@@ -26,9 +26,9 @@ export class PropertyMediaService {
   async create(
     createPropertyMediaDto: CreatePropertyMediaDto,
   ): Promise<PropertyMedia> {
-    const { eventId, ...rest } = createPropertyMediaDto;
+    const { propertyId, ...rest } = createPropertyMediaDto;
     return this.PropertyMediaRepository.save({
-      event: { id: eventId },
+      event: { id: propertyId },
       ...rest,
     });
   }
@@ -37,18 +37,11 @@ export class PropertyMediaService {
     return this.PropertyMediaRepository.find();
   }
 
-  async findAllByevent(eventId: number): Promise<PropertyMedia[]> {
+  async findAllByProperty(propertyId: number): Promise<PropertyMedia[]> {
     return await this.PropertyMediaRepository
       .createQueryBuilder()
-      .where('event_id = :eventId', { eventId })
+      .where('property_id = :propertyId', { propertyId })
       .getMany();
-
-    // Example with join
-    // return await this.PropertyMediaRepository
-    // .createQueryBuilder('PropertyMedia')
-    // .innerJoin('PropertyMedia.event', 'event')
-    // .where('event.id = :eventId', { eventId })
-    // .getMany();
   }
 
   async findAllByUser(userId: number): Promise<PropertyMedia[]> {
@@ -99,7 +92,7 @@ export class PropertyMediaService {
     id: number,
     updateDto: UpdateDocumentStatusDto,
   ): Promise<PropertyMedia> {
-    if (updateDto.status === DocumentStatus.DECLINED && !updateDto.declineReason) {
+    if (updateDto.status === DocumentStatus.DECLINED && !updateDto.comment) {
       throw new BadRequestException('Please provide a reason for declining')
     }
 
@@ -125,32 +118,32 @@ export class PropertyMediaService {
     return this.PropertyMediaRepository.save(proposedDevelopment);
   }
 
-  async reupload(file: Express.Multer.File,
-    dto: DocumentReuploadDto,
-  ): Promise<
-    AbstractBaseMediaEntity
-  > {
-    const { id, ...rest } = dto
-    const size = file.size
-    let oldMedia = null
-    let newUrl = null
+  // async reupload(
+  //   dto: DocumentReuploadDto,
+  // ): Promise<
+  //   AbstractBaseMediaEntity
+  // > {
+  //   const { id, ...rest } = dto
+  //   const size = file.size
+  //   let oldMedia = null
+  //   let newUrl = null
 
-    oldMedia = await this.findOne(id)
+  //   oldMedia = await this.findOne(id)
 
-    if (!oldMedia) {
-      throw new BadRequestException('Invalid document ID')
-    }
+  //   if (!oldMedia) {
+  //     throw new BadRequestException('Invalid document ID')
+  //   }
 
-    newUrl = await this.uploaderService.replaceFileOnS3(
-      file,
-      S3Folder.DOCUMENT,
-      oldMedia.url,
-    );
-    return await this.updateOne(id, {
-      url: newUrl,
-      size,
-      status: DocumentStatus.PENDING,
-      ...rest
-    })
-  }
+  //   newUrl = await this.uploaderService.replaceFileOnS3(
+  //     file,
+  //     S3Folder.DOCUMENT,
+  //     oldMedia.url,
+  //   );
+  //   return await this.updateOne(id, {
+  //     url: newUrl,
+  //     size,
+  //     status: DocumentStatus.PENDING,
+  //     ...rest
+  //   })
+  // }
 }

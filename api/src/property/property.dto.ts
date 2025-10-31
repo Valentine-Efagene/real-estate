@@ -1,7 +1,8 @@
 import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
-import { ArrayNotEmpty, IsArray, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, IsUrl, MaxLength, ValidateNested } from 'class-validator';
+import { ArrayNotEmpty, IsArray, IsEnum, IsInt, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, IsUrl, MaxLength, ValidateNested } from 'class-validator';
 import { Currency, Period, PropertyCategory, PropertyType } from './property.enums';
 import { Transform, Type } from 'class-transformer';
+import { CreateDocumentDto } from 'src/common/common.dto';
 
 export class CreatePropertyBaseDto {
   @ApiProperty({
@@ -32,6 +33,13 @@ export class CreatePropertyBaseDto {
   @IsNotEmpty()
   @MaxLength(255)
   city: string;
+
+  @ApiProperty({
+    example: 'Alabama',
+  })
+  @IsNotEmpty()
+  @MaxLength(255)
+  state: string;
 
   @ApiProperty({
     example: 'Pine Apartments',
@@ -150,24 +158,47 @@ export class CreatePropertyBaseDto {
   amenities?: string[];
 }
 
-export class CreatePropertyControllerDto extends CreatePropertyBaseDto {
+export class SetDisplayImageDto {
   @ApiProperty({
-    type: 'string',
-    format: 'binary',
-    description: 'The file to be uploaded',
-    example: 'example.pdf',
+    example: 1,
   })
-  gallery: Express.Multer.File[];
+  @IsNotEmpty()
+  @Transform(({ value }) => {
+    return parseInt(value)
+  })
+  @IsInt()
+  propertyMediaId: number
 }
 
-export class GalleryItemDto {
-  @IsNumber()
-  @IsPositive()
-  size: number;
+export class CreateManyPropertyDocumentsDto {
+  @ApiProperty({
+    example: 1,
+  })
+  @IsNotEmpty()
+  @Transform(({ value }) => parseInt(value, 10), { toClassOnly: true })
+  propertyId: number;
 
-  @IsString()
-  @IsUrl()
-  url: string;
+  @ApiProperty({
+    type: [CreateDocumentDto],
+    description: 'Array of documents to create',
+  })
+  @IsNotEmpty()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateDocumentDto)
+  documents: CreateDocumentDto[];
+}
+
+export class CreatePropertyControllerDto extends CreatePropertyBaseDto {
+  @ApiProperty({
+    type: [CreateDocumentDto],
+    description: 'Array of documents to create',
+  })
+  @IsNotEmpty()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateDocumentDto)
+  gallery: CreateDocumentDto[];
 }
 
 export class CreatePropertyDto extends CreatePropertyBaseDto {
@@ -179,9 +210,20 @@ export class CreatePropertyDto extends CreatePropertyBaseDto {
   @IsArray()
   @ArrayNotEmpty()
   @ValidateNested({ each: true })
-  @Type(() => GalleryItemDto)
-  gallery: GalleryItemDto[];
+  @Type(() => CreateDocumentDto)
+  gallery: CreateDocumentDto[];
 }
 
 export class UpdatePropertyDto extends PartialType(CreatePropertyDto) {
+  @ApiPropertyOptional({
+    nullable: true,
+    type: 'string',
+    example: ['WiFi', 'Garage', 'Gym'],
+  })
+  @IsArray()
+  @IsString({ each: true })
+  @Transform(({ value }) =>
+    typeof value === 'string' ? value.split(',') : value
+  )
+  amenities?: string[];
 }

@@ -3,7 +3,6 @@ import { BaseEntity } from '../common/helpers/BaseEntity';
 import { UserStatus } from './user.enums';
 import { Role } from '../role/role.entity';
 import { RefreshToken } from '../refresh_token/refresh_token.entity';
-import { Ticket } from '../ticket/ticket.entity';
 import { Property } from '../property/property.entity';
 
 @Entity({ name: 'users' })
@@ -50,24 +49,12 @@ export class User extends BaseEntity {
   )
   refreshTokens: RefreshToken[];
 
-  // @OneToMany(
-  //   () => Payment,
-  //   payment => payment.user
-  // )
-  // payments: Payment[]
-
   @OneToMany(
-    () => Event,
-    (event) =>
-      event.user,
+    () => Property,
+    (property) =>
+      property.user,
   )
-  events: Event[];
-
-  @OneToMany(
-    () => Ticket,
-    (ticket) => ticket.user
-  )
-  ticket: Ticket[]
+  properties: Property[];
 
   @Column({
     type: 'enum',

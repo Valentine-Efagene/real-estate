@@ -1,43 +1,14 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty } from 'class-validator';
+import { CreateDocumentDto } from 'src/common/common.dto';
 
-export class CreatePropertyMediaControllerDto {
-  @ApiProperty({
-    type: 'string',
-    format: 'binary',
-    description: 'The file to be uploaded',
-    example: 'example.pdf',
-  })
-  file: Express.Multer.File;
-
-  @ApiPropertyOptional({ nullable: true })
-  @IsNotEmpty()
-  name: string;
-
-  @ApiPropertyOptional({ nullable: true })
-  @IsNotEmpty()
-  description: string;
-
+export class CreatePropertyMediaControllerDto extends CreateDocumentDto {
   @ApiProperty({ nullable: false, example: 1 })
   @IsNotEmpty()
-  eventId: number;
+  propertyId: number;
 }
 
-export class CreatePropertyMediaDto {
-  @ApiPropertyOptional({ nullable: true })
-  name: string;
-
-  @ApiPropertyOptional({ nullable: true })
-  description: string;
-
-  @ApiPropertyOptional({ nullable: true })
-  url: string;
-
+export class CreatePropertyMediaDto extends CreateDocumentDto {
   @ApiProperty({ nullable: false, example: 1 })
-  eventId: number;
-
-  @ApiProperty({ nullable: false })
-  @IsNotEmpty()
-  @IsNumber()
-  size: number;
+  propertyId: number;
 }

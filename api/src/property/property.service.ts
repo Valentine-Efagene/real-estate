@@ -1,17 +1,20 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, FindOptionsWhere, Like, Repository } from 'typeorm';
 import { Property } from './property.entity';
 import { CreatePropertyDto, UpdatePropertyDto } from './property.dto';
 import { FilterOperator, PaginateQuery, Paginated, paginate } from 'nestjs-paginate';
-import { Amenity } from 'src/amenity/amenity.entity';
-import { PropertyMedia } from 'src/property-media/property-media.entity';
+import { Amenity } from '../amenity/amenity.entity';
+import { PropertyMedia } from '../property-media/property-media.entity';
+import { contentType } from 'mime-types';
 
 @Injectable()
 export class PropertyService {
   constructor(
     @InjectRepository(Property)
     private readonly propertyRepository: Repository<Property>,
+    @InjectRepository(PropertyMedia)
+    private readonly propertyMediaRepository: Repository<PropertyMedia>,
     private dataSource: DataSource,
   ) { }
 
@@ -131,6 +134,41 @@ export class PropertyService {
         title: Like(`%${title}%`)
       }
     });
+  }
+
+  async setDisplayImage(propertyId: number, mediaId: number): Promise<Property> {
+    const media = await this.propertyMediaRepository.findOne({
+      where: {
+        id: mediaId,
+        propertyId: propertyId
+      }
+    })
+
+    if (!media) {
+      throw new BadRequestException('Media not found')
+    }
+
+    const mimeType = contentType(media.url) || ''
+
+    if (!mimeType.startsWith('image/')) {
+      throw new BadRequestException('Only an image can be used as display image')
+    }
+
+    const property = await this.propertyRepository.findOne({
+      where: {
+        id: propertyId
+      }
+    })
+
+    if (!property) {
+      throw new BadRequestException('Property not found')
+    }
+
+    this.propertyRepository.merge(property, {
+      displayImageId: mediaId
+    })
+
+    return await this.propertyRepository.save(property)
   }
 
   async updateOne(id: number, { amenities, ...updateDto }: UpdatePropertyDto): Promise<Property> {

@@ -93,7 +93,7 @@ export class PropertyDocumentService {
     id: number,
     updateDto: UpdateDocumentStatusDto,
   ): Promise<PropertyDocument> {
-    if (updateDto.status === DocumentStatus.DECLINED && !updateDto.declineReason) {
+    if (updateDto.status === DocumentStatus.DECLINED && !updateDto.comment) {
       throw new BadRequestException('Please provide a reason for declining')
     }
 

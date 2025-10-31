@@ -1,18 +1,17 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Readable, PassThrough } from 'node:stream'
-import AWSUtil from '../util/AwsUtil';
 import ImageUtil from '../util/ImageUtil';
 import UrlUtil from '../util/UrlUtil';
 import { ByteLogger } from './util/ByteLogger';
 import archiver from 'archiver';
-import AwsUtil from '../util/AwsUtil';
+import AwsUtil from './util/AwsUtil';
 
 @Injectable()
 export class S3UploaderService {
   private readonly logger = new Logger(S3UploaderService.name);
 
   async uploadFileToS3(file: any, folder: string) {
-    const path = await AWSUtil.uploadFileToS3(
+    const path = await AwsUtil.uploadFileToS3(
       file,
       folder,
       ImageUtil.customFilename(file),
@@ -22,7 +21,7 @@ export class S3UploaderService {
   }
 
   async uploadImageToS3(file: any, folder: string) {
-    const path = await AWSUtil.uploadImageToS3(
+    const path = await AwsUtil.uploadImageToS3(
       file,
       folder,
       ImageUtil.customFilename(file),
@@ -31,8 +30,8 @@ export class S3UploaderService {
     return path;
   }
 
-  async replaceImageOnS3(file: any, folder: string, url: string) {
-    const path = await AWSUtil.uploadImageToS3(
+  async replaceFileOnS3(file: any, folder: string, url: string) {
+    const path = await AwsUtil.uploadFileToS3(
       file,
       folder,
       ImageUtil.customFilename(file),
@@ -46,16 +45,16 @@ export class S3UploaderService {
 
   async deleteFromS3(url: string) {
     const key = UrlUtil.getKey(url);
-    await AWSUtil.deleteFromS3(key);
+    await AwsUtil.deleteFromS3(key);
   }
 
   async getPresignedUrl(url: string) {
     const key = UrlUtil.getKey(url);
-    return await AWSUtil.createPresignedUrl(key);
+    return await AwsUtil.createPresignedUrl(key);
   }
 
   async createPresignedPost(key: string) {
-    return await AWSUtil.createPresignedPost(key);
+    return await AwsUtil.createPresignedPost(key);
   }
 
 

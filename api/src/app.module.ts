@@ -58,12 +58,10 @@ import { PasswordResetTokenModule } from './password_reset_tokens/password_reset
 import { MailModule } from './mail/mail.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import AuthenticationMiddleware from './common/middleware/AuthenticationMiddleware';
-import { TicketModule } from './ticket/ticket.module';
 import { options } from './data-source';
 import { SettingsModule } from './settings/settings.module';
 import { PropertyModule } from './property/property.module';
 import { PropertyMediaModule } from './property-media/property-media.module';
-import { QrCodeModule } from './qr-code/qr-code.module';
 import { EncryptionModule } from './encryption/encryption.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { BulkInviteModule } from './bulk-invite/bulk-invite.module';
@@ -98,7 +96,6 @@ import { AccessLoggerMiddleware } from './common/middleware/AccessLoggerMiddlewa
     RoleModule,
     PermissionModule,
     RefreshTokenModule,
-    TicketModule,
     UserSuspensionModule,
     PasswordResetTokenModule,
     SettingsModule,
@@ -114,9 +111,10 @@ import { AccessLoggerMiddleware } from './common/middleware/AccessLoggerMiddlewa
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthenticationMiddleware)
+      .forRoutes('*');
     consumer
       .apply(AccessLoggerMiddleware)
-      .apply(AuthenticationMiddleware)
       .exclude(
         { path: 'qr/(.*)', method: RequestMethod.GET },
         { path: 'auth/sign-up', method: RequestMethod.POST },

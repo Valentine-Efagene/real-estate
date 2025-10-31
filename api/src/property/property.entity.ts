@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 import { Currency, PropertyCategory, PropertyType, Period } from './property.enums';
 import { PropertyDocument } from '../property-document/property-document.entity';
 import { PropertyMedia } from '../property-media/property-media.entity';
@@ -34,7 +34,19 @@ export class Property extends AbstractBaseReviewableEntity {
     () => PropertyMedia,
     (propertyDocument) => propertyDocument.property,
   )
+
   media: PropertyMedia[];
+  @OneToOne(() => PropertyMedia, {
+    onDelete: 'SET NULL', // prevents FK errors if image is deleted
+    onUpdate: 'CASCADE'
+  })
+  @JoinColumn({ name: 'display_image_id' })
+  displayImage: PropertyMedia;
+
+  @Column({
+    nullable: true
+  })
+  displayImageId: number
 
   @Column({ nullable: true })
   title?: string;

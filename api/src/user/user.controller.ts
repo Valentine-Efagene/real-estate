@@ -32,11 +32,7 @@ import { Paginate, Paginated, PaginateQuery } from 'nestjs-paginate';
 import { ThrottlerGuard } from '@nestjs/throttler';
 import { RequirePermission } from '../common/decorator/permission.decorator';
 import { PermissionName } from '../permission/permission.enums';
-import { TicketService } from '../ticket/ticket.service';
-import { Ticket } from '../ticket/ticket.entity';
 import { Request } from 'express';
-import { OrderService } from '../order/order.service';
-import { Order } from '../order/order.entity';
 
 @SwaggerAuth()
 @UseGuards(ThrottlerGuard)
@@ -46,9 +42,7 @@ import { Order } from '../order/order.entity';
 export class UserController {
   constructor(
     private readonly userService: UserService,
-    private readonly ticketService: TicketService,
     private readonly uploaderService: S3UploaderService,
-    private readonly orderService: OrderService
   ) { }
 
   @SwaggerAuth()
@@ -140,7 +134,7 @@ export class UserController {
     let url = null;
 
     if (user.avatar) {
-      url = await this.uploaderService.replaceImageOnS3(
+      url = await this.uploaderService.replaceFileOnS3(
         file,
         S3Folder.AVATAR,
         user.avatar,
@@ -151,18 +145,6 @@ export class UserController {
 
     await this.userService.updateOne(id, { avatar: url });
     return new StandardApiResponse(HttpStatus.OK, ResponseMessage.UPDATED, url);
-  }
-
-
-  @SwaggerAuth()
-  @Get(':id/orders')
-  @ApiResponse(OpenApiHelper.responseDoc)
-  async getMedia(
-    @Param('id', ParseIntPipe) id: number,
-    @Paginate() query: PaginateQuery,
-  ): Promise<StandardApiResponse<Paginated<Order>>> {
-    const data = await this.orderService.getOrdersByUser(id, query);
-    return new StandardApiResponse(HttpStatus.OK, ResponseMessage.FETCHED, data);
   }
 
   @SwaggerAuth()
@@ -189,7 +171,7 @@ export class UserController {
 
     if (file) {
       if (user.avatar) {
-        url = await this.uploaderService.replaceImageOnS3(
+        url = await this.uploaderService.replaceFileOnS3(
           file,
           S3Folder.AVATAR,
           user.avatar,
@@ -270,16 +252,6 @@ export class UserController {
   ): Promise<StandardApiResponse<User>> {
     const data = await this.userService.reinstate(id, suspendUserDto.reason);
     return new StandardApiResponse(HttpStatus.OK, ResponseMessage.UPDATED, data);
-  }
-
-  @SwaggerAuth()
-  @Get(':id/tickets')
-  @ApiResponse(OpenApiHelper.responseDoc)
-  async findTickets(
-    @Paginate() query: PaginateQuery,
-    @Param('id', ParseIntPipe) id: number,): Promise<StandardApiResponse<Paginated<Ticket>>> {
-    const data = await this.ticketService.findAllByUserPaginated(id, query);
-    return new StandardApiResponse(HttpStatus.OK, ResponseMessage.FETCHED, data);
   }
 
   @SwaggerAuth()

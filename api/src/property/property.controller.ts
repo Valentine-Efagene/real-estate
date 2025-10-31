@@ -5,26 +5,21 @@ import {
   Get,
   Param,
   Post,
+  HttpCode,
   HttpStatus,
   ParseIntPipe,
   Query,
-  BadRequestException,
-  UseInterceptors,
-  UploadedFiles,
 } from '@nestjs/common';
 import { Property } from './property.entity';
 import { PropertyService } from './property.service';
-import { CreatePropertyControllerDto, GalleryItemDto } from './property.dto';
-import { ApiConsumes, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { StandardApiResponse } from 'src/common/common.dto';
-import OpenApiHelper from 'src/common/OpenApiHelper';
-import { ResponseMessage, S3Folder } from 'src/common/common.enum';
-import { SwaggerAuth } from 'src/common/guard/swagger-auth.guard';
+import { CreatePropertyControllerDto, SetDisplayImageDto } from './property.dto';
+import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { CreateDocumentDto, StandardApiResponse } from '../common/common.dto';
+import OpenApiHelper from '../common/OpenApiHelper';
+import { ResponseMessage, S3Folder } from '../common/common.enum';
+import { SwaggerAuth } from '../common/guard/swagger-auth.guard';
 import { Paginate, PaginateQuery, Paginated } from 'nestjs-paginate';
-import { FilesInterceptor } from '@nestjs/platform-express';
-import { S3UploaderService } from 'src/s3-uploader/s3-uploader.service';
-import { PropertyMediaService } from 'src/property-media/property-media.service';
-import FilesValidator from 'src/common/validator/FilesValidator';
+import { S3UploaderService } from '../s3-uploader/s3-uploader.service';
 
 @SwaggerAuth()
 @Controller('properties')
@@ -90,18 +85,23 @@ export class PropertyController {
   }
 
   @SwaggerAuth()
+  @HttpCode(HttpStatus.OK)
+  @Post(':id/set-display-image')
+  @ApiResponse(OpenApiHelper.responseDoc)
+  async setDisplayImage(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: SetDisplayImageDto
+  ) {
+    const response = await this.propertyService.setDisplayImage(id, dto.propertyMediaId)
+    return new StandardApiResponse(HttpStatus.OK, ResponseMessage.UPDATED, response)
+  }
+
+  @SwaggerAuth()
   @Post()
-  @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FilesInterceptor('gallery', 10))
   async create(
-    // @UploadedFiles(FileValidators.fileValidator)
-    @UploadedFiles(FilesValidator) gallery: Express.Multer.File[],
     @Body() createPropertyDto: CreatePropertyControllerDto,
   ): Promise<StandardApiResponse<Property>> {
-    if (!gallery) {
-      throw new BadRequestException();
-    }
-
+    const { gallery } = createPropertyDto;
     const galleryPromises = []
 
     for (let index = 0; index < gallery.length; index++) {
@@ -117,10 +117,12 @@ export class PropertyController {
 
     const urls = await Promise.all(galleryPromises)
 
-    const galleryArray: GalleryItemDto[] = urls.map((url, index) => {
+    const galleryArray: CreateDocumentDto[] = urls.map((url, index) => {
       return {
         url,
-        size: gallery[index].size
+        size: gallery[index].size,
+        name: gallery[index].name,
+        description: gallery[index].description,
       }
     })
 

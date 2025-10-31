@@ -25,7 +25,7 @@ export abstract class AbstractBaseDocumentEntity extends AbstractBaseReviewableE
   status: DocumentStatus;
 
   @Column({ nullable: true })
-  declineReason: string;
+  comment: string;
 
   @Column({ type: 'text', nullable: false })
   url: string;
@@ -41,6 +41,6 @@ export abstract class AbstractBaseDocumentEntity extends AbstractBaseReviewableE
 }
 
 export abstract class AbstractBaseMediaEntity extends AbstractBaseDocumentEntity {
-  @Column()
-  mimeType: string;
+  // @Column()
+  // mimeType: string;
 }

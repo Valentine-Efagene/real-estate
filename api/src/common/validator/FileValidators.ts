@@ -1,6 +1,6 @@
 import { FileTypeValidator, HttpStatus, MaxFileSizeValidator, ParseFilePipeBuilder } from '@nestjs/common';
-import FileSize from '../../s3-uploader/util/FileSize';
 import OptionalFilePipe from './OptionalFilePipe';
+import FileSize from '../../util/FileSize';
 
 export default class FileValidators {
   public static imageValidator = new ParseFilePipeBuilder()
