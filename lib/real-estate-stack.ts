@@ -6,7 +6,7 @@ import * as ecs_patterns from 'aws-cdk-lib/aws-ecs-patterns';
 import * as rds from 'aws-cdk-lib/aws-rds';
 import * as elasticache from 'aws-cdk-lib/aws-elasticache';
 
-export class MediacraftStack extends cdk.Stack {
+export class RealEstateStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
@@ -56,12 +56,12 @@ export class MediacraftStack extends cdk.Stack {
     valkeyCluster.addDependency(subnetGroup);
 
     // ECS Cluster
-    const ecsCluster = new ecs.Cluster(this, 'MediacraftEcsCluster', {
+    const ecsCluster = new ecs.Cluster(this, 'RealEstateEcsCluster', {
       vpc,
     });
 
     // Application Load Balanced Fargate Service
-    const fargateService = new ecs_patterns.ApplicationLoadBalancedFargateService(this, 'MediacraftService', {
+    const fargateService = new ecs_patterns.ApplicationLoadBalancedFargateService(this, 'RealEstateService', {
       cluster: ecsCluster,
       cpu: 512,
       desiredCount: 1,
