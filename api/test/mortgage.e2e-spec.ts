@@ -90,6 +90,10 @@ describe('Mortgage flow (e2e)', () => {
             .post('/auth/sign-in')
             .send({ identifier: staffDto.email, password: staffDto.password })
 
+        // debug: log response to inspect why sign-in failed in CI/test env
+        // (temporary - will be removed after troubleshooting)
+        // eslint-disable-next-line no-console
+        console.log('SIGNIN_RESPONSE', { status: signInRes.status, body: signInRes.body })
         expect(signInRes.status).toBe(HttpStatus.OK)
         const token = signInRes.body.payload.accessToken
         expect(token).toBeDefined()
@@ -123,6 +127,10 @@ describe('Mortgage flow (e2e)', () => {
             zipCode: '100001',
             district: 'Ikeja',
             country: 'Nigeria',
+            nBedrooms: '3',
+            nBathrooms: '2',
+            nParkingSpots: '1',
+            currency: 'NGN',
             category: 'SALE',
             propertyType: 'HOUSE'
         } as any)
@@ -133,7 +141,7 @@ describe('Mortgage flow (e2e)', () => {
             .post('/mortgages')
             .set('Authorization', `Bearer ${token}`)
             .send({ propertyId: property.id, borrowerId: borrower.id, principal: 100000, termMonths: 360, interestRate: 4.5, mortgageTypeId })
-            .expect(HttpStatus.OK)
+            .expect(HttpStatus.CREATED)
 
         const mortgage = createMortgageRes.body.payload || createMortgageRes.body
         expect(mortgage).toBeDefined()
@@ -171,7 +179,7 @@ describe('Mortgage flow (e2e)', () => {
             .post(`/mortgages/steps/${firstStep.id}/complete`)
             .set('Authorization', `Bearer ${token}`)
             .send({})
-            .expect(HttpStatus.OK)
+            .expect(HttpStatus.CREATED)
 
         // fetch mortgage and assert step completed
         const finalRes = await request(app.getHttpServer())

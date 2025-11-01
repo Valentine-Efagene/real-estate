@@ -123,28 +123,31 @@ import { PropertyDocumentModule } from './property-document/property-document.mo
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthenticationMiddleware)
-      .forRoutes('*');
+    // Exclude public endpoints from authentication middleware
+    const excludedPaths = [
+      { path: 'qr/(.*)', method: RequestMethod.GET },
+      { path: 'auth/sign-up', method: RequestMethod.POST },
+      { path: 'auth/request-password-reset', method: RequestMethod.POST },
+      { path: 'auth/reset-password', method: RequestMethod.POST },
+      { path: 'event-ticket-types/(.*)', method: RequestMethod.GET },
+      { path: 'bulk-invite/test', method: RequestMethod.POST },
+      { path: 'events/public/(.*)', method: RequestMethod.GET },
+      { path: 'event-media/(.*)', method: RequestMethod.GET },
+      { path: 'orders/paystack/webhook', method: RequestMethod.POST },
+      { path: 'auth/sign-in/google-token', method: RequestMethod.POST },
+      { path: 'auth/sign-in', method: RequestMethod.POST },
+      { path: 'events/public', method: RequestMethod.GET },
+      { path: 'auth/google', method: RequestMethod.GET },
+      { path: 'auth/google/callback', method: RequestMethod.GET },
+      { path: 'auth/verify-email', method: RequestMethod.GET },
+      { path: 'mailer/(.*)', method: RequestMethod.POST },
+    ];
+
+    consumer.apply(AuthenticationMiddleware).exclude(...excludedPaths).forRoutes('*');
+
     consumer
       .apply(AccessLoggerMiddleware)
-      .exclude(
-        { path: 'qr/(.*)', method: RequestMethod.GET },
-        { path: 'auth/sign-up', method: RequestMethod.POST },
-        { path: 'auth/request-password-reset', method: RequestMethod.POST },
-        { path: 'auth/reset-password', method: RequestMethod.POST },
-        { path: 'event-ticket-types/(.*)', method: RequestMethod.GET },
-        { path: 'bulk-invite/test', method: RequestMethod.POST },
-        { path: 'events/public/(.*)', method: RequestMethod.GET },
-        { path: 'event-media/(.*)', method: RequestMethod.GET },
-        { path: 'orders/paystack/webhook', method: RequestMethod.POST },
-        { path: 'auth/sign-in/google-token', method: RequestMethod.POST },
-        { path: 'auth/sign-in', method: RequestMethod.POST },
-        { path: 'events/public', method: RequestMethod.GET },
-        { path: 'auth/google', method: RequestMethod.GET },
-        { path: 'auth/google/callback', method: RequestMethod.GET },
-        { path: 'auth/verify-email', method: RequestMethod.GET },
-        { path: 'mailer/(.*)', method: RequestMethod.POST },
-      )
+      .exclude(...excludedPaths)
       .forRoutes('*');
   }
 }
