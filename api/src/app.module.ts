@@ -63,6 +63,8 @@ import { SettingsModule } from './settings/settings.module';
 import { PropertyModule } from './property/property.module';
 import { PropertyMediaModule } from './property-media/property-media.module';
 import { MortgageModule } from './mortgage/mortgage.module';
+import { MortgageDocumentModule } from './mortgage-document/mortgage-document.module';
+import { MortgageStepModule } from './mortgage-step/mortgage-step.module';
 import { EncryptionModule } from './encryption/encryption.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { BulkInviteModule } from './bulk-invite/bulk-invite.module';
@@ -103,6 +105,8 @@ import { AccessLoggerMiddleware } from './common/middleware/AccessLoggerMiddlewa
     PropertyModule,
     PropertyMediaModule,
     MortgageModule,
+    MortgageDocumentModule,
+    MortgageStepModule,
     EncryptionModule,
     BulkInviteModule,
     ScheduleModule.forRoot()

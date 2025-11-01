@@ -27,6 +27,11 @@ export class CreateMortgageDto {
     @ApiPropertyOptional({ example: 4.5 })
     @IsOptional()
     interestRate?: number;
+
+    @ApiPropertyOptional({ example: 1 })
+    @IsOptional()
+    @IsNumber()
+    mortgageTypeId?: number;
 }
 
 export class CreateMortgageStepDto {

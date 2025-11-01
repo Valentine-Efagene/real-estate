@@ -5,6 +5,7 @@ import { Mortgage } from './mortgage.entity';
 import { MortgageDocument } from './mortgage-document.entity';
 import { MortgageStep } from './mortgage-step.entity';
 import { CreateMortgageDto, CreateMortgageDocumentDto, CreateMortgageStepDto } from './mortgage.dto';
+import { MortgageType } from 'src/mortgage-type/mortgage-type.entity';
 
 @Injectable()
 export class MortgageService {
@@ -15,6 +16,8 @@ export class MortgageService {
         private readonly documentRepo: Repository<MortgageDocument>,
         @InjectRepository(MortgageStep)
         private readonly stepRepo: Repository<MortgageStep>,
+        @InjectRepository(MortgageType)
+        private readonly typeRepo: Repository<MortgageType>,
     ) { }
 
     async create(dto: CreateMortgageDto): Promise<Mortgage> {
@@ -25,6 +28,7 @@ export class MortgageService {
             downPayment: dto.downPayment,
             termMonths: dto.termMonths,
             interestRate: dto.interestRate,
+            mortgageTypeId: (dto as any).mortgageTypeId,
         });
         // Basic monthly payment calc when possible (simple interest approximation)
         if (m.principal && m.termMonths && m.interestRate) {
@@ -34,7 +38,26 @@ export class MortgageService {
                 m.monthlyPayment = (m.principal * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -n));
             }
         }
-        return this.mortgageRepo.save(m);
+        const saved = await this.mortgageRepo.save(m);
+
+        // If mortgage type has default steps, seed them
+        const mortgageTypeId = (dto as any).mortgageTypeId;
+        if (mortgageTypeId) {
+            const mt = await this.typeRepo.findOneBy({ id: mortgageTypeId });
+            if (mt && Array.isArray(mt.defaultSteps) && mt.defaultSteps.length > 0) {
+                const stepsToCreate = mt.defaultSteps.map((s, idx) => ({
+                    mortgageId: saved.id,
+                    title: s.title || s.name || `Step ${idx + 1}`,
+                    description: s.description || null,
+                    sequence: typeof s.sequence === 'number' ? s.sequence : (s.sequence || idx + 1),
+                    isOptional: !!s.isOptional,
+                }));
+                const createdSteps = this.stepRepo.create(stepsToCreate as any[]);
+                await this.stepRepo.save(createdSteps);
+            }
+        }
+
+        return this.mortgageRepo.findOne({ where: { id: saved.id }, relations: ['steps', 'documents', 'property'] });
     }
 
     async get(id: number) {

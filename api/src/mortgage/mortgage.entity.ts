@@ -4,6 +4,7 @@ import { Property } from 'src/property/property.entity';
 import { User } from '../user/user.entity';
 import MortgageDocument from './mortgage-document.entity';
 import MortgageStep from './mortgage-step.entity';
+import { MortgageType } from 'src/mortgage-type/mortgage-type.entity';
 
 export enum MortgageStatus {
     DRAFT = 'DRAFT',
@@ -52,6 +53,13 @@ export class Mortgage extends AbstractBaseReviewableEntity {
 
     @OneToMany(() => MortgageStep, (step) => step.mortgage, { cascade: true })
     steps: MortgageStep[];
+
+    @ManyToOne(() => MortgageType, { nullable: true })
+    @JoinColumn({ name: 'mortgage_type_id' })
+    mortgageType: MortgageType;
+
+    @Column({ nullable: true })
+    mortgageTypeId: number;
 }
 
 export default Mortgage;
