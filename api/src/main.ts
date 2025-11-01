@@ -6,6 +6,7 @@ import { ValidationPipe } from '@nestjs/common'
 import { QueryFailedFilter } from './common/common.error'
 import { RoleSeeder } from './role/role.seeder'
 import { PermissionSeeder } from './permission/permission.seeder'
+import { MortgageTypeSeeder } from './mortgage-type/mortgage-type.seeder'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
@@ -17,6 +18,9 @@ async function bootstrap() {
 
   const permissionSeeder = app.get(PermissionSeeder)
   await permissionSeeder.seed();
+
+  const mortgageTypeSeeder = app.get(MortgageTypeSeeder)
+  await mortgageTypeSeeder.seed();
 
   // Enable validation globally
   app.useGlobalPipes(new ValidationPipe({

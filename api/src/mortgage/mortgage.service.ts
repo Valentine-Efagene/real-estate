@@ -55,6 +55,18 @@ export class MortgageService {
                 const createdSteps = this.stepRepo.create(stepsToCreate as any[]);
                 await this.stepRepo.save(createdSteps);
             }
+
+            // If mortgage type defines requiredDocuments, create placeholder MortgageDocument rows
+            if (mt && Array.isArray(mt.requiredDocuments) && mt.requiredDocuments.length > 0) {
+                const docsToCreate = mt.requiredDocuments.map((d) => ({
+                    mortgageId: saved.id,
+                    fileName: d.name || d.title || 'Document',
+                    url: null,
+                    isTemplate: true,
+                }));
+                const createdDocs = this.documentRepo.create(docsToCreate as any[]);
+                await this.documentRepo.save(createdDocs);
+            }
         }
 
         return this.mortgageRepo.findOne({ where: { id: saved.id }, relations: ['steps', 'documents', 'property'] });

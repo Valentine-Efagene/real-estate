@@ -136,6 +136,11 @@ describe('Mortgage flow (e2e)', () => {
         expect(mortgage.id).toBeDefined()
         const mortgageId = mortgage.id
 
+        // placeholder documents should have been created from mortgage type
+        expect(Array.isArray(mortgage.documents)).toBe(true)
+        expect(mortgage.documents.length).toBeGreaterThanOrEqual(2)
+        expect(mortgage.documents.some((d: any) => d.isTemplate)).toBe(true)
+
         // steps should have been seeded
         const stepsRes = await request(app.getHttpServer())
             .get(`/mortgage-steps?mortgageId=${mortgageId}`)

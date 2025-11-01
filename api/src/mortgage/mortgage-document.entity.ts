@@ -15,8 +15,13 @@ export class MortgageDocument extends AbstractBaseReviewableEntity {
     @Column()
     fileName: string;
 
-    @Column()
+    // Allow null URLs for template/placeholder documents created from mortgage type templates.
+    @Column({ nullable: true })
     url: string;
+
+    // Flag to mark this document as a template/placeholder (not yet uploaded). Template docs typically have a name but no URL.
+    @Column({ default: false })
+    isTemplate: boolean;
 
     @Column({ nullable: true })
     mimeType: string;
