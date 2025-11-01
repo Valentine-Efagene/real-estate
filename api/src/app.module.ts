@@ -62,6 +62,7 @@ import { options } from './data-source';
 import { SettingsModule } from './settings/settings.module';
 import { PropertyModule } from './property/property.module';
 import { PropertyMediaModule } from './property-media/property-media.module';
+import { MortgageModule } from './mortgage/mortgage.module';
 import { EncryptionModule } from './encryption/encryption.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { BulkInviteModule } from './bulk-invite/bulk-invite.module';
@@ -101,6 +102,7 @@ import { AccessLoggerMiddleware } from './common/middleware/AccessLoggerMiddlewa
     SettingsModule,
     PropertyModule,
     PropertyMediaModule,
+    MortgageModule,
     EncryptionModule,
     BulkInviteModule,
     ScheduleModule.forRoot()
