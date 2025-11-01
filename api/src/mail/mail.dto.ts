@@ -104,3 +104,11 @@ export class SendTicketMailDto {
 export class TestDto {
 
 }
+
+export class SendPaymentReminderDto {
+  name: string;
+  receiverEmail: string;
+  amount: number;
+  dueDate: string; // ISO date string
+  mortgageId: number;
+}

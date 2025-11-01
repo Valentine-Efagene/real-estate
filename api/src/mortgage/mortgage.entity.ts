@@ -60,6 +60,9 @@ export class Mortgage extends AbstractBaseReviewableEntity {
 
     @Column({ nullable: true })
     mortgageTypeId: number;
+
+    @Column({ type: 'timestamp', nullable: true })
+    lastReminderSentAt: Date;
 }
 
 export default Mortgage;

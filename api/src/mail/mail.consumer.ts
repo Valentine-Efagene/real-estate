@@ -34,6 +34,9 @@ export class MailConsumer extends WorkerHost {
             case MailQueueJobNames.SEND_PASSWORD_RESET_MESSAGE:
                 await this.sendPasswordResetMail(job, token)
                 break;
+            case MailQueueJobNames.SEND_PAYMENT_REMINDER:
+                await this.sendPaymentReminderMail(job, token)
+                break;
 
             default:
                 break;
@@ -78,6 +81,31 @@ export class MailConsumer extends WorkerHost {
                 context: {
                     resetUrl: dto.resetUrl,
                     name: dto.name,
+                    ...ConstantHelper.mailConstants,
+                    socialLinks: ConstantHelper.socialLinks,
+                }
+            })
+
+            console.log('SMTP Response:', response)
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+
+    async sendPaymentReminderMail(job: Job<any, void, string>, token?: string): Promise<any> {
+        const dto = job.data
+
+        try {
+            const response = await this.mailerService.sendMail({
+                to: dto.receiverEmail,
+                subject: 'Mortgage payment reminder',
+                template: './payment-reminder',
+                context: {
+                    name: dto.name,
+                    amount: dto.amount,
+                    dueDate: dto.dueDate,
+                    mortgageId: dto.mortgageId,
                     ...ConstantHelper.mailConstants,
                     socialLinks: ConstantHelper.socialLinks,
                 }

@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
-import { SendMailDto, SendPasswordResetMailDto, SendTicketMailDto, SendVerificationMailDto } from './mail.dto';
+import { SendMailDto, SendPasswordResetMailDto, SendTicketMailDto, SendVerificationMailDto, SendPaymentReminderDto } from './mail.dto';
 import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
 import { MailQueueJobNames } from './mail.enums';
@@ -41,5 +41,9 @@ export class MailService {
 
   async sendPasswordResetEmail(mailDto: SendPasswordResetMailDto): Promise<void> {
     const job = await this.mailQueue.add(MailQueueJobNames.SEND_PASSWORD_RESET_MESSAGE, mailDto)
+  }
+
+  async sendPaymentReminder(mailDto: SendPaymentReminderDto): Promise<void> {
+    const job = await this.mailQueue.add(MailQueueJobNames.SEND_PAYMENT_REMINDER, mailDto)
   }
 }
