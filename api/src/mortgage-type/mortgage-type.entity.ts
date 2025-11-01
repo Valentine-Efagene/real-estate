@@ -1,5 +1,5 @@
 import { Column, Entity } from 'typeorm';
-import { AbstractBaseReviewableEntity } from 'src/common/common.entity';
+import { AbstractBaseReviewableEntity } from '../common/common.entity';
 
 /**
  * MortgageType stores named mortgage configurations. Examples: 'Standard Fixed', 'Interest Only', 'Buy-to-Let'.

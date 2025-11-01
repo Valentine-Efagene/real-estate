@@ -2,7 +2,6 @@ import { BadRequestException, Injectable } from "@nestjs/common";
 import { EncryptionService } from "../encryption/encryption.service";
 import * as QRCode from "qrcode";
 import * as crypto from "crypto";
-import { Ticket } from "src/ticket/ticket.entity";
 
 @Injectable()
 export class QrCodeService {
@@ -54,14 +53,14 @@ export class QrCodeService {
   /**
    * Validate the QR nonce with DB version
    */
-  validate(qrCode: string, ticket: Ticket) {
+  validate(qrCode: string, propertyId: string) {
     const { nonce } = this.parseEncryptedText(qrCode);
 
     if (!nonce) {
       throw new BadRequestException('QR code is missing nonce');
     }
 
-    if (nonce !== ticket.nonce) {
+    if (nonce !== propertyId) {
       throw new BadRequestException('QR code is invalid or has been reused');
     }
   }

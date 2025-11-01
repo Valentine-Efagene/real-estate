@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
-import { AbstractBaseReviewableEntity } from 'src/common/common.entity';
+import { AbstractBaseReviewableEntity } from '../common/common.entity';
 import { Mortgage } from './mortgage.entity';
-import { User } from 'src/user/user.entity';
+import { User } from '../user/user.entity';
 
 @Entity({ name: 'mortgage_document' })
 export class MortgageDocument extends AbstractBaseReviewableEntity {

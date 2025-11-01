@@ -1,10 +1,10 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
-import { AbstractBaseReviewableEntity } from 'src/common/common.entity';
-import { Property } from 'src/property/property.entity';
+import { AbstractBaseReviewableEntity } from '../common/common.entity';
+import { Property } from '../property/property.entity';
 import { User } from '../user/user.entity';
 import MortgageDocument from './mortgage-document.entity';
 import MortgageStep from './mortgage-step.entity';
-import { MortgageType } from 'src/mortgage-type/mortgage-type.entity';
+import { MortgageType } from '../mortgage-type/mortgage-type.entity';
 
 export enum MortgageStatus {
     DRAFT = 'DRAFT',

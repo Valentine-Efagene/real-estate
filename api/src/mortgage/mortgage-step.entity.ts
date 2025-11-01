@@ -1,5 +1,5 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
-import { AbstractBaseReviewableEntity } from 'src/common/common.entity';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { AbstractBaseReviewableEntity } from '../common/common.entity';
 import { Mortgage } from './mortgage.entity';
 
 @Entity({ name: 'mortgage_step' })
@@ -21,13 +21,7 @@ export class MortgageStep extends AbstractBaseReviewableEntity {
     @Column({ type: 'int', default: 0 })
     sequence: number;
 
-    // Self-referencing pointer to the next step to mimic a linked list when desired
-    @OneToOne(() => MortgageStep, { nullable: true })
-    @JoinColumn({ name: 'next_step_id' })
-    nextStep: MortgageStep;
-
-    @Column({ nullable: true })
-    nextStepId: number;
+    // We use `sequence` for ordering. Removed linked-list pointer fields (nextStep/nextStepId) to reduce redundancy.
 
     @Column({ default: false })
     isOptional: boolean;

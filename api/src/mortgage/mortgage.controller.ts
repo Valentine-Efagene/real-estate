@@ -34,8 +34,8 @@ export class MortgageController {
     }
 
     @Post('steps/:stepId/complete')
-    async completeStep(@Param('stepId', ParseIntPipe) stepId: number, @Body() body: { nextStepId?: number }) {
-        return this.mortgageService.completeStep(stepId, body?.nextStepId);
+    async completeStep(@Param('stepId', ParseIntPipe) stepId: number) {
+        return this.mortgageService.completeStep(stepId);
     }
 }
 

@@ -94,13 +94,10 @@ export class MortgageService {
     }
 
     // Mark a step as completed and optionally link to next step
-    async completeStep(stepId: number, nextStepId?: number) {
+    async completeStep(stepId: number) {
         const step = await this.stepRepo.findOneBy({ id: stepId });
         if (!step) throw new NotFoundException('Step not found');
         step.completedAt = new Date();
-        if (nextStepId) {
-            step.nextStepId = nextStepId;
-        }
         return this.stepRepo.save(step);
     }
 }
