@@ -88,8 +88,8 @@ export class Property extends AbstractBaseReviewableEntity {
   @Column({ nullable: true })
   zipCode: string;
 
-  @Column({ default: false })
-  streetAdress: string;
+  @Column({ nullable: true })
+  streetAddress: string;
 
   @Column({ nullable: false })
   nBedrooms: string
