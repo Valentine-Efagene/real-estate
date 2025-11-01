@@ -19,7 +19,7 @@ export class Settings extends AbstractBaseReviewableEntity {
 
   @OneToMany(
     () => PropertyMedia,
-    (PropertyMedia) => PropertyMedia.event,
+    (PropertyMedia) => PropertyMedia.property,
   )
   media: PropertyMedia[];
 

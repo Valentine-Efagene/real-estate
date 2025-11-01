@@ -5,7 +5,7 @@ import { Mortgage } from './mortgage.entity';
 import { MortgageDocument } from './mortgage-document.entity';
 import { MortgageStep } from './mortgage-step.entity';
 import { CreateMortgageDto, CreateMortgageDocumentDto, CreateMortgageStepDto } from './mortgage.dto';
-import { MortgageType } from 'src/mortgage-type/mortgage-type.entity';
+import { MortgageType } from '../mortgage-type/mortgage-type.entity';
 
 @Injectable()
 export class MortgageService {

@@ -13,10 +13,12 @@ import { PermissionSeeder } from '../src/permission/permission.seeder'
 import { User } from '../src/user/user.entity'
 import { UserService } from '../src/user/user.service'
 import { mockMailService } from './__mocks__/mail.service.mock'
+import { mockS3UploaderService } from './__mocks__/s3-uploader.service.mock'
 import { Property } from '../src/property/property.entity'
 import { Mortgage } from '../src/mortgage/mortgage.entity'
 import { MortgageDocument } from '../src/mortgage/mortgage-document.entity'
 import { MortgageStep } from '../src/mortgage/mortgage-step.entity'
+import { S3UploaderService } from '../src/s3-uploader/s3-uploader.service'
 
 describe('Mortgage flow (e2e)', () => {
     const logger = new Logger('Mortgage E2E')
@@ -49,6 +51,8 @@ describe('Mortgage flow (e2e)', () => {
         const moduleFixture: TestingModule = await Test.createTestingModule({ imports: [AppModule] })
             .overrideProvider(MailService)
             .useValue(mockMailService)
+            .overrideProvider(S3UploaderService)
+            .useValue(mockS3UploaderService)
             .compile()
 
         app = moduleFixture.createNestApplication()

@@ -17,6 +17,8 @@ import { SignInDto } from '../src/auth/auth.dto'
 import { CreateUserDto } from '../src/user/user.dto'
 import { UserService } from '../src/user/user.service'
 import { getEmailVerificationToken, mockMailService } from './__mocks__/mail.service.mock'
+import { mockS3UploaderService } from './__mocks__/s3-uploader.service.mock'
+import { S3UploaderService } from '../src/s3-uploader/s3-uploader.service'
 
 describe('AuthController (e2e)', () => {
   const logger = new Logger('Authentication E2E Tests')
@@ -51,6 +53,8 @@ describe('AuthController (e2e)', () => {
     })
       .overrideProvider(MailService)
       .useValue(mockMailService)
+      .overrideProvider(S3UploaderService)
+      .useValue(mockS3UploaderService)
       .compile()
 
     app = moduleFixture.createNestApplication()

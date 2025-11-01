@@ -34,7 +34,7 @@ import { S3UploaderService } from '../s3-uploader/s3-uploader.service';
 import { ResponseMessage, S3Folder } from '../common/common.enum';
 import FileValidators from '../common/validator/FileValidators';
 import { SwaggerAuth } from '../common/guard/swagger-auth.guard';
-import { AbstractBaseDocumentEntity } from 'src/common/common.entity';
+import { AbstractBaseDocumentEntity } from '../common/common.entity';
 
 @SwaggerAuth()
 @Controller('property-documents')

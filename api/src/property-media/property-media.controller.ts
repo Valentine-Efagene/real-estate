@@ -115,24 +115,4 @@ export class PropertyMediaController {
 
     return new StandardApiResponse(HttpStatus.NO_CONTENT, ResponseMessage.DELETED);
   }
-
-  @Post('reupload')
-  @ApiOperation({
-    summary: 'Reupload a file',
-    description: ``,
-  })
-  @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('file'))
-  async reupload(
-    @UploadedFile(FileValidators.imageValidator)
-    file: Express.Multer.File,
-    @Body() body: DocumentReuploadDto,
-  ): Promise<StandardApiResponse<AbstractBaseMediaEntity>> {
-    if (!file) {
-      throw new BadRequestException();
-    }
-
-    const res = await this.PropertyMediaService.reupload(file, body)
-    return new StandardApiResponse(HttpStatus.OK, ResponseMessage.UPDATED, res);
-  }
 }

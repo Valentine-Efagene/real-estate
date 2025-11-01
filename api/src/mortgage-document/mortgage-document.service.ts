@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { MortgageDocument } from 'src/mortgage/mortgage-document.entity';
+import { MortgageDocument } from '../mortgage/mortgage-document.entity';
 import { CreateMortgageDocumentDto, UpdateMortgageDocumentDto } from './mortgage-document.dto';
 
 @Injectable()

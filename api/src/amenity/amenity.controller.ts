@@ -12,10 +12,10 @@ import { Amenity } from './amenity.entity';
 import { AmenityService } from './amenity.service';
 import { CreateAmenityDto } from './amenity.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { StandardApiResponse } from 'src/common/common.dto';
-import OpenApiHelper from 'src/common/OpenApiHelper';
-import { ResponseMessage } from 'src/common/common.enum';
-import { SwaggerAuth } from 'src/common/guard/swagger-auth.guard';
+import { StandardApiResponse } from '../common/common.dto';
+import OpenApiHelper from '../common/OpenApiHelper';
+import { ResponseMessage } from '../common/common.enum';
+import { SwaggerAuth } from '../common/guard/swagger-auth.guard';
 
 @SwaggerAuth()
 @Controller('amenities')

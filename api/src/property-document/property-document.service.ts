@@ -11,9 +11,9 @@ import {
   UpdateDocumentStatusDto,
 } from '../common/common.dto';
 import { DocumentStatus } from '../common/common.type';
-import { S3UploaderService } from 'src/s3-uploader/s3-uploader.service';
-import { AbstractBaseDocumentEntity } from 'src/common/common.entity';
-import { S3Folder } from 'src/common/common.enum';
+import { S3UploaderService } from '../s3-uploader/s3-uploader.service';
+import { AbstractBaseDocumentEntity } from '../common/common.entity';
+import { S3Folder } from '../common/common.enum';
 
 @Injectable()
 export class PropertyDocumentService {
@@ -135,7 +135,7 @@ export class PropertyDocumentService {
       throw new BadRequestException('Invalid document ID')
     }
 
-    newUrl = await this.uploaderService.replaceImageOnS3(
+    newUrl = await this.uploaderService.replaceFileOnS3(
       file,
       S3Folder.DOCUMENT,
       oldDocument.url,

@@ -33,7 +33,7 @@ export class PropertyService {
     property.nParkingSpots = createPropertyDto.nParkingSpots
     property.price = createPropertyDto.price
     property.country = createPropertyDto.country
-    property.streetAdress = createPropertyDto.streetAddress
+    property.streetAddress = createPropertyDto.streetAddress
     property.longitude = createPropertyDto.longitude
     property.latitude = createPropertyDto.latitude
     property.area = createPropertyDto.area
@@ -93,7 +93,7 @@ export class PropertyService {
   ): Promise<Paginated<Property>> {
     const whereFilter: FindOptionsWhere<Property> | FindOptionsWhere<Property>[] = [
       { country: Like(`%${location}%`) },
-      { streetAdress: Like(`%${location}%`) },
+      { streetAddress: Like(`%${location}%`) },
       { city: Like(`%${location}%`) },
       { zipCode: Like(`%${location}%`) },
     ]

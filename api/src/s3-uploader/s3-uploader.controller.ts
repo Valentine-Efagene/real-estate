@@ -13,11 +13,11 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { S3UploaderService } from './s3-uploader.service';
 import { ApiConsumes, ApiCreatedResponse, ApiOperation, ApiParam, ApiQuery } from '@nestjs/swagger';
-import FileValidators from '../validator/FileValidators';
 import { BundleDto, FileUploadDto, ImageUploadDto, PresignedPostDto, PresignerDto } from './s3-uploader.dto';
 import FolderResolver from '../util/FolderResolver';
-import { StandardApiResponse } from '../common/common.struct';
-import { SwaggerAuth } from '../common/swagger-auth.guard';
+import FileValidators from '../common/validator/FileValidators';
+import { SwaggerAuth } from '../common/guard/swagger-auth.guard';
+import { StandardApiResponse } from '../common/common.dto';
 
 @SwaggerAuth()
 @Controller()

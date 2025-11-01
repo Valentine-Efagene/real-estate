@@ -8,8 +8,9 @@ import { MailConsumer } from './mail.consumer';
 import { TemplateTesterService } from './template-tester.service';
 import { CustomeHandlebarsAdapter } from './custom-handlebars.adapter';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Ticket } from '../ticket/ticket.entity';
 import { QueueNames } from '../common/common.enum';
+import Mortgage from '../mortgage/mortgage.entity';
+import { Property } from '../property/property.entity';
 
 @Module({
   imports: [
@@ -44,7 +45,7 @@ import { QueueNames } from '../common/common.enum';
     BullModule.registerQueue({
       name: QueueNames.EMAIL
     }),
-    TypeOrmModule.forFeature([Ticket])
+    TypeOrmModule.forFeature([Mortgage, Property])
   ],
   providers: [MailService, MailConsumer, TemplateTesterService],
   controllers: [MailController],

@@ -1,4 +1,3 @@
-// src/user/user.seeder.ts
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';

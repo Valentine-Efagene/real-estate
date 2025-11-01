@@ -2,7 +2,7 @@ import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
 import { ArrayNotEmpty, IsArray, IsEnum, IsInt, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, IsUrl, MaxLength, ValidateNested } from 'class-validator';
 import { Currency, Period, PropertyCategory, PropertyType } from './property.enums';
 import { Transform, Type } from 'class-transformer';
-import { CreateDocumentDto } from 'src/common/common.dto';
+import { CreateDocumentDto } from '../common/common.dto';
 
 export class CreatePropertyBaseDto {
   @ApiProperty({

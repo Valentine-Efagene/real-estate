@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { MortgageDocument } from 'src/mortgage/mortgage-document.entity';
+import { MortgageDocument } from '../mortgage/mortgage-document.entity';
 import { MortgageDocumentService } from './mortgage-document.service';
 import { MortgageDocumentController } from './mortgage-document.controller';
 
