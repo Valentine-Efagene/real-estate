@@ -71,6 +71,8 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { BulkInviteModule } from './bulk-invite/bulk-invite.module';
 import { BullModule } from '@nestjs/bullmq';
 import { AccessLoggerMiddleware } from './common/middleware/AccessLoggerMiddleware';
+import { QrCodeModule } from './qr-code/qr-code.module';
+import { PropertyDocumentModule } from './property-document/property-document.module';
 
 @Module({
   imports: [
@@ -104,12 +106,14 @@ import { AccessLoggerMiddleware } from './common/middleware/AccessLoggerMiddlewa
     PasswordResetTokenModule,
     SettingsModule,
     PropertyModule,
+    PropertyDocumentModule,
     PropertyMediaModule,
     MortgageModule,
     MortgageDocumentModule,
     MortgageStepModule,
     MortgageTypeModule,
     EncryptionModule,
+    QrCodeModule,
     BulkInviteModule,
     ScheduleModule.forRoot()
   ],

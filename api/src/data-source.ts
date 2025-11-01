@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import * as dotenv from 'dotenv';
 
 import { User } from './user/user.entity';
@@ -13,6 +12,12 @@ import { Permission } from './permission/permission.entity';
 import { PropertyMedia } from './property-media/property-media.entity';
 import { Settings } from './settings/settings.entity';
 import { BulkInviteTask } from './bulk-invite/bulk-invite-task.entity';
+import { PropertyDocument } from './property-document/property-document.entity';
+import Mortgage from './mortgage/mortgage.entity';
+import MortgageDocument from './mortgage/mortgage-document.entity';
+import MortgageStep from './mortgage/mortgage-step.entity';
+import MortgageType from './mortgage-type/mortgage-type.entity';
+import { Amenity } from './amenity/amenity.entity';
 
 if (process.env.NODE_ENV !== 'test') {
     dotenv.config();
@@ -35,6 +40,12 @@ export const options = {
         Property,
         UserSuspension,
         PropertyMedia,
+        PropertyDocument,
+        Mortgage,
+        MortgageDocument,
+        MortgageStep,
+        MortgageType,
+        Amenity,
         PasswordResetToken,
         Settings,
         BulkInviteTask,
