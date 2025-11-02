@@ -6,6 +6,7 @@ import { Amenity } from '../amenity/amenity.entity';
 import { AbstractBaseReviewableEntity } from '../common/common.entity';
 import { Mortgage } from '../mortgage/mortgage.entity';
 import { PropertyStatus, PropertyType } from './property.type';
+import { PropertyCategory, Currency, Period } from '../social/social.enums';
 
 @Entity({ name: 'property' })
 export class Property extends AbstractBaseReviewableEntity {
@@ -57,12 +58,26 @@ export class Property extends AbstractBaseReviewableEntity {
   @Column({
     nullable: true,
     type: 'enum',
+    enum: PropertyCategory,
+  })
+  category: PropertyCategory;
+
+  @Column({
+    nullable: true,
+    type: 'enum',
     enum: PropertyType
   })
   propertyType: string;
 
   @Column({ nullable: true })
   country: string;
+
+  @Column({
+    nullable: true,
+    type: 'enum',
+    enum: Currency,
+  })
+  currency: Currency;
 
   @Column({ nullable: true })
   city: string;
@@ -85,6 +100,12 @@ export class Property extends AbstractBaseReviewableEntity {
   @Column({ nullable: false })
   nParkingSpots: string
 
+  @Column({
+    nullable: true,
+    type: 'enum',
+    enum: Period,
+  })
+  period: Period
   // @Column({
   //   nullable: false,
   //   type: 'enum',

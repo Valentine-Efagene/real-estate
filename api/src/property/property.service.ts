@@ -26,7 +26,6 @@ export class PropertyService {
     const property = new Property()
     property.userId = createPropertyDto.userId
     property.title = createPropertyDto.title
-    property.category = createPropertyDto.category
     property.city = createPropertyDto.city
     property.nBathrooms = createPropertyDto.nBathrooms
     property.nBedrooms = createPropertyDto.nBedrooms
@@ -37,8 +36,6 @@ export class PropertyService {
     property.longitude = createPropertyDto.longitude
     property.latitude = createPropertyDto.latitude
     property.area = createPropertyDto.area
-    property.currency = createPropertyDto.currency
-    property.period = createPropertyDto.period
 
     try {
       // Handle amenities

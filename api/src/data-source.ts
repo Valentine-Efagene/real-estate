@@ -17,6 +17,9 @@ import Mortgage from './mortgage/mortgage.entity';
 import MortgageDocument from './mortgage/mortgage-document.entity';
 import MortgageStep from './mortgage/mortgage-step.entity';
 import MortgageType from './mortgage-type/mortgage-type.entity';
+import { MortgageDownpaymentPlan } from './mortgage-downpayment/mortgage-downpayment.entity';
+import { MortgageDownpaymentInstallment } from './mortgage-downpayment/mortgage-downpayment-installment.entity';
+import { MortgageDownpaymentPayment } from './mortgage-downpayment/mortgage-downpayment-payment.entity';
 import { Amenity } from './amenity/amenity.entity';
 
 if (process.env.NODE_ENV !== 'test') {
@@ -44,6 +47,9 @@ export const options = {
         Mortgage,
         MortgageDocument,
         MortgageStep,
+        MortgageDownpaymentPlan,
+        MortgageDownpaymentInstallment,
+        MortgageDownpaymentPayment,
         MortgageType,
         Amenity,
         PasswordResetToken,

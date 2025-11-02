@@ -1,6 +1,7 @@
 import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
 import { ArrayNotEmpty, IsArray, IsEnum, IsInt, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, IsUrl, MaxLength, ValidateNested } from 'class-validator';
-import { Currency, Period, PropertyCategory, PropertyType } from './property.enums';
+import { PropertyType } from './property.type';
+import { PropertyCategory, Currency, Period } from '../social/social.enums';
 import { Transform, Type } from 'class-transformer';
 import { CreateDocumentDto } from '../common/common.dto';
 
@@ -63,20 +64,30 @@ export class CreatePropertyBaseDto {
   country: string;
 
   @ApiProperty({
-    example: PropertyCategory.SALE,
-    type: 'enum',
-    enum: PropertyCategory
-  })
-  @IsNotEmpty()
-  category: string
-
-  @ApiProperty({
     example: PropertyType.HOUSE,
     type: 'enum',
     enum: PropertyType
   })
   @IsNotEmpty()
   propertyType: PropertyType
+
+  @ApiProperty({
+    example: PropertyCategory.SALE,
+    type: 'enum',
+    enum: PropertyCategory,
+    nullable: true,
+  })
+  @IsOptional()
+  category?: PropertyCategory
+
+  @ApiProperty({
+    example: 'NGN',
+    type: 'enum',
+    enum: Currency,
+    nullable: true,
+  })
+  @IsOptional()
+  currency?: Currency
 
   // @ApiProperty({
   //   example: RentPeriodType.YEARLY,
@@ -110,6 +121,15 @@ export class CreatePropertyBaseDto {
   @Type(() => Number)
   price?: number;
 
+  @ApiProperty({
+    nullable: true,
+    example: Period.MONTHLY,
+    type: 'enum',
+    enum: Period,
+  })
+  @IsOptional()
+  period?: Period
+
   @ApiProperty({ nullable: true, example: '12000000' })
   @IsNumber()
   @IsOptional()
@@ -127,14 +147,6 @@ export class CreatePropertyBaseDto {
   @IsNumber()
   @Type(() => Number)
   longitude?: number;
-
-  @ApiProperty({ nullable: true, example: Currency.NGN, type: 'enum', enum: Currency })
-  @IsEnum(Currency)
-  currency?: Currency;
-
-  @ApiProperty({ nullable: true, example: Period.YEARLY, type: 'enum', enum: Period })
-  @IsEnum(Period)
-  period?: Period;
 
   @ApiProperty({
     nullable: true,

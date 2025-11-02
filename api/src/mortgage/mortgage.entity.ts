@@ -1,10 +1,11 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 import { AbstractBaseReviewableEntity } from '../common/common.entity';
 import { Property } from '../property/property.entity';
 import { User } from '../user/user.entity';
 import MortgageDocument from './mortgage-document.entity';
 import MortgageStep from './mortgage-step.entity';
 import { MortgageType } from '../mortgage-type/mortgage-type.entity';
+import { MortgageDownpaymentPlan } from '../mortgage-downpayment/mortgage-downpayment.entity';
 
 export enum MortgageStatus {
     DRAFT = 'DRAFT',
@@ -63,6 +64,16 @@ export class Mortgage extends AbstractBaseReviewableEntity {
 
     @Column({ type: 'timestamp', nullable: true })
     lastReminderSentAt: Date;
+
+    @OneToOne(() => MortgageDownpaymentPlan, { nullable: true })
+    @JoinColumn({ name: 'downpayment_plan_id' })
+    downpaymentPlan: MortgageDownpaymentPlan;
+
+    @Column({ nullable: true })
+    downpaymentPlanId: number;
+
+    @Column({ type: 'double precision', nullable: true })
+    downPaymentPaid: number;
 }
 
 export default Mortgage;

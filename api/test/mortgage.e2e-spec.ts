@@ -93,7 +93,6 @@ describe('Mortgage flow (e2e)', () => {
         // debug: log response to inspect why sign-in failed in CI/test env
         // (temporary - will be removed after troubleshooting)
         // eslint-disable-next-line no-console
-        console.log('SIGNIN_RESPONSE', { status: signInRes.status, body: signInRes.body })
         expect(signInRes.status).toBe(HttpStatus.OK)
         const token = signInRes.body.payload.accessToken
         expect(token).toBeDefined()
