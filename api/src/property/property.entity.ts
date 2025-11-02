@@ -1,12 +1,11 @@
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne } from 'typeorm';
-import { Currency, PropertyCategory, PropertyType, Period } from './property.enums';
 import { PropertyDocument } from '../property-document/property-document.entity';
 import { PropertyMedia } from '../property-media/property-media.entity';
 import { User } from '../user/user.entity';
 import { Amenity } from '../amenity/amenity.entity';
 import { AbstractBaseReviewableEntity } from '../common/common.entity';
-import { Status } from '../common/common.type';
 import { Mortgage } from '../mortgage/mortgage.entity';
+import { PropertyStatus, PropertyType } from './property.type';
 
 @Entity({ name: 'property' })
 export class Property extends AbstractBaseReviewableEntity {
@@ -53,14 +52,7 @@ export class Property extends AbstractBaseReviewableEntity {
   displayImageId: number
 
   @Column({ nullable: true })
-  title?: string;
-
-  @Column({
-    nullable: true,
-    type: 'enum',
-    enum: PropertyCategory
-  })
-  category: string;
+  title: string;
 
   @Column({
     nullable: true,
@@ -68,13 +60,6 @@ export class Property extends AbstractBaseReviewableEntity {
     enum: PropertyType
   })
   propertyType: string;
-
-  @Column({
-    nullable: true,
-    type: 'enum',
-    enum: Period
-  })
-  period: Period;
 
   @Column({ nullable: true })
   country: string;
@@ -99,13 +84,6 @@ export class Property extends AbstractBaseReviewableEntity {
 
   @Column({ nullable: false })
   nParkingSpots: string
-
-  @Column({
-    nullable: false,
-    type: 'enum',
-    enum: Currency
-  })
-  currency: Currency
 
   // @Column({
   //   nullable: false,
@@ -154,8 +132,8 @@ export class Property extends AbstractBaseReviewableEntity {
 
   @Column({
     type: 'enum',
-    enum: Status,
-    default: Status.PENDING,
+    enum: PropertyStatus,
+    default: PropertyStatus.PENDING,
   })
-  status: Status;
+  status: PropertyStatus;
 }

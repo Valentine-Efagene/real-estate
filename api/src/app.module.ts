@@ -73,6 +73,7 @@ import { BullModule } from '@nestjs/bullmq';
 import { AccessLoggerMiddleware } from './common/middleware/AccessLoggerMiddleware';
 import { QrCodeModule } from './qr-code/qr-code.module';
 import { PropertyDocumentModule } from './property-document/property-document.module';
+import { CaslModule } from './casl/casl.module';
 
 @Module({
   imports: [
@@ -115,7 +116,8 @@ import { PropertyDocumentModule } from './property-document/property-document.mo
     EncryptionModule,
     QrCodeModule,
     BulkInviteModule,
-    ScheduleModule.forRoot()
+    ScheduleModule.forRoot(),
+    CaslModule
   ],
   controllers: [AppController],
   providers: [AppService,
