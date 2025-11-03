@@ -2,6 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { AbstractBaseEntity } from '../common/common.pure.entity';
 import { Mortgage } from '../mortgage/mortgage.entity';
 import { MortgageDownpaymentInstallment } from './mortgage-downpayment-installment.entity';
+import { Frequency } from 'src/common/common.type';
 
 export enum DownpaymentPlanStatus {
     PENDING = 'PENDING',
@@ -26,8 +27,8 @@ export class MortgageDownpaymentPlan extends AbstractBaseEntity {
     @Column({ type: 'int', nullable: true })
     installmentCount: number;
 
-    @Column({ nullable: true })
-    frequency: string;
+    @Column({ nullable: true, type: 'enum', enum: Frequency })
+    frequency: Frequency;
 
     @Column({ type: 'date', nullable: true })
     startDate: Date;

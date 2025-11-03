@@ -51,7 +51,7 @@ export const options = {
         MortgageDownpaymentPlan,
         MortgageDownpaymentInstallment,
         MortgageDownpaymentPayment,
-    TransactionEntity,
+        TransactionEntity,
         MortgageType,
         Amenity,
         PasswordResetToken,

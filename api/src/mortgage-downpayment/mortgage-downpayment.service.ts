@@ -5,6 +5,7 @@ import { MortgageDownpaymentPlan, DownpaymentPlanStatus } from './mortgage-downp
 import { MortgageDownpaymentInstallment, InstallmentStatus } from './mortgage-downpayment-installment.entity';
 import { MortgageDownpaymentPayment, DownpaymentPaymentStatus } from './mortgage-downpayment-payment.entity';
 import { Mortgage } from '../mortgage/mortgage.entity';
+import { Frequency } from 'src/common/common.type';
 
 @Injectable()
 export class MortgageDownpaymentService {
@@ -22,7 +23,7 @@ export class MortgageDownpaymentService {
         private mortgageRepo: Repository<Mortgage>,
     ) { }
 
-    async createPlan(mortgageId: number, dto: { totalAmount: number; installmentCount?: number; frequency?: string; startDate?: string }) {
+    async createPlan(mortgageId: number, dto: { totalAmount: number; installmentCount?: number; frequency?: Frequency; startDate?: string }) {
         const mortgage = await this.mortgageRepo.findOneBy({ id: mortgageId });
         if (!mortgage) throw new NotFoundException('Mortgage not found');
 

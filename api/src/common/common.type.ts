@@ -23,3 +23,10 @@ export class PaginatedData {
 
   currentPage: number;
 }
+
+export enum Frequency {
+  MONTHLY = 'MONTHLY',
+  YEARLY = 'YEARLY',
+  ONE_TIME = 'ONE_TIME',
+  DAILY = 'DAILY',
+}

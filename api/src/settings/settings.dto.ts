@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
 import { ArrayNotEmpty, IsArray, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, IsUrl, MaxLength, ValidateNested } from 'class-validator';
-import { Currency, Period, PropertyCategory, PropertyType } from './settings.enums';
+import { Currency, PropertyCategory, PropertyType } from './settings.enums';
 import { Transform, Type } from 'class-transformer';
 
 export class CreateSettingsBaseDto {
@@ -70,14 +70,6 @@ export class CreateSettingsBaseDto {
   @IsNotEmpty()
   propertyType: PropertyType
 
-  // @ApiProperty({
-  //   example: RentPeriodType.YEARLY,
-  //   type: 'enum',
-  //   enum: RentPeriodType
-  // })
-  // @IsNotEmpty()
-  // rentPeriodType: RentPeriodType
-
   @ApiProperty({ nullable: true, example: 'Jane' })
   @IsOptional()
   firstName?: string;
@@ -123,10 +115,6 @@ export class CreateSettingsBaseDto {
   @ApiProperty({ nullable: true, example: Currency.NGN, type: 'enum', enum: Currency })
   @IsEnum(Currency)
   currency?: Currency;
-
-  @ApiProperty({ nullable: true, example: Period.YEARLY, type: 'enum', enum: Period })
-  @IsEnum(Period)
-  period?: Period;
 
   @ApiProperty({
     nullable: true,

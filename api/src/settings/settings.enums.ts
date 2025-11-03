@@ -15,10 +15,3 @@ export enum Currency {
   JPY = 'JPY',
   NGN = 'NGN',
 }
-
-export enum Period {
-  DAILY = 'DAILY',
-  WEEKLY = 'WEEKLY',
-  MONTHLY = 'MONTHLY',
-  YEARLY = 'YEARLY',
-}

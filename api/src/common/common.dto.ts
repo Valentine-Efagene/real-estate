@@ -57,7 +57,6 @@ export class UpdateDocumentStatusDto {
   reviewerId: number;
 }
 
-
 export class UpdateDocumentDto {
   @ApiProperty({
     nullable: false,
