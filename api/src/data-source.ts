@@ -20,8 +20,9 @@ import MortgageType from './mortgage-type/mortgage-type.entity';
 import { MortgageDownpaymentPlan } from './mortgage-downpayment/mortgage-downpayment.entity';
 import { MortgageDownpaymentInstallment } from './mortgage-downpayment/mortgage-downpayment-installment.entity';
 import { MortgageDownpaymentPayment } from './mortgage-downpayment/mortgage-downpayment-payment.entity';
-import TransactionEntity from './payments/transaction.entity';
 import { Amenity } from './amenity/amenity.entity';
+import { Wallet } from './wallet/wallet.entity';
+import { Transaction } from './transaction/transaction.entity';
 
 if (process.env.NODE_ENV !== 'test') {
     dotenv.config();
@@ -51,12 +52,13 @@ export const options = {
         MortgageDownpaymentPlan,
         MortgageDownpaymentInstallment,
         MortgageDownpaymentPayment,
-        TransactionEntity,
         MortgageType,
         Amenity,
         PasswordResetToken,
         Settings,
         BulkInviteTask,
+        Wallet,
+        Transaction,
     ],
     dropSchema: process.env.NODE_ENV?.includes("test") && IS_NOT_PRODUCTION_DB,
     synchronize: IS_NOT_PRODUCTION_DB,

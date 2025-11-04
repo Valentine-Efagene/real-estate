@@ -69,6 +69,8 @@ import { MortgageTypeModule } from './mortgage-type/mortgage-type.module';
 import MortgageDownpaymentModule from './mortgage-downpayment/mortgage-downpayment.module';
 import PaymentsModule from './payments/payments.module';
 import { EncryptionModule } from './encryption/encryption.module';
+import { WalletModule } from './wallet/wallet.module';
+import { TransactionModule } from './transaction/transaction.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { BulkInviteModule } from './bulk-invite/bulk-invite.module';
 import { BullModule } from '@nestjs/bullmq';
@@ -117,6 +119,8 @@ import { CaslModule } from './casl/casl.module';
     MortgageTypeModule,
     MortgageDownpaymentModule,
     PaymentsModule,
+    WalletModule,
+    TransactionModule,
     EncryptionModule,
     QrCodeModule,
     BulkInviteModule,

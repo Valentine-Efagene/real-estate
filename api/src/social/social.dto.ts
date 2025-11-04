@@ -1,7 +1,6 @@
-import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
-import { ArrayNotEmpty, IsArray, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, IsUrl, MaxLength, ValidateNested } from 'class-validator';
-import { Currency, Period, PropertyCategory, PropertyType } from './social.enums';
-import { Transform, Type } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsNumber, MaxLength } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class CreateSocialDto {
   @ApiProperty({

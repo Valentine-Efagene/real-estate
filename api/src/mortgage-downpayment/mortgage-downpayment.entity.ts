@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { AbstractBaseEntity } from '../common/common.pure.entity';
 import { Mortgage } from '../mortgage/mortgage.entity';
 import { MortgageDownpaymentInstallment } from './mortgage-downpayment-installment.entity';
-import { Frequency } from 'src/common/common.type';
+import { Frequency } from '../common/common.type';
 
 export enum DownpaymentPlanStatus {
     PENDING = 'PENDING',

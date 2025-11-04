@@ -4,6 +4,8 @@ import { UserStatus } from './user.enums';
 import { Role } from '../role/role.entity';
 import { RefreshToken } from '../refresh_token/refresh_token.entity';
 import { Property } from '../property/property.entity';
+import { Transaction } from '../transaction/transaction.entity';
+import { Wallet } from '../wallet/wallet.entity';
 
 @Entity({ name: 'users' })
 export class User extends BaseEntity {
@@ -48,6 +50,22 @@ export class User extends BaseEntity {
     { eager: true },
   )
   refreshTokens: RefreshToken[];
+
+  @OneToMany(
+    () => Wallet,
+    (wallet) =>
+      wallet.user,
+    { eager: true },
+  )
+  wallets: Wallet[];
+
+  @OneToMany(
+    () => Transaction,
+    (transaction) =>
+      transaction.user,
+    { eager: true },
+  )
+  transactions: Transaction[];
 
   @OneToMany(
     () => Property,

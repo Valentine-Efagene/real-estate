@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BullModule } from '@nestjs/bullmq';
-import TransactionEntity from './transaction.entity';
+import { Transaction } from '../transaction/transaction.entity';
+import { Wallet } from '../wallet/wallet.entity';
 import { MortgageDownpaymentPlan } from '../mortgage-downpayment/mortgage-downpayment.entity';
 import { MortgageDownpaymentInstallment } from '../mortgage-downpayment/mortgage-downpayment-installment.entity';
 import { MortgageDownpaymentPayment } from '../mortgage-downpayment/mortgage-downpayment-payment.entity';
@@ -12,7 +13,7 @@ import TransactionProcessor from './transaction.processor';
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([TransactionEntity, MortgageDownpaymentPlan, MortgageDownpaymentInstallment, MortgageDownpaymentPayment, Mortgage, User]),
+        TypeOrmModule.forFeature([Transaction, Wallet, MortgageDownpaymentPlan, MortgageDownpaymentInstallment, MortgageDownpaymentPayment, Mortgage, User]),
         BullModule.registerQueue({ name: 'transactions' }),
     ],
     providers: [PaymentReconciliationService, TransactionProcessor],

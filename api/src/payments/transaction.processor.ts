@@ -1,6 +1,5 @@
 import { OnQueueEvent, Processor, WorkerHost } from '@nestjs/bullmq';
 import { Job } from 'bullmq';
-import { Inject } from '@nestjs/common';
 import { PaymentReconciliationService } from './payment-reconciliation.service';
 
 @Processor('transactions')
