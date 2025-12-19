@@ -54,11 +54,23 @@ export class RealEstateStack extends cdk.Stack {
     });
     valkeyCluster.addDependency(subnetGroup);
 
-    // === Lambda Function ===
-    const apiLambda = new lambda.Function(this, 'RealEstateApiLambda', {
+    // Shared environment variables for all Lambdas
+    const sharedEnv = {
+      NODE_ENV: 'production',
+      DB_HOST: cluster.clusterEndpoint.hostname,
+      DB_PORT: cluster.clusterEndpoint.port.toString(),
+      DB_NAME: 'mediacraftdb',
+      DATABASE_SECRET_ARN: dbCredentials.secretArn,
+      VALKEY_ENDPOINT: valkeyCluster.attrRedisEndpointAddress,
+      VALKEY_PORT: '6379',
+      AWS_REGION_NAME: cdk.Stack.of(this).region,
+    };
+
+    // === User Service Lambda ===
+    const userServiceLambda = new lambda.Function(this, 'UserServiceLambda', {
       runtime: lambda.Runtime.NODEJS_20_X,
       handler: 'serverless.handler',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../api'), {
+      code: lambda.Code.fromAsset(path.join(__dirname, '../services/user-service'), {
         exclude: ['node_modules', 'test', 'dist'],
         bundling: {
           image: lambda.Runtime.NODEJS_20_X.bundlingImage,
@@ -79,28 +91,77 @@ export class RealEstateStack extends cdk.Stack {
       vpcSubnets: {
         subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
       },
-      environment: {
-        NODE_ENV: 'production',
-        DATABASE_HOST: cluster.clusterEndpoint.hostname,
-        DATABASE_PORT: cluster.clusterEndpoint.port.toString(),
-        DATABASE_NAME: 'mediacraftdb',
-        DATABASE_SECRET_ARN: dbCredentials.secretArn,
-        VALKEY_ENDPOINT: valkeyCluster.attrRedisEndpointAddress,
-        VALKEY_PORT: '6379',
-        AWS_REGION_NAME: cdk.Stack.of(this).region,
-      },
+      environment: sharedEnv,
       logRetention: logs.RetentionDays.ONE_WEEK,
     });
 
-    // Grant permissions
-    dbCredentials.grantRead(apiLambda);
-    cluster.connections.allowDefaultPortFrom(apiLambda);
-    valkeyCluster.node.addDependency(apiLambda);
+    // === Mortgage Service Lambda ===
+    const mortgageServiceLambda = new lambda.Function(this, 'MortgageServiceLambda', {
+      runtime: lambda.Runtime.NODEJS_20_X,
+      handler: 'serverless.handler',
+      code: lambda.Code.fromAsset(path.join(__dirname, '../services/mortgage-service'), {
+        exclude: ['node_modules', 'test', 'dist'],
+        bundling: {
+          image: lambda.Runtime.NODEJS_20_X.bundlingImage,
+          command: [
+            'bash', '-c', [
+              'npm install',
+              'npm run build',
+              'cp -r dist/* /asset-output/',
+              'cp -r node_modules /asset-output/',
+              'cp package.json /asset-output/',
+            ].join(' && '),
+          ],
+        },
+      }),
+      timeout: cdk.Duration.seconds(30),
+      memorySize: 1024,
+      vpc,
+      vpcSubnets: {
+        subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
+      },
+      environment: sharedEnv,
+      logRetention: logs.RetentionDays.ONE_WEEK,
+    });
 
-    // === API Gateway ===
-    const api = new apigateway.LambdaRestApi(this, 'RealEstateApi', {
-      handler: apiLambda,
-      proxy: true,
+    // === Property Service Lambda ===
+    const propertyServiceLambda = new lambda.Function(this, 'PropertyServiceLambda', {
+      runtime: lambda.Runtime.NODEJS_20_X,
+      handler: 'serverless.handler',
+      code: lambda.Code.fromAsset(path.join(__dirname, '../services/property-service'), {
+        exclude: ['node_modules', 'test', 'dist'],
+        bundling: {
+          image: lambda.Runtime.NODEJS_20_X.bundlingImage,
+          command: [
+            'bash', '-c', [
+              'npm install',
+              'npm run build',
+              'cp -r dist/* /asset-output/',
+              'cp -r node_modules /asset-output/',
+              'cp package.json /asset-output/',
+            ].join(' && '),
+          ],
+        },
+      }),
+      timeout: cdk.Duration.seconds(30),
+      memorySize: 1024,
+      vpc,
+      vpcSubnets: {
+        subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
+      },
+      environment: sharedEnv,
+      logRetention: logs.RetentionDays.ONE_WEEK,
+    });
+
+    // Grant permissions to all Lambdas
+    [userServiceLambda, mortgageServiceLambda, propertyServiceLambda].forEach(fn => {
+      dbCredentials.grantRead(fn);
+      cluster.connections.allowDefaultPortFrom(fn);
+    });
+
+    // === API Gateway with Path-Based Routing ===
+    const api = new apigateway.RestApi(this, 'RealEstateApi', {
+      restApiName: 'Real Estate Microservices API',
       deployOptions: {
         stageName: 'prod',
         throttlingRateLimit: 100,
@@ -123,10 +184,100 @@ export class RealEstateStack extends cdk.Stack {
       },
     });
 
+    // User Service routes (/auth/*, /users/*, /roles/*, /permissions/*, /tenants/*)
+    const authResource = api.root.addResource('auth');
+    authResource.addProxy({
+      defaultIntegration: new apigateway.LambdaIntegration(userServiceLambda),
+      anyMethod: true,
+    });
+
+    const usersResource = api.root.addResource('users');
+    usersResource.addProxy({
+      defaultIntegration: new apigateway.LambdaIntegration(userServiceLambda),
+      anyMethod: true,
+    });
+
+    const rolesResource = api.root.addResource('roles');
+    rolesResource.addProxy({
+      defaultIntegration: new apigateway.LambdaIntegration(userServiceLambda),
+      anyMethod: true,
+    });
+
+    const permissionsResource = api.root.addResource('permissions');
+    permissionsResource.addProxy({
+      defaultIntegration: new apigateway.LambdaIntegration(userServiceLambda),
+      anyMethod: true,
+    });
+
+    const tenantsResource = api.root.addResource('tenants');
+    tenantsResource.addProxy({
+      defaultIntegration: new apigateway.LambdaIntegration(userServiceLambda),
+      anyMethod: true,
+    });
+
+    // Mortgage Service routes (/mortgages/*, /mortgage-types/*, /payments/*, /wallets/*)
+    const mortgagesResource = api.root.addResource('mortgages');
+    mortgagesResource.addProxy({
+      defaultIntegration: new apigateway.LambdaIntegration(mortgageServiceLambda),
+      anyMethod: true,
+    });
+
+    const mortgageTypesResource = api.root.addResource('mortgage-types');
+    mortgageTypesResource.addProxy({
+      defaultIntegration: new apigateway.LambdaIntegration(mortgageServiceLambda),
+      anyMethod: true,
+    });
+
+    const paymentsResource = api.root.addResource('payments');
+    paymentsResource.addProxy({
+      defaultIntegration: new apigateway.LambdaIntegration(mortgageServiceLambda),
+      anyMethod: true,
+    });
+
+    const walletsResource = api.root.addResource('wallets');
+    walletsResource.addProxy({
+      defaultIntegration: new apigateway.LambdaIntegration(mortgageServiceLambda),
+      anyMethod: true,
+    });
+
+    // Property Service routes (/properties/*, /amenities/*, /qr-code/*)
+    const propertiesResource = api.root.addResource('properties');
+    propertiesResource.addProxy({
+      defaultIntegration: new apigateway.LambdaIntegration(propertyServiceLambda),
+      anyMethod: true,
+    });
+
+    const amenitiesResource = api.root.addResource('amenities');
+    amenitiesResource.addProxy({
+      defaultIntegration: new apigateway.LambdaIntegration(propertyServiceLambda),
+      anyMethod: true,
+    });
+
+    const qrCodeResource = api.root.addResource('qr-code');
+    qrCodeResource.addProxy({
+      defaultIntegration: new apigateway.LambdaIntegration(propertyServiceLambda),
+      anyMethod: true,
+    });
+
     // === Outputs ===
     new cdk.CfnOutput(this, 'ApiUrl', {
       value: api.url,
       description: 'API Gateway URL',
+    });
+
+    new cdk.CfnOutput(this, 'UserServiceLambdaArn', {
+      value: userServiceLambda.functionArn,
+      description: 'User Service Lambda ARN',
+    });
+
+    new cdk.CfnOutput(this, 'MortgageServiceLambdaArn', {
+      value: mortgageServiceLambda.functionArn,
+      description: 'Mortgage Service Lambda ARN',
+    });
+
+    new cdk.CfnOutput(this, 'PropertyServiceLambdaArn', {
+      value: propertyServiceLambda.functionArn,
+      description: 'Property Service Lambda ARN',
     });
 
     new cdk.CfnOutput(this, 'DatabaseSecretArn', {
