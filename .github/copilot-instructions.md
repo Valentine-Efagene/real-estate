@@ -1,0 +1,7 @@
+- Structure things into modules as much as possible.
+- Use the `@nestjs/config` package to manage environment variables.
+- Use `@nestjs/typeorm` for database interactions.
+- Use `@nestjs/mailer` for sending emails.
+- Don't worry about unit tests for now.
+- Only focus on e2e tests, and give them clear user stories.
+- Use `class-validator` and `class-transformer` for DTO validation and transformation.

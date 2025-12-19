@@ -4,8 +4,16 @@ import { MortgageDownpaymentPlan } from './mortgage-downpayment.entity';
 import { MortgageDownpaymentInstallment } from './mortgage-downpayment-installment.entity';
 import { User } from '../user/user.entity';
 
+// Legacy enum - kept for backward compatibility
 export enum DownpaymentPaymentStatus {
     PENDING = 'PENDING',
+    COMPLETED = 'COMPLETED',
+    FAILED = 'FAILED',
+}
+
+// Payment state for FSM tracking
+export enum PaymentState {
+    INITIATED = 'INITIATED',
     COMPLETED = 'COMPLETED',
     FAILED = 'FAILED',
 }
@@ -41,6 +49,13 @@ export class MortgageDownpaymentPayment extends AbstractBaseEntity {
 
     @Column({ type: 'enum', enum: DownpaymentPaymentStatus, default: DownpaymentPaymentStatus.PENDING })
     status: DownpaymentPaymentStatus;
+
+    // FSM state tracking
+    @Column({ type: 'enum', enum: PaymentState, default: PaymentState.INITIATED })
+    state: PaymentState;
+
+    @Column({ type: 'text', nullable: true })
+    stateMetadata: string; // JSON metadata for state transitions
 }
 
 export default MortgageDownpaymentPayment;

@@ -6,7 +6,9 @@ import MortgageDocument from './mortgage-document.entity';
 import MortgageStep from './mortgage-step.entity';
 import { MortgageType } from '../mortgage-type/mortgage-type.entity';
 import { MortgageDownpaymentPlan } from '../mortgage-downpayment/mortgage-downpayment.entity';
+import { MortgageState } from '../mortgage-fsm/mortgage-fsm.types';
 
+// Legacy enum - kept for backward compatibility
 export enum MortgageStatus {
     DRAFT = 'DRAFT',
     PENDING = 'PENDING',
@@ -48,6 +50,14 @@ export class Mortgage extends AbstractBaseReviewableEntity {
 
     @Column({ type: 'enum', enum: MortgageStatus, default: MortgageStatus.DRAFT })
     status: MortgageStatus;
+
+    // FSM State - Primary state tracking
+    @Column({ type: 'varchar', default: MortgageState.DRAFT })
+    state: string; // Using string to store MortgageState enum values
+
+    // FSM Metadata - Stores transition history and context
+    @Column({ type: 'text', nullable: true })
+    stateMetadata: string; // JSON string containing last transition info
 
     @OneToMany(() => MortgageDocument, (doc) => doc.mortgage)
     documents: MortgageDocument[];
