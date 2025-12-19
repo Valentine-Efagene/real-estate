@@ -23,7 +23,9 @@
         "mysql2": "^3.10.2",
         "passport-jwt": "^4.0.1",
         "reflect-metadata": "^0.2.0",
-        "typeorm": "^0.3.20"
+        "typeorm": "^0.3.20",
+        "@aws-sdk/client-dynamodb": "^3.529.0",
+        "@aws-sdk/lib-dynamodb": "^3.529.0"
     },
     "devDependencies": {
         "@types/node": "^20.3.1",

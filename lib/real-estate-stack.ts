@@ -6,6 +6,7 @@ import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as rds from 'aws-cdk-lib/aws-rds';
 import * as elasticache from 'aws-cdk-lib/aws-elasticache';
 import * as logs from 'aws-cdk-lib/aws-logs';
+import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as path from 'path';
 
 export class RealEstateStack extends cdk.Stack {
@@ -54,6 +55,23 @@ export class RealEstateStack extends cdk.Stack {
     });
     valkeyCluster.addDependency(subnetGroup);
 
+    // === DynamoDB for Role Policies ===
+    const rolePoliciesTable = new dynamodb.Table(this, 'RolePoliciesTable', {
+      tableName: 'role-policies',
+      partitionKey: { name: 'PK', type: dynamodb.AttributeType.STRING },
+      sortKey: { name: 'SK', type: dynamodb.AttributeType.STRING },
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      pointInTimeRecovery: true,
+    });
+
+    // Global Secondary Index for tenant queries
+    rolePoliciesTable.addGlobalSecondaryIndex({
+      indexName: 'GSI1',
+      partitionKey: { name: 'GSI1PK', type: dynamodb.AttributeType.STRING },
+      sortKey: { name: 'GSI1SK', type: dynamodb.AttributeType.STRING },
+    });
+
     // Shared environment variables for all Lambdas
     const sharedEnv = {
       NODE_ENV: 'production',
@@ -64,6 +82,7 @@ export class RealEstateStack extends cdk.Stack {
       VALKEY_ENDPOINT: valkeyCluster.attrRedisEndpointAddress,
       VALKEY_PORT: '6379',
       AWS_REGION_NAME: cdk.Stack.of(this).region,
+      ROLE_POLICIES_TABLE_NAME: rolePoliciesTable.tableName,
     };
 
     // === User Service Lambda ===
@@ -157,7 +176,40 @@ export class RealEstateStack extends cdk.Stack {
     [userServiceLambda, mortgageServiceLambda, propertyServiceLambda].forEach(fn => {
       dbCredentials.grantRead(fn);
       cluster.connections.allowDefaultPortFrom(fn);
+      rolePoliciesTable.grantReadWriteData(fn);
     });
+
+    // === Lambda Authorizer ===
+    const authorizerLambda = new lambda.Function(this, 'AuthorizerLambda', {
+      runtime: lambda.Runtime.NODEJS_20_X,
+      handler: 'index.handler',
+      code: lambda.Code.fromAsset(path.join(__dirname, '../services/authorizer-service'), {
+        exclude: ['node_modules', 'test', 'dist'],
+        bundling: {
+          image: lambda.Runtime.NODEJS_20_X.bundlingImage,
+          command: [
+            'bash', '-c', [
+              'npm install',
+              'npm run build',
+              'cp -r dist/* /asset-output/',
+              'cp -r node_modules /asset-output/',
+              'cp package.json /asset-output/',
+            ].join(' && '),
+          ],
+        },
+      }),
+      timeout: cdk.Duration.seconds(10),
+      memorySize: 512,
+      environment: {
+        ROLE_POLICIES_TABLE_NAME: rolePoliciesTable.tableName,
+        JWT_SECRET: process.env.JWT_SECRET || 'your-secret-key-change-in-production',
+        AWS_REGION_NAME: cdk.Stack.of(this).region,
+      },
+      logRetention: logs.RetentionDays.ONE_WEEK,
+    });
+
+    // Grant DynamoDB read access to authorizer
+    rolePoliciesTable.grantReadData(authorizerLambda);
 
     // === API Gateway with Path-Based Routing ===
     const api = new apigateway.RestApi(this, 'RealEstateApi', {
@@ -184,6 +236,14 @@ export class RealEstateStack extends cdk.Stack {
       },
     });
 
+    // Configure Lambda authorizer
+    const authorizer = new apigateway.TokenAuthorizer(this, 'JwtAuthorizer', {
+      handler: authorizerLambda,
+      identitySource: 'method.request.header.Authorization',
+      resultsCacheTtl: cdk.Duration.minutes(5),
+      authorizerName: 'JwtAuthorizer',
+    });
+
     // User Service routes (/auth/*, /users/*, /roles/*, /permissions/*, /tenants/*)
     const authResource = api.root.addResource('auth');
     authResource.addProxy({
@@ -195,24 +255,40 @@ export class RealEstateStack extends cdk.Stack {
     usersResource.addProxy({
       defaultIntegration: new apigateway.LambdaIntegration(userServiceLambda),
       anyMethod: true,
+      defaultMethodOptions: {
+        authorizer,
+        authorizationType: apigateway.AuthorizationType.CUSTOM,
+      },
     });
 
     const rolesResource = api.root.addResource('roles');
     rolesResource.addProxy({
       defaultIntegration: new apigateway.LambdaIntegration(userServiceLambda),
       anyMethod: true,
+      defaultMethodOptions: {
+        authorizer,
+        authorizationType: apigateway.AuthorizationType.CUSTOM,
+      },
     });
 
     const permissionsResource = api.root.addResource('permissions');
     permissionsResource.addProxy({
       defaultIntegration: new apigateway.LambdaIntegration(userServiceLambda),
       anyMethod: true,
+      defaultMethodOptions: {
+        authorizer,
+        authorizationType: apigateway.AuthorizationType.CUSTOM,
+      },
     });
 
     const tenantsResource = api.root.addResource('tenants');
     tenantsResource.addProxy({
       defaultIntegration: new apigateway.LambdaIntegration(userServiceLambda),
       anyMethod: true,
+      defaultMethodOptions: {
+        authorizer,
+        authorizationType: apigateway.AuthorizationType.CUSTOM,
+      },
     });
 
     // Mortgage Service routes (/mortgages/*, /mortgage-types/*, /payments/*, /wallets/*)
@@ -220,24 +296,40 @@ export class RealEstateStack extends cdk.Stack {
     mortgagesResource.addProxy({
       defaultIntegration: new apigateway.LambdaIntegration(mortgageServiceLambda),
       anyMethod: true,
+      defaultMethodOptions: {
+        authorizer,
+        authorizationType: apigateway.AuthorizationType.CUSTOM,
+      },
     });
 
     const mortgageTypesResource = api.root.addResource('mortgage-types');
     mortgageTypesResource.addProxy({
       defaultIntegration: new apigateway.LambdaIntegration(mortgageServiceLambda),
       anyMethod: true,
+      defaultMethodOptions: {
+        authorizer,
+        authorizationType: apigateway.AuthorizationType.CUSTOM,
+      },
     });
 
     const paymentsResource = api.root.addResource('payments');
     paymentsResource.addProxy({
       defaultIntegration: new apigateway.LambdaIntegration(mortgageServiceLambda),
       anyMethod: true,
+      defaultMethodOptions: {
+        authorizer,
+        authorizationType: apigateway.AuthorizationType.CUSTOM,
+      },
     });
 
     const walletsResource = api.root.addResource('wallets');
     walletsResource.addProxy({
       defaultIntegration: new apigateway.LambdaIntegration(mortgageServiceLambda),
       anyMethod: true,
+      defaultMethodOptions: {
+        authorizer,
+        authorizationType: apigateway.AuthorizationType.CUSTOM,
+      },
     });
 
     // Property Service routes (/properties/*, /amenities/*, /qr-code/*)
@@ -245,18 +337,30 @@ export class RealEstateStack extends cdk.Stack {
     propertiesResource.addProxy({
       defaultIntegration: new apigateway.LambdaIntegration(propertyServiceLambda),
       anyMethod: true,
+      defaultMethodOptions: {
+        authorizer,
+        authorizationType: apigateway.AuthorizationType.CUSTOM,
+      },
     });
 
     const amenitiesResource = api.root.addResource('amenities');
     amenitiesResource.addProxy({
       defaultIntegration: new apigateway.LambdaIntegration(propertyServiceLambda),
       anyMethod: true,
+      defaultMethodOptions: {
+        authorizer,
+        authorizationType: apigateway.AuthorizationType.CUSTOM,
+      },
     });
 
     const qrCodeResource = api.root.addResource('qr-code');
     qrCodeResource.addProxy({
       defaultIntegration: new apigateway.LambdaIntegration(propertyServiceLambda),
       anyMethod: true,
+      defaultMethodOptions: {
+        authorizer,
+        authorizationType: apigateway.AuthorizationType.CUSTOM,
+      },
     });
 
     // === Outputs ===
@@ -288,6 +392,16 @@ export class RealEstateStack extends cdk.Stack {
     new cdk.CfnOutput(this, 'ValkeyEndpoint', {
       value: valkeyCluster.attrRedisEndpointAddress,
       description: 'Valkey (Redis) cluster endpoint',
+    });
+
+    new cdk.CfnOutput(this, 'RolePoliciesTableName', {
+      value: rolePoliciesTable.tableName,
+      description: 'DynamoDB Role Policies Table Name',
+    });
+
+    new cdk.CfnOutput(this, 'AuthorizerLambdaArn', {
+      value: authorizerLambda.functionArn,
+      description: 'Lambda Authorizer ARN',
     });
   }
 }

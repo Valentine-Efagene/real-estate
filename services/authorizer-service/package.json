@@ -1,0 +1,21 @@
+{
+    "name": "authorizer-service",
+    "version": "1.0.0",
+    "description": "Lambda Authorizer for Real Estate API",
+    "main": "dist/index.js",
+    "scripts": {
+        "build": "tsc",
+        "start": "node dist/index.js"
+    },
+    "dependencies": {
+        "@aws-sdk/client-dynamodb": "^3.529.0",
+        "@aws-sdk/lib-dynamodb": "^3.529.0",
+        "jsonwebtoken": "^9.0.2"
+    },
+    "devDependencies": {
+        "@types/aws-lambda": "^8.10.134",
+        "@types/jsonwebtoken": "^9.0.5",
+        "@types/node": "^20.11.19",
+        "typescript": "^5.3.3"
+    }
+}
