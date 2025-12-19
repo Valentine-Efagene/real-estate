@@ -1,4 +1,5 @@
-import { CreateDateColumn, DeleteDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { CreateDateColumn, DeleteDateColumn, PrimaryGeneratedColumn, UpdateDateColumn, Column, Index, ManyToOne, JoinColumn } from 'typeorm';
+import { Tenant } from '../../tenant/tenant.entity';
 
 export class BaseEntity {
   @PrimaryGeneratedColumn()
@@ -16,4 +17,18 @@ export class BaseEntity {
 
   @DeleteDateColumn({ nullable: true, default: null })
   deletedAt: Date;
+}
+
+/**
+ * Tenant-aware version of BaseEntity
+ * Use this for entities that need tenant isolation
+ */
+export class TenantAwareBaseEntity extends BaseEntity {
+  @ManyToOne(() => Tenant, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'tenant_id' })
+  tenant: Tenant;
+
+  @Column({ name: 'tenant_id' })
+  @Index()
+  tenantId: number;
 }

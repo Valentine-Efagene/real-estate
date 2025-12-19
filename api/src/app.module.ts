@@ -78,6 +78,9 @@ import { AccessLoggerMiddleware } from './common/middleware/AccessLoggerMiddlewa
 import { QrCodeModule } from './qr-code/qr-code.module';
 import { PropertyDocumentModule } from './property-document/property-document.module';
 import { CaslModule } from './casl/casl.module';
+import { TenantModule } from './tenant/tenant.module';
+import { TenantMiddleware } from './common/middleware/TenantMiddleware';
+import { EventBusModule } from './event-bus/event-bus.module';
 
 @Module({
   imports: [
@@ -100,7 +103,9 @@ import { CaslModule } from './casl/casl.module';
         password: process.env.REDIS_PASSWORD,
       },
     }),
+    EventBusModule,
     MailModule,
+    TenantModule,
     UserModule,
     AuthModule,
     UserModule,
@@ -152,6 +157,9 @@ export class AppModule {
       { path: 'auth/verify-email', method: RequestMethod.GET },
       { path: 'mailer/(.*)', method: RequestMethod.POST },
     ];
+
+    // Apply TenantMiddleware globally (runs before authentication)
+    consumer.apply(TenantMiddleware).forRoutes('*');
 
     consumer.apply(AuthenticationMiddleware).exclude(...excludedPaths).forRoutes('*');
 

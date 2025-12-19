@@ -1,5 +1,5 @@
 import { Column, Entity, JoinTable, ManyToMany, OneToMany, OneToOne } from 'typeorm';
-import { BaseEntity } from '../common/helpers/BaseEntity';
+import { TenantAwareBaseEntity } from '../common/helpers/BaseEntity';
 import { UserStatus } from './user.enums';
 import { Role } from '../role/role.entity';
 import { RefreshToken } from '../refresh_token/refresh_token.entity';
@@ -8,7 +8,7 @@ import { Transaction } from '../transaction/transaction.entity';
 import { Wallet } from '../wallet/wallet.entity';
 
 @Entity({ name: 'users' })
-export class User extends BaseEntity {
+export class User extends TenantAwareBaseEntity {
   @Column({ nullable: true })
   firstName?: string;
 

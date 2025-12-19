@@ -7,6 +7,8 @@ import { Mortgage } from '../mortgage/mortgage.entity';
 import { MortgageTransitionModule } from '../mortgage-transition/mortgage-transition.module';
 import { MortgageTransitionEventModule } from '../mortgage-transition-event/mortgage-transition-event.module';
 import { MortgageStateHistoryModule } from '../mortgage-state-history/mortgage-state-history.module';
+import { EventBusModule } from '../event-bus/event-bus.module';
+import { FSMEventConfig } from './fsm-event-config.service';
 
 @Module({
     imports: [
@@ -14,9 +16,10 @@ import { MortgageStateHistoryModule } from '../mortgage-state-history/mortgage-s
         MortgageTransitionModule,
         MortgageTransitionEventModule,
         MortgageStateHistoryModule,
+        EventBusModule,
     ],
     controllers: [MortgageFSMController],
-    providers: [MortgageFSMService, MortgageTransitionService],
+    providers: [MortgageFSMService, MortgageTransitionService, FSMEventConfig],
     exports: [MortgageFSMService, MortgageTransitionService],
 })
 export class MortgageFSMModule { }

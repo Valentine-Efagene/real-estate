@@ -23,6 +23,7 @@ import { MortgageDownpaymentPayment } from './mortgage-downpayment/mortgage-down
 import { Amenity } from './amenity/amenity.entity';
 import { Wallet } from './wallet/wallet.entity';
 import { Transaction } from './transaction/transaction.entity';
+import { Tenant } from './tenant/tenant.entity';
 
 if (process.env.NODE_ENV !== 'test') {
     dotenv.config();
@@ -38,6 +39,7 @@ export const options = {
     password: process.env.DB_PASSWORD ?? '',
     database: process.env.DB_NAME,
     entities: [
+        Tenant,
         User,
         Role,
         Permission,

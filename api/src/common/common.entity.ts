@@ -5,9 +5,9 @@ import {
   Column,
 } from 'typeorm';
 import { DocumentStatus } from './common.type';
-import { AbstractBaseEntity } from './common.pure.entity';
+import { AbstractBaseEntity, AbstractTenantAwareEntity } from './common.pure.entity';
 
-export abstract class AbstractBaseReviewableEntity extends AbstractBaseEntity {
+export abstract class AbstractBaseReviewableEntity extends AbstractTenantAwareEntity {
   @ManyToOne(() => User, { eager: true })
   @JoinColumn({ name: 'reviewed_by' })
   reviewer: User;

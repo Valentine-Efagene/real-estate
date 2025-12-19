@@ -5,3 +5,6 @@
 - Don't worry about unit tests for now.
 - Only focus on e2e tests, and give them clear user stories.
 - Use `class-validator` and `class-transformer` for DTO validation and transformation.
+- We intend to break the application into microservices in the future, so design with that in mind.
+- Use TypeScript features like interfaces, types, and generics effectively.
+- Follow NestJS best practices for folder structure, dependency injection, and module organization.
