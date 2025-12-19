@@ -43,7 +43,6 @@ const envModule = ConfigModule.forRoot({
 import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { RoleModule } from './role/role.module';
 import { PermissionModule } from './permission/permission.module';
@@ -58,7 +57,6 @@ import { PasswordResetTokenModule } from './password_reset_tokens/password_reset
 import { MailModule } from './mail/mail.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import AuthenticationMiddleware from './common/middleware/AuthenticationMiddleware';
-import { options } from './data-source';
 import { SettingsModule } from './settings/settings.module';
 import { PropertyModule } from './property/property.module';
 import { PropertyMediaModule } from './property-media/property-media.module';
@@ -81,11 +79,12 @@ import { CaslModule } from './casl/casl.module';
 import { TenantModule } from './tenant/tenant.module';
 import { TenantMiddleware } from './common/middleware/TenantMiddleware';
 import { EventBusModule } from './event-bus/event-bus.module';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
     envModule,
-    TypeOrmModule.forRoot(options as TypeOrmModuleOptions),
+    DatabaseModule, // Centralized database configuration
     JwtModule.register({
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '60s' },
