@@ -9,7 +9,7 @@ export const handler = async (
 ): Promise<APIGatewayAuthorizerResult> => {
     console.log('Authorizer invoked:', JSON.stringify({
         methodArn: event.methodArn,
-        requestId: context.requestId
+        requestId: context.awsRequestId
     }));
 
     return authorizerService.authorize(event);

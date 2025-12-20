@@ -121,7 +121,7 @@ export class AuthorizerService {
                 userId: jwtPayload.sub,
                 email: jwtPayload.email,
                 roles: JSON.stringify(jwtPayload.roles),
-                tenantId: jwtPayload.tenantId,
+                tenantId: jwtPayload.tenantId || '',
             }
             : undefined;
 

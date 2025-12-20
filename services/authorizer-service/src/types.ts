@@ -1,3 +1,5 @@
+import { APIGatewayAuthorizerResultContext } from 'aws-lambda';
+
 export interface PolicyResource {
     path: string;
     methods: string[];
@@ -34,9 +36,13 @@ export interface JwtPayload {
     exp: number;
 }
 
-export interface AuthorizerContext {
+/**
+ * Authorizer context that will be passed to downstream Lambda functions
+ * Must extend APIGatewayAuthorizerResultContext which requires string index signature
+ */
+export interface AuthorizerContext extends APIGatewayAuthorizerResultContext {
     userId: string;
     email: string;
-    roles: string;
-    tenantId?: string;
+    roles: string; // JSON stringified array
+    tenantId: string;
 }
