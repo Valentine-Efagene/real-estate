@@ -1,0 +1,39 @@
+# Ignore build output
+dist/
+*.js
+*.d.ts
+*.js.map
+*.d.ts.map
+
+# CDK asset staging directory
+.cdk.staging/
+cdk.out/
+
+# Dependencies
+node_modules/
+
+# Environment variables
+.env
+.env.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Test coverage
+coverage/
+
+# Temporary files
+*.tmp
+.cache/

@@ -28,11 +28,11 @@ import { APP_GUARD } from '@nestjs/core';
 import { ScheduleModule } from '@nestjs/schedule';
 
 // Import shared modules
-import { DatabaseModule } from '../../shared/database/database.module';
-import { TenantMiddleware } from '../../shared/common/middleware/TenantMiddleware';
-import { PermissionGuard } from '../../shared/common/guard/permission.guard';
-import AuthenticationMiddleware from '../../shared/common/middleware/AuthenticationMiddleware';
-import { EventBusModule } from '../../shared/event-bus/event-bus.module';
+import { DatabaseModule } from '@shared/database/database.module';
+import { TenantMiddleware } from '@shared/common/middleware/TenantMiddleware';
+import { PermissionGuard } from '@shared/common/guard/permission.guard';
+import AuthenticationMiddleware from '@shared/common/middleware/AuthenticationMiddleware';
+import { EventBusModule } from '@shared/event-bus/event-bus.module';
 
 // Service-specific modules
 import { MortgageModule } from './mortgage/mortgage.module';
@@ -43,15 +43,14 @@ import MortgageDownpaymentModule from './mortgage-downpayment/mortgage-downpayme
 import PaymentsModule from './payments/payments.module';
 import { WalletModule } from './wallet/wallet.module';
 import { TransactionModule } from './transaction/transaction.module';
-import { jwtConstants } from '../../shared/common/common.type';
 
 @Module({
     imports: [
         envModule,
         DatabaseModule,
         JwtModule.register({
-            secret: jwtConstants.secret,
-            signOptions: { expiresIn: '60s' },
+            secret: process.env.JWT_SECRET || 'default-secret-change-in-production',
+            signOptions: { expiresIn: '100m' },
             global: true
         }),
         ThrottlerModule.forRoot([{

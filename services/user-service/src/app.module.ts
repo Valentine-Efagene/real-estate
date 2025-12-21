@@ -30,12 +30,12 @@ import { JwtModule } from '@nestjs/jwt';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 
-// Import shared modules from ../../shared
-import { DatabaseModule } from '../../shared/database/database.module';
-import { TenantMiddleware } from '../../shared/common/middleware/TenantMiddleware';
-import { PermissionGuard } from '../../shared/common/guard/permission.guard';
-import AuthenticationMiddleware from '../../shared/common/middleware/AuthenticationMiddleware';
-import { AccessLoggerMiddleware } from '../../shared/common/middleware/AccessLoggerMiddleware';
+// Import shared modules
+import { DatabaseModule } from '@shared/database/database.module';
+import { TenantMiddleware } from '@shared/common/middleware/TenantMiddleware';
+import { PermissionGuard } from '@shared/common/guard/permission.guard';
+import AuthenticationMiddleware from '@shared/common/middleware/AuthenticationMiddleware';
+import { AccessLoggerMiddleware } from '@shared/common/middleware/AccessLoggerMiddleware';
 
 // Service-specific modules
 import { AuthModule } from './auth/auth.module';

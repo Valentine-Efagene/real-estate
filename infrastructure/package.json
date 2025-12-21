@@ -1,0 +1,28 @@
+{
+    "name": "@real-estate/infrastructure",
+    "version": "1.0.0",
+    "description": "AWS CDK Infrastructure for Real Estate Microservices",
+    "main": "lib/real-estate-stack.js",
+    "bin": {
+        "real-estate-infrastructure": "bin/real-estate-stack.js"
+    },
+    "scripts": {
+        "build": "tsc",
+        "watch": "tsc -w",
+        "test": "jest",
+        "cdk": "cdk",
+        "synth": "cdk synth",
+        "deploy": "cdk deploy",
+        "diff": "cdk diff",
+        "destroy": "cdk destroy"
+    },
+    "dependencies": {
+        "aws-cdk-lib": "2.211.0",
+        "constructs": "^10.0.0"
+    },
+    "devDependencies": {
+        "@types/node": "22.7.9",
+        "aws-cdk": "2.1027.0",
+        "typescript": "~5.6.3"
+    }
+}
