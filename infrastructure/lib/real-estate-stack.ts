@@ -22,17 +22,18 @@ export class RealEstateStack extends cdk.Stack {
     // === MySQL RDS ===
     const cluster = new rds.DatabaseCluster(this, "AuroraServerlessDB", {
       engine: rds.DatabaseClusterEngine.auroraMysql({
-        version: rds.AuroraMysqlEngineVersion.VER_3_10_0,
+        version: rds.AuroraMysqlEngineVersion.VER_3_10_0, // 8.0-compatible
       }),
       writer: rds.ClusterInstance.serverlessV2("writer", {
         scaleWithWriter: true,
+        publiclyAccessible: true, // ⚠️ Allow only in dev.
       }),
       vpc,
       vpcSubnets: {
-        subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
+        subnetType: ec2.SubnetType.PUBLIC, // 👈 Force use of public subnets. Allow only on dev.
       },
       credentials: rds.Credentials.fromGeneratedSecret("dbadmin"),
-      defaultDatabaseName: "mediacraftdb",
+      defaultDatabaseName: "authdb",
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
