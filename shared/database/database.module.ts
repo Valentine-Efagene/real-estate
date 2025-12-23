@@ -1,9 +1,21 @@
-import { Module, Global } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { Module, Global, DynamicModule } from '@nestjs/common';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { DatabaseService } from './database.service';
 import { DataSource } from 'typeorm';
-import { getDatabaseConfig } from './database.config';
+import { DATABASE_ENTITIES } from './database.config';
+import { CustomNamingStrategy } from '../common/helpers/CustomNamingStrategy';
+
+export interface DatabaseModuleOptions {
+    host: string;
+    port: number;
+    username: string;
+    password: string;
+    database: string;
+    synchronize?: boolean;
+    dropSchema?: boolean;
+    logging?: boolean;
+    isProduction?: boolean;
+}
 
 /**
  * Global Database Module
@@ -11,22 +23,49 @@ import { getDatabaseConfig } from './database.config';
  * Can be imported by multiple Lambda functions
  */
 @Global()
-@Module({
-    imports: [
-        TypeOrmModule.forRootAsync({
-            imports: [ConfigModule],
-            inject: [ConfigService],
-            useFactory: async (configService: ConfigService) => {
-                return getDatabaseConfig(configService);
+@Module({})
+export class DatabaseModule {
+    /**
+     * Configure DatabaseModule with runtime options
+     * @param options - Database connection configuration
+     * @returns Configured DynamicModule
+     */
+    static forRoot(options: DatabaseModuleOptions): DynamicModule {
+        const typeOrmOptions: TypeOrmModuleOptions = {
+            type: 'mysql',
+            host: options.host,
+            port: options.port,
+            username: options.username,
+            password: options.password,
+            database: options.database,
+            entities: DATABASE_ENTITIES,
+            synchronize: options.synchronize ?? false,
+            dropSchema: options.dropSchema ?? false,
+            namingStrategy: new CustomNamingStrategy(),
+            logging: options.logging ?? !options.isProduction,
+            // Connection pool settings for Lambda
+            extra: {
+                connectionLimit: options.isProduction ? 5 : 10,
+                connectTimeout: 60000,
+                acquireTimeout: 60000,
+                timeout: 60000,
             },
-            dataSourceFactory: async (options) => {
-                const dataSource = new DataSource(options);
-                await dataSource.initialize();
-                return dataSource;
-            },
-        }),
-    ],
-    providers: [DatabaseService],
-    exports: [DatabaseService, TypeOrmModule],
-})
-export class DatabaseModule { }
+        };
+
+        return {
+            module: DatabaseModule,
+            imports: [
+                TypeOrmModule.forRootAsync({
+                    useFactory: async () => typeOrmOptions,
+                    dataSourceFactory: async (opts) => {
+                        const dataSource = new DataSource(opts);
+                        await dataSource.initialize();
+                        return dataSource;
+                    },
+                }),
+            ],
+            providers: [DatabaseService],
+            exports: [DatabaseService, TypeOrmModule],
+        };
+    }
+}

@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Social } from './social.entity';
 import { SocialController } from './social.controller';
 import { SocialService } from './social.service';
+import { Social } from '@valentine-efagene/entities';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Social])],

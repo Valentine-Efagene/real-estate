@@ -9,19 +9,16 @@ import {
   ParseIntPipe,
   Put,
 } from '@nestjs/common';
-import { Role } from './role.entity';
 import { RoleService } from './role.service';
 import { AssignPermissionsDto, CreateRoleDto } from './role.dto';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { StandardApiResponse } from '../common/common.dto';
-import OpenApiHelper from '../common/OpenApiHelper';
-import { ResponseMessage } from '../common/common.enum';
-import { SwaggerAuth } from '../common/guard/swagger-auth.guard';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { SwaggerAuth } from '@qshelter/nest-auth';
+import { Role } from '@valentine-efagene/entities';
+import { ResponseMessage, StandardApiResponse } from '../type';
 
 @SwaggerAuth()
 @Controller('roles')
 @ApiTags('Role')
-@ApiResponse(OpenApiHelper.responseDoc)
 export class RoleController {
   constructor(private readonly roleService: RoleService) { }
 
@@ -34,14 +31,12 @@ export class RoleController {
   }
 
   @Get()
-  @ApiResponse(OpenApiHelper.arrayResponseDoc)
   async findAll(): Promise<StandardApiResponse<Role[]>> {
     const data = await this.roleService.findAll();
     return new StandardApiResponse(HttpStatus.OK, ResponseMessage.FETCHED, data);
   }
 
   @Get(':id')
-  @ApiResponse(OpenApiHelper.responseDoc)
   async findOne(
     @Param('id', ParseIntPipe) id: number,): Promise<StandardApiResponse<Role>> {
     const data = await this.roleService.findOne(id);
@@ -49,7 +44,6 @@ export class RoleController {
   }
 
   @Put('/:id/assign-permissions')
-  @ApiResponse(OpenApiHelper.responseDoc)
   async assignPermissions(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: AssignPermissionsDto
@@ -59,7 +53,6 @@ export class RoleController {
   }
 
   @Put('/:id/revoke-permissions')
-  @ApiResponse(OpenApiHelper.responseDoc)
   async revokePermissions(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: AssignPermissionsDto
@@ -71,7 +64,6 @@ export class RoleController {
   @Delete(':id')
   //@Roles([RoleRole.ADMIN])
   @ApiOperation({ summary: '', tags: ['Admin'] })
-  @ApiResponse(OpenApiHelper.nullResponseDoc)
   async remove(
     @Param('id', ParseIntPipe) id: number): Promise<StandardApiResponse<void>> {
     await this.roleService.remove(id);

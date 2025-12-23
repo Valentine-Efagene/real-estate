@@ -90,12 +90,13 @@ export class RealEstateStack extends cdk.Stack {
     const userServiceLambda = new lambda.Function(this, 'UserServiceLambda', {
       runtime: lambda.Runtime.NODEJS_20_X,
       handler: 'serverless.handler',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../../services/user-service'), {
-        exclude: ['node_modules', 'test', 'dist'],
+      code: lambda.Code.fromAsset(path.join(__dirname, '../../'), {
+        exclude: ['infrastructure', 'node_modules', '.git'],
         bundling: {
           image: lambda.Runtime.NODEJS_20_X.bundlingImage,
           command: [
             'bash', '-c', [
+              'cd services/user-service',
               'npm install',
               'npm run build',
               'cp -r dist/* /asset-output/',
@@ -119,12 +120,13 @@ export class RealEstateStack extends cdk.Stack {
     const mortgageServiceLambda = new lambda.Function(this, 'MortgageServiceLambda', {
       runtime: lambda.Runtime.NODEJS_20_X,
       handler: 'serverless.handler',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../../services/mortgage-service'), {
-        exclude: ['node_modules', 'test', 'dist'],
+      code: lambda.Code.fromAsset(path.join(__dirname, '../../'), {
+        exclude: ['infrastructure', 'node_modules', '.git'],
         bundling: {
           image: lambda.Runtime.NODEJS_20_X.bundlingImage,
           command: [
             'bash', '-c', [
+              'cd services/mortgage-service',
               'npm install',
               'npm run build',
               'cp -r dist/* /asset-output/',
@@ -148,12 +150,13 @@ export class RealEstateStack extends cdk.Stack {
     const propertyServiceLambda = new lambda.Function(this, 'PropertyServiceLambda', {
       runtime: lambda.Runtime.NODEJS_20_X,
       handler: 'serverless.handler',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../../services/property-service'), {
-        exclude: ['node_modules', 'test', 'dist'],
+      code: lambda.Code.fromAsset(path.join(__dirname, '../../'), {
+        exclude: ['infrastructure', 'node_modules', '.git'],
         bundling: {
           image: lambda.Runtime.NODEJS_20_X.bundlingImage,
           command: [
             'bash', '-c', [
+              'cd services/property-service',
               'npm install',
               'npm run build',
               'cp -r dist/* /asset-output/',

@@ -1,4 +1,4 @@
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
 
 const envModule = ConfigModule.forRoot({
@@ -13,6 +13,7 @@ const envModule = ConfigModule.forRoot({
         DB_NAME: Joi.string(),
         DB_PORT: Joi.number().port().default(3306),
         DB_USERNAME: Joi.string(),
+        DB_PASSWORD: Joi.string(),
 
         // AUTH
         JWT_SECRET: Joi.string(),
@@ -31,11 +32,11 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 
 // Import shared modules
-import { DatabaseModule } from '@shared/database/database.module';
-import { TenantMiddleware } from '@shared/common/middleware/TenantMiddleware';
-import { PermissionGuard } from '@shared/common/guard/permission.guard';
-import AuthenticationMiddleware from '@shared/common/middleware/AuthenticationMiddleware';
-import { AccessLoggerMiddleware } from '@shared/common/middleware/AccessLoggerMiddleware';
+import { DatabaseModule } from '@real-estate/shared-database';
+import { TenantMiddleware } from '@real-estate/shared-common/middleware/TenantMiddleware';
+import { PermissionGuard } from '@real-estate/shared-common/guard/permission.guard';
+import AuthenticationMiddleware from '@real-estate/shared-common/middleware/AuthenticationMiddleware';
+import { AccessLoggerMiddleware } from '@real-estate/shared-common/middleware/AccessLoggerMiddleware';
 
 // Service-specific modules
 import { AuthModule } from './auth/auth.module';
@@ -46,7 +47,6 @@ import { TenantModule } from './tenant/tenant.module';
 import { RefreshTokenModule } from './refresh_token/refresh_token.module';
 import { PasswordResetTokenModule } from './password_reset_tokens/password_reset_tokens.module';
 import { UserSuspensionModule } from './user_suspensions/user_suspensions.module';
-import { SettingsModule } from './settings/settings.module';
 import { MailModule } from './mail/mail.module';
 import { EncryptionModule } from './encryption/encryption.module';
 import { CaslModule } from './casl/casl.module';
@@ -55,7 +55,16 @@ import { jwtConstants } from './auth/auth.constants';
 @Module({
     imports: [
         envModule,
-        DatabaseModule,
+        DatabaseModule.forRoot({
+            host: process.env.DB_HOST || '127.0.0.1',
+            port: parseInt(process.env.DB_PORT) || 3306,
+            username: process.env.DB_USERNAME || 'root',
+            password: process.env.DB_PASSWORD || '',
+            database: process.env.DB_NAME,
+            synchronize: process.env.DB_HOST === '127.0.0.1' || process.env.DB_HOST === 'localhost',
+            logging: process.env.NODE_ENV !== 'production',
+            isProduction: process.env.NODE_ENV === 'production',
+        }),
         JwtModule.register({
             secret: jwtConstants.secret,
             signOptions: { expiresIn: '60s' },
@@ -74,7 +83,6 @@ import { jwtConstants } from './auth/auth.constants';
         RefreshTokenModule,
         PasswordResetTokenModule,
         UserSuspensionModule,
-        SettingsModule,
         EncryptionModule,
         CaslModule,
     ],

@@ -1,6 +1,5 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, Inject, Optional } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import { ConfigService } from '@nestjs/config';
 import { firstValueFrom } from 'rxjs';
 import {
     EventPayload,
@@ -24,14 +23,14 @@ export class EventBusService {
 
     constructor(
         private readonly httpService: HttpService,
-        private readonly configService: ConfigService,
+        @Optional() @Inject('EVENT_BUS_OPTIONS') private readonly options?: any,
     ) {
         this.config = {
-            defaultTransport: EventTransportType.HTTP,
-            defaultTimeout: 30000,
-            defaultRetries: 3,
+            defaultTransport: options?.defaultTransport || EventTransportType.HTTP,
+            defaultTimeout: options?.defaultTimeout || 30000,
+            defaultRetries: options?.defaultRetries || 3,
             enableDeadLetterQueue: true,
-            awsRegion: this.configService.get('AWS_REGION', 'us-east-1'),
+            awsRegion: options?.awsRegion || 'us-east-1',
         };
     }
 

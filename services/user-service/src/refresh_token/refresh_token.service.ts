@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { RefreshToken } from './refresh_token.entity';
 import { CreateRefreshTokenDto } from './refresh_token.dto';
+import { RefreshToken } from '@valentine-efagene/entities';
 
 @Injectable()
 export class RefreshTokenService {

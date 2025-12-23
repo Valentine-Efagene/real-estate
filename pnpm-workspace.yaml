@@ -1,0 +1,10 @@
+packages:
+  - 'shared/entities'
+  - 'shared/database'
+  - 'shared/common'
+  - 'shared/event-bus'
+  - 'services/user-service'
+  - 'services/mortgage-service'
+  - 'services/property-service'
+  - 'services/authorizer-service'
+  - 'infrastructure'

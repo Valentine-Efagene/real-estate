@@ -9,19 +9,16 @@ import {
   ParseIntPipe,
   HttpCode,
 } from '@nestjs/common';
-import { Permission } from './permission.entity';
 import { PermissionService } from './permission.service';
 import { CreatePermissionDto } from './permission.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { StandardApiResponse } from '../common/common.dto';
-import OpenApiHelper from '../common/OpenApiHelper';
-import { ResponseMessage } from '../common/common.enum';
-import { SwaggerAuth } from '../common/guard/swagger-auth.guard';
+import { SwaggerAuth } from '@qshelter/nest-auth';
+import { Permission } from '@valentine-efagene/entities';
+import { ResponseMessage, StandardApiResponse } from '../type';
 
 @SwaggerAuth()
 @Controller('permissions')
 @ApiTags('Permission')
-@ApiResponse(OpenApiHelper.responseDoc)
 export class PermissionController {
   constructor(private readonly permissionService: PermissionService) { }
 
@@ -41,7 +38,6 @@ export class PermissionController {
   }
 
   @Get()
-  @ApiResponse(OpenApiHelper.arrayResponseDoc)
   async findAll(): Promise<StandardApiResponse<Permission[]>> {
     const data = await this.permissionService.findAll();
     return new StandardApiResponse(HttpStatus.OK, ResponseMessage.FETCHED, data);
@@ -49,7 +45,6 @@ export class PermissionController {
 
 
   @Get(':id')
-  @ApiResponse(OpenApiHelper.responseDoc)
   async findOne(
     @Param('id', ParseIntPipe) id: number,): Promise<StandardApiResponse<Permission>> {
     const data = await this.permissionService.findOne(id);
@@ -59,7 +54,6 @@ export class PermissionController {
   @Delete(':id')
   //@Permissions([PermissionPermission.ADMIN])
   @ApiOperation({ summary: '', tags: ['Admin'] })
-  @ApiResponse(OpenApiHelper.nullResponseDoc)
   async remove(
     @Param('id', ParseIntPipe) id: number): Promise<StandardApiResponse<void>> {
     await this.permissionService.remove(id);

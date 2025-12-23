@@ -1,0 +1,30 @@
+{
+    "name": "@real-estate/shared-event-bus",
+    "version": "1.0.0",
+    "description": "Shared EventBridge event bus module for inter-service communication",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "build": "tsc",
+        "prepublishOnly": "npm run build"
+    },
+    "keywords": [
+        "eventbridge",
+        "event-bus",
+        "nestjs",
+        "aws"
+    ],
+    "author": "",
+    "license": "UNLICENSED",
+    "peerDependencies": {
+        "@nestjs/common": "^10.0.0",
+        "@aws-sdk/client-eventbridge": "^3.0.0"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "@nestjs/common": "^10.0.0",
+        "@aws-sdk/client-eventbridge": "^3.500.0",
+        "typescript": "^5.0.0",
+        "@types/node": "^20.0.0"
+    }
+}

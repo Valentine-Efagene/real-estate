@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Role } from './role.entity';
 import { Repository } from 'typeorm';
 import { RoleName } from './role.enums';
+import { Role } from '@valentine-efagene/entities';
 
 @Injectable()
 export class RoleSeeder {

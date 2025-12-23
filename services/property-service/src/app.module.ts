@@ -12,6 +12,7 @@ const envModule = ConfigModule.forRoot({
         DB_NAME: Joi.string(),
         DB_PORT: Joi.number().port().default(3306),
         DB_USERNAME: Joi.string(),
+        DB_PASSWORD: Joi.string(),
 
         JWT_SECRET: Joi.string(),
 
@@ -31,10 +32,10 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 
 // Import shared modules
-import { DatabaseModule } from '../../shared/database/database.module';
-import { TenantMiddleware } from '../../shared/common/middleware/TenantMiddleware';
-import { PermissionGuard } from '../../shared/common/guard/permission.guard';
-import AuthenticationMiddleware from '../../shared/common/middleware/AuthenticationMiddleware';
+import { DatabaseModule } from '@real-estate/shared-database';
+import { TenantMiddleware } from '@real-estate/shared-common/middleware/TenantMiddleware';
+import { PermissionGuard } from '@real-estate/shared-common/guard/permission.guard';
+import AuthenticationMiddleware from '@real-estate/shared-common/middleware/AuthenticationMiddleware';
 
 // Service-specific modules
 import { PropertyModule } from './property/property.module';
@@ -43,14 +44,22 @@ import { PropertyDocumentModule } from './property-document/property-document.mo
 import { AmenityModule } from './amenity/amenity.module';
 import { QrCodeModule } from './qr-code/qr-code.module';
 import { S3UploaderModule } from './s3-uploader/s3-uploader.module';
-import { jwtConstants } from '../../shared/common/common.type';
 
 @Module({
     imports: [
         envModule,
-        DatabaseModule,
+        DatabaseModule.forRoot({
+            host: process.env.DB_HOST || '127.0.0.1',
+            port: parseInt(process.env.DB_PORT) || 3306,
+            username: process.env.DB_USERNAME || 'root',
+            password: process.env.DB_PASSWORD || '',
+            database: process.env.DB_NAME,
+            synchronize: process.env.DB_HOST === '127.0.0.1' || process.env.DB_HOST === 'localhost',
+            logging: process.env.NODE_ENV !== 'production',
+            isProduction: process.env.NODE_ENV === 'production',
+        }),
         JwtModule.register({
-            secret: jwtConstants.secret,
+            secret: process.env.JWT_SECRET || 'default-secret-change-in-production',
             signOptions: { expiresIn: '60s' },
             global: true
         }),

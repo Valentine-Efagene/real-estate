@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { RefreshToken } from './refresh_token.entity';
 import { RefreshTokenService } from './refresh_token.service';
+import { RefreshToken } from '@valentine-efagene/entities';
 
 @Module({
   imports: [TypeOrmModule.forFeature([RefreshToken])],

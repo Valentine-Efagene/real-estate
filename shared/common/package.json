@@ -1,0 +1,35 @@
+{
+    "name": "@real-estate/shared-common",
+    "version": "1.0.0",
+    "description": "Shared common utilities, DTOs, guards, middleware, and decorators",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "build": "tsc",
+        "prepublishOnly": "npm run build"
+    },
+    "keywords": [
+        "common",
+        "utilities",
+        "nestjs"
+    ],
+    "author": "",
+    "license": "UNLICENSED",
+    "peerDependencies": {
+        "@nestjs/common": "^10.0.0",
+        "@nestjs/config": "^3.0.0",
+        "@nestjs/jwt": "^10.0.0",
+        "class-validator": "^0.14.0",
+        "class-transformer": "^0.5.0"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "@nestjs/common": "^10.0.0",
+        "@nestjs/config": "^3.0.0",
+        "@nestjs/jwt": "^10.0.0",
+        "class-validator": "^0.14.0",
+        "class-transformer": "^0.5.1",
+        "typescript": "^5.0.0",
+        "@types/node": "^20.0.0"
+    }
+}

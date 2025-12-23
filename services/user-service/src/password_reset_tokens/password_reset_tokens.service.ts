@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { PasswordResetToken } from './password_reset_tokens.entity';
 import { CreatePasswordResetTokenDto } from './password_reset_tokens.dto';
+import { PasswordResetToken } from '@valentine-efagene/entities';
 
 @Injectable()
 export class PasswordResetTokenService {

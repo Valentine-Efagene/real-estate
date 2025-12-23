@@ -1,0 +1,16 @@
+{
+    "name": "@real-estate/monorepo",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "build:shared": "pnpm --filter './shared/**' run build",
+        "build:services": "pnpm --filter './services/**' run build",
+        "build:all": "pnpm run build:shared && pnpm run build:services",
+        "install:all": "pnpm install -r"
+    },
+    "devDependencies": {},
+    "engines": {
+        "node": ">=20.0.0",
+        "pnpm": ">=8.0.0"
+    }
+}

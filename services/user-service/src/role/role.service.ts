@@ -1,9 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException, Param } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
-import { Role } from './role.entity';
 import { AssignPermissionsDto, CreateRoleDto, UpdateRoleDto } from './role.dto';
-import { Permission } from '../permission/permission.entity';
+import { Permission, Role } from '@valentine-efagene/entities';
 
 @Injectable()
 export class RoleService {
