@@ -33,7 +33,7 @@ import { DatabaseModule } from '@real-estate/shared-database';
 import { TenantMiddleware } from '@real-estate/shared-common/middleware/TenantMiddleware';
 import { PermissionGuard } from '@real-estate/shared-common/guard/permission.guard';
 import AuthenticationMiddleware from '@real-estate/shared-common/middleware/AuthenticationMiddleware';
-import { EventBusModule } from '@real-estate/shared-event-bus';
+import { EventBusModule } from '@valentine-efagene/event-bus';
 
 // Service-specific modules
 import { MortgageModule } from './mortgage/mortgage.module';

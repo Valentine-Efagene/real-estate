@@ -1,5 +1,5 @@
 {
-    "name": "@real-estate/shared-event-bus",
+    "name": "@valentine-efagene/event-bus",
     "version": "1.0.0",
     "description": "Shared EventBridge event bus module for inter-service communication",
     "main": "dist/index.js",
@@ -12,19 +12,25 @@
         "eventbridge",
         "event-bus",
         "nestjs",
-        "aws"
+        "aws",
+        "microservices",
+        "sns",
+        "http"
     ],
-    "author": "",
-    "license": "UNLICENSED",
+    "author": "Valentine Efagene",
+    "license": "MIT",
     "peerDependencies": {
         "@nestjs/common": "^10.0.0",
-        "@aws-sdk/client-eventbridge": "^3.0.0"
+        "@nestjs/axios": "^4.0.0"
     },
-    "dependencies": {},
+    "dependencies": {
+        "@aws-sdk/client-eventbridge": "^3.500.0"
+    },
     "devDependencies": {
         "@nestjs/common": "^10.0.0",
-        "@aws-sdk/client-eventbridge": "^3.500.0",
+        "@nestjs/axios": "^4.0.0",
         "typescript": "^5.0.0",
-        "@types/node": "^20.0.0"
+        "@types/node": "^20.0.0",
+        "rxjs": "^7.8.1"
     }
 }
