@@ -1,5 +1,5 @@
 import {
-    APIGatewayTokenAuthorizerEvent,
+    APIGatewayRequestAuthorizerEvent,
     APIGatewayAuthorizerResult,
     PolicyDocument,
     Statement as PolicyStatement
@@ -20,10 +20,11 @@ export class AuthorizerService {
         this.pathMatcher = new PathMatcher();
     }
 
-    async authorize(event: APIGatewayTokenAuthorizerEvent): Promise<APIGatewayAuthorizerResult> {
+    async authorize(event: APIGatewayRequestAuthorizerEvent): Promise<APIGatewayAuthorizerResult> {
         try {
             // 1. Extract and verify JWT
-            const token = this.jwtService.extractToken(event.authorizationToken);
+            const authHeader = event.headers?.Authorization || event.headers?.authorization || '';
+            const token = this.jwtService.extractToken(authHeader);
             const payload = this.jwtService.verify(token);
 
             console.log('JWT verified for user:', payload.sub, 'roles:', payload.roles);
@@ -36,8 +37,9 @@ export class AuthorizerService {
                 return this.generatePolicy(payload.sub, 'Deny', event.methodArn, payload);
             }
 
-            // 3. Extract path and method from methodArn
-            const { path, method } = this.parseMethodArn(event.methodArn);
+            // 3. Extract path and method from request event
+            const path = event.resource; // e.g., /users/{id}
+            const method = event.httpMethod; // e.g., GET, POST
             console.log('Checking access for:', method, path);
 
             // 4. Check if any role policy allows access

@@ -241,9 +241,11 @@ export class RealEstateStack extends cdk.Stack {
     });
 
     // Configure Lambda authorizer
-    const authorizer = new apigateway.TokenAuthorizer(this, 'JwtAuthorizer', {
+    const authorizer = new apigateway.RequestAuthorizer(this, 'JwtAuthorizer', {
       handler: authorizerLambda,
-      identitySource: 'method.request.header.Authorization',
+      identitySources: [
+        apigateway.IdentitySource.header('Authorization'),
+      ],
       resultsCacheTtl: cdk.Duration.minutes(5),
       authorizerName: 'JwtAuthorizer',
     });

@@ -1,10 +1,10 @@
-import { APIGatewayTokenAuthorizerEvent, APIGatewayAuthorizerResult, Context } from 'aws-lambda';
+import { APIGatewayAuthorizerResult, Context, APIGatewayRequestAuthorizerEvent } from 'aws-lambda';
 import { AuthorizerService } from './authorizer-service';
 
 const authorizerService = new AuthorizerService();
 
 export const handler = async (
-    event: APIGatewayTokenAuthorizerEvent,
+    event: APIGatewayRequestAuthorizerEvent,
     context: Context
 ): Promise<APIGatewayAuthorizerResult> => {
     console.log('Authorizer invoked:', JSON.stringify({
