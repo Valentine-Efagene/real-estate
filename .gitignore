@@ -9,3 +9,4 @@ cdk.out
 .env
 *.js.map
 .test.env
+dist/
