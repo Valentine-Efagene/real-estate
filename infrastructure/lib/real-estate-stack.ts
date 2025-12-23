@@ -78,7 +78,7 @@ export class RealEstateStack extends cdk.Stack {
       NODE_ENV: 'production',
       DB_HOST: cluster.clusterEndpoint.hostname,
       DB_PORT: cluster.clusterEndpoint.port.toString(),
-      DB_NAME: 'mediacraftdb',
+      DB_NAME: 'real_estate_db',
       DATABASE_SECRET_ARN: dbCredentials.secretArn,
       VALKEY_ENDPOINT: valkeyCluster.attrRedisEndpointAddress,
       VALKEY_PORT: '6379',
@@ -90,7 +90,7 @@ export class RealEstateStack extends cdk.Stack {
     const userServiceLambda = new lambda.Function(this, 'UserServiceLambda', {
       runtime: lambda.Runtime.NODEJS_20_X,
       handler: 'serverless.handler',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../services/user-service'), {
+      code: lambda.Code.fromAsset(path.join(__dirname, '../../services/user-service'), {
         exclude: ['node_modules', 'test', 'dist'],
         bundling: {
           image: lambda.Runtime.NODEJS_20_X.bundlingImage,
@@ -119,7 +119,7 @@ export class RealEstateStack extends cdk.Stack {
     const mortgageServiceLambda = new lambda.Function(this, 'MortgageServiceLambda', {
       runtime: lambda.Runtime.NODEJS_20_X,
       handler: 'serverless.handler',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../services/mortgage-service'), {
+      code: lambda.Code.fromAsset(path.join(__dirname, '../../services/mortgage-service'), {
         exclude: ['node_modules', 'test', 'dist'],
         bundling: {
           image: lambda.Runtime.NODEJS_20_X.bundlingImage,
@@ -148,7 +148,7 @@ export class RealEstateStack extends cdk.Stack {
     const propertyServiceLambda = new lambda.Function(this, 'PropertyServiceLambda', {
       runtime: lambda.Runtime.NODEJS_20_X,
       handler: 'serverless.handler',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../services/property-service'), {
+      code: lambda.Code.fromAsset(path.join(__dirname, '../../services/property-service'), {
         exclude: ['node_modules', 'test', 'dist'],
         bundling: {
           image: lambda.Runtime.NODEJS_20_X.bundlingImage,
@@ -184,7 +184,7 @@ export class RealEstateStack extends cdk.Stack {
     const authorizerLambda = new lambda.Function(this, 'AuthorizerLambda', {
       runtime: lambda.Runtime.NODEJS_20_X,
       handler: 'index.handler',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../services/authorizer-service'), {
+      code: lambda.Code.fromAsset(path.join(__dirname, '../../services/authorizer-service'), {
         exclude: ['node_modules', 'test', 'dist'],
         bundling: {
           image: lambda.Runtime.NODEJS_20_X.bundlingImage,
