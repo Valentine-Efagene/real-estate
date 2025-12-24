@@ -15,9 +15,7 @@ import { S3UploaderService } from './s3-uploader.service';
 import { ApiConsumes, ApiCreatedResponse, ApiOperation, ApiParam, ApiQuery } from '@nestjs/swagger';
 import { BundleDto, FileUploadDto, ImageUploadDto, PresignedPostDto, PresignerDto } from './s3-uploader.dto';
 import FolderResolver from '../util/FolderResolver';
-import FileValidators from '../common/validator/FileValidators';
-import { SwaggerAuth } from '../common/guard/swagger-auth.guard';
-import { StandardApiResponse } from '../common/common.dto';
+import { FileValidators, SwaggerAuth, StandardApiResponse } from '@valentine-efagene/qshelter-common';
 
 @SwaggerAuth()
 @Controller()

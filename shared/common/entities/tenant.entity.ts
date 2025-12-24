@@ -1,6 +1,6 @@
 import { Entity, Column, Index, Unique } from 'typeorm';
 import { BaseEntity } from './BaseEntity';
-import { TenantStatus, TenantPlan } from '../types/tenant.enums';
+import { TenantStatus, TenantPlan } from '../types/tenant.type';
 
 @Entity({ name: 'tenants' })
 @Unique(['subdomain'])

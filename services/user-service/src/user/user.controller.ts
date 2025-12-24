@@ -8,8 +8,6 @@ import {
   HttpStatus,
   ParseIntPipe,
   BadRequestException,
-  UploadedFile,
-  UseInterceptors,
   Put,
   Patch,
   Query,
@@ -17,17 +15,13 @@ import {
   Req,
   UnauthorizedException,
 } from '@nestjs/common';
-import { User } from './user.entity';
-import { S3UploaderService } from '../s3-uploader/s3-uploader.service';
+import { User } from '@valentine-efagene/qshelter-common';
 import { UserService } from './user.service';
-import { AssignRolesDto, AvatarUploadDto, CreateAdminDto, CreateUserDto, SuspendUserDto, UpdateUserControllerDto } from './user.dto';
-import { ApiConsumes, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { StandardApiResponse, OpenApiHelper } from '@valentine-efagene/qshelter-common';
-import { ResponseMessage, S3Folder } from '../common/common.enum';
+import { AssignRolesDto, CreateAdminDto, CreateUserDto, SuspendUserDto, UpdateUserControllerDto, UpdateAvatarDto } from './user.dto';
+import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { StandardApiResponse, PaginationHelper, PaginatedResponse } from '@valentine-efagene/qshelter-common';
+import { ResponseMessage } from '../common/common.enum';
 import { SwaggerAuth } from '@valentine-efagene/qshelter-common';
-import { FileInterceptor } from '@nestjs/platform-express';
-import FileValidators from '../common/validator/FileValidators';
-import { Paginate, Paginated, PaginateQuery } from 'nestjs-paginate';
 import { ThrottlerGuard } from '@nestjs/throttler';
 import { RequirePermission } from '@valentine-efagene/qshelter-common';
 import { PermissionName } from '../permission/permission.enums';
@@ -37,11 +31,9 @@ import { Request } from 'express';
 @UseGuards(ThrottlerGuard)
 @Controller('users')
 @ApiTags('User')
-@ApiResponse(OpenApiHelper.responseDoc)
 export class UserController {
   constructor(
     private readonly userService: UserService,
-    private readonly uploaderService: S3UploaderService,
   ) { }
 
   @SwaggerAuth()
@@ -92,14 +84,41 @@ export class UserController {
     description: '',
     required: false,
   })
-  @ApiResponse(OpenApiHelper.arrayResponseDoc)
+  @ApiQuery({
+    name: 'page',
+    type: 'number',
+    example: 1,
+    description: 'Page number',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'limit',
+    type: 'number',
+    example: 10,
+    description: 'Items per page',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'sortBy',
+    type: 'string',
+    example: 'id',
+    description: 'Sort by field',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'sortOrder',
+    type: 'string',
+    example: 'DESC',
+    description: 'Sort order (ASC or DESC)',
+    required: false,
+  })
   async findAllPaginated(
-    @Paginate() query: PaginateQuery,
-    @Query('firstName') firstName?: string,
-    @Query('lastName') lastName?: string,
-    @Query('email') email?: string,
-  ): Promise<StandardApiResponse<Paginated<User>>> {
-    const data = await this.userService.findAllPaginated(query, {
+    @Query() queryParams: any,
+  ): Promise<StandardApiResponse<PaginatedResponse<User>>> {
+    const paginationQuery = PaginationHelper.parseQuery(queryParams);
+    const { firstName, lastName, email } = queryParams;
+
+    const data = await this.userService.findAllPaginated(paginationQuery, {
       firstName, lastName, email
     });
     return new StandardApiResponse(HttpStatus.OK, ResponseMessage.FETCHED, data);
@@ -108,78 +127,37 @@ export class UserController {
   @SwaggerAuth()
   @Put('avatar/:id')
   @ApiOperation({
-    summary: 'Upload a file',
-    description: '',
+    summary: 'Update user avatar',
+    description: 'Updates user avatar with S3 URL from frontend upload',
   })
-  @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('file'))
-  async uploadLogo(
-    @UploadedFile(FileValidators.imageValidator)
-    file: Express.Multer.File,
+  async updateAvatar(
     @Param('id', ParseIntPipe) id: number,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    @Body() body: AvatarUploadDto,
-  ): Promise<StandardApiResponse<string>> {
-    if (!file) {
-      throw new BadRequestException();
-    }
-
+    @Body() body: UpdateAvatarDto,
+  ): Promise<StandardApiResponse<User>> {
     const user = await this.userService.findOne(id);
 
     if (!user) {
-      throw new BadRequestException();
+      throw new BadRequestException('User not found');
     }
 
-    let url = null;
-
-    if (user.avatar) {
-      url = await this.uploaderService.replaceFileOnS3(
-        file,
-        S3Folder.AVATAR,
-        user.avatar,
-      );
-    } else {
-      url = await this.uploaderService.uploadImageToS3(file, S3Folder.LOGO);
-    }
-
-    await this.userService.updateOne(id, { avatar: url });
-    return new StandardApiResponse(HttpStatus.OK, ResponseMessage.UPDATED, url);
+    const data = await this.userService.updateOne(id, { avatar: body.avatarUrl });
+    return new StandardApiResponse(HttpStatus.OK, ResponseMessage.UPDATED, data);
   }
 
   @SwaggerAuth()
   @Patch('/:id')
   @ApiOperation({
     summary: 'Update user',
-    description: '',
+    description: 'Update user details including avatar URL',
   })
-  @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('file'))
-  async uploadUser(
-    @UploadedFile(FileValidators.optionalImageValidator)
-    file: Express.Multer.File,
+  async updateUser(
     @Param('id', ParseIntPipe) id: number,
     @Body() body: UpdateUserControllerDto,
   ): Promise<StandardApiResponse<User>> {
     const user = await this.userService.findOne(id);
 
     if (!user) {
-      throw new BadRequestException();
-    }
-
-    let url = null;
-
-    if (file) {
-      if (user.avatar) {
-        url = await this.uploaderService.replaceFileOnS3(
-          file,
-          S3Folder.AVATAR,
-          user.avatar,
-        );
-      } else {
-        url = await this.uploaderService.uploadImageToS3(file, S3Folder.LOGO);
-      }
-
-      body['avatar'] = url
+      throw new BadRequestException('User not found');
     }
 
     const data = await this.userService.updateOne(id, body);
@@ -190,13 +168,9 @@ export class UserController {
   @Patch()
   @ApiOperation({
     summary: 'Update profile',
-    description: '',
+    description: 'Update authenticated user profile including avatar URL',
   })
-  @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('file'))
   async updateProfile(
-    @UploadedFile(FileValidators.optionalImageValidator)
-    file: Express.Multer.File,
     @Body() body: UpdateUserControllerDto,
     @Req() req: Request
   ): Promise<StandardApiResponse<User>> {
@@ -204,22 +178,6 @@ export class UserController {
 
     if (!user) {
       throw new UnauthorizedException();
-    }
-
-    let url = null;
-
-    if (file) {
-      if (user.avatar) {
-        url = await this.uploaderService.replaceFileOnS3(
-          file,
-          S3Folder.AVATAR,
-          user.avatar,
-        );
-      } else {
-        url = await this.uploaderService.uploadImageToS3(file, S3Folder.LOGO);
-      }
-
-      body['avatar'] = url
     }
 
     const data = await this.userService.updateOne(user.id, {
@@ -233,7 +191,6 @@ export class UserController {
 
   @SwaggerAuth()
   @Get('/suspend/:id')
-  @ApiResponse(OpenApiHelper.responseDoc)
   async suspend(
     @Param('id', ParseIntPipe) id: number,
     @Body() suspendUserDto: SuspendUserDto
@@ -244,7 +201,6 @@ export class UserController {
 
   @SwaggerAuth()
   @Get('/suspend/:id')
-  @ApiResponse(OpenApiHelper.responseDoc)
   async reinstate(
     @Param('id', ParseIntPipe) id: number,
     @Body() suspendUserDto: SuspendUserDto
@@ -255,7 +211,6 @@ export class UserController {
 
   @SwaggerAuth()
   @Get('/profile')
-  @ApiResponse(OpenApiHelper.responseDoc)
   async profile(
     @Req() request: Request,
   ): Promise<StandardApiResponse<User>> {
@@ -265,7 +220,6 @@ export class UserController {
 
   @SwaggerAuth()
   @Get(':id')
-  @ApiResponse(OpenApiHelper.responseDoc)
   async findOne(
     @Param('id', ParseIntPipe) id: number,): Promise<StandardApiResponse<User>> {
     const data = await this.userService.findOne(id);
@@ -273,7 +227,6 @@ export class UserController {
   }
 
   @Put('/:id/set-roles')
-  @ApiResponse(OpenApiHelper.responseDoc)
   async setRoles(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: AssignRolesDto
@@ -305,7 +258,6 @@ export class UserController {
   @Delete(':id')
   @SwaggerAuth()
   @ApiOperation({ summary: '', tags: ['Admin'] })
-  @ApiResponse(OpenApiHelper.nullResponseDoc)
   async remove(
     @Param('id', ParseIntPipe) id: number): Promise<StandardApiResponse<void>> {
     await this.userService.remove(id);
@@ -314,7 +266,6 @@ export class UserController {
 
   @SwaggerAuth()
   @Get()
-  @ApiResponse(OpenApiHelper.arrayResponseDoc)
   async findAll(): Promise<StandardApiResponse<User[]>> {
     const data = await this.userService.findAll();
     return new StandardApiResponse(HttpStatus.OK, ResponseMessage.FETCHED, data);

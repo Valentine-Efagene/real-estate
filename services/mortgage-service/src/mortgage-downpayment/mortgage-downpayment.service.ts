@@ -5,7 +5,7 @@ import { MortgageDownpaymentPlan, DownpaymentPlanStatus } from './mortgage-downp
 import { MortgageDownpaymentInstallment, InstallmentStatus } from './mortgage-downpayment-installment.entity';
 import { MortgageDownpaymentPayment, DownpaymentPaymentStatus } from './mortgage-downpayment-payment.entity';
 import { Mortgage } from '../mortgage/mortgage.entity';
-import { Frequency } from '../common/common.type';
+import { Frequency } from '@valentine-efagene/qshelter-common';
 
 @Injectable()
 export class MortgageDownpaymentService {

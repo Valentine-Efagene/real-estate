@@ -9,11 +9,11 @@ import {
   DocumentReuploadDto,
   UpdateDocumentDto,
   UpdateDocumentStatusDto,
-} from '../common/common.dto';
-import { DocumentStatus } from '../common/common.type';
+  DocumentStatus,
+  AbstractBaseDocumentEntity,
+  S3Folder
+} from '@valentine-efagene/qshelter-common';
 import { S3UploaderService } from '../s3-uploader/s3-uploader.service';
-import { AbstractBaseDocumentEntity } from '../common/common.entity';
-import { S3Folder } from '../common/common.enum';
 
 @Injectable()
 export class PropertyDocumentService {

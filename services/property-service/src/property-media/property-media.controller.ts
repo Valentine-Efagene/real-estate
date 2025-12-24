@@ -15,7 +15,17 @@ import {
 } from '@nestjs/common';
 import { PropertyMedia } from './property-media.entity';
 import { PropertyMediaService } from './property-media.service';
-import OpenApiHelper from '../common/OpenApiHelper';
+import {
+  OpenApiHelper,
+  DocumentReuploadDto,
+  StandardApiResponse,
+  UpdateDocumentStatusDto,
+  ResponseMessage,
+  S3Folder,
+  FileValidators,
+  SwaggerAuth,
+  AbstractBaseMediaEntity
+} from '@valentine-efagene/qshelter-common';
 import {
   ApiConsumes,
   ApiHeader,
@@ -24,16 +34,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
-import {
-  DocumentReuploadDto,
-  StandardApiResponse,
-  UpdateDocumentStatusDto,
-} from '../common/common.dto';
 import { S3UploaderService } from '../s3-uploader/s3-uploader.service';
-import { ResponseMessage, S3Folder } from '../common/common.enum';
-import FileValidators from '../common/validator/FileValidators';
-import { SwaggerAuth } from '../common/guard/swagger-auth.guard';
-import { AbstractBaseMediaEntity } from '../common/common.entity';
 import { CreatePropertyMediaControllerDto } from './property-media.dto';
 
 @SwaggerAuth()

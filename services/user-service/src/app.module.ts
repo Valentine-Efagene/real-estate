@@ -34,7 +34,7 @@ import { APP_GUARD } from '@nestjs/core';
 // Import shared modules
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { options } from './data-source';
-import { TenantMiddleware, AccessLoggerMiddleware, PermissionGuard } from '@valentine-efagene/qshelter-common';
+import { TenantMiddleware, AccessLoggerMiddleware } from '@valentine-efagene/qshelter-common';
 
 // Service-specific modules
 import { AuthModule } from './auth/auth.module';
@@ -76,7 +76,6 @@ import { jwtConstants } from './auth/auth.constants';
         CaslModule,
     ],
     providers: [
-        { provide: APP_GUARD, useClass: PermissionGuard },
     ],
 })
 export class AppModule {
@@ -98,6 +97,6 @@ export class AppModule {
         // Use API Gateway authorizer for authentication; skip local AuthenticationMiddleware
 
         // Apply access logger middleware
-        consumer.apply(AccessLoggerMiddleware).exclude(...excludedPaths).forRoutes('*');
+        consumer.apply().exclude(...excludedPaths).forRoutes('*');
     }
 }

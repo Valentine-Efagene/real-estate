@@ -6,7 +6,7 @@ import { Amenity } from './amenity.entity';
 import { AbstractBaseReviewableEntity } from './common.entity';
 import { Mortgage } from './mortgage.entity';
 import { PropertyStatus, PropertyType } from '../types/property.type';
-import { Currency, PropertyCategory } from '../types/social.enums';
+import { Currency } from 'types';
 
 @Entity({ name: 'property' })
 export class Property extends AbstractBaseReviewableEntity {
@@ -18,7 +18,7 @@ export class Property extends AbstractBaseReviewableEntity {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @Column({ nullable: true })
+  @Column({ name: 'user_id', nullable: true })
   userId: number;
 
   @OneToMany(
@@ -48,6 +48,7 @@ export class Property extends AbstractBaseReviewableEntity {
   displayImage: PropertyMedia;
 
   @Column({
+    name: 'display_image_id',
     nullable: true
   })
   displayImageId: number
@@ -56,13 +57,7 @@ export class Property extends AbstractBaseReviewableEntity {
   title: string;
 
   @Column({
-    nullable: true,
-    type: 'enum',
-    enum: PropertyCategory,
-  })
-  category: PropertyCategory;
-
-  @Column({
+    name: 'property_type',
     nullable: true,
     type: 'enum',
     enum: PropertyType
@@ -85,7 +80,7 @@ export class Property extends AbstractBaseReviewableEntity {
   @Column({ nullable: true })
   district: string;
 
-  @Column({ nullable: true })
+  @Column({ name: 'zip_code', nullable: true })
   zipCode: string;
 
   @Column({ nullable: true })

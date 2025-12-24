@@ -111,22 +111,23 @@ export class UpdateUserDto {
 export class UpdateUserControllerDto extends UpdateUserDto {
   @ApiPropertyOptional({
     type: 'string',
-    format: 'binary',
-    description: 'The file to be uploaded',
-    example: 'example.pdf',
+    description: 'Avatar URL from S3 upload',
+    example: 'https://bucket.s3.amazonaws.com/avatars/user-123.jpg',
   })
   @IsOptional()
-  file?: Express.Multer.File;
+  @IsString()
+  avatar?: string;
 }
 
-export class AvatarUploadDto {
+export class UpdateAvatarDto {
   @ApiProperty({
     type: 'string',
-    format: 'binary',
-    description: 'The file to be uploaded',
-    example: 'example.pdf',
+    description: 'Avatar URL from S3 upload',
+    example: 'https://bucket.s3.amazonaws.com/avatars/user-123.jpg',
   })
-  file: Express.Multer.File;
+  @IsNotEmpty()
+  @IsString()
+  avatarUrl: string;
 }
 
 export class SuspendUserDto {

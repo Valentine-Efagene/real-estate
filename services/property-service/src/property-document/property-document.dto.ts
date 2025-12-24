@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
-import { CreateDocumentDto } from '../common/common.dto';
+import { CreateDocumentDto } from '@valentine-efagene/qshelter-common';
 
 export class CreatePropertyDocumentControllerDto extends CreateDocumentDto {
   @ApiProperty({ nullable: false, example: 1 })

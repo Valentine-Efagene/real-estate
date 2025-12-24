@@ -1,5 +1,5 @@
 import { Repository } from 'typeorm';
-import { UserSuspension } from './user_suspensions.entity';
+import { UserSuspension } from '@valentine-efagene/qshelter-common';
 
 export class UserSuspensionRepository extends Repository<UserSuspension> {
   // ...

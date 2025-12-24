@@ -11,16 +11,12 @@ import {
 import { Amenity } from './amenity.entity';
 import { AmenityService } from './amenity.service';
 import { CreateAmenityDto } from './amenity.dto';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { StandardApiResponse } from '../common/common.dto';
-import OpenApiHelper from '../common/OpenApiHelper';
-import { ResponseMessage } from '../common/common.enum';
-import { SwaggerAuth } from '../common/guard/swagger-auth.guard';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ResponseMessage, StandardApiResponse, SwaggerAuth } from '@valentine-efagene/qshelter-common';
 
 @SwaggerAuth()
 @Controller('amenities')
 @ApiTags('Amenity')
-@ApiResponse(OpenApiHelper.responseDoc)
 export class AmenityController {
   constructor(private readonly userService: AmenityService) { }
 
@@ -33,14 +29,12 @@ export class AmenityController {
   }
 
   @Get()
-  @ApiResponse(OpenApiHelper.arrayResponseDoc)
   async findAll(): Promise<StandardApiResponse<Amenity[]>> {
     const data = await this.userService.findAll();
     return new StandardApiResponse(HttpStatus.OK, ResponseMessage.FETCHED, data);
   }
 
   @Get(':id')
-  @ApiResponse(OpenApiHelper.responseDoc)
   async findOne(
     @Param('id', ParseIntPipe) id: number,): Promise<StandardApiResponse<Amenity>> {
     const data = await this.userService.findOne(id);
@@ -50,7 +44,6 @@ export class AmenityController {
   @Delete(':id')
   //@Amenitys([AmenityAmenity.ADMIN])
   @ApiOperation({ summary: '', tags: ['Admin'] })
-  @ApiResponse(OpenApiHelper.nullResponseDoc)
   async remove(
     @Param('id', ParseIntPipe) id: number): Promise<StandardApiResponse<void>> {
     await this.userService.remove(id);

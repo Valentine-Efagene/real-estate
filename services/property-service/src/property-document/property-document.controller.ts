@@ -16,7 +16,17 @@ import {
 import { PropertyDocument } from './property-document.entity';
 import { PropertyDocumentService } from './property-document.service';
 import { CreatePropertyDocumentControllerDto } from './property-document.dto';
-import OpenApiHelper from '../common/OpenApiHelper';
+import {
+  OpenApiHelper,
+  DocumentReuploadDto,
+  StandardApiResponse,
+  UpdateDocumentStatusDto,
+  ResponseMessage,
+  S3Folder,
+  FileValidators,
+  SwaggerAuth,
+  AbstractBaseDocumentEntity
+} from '@valentine-efagene/qshelter-common';
 import {
   ApiConsumes,
   ApiHeader,
@@ -25,16 +35,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
-import {
-  DocumentReuploadDto,
-  StandardApiResponse,
-  UpdateDocumentStatusDto,
-} from '../common/common.dto';
 import { S3UploaderService } from '../s3-uploader/s3-uploader.service';
-import { ResponseMessage, S3Folder } from '../common/common.enum';
-import FileValidators from '../common/validator/FileValidators';
-import { SwaggerAuth } from '../common/guard/swagger-auth.guard';
-import { AbstractBaseDocumentEntity } from '../common/common.entity';
 
 @SwaggerAuth()
 @Controller('property-documents')

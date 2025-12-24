@@ -5,19 +5,14 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 import { DataSource, DataSourceOptions } from "typeorm";
-import { User } from "./user/user.entity";
-import { Developer } from "./developer/developer.entity";
-import { ProposedDevelopment } from "./proposed-development/proposed-development.entity";
-import { DeveloperDirector } from "./developer-director/developer-director.entity";
-import { DeveloperPoc } from "./developer-poc/developer-poc.entity";
+import {
+    User,
+    Tenant
+} from '@valentine-efagene/qshelter-common';
 import { Property } from "./property/property.entity";
-import { DeveloperDocument } from "./developer-document/developer-document.entity";
-import { DeveloperDirectorDocument } from "./developer-director-document/developer-director-document.entity";
-import { ProposedDevelopmentDocument } from "./proposed-development-document/proposed-development-document.entity";
-import { ProposedProperty } from "./proposed-property/proposed-property.entity";
-import { GroupEntity } from "./group-entity/group-entity.entity";
-import { CustomNamingStrategy } from "./common/helpers/CustomNamingStrategy";
-import { Wallet } from "./wallet/wallet.entity";
+import { PropertyMedia } from "./property-media/property-media.entity";
+import { PropertyDocument } from "./property-document/property-document.entity";
+import { Amenity } from "./amenity/amenity.entity";
 
 const IS_NOT_PRODUCTION_DB = process.env.db_host == '127.0.0.1'
 
@@ -33,21 +28,14 @@ export const options: DataSourceOptions = {
     database: process.env.db_name ?? 'qshelter-dev',
     entities: [
         User,
-        Developer,
-        ProposedDevelopment,
-        DeveloperDirector,
-        DeveloperPoc,
+        Tenant,
         Property,
-        DeveloperDocument,
-        DeveloperDirectorDocument,
-        ProposedDevelopmentDocument,
-        ProposedProperty,
-        GroupEntity,
-        Wallet
+        PropertyMedia,
+        PropertyDocument,
+        Amenity
     ],
     dropSchema: process.env.node_env?.includes("test") && IS_NOT_PRODUCTION_DB,
     synchronize: IS_NOT_PRODUCTION_DB,
-    namingStrategy: new CustomNamingStrategy(),
     migrations: [__dirname + '/../migrations/*{.ts,.js}'],
 
     // Serverless-optimized connection pool settings (always enabled for Lambda)

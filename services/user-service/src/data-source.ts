@@ -14,8 +14,7 @@ import {
     UserSuspension,
     Tenant,
     Settings,
-    Social,
-    CustomNamingStrategy
+    Social
 } from "@valentine-efagene/qshelter-common";
 
 const IS_NOT_PRODUCTION_DB = process.env.db_host == '127.0.0.1'
@@ -43,7 +42,6 @@ export const options: DataSourceOptions = {
     ],
     dropSchema: process.env.node_env?.includes("test") && IS_NOT_PRODUCTION_DB,
     synchronize: IS_NOT_PRODUCTION_DB,
-    namingStrategy: new CustomNamingStrategy(),
     migrations: [__dirname + '/../migrations/*{.ts,.js}'],
 
     // Serverless-optimized connection pool settings (always enabled for Lambda)

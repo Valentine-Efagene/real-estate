@@ -5,7 +5,7 @@ import {
   ManyToOne,
 } from 'typeorm';
 import { Property } from '../property/property.entity';
-import { AbstractBaseDocumentEntity } from '../common/common.entity';
+import { AbstractBaseDocumentEntity } from '@valentine-efagene/qshelter-common';
 
 @Entity({ name: 'property-document' })
 export class PropertyDocument extends AbstractBaseDocumentEntity {

@@ -5,7 +5,7 @@ import {
   ManyToOne,
 } from 'typeorm';
 import { Property } from '../property/property.entity';
-import { AbstractBaseMediaEntity } from '../common/common.entity';
+import { AbstractBaseMediaEntity } from '@valentine-efagene/qshelter-common';
 
 @Entity({ name: 'property_media' })
 export class PropertyMedia extends AbstractBaseMediaEntity {

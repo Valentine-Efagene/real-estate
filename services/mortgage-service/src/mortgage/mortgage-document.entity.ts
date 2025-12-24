@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
-import { AbstractBaseReviewableEntity } from '../common/common.entity';
+import { AbstractBaseReviewableEntity } from '@valentine-efagene/qshelter-common';
 import { Mortgage } from './mortgage.entity';
 import { User } from '../user/user.entity';
 

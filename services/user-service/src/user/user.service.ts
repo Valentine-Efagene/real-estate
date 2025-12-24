@@ -5,8 +5,7 @@ import * as bcrypt from 'bcrypt';
 import { CreateUserDto, SetRolesDto, UpdateUserDto } from './user.dto';
 import { Request } from 'express';
 import { UserStatus } from './user.enums';
-import { Role, User } from '@valentine-efagene/qshelter-common';
-import { FilterOperator, paginate, Paginated, PaginateQuery } from 'nestjs-paginate';
+import { Role, User, PaginationHelper, PaginationQuery, PaginatedResponse, UserSuspension } from '@valentine-efagene/qshelter-common';
 
 @Injectable()
 export class UserService {
@@ -78,40 +77,54 @@ export class UserService {
     return this.userRepository.find();
   }
 
-  findAllPaginated(
-    query: PaginateQuery,
+  async findAllPaginated(
+    query: PaginationQuery,
     params: {
       firstName?: string,
       lastName?: string,
       email?: string,
     }
-  ): Promise<Paginated<User>> {
-    const { firstName, lastName, email } = params
+  ): Promise<PaginatedResponse<User>> {
+    const { firstName, lastName, email } = params;
+    const { page, limit, sortBy, sortOrder } = query;
 
-    const whereFilter: FindOptionsWhere<User> | FindOptionsWhere<User>[] = [
-      { firstName: Like(`%${firstName}%`) },
-      { lastName: Like(`%${lastName}%`) },
-      { email: Like(`%${email}%`) },
-    ]
+    // Build where clause
+    const whereConditions: FindOptionsWhere<User>[] = [];
 
-    return paginate(query, this.userRepository, {
-      sortableColumns: ['id', 'firstName', 'email', 'lastName', 'createdAt', 'updatedAt'],
-      //nullSort: 'last',
-      defaultSortBy: [['id', 'DESC']],
-      loadEagerRelations: true,
+    if (firstName) {
+      whereConditions.push({ firstName: Like(`%${firstName}%`) });
+    }
+    if (lastName) {
+      whereConditions.push({ lastName: Like(`%${lastName}%`) });
+    }
+    if (email) {
+      whereConditions.push({ email: Like(`%${email}%`) });
+    }
+
+    // Calculate pagination
+    const skip = PaginationHelper.getSkip(page, limit);
+    const take = PaginationHelper.getLimit(limit);
+
+    // Build find options
+    const findOptions: any = {
       relations: ['roles'],
-      searchableColumns: ['id', 'firstName', 'lastName', 'email'],
-      //select: ['id'],
-      // where: Object.values(params).length > 0 ? whereFilter : undefined,
-      filterableColumns: {
-        //name: [FilterOperator.EQ, FilterSuffix.NOT],
-        price: [FilterOperator.LTE],
-        propertyType: true,
-        category: true,
-        status: true,
-        createdAt: true
+      skip,
+      take,
+      order: {
+        [sortBy || 'id']: sortOrder || 'DESC',
       },
-    });
+    };
+
+    // Add where clause if there are conditions
+    if (whereConditions.length > 0) {
+      findOptions.where = whereConditions;
+    }
+
+    // Execute query
+    const [items, total] = await this.userRepository.findAndCount(findOptions);
+
+    // Return paginated response
+    return PaginationHelper.paginate(items, total, query);
   }
 
   findOne(id: number): Promise<User> {

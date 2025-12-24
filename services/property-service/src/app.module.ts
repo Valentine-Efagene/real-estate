@@ -34,8 +34,6 @@ import { APP_GUARD } from '@nestjs/core';
 // Import shared modules
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { options } from './data-source';
-import { TenantMiddleware } from '@valentine-efagene/qshelter-common/middleware/TenantMiddleware';
-import { PermissionGuard } from '@valentine-efagene/qshelter-common/guard/permission.guard';
 
 // Service-specific modules
 import { PropertyModule } from './property/property.module';
@@ -44,6 +42,7 @@ import { PropertyDocumentModule } from './property-document/property-document.mo
 import { AmenityModule } from './amenity/amenity.module';
 import { QrCodeModule } from './qr-code/qr-code.module';
 import { S3UploaderModule } from './s3-uploader/s3-uploader.module';
+import { AccessLoggerMiddleware, TenantMiddleware } from '@valentine-efagene/qshelter-common';
 
 @Module({
     imports: [
@@ -66,7 +65,6 @@ import { S3UploaderModule } from './s3-uploader/s3-uploader.module';
         S3UploaderModule,
     ],
     providers: [
-        { provide: APP_GUARD, useClass: PermissionGuard },
     ],
 })
 export class AppModule {

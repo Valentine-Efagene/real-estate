@@ -3,7 +3,7 @@ import { PropertyDocument } from '../property-document/property-document.entity'
 import { PropertyMedia } from '../property-media/property-media.entity';
 import { User } from '../user/user.entity';
 import { Amenity } from '../amenity/amenity.entity';
-import { AbstractBaseReviewableEntity } from '../common/common.entity';
+import { AbstractBaseReviewableEntity } from '@valentine-efagene/qshelter-common';
 import { Mortgage } from '../mortgage/mortgage.entity';
 import { PropertyStatus, PropertyType } from './property.type';
 import { PropertyCategory, Currency } from '../social/social.enums';

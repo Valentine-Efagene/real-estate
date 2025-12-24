@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
-import { AbstractBaseEntity } from '../common/common.pure.entity';
+import { AbstractBaseEntity } from '@valentine-efagene/qshelter-common';
 import { MortgageDownpaymentPlan } from './mortgage-downpayment.entity';
 
 export enum InstallmentStatus {

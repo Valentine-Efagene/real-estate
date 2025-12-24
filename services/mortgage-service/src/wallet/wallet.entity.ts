@@ -1,5 +1,5 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
-import { Currency } from '../common/common.enum';
+import { Currency } from '@valentine-efagene/qshelter-common';
 import { Transaction } from '../transaction/transaction.entity';
 import { User } from '../user/user.entity';
 

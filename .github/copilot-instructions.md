@@ -8,3 +8,9 @@
 - We intend to break the application into microservices in the future, so design with that in mind.
 - Use TypeScript features like interfaces, types, and generics effectively.
 - Follow NestJS best practices for folder structure, dependency injection, and module organization.
+- The software should be production-ready, with proper error handling, logging, and security considerations.
+- The application is a real estate management platform with user authentication, property listings, and mortgage management.
+- The application is broken into services that will each be deployed as AWS Lambda functions behind an API Gateway.
+- The common modules (database entities, utilities) should be in a shared library that each service can import. This shared library is called `qshelter-common`, and it is an npm package hosted on an npm registry.
+- The event bus module serves as our communication and orchestration channel, and it is also an npm package.
+- Never import code directly from one service to another. Always use the shared library or event bus for shared functionality.

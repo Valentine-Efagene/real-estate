@@ -6,13 +6,9 @@ import {
   HttpStatus,
   ParseIntPipe,
 } from '@nestjs/common';
-import { UserSuspension } from './user_suspensions.entity';
+import { UserSuspension, StandardApiResponse, OpenApiHelper, ResponseMessage, SwaggerAuth } from '@valentine-efagene/qshelter-common';
 import { UserSuspensionService } from './user_suspensions.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { StandardApiResponse } from '../common/common.dto';
-import OpenApiHelper from '../common/OpenApiHelper';
-import { ResponseMessage } from '../common/common.enum';
-import { SwaggerAuth } from '../common/guard/swagger-auth.guard';
 
 @SwaggerAuth()
 @Controller('user-suspension')

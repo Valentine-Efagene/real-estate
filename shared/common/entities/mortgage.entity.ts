@@ -6,7 +6,7 @@ import MortgageDocument from './mortgage-document.entity';
 import MortgageStep from './mortgage-step.entity';
 import { MortgageType } from './mortgage-type.entity';
 import { MortgageDownpaymentPlan } from './mortgage-downpayment.entity';
-import { MortgageState } from '../types/mortgage-fsm.types';
+import { MortgageState } from '../types/mortgage-fsm.type';
 
 // Legacy enum - kept for backward compatibility
 export enum MortgageStatus {
@@ -23,29 +23,29 @@ export class Mortgage extends AbstractBaseReviewableEntity {
     @JoinColumn({ name: 'property_id' })
     property: Property;
 
-    @Column({ nullable: true })
+    @Column({ name: 'property_id', nullable: true })
     propertyId: number;
 
     @ManyToOne(() => User, { nullable: true })
     @JoinColumn({ name: 'borrower_id' })
     borrower: User;
 
-    @Column({ nullable: true })
+    @Column({ name: 'borrower_id', nullable: true })
     borrowerId: number;
 
     @Column({ type: 'double precision', nullable: true })
     principal: number;
 
-    @Column({ type: 'double precision', nullable: true })
+    @Column({ name: 'down_payment', type: 'double precision', nullable: true })
     downPayment: number;
 
-    @Column({ type: 'int', nullable: true })
+    @Column({ name: 'term_months', type: 'int', nullable: true })
     termMonths: number;
 
-    @Column({ type: 'double precision', nullable: true })
+    @Column({ name: 'interest_rate', type: 'double precision', nullable: true })
     interestRate: number;
 
-    @Column({ type: 'double precision', nullable: true })
+    @Column({ name: 'monthly_payment', type: 'double precision', nullable: true })
     monthlyPayment: number;
 
     @Column({ type: 'enum', enum: MortgageStatus, default: MortgageStatus.DRAFT })
@@ -56,7 +56,7 @@ export class Mortgage extends AbstractBaseReviewableEntity {
     state: string; // Using string to store MortgageState enum values
 
     // FSM Metadata - Stores transition history and context
-    @Column({ type: 'text', nullable: true })
+    @Column({ name: 'state_metadata', type: 'text', nullable: true })
     stateMetadata: string; // JSON string containing last transition info
 
     @OneToMany(() => MortgageDocument, (doc) => doc.mortgage)
@@ -69,20 +69,20 @@ export class Mortgage extends AbstractBaseReviewableEntity {
     @JoinColumn({ name: 'mortgage_type_id' })
     mortgageType: MortgageType;
 
-    @Column({ nullable: true })
+    @Column({ name: 'mortgage_type_id', nullable: true })
     mortgageTypeId: number;
 
-    @Column({ type: 'timestamp', nullable: true })
+    @Column({ name: 'last_reminder_sent_at', type: 'timestamp', nullable: true })
     lastReminderSentAt: Date;
 
     @OneToOne(() => MortgageDownpaymentPlan, { nullable: true })
     @JoinColumn({ name: 'downpayment_plan_id' })
     downpaymentPlan: MortgageDownpaymentPlan;
 
-    @Column({ nullable: true })
+    @Column({ name: 'downpayment_plan_id', nullable: true })
     downpaymentPlanId: number;
 
-    @Column({ type: 'double precision', nullable: true })
+    @Column({ name: 'down_payment_paid', type: 'double precision', nullable: true })
     downPaymentPaid: number;
 }
 

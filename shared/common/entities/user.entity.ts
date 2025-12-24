@@ -1,6 +1,6 @@
 import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
 import { TenantAwareBaseEntity } from './BaseEntity';
-import { UserStatus } from '../types/user.enums';
+import { UserStatus } from '../types/user.type';
 import { Role } from './role.entity';
 import { RefreshToken } from './refresh_token.entity';
 import { Property } from './property.entity';
@@ -9,10 +9,10 @@ import { Wallet } from './wallet.entity';
 
 @Entity({ name: 'users' })
 export class User extends TenantAwareBaseEntity {
-  @Column({ nullable: true })
+  @Column({ name: 'first_name', nullable: true })
   firstName?: string;
 
-  @Column({ nullable: true })
+  @Column({ name: 'last_name', nullable: true })
   lastName?: string;
 
   @Column({ nullable: true })
@@ -81,9 +81,9 @@ export class User extends TenantAwareBaseEntity {
   })
   status: UserStatus
 
-  @Column({ default: false })
+  @Column({ name: 'is_email_verified', default: false })
   isEmailVerified?: boolean;
 
-  @Column({ nullable: true })
+  @Column({ name: 'email_verification_token', nullable: true })
   emailVerificationToken: string | null
 }

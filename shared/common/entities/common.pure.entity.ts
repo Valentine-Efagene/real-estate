@@ -7,17 +7,18 @@ export abstract class AbstractBaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+    @CreateDateColumn({ name: 'created_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     createdAt: Date;
 
     @UpdateDateColumn({
+        name: 'updated_at',
         type: 'timestamp',
         default: () => 'CURRENT_TIMESTAMP',
         onUpdate: 'CURRENT_TIMESTAMP',
     })
     updatedAt: Date;
 
-    @DeleteDateColumn({ nullable: true, default: null })
+    @DeleteDateColumn({ name: 'deleted_at', nullable: true, default: null })
     deletedAt: Date;
 }
 

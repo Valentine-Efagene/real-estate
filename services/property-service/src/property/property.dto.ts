@@ -3,7 +3,7 @@ import { ArrayNotEmpty, IsArray, IsEnum, IsInt, IsNotEmpty, IsNumber, IsOptional
 import { PropertyType } from './property.type';
 import { PropertyCategory, Currency } from '../social/social.enums';
 import { Transform, Type } from 'class-transformer';
-import { CreateDocumentDto } from '../common/common.dto';
+import { CreateDocumentDto } from '@valentine-efagene/qshelter-common';
 
 export class CreatePropertyBaseDto {
   @ApiProperty({

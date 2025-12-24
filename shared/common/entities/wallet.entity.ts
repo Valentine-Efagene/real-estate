@@ -1,7 +1,7 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { Transaction } from './transaction.entity';
 import { User } from './user.entity';
-import { Currency } from '../types/social.enums';
+import { Currency } from 'types';
 
 @Entity({ name: 'wallets' })
 export class Wallet {
@@ -12,7 +12,7 @@ export class Wallet {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @Column()
+  @Column({ name: 'user_id' })
   userId: number
 
   @Column({
@@ -21,20 +21,16 @@ export class Wallet {
   })
   currency: number
 
-  @Column({
-  })
+  @Column({ name: 'customer_id' })
   customerId: string
 
-  @Column({
-  })
+  @Column({ name: 'bank_name' })
   bankName: string
 
-  @Column({
-  })
+  @Column({ name: 'account_number' })
   accountNumber: string
 
-  @Column({
-  })
+  @Column({ name: 'account_name' })
   accountName: string
 
   @Column({ type: 'decimal', precision: 65, scale: 2, nullable: true })
@@ -43,10 +39,10 @@ export class Wallet {
   @Column()
   enabled: boolean
 
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
   @OneToMany(() => Transaction, transaction => transaction.wallet)

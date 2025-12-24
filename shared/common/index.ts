@@ -14,4 +14,5 @@ export * from './decorator';
 
 // Additional utilities
 export * from './types';
+export * from './guard';
 export * from './OpenApiHelper';

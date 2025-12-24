@@ -1,8 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
-import { AbstractBaseEntity } from '../common/common.pure.entity';
+import { AbstractBaseEntity, Frequency } from '@valentine-efagene/qshelter-common';
 import { Mortgage } from '../mortgage/mortgage.entity';
 import { MortgageDownpaymentInstallment } from './mortgage-downpayment-installment.entity';
-import { Frequency } from '../common/common.type';
 
 export enum DownpaymentPlanStatus {
     PENDING = 'PENDING',

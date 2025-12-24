@@ -14,17 +14,12 @@ import { Property } from './property.entity';
 import { PropertyService } from './property.service';
 import { CreatePropertyControllerDto, SetDisplayImageDto } from './property.dto';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CreateDocumentDto, StandardApiResponse } from '../common/common.dto';
-import OpenApiHelper from '../common/OpenApiHelper';
-import { ResponseMessage, S3Folder } from '../common/common.enum';
-import { SwaggerAuth } from '../common/guard/swagger-auth.guard';
-import { Paginate, PaginateQuery, Paginated } from 'nestjs-paginate';
+import { StandardApiResponse, ResponseMessage, SwaggerAuth } from '@valentine-efagene/qshelter-common';
 import { S3UploaderService } from '../s3-uploader/s3-uploader.service';
 
 @SwaggerAuth()
 @Controller('properties')
 @ApiTags('Property')
-@ApiResponse(OpenApiHelper.responseDoc)
 export class PropertyController {
   constructor(
     private readonly propertyService: PropertyService,
@@ -75,7 +70,6 @@ export class PropertyController {
     required: false,
     description: 'Less than or equal to'
   })
-  @ApiResponse(OpenApiHelper.arrayResponseDoc)
   async findAllPaginated(
     @Paginate() query: PaginateQuery,
     @Query('location') location?: string,
@@ -87,7 +81,6 @@ export class PropertyController {
   @SwaggerAuth()
   @HttpCode(HttpStatus.OK)
   @Post(':id/set-display-image')
-  @ApiResponse(OpenApiHelper.responseDoc)
   async setDisplayImage(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: SetDisplayImageDto
@@ -151,7 +144,6 @@ export class PropertyController {
 
   @SwaggerAuth()
   @Get()
-  @ApiResponse(OpenApiHelper.arrayResponseDoc)
   //@RequirePermission(PermissionsEnum.CAN_LIST_USERS)
   async findAll(): Promise<StandardApiResponse<Property[]>> {
     const data = await this.propertyService.findAll();

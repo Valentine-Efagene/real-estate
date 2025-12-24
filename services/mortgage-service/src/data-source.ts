@@ -5,19 +5,19 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 import { DataSource, DataSourceOptions } from "typeorm";
-import { User } from "./user/user.entity";
-import { Developer } from "./developer/developer.entity";
-import { ProposedDevelopment } from "./proposed-development/proposed-development.entity";
-import { DeveloperDirector } from "./developer-director/developer-director.entity";
-import { DeveloperPoc } from "./developer-poc/developer-poc.entity";
-import { Property } from "./property/property.entity";
-import { DeveloperDocument } from "./developer-document/developer-document.entity";
-import { DeveloperDirectorDocument } from "./developer-director-document/developer-director-document.entity";
-import { ProposedDevelopmentDocument } from "./proposed-development-document/proposed-development-document.entity";
-import { ProposedProperty } from "./proposed-property/proposed-property.entity";
-import { GroupEntity } from "./group-entity/group-entity.entity";
-import { CustomNamingStrategy } from "./common/helpers/CustomNamingStrategy";
-import { Wallet } from "./wallet/wallet.entity";
+import {
+    User,
+    Tenant,
+    Wallet
+} from '@valentine-efagene/qshelter-common';
+import { Mortgage } from "./mortgage/mortgage.entity";
+import { MortgageDocument } from "./mortgage/mortgage-document.entity";
+import { MortgageStep } from "./mortgage/mortgage-step.entity";
+import { MortgageType } from "./mortgage-type/mortgage-type.entity";
+import { MortgageDownpayment } from "./mortgage-downpayment/mortgage-downpayment.entity";
+import { MortgageDownpaymentInstallment } from "./mortgage-downpayment/mortgage-downpayment-installment.entity";
+import { MortgageDownpaymentPayment } from "./mortgage-downpayment/mortgage-downpayment-payment.entity";
+import { Transaction } from "./transaction/transaction.entity";
 
 const IS_NOT_PRODUCTION_DB = process.env.db_host == '127.0.0.1'
 
@@ -33,21 +33,19 @@ export const options: DataSourceOptions = {
     database: process.env.db_name ?? 'qshelter-dev',
     entities: [
         User,
-        Developer,
-        ProposedDevelopment,
-        DeveloperDirector,
-        DeveloperPoc,
-        Property,
-        DeveloperDocument,
-        DeveloperDirectorDocument,
-        ProposedDevelopmentDocument,
-        ProposedProperty,
-        GroupEntity,
-        Wallet
+        Tenant,
+        Wallet,
+        Transaction,
+        Mortgage,
+        MortgageDocument,
+        MortgageStep,
+        MortgageType,
+        MortgageDownpayment,
+        MortgageDownpaymentInstallment,
+        MortgageDownpaymentPayment
     ],
     dropSchema: process.env.node_env?.includes("test") && IS_NOT_PRODUCTION_DB,
     synchronize: IS_NOT_PRODUCTION_DB,
-    namingStrategy: new CustomNamingStrategy(),
     migrations: [__dirname + '/../migrations/*{.ts,.js}'],
 
     // Serverless-optimized connection pool settings (always enabled for Lambda)

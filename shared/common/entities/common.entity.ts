@@ -12,7 +12,7 @@ export abstract class AbstractBaseReviewableEntity extends AbstractTenantAwareEn
   @JoinColumn({ name: 'reviewed_by' })
   reviewer: User;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ name: 'reviewed_at', type: 'timestamp', nullable: true })
   reviewedAt: string;
 }
 
