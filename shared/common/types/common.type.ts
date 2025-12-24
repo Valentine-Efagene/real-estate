@@ -10,16 +10,11 @@ export enum Status {
   DECLINED = 'DECLINED',
 }
 
-export interface IDocument {
-  url: string;
-  name: string;
-  description: string;
-}
-
 export class CreateDocumentDto {
   url: string;
   name?: string;
   description?: string;
+  size?: number;
 }
 
 export class UpdateDocumentDto {

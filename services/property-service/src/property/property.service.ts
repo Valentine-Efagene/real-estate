@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, FindOptionsWhere, Like, Repository } from 'typeorm';
 import { Property } from './property.entity';
 import { CreatePropertyDto, UpdatePropertyDto } from './property.dto';
-import { FilterOperator, PaginateQuery, Paginated, paginate } from 'nestjs-paginate';
+import { PaginationHelper, PaginatedResponse, PaginationQuery } from '@valentine-efagene/qshelter-common';
 import { Amenity } from '../amenity/amenity.entity';
 import { PropertyMedia } from '../property-media/property-media.entity';
 import { contentType } from 'mime-types';
@@ -84,35 +84,30 @@ export class PropertyService {
     return this.propertyRepository.find();
   }
 
-  findAllPaginated(
-    query: PaginateQuery,
+  async findAllPaginated(
+    query: PaginationQuery,
     location?: string,
-  ): Promise<Paginated<Property>> {
-    const whereFilter: FindOptionsWhere<Property> | FindOptionsWhere<Property>[] = [
+  ): Promise<PaginatedResponse<Property>> {
+    const page = query.page || 1;
+    const limit = PaginationHelper.getLimit(query.limit);
+    const skip = PaginationHelper.getSkip(page, limit);
+
+    const whereFilter: FindOptionsWhere<Property> | FindOptionsWhere<Property>[] = location ? [
       { country: Like(`%${location}%`) },
       { streetAddress: Like(`%${location}%`) },
       { city: Like(`%${location}%`) },
       { zipCode: Like(`%${location}%`) },
-    ]
+    ] : {};
 
-    return paginate(query, this.propertyRepository, {
-      sortableColumns: ['id', 'title', 'createdAt', 'updatedAt'],
-      //nullSort: 'last',
-      defaultSortBy: [['id', 'DESC']],
-      loadEagerRelations: true,
+    const [items, total] = await this.propertyRepository.findAndCount({
+      where: whereFilter,
       relations: ['user', 'media'],
-      searchableColumns: ['title', 'user.firstName', 'user.lastName', 'user.email'],
-      //select: ['id'],
-      where: location ? whereFilter : undefined,
-      filterableColumns: {
-        //name: [FilterOperator.EQ, FilterSuffix.NOT],
-        price: [FilterOperator.LTE],
-        propertyType: true,
-        category: true,
-        status: true,
-        createdAt: true
-      },
+      order: { id: 'DESC' },
+      skip,
+      take: limit,
     });
+
+    return PaginationHelper.paginate(items, total, query);
   }
 
   findOne(id: number): Promise<Property> {

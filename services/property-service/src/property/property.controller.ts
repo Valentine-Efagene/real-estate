@@ -14,8 +14,7 @@ import { Property } from './property.entity';
 import { PropertyService } from './property.service';
 import { CreatePropertyControllerDto, SetDisplayImageDto } from './property.dto';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { StandardApiResponse, ResponseMessage, SwaggerAuth } from '@valentine-efagene/qshelter-common';
-import { S3UploaderService } from '../s3-uploader/s3-uploader.service';
+import { StandardApiResponse, ResponseMessage, SwaggerAuth, PaginatedResponse, PaginationQuery } from '@valentine-efagene/qshelter-common';
 
 @SwaggerAuth()
 @Controller('properties')
@@ -23,7 +22,6 @@ import { S3UploaderService } from '../s3-uploader/s3-uploader.service';
 export class PropertyController {
   constructor(
     private readonly propertyService: PropertyService,
-    private readonly uploaderService: S3UploaderService,
     // private readonly propertyMediaService: PropertyMediaService
   ) { }
 
@@ -70,10 +68,24 @@ export class PropertyController {
     required: false,
     description: 'Less than or equal to'
   })
+  @ApiQuery({
+    name: 'page',
+    type: 'number',
+    example: 1,
+    required: false,
+    description: 'Page number'
+  })
+  @ApiQuery({
+    name: 'limit',
+    type: 'number',
+    example: 10,
+    required: false,
+    description: 'Items per page'
+  })
   async findAllPaginated(
-    @Paginate() query: PaginateQuery,
+    @Query() query: PaginationQuery,
     @Query('location') location?: string,
-  ): Promise<StandardApiResponse<Paginated<Property>>> {
+  ): Promise<StandardApiResponse<PaginatedResponse<Property>>> {
     const data = await this.propertyService.findAllPaginated(query, location);
     return new StandardApiResponse(HttpStatus.OK, ResponseMessage.FETCHED, data);
   }
@@ -94,38 +106,12 @@ export class PropertyController {
   async create(
     @Body() createPropertyDto: CreatePropertyControllerDto,
   ): Promise<StandardApiResponse<Property>> {
-    const { gallery } = createPropertyDto;
-    const galleryPromises = []
-
-    for (let index = 0; index < gallery.length; index++) {
-      const file = gallery[index];
-
-      const response = await this.uploaderService.uploadFileToS3(
-        file,
-        S3Folder.DOCUMENT,
-      );
-
-      galleryPromises.push(response)
-    }
-
-    const urls = await Promise.all(galleryPromises)
-
-    const galleryArray: CreateDocumentDto[] = urls.map((url, index) => {
-      return {
-        url,
-        size: gallery[index].size,
-        name: gallery[index].name,
-        description: gallery[index].description,
-      }
-    })
-
-    const data = await this.propertyService.create({ ...createPropertyDto, gallery: galleryArray });
+    const data = await this.propertyService.create(createPropertyDto);
     return new StandardApiResponse(HttpStatus.CREATED, ResponseMessage.CREATED, data);
   }
 
   @SwaggerAuth()
   @Get(':id')
-  @ApiResponse(OpenApiHelper.responseDoc)
   async findOne(
     @Param('id', ParseIntPipe) id: number,): Promise<StandardApiResponse<Property>> {
     const data = await this.propertyService.findOne(id);
@@ -135,7 +121,6 @@ export class PropertyController {
   @Delete(':id')
   @SwaggerAuth()
   @ApiOperation({ summary: '', tags: ['Admin'] })
-  @ApiResponse(OpenApiHelper.nullResponseDoc)
   async remove(
     @Param('id', ParseIntPipe) id: number): Promise<StandardApiResponse<void>> {
     await this.propertyService.remove(id);

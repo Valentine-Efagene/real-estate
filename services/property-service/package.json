@@ -30,7 +30,7 @@
     "@nestjs/typeorm": "^10.0.2",
     "@real-estate/shared-database": "file:../../shared/database",
     "@real-estate/shared-event-bus": "file:../../shared/event-bus",
-    "@valentine-efagene/qshelter-common": "file:../../shared/common/valentine-efagene-qshelter-common-1.0.4.tgz",
+    "@valentine-efagene/qshelter-common": "file:../../shared/common/valentine-efagene-qshelter-common-1.0.5.tgz",
     "aws-lambda": "^1.0.7",
     "axios": "^1.11.0",
     "bcrypt": "^5.1.1",
