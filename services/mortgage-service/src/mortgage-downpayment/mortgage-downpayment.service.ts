@@ -1,11 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { MortgageDownpaymentPlan, DownpaymentPlanStatus } from './mortgage-downpayment.entity';
-import { MortgageDownpaymentInstallment, InstallmentStatus } from './mortgage-downpayment-installment.entity';
-import { MortgageDownpaymentPayment, DownpaymentPaymentStatus } from './mortgage-downpayment-payment.entity';
+import { MortgageDownpaymentPlan, DownpaymentPlanStatus, MortgageDownpaymentInstallment, MortgageInstallmentStatus, MortgageDownpaymentPayment, DownpaymentPaymentStatus, Frequency } from '@valentine-efagene/qshelter-common';
 import { Mortgage } from '../mortgage/mortgage.entity';
-import { Frequency } from '@valentine-efagene/qshelter-common';
 
 @Injectable()
 export class MortgageDownpaymentService {
@@ -56,7 +53,7 @@ export class MortgageDownpaymentService {
                 dueDate: due,
                 amountDue: amount,
                 amountPaid: 0,
-                status: InstallmentStatus.PENDING,
+                status: MortgageInstallmentStatus.PENDING,
             });
             installments.push(inst);
         }
@@ -90,10 +87,10 @@ export class MortgageDownpaymentService {
             inst.amountPaid = Number((inst.amountPaid + toApply).toFixed(2));
             remaining = Number((remaining - toApply).toFixed(2));
             if (inst.amountPaid >= inst.amountDue) {
-                inst.status = InstallmentStatus.PAID;
+                inst.status = MortgageInstallmentStatus.PAID;
                 inst.paidAt = new Date();
             } else {
-                inst.status = InstallmentStatus.PARTIAL;
+                inst.status = MortgageInstallmentStatus.PARTIAL;
             }
             await this.installmentRepo.save(inst);
         }

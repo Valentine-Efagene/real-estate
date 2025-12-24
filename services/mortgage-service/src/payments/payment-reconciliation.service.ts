@@ -3,9 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 import { Transaction } from '../transaction/transaction.entity';
 import { Wallet } from '../wallet/wallet.entity';
-import { MortgageDownpaymentPlan, DownpaymentPlanStatus } from '../mortgage-downpayment/mortgage-downpayment.entity';
-import { MortgageDownpaymentInstallment, InstallmentStatus } from '../mortgage-downpayment/mortgage-downpayment-installment.entity';
-import { MortgageDownpaymentPayment, DownpaymentPaymentStatus } from '../mortgage-downpayment/mortgage-downpayment-payment.entity';
+import { MortgageDownpaymentPlan, DownpaymentPlanStatus, MortgageDownpaymentInstallment, MortgageInstallmentStatus, MortgageDownpaymentPayment, DownpaymentPaymentStatus } from '@valentine-efagene/qshelter-common';
 import { Mortgage } from '../mortgage/mortgage.entity';
 import { User } from '../user/user.entity';
 
@@ -116,7 +114,7 @@ export class PaymentReconciliationService {
                 if (apply <= 0) continue;
 
                 const newAmountPaid = Number((Number(inst.amountPaid || 0) + apply).toFixed(2));
-                const newStatus = newAmountPaid >= inst.amountDue ? InstallmentStatus.PAID : InstallmentStatus.PARTIAL;
+                const newStatus = newAmountPaid >= inst.amountDue ? MortgageInstallmentStatus.PAID : MortgageInstallmentStatus.PARTIAL;
                 const paidAt = newAmountPaid >= inst.amountDue ? new Date() : inst.paidAt;
 
                 this.logger.debug(`Updating installment ${inst.id}: ${inst.amountPaid || 0} -> ${newAmountPaid}, status: ${inst.status} -> ${newStatus}`);

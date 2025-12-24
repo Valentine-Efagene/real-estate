@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { AbstractBaseEntity } from './common.pure.entity';
 import { MortgageDownpaymentPlan } from './mortgage-downpayment.entity';
 
-export enum InstallmentStatus {
+export enum MortgageInstallmentStatus {
     PENDING = 'PENDING',
     PARTIAL = 'PARTIAL',
     PAID = 'PAID',
@@ -33,8 +33,8 @@ export class MortgageDownpaymentInstallment extends AbstractBaseEntity {
     @Column({ type: 'timestamp', nullable: true })
     paidAt: Date;
 
-    @Column({ type: 'enum', enum: InstallmentStatus, default: InstallmentStatus.PENDING })
-    status: InstallmentStatus;
+    @Column({ type: 'enum', enum: MortgageInstallmentStatus, default: MortgageInstallmentStatus.PENDING })
+    status: MortgageInstallmentStatus;
 }
 
 export default MortgageDownpaymentInstallment;

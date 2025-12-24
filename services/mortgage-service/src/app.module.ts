@@ -31,9 +31,6 @@ import { ScheduleModule } from '@nestjs/schedule';
 // Import shared modules
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { options } from './data-source';
-import { TenantMiddleware } from '@valentine-efagene/qshelter-common/middleware/TenantMiddleware';
-import { PermissionGuard } from '@valentine-efagene/qshelter-common/guard/permission.guard';
-import { AccessLoggerMiddleware } from '@valentine-efagene/qshelter-common/middleware/AccessLoggerMiddleware';
 import { EventBusModule } from '@valentine-efagene/event-bus';
 
 // Service-specific modules
@@ -45,6 +42,7 @@ import MortgageDownpaymentModule from './mortgage-downpayment/mortgage-downpayme
 import PaymentsModule from './payments/payments.module';
 import { WalletModule } from './wallet/wallet.module';
 import { TransactionModule } from './transaction/transaction.module';
+import { AccessLoggerMiddleware, TenantMiddleware } from '@valentine-efagene/qshelter-common';
 
 @Module({
     imports: [
@@ -73,7 +71,6 @@ import { TransactionModule } from './transaction/transaction.module';
         TransactionModule,
     ],
     providers: [
-        { provide: APP_GUARD, useClass: PermissionGuard },
     ],
 })
 export class AppModule {

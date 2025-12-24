@@ -5,6 +5,8 @@ import { User } from './user.entity';
 import { Amenity } from './amenity.entity';
 import { AbstractBaseReviewableEntity } from './common.entity';
 import { Mortgage } from './mortgage.entity';
+import { PaymentPlan } from './payment-plan.entity';
+import { Contract } from './contract.entity';
 import { PropertyStatus, PropertyType } from '../types/property.type';
 import { Currency } from 'types';
 
@@ -40,6 +42,13 @@ export class Property extends AbstractBaseReviewableEntity {
 
   @OneToMany(() => Mortgage, (mortgage) => mortgage.property)
   mortgages: Mortgage[];
+
+  @OneToMany(() => PaymentPlan, (plan) => plan.property)
+  paymentPlans: PaymentPlan[];
+
+  @OneToMany(() => Contract, (contract) => contract.property)
+  contracts: Contract[];
+
   @OneToOne(() => PropertyMedia, {
     onDelete: 'SET NULL', // prevents FK errors if image is deleted
     onUpdate: 'CASCADE'
