@@ -1,14 +1,12 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, FindOptionsWhere, Like, Repository } from 'typeorm';
-import { User } from './user.entity';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto, SetRolesDto, UpdateUserDto } from './user.dto';
-import { UserSuspension } from '../user_suspensions/user_suspensions.entity';
-import { Role } from '../role/role.entity';
-import { FilterOperator, paginate, Paginated, PaginateQuery } from 'nestjs-paginate';
 import { Request } from 'express';
 import { UserStatus } from './user.enums';
+import { Role, User } from '@valentine-efagene/qshelter-common';
+import { FilterOperator, paginate, Paginated, PaginateQuery } from 'nestjs-paginate';
 
 @Injectable()
 export class UserService {
@@ -201,36 +199,6 @@ export class UserService {
     return await this.userRepository.save(updated)
   }
 
-  // async assignRoles(id: number, dto: AssignRolesDto): Promise<User> {
-  //   const user = await this.findOne(id)
-
-  //   if (!user) {
-  //     throw new BadRequestException('Invalid user ID')
-  //   }
-
-  //   const queryRunner = this.dataSource.createQueryRunner()
-  //   await queryRunner.connect()
-  //   await queryRunner.startTransaction()
-
-  //   try {
-  //     const rolePromises = dto.roleIds?.map(id => {
-  //       return this.dataSource.getRepository(Role).findOneBy({ id })
-  //     })
-
-  //     const roles: Role[] = await Promise.all(rolePromises)
-  //     user.roles = roles
-  //     await queryRunner.manager.save(user)
-
-  //     await queryRunner.commitTransaction()
-  //     return user
-  //   } catch (error) {
-  //     await queryRunner.rollbackTransaction()
-  //     throw error
-  //   } finally {
-  //     await queryRunner.release()
-  //   }
-  // }
-
   async setRoles(id: number, dto: SetRolesDto): Promise<User> {
     const user = await this.findOne(id)
 
@@ -260,34 +228,6 @@ export class UserService {
       await queryRunner.release()
     }
   }
-
-  // async revokeRoles(id: number, dto: AssignRolesDto): Promise<User> {
-  //   const user = await this.findOne(id)
-
-  //   if (!user) {
-  //     throw new BadRequestException('Invalid role ID')
-  //   }
-
-  //   const oldRoleIds = user.roles
-  //   const newRoles = oldRoleIds.filter(role => !dto.roleIds.includes(role.id))
-
-  //   const queryRunner = this.dataSource.createQueryRunner()
-  //   await queryRunner.connect()
-  //   await queryRunner.startTransaction()
-
-  //   try {
-  //     user.roles = newRoles
-  //     await queryRunner.manager.save(user)
-
-  //     await queryRunner.commitTransaction()
-  //     return user
-  //   } catch (error) {
-  //     await queryRunner.rollbackTransaction()
-  //     throw error
-  //   } finally {
-  //     await queryRunner.release()
-  //   }
-  // }
 
   async remove(id: number): Promise<void> {
     await this.userRepository.delete(id);

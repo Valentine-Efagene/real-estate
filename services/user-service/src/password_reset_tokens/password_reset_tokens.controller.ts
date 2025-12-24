@@ -11,7 +11,7 @@ import {
 import { PasswordResetTokenService } from './password_reset_tokens.service';
 import { CreatePasswordResetTokenDto } from './password_reset_tokens.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { PasswordResetToken } from '@valentine-efagene/entities';
+import { PasswordResetToken } from '@valentine-efagene/qshelter-common';
 import { SwaggerAuth } from '@qshelter/nest-auth';
 import { ResponseMessage, StandardApiResponse } from 'src/type';
 

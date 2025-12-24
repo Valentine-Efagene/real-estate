@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { RoleController } from './role.controller';
 import { RoleService } from './role.service';
 import { RoleSeeder } from './role.seeder';
-import { Role } from '@valentine-efagene/entities';
+import { Role } from '@valentine-efagene/qshelter-common';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Role])],

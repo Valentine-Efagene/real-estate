@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Amenity } from '@valentine-efagene/entities';
+import { Amenity } from '@valentine-efagene/qshelter-common';
 import { AmenityController } from './amenity.controller';
 import { AmenityService } from './amenity.service';
 

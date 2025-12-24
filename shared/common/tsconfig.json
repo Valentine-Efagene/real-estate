@@ -20,7 +20,16 @@
         "esModuleInterop": true
     },
     "include": [
-        "**/*.ts"
+        "pagination/**/*.ts",
+        "entities/**/*.ts",
+        "types/**/*.ts",
+        "middleware/**/*.ts",
+        "guard/**/*.ts",
+        "helpers/**/*.ts",
+        "decorator/**/*.ts",
+        "index.ts",
+        "standard-response.ts",
+        "OpenApiHelper.ts"
     ],
     "exclude": [
         "node_modules",

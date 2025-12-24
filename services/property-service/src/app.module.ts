@@ -32,10 +32,10 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 
 // Import shared modules
-import { DatabaseModule } from '@real-estate/shared-database';
-import { TenantMiddleware } from '@real-estate/shared-common/middleware/TenantMiddleware';
-import { PermissionGuard } from '@real-estate/shared-common/guard/permission.guard';
-import AuthenticationMiddleware from '@real-estate/shared-common/middleware/AuthenticationMiddleware';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { options } from './data-source';
+import { TenantMiddleware } from '@valentine-efagene/qshelter-common/middleware/TenantMiddleware';
+import { PermissionGuard } from '@valentine-efagene/qshelter-common/guard/permission.guard';
 
 // Service-specific modules
 import { PropertyModule } from './property/property.module';
@@ -48,16 +48,7 @@ import { S3UploaderModule } from './s3-uploader/s3-uploader.module';
 @Module({
     imports: [
         envModule,
-        DatabaseModule.forRoot({
-            host: process.env.DB_HOST || '127.0.0.1',
-            port: parseInt(process.env.DB_PORT) || 3306,
-            username: process.env.DB_USERNAME || 'root',
-            password: process.env.DB_PASSWORD || '',
-            database: process.env.DB_NAME,
-            synchronize: process.env.DB_HOST === '127.0.0.1' || process.env.DB_HOST === 'localhost',
-            logging: process.env.NODE_ENV !== 'production',
-            isProduction: process.env.NODE_ENV === 'production',
-        }),
+        TypeOrmModule.forRoot(options),
         JwtModule.register({
             secret: process.env.JWT_SECRET || 'default-secret-change-in-production',
             signOptions: { expiresIn: '60s' },
@@ -81,6 +72,10 @@ import { S3UploaderModule } from './s3-uploader/s3-uploader.module';
 export class AppModule {
     configure(consumer: MiddlewareConsumer) {
         consumer.apply(TenantMiddleware).forRoutes('*');
-        consumer.apply(AuthenticationMiddleware).forRoutes('*');
+
+        // Use API Gateway authorizer for authentication; skip local AuthenticationMiddleware
+
+        // Apply access logger middleware
+        consumer.apply(AccessLoggerMiddleware).forRoutes('*');
     }
 }

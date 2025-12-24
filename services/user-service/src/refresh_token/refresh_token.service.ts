@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateRefreshTokenDto } from './refresh_token.dto';
-import { RefreshToken } from '@valentine-efagene/entities';
+import { RefreshToken } from '@valentine-efagene/qshelter-common';
 
 @Injectable()
 export class RefreshTokenService {

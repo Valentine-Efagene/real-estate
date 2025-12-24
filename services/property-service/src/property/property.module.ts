@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Property } from '@valentine-efagene/entities';
+import { Property } from '@valentine-efagene/qshelter-common';
 import { PropertyController } from './property.controller';
 import { PropertyService } from './property.service';
 import { S3UploaderModule } from '../s3-uploader/s3-uploader.module';

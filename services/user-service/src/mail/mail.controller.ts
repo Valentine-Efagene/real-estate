@@ -7,12 +7,10 @@ import {
 import { MailService } from './mail.service';
 import { SendMailDto, SendTicketMailDto, SendVerificationMailDto, TestDto } from './mail.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { StandardApiResponse } from '../common/common.dto';
-import OpenApiHelper from '../common/OpenApiHelper';
+import { StandardApiResponse, OpenApiHelper } from '@valentine-efagene/qshelter-common';
 import { ResponseMessage } from '../common/common.enum';
-import { SwaggerAuth } from '../common/guard/swagger-auth.guard';
+import { SwaggerAuth, ConstantHelper } from '@valentine-efagene/qshelter-common';
 import { TemplateTesterService } from './template-tester.service';
-import { ConstantHelper } from '../common/helpers/ConstantHelper';
 
 @SwaggerAuth()
 @Controller('mailer')

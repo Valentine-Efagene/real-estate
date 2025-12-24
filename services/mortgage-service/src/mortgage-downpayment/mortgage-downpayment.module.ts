@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MortgageDownpaymentService } from './mortgage-downpayment.service';
-import { MortgageDownpaymentPlan, MortgageDownpaymentInstallment, MortgageDownpaymentPayment, Mortgage } from '@valentine-efagene/entities';
+import { MortgageDownpaymentPlan, MortgageDownpaymentInstallment, MortgageDownpaymentPayment, Mortgage } from '@valentine-efagene/qshelter-common';
 import { MortgageDownpaymentController } from './mortgage-downpayment.controller';
 
 @Module({

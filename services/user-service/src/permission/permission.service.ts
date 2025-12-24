@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreatePermissionDto, UpdatePermissionDto } from './permission.dto';
 import { PermissionSeeder } from './permission.seeder';
-import { Permission } from '@valentine-efagene/entities';
+import { Permission } from '@valentine-efagene/qshelter-common';
 
 @Injectable()
 export class PermissionService {

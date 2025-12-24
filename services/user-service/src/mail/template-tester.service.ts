@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import * as path from 'path';
 import * as fs from 'fs';
-import EmailHelper from '../common/helpers/EmailHelper';
+import { EmailHelper } from '@valentine-efagene/qshelter-common';
 
 @Injectable()
 export class TemplateTesterService {

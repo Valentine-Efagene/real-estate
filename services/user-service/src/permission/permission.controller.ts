@@ -13,7 +13,7 @@ import { PermissionService } from './permission.service';
 import { CreatePermissionDto } from './permission.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SwaggerAuth } from '@qshelter/nest-auth';
-import { Permission } from '@valentine-efagene/entities';
+import { Permission } from '@valentine-efagene/qshelter-common';
 import { ResponseMessage, StandardApiResponse } from '../type';
 
 @SwaggerAuth()

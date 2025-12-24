@@ -4,7 +4,7 @@ import { MailService } from './mail.service';
 import { SendMailDto, SendPasswordResetMailDto, SendTicketMailDto, SendVerificationMailDto } from './mail.dto';
 import { MailQueueJobNames } from './mail.enums';
 import { MailerService } from '@nestjs-modules/mailer';
-import { ConstantHelper } from '../common/helpers/ConstantHelper';
+import { ConstantHelper } from '@valentine-efagene/qshelter-common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { QueueNames } from '../common/common.enum';

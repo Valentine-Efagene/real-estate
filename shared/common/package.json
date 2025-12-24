@@ -1,35 +1,94 @@
 {
-    "name": "@real-estate/shared-common",
-    "version": "1.0.0",
-    "description": "Shared common utilities, DTOs, guards, middleware, and decorators",
+    "name": "@valentine-efagene/qshelter-common",
+    "version": "1.0.1",
+    "description": "Shared common utilities, DTOs, entities, guards, middleware, decorators, and pagination for QShelter",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
         "build": "tsc",
-        "prepublishOnly": "npm run build"
+        "prepublishOnly": "npm run build",
+        "publish:public": "npm publish --access public",
+        "build:watch": "tsc -w",
+        "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+        "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
     },
     "keywords": [
         "common",
         "utilities",
-        "nestjs"
+        "nestjs",
+        "entities",
+        "pagination",
+        "qshelter"
     ],
-    "author": "",
-    "license": "UNLICENSED",
+    "author": "Valentine Efagene",
+    "license": "MIT",
+    "files": [
+        "dist"
+    ],
+    "exports": {
+        ".": {
+            "import": "./dist/index.js",
+            "require": "./dist/index.js"
+        },
+        "./*": {
+            "import": "./dist/*",
+            "require": "./dist/*"
+        },
+        "./middleware/*": {
+            "import": "./dist/middleware/*",
+            "require": "./dist/middleware/*"
+        },
+        "./guard/*": {
+            "import": "./dist/guard/*",
+            "require": "./dist/guard/*"
+        },
+        "./helpers/*": {
+            "import": "./dist/helpers/*",
+            "require": "./dist/helpers/*"
+        },
+        "./decorator/*": {
+            "import": "./dist/decorator/*",
+            "require": "./dist/decorator/*"
+        },
+        "./entities/*": {
+            "import": "./dist/entities/*",
+            "require": "./dist/entities/*"
+        },
+        "./types/*": {
+            "import": "./dist/types/*",
+            "require": "./dist/types/*"
+        },
+        "./OpenApiHelper": {
+            "import": "./dist/OpenApiHelper.js",
+            "require": "./dist/OpenApiHelper.js"
+        },
+        "./standard-response": {
+            "import": "./dist/standard-response.js",
+            "require": "./dist/standard-response.js"
+        }
+    },
     "peerDependencies": {
+        "typeorm": "^0.3.0",
         "@nestjs/common": "^10.0.0",
+        "@nestjs/swagger": "^7.4.0",
         "@nestjs/config": "^3.0.0",
         "@nestjs/jwt": "^10.0.0",
         "class-validator": "^0.14.0",
         "class-transformer": "^0.5.0"
     },
-    "dependencies": {},
+    "dependencies": {
+        "handlebars": "^4.7.8"
+    },
     "devDependencies": {
+        "@nestjs/swagger": "^7.4.0",
+        "typeorm": "^0.3.20",
         "@nestjs/common": "^10.0.0",
         "@nestjs/config": "^3.0.0",
         "@nestjs/jwt": "^10.0.0",
         "class-validator": "^0.14.0",
         "class-transformer": "^0.5.1",
         "typescript": "^5.0.0",
-        "@types/node": "^20.0.0"
+        "@types/node": "^20.0.0",
+        "@types/handlebars": "^4.1.0"
     }
 }

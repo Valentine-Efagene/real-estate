@@ -13,7 +13,7 @@ import { RoleService } from './role.service';
 import { AssignPermissionsDto, CreateRoleDto } from './role.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { SwaggerAuth } from '@qshelter/nest-auth';
-import { Role } from '@valentine-efagene/entities';
+import { Role } from '@valentine-efagene/qshelter-common';
 import { ResponseMessage, StandardApiResponse } from '../type';
 
 @SwaggerAuth()

@@ -1,4 +1,4 @@
 import { Reflector } from '@nestjs/core';
-import { PermissionName } from '../../permission/permission.enums';
+import { PermissionName } from '../types/permission.enums';
 
 export const RequirePermission = Reflector.createDecorator<PermissionName>();

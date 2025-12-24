@@ -22,15 +22,14 @@ import { S3UploaderService } from '../s3-uploader/s3-uploader.service';
 import { UserService } from './user.service';
 import { AssignRolesDto, AvatarUploadDto, CreateAdminDto, CreateUserDto, SuspendUserDto, UpdateUserControllerDto } from './user.dto';
 import { ApiConsumes, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { StandardApiResponse } from '../common/common.dto';
-import OpenApiHelper from '../common/OpenApiHelper';
+import { StandardApiResponse, OpenApiHelper } from '@valentine-efagene/qshelter-common';
 import { ResponseMessage, S3Folder } from '../common/common.enum';
-import { SwaggerAuth } from '../common/guard/swagger-auth.guard';
+import { SwaggerAuth } from '@valentine-efagene/qshelter-common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import FileValidators from '../common/validator/FileValidators';
 import { Paginate, Paginated, PaginateQuery } from 'nestjs-paginate';
 import { ThrottlerGuard } from '@nestjs/throttler';
-import { RequirePermission } from '../common/decorator/permission.decorator';
+import { RequirePermission } from '@valentine-efagene/qshelter-common';
 import { PermissionName } from '../permission/permission.enums';
 import { Request } from 'express';
 

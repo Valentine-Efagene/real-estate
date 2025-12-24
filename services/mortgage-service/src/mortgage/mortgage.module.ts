@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Mortgage, MortgageDocument, MortgageStep, MortgageType } from '@valentine-efagene/entities';
+import { Mortgage, MortgageDocument, MortgageStep, MortgageType } from '@valentine-efagene/qshelter-common';
 import { MortgageService } from './mortgage.service';
 import { MortgageController } from './mortgage.controller';
 import { MailModule } from '../mail/mail.module';

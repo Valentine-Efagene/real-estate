@@ -9,7 +9,7 @@ import {
 import { SocialService } from './social.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { SwaggerAuth } from '@qshelter/nest-auth';
-import { Social } from '@valentine-efagene/entities';
+import { Social } from '@valentine-efagene/qshelter-common';
 import { ResponseMessage, StandardApiResponse } from '../type';
 
 @SwaggerAuth()

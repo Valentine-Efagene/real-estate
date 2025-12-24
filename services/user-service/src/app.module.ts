@@ -32,11 +32,9 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 
 // Import shared modules
-import { DatabaseModule } from '@real-estate/shared-database';
-import { TenantMiddleware } from '@real-estate/shared-common/middleware/TenantMiddleware';
-import { PermissionGuard } from '@real-estate/shared-common/guard/permission.guard';
-import AuthenticationMiddleware from '@real-estate/shared-common/middleware/AuthenticationMiddleware';
-import { AccessLoggerMiddleware } from '@real-estate/shared-common/middleware/AccessLoggerMiddleware';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { options } from './data-source';
+import { TenantMiddleware, AccessLoggerMiddleware, PermissionGuard } from '@valentine-efagene/qshelter-common';
 
 // Service-specific modules
 import { AuthModule } from './auth/auth.module';
@@ -55,16 +53,7 @@ import { jwtConstants } from './auth/auth.constants';
 @Module({
     imports: [
         envModule,
-        DatabaseModule.forRoot({
-            host: process.env.DB_HOST || '127.0.0.1',
-            port: parseInt(process.env.DB_PORT) || 3306,
-            username: process.env.DB_USERNAME || 'root',
-            password: process.env.DB_PASSWORD || '',
-            database: process.env.DB_NAME,
-            synchronize: process.env.DB_HOST === '127.0.0.1' || process.env.DB_HOST === 'localhost',
-            logging: process.env.NODE_ENV !== 'production',
-            isProduction: process.env.NODE_ENV === 'production',
-        }),
+        TypeOrmModule.forRoot(options),
         JwtModule.register({
             secret: jwtConstants.secret,
             signOptions: { expiresIn: '60s' },
@@ -106,8 +95,9 @@ export class AppModule {
         // Apply TenantMiddleware globally
         consumer.apply(TenantMiddleware).forRoutes('*');
 
-        consumer.apply(AuthenticationMiddleware).exclude(...excludedPaths).forRoutes('*');
+        // Use API Gateway authorizer for authentication; skip local AuthenticationMiddleware
 
+        // Apply access logger middleware
         consumer.apply(AccessLoggerMiddleware).exclude(...excludedPaths).forRoutes('*');
     }
 }

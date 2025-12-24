@@ -13,11 +13,11 @@ import {
 import { AuthService } from './auth.service';
 import { RefreshTokenDto, RequestPasswordResetDto, ResetPasswordDto, SignInDto, SignUpDto } from './auth.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { StandardApiResponse } from '../common/common.dto';
+import { StandardApiResponse } from '@valentine-efagene/qshelter-common';
 import { ResponseMessage } from '../common/common.enum';
 import { SerializeUser } from './decorator';
 import { User } from '../user/user.entity';
-import { SwaggerAuth } from '../common/guard/swagger-auth.guard';
+import { SwaggerAuth } from '@valentine-efagene/qshelter-common';
 import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
 import { IAuthTokensAndUser } from './auth.type';
 import { GoogleOAuthGuard } from './guard/google-oauth.guard';
