@@ -10,20 +10,32 @@ provider:
   
   environment:
     NODE_ENV: ${self:provider.stage}
-    ROLE_POLICIES_TABLE_NAME: ${env:ROLE_POLICIES_TABLE_NAME}
-    JWT_SECRET: ${env:JWT_SECRET}
   
   # IAM permissions for authorizer
   iam:
     role:
       statements:
+        # SSM Parameter Store access for infrastructure config
+        - Effect: Allow
+          Action:
+            - ssm:GetParameter
+            - ssm:GetParameters
+            - ssm:GetParametersByPath
+          Resource:
+            - arn:aws:ssm:${self:provider.region}:*:parameter/qshelter/${self:provider.stage}/*
+        # Secrets Manager access for JWT secret
+        - Effect: Allow
+          Action:
+            - secretsmanager:GetSecretValue
+          Resource:
+            - arn:aws:secretsmanager:${self:provider.region}:*:secret:qshelter/${self:provider.stage}/*
+        # DynamoDB access (table name fetched from SSM)
         - Effect: Allow
           Action:
             - dynamodb:GetItem
             - dynamodb:Query
           Resource:
-            - arn:aws:dynamodb:${self:provider.region}:*:table/${env:ROLE_POLICIES_TABLE_NAME}
-            - arn:aws:dynamodb:${self:provider.region}:*:table/${env:ROLE_POLICIES_TABLE_NAME}/index/*
+            - arn:aws:dynamodb:${self:provider.region}:*:table/*
 
 functions:
   authorizer:
@@ -61,15 +73,13 @@ resources:
       Description: ARN of the authorizer Lambda function
       Value: !GetAtt AuthorizerLambdaFunction.Arn
       Export:
-        Name: QShelterAuthorizerFunctionArn
+        Name: QShelterAuthorizerFunctionArn-${self:provider.stage}
     
     AuthorizerId:
       Description: ID of the HTTP API authorizer
       Value: !Ref HttpApiAuthorizer
       Export:
-        Name: QShelterAuthorizerId
-      Export:
-        Name: QShelterAuthorizerId
+        Name: QShelterAuthorizerId-${self:provider.stage}
 
 plugins:
   - serverless-dotenv-plugin

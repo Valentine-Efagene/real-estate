@@ -10,38 +10,47 @@ provider:
   memorySize: 512
   timeout: 30
   
+  # Reference shared HTTP API Gateway
+  httpApi:
+    id: ${env:HTTP_API_ID}
+  
   environment:
-    NODE_ENV: ${env:NODE_ENV}
-    DB_HOST: ${env:DB_HOST}
-    DB_PORT: ${env:DB_PORT}
-    DB_NAME: ${env:DB_NAME}
-    DB_USERNAME: ${env:DB_USERNAME}
-    DB_PASSWORD: ${env:DB_PASSWORD}
-    JWT_SECRET: ${env:JWT_SECRET}
-    EVENT_BUS_NAME: ${env:EVENT_BUS_NAME}
-    S3_BUCKET_NAME: ${env:S3_BUCKET_NAME}
+    NODE_ENV: ${self:provider.stage}
 
   iam:
     role:
       statements:
+        # SSM Parameter Store access for infrastructure config
+        - Effect: Allow
+          Action:
+            - ssm:GetParameter
+            - ssm:GetParameters
+            - ssm:GetParametersByPath
+          Resource:
+            - arn:aws:ssm:${self:provider.region}:*:parameter/qshelter/${self:provider.stage}/*
+        # Secrets Manager access for sensitive credentials
+        - Effect: Allow
+          Action:
+            - secretsmanager:GetSecretValue
+          Resource:
+            - arn:aws:secretsmanager:${self:provider.region}:*:secret:qshelter/${self:provider.stage}/*
+        # EventBridge access
         - Effect: Allow
           Action:
             - events:PutEvents
           Resource:
-            - arn:aws:events:${self:provider.region}:*:event-bus/${env:EVENT_BUS_NAME}
+            - arn:aws:events:${self:provider.region}:*:event-bus/*
+        # S3 access
         - Effect: Allow
           Action:
             - s3:GetObject
             - s3:PutObject
             - s3:DeleteObject
             - s3:PutObjectAcl
-          Resource:
-            - arn:aws:s3:::${env:S3_BUCKET_NAME}/*
-        - Effect: Allow
-          Action:
             - s3:ListBucket
           Resource:
-            - arn:aws:s3:::${env:S3_BUCKET_NAME}
+            - arn:aws:s3:::*
+            - arn:aws:s3:::*/*
 
 package:
   individually: true
@@ -60,9 +69,7 @@ functions:
           path: /property/properties/{proxy+}
           method: ANY
           authorizer:
-            name: customAuthorizer
-            type: request
-            functionArn: ${env:AUTHORIZER_LAMBDA_ARN}
+            name: qshelterAuthorizer
 
   propertyMedia:
     handler: dist/serverless.handler
@@ -71,9 +78,7 @@ functions:
           path: /property/property-media/{proxy+}
           method: ANY
           authorizer:
-            name: customAuthorizer
-            type: request
-            functionArn: ${env:AUTHORIZER_LAMBDA_ARN}
+            name: qshelterAuthorizer
 
   propertyDocuments:
     handler: dist/serverless.handler
@@ -82,9 +87,7 @@ functions:
           path: /property/property-document/{proxy+}
           method: ANY
           authorizer:
-            name: customAuthorizer
-            type: request
-            functionArn: ${env:AUTHORIZER_LAMBDA_ARN}
+            name: qshelterAuthorizer
 
   amenities:
     handler: dist/serverless.handler
@@ -93,9 +96,7 @@ functions:
           path: /property/amenities/{proxy+}
           method: ANY
           authorizer:
-            name: customAuthorizer
-            type: request
-            functionArn: ${env:AUTHORIZER_LAMBDA_ARN}
+            name: qshelterAuthorizer
 
   # Presigned URL generator for S3 uploads
   generatePresignedUrl:
@@ -105,9 +106,7 @@ functions:
           path: /property/upload/presigned-url
           method: POST
           authorizer:
-            name: customAuthorizer
-            type: request
-            functionArn: ${env:AUTHORIZER_LAMBDA_ARN}
+            name: qshelterAuthorizer
 
 plugins:
   - serverless-offline

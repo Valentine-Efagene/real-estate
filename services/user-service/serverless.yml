@@ -8,46 +8,32 @@ provider:
   stage: ${opt:stage, 'dev'}
   region: us-east-1
   
-  # VPC configuration - values from CDK outputs
-  vpc:
-    securityGroupIds:
-      - ${env:DB_SECURITY_GROUP_ID}
-    subnetIds:
-      - ${env:PRIVATE_SUBNET_ID_1}
-      - ${env:PRIVATE_SUBNET_ID_2}
-  
   # Reference shared HTTP API Gateway
   httpApi:
     id: ${env:HTTP_API_ID}
   
   environment:
     NODE_ENV: ${self:provider.stage}
-    DB_HOST: ${env:DB_HOST}
-    DB_PORT: ${env:DB_PORT}
-    DATABASE_SECRET_ARN: ${env:DATABASE_SECRET_ARN}
-    REDIS_HOST: ${env:REDIS_HOST}
-    REDIS_PORT: ${env:REDIS_PORT}
-    ROLE_POLICIES_TABLE_NAME: ${env:ROLE_POLICIES_TABLE_NAME}
-    EVENTBRIDGE_BUS_NAME: ${env:EVENTBRIDGE_BUS_NAME}
-    S3_BUCKET_NAME: ${env:S3_BUCKET_NAME}
-    JWT_SECRET: ${env:JWT_SECRET}
-    REFRESH_TOKEN_SECRET: ${env:REFRESH_TOKEN_SECRET}
-    ENCRYPTION_PASSWORD: ${env:ENCRYPTION_PASSWORD}
-    ENCRYPTION_SALT: ${env:ENCRYPTION_SALT}
-    GOOGLE_CLIENT_ID: ${env:GOOGLE_CLIENT_ID}
-    GOOGLE_CLIENT_SECRET: ${env:GOOGLE_CLIENT_SECRET}
-    GOOGLE_CALLBACK_URL: ${env:GOOGLE_CALLBACK_URL}
-    FRONTEND_BASE_URL: ${env:FRONTEND_BASE_URL}
   
   # IAM role with necessary permissions
   iam:
     role:
       statements:
+        # SSM Parameter Store access for infrastructure config
+        - Effect: Allow
+          Action:
+            - ssm:GetParameter
+            - ssm:GetParameters
+            - ssm:GetParametersByPath
+          Resource:
+            - arn:aws:ssm:${self:provider.region}:*:parameter/qshelter/${self:provider.stage}/*
+        # Secrets Manager access for sensitive credentials
         - Effect: Allow
           Action:
             - secretsmanager:GetSecretValue
           Resource:
             - arn:aws:secretsmanager:${self:provider.region}:*:secret:qshelter/${self:provider.stage}/*
+        # DynamoDB access (table names fetched from SSM)
         - Effect: Allow
           Action:
             - dynamodb:GetItem
@@ -57,20 +43,22 @@ provider:
             - dynamodb:Query
             - dynamodb:Scan
           Resource:
-            - arn:aws:dynamodb:${self:provider.region}:*:table/${env:ROLE_POLICIES_TABLE_NAME}
-            - arn:aws:dynamodb:${self:provider.region}:*:table/${env:ROLE_POLICIES_TABLE_NAME}/index/*
+            - arn:aws:dynamodb:${self:provider.region}:*:table/*
+        # EventBridge access (bus name fetched from SSM)
         - Effect: Allow
           Action:
             - events:PutEvents
           Resource:
-            - arn:aws:events:${self:provider.region}:*:event-bus/${env:EVENTBRIDGE_BUS_NAME}
+            - arn:aws:events:${self:provider.region}:*:event-bus/*
+        # S3 access (bucket name fetched from SSM)
         - Effect: Allow
           Action:
             - s3:GetObject
             - s3:PutObject
             - s3:DeleteObject
           Resource:
-            - arn:aws:s3:::${env:S3_BUCKET_NAME}/*
+            - arn:aws:s3:::*/*
+        # CloudWatch Logs
         - Effect: Allow
           Action:
             - logs:CreateLogGroup

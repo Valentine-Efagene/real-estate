@@ -10,24 +10,36 @@ provider:
   memorySize: 512
   timeout: 30
   
+  # Reference shared HTTP API Gateway
+  httpApi:
+    id: ${env:HTTP_API_ID}
+  
   environment:
-    NODE_ENV: ${env:NODE_ENV}
-    DB_HOST: ${env:DB_HOST}
-    DB_PORT: ${env:DB_PORT}
-    DB_NAME: ${env:DB_NAME}
-    DB_USERNAME: ${env:DB_USERNAME}
-    DB_PASSWORD: ${env:DB_PASSWORD}
-    JWT_SECRET: ${env:JWT_SECRET}
-    EVENT_BUS_NAME: ${env:EVENT_BUS_NAME}
+    NODE_ENV: ${self:provider.stage}
 
   iam:
     role:
       statements:
+        # SSM Parameter Store access for infrastructure config
+        - Effect: Allow
+          Action:
+            - ssm:GetParameter
+            - ssm:GetParameters
+            - ssm:GetParametersByPath
+          Resource:
+            - arn:aws:ssm:${self:provider.region}:*:parameter/qshelter/${self:provider.stage}/*
+        # Secrets Manager access for sensitive credentials
+        - Effect: Allow
+          Action:
+            - secretsmanager:GetSecretValue
+          Resource:
+            - arn:aws:secretsmanager:${self:provider.region}:*:secret:qshelter/${self:provider.stage}/*
+        # EventBridge access
         - Effect: Allow
           Action:
             - events:PutEvents
           Resource:
-            - arn:aws:events:${self:provider.region}:*:event-bus/${env:EVENT_BUS_NAME}
+            - arn:aws:events:${self:provider.region}:*:event-bus/*
 
 package:
   individually: true
@@ -46,9 +58,7 @@ functions:
           path: /mortgage/mortgages/{proxy+}
           method: ANY
           authorizer:
-            name: customAuthorizer
-            type: request
-            functionArn: ${env:AUTHORIZER_LAMBDA_ARN}
+            name: qshelterAuthorizer
 
   mortgageTypes:
     handler: dist/serverless.handler
@@ -57,9 +67,7 @@ functions:
           path: /mortgage/mortgage-types/{proxy+}
           method: ANY
           authorizer:
-            name: customAuthorizer
-            type: request
-            functionArn: ${env:AUTHORIZER_LAMBDA_ARN}
+            name: qshelterAuthorizer
 
   downpayments:
     handler: dist/serverless.handler
@@ -68,9 +76,7 @@ functions:
           path: /mortgage/downpayments/{proxy+}
           method: ANY
           authorizer:
-            name: customAuthorizer
-            type: request
-            functionArn: ${env:AUTHORIZER_LAMBDA_ARN}
+            name: qshelterAuthorizer
 
   payments:
     handler: dist/serverless.handler
@@ -79,21 +85,12 @@ functions:
           path: /mortgage/payments/{proxy+}
           method: ANY
           authorizer:
-            name: customAuthorizer
-            type: request
-            functionArn: ${env:AUTHORIZER_LAMBDA_ARN}
+            name: qshelterAuthorizer
 
   # FSM event listener (triggered by EventBridge)
+  # Note: EventBridge bus name will be fetched from ConfigService at runtime
   fsmEventHandler:
     handler: dist/serverless.fsmEventHandler
-    events:
-      - eventBridge:
-          eventBus: ${env:EVENT_BUS_NAME}
-          pattern:
-            source:
-              - mortgage.fsm
-            detail-type:
-              - MortgageStateTransition
 
 plugins:
   - serverless-offline
