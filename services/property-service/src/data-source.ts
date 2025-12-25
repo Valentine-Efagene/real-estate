@@ -14,18 +14,18 @@ import { PropertyMedia } from "./property-media/property-media.entity";
 import { PropertyDocument } from "./property-document/property-document.entity";
 import { Amenity } from "./amenity/amenity.entity";
 
-const IS_NOT_PRODUCTION_DB = process.env.db_host == '127.0.0.1'
+const IS_NOT_PRODUCTION_DB = process.env.DB_HOST == '127.0.0.1'
 
 // Force serverless mode for Lambda deployment
 const IS_SERVERLESS = true;
 
 export const options: DataSourceOptions = {
     type: 'mysql',
-    host: process.env.db_host ?? '127.0.0.1',
-    port: Number(process.env.db_port) ?? 3306,
-    username: process.env.db_username ?? 'root',
-    password: process.env.db_password ?? '',
-    database: process.env.db_name ?? 'qshelter-dev',
+    host: process.env.DB_HOST ?? '127.0.0.1',
+    port: Number(process.env.DB_PORT) ?? 3306,
+    username: process.env.DB_USERNAME ?? 'root',
+    password: process.env.DB_PASSWORD ?? '',
+    database: process.env.DB_NAME ?? 'qshelter-dev',
     entities: [
         User,
         Tenant,
@@ -34,7 +34,7 @@ export const options: DataSourceOptions = {
         PropertyDocument,
         Amenity
     ],
-    dropSchema: process.env.node_env?.includes("test") && IS_NOT_PRODUCTION_DB,
+    dropSchema: process.env.NODE_ENV?.includes("test") && IS_NOT_PRODUCTION_DB,
     synchronize: IS_NOT_PRODUCTION_DB,
     migrations: [__dirname + '/../migrations/*{.ts,.js}'],
 

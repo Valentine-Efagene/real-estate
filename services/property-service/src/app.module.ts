@@ -41,7 +41,6 @@ import { PropertyMediaModule } from './property-media/property-media.module';
 import { PropertyDocumentModule } from './property-document/property-document.module';
 import { AmenityModule } from './amenity/amenity.module';
 import { QrCodeModule } from './qr-code/qr-code.module';
-import { S3UploaderModule } from './s3-uploader/s3-uploader.module';
 import { AccessLoggerMiddleware, TenantMiddleware } from '@valentine-efagene/qshelter-common';
 
 @Module({
@@ -62,7 +61,6 @@ import { AccessLoggerMiddleware, TenantMiddleware } from '@valentine-efagene/qsh
         PropertyDocumentModule,
         AmenityModule,
         QrCodeModule,
-        S3UploaderModule,
     ],
     providers: [
     ],
