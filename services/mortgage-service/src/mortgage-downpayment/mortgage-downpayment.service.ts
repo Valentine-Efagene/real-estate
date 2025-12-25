@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { MortgageDownpaymentPlan, DownpaymentPlanStatus, MortgageDownpaymentInstallment, MortgageInstallmentStatus, MortgageDownpaymentPayment, DownpaymentPaymentStatus, Frequency } from '@valentine-efagene/qshelter-common';
-import { Mortgage } from '../mortgage/mortgage.entity';
+import { Mortgage } from '@valentine-efagene/qshelter-common';
 
 @Injectable()
 export class MortgageDownpaymentService {

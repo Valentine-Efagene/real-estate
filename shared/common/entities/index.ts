@@ -6,6 +6,8 @@ export * from './common.entity';
 export * from './common.pure.entity';
 export * from './contract-document.entity';
 export * from './contract.entity';
+export * from './device_endpoint.entity';
+export * from './email_preference.entity';
 export * from './mortgage-document.entity';
 export * from './mortgage-downpayment-installment.entity';
 export * from './mortgage-downpayment-payment.entity';

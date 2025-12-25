@@ -1,11 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
-import { Transaction } from '../transaction/transaction.entity';
-import { Wallet } from '../wallet/wallet.entity';
-import { MortgageDownpaymentPlan, DownpaymentPlanStatus, MortgageDownpaymentInstallment, MortgageInstallmentStatus, MortgageDownpaymentPayment, DownpaymentPaymentStatus } from '@valentine-efagene/qshelter-common';
-import { Mortgage } from '../mortgage/mortgage.entity';
-import { User } from '../user/user.entity';
+import { Wallet } from '@valentine-efagene/qshelter-common';
+import { MortgageDownpaymentPlan, DownpaymentPlanStatus, MortgageDownpaymentInstallment, MortgageInstallmentStatus, MortgageDownpaymentPayment, DownpaymentPaymentStatus, Transaction, User } from '@valentine-efagene/qshelter-common';
+import { Mortgage } from '@valentine-efagene/qshelter-common';
 
 @Injectable()
 export class PaymentReconciliationService {

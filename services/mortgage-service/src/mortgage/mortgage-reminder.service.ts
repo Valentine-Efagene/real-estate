@@ -3,7 +3,7 @@ import { Cron } from '@nestjs/schedule';
 import { Not } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Mortgage } from './mortgage.entity';
+import { Mortgage } from '@valentine-efagene/qshelter-common';
 import { MailService } from '../mail/mail.service';
 
 @Injectable()

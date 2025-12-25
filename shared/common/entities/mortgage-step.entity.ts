@@ -8,25 +8,25 @@ export class MortgageStep extends AbstractBaseReviewableEntity {
     @JoinColumn({ name: 'mortgage_id' })
     mortgage: Mortgage;
 
-    @Column({ nullable: true })
+    @Column({ name: 'mortgage_id', nullable: true })
     mortgageId: number;
 
-    @Column()
+    @Column({ name: 'title' })
     title: string;
 
-    @Column({ type: 'text', nullable: true })
+    @Column({ name: 'description', type: 'text', nullable: true })
     description: string;
 
     // Sequence order - easier to query and reorder than relying purely on linked-list pointers
-    @Column({ type: 'int', default: 0 })
+    @Column({ name: 'sequence', type: 'int', default: 0 })
     sequence: number;
 
     // We use `sequence` for ordering. Removed linked-list pointer fields (nextStep/nextStepId) to reduce redundancy.
 
-    @Column({ default: false })
+    @Column({ name: 'is_optional', default: false })
     isOptional: boolean;
 
-    @Column({ nullable: true })
+    @Column({ name: 'completed_at', nullable: true })
     completedAt: Date;
 }
 

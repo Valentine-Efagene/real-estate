@@ -13,11 +13,13 @@ export class PasswordResetToken extends BaseEntity {
   user: User;
 
   @Column({
+    name: 'token_hash',
     nullable: true
   })
   tokenHash: string
 
   @DeleteDateColumn({
+    name: 'expires_at',
     nullable: true,
     default: null
   })

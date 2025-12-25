@@ -9,22 +9,22 @@ import { AbstractBaseReviewableEntity } from './common.entity';
  */
 @Entity({ name: 'mortgage_type' })
 export class MortgageType extends AbstractBaseReviewableEntity {
-    @Column()
+    @Column({ name: 'name' })
     name: string;
 
-    @Column({ nullable: true })
+    @Column({ name: 'slug', nullable: true })
     slug: string;
 
-    @Column({ type: 'text', nullable: true })
+    @Column({ name: 'description', type: 'text', nullable: true })
     description?: string;
 
-    @Column({ type: 'json', nullable: true })
+    @Column({ name: 'default_steps', type: 'json', nullable: true })
     defaultSteps?: any[];
 
-    @Column({ type: 'json', nullable: true })
+    @Column({ name: 'required_documents', type: 'json', nullable: true })
     requiredDocuments?: any[];
 
-    @Column({ type: 'json', nullable: true })
+    @Column({ name: 'config', type: 'json', nullable: true })
     config?: any;
 }
 

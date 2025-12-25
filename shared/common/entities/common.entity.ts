@@ -18,25 +18,26 @@ export abstract class AbstractBaseReviewableEntity extends AbstractTenantAwareEn
 
 export abstract class AbstractBaseDocumentEntity extends AbstractBaseReviewableEntity {
   @Column({
+    name: 'status',
     type: 'enum',
     enum: DocumentStatus,
     default: DocumentStatus.PENDING,
   })
   status: DocumentStatus;
 
-  @Column({ nullable: true })
+  @Column({ name: 'comment', nullable: true })
   comment: string;
 
-  @Column({ type: 'text', nullable: false })
+  @Column({ name: 'url', type: 'text', nullable: false })
   url: string;
 
-  @Column({ nullable: true })
+  @Column({ name: 'description', nullable: true })
   description: string;
 
-  @Column({ nullable: true })
+  @Column({ name: 'name', nullable: true })
   name: string;
 
-  @Column({ nullable: false, comment: "In bytes" })
+  @Column({ name: 'size', nullable: false, comment: "In bytes" })
   size: number
 }
 

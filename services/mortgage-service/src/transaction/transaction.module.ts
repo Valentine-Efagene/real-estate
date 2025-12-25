@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Transaction } from './transaction.entity';
+import { Transaction } from '@valentine-efagene/qshelter-common';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Transaction])],

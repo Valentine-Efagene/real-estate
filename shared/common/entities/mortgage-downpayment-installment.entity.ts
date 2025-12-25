@@ -15,25 +15,25 @@ export class MortgageDownpaymentInstallment extends AbstractBaseEntity {
     @JoinColumn({ name: 'plan_id' })
     plan: MortgageDownpaymentPlan;
 
-    @Column({ nullable: true })
+    @Column({ name: 'plan_id', nullable: true })
     planId: number;
 
-    @Column({ type: 'int' })
+    @Column({ name: 'sequence', type: 'int' })
     sequence: number;
 
-    @Column({ type: 'date' })
+    @Column({ name: 'due_date', type: 'date' })
     dueDate: Date;
 
-    @Column({ type: 'double precision' })
+    @Column({ name: 'amount_due', type: 'double precision' })
     amountDue: number;
 
-    @Column({ type: 'double precision', default: 0 })
+    @Column({ name: 'amount_paid', type: 'double precision', default: 0 })
     amountPaid: number;
 
-    @Column({ type: 'timestamp', nullable: true })
+    @Column({ name: 'paid_at', type: 'timestamp', nullable: true })
     paidAt: Date;
 
-    @Column({ type: 'enum', enum: MortgageInstallmentStatus, default: MortgageInstallmentStatus.PENDING })
+    @Column({ name: 'status', type: 'enum', enum: MortgageInstallmentStatus, default: MortgageInstallmentStatus.PENDING })
     status: MortgageInstallmentStatus;
 }
 

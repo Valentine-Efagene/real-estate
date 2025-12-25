@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DataSource } from 'typeorm';
-import { MortgageTransition } from '../mortgage-transition/mortgage-transition.entity';
-import { MortgageTransitionEvent } from '../mortgage-transition-event/mortgage-transition-event.entity';
+import { MortgageTransition } from '@valentine-efagene/qshelter-common';
+import { MortgageTransitionEvent } from '@valentine-efagene/qshelter-common';
 import { MortgageAction, MortgageFSMContext } from './mortgage-fsm.types';
 
 interface EventExecutionResult {

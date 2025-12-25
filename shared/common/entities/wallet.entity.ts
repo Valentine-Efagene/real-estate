@@ -1,7 +1,7 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { Transaction } from './transaction.entity';
 import { User } from './user.entity';
-import { Currency } from 'types';
+import { Currency } from '../types/common.type';
 
 @Entity({ name: 'wallets' })
 export class Wallet {

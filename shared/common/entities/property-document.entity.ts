@@ -16,6 +16,6 @@ export class PropertyDocument extends AbstractBaseDocumentEntity {
   @JoinColumn({ name: 'property_id' })
   property: Property;
 
-  @Column()
+  @Column({ name: 'property_id' })
   propertyId: number;
 }

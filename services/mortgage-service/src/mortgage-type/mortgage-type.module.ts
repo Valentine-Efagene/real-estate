@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { MortgageType } from './mortgage-type.entity';
+import { MortgageType } from '@valentine-efagene/qshelter-common';
 import { MortgageTypeService } from './mortgage-type.service';
 import { MortgageTypeController } from './mortgage-type.controller';
 import { MortgageTypeSeeder } from './mortgage-type.seeder';

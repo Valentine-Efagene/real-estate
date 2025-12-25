@@ -3,23 +3,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { MortgageFSMService } from './mortgage-fsm.service';
 import { MortgageFSMController } from './mortgage-fsm.controller';
 import { MortgageTransitionService } from './mortgage-transition.service';
-import { Mortgage } from '../mortgage/mortgage.entity';
-import { MortgageTransitionModule } from '../mortgage-transition/mortgage-transition.module';
-import { MortgageTransitionEventModule } from '../mortgage-transition-event/mortgage-transition-event.module';
-import { MortgageStateHistoryModule } from '../mortgage-state-history/mortgage-state-history.module';
-import { EventBusModule } from '../event-bus/event-bus.module';
-import { FSMEventConfig } from './fsm-event-config.service';
+import { Mortgage, MortgageTransition, MortgageTransitionEvent } from '@valentine-efagene/qshelter-common';
+// import { FSMEventConfig } from './fsm-event-config.service'; // TODO: Add back when EventBus is implemented
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([Mortgage]),
-        MortgageTransitionModule,
-        MortgageTransitionEventModule,
-        MortgageStateHistoryModule,
-        EventBusModule,
+        TypeOrmModule.forFeature([Mortgage, MortgageTransition, MortgageTransitionEvent]),
     ],
     controllers: [MortgageFSMController],
-    providers: [MortgageFSMService, MortgageTransitionService, FSMEventConfig],
+    providers: [MortgageFSMService, MortgageTransitionService], // FSMEventConfig removed until EventBus is implemented
     exports: [MortgageFSMService, MortgageTransitionService],
 })
 export class MortgageFSMModule { }

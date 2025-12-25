@@ -6,23 +6,23 @@ import { TenantStatus, TenantPlan } from '../types/tenant.type';
 @Unique(['subdomain'])
 @Unique(['domain'])
 export class Tenant extends BaseEntity {
-    @Column({ length: 255 })
+    @Column({ name: 'name', length: 255 })
     name: string;
 
-    @Column({ length: 100, unique: true })
+    @Column({ name: 'subdomain', length: 100, unique: true })
     @Index()
     subdomain: string; // e.g., 'acme' for acme.yourdomain.com
 
-    @Column({ length: 255, nullable: true, unique: true })
+    @Column({ name: 'domain', length: 255, nullable: true, unique: true })
     domain: string; // Optional custom domain: e.g., 'realestate.acme.com'
 
-    @Column({ type: 'varchar', default: TenantStatus.ACTIVE })
+    @Column({ name: 'status', type: 'varchar', default: TenantStatus.ACTIVE })
     status: TenantStatus;
 
-    @Column({ type: 'varchar', default: TenantPlan.FREE })
+    @Column({ name: 'plan', type: 'varchar', default: TenantPlan.FREE })
     plan: TenantPlan;
 
-    @Column({ type: 'json', nullable: true })
+    @Column({ name: 'config', type: 'json', nullable: true })
     config: {
         maxUsers?: number;
         maxProperties?: number;
@@ -35,30 +35,30 @@ export class Tenant extends BaseEntity {
         [key: string]: any;
     };
 
-    @Column({ type: 'json', nullable: true })
+    @Column({ name: 'metadata', type: 'json', nullable: true })
     metadata: any; // Additional tenant-specific metadata
 
-    @Column({ type: 'timestamp', nullable: true })
+    @Column({ name: 'trial_ends_at', type: 'timestamp', nullable: true })
     trialEndsAt: Date;
 
-    @Column({ type: 'timestamp', nullable: true })
+    @Column({ name: 'subscription_ends_at', type: 'timestamp', nullable: true })
     subscriptionEndsAt: Date;
 
     // Contact information
-    @Column({ length: 255, nullable: true })
+    @Column({ name: 'contact_email', length: 255, nullable: true })
     contactEmail: string;
 
-    @Column({ length: 50, nullable: true })
+    @Column({ name: 'contact_phone', length: 50, nullable: true })
     contactPhone: string;
 
     // Database strategy (for future use if migrating to separate databases per tenant)
-    @Column({ type: 'varchar', default: 'shared' })
+    @Column({ name: 'database_strategy', type: 'varchar', default: 'shared' })
     databaseStrategy: 'shared' | 'isolated';
 
-    @Column({ length: 255, nullable: true })
+    @Column({ name: 'database_host', length: 255, nullable: true })
     databaseHost: string;
 
-    @Column({ length: 100, nullable: true })
+    @Column({ name: 'database_name', length: 100, nullable: true })
     databaseName: string;
 }
 

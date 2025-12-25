@@ -9,6 +9,7 @@ export class Transaction {
   id: number;
 
   @Column({
+    name: 'type',
     type: 'enum',
     enum: TransactionType
   })
@@ -21,36 +22,38 @@ export class Transaction {
   @JoinColumn({ name: 'wallet_id' })
   wallet: Wallet;
 
-  @Column()
+  @Column({ name: 'wallet_id' })
   walletId: number
 
   @ManyToOne(() => User, (user) => user.transactions)
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @Column()
+  @Column({ name: 'user_id' })
   userId: number
 
   @Column({
+    name: 'provider',
     type: 'enum',
     enum: Provider
   })
   provider: Provider
 
-  @Column()
+  @Column({ name: 'ref' })
   ref: string
 
   @Column({
+    name: 'metadata',
     type: 'text'
   })
   metadata: string
 
-  @Column({ type: 'decimal', precision: 65, scale: 2, nullable: true })
+  @Column({ name: 'amount', type: 'decimal', precision: 65, scale: 2, nullable: true })
   amount: number;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 }

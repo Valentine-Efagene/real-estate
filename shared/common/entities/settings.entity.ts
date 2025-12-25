@@ -14,7 +14,7 @@ export class Settings extends AbstractBaseReviewableEntity {
   @JoinColumn({ name: 'created_by' })
   creator: User;
 
-  @Column({ nullable: true })
+  @Column({ name: 'created_by', nullable: true })
   createdBy: number;
 
   @OneToMany(
@@ -23,31 +23,33 @@ export class Settings extends AbstractBaseReviewableEntity {
   )
   media: PropertyMedia[];
 
-  @Column({ nullable: true })
+  @Column({ name: 'title', nullable: true })
   title: string;
 
-  @Column()
+  @Column({ name: 'location' })
   location: string;
 
-  @Column()
+  @Column({ name: 'start_time' })
   startTime: Date;
 
-  @Column()
+  @Column({ name: 'end_time' })
   endTime: Date;
 
-  @Column({ default: true })
+  @Column({ name: 'is_private', default: true })
   isPrivate: boolean;
 
-  @Column({ nullable: true })
+  @Column({ name: 'qr_offline_code', nullable: true })
   qrOfflineCode: string;
 
   @Column({
+    name: 'description',
     type: 'text',
     nullable: true
   })
   description: string
 
   @Column({
+    name: 'status',
     type: 'enum',
     enum: Status,
     default: Status.PENDING,

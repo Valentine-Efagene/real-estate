@@ -8,9 +8,9 @@ export class RefreshToken extends BaseEntity {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @Column({ nullable: true })
+  @Column({ name: 'user_id', nullable: true })
   userId: number;
 
-  @Column({ nullable: false, type: 'text' })
+  @Column({ name: 'token', nullable: false, type: 'text' })
   token: string;
 }

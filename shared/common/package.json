@@ -1,6 +1,6 @@
 {
     "name": "@valentine-efagene/qshelter-common",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "description": "Shared common utilities, DTOs, entities, guards, middleware, decorators, and pagination for QShelter",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",

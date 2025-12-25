@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { MortgageType } from './mortgage-type.entity';
+import { MortgageType } from '@valentine-efagene/qshelter-common';
 import { CreateMortgageTypeDto, UpdateMortgageTypeDto } from './mortgage-type.dto';
 
 @Injectable()

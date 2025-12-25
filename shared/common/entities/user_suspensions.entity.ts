@@ -13,11 +13,13 @@ export class UserSuspension extends BaseEntity {
   user: User;
 
   @Column({
+    name: 'user_id',
     nullable: false
   })
   userId: number
 
   @Column({
+    name: 'reason',
     nullable: false
   })
   reason: string

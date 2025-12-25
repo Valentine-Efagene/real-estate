@@ -18,22 +18,22 @@ export class MortgageDownpaymentPlan extends AbstractBaseEntity {
     @JoinColumn({ name: 'mortgage_id' })
     mortgage: Mortgage;
 
-    @Column({ nullable: true })
+    @Column({ name: 'mortgage_id', nullable: true })
     mortgageId: number;
 
-    @Column({ type: 'double precision' })
+    @Column({ name: 'total_amount', type: 'double precision' })
     totalAmount: number;
 
-    @Column({ type: 'int', nullable: true })
+    @Column({ name: 'installment_count', type: 'int', nullable: true })
     installmentCount: number;
 
-    @Column({ nullable: true, type: 'enum', enum: Frequency })
+    @Column({ name: 'frequency', nullable: true, type: 'enum', enum: Frequency })
     frequency: Frequency;
 
-    @Column({ type: 'date', nullable: true })
+    @Column({ name: 'start_date', type: 'date', nullable: true })
     startDate: Date;
 
-    @Column({ type: 'enum', enum: DownpaymentPlanStatus, default: DownpaymentPlanStatus.PENDING })
+    @Column({ name: 'status', type: 'enum', enum: DownpaymentPlanStatus, default: DownpaymentPlanStatus.PENDING })
     status: DownpaymentPlanStatus;
 
     @OneToMany(() => MortgageDownpaymentInstallment, (i) => i.plan, { cascade: true })

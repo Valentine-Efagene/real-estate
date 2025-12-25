@@ -17,6 +17,7 @@ export class PropertyMedia extends AbstractBaseMediaEntity {
   property: Property;
 
   @Column({
+    name: 'property_id',
     nullable: false
   })
   propertyId: number

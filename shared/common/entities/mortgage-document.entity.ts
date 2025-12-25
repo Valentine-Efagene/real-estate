@@ -9,28 +9,28 @@ export class MortgageDocument extends AbstractBaseReviewableEntity {
     @JoinColumn({ name: 'mortgage_id' })
     mortgage: Mortgage;
 
-    @Column({ nullable: true })
+    @Column({ name: 'mortgage_id', nullable: true })
     mortgageId: number;
 
-    @Column()
+    @Column({ name: 'file_name' })
     fileName: string;
 
     // Allow null URLs for template/placeholder documents created from mortgage type templates.
-    @Column({ nullable: true })
+    @Column({ name: 'url', nullable: true })
     url: string;
 
     // Flag to mark this document as a template/placeholder (not yet uploaded). Template docs typically have a name but no URL.
-    @Column({ default: false })
+    @Column({ name: 'is_template', default: false })
     isTemplate: boolean;
 
-    @Column({ nullable: true })
+    @Column({ name: 'mime_type', nullable: true })
     mimeType: string;
 
     @ManyToOne(() => User, { nullable: true })
     @JoinColumn({ name: 'uploaded_by' })
     uploadedBy: User;
 
-    @Column({ nullable: true })
+    @Column({ name: 'uploaded_by_id', nullable: true })
     uploadedById: number;
 }
 

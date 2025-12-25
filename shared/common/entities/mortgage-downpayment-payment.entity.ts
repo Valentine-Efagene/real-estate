@@ -24,37 +24,37 @@ export class MortgageDownpaymentPayment extends AbstractBaseEntity {
     @JoinColumn({ name: 'plan_id' })
     plan: MortgageDownpaymentPlan;
 
-    @Column({ nullable: true })
+    @Column({ name: 'plan_id', nullable: true })
     planId: number;
 
     @ManyToOne(() => MortgageDownpaymentInstallment, { nullable: true })
     @JoinColumn({ name: 'installment_id' })
     installment: MortgageDownpaymentInstallment;
 
-    @Column({ nullable: true })
+    @Column({ name: 'installment_id', nullable: true })
     installmentId: number;
 
     @ManyToOne(() => User, { nullable: true })
     @JoinColumn({ name: 'payer_id' })
     payer: User;
 
-    @Column({ nullable: true })
+    @Column({ name: 'payer_id', nullable: true })
     payerId: number;
 
-    @Column({ type: 'double precision' })
+    @Column({ name: 'amount', type: 'double precision' })
     amount: number;
 
-    @Column({ nullable: true, unique: true })
+    @Column({ name: 'provider_reference', nullable: true, unique: true })
     providerReference: string;
 
-    @Column({ type: 'enum', enum: DownpaymentPaymentStatus, default: DownpaymentPaymentStatus.PENDING })
+    @Column({ name: 'status', type: 'enum', enum: DownpaymentPaymentStatus, default: DownpaymentPaymentStatus.PENDING })
     status: DownpaymentPaymentStatus;
 
     // FSM state tracking
-    @Column({ type: 'enum', enum: PaymentState, default: PaymentState.INITIATED })
+    @Column({ name: 'state', type: 'enum', enum: PaymentState, default: PaymentState.INITIATED })
     state: PaymentState;
 
-    @Column({ type: 'text', nullable: true })
+    @Column({ name: 'state_metadata', type: 'text', nullable: true })
     stateMetadata: string; // JSON metadata for state transitions
 }
 

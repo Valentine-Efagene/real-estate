@@ -6,6 +6,7 @@ import { RefreshToken } from './refresh_token.entity';
 import { Property } from './property.entity';
 import { Transaction } from './transaction.entity';
 import { Wallet } from './wallet.entity';
+import { DeviceEndpoint } from './device_endpoint.entity';
 
 @Entity({ name: 'users' })
 export class User extends TenantAwareBaseEntity {
@@ -15,25 +16,28 @@ export class User extends TenantAwareBaseEntity {
   @Column({ name: 'last_name', nullable: true })
   lastName?: string;
 
-  @Column({ nullable: true })
+  @OneToMany(() => DeviceEndpoint, deviceEndpoint => deviceEndpoint.user)
+  deviceEndpoints: DeviceEndpoint[]
+
+  @Column({ name: 'phone', nullable: true })
   phone?: string;
 
-  @Column({ nullable: true, type: 'text' })
+  @Column({ name: 'bio', nullable: true, type: 'text' })
   bio?: string;
 
-  @Column({ nullable: true })
+  @Column({ name: 'address', nullable: true })
   address?: string;
 
-  @Column({ nullable: true })
+  @Column({ name: 'email', nullable: true })
   email: string;
 
-  @Column({ nullable: true })
+  @Column({ name: 'password', nullable: true })
   password: string;
 
-  @Column({ type: 'text', nullable: true })
+  @Column({ name: 'avatar', type: 'text', nullable: true })
   avatar?: string;
 
-  @Column({ nullable: true })
+  @Column({ name: 'gender', nullable: true })
   gender: string;
 
   @ManyToMany(() => Role, (role) => role.users, {
@@ -75,6 +79,7 @@ export class User extends TenantAwareBaseEntity {
   properties: Property[];
 
   @Column({
+    name: 'status',
     type: 'enum',
     enum: UserStatus,
     default: UserStatus.PENDING

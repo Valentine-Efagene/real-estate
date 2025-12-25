@@ -8,7 +8,7 @@ import { Mortgage } from './mortgage.entity';
 import { PaymentPlan } from './payment-plan.entity';
 import { Contract } from './contract.entity';
 import { PropertyStatus, PropertyType } from '../types/property.type';
-import { Currency } from 'types';
+import { Currency } from '../types/common.type';
 
 @Entity({ name: 'property' })
 export class Property extends AbstractBaseReviewableEntity {
@@ -62,7 +62,7 @@ export class Property extends AbstractBaseReviewableEntity {
   })
   displayImageId: number
 
-  @Column({ nullable: true })
+  @Column({ name: 'title', nullable: true })
   title: string;
 
   @Column({
@@ -73,38 +73,40 @@ export class Property extends AbstractBaseReviewableEntity {
   })
   propertyType: string;
 
-  @Column({ nullable: true })
+  @Column({ name: 'country', nullable: true })
   country: string;
 
   @Column({
+    name: 'currency',
     nullable: true,
     type: 'enum',
     enum: Currency,
   })
   currency: Currency;
 
-  @Column({ nullable: true })
+  @Column({ name: 'city', nullable: true })
   city: string;
 
-  @Column({ nullable: true })
+  @Column({ name: 'district', nullable: true })
   district: string;
 
   @Column({ name: 'zip_code', nullable: true })
   zipCode: string;
 
-  @Column({ nullable: true })
+  @Column({ name: 'street_address', nullable: true })
   streetAddress: string;
 
-  @Column({ nullable: false })
+  @Column({ name: 'n_bedrooms', nullable: false })
   nBedrooms: string
 
-  @Column({ nullable: false })
+  @Column({ name: 'n_bathrooms', nullable: false })
   nBathrooms: string
 
-  @Column({ nullable: false })
+  @Column({ name: 'n_parking_spots', nullable: false })
   nParkingSpots: string
 
   @Column({
+    name: 'price',
     type: 'double precision',
     scale: 2,
     precision: 20,
@@ -113,6 +115,7 @@ export class Property extends AbstractBaseReviewableEntity {
   price: number
 
   @Column({
+    name: 'longitude',
     type: 'double precision',
     scale: 2,
     precision: 20,
@@ -121,6 +124,7 @@ export class Property extends AbstractBaseReviewableEntity {
   longitude: number
 
   @Column({
+    name: 'latitude',
     type: 'double precision',
     scale: 2,
     precision: 20,
@@ -129,6 +133,7 @@ export class Property extends AbstractBaseReviewableEntity {
   latitude: number
 
   @Column({
+    name: 'area',
     type: 'double precision',
     scale: 2,
     precision: 20,
@@ -137,12 +142,14 @@ export class Property extends AbstractBaseReviewableEntity {
   area: number
 
   @Column({
+    name: 'description',
     type: 'text',
     nullable: true
   })
   description: string
 
   @Column({
+    name: 'status',
     type: 'enum',
     enum: PropertyStatus,
     default: PropertyStatus.PENDING,

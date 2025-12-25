@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BullModule } from '@nestjs/bullmq';
-import { Transaction } from '../transaction/transaction.entity';
-import { Wallet } from '../wallet/wallet.entity';
+import { Transaction } from '@valentine-efagene/qshelter-common';
+import { Wallet } from '@valentine-efagene/qshelter-common';
 import { MortgageDownpaymentPlan, MortgageDownpaymentInstallment, MortgageDownpaymentPayment } from '@valentine-efagene/qshelter-common';
-import { Mortgage } from '../mortgage/mortgage.entity';
-import { User } from '../user/user.entity';
+import { Mortgage } from '@valentine-efagene/qshelter-common';
+import { User } from '@valentine-efagene/qshelter-common';
 import { PaymentReconciliationService } from './payment-reconciliation.service';
 import TransactionProcessor from './transaction.processor';
 

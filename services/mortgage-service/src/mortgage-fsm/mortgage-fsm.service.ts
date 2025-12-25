@@ -11,8 +11,8 @@ import {
     MortgageStateChangeEvent,
     MortgageAction,
 } from './mortgage-fsm.types';
-import { Mortgage } from '../mortgage/mortgage.entity';
-import { MortgageTransition } from '../mortgage-transition/mortgage-transition.entity';
+import { Mortgage } from '@valentine-efagene/qshelter-common';
+import { MortgageTransition } from '@valentine-efagene/qshelter-common';
 import { MortgageTransitionService } from './mortgage-transition.service';
 import { MortgageStateHistory } from '../mortgage-state-history/mortgage-state-history.entity';
 

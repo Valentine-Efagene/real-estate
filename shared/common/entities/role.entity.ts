@@ -5,7 +5,7 @@ import { BaseEntity } from './BaseEntity';
 
 @Entity({ name: 'roles' })
 export class Role extends BaseEntity {
-  @Column({ nullable: true })
+  @Column({ name: 'name', nullable: true })
   name: string;
 
   @ManyToMany(() => Permission, (permission) => permission.roles, {

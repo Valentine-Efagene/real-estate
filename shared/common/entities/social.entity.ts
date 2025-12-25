@@ -12,15 +12,17 @@ export class Social extends AbstractBaseReviewableEntity {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @Column({ nullable: true })
+  @Column({ name: 'user_id', nullable: true })
   userId: number;
 
   @Column({
+    name: 'brand',
     nullable: true,
   })
   brand: string;
 
   @Column({
+    name: 'link',
     nullable: true,
   })
   link: string;

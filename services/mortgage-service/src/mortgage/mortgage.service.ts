@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Mortgage } from './mortgage.entity';
-import { MortgageDocument } from './mortgage-document.entity';
-import { MortgageStep } from './mortgage-step.entity';
+import { Mortgage } from '@valentine-efagene/qshelter-common';
+import { MortgageDocument } from '@valentine-efagene/qshelter-common';
+import { MortgageStep } from '@valentine-efagene/qshelter-common';
 import { CreateMortgageDto, CreateMortgageDocumentDto, CreateMortgageStepDto } from './mortgage.dto';
-import { MortgageType } from '../mortgage-type/mortgage-type.entity';
+import { MortgageType } from '@valentine-efagene/qshelter-common';
 
 @Injectable()
 export class MortgageService {

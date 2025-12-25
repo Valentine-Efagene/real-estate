@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { MortgageType } from './mortgage-type.entity';
+import { MortgageType } from '@valentine-efagene/qshelter-common';
 
 @Injectable()
 export class MortgageTypeSeeder {
