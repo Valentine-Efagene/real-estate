@@ -1,13 +1,15 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import * as lambda from 'aws-cdk-lib/aws-lambda';
-import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as rds from 'aws-cdk-lib/aws-rds';
 import * as elasticache from 'aws-cdk-lib/aws-elasticache';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as events from 'aws-cdk-lib/aws-events';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import * as logs from 'aws-cdk-lib/aws-logs';
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
-import * as path from 'path';
+import * as apigatewayv2 from 'aws-cdk-lib/aws-apigatewayv2';
+import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
 
 export class RealEstateStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -73,341 +75,278 @@ export class RealEstateStack extends cdk.Stack {
       sortKey: { name: 'GSI1SK', type: dynamodb.AttributeType.STRING },
     });
 
-    // Shared environment variables for all Lambdas
-    const sharedEnv = {
-      NODE_ENV: 'production',
-      DB_HOST: cluster.clusterEndpoint.hostname,
-      DB_PORT: cluster.clusterEndpoint.port.toString(),
-      DB_NAME: 'real_estate_db',
-      DATABASE_SECRET_ARN: dbCredentials.secretArn,
-      VALKEY_ENDPOINT: valkeyCluster.attrRedisEndpointAddress,
-      VALKEY_PORT: '6379',
-      AWS_REGION_NAME: cdk.Stack.of(this).region,
-      ROLE_POLICIES_TABLE_NAME: rolePoliciesTable.tableName,
-    };
-
-    // === User Service Lambda ===
-    const userServiceLambda = new lambda.Function(this, 'UserServiceLambda', {
-      runtime: lambda.Runtime.NODEJS_20_X,
-      handler: 'serverless.handler',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../../'), {
-        exclude: ['infrastructure', 'node_modules', '.git'],
-        bundling: {
-          image: lambda.Runtime.NODEJS_20_X.bundlingImage,
-          command: [
-            'bash', '-c', [
-              'cd services/user-service',
-              'npm install',
-              'npm run build',
-              'cp -r dist/* /asset-output/',
-              'cp -r node_modules /asset-output/',
-              'cp package.json /asset-output/',
-            ].join(' && '),
-          ],
+    // === S3 Buckets ===
+    const uploadsBucket = new s3.Bucket(this, 'UploadsBucket', {
+      bucketName: `qshelter-uploads-${cdk.Stack.of(this).account}`,
+      encryption: s3.BucketEncryption.S3_MANAGED,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      versioned: true,
+      lifecycleRules: [
+        {
+          id: 'DeleteOldVersions',
+          noncurrentVersionExpiration: cdk.Duration.days(30),
         },
-      }),
-      timeout: cdk.Duration.seconds(30),
-      memorySize: 1024,
-      vpc,
-      vpcSubnets: {
-        subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
-      },
-      environment: sharedEnv,
-      logRetention: logs.RetentionDays.ONE_WEEK,
-    });
-
-    // === Mortgage Service Lambda ===
-    const mortgageServiceLambda = new lambda.Function(this, 'MortgageServiceLambda', {
-      runtime: lambda.Runtime.NODEJS_20_X,
-      handler: 'serverless.handler',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../../'), {
-        exclude: ['infrastructure', 'node_modules', '.git'],
-        bundling: {
-          image: lambda.Runtime.NODEJS_20_X.bundlingImage,
-          command: [
-            'bash', '-c', [
-              'cd services/mortgage-service',
-              'npm install',
-              'npm run build',
-              'cp -r dist/* /asset-output/',
-              'cp -r node_modules /asset-output/',
-              'cp package.json /asset-output/',
-            ].join(' && '),
-          ],
+        {
+          id: 'DeleteIncompleteUploads',
+          abortIncompleteMultipartUploadAfter: cdk.Duration.days(7),
         },
-      }),
-      timeout: cdk.Duration.seconds(30),
-      memorySize: 1024,
-      vpc,
-      vpcSubnets: {
-        subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
-      },
-      environment: sharedEnv,
-      logRetention: logs.RetentionDays.ONE_WEEK,
-    });
-
-    // === Property Service Lambda ===
-    const propertyServiceLambda = new lambda.Function(this, 'PropertyServiceLambda', {
-      runtime: lambda.Runtime.NODEJS_20_X,
-      handler: 'serverless.handler',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../../'), {
-        exclude: ['infrastructure', 'node_modules', '.git'],
-        bundling: {
-          image: lambda.Runtime.NODEJS_20_X.bundlingImage,
-          command: [
-            'bash', '-c', [
-              'cd services/property-service',
-              'npm install',
-              'npm run build',
-              'cp -r dist/* /asset-output/',
-              'cp -r node_modules /asset-output/',
-              'cp package.json /asset-output/',
-            ].join(' && '),
-          ],
+      ],
+      cors: [
+        {
+          allowedMethods: [s3.HttpMethods.GET, s3.HttpMethods.PUT, s3.HttpMethods.POST],
+          allowedOrigins: ['*'], // Restrict in production
+          allowedHeaders: ['*'],
+          maxAge: 3000,
         },
-      }),
-      timeout: cdk.Duration.seconds(30),
-      memorySize: 1024,
-      vpc,
-      vpcSubnets: {
-        subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
-      },
-      environment: sharedEnv,
-      logRetention: logs.RetentionDays.ONE_WEEK,
+      ],
+      removalPolicy: cdk.RemovalPolicy.RETAIN,
     });
 
-    // Grant permissions to all Lambdas
-    [userServiceLambda, mortgageServiceLambda, propertyServiceLambda].forEach(fn => {
-      dbCredentials.grantRead(fn);
-      cluster.connections.allowDefaultPortFrom(fn);
-      rolePoliciesTable.grantReadWriteData(fn);
+    // === EventBridge Event Bus ===
+    const eventBus = new events.EventBus(this, 'QShelterEventBus', {
+      eventBusName: 'qshelter-event-bus',
     });
 
-    // === Lambda Authorizer ===
-    const authorizerLambda = new lambda.Function(this, 'AuthorizerLambda', {
-      runtime: lambda.Runtime.NODEJS_20_X,
-      handler: 'index.handler',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../../services/authorizer-service'), {
-        exclude: ['node_modules', 'test', 'dist'],
-        bundling: {
-          image: lambda.Runtime.NODEJS_20_X.bundlingImage,
-          command: [
-            'bash', '-c', [
-              'npm install',
-              'npm run build',
-              'cp -r dist/* /asset-output/',
-              'cp -r node_modules /asset-output/',
-              'cp package.json /asset-output/',
-            ].join(' && '),
-          ],
-        },
-      }),
-      timeout: cdk.Duration.seconds(10),
-      memorySize: 512,
-      environment: {
-        ROLE_POLICIES_TABLE_NAME: rolePoliciesTable.tableName,
-        JWT_SECRET: process.env.JWT_SECRET || 'your-secret-key-change-in-production',
-        AWS_REGION_NAME: cdk.Stack.of(this).region,
-      },
-      logRetention: logs.RetentionDays.ONE_WEEK,
+    // Create CloudWatch Log Group for EventBridge
+    const eventBusLogGroup = new logs.LogGroup(this, 'EventBusLogGroup', {
+      logGroupName: '/aws/events/qshelter-event-bus',
+      retention: logs.RetentionDays.ONE_WEEK,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
-    // Grant DynamoDB read access to authorizer
-    rolePoliciesTable.grantReadData(authorizerLambda);
+    // === IAM Role for Lambda Services ===
+    const lambdaServiceRole = new iam.Role(this, 'LambdaServiceRole', {
+      assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+      description: 'Role for QShelter microservice Lambda functions',
+      managedPolicies: [
+        iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaVPCAccessExecutionRole'),
+      ],
+    });
 
-    // === API Gateway with Path-Based Routing ===
-    const api = new apigateway.RestApi(this, 'RealEstateApi', {
-      restApiName: 'Real Estate Microservices API',
-      deployOptions: {
-        stageName: 'prod',
-        throttlingRateLimit: 100,
-        throttlingBurstLimit: 200,
-        loggingLevel: apigateway.MethodLoggingLevel.INFO,
-        dataTraceEnabled: true,
-      },
-      defaultCorsPreflightOptions: {
-        allowOrigins: apigateway.Cors.ALL_ORIGINS,
-        allowMethods: apigateway.Cors.ALL_METHODS,
+    // Grant permissions to Lambda role
+    dbCredentials.grantRead(lambdaServiceRole);
+    rolePoliciesTable.grantReadWriteData(lambdaServiceRole);
+    uploadsBucket.grantReadWrite(lambdaServiceRole);
+
+    // Grant EventBridge permissions
+    lambdaServiceRole.addToPolicy(new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: [
+        'events:PutEvents',
+      ],
+      resources: [eventBus.eventBusArn],
+    }));
+
+    // Grant Secrets Manager access
+    lambdaServiceRole.addToPolicy(new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: [
+        'secretsmanager:GetSecretValue',
+      ],
+      resources: [
+        `arn:aws:secretsmanager:${cdk.Stack.of(this).region}:${cdk.Stack.of(this).account}:secret:qshelter/*`,
+      ],
+    }));
+
+    // Grant CloudWatch Logs permissions
+    lambdaServiceRole.addToPolicy(new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: [
+        'logs:CreateLogGroup',
+        'logs:CreateLogStream',
+        'logs:PutLogEvents',
+      ],
+      resources: ['*'],
+    }));
+
+    // === CloudWatch Log Groups for Services ===
+    new logs.LogGroup(this, 'UserServiceLogGroup', {
+      logGroupName: '/aws/lambda/qshelter-user-service',
+      retention: logs.RetentionDays.ONE_WEEK,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    });
+
+    new logs.LogGroup(this, 'PropertyServiceLogGroup', {
+      logGroupName: '/aws/lambda/qshelter-property-service',
+      retention: logs.RetentionDays.ONE_WEEK,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    });
+
+    new logs.LogGroup(this, 'MortgageServiceLogGroup', {
+      logGroupName: '/aws/lambda/qshelter-mortgage-service',
+      retention: logs.RetentionDays.ONE_WEEK,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    });
+
+    new logs.LogGroup(this, 'NotificationsServiceLogGroup', {
+      logGroupName: '/aws/lambda/qshelter-notifications-service',
+      retention: logs.RetentionDays.ONE_WEEK,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    });
+
+    new logs.LogGroup(this, 'AuthorizerServiceLogGroup', {
+      logGroupName: '/aws/lambda/qshelter-authorizer-service',
+      retention: logs.RetentionDays.ONE_WEEK,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    });
+
+    // === HTTP API Gateway (Shared) ===
+    const httpApi = new apigatewayv2.CfnApi(this, 'QShelterHttpApi', {
+      name: 'qshelter-api',
+      protocolType: 'HTTP',
+      corsConfiguration: {
+        allowOrigins: ['*'], // Restrict in production
+        allowMethods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
         allowHeaders: [
           'Content-Type',
-          'X-Amz-Date',
           'Authorization',
+          'X-Amz-Date',
           'X-Api-Key',
           'X-Amz-Security-Token',
           'X-Tenant-ID',
           'X-Tenant-Subdomain',
         ],
+        maxAge: 300,
       },
     });
 
-    // Configure Lambda authorizer
-    const authorizer = new apigateway.RequestAuthorizer(this, 'JwtAuthorizer', {
-      handler: authorizerLambda,
-      identitySources: [
-        apigateway.IdentitySource.header('Authorization'),
-      ],
-      resultsCacheTtl: cdk.Duration.minutes(5),
-      authorizerName: 'JwtAuthorizer',
-    });
-
-    // User Service routes (/auth/*, /users/*, /roles/*, /permissions/*, /tenants/*)
-    const authResource = api.root.addResource('auth');
-    authResource.addProxy({
-      defaultIntegration: new apigateway.LambdaIntegration(userServiceLambda),
-      anyMethod: true,
-    });
-
-    const usersResource = api.root.addResource('users');
-    usersResource.addProxy({
-      defaultIntegration: new apigateway.LambdaIntegration(userServiceLambda),
-      anyMethod: true,
-      defaultMethodOptions: {
-        authorizer,
-        authorizationType: apigateway.AuthorizationType.CUSTOM,
+    // Create a default stage
+    const apiStage = new apigatewayv2.CfnStage(this, 'QShelterHttpApiStage', {
+      apiId: httpApi.ref,
+      stageName: '$default',
+      autoDeploy: true,
+      accessLogSettings: {
+        destinationArn: new logs.LogGroup(this, 'ApiAccessLogGroup', {
+          logGroupName: '/aws/apigateway/qshelter-api',
+          retention: logs.RetentionDays.ONE_WEEK,
+          removalPolicy: cdk.RemovalPolicy.DESTROY,
+        }).logGroupArn,
+        format: JSON.stringify({
+          requestId: '$context.requestId',
+          ip: '$context.identity.sourceIp',
+          requestTime: '$context.requestTime',
+          httpMethod: '$context.httpMethod',
+          routeKey: '$context.routeKey',
+          status: '$context.status',
+          protocol: '$context.protocol',
+          responseLength: '$context.responseLength',
+          errorMessage: '$context.error.message',
+          integrationErrorMessage: '$context.integrationErrorMessage',
+        }),
       },
-    });
-
-    const rolesResource = api.root.addResource('roles');
-    rolesResource.addProxy({
-      defaultIntegration: new apigateway.LambdaIntegration(userServiceLambda),
-      anyMethod: true,
-      defaultMethodOptions: {
-        authorizer,
-        authorizationType: apigateway.AuthorizationType.CUSTOM,
-      },
-    });
-
-    const permissionsResource = api.root.addResource('permissions');
-    permissionsResource.addProxy({
-      defaultIntegration: new apigateway.LambdaIntegration(userServiceLambda),
-      anyMethod: true,
-      defaultMethodOptions: {
-        authorizer,
-        authorizationType: apigateway.AuthorizationType.CUSTOM,
-      },
-    });
-
-    const tenantsResource = api.root.addResource('tenants');
-    tenantsResource.addProxy({
-      defaultIntegration: new apigateway.LambdaIntegration(userServiceLambda),
-      anyMethod: true,
-      defaultMethodOptions: {
-        authorizer,
-        authorizationType: apigateway.AuthorizationType.CUSTOM,
-      },
-    });
-
-    // Mortgage Service routes (/mortgages/*, /mortgage-types/*, /payments/*, /wallets/*)
-    const mortgagesResource = api.root.addResource('mortgages');
-    mortgagesResource.addProxy({
-      defaultIntegration: new apigateway.LambdaIntegration(mortgageServiceLambda),
-      anyMethod: true,
-      defaultMethodOptions: {
-        authorizer,
-        authorizationType: apigateway.AuthorizationType.CUSTOM,
-      },
-    });
-
-    const mortgageTypesResource = api.root.addResource('mortgage-types');
-    mortgageTypesResource.addProxy({
-      defaultIntegration: new apigateway.LambdaIntegration(mortgageServiceLambda),
-      anyMethod: true,
-      defaultMethodOptions: {
-        authorizer,
-        authorizationType: apigateway.AuthorizationType.CUSTOM,
-      },
-    });
-
-    const paymentsResource = api.root.addResource('payments');
-    paymentsResource.addProxy({
-      defaultIntegration: new apigateway.LambdaIntegration(mortgageServiceLambda),
-      anyMethod: true,
-      defaultMethodOptions: {
-        authorizer,
-        authorizationType: apigateway.AuthorizationType.CUSTOM,
-      },
-    });
-
-    const walletsResource = api.root.addResource('wallets');
-    walletsResource.addProxy({
-      defaultIntegration: new apigateway.LambdaIntegration(mortgageServiceLambda),
-      anyMethod: true,
-      defaultMethodOptions: {
-        authorizer,
-        authorizationType: apigateway.AuthorizationType.CUSTOM,
-      },
-    });
-
-    // Property Service routes (/properties/*, /amenities/*, /qr-code/*)
-    const propertiesResource = api.root.addResource('properties');
-    propertiesResource.addProxy({
-      defaultIntegration: new apigateway.LambdaIntegration(propertyServiceLambda),
-      anyMethod: true,
-      defaultMethodOptions: {
-        authorizer,
-        authorizationType: apigateway.AuthorizationType.CUSTOM,
-      },
-    });
-
-    const amenitiesResource = api.root.addResource('amenities');
-    amenitiesResource.addProxy({
-      defaultIntegration: new apigateway.LambdaIntegration(propertyServiceLambda),
-      anyMethod: true,
-      defaultMethodOptions: {
-        authorizer,
-        authorizationType: apigateway.AuthorizationType.CUSTOM,
-      },
-    });
-
-    const qrCodeResource = api.root.addResource('qr-code');
-    qrCodeResource.addProxy({
-      defaultIntegration: new apigateway.LambdaIntegration(propertyServiceLambda),
-      anyMethod: true,
-      defaultMethodOptions: {
-        authorizer,
-        authorizationType: apigateway.AuthorizationType.CUSTOM,
+      defaultRouteSettings: {
+        throttlingBurstLimit: 200,
+        throttlingRateLimit: 100,
       },
     });
 
     // === Outputs ===
-    new cdk.CfnOutput(this, 'ApiUrl', {
-      value: api.url,
-      description: 'API Gateway URL',
+    new cdk.CfnOutput(this, 'VpcId', {
+      value: vpc.vpcId,
+      description: 'VPC ID',
+      exportName: 'QShelterVpcId',
     });
 
-    new cdk.CfnOutput(this, 'UserServiceLambdaArn', {
-      value: userServiceLambda.functionArn,
-      description: 'User Service Lambda ARN',
+    new cdk.CfnOutput(this, 'PrivateSubnetIds', {
+      value: vpc.privateSubnets.map(subnet => subnet.subnetId).join(','),
+      description: 'Private Subnet IDs',
+      exportName: 'QShelterPrivateSubnetIds',
     });
 
-    new cdk.CfnOutput(this, 'MortgageServiceLambdaArn', {
-      value: mortgageServiceLambda.functionArn,
-      description: 'Mortgage Service Lambda ARN',
+    new cdk.CfnOutput(this, 'DatabaseEndpoint', {
+      value: cluster.clusterEndpoint.hostname,
+      description: 'RDS Aurora Cluster Endpoint',
+      exportName: 'QShelterDatabaseEndpoint',
     });
 
-    new cdk.CfnOutput(this, 'PropertyServiceLambdaArn', {
-      value: propertyServiceLambda.functionArn,
-      description: 'Property Service Lambda ARN',
+    new cdk.CfnOutput(this, 'DatabasePort', {
+      value: cluster.clusterEndpoint.port.toString(),
+      description: 'RDS Aurora Cluster Port',
+      exportName: 'QShelterDatabasePort',
     });
 
     new cdk.CfnOutput(this, 'DatabaseSecretArn', {
       value: dbCredentials.secretArn,
       description: 'Database credentials secret ARN',
+      exportName: 'QShelterDatabaseSecretArn',
+    });
+
+    new cdk.CfnOutput(this, 'DatabaseSecurityGroupId', {
+      value: cluster.connections.securityGroups[0].securityGroupId,
+      description: 'Database Security Group ID',
+      exportName: 'QShelterDatabaseSecurityGroupId',
     });
 
     new cdk.CfnOutput(this, 'ValkeyEndpoint', {
       value: valkeyCluster.attrRedisEndpointAddress,
       description: 'Valkey (Redis) cluster endpoint',
+      exportName: 'QShelterValkeyEndpoint',
+    });
+
+    new cdk.CfnOutput(this, 'ValkeyPort', {
+      value: '6379',
+      description: 'Valkey (Redis) cluster port',
+      exportName: 'QShelterValkeyPort',
     });
 
     new cdk.CfnOutput(this, 'RolePoliciesTableName', {
       value: rolePoliciesTable.tableName,
       description: 'DynamoDB Role Policies Table Name',
+      exportName: 'QShelterRolePoliciesTableName',
     });
 
-    new cdk.CfnOutput(this, 'AuthorizerLambdaArn', {
-      value: authorizerLambda.functionArn,
-      description: 'Lambda Authorizer ARN',
+    new cdk.CfnOutput(this, 'RolePoliciesTableArn', {
+      value: rolePoliciesTable.tableArn,
+      description: 'DynamoDB Role Policies Table ARN',
+      exportName: 'QShelterRolePoliciesTableArn',
+    });
+
+    new cdk.CfnOutput(this, 'UploadsBucketName', {
+      value: uploadsBucket.bucketName,
+      description: 'S3 Uploads Bucket Name',
+      exportName: 'QShelterUploadsBucketName',
+    });
+
+    new cdk.CfnOutput(this, 'UploadsBucketArn', {
+      value: uploadsBucket.bucketArn,
+      description: 'S3 Uploads Bucket ARN',
+      exportName: 'QShelterUploadsBucketArn',
+    });
+
+    new cdk.CfnOutput(this, 'EventBusName', {
+      value: eventBus.eventBusName,
+      description: 'EventBridge Event Bus Name',
+      exportName: 'QShelterEventBusName',
+    });
+
+    new cdk.CfnOutput(this, 'EventBusArn', {
+      value: eventBus.eventBusArn,
+      description: 'EventBridge Event Bus ARN',
+      exportName: 'QShelterEventBusArn',
+    });
+
+    new cdk.CfnOutput(this, 'LambdaServiceRoleArn', {
+      value: lambdaServiceRole.roleArn,
+      description: 'IAM Role ARN for Lambda functions',
+      exportName: 'QShelterLambdaServiceRoleArn',
+    });
+
+    new cdk.CfnOutput(this, 'HttpApiId', {
+      value: httpApi.ref,
+      description: 'HTTP API Gateway ID',
+      exportName: 'QShelterHttpApiId',
+    });
+
+    new cdk.CfnOutput(this, 'HttpApiEndpoint', {
+      value: `https://${httpApi.ref}.execute-api.${cdk.Stack.of(this).region}.amazonaws.com`,
+      description: 'HTTP API Gateway Endpoint',
+      exportName: 'QShelterHttpApiEndpoint',
+    });
+
+    new cdk.CfnOutput(this, 'HttpApiExecutionArn', {
+      value: `arn:aws:execute-api:${cdk.Stack.of(this).region}:${cdk.Stack.of(this).account}:${httpApi.ref}/*`,
+      description: 'HTTP API Gateway Execution ARN',
+      exportName: 'QShelterHttpApiExecutionArn',
     });
   }
 }
