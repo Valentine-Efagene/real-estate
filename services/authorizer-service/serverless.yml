@@ -6,11 +6,11 @@ provider:
   name: aws
   runtime: nodejs20.x
   stage: ${opt:stage, 'dev'}
-  region: ${opt:region, 'us-east-1'}
+  region: us-east-1
   
   environment:
     NODE_ENV: ${self:provider.stage}
-    ROLE_POLICIES_TABLE_NAME: !ImportValue QShelterRolePoliciesTableName
+    ROLE_POLICIES_TABLE_NAME: ${env:ROLE_POLICIES_TABLE_NAME}
     JWT_SECRET: ${env:JWT_SECRET}
   
   # IAM permissions for authorizer
@@ -22,8 +22,8 @@ provider:
             - dynamodb:GetItem
             - dynamodb:Query
           Resource:
-            - !ImportValue QShelterRolePoliciesTableArn
-            - !Join ['', [!ImportValue QShelterRolePoliciesTableArn, '/index/*']]
+            - arn:aws:dynamodb:${self:provider.region}:*:table/${env:ROLE_POLICIES_TABLE_NAME}
+            - arn:aws:dynamodb:${self:provider.region}:*:table/${env:ROLE_POLICIES_TABLE_NAME}/index/*
 
 functions:
   authorizer:
@@ -37,7 +37,7 @@ resources:
     HttpApiAuthorizer:
       Type: AWS::ApiGatewayV2::Authorizer
       Properties:
-        ApiId: !ImportValue QShelterHttpApiId
+        ApiId: ${env:HTTP_API_ID}
         Name: qshelterAuthorizer
         AuthorizerType: REQUEST
         AuthorizerUri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AuthorizerLambdaFunction.Arn}/invocations'
@@ -54,9 +54,7 @@ resources:
         FunctionName: !GetAtt AuthorizerLambdaFunction.Arn
         Action: lambda:InvokeFunction
         Principal: apigateway.amazonaws.com
-        SourceArn: !Sub 
-          - 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiId}/*'
-          - ApiId: !ImportValue QShelterHttpApiId
+        SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${env:HTTP_API_ID}/*'
 
   Outputs:
     AuthorizerFunctionArn:
@@ -68,6 +66,8 @@ resources:
     AuthorizerId:
       Description: ID of the HTTP API authorizer
       Value: !Ref HttpApiAuthorizer
+      Export:
+        Name: QShelterAuthorizerId
       Export:
         Name: QShelterAuthorizerId
 

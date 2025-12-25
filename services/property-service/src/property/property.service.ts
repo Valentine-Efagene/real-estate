@@ -1,10 +1,8 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, FindOptionsWhere, Like, Repository } from 'typeorm';
-import { Property } from './property.entity';
 import { CreatePropertyDto, UpdatePropertyDto } from './property.dto';
-import { PaginationHelper, PaginatedResponse, PaginationQuery } from '@valentine-efagene/qshelter-common';
-import { Amenity } from '../amenity/amenity.entity';
+import { PaginationHelper, PaginatedResponse, PaginationQuery, Amenity, Property } from '@valentine-efagene/qshelter-common';
 import { PropertyMedia } from '../property-media/property-media.entity';
 import { contentType } from 'mime-types';
 

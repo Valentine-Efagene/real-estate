@@ -1,3 +1,8 @@
+export enum PropertyCategory {
+    RENT = 'RENT',
+    SALE = 'SALE',
+}
+
 export enum PropertyStatus {
     APPROVED = 'APPROVED',
     PENDING = 'PENDING',

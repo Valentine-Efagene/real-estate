@@ -4,45 +4,73 @@ frameworkVersion: '3'
 
 provider:
   name: aws
-  runtime: nodejs18.x
-  region: ${env:AWS_REGION, 'us-east-1'}
+  runtime: nodejs20.x
   stage: ${opt:stage, 'dev'}
-  memorySize: 512
-  timeout: 30
+  region: us-east-1
   
-  # Environment variables from .env file
+  # VPC configuration - values from CDK outputs
+  vpc:
+    securityGroupIds:
+      - ${env:DB_SECURITY_GROUP_ID}
+    subnetIds:
+      - ${env:PRIVATE_SUBNET_ID_1}
+      - ${env:PRIVATE_SUBNET_ID_2}
+  
+  # Reference shared HTTP API Gateway
+  httpApi:
+    id: ${env:HTTP_API_ID}
+  
   environment:
-    NODE_ENV: ${env:NODE_ENV}
+    NODE_ENV: ${self:provider.stage}
     DB_HOST: ${env:DB_HOST}
     DB_PORT: ${env:DB_PORT}
-    DB_NAME: ${env:DB_NAME}
-    DB_USERNAME: ${env:DB_USERNAME}
-    DB_PASSWORD: ${env:DB_PASSWORD}
+    DATABASE_SECRET_ARN: ${env:DATABASE_SECRET_ARN}
+    REDIS_HOST: ${env:REDIS_HOST}
+    REDIS_PORT: ${env:REDIS_PORT}
+    ROLE_POLICIES_TABLE_NAME: ${env:ROLE_POLICIES_TABLE_NAME}
+    EVENTBRIDGE_BUS_NAME: ${env:EVENTBRIDGE_BUS_NAME}
+    S3_BUCKET_NAME: ${env:S3_BUCKET_NAME}
     JWT_SECRET: ${env:JWT_SECRET}
     REFRESH_TOKEN_SECRET: ${env:REFRESH_TOKEN_SECRET}
     ENCRYPTION_PASSWORD: ${env:ENCRYPTION_PASSWORD}
     ENCRYPTION_SALT: ${env:ENCRYPTION_SALT}
     GOOGLE_CLIENT_ID: ${env:GOOGLE_CLIENT_ID}
+    GOOGLE_CLIENT_SECRET: ${env:GOOGLE_CLIENT_SECRET}
+    GOOGLE_CALLBACK_URL: ${env:GOOGLE_CALLBACK_URL}
     FRONTEND_BASE_URL: ${env:FRONTEND_BASE_URL}
-    EVENT_BUS_NAME: ${env:EVENT_BUS_NAME}
-    
-  # VPC configuration (optional, if using VPC)
-  # vpc:
-  #   securityGroupIds:
-  #     - ${env:SECURITY_GROUP_ID}
-  #   subnetIds:
-  #     - ${env:SUBNET_ID_1}
-  #     - ${env:SUBNET_ID_2}
-
-  # IAM role statements
+  
+  # IAM role with necessary permissions
   iam:
     role:
       statements:
         - Effect: Allow
           Action:
+            - secretsmanager:GetSecretValue
+          Resource:
+            - arn:aws:secretsmanager:${self:provider.region}:*:secret:qshelter/${self:provider.stage}/*
+        - Effect: Allow
+          Action:
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+            - dynamodb:Query
+            - dynamodb:Scan
+          Resource:
+            - arn:aws:dynamodb:${self:provider.region}:*:table/${env:ROLE_POLICIES_TABLE_NAME}
+            - arn:aws:dynamodb:${self:provider.region}:*:table/${env:ROLE_POLICIES_TABLE_NAME}/index/*
+        - Effect: Allow
+          Action:
             - events:PutEvents
           Resource:
-            - arn:aws:events:${self:provider.region}:*:event-bus/${env:EVENT_BUS_NAME}
+            - arn:aws:events:${self:provider.region}:*:event-bus/${env:EVENTBRIDGE_BUS_NAME}
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+            - s3:DeleteObject
+          Resource:
+            - arn:aws:s3:::${env:S3_BUCKET_NAME}/*
         - Effect: Allow
           Action:
             - logs:CreateLogGroup
@@ -64,92 +92,94 @@ package:
     - 'node_modules/@valentine-efagene/qshelter-common/**'
 
 functions:
-  # Auth endpoints
-  auth:
+  # Auth endpoints (public - no authorizer)
+  authPublic:
     handler: dist/serverless.handler
     events:
       - httpApi:
-          path: /user/auth/{proxy+}
-          method: ANY
-          authorizer:
-            name: customAuthorizer
-            type: request
-            functionArn: ${env:AUTHORIZER_LAMBDA_ARN}
-            identitySource:
-              - $request.header.Authorization
-      # Public endpoints (no auth required)
-      - httpApi:
-          path: /user/auth/login
+          path: /auth/login
           method: POST
       - httpApi:
-          path: /user/auth/signup
+          path: /auth/signup
           method: POST
       - httpApi:
-          path: /user/auth/refresh-token
+          path: /auth/refresh-token
           method: POST
       - httpApi:
-          path: /user/auth/verify-email
+          path: /auth/verify-email
           method: GET
       - httpApi:
-          path: /user/auth/reset-password
+          path: /auth/reset-password
           method: POST
       - httpApi:
-          path: /user/auth/request-password-reset
+          path: /auth/request-password-reset
           method: POST
+      - httpApi:
+          path: /auth/google
+          method: GET
+      - httpApi:
+          path: /auth/google/callback
+          method: GET
+
+  # Protected auth endpoints
+  authProtected:
+    handler: dist/serverless.handler
+    events:
+      - httpApi:
+          path: /auth/logout
+          method: POST
+          authorizer:
+            name: qshelterAuthorizer
+      - httpApi:
+          path: /auth/me
+          method: GET
+          authorizer:
+            name: qshelterAuthorizer
 
   # User management endpoints
   users:
     handler: dist/serverless.handler
     events:
       - httpApi:
-          path: /user/users/{proxy+}
+          path: /users/{proxy+}
           method: ANY
           authorizer:
-            name: customAuthorizer
-            type: request
-            functionArn: ${env:AUTHORIZER_LAMBDA_ARN}
+            name: qshelterAuthorizer
 
   # Role management endpoints
   roles:
     handler: dist/serverless.handler
     events:
       - httpApi:
-          path: /user/roles/{proxy+}
+          path: /roles/{proxy+}
           method: ANY
           authorizer:
-            name: customAuthorizer
-            type: request
-            functionArn: ${env:AUTHORIZER_LAMBDA_ARN}
+            name: qshelterAuthorizer
 
   # Permission management endpoints
   permissions:
     handler: dist/serverless.handler
     events:
       - httpApi:
-          path: /user/permissions/{proxy+}
+          path: /permissions/{proxy+}
           method: ANY
           authorizer:
-            name: customAuthorizer
-            type: request
-            functionArn: ${env:AUTHORIZER_LAMBDA_ARN}
+            name: qshelterAuthorizer
 
   # Tenant management endpoints
   tenants:
     handler: dist/serverless.handler
     events:
       - httpApi:
-          path: /user/tenants/{proxy+}
+          path: /tenants/{proxy+}
           method: ANY
-          authorizer:
-            name: customAuthorizer
-            type: request
-            functionArn: ${env:AUTHORIZER_LAMBDA_ARN}
-
 plugins:
-  - serverless-offline
   - serverless-dotenv-plugin
+  - serverless-offline
 
 custom:
+  dotenv:
+    path: .env
   serverless-offline:
     httpPort: 3001
     noPrependStageInUrl: true

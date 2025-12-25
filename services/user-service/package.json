@@ -31,7 +31,7 @@
         "@qshelter/nest-auth": "^1.0.14",
         "@real-estate/shared-database": "file:../../shared/database",
         "@real-estate/shared-event-bus": "file:../../shared/event-bus",
-        "@valentine-efagene/qshelter-common": "^1.1.3",
+        "@valentine-efagene/qshelter-common": "^1.2.1",
         "aws-lambda": "^1.0.7",
         "axios": "^1.11.0",
         "bcrypt": "^5.1.1",

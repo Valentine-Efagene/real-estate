@@ -118,55 +118,50 @@ export class RealEstateStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
-    // === HTTP API Gateway (Shared) ===
-    const httpApi = new apigatewayv2.CfnApi(this, 'QShelterHttpApi', {
-      name: 'qshelter-api',
-      protocolType: 'HTTP',
-      corsConfiguration: {
-        allowOrigins: ['*'], // Restrict in production
-        allowMethods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-        allowHeaders: [
-          'Content-Type',
-          'Authorization',
-          'X-Amz-Date',
-          'X-Api-Key',
-          'X-Amz-Security-Token',
-          'X-Tenant-ID',
-          'X-Tenant-Subdomain',
-        ],
-        maxAge: 300,
-      },
+    // === IAM Role for Lambda Services ===
+    const lambdaServiceRole = new iam.Role(this, 'LambdaServiceRole', {
+      assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+      description: 'Role for QShelter microservice Lambda functions',
+      managedPolicies: [
+        iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaVPCAccessExecutionRole'),
+      ],
     });
 
-    // Create a default stage
-    const apiStage = new apigatewayv2.CfnStage(this, 'QShelterHttpApiStage', {
-      apiId: httpApi.ref,
-      stageName: '$default',
-      autoDeploy: true,
-      accessLogSettings: {
-        destinationArn: new logs.LogGroup(this, 'ApiAccessLogGroup', {
-          logGroupName: '/aws/apigateway/qshelter-api',
-          retention: logs.RetentionDays.ONE_WEEK,
-          removalPolicy: cdk.RemovalPolicy.DESTROY,
-        }).logGroupArn,
-        format: JSON.stringify({
-          requestId: '$context.requestId',
-          ip: '$context.identity.sourceIp',
-          requestTime: '$context.requestTime',
-          httpMethod: '$context.httpMethod',
-          routeKey: '$context.routeKey',
-          status: '$context.status',
-          protocol: '$context.protocol',
-          responseLength: '$context.responseLength',
-          errorMessage: '$context.error.message',
-          integrationErrorMessage: '$context.integrationErrorMessage',
-        }),
-      },
-      defaultRouteSettings: {
-        throttlingBurstLimit: 200,
-        throttlingRateLimit: 100,
-      },
-    });
+    // Grant permissions to Lambda role
+    dbCredentials.grantRead(lambdaServiceRole);
+    rolePoliciesTable.grantReadWriteData(lambdaServiceRole);
+    uploadsBucket.grantReadWrite(lambdaServiceRole);
+
+    // Grant EventBridge permissions
+    lambdaServiceRole.addToPolicy(new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: [
+        'events:PutEvents',
+      ],
+      resources: [eventBus.eventBusArn],
+    }));
+
+    // Grant Secrets Manager access
+    lambdaServiceRole.addToPolicy(new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: [
+        'secretsmanager:GetSecretValue',
+      ],
+      resources: [
+        `arn:aws:secretsmanager:${cdk.Stack.of(this).region}:${cdk.Stack.of(this).account}:secret:qshelter/*`,
+      ],
+    }));
+
+    // Grant CloudWatch Logs permissions
+    lambdaServiceRole.addToPolicy(new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: [
+        'logs:CreateLogGroup',
+        'logs:CreateLogStream',
+        'logs:PutLogEvents',
+      ],
+      resources: ['*'],
+    }));
 
     // === CloudWatch Log Groups for Services ===
     new logs.LogGroup(this, 'UserServiceLogGroup', {
@@ -190,9 +185,6 @@ export class RealEstateStack extends cdk.Stack {
     new logs.LogGroup(this, 'NotificationsServiceLogGroup', {
       logGroupName: '/aws/lambda/qshelter-notifications-service',
       retention: logs.RetentionDays.ONE_WEEK,
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
-    });
-
     new logs.LogGroup(this, 'AuthorizerServiceLogGroup', {
       logGroupName: '/aws/lambda/qshelter-authorizer-service',
       retention: logs.RetentionDays.ONE_WEEK,
@@ -273,8 +265,8 @@ export class RealEstateStack extends cdk.Stack {
     });
 
     // === Secrets Manager (Sensitive Values) ===
-
-    // JWT Secrets - Auto-generated
+    
+    // JWT Secrets - Generate if not provided
     const jwtSecret = new secretsmanager.Secret(this, 'JwtSecret', {
       secretName: `qshelter/${stage}/jwt-secret`,
       description: 'JWT signing secret for authentication',
@@ -297,14 +289,12 @@ export class RealEstateStack extends cdk.Stack {
       },
     });
 
-    // Encryption Keys - Auto-generated
+    // Encryption Keys
     const encryptionSecret = new secretsmanager.Secret(this, 'EncryptionSecret', {
       secretName: `qshelter/${stage}/encryption`,
       description: 'Encryption keys for sensitive data',
       generateSecretString: {
-        secretStringTemplate: JSON.stringify({
-          salt: 'AUTO_GENERATED',
-        }),
+        secretStringTemplate: JSON.stringify({}),
         generateStringKey: 'password',
         excludePunctuation: false,
         passwordLength: 32,
@@ -358,7 +348,7 @@ export class RealEstateStack extends cdk.Stack {
     dbCredentials.grantRead(lambdaServiceRole);
     rolePoliciesTable.grantReadWriteData(lambdaServiceRole);
     uploadsBucket.grantReadWrite(lambdaServiceRole);
-
+    
     // Grant EventBridge permissions
     lambdaServiceRole.addToPolicy(new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
@@ -407,22 +397,150 @@ export class RealEstateStack extends cdk.Stack {
         'logs:PutLogEvents',
       ],
       resources: ['*'],
-    }));
+    }));ogGroupName: '/aws/lambda/qshelter-authorizer-service',
+      retention: logs.RetentionDays.ONE_WEEK,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    });
+
+    // === HTTP API Gateway (Shared) ===
+    const httpApi = new apigatewayv2.CfnApi(this, 'QShelterHttpApi', {
+      name: 'qshelter-api',
+      protocolType: 'HTTP',
+      corsConfiguration: {
+        allowOrigins: ['*'], // Restrict in production
+        allowMethods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+        allowHeaders: [
+          'Content-Type',
+          'Authorization',
+          'X-Amz-Date',
+          'X-Api-Key',
+          'X-Amz-Security-Token',
+          'X-Tenant-ID',
+          'X-Tenant-Subdomain',
+        ],
+        maxAge: 300,
+      },
+    });
+
+    // Create a default stage
+    const apiStage = new apigatewayv2.CfnStage(this, 'QShelterHttpApiStage', {
+      apiId: httpApi.ref,
+      stageName: '$default',
+      autoDeploy: true,
+      accessLogSettings: {
+        destinationArn: new logs.LogGroup(this, 'ApiAccessLogGroup', {
+          logGroupName: '/aws/apigateway/qshelter-api',
+          retention: logs.RetentionDays.ONE_WEEK,
+          removalPolicy: cdk.RemovalPolicy.DESTROY,
+        }).logGroupArn,
+        format: JSON.stringify({
+          requestId: '$context.requestId',
+          ip: '$context.identity.sourceIp',
+          requestTime: '$context.requestTime',
+          httpMethod: '$context.httpMethod',
+          routeKey: '$context.routeKey',
+          status: '$context.status',
+          protocol: '$context.protocol',
+          responseLength: '$context.responseLength',
+          errorMessage: '$context.error.message',
+          integrationErrorMessage: '$context.integrationErrorMessage',
+        }),
+      },
+      defaultRouteSettings: {
+        throttlingBurstLimit: 200,
+        throttlingRateLimit: 100,
+      },
+    });
 
     // === Outputs ===
     new cdk.CfnOutput(this, 'VpcId', {
       value: vpc.vpcId,
       description: 'VPC ID',
+      exportName: 'QShelterVpcId',
     });
 
-    new cdk.CfnOutput(this, 'HttpApiId', {
-      value: httpApi.ref,
-      description: 'HTTP API Gateway ID',
+    new cdk.CfnOutput(this, 'PrivateSubnetIds', {
+      value: vpc.privateSubnets.map(subnet => subnet.subnetId).join(','),
+      description: 'Private Subnet IDs',
+      exportName: 'QShelterPrivateSubnetIds',
     });
 
-    new cdk.CfnOutput(this, 'HttpApiEndpoint', {
-      value: `https://${httpApi.ref}.execute-api.${this.region}.amazonaws.com`,
-      description: 'HTTP API Gateway Endpoint',
+    new cdk.CfnOutput(this, 'DatabaseEndpoint', {
+      value: cluster.clusterEndpoint.hostname,
+      description: 'RDS Aurora Cluster Endpoint',
+      exportName: 'QShelterDatabaseEndpoint',
+    });
+
+    new cdk.CfnOutput(this, 'DatabasePort', {
+      value: cluster.clusterEndpoint.port.toString(),
+      description: 'RDS Aurora Cluster Port',
+      exportName: 'QShelterDatabasePort',
+    });
+
+    new cdk.CfnOutput(this, 'DatabaseSecretArn', {
+      value: dbCredentials.secretArn,
+      description: 'Database credentials secret ARN',
+      exportName: 'QShelterDatabaseSecretArn',
+    });
+
+    new cdk.CfnOutput(this, 'DatabaseSecurityGroupId', {
+      value: cluster.connections.securityGroups[0].securityGroupId,
+      description: 'Database Security Group ID',
+      exportName: 'QShelterDatabaseSecurityGroupId',
+    });
+
+    new cdk.CfnOutput(this, 'ValkeyEndpoint', {
+      value: valkeyCluster.attrRedisEndpointAddress,
+      description: 'Valkey (Redis) cluster endpoint',
+      exportName: 'QShelterValkeyEndpoint',
+    });
+
+    new cdk.CfnOutput(this, 'ValkeyPort', {
+      value: '6379',
+      description: 'Valkey (Redis) cluster port',
+      exportName: 'QShelterValkeyPort',
+    });
+
+    new cdk.CfnOutput(this, 'RolePoliciesTableName', {
+      value: rolePoliciesTable.tableName,
+      description: 'DynamoDB Role Policies Table Name',
+      exportName: 'QShelterRolePoliciesTableName',
+    });
+
+    new cdk.CfnOutput(this, 'RolePoliciesTableArn', {
+      value: rolePoliciesTable.tableArn,
+      description: 'DynamoDB Role Policies Table ARN',
+      exportName: 'QShelterRolePoliciesTableArn',
+    });
+
+    new cdk.CfnOutput(this, 'UploadsBucketName', {
+      value: uploadsBucket.bucketName,
+      description: 'S3 Uploads Bucket Name',
+      exportName: 'QShelterUploadsBucketName',
+    });
+
+    new cdk.CfnOutput(this, 'UploadsBucketArn', {
+      value: uploadsBucket.bucketArn,
+      description: 'S3 Uploads Bucket ARN',
+      exportName: 'QShelterUploadsBucketArn',
+    });
+
+    new cdk.CfnOutput(this, 'EventBusName', {
+      value: eventBus.eventBusName,
+      description: 'EventBridge Event Bus Name',
+      exportName: 'QShelterEventBusName',
+    });
+
+    new cdk.CfnOutput(this, 'EventBusArn', {
+      value: eventBus.eventBusArn,
+      description: 'EventBridge Event Bus ARN',
+      exportName: 'QShelterEventBusArn',
+    });
+
+    new cdk.CfnOutput(this, 'LambdaServiceRoleArn', {
+      value: lambdaServiceRole.roleArn,
+      description: 'IAM Role ARN for Lambda functions',
+      exportName: 'QShelterLambdaServiceRoleArn',
     });
 
     new cdk.CfnOutput(this, 'Stage', {
@@ -432,32 +550,27 @@ export class RealEstateStack extends cdk.Stack {
 
     new cdk.CfnOutput(this, 'ParameterPathPrefix', {
       value: `/qshelter/${stage}/`,
-      description: 'SSM Parameter Store path prefix - all infrastructure values stored here',
+      description: 'SSM Parameter Store path prefix for infrastructure values',
     });
 
     new cdk.CfnOutput(this, 'SecretsPathPrefix', {
       value: `qshelter/${stage}/`,
-      description: 'Secrets Manager path prefix - all sensitive values stored here',
+      description: 'Secrets Manager path prefix for sensitive values',
     });
 
     new cdk.CfnOutput(this, 'JwtSecretArn', {
       value: jwtSecret.secretArn,
-      description: 'JWT Secret ARN in Secrets Manager (auto-generated)',
+      description: 'JWT Secret ARN in Secrets Manager',
     });
 
     new cdk.CfnOutput(this, 'OAuthSecretArn', {
       value: oauthSecret.secretArn,
-      description: 'OAuth Secret ARN (UPDATE with actual Google credentials)',
+      description: 'OAuth Secret ARN (update with actual credentials)',
     });
 
     new cdk.CfnOutput(this, 'PaystackSecretArn', {
       value: paystackSecret.secretArn,
-      description: 'Paystack Secret ARN (UPDATE with actual credentials)',
-    });
-
-    new cdk.CfnOutput(this, 'EmailSecretArn', {
-      value: emailSecret.secretArn,
-      description: 'Email Secret ARN (UPDATE with actual Office365 credentials)',
+      description: 'Paystack Secret ARN (update with actual credentials)',
     });
   }
 }

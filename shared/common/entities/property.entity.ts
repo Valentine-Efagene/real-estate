@@ -7,7 +7,7 @@ import { AbstractBaseReviewableEntity } from './common.entity';
 import { Mortgage } from './mortgage.entity';
 import { PaymentPlan } from './payment-plan.entity';
 import { Contract } from './contract.entity';
-import { PropertyStatus, PropertyType } from '../types/property.type';
+import { PropertyCategory, PropertyStatus, PropertyType } from '../types/property.type';
 import { Currency } from '../types/common.type';
 
 @Entity({ name: 'property' })
@@ -64,6 +64,14 @@ export class Property extends AbstractBaseReviewableEntity {
 
   @Column({ name: 'title', nullable: true })
   title: string;
+
+  @Column({
+    name: 'category',
+    nullable: true,
+    type: 'enum',
+    enum: PropertyCategory,
+  })
+  category: PropertyCategory;
 
   @Column({
     name: 'property_type',

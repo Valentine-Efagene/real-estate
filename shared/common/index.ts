@@ -24,3 +24,6 @@ export * from './qr-code/qr-code.service';
 export * from './qr-code/qr-code.module';
 export * from './qr-code/qr-code.type';
 export * from './qr-code/qr-code.dto';
+
+// Configuration Service (SSM + Secrets Manager)
+export * from './src/config';

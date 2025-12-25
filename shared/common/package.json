@@ -1,6 +1,6 @@
 {
     "name": "@valentine-efagene/qshelter-common",
-    "version": "1.1.4",
+    "version": "1.2.1",
     "description": "Shared common utilities, DTOs, entities, guards, middleware, decorators, and pagination for QShelter",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -18,7 +18,9 @@
         "nestjs",
         "entities",
         "pagination",
-        "qshelter"
+        "qshelter",
+        "aws",
+        "config"
     ],
     "author": "Valentine Efagene",
     "license": "MIT",
@@ -77,6 +79,8 @@
         "typeorm": "^0.3.0"
     },
     "dependencies": {
+        "@aws-sdk/client-secrets-manager": "^3.958.0",
+        "@aws-sdk/client-ssm": "^3.958.0",
         "@types/qrcode": "^1.5.6",
         "handlebars": "^4.7.8",
         "qrcode": "^1.5.4"
