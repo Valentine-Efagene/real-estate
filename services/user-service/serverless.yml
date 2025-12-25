@@ -1,0 +1,155 @@
+service: qshelter-user-service
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ${env:AWS_REGION, 'us-east-1'}
+  stage: ${opt:stage, 'dev'}
+  memorySize: 512
+  timeout: 30
+  
+  # Environment variables from .env file
+  environment:
+    NODE_ENV: ${env:NODE_ENV}
+    DB_HOST: ${env:DB_HOST}
+    DB_PORT: ${env:DB_PORT}
+    DB_NAME: ${env:DB_NAME}
+    DB_USERNAME: ${env:DB_USERNAME}
+    DB_PASSWORD: ${env:DB_PASSWORD}
+    JWT_SECRET: ${env:JWT_SECRET}
+    REFRESH_TOKEN_SECRET: ${env:REFRESH_TOKEN_SECRET}
+    ENCRYPTION_PASSWORD: ${env:ENCRYPTION_PASSWORD}
+    ENCRYPTION_SALT: ${env:ENCRYPTION_SALT}
+    GOOGLE_CLIENT_ID: ${env:GOOGLE_CLIENT_ID}
+    FRONTEND_BASE_URL: ${env:FRONTEND_BASE_URL}
+    EVENT_BUS_NAME: ${env:EVENT_BUS_NAME}
+    
+  # VPC configuration (optional, if using VPC)
+  # vpc:
+  #   securityGroupIds:
+  #     - ${env:SECURITY_GROUP_ID}
+  #   subnetIds:
+  #     - ${env:SUBNET_ID_1}
+  #     - ${env:SUBNET_ID_2}
+
+  # IAM role statements
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - events:PutEvents
+          Resource:
+            - arn:aws:events:${self:provider.region}:*:event-bus/${env:EVENT_BUS_NAME}
+        - Effect: Allow
+          Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+          Resource:
+            - arn:aws:logs:${self:provider.region}:*:log-group:/aws/lambda/*
+
+# Package configuration
+package:
+  individually: true
+  patterns:
+    - '!node_modules/**'
+    - '!test/**'
+    - '!.git/**'
+    - '!.env*'
+    - '!*.md'
+    - 'dist/**'
+    - 'node_modules/@valentine-efagene/qshelter-common/**'
+
+functions:
+  # Auth endpoints
+  auth:
+    handler: dist/serverless.handler
+    events:
+      - httpApi:
+          path: /user/auth/{proxy+}
+          method: ANY
+          authorizer:
+            name: customAuthorizer
+            type: request
+            functionArn: ${env:AUTHORIZER_LAMBDA_ARN}
+            identitySource:
+              - $request.header.Authorization
+      # Public endpoints (no auth required)
+      - httpApi:
+          path: /user/auth/login
+          method: POST
+      - httpApi:
+          path: /user/auth/signup
+          method: POST
+      - httpApi:
+          path: /user/auth/refresh-token
+          method: POST
+      - httpApi:
+          path: /user/auth/verify-email
+          method: GET
+      - httpApi:
+          path: /user/auth/reset-password
+          method: POST
+      - httpApi:
+          path: /user/auth/request-password-reset
+          method: POST
+
+  # User management endpoints
+  users:
+    handler: dist/serverless.handler
+    events:
+      - httpApi:
+          path: /user/users/{proxy+}
+          method: ANY
+          authorizer:
+            name: customAuthorizer
+            type: request
+            functionArn: ${env:AUTHORIZER_LAMBDA_ARN}
+
+  # Role management endpoints
+  roles:
+    handler: dist/serverless.handler
+    events:
+      - httpApi:
+          path: /user/roles/{proxy+}
+          method: ANY
+          authorizer:
+            name: customAuthorizer
+            type: request
+            functionArn: ${env:AUTHORIZER_LAMBDA_ARN}
+
+  # Permission management endpoints
+  permissions:
+    handler: dist/serverless.handler
+    events:
+      - httpApi:
+          path: /user/permissions/{proxy+}
+          method: ANY
+          authorizer:
+            name: customAuthorizer
+            type: request
+            functionArn: ${env:AUTHORIZER_LAMBDA_ARN}
+
+  # Tenant management endpoints
+  tenants:
+    handler: dist/serverless.handler
+    events:
+      - httpApi:
+          path: /user/tenants/{proxy+}
+          method: ANY
+          authorizer:
+            name: customAuthorizer
+            type: request
+            functionArn: ${env:AUTHORIZER_LAMBDA_ARN}
+
+plugins:
+  - serverless-offline
+  - serverless-dotenv-plugin
+
+custom:
+  serverless-offline:
+    httpPort: 3001
+    noPrependStageInUrl: true
