@@ -14,9 +14,6 @@ import {
 import { Mortgage } from '@valentine-efagene/qshelter-common';
 import { MortgageTransition } from '@valentine-efagene/qshelter-common';
 import { MortgageTransitionService } from './mortgage-transition.service';
-import { MortgageStateHistory } from '../mortgage-state-history/mortgage-state-history.entity';
-
-export { MortgageStateHistory };
 
 
 @Injectable()
@@ -29,8 +26,8 @@ export class MortgageFSMService {
         @InjectRepository(Mortgage)
         private mortgageRepo: Repository<Mortgage>,
 
-        @InjectRepository(MortgageStateHistory)
-        private stateHistoryRepo: Repository<MortgageStateHistory>,
+        // @InjectRepository(MortgageStateHistory)
+        // private stateHistoryRepo: Repository<MortgageStateHistory>,
 
         private transitionService: MortgageTransitionService,
 
@@ -536,17 +533,18 @@ export class MortgageFSMService {
                 completedAt: new Date(),
             });
 
+            // TODO: Publish state change event to event bus instead
             // Record state history (legacy - for backward compatibility)
-            const historyEntry = this.stateHistoryRepo.create({
-                mortgageId,
-                fromState: currentState,
-                toState: transitionDef.to,
-                event,
-                context: fullContext,
-                triggeredBy,
-                success: true,
-            });
-            await queryRunner.manager.save(historyEntry);
+            // const historyEntry = this.stateHistoryRepo.create({
+            //     mortgageId,
+            //     fromState: currentState,
+            //     toState: transitionDef.to,
+            //     event,
+            //     context: fullContext,
+            //     triggeredBy,
+            //     success: true,
+            // });
+            // await queryRunner.manager.save(historyEntry);
 
             await queryRunner.commitTransaction();
 
@@ -584,24 +582,25 @@ export class MortgageFSMService {
                 }
             }
 
+            // TODO: Publish error event to event bus instead
             // Record failed transition in history (legacy)
-            try {
-                const mortgage = await this.mortgageRepo.findOne({ where: { id: mortgageId } });
-                if (mortgage) {
-                    await this.stateHistoryRepo.save({
-                        mortgageId,
-                        fromState: mortgage.state as MortgageState,
-                        toState: mortgage.state as MortgageState,
-                        event,
-                        context: context as any,
-                        triggeredBy,
-                        success: false,
-                        error: error.message,
-                    });
-                }
-            } catch (historyError) {
-                this.logger.error('Failed to record error in history', historyError);
-            }
+            // try {
+            //     const mortgage = await this.mortgageRepo.findOne({ where: { id: mortgageId } });
+            //     if (mortgage) {
+            //         await this.stateHistoryRepo.save({
+            //             mortgageId,
+            //             fromState: mortgage.state as MortgageState,
+            //             toState: mortgage.state as MortgageState,
+            //             event,
+            //             context: context as any,
+            //             triggeredBy,
+            //             success: false,
+            //             error: error.message,
+            //         });
+            //     }
+            // } catch (historyError) {
+            //     this.logger.error('Failed to record error in history', historyError);
+            // }
 
             return { success: false, error: error.message };
         } finally {
@@ -698,12 +697,15 @@ export class MortgageFSMService {
 
     /**
      * Get transition history for a mortgage
+     * TODO: This should query from a separate history service via event bus
      */
-    async getHistory(mortgageId: number): Promise<MortgageStateHistory[]> {
-        return this.stateHistoryRepo.find({
-            where: { mortgageId },
-            order: { timestamp: 'DESC' },
-        });
+    async getHistory(mortgageId: number): Promise<any[]> {
+        // return this.stateHistoryRepo.find({
+        //     where: { mortgageId },
+        //     order: { timestamp: 'DESC' },
+        // });
+        this.logger.warn('getHistory called but history tracking is disabled. Use event bus history service.');
+        return [];
     }
 
     /**

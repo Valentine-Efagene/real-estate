@@ -1,6 +1,6 @@
 {
     "name": "@valentine-efagene/qshelter-common",
-    "version": "1.1.2",
+    "version": "1.1.4",
     "description": "Shared common utilities, DTOs, entities, guards, middleware, decorators, and pagination for QShelter",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -68,27 +68,29 @@
         }
     },
     "peerDependencies": {
-        "typeorm": "^0.3.0",
         "@nestjs/common": "^10.0.0",
-        "@nestjs/swagger": "^7.4.0",
         "@nestjs/config": "^3.0.0",
         "@nestjs/jwt": "^10.0.0",
+        "@nestjs/swagger": "^7.4.0",
+        "class-transformer": "^0.5.0",
         "class-validator": "^0.14.0",
-        "class-transformer": "^0.5.0"
+        "typeorm": "^0.3.0"
     },
     "dependencies": {
-        "handlebars": "^4.7.8"
+        "@types/qrcode": "^1.5.6",
+        "handlebars": "^4.7.8",
+        "qrcode": "^1.5.4"
     },
     "devDependencies": {
-        "@nestjs/swagger": "^7.4.0",
-        "typeorm": "^0.3.20",
         "@nestjs/common": "^10.0.0",
         "@nestjs/config": "^3.0.0",
         "@nestjs/jwt": "^10.0.0",
-        "class-validator": "^0.14.0",
-        "class-transformer": "^0.5.1",
-        "typescript": "^5.0.0",
+        "@nestjs/swagger": "^7.4.0",
+        "@types/handlebars": "^4.1.0",
         "@types/node": "^20.0.0",
-        "@types/handlebars": "^4.1.0"
+        "class-transformer": "^0.5.1",
+        "class-validator": "^0.14.0",
+        "typeorm": "^0.3.20",
+        "typescript": "^5.0.0"
     }
 }

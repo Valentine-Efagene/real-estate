@@ -16,12 +16,5 @@ export class CreateRefreshTokenDto {
   token: string;
 }
 
-export class AvatarUploadDto {
-  @ApiProperty({
-    type: 'string',
-    format: 'binary',
-    description: 'The file to be uploaded',
-    example: 'example.pdf',
-  })
-  file: Express.Multer.File;
-}
+// Avatar uploads are handled on the frontend using presigned S3 URLs
+// No need for file upload DTOs in the backend

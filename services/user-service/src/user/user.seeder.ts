@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './user.entity';
+import { User } from '@valentine-efagene/qshelter-common';
 import { Repository } from 'typeorm';
 import { UserService } from './user.service';
 

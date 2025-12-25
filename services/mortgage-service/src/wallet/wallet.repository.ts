@@ -1,5 +1,5 @@
 import { Repository } from 'typeorm';
-import { Wallet } from './wallet.entity';
+import { Wallet } from '@valentine-efagene/qshelter-common';
 
 export class MortgageRepository extends Repository<Wallet> {
   // ...

@@ -1,5 +1,5 @@
 import { Repository } from 'typeorm';
-import { Social } from './social.entity';
+import { Social } from '@valentine-efagene/qshelter-common';
 
 export class UserRepository extends Repository<Social> {
   // ...

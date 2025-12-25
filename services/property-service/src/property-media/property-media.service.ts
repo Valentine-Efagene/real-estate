@@ -11,16 +11,15 @@ import {
   UpdateDocumentStatusDto,
   DocumentStatus,
   AbstractBaseMediaEntity,
-  S3Folder
+  PaginatedResponse
 } from '@valentine-efagene/qshelter-common';
-import { S3UploaderService } from '../s3-uploader/s3-uploader.service';
+// TODO: File uploads handled on frontend - S3UploaderService removed
 
 @Injectable()
 export class PropertyMediaService {
   constructor(
     @InjectRepository(PropertyMedia)
     private readonly PropertyMediaRepository: Repository<PropertyMedia>,
-    private readonly uploaderService: S3UploaderService,
   ) { }
 
   async create(
@@ -82,9 +81,10 @@ export class PropertyMediaService {
   async remove(id: number): Promise<void> {
     const document = await this.PropertyMediaRepository.findOneBy({ id });
 
-    if (document.url) {
-      await this.uploaderService.deleteFromS3(document.url);
-    }
+    // TODO: File deletion handled via S3 lifecycle policies or admin tools
+    // if (document.url) {
+    //   await this.uploaderService.deleteFromS3(document.url);
+    // }
     await this.PropertyMediaRepository.delete(id);
   }
 
@@ -107,11 +107,11 @@ export class PropertyMediaService {
       );
     }
 
-    const { reviewerId, status } = updateDto;
+    const { status } = updateDto;
 
     this.PropertyMediaRepository.merge(proposedDevelopment, {
       ...updateDto,
-      reviewer: { id: reviewerId },
+      // reviewer: { id: reviewerId }, // TODO: reviewerId not in DTO
       reviewedAt:
         status === DocumentStatus.APPROVED ? new Date().toISOString() : null,
     });

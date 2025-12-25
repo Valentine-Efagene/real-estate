@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Tenant } from './tenant.entity';
+import { Tenant } from '@valentine-efagene/qshelter-common';
 import { TenantService } from './tenant.service';
 import { TenantController } from './tenant.controller';
 import { TenantContextService } from './tenant-context.service';

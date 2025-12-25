@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Tenant } from './tenant.entity';
+import { Tenant } from '@valentine-efagene/qshelter-common';
 import { CreateTenantDto, UpdateTenantDto } from './tenant.dto';
 import { TenantStatus } from './tenant.enums';
 

@@ -1,26 +1,22 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { PropertyDocument } from './property-document.entity';
 import {
   CreatePropertyDocumentDto,
 } from './property-document.dto';
 import {
-  DocumentReuploadDto,
   UpdateDocumentDto,
   UpdateDocumentStatusDto,
   DocumentStatus,
-  AbstractBaseDocumentEntity,
-  S3Folder
+  PropertyDocument,
 } from '@valentine-efagene/qshelter-common';
-import { S3UploaderService } from '../s3-uploader/s3-uploader.service';
+// TODO: File uploads handled on frontend - S3UploaderService removed
 
 @Injectable()
 export class PropertyDocumentService {
   constructor(
     @InjectRepository(PropertyDocument)
     private readonly propertyDocumentRepository: Repository<PropertyDocument>,
-    private readonly uploaderService: S3UploaderService,
   ) { }
 
   async create(
@@ -83,9 +79,10 @@ export class PropertyDocumentService {
   async remove(id: number): Promise<void> {
     const document = await this.propertyDocumentRepository.findOneBy({ id });
 
-    if (document.url) {
-      await this.uploaderService.deleteFromS3((await document).url);
-    }
+    // TODO: File deletion handled via S3 lifecycle policies or admin tools
+    // if (document.url) {
+    //   await this.uploaderService.deleteFromS3((await document).url);
+    // }
     await this.propertyDocumentRepository.delete(id);
   }
 
@@ -108,43 +105,44 @@ export class PropertyDocumentService {
       );
     }
 
-    const { reviewerId, status } = updateDto;
+    const { status } = updateDto;
 
     this.propertyDocumentRepository.merge(proposedDevelopment, {
       ...updateDto,
-      reviewer: { id: reviewerId },
+      // reviewer: { id: reviewerId }, // TODO: reviewerId not in DTO
       reviewedAt:
         status === DocumentStatus.APPROVED ? new Date().toISOString() : null,
     });
     return this.propertyDocumentRepository.save(proposedDevelopment);
   }
 
-  async reupload(file: Express.Multer.File,
-    dto: DocumentReuploadDto,
-  ): Promise<
-    AbstractBaseDocumentEntity
-  > {
-    const { id, ...rest } = dto
-    const size = file.size
-    let oldDocument = null
-    let newUrl = null
+  // TODO: File reuploads handled on frontend with presigned S3 URLs
+  // async reupload(file: Express.Multer.File,
+  //   dto: DocumentReuploadDto,
+  // ): Promise<
+  //   AbstractBaseDocumentEntity
+  // > {
+  //   const { id, ...rest } = dto
+  //   const size = file.size
+  //   let oldDocument = null
+  //   let newUrl = null
 
-    oldDocument = await this.findOne(id)
+  //   oldDocument = await this.findOne(id)
 
-    if (!oldDocument) {
-      throw new BadRequestException('Invalid document ID')
-    }
+  //   if (!oldDocument) {
+  //     throw new BadRequestException('Invalid document ID')
+  //   }
 
-    newUrl = await this.uploaderService.replaceFileOnS3(
-      file,
-      S3Folder.DOCUMENT,
-      oldDocument.url,
-    );
-    return await this.updateOne(id, {
-      url: newUrl,
-      size,
-      status: DocumentStatus.PENDING,
-      ...rest
-    })
-  }
+  //   newUrl = await this.uploaderService.replaceFileOnS3(
+  //     file,
+  //     S3Folder.DOCUMENT,
+  //     oldDocument.url,
+  //   );
+  //   return await this.updateOne(id, {
+  //     url: newUrl,
+  //     size,
+  //     status: DocumentStatus.PENDING,
+  //     ...rest
+  //   })
+  // }
 }

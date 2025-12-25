@@ -16,3 +16,11 @@ export * from './decorator';
 export * from './types';
 export * from './guard';
 export * from './OpenApiHelper';
+
+// Encryption and QR Code
+export * from './encryption/encryption.service';
+export * from './encryption/encryption.module';
+export * from './qr-code/qr-code.service';
+export * from './qr-code/qr-code.module';
+export * from './qr-code/qr-code.type';
+export * from './qr-code/qr-code.dto';

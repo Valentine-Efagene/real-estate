@@ -21,9 +21,10 @@ export class TenantContextService {
 
     /**
      * Get the current tenant object from the request
+     * Note: The middleware sets tenantId, not tenant object
      */
     getTenant() {
-        return this.request.tenant;
+        return this.request.tenantId;
     }
 
     /**

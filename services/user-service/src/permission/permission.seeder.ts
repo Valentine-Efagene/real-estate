@@ -1,9 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Permission } from './permission.entity';
+import { Permission, Role } from '@valentine-efagene/qshelter-common';
 import { In, Repository } from 'typeorm';
 import { PermissionName } from './permission.enums';
-import { Role } from '../role/role.entity';
 import { PERMISSIONS } from './permissions.data';
 
 @Injectable()

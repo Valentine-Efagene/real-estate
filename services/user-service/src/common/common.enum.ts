@@ -9,6 +9,10 @@ export enum ResponseMessage {
     FETCHED = 'Fetched successfully',
     SUCCESS = 'Operation successful',
     ERROR = 'An error occurred',
+    EMAIL_SENT = 'Email sent successfully',
+    AUTHENTICATED = 'Authenticated successfully',
+    USER_SIGNUP_SUCCESSFUL = 'User signup successful',
+    DONE = 'Done',
 }
 
 export enum S3Folder {

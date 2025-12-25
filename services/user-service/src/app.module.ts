@@ -45,9 +45,7 @@ import { TenantModule } from './tenant/tenant.module';
 import { RefreshTokenModule } from './refresh_token/refresh_token.module';
 import { PasswordResetTokenModule } from './password_reset_tokens/password_reset_tokens.module';
 import { UserSuspensionModule } from './user_suspensions/user_suspensions.module';
-import { MailModule } from './mail/mail.module';
-import { EncryptionModule } from './encryption/encryption.module';
-import { CaslModule } from './casl/casl.module';
+import { EncryptionModule } from '@valentine-efagene/qshelter-common';
 import { jwtConstants } from './auth/auth.constants';
 
 @Module({
@@ -63,7 +61,6 @@ import { jwtConstants } from './auth/auth.constants';
             ttl: 60000,
             limit: 10,
         }]),
-        MailModule,
         TenantModule,
         AuthModule,
         UserModule,
@@ -73,7 +70,6 @@ import { jwtConstants } from './auth/auth.constants';
         PasswordResetTokenModule,
         UserSuspensionModule,
         EncryptionModule,
-        CaslModule,
     ],
     providers: [
     ],

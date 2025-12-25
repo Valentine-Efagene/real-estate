@@ -2,7 +2,7 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { PERMISSIONS_KEY } from '../../permission/permissions.decorator';
-import { User } from '../../user/user.entity';
+import { User } from '@valentine-efagene/qshelter-common';
 
 @Injectable()
 export class PermissionsGuard implements CanActivate {

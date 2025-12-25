@@ -1,4 +1,4 @@
-export { Tenant } from './tenant.entity';
+export { Tenant } from '@valentine-efagene/qshelter-common';
 export { TenantModule } from './tenant.module';
 export { TenantService } from './tenant.service';
 export { TenantController } from './tenant.controller';

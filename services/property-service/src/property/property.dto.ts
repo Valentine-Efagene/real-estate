@@ -1,9 +1,8 @@
 import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
 import { ArrayNotEmpty, IsArray, IsEnum, IsInt, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, IsUrl, MaxLength, ValidateNested } from 'class-validator';
 import { PropertyType } from './property.type';
-import { PropertyCategory, Currency } from '../social/social.enums';
+import { Currency, CreateDocumentDto } from '@valentine-efagene/qshelter-common';
 import { Transform, Type } from 'class-transformer';
-import { CreateDocumentDto } from '@valentine-efagene/qshelter-common';
 
 export class CreatePropertyBaseDto {
   @ApiProperty({
@@ -70,15 +69,6 @@ export class CreatePropertyBaseDto {
   })
   @IsNotEmpty()
   propertyType: PropertyType
-
-  @ApiProperty({
-    example: PropertyCategory.SALE,
-    type: 'enum',
-    enum: PropertyCategory,
-    nullable: true,
-  })
-  @IsOptional()
-  category?: PropertyCategory
 
   @ApiProperty({
     example: 'NGN',

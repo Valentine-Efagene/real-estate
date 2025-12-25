@@ -4,7 +4,8 @@ import { Not } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Mortgage } from '@valentine-efagene/qshelter-common';
-import { MailService } from '../mail/mail.service';
+// TODO: Re-enable when MailService is available
+// import { MailService } from '../mail/mail.service';
 
 @Injectable()
 export class MortgageReminderService {
@@ -13,7 +14,8 @@ export class MortgageReminderService {
     constructor(
         @InjectRepository(Mortgage)
         private readonly mortgageRepo: Repository<Mortgage>,
-        private readonly mailService: MailService,
+        // TODO: Use event bus to send notifications instead of direct MailService dependency
+        // private readonly mailService: MailService,
     ) { }
 
     // Run daily at 09:00
@@ -45,21 +47,23 @@ export class MortgageReminderService {
             const shouldSend = diffDays <= 3 && (!m.lastReminderSentAt || new Date(m.lastReminderSentAt).toDateString() !== today.toDateString());
 
             if (shouldSend) {
-                try {
-                    await this.mailService.sendPaymentReminder({
-                        name: `${m.borrower.firstName || ''} ${m.borrower.lastName || ''}`.trim(),
-                        receiverEmail: m.borrower.email,
-                        amount: m.monthlyPayment,
-                        dueDate: nextDue.toISOString(),
-                        mortgageId: m.id,
-                    } as any);
+                // TODO: Publish event to event bus instead of calling mail service directly
+                this.logger.log(`Would send payment reminder for mortgage ${m.id} to ${m.borrower.email}`);
+                // try {
+                //     await this.mailService.sendPaymentReminder({
+                //         name: `${m.borrower.firstName || ''} ${m.borrower.lastName || ''}`.trim(),
+                //         receiverEmail: m.borrower.email,
+                //         amount: m.monthlyPayment,
+                //         dueDate: nextDue.toISOString(),
+                //         mortgageId: m.id,
+                //     } as any);
 
-                    m.lastReminderSentAt = new Date();
-                    await this.mortgageRepo.save(m);
-                    this.logger.log(`Sent payment reminder for mortgage ${m.id} to ${m.borrower.email}`);
-                } catch (err) {
-                    this.logger.error(`Failed to send reminder for mortgage ${m.id}: ${err}`);
-                }
+                //     m.lastReminderSentAt = new Date();
+                //     await this.mortgageRepo.save(m);
+                //     this.logger.log(`Sent payment reminder for mortgage ${m.id} to ${m.borrower.email}`);
+                // } catch (err) {
+                //     this.logger.error(`Failed to send reminder for mortgage ${m.id}: ${err}`);
+                // }
             }
         }
     }

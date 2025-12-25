@@ -40,8 +40,7 @@ import { PropertyModule } from './property/property.module';
 import { PropertyMediaModule } from './property-media/property-media.module';
 import { PropertyDocumentModule } from './property-document/property-document.module';
 import { AmenityModule } from './amenity/amenity.module';
-import { QrCodeModule } from './qr-code/qr-code.module';
-import { AccessLoggerMiddleware, TenantMiddleware } from '@valentine-efagene/qshelter-common';
+import { QrCodeModule, AccessLoggerMiddleware, TenantMiddleware } from '@valentine-efagene/qshelter-common';
 
 @Module({
     imports: [

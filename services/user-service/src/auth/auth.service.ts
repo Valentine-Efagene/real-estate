@@ -4,20 +4,17 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UserService } from '../user/user.service';
 import { RefreshTokenDto, SignInDto, SignUpDto, SignUpStrippedDto } from './auth.dto';
-import { User } from '../user/user.entity';
+import { User, PasswordResetToken, Role } from '@valentine-efagene/qshelter-common';
 import { IAccessTokenPayload, IAuthTokensAndUser, IGoogleAuthProfileParsed, IJwtConfig } from './auth.type';
 import { RefreshTokenService } from '../refresh_token/refresh_token.service';
 import { accessTokenConfig, refreshTokenConfig } from './auth.constants';
-import { MailService } from '../mail/mail.service';
 import { Request } from 'express';
 import { OAuth2Client } from 'google-auth-library';
 import { randomBytes, randomUUID } from 'crypto'
 import { InjectRepository } from '@nestjs/typeorm';
-import { PasswordResetToken } from '../password_reset_tokens/password_reset_tokens.entity';
 import { MoreThan, QueryRunner, Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { UserStatus } from '../user/user.enums';
-import { Role } from '../role/role.entity';
 import { RoleName } from '../role/role.enums';
 
 function generateRandomString(length = 16) {
@@ -32,7 +29,6 @@ export class AuthService {
     constructor(
         private userService: UserService,
         private jwtService: JwtService,
-        private mailService: MailService,
         private refreshTokenService: RefreshTokenService,
         private configService: ConfigService,
 
@@ -75,11 +71,14 @@ export class AuthService {
         await this.passwordResetTokenRepository.save(_resetToken)
 
         const resetUrl = `${this.configService.get('FRONTEND_BASE_URL')}/auth/reset-password?token=${token}`;
-        await this.mailService.sendPasswordResetEmail({
-            name: user.firstName,
-            receiverEmail: user.email,
-            resetUrl
-        });
+
+        // TODO: Publish event to event bus to trigger notification service
+        // await eventBus.publish('user.password-reset-requested', {
+        //     name: user.firstName,
+        //     receiverEmail: user.email,
+        //     resetUrl
+        // });
+        this.logger.log(`Password reset requested for user ${user.email}`);
     }
 
     async resetPassword(token: string, newPassword: string): Promise<void> {
@@ -146,11 +145,13 @@ export class AuthService {
         }
 
         if (!autoVerify) {
-            await this.mailService.sendEmailVerification({
-                link: `${process.env.BASE_URL}/auth/verify-email?token=${verificationToken}`,
-                name: user.firstName,
-                receiverEmail: newUser.email
-            })
+            // TODO: Publish event to event bus to trigger notification service
+            // await eventBus.publish('user.email-verification-requested', {
+            //     link: `${process.env.BASE_URL}/auth/verify-email?token=${verificationToken}`,
+            //     name: user.firstName,
+            //     receiverEmail: newUser.email
+            // });
+            this.logger.log(`Email verification requested for ${newUser.email}`);
         }
 
         return newUser
@@ -187,11 +188,13 @@ export class AuthService {
         }
 
         if (!autoVerify) {
-            await this.mailService.sendEmailVerification({
-                link: `${process.env.BASE_URL}/auth/verify-email?token=${verificationToken}`,
-                name: dto.firstName,
-                receiverEmail: user.email
-            })
+            // TODO: Publish event to event bus to trigger notification service
+            // await eventBus.publish('user.email-verification-requested', {
+            //     link: `${process.env.BASE_URL}/auth/verify-email?token=${verificationToken}`,
+            //     name: dto.firstName,
+            //     receiverEmail: user.email
+            // });
+            this.logger.log(`Email verification requested for staff ${user.email}`);
         }
 
         return updated

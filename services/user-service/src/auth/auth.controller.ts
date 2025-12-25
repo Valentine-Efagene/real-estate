@@ -13,10 +13,9 @@ import {
 import { AuthService } from './auth.service';
 import { RefreshTokenDto, RequestPasswordResetDto, ResetPasswordDto, SignInDto, SignUpDto } from './auth.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { StandardApiResponse } from '@valentine-efagene/qshelter-common';
+import { StandardApiResponse, User } from '@valentine-efagene/qshelter-common';
 import { ResponseMessage } from '../common/common.enum';
 import { SerializeUser } from './decorator';
-import { User } from '../user/user.entity';
 import { SwaggerAuth } from '@valentine-efagene/qshelter-common';
 import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
 import { IAuthTokensAndUser } from './auth.type';

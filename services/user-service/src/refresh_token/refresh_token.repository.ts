@@ -1,5 +1,5 @@
 import { Repository } from 'typeorm';
-import { RefreshToken } from './refresh_token.entity';
+import { RefreshToken } from '@valentine-efagene/qshelter-common';
 
 export class RefreshTokenRepository extends Repository<RefreshToken> {
   // ...

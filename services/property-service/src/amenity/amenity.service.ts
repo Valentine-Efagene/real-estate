@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Amenity } from './amenity.entity';
 import { CreateAmenityDto } from './amenity.dto';
+import { Amenity } from '@valentine-efagene/qshelter-common';
 
 @Injectable()
 export class AmenityService {

@@ -5,135 +5,94 @@ import {
   Get,
   Param,
   Post,
-  UseInterceptors,
-  BadRequestException,
-  UploadedFile,
-  UsePipes,
-  ValidationPipe,
   HttpStatus,
   ParseIntPipe,
 } from '@nestjs/common';
-import { PropertyDocument } from './property-document.entity';
 import { PropertyDocumentService } from './property-document.service';
-import { CreatePropertyDocumentControllerDto } from './property-document.dto';
 import {
-  OpenApiHelper,
-  DocumentReuploadDto,
   StandardApiResponse,
   UpdateDocumentStatusDto,
   ResponseMessage,
-  S3Folder,
-  FileValidators,
   SwaggerAuth,
-  AbstractBaseDocumentEntity
+  PropertyDocument,
 } from '@valentine-efagene/qshelter-common';
 import {
-  ApiConsumes,
-  ApiHeader,
   ApiOperation,
-  ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { S3UploaderService } from '../s3-uploader/s3-uploader.service';
+import { CreatePropertyDocumentControllerDto } from './property-document.dto';
 
 @SwaggerAuth()
-@Controller('property-documents')
-@ApiTags('Property Document')
-@ApiHeader(OpenApiHelper.userIdHeader)
-@ApiResponse(OpenApiHelper.responseDoc)
+@Controller('property-document')
+@ApiTags('Property Documents')
 export class PropertyDocumentController {
   constructor(
     private readonly propertyDocumentService: PropertyDocumentService,
-    private readonly uploaderService: S3UploaderService,
   ) { }
 
   @Post()
   @ApiOperation({
-    summary: 'Upload a file',
-    description: '',
+    summary: 'Create document record with S3 URL',
+    description: 'After uploading to S3 using presigned URL, create the document record',
   })
-  @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('file'))
   async create(
-    @UploadedFile(FileValidators.fileValidator)
-    file: Express.Multer.File,
     @Body() createPropertyDocumentDto: CreatePropertyDocumentControllerDto,
   ): Promise<StandardApiResponse<PropertyDocument>> {
-    if (!file) {
-      throw new BadRequestException('File Required');
-    }
-
-    const response = await this.uploaderService.uploadFileToS3(
-      file,
-      S3Folder.DOCUMENT,
-    );
-
-    const url = response;
-    const data = await this.propertyDocumentService.create({
-      ...createPropertyDocumentDto,
-      url,
-      size: file.size
-    });
-
-    return new StandardApiResponse(HttpStatus.CREATED, ResponseMessage.CREATED, data);
+    const document = await this.propertyDocumentService.create(createPropertyDocumentDto);
+    return new StandardApiResponse(HttpStatus.CREATED, ResponseMessage.CREATED, document);
   }
 
   @Get()
-  @ApiResponse(OpenApiHelper.arrayResponseDoc)
+  @ApiOperation({
+    summary: 'Get all documents',
+  })
   async findAll(): Promise<StandardApiResponse<PropertyDocument[]>> {
-    const data = await this.propertyDocumentService.findAll();
-    return new StandardApiResponse(HttpStatus.OK, ResponseMessage.FETCHED, data);
+    return new StandardApiResponse(
+      HttpStatus.OK,
+      ResponseMessage.FETCHED,
+      await this.propertyDocumentService.findAll(),
+    );
   }
 
   @Get(':id')
-  async findOne(
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<StandardApiResponse<PropertyDocument>> {
-    const data = await this.propertyDocumentService.findOne(id);
-    return new StandardApiResponse(HttpStatus.OK, ResponseMessage.FETCHED, data);
-  }
-
-  @Post(':id/update-status')
-  @ApiOperation({ summary: '', tags: ['Admin'] })
-  @UsePipes(new ValidationPipe({ transform: true }))
-  async updateStatus(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() updateDto: UpdateDocumentStatusDto,
-  ): Promise<StandardApiResponse<PropertyDocument>> {
-    const data = await this.propertyDocumentService.updateStatus(
-      id,
-      updateDto,
+  @ApiOperation({
+    summary: 'Get a single document by ID',
+  })
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<StandardApiResponse<PropertyDocument>> {
+    return new StandardApiResponse(
+      HttpStatus.OK,
+      ResponseMessage.FETCHED,
+      await this.propertyDocumentService.findOne(id),
     );
-
-    return new StandardApiResponse(HttpStatus.OK, ResponseMessage.UPDATED, data);
   }
 
   @Delete(':id')
+  @ApiOperation({
+    summary: 'Delete a document',
+  })
   async remove(
-    @Param('id', ParseIntPipe) id: number,): Promise<StandardApiResponse<void>> {
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<StandardApiResponse<any>> {
     await this.propertyDocumentService.remove(id);
-
-    return new StandardApiResponse(HttpStatus.NO_CONTENT, ResponseMessage.DELETED, null);
+    return new StandardApiResponse(
+      HttpStatus.OK,
+      ResponseMessage.DELETED,
+      null,
+    );
   }
 
-  @Post('reupload')
+  @Post(':id/status')
   @ApiOperation({
-    summary: 'Reupload a file',
-    description: ``,
+    summary: 'Update document status',
   })
-  @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('file'))
-  async reupload(
-    @UploadedFile(FileValidators.imageValidator)
-    file: Express.Multer.File,
-    @Body() body: DocumentReuploadDto,
-  ): Promise<StandardApiResponse<AbstractBaseDocumentEntity>> {
-    if (!file) {
-      throw new BadRequestException();
-    }
-
-    const res = await this.propertyDocumentService.reupload(file, body)
-    return new StandardApiResponse(HttpStatus.OK, ResponseMessage.UPDATED, res);
+  async updateStatus(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateDocumentStatusDto,
+  ): Promise<StandardApiResponse<PropertyDocument>> {
+    return new StandardApiResponse(
+      HttpStatus.OK,
+      ResponseMessage.UPDATED,
+      await this.propertyDocumentService.updateStatus(id, dto),
+    );
   }
 }

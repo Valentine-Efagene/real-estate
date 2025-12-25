@@ -235,26 +235,6 @@ export class UserController {
     return new StandardApiResponse(HttpStatus.OK, ResponseMessage.FETCHED, data);
   }
 
-  // @Put('/:id/assign-roles')
-  // @ApiResponse(OpenApiHelper.responseDoc)
-  // async assignPermissions(
-  //   @Param('id', ParseIntPipe) id: number,
-  //   @Body() dto: AssignRolesDto
-  // ): Promise<StandardApiResponse<User>> {
-  //   const data = await this.userService.assignRoles(id, dto);
-  //   return new StandardApiResponse(HttpStatus.OK, ResponseMessage.FETCHED, data);
-  // }
-
-  // @Put('/:id/revoke-roles')
-  // @ApiResponse(OpenApiHelper.responseDoc)
-  // async revokePermissions(
-  //   @Param('id', ParseIntPipe) id: number,
-  //   @Body() dto: AssignRolesDto
-  // ): Promise<StandardApiResponse<User>> {
-  //   const data = await this.userService.revokeRoles(id, dto);
-  //   return new StandardApiResponse(HttpStatus.OK, ResponseMessage.FETCHED, data);
-  // }
-
   @Delete(':id')
   @SwaggerAuth()
   @ApiOperation({ summary: '', tags: ['Admin'] })
