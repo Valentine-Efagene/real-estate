@@ -16,6 +16,7 @@ build/
 # Compiled files
 *.js
 !jest.config.js
+!webpack.config.js
 *.d.ts
 *.js.map
 *.ts.map

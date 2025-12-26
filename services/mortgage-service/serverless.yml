@@ -50,17 +50,21 @@ provider:
             - arn:aws:events:${self:provider.region}:*:event-bus/*
 
 package:
-  individually: true
+  individually: false
   patterns:
-    - '!node_modules/**'
-    - '!test/**'
-    - '!.git/**'
-    - 'dist/**'
+    - '!**'
+    - 'dist-webpack/**'
     - 'node_modules/@valentine-efagene/qshelter-common/**'
+    - 'node_modules/@nestjs/**'
+    - 'node_modules/@codegenie/**'
+    - 'node_modules/reflect-metadata/**'
+    - 'node_modules/rxjs/**'
+    - 'node_modules/class-transformer/**'
+    - 'node_modules/class-validator/**'
 
 functions:
   main:
-    handler: dist/serverless.handler
+    handler: dist-webpack/serverless.handler
     events:
       - httpApi:
           path: /mortgage/mortgages/{proxy+}
