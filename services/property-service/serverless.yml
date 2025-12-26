@@ -1,6 +1,6 @@
 service: qshelter-property-service
 
-frameworkVersion: '3'
+frameworkVersion: '4'
 
 provider:
   name: aws
@@ -110,7 +110,6 @@ functions:
 
 plugins:
   - serverless-offline
-  - serverless-dotenv-plugin
 
 custom:
   serverless-offline:

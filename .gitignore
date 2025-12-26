@@ -77,3 +77,5 @@ cdk.context.json
 *.seed
 *.pid.lock
 .cache
+# Backup files
+*.backup

@@ -24,6 +24,9 @@ export class RealEstateStack extends cdk.Stack {
     // Get stage from context or default to 'dev'
     const stage = this.node.tryGetContext('stage') || 'dev';
 
+    // Prefix for all resource names to avoid collisions across stages
+    const prefix = `qshelter-${stage}`;
+
     // === Networking ===
     const vpc = new ec2.Vpc(this, "RealEstateVpc", {
       maxAzs: 2,
@@ -54,14 +57,14 @@ export class RealEstateStack extends cdk.Stack {
     const subnetGroup = new elasticache.CfnSubnetGroup(this, 'ValkeySubnetGroup', {
       description: 'Valkey subnet group',
       subnetIds: vpc.privateSubnets.map(subnet => subnet.subnetId),
-      cacheSubnetGroupName: 'valkey-subnet-group',
+      cacheSubnetGroupName: `${prefix}-valkey-subnet-group`,
     });
 
     const valkeyCluster = new elasticache.CfnCacheCluster(this, 'ValkeyCluster', {
       cacheNodeType: 'cache.t4g.micro',
       engine: 'redis',
       numCacheNodes: 1,
-      clusterName: 'valkey-cluster',
+      clusterName: `${prefix}-valkey-cluster`,
       vpcSecurityGroupIds: [vpc.vpcDefaultSecurityGroup],
       cacheSubnetGroupName: subnetGroup.cacheSubnetGroupName!,
     });
@@ -69,7 +72,7 @@ export class RealEstateStack extends cdk.Stack {
 
     // === DynamoDB for Role Policies ===
     const rolePoliciesTable = new dynamodb.Table(this, 'RolePoliciesTable', {
-      tableName: 'role-policies',
+      tableName: `${prefix}-role-policies`,
       partitionKey: { name: 'PK', type: dynamodb.AttributeType.STRING },
       sortKey: { name: 'SK', type: dynamodb.AttributeType.STRING },
       billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
@@ -86,7 +89,7 @@ export class RealEstateStack extends cdk.Stack {
 
     // === S3 Buckets ===
     const uploadsBucket = new s3.Bucket(this, 'UploadsBucket', {
-      bucketName: `qshelter-uploads-${cdk.Stack.of(this).account}`,
+      bucketName: `${prefix}-uploads-${cdk.Stack.of(this).account}`,
       encryption: s3.BucketEncryption.S3_MANAGED,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
       versioned: true,
@@ -113,104 +116,48 @@ export class RealEstateStack extends cdk.Stack {
 
     // === EventBridge Event Bus ===
     const eventBus = new events.EventBus(this, 'QShelterEventBus', {
-      eventBusName: 'qshelter-event-bus',
+      eventBusName: `${prefix}-event-bus`,
     });
 
     // Create CloudWatch Log Group for EventBridge
     const eventBusLogGroup = new logs.LogGroup(this, 'EventBusLogGroup', {
-      logGroupName: '/aws/events/qshelter-event-bus',
+      logGroupName: `/aws/events/${prefix}-event-bus`,
       retention: logs.RetentionDays.ONE_WEEK,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
-    // === HTTP API Gateway (Shared) ===
-    const httpApi = new apigatewayv2.CfnApi(this, 'QShelterHttpApi', {
-      name: 'qshelter-api',
-      protocolType: 'HTTP',
-      corsConfiguration: {
-        allowOrigins: ['*'], // Restrict in production
-        allowMethods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-        allowHeaders: [
-          'Content-Type',
-          'Authorization',
-          'X-Amz-Date',
-          'X-Api-Key',
-          'X-Amz-Security-Token',
-          'X-Tenant-ID',
-          'X-Tenant-Subdomain',
-        ],
-        maxAge: 300,
-      },
-    });
-
-    // Create a default stage
-    const apiStage = new apigatewayv2.CfnStage(this, 'QShelterHttpApiStage', {
-      apiId: httpApi.ref,
-      stageName: '$default',
-      autoDeploy: true,
-      accessLogSettings: {
-        destinationArn: new logs.LogGroup(this, 'ApiAccessLogGroup', {
-          logGroupName: '/aws/apigateway/qshelter-api',
-          retention: logs.RetentionDays.ONE_WEEK,
-          removalPolicy: cdk.RemovalPolicy.DESTROY,
-        }).logGroupArn,
-        format: JSON.stringify({
-          requestId: '$context.requestId',
-          ip: '$context.identity.sourceIp',
-          requestTime: '$context.requestTime',
-          httpMethod: '$context.httpMethod',
-          routeKey: '$context.routeKey',
-          status: '$context.status',
-          protocol: '$context.protocol',
-          responseLength: '$context.responseLength',
-          errorMessage: '$context.error.message',
-          integrationErrorMessage: '$context.integrationErrorMessage',
-        }),
-      },
-      defaultRouteSettings: {
-        throttlingBurstLimit: 200,
-        throttlingRateLimit: 100,
-      },
-    });
-
     // === CloudWatch Log Groups for Services ===
     new logs.LogGroup(this, 'UserServiceLogGroup', {
-      logGroupName: '/aws/lambda/qshelter-user-service',
+      logGroupName: `/aws/lambda/${prefix}-user-service`,
       retention: logs.RetentionDays.ONE_WEEK,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
     new logs.LogGroup(this, 'PropertyServiceLogGroup', {
-      logGroupName: '/aws/lambda/qshelter-property-service',
+      logGroupName: `/aws/lambda/${prefix}-property-service`,
       retention: logs.RetentionDays.ONE_WEEK,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
     new logs.LogGroup(this, 'MortgageServiceLogGroup', {
-      logGroupName: '/aws/lambda/qshelter-mortgage-service',
+      logGroupName: `/aws/lambda/${prefix}-mortgage-service`,
       retention: logs.RetentionDays.ONE_WEEK,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
     new logs.LogGroup(this, 'NotificationsServiceLogGroup', {
-      logGroupName: '/aws/lambda/qshelter-notifications-service',
+      logGroupName: `/aws/lambda/${prefix}-notifications-service`,
       retention: logs.RetentionDays.ONE_WEEK,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
     new logs.LogGroup(this, 'AuthorizerServiceLogGroup', {
-      logGroupName: '/aws/lambda/qshelter-authorizer-service',
+      logGroupName: `/aws/lambda/${prefix}-authorizer-service`,
       retention: logs.RetentionDays.ONE_WEEK,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
     // === Systems Manager Parameters (Infrastructure - Free) ===
-    new ssm.StringParameter(this, 'HttpApiIdParameter', {
-      parameterName: `/qshelter/${stage}/http-api-id`,
-      stringValue: httpApi.ref,
-      description: 'HTTP API Gateway ID',
-    });
-
     new ssm.StringParameter(this, 'VpcIdParameter', {
       parameterName: `/qshelter/${stage}/vpc-id`,
       stringValue: vpc.vpcId,
@@ -325,7 +272,7 @@ export class RealEstateStack extends cdk.Stack {
           process.env.GOOGLE_CLIENT_SECRET || 'UPDATE_ME'
         ),
         google_callback_url: cdk.SecretValue.unsafePlainText(
-          process.env.GOOGLE_CALLBACK_URL || `https://${httpApi.ref}.execute-api.${this.region}.amazonaws.com/auth/google/callback`
+          process.env.GOOGLE_CALLBACK_URL || 'UPDATE_ME'
         ),
       },
     });
@@ -453,16 +400,6 @@ export class RealEstateStack extends cdk.Stack {
     new cdk.CfnOutput(this, 'VpcId', {
       value: vpc.vpcId,
       description: 'VPC ID',
-    });
-
-    new cdk.CfnOutput(this, 'HttpApiId', {
-      value: httpApi.ref,
-      description: 'HTTP API Gateway ID',
-    });
-
-    new cdk.CfnOutput(this, 'HttpApiEndpoint', {
-      value: `https://${httpApi.ref}.execute-api.${this.region}.amazonaws.com`,
-      description: 'HTTP API Gateway Endpoint',
     });
 
     new cdk.CfnOutput(this, 'Stage', {

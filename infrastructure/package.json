@@ -12,6 +12,8 @@
         "test": "jest",
         "cdk": "cdk",
         "synth": "cdk synth",
+        "bootstrap": "cdk bootstrap",
+        "deploy-dev": "cdk deploy --context stage=dev --require-approval never",
         "deploy": "cdk deploy",
         "diff": "cdk diff",
         "destroy": "cdk destroy"

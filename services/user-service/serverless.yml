@@ -1,6 +1,6 @@
 service: qshelter-user-service
 
-frameworkVersion: '3'
+frameworkVersion: '4'
 
 provider:
   name: aws
@@ -8,9 +8,35 @@ provider:
   stage: ${opt:stage, 'dev'}
   region: us-east-1
   
-  # Reference shared HTTP API Gateway
+  # Create HTTP API Gateway for this service
   httpApi:
-    id: ${env:HTTP_API_ID}
+    cors:
+      allowedOrigins:
+        - '*'
+      allowedHeaders:
+        - Content-Type
+        - Authorization
+        - X-Amz-Date
+        - X-Api-Key
+        - X-Amz-Security-Token
+        - X-Tenant-ID
+        - X-Tenant-Subdomain
+      allowedMethods:
+        - GET
+        - POST
+        - PUT
+        - PATCH
+        - DELETE
+        - OPTIONS
+    authorizers:
+      UserServiceAuthorizer:
+        type: request
+        functionArn: ${ssm:/qshelter/${self:provider.stage}/authorizer-lambda-arn}
+        identitySource:
+          - $request.header.Authorization
+        enableSimpleResponses: false
+        resultTtlInSeconds: 300
+        payloadVersion: '2.0'
   
   environment:
     NODE_ENV: ${self:provider.stage}
@@ -117,12 +143,12 @@ functions:
           path: /auth/logout
           method: POST
           authorizer:
-            name: qshelterAuthorizer
+            name: UserServiceAuthorizer
       - httpApi:
           path: /auth/me
           method: GET
           authorizer:
-            name: qshelterAuthorizer
+            name: UserServiceAuthorizer
 
   # User management endpoints
   users:
@@ -132,7 +158,7 @@ functions:
           path: /users/{proxy+}
           method: ANY
           authorizer:
-            name: qshelterAuthorizer
+            name: UserServiceAuthorizer
 
   # Role management endpoints
   roles:
@@ -142,7 +168,7 @@ functions:
           path: /roles/{proxy+}
           method: ANY
           authorizer:
-            name: qshelterAuthorizer
+            name: UserServiceAuthorizer
 
   # Permission management endpoints
   permissions:
@@ -152,7 +178,7 @@ functions:
           path: /permissions/{proxy+}
           method: ANY
           authorizer:
-            name: qshelterAuthorizer
+            name: UserServiceAuthorizer
 
   # Tenant management endpoints
   tenants:
@@ -161,13 +187,11 @@ functions:
       - httpApi:
           path: /tenants/{proxy+}
           method: ANY
+
 plugins:
-  - serverless-dotenv-plugin
   - serverless-offline
 
 custom:
-  dotenv:
-    path: .env
   serverless-offline:
     httpPort: 3001
     noPrependStageInUrl: true

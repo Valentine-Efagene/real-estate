@@ -477,3 +477,5 @@ For 1M requests/month:
 
 **Status**: ✅ Complete and ready for deployment
 **Next Action**: Deploy CDK stack and seed initial policies
+
+HTTP_API_ID=8xkk9502y3 sls deploy --stage dev

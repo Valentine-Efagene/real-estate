@@ -1,6 +1,6 @@
 service: qshelter-authorizer-service
 
-frameworkVersion: '3'
+frameworkVersion: '4'
 
 provider:
   name: aws
@@ -21,6 +21,7 @@ provider:
             - ssm:GetParameter
             - ssm:GetParameters
             - ssm:GetParametersByPath
+            - ssm:PutParameter
           Resource:
             - arn:aws:ssm:${self:provider.region}:*:parameter/qshelter/${self:provider.stage}/*
         # Secrets Manager access for JWT secret
@@ -41,50 +42,27 @@ functions:
   authorizer:
     handler: dist/index.handler
     name: qshelter-authorizer-${self:provider.stage}
-    description: JWT authorizer for QShelter HTTP API
+    description: Shared JWT authorizer for all QShelter services
 
-# Configure the authorizer for HTTP API
 resources:
   Resources:
-    HttpApiAuthorizer:
-      Type: AWS::ApiGatewayV2::Authorizer
+    # Store the authorizer Lambda ARN in SSM for services to reference
+    AuthorizerArnParameter:
+      Type: AWS::SSM::Parameter
       Properties:
-        ApiId: ${env:HTTP_API_ID}
-        Name: qshelterAuthorizer
-        AuthorizerType: REQUEST
-        AuthorizerUri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AuthorizerLambdaFunction.Arn}/invocations'
-        AuthorizerPayloadFormatVersion: '2.0'
-        AuthorizerResultTtlInSeconds: 300
-        IdentitySource:
-          - $request.header.Authorization
-        EnableSimpleResponses: false
-
-    # Grant API Gateway permission to invoke the authorizer Lambda
-    AuthorizerInvokePermission:
-      Type: AWS::Lambda::Permission
-      Properties:
-        FunctionName: !GetAtt AuthorizerLambdaFunction.Arn
-        Action: lambda:InvokeFunction
-        Principal: apigateway.amazonaws.com
-        SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${env:HTTP_API_ID}/*'
+        Name: /qshelter/${self:provider.stage}/authorizer-lambda-arn
+        Description: ARN of the shared authorizer Lambda function
+        Type: String
+        Value: !GetAtt AuthorizerLambdaFunction.Arn
 
   Outputs:
     AuthorizerFunctionArn:
-      Description: ARN of the authorizer Lambda function
+      Description: ARN of the shared authorizer Lambda
       Value: !GetAtt AuthorizerLambdaFunction.Arn
       Export:
-        Name: QShelterAuthorizerFunctionArn-${self:provider.stage}
-    
-    AuthorizerId:
-      Description: ID of the HTTP API authorizer
-      Value: !Ref HttpApiAuthorizer
-      Export:
-        Name: QShelterAuthorizerId-${self:provider.stage}
+        Name: QShelterAuthorizerArn-${self:provider.stage}
 
 plugins:
-  - serverless-dotenv-plugin
   - serverless-offline
 
 custom:
-  dotenv:
-    path: .env
