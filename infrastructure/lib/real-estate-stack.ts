@@ -11,10 +11,15 @@ import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as apigatewayv2 from 'aws-cdk-lib/aws-apigatewayv2';
 import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
 import * as ssm from 'aws-cdk-lib/aws-ssm';
+import * as dotenv from 'dotenv';
+import * as path from 'path';
 
 export class RealEstateStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
+
+    // Load environment variables from .env file
+    dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
     // Get stage from context or default to 'dev'
     const stage = this.node.tryGetContext('stage') || 'dev';
@@ -274,74 +279,109 @@ export class RealEstateStack extends cdk.Stack {
 
     // === Secrets Manager (Sensitive Values) ===
 
-    // JWT Secrets - Auto-generated
+    // JWT Secrets - Use from .env or auto-generate
     const jwtSecret = new secretsmanager.Secret(this, 'JwtSecret', {
       secretName: `qshelter/${stage}/jwt-secret`,
       description: 'JWT signing secret for authentication',
-      generateSecretString: {
-        secretStringTemplate: JSON.stringify({ description: 'JWT Secret' }),
-        generateStringKey: 'secret',
-        excludePunctuation: true,
-        passwordLength: 64,
-      },
+      secretStringValue: cdk.SecretValue.unsafePlainText(
+        process.env.ACCESS_TOKEN_SECRET ||
+        // Fallback to auto-generation if not in .env
+        require('crypto').randomBytes(32).toString('hex')
+      ),
     });
 
     const refreshTokenSecret = new secretsmanager.Secret(this, 'RefreshTokenSecret', {
       secretName: `qshelter/${stage}/refresh-token-secret`,
       description: 'Refresh token signing secret',
-      generateSecretString: {
-        secretStringTemplate: JSON.stringify({ description: 'Refresh Token Secret' }),
-        generateStringKey: 'secret',
-        excludePunctuation: true,
-        passwordLength: 64,
-      },
+      secretStringValue: cdk.SecretValue.unsafePlainText(
+        process.env.REFRESH_TOKEN_SECRET ||
+        require('crypto').randomBytes(32).toString('hex')
+      ),
     });
 
-    // Encryption Keys - Auto-generated
+    // Encryption Keys - Use from .env or auto-generate
     const encryptionSecret = new secretsmanager.Secret(this, 'EncryptionSecret', {
       secretName: `qshelter/${stage}/encryption`,
       description: 'Encryption keys for sensitive data',
-      generateSecretString: {
-        secretStringTemplate: JSON.stringify({
-          salt: 'AUTO_GENERATED',
-        }),
-        generateStringKey: 'password',
-        excludePunctuation: false,
-        passwordLength: 32,
+      secretObjectValue: {
+        password: cdk.SecretValue.unsafePlainText(
+          process.env.ENCRYPTION_PASSWORD || require('crypto').randomBytes(16).toString('hex')
+        ),
+        salt: cdk.SecretValue.unsafePlainText(
+          process.env.ENCRYPTION_SALT || require('crypto').randomBytes(8).toString('hex')
+        ),
       },
     });
 
-    // Placeholder for OAuth secrets (update manually after creation)
+    // OAuth secrets from .env
     const oauthSecret = new secretsmanager.Secret(this, 'OAuthSecret', {
       secretName: `qshelter/${stage}/oauth`,
       description: 'OAuth provider credentials (Google, etc)',
       secretObjectValue: {
-        google_client_id: cdk.SecretValue.unsafePlainText('UPDATE_ME'),
-        google_client_secret: cdk.SecretValue.unsafePlainText('UPDATE_ME'),
-        google_callback_url: cdk.SecretValue.unsafePlainText(`https://${httpApi.ref}.execute-api.${this.region}.amazonaws.com/auth/google/callback`),
+        google_client_id: cdk.SecretValue.unsafePlainText(
+          process.env.GOOGLE_CLIENT_ID || 'UPDATE_ME'
+        ),
+        google_client_secret: cdk.SecretValue.unsafePlainText(
+          process.env.GOOGLE_CLIENT_SECRET || 'UPDATE_ME'
+        ),
+        google_callback_url: cdk.SecretValue.unsafePlainText(
+          process.env.GOOGLE_CALLBACK_URL || `https://${httpApi.ref}.execute-api.${this.region}.amazonaws.com/auth/google/callback`
+        ),
       },
     });
 
-    // Placeholder for Paystack secrets (update manually after creation)
+    // Paystack secrets from .env
     const paystackSecret = new secretsmanager.Secret(this, 'PaystackSecret', {
       secretName: `qshelter/${stage}/paystack`,
       description: 'Paystack payment gateway credentials',
       secretObjectValue: {
-        secret_key: cdk.SecretValue.unsafePlainText('UPDATE_ME'),
-        public_key: cdk.SecretValue.unsafePlainText('UPDATE_ME'),
-        base_url: cdk.SecretValue.unsafePlainText('https://api.paystack.co'),
+        secret_key: cdk.SecretValue.unsafePlainText(
+          process.env.PAYSTACK_SECRET_KEY || 'UPDATE_ME'
+        ),
+        public_key: cdk.SecretValue.unsafePlainText(
+          process.env.PAYSTACK_PUBLIC_KEY || 'UPDATE_ME'
+        ),
+        base_url: cdk.SecretValue.unsafePlainText(
+          process.env.PAYSTACK_BASE_URL || 'https://api.paystack.co'
+        ),
       },
     });
 
-    // Placeholder for Email/SMTP secrets (update manually)
+    // Email/SMTP secrets from .env
     const emailSecret = new secretsmanager.Secret(this, 'EmailSecret', {
       secretName: `qshelter/${stage}/email`,
       description: 'Email service credentials (Office365, SMTP)',
       secretObjectValue: {
-        office365_client_id: cdk.SecretValue.unsafePlainText('UPDATE_ME'),
-        office365_client_secret: cdk.SecretValue.unsafePlainText('UPDATE_ME'),
-        office365_tenant_id: cdk.SecretValue.unsafePlainText('UPDATE_ME'),
-        office365_sender_email: cdk.SecretValue.unsafePlainText('info@qshelter.ng'),
+        office365_client_id: cdk.SecretValue.unsafePlainText(
+          process.env.OFFICE365_CLIENT_ID || 'UPDATE_ME'
+        ),
+        office365_client_secret: cdk.SecretValue.unsafePlainText(
+          process.env.OFFICE365_CLIENT_SECRET || 'UPDATE_ME'
+        ),
+        office365_tenant_id: cdk.SecretValue.unsafePlainText(
+          process.env.OFFICE365_TENANT_ID || 'UPDATE_ME'
+        ),
+        office365_sender_email: cdk.SecretValue.unsafePlainText(
+          process.env.OFFICE365_SENDER_EMAIL || 'info@qshelter.ng'
+        ),
+        smtp_host: cdk.SecretValue.unsafePlainText(
+          process.env.SMTP_HOST || 'smtp.mailtrap.io'
+        ),
+        smtp_port: cdk.SecretValue.unsafePlainText(
+          process.env.SMTP_PORT || '2525'
+        ),
+        smtp_username: cdk.SecretValue.unsafePlainText(
+          process.env.SMTP_USERNAME || 'UPDATE_ME'
+        ),
+        smtp_password: cdk.SecretValue.unsafePlainText(
+          process.env.SMTP_PASSWORD || 'UPDATE_ME'
+        ),
+        smtp_encryption: cdk.SecretValue.unsafePlainText(
+          process.env.SMTP_ENCRYPTION || 'STARTTLS'
+        ),
+        from_email: cdk.SecretValue.unsafePlainText(
+          process.env.FROM_EMAIL || process.env.MAIL_FROM_ADDRESS || 'info@qshelter.ng'
+        ),
       },
     });
 
