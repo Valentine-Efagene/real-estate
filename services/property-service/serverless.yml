@@ -10,9 +10,17 @@ provider:
   memorySize: 512
   timeout: 30
   
-  # Reference shared HTTP API Gateway
+  # Create own HTTP API Gateway for this service
   httpApi:
-    id: ${env:HTTP_API_ID}
+    cors: true
+    authorizers:
+      PropertyServiceAuthorizer:
+        type: request
+        functionArn: ${ssm:/qshelter/${self:provider.stage}/authorizer-lambda-arn}
+        enableSimpleResponses: true
+        payloadVersion: '2.0'
+        identitySource:
+          - $request.header.Authorization
   
   environment:
     NODE_ENV: ${self:provider.stage}
@@ -62,56 +70,37 @@ package:
     - 'node_modules/@valentine-efagene/qshelter-common/**'
 
 functions:
-  properties:
+  main:
     handler: dist/serverless.handler
     events:
       - httpApi:
           path: /property/properties/{proxy+}
           method: ANY
           authorizer:
-            name: qshelterAuthorizer
-
-  propertyMedia:
-    handler: dist/serverless.handler
-    events:
+            name: PropertyServiceAuthorizer
       - httpApi:
           path: /property/property-media/{proxy+}
           method: ANY
           authorizer:
-            name: qshelterAuthorizer
-
-  propertyDocuments:
-    handler: dist/serverless.handler
-    events:
+            name: PropertyServiceAuthorizer
       - httpApi:
           path: /property/property-document/{proxy+}
           method: ANY
           authorizer:
-            name: qshelterAuthorizer
-
-  amenities:
-    handler: dist/serverless.handler
-    events:
+            name: PropertyServiceAuthorizer
       - httpApi:
           path: /property/amenities/{proxy+}
           method: ANY
           authorizer:
-            name: qshelterAuthorizer
-
-  # Presigned URL generator for S3 uploads
-  generatePresignedUrl:
-    handler: dist/serverless.presignedUrlHandler
-    events:
+            name: PropertyServiceAuthorizer
       - httpApi:
           path: /property/upload/presigned-url
           method: POST
           authorizer:
-            name: qshelterAuthorizer
-
-plugins:
-  - serverless-offline
-
-custom:
-  serverless-offline:
-    httpPort: 3002
-    noPrependStageInUrl: true
+            name: PropertyServiceAuthorizer
+      - httpApi:
+          path: /property/api
+          method: GET
+      - httpApi:
+          path: /property/api-json
+          method: GET

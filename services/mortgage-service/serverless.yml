@@ -10,9 +10,17 @@ provider:
   memorySize: 512
   timeout: 30
   
-  # Reference shared HTTP API Gateway
+  # Create own HTTP API Gateway for this service
   httpApi:
-    id: ${env:HTTP_API_ID}
+    cors: true
+    authorizers:
+      MortgageServiceAuthorizer:
+        type: request
+        functionArn: ${ssm:/qshelter/${self:provider.stage}/authorizer-lambda-arn}
+        enableSimpleResponses: true
+        payloadVersion: '2.0'
+        identitySource:
+          - $request.header.Authorization
   
   environment:
     NODE_ENV: ${self:provider.stage}
@@ -51,51 +59,37 @@ package:
     - 'node_modules/@valentine-efagene/qshelter-common/**'
 
 functions:
-  mortgages:
+  main:
     handler: dist/serverless.handler
     events:
       - httpApi:
           path: /mortgage/mortgages/{proxy+}
           method: ANY
           authorizer:
-            name: qshelterAuthorizer
-
-  mortgageTypes:
-    handler: dist/serverless.handler
-    events:
+            name: MortgageServiceAuthorizer
       - httpApi:
           path: /mortgage/mortgage-types/{proxy+}
           method: ANY
           authorizer:
-            name: qshelterAuthorizer
-
-  downpayments:
-    handler: dist/serverless.handler
-    events:
+            name: MortgageServiceAuthorizer
       - httpApi:
           path: /mortgage/downpayments/{proxy+}
           method: ANY
           authorizer:
-            name: qshelterAuthorizer
-
-  payments:
-    handler: dist/serverless.handler
-    events:
+            name: MortgageServiceAuthorizer
       - httpApi:
           path: /mortgage/payments/{proxy+}
           method: ANY
           authorizer:
-            name: qshelterAuthorizer
+            name: MortgageServiceAuthorizer
+      - httpApi:
+          path: /mortgage/api
+          method: GET
+      - httpApi:
+          path: /mortgage/api-json
+          method: GET
 
   # FSM event listener (triggered by EventBridge)
   # Note: EventBridge bus name will be fetched from ConfigService at runtime
   fsmEventHandler:
     handler: dist/serverless.fsmEventHandler
-
-plugins:
-  - serverless-offline
-
-custom:
-  serverless-offline:
-    httpPort: 3003
-    noPrependStageInUrl: true

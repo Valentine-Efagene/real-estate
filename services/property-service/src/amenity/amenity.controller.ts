@@ -8,7 +8,7 @@ import {
   HttpStatus,
   ParseIntPipe,
 } from '@nestjs/common';
-import { Amenity } from './amenity.entity';
+import { Amenity } from '@valentine-efagene/qshelter-common';
 import { AmenityService } from './amenity.service';
 import { CreateAmenityDto } from './amenity.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';

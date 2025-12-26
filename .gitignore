@@ -79,3 +79,4 @@ cdk.context.json
 .cache
 # Backup files
 *.backup
+.env.bak

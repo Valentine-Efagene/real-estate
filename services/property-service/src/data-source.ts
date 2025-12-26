@@ -7,12 +7,12 @@ if (process.env.NODE_ENV !== 'test') {
 import { DataSource, DataSourceOptions } from "typeorm";
 import {
     User,
-    Tenant
+    Tenant,
+    Property,
+    PropertyMedia,
+    PropertyDocument,
+    Amenity,
 } from '@valentine-efagene/qshelter-common';
-import { Property } from "./property/property.entity";
-import { PropertyMedia } from "./property-media/property-media.entity";
-import { PropertyDocument } from "./property-document/property-document.entity";
-import { Amenity } from "./amenity/amenity.entity";
 
 const IS_NOT_PRODUCTION_DB = process.env.DB_HOST == '127.0.0.1'
 

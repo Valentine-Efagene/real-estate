@@ -1,5 +1,5 @@
 import { Repository } from 'typeorm';
-import { PropertyMedia } from './property-media.entity';
+import { PropertyMedia } from '@valentine-efagene/qshelter-common';
 
 export class PropertyMediaRepository extends Repository<PropertyMedia> {
   // ...

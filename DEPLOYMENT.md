@@ -13,8 +13,37 @@ QShelter uses a **decoupled microservices architecture** where:
 
 1. AWS CLI configured with appropriate credentials
 2. Node.js 18.x or later
-3. Serverless Framework installed globally: `npm install -g serverless`
+3. Serverless Framework v4
 4. Docker (for local development)
+
+## ⚠️ CRITICAL: AWS Credentials Setup
+
+### Local Development
+
+Use AWS CLI credentials (recommended):
+
+```bash
+aws configure
+```
+
+**IMPORTANT**: Do NOT set `AWS_ACCESS_KEY_ID` or `AWS_SECRET_ACCESS_KEY` in service `.env` files. These will conflict with AWS CLI credentials and cause SSM parameter resolution failures during deployment.
+
+### CI/CD Pipeline
+
+Set these environment variables in your CI/CD platform (GitHub Actions, GitLab CI, etc.):
+
+```bash
+AWS_ACCESS_KEY_ID=<your-access-key>
+AWS_SECRET_ACCESS_KEY=<your-secret-key>
+AWS_REGION=us-east-1
+```
+
+The Serverless Framework will automatically use these credentials to:
+
+- Resolve SSM parameters (e.g., authorizer Lambda ARN)
+- Deploy Lambda functions
+- Create/update API Gateways
+- Set up CloudWatch logs
 
 ## Infrastructure Setup (One-Time)
 

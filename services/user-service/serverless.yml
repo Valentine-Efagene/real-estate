@@ -106,10 +106,19 @@ package:
     - 'node_modules/@valentine-efagene/qshelter-common/**'
 
 functions:
-  # Auth endpoints (public - no authorizer)
-  authPublic:
+  # Single Lambda function handling all user service routes
+  main:
     handler: dist/serverless.handler
     events:
+      # Swagger/OpenAPI documentation endpoints (public - no authorizer)
+      - httpApi:
+          path: /api
+          method: GET
+      - httpApi:
+          path: /api-json
+          method: GET
+      
+      # Auth endpoints (public - no authorizer)
       - httpApi:
           path: /auth/login
           method: POST
@@ -134,11 +143,8 @@ functions:
       - httpApi:
           path: /auth/google/callback
           method: GET
-
-  # Protected auth endpoints
-  authProtected:
-    handler: dist/serverless.handler
-    events:
+      
+      # Protected auth endpoints
       - httpApi:
           path: /auth/logout
           method: POST
@@ -149,41 +155,29 @@ functions:
           method: GET
           authorizer:
             name: UserServiceAuthorizer
-
-  # User management endpoints
-  users:
-    handler: dist/serverless.handler
-    events:
+      
+      # User management endpoints
       - httpApi:
           path: /users/{proxy+}
           method: ANY
           authorizer:
             name: UserServiceAuthorizer
-
-  # Role management endpoints
-  roles:
-    handler: dist/serverless.handler
-    events:
+      
+      # Role management endpoints
       - httpApi:
           path: /roles/{proxy+}
           method: ANY
           authorizer:
             name: UserServiceAuthorizer
-
-  # Permission management endpoints
-  permissions:
-    handler: dist/serverless.handler
-    events:
+      
+      # Permission management endpoints
       - httpApi:
           path: /permissions/{proxy+}
           method: ANY
           authorizer:
             name: UserServiceAuthorizer
-
-  # Tenant management endpoints
-  tenants:
-    handler: dist/serverless.handler
-    events:
+      
+      # Tenant management endpoints
       - httpApi:
           path: /tenants/{proxy+}
           method: ANY

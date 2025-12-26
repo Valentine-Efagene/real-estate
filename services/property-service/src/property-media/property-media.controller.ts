@@ -8,7 +8,7 @@ import {
   HttpStatus,
   ParseIntPipe,
 } from '@nestjs/common';
-import { PropertyMedia } from './property-media.entity';
+import { PropertyMedia } from '@valentine-efagene/qshelter-common';
 import { PropertyMediaService } from './property-media.service';
 import {
   StandardApiResponse,

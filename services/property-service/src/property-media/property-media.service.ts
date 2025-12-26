@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { PropertyMedia } from './property-media.entity';
+import { PropertyMedia } from '@valentine-efagene/qshelter-common';
 import {
   CreatePropertyMediaDto,
 } from './property-media.dto';

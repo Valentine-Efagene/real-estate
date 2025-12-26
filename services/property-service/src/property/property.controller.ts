@@ -10,7 +10,7 @@ import {
   ParseIntPipe,
   Query,
 } from '@nestjs/common';
-import { Property } from './property.entity';
+import { Property } from '@valentine-efagene/qshelter-common';
 import { PropertyService } from './property.service';
 import { CreatePropertyControllerDto, SetDisplayImageDto } from './property.dto';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';

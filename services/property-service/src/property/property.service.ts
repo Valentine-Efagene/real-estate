@@ -2,8 +2,7 @@ import { Injectable, NotFoundException, BadRequestException } from '@nestjs/comm
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, FindOptionsWhere, Like, Repository } from 'typeorm';
 import { CreatePropertyDto, UpdatePropertyDto } from './property.dto';
-import { PaginationHelper, PaginatedResponse, PaginationQuery, Amenity, Property } from '@valentine-efagene/qshelter-common';
-import { PropertyMedia } from '../property-media/property-media.entity';
+import { PaginationHelper, PaginatedResponse, PaginationQuery, Amenity, Property, PropertyMedia } from '@valentine-efagene/qshelter-common';
 import { contentType } from 'mime-types';
 
 @Injectable()
