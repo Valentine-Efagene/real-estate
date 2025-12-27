@@ -1,11 +1,26 @@
-import { Entity, Column, Index, Unique } from 'typeorm';
-import { BaseEntity } from './BaseEntity';
+import { Entity, Column, Index, Unique, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
 import { TenantStatus, TenantPlan } from '../types/tenant.type';
 
 @Entity({ name: 'tenants' })
 @Unique(['subdomain'])
 @Unique(['domain'])
-export class Tenant extends BaseEntity {
+export class Tenant {
+    @PrimaryGeneratedColumn()
+    id: number;
+
+    @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+    createdAt: Date;
+
+    @UpdateDateColumn({
+        type: 'timestamp',
+        default: () => 'CURRENT_TIMESTAMP',
+        onUpdate: 'CURRENT_TIMESTAMP',
+    })
+    updatedAt: Date;
+
+    @DeleteDateColumn({ nullable: true, default: null })
+    deletedAt: Date;
+
     @Column({ name: 'name', length: 255 })
     name: string;
 

@@ -1,4 +1,3 @@
-import { User } from './user.entity';
 import {
   ManyToOne,
   JoinColumn,
@@ -8,9 +7,9 @@ import { DocumentStatus } from '../types/common.type';
 import { AbstractTenantAwareEntity } from './common.pure.entity';
 
 export abstract class AbstractBaseReviewableEntity extends AbstractTenantAwareEntity {
-  @ManyToOne(() => User, { eager: true })
+  @ManyToOne('User', { eager: true })
   @JoinColumn({ name: 'reviewed_by' })
-  reviewer: User;
+  reviewer: any;
 
   @Column({ name: 'reviewed_at', type: 'timestamp', nullable: true })
   reviewedAt: string;

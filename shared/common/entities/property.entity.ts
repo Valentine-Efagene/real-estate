@@ -1,14 +1,14 @@
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne } from 'typeorm';
-import { PropertyDocument } from './property-document.entity';
-import { PropertyMedia } from './property-media.entity';
 import { User } from './user.entity';
 import { Amenity } from './amenity.entity';
 import { AbstractBaseReviewableEntity } from './common.entity';
+import { PropertyCategory, PropertyStatus, PropertyType } from '../types/property.type';
+import { Currency } from '../types/common.type';
+import { PropertyDocument } from './property-document.entity';
+import { PropertyMedia } from './property-media.entity';
 import { Mortgage } from './mortgage.entity';
 import { PaymentPlan } from './payment-plan.entity';
 import { Contract } from './contract.entity';
-import { PropertyCategory, PropertyStatus, PropertyType } from '../types/property.type';
-import { Currency } from '../types/common.type';
 
 @Entity({ name: 'property' })
 export class Property extends AbstractBaseReviewableEntity {
@@ -25,9 +25,9 @@ export class Property extends AbstractBaseReviewableEntity {
 
   @OneToMany(
     () => PropertyDocument,
-    (propertyDocument) => propertyDocument.property,
+    (doc) => doc.property,
   )
-  documents: PropertyDocument[];
+  documents?: PropertyDocument[];
 
   @ManyToMany(() => Amenity)
   @JoinTable()
@@ -35,26 +35,26 @@ export class Property extends AbstractBaseReviewableEntity {
 
   @OneToMany(
     () => PropertyMedia,
-    (propertyDocument) => propertyDocument.property,
+    (media) => media.property,
   )
 
-  media: PropertyMedia[];
+  media?: PropertyMedia[];
 
   @OneToMany(() => Mortgage, (mortgage) => mortgage.property)
-  mortgages: Mortgage[];
+  mortgages?: Mortgage[];
 
   @OneToMany(() => PaymentPlan, (plan) => plan.property)
-  paymentPlans: PaymentPlan[];
+  paymentPlans?: PaymentPlan[];
 
   @OneToMany(() => Contract, (contract) => contract.property)
-  contracts: Contract[];
+  contracts?: Contract[];
 
   @OneToOne(() => PropertyMedia, {
     onDelete: 'SET NULL', // prevents FK errors if image is deleted
     onUpdate: 'CASCADE'
   })
   @JoinColumn({ name: 'display_image_id' })
-  displayImage: PropertyMedia;
+  displayImage?: PropertyMedia;
 
   @Column({
     name: 'display_image_id',

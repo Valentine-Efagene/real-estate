@@ -4,26 +4,13 @@ import * as Joi from 'joi';
 const envModule = ConfigModule.forRoot({
     validationSchema: Joi.object({
         NODE_ENV: Joi.string()
-            .valid('development', 'production', 'test', 'provision')
+            .valid('development', 'production', 'test', 'provision', 'dev', 'prod')
             .default('development'),
-        PORT: Joi.number().port().default(3001),
-
-        // DB
-        DB_HOST: Joi.string(),
-        DB_NAME: Joi.string(),
-        DB_PORT: Joi.number().port().default(3306),
-        DB_USERNAME: Joi.string(),
-        DB_PASSWORD: Joi.string(),
-
-        // AUTH
-        JWT_SECRET: Joi.string(),
-        REFRESH_TOKEN_SECRET: Joi.string(),
-
-        ENCRYPTION_PASSWORD: Joi.string().required(),
-        ENCRYPTION_SALT: Joi.string().required(),
+        PORT: Joi.number().port().optional(),
     }),
     envFilePath: '.env',
-    isGlobal: true
+    isGlobal: true,
+    ignoreEnvFile: true, // Ignore .env file in Lambda, use SSM/Secrets Manager
 });
 
 import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';

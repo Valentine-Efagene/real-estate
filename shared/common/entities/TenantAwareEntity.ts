@@ -1,4 +1,3 @@
-import Tenant from './tenant.entity';
 import { CreateDateColumn, DeleteDateColumn, PrimaryGeneratedColumn, UpdateDateColumn, Column, Index, ManyToOne, JoinColumn } from 'typeorm';
 
 /**
@@ -9,9 +8,9 @@ export class TenantAwareEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => Tenant, { onDelete: 'CASCADE' })
+    @ManyToOne(() => require('./tenant.entity').default, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'tenant_id' })
-    tenant: Tenant;
+    tenant: any;
 
     @Column({ name: 'tenant_id' })
     @Index()

@@ -59,6 +59,7 @@ package:
     - 'node_modules/@codegenie/**'
     - 'node_modules/reflect-metadata/**'
     - 'node_modules/rxjs/**'
+    - 'node_modules/tslib/**'
     - 'node_modules/class-transformer/**'
     - 'node_modules/class-validator/**'
 

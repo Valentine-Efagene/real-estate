@@ -6,4 +6,4 @@
 export * from './database.module';
 export * from './database.service';
 export * from './database.config';
-export * from './entities';
+export * from '@valentine-efagene/qshelter-common';

@@ -1,9 +1,9 @@
 import { Column, DeleteDateColumn, Entity, JoinColumn, OneToOne } from 'typeorm';
 import { User } from './user.entity';
-import { BaseEntity } from './BaseEntity';
+import { AbstractBaseEntity } from './common.pure.entity';
 
 @Entity({ name: 'password_reset_token' })
-export class PasswordResetToken extends BaseEntity {
+export class PasswordResetToken extends AbstractBaseEntity {
   @OneToOne(() => User, {
     //eager: true,
     onDelete: 'CASCADE',

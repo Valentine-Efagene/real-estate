@@ -1,9 +1,9 @@
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
-import { BaseEntity } from './BaseEntity';
+import { AbstractBaseEntity } from './common.pure.entity';
 import { User } from './user.entity';
 
 @Entity({ name: 'refresh_tokens' })
-export class RefreshToken extends BaseEntity {
+export class RefreshToken extends AbstractBaseEntity {
   @ManyToOne(() => User, (user) => user.refreshTokens)
   @JoinColumn({ name: 'user_id' })
   user: User;

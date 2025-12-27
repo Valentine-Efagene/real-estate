@@ -1,9 +1,11 @@
-export * from './BaseEntity';
+// Export base entities first to avoid circular dependency issues
+export * from './common.pure.entity';
+export * from './common.entity';
 export * from './TenantAwareEntity';
 export * from './TenantAwareRepository';
+
+// Export concrete entities
 export * from './amenity.entity';
-export * from './common.entity';
-export * from './common.pure.entity';
 export * from './contract-document.entity';
 export * from './contract.entity';
 export * from './device_endpoint.entity';

@@ -8,6 +8,7 @@
     "scripts": {
         "build": "nest build",
         "build:webpack": "webpack --config webpack.config.js",
+        "offline": "npm run build && npm run build:webpack && npx sls offline --stage dev",
         "deploy:dev": "npm run build && npm run build:webpack && npx sls deploy --stage dev",
         "deploy:staging": "npm run build && npm run build:webpack && npx sls deploy --stage staging",
         "deploy:prod": "npm run build && npm run build:webpack && npx sls deploy --stage prod",
@@ -36,7 +37,7 @@
         "@qshelter/nest-auth": "^1.0.14",
         "@real-estate/shared-database": "file:../../shared/database",
         "@real-estate/shared-event-bus": "file:../../shared/event-bus",
-        "@valentine-efagene/qshelter-common": "^1.2.1",
+        "@valentine-efagene/qshelter-common": "^1.2.6",
         "aws-lambda": "^1.0.7",
         "axios": "^1.11.0",
         "bcrypt": "^5.1.1",
@@ -58,6 +59,7 @@
     },
     "devDependencies": {
         "@nestjs/cli": "^10.0.0",
+        "serverless-offline": "^14.4.0",
         "source-map-support": "^0.5.21",
         "ts-loader": "^9.5.4",
         "ts-node": "^10.9.1",

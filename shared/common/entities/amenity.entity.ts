@@ -1,8 +1,8 @@
 import { Column, Entity } from 'typeorm';
-import { BaseEntity } from './BaseEntity';
+import { AbstractBaseEntity } from './common.pure.entity';
 
 @Entity({ name: 'amenity' })
-export class Amenity extends BaseEntity {
+export class Amenity extends AbstractBaseEntity {
   @Column({
     name: 'name',
     nullable: false

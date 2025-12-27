@@ -1,27 +1,29 @@
 const path = require('path');
-const webpack = require('webpack');
 const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
     entry: './src/serverless.ts',
     target: 'node',
-    mode: 'production',
+    mode: 'development',
     externals: [
         nodeExternals({
-            allowlist: ['@valentine-efagene/qshelter-common']
-        })
+            allowlist: [
+                // Bundle nothing from node_modules - keep everything external
+                // This prevents webpack from breaking class inheritance
+            ],
+        }),
     ],
     module: {
         rules: [
             {
-                test: /\.tsx?$/,
-                use: 'ts-loader',
+                test: /\.ts$/,
+                loader: 'ts-loader',
                 exclude: /node_modules/,
             },
         ],
     },
     resolve: {
-        extensions: ['.tsx', '.ts', '.js'],
+        extensions: ['.ts', '.js'],
     },
     output: {
         filename: 'serverless.js',
@@ -29,11 +31,6 @@ module.exports = {
         libraryTarget: 'commonjs2',
     },
     optimization: {
-        minimize: false, // NestJS doesn't work well with minification
+        minimize: false,
     },
-    plugins: [
-        new webpack.IgnorePlugin({
-            resourceRegExp: /^aws-sdk$/, // AWS SDK is available in Lambda runtime
-        }),
-    ],
 };

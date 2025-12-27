@@ -1,9 +1,9 @@
 import { Column, Entity, ManyToMany } from 'typeorm';
-import { BaseEntity } from './BaseEntity';
+import { AbstractBaseEntity } from './common.pure.entity';
 import { Role } from './role.entity';
 
 @Entity({ name: 'permissions' })
-export class Permission extends BaseEntity {
+export class Permission extends AbstractBaseEntity {
   @Column({ name: 'name', type: 'varchar', nullable: true })
   name: string;
 
