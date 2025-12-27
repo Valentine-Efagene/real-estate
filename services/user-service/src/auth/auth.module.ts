@@ -3,7 +3,7 @@ import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { jwtConstants } from './auth.constants';
+import { getJwtSecret } from './auth.constants';
 import { LocalStrategy } from './strategy/local_strategy';
 import { UserModule } from '../user/user.module';
 import { AuthController } from './auth.controller';
@@ -19,8 +19,8 @@ import { User, PasswordResetToken, Role } from '@valentine-efagene/qshelter-comm
         UserModule,
         PassportModule,
         JwtModule.register({
-            secret: jwtConstants.secret,
-            signOptions: { expiresIn: '60s' },
+            secret: getJwtSecret(),
+            signOptions: { expiresIn: '100m' },
         }),
         RefreshTokenModule,
         PasswordResetTokenModule,

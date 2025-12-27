@@ -1,16 +1,30 @@
 import { IJwtConfig } from "./auth.type";
+import { ConfigService } from "@valentine-efagene/qshelter-common";
 
-export const jwtConstants = {
-    secret: process.env.JWT_SECRET,
-    refreshSecret: process.env.REFRESH_TOKEN_SECRET,
+const configService = ConfigService.getInstance();
+const stage = process.env.NODE_ENV || 'dev';
+
+// Cache secrets on module load
+let jwtSecret: string;
+let refreshSecret: string;
+
+// Initialize secrets asynchronously
+export const initializeSecrets = async () => {
+    const jwtSecrets = await configService.getJwtSecret(stage);
+    const refreshSecrets = await configService.getRefreshTokenSecret(stage);
+    jwtSecret = jwtSecrets.secret;
+    refreshSecret = refreshSecrets.secret;
 };
 
-export const accessTokenConfig = (): IJwtConfig => ({
-    secret: process.env.JWT_SECRET,
+export const getAccessTokenConfig = (): IJwtConfig => ({
+    secret: jwtSecret,
     expiresIn: '100m',
 });
 
-export const refreshTokenConfig = (): IJwtConfig => ({
-    secret: process.env.REFRESH_TOKEN_SECRET,
+export const getRefreshTokenConfig = (): IJwtConfig => ({
+    secret: refreshSecret,
     expiresIn: '60d',
 });
+
+export const getJwtSecret = () => jwtSecret;
+export const getRefreshSecret = () => refreshSecret;

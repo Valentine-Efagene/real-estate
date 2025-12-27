@@ -1,17 +1,9 @@
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import * as Joi from 'joi';
+import { ConfigService } from '@valentine-efagene/qshelter-common';
+import { initializeSecrets, getJwtSecret } from './auth/auth.constants';
 
-const envModule = ConfigModule.forRoot({
-    validationSchema: Joi.object({
-        NODE_ENV: Joi.string()
-            .valid('development', 'production', 'test', 'provision', 'dev', 'prod')
-            .default('development'),
-        PORT: Joi.number().port().optional(),
-    }),
-    envFilePath: '.env',
-    isGlobal: true,
-    ignoreEnvFile: true, // Ignore .env file in Lambda, use SSM/Secrets Manager
-});
+// Initialize secrets from SSM/Secrets Manager before app starts
+// This is called in main.ts before bootstrapping
+export { initializeSecrets };
 
 import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
@@ -33,15 +25,13 @@ import { RefreshTokenModule } from './refresh_token/refresh_token.module';
 import { PasswordResetTokenModule } from './password_reset_tokens/password_reset_tokens.module';
 import { UserSuspensionModule } from './user_suspensions/user_suspensions.module';
 import { EncryptionModule } from '@valentine-efagene/qshelter-common';
-import { jwtConstants } from './auth/auth.constants';
 
 @Module({
     imports: [
-        envModule,
         TypeOrmModule.forRoot(options),
         JwtModule.register({
-            secret: jwtConstants.secret,
-            signOptions: { expiresIn: '60s' },
+            secret: getJwtSecret(),
+            signOptions: { expiresIn: '100m' },
             global: true
         }),
         ThrottlerModule.forRoot([{

@@ -7,15 +7,17 @@ import { RefreshTokenDto, SignInDto, SignUpDto, SignUpStrippedDto } from './auth
 import { User, PasswordResetToken, Role } from '@valentine-efagene/qshelter-common';
 import { IAccessTokenPayload, IAuthTokensAndUser, IGoogleAuthProfileParsed, IJwtConfig } from './auth.type';
 import { RefreshTokenService } from '../refresh_token/refresh_token.service';
-import { accessTokenConfig, refreshTokenConfig } from './auth.constants';
+import { getAccessTokenConfig, getRefreshTokenConfig } from './auth.constants';
 import { Request } from 'express';
 import { OAuth2Client } from 'google-auth-library';
 import { randomBytes, randomUUID } from 'crypto'
 import { InjectRepository } from '@nestjs/typeorm';
 import { MoreThan, QueryRunner, Repository } from 'typeorm';
-import { ConfigService } from '@nestjs/config';
+import { ConfigService } from '@valentine-efagene/qshelter-common';
 import { UserStatus } from '../user/user.enums';
 import { RoleName } from '../role/role.enums';
+
+const configService = ConfigService.getInstance();
 
 function generateRandomString(length = 16) {
     return randomBytes(length).toString('hex').slice(0, length);
@@ -30,7 +32,6 @@ export class AuthService {
         private userService: UserService,
         private jwtService: JwtService,
         private refreshTokenService: RefreshTokenService,
-        private configService: ConfigService,
 
         @InjectRepository(PasswordResetToken)
         private readonly passwordResetTokenRepository: Repository<PasswordResetToken>,
@@ -38,7 +39,12 @@ export class AuthService {
         @InjectRepository(User)
         private readonly userRepository: Repository<User>
     ) {
-        this.googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+        this.initializeGoogleClient();
+    }
+
+    private async initializeGoogleClient() {
+        const oauthSecrets = await configService.getOAuthSecrets(process.env.NODE_ENV || 'dev');
+        this.googleClient = new OAuth2Client(oauthSecrets.google_client_id);
     }
 
     async requestPasswordReset(email: string): Promise<void> {
@@ -70,7 +76,9 @@ export class AuthService {
 
         await this.passwordResetTokenRepository.save(_resetToken)
 
-        const resetUrl = `${this.configService.get('FRONTEND_BASE_URL')}/auth/reset-password?token=${token}`;
+        // TODO: Get frontend URL from SSM or use environment variable
+        const frontendBaseUrl = process.env.FRONTEND_BASE_URL || 'http://localhost:3000';
+        const resetUrl = `${frontendBaseUrl}/auth/reset-password?token=${token}`;
 
         // TODO: Publish event to event bus to trigger notification service
         // await eventBus.publish('user.password-reset-requested', {
@@ -276,7 +284,7 @@ export class AuthService {
             roles: user.roles.map(role => role.name)
         };
 
-        const accessToken = await this.generateJWT(payload, accessTokenConfig());
+        const accessToken = await this.generateJWT(payload, getAccessTokenConfig());
         await this.refreshTokenService.replaceToken({
             token: accessToken,
             userId: user.id
@@ -307,8 +315,8 @@ export class AuthService {
             roles: user.roles?.map(role => role.name)
         };
 
-        const accessToken = await this.generateJWT(payload, accessTokenConfig());
-        const refreshToken = await this.generateJWT(payload, refreshTokenConfig());
+        const accessToken = await this.generateJWT(payload, getAccessTokenConfig());
+        const refreshToken = await this.generateJWT(payload, getRefreshTokenConfig());
 
         const doc = await this.refreshTokenService.findOneByUserId(user.id)
 
