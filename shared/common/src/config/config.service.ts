@@ -186,7 +186,16 @@ export class ConfigService {
             });
 
             const response = await this.secretsClient.send(command);
-            const secret = JSON.parse(response.SecretString || '{}');
+            const secretString = response.SecretString || '{}';
+
+            // Try to parse as JSON first, if it fails treat as plain text
+            let secret: any;
+            try {
+                secret = JSON.parse(secretString);
+            } catch {
+                // If not JSON, treat as plain text and wrap in object with 'secret' key
+                secret = { secret: secretString };
+            }
 
             this.setCache(secretName, secret);
             return secret as T;

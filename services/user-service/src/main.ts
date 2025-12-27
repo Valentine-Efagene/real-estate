@@ -11,19 +11,15 @@ async function bootstrap() {
     const configService = ConfigService.getInstance();
 
     // Load infrastructure config and populate process.env for TypeORM
-    try {
-        const infraConfig = await configService.getInfrastructureConfig(stage);
-        process.env.DB_HOST = infraConfig.dbHost;
-        process.env.DB_PORT = infraConfig.dbPort.toString();
-        process.env.DB_NAME = 'qshelter-' + stage;
+    const infraConfig = await configService.getInfrastructureConfig(stage);
+    process.env.DB_HOST = infraConfig.dbHost;
+    process.env.DB_PORT = infraConfig.dbPort.toString();
+    process.env.DB_NAME = 'qshelter-' + stage;
 
-        // Load database credentials from Secrets Manager
-        const dbSecret = await configService['getSecret'](infraConfig.databaseSecretArn);
-        process.env.DB_USERNAME = (dbSecret as any).username;
-        process.env.DB_PASSWORD = (dbSecret as any).password;
-    } catch (error) {
-        console.warn('Could not load config from AWS, using local environment:', error.message);
-    }
+    // Load database credentials from Secrets Manager
+    const dbSecret = await configService['getSecret'](infraConfig.databaseSecretArn);
+    process.env.DB_USERNAME = (dbSecret as any).username;
+    process.env.DB_PASSWORD = (dbSecret as any).password;
 
     // Initialize JWT secrets from SSM/Secrets Manager
     await initializeSecrets();
