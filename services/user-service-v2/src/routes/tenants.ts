@@ -18,10 +18,7 @@ tenantRouter.post('/', async (req, res, next) => {
     try {
         const data = z.object({
             name: z.string(),
-            subdomain: z.string().optional(),
-            logo: z.string().url().optional(),
-            primaryColor: z.string().optional(),
-            secondaryColor: z.string().optional(),
+            subdomain: z.string(),
         }).parse(req.body);
 
         const result = await tenantService.create(data);
@@ -54,9 +51,6 @@ tenantRouter.put('/:id', async (req, res, next) => {
         const data = z.object({
             name: z.string().optional(),
             subdomain: z.string().optional(),
-            logo: z.string().url().optional(),
-            primaryColor: z.string().optional(),
-            secondaryColor: z.string().optional(),
             isActive: z.boolean().optional(),
         }).parse(req.body);
 

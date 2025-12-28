@@ -3,37 +3,26 @@ import { NotFoundError, ConflictError } from '@valentine-efagene/qshelter-common
 
 export interface CreateTenantInput {
     name: string;
-    subdomain?: string;
-    logo?: string;
-    primaryColor?: string;
-    secondaryColor?: string;
+    subdomain: string;
 }
 
 export interface UpdateTenantInput {
     name?: string;
     subdomain?: string;
-    logo?: string;
-    primaryColor?: string;
-    secondaryColor?: string;
     isActive?: boolean;
 }
 
 class TenantService {
     async create(data: CreateTenantInput) {
-        if (data.subdomain) {
-            const existing = await prisma.tenant.findUnique({ where: { subdomain: data.subdomain } });
-            if (existing) {
-                throw new ConflictError('Subdomain already exists');
-            }
+        const existing = await prisma.tenant.findUnique({ where: { subdomain: data.subdomain } });
+        if (existing) {
+            throw new ConflictError('Subdomain already exists');
         }
 
         return prisma.tenant.create({
             data: {
                 name: data.name,
                 subdomain: data.subdomain,
-                logo: data.logo,
-                primaryColor: data.primaryColor,
-                secondaryColor: data.secondaryColor,
             },
         });
     }

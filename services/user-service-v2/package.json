@@ -8,10 +8,17 @@
     "dev": "tsx watch src/local.ts",
     "build": "tsc && node esbuild.config.js",
     "deploy:dev": "npm run build && npx sls deploy --stage dev",
-    "test": "jest",
-    "test:e2e": "jest --config jest.e2e.config.js",
+    "test": "node --experimental-vm-modules --no-warnings=ExperimentalWarning node_modules/jest/bin/jest.js",
+    "test:e2e": "NODE_ENV=local NODE_OPTIONS='--experimental-vm-modules --no-warnings=ExperimentalWarning' jest --config jest.e2e.config.js",
     "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev"
+    "prisma:migrate": "prisma migrate dev",
+    "db:seed": "tsx src/lib/db/seed.ts",
+    "db:seed:local": "NODE_ENV=local tsx src/lib/db/seed.ts",
+    "db:reset": "prisma migrate reset --force",
+    "db:reset:local": "NODE_ENV=local prisma migrate reset --force",
+    "db:studio": "prisma studio",
+    "db:push": "prisma db push",
+    "db:push:local": "NODE_ENV=local prisma db push"
   },
   "dependencies": {
     "@aws-lambda-powertools/logger": "^2.11.0",
@@ -29,6 +36,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@faker-js/faker": "^10.1.0",
     "@types/aws-lambda": "^8.10.145",
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.0",
