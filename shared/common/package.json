@@ -1,6 +1,6 @@
 {
   "name": "@valentine-efagene/qshelter-common",
-  "version": "2.0.18",
+  "version": "2.0.19",
   "description": "Shared database schemas and utilities for QShelter services",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
@@ -28,12 +28,13 @@
     "prisma"
   ],
   "dependencies": {
-    "@prisma/client": "^7.0.0",
-    "prisma": "^7.0.0",
+    "@aws-sdk/client-secrets-manager": "^3.500.0",
     "@aws-sdk/client-ssm": "^3.500.0",
-    "@aws-sdk/client-secrets-manager": "^3.500.0"
+    "@prisma/client": "^7.0.0",
+    "prisma": "^7.0.0"
   },
   "devDependencies": {
+    "@types/node": "^25.0.3",
     "typescript": "^5.7.3"
   }
 }

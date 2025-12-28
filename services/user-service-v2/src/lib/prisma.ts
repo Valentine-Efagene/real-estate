@@ -7,9 +7,6 @@ import { ConfigService, PrismaClient } from '@valentine-efagene/qshelter-common'
 
 // Load environment variables from .env.local for local development
 const stage = process.env.NODE_ENV || 'dev';
-if (stage === 'local') {
-    config({ path: '.env.local' });
-}
 
 async function createAdapter() {
     if (stage === 'local') {
@@ -22,15 +19,15 @@ async function createAdapter() {
             connectionLimit: 5
         });
     } else {
+        // Use ConfigService for AWS environments
         const configService = ConfigService.getInstance();
-        // Load infrastructure config and populate process.env for TypeORM
-        const infraConfig = await configService.getInfrastructureConfig(stage);
-        const dbSecret = await configService['getSecret'](infraConfig.databaseSecretArn);
+        const dbCredentials = await configService.getDatabaseCredentials(stage);
+
         return new PrismaMariaDb({
-            host: infraConfig.dbHost,
-            user: 'qshelter-' + stage,
-            password: (dbSecret as any).username,
-            database: (dbSecret as any).password,
+            host: dbCredentials.host,
+            user: dbCredentials.username,
+            password: dbCredentials.password,
+            database: dbCredentials.database,
             connectionLimit: 5
         });
     }

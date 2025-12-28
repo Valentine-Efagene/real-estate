@@ -20,6 +20,14 @@ export interface JwtSecrets {
     secret: string;
 }
 
+export interface DatabaseCredentials {
+    username: string;
+    password: string;
+    host: string;
+    port: number;
+    database: string;
+}
+
 export interface EncryptionSecrets {
     password: string;
     salt: string;
@@ -143,6 +151,30 @@ export class ConfigService {
      */
     async getRefreshTokenSecret(stage: string = process.env.NODE_ENV || 'dev'): Promise<JwtSecrets> {
         return this.getSecret<JwtSecrets>(`qshelter/${stage}/refresh-token-secret`);
+    }
+
+    /**
+     * Get database credentials - combines secret and infrastructure config
+     * Returns a complete DatabaseCredentials object ready to use
+     */
+    async getDatabaseCredentials(stage: string = process.env.NODE_ENV || 'dev'): Promise<DatabaseCredentials> {
+        const cacheKey = `db-credentials-${stage}`;
+        const cached = this.getFromCache<DatabaseCredentials>(cacheKey);
+        if (cached) return cached;
+
+        const infraConfig = await this.getInfrastructureConfig(stage);
+        const dbSecret = await this.getSecret<{ username: string; password: string }>(infraConfig.databaseSecretArn);
+
+        const credentials: DatabaseCredentials = {
+            username: dbSecret.username,
+            password: dbSecret.password,
+            host: infraConfig.dbHost,
+            port: infraConfig.dbPort,
+            database: `qshelter_${stage}`,
+        };
+
+        this.setCache(cacheKey, credentials);
+        return credentials;
     }
 
     /**
