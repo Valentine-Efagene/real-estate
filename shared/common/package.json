@@ -1,6 +1,6 @@
 {
   "name": "@valentine-efagene/qshelter-common",
-  "version": "2.0.12",
+  "version": "2.0.15",
   "description": "Shared database schemas and utilities for QShelter services",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -9,6 +9,7 @@
     "build": "tsc",
     "dev": "tsc --watch",
     "generate:prisma": "prisma generate",
+    "migrate:dev": "prisma migrate dev",
     "patch": "npm version patch && npm run build && npm publish --access public",
     "prepublishOnly": "npm run build",
     "publish:public": "npm publish --access public"

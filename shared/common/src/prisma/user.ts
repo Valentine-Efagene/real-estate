@@ -6,18 +6,18 @@ import { PrismaClient } from '../generated/client/client';
  * a top-level `roles` array of Role objects for convenience.
  */
 export async function getUserWithRoles(prisma: PrismaClient, userId: string) {
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
-    include: { userRoles: { include: { role: true } } },
-  });
+    const user = await prisma.user.findUnique({
+        where: { id: userId },
+        include: { userRoles: { include: { role: true } } },
+    });
 
-  if (!user) return null;
+    if (!user) return null;
 
-  const roles = (user as any).userRoles?.map((ur: any) => ur.role) ?? [];
+    const roles = (user as any).userRoles?.map((ur: any) => ur.role) ?? [];
 
-  // Return a shallow copy of the user with `roles` fused in for quick access.
-  const { userRoles, ...rest } = user as any;
-  return { ...rest, roles };
+    // Return a shallow copy of the user with `roles` fused in for quick access.
+    const { userRoles, ...rest } = user as any;
+    return { ...rest, roles };
 }
 
 export type { PrismaClient };

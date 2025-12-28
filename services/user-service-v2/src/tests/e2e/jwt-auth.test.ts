@@ -4,7 +4,7 @@ import { app } from '../../app';
 import { cleanDatabase, seedTestRoles } from './setup';
 import { prisma } from '../../lib/prisma';
 
-describe('Auth E2E Tests', () => {
+describe('JWT Auth E2E Tests', () => {
     beforeAll(async () => {
         await cleanDatabase();
         await seedTestRoles();
@@ -53,7 +53,7 @@ describe('Auth E2E Tests', () => {
             expect(user?.password).not.toBe(userData.password); // Password should be hashed
             expect(user?.emailVerificationToken).toBeTruthy();
             expect(user?.emailVerifiedAt).toBeNull();
-            expect(user?.isActive).toBe(false);
+            expect(user?.isActive).toBe(true);
         });
 
         it('should fail with duplicate email', async () => {
@@ -731,7 +731,7 @@ describe('Auth E2E Tests', () => {
                 .expect(401);
 
             expect(response.body.success).toBe(false);
-            expect(response.body.error).toContain('Invalid token');
+            expect(response.body.error).toContain('Invalid or expired token');
         });
     });
 

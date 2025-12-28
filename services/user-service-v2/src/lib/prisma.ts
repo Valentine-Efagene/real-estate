@@ -1,7 +1,13 @@
 import { PrismaMariaDb } from '@prisma/adapter-mariadb';
 import { ConfigService, PrismaClient } from '@valentine-efagene/qshelter-common';
+import { config } from 'dotenv';
 
+// Load environment variables from .env.local for local development
 const stage = process.env.NODE_ENV || 'dev';
+if (stage === 'local') {
+    config({ path: '.env.local' });
+}
+
 let adapter;
 
 if (stage === 'local') {

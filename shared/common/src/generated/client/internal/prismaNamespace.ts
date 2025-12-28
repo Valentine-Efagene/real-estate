@@ -2933,6 +2933,7 @@ export type TenantScalarFieldEnum = (typeof TenantScalarFieldEnum)[keyof typeof 
 
 export const RefreshTokenScalarFieldEnum = {
   id: 'id',
+  jti: 'jti',
   token: 'token',
   userId: 'userId',
   expiresAt: 'expiresAt',
@@ -3451,6 +3452,7 @@ export type TenantOrderByRelevanceFieldEnum = (typeof TenantOrderByRelevanceFiel
 
 export const RefreshTokenOrderByRelevanceFieldEnum = {
   id: 'id',
+  jti: 'jti',
   token: 'token',
   userId: 'userId'
 } as const

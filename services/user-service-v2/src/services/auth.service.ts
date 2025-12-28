@@ -16,6 +16,7 @@ interface JWTPayload {
     userId: string;
     email: string;
     roles?: string[];
+    jti?: string;
 }
 
 class AuthService {
@@ -179,20 +180,40 @@ class AuthService {
         try {
             const payload = jwt.verify(token, secret) as JWTPayload;
 
-            const user = await prisma.user.findUnique({
-                where: { id: payload.userId },
+            if (!payload.jti) {
+                throw new UnauthorizedError('Invalid or expired token');
+            }
+
+            // Verify token exists in database and hasn't been revoked
+            const storedToken = await prisma.refreshToken.findUnique({
+                where: { jti: payload.jti },
                 include: {
-                    userRoles: {
+                    user: {
                         include: {
-                            role: true,
+                            userRoles: {
+                                include: {
+                                    role: true,
+                                },
+                            },
                         },
                     },
                 },
             });
 
+            if (!storedToken || storedToken.expiresAt < new Date()) {
+                throw new UnauthorizedError('Invalid or expired token');
+            }
+
+            const user = storedToken.user;
+
             if (!user || !user.isActive) {
                 throw new UnauthorizedError('Invalid token');
             }
+
+            // Delete old refresh token
+            await prisma.refreshToken.delete({
+                where: { jti: payload.jti },
+            });
 
             const roleNames = user.userRoles?.map((ur) => ur.role.name) || [];
             return this.generateTokens(user.id, user.email, roleNames);
@@ -416,30 +437,56 @@ class AuthService {
         const accessExpiry = process.env.JWT_ACCESS_EXPIRY || '15m';
         const refreshExpiry = process.env.JWT_REFRESH_EXPIRY || '7d';
 
-        const payload: JWTPayload = { userId, email, roles };
+        // Calculate exact expiration times to keep JWT and DB in sync
+        const refreshExpiryMs = this.parseExpiryToMs(refreshExpiry);
+        const accessExpiryMs = this.parseExpiryToMs(accessExpiry);
+        const now = Math.floor(Date.now() / 1000); // Current time in seconds
+        const refreshExpiresAt = new Date((now + Math.floor(refreshExpiryMs / 1000)) * 1000);
 
-        const accessToken = jwt.sign(payload, accessSecret, { expiresIn: accessExpiry } as jwt.SignOptions);
-        const refreshToken = jwt.sign(payload, refreshSecret, { expiresIn: refreshExpiry } as jwt.SignOptions);
+        // Add unique jti to ensure each token is unique
+        const accessJti = randomUUID();
+        const refreshJti = randomUUID();
+
+        const accessToken = jwt.sign({ userId, email, roles, jti: accessJti }, accessSecret, { expiresIn: accessExpiry } as jwt.SignOptions);
+        const refreshToken = jwt.sign({ userId, email, roles, jti: refreshJti }, refreshSecret, { expiresIn: refreshExpiry } as jwt.SignOptions);
 
         // Clean up old refresh tokens for this user
         await prisma.refreshToken.deleteMany({
             where: { userId, expiresAt: { lt: new Date() } },
         });
 
-        // Store new refresh token
+        // Store refresh token with jti and synchronized expiry
         await prisma.refreshToken.create({
             data: {
-                token: refreshToken,
+                jti: refreshJti,
                 userId,
-                expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+                expiresAt: refreshExpiresAt,
             },
         });
 
         return {
             accessToken,
             refreshToken,
-            expiresIn: 900, // 15 minutes in seconds
+            expiresIn: Math.floor(accessExpiryMs / 1000), // Convert to seconds
         };
+    }
+
+    private parseExpiryToMs(expiry: string): number {
+        const match = expiry.match(/^(\d+)([smhd])$/);
+        if (!match) {
+            throw new Error(`Invalid expiry format: ${expiry}`);
+        }
+
+        const value = parseInt(match[1], 10);
+        const unit = match[2];
+
+        switch (unit) {
+            case 's': return value * 1000;
+            case 'm': return value * 60 * 1000;
+            case 'h': return value * 60 * 60 * 1000;
+            case 'd': return value * 24 * 60 * 60 * 1000;
+            default: throw new Error(`Unknown time unit: ${unit}`);
+        }
     }
 }
 

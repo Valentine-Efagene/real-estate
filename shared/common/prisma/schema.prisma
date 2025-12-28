@@ -124,7 +124,9 @@ model Tenant {
 
 model RefreshToken {
   id        String   @id @default(cuid())
-  token     String   @unique
+  // Use the JWT `jti` for indexed lookups and keep the raw JWT (optional)
+  jti       String?  @unique @db.VarChar(255)
+  token     String?  @db.LongText
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   expiresAt DateTime
