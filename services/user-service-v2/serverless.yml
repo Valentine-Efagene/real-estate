@@ -36,8 +36,9 @@ provider:
 functions:
   api:
     handler: dist/lambda.handler
-    timeout: 30
+    timeout: 60
     memorySize: 512
+    runtime: nodejs20.x
     events:
       # Health and docs (public)
       - httpApi: 'GET /health'
@@ -199,6 +200,8 @@ plugins:
 package:
   patterns:
     - '!**/*'
-    - 'dist/**'
+    - '!dist/**/*.js'
+    - '!dist/**/*.d.ts'
+    - 'dist/**/*.mjs'
     - 'node_modules/@prisma/client/**'
     - 'node_modules/.prisma/**'
