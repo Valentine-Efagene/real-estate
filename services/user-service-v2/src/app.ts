@@ -16,10 +16,10 @@ app.get('/health', (req, res) => {
     res.json({ status: 'healthy', service: 'user-service-v2' });
 });
 
-app.use('/api/auth', authRouter);
-app.use('/api/users', userRouter);
-app.use('/api/roles', roleRouter);
-app.use('/api/tenants', tenantRouter);
-app.use('/api/socials', socialRouter);
+app.use('/auth', authRouter);
+app.use('/users', userRouter);
+app.use('/roles', roleRouter);
+app.use('/tenants', tenantRouter);
+app.use('/socials', socialRouter);
 
 app.use(errorHandler);

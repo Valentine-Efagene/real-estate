@@ -20,7 +20,7 @@ describe('JWT Auth E2E Tests', () => {
         await prisma.$disconnect();
     });
 
-    describe('POST /api/auth/signup', () => {
+    describe('POST /auth/signup', () => {
         it('should successfully create a new user', async () => {
             const userData = {
                 email: faker.internet.email(),
@@ -30,7 +30,7 @@ describe('JWT Auth E2E Tests', () => {
             };
 
             const response = await request(app)
-                .post('/api/auth/signup')
+                .post('/auth/signup')
                 .send(userData)
                 .expect(201);
 
@@ -66,13 +66,13 @@ describe('JWT Auth E2E Tests', () => {
 
             // Create first user
             await request(app)
-                .post('/api/auth/signup')
+                .post('/auth/signup')
                 .send(userData)
                 .expect(201);
 
             // Attempt to create duplicate user
             const response = await request(app)
-                .post('/api/auth/signup')
+                .post('/auth/signup')
                 .send(userData)
                 .expect(409);
 
@@ -89,7 +89,7 @@ describe('JWT Auth E2E Tests', () => {
             };
 
             const response = await request(app)
-                .post('/api/auth/signup')
+                .post('/auth/signup')
                 .send(userData)
                 .expect(400);
 
@@ -105,7 +105,7 @@ describe('JWT Auth E2E Tests', () => {
             };
 
             const response = await request(app)
-                .post('/api/auth/signup')
+                .post('/auth/signup')
                 .send(userData)
                 .expect(400);
 
@@ -114,7 +114,7 @@ describe('JWT Auth E2E Tests', () => {
 
         it('should fail with missing required fields', async () => {
             const response = await request(app)
-                .post('/api/auth/signup')
+                .post('/auth/signup')
                 .send({
                     email: faker.internet.email(),
                     // Missing password, firstName, lastName
@@ -125,7 +125,7 @@ describe('JWT Auth E2E Tests', () => {
         });
     });
 
-    describe('POST /api/auth/login', () => {
+    describe('POST /auth/login', () => {
         const userData = {
             email: faker.internet.email(),
             password: faker.internet.password({ length: 16, memorable: true, pattern: /[A-Za-z0-9!@#$%]/ }),
@@ -136,13 +136,13 @@ describe('JWT Auth E2E Tests', () => {
         it('should fail to login before email verification', async () => {
             // Create user
             await request(app)
-                .post('/api/auth/signup')
+                .post('/auth/signup')
                 .send(userData)
                 .expect(201);
 
             // Attempt to login without verifying email
             const response = await request(app)
-                .post('/api/auth/login')
+                .post('/auth/login')
                 .send({
                     email: userData.email,
                     password: userData.password,
@@ -156,7 +156,7 @@ describe('JWT Auth E2E Tests', () => {
         it('should successfully login after email verification', async () => {
             // Create user
             await request(app)
-                .post('/api/auth/signup')
+                .post('/auth/signup')
                 .send(userData)
                 .expect(201);
 
@@ -168,12 +168,12 @@ describe('JWT Auth E2E Tests', () => {
 
             // Verify email
             await request(app)
-                .get(`/api/auth/verify-email?token=${verificationToken}`)
+                .get(`/auth/verify-email?token=${verificationToken}`)
                 .expect(200);
 
             // Login
             const response = await request(app)
-                .post('/api/auth/login')
+                .post('/auth/login')
                 .send({
                     email: userData.email,
                     password: userData.password,
@@ -195,7 +195,7 @@ describe('JWT Auth E2E Tests', () => {
         it('should fail with incorrect password', async () => {
             // Create and verify user
             await request(app)
-                .post('/api/auth/signup')
+                .post('/auth/signup')
                 .send(userData)
                 .expect(201);
 
@@ -204,12 +204,12 @@ describe('JWT Auth E2E Tests', () => {
             });
 
             await request(app)
-                .get(`/api/auth/verify-email?token=${user?.emailVerificationToken}`)
+                .get(`/auth/verify-email?token=${user?.emailVerificationToken}`)
                 .expect(200);
 
             // Attempt login with wrong password
             const response = await request(app)
-                .post('/api/auth/login')
+                .post('/auth/login')
                 .send({
                     email: userData.email,
                     password: 'WrongPassword123!',
@@ -222,7 +222,7 @@ describe('JWT Auth E2E Tests', () => {
 
         it('should fail with non-existent email', async () => {
             const response = await request(app)
-                .post('/api/auth/login')
+                .post('/auth/login')
                 .send({
                     email: faker.internet.email(),
                     password: faker.internet.password({ length: 16, memorable: true, pattern: /[A-Za-z0-9!@#$%]/ }),
@@ -236,7 +236,7 @@ describe('JWT Auth E2E Tests', () => {
         it('should fail for inactive account', async () => {
             // Create and verify user
             await request(app)
-                .post('/api/auth/signup')
+                .post('/auth/signup')
                 .send(userData)
                 .expect(201);
 
@@ -245,7 +245,7 @@ describe('JWT Auth E2E Tests', () => {
             });
 
             await request(app)
-                .get(`/api/auth/verify-email?token=${user?.emailVerificationToken}`)
+                .get(`/auth/verify-email?token=${user?.emailVerificationToken}`)
                 .expect(200);
 
             // Deactivate user
@@ -256,7 +256,7 @@ describe('JWT Auth E2E Tests', () => {
 
             // Attempt login
             const response = await request(app)
-                .post('/api/auth/login')
+                .post('/auth/login')
                 .send({
                     email: userData.email,
                     password: userData.password,
@@ -268,7 +268,7 @@ describe('JWT Auth E2E Tests', () => {
         });
     });
 
-    describe('GET /api/auth/verify-email', () => {
+    describe('GET /auth/verify-email', () => {
         it('should successfully verify email with valid token', async () => {
             const userData = {
                 email: faker.internet.email(),
@@ -279,7 +279,7 @@ describe('JWT Auth E2E Tests', () => {
 
             // Create user
             await request(app)
-                .post('/api/auth/signup')
+                .post('/auth/signup')
                 .send(userData)
                 .expect(201);
 
@@ -293,7 +293,7 @@ describe('JWT Auth E2E Tests', () => {
 
             // Verify email
             const response = await request(app)
-                .get(`/api/auth/verify-email?token=${token}`)
+                .get(`/auth/verify-email?token=${token}`)
                 .expect(200);
 
             expect(response.body.success).toBe(true);
@@ -311,7 +311,7 @@ describe('JWT Auth E2E Tests', () => {
 
         it('should fail with invalid token', async () => {
             const response = await request(app)
-                .get('/api/auth/verify-email?token=invalid-token')
+                .get('/auth/verify-email?token=invalid-token')
                 .expect(400);
 
             expect(response.body.success).toBe(false);
@@ -328,7 +328,7 @@ describe('JWT Auth E2E Tests', () => {
 
             // Create user
             await request(app)
-                .post('/api/auth/signup')
+                .post('/auth/signup')
                 .send(userData)
                 .expect(201);
 
@@ -340,19 +340,19 @@ describe('JWT Auth E2E Tests', () => {
 
             // Verify email first time
             await request(app)
-                .get(`/api/auth/verify-email?token=${token}`)
+                .get(`/auth/verify-email?token=${token}`)
                 .expect(200);
 
             // Attempt to verify again with same token
             const response = await request(app)
-                .get(`/api/auth/verify-email?token=${token}`)
+                .get(`/auth/verify-email?token=${token}`)
                 .expect(400);
 
             expect(response.body.success).toBe(false);
         });
     });
 
-    describe('POST /api/auth/request-password-reset', () => {
+    describe('POST /auth/request-password-reset', () => {
         it('should create password reset token for existing user', async () => {
             const userData = {
                 email: faker.internet.email(),
@@ -363,13 +363,13 @@ describe('JWT Auth E2E Tests', () => {
 
             // Create user
             await request(app)
-                .post('/api/auth/signup')
+                .post('/auth/signup')
                 .send(userData)
                 .expect(201);
 
             // Request password reset
             const response = await request(app)
-                .post('/api/auth/request-password-reset')
+                .post('/auth/request-password-reset')
                 .send({ email: userData.email })
                 .expect(200);
 
@@ -393,7 +393,7 @@ describe('JWT Auth E2E Tests', () => {
 
         it('should not reveal if email does not exist', async () => {
             const response = await request(app)
-                .post('/api/auth/request-password-reset')
+                .post('/auth/request-password-reset')
                 .send({ email: faker.internet.email() })
                 .expect(200);
 
@@ -411,13 +411,13 @@ describe('JWT Auth E2E Tests', () => {
 
             // Create user
             await request(app)
-                .post('/api/auth/signup')
+                .post('/auth/signup')
                 .send(userData)
                 .expect(201);
 
             // Request password reset first time
             await request(app)
-                .post('/api/auth/request-password-reset')
+                .post('/auth/request-password-reset')
                 .send({ email: userData.email })
                 .expect(200);
 
@@ -431,7 +431,7 @@ describe('JWT Auth E2E Tests', () => {
 
             // Request password reset second time
             await request(app)
-                .post('/api/auth/request-password-reset')
+                .post('/auth/request-password-reset')
                 .send({ email: userData.email })
                 .expect(200);
 
@@ -445,7 +445,7 @@ describe('JWT Auth E2E Tests', () => {
         });
     });
 
-    describe('POST /api/auth/reset-password', () => {
+    describe('POST /auth/reset-password', () => {
         it('should successfully reset password with valid token', async () => {
             const userData = {
                 email: faker.internet.email(),
@@ -456,7 +456,7 @@ describe('JWT Auth E2E Tests', () => {
 
             // Create and verify user
             await request(app)
-                .post('/api/auth/signup')
+                .post('/auth/signup')
                 .send(userData)
                 .expect(201);
 
@@ -465,12 +465,12 @@ describe('JWT Auth E2E Tests', () => {
             });
 
             await request(app)
-                .get(`/api/auth/verify-email?token=${user?.emailVerificationToken}`)
+                .get(`/auth/verify-email?token=${user?.emailVerificationToken}`)
                 .expect(200);
 
             // Request password reset
             await request(app)
-                .post('/api/auth/request-password-reset')
+                .post('/auth/request-password-reset')
                 .send({ email: userData.email })
                 .expect(200);
 
@@ -483,7 +483,7 @@ describe('JWT Auth E2E Tests', () => {
 
             // Reset password
             const response = await request(app)
-                .post('/api/auth/reset-password')
+                .post('/auth/reset-password')
                 .send({
                     token: resetToken?.token,
                     newPassword,
@@ -501,7 +501,7 @@ describe('JWT Auth E2E Tests', () => {
 
             // Verify can login with new password
             const loginResponse = await request(app)
-                .post('/api/auth/login')
+                .post('/auth/login')
                 .send({
                     email: userData.email,
                     password: newPassword,
@@ -512,7 +512,7 @@ describe('JWT Auth E2E Tests', () => {
 
             // Verify cannot login with old password
             await request(app)
-                .post('/api/auth/login')
+                .post('/auth/login')
                 .send({
                     email: userData.email,
                     password: userData.password,
@@ -522,7 +522,7 @@ describe('JWT Auth E2E Tests', () => {
 
         it('should fail with invalid token', async () => {
             const response = await request(app)
-                .post('/api/auth/reset-password')
+                .post('/auth/reset-password')
                 .send({
                     token: 'invalid-token',
                     newPassword: faker.internet.password({ length: 16, memorable: true, pattern: /[A-Za-z0-9!@#$%]/ }),
@@ -543,7 +543,7 @@ describe('JWT Auth E2E Tests', () => {
 
             // Create user
             await request(app)
-                .post('/api/auth/signup')
+                .post('/auth/signup')
                 .send(userData)
                 .expect(201);
 
@@ -562,7 +562,7 @@ describe('JWT Auth E2E Tests', () => {
 
             // Attempt to reset password
             const response = await request(app)
-                .post('/api/auth/reset-password')
+                .post('/auth/reset-password')
                 .send({
                     token: expiredToken.token,
                     newPassword: faker.internet.password({ length: 16, memorable: true, pattern: /[A-Za-z0-9!@#$%]/ }),
@@ -583,7 +583,7 @@ describe('JWT Auth E2E Tests', () => {
 
             // Create and verify user
             await request(app)
-                .post('/api/auth/signup')
+                .post('/auth/signup')
                 .send(userData)
                 .expect(201);
 
@@ -592,12 +592,12 @@ describe('JWT Auth E2E Tests', () => {
             });
 
             await request(app)
-                .get(`/api/auth/verify-email?token=${user?.emailVerificationToken}`)
+                .get(`/auth/verify-email?token=${user?.emailVerificationToken}`)
                 .expect(200);
 
             // Request password reset
             await request(app)
-                .post('/api/auth/request-password-reset')
+                .post('/auth/request-password-reset')
                 .send({ email: userData.email })
                 .expect(200);
 
@@ -607,7 +607,7 @@ describe('JWT Auth E2E Tests', () => {
 
             // Reset password first time
             await request(app)
-                .post('/api/auth/reset-password')
+                .post('/auth/reset-password')
                 .send({
                     token: resetToken?.token,
                     newPassword: faker.internet.password({ length: 16, memorable: true, pattern: /[A-Za-z0-9!@#$%]/ }),
@@ -616,7 +616,7 @@ describe('JWT Auth E2E Tests', () => {
 
             // Attempt to use same token again
             const response = await request(app)
-                .post('/api/auth/reset-password')
+                .post('/auth/reset-password')
                 .send({
                     token: resetToken?.token,
                     newPassword: faker.internet.password({ length: 16, memorable: true, pattern: /[A-Za-z0-9!@#$%]/ }),
@@ -628,7 +628,7 @@ describe('JWT Auth E2E Tests', () => {
         });
     });
 
-    describe('POST /api/auth/refresh', () => {
+    describe('POST /auth/refresh', () => {
         it('should successfully refresh tokens with valid refresh token', async () => {
             const userData = {
                 email: faker.internet.email(),
@@ -639,7 +639,7 @@ describe('JWT Auth E2E Tests', () => {
 
             // Create and verify user
             await request(app)
-                .post('/api/auth/signup')
+                .post('/auth/signup')
                 .send(userData)
                 .expect(201);
 
@@ -648,12 +648,12 @@ describe('JWT Auth E2E Tests', () => {
             });
 
             await request(app)
-                .get(`/api/auth/verify-email?token=${user?.emailVerificationToken}`)
+                .get(`/auth/verify-email?token=${user?.emailVerificationToken}`)
                 .expect(200);
 
             // Login to get tokens
             const loginResponse = await request(app)
-                .post('/api/auth/login')
+                .post('/auth/login')
                 .send({
                     email: userData.email,
                     password: userData.password,
@@ -664,7 +664,7 @@ describe('JWT Auth E2E Tests', () => {
 
             // Refresh tokens
             const response = await request(app)
-                .post('/api/auth/refresh')
+                .post('/auth/refresh')
                 .send({ refreshToken })
                 .expect(200);
 
@@ -677,7 +677,7 @@ describe('JWT Auth E2E Tests', () => {
 
         it('should fail with invalid refresh token', async () => {
             const response = await request(app)
-                .post('/api/auth/refresh')
+                .post('/auth/refresh')
                 .send({ refreshToken: 'invalid-token' })
                 .expect(401);
 
@@ -695,7 +695,7 @@ describe('JWT Auth E2E Tests', () => {
 
             // Create and verify user
             await request(app)
-                .post('/api/auth/signup')
+                .post('/auth/signup')
                 .send(userData)
                 .expect(201);
 
@@ -704,12 +704,12 @@ describe('JWT Auth E2E Tests', () => {
             });
 
             await request(app)
-                .get(`/api/auth/verify-email?token=${user?.emailVerificationToken}`)
+                .get(`/auth/verify-email?token=${user?.emailVerificationToken}`)
                 .expect(200);
 
             // Login to get tokens
             const loginResponse = await request(app)
-                .post('/api/auth/login')
+                .post('/auth/login')
                 .send({
                     email: userData.email,
                     password: userData.password,
@@ -726,7 +726,7 @@ describe('JWT Auth E2E Tests', () => {
 
             // Attempt to refresh tokens
             const response = await request(app)
-                .post('/api/auth/refresh')
+                .post('/auth/refresh')
                 .send({ refreshToken })
                 .expect(401);
 
@@ -746,7 +746,7 @@ describe('JWT Auth E2E Tests', () => {
 
             // 1. Signup
             const signupResponse = await request(app)
-                .post('/api/auth/signup')
+                .post('/auth/signup')
                 .send(userData)
                 .expect(201);
 
@@ -755,7 +755,7 @@ describe('JWT Auth E2E Tests', () => {
 
             // 2. Verify login fails before email verification
             await request(app)
-                .post('/api/auth/login')
+                .post('/auth/login')
                 .send({
                     email: userData.email,
                     password: userData.password,
@@ -768,12 +768,12 @@ describe('JWT Auth E2E Tests', () => {
             });
 
             await request(app)
-                .get(`/api/auth/verify-email?token=${user?.emailVerificationToken}`)
+                .get(`/auth/verify-email?token=${user?.emailVerificationToken}`)
                 .expect(200);
 
             // 4. Login successfully
             const loginResponse = await request(app)
-                .post('/api/auth/login')
+                .post('/auth/login')
                 .send({
                     email: userData.email,
                     password: userData.password,
@@ -786,7 +786,7 @@ describe('JWT Auth E2E Tests', () => {
 
             // 5. Request password reset
             await request(app)
-                .post('/api/auth/request-password-reset')
+                .post('/auth/request-password-reset')
                 .send({ email: userData.email })
                 .expect(200);
 
@@ -797,7 +797,7 @@ describe('JWT Auth E2E Tests', () => {
 
             const newPassword = faker.internet.password({ length: 16, memorable: true, pattern: /[A-Za-z0-9!@#$%]/ });
             await request(app)
-                .post('/api/auth/reset-password')
+                .post('/auth/reset-password')
                 .send({
                     token: resetToken?.token,
                     newPassword,
@@ -806,7 +806,7 @@ describe('JWT Auth E2E Tests', () => {
 
             // 7. Login with new password
             const newLoginResponse = await request(app)
-                .post('/api/auth/login')
+                .post('/auth/login')
                 .send({
                     email: userData.email,
                     password: newPassword,
@@ -817,7 +817,7 @@ describe('JWT Auth E2E Tests', () => {
 
             // 8. Refresh tokens
             const refreshResponse = await request(app)
-                .post('/api/auth/refresh')
+                .post('/auth/refresh')
                 .send({ refreshToken: newLoginResponse.body.data.refreshToken })
                 .expect(200);
 
