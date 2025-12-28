@@ -63,6 +63,7 @@ export const ModelName = {
   EmailPreference: 'EmailPreference',
   DeviceEndpoint: 'DeviceEndpoint',
   Social: 'Social',
+  OAuthState: 'OAuthState',
   Wallet: 'Wallet',
   Transaction: 'Transaction',
   Settings: 'Settings',
@@ -253,6 +254,16 @@ export const SocialScalarFieldEnum = {
 } as const
 
 export type SocialScalarFieldEnum = (typeof SocialScalarFieldEnum)[keyof typeof SocialScalarFieldEnum]
+
+
+export const OAuthStateScalarFieldEnum = {
+  id: 'id',
+  state: 'state',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
+} as const
+
+export type OAuthStateScalarFieldEnum = (typeof OAuthStateScalarFieldEnum)[keyof typeof OAuthStateScalarFieldEnum]
 
 
 export const WalletScalarFieldEnum = {
@@ -742,6 +753,14 @@ export const SocialOrderByRelevanceFieldEnum = {
 } as const
 
 export type SocialOrderByRelevanceFieldEnum = (typeof SocialOrderByRelevanceFieldEnum)[keyof typeof SocialOrderByRelevanceFieldEnum]
+
+
+export const OAuthStateOrderByRelevanceFieldEnum = {
+  id: 'id',
+  state: 'state'
+} as const
+
+export type OAuthStateOrderByRelevanceFieldEnum = (typeof OAuthStateOrderByRelevanceFieldEnum)[keyof typeof OAuthStateOrderByRelevanceFieldEnum]
 
 
 export const WalletOrderByRelevanceFieldEnum = {

@@ -100,6 +100,11 @@ export type DeviceEndpoint = Prisma.DeviceEndpointModel
  */
 export type Social = Prisma.SocialModel
 /**
+ * Model OAuthState
+ * 
+ */
+export type OAuthState = Prisma.OAuthStateModel
+/**
  * Model Wallet
  * 
  */

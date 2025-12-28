@@ -10,6 +10,19 @@ Lightweight user authentication service optimized for AWS Lambda.
 - **Zod** - Runtime validation (from @valentine-efagene/qshelter-common)
 - **esbuild** - Ultra-fast bundler
 - **AWS Lambda** - Serverless deployment
+- **Google OAuth2** - Social authentication with redirect and token flows
+
+## Features
+
+- ✅ Email/password authentication
+- ✅ Google OAuth2 (redirect flow + token flow)
+- ✅ JWT access & refresh tokens
+- ✅ Email verification
+- ✅ Password reset
+- ✅ Role-based access control (via shared common library)
+- ✅ Multi-tenant support
+
+See [GOOGLE_OAUTH.md](./GOOGLE_OAUTH.md) for OAuth2 flow documentation.
 
 ## Estimated Bundle Size
 
@@ -21,10 +34,12 @@ Lightweight user authentication service optimized for AWS Lambda.
 # Install dependencies
 pnpm install
 
-# Generate Prisma client
+# Generate Prisma client (IMPORTANT: Run this first!)
+cd ../../shared/common
 pnpm prisma:generate
+cd ../../services/user-service-v2
 
-# Run migrations
+# Run migrations (if needed)
 pnpm prisma:migrate
 
 # Start local dev server

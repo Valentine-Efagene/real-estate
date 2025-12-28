@@ -6,7 +6,11 @@ import { prisma } from '../lib/prisma';
 import { UnauthorizedError, ConflictError, ValidationError } from '@valentine-efagene/qshelter-common';
 import { LoginInput, SignupInput, AuthResponse } from '../validators/auth.validator';
 
-const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+const googleClient = new OAuth2Client(
+    process.env.GOOGLE_CLIENT_ID,
+    process.env.GOOGLE_CLIENT_SECRET,
+    process.env.GOOGLE_CALLBACK_URL || 'http://localhost:3000/api/auth/google/callback'
+);
 
 interface JWTPayload {
     userId: string;
@@ -258,6 +262,112 @@ class AuthService {
             return this.generateTokens(user.id, user.email, roleNames);
         } catch (error) {
             throw new UnauthorizedError('Invalid Google token');
+        }
+    }
+
+    async generateGoogleAuthUrl(): Promise<string> {
+        const state = randomBytes(32).toString('hex');
+
+        // Store state with expiry for CSRF protection
+        await prisma.oAuthState.create({
+            data: {
+                state,
+                expiresAt: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes
+            },
+        });
+
+        const authUrl = googleClient.generateAuthUrl({
+            access_type: 'offline',
+            scope: ['profile', 'email'],
+            state,
+        });
+
+        return authUrl;
+    }
+
+    async handleGoogleCallback(code: string, state: string): Promise<AuthResponse> {
+        // Verify state for CSRF protection
+        const stateRecord = await prisma.oAuthState.findFirst({
+            where: {
+                state,
+                expiresAt: { gt: new Date() },
+            },
+        });
+
+        if (!stateRecord) {
+            throw new ValidationError('Invalid or expired state parameter');
+        }
+
+        // Delete used state
+        await prisma.oAuthState.delete({ where: { id: stateRecord.id } });
+
+        try {
+            // Exchange authorization code for tokens
+            const { tokens } = await googleClient.getToken(code);
+            googleClient.setCredentials(tokens);
+
+            // Verify the ID token
+            const ticket = await googleClient.verifyIdToken({
+                idToken: tokens.id_token!,
+                audience: process.env.GOOGLE_CLIENT_ID,
+            });
+
+            const payload = ticket.getPayload();
+            if (!payload?.email) {
+                throw new ValidationError('Invalid Google token');
+            }
+
+            const { email, given_name, family_name, picture, sub } = payload;
+
+            let user = await prisma.user.findUnique({
+                where: { email },
+                include: {
+                    userRoles: {
+                        include: {
+                            role: true,
+                        },
+                    },
+                },
+            });
+
+            if (user) {
+                // Update last login
+                await prisma.user.update({
+                    where: { id: user.id },
+                    data: { lastLoginAt: new Date() },
+                });
+
+                const roleNames = user.userRoles?.map((ur) => ur.role.name) || [];
+                return this.generateTokens(user.id, user.email, roleNames);
+            }
+
+            // Create new user
+            const randomPassword = randomBytes(16).toString('hex');
+            const hashedPassword = await bcrypt.hash(randomPassword, 10);
+
+            user = await prisma.user.create({
+                data: {
+                    email,
+                    firstName: given_name || '',
+                    lastName: family_name || '',
+                    password: hashedPassword,
+                    googleId: sub,
+                    emailVerifiedAt: new Date(), // Google accounts are pre-verified
+                    isActive: true,
+                },
+                include: {
+                    userRoles: {
+                        include: {
+                            role: true,
+                        },
+                    },
+                },
+            });
+
+            const roleNames = user.userRoles?.map((ur) => ur.role.name) || [];
+            return this.generateTokens(user.id, user.email, roleNames);
+        } catch (error) {
+            throw new UnauthorizedError('Failed to authenticate with Google');
         }
     }
 

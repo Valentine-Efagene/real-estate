@@ -79,6 +79,34 @@ authRouter.post('/google-token-login', async (req, res, next) => {
     }
 });
 
+authRouter.get('/google', async (req, res, next) => {
+    try {
+        const authUrl = await authService.generateGoogleAuthUrl();
+        res.redirect(authUrl);
+    } catch (error) {
+        next(error);
+    }
+});
+
+authRouter.get('/google/callback', async (req, res, next) => {
+    try {
+        const { code, state } = z.object({
+            code: z.string(),
+            state: z.string(),
+        }).parse(req.query);
+
+        const result = await authService.handleGoogleCallback(code, state);
+
+        // Redirect to frontend with tokens
+        const frontendUrl = process.env.FRONTEND_BASE_URL || 'http://localhost:3000';
+        const redirectUrl = `${frontendUrl}/auth/callback?accessToken=${result.accessToken}&refreshToken=${result.refreshToken}`;
+
+        res.redirect(redirectUrl);
+    } catch (error) {
+        next(error);
+    }
+});
+
 authRouter.get('/me', async (req, res, next) => {
     try {
         // TODO: Extract userId from auth context/JWT

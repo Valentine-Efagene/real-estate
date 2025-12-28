@@ -396,6 +396,7 @@ export const ModelName = {
   EmailPreference: 'EmailPreference',
   DeviceEndpoint: 'DeviceEndpoint',
   Social: 'Social',
+  OAuthState: 'OAuthState',
   Wallet: 'Wallet',
   Transaction: 'Transaction',
   Settings: 'Settings',
@@ -434,7 +435,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenant" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyAmenity" | "mortgage" | "mortgageType" | "mortgageDocument" | "mortgageStep" | "mortgageDownpaymentPlan" | "mortgageDownpaymentInstallment" | "mortgageDownpaymentPayment" | "mortgageTransition" | "mortgageTransitionEvent" | "paymentPlan" | "paymentSchedule" | "paymentInstallment" | "payment" | "contract" | "contractDocument"
+    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenant" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyAmenity" | "mortgage" | "mortgageType" | "mortgageDocument" | "mortgageStep" | "mortgageDownpaymentPlan" | "mortgageDownpaymentInstallment" | "mortgageDownpaymentPayment" | "mortgageTransition" | "mortgageTransitionEvent" | "paymentPlan" | "paymentSchedule" | "paymentInstallment" | "payment" | "contract" | "contractDocument"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1227,6 +1228,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.SocialCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.SocialCountAggregateOutputType> | number
+        }
+      }
+    }
+    OAuthState: {
+      payload: Prisma.$OAuthStatePayload<ExtArgs>
+      fields: Prisma.OAuthStateFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OAuthStateFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OAuthStatePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OAuthStateFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OAuthStatePayload>
+        }
+        findFirst: {
+          args: Prisma.OAuthStateFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OAuthStatePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OAuthStateFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OAuthStatePayload>
+        }
+        findMany: {
+          args: Prisma.OAuthStateFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OAuthStatePayload>[]
+        }
+        create: {
+          args: Prisma.OAuthStateCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OAuthStatePayload>
+        }
+        createMany: {
+          args: Prisma.OAuthStateCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.OAuthStateDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OAuthStatePayload>
+        }
+        update: {
+          args: Prisma.OAuthStateUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OAuthStatePayload>
+        }
+        deleteMany: {
+          args: Prisma.OAuthStateDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OAuthStateUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.OAuthStateUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OAuthStatePayload>
+        }
+        aggregate: {
+          args: Prisma.OAuthStateAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOAuthState>
+        }
+        groupBy: {
+          args: Prisma.OAuthStateGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OAuthStateGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OAuthStateCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OAuthStateCountAggregateOutputType> | number
         }
       }
     }
@@ -2938,6 +3005,16 @@ export const SocialScalarFieldEnum = {
 export type SocialScalarFieldEnum = (typeof SocialScalarFieldEnum)[keyof typeof SocialScalarFieldEnum]
 
 
+export const OAuthStateScalarFieldEnum = {
+  id: 'id',
+  state: 'state',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
+} as const
+
+export type OAuthStateScalarFieldEnum = (typeof OAuthStateScalarFieldEnum)[keyof typeof OAuthStateScalarFieldEnum]
+
+
 export const WalletScalarFieldEnum = {
   id: 'id',
   balance: 'balance',
@@ -3427,6 +3504,14 @@ export const SocialOrderByRelevanceFieldEnum = {
 export type SocialOrderByRelevanceFieldEnum = (typeof SocialOrderByRelevanceFieldEnum)[keyof typeof SocialOrderByRelevanceFieldEnum]
 
 
+export const OAuthStateOrderByRelevanceFieldEnum = {
+  id: 'id',
+  state: 'state'
+} as const
+
+export type OAuthStateOrderByRelevanceFieldEnum = (typeof OAuthStateOrderByRelevanceFieldEnum)[keyof typeof OAuthStateOrderByRelevanceFieldEnum]
+
+
 export const WalletOrderByRelevanceFieldEnum = {
   id: 'id',
   currency: 'currency'
@@ -3833,6 +3918,7 @@ export type GlobalOmitConfig = {
   emailPreference?: Prisma.EmailPreferenceOmit
   deviceEndpoint?: Prisma.DeviceEndpointOmit
   social?: Prisma.SocialOmit
+  oAuthState?: Prisma.OAuthStateOmit
   wallet?: Prisma.WalletOmit
   transaction?: Prisma.TransactionOmit
   settings?: Prisma.SettingsOmit

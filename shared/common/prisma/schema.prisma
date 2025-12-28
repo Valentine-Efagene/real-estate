@@ -205,6 +205,17 @@ model Social {
   @@map("socials")
 }
 
+model OAuthState {
+  id        String   @id @default(cuid())
+  state     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([state])
+  @@index([expiresAt])
+  @@map("oauth_states")
+}
+
 model Wallet {
   id           String        @id @default(cuid())
   balance      Float         @default(0)
