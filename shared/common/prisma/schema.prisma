@@ -1,0 +1,649 @@
+// =============================================================================
+// QSHELTER UNIFIED DATABASE SCHEMA
+// =============================================================================
+// This schema contains all database models for the QShelter platform
+// Organized by domain for better readability
+// =============================================================================
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/client"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+// =============================================================================
+// USER & AUTH DOMAIN
+// =============================================================================
+
+model User {
+  id                     String            @id @default(cuid())
+  email                  String            @unique
+  password               String?
+  phone                  String?           @unique
+  firstName              String?
+  lastName               String?
+  isActive               Boolean           @default(true)
+  isEmailVerified        Boolean           @default(false)
+  googleId               String?
+  avatar                 String?
+  tenantId               String?
+  tenant                 Tenant?           @relation(fields: [tenantId], references: [id], onDelete: SetNull)
+  // Support multiple roles via explicit join table `UserRole`
+  userRoles              UserRole[]
+  walletId               String?           @unique
+  wallet                 Wallet?           @relation(fields: [walletId], references: [id])
+  createdAt              DateTime          @default(now())
+  updatedAt              DateTime          @updatedAt
+  emailVerifiedAt        DateTime?
+  emailVerificationToken String?
+  lastLoginAt            DateTime?
+  refreshTokens          RefreshToken[]
+  passwordResets         PasswordReset[]
+  suspensions            UserSuspension[]
+  emailPreferences       EmailPreference[]
+  deviceEndpoints        DeviceEndpoint[]
+  socials                Social[]
+
+  // Relations to other domains
+  properties    Property[]
+  mortgages     Mortgage[]    @relation("MortgageBorrower")
+  paymentPlans  PaymentPlan[]
+  contracts     Contract[]    @relation("ContractBuyer")
+  soldContracts Contract[]    @relation("ContractSeller")
+  payments      Payment[]
+
+  @@index([email])
+  @@index([tenantId])
+  @@map("users")
+}
+
+model Role {
+  id          String           @id @default(cuid())
+  name        String           @unique
+  description String?
+  userRoles   UserRole[]
+  permissions RolePermission[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@map("roles")
+}
+
+model Permission {
+  id          String           @id @default(cuid())
+  name        String           @unique
+  description String?
+  resource    String
+  action      String
+  roles       RolePermission[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@unique([resource, action])
+  @@index([resource])
+  @@map("permissions")
+}
+
+model RolePermission {
+  roleId       String
+  permissionId String
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  createdAt    DateTime   @default(now())
+
+  @@id([roleId, permissionId])
+  @@map("role_permissions")
+}
+
+model UserRole {
+  userId    String
+  roleId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role      Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@id([userId, roleId])
+  @@map("user_roles")
+}
+
+model Tenant {
+  id        String   @id @default(cuid())
+  name      String
+  subdomain String   @unique
+  isActive  Boolean  @default(true)
+  users     User[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([subdomain])
+  @@map("tenants")
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("refresh_tokens")
+}
+
+model PasswordReset {
+  id        String    @id @default(cuid())
+  token     String    @unique
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("password_resets")
+}
+
+model UserSuspension {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reason      String
+  suspendedAt DateTime  @default(now())
+  expiresAt   DateTime?
+  liftedAt    DateTime?
+
+  @@index([userId])
+  @@map("user_suspensions")
+}
+
+model EmailPreference {
+  id                  String   @id @default(cuid())
+  userId              String
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  marketingEmails     Boolean  @default(true)
+  transactionalEmails Boolean  @default(true)
+  propertyAlerts      Boolean  @default(true)
+  paymentReminders    Boolean  @default(true)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([userId])
+  @@map("email_preferences")
+}
+
+model DeviceEndpoint {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  endpoint  String // Push notification endpoint
+  platform  String // ios, android, web
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@map("device_endpoints")
+}
+
+model Social {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider  String // google, facebook, twitter, etc
+  socialId  String // ID from the social provider
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([provider, socialId])
+  @@index([userId])
+  @@map("socials")
+}
+
+model Wallet {
+  id           String        @id @default(cuid())
+  balance      Float         @default(0)
+  currency     String        @default("USD")
+  user         User?
+  transactions Transaction[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@map("wallets")
+}
+
+model Transaction {
+  id          String   @id @default(cuid())
+  walletId    String
+  wallet      Wallet   @relation(fields: [walletId], references: [id], onDelete: Cascade)
+  amount      Float
+  type        String // CREDIT, DEBIT
+  status      String // PENDING, COMPLETED, FAILED
+  reference   String?
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([walletId])
+  @@map("transactions")
+}
+
+model Settings {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String   @db.Text
+  category  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category])
+  @@map("settings")
+}
+
+// =============================================================================
+// PROPERTY DOMAIN
+// =============================================================================
+
+model Property {
+  id             String         @id @default(cuid())
+  userId         String
+  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title          String
+  category       String // SALE, RENT, LEASE
+  propertyType   String // APARTMENT, HOUSE, LAND, COMMERCIAL
+  country        String
+  currency       String // USD, NGN, etc
+  city           String
+  district       String?
+  zipCode        String?
+  streetAddress  String?
+  nBedrooms      String
+  nBathrooms     String
+  nParkingSpots  String
+  price          Float
+  longitude      Float?
+  latitude       Float?
+  area           Float?
+  status         String         @default("DRAFT") // DRAFT, PUBLISHED, SOLD, RENTED
+  description    String?        @db.Text
+  displayImageId String?
+  displayImage   PropertyMedia? @relation("DisplayImage", fields: [displayImageId], references: [id], onDelete: SetNull)
+  isPublished    Boolean        @default(false)
+  publishedAt    DateTime?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  documents    PropertyDocument[]
+  media        PropertyMedia[]    @relation("PropertyMedia")
+  amenities    PropertyAmenity[]
+  mortgages    Mortgage[]
+  paymentPlans PaymentPlan[]
+  contracts    Contract[]
+
+  @@index([userId])
+  @@index([category])
+  @@index([propertyType])
+  @@index([city])
+  @@map("properties")
+}
+
+model PropertyMedia {
+  id         String   @id @default(cuid())
+  propertyId String
+  property   Property @relation("PropertyMedia", fields: [propertyId], references: [id], onDelete: Cascade)
+  url        String
+  type       String // IMAGE, VIDEO
+  caption    String?
+  order      Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  displayForProperties Property[] @relation("DisplayImage")
+
+  @@index([propertyId])
+  @@map("property_media")
+}
+
+model PropertyDocument {
+  id         String   @id @default(cuid())
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  name       String
+  url        String
+  type       String // TITLE_DEED, SURVEY_PLAN, etc
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([propertyId])
+  @@map("property_documents")
+}
+
+model Amenity {
+  id         String            @id @default(cuid())
+  name       String            @unique
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+  properties PropertyAmenity[]
+
+  @@map("amenities")
+}
+
+model PropertyAmenity {
+  propertyId String
+  amenityId  String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  amenity    Amenity  @relation(fields: [amenityId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+
+  @@id([propertyId, amenityId])
+  @@map("property_amenities")
+}
+
+// =============================================================================
+// MORTGAGE DOMAIN
+// =============================================================================
+
+model Mortgage {
+  id                 String                   @id @default(cuid())
+  propertyId         String
+  property           Property                 @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  borrowerId         String
+  borrower           User                     @relation("MortgageBorrower", fields: [borrowerId], references: [id], onDelete: Cascade)
+  mortgageTypeId     String?
+  mortgageType       MortgageType?            @relation(fields: [mortgageTypeId], references: [id])
+  downpaymentPlanId  String?
+  downpaymentPlan    MortgageDownpaymentPlan? @relation(fields: [downpaymentPlanId], references: [id])
+  principal          Float
+  downPayment        Float
+  downPaymentPaid    Float                    @default(0)
+  termMonths         Int
+  interestRate       Float
+  monthlyPayment     Float
+  status             String                   @default("DRAFT") // DRAFT, PENDING, ACTIVE, COMPLETED, CANCELLED
+  state              String                   @default("DRAFT") // FSM state
+  stateMetadata      String?                  @db.Text // JSON metadata
+  lastReminderSentAt DateTime?
+  createdAt          DateTime                 @default(now())
+  updatedAt          DateTime                 @updatedAt
+
+  documents        MortgageDocument[]
+  steps            MortgageStep[]
+  transitions      MortgageTransition[]
+  transitionEvents MortgageTransitionEvent[]
+
+  @@index([propertyId])
+  @@index([borrowerId])
+  @@index([status])
+  @@index([state])
+  @@map("mortgages")
+}
+
+model MortgageType {
+  id          String     @id @default(cuid())
+  name        String     @unique
+  description String?    @db.Text
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  mortgages   Mortgage[]
+
+  @@map("mortgage_types")
+}
+
+model MortgageDocument {
+  id         String   @id @default(cuid())
+  mortgageId String
+  mortgage   Mortgage @relation(fields: [mortgageId], references: [id], onDelete: Cascade)
+  name       String
+  url        String
+  type       String // INCOME_PROOF, ID, etc
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([mortgageId])
+  @@map("mortgage_documents")
+}
+
+model MortgageStep {
+  id          String    @id @default(cuid())
+  mortgageId  String
+  mortgage    Mortgage  @relation(fields: [mortgageId], references: [id], onDelete: Cascade)
+  name        String
+  description String?   @db.Text
+  order       Int
+  isCompleted Boolean   @default(false)
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([mortgageId])
+  @@map("mortgage_steps")
+}
+
+model MortgageDownpaymentPlan {
+  id          String   @id @default(cuid())
+  totalAmount Float
+  paidAmount  Float    @default(0)
+  status      String   @default("PENDING") // PENDING, ACTIVE, COMPLETED
+  startDate   DateTime
+  endDate     DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  mortgages    Mortgage[]
+  installments MortgageDownpaymentInstallment[]
+  payments     MortgageDownpaymentPayment[]
+
+  @@map("mortgage_downpayment_plans")
+}
+
+model MortgageDownpaymentInstallment {
+  id        String                  @id @default(cuid())
+  planId    String
+  plan      MortgageDownpaymentPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  amount    Float
+  dueDate   DateTime
+  isPaid    Boolean                 @default(false)
+  paidDate  DateTime?
+  createdAt DateTime                @default(now())
+  updatedAt DateTime                @updatedAt
+
+  @@index([planId])
+  @@map("mortgage_downpayment_installments")
+}
+
+model MortgageDownpaymentPayment {
+  id            String                  @id @default(cuid())
+  planId        String
+  plan          MortgageDownpaymentPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  amount        Float
+  paymentMethod String
+  reference     String?
+  status        String                  @default("PENDING")
+  createdAt     DateTime                @default(now())
+  updatedAt     DateTime                @updatedAt
+
+  @@index([planId])
+  @@map("mortgage_downpayment_payments")
+}
+
+model MortgageTransition {
+  id             String   @id @default(cuid())
+  mortgageId     String
+  mortgage       Mortgage @relation(fields: [mortgageId], references: [id], onDelete: Cascade)
+  fromState      String
+  toState        String
+  trigger        String
+  metadata       String?  @db.Text // JSON
+  transitionedAt DateTime @default(now())
+
+  @@index([mortgageId])
+  @@map("mortgage_transitions")
+}
+
+model MortgageTransitionEvent {
+  id         String   @id @default(cuid())
+  mortgageId String
+  mortgage   Mortgage @relation(fields: [mortgageId], references: [id], onDelete: Cascade)
+  event      String
+  data       String?  @db.Text // JSON
+  createdAt  DateTime @default(now())
+
+  @@index([mortgageId])
+  @@map("mortgage_transition_events")
+}
+
+// =============================================================================
+// PAYMENT & CONTRACT DOMAIN
+// =============================================================================
+
+model PaymentPlan {
+  id                String   @id @default(cuid())
+  propertyId        String
+  property          Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  buyerId           String?
+  buyer             User?    @relation(fields: [buyerId], references: [id])
+  planType          String // MORTGAGE, INSTALLMENT, RENT_TO_OWN, LEASE, OUTRIGHT_PURCHASE, CUSTOM
+  name              String
+  description       String?  @db.Text
+  totalAmount       Float
+  downPaymentAmount Float    @default(0)
+  downPaymentPaid   Float    @default(0)
+  principalAmount   Float
+  interestRate      Float    @default(0)
+  totalInterest     Float    @default(0)
+  state             String   @default("DRAFT") // FSM state
+  stateMetadata     String?  @db.Text
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  contract  Contract?
+  schedules PaymentSchedule[]
+  payments  Payment[]
+
+  @@index([propertyId])
+  @@index([buyerId])
+  @@index([state])
+  @@map("payment_plans")
+}
+
+model PaymentSchedule {
+  id        String      @id @default(cuid())
+  planId    String
+  plan      PaymentPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  name      String
+  frequency String // MONTHLY, WEEKLY, QUARTERLY, CUSTOM
+  startDate DateTime
+  endDate   DateTime?
+  isActive  Boolean     @default(true)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  installments PaymentInstallment[]
+  payments     Payment[]
+
+  @@index([planId])
+  @@map("payment_schedules")
+}
+
+model PaymentInstallment {
+  id                String          @id @default(cuid())
+  scheduleId        String
+  schedule          PaymentSchedule @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+  installmentNumber Int
+  amount            Float
+  principalAmount   Float
+  interestAmount    Float
+  dueDate           DateTime
+  status            String          @default("PENDING") // PENDING, PAID, OVERDUE, WAIVED
+  paidAmount        Float           @default(0)
+  paidDate          DateTime?
+  lateFee           Float           @default(0)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  payments Payment[]
+
+  @@index([scheduleId])
+  @@index([dueDate])
+  @@index([status])
+  @@map("payment_installments")
+}
+
+model Payment {
+  id              String              @id @default(cuid())
+  planId          String
+  plan            PaymentPlan         @relation(fields: [planId], references: [id], onDelete: Cascade)
+  scheduleId      String?
+  schedule        PaymentSchedule?    @relation(fields: [scheduleId], references: [id])
+  installmentId   String?
+  installment     PaymentInstallment? @relation(fields: [installmentId], references: [id])
+  payerId         String?
+  payer           User?               @relation(fields: [payerId], references: [id])
+  amount          Float
+  principalAmount Float               @default(0)
+  interestAmount  Float               @default(0)
+  lateFeeAmount   Float               @default(0)
+  paymentMethod   String // BANK_TRANSFER, CREDIT_CARD, WALLET, etc
+  status          String              @default("INITIATED") // INITIATED, PENDING, PROCESSING, COMPLETED, FAILED, CANCELLED, REFUNDED
+  reference       String?             @unique
+  gatewayResponse String?             @db.Text // JSON
+  processedAt     DateTime?
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+
+  @@index([planId])
+  @@index([payerId])
+  @@index([status])
+  @@index([reference])
+  @@map("payments")
+}
+
+model Contract {
+  id             String       @id @default(cuid())
+  propertyId     String
+  property       Property     @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  paymentPlanId  String?      @unique
+  paymentPlan    PaymentPlan? @relation(fields: [paymentPlanId], references: [id])
+  buyerId        String?
+  buyer          User?        @relation("ContractBuyer", fields: [buyerId], references: [id])
+  sellerId       String?
+  seller         User?        @relation("ContractSeller", fields: [sellerId], references: [id])
+  contractType   String // MORTGAGE, SALE_AGREEMENT, LEASE_AGREEMENT, etc
+  contractNumber String       @unique
+  title          String
+  description    String?      @db.Text
+  status         String       @default("DRAFT") // DRAFT, PENDING_SIGNATURE, ACTIVE, COMPLETED, TERMINATED
+  startDate      DateTime?
+  endDate        DateTime?
+  signedAt       DateTime?
+  terminatedAt   DateTime?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  documents ContractDocument[]
+
+  @@index([propertyId])
+  @@index([buyerId])
+  @@index([sellerId])
+  @@index([status])
+  @@map("contracts")
+}
+
+model ContractDocument {
+  id         String   @id @default(cuid())
+  contractId String
+  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  name       String
+  url        String
+  type       String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([contractId])
+  @@map("contract_documents")
+}

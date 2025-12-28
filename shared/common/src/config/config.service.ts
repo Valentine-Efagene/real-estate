@@ -101,7 +101,7 @@ export class ConfigService {
 
             this.setCache(cacheKey, config);
             return config;
-        } catch (error) {
+        } catch (error: any) {
             console.error('Error fetching infrastructure config from SSM:', error);
             throw new Error(`Failed to load infrastructure configuration: ${error.message}`);
         }
@@ -125,7 +125,7 @@ export class ConfigService {
 
             this.setCache(name, value);
             return value;
-        } catch (error) {
+        } catch (error: any) {
             console.error(`Error fetching parameter ${name}:`, error);
             throw new Error(`Failed to load parameter ${name}: ${error.message}`);
         }
@@ -199,7 +199,7 @@ export class ConfigService {
 
             this.setCache(secretName, secret);
             return secret as T;
-        } catch (error) {
+        } catch (error: any) {
             console.error(`Error fetching secret ${secretName}:`, error);
             throw new Error(`Failed to load secret ${secretName}: ${error.message}`);
         }
@@ -244,6 +244,14 @@ export class ConfigService {
     clearCache(): void {
         this.cache.clear();
         this.cacheTimestamps.clear();
+    }
+
+    /**
+     * Get a configuration value from environment variables
+     * This is useful for local development when AWS services are not available
+     */
+    get(key: string): string {
+        return process.env[key] || '';
     }
 }
 

@@ -98,40 +98,24 @@ provider:
 package:
   individually: false
   patterns:
-    - '!**'
-    - 'dist-webpack/**'
-    - 'node_modules/**'
-    # Exclude large development dependencies
-    - '!node_modules/aws-cdk/**'
-    - '!node_modules/aws-cdk-lib/**'
-    - '!node_modules/@aws-cdk/**'
-    - '!node_modules/constructs/**'
-    - '!node_modules/typescript/**'
-    - '!node_modules/@types/**'
-    - '!node_modules/ts-loader/**'
-    - '!node_modules/webpack/**'
-    - '!node_modules/webpack-cli/**'
-    - '!node_modules/terser-webpack-plugin/**'
-    - '!node_modules/@jest/**'
-    - '!node_modules/jest/**'
-    - '!node_modules/@nestjs/testing/**'
-    - '!node_modules/serverless/**'
-    - '!node_modules/serverless-webpack/**'
-    # Exclude optional database drivers we don't use
-    - '!node_modules/mongodb/**'
-    - '!node_modules/oracledb/**'
-    - '!node_modules/pg/**'
-    - '!node_modules/pg-native/**'
-    - '!node_modules/sqlite3/**'
-    - '!node_modules/better-sqlite3/**'
-    - '!node_modules/sql.js/**'
-    - '!node_modules/mssql/**'
-    - '!node_modules/react-native-sqlite-storage/**'
-    - '!node_modules/@google-cloud/**'
-    - '!node_modules/@sap/**'
-    # Keep bcrypt (native module needed at runtime)
-    # Keep mysql2 (our actual database driver)
-    # Keep all other runtime dependencies
+    # Include compiled webpack bundle (most code is bundled here)
+    - 'dist-webpack/serverless.js'
+    # Exclude all node_modules first
+    - '!node_modules/**'
+    # Then explicitly include only the runtime dependencies that webpack externalizes
+    - 'node_modules/@nestjs/**'
+    - 'node_modules/typeorm/**'
+    - 'node_modules/mysql2/**'
+    - 'node_modules/class-validator/**'
+    - 'node_modules/class-transformer/**'
+    - 'node_modules/reflect-metadata/**'
+    - 'node_modules/rxjs/**'
+    - 'node_modules/@valentine-efagene/qshelter-common/**'
+    - 'node_modules/tslib/**'
+    # Additional runtime dependencies discovered during deployment:
+    - 'node_modules/uid/**'
+    - 'node_modules/iterare/**'
+    - 'node_modules/fast-safe-stringify/**'
 
 functions:
   # Single Lambda function handling all user service routes

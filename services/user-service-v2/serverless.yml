@@ -1,0 +1,141 @@
+service: qshelter-user-service-v2
+
+frameworkVersion: '4'
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  stage: ${opt:stage, 'dev'}
+  region: us-east-1
+  
+  httpApi:
+    cors: true
+    authorizers:
+      UserServiceAuthorizer:
+        type: request
+        functionArn: ${ssm:/qshelter/${self:provider.stage}/authorizer-lambda-arn}
+        identitySource: $request.header.Authorization
+        enableSimpleResponses: false
+        resultTtlInSeconds: 300
+        payloadVersion: '2.0'
+  
+  environment:
+    NODE_ENV: ${self:provider.stage}
+    STAGE: ${self:provider.stage}
+  
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action: [ssm:GetParameter, ssm:GetParameters]
+          Resource: arn:aws:ssm:${self:provider.region}:*:parameter/qshelter/${self:provider.stage}/*
+        - Effect: Allow
+          Action: secretsmanager:GetSecretValue
+          Resource: arn:aws:secretsmanager:${self:provider.region}:*:secret:qshelter/${self:provider.stage}/*
+
+functions:
+  api:
+    handler: dist/lambda.handler
+    timeout: 30
+    memorySize: 512
+    events:
+      # Auth routes (public)
+      - httpApi: 'POST /api/auth/login'
+      - httpApi: 'POST /api/auth/signup'
+      - httpApi: 'POST /api/auth/refresh'
+      - httpApi: 'GET /api/auth/verify-email'
+      - httpApi: 'POST /api/auth/request-password-reset'
+      - httpApi: 'POST /api/auth/reset-password'
+      - httpApi: 'POST /api/auth/google-token-login'
+      
+      # Auth routes (protected)
+      - httpApi:
+          path: /api/auth/me
+          method: GET
+          authorizer: UserServiceAuthorizer
+      
+      # User routes (protected)
+      - httpApi:
+          path: /api/users
+          method: GET
+          authorizer: UserServiceAuthorizer
+      - httpApi:
+          path: /api/users/{id}
+          method: GET
+          authorizer: UserServiceAuthorizer
+      - httpApi:
+          path: /api/users/{id}
+          method: PUT
+          authorizer: UserServiceAuthorizer
+      - httpApi:
+          path: /api/users/{id}
+          method: DELETE
+          authorizer: UserServiceAuthorizer
+      - httpApi:
+          path: /api/users/{id}/avatar
+          method: PUT
+          authorizer: UserServiceAuthorizer
+      - httpApi:
+          path: /api/users/profile
+          method: PATCH
+          authorizer: UserServiceAuthorizer
+      - httpApi:
+          path: /api/users/{id}/suspend
+          method: POST
+          authorizer: UserServiceAuthorizer
+      - httpApi:
+          path: /api/users/{id}/reinstate
+          method: POST
+          authorizer: UserServiceAuthorizer
+      - httpApi:
+          path: /api/users/{id}/roles
+          method: PUT
+          authorizer: UserServiceAuthorizer
+      
+      # Role routes (protected)
+      - httpApi:
+          path: /api/roles
+          method: ANY
+          authorizer: UserServiceAuthorizer
+      - httpApi:
+          path: /api/roles/{id}
+          method: ANY
+          authorizer: UserServiceAuthorizer
+      
+      # Tenant routes (protected)
+      - httpApi:
+          path: /api/tenants
+          method: ANY
+          authorizer: UserServiceAuthorizer
+      - httpApi:
+          path: /api/tenants/{id}
+          method: ANY
+          authorizer: UserServiceAuthorizer
+      - httpApi:
+          path: /api/tenants/subdomain/{subdomain}
+          method: GET
+          authorizer: UserServiceAuthorizer
+      
+      # Social routes (protected)
+      - httpApi:
+          path: /api/socials
+          method: POST
+          authorizer: UserServiceAuthorizer
+      - httpApi:
+          path: /api/socials/{id}
+          method: ANY
+          authorizer: UserServiceAuthorizer
+      - httpApi:
+          path: /api/socials/user/{userId}
+          method: GET
+          authorizer: UserServiceAuthorizer
+
+plugins:
+  - serverless-offline
+
+package:
+  patterns:
+    - '!**/*'
+    - 'dist/**'
+    - 'node_modules/@prisma/client/**'
+    - 'node_modules/.prisma/**'
