@@ -47,7 +47,7 @@ export class RealEstateStack extends cdk.Stack {
         subnetType: ec2.SubnetType.PUBLIC, // 👈 Force use of public subnets. Allow only on dev.
       },
       credentials: rds.Credentials.fromGeneratedSecret("dbadmin"),
-      defaultDatabaseName: "authdb",
+      defaultDatabaseName: `qshelter_${stage}`,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 

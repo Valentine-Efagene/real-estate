@@ -1,4 +1,4 @@
-service: qshelter-user-service-v2
+service: qshelter-user-service
 
 frameworkVersion: '4'
 
@@ -39,96 +39,159 @@ functions:
     timeout: 30
     memorySize: 512
     events:
+      # Health and docs (public)
+      - httpApi: 'GET /health'
+      - httpApi: 'GET /api-docs'
+      - httpApi: 'GET /openapi.json'
+      
       # Auth routes (public)
-      - httpApi: 'POST /api/auth/login'
-      - httpApi: 'POST /api/auth/signup'
-      - httpApi: 'POST /api/auth/refresh'
-      - httpApi: 'GET /api/auth/verify-email'
-      - httpApi: 'POST /api/auth/request-password-reset'
-      - httpApi: 'POST /api/auth/reset-password'
-      - httpApi: 'POST /api/auth/google-token-login'
+      - httpApi: 'POST /auth/login'
+      - httpApi: 'POST /auth/signup'
+      - httpApi: 'POST /auth/refresh'
+      - httpApi: 'GET /auth/verify-email'
+      - httpApi: 'POST /auth/request-password-reset'
+      - httpApi: 'POST /auth/reset-password'
+      - httpApi: 'POST /auth/google-token-login'
       
       # Auth routes (protected)
       - httpApi:
-          path: /api/auth/me
+          path: /auth/me
           method: GET
-          authorizer: UserServiceAuthorizer
+          authorizer:
+            name: UserServiceAuthorizer
       
       # User routes (protected)
       - httpApi:
-          path: /api/users
+          path: /users
           method: GET
-          authorizer: UserServiceAuthorizer
+          authorizer:
+            name: UserServiceAuthorizer
       - httpApi:
-          path: /api/users/{id}
+          path: /users/{id}
           method: GET
-          authorizer: UserServiceAuthorizer
+          authorizer:
+            name: UserServiceAuthorizer
       - httpApi:
-          path: /api/users/{id}
+          path: /users/{id}
           method: PUT
-          authorizer: UserServiceAuthorizer
+          authorizer:
+            name: UserServiceAuthorizer
       - httpApi:
-          path: /api/users/{id}
+          path: /users/{id}
           method: DELETE
-          authorizer: UserServiceAuthorizer
+          authorizer:
+            name: UserServiceAuthorizer
       - httpApi:
-          path: /api/users/{id}/avatar
+          path: /users/{id}/avatar
           method: PUT
-          authorizer: UserServiceAuthorizer
+          authorizer:
+            name: UserServiceAuthorizer
       - httpApi:
-          path: /api/users/profile
+          path: /users/profile
           method: PATCH
-          authorizer: UserServiceAuthorizer
+          authorizer:
+            name: UserServiceAuthorizer
       - httpApi:
-          path: /api/users/{id}/suspend
+          path: /users/{id}/suspend
           method: POST
-          authorizer: UserServiceAuthorizer
+          authorizer:
+            name: UserServiceAuthorizer
       - httpApi:
-          path: /api/users/{id}/reinstate
+          path: /users/{id}/reinstate
           method: POST
-          authorizer: UserServiceAuthorizer
+          authorizer:
+            name: UserServiceAuthorizer
       - httpApi:
-          path: /api/users/{id}/roles
+          path: /users/{id}/roles
           method: PUT
-          authorizer: UserServiceAuthorizer
+          authorizer:
+            name: UserServiceAuthorizer
       
       # Role routes (protected)
       - httpApi:
-          path: /api/roles
-          method: ANY
-          authorizer: UserServiceAuthorizer
+          path: /roles
+          method: GET
+          authorizer:
+            name: UserServiceAuthorizer
       - httpApi:
-          path: /api/roles/{id}
-          method: ANY
-          authorizer: UserServiceAuthorizer
+          path: /roles
+          method: POST
+          authorizer:
+            name: UserServiceAuthorizer
+      - httpApi:
+          path: /roles/{id}
+          method: GET
+          authorizer:
+            name: UserServiceAuthorizer
+      - httpApi:
+          path: /roles/{id}
+          method: PUT
+          authorizer:
+            name: UserServiceAuthorizer
+      - httpApi:
+          path: /roles/{id}
+          method: DELETE
+          authorizer:
+            name: UserServiceAuthorizer
       
       # Tenant routes (protected)
       - httpApi:
-          path: /api/tenants
-          method: ANY
-          authorizer: UserServiceAuthorizer
-      - httpApi:
-          path: /api/tenants/{id}
-          method: ANY
-          authorizer: UserServiceAuthorizer
-      - httpApi:
-          path: /api/tenants/subdomain/{subdomain}
+          path: /tenants
           method: GET
-          authorizer: UserServiceAuthorizer
+          authorizer:
+            name: UserServiceAuthorizer
+      - httpApi:
+          path: /tenants
+          method: POST
+          authorizer:
+            name: UserServiceAuthorizer
+      - httpApi:
+          path: /tenants/{id}
+          method: GET
+          authorizer:
+            name: UserServiceAuthorizer
+      - httpApi:
+          path: /tenants/{id}
+          method: PUT
+          authorizer:
+            name: UserServiceAuthorizer
+      - httpApi:
+          path: /tenants/{id}
+          method: DELETE
+          authorizer:
+            name: UserServiceAuthorizer
+      - httpApi:
+          path: /tenants/subdomain/{subdomain}
+          method: GET
+          authorizer:
+            name: UserServiceAuthorizer
       
       # Social routes (protected)
       - httpApi:
-          path: /api/socials
+          path: /socials
           method: POST
-          authorizer: UserServiceAuthorizer
+          authorizer:
+            name: UserServiceAuthorizer
       - httpApi:
-          path: /api/socials/{id}
-          method: ANY
-          authorizer: UserServiceAuthorizer
-      - httpApi:
-          path: /api/socials/user/{userId}
+          path: /socials/{id}
           method: GET
-          authorizer: UserServiceAuthorizer
+          authorizer:
+            name: UserServiceAuthorizer
+      - httpApi:
+          path: /socials/{id}
+          method: PUT
+          authorizer:
+            name: UserServiceAuthorizer
+      - httpApi:
+          path: /socials/{id}
+          method: DELETE
+          authorizer:
+            name: UserServiceAuthorizer
+      - httpApi:
+          path: /socials/user/{userId}
+          method: GET
+          authorizer:
+            name: UserServiceAuthorizer
 
 plugins:
   - serverless-offline

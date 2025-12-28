@@ -2,7 +2,6 @@ import { SSMClient, GetParameterCommand, GetParametersByPathCommand } from '@aws
 import { SecretsManagerClient, GetSecretValueCommand } from '@aws-sdk/client-secrets-manager';
 
 export interface InfrastructureConfig {
-    httpApiId: string;
     vpcId: string;
     dbSecurityGroupId: string;
     privateSubnetIds: string[];
@@ -93,7 +92,6 @@ export class ConfigService {
             const params = response.Parameters || [];
 
             const config: InfrastructureConfig = {
-                httpApiId: this.getParamValue(params, `${pathPrefix}http-api-id`),
                 vpcId: this.getParamValue(params, `${pathPrefix}vpc-id`),
                 dbSecurityGroupId: this.getParamValue(params, `${pathPrefix}db-security-group-id`),
                 privateSubnetIds: this.getParamValue(params, `${pathPrefix}private-subnet-ids`).split(','),
