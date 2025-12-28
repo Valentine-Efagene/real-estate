@@ -1,4 +1,4 @@
-import { PrismaClient } from '../generated/client/client';
+import { PrismaClient } from "../../generated/client/client";
 
 /**
  * Fetch a user and return a copy with a flattened `roles` array for quick access.

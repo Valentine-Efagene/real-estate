@@ -1,6 +1,6 @@
 import serverlessExpress from '@codegenie/serverless-express';
 import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from 'aws-lambda';
-import { app } from './app.js';
+import { app } from './app';
 import { loadConfig } from './lib/config.js';
 
 let serverlessExpressInstance: any;
@@ -8,7 +8,7 @@ let serverlessExpressInstance: any;
 async function setup() {
     await loadConfig();
     const server = app.listen();
-    serverlessExpressInstance = serverlessExpress({ app: server });
+    serverlessExpressInstance = serverlessExpress({ app: server as any });
     return serverlessExpressInstance;
 }
 

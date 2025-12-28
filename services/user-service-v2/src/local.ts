@@ -1,5 +1,8 @@
-import { app } from './app.js';
-import { loadConfig } from './lib/config.js';
+import { config } from 'dotenv';
+config({ path: '.env.local' });
+
+import { app } from './app';
+import { loadConfig } from './lib/config';
 
 async function start() {
     await loadConfig();

@@ -23,6 +23,12 @@ async function getSecret(secretId: string): Promise<any> {
 }
 
 export async function loadConfig() {
+    // Skip AWS config loading for local development
+    if (process.env.NODE_ENV === 'local') {
+        console.log('Running in local mode, using .env.local configuration');
+        return;
+    }
+
     const stage = process.env.STAGE || 'dev';
 
     try {
