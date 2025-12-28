@@ -10,6 +10,7 @@ export const signupSchema = z.object({
     password: z.string().min(8),
     firstName: z.string().min(1),
     lastName: z.string().min(1),
+    avatar: z.string().url().optional(),
 });
 
 export const refreshTokenSchema = z.object({

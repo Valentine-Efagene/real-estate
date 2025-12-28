@@ -34,6 +34,7 @@ class AuthService {
                 password: hashedPassword,
                 firstName: data.firstName,
                 lastName: data.lastName,
+                avatar: data.avatar,
                 emailVerificationToken,
             },
         });
@@ -246,6 +247,7 @@ class AuthService {
                     lastName: family_name || '',
                     password: hashedPassword,
                     googleId: payload.sub,
+                    avatar: picture,
                     emailVerifiedAt: new Date(), // Google accounts are pre-verified
                     isActive: true,
                 },
@@ -352,6 +354,7 @@ class AuthService {
                     lastName: family_name || '',
                     password: hashedPassword,
                     googleId: sub,
+                    avatar: picture,
                     emailVerifiedAt: new Date(), // Google accounts are pre-verified
                     isActive: true,
                 },
@@ -380,6 +383,7 @@ class AuthService {
                 firstName: true,
                 lastName: true,
                 phone: true,
+                avatar: true,
                 isActive: true,
                 emailVerifiedAt: true,
                 lastLoginAt: true,

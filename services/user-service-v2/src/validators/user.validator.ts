@@ -14,6 +14,7 @@ export const updateUserSchema = z.object({
     lastName: z.string().optional(),
     isActive: z.boolean().optional(),
     roleId: z.string().optional(),
+    avatar: z.string().url().optional(),
 });
 
 export const userQuerySchema = z.object({
