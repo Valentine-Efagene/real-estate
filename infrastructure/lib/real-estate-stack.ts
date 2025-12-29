@@ -225,6 +225,13 @@ export class RealEstateStack extends cdk.Stack {
       description: 'EventBridge Bus Name',
     });
 
+    // HTTP API ID parameter (centralized)
+    new ssm.StringParameter(this, 'HttpApiIdParameter', {
+      parameterName: `/qshelter/${stage}/http-api-id`,
+      stringValue: process.env.HTTP_API_ID || 'REPLACE_ME',
+      description: 'HTTP API Gateway ID (set by infra or CI/CD after API deployment)',
+    });
+
     // === Secrets Manager (Sensitive Values) ===
 
     // JWT Secrets - Use from .env or auto-generate

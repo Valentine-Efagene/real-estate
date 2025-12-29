@@ -238,3 +238,13 @@ package:
     - '!node_modules/**/examples/**'
     - '!node_modules/.prisma/**'
     - 'package.json'
+
+resources:
+  Resources:
+    HttpApiIdParameter:
+      Type: AWS::SSM::Parameter
+      Properties:
+        Name: /qshelter/${self:provider.stage}/http-api-id
+        Type: String
+        Value:
+          Ref: HttpApi
