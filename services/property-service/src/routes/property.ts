@@ -98,12 +98,3 @@ propertyRouter.get('/property-document/:propertyId', async (req, res, next) => {
     }
 });
 
-// Amenities
-propertyRouter.get('/amenities', async (req, res, next) => {
-    try {
-        const amenities = await propertyService.getAmenities();
-        res.json(successResponse(amenities));
-    } catch (error) {
-        next(error);
-    }
-});
