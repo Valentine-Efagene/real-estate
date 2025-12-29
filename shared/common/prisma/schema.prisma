@@ -359,42 +359,228 @@ model PropertyAmenity {
 }
 
 // =============================================================================
-// MORTGAGE DOMAIN
+// MORTGAGE DOMAIN - MODULAR PAYMENT SYSTEM
 // =============================================================================
 
-model Mortgage {
-  id                 String                   @id @default(cuid())
-  propertyId         String
-  property           Property                 @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  borrowerId         String
-  borrower           User                     @relation("MortgageBorrower", fields: [borrowerId], references: [id], onDelete: Cascade)
-  mortgageTypeId     String?
-  mortgageType       MortgageType?            @relation(fields: [mortgageTypeId], references: [id])
-  downpaymentPlanId  String?
-  downpaymentPlan    MortgageDownpaymentPlan? @relation(fields: [downpaymentPlanId], references: [id])
-  principal          Float
-  downPayment        Float
-  downPaymentPaid    Float                    @default(0)
-  termMonths         Int
-  interestRate       Float
-  monthlyPayment     Float
-  status             String                   @default("DRAFT") // DRAFT, PENDING, ACTIVE, COMPLETED, CANCELLED
-  state              String                   @default("DRAFT") // FSM state
-  stateMetadata      String?                  @db.Text // JSON metadata
-  lastReminderSentAt DateTime?
-  createdAt          DateTime                 @default(now())
-  updatedAt          DateTime                 @updatedAt
+// Template system for creating reusable payment plans
+model PaymentPlanTemplate {
+  id          String  @id @default(cuid())
+  name        String  @unique
+  description String? @db.Text
+  category    String // STANDARD, FLEXIBLE, CUSTOM
+  isActive    Boolean @default(true)
 
+  // Configuration fields (explicit instead of JSON)
+  allowEarlyPayoff       Boolean @default(true)
+  earlyPayoffPenaltyRate Float? // Percentage penalty for early payoff
+  autoActivatePhases     Boolean @default(true)
+  requiresManualApproval Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  mortgages Mortgage[]
+  phases    PaymentPhaseTemplate[]
+
+  @@map("payment_plan_templates")
+}
+
+// Phase templates define the structure
+model PaymentPhaseTemplate {
+  id         String              @id @default(cuid())
+  templateId String
+  template   PaymentPlanTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+
+  name        String
+  description String? @db.Text
+  phaseType   String // DOWNPAYMENT, MORTGAGE, BALLOON, GRACE_PERIOD, CUSTOM
+  order       Int
+
+  // Timing configuration
+  durationMonths  Int?
+  gracePeriodDays Int  @default(0)
+
+  // Payment configuration
+  paymentFrequency    String? // MONTHLY, BIWEEKLY, WEEKLY, CUSTOM
+  interestRate        Float?
+  customFrequencyDays Int? // For CUSTOM frequency
+
+  // Installment generation
+  numberOfInstallments   Int?
+  installmentAmount      Float?
+  calculateInterestDaily Boolean @default(false)
+
+  // Activation rules
+  requiresPreviousPhaseCompletion Boolean @default(true)
+  minimumCompletionPercentage     Float? // e.g., 100.0 for full completion
+  requiredDocumentTypes           String? // Comma-separated document types
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([templateId])
+  @@map("payment_phase_templates")
+}
+
+model Mortgage {
+  id                    String                   @id @default(cuid())
+  propertyId            String
+  property              Property                 @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  borrowerId            String
+  borrower              User                     @relation("MortgageBorrower", fields: [borrowerId], references: [id], onDelete: Cascade)
+  mortgageTypeId        String?
+  mortgageType          MortgageType?            @relation(fields: [mortgageTypeId], references: [id])
+  paymentPlanTemplateId String?
+  paymentPlanTemplate   PaymentPlanTemplate?     @relation(fields: [paymentPlanTemplateId], references: [id])
+  downpaymentPlanId     String?
+  downpaymentPlan       MortgageDownpaymentPlan? @relation(fields: [downpaymentPlanId], references: [id])
+
+  principal       Float
+  downPayment     Float
+  downPaymentPaid Float @default(0)
+  termMonths      Int
+  interestRate    Float
+  monthlyPayment  Float
+
+  status String @default("DRAFT") // DRAFT, PENDING, ACTIVE, COMPLETED, CANCELLED
+  state  String @default("DRAFT") // FSM state
+
+  // State metadata (explicit fields instead of JSON)
+  currentPhaseId     String?
+  nextPaymentDueDate DateTime?
+  totalPaidToDate    Float     @default(0)
+  totalInterestPaid  Float     @default(0)
+  lastReminderSentAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  phases           MortgagePhase[]
   documents        MortgageDocument[]
   steps            MortgageStep[]
   transitions      MortgageTransition[]
   transitionEvents MortgageTransitionEvent[]
+  payments         MortgagePayment[]
 
   @@index([propertyId])
   @@index([borrowerId])
   @@index([status])
   @@index([state])
   @@map("mortgages")
+}
+
+// Actual phases for a specific mortgage instance
+model MortgagePhase {
+  id         String   @id @default(cuid())
+  mortgageId String
+  mortgage   Mortgage @relation(fields: [mortgageId], references: [id], onDelete: Cascade)
+
+  name        String
+  description String? @db.Text
+  phaseType   String
+  order       Int
+
+  status String @default("PENDING") // PENDING, ACTIVE, COMPLETED, SKIPPED
+
+  // Financial details
+  totalAmount     Float
+  paidAmount      Float @default(0)
+  remainingAmount Float
+
+  // Timing
+  startDate   DateTime?
+  endDate     DateTime?
+  activatedAt DateTime?
+  completedAt DateTime?
+
+  // Configuration (explicit fields from template, can be customized per instance)
+  durationMonths         Int?
+  gracePeriodDays        Int     @default(0)
+  paymentFrequency       String? // MONTHLY, BIWEEKLY, WEEKLY, CUSTOM
+  interestRate           Float?
+  customFrequencyDays    Int?
+  numberOfInstallments   Int?
+  installmentAmount      Float?
+  calculateInterestDaily Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  installments MortgageInstallment[]
+  payments     MortgagePayment[]
+
+  @@index([mortgageId])
+  @@index([status])
+  @@index([order])
+  @@map("mortgage_phases")
+}
+
+// Installments within each phase
+model MortgageInstallment {
+  id      String        @id @default(cuid())
+  phaseId String
+  phase   MortgagePhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+
+  installmentNumber Int
+
+  amount          Float
+  principalAmount Float @default(0)
+  interestAmount  Float @default(0)
+
+  dueDate DateTime
+  status  String   @default("PENDING") // PENDING, PAID, OVERDUE, PARTIALLY_PAID, WAIVED
+
+  paidAmount Float     @default(0)
+  paidDate   DateTime?
+
+  lateFee            Float     @default(0)
+  lateFeeWaived      Boolean   @default(false)
+  gracePeriodDays    Int       @default(0)
+  gracePeriodEndDate DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  payments MortgagePayment[]
+
+  @@index([phaseId])
+  @@index([dueDate])
+  @@index([status])
+  @@map("mortgage_installments")
+}
+
+// Unified payment record
+model MortgagePayment {
+  id            String               @id @default(cuid())
+  mortgageId    String
+  mortgage      Mortgage             @relation(fields: [mortgageId], references: [id], onDelete: Cascade)
+  phaseId       String?
+  phase         MortgagePhase?       @relation(fields: [phaseId], references: [id])
+  installmentId String?
+  installment   MortgageInstallment? @relation(fields: [installmentId], references: [id])
+
+  amount          Float
+  principalAmount Float @default(0)
+  interestAmount  Float @default(0)
+  lateFeeAmount   Float @default(0)
+
+  paymentMethod String // BANK_TRANSFER, CREDIT_CARD, WALLET, CASH, CHECK
+  status        String @default("INITIATED") // INITIATED, PENDING, COMPLETED, FAILED, REFUNDED
+
+  reference       String? @unique
+  gatewayResponse String? @db.Text // JSON
+
+  processedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([mortgageId])
+  @@index([phaseId])
+  @@index([installmentId])
+  @@index([status])
+  @@index([reference])
+  @@map("mortgage_payments")
 }
 
 model MortgageType {
@@ -509,6 +695,48 @@ model MortgageTransitionEvent {
 
   @@index([mortgageId])
   @@map("mortgage_transition_events")
+}
+
+// =============================================================================
+// EVENT OUTBOX - For guaranteed event delivery to SQS queues
+// =============================================================================
+
+model DomainEvent {
+  id String @id @default(cuid())
+
+  // Event identification
+  eventType     String // MORTGAGE.CREATED, PHASE.ACTIVATED, PAYMENT.COMPLETED, etc
+  aggregateType String // Mortgage, MortgagePhase, MortgagePayment, Property, etc
+  aggregateId   String
+
+  // Routing - which queue(s) should receive this
+  queueName String // notifications, payments, mortgage-steps, accounting, etc
+
+  // Event payload (all data needed by consumers)
+  payload String @db.Text // JSON
+
+  // Metadata
+  occurredAt DateTime @default(now())
+  actorId    String? // User who triggered the event
+  actorRole  String? // Role of the actor
+
+  // Processing status
+  status       String    @default("PENDING") // PENDING, PROCESSING, SENT, FAILED
+  processedAt  DateTime?
+  sentAt       DateTime?
+  failureCount Int       @default(0)
+  lastError    String?   @db.Text
+  nextRetryAt  DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, nextRetryAt])
+  @@index([eventType])
+  @@index([aggregateType, aggregateId])
+  @@index([queueName])
+  @@index([occurredAt])
+  @@map("domain_events")
 }
 
 // =============================================================================
