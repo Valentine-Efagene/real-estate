@@ -4,7 +4,7 @@ frameworkVersion: '4'
 
 provider:
   name: aws
-  runtime: nodejs18.x
+  runtime: nodejs20.x
   region: us-east-1
   stage: ${opt:stage, 'dev'}
   memorySize: 512
@@ -61,22 +61,46 @@ provider:
             - arn:aws:s3:::*/*
 
 package:
-  individually: false
   patterns:
-    - '!**'
-    - 'dist-webpack/**'
-    - 'node_modules/@valentine-efagene/qshelter-common/**'
-    - 'node_modules/@nestjs/**'
-    - 'node_modules/@codegenie/**'
-    - 'node_modules/reflect-metadata/**'
-    - 'node_modules/rxjs/**'
-    - 'node_modules/tslib/**'
-    - 'node_modules/class-transformer/**'
-    - 'node_modules/class-validator/**'
+    - '!src/**'
+    - '!test/**'
+    - '!tests/**'
+    - '!**/*.test.ts'
+    - '!**/*.test.js'
+    - '!**/*.spec.ts'
+    - '!**/*.spec.js'
+    - '!dist/**/*.js'
+    - '!dist/**/*.d.ts'
+    - '!node_modules/@aws-sdk/**'
+    - '!node_modules/aws-sdk/**'
+    - '!node_modules/prisma/**'
+    - '!node_modules/@prisma/engines/**'
+    - '!node_modules/@prisma/studio/**'
+    - '!node_modules/@prisma/studio-core/**'
+    - '!node_modules/@electric-sql/**'
+    - '!node_modules/@prisma/client/runtime/*cockroachdb*'
+    - '!node_modules/@prisma/client/runtime/*sqlserver*'
+    - '!node_modules/@prisma/client/runtime/*postgresql*'
+    - '!node_modules/@prisma/client/runtime/*sqlite*'
+    - 'dist/**/*.mjs'
+    - '!**/*.map'
+    - '!**/*.ts'
+    - '!**/*.tsx'
+    - '!**/*.md'
+    - '!**/.git/**'
+    - '!**/.github/**'
+    - '!**/Dockerfile'
+    - '!**/docker/**'
+    - '!node_modules/**/test/**'
+    - '!node_modules/**/tests/**'
+    - '!node_modules/**/example/**'
+    - '!node_modules/**/examples/**'
+    - '!node_modules/.prisma/**'
+    - 'package.json'
 
 functions:
   main:
-    handler: dist-webpack/serverless.handler
+    handler: dist/lambda.handler
     events:
       - httpApi:
           path: /property/properties/{proxy+}
