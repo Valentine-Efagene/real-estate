@@ -27,7 +27,10 @@ provider:
     role:
       statements:
         - Effect: Allow
-          Action: [ssm:GetParameter, ssm:GetParameters]
+          Action: 
+            - ssm:GetParameter
+            - ssm:GetParameters
+            - ssm:GetParametersByPath
           Resource: arn:aws:ssm:${self:provider.region}:*:parameter/qshelter/${self:provider.stage}/*
         - Effect: Allow
           Action: secretsmanager:GetSecretValue
@@ -36,7 +39,7 @@ provider:
 functions:
   api:
     handler: dist/lambda.handler
-    timeout: 60
+    timeout: 29
     memorySize: 512
     runtime: nodejs20.x
     events:
@@ -199,9 +202,39 @@ plugins:
 
 package:
   patterns:
-    - '!**/*'
+    - '!src/**'
+    - '!test/**'
+    - '!tests/**'
+    - '!**/*.test.ts'
+    - '!**/*.test.js'
+    - '!**/*.spec.ts'
+    - '!**/*.spec.js'
     - '!dist/**/*.js'
     - '!dist/**/*.d.ts'
+    - '!node_modules/@aws-sdk/**'
+    - '!node_modules/aws-sdk/**'
+    - '!node_modules/prisma/**'
+    - '!node_modules/@prisma/engines/**'
+    - '!node_modules/@prisma/studio/**'
+    - '!node_modules/@prisma/studio-core/**'
+    - '!node_modules/@electric-sql/**'
+    - '!node_modules/@prisma/client/runtime/*cockroachdb*'
+    - '!node_modules/@prisma/client/runtime/*sqlserver*'
+    - '!node_modules/@prisma/client/runtime/*postgresql*'
+    - '!node_modules/@prisma/client/runtime/*sqlite*'
     - 'dist/**/*.mjs'
-    - 'node_modules/@prisma/client/**'
-    - 'node_modules/.prisma/**'
+    - 'dist/**/*.mjs'
+    - '!**/*.map'
+    - '!**/*.ts'
+    - '!**/*.tsx'
+    - '!**/*.md'
+    - '!**/.git/**'
+    - '!**/.github/**'
+    - '!**/Dockerfile'
+    - '!**/docker/**'
+    - '!node_modules/**/test/**'
+    - '!node_modules/**/tests/**'
+    - '!node_modules/**/example/**'
+    - '!node_modules/**/examples/**'
+    - '!node_modules/.prisma/**'
+    - 'package.json'
