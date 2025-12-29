@@ -1,4 +1,4 @@
-import { prisma } from '../lib/prisma.js';
+import { prisma } from '../lib/prisma';
 import { AppError } from '@valentine-efagene/qshelter-common';
 import type {
     CreateMortgageInput,
@@ -6,7 +6,7 @@ import type {
     CreateMortgageTypeInput,
     CreatePaymentInput,
     CreateDownpaymentInput,
-} from '../validators/mortgage.validator.js';
+} from '../validators/mortgage.validator';
 
 class MortgageService {
     async createMortgage(data: CreateMortgageInput) {

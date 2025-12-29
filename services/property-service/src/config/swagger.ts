@@ -7,7 +7,7 @@ import {
     propertyResponseSchema,
     presignedUrlRequestSchema,
     presignedUrlResponseSchema,
-} from '../validators/property.validator.js';
+} from '../validators/property.validator';
 
 extendZodWithOpenApi(z);
 

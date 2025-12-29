@@ -1,0 +1,57 @@
+import { Router, type Router as RouterType } from 'express';
+import { successResponse } from '@valentine-efagene/qshelter-common';
+import { createAmenitySchema, updateAmenitySchema } from '../validators/amenity.validator.js';
+import { amenityService } from '../services/amenity.service.js';
+
+export const amenityRouter: RouterType = Router();
+
+// Amenities CRUD
+amenityRouter.post('/amenities', async (req, res, next) => {
+    try {
+        const data = createAmenitySchema.parse(req.body);
+        const amenity = await amenityService.createAmenity(data);
+        res.status(201).json(successResponse(amenity));
+    } catch (error) {
+        next(error);
+    }
+});
+
+amenityRouter.get('/amenities', async (req, res, next) => {
+    try {
+        const amenities = await amenityService.getAmenities();
+        res.json(successResponse(amenities));
+    } catch (error) {
+        next(error);
+    }
+});
+
+amenityRouter.get('/amenities/:id', async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const amenity = await amenityService.getAmenityById(id);
+        res.json(successResponse(amenity));
+    } catch (error) {
+        next(error);
+    }
+});
+
+amenityRouter.put('/amenities/:id', async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const data = updateAmenitySchema.parse(req.body);
+        const amenity = await amenityService.updateAmenity(id, data);
+        res.json(successResponse(amenity));
+    } catch (error) {
+        next(error);
+    }
+});
+
+amenityRouter.delete('/amenities/:id', async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const result = await amenityService.deleteAmenity(id);
+        res.json(successResponse(result));
+    } catch (error) {
+        next(error);
+    }
+});

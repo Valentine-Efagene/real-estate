@@ -1,13 +1,11 @@
 import { Router, type Router as RouterType } from 'express';
 import { successResponse } from '@valentine-efagene/qshelter-common';
-import { prisma } from '../lib/prisma.js';
+import { prisma } from '../lib/prisma';
 import {
     createPropertySchema,
     updatePropertySchema,
-    presignedUrlRequestSchema,
 } from '../validators/property.validator.js';
 import { propertyService } from '../services/property.service.js';
-import { uploadService } from '../services/upload.service.js';
 
 export const propertyRouter: RouterType = Router();
 
@@ -105,17 +103,6 @@ propertyRouter.get('/amenities', async (req, res, next) => {
     try {
         const amenities = await propertyService.getAmenities();
         res.json(successResponse(amenities));
-    } catch (error) {
-        next(error);
-    }
-});
-
-// Presigned URL for S3 uploads
-propertyRouter.post('/upload/presigned-url', async (req, res, next) => {
-    try {
-        const data = presignedUrlRequestSchema.parse(req.body);
-        const result = await uploadService.generatePresignedUrl(data);
-        res.json(successResponse(result));
     } catch (error) {
         next(error);
     }

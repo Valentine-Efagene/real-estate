@@ -1,6 +1,6 @@
-import { prisma } from '../lib/prisma.js';
+import { prisma } from '../lib/prisma';
 import { AppError } from '@valentine-efagene/qshelter-common';
-import type { CreatePropertyInput, UpdatePropertyInput } from '../validators/property.validator.js';
+import type { CreatePropertyInput, UpdatePropertyInput } from '../validators/property.validator';
 
 class PropertyService {
     async createProperty(data: CreatePropertyInput, userId: string) {
@@ -99,13 +99,6 @@ class PropertyService {
             orderBy: { createdAt: 'desc' },
         });
         return documents;
-    }
-
-    async getAmenities() {
-        const amenities = await prisma.amenity.findMany({
-            orderBy: { name: 'asc' },
-        });
-        return amenities;
     }
 }
 
