@@ -27,9 +27,13 @@ export type AggregateContractDocument = {
 export type ContractDocumentMinAggregateOutputType = {
   id: string | null
   contractId: string | null
+  phaseId: string | null
+  stepId: string | null
   name: string | null
   url: string | null
   type: string | null
+  uploadedById: string | null
+  status: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -37,9 +41,13 @@ export type ContractDocumentMinAggregateOutputType = {
 export type ContractDocumentMaxAggregateOutputType = {
   id: string | null
   contractId: string | null
+  phaseId: string | null
+  stepId: string | null
   name: string | null
   url: string | null
   type: string | null
+  uploadedById: string | null
+  status: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -47,9 +55,13 @@ export type ContractDocumentMaxAggregateOutputType = {
 export type ContractDocumentCountAggregateOutputType = {
   id: number
   contractId: number
+  phaseId: number
+  stepId: number
   name: number
   url: number
   type: number
+  uploadedById: number
+  status: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -59,9 +71,13 @@ export type ContractDocumentCountAggregateOutputType = {
 export type ContractDocumentMinAggregateInputType = {
   id?: true
   contractId?: true
+  phaseId?: true
+  stepId?: true
   name?: true
   url?: true
   type?: true
+  uploadedById?: true
+  status?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -69,9 +85,13 @@ export type ContractDocumentMinAggregateInputType = {
 export type ContractDocumentMaxAggregateInputType = {
   id?: true
   contractId?: true
+  phaseId?: true
+  stepId?: true
   name?: true
   url?: true
   type?: true
+  uploadedById?: true
+  status?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -79,9 +99,13 @@ export type ContractDocumentMaxAggregateInputType = {
 export type ContractDocumentCountAggregateInputType = {
   id?: true
   contractId?: true
+  phaseId?: true
+  stepId?: true
   name?: true
   url?: true
   type?: true
+  uploadedById?: true
+  status?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -162,9 +186,13 @@ export type ContractDocumentGroupByArgs<ExtArgs extends runtime.Types.Extensions
 export type ContractDocumentGroupByOutputType = {
   id: string
   contractId: string
+  phaseId: string | null
+  stepId: string | null
   name: string
   url: string
   type: string
+  uploadedById: string | null
+  status: string
   createdAt: Date
   updatedAt: Date
   _count: ContractDocumentCountAggregateOutputType | null
@@ -193,23 +221,33 @@ export type ContractDocumentWhereInput = {
   NOT?: Prisma.ContractDocumentWhereInput | Prisma.ContractDocumentWhereInput[]
   id?: Prisma.StringFilter<"ContractDocument"> | string
   contractId?: Prisma.StringFilter<"ContractDocument"> | string
+  phaseId?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
+  stepId?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
   name?: Prisma.StringFilter<"ContractDocument"> | string
   url?: Prisma.StringFilter<"ContractDocument"> | string
   type?: Prisma.StringFilter<"ContractDocument"> | string
+  uploadedById?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
+  status?: Prisma.StringFilter<"ContractDocument"> | string
   createdAt?: Prisma.DateTimeFilter<"ContractDocument"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ContractDocument"> | Date | string
   contract?: Prisma.XOR<Prisma.ContractScalarRelationFilter, Prisma.ContractWhereInput>
+  uploadedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }
 
 export type ContractDocumentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   contractId?: Prisma.SortOrder
+  phaseId?: Prisma.SortOrderInput | Prisma.SortOrder
+  stepId?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
   url?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  uploadedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   contract?: Prisma.ContractOrderByWithRelationInput
+  uploadedBy?: Prisma.UserOrderByWithRelationInput
   _relevance?: Prisma.ContractDocumentOrderByRelevanceInput
 }
 
@@ -219,20 +257,29 @@ export type ContractDocumentWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.ContractDocumentWhereInput[]
   NOT?: Prisma.ContractDocumentWhereInput | Prisma.ContractDocumentWhereInput[]
   contractId?: Prisma.StringFilter<"ContractDocument"> | string
+  phaseId?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
+  stepId?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
   name?: Prisma.StringFilter<"ContractDocument"> | string
   url?: Prisma.StringFilter<"ContractDocument"> | string
   type?: Prisma.StringFilter<"ContractDocument"> | string
+  uploadedById?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
+  status?: Prisma.StringFilter<"ContractDocument"> | string
   createdAt?: Prisma.DateTimeFilter<"ContractDocument"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ContractDocument"> | Date | string
   contract?: Prisma.XOR<Prisma.ContractScalarRelationFilter, Prisma.ContractWhereInput>
+  uploadedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }, "id">
 
 export type ContractDocumentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   contractId?: Prisma.SortOrder
+  phaseId?: Prisma.SortOrderInput | Prisma.SortOrder
+  stepId?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
   url?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  uploadedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.ContractDocumentCountOrderByAggregateInput
@@ -246,49 +293,69 @@ export type ContractDocumentScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ContractDocumentScalarWhereWithAggregatesInput | Prisma.ContractDocumentScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"ContractDocument"> | string
   contractId?: Prisma.StringWithAggregatesFilter<"ContractDocument"> | string
+  phaseId?: Prisma.StringNullableWithAggregatesFilter<"ContractDocument"> | string | null
+  stepId?: Prisma.StringNullableWithAggregatesFilter<"ContractDocument"> | string | null
   name?: Prisma.StringWithAggregatesFilter<"ContractDocument"> | string
   url?: Prisma.StringWithAggregatesFilter<"ContractDocument"> | string
   type?: Prisma.StringWithAggregatesFilter<"ContractDocument"> | string
+  uploadedById?: Prisma.StringNullableWithAggregatesFilter<"ContractDocument"> | string | null
+  status?: Prisma.StringWithAggregatesFilter<"ContractDocument"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ContractDocument"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ContractDocument"> | Date | string
 }
 
 export type ContractDocumentCreateInput = {
   id?: string
+  phaseId?: string | null
+  stepId?: string | null
   name: string
   url: string
   type: string
+  status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
   contract: Prisma.ContractCreateNestedOneWithoutDocumentsInput
+  uploadedBy?: Prisma.UserCreateNestedOneWithoutUploadedDocsInput
 }
 
 export type ContractDocumentUncheckedCreateInput = {
   id?: string
   contractId: string
+  phaseId?: string | null
+  stepId?: string | null
   name: string
   url: string
   type: string
+  uploadedById?: string | null
+  status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type ContractDocumentUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contract?: Prisma.ContractUpdateOneRequiredWithoutDocumentsNestedInput
+  uploadedBy?: Prisma.UserUpdateOneWithoutUploadedDocsNestedInput
 }
 
 export type ContractDocumentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -296,18 +363,25 @@ export type ContractDocumentUncheckedUpdateInput = {
 export type ContractDocumentCreateManyInput = {
   id?: string
   contractId: string
+  phaseId?: string | null
+  stepId?: string | null
   name: string
   url: string
   type: string
+  uploadedById?: string | null
+  status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type ContractDocumentUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -315,9 +389,13 @@ export type ContractDocumentUpdateManyMutationInput = {
 export type ContractDocumentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -341,9 +419,13 @@ export type ContractDocumentOrderByRelevanceInput = {
 export type ContractDocumentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   contractId?: Prisma.SortOrder
+  phaseId?: Prisma.SortOrder
+  stepId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   url?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  uploadedById?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -351,9 +433,13 @@ export type ContractDocumentCountOrderByAggregateInput = {
 export type ContractDocumentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   contractId?: Prisma.SortOrder
+  phaseId?: Prisma.SortOrder
+  stepId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   url?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  uploadedById?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -361,11 +447,57 @@ export type ContractDocumentMaxOrderByAggregateInput = {
 export type ContractDocumentMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   contractId?: Prisma.SortOrder
+  phaseId?: Prisma.SortOrder
+  stepId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   url?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  uploadedById?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type ContractDocumentCreateNestedManyWithoutUploadedByInput = {
+  create?: Prisma.XOR<Prisma.ContractDocumentCreateWithoutUploadedByInput, Prisma.ContractDocumentUncheckedCreateWithoutUploadedByInput> | Prisma.ContractDocumentCreateWithoutUploadedByInput[] | Prisma.ContractDocumentUncheckedCreateWithoutUploadedByInput[]
+  connectOrCreate?: Prisma.ContractDocumentCreateOrConnectWithoutUploadedByInput | Prisma.ContractDocumentCreateOrConnectWithoutUploadedByInput[]
+  createMany?: Prisma.ContractDocumentCreateManyUploadedByInputEnvelope
+  connect?: Prisma.ContractDocumentWhereUniqueInput | Prisma.ContractDocumentWhereUniqueInput[]
+}
+
+export type ContractDocumentUncheckedCreateNestedManyWithoutUploadedByInput = {
+  create?: Prisma.XOR<Prisma.ContractDocumentCreateWithoutUploadedByInput, Prisma.ContractDocumentUncheckedCreateWithoutUploadedByInput> | Prisma.ContractDocumentCreateWithoutUploadedByInput[] | Prisma.ContractDocumentUncheckedCreateWithoutUploadedByInput[]
+  connectOrCreate?: Prisma.ContractDocumentCreateOrConnectWithoutUploadedByInput | Prisma.ContractDocumentCreateOrConnectWithoutUploadedByInput[]
+  createMany?: Prisma.ContractDocumentCreateManyUploadedByInputEnvelope
+  connect?: Prisma.ContractDocumentWhereUniqueInput | Prisma.ContractDocumentWhereUniqueInput[]
+}
+
+export type ContractDocumentUpdateManyWithoutUploadedByNestedInput = {
+  create?: Prisma.XOR<Prisma.ContractDocumentCreateWithoutUploadedByInput, Prisma.ContractDocumentUncheckedCreateWithoutUploadedByInput> | Prisma.ContractDocumentCreateWithoutUploadedByInput[] | Prisma.ContractDocumentUncheckedCreateWithoutUploadedByInput[]
+  connectOrCreate?: Prisma.ContractDocumentCreateOrConnectWithoutUploadedByInput | Prisma.ContractDocumentCreateOrConnectWithoutUploadedByInput[]
+  upsert?: Prisma.ContractDocumentUpsertWithWhereUniqueWithoutUploadedByInput | Prisma.ContractDocumentUpsertWithWhereUniqueWithoutUploadedByInput[]
+  createMany?: Prisma.ContractDocumentCreateManyUploadedByInputEnvelope
+  set?: Prisma.ContractDocumentWhereUniqueInput | Prisma.ContractDocumentWhereUniqueInput[]
+  disconnect?: Prisma.ContractDocumentWhereUniqueInput | Prisma.ContractDocumentWhereUniqueInput[]
+  delete?: Prisma.ContractDocumentWhereUniqueInput | Prisma.ContractDocumentWhereUniqueInput[]
+  connect?: Prisma.ContractDocumentWhereUniqueInput | Prisma.ContractDocumentWhereUniqueInput[]
+  update?: Prisma.ContractDocumentUpdateWithWhereUniqueWithoutUploadedByInput | Prisma.ContractDocumentUpdateWithWhereUniqueWithoutUploadedByInput[]
+  updateMany?: Prisma.ContractDocumentUpdateManyWithWhereWithoutUploadedByInput | Prisma.ContractDocumentUpdateManyWithWhereWithoutUploadedByInput[]
+  deleteMany?: Prisma.ContractDocumentScalarWhereInput | Prisma.ContractDocumentScalarWhereInput[]
+}
+
+export type ContractDocumentUncheckedUpdateManyWithoutUploadedByNestedInput = {
+  create?: Prisma.XOR<Prisma.ContractDocumentCreateWithoutUploadedByInput, Prisma.ContractDocumentUncheckedCreateWithoutUploadedByInput> | Prisma.ContractDocumentCreateWithoutUploadedByInput[] | Prisma.ContractDocumentUncheckedCreateWithoutUploadedByInput[]
+  connectOrCreate?: Prisma.ContractDocumentCreateOrConnectWithoutUploadedByInput | Prisma.ContractDocumentCreateOrConnectWithoutUploadedByInput[]
+  upsert?: Prisma.ContractDocumentUpsertWithWhereUniqueWithoutUploadedByInput | Prisma.ContractDocumentUpsertWithWhereUniqueWithoutUploadedByInput[]
+  createMany?: Prisma.ContractDocumentCreateManyUploadedByInputEnvelope
+  set?: Prisma.ContractDocumentWhereUniqueInput | Prisma.ContractDocumentWhereUniqueInput[]
+  disconnect?: Prisma.ContractDocumentWhereUniqueInput | Prisma.ContractDocumentWhereUniqueInput[]
+  delete?: Prisma.ContractDocumentWhereUniqueInput | Prisma.ContractDocumentWhereUniqueInput[]
+  connect?: Prisma.ContractDocumentWhereUniqueInput | Prisma.ContractDocumentWhereUniqueInput[]
+  update?: Prisma.ContractDocumentUpdateWithWhereUniqueWithoutUploadedByInput | Prisma.ContractDocumentUpdateWithWhereUniqueWithoutUploadedByInput[]
+  updateMany?: Prisma.ContractDocumentUpdateManyWithWhereWithoutUploadedByInput | Prisma.ContractDocumentUpdateManyWithWhereWithoutUploadedByInput[]
+  deleteMany?: Prisma.ContractDocumentScalarWhereInput | Prisma.ContractDocumentScalarWhereInput[]
 }
 
 export type ContractDocumentCreateNestedManyWithoutContractInput = {
@@ -410,20 +542,97 @@ export type ContractDocumentUncheckedUpdateManyWithoutContractNestedInput = {
   deleteMany?: Prisma.ContractDocumentScalarWhereInput | Prisma.ContractDocumentScalarWhereInput[]
 }
 
-export type ContractDocumentCreateWithoutContractInput = {
+export type ContractDocumentCreateWithoutUploadedByInput = {
   id?: string
+  phaseId?: string | null
+  stepId?: string | null
   name: string
   url: string
   type: string
+  status?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  contract: Prisma.ContractCreateNestedOneWithoutDocumentsInput
+}
+
+export type ContractDocumentUncheckedCreateWithoutUploadedByInput = {
+  id?: string
+  contractId: string
+  phaseId?: string | null
+  stepId?: string | null
+  name: string
+  url: string
+  type: string
+  status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
-export type ContractDocumentUncheckedCreateWithoutContractInput = {
+export type ContractDocumentCreateOrConnectWithoutUploadedByInput = {
+  where: Prisma.ContractDocumentWhereUniqueInput
+  create: Prisma.XOR<Prisma.ContractDocumentCreateWithoutUploadedByInput, Prisma.ContractDocumentUncheckedCreateWithoutUploadedByInput>
+}
+
+export type ContractDocumentCreateManyUploadedByInputEnvelope = {
+  data: Prisma.ContractDocumentCreateManyUploadedByInput | Prisma.ContractDocumentCreateManyUploadedByInput[]
+  skipDuplicates?: boolean
+}
+
+export type ContractDocumentUpsertWithWhereUniqueWithoutUploadedByInput = {
+  where: Prisma.ContractDocumentWhereUniqueInput
+  update: Prisma.XOR<Prisma.ContractDocumentUpdateWithoutUploadedByInput, Prisma.ContractDocumentUncheckedUpdateWithoutUploadedByInput>
+  create: Prisma.XOR<Prisma.ContractDocumentCreateWithoutUploadedByInput, Prisma.ContractDocumentUncheckedCreateWithoutUploadedByInput>
+}
+
+export type ContractDocumentUpdateWithWhereUniqueWithoutUploadedByInput = {
+  where: Prisma.ContractDocumentWhereUniqueInput
+  data: Prisma.XOR<Prisma.ContractDocumentUpdateWithoutUploadedByInput, Prisma.ContractDocumentUncheckedUpdateWithoutUploadedByInput>
+}
+
+export type ContractDocumentUpdateManyWithWhereWithoutUploadedByInput = {
+  where: Prisma.ContractDocumentScalarWhereInput
+  data: Prisma.XOR<Prisma.ContractDocumentUpdateManyMutationInput, Prisma.ContractDocumentUncheckedUpdateManyWithoutUploadedByInput>
+}
+
+export type ContractDocumentScalarWhereInput = {
+  AND?: Prisma.ContractDocumentScalarWhereInput | Prisma.ContractDocumentScalarWhereInput[]
+  OR?: Prisma.ContractDocumentScalarWhereInput[]
+  NOT?: Prisma.ContractDocumentScalarWhereInput | Prisma.ContractDocumentScalarWhereInput[]
+  id?: Prisma.StringFilter<"ContractDocument"> | string
+  contractId?: Prisma.StringFilter<"ContractDocument"> | string
+  phaseId?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
+  stepId?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
+  name?: Prisma.StringFilter<"ContractDocument"> | string
+  url?: Prisma.StringFilter<"ContractDocument"> | string
+  type?: Prisma.StringFilter<"ContractDocument"> | string
+  uploadedById?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
+  status?: Prisma.StringFilter<"ContractDocument"> | string
+  createdAt?: Prisma.DateTimeFilter<"ContractDocument"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ContractDocument"> | Date | string
+}
+
+export type ContractDocumentCreateWithoutContractInput = {
   id?: string
+  phaseId?: string | null
+  stepId?: string | null
   name: string
   url: string
   type: string
+  status?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  uploadedBy?: Prisma.UserCreateNestedOneWithoutUploadedDocsInput
+}
+
+export type ContractDocumentUncheckedCreateWithoutContractInput = {
+  id?: string
+  phaseId?: string | null
+  stepId?: string | null
+  name: string
+  url: string
+  type: string
+  uploadedById?: string | null
+  status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -454,51 +663,106 @@ export type ContractDocumentUpdateManyWithWhereWithoutContractInput = {
   data: Prisma.XOR<Prisma.ContractDocumentUpdateManyMutationInput, Prisma.ContractDocumentUncheckedUpdateManyWithoutContractInput>
 }
 
-export type ContractDocumentScalarWhereInput = {
-  AND?: Prisma.ContractDocumentScalarWhereInput | Prisma.ContractDocumentScalarWhereInput[]
-  OR?: Prisma.ContractDocumentScalarWhereInput[]
-  NOT?: Prisma.ContractDocumentScalarWhereInput | Prisma.ContractDocumentScalarWhereInput[]
-  id?: Prisma.StringFilter<"ContractDocument"> | string
-  contractId?: Prisma.StringFilter<"ContractDocument"> | string
-  name?: Prisma.StringFilter<"ContractDocument"> | string
-  url?: Prisma.StringFilter<"ContractDocument"> | string
-  type?: Prisma.StringFilter<"ContractDocument"> | string
-  createdAt?: Prisma.DateTimeFilter<"ContractDocument"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"ContractDocument"> | Date | string
+export type ContractDocumentCreateManyUploadedByInput = {
+  id?: string
+  contractId: string
+  phaseId?: string | null
+  stepId?: string | null
+  name: string
+  url: string
+  type: string
+  status?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ContractDocumentUpdateWithoutUploadedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contract?: Prisma.ContractUpdateOneRequiredWithoutDocumentsNestedInput
+}
+
+export type ContractDocumentUncheckedUpdateWithoutUploadedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ContractDocumentUncheckedUpdateManyWithoutUploadedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ContractDocumentCreateManyContractInput = {
   id?: string
+  phaseId?: string | null
+  stepId?: string | null
   name: string
   url: string
   type: string
+  uploadedById?: string | null
+  status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type ContractDocumentUpdateWithoutContractInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploadedBy?: Prisma.UserUpdateOneWithoutUploadedDocsNestedInput
 }
 
 export type ContractDocumentUncheckedUpdateWithoutContractInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ContractDocumentUncheckedUpdateManyWithoutContractInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -508,12 +772,17 @@ export type ContractDocumentUncheckedUpdateManyWithoutContractInput = {
 export type ContractDocumentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   contractId?: boolean
+  phaseId?: boolean
+  stepId?: boolean
   name?: boolean
   url?: boolean
   type?: boolean
+  uploadedById?: boolean
+  status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
+  uploadedBy?: boolean | Prisma.ContractDocument$uploadedByArgs<ExtArgs>
 }, ExtArgs["result"]["contractDocument"]>
 
 
@@ -521,29 +790,39 @@ export type ContractDocumentSelect<ExtArgs extends runtime.Types.Extensions.Inte
 export type ContractDocumentSelectScalar = {
   id?: boolean
   contractId?: boolean
+  phaseId?: boolean
+  stepId?: boolean
   name?: boolean
   url?: boolean
   type?: boolean
+  uploadedById?: boolean
+  status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ContractDocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "contractId" | "name" | "url" | "type" | "createdAt" | "updatedAt", ExtArgs["result"]["contractDocument"]>
+export type ContractDocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "contractId" | "phaseId" | "stepId" | "name" | "url" | "type" | "uploadedById" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["contractDocument"]>
 export type ContractDocumentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
+  uploadedBy?: boolean | Prisma.ContractDocument$uploadedByArgs<ExtArgs>
 }
 
 export type $ContractDocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "ContractDocument"
   objects: {
     contract: Prisma.$ContractPayload<ExtArgs>
+    uploadedBy: Prisma.$UserPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     contractId: string
+    phaseId: string | null
+    stepId: string | null
     name: string
     url: string
     type: string
+    uploadedById: string | null
+    status: string
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["contractDocument"]>
@@ -887,6 +1166,7 @@ readonly fields: ContractDocumentFieldRefs;
 export interface Prisma__ContractDocumentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   contract<T extends Prisma.ContractDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContractDefaultArgs<ExtArgs>>): Prisma.Prisma__ContractClient<runtime.Types.Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  uploadedBy<T extends Prisma.ContractDocument$uploadedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContractDocument$uploadedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -918,9 +1198,13 @@ export interface Prisma__ContractDocumentClient<T, Null = never, ExtArgs extends
 export interface ContractDocumentFieldRefs {
   readonly id: Prisma.FieldRef<"ContractDocument", 'String'>
   readonly contractId: Prisma.FieldRef<"ContractDocument", 'String'>
+  readonly phaseId: Prisma.FieldRef<"ContractDocument", 'String'>
+  readonly stepId: Prisma.FieldRef<"ContractDocument", 'String'>
   readonly name: Prisma.FieldRef<"ContractDocument", 'String'>
   readonly url: Prisma.FieldRef<"ContractDocument", 'String'>
   readonly type: Prisma.FieldRef<"ContractDocument", 'String'>
+  readonly uploadedById: Prisma.FieldRef<"ContractDocument", 'String'>
+  readonly status: Prisma.FieldRef<"ContractDocument", 'String'>
   readonly createdAt: Prisma.FieldRef<"ContractDocument", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"ContractDocument", 'DateTime'>
 }
@@ -1263,6 +1547,25 @@ export type ContractDocumentDeleteManyArgs<ExtArgs extends runtime.Types.Extensi
    * Limit how many ContractDocuments to delete.
    */
   limit?: number
+}
+
+/**
+ * ContractDocument.uploadedBy
+ */
+export type ContractDocument$uploadedByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
 }
 
 /**

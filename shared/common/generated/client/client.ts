@@ -140,82 +140,97 @@ export type PropertyDocument = Prisma.PropertyDocumentModel
  */
 export type Amenity = Prisma.AmenityModel
 /**
+ * Model PropertyVariant
+ * 
+ */
+export type PropertyVariant = Prisma.PropertyVariantModel
+/**
+ * Model PropertyVariantAmenity
+ * 
+ */
+export type PropertyVariantAmenity = Prisma.PropertyVariantAmenityModel
+/**
+ * Model PropertyVariantMedia
+ * 
+ */
+export type PropertyVariantMedia = Prisma.PropertyVariantMediaModel
+/**
+ * Model PropertyUnit
+ * 
+ */
+export type PropertyUnit = Prisma.PropertyUnitModel
+/**
  * Model PropertyAmenity
  * 
  */
 export type PropertyAmenity = Prisma.PropertyAmenityModel
-/**
- * Model Mortgage
- * 
- */
-export type Mortgage = Prisma.MortgageModel
-/**
- * Model MortgageType
- * 
- */
-export type MortgageType = Prisma.MortgageTypeModel
-/**
- * Model MortgageDocument
- * 
- */
-export type MortgageDocument = Prisma.MortgageDocumentModel
-/**
- * Model MortgageStep
- * 
- */
-export type MortgageStep = Prisma.MortgageStepModel
-/**
- * Model MortgageDownpaymentPlan
- * 
- */
-export type MortgageDownpaymentPlan = Prisma.MortgageDownpaymentPlanModel
-/**
- * Model MortgageDownpaymentInstallment
- * 
- */
-export type MortgageDownpaymentInstallment = Prisma.MortgageDownpaymentInstallmentModel
-/**
- * Model MortgageDownpaymentPayment
- * 
- */
-export type MortgageDownpaymentPayment = Prisma.MortgageDownpaymentPaymentModel
-/**
- * Model MortgageTransition
- * 
- */
-export type MortgageTransition = Prisma.MortgageTransitionModel
-/**
- * Model MortgageTransitionEvent
- * 
- */
-export type MortgageTransitionEvent = Prisma.MortgageTransitionEventModel
 /**
  * Model PaymentPlan
  * 
  */
 export type PaymentPlan = Prisma.PaymentPlanModel
 /**
- * Model PaymentSchedule
+ * Model PropertyPaymentMethod
  * 
  */
-export type PaymentSchedule = Prisma.PaymentScheduleModel
+export type PropertyPaymentMethod = Prisma.PropertyPaymentMethodModel
 /**
- * Model PaymentInstallment
+ * Model PropertyPaymentMethodLink
  * 
  */
-export type PaymentInstallment = Prisma.PaymentInstallmentModel
+export type PropertyPaymentMethodLink = Prisma.PropertyPaymentMethodLinkModel
 /**
- * Model Payment
+ * Model PropertyPaymentMethodPhase
  * 
  */
-export type Payment = Prisma.PaymentModel
+export type PropertyPaymentMethodPhase = Prisma.PropertyPaymentMethodPhaseModel
 /**
  * Model Contract
  * 
  */
 export type Contract = Prisma.ContractModel
 /**
+ * Model ContractPhase
+ * 
+ */
+export type ContractPhase = Prisma.ContractPhaseModel
+/**
+ * Model ContractPhaseStep
+ * 
+ */
+export type ContractPhaseStep = Prisma.ContractPhaseStepModel
+/**
+ * Model ContractPhaseStepApproval
+ * 
+ */
+export type ContractPhaseStepApproval = Prisma.ContractPhaseStepApprovalModel
+/**
+ * Model ContractInstallment
+ * 
+ */
+export type ContractInstallment = Prisma.ContractInstallmentModel
+/**
+ * Model ContractPayment
+ * 
+ */
+export type ContractPayment = Prisma.ContractPaymentModel
+/**
  * Model ContractDocument
  * 
  */
 export type ContractDocument = Prisma.ContractDocumentModel
+/**
+ * Model ContractTransition
+ * 
+ */
+export type ContractTransition = Prisma.ContractTransitionModel
+/**
+ * Model ContractEvent
+ * 
+ */
+export type ContractEvent = Prisma.ContractEventModel
+/**
+ * Model DomainEvent
+ * 
+ */
+export type DomainEvent = Prisma.DomainEventModel

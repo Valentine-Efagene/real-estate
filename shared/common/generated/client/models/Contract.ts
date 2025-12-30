@@ -20,21 +20,60 @@ export type ContractModel = runtime.Types.Result.DefaultSelection<Prisma.$Contra
 
 export type AggregateContract = {
   _count: ContractCountAggregateOutputType | null
+  _avg: ContractAvgAggregateOutputType | null
+  _sum: ContractSumAggregateOutputType | null
   _min: ContractMinAggregateOutputType | null
   _max: ContractMaxAggregateOutputType | null
 }
 
+export type ContractAvgAggregateOutputType = {
+  totalAmount: number | null
+  downPayment: number | null
+  downPaymentPaid: number | null
+  principal: number | null
+  interestRate: number | null
+  termMonths: number | null
+  periodicPayment: number | null
+  totalPaidToDate: number | null
+  totalInterestPaid: number | null
+}
+
+export type ContractSumAggregateOutputType = {
+  totalAmount: number | null
+  downPayment: number | null
+  downPaymentPaid: number | null
+  principal: number | null
+  interestRate: number | null
+  termMonths: number | null
+  periodicPayment: number | null
+  totalPaidToDate: number | null
+  totalInterestPaid: number | null
+}
+
 export type ContractMinAggregateOutputType = {
   id: string | null
-  propertyId: string | null
-  paymentPlanId: string | null
+  propertyUnitId: string | null
   buyerId: string | null
   sellerId: string | null
-  contractType: string | null
+  paymentMethodId: string | null
   contractNumber: string | null
   title: string | null
   description: string | null
+  contractType: string | null
+  totalAmount: number | null
+  downPayment: number | null
+  downPaymentPaid: number | null
+  principal: number | null
+  interestRate: number | null
+  termMonths: number | null
+  periodicPayment: number | null
+  totalPaidToDate: number | null
+  totalInterestPaid: number | null
   status: string | null
+  state: string | null
+  currentPhaseId: string | null
+  nextPaymentDueDate: Date | null
+  lastReminderSentAt: Date | null
   startDate: Date | null
   endDate: Date | null
   signedAt: Date | null
@@ -45,15 +84,28 @@ export type ContractMinAggregateOutputType = {
 
 export type ContractMaxAggregateOutputType = {
   id: string | null
-  propertyId: string | null
-  paymentPlanId: string | null
+  propertyUnitId: string | null
   buyerId: string | null
   sellerId: string | null
-  contractType: string | null
+  paymentMethodId: string | null
   contractNumber: string | null
   title: string | null
   description: string | null
+  contractType: string | null
+  totalAmount: number | null
+  downPayment: number | null
+  downPaymentPaid: number | null
+  principal: number | null
+  interestRate: number | null
+  termMonths: number | null
+  periodicPayment: number | null
+  totalPaidToDate: number | null
+  totalInterestPaid: number | null
   status: string | null
+  state: string | null
+  currentPhaseId: string | null
+  nextPaymentDueDate: Date | null
+  lastReminderSentAt: Date | null
   startDate: Date | null
   endDate: Date | null
   signedAt: Date | null
@@ -64,15 +116,28 @@ export type ContractMaxAggregateOutputType = {
 
 export type ContractCountAggregateOutputType = {
   id: number
-  propertyId: number
-  paymentPlanId: number
+  propertyUnitId: number
   buyerId: number
   sellerId: number
-  contractType: number
+  paymentMethodId: number
   contractNumber: number
   title: number
   description: number
+  contractType: number
+  totalAmount: number
+  downPayment: number
+  downPaymentPaid: number
+  principal: number
+  interestRate: number
+  termMonths: number
+  periodicPayment: number
+  totalPaidToDate: number
+  totalInterestPaid: number
   status: number
+  state: number
+  currentPhaseId: number
+  nextPaymentDueDate: number
+  lastReminderSentAt: number
   startDate: number
   endDate: number
   signedAt: number
@@ -83,17 +148,54 @@ export type ContractCountAggregateOutputType = {
 }
 
 
+export type ContractAvgAggregateInputType = {
+  totalAmount?: true
+  downPayment?: true
+  downPaymentPaid?: true
+  principal?: true
+  interestRate?: true
+  termMonths?: true
+  periodicPayment?: true
+  totalPaidToDate?: true
+  totalInterestPaid?: true
+}
+
+export type ContractSumAggregateInputType = {
+  totalAmount?: true
+  downPayment?: true
+  downPaymentPaid?: true
+  principal?: true
+  interestRate?: true
+  termMonths?: true
+  periodicPayment?: true
+  totalPaidToDate?: true
+  totalInterestPaid?: true
+}
+
 export type ContractMinAggregateInputType = {
   id?: true
-  propertyId?: true
-  paymentPlanId?: true
+  propertyUnitId?: true
   buyerId?: true
   sellerId?: true
-  contractType?: true
+  paymentMethodId?: true
   contractNumber?: true
   title?: true
   description?: true
+  contractType?: true
+  totalAmount?: true
+  downPayment?: true
+  downPaymentPaid?: true
+  principal?: true
+  interestRate?: true
+  termMonths?: true
+  periodicPayment?: true
+  totalPaidToDate?: true
+  totalInterestPaid?: true
   status?: true
+  state?: true
+  currentPhaseId?: true
+  nextPaymentDueDate?: true
+  lastReminderSentAt?: true
   startDate?: true
   endDate?: true
   signedAt?: true
@@ -104,15 +206,28 @@ export type ContractMinAggregateInputType = {
 
 export type ContractMaxAggregateInputType = {
   id?: true
-  propertyId?: true
-  paymentPlanId?: true
+  propertyUnitId?: true
   buyerId?: true
   sellerId?: true
-  contractType?: true
+  paymentMethodId?: true
   contractNumber?: true
   title?: true
   description?: true
+  contractType?: true
+  totalAmount?: true
+  downPayment?: true
+  downPaymentPaid?: true
+  principal?: true
+  interestRate?: true
+  termMonths?: true
+  periodicPayment?: true
+  totalPaidToDate?: true
+  totalInterestPaid?: true
   status?: true
+  state?: true
+  currentPhaseId?: true
+  nextPaymentDueDate?: true
+  lastReminderSentAt?: true
   startDate?: true
   endDate?: true
   signedAt?: true
@@ -123,15 +238,28 @@ export type ContractMaxAggregateInputType = {
 
 export type ContractCountAggregateInputType = {
   id?: true
-  propertyId?: true
-  paymentPlanId?: true
+  propertyUnitId?: true
   buyerId?: true
   sellerId?: true
-  contractType?: true
+  paymentMethodId?: true
   contractNumber?: true
   title?: true
   description?: true
+  contractType?: true
+  totalAmount?: true
+  downPayment?: true
+  downPaymentPaid?: true
+  principal?: true
+  interestRate?: true
+  termMonths?: true
+  periodicPayment?: true
+  totalPaidToDate?: true
+  totalInterestPaid?: true
   status?: true
+  state?: true
+  currentPhaseId?: true
+  nextPaymentDueDate?: true
+  lastReminderSentAt?: true
   startDate?: true
   endDate?: true
   signedAt?: true
@@ -179,6 +307,18 @@ export type ContractAggregateArgs<ExtArgs extends runtime.Types.Extensions.Inter
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: ContractAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: ContractSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: ContractMinAggregateInputType
@@ -209,21 +349,36 @@ export type ContractGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   _count?: ContractCountAggregateInputType | true
+  _avg?: ContractAvgAggregateInputType
+  _sum?: ContractSumAggregateInputType
   _min?: ContractMinAggregateInputType
   _max?: ContractMaxAggregateInputType
 }
 
 export type ContractGroupByOutputType = {
   id: string
-  propertyId: string
-  paymentPlanId: string | null
-  buyerId: string | null
+  propertyUnitId: string
+  buyerId: string
   sellerId: string | null
-  contractType: string
+  paymentMethodId: string | null
   contractNumber: string
   title: string
   description: string | null
+  contractType: string
+  totalAmount: number
+  downPayment: number
+  downPaymentPaid: number
+  principal: number | null
+  interestRate: number | null
+  termMonths: number | null
+  periodicPayment: number | null
+  totalPaidToDate: number
+  totalInterestPaid: number
   status: string
+  state: string
+  currentPhaseId: string | null
+  nextPaymentDueDate: Date | null
+  lastReminderSentAt: Date | null
   startDate: Date | null
   endDate: Date | null
   signedAt: Date | null
@@ -231,6 +386,8 @@ export type ContractGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   _count: ContractCountAggregateOutputType | null
+  _avg: ContractAvgAggregateOutputType | null
+  _sum: ContractSumAggregateOutputType | null
   _min: ContractMinAggregateOutputType | null
   _max: ContractMaxAggregateOutputType | null
 }
@@ -255,91 +412,155 @@ export type ContractWhereInput = {
   OR?: Prisma.ContractWhereInput[]
   NOT?: Prisma.ContractWhereInput | Prisma.ContractWhereInput[]
   id?: Prisma.StringFilter<"Contract"> | string
-  propertyId?: Prisma.StringFilter<"Contract"> | string
-  paymentPlanId?: Prisma.StringNullableFilter<"Contract"> | string | null
-  buyerId?: Prisma.StringNullableFilter<"Contract"> | string | null
+  propertyUnitId?: Prisma.StringFilter<"Contract"> | string
+  buyerId?: Prisma.StringFilter<"Contract"> | string
   sellerId?: Prisma.StringNullableFilter<"Contract"> | string | null
-  contractType?: Prisma.StringFilter<"Contract"> | string
+  paymentMethodId?: Prisma.StringNullableFilter<"Contract"> | string | null
   contractNumber?: Prisma.StringFilter<"Contract"> | string
   title?: Prisma.StringFilter<"Contract"> | string
   description?: Prisma.StringNullableFilter<"Contract"> | string | null
+  contractType?: Prisma.StringFilter<"Contract"> | string
+  totalAmount?: Prisma.FloatFilter<"Contract"> | number
+  downPayment?: Prisma.FloatFilter<"Contract"> | number
+  downPaymentPaid?: Prisma.FloatFilter<"Contract"> | number
+  principal?: Prisma.FloatNullableFilter<"Contract"> | number | null
+  interestRate?: Prisma.FloatNullableFilter<"Contract"> | number | null
+  termMonths?: Prisma.IntNullableFilter<"Contract"> | number | null
+  periodicPayment?: Prisma.FloatNullableFilter<"Contract"> | number | null
+  totalPaidToDate?: Prisma.FloatFilter<"Contract"> | number
+  totalInterestPaid?: Prisma.FloatFilter<"Contract"> | number
   status?: Prisma.StringFilter<"Contract"> | string
+  state?: Prisma.StringFilter<"Contract"> | string
+  currentPhaseId?: Prisma.StringNullableFilter<"Contract"> | string | null
+  nextPaymentDueDate?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
+  lastReminderSentAt?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
   startDate?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
   endDate?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
   signedAt?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
   terminatedAt?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Contract"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Contract"> | Date | string
-  property?: Prisma.XOR<Prisma.PropertyScalarRelationFilter, Prisma.PropertyWhereInput>
-  paymentPlan?: Prisma.XOR<Prisma.PaymentPlanNullableScalarRelationFilter, Prisma.PaymentPlanWhereInput> | null
-  buyer?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  propertyUnit?: Prisma.XOR<Prisma.PropertyUnitScalarRelationFilter, Prisma.PropertyUnitWhereInput>
+  buyer?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   seller?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  paymentMethod?: Prisma.XOR<Prisma.PropertyPaymentMethodNullableScalarRelationFilter, Prisma.PropertyPaymentMethodWhereInput> | null
+  phases?: Prisma.ContractPhaseListRelationFilter
   documents?: Prisma.ContractDocumentListRelationFilter
+  payments?: Prisma.ContractPaymentListRelationFilter
+  transitions?: Prisma.ContractTransitionListRelationFilter
+  events?: Prisma.ContractEventListRelationFilter
 }
 
 export type ContractOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  propertyId?: Prisma.SortOrder
-  paymentPlanId?: Prisma.SortOrderInput | Prisma.SortOrder
-  buyerId?: Prisma.SortOrderInput | Prisma.SortOrder
+  propertyUnitId?: Prisma.SortOrder
+  buyerId?: Prisma.SortOrder
   sellerId?: Prisma.SortOrderInput | Prisma.SortOrder
-  contractType?: Prisma.SortOrder
+  paymentMethodId?: Prisma.SortOrderInput | Prisma.SortOrder
   contractNumber?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  contractType?: Prisma.SortOrder
+  totalAmount?: Prisma.SortOrder
+  downPayment?: Prisma.SortOrder
+  downPaymentPaid?: Prisma.SortOrder
+  principal?: Prisma.SortOrderInput | Prisma.SortOrder
+  interestRate?: Prisma.SortOrderInput | Prisma.SortOrder
+  termMonths?: Prisma.SortOrderInput | Prisma.SortOrder
+  periodicPayment?: Prisma.SortOrderInput | Prisma.SortOrder
+  totalPaidToDate?: Prisma.SortOrder
+  totalInterestPaid?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  state?: Prisma.SortOrder
+  currentPhaseId?: Prisma.SortOrderInput | Prisma.SortOrder
+  nextPaymentDueDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastReminderSentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   startDate?: Prisma.SortOrderInput | Prisma.SortOrder
   endDate?: Prisma.SortOrderInput | Prisma.SortOrder
   signedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   terminatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  property?: Prisma.PropertyOrderByWithRelationInput
-  paymentPlan?: Prisma.PaymentPlanOrderByWithRelationInput
+  propertyUnit?: Prisma.PropertyUnitOrderByWithRelationInput
   buyer?: Prisma.UserOrderByWithRelationInput
   seller?: Prisma.UserOrderByWithRelationInput
+  paymentMethod?: Prisma.PropertyPaymentMethodOrderByWithRelationInput
+  phases?: Prisma.ContractPhaseOrderByRelationAggregateInput
   documents?: Prisma.ContractDocumentOrderByRelationAggregateInput
+  payments?: Prisma.ContractPaymentOrderByRelationAggregateInput
+  transitions?: Prisma.ContractTransitionOrderByRelationAggregateInput
+  events?: Prisma.ContractEventOrderByRelationAggregateInput
   _relevance?: Prisma.ContractOrderByRelevanceInput
 }
 
 export type ContractWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  paymentPlanId?: string
   contractNumber?: string
   AND?: Prisma.ContractWhereInput | Prisma.ContractWhereInput[]
   OR?: Prisma.ContractWhereInput[]
   NOT?: Prisma.ContractWhereInput | Prisma.ContractWhereInput[]
-  propertyId?: Prisma.StringFilter<"Contract"> | string
-  buyerId?: Prisma.StringNullableFilter<"Contract"> | string | null
+  propertyUnitId?: Prisma.StringFilter<"Contract"> | string
+  buyerId?: Prisma.StringFilter<"Contract"> | string
   sellerId?: Prisma.StringNullableFilter<"Contract"> | string | null
-  contractType?: Prisma.StringFilter<"Contract"> | string
+  paymentMethodId?: Prisma.StringNullableFilter<"Contract"> | string | null
   title?: Prisma.StringFilter<"Contract"> | string
   description?: Prisma.StringNullableFilter<"Contract"> | string | null
+  contractType?: Prisma.StringFilter<"Contract"> | string
+  totalAmount?: Prisma.FloatFilter<"Contract"> | number
+  downPayment?: Prisma.FloatFilter<"Contract"> | number
+  downPaymentPaid?: Prisma.FloatFilter<"Contract"> | number
+  principal?: Prisma.FloatNullableFilter<"Contract"> | number | null
+  interestRate?: Prisma.FloatNullableFilter<"Contract"> | number | null
+  termMonths?: Prisma.IntNullableFilter<"Contract"> | number | null
+  periodicPayment?: Prisma.FloatNullableFilter<"Contract"> | number | null
+  totalPaidToDate?: Prisma.FloatFilter<"Contract"> | number
+  totalInterestPaid?: Prisma.FloatFilter<"Contract"> | number
   status?: Prisma.StringFilter<"Contract"> | string
+  state?: Prisma.StringFilter<"Contract"> | string
+  currentPhaseId?: Prisma.StringNullableFilter<"Contract"> | string | null
+  nextPaymentDueDate?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
+  lastReminderSentAt?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
   startDate?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
   endDate?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
   signedAt?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
   terminatedAt?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Contract"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Contract"> | Date | string
-  property?: Prisma.XOR<Prisma.PropertyScalarRelationFilter, Prisma.PropertyWhereInput>
-  paymentPlan?: Prisma.XOR<Prisma.PaymentPlanNullableScalarRelationFilter, Prisma.PaymentPlanWhereInput> | null
-  buyer?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  propertyUnit?: Prisma.XOR<Prisma.PropertyUnitScalarRelationFilter, Prisma.PropertyUnitWhereInput>
+  buyer?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   seller?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  paymentMethod?: Prisma.XOR<Prisma.PropertyPaymentMethodNullableScalarRelationFilter, Prisma.PropertyPaymentMethodWhereInput> | null
+  phases?: Prisma.ContractPhaseListRelationFilter
   documents?: Prisma.ContractDocumentListRelationFilter
-}, "id" | "paymentPlanId" | "contractNumber">
+  payments?: Prisma.ContractPaymentListRelationFilter
+  transitions?: Prisma.ContractTransitionListRelationFilter
+  events?: Prisma.ContractEventListRelationFilter
+}, "id" | "contractNumber">
 
 export type ContractOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  propertyId?: Prisma.SortOrder
-  paymentPlanId?: Prisma.SortOrderInput | Prisma.SortOrder
-  buyerId?: Prisma.SortOrderInput | Prisma.SortOrder
+  propertyUnitId?: Prisma.SortOrder
+  buyerId?: Prisma.SortOrder
   sellerId?: Prisma.SortOrderInput | Prisma.SortOrder
-  contractType?: Prisma.SortOrder
+  paymentMethodId?: Prisma.SortOrderInput | Prisma.SortOrder
   contractNumber?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  contractType?: Prisma.SortOrder
+  totalAmount?: Prisma.SortOrder
+  downPayment?: Prisma.SortOrder
+  downPaymentPaid?: Prisma.SortOrder
+  principal?: Prisma.SortOrderInput | Prisma.SortOrder
+  interestRate?: Prisma.SortOrderInput | Prisma.SortOrder
+  termMonths?: Prisma.SortOrderInput | Prisma.SortOrder
+  periodicPayment?: Prisma.SortOrderInput | Prisma.SortOrder
+  totalPaidToDate?: Prisma.SortOrder
+  totalInterestPaid?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  state?: Prisma.SortOrder
+  currentPhaseId?: Prisma.SortOrderInput | Prisma.SortOrder
+  nextPaymentDueDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastReminderSentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   startDate?: Prisma.SortOrderInput | Prisma.SortOrder
   endDate?: Prisma.SortOrderInput | Prisma.SortOrder
   signedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -347,8 +568,10 @@ export type ContractOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.ContractCountOrderByAggregateInput
+  _avg?: Prisma.ContractAvgOrderByAggregateInput
   _max?: Prisma.ContractMaxOrderByAggregateInput
   _min?: Prisma.ContractMinOrderByAggregateInput
+  _sum?: Prisma.ContractSumOrderByAggregateInput
 }
 
 export type ContractScalarWhereWithAggregatesInput = {
@@ -356,15 +579,28 @@ export type ContractScalarWhereWithAggregatesInput = {
   OR?: Prisma.ContractScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ContractScalarWhereWithAggregatesInput | Prisma.ContractScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Contract"> | string
-  propertyId?: Prisma.StringWithAggregatesFilter<"Contract"> | string
-  paymentPlanId?: Prisma.StringNullableWithAggregatesFilter<"Contract"> | string | null
-  buyerId?: Prisma.StringNullableWithAggregatesFilter<"Contract"> | string | null
+  propertyUnitId?: Prisma.StringWithAggregatesFilter<"Contract"> | string
+  buyerId?: Prisma.StringWithAggregatesFilter<"Contract"> | string
   sellerId?: Prisma.StringNullableWithAggregatesFilter<"Contract"> | string | null
-  contractType?: Prisma.StringWithAggregatesFilter<"Contract"> | string
+  paymentMethodId?: Prisma.StringNullableWithAggregatesFilter<"Contract"> | string | null
   contractNumber?: Prisma.StringWithAggregatesFilter<"Contract"> | string
   title?: Prisma.StringWithAggregatesFilter<"Contract"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"Contract"> | string | null
+  contractType?: Prisma.StringWithAggregatesFilter<"Contract"> | string
+  totalAmount?: Prisma.FloatWithAggregatesFilter<"Contract"> | number
+  downPayment?: Prisma.FloatWithAggregatesFilter<"Contract"> | number
+  downPaymentPaid?: Prisma.FloatWithAggregatesFilter<"Contract"> | number
+  principal?: Prisma.FloatNullableWithAggregatesFilter<"Contract"> | number | null
+  interestRate?: Prisma.FloatNullableWithAggregatesFilter<"Contract"> | number | null
+  termMonths?: Prisma.IntNullableWithAggregatesFilter<"Contract"> | number | null
+  periodicPayment?: Prisma.FloatNullableWithAggregatesFilter<"Contract"> | number | null
+  totalPaidToDate?: Prisma.FloatWithAggregatesFilter<"Contract"> | number
+  totalInterestPaid?: Prisma.FloatWithAggregatesFilter<"Contract"> | number
   status?: Prisma.StringWithAggregatesFilter<"Contract"> | string
+  state?: Prisma.StringWithAggregatesFilter<"Contract"> | string
+  currentPhaseId?: Prisma.StringNullableWithAggregatesFilter<"Contract"> | string | null
+  nextPaymentDueDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Contract"> | Date | string | null
+  lastReminderSentAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Contract"> | Date | string | null
   startDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Contract"> | Date | string | null
   endDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Contract"> | Date | string | null
   signedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Contract"> | Date | string | null
@@ -375,95 +611,176 @@ export type ContractScalarWhereWithAggregatesInput = {
 
 export type ContractCreateInput = {
   id?: string
-  contractType: string
   contractNumber: string
   title: string
   description?: string | null
+  contractType: string
+  totalAmount: number
+  downPayment?: number
+  downPaymentPaid?: number
+  principal?: number | null
+  interestRate?: number | null
+  termMonths?: number | null
+  periodicPayment?: number | null
+  totalPaidToDate?: number
+  totalInterestPaid?: number
   status?: string
+  state?: string
+  currentPhaseId?: string | null
+  nextPaymentDueDate?: Date | string | null
+  lastReminderSentAt?: Date | string | null
   startDate?: Date | string | null
   endDate?: Date | string | null
   signedAt?: Date | string | null
   terminatedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  property: Prisma.PropertyCreateNestedOneWithoutContractsInput
-  paymentPlan?: Prisma.PaymentPlanCreateNestedOneWithoutContractInput
-  buyer?: Prisma.UserCreateNestedOneWithoutContractsInput
+  propertyUnit: Prisma.PropertyUnitCreateNestedOneWithoutContractsInput
+  buyer: Prisma.UserCreateNestedOneWithoutContractsInput
   seller?: Prisma.UserCreateNestedOneWithoutSoldContractsInput
+  paymentMethod?: Prisma.PropertyPaymentMethodCreateNestedOneWithoutContractsInput
+  phases?: Prisma.ContractPhaseCreateNestedManyWithoutContractInput
   documents?: Prisma.ContractDocumentCreateNestedManyWithoutContractInput
+  payments?: Prisma.ContractPaymentCreateNestedManyWithoutContractInput
+  transitions?: Prisma.ContractTransitionCreateNestedManyWithoutContractInput
+  events?: Prisma.ContractEventCreateNestedManyWithoutContractInput
 }
 
 export type ContractUncheckedCreateInput = {
   id?: string
-  propertyId: string
-  paymentPlanId?: string | null
-  buyerId?: string | null
+  propertyUnitId: string
+  buyerId: string
   sellerId?: string | null
-  contractType: string
+  paymentMethodId?: string | null
   contractNumber: string
   title: string
   description?: string | null
+  contractType: string
+  totalAmount: number
+  downPayment?: number
+  downPaymentPaid?: number
+  principal?: number | null
+  interestRate?: number | null
+  termMonths?: number | null
+  periodicPayment?: number | null
+  totalPaidToDate?: number
+  totalInterestPaid?: number
   status?: string
+  state?: string
+  currentPhaseId?: string | null
+  nextPaymentDueDate?: Date | string | null
+  lastReminderSentAt?: Date | string | null
   startDate?: Date | string | null
   endDate?: Date | string | null
   signedAt?: Date | string | null
   terminatedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  phases?: Prisma.ContractPhaseUncheckedCreateNestedManyWithoutContractInput
   documents?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutContractInput
+  payments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutContractInput
+  transitions?: Prisma.ContractTransitionUncheckedCreateNestedManyWithoutContractInput
+  events?: Prisma.ContractEventUncheckedCreateNestedManyWithoutContractInput
 }
 
 export type ContractUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  contractType?: Prisma.StringFieldUpdateOperationsInput | string
   contractNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPayment?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPaymentPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  principal?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  termMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   terminatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  property?: Prisma.PropertyUpdateOneRequiredWithoutContractsNestedInput
-  paymentPlan?: Prisma.PaymentPlanUpdateOneWithoutContractNestedInput
-  buyer?: Prisma.UserUpdateOneWithoutContractsNestedInput
+  propertyUnit?: Prisma.PropertyUnitUpdateOneRequiredWithoutContractsNestedInput
+  buyer?: Prisma.UserUpdateOneRequiredWithoutContractsNestedInput
   seller?: Prisma.UserUpdateOneWithoutSoldContractsNestedInput
+  paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneWithoutContractsNestedInput
+  phases?: Prisma.ContractPhaseUpdateManyWithoutContractNestedInput
   documents?: Prisma.ContractDocumentUpdateManyWithoutContractNestedInput
+  payments?: Prisma.ContractPaymentUpdateManyWithoutContractNestedInput
+  transitions?: Prisma.ContractTransitionUpdateManyWithoutContractNestedInput
+  events?: Prisma.ContractEventUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  propertyId?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  buyerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  propertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
+  buyerId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contractNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPayment?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPaymentPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  principal?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  termMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   terminatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  phases?: Prisma.ContractPhaseUncheckedUpdateManyWithoutContractNestedInput
   documents?: Prisma.ContractDocumentUncheckedUpdateManyWithoutContractNestedInput
+  payments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutContractNestedInput
+  transitions?: Prisma.ContractTransitionUncheckedUpdateManyWithoutContractNestedInput
+  events?: Prisma.ContractEventUncheckedUpdateManyWithoutContractNestedInput
 }
 
 export type ContractCreateManyInput = {
   id?: string
-  propertyId: string
-  paymentPlanId?: string | null
-  buyerId?: string | null
+  propertyUnitId: string
+  buyerId: string
   sellerId?: string | null
-  contractType: string
+  paymentMethodId?: string | null
   contractNumber: string
   title: string
   description?: string | null
+  contractType: string
+  totalAmount: number
+  downPayment?: number
+  downPaymentPaid?: number
+  principal?: number | null
+  interestRate?: number | null
+  termMonths?: number | null
+  periodicPayment?: number | null
+  totalPaidToDate?: number
+  totalInterestPaid?: number
   status?: string
+  state?: string
+  currentPhaseId?: string | null
+  nextPaymentDueDate?: Date | string | null
+  lastReminderSentAt?: Date | string | null
   startDate?: Date | string | null
   endDate?: Date | string | null
   signedAt?: Date | string | null
@@ -474,11 +791,24 @@ export type ContractCreateManyInput = {
 
 export type ContractUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  contractType?: Prisma.StringFieldUpdateOperationsInput | string
   contractNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPayment?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPaymentPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  principal?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  termMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -489,15 +819,28 @@ export type ContractUpdateManyMutationInput = {
 
 export type ContractUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  propertyId?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  buyerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  propertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
+  buyerId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contractNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPayment?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPaymentPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  principal?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  termMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -516,11 +859,6 @@ export type ContractOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type ContractNullableScalarRelationFilter = {
-  is?: Prisma.ContractWhereInput | null
-  isNot?: Prisma.ContractWhereInput | null
-}
-
 export type ContractOrderByRelevanceInput = {
   fields: Prisma.ContractOrderByRelevanceFieldEnum | Prisma.ContractOrderByRelevanceFieldEnum[]
   sort: Prisma.SortOrder
@@ -529,15 +867,28 @@ export type ContractOrderByRelevanceInput = {
 
 export type ContractCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  propertyId?: Prisma.SortOrder
-  paymentPlanId?: Prisma.SortOrder
+  propertyUnitId?: Prisma.SortOrder
   buyerId?: Prisma.SortOrder
   sellerId?: Prisma.SortOrder
-  contractType?: Prisma.SortOrder
+  paymentMethodId?: Prisma.SortOrder
   contractNumber?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  contractType?: Prisma.SortOrder
+  totalAmount?: Prisma.SortOrder
+  downPayment?: Prisma.SortOrder
+  downPaymentPaid?: Prisma.SortOrder
+  principal?: Prisma.SortOrder
+  interestRate?: Prisma.SortOrder
+  termMonths?: Prisma.SortOrder
+  periodicPayment?: Prisma.SortOrder
+  totalPaidToDate?: Prisma.SortOrder
+  totalInterestPaid?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  state?: Prisma.SortOrder
+  currentPhaseId?: Prisma.SortOrder
+  nextPaymentDueDate?: Prisma.SortOrder
+  lastReminderSentAt?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   signedAt?: Prisma.SortOrder
@@ -546,17 +897,42 @@ export type ContractCountOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
+export type ContractAvgOrderByAggregateInput = {
+  totalAmount?: Prisma.SortOrder
+  downPayment?: Prisma.SortOrder
+  downPaymentPaid?: Prisma.SortOrder
+  principal?: Prisma.SortOrder
+  interestRate?: Prisma.SortOrder
+  termMonths?: Prisma.SortOrder
+  periodicPayment?: Prisma.SortOrder
+  totalPaidToDate?: Prisma.SortOrder
+  totalInterestPaid?: Prisma.SortOrder
+}
+
 export type ContractMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  propertyId?: Prisma.SortOrder
-  paymentPlanId?: Prisma.SortOrder
+  propertyUnitId?: Prisma.SortOrder
   buyerId?: Prisma.SortOrder
   sellerId?: Prisma.SortOrder
-  contractType?: Prisma.SortOrder
+  paymentMethodId?: Prisma.SortOrder
   contractNumber?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  contractType?: Prisma.SortOrder
+  totalAmount?: Prisma.SortOrder
+  downPayment?: Prisma.SortOrder
+  downPaymentPaid?: Prisma.SortOrder
+  principal?: Prisma.SortOrder
+  interestRate?: Prisma.SortOrder
+  termMonths?: Prisma.SortOrder
+  periodicPayment?: Prisma.SortOrder
+  totalPaidToDate?: Prisma.SortOrder
+  totalInterestPaid?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  state?: Prisma.SortOrder
+  currentPhaseId?: Prisma.SortOrder
+  nextPaymentDueDate?: Prisma.SortOrder
+  lastReminderSentAt?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   signedAt?: Prisma.SortOrder
@@ -567,21 +943,46 @@ export type ContractMaxOrderByAggregateInput = {
 
 export type ContractMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  propertyId?: Prisma.SortOrder
-  paymentPlanId?: Prisma.SortOrder
+  propertyUnitId?: Prisma.SortOrder
   buyerId?: Prisma.SortOrder
   sellerId?: Prisma.SortOrder
-  contractType?: Prisma.SortOrder
+  paymentMethodId?: Prisma.SortOrder
   contractNumber?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  contractType?: Prisma.SortOrder
+  totalAmount?: Prisma.SortOrder
+  downPayment?: Prisma.SortOrder
+  downPaymentPaid?: Prisma.SortOrder
+  principal?: Prisma.SortOrder
+  interestRate?: Prisma.SortOrder
+  termMonths?: Prisma.SortOrder
+  periodicPayment?: Prisma.SortOrder
+  totalPaidToDate?: Prisma.SortOrder
+  totalInterestPaid?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  state?: Prisma.SortOrder
+  currentPhaseId?: Prisma.SortOrder
+  nextPaymentDueDate?: Prisma.SortOrder
+  lastReminderSentAt?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   signedAt?: Prisma.SortOrder
   terminatedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type ContractSumOrderByAggregateInput = {
+  totalAmount?: Prisma.SortOrder
+  downPayment?: Prisma.SortOrder
+  downPaymentPaid?: Prisma.SortOrder
+  principal?: Prisma.SortOrder
+  interestRate?: Prisma.SortOrder
+  termMonths?: Prisma.SortOrder
+  periodicPayment?: Prisma.SortOrder
+  totalPaidToDate?: Prisma.SortOrder
+  totalInterestPaid?: Prisma.SortOrder
 }
 
 export type ContractScalarRelationFilter = {
@@ -673,78 +1074,116 @@ export type ContractUncheckedUpdateManyWithoutSellerNestedInput = {
   deleteMany?: Prisma.ContractScalarWhereInput | Prisma.ContractScalarWhereInput[]
 }
 
-export type ContractCreateNestedManyWithoutPropertyInput = {
-  create?: Prisma.XOR<Prisma.ContractCreateWithoutPropertyInput, Prisma.ContractUncheckedCreateWithoutPropertyInput> | Prisma.ContractCreateWithoutPropertyInput[] | Prisma.ContractUncheckedCreateWithoutPropertyInput[]
-  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutPropertyInput | Prisma.ContractCreateOrConnectWithoutPropertyInput[]
-  createMany?: Prisma.ContractCreateManyPropertyInputEnvelope
+export type ContractCreateNestedManyWithoutPropertyUnitInput = {
+  create?: Prisma.XOR<Prisma.ContractCreateWithoutPropertyUnitInput, Prisma.ContractUncheckedCreateWithoutPropertyUnitInput> | Prisma.ContractCreateWithoutPropertyUnitInput[] | Prisma.ContractUncheckedCreateWithoutPropertyUnitInput[]
+  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutPropertyUnitInput | Prisma.ContractCreateOrConnectWithoutPropertyUnitInput[]
+  createMany?: Prisma.ContractCreateManyPropertyUnitInputEnvelope
   connect?: Prisma.ContractWhereUniqueInput | Prisma.ContractWhereUniqueInput[]
 }
 
-export type ContractUncheckedCreateNestedManyWithoutPropertyInput = {
-  create?: Prisma.XOR<Prisma.ContractCreateWithoutPropertyInput, Prisma.ContractUncheckedCreateWithoutPropertyInput> | Prisma.ContractCreateWithoutPropertyInput[] | Prisma.ContractUncheckedCreateWithoutPropertyInput[]
-  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutPropertyInput | Prisma.ContractCreateOrConnectWithoutPropertyInput[]
-  createMany?: Prisma.ContractCreateManyPropertyInputEnvelope
+export type ContractUncheckedCreateNestedManyWithoutPropertyUnitInput = {
+  create?: Prisma.XOR<Prisma.ContractCreateWithoutPropertyUnitInput, Prisma.ContractUncheckedCreateWithoutPropertyUnitInput> | Prisma.ContractCreateWithoutPropertyUnitInput[] | Prisma.ContractUncheckedCreateWithoutPropertyUnitInput[]
+  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutPropertyUnitInput | Prisma.ContractCreateOrConnectWithoutPropertyUnitInput[]
+  createMany?: Prisma.ContractCreateManyPropertyUnitInputEnvelope
   connect?: Prisma.ContractWhereUniqueInput | Prisma.ContractWhereUniqueInput[]
 }
 
-export type ContractUpdateManyWithoutPropertyNestedInput = {
-  create?: Prisma.XOR<Prisma.ContractCreateWithoutPropertyInput, Prisma.ContractUncheckedCreateWithoutPropertyInput> | Prisma.ContractCreateWithoutPropertyInput[] | Prisma.ContractUncheckedCreateWithoutPropertyInput[]
-  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutPropertyInput | Prisma.ContractCreateOrConnectWithoutPropertyInput[]
-  upsert?: Prisma.ContractUpsertWithWhereUniqueWithoutPropertyInput | Prisma.ContractUpsertWithWhereUniqueWithoutPropertyInput[]
-  createMany?: Prisma.ContractCreateManyPropertyInputEnvelope
+export type ContractUpdateManyWithoutPropertyUnitNestedInput = {
+  create?: Prisma.XOR<Prisma.ContractCreateWithoutPropertyUnitInput, Prisma.ContractUncheckedCreateWithoutPropertyUnitInput> | Prisma.ContractCreateWithoutPropertyUnitInput[] | Prisma.ContractUncheckedCreateWithoutPropertyUnitInput[]
+  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutPropertyUnitInput | Prisma.ContractCreateOrConnectWithoutPropertyUnitInput[]
+  upsert?: Prisma.ContractUpsertWithWhereUniqueWithoutPropertyUnitInput | Prisma.ContractUpsertWithWhereUniqueWithoutPropertyUnitInput[]
+  createMany?: Prisma.ContractCreateManyPropertyUnitInputEnvelope
   set?: Prisma.ContractWhereUniqueInput | Prisma.ContractWhereUniqueInput[]
   disconnect?: Prisma.ContractWhereUniqueInput | Prisma.ContractWhereUniqueInput[]
   delete?: Prisma.ContractWhereUniqueInput | Prisma.ContractWhereUniqueInput[]
   connect?: Prisma.ContractWhereUniqueInput | Prisma.ContractWhereUniqueInput[]
-  update?: Prisma.ContractUpdateWithWhereUniqueWithoutPropertyInput | Prisma.ContractUpdateWithWhereUniqueWithoutPropertyInput[]
-  updateMany?: Prisma.ContractUpdateManyWithWhereWithoutPropertyInput | Prisma.ContractUpdateManyWithWhereWithoutPropertyInput[]
+  update?: Prisma.ContractUpdateWithWhereUniqueWithoutPropertyUnitInput | Prisma.ContractUpdateWithWhereUniqueWithoutPropertyUnitInput[]
+  updateMany?: Prisma.ContractUpdateManyWithWhereWithoutPropertyUnitInput | Prisma.ContractUpdateManyWithWhereWithoutPropertyUnitInput[]
   deleteMany?: Prisma.ContractScalarWhereInput | Prisma.ContractScalarWhereInput[]
 }
 
-export type ContractUncheckedUpdateManyWithoutPropertyNestedInput = {
-  create?: Prisma.XOR<Prisma.ContractCreateWithoutPropertyInput, Prisma.ContractUncheckedCreateWithoutPropertyInput> | Prisma.ContractCreateWithoutPropertyInput[] | Prisma.ContractUncheckedCreateWithoutPropertyInput[]
-  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutPropertyInput | Prisma.ContractCreateOrConnectWithoutPropertyInput[]
-  upsert?: Prisma.ContractUpsertWithWhereUniqueWithoutPropertyInput | Prisma.ContractUpsertWithWhereUniqueWithoutPropertyInput[]
-  createMany?: Prisma.ContractCreateManyPropertyInputEnvelope
+export type ContractUncheckedUpdateManyWithoutPropertyUnitNestedInput = {
+  create?: Prisma.XOR<Prisma.ContractCreateWithoutPropertyUnitInput, Prisma.ContractUncheckedCreateWithoutPropertyUnitInput> | Prisma.ContractCreateWithoutPropertyUnitInput[] | Prisma.ContractUncheckedCreateWithoutPropertyUnitInput[]
+  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutPropertyUnitInput | Prisma.ContractCreateOrConnectWithoutPropertyUnitInput[]
+  upsert?: Prisma.ContractUpsertWithWhereUniqueWithoutPropertyUnitInput | Prisma.ContractUpsertWithWhereUniqueWithoutPropertyUnitInput[]
+  createMany?: Prisma.ContractCreateManyPropertyUnitInputEnvelope
   set?: Prisma.ContractWhereUniqueInput | Prisma.ContractWhereUniqueInput[]
   disconnect?: Prisma.ContractWhereUniqueInput | Prisma.ContractWhereUniqueInput[]
   delete?: Prisma.ContractWhereUniqueInput | Prisma.ContractWhereUniqueInput[]
   connect?: Prisma.ContractWhereUniqueInput | Prisma.ContractWhereUniqueInput[]
-  update?: Prisma.ContractUpdateWithWhereUniqueWithoutPropertyInput | Prisma.ContractUpdateWithWhereUniqueWithoutPropertyInput[]
-  updateMany?: Prisma.ContractUpdateManyWithWhereWithoutPropertyInput | Prisma.ContractUpdateManyWithWhereWithoutPropertyInput[]
+  update?: Prisma.ContractUpdateWithWhereUniqueWithoutPropertyUnitInput | Prisma.ContractUpdateWithWhereUniqueWithoutPropertyUnitInput[]
+  updateMany?: Prisma.ContractUpdateManyWithWhereWithoutPropertyUnitInput | Prisma.ContractUpdateManyWithWhereWithoutPropertyUnitInput[]
   deleteMany?: Prisma.ContractScalarWhereInput | Prisma.ContractScalarWhereInput[]
 }
 
-export type ContractCreateNestedOneWithoutPaymentPlanInput = {
-  create?: Prisma.XOR<Prisma.ContractCreateWithoutPaymentPlanInput, Prisma.ContractUncheckedCreateWithoutPaymentPlanInput>
-  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutPaymentPlanInput
+export type ContractCreateNestedManyWithoutPaymentMethodInput = {
+  create?: Prisma.XOR<Prisma.ContractCreateWithoutPaymentMethodInput, Prisma.ContractUncheckedCreateWithoutPaymentMethodInput> | Prisma.ContractCreateWithoutPaymentMethodInput[] | Prisma.ContractUncheckedCreateWithoutPaymentMethodInput[]
+  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutPaymentMethodInput | Prisma.ContractCreateOrConnectWithoutPaymentMethodInput[]
+  createMany?: Prisma.ContractCreateManyPaymentMethodInputEnvelope
+  connect?: Prisma.ContractWhereUniqueInput | Prisma.ContractWhereUniqueInput[]
+}
+
+export type ContractUncheckedCreateNestedManyWithoutPaymentMethodInput = {
+  create?: Prisma.XOR<Prisma.ContractCreateWithoutPaymentMethodInput, Prisma.ContractUncheckedCreateWithoutPaymentMethodInput> | Prisma.ContractCreateWithoutPaymentMethodInput[] | Prisma.ContractUncheckedCreateWithoutPaymentMethodInput[]
+  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutPaymentMethodInput | Prisma.ContractCreateOrConnectWithoutPaymentMethodInput[]
+  createMany?: Prisma.ContractCreateManyPaymentMethodInputEnvelope
+  connect?: Prisma.ContractWhereUniqueInput | Prisma.ContractWhereUniqueInput[]
+}
+
+export type ContractUpdateManyWithoutPaymentMethodNestedInput = {
+  create?: Prisma.XOR<Prisma.ContractCreateWithoutPaymentMethodInput, Prisma.ContractUncheckedCreateWithoutPaymentMethodInput> | Prisma.ContractCreateWithoutPaymentMethodInput[] | Prisma.ContractUncheckedCreateWithoutPaymentMethodInput[]
+  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutPaymentMethodInput | Prisma.ContractCreateOrConnectWithoutPaymentMethodInput[]
+  upsert?: Prisma.ContractUpsertWithWhereUniqueWithoutPaymentMethodInput | Prisma.ContractUpsertWithWhereUniqueWithoutPaymentMethodInput[]
+  createMany?: Prisma.ContractCreateManyPaymentMethodInputEnvelope
+  set?: Prisma.ContractWhereUniqueInput | Prisma.ContractWhereUniqueInput[]
+  disconnect?: Prisma.ContractWhereUniqueInput | Prisma.ContractWhereUniqueInput[]
+  delete?: Prisma.ContractWhereUniqueInput | Prisma.ContractWhereUniqueInput[]
+  connect?: Prisma.ContractWhereUniqueInput | Prisma.ContractWhereUniqueInput[]
+  update?: Prisma.ContractUpdateWithWhereUniqueWithoutPaymentMethodInput | Prisma.ContractUpdateWithWhereUniqueWithoutPaymentMethodInput[]
+  updateMany?: Prisma.ContractUpdateManyWithWhereWithoutPaymentMethodInput | Prisma.ContractUpdateManyWithWhereWithoutPaymentMethodInput[]
+  deleteMany?: Prisma.ContractScalarWhereInput | Prisma.ContractScalarWhereInput[]
+}
+
+export type ContractUncheckedUpdateManyWithoutPaymentMethodNestedInput = {
+  create?: Prisma.XOR<Prisma.ContractCreateWithoutPaymentMethodInput, Prisma.ContractUncheckedCreateWithoutPaymentMethodInput> | Prisma.ContractCreateWithoutPaymentMethodInput[] | Prisma.ContractUncheckedCreateWithoutPaymentMethodInput[]
+  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutPaymentMethodInput | Prisma.ContractCreateOrConnectWithoutPaymentMethodInput[]
+  upsert?: Prisma.ContractUpsertWithWhereUniqueWithoutPaymentMethodInput | Prisma.ContractUpsertWithWhereUniqueWithoutPaymentMethodInput[]
+  createMany?: Prisma.ContractCreateManyPaymentMethodInputEnvelope
+  set?: Prisma.ContractWhereUniqueInput | Prisma.ContractWhereUniqueInput[]
+  disconnect?: Prisma.ContractWhereUniqueInput | Prisma.ContractWhereUniqueInput[]
+  delete?: Prisma.ContractWhereUniqueInput | Prisma.ContractWhereUniqueInput[]
+  connect?: Prisma.ContractWhereUniqueInput | Prisma.ContractWhereUniqueInput[]
+  update?: Prisma.ContractUpdateWithWhereUniqueWithoutPaymentMethodInput | Prisma.ContractUpdateWithWhereUniqueWithoutPaymentMethodInput[]
+  updateMany?: Prisma.ContractUpdateManyWithWhereWithoutPaymentMethodInput | Prisma.ContractUpdateManyWithWhereWithoutPaymentMethodInput[]
+  deleteMany?: Prisma.ContractScalarWhereInput | Prisma.ContractScalarWhereInput[]
+}
+
+export type ContractCreateNestedOneWithoutPhasesInput = {
+  create?: Prisma.XOR<Prisma.ContractCreateWithoutPhasesInput, Prisma.ContractUncheckedCreateWithoutPhasesInput>
+  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutPhasesInput
   connect?: Prisma.ContractWhereUniqueInput
 }
 
-export type ContractUncheckedCreateNestedOneWithoutPaymentPlanInput = {
-  create?: Prisma.XOR<Prisma.ContractCreateWithoutPaymentPlanInput, Prisma.ContractUncheckedCreateWithoutPaymentPlanInput>
-  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutPaymentPlanInput
+export type ContractUpdateOneRequiredWithoutPhasesNestedInput = {
+  create?: Prisma.XOR<Prisma.ContractCreateWithoutPhasesInput, Prisma.ContractUncheckedCreateWithoutPhasesInput>
+  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutPhasesInput
+  upsert?: Prisma.ContractUpsertWithoutPhasesInput
+  connect?: Prisma.ContractWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ContractUpdateToOneWithWhereWithoutPhasesInput, Prisma.ContractUpdateWithoutPhasesInput>, Prisma.ContractUncheckedUpdateWithoutPhasesInput>
+}
+
+export type ContractCreateNestedOneWithoutPaymentsInput = {
+  create?: Prisma.XOR<Prisma.ContractCreateWithoutPaymentsInput, Prisma.ContractUncheckedCreateWithoutPaymentsInput>
+  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutPaymentsInput
   connect?: Prisma.ContractWhereUniqueInput
 }
 
-export type ContractUpdateOneWithoutPaymentPlanNestedInput = {
-  create?: Prisma.XOR<Prisma.ContractCreateWithoutPaymentPlanInput, Prisma.ContractUncheckedCreateWithoutPaymentPlanInput>
-  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutPaymentPlanInput
-  upsert?: Prisma.ContractUpsertWithoutPaymentPlanInput
-  disconnect?: Prisma.ContractWhereInput | boolean
-  delete?: Prisma.ContractWhereInput | boolean
+export type ContractUpdateOneRequiredWithoutPaymentsNestedInput = {
+  create?: Prisma.XOR<Prisma.ContractCreateWithoutPaymentsInput, Prisma.ContractUncheckedCreateWithoutPaymentsInput>
+  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutPaymentsInput
+  upsert?: Prisma.ContractUpsertWithoutPaymentsInput
   connect?: Prisma.ContractWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.ContractUpdateToOneWithWhereWithoutPaymentPlanInput, Prisma.ContractUpdateWithoutPaymentPlanInput>, Prisma.ContractUncheckedUpdateWithoutPaymentPlanInput>
-}
-
-export type ContractUncheckedUpdateOneWithoutPaymentPlanNestedInput = {
-  create?: Prisma.XOR<Prisma.ContractCreateWithoutPaymentPlanInput, Prisma.ContractUncheckedCreateWithoutPaymentPlanInput>
-  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutPaymentPlanInput
-  upsert?: Prisma.ContractUpsertWithoutPaymentPlanInput
-  disconnect?: Prisma.ContractWhereInput | boolean
-  delete?: Prisma.ContractWhereInput | boolean
-  connect?: Prisma.ContractWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.ContractUpdateToOneWithWhereWithoutPaymentPlanInput, Prisma.ContractUpdateWithoutPaymentPlanInput>, Prisma.ContractUncheckedUpdateWithoutPaymentPlanInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ContractUpdateToOneWithWhereWithoutPaymentsInput, Prisma.ContractUpdateWithoutPaymentsInput>, Prisma.ContractUncheckedUpdateWithoutPaymentsInput>
 }
 
 export type ContractCreateNestedOneWithoutDocumentsInput = {
@@ -761,42 +1200,104 @@ export type ContractUpdateOneRequiredWithoutDocumentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ContractUpdateToOneWithWhereWithoutDocumentsInput, Prisma.ContractUpdateWithoutDocumentsInput>, Prisma.ContractUncheckedUpdateWithoutDocumentsInput>
 }
 
+export type ContractCreateNestedOneWithoutTransitionsInput = {
+  create?: Prisma.XOR<Prisma.ContractCreateWithoutTransitionsInput, Prisma.ContractUncheckedCreateWithoutTransitionsInput>
+  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutTransitionsInput
+  connect?: Prisma.ContractWhereUniqueInput
+}
+
+export type ContractUpdateOneRequiredWithoutTransitionsNestedInput = {
+  create?: Prisma.XOR<Prisma.ContractCreateWithoutTransitionsInput, Prisma.ContractUncheckedCreateWithoutTransitionsInput>
+  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutTransitionsInput
+  upsert?: Prisma.ContractUpsertWithoutTransitionsInput
+  connect?: Prisma.ContractWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ContractUpdateToOneWithWhereWithoutTransitionsInput, Prisma.ContractUpdateWithoutTransitionsInput>, Prisma.ContractUncheckedUpdateWithoutTransitionsInput>
+}
+
+export type ContractCreateNestedOneWithoutEventsInput = {
+  create?: Prisma.XOR<Prisma.ContractCreateWithoutEventsInput, Prisma.ContractUncheckedCreateWithoutEventsInput>
+  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutEventsInput
+  connect?: Prisma.ContractWhereUniqueInput
+}
+
+export type ContractUpdateOneRequiredWithoutEventsNestedInput = {
+  create?: Prisma.XOR<Prisma.ContractCreateWithoutEventsInput, Prisma.ContractUncheckedCreateWithoutEventsInput>
+  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutEventsInput
+  upsert?: Prisma.ContractUpsertWithoutEventsInput
+  connect?: Prisma.ContractWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ContractUpdateToOneWithWhereWithoutEventsInput, Prisma.ContractUpdateWithoutEventsInput>, Prisma.ContractUncheckedUpdateWithoutEventsInput>
+}
+
 export type ContractCreateWithoutBuyerInput = {
   id?: string
-  contractType: string
   contractNumber: string
   title: string
   description?: string | null
+  contractType: string
+  totalAmount: number
+  downPayment?: number
+  downPaymentPaid?: number
+  principal?: number | null
+  interestRate?: number | null
+  termMonths?: number | null
+  periodicPayment?: number | null
+  totalPaidToDate?: number
+  totalInterestPaid?: number
   status?: string
+  state?: string
+  currentPhaseId?: string | null
+  nextPaymentDueDate?: Date | string | null
+  lastReminderSentAt?: Date | string | null
   startDate?: Date | string | null
   endDate?: Date | string | null
   signedAt?: Date | string | null
   terminatedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  property: Prisma.PropertyCreateNestedOneWithoutContractsInput
-  paymentPlan?: Prisma.PaymentPlanCreateNestedOneWithoutContractInput
+  propertyUnit: Prisma.PropertyUnitCreateNestedOneWithoutContractsInput
   seller?: Prisma.UserCreateNestedOneWithoutSoldContractsInput
+  paymentMethod?: Prisma.PropertyPaymentMethodCreateNestedOneWithoutContractsInput
+  phases?: Prisma.ContractPhaseCreateNestedManyWithoutContractInput
   documents?: Prisma.ContractDocumentCreateNestedManyWithoutContractInput
+  payments?: Prisma.ContractPaymentCreateNestedManyWithoutContractInput
+  transitions?: Prisma.ContractTransitionCreateNestedManyWithoutContractInput
+  events?: Prisma.ContractEventCreateNestedManyWithoutContractInput
 }
 
 export type ContractUncheckedCreateWithoutBuyerInput = {
   id?: string
-  propertyId: string
-  paymentPlanId?: string | null
+  propertyUnitId: string
   sellerId?: string | null
-  contractType: string
+  paymentMethodId?: string | null
   contractNumber: string
   title: string
   description?: string | null
+  contractType: string
+  totalAmount: number
+  downPayment?: number
+  downPaymentPaid?: number
+  principal?: number | null
+  interestRate?: number | null
+  termMonths?: number | null
+  periodicPayment?: number | null
+  totalPaidToDate?: number
+  totalInterestPaid?: number
   status?: string
+  state?: string
+  currentPhaseId?: string | null
+  nextPaymentDueDate?: Date | string | null
+  lastReminderSentAt?: Date | string | null
   startDate?: Date | string | null
   endDate?: Date | string | null
   signedAt?: Date | string | null
   terminatedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  phases?: Prisma.ContractPhaseUncheckedCreateNestedManyWithoutContractInput
   documents?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutContractInput
+  payments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutContractInput
+  transitions?: Prisma.ContractTransitionUncheckedCreateNestedManyWithoutContractInput
+  events?: Prisma.ContractEventUncheckedCreateNestedManyWithoutContractInput
 }
 
 export type ContractCreateOrConnectWithoutBuyerInput = {
@@ -811,40 +1312,74 @@ export type ContractCreateManyBuyerInputEnvelope = {
 
 export type ContractCreateWithoutSellerInput = {
   id?: string
-  contractType: string
   contractNumber: string
   title: string
   description?: string | null
+  contractType: string
+  totalAmount: number
+  downPayment?: number
+  downPaymentPaid?: number
+  principal?: number | null
+  interestRate?: number | null
+  termMonths?: number | null
+  periodicPayment?: number | null
+  totalPaidToDate?: number
+  totalInterestPaid?: number
   status?: string
+  state?: string
+  currentPhaseId?: string | null
+  nextPaymentDueDate?: Date | string | null
+  lastReminderSentAt?: Date | string | null
   startDate?: Date | string | null
   endDate?: Date | string | null
   signedAt?: Date | string | null
   terminatedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  property: Prisma.PropertyCreateNestedOneWithoutContractsInput
-  paymentPlan?: Prisma.PaymentPlanCreateNestedOneWithoutContractInput
-  buyer?: Prisma.UserCreateNestedOneWithoutContractsInput
+  propertyUnit: Prisma.PropertyUnitCreateNestedOneWithoutContractsInput
+  buyer: Prisma.UserCreateNestedOneWithoutContractsInput
+  paymentMethod?: Prisma.PropertyPaymentMethodCreateNestedOneWithoutContractsInput
+  phases?: Prisma.ContractPhaseCreateNestedManyWithoutContractInput
   documents?: Prisma.ContractDocumentCreateNestedManyWithoutContractInput
+  payments?: Prisma.ContractPaymentCreateNestedManyWithoutContractInput
+  transitions?: Prisma.ContractTransitionCreateNestedManyWithoutContractInput
+  events?: Prisma.ContractEventCreateNestedManyWithoutContractInput
 }
 
 export type ContractUncheckedCreateWithoutSellerInput = {
   id?: string
-  propertyId: string
-  paymentPlanId?: string | null
-  buyerId?: string | null
-  contractType: string
+  propertyUnitId: string
+  buyerId: string
+  paymentMethodId?: string | null
   contractNumber: string
   title: string
   description?: string | null
+  contractType: string
+  totalAmount: number
+  downPayment?: number
+  downPaymentPaid?: number
+  principal?: number | null
+  interestRate?: number | null
+  termMonths?: number | null
+  periodicPayment?: number | null
+  totalPaidToDate?: number
+  totalInterestPaid?: number
   status?: string
+  state?: string
+  currentPhaseId?: string | null
+  nextPaymentDueDate?: Date | string | null
+  lastReminderSentAt?: Date | string | null
   startDate?: Date | string | null
   endDate?: Date | string | null
   signedAt?: Date | string | null
   terminatedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  phases?: Prisma.ContractPhaseUncheckedCreateNestedManyWithoutContractInput
   documents?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutContractInput
+  payments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutContractInput
+  transitions?: Prisma.ContractTransitionUncheckedCreateNestedManyWithoutContractInput
+  events?: Prisma.ContractEventUncheckedCreateNestedManyWithoutContractInput
 }
 
 export type ContractCreateOrConnectWithoutSellerInput = {
@@ -878,15 +1413,28 @@ export type ContractScalarWhereInput = {
   OR?: Prisma.ContractScalarWhereInput[]
   NOT?: Prisma.ContractScalarWhereInput | Prisma.ContractScalarWhereInput[]
   id?: Prisma.StringFilter<"Contract"> | string
-  propertyId?: Prisma.StringFilter<"Contract"> | string
-  paymentPlanId?: Prisma.StringNullableFilter<"Contract"> | string | null
-  buyerId?: Prisma.StringNullableFilter<"Contract"> | string | null
+  propertyUnitId?: Prisma.StringFilter<"Contract"> | string
+  buyerId?: Prisma.StringFilter<"Contract"> | string
   sellerId?: Prisma.StringNullableFilter<"Contract"> | string | null
-  contractType?: Prisma.StringFilter<"Contract"> | string
+  paymentMethodId?: Prisma.StringNullableFilter<"Contract"> | string | null
   contractNumber?: Prisma.StringFilter<"Contract"> | string
   title?: Prisma.StringFilter<"Contract"> | string
   description?: Prisma.StringNullableFilter<"Contract"> | string | null
+  contractType?: Prisma.StringFilter<"Contract"> | string
+  totalAmount?: Prisma.FloatFilter<"Contract"> | number
+  downPayment?: Prisma.FloatFilter<"Contract"> | number
+  downPaymentPaid?: Prisma.FloatFilter<"Contract"> | number
+  principal?: Prisma.FloatNullableFilter<"Contract"> | number | null
+  interestRate?: Prisma.FloatNullableFilter<"Contract"> | number | null
+  termMonths?: Prisma.IntNullableFilter<"Contract"> | number | null
+  periodicPayment?: Prisma.FloatNullableFilter<"Contract"> | number | null
+  totalPaidToDate?: Prisma.FloatFilter<"Contract"> | number
+  totalInterestPaid?: Prisma.FloatFilter<"Contract"> | number
   status?: Prisma.StringFilter<"Contract"> | string
+  state?: Prisma.StringFilter<"Contract"> | string
+  currentPhaseId?: Prisma.StringNullableFilter<"Contract"> | string | null
+  nextPaymentDueDate?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
+  lastReminderSentAt?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
   startDate?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
   endDate?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
   signedAt?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
@@ -911,99 +1459,262 @@ export type ContractUpdateManyWithWhereWithoutSellerInput = {
   data: Prisma.XOR<Prisma.ContractUpdateManyMutationInput, Prisma.ContractUncheckedUpdateManyWithoutSellerInput>
 }
 
-export type ContractCreateWithoutPropertyInput = {
+export type ContractCreateWithoutPropertyUnitInput = {
   id?: string
-  contractType: string
   contractNumber: string
   title: string
   description?: string | null
+  contractType: string
+  totalAmount: number
+  downPayment?: number
+  downPaymentPaid?: number
+  principal?: number | null
+  interestRate?: number | null
+  termMonths?: number | null
+  periodicPayment?: number | null
+  totalPaidToDate?: number
+  totalInterestPaid?: number
   status?: string
+  state?: string
+  currentPhaseId?: string | null
+  nextPaymentDueDate?: Date | string | null
+  lastReminderSentAt?: Date | string | null
   startDate?: Date | string | null
   endDate?: Date | string | null
   signedAt?: Date | string | null
   terminatedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  paymentPlan?: Prisma.PaymentPlanCreateNestedOneWithoutContractInput
-  buyer?: Prisma.UserCreateNestedOneWithoutContractsInput
+  buyer: Prisma.UserCreateNestedOneWithoutContractsInput
   seller?: Prisma.UserCreateNestedOneWithoutSoldContractsInput
+  paymentMethod?: Prisma.PropertyPaymentMethodCreateNestedOneWithoutContractsInput
+  phases?: Prisma.ContractPhaseCreateNestedManyWithoutContractInput
   documents?: Prisma.ContractDocumentCreateNestedManyWithoutContractInput
+  payments?: Prisma.ContractPaymentCreateNestedManyWithoutContractInput
+  transitions?: Prisma.ContractTransitionCreateNestedManyWithoutContractInput
+  events?: Prisma.ContractEventCreateNestedManyWithoutContractInput
 }
 
-export type ContractUncheckedCreateWithoutPropertyInput = {
+export type ContractUncheckedCreateWithoutPropertyUnitInput = {
   id?: string
-  paymentPlanId?: string | null
-  buyerId?: string | null
+  buyerId: string
   sellerId?: string | null
-  contractType: string
+  paymentMethodId?: string | null
   contractNumber: string
   title: string
   description?: string | null
+  contractType: string
+  totalAmount: number
+  downPayment?: number
+  downPaymentPaid?: number
+  principal?: number | null
+  interestRate?: number | null
+  termMonths?: number | null
+  periodicPayment?: number | null
+  totalPaidToDate?: number
+  totalInterestPaid?: number
   status?: string
+  state?: string
+  currentPhaseId?: string | null
+  nextPaymentDueDate?: Date | string | null
+  lastReminderSentAt?: Date | string | null
   startDate?: Date | string | null
   endDate?: Date | string | null
   signedAt?: Date | string | null
   terminatedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  phases?: Prisma.ContractPhaseUncheckedCreateNestedManyWithoutContractInput
   documents?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutContractInput
+  payments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutContractInput
+  transitions?: Prisma.ContractTransitionUncheckedCreateNestedManyWithoutContractInput
+  events?: Prisma.ContractEventUncheckedCreateNestedManyWithoutContractInput
 }
 
-export type ContractCreateOrConnectWithoutPropertyInput = {
+export type ContractCreateOrConnectWithoutPropertyUnitInput = {
   where: Prisma.ContractWhereUniqueInput
-  create: Prisma.XOR<Prisma.ContractCreateWithoutPropertyInput, Prisma.ContractUncheckedCreateWithoutPropertyInput>
+  create: Prisma.XOR<Prisma.ContractCreateWithoutPropertyUnitInput, Prisma.ContractUncheckedCreateWithoutPropertyUnitInput>
 }
 
-export type ContractCreateManyPropertyInputEnvelope = {
-  data: Prisma.ContractCreateManyPropertyInput | Prisma.ContractCreateManyPropertyInput[]
+export type ContractCreateManyPropertyUnitInputEnvelope = {
+  data: Prisma.ContractCreateManyPropertyUnitInput | Prisma.ContractCreateManyPropertyUnitInput[]
   skipDuplicates?: boolean
 }
 
-export type ContractUpsertWithWhereUniqueWithoutPropertyInput = {
+export type ContractUpsertWithWhereUniqueWithoutPropertyUnitInput = {
   where: Prisma.ContractWhereUniqueInput
-  update: Prisma.XOR<Prisma.ContractUpdateWithoutPropertyInput, Prisma.ContractUncheckedUpdateWithoutPropertyInput>
-  create: Prisma.XOR<Prisma.ContractCreateWithoutPropertyInput, Prisma.ContractUncheckedCreateWithoutPropertyInput>
+  update: Prisma.XOR<Prisma.ContractUpdateWithoutPropertyUnitInput, Prisma.ContractUncheckedUpdateWithoutPropertyUnitInput>
+  create: Prisma.XOR<Prisma.ContractCreateWithoutPropertyUnitInput, Prisma.ContractUncheckedCreateWithoutPropertyUnitInput>
 }
 
-export type ContractUpdateWithWhereUniqueWithoutPropertyInput = {
+export type ContractUpdateWithWhereUniqueWithoutPropertyUnitInput = {
   where: Prisma.ContractWhereUniqueInput
-  data: Prisma.XOR<Prisma.ContractUpdateWithoutPropertyInput, Prisma.ContractUncheckedUpdateWithoutPropertyInput>
+  data: Prisma.XOR<Prisma.ContractUpdateWithoutPropertyUnitInput, Prisma.ContractUncheckedUpdateWithoutPropertyUnitInput>
 }
 
-export type ContractUpdateManyWithWhereWithoutPropertyInput = {
+export type ContractUpdateManyWithWhereWithoutPropertyUnitInput = {
   where: Prisma.ContractScalarWhereInput
-  data: Prisma.XOR<Prisma.ContractUpdateManyMutationInput, Prisma.ContractUncheckedUpdateManyWithoutPropertyInput>
+  data: Prisma.XOR<Prisma.ContractUpdateManyMutationInput, Prisma.ContractUncheckedUpdateManyWithoutPropertyUnitInput>
 }
 
-export type ContractCreateWithoutPaymentPlanInput = {
+export type ContractCreateWithoutPaymentMethodInput = {
   id?: string
-  contractType: string
   contractNumber: string
   title: string
   description?: string | null
+  contractType: string
+  totalAmount: number
+  downPayment?: number
+  downPaymentPaid?: number
+  principal?: number | null
+  interestRate?: number | null
+  termMonths?: number | null
+  periodicPayment?: number | null
+  totalPaidToDate?: number
+  totalInterestPaid?: number
   status?: string
+  state?: string
+  currentPhaseId?: string | null
+  nextPaymentDueDate?: Date | string | null
+  lastReminderSentAt?: Date | string | null
   startDate?: Date | string | null
   endDate?: Date | string | null
   signedAt?: Date | string | null
   terminatedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  property: Prisma.PropertyCreateNestedOneWithoutContractsInput
-  buyer?: Prisma.UserCreateNestedOneWithoutContractsInput
+  propertyUnit: Prisma.PropertyUnitCreateNestedOneWithoutContractsInput
+  buyer: Prisma.UserCreateNestedOneWithoutContractsInput
   seller?: Prisma.UserCreateNestedOneWithoutSoldContractsInput
+  phases?: Prisma.ContractPhaseCreateNestedManyWithoutContractInput
   documents?: Prisma.ContractDocumentCreateNestedManyWithoutContractInput
+  payments?: Prisma.ContractPaymentCreateNestedManyWithoutContractInput
+  transitions?: Prisma.ContractTransitionCreateNestedManyWithoutContractInput
+  events?: Prisma.ContractEventCreateNestedManyWithoutContractInput
 }
 
-export type ContractUncheckedCreateWithoutPaymentPlanInput = {
+export type ContractUncheckedCreateWithoutPaymentMethodInput = {
   id?: string
-  propertyId: string
-  buyerId?: string | null
+  propertyUnitId: string
+  buyerId: string
   sellerId?: string | null
-  contractType: string
   contractNumber: string
   title: string
   description?: string | null
+  contractType: string
+  totalAmount: number
+  downPayment?: number
+  downPaymentPaid?: number
+  principal?: number | null
+  interestRate?: number | null
+  termMonths?: number | null
+  periodicPayment?: number | null
+  totalPaidToDate?: number
+  totalInterestPaid?: number
   status?: string
+  state?: string
+  currentPhaseId?: string | null
+  nextPaymentDueDate?: Date | string | null
+  lastReminderSentAt?: Date | string | null
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  signedAt?: Date | string | null
+  terminatedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  phases?: Prisma.ContractPhaseUncheckedCreateNestedManyWithoutContractInput
+  documents?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutContractInput
+  payments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutContractInput
+  transitions?: Prisma.ContractTransitionUncheckedCreateNestedManyWithoutContractInput
+  events?: Prisma.ContractEventUncheckedCreateNestedManyWithoutContractInput
+}
+
+export type ContractCreateOrConnectWithoutPaymentMethodInput = {
+  where: Prisma.ContractWhereUniqueInput
+  create: Prisma.XOR<Prisma.ContractCreateWithoutPaymentMethodInput, Prisma.ContractUncheckedCreateWithoutPaymentMethodInput>
+}
+
+export type ContractCreateManyPaymentMethodInputEnvelope = {
+  data: Prisma.ContractCreateManyPaymentMethodInput | Prisma.ContractCreateManyPaymentMethodInput[]
+  skipDuplicates?: boolean
+}
+
+export type ContractUpsertWithWhereUniqueWithoutPaymentMethodInput = {
+  where: Prisma.ContractWhereUniqueInput
+  update: Prisma.XOR<Prisma.ContractUpdateWithoutPaymentMethodInput, Prisma.ContractUncheckedUpdateWithoutPaymentMethodInput>
+  create: Prisma.XOR<Prisma.ContractCreateWithoutPaymentMethodInput, Prisma.ContractUncheckedCreateWithoutPaymentMethodInput>
+}
+
+export type ContractUpdateWithWhereUniqueWithoutPaymentMethodInput = {
+  where: Prisma.ContractWhereUniqueInput
+  data: Prisma.XOR<Prisma.ContractUpdateWithoutPaymentMethodInput, Prisma.ContractUncheckedUpdateWithoutPaymentMethodInput>
+}
+
+export type ContractUpdateManyWithWhereWithoutPaymentMethodInput = {
+  where: Prisma.ContractScalarWhereInput
+  data: Prisma.XOR<Prisma.ContractUpdateManyMutationInput, Prisma.ContractUncheckedUpdateManyWithoutPaymentMethodInput>
+}
+
+export type ContractCreateWithoutPhasesInput = {
+  id?: string
+  contractNumber: string
+  title: string
+  description?: string | null
+  contractType: string
+  totalAmount: number
+  downPayment?: number
+  downPaymentPaid?: number
+  principal?: number | null
+  interestRate?: number | null
+  termMonths?: number | null
+  periodicPayment?: number | null
+  totalPaidToDate?: number
+  totalInterestPaid?: number
+  status?: string
+  state?: string
+  currentPhaseId?: string | null
+  nextPaymentDueDate?: Date | string | null
+  lastReminderSentAt?: Date | string | null
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  signedAt?: Date | string | null
+  terminatedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  propertyUnit: Prisma.PropertyUnitCreateNestedOneWithoutContractsInput
+  buyer: Prisma.UserCreateNestedOneWithoutContractsInput
+  seller?: Prisma.UserCreateNestedOneWithoutSoldContractsInput
+  paymentMethod?: Prisma.PropertyPaymentMethodCreateNestedOneWithoutContractsInput
+  documents?: Prisma.ContractDocumentCreateNestedManyWithoutContractInput
+  payments?: Prisma.ContractPaymentCreateNestedManyWithoutContractInput
+  transitions?: Prisma.ContractTransitionCreateNestedManyWithoutContractInput
+  events?: Prisma.ContractEventCreateNestedManyWithoutContractInput
+}
+
+export type ContractUncheckedCreateWithoutPhasesInput = {
+  id?: string
+  propertyUnitId: string
+  buyerId: string
+  sellerId?: string | null
+  paymentMethodId?: string | null
+  contractNumber: string
+  title: string
+  description?: string | null
+  contractType: string
+  totalAmount: number
+  downPayment?: number
+  downPaymentPaid?: number
+  principal?: number | null
+  interestRate?: number | null
+  termMonths?: number | null
+  periodicPayment?: number | null
+  totalPaidToDate?: number
+  totalInterestPaid?: number
+  status?: string
+  state?: string
+  currentPhaseId?: string | null
+  nextPaymentDueDate?: Date | string | null
+  lastReminderSentAt?: Date | string | null
   startDate?: Date | string | null
   endDate?: Date | string | null
   signedAt?: Date | string | null
@@ -1011,53 +1722,87 @@ export type ContractUncheckedCreateWithoutPaymentPlanInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   documents?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutContractInput
+  payments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutContractInput
+  transitions?: Prisma.ContractTransitionUncheckedCreateNestedManyWithoutContractInput
+  events?: Prisma.ContractEventUncheckedCreateNestedManyWithoutContractInput
 }
 
-export type ContractCreateOrConnectWithoutPaymentPlanInput = {
+export type ContractCreateOrConnectWithoutPhasesInput = {
   where: Prisma.ContractWhereUniqueInput
-  create: Prisma.XOR<Prisma.ContractCreateWithoutPaymentPlanInput, Prisma.ContractUncheckedCreateWithoutPaymentPlanInput>
+  create: Prisma.XOR<Prisma.ContractCreateWithoutPhasesInput, Prisma.ContractUncheckedCreateWithoutPhasesInput>
 }
 
-export type ContractUpsertWithoutPaymentPlanInput = {
-  update: Prisma.XOR<Prisma.ContractUpdateWithoutPaymentPlanInput, Prisma.ContractUncheckedUpdateWithoutPaymentPlanInput>
-  create: Prisma.XOR<Prisma.ContractCreateWithoutPaymentPlanInput, Prisma.ContractUncheckedCreateWithoutPaymentPlanInput>
+export type ContractUpsertWithoutPhasesInput = {
+  update: Prisma.XOR<Prisma.ContractUpdateWithoutPhasesInput, Prisma.ContractUncheckedUpdateWithoutPhasesInput>
+  create: Prisma.XOR<Prisma.ContractCreateWithoutPhasesInput, Prisma.ContractUncheckedCreateWithoutPhasesInput>
   where?: Prisma.ContractWhereInput
 }
 
-export type ContractUpdateToOneWithWhereWithoutPaymentPlanInput = {
+export type ContractUpdateToOneWithWhereWithoutPhasesInput = {
   where?: Prisma.ContractWhereInput
-  data: Prisma.XOR<Prisma.ContractUpdateWithoutPaymentPlanInput, Prisma.ContractUncheckedUpdateWithoutPaymentPlanInput>
+  data: Prisma.XOR<Prisma.ContractUpdateWithoutPhasesInput, Prisma.ContractUncheckedUpdateWithoutPhasesInput>
 }
 
-export type ContractUpdateWithoutPaymentPlanInput = {
+export type ContractUpdateWithoutPhasesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  contractType?: Prisma.StringFieldUpdateOperationsInput | string
   contractNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPayment?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPaymentPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  principal?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  termMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   terminatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  property?: Prisma.PropertyUpdateOneRequiredWithoutContractsNestedInput
-  buyer?: Prisma.UserUpdateOneWithoutContractsNestedInput
+  propertyUnit?: Prisma.PropertyUnitUpdateOneRequiredWithoutContractsNestedInput
+  buyer?: Prisma.UserUpdateOneRequiredWithoutContractsNestedInput
   seller?: Prisma.UserUpdateOneWithoutSoldContractsNestedInput
+  paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneWithoutContractsNestedInput
   documents?: Prisma.ContractDocumentUpdateManyWithoutContractNestedInput
+  payments?: Prisma.ContractPaymentUpdateManyWithoutContractNestedInput
+  transitions?: Prisma.ContractTransitionUpdateManyWithoutContractNestedInput
+  events?: Prisma.ContractEventUpdateManyWithoutContractNestedInput
 }
 
-export type ContractUncheckedUpdateWithoutPaymentPlanInput = {
+export type ContractUncheckedUpdateWithoutPhasesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  propertyId?: Prisma.StringFieldUpdateOperationsInput | string
-  buyerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  propertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
+  buyerId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contractNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPayment?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPaymentPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  principal?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  termMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1065,44 +1810,241 @@ export type ContractUncheckedUpdateWithoutPaymentPlanInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.ContractDocumentUncheckedUpdateManyWithoutContractNestedInput
+  payments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutContractNestedInput
+  transitions?: Prisma.ContractTransitionUncheckedUpdateManyWithoutContractNestedInput
+  events?: Prisma.ContractEventUncheckedUpdateManyWithoutContractNestedInput
+}
+
+export type ContractCreateWithoutPaymentsInput = {
+  id?: string
+  contractNumber: string
+  title: string
+  description?: string | null
+  contractType: string
+  totalAmount: number
+  downPayment?: number
+  downPaymentPaid?: number
+  principal?: number | null
+  interestRate?: number | null
+  termMonths?: number | null
+  periodicPayment?: number | null
+  totalPaidToDate?: number
+  totalInterestPaid?: number
+  status?: string
+  state?: string
+  currentPhaseId?: string | null
+  nextPaymentDueDate?: Date | string | null
+  lastReminderSentAt?: Date | string | null
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  signedAt?: Date | string | null
+  terminatedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  propertyUnit: Prisma.PropertyUnitCreateNestedOneWithoutContractsInput
+  buyer: Prisma.UserCreateNestedOneWithoutContractsInput
+  seller?: Prisma.UserCreateNestedOneWithoutSoldContractsInput
+  paymentMethod?: Prisma.PropertyPaymentMethodCreateNestedOneWithoutContractsInput
+  phases?: Prisma.ContractPhaseCreateNestedManyWithoutContractInput
+  documents?: Prisma.ContractDocumentCreateNestedManyWithoutContractInput
+  transitions?: Prisma.ContractTransitionCreateNestedManyWithoutContractInput
+  events?: Prisma.ContractEventCreateNestedManyWithoutContractInput
+}
+
+export type ContractUncheckedCreateWithoutPaymentsInput = {
+  id?: string
+  propertyUnitId: string
+  buyerId: string
+  sellerId?: string | null
+  paymentMethodId?: string | null
+  contractNumber: string
+  title: string
+  description?: string | null
+  contractType: string
+  totalAmount: number
+  downPayment?: number
+  downPaymentPaid?: number
+  principal?: number | null
+  interestRate?: number | null
+  termMonths?: number | null
+  periodicPayment?: number | null
+  totalPaidToDate?: number
+  totalInterestPaid?: number
+  status?: string
+  state?: string
+  currentPhaseId?: string | null
+  nextPaymentDueDate?: Date | string | null
+  lastReminderSentAt?: Date | string | null
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  signedAt?: Date | string | null
+  terminatedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  phases?: Prisma.ContractPhaseUncheckedCreateNestedManyWithoutContractInput
+  documents?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutContractInput
+  transitions?: Prisma.ContractTransitionUncheckedCreateNestedManyWithoutContractInput
+  events?: Prisma.ContractEventUncheckedCreateNestedManyWithoutContractInput
+}
+
+export type ContractCreateOrConnectWithoutPaymentsInput = {
+  where: Prisma.ContractWhereUniqueInput
+  create: Prisma.XOR<Prisma.ContractCreateWithoutPaymentsInput, Prisma.ContractUncheckedCreateWithoutPaymentsInput>
+}
+
+export type ContractUpsertWithoutPaymentsInput = {
+  update: Prisma.XOR<Prisma.ContractUpdateWithoutPaymentsInput, Prisma.ContractUncheckedUpdateWithoutPaymentsInput>
+  create: Prisma.XOR<Prisma.ContractCreateWithoutPaymentsInput, Prisma.ContractUncheckedCreateWithoutPaymentsInput>
+  where?: Prisma.ContractWhereInput
+}
+
+export type ContractUpdateToOneWithWhereWithoutPaymentsInput = {
+  where?: Prisma.ContractWhereInput
+  data: Prisma.XOR<Prisma.ContractUpdateWithoutPaymentsInput, Prisma.ContractUncheckedUpdateWithoutPaymentsInput>
+}
+
+export type ContractUpdateWithoutPaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  contractNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPayment?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPaymentPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  principal?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  termMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  propertyUnit?: Prisma.PropertyUnitUpdateOneRequiredWithoutContractsNestedInput
+  buyer?: Prisma.UserUpdateOneRequiredWithoutContractsNestedInput
+  seller?: Prisma.UserUpdateOneWithoutSoldContractsNestedInput
+  paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneWithoutContractsNestedInput
+  phases?: Prisma.ContractPhaseUpdateManyWithoutContractNestedInput
+  documents?: Prisma.ContractDocumentUpdateManyWithoutContractNestedInput
+  transitions?: Prisma.ContractTransitionUpdateManyWithoutContractNestedInput
+  events?: Prisma.ContractEventUpdateManyWithoutContractNestedInput
+}
+
+export type ContractUncheckedUpdateWithoutPaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  propertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
+  buyerId?: Prisma.StringFieldUpdateOperationsInput | string
+  sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPayment?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPaymentPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  principal?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  termMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  phases?: Prisma.ContractPhaseUncheckedUpdateManyWithoutContractNestedInput
+  documents?: Prisma.ContractDocumentUncheckedUpdateManyWithoutContractNestedInput
+  transitions?: Prisma.ContractTransitionUncheckedUpdateManyWithoutContractNestedInput
+  events?: Prisma.ContractEventUncheckedUpdateManyWithoutContractNestedInput
 }
 
 export type ContractCreateWithoutDocumentsInput = {
   id?: string
-  contractType: string
   contractNumber: string
   title: string
   description?: string | null
+  contractType: string
+  totalAmount: number
+  downPayment?: number
+  downPaymentPaid?: number
+  principal?: number | null
+  interestRate?: number | null
+  termMonths?: number | null
+  periodicPayment?: number | null
+  totalPaidToDate?: number
+  totalInterestPaid?: number
   status?: string
+  state?: string
+  currentPhaseId?: string | null
+  nextPaymentDueDate?: Date | string | null
+  lastReminderSentAt?: Date | string | null
   startDate?: Date | string | null
   endDate?: Date | string | null
   signedAt?: Date | string | null
   terminatedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  property: Prisma.PropertyCreateNestedOneWithoutContractsInput
-  paymentPlan?: Prisma.PaymentPlanCreateNestedOneWithoutContractInput
-  buyer?: Prisma.UserCreateNestedOneWithoutContractsInput
+  propertyUnit: Prisma.PropertyUnitCreateNestedOneWithoutContractsInput
+  buyer: Prisma.UserCreateNestedOneWithoutContractsInput
   seller?: Prisma.UserCreateNestedOneWithoutSoldContractsInput
+  paymentMethod?: Prisma.PropertyPaymentMethodCreateNestedOneWithoutContractsInput
+  phases?: Prisma.ContractPhaseCreateNestedManyWithoutContractInput
+  payments?: Prisma.ContractPaymentCreateNestedManyWithoutContractInput
+  transitions?: Prisma.ContractTransitionCreateNestedManyWithoutContractInput
+  events?: Prisma.ContractEventCreateNestedManyWithoutContractInput
 }
 
 export type ContractUncheckedCreateWithoutDocumentsInput = {
   id?: string
-  propertyId: string
-  paymentPlanId?: string | null
-  buyerId?: string | null
+  propertyUnitId: string
+  buyerId: string
   sellerId?: string | null
-  contractType: string
+  paymentMethodId?: string | null
   contractNumber: string
   title: string
   description?: string | null
+  contractType: string
+  totalAmount: number
+  downPayment?: number
+  downPaymentPaid?: number
+  principal?: number | null
+  interestRate?: number | null
+  termMonths?: number | null
+  periodicPayment?: number | null
+  totalPaidToDate?: number
+  totalInterestPaid?: number
   status?: string
+  state?: string
+  currentPhaseId?: string | null
+  nextPaymentDueDate?: Date | string | null
+  lastReminderSentAt?: Date | string | null
   startDate?: Date | string | null
   endDate?: Date | string | null
   signedAt?: Date | string | null
   terminatedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  phases?: Prisma.ContractPhaseUncheckedCreateNestedManyWithoutContractInput
+  payments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutContractInput
+  transitions?: Prisma.ContractTransitionUncheckedCreateNestedManyWithoutContractInput
+  events?: Prisma.ContractEventUncheckedCreateNestedManyWithoutContractInput
 }
 
 export type ContractCreateOrConnectWithoutDocumentsInput = {
@@ -1123,52 +2065,419 @@ export type ContractUpdateToOneWithWhereWithoutDocumentsInput = {
 
 export type ContractUpdateWithoutDocumentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  contractType?: Prisma.StringFieldUpdateOperationsInput | string
   contractNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPayment?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPaymentPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  principal?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  termMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   terminatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  property?: Prisma.PropertyUpdateOneRequiredWithoutContractsNestedInput
-  paymentPlan?: Prisma.PaymentPlanUpdateOneWithoutContractNestedInput
-  buyer?: Prisma.UserUpdateOneWithoutContractsNestedInput
+  propertyUnit?: Prisma.PropertyUnitUpdateOneRequiredWithoutContractsNestedInput
+  buyer?: Prisma.UserUpdateOneRequiredWithoutContractsNestedInput
   seller?: Prisma.UserUpdateOneWithoutSoldContractsNestedInput
+  paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneWithoutContractsNestedInput
+  phases?: Prisma.ContractPhaseUpdateManyWithoutContractNestedInput
+  payments?: Prisma.ContractPaymentUpdateManyWithoutContractNestedInput
+  transitions?: Prisma.ContractTransitionUpdateManyWithoutContractNestedInput
+  events?: Prisma.ContractEventUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateWithoutDocumentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  propertyId?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  buyerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  propertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
+  buyerId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contractNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPayment?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPaymentPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  principal?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  termMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   terminatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  phases?: Prisma.ContractPhaseUncheckedUpdateManyWithoutContractNestedInput
+  payments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutContractNestedInput
+  transitions?: Prisma.ContractTransitionUncheckedUpdateManyWithoutContractNestedInput
+  events?: Prisma.ContractEventUncheckedUpdateManyWithoutContractNestedInput
+}
+
+export type ContractCreateWithoutTransitionsInput = {
+  id?: string
+  contractNumber: string
+  title: string
+  description?: string | null
+  contractType: string
+  totalAmount: number
+  downPayment?: number
+  downPaymentPaid?: number
+  principal?: number | null
+  interestRate?: number | null
+  termMonths?: number | null
+  periodicPayment?: number | null
+  totalPaidToDate?: number
+  totalInterestPaid?: number
+  status?: string
+  state?: string
+  currentPhaseId?: string | null
+  nextPaymentDueDate?: Date | string | null
+  lastReminderSentAt?: Date | string | null
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  signedAt?: Date | string | null
+  terminatedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  propertyUnit: Prisma.PropertyUnitCreateNestedOneWithoutContractsInput
+  buyer: Prisma.UserCreateNestedOneWithoutContractsInput
+  seller?: Prisma.UserCreateNestedOneWithoutSoldContractsInput
+  paymentMethod?: Prisma.PropertyPaymentMethodCreateNestedOneWithoutContractsInput
+  phases?: Prisma.ContractPhaseCreateNestedManyWithoutContractInput
+  documents?: Prisma.ContractDocumentCreateNestedManyWithoutContractInput
+  payments?: Prisma.ContractPaymentCreateNestedManyWithoutContractInput
+  events?: Prisma.ContractEventCreateNestedManyWithoutContractInput
+}
+
+export type ContractUncheckedCreateWithoutTransitionsInput = {
+  id?: string
+  propertyUnitId: string
+  buyerId: string
+  sellerId?: string | null
+  paymentMethodId?: string | null
+  contractNumber: string
+  title: string
+  description?: string | null
+  contractType: string
+  totalAmount: number
+  downPayment?: number
+  downPaymentPaid?: number
+  principal?: number | null
+  interestRate?: number | null
+  termMonths?: number | null
+  periodicPayment?: number | null
+  totalPaidToDate?: number
+  totalInterestPaid?: number
+  status?: string
+  state?: string
+  currentPhaseId?: string | null
+  nextPaymentDueDate?: Date | string | null
+  lastReminderSentAt?: Date | string | null
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  signedAt?: Date | string | null
+  terminatedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  phases?: Prisma.ContractPhaseUncheckedCreateNestedManyWithoutContractInput
+  documents?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutContractInput
+  payments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutContractInput
+  events?: Prisma.ContractEventUncheckedCreateNestedManyWithoutContractInput
+}
+
+export type ContractCreateOrConnectWithoutTransitionsInput = {
+  where: Prisma.ContractWhereUniqueInput
+  create: Prisma.XOR<Prisma.ContractCreateWithoutTransitionsInput, Prisma.ContractUncheckedCreateWithoutTransitionsInput>
+}
+
+export type ContractUpsertWithoutTransitionsInput = {
+  update: Prisma.XOR<Prisma.ContractUpdateWithoutTransitionsInput, Prisma.ContractUncheckedUpdateWithoutTransitionsInput>
+  create: Prisma.XOR<Prisma.ContractCreateWithoutTransitionsInput, Prisma.ContractUncheckedCreateWithoutTransitionsInput>
+  where?: Prisma.ContractWhereInput
+}
+
+export type ContractUpdateToOneWithWhereWithoutTransitionsInput = {
+  where?: Prisma.ContractWhereInput
+  data: Prisma.XOR<Prisma.ContractUpdateWithoutTransitionsInput, Prisma.ContractUncheckedUpdateWithoutTransitionsInput>
+}
+
+export type ContractUpdateWithoutTransitionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  contractNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPayment?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPaymentPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  principal?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  termMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  propertyUnit?: Prisma.PropertyUnitUpdateOneRequiredWithoutContractsNestedInput
+  buyer?: Prisma.UserUpdateOneRequiredWithoutContractsNestedInput
+  seller?: Prisma.UserUpdateOneWithoutSoldContractsNestedInput
+  paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneWithoutContractsNestedInput
+  phases?: Prisma.ContractPhaseUpdateManyWithoutContractNestedInput
+  documents?: Prisma.ContractDocumentUpdateManyWithoutContractNestedInput
+  payments?: Prisma.ContractPaymentUpdateManyWithoutContractNestedInput
+  events?: Prisma.ContractEventUpdateManyWithoutContractNestedInput
+}
+
+export type ContractUncheckedUpdateWithoutTransitionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  propertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
+  buyerId?: Prisma.StringFieldUpdateOperationsInput | string
+  sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPayment?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPaymentPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  principal?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  termMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  phases?: Prisma.ContractPhaseUncheckedUpdateManyWithoutContractNestedInput
+  documents?: Prisma.ContractDocumentUncheckedUpdateManyWithoutContractNestedInput
+  payments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutContractNestedInput
+  events?: Prisma.ContractEventUncheckedUpdateManyWithoutContractNestedInput
+}
+
+export type ContractCreateWithoutEventsInput = {
+  id?: string
+  contractNumber: string
+  title: string
+  description?: string | null
+  contractType: string
+  totalAmount: number
+  downPayment?: number
+  downPaymentPaid?: number
+  principal?: number | null
+  interestRate?: number | null
+  termMonths?: number | null
+  periodicPayment?: number | null
+  totalPaidToDate?: number
+  totalInterestPaid?: number
+  status?: string
+  state?: string
+  currentPhaseId?: string | null
+  nextPaymentDueDate?: Date | string | null
+  lastReminderSentAt?: Date | string | null
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  signedAt?: Date | string | null
+  terminatedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  propertyUnit: Prisma.PropertyUnitCreateNestedOneWithoutContractsInput
+  buyer: Prisma.UserCreateNestedOneWithoutContractsInput
+  seller?: Prisma.UserCreateNestedOneWithoutSoldContractsInput
+  paymentMethod?: Prisma.PropertyPaymentMethodCreateNestedOneWithoutContractsInput
+  phases?: Prisma.ContractPhaseCreateNestedManyWithoutContractInput
+  documents?: Prisma.ContractDocumentCreateNestedManyWithoutContractInput
+  payments?: Prisma.ContractPaymentCreateNestedManyWithoutContractInput
+  transitions?: Prisma.ContractTransitionCreateNestedManyWithoutContractInput
+}
+
+export type ContractUncheckedCreateWithoutEventsInput = {
+  id?: string
+  propertyUnitId: string
+  buyerId: string
+  sellerId?: string | null
+  paymentMethodId?: string | null
+  contractNumber: string
+  title: string
+  description?: string | null
+  contractType: string
+  totalAmount: number
+  downPayment?: number
+  downPaymentPaid?: number
+  principal?: number | null
+  interestRate?: number | null
+  termMonths?: number | null
+  periodicPayment?: number | null
+  totalPaidToDate?: number
+  totalInterestPaid?: number
+  status?: string
+  state?: string
+  currentPhaseId?: string | null
+  nextPaymentDueDate?: Date | string | null
+  lastReminderSentAt?: Date | string | null
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  signedAt?: Date | string | null
+  terminatedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  phases?: Prisma.ContractPhaseUncheckedCreateNestedManyWithoutContractInput
+  documents?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutContractInput
+  payments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutContractInput
+  transitions?: Prisma.ContractTransitionUncheckedCreateNestedManyWithoutContractInput
+}
+
+export type ContractCreateOrConnectWithoutEventsInput = {
+  where: Prisma.ContractWhereUniqueInput
+  create: Prisma.XOR<Prisma.ContractCreateWithoutEventsInput, Prisma.ContractUncheckedCreateWithoutEventsInput>
+}
+
+export type ContractUpsertWithoutEventsInput = {
+  update: Prisma.XOR<Prisma.ContractUpdateWithoutEventsInput, Prisma.ContractUncheckedUpdateWithoutEventsInput>
+  create: Prisma.XOR<Prisma.ContractCreateWithoutEventsInput, Prisma.ContractUncheckedCreateWithoutEventsInput>
+  where?: Prisma.ContractWhereInput
+}
+
+export type ContractUpdateToOneWithWhereWithoutEventsInput = {
+  where?: Prisma.ContractWhereInput
+  data: Prisma.XOR<Prisma.ContractUpdateWithoutEventsInput, Prisma.ContractUncheckedUpdateWithoutEventsInput>
+}
+
+export type ContractUpdateWithoutEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  contractNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPayment?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPaymentPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  principal?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  termMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  propertyUnit?: Prisma.PropertyUnitUpdateOneRequiredWithoutContractsNestedInput
+  buyer?: Prisma.UserUpdateOneRequiredWithoutContractsNestedInput
+  seller?: Prisma.UserUpdateOneWithoutSoldContractsNestedInput
+  paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneWithoutContractsNestedInput
+  phases?: Prisma.ContractPhaseUpdateManyWithoutContractNestedInput
+  documents?: Prisma.ContractDocumentUpdateManyWithoutContractNestedInput
+  payments?: Prisma.ContractPaymentUpdateManyWithoutContractNestedInput
+  transitions?: Prisma.ContractTransitionUpdateManyWithoutContractNestedInput
+}
+
+export type ContractUncheckedUpdateWithoutEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  propertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
+  buyerId?: Prisma.StringFieldUpdateOperationsInput | string
+  sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPayment?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPaymentPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  principal?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  termMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  phases?: Prisma.ContractPhaseUncheckedUpdateManyWithoutContractNestedInput
+  documents?: Prisma.ContractDocumentUncheckedUpdateManyWithoutContractNestedInput
+  payments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutContractNestedInput
+  transitions?: Prisma.ContractTransitionUncheckedUpdateManyWithoutContractNestedInput
 }
 
 export type ContractCreateManyBuyerInput = {
   id?: string
-  propertyId: string
-  paymentPlanId?: string | null
+  propertyUnitId: string
   sellerId?: string | null
-  contractType: string
+  paymentMethodId?: string | null
   contractNumber: string
   title: string
   description?: string | null
+  contractType: string
+  totalAmount: number
+  downPayment?: number
+  downPaymentPaid?: number
+  principal?: number | null
+  interestRate?: number | null
+  termMonths?: number | null
+  periodicPayment?: number | null
+  totalPaidToDate?: number
+  totalInterestPaid?: number
   status?: string
+  state?: string
+  currentPhaseId?: string | null
+  nextPaymentDueDate?: Date | string | null
+  lastReminderSentAt?: Date | string | null
   startDate?: Date | string | null
   endDate?: Date | string | null
   signedAt?: Date | string | null
@@ -1179,14 +2488,27 @@ export type ContractCreateManyBuyerInput = {
 
 export type ContractCreateManySellerInput = {
   id?: string
-  propertyId: string
-  paymentPlanId?: string | null
-  buyerId?: string | null
-  contractType: string
+  propertyUnitId: string
+  buyerId: string
+  paymentMethodId?: string | null
   contractNumber: string
   title: string
   description?: string | null
+  contractType: string
+  totalAmount: number
+  downPayment?: number
+  downPaymentPaid?: number
+  principal?: number | null
+  interestRate?: number | null
+  termMonths?: number | null
+  periodicPayment?: number | null
+  totalPaidToDate?: number
+  totalInterestPaid?: number
   status?: string
+  state?: string
+  currentPhaseId?: string | null
+  nextPaymentDueDate?: Date | string | null
+  lastReminderSentAt?: Date | string | null
   startDate?: Date | string | null
   endDate?: Date | string | null
   signedAt?: Date | string | null
@@ -1197,52 +2519,99 @@ export type ContractCreateManySellerInput = {
 
 export type ContractUpdateWithoutBuyerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  contractType?: Prisma.StringFieldUpdateOperationsInput | string
   contractNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPayment?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPaymentPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  principal?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  termMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   terminatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  property?: Prisma.PropertyUpdateOneRequiredWithoutContractsNestedInput
-  paymentPlan?: Prisma.PaymentPlanUpdateOneWithoutContractNestedInput
+  propertyUnit?: Prisma.PropertyUnitUpdateOneRequiredWithoutContractsNestedInput
   seller?: Prisma.UserUpdateOneWithoutSoldContractsNestedInput
+  paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneWithoutContractsNestedInput
+  phases?: Prisma.ContractPhaseUpdateManyWithoutContractNestedInput
   documents?: Prisma.ContractDocumentUpdateManyWithoutContractNestedInput
+  payments?: Prisma.ContractPaymentUpdateManyWithoutContractNestedInput
+  transitions?: Prisma.ContractTransitionUpdateManyWithoutContractNestedInput
+  events?: Prisma.ContractEventUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateWithoutBuyerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  propertyId?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  propertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contractNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPayment?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPaymentPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  principal?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  termMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   terminatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  phases?: Prisma.ContractPhaseUncheckedUpdateManyWithoutContractNestedInput
   documents?: Prisma.ContractDocumentUncheckedUpdateManyWithoutContractNestedInput
+  payments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutContractNestedInput
+  transitions?: Prisma.ContractTransitionUncheckedUpdateManyWithoutContractNestedInput
+  events?: Prisma.ContractEventUncheckedUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateManyWithoutBuyerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  propertyId?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  propertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contractNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPayment?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPaymentPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  principal?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  termMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1253,52 +2622,99 @@ export type ContractUncheckedUpdateManyWithoutBuyerInput = {
 
 export type ContractUpdateWithoutSellerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  contractType?: Prisma.StringFieldUpdateOperationsInput | string
   contractNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPayment?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPaymentPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  principal?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  termMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   terminatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  property?: Prisma.PropertyUpdateOneRequiredWithoutContractsNestedInput
-  paymentPlan?: Prisma.PaymentPlanUpdateOneWithoutContractNestedInput
-  buyer?: Prisma.UserUpdateOneWithoutContractsNestedInput
+  propertyUnit?: Prisma.PropertyUnitUpdateOneRequiredWithoutContractsNestedInput
+  buyer?: Prisma.UserUpdateOneRequiredWithoutContractsNestedInput
+  paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneWithoutContractsNestedInput
+  phases?: Prisma.ContractPhaseUpdateManyWithoutContractNestedInput
   documents?: Prisma.ContractDocumentUpdateManyWithoutContractNestedInput
+  payments?: Prisma.ContractPaymentUpdateManyWithoutContractNestedInput
+  transitions?: Prisma.ContractTransitionUpdateManyWithoutContractNestedInput
+  events?: Prisma.ContractEventUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateWithoutSellerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  propertyId?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  buyerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  propertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
+  buyerId?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contractNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPayment?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPaymentPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  principal?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  termMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   terminatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  phases?: Prisma.ContractPhaseUncheckedUpdateManyWithoutContractNestedInput
   documents?: Prisma.ContractDocumentUncheckedUpdateManyWithoutContractNestedInput
+  payments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutContractNestedInput
+  transitions?: Prisma.ContractTransitionUncheckedUpdateManyWithoutContractNestedInput
+  events?: Prisma.ContractEventUncheckedUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateManyWithoutSellerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  propertyId?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  buyerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  propertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
+  buyerId?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contractNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPayment?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPaymentPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  principal?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  termMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1307,16 +2723,29 @@ export type ContractUncheckedUpdateManyWithoutSellerInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type ContractCreateManyPropertyInput = {
+export type ContractCreateManyPropertyUnitInput = {
   id?: string
-  paymentPlanId?: string | null
-  buyerId?: string | null
+  buyerId: string
   sellerId?: string | null
-  contractType: string
+  paymentMethodId?: string | null
   contractNumber: string
   title: string
   description?: string | null
+  contractType: string
+  totalAmount: number
+  downPayment?: number
+  downPaymentPaid?: number
+  principal?: number | null
+  interestRate?: number | null
+  termMonths?: number | null
+  periodicPayment?: number | null
+  totalPaidToDate?: number
+  totalInterestPaid?: number
   status?: string
+  state?: string
+  currentPhaseId?: string | null
+  nextPaymentDueDate?: Date | string | null
+  lastReminderSentAt?: Date | string | null
   startDate?: Date | string | null
   endDate?: Date | string | null
   signedAt?: Date | string | null
@@ -1325,54 +2754,235 @@ export type ContractCreateManyPropertyInput = {
   updatedAt?: Date | string
 }
 
-export type ContractUpdateWithoutPropertyInput = {
+export type ContractUpdateWithoutPropertyUnitInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  contractType?: Prisma.StringFieldUpdateOperationsInput | string
   contractNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPayment?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPaymentPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  principal?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  termMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   terminatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  paymentPlan?: Prisma.PaymentPlanUpdateOneWithoutContractNestedInput
-  buyer?: Prisma.UserUpdateOneWithoutContractsNestedInput
+  buyer?: Prisma.UserUpdateOneRequiredWithoutContractsNestedInput
   seller?: Prisma.UserUpdateOneWithoutSoldContractsNestedInput
+  paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneWithoutContractsNestedInput
+  phases?: Prisma.ContractPhaseUpdateManyWithoutContractNestedInput
   documents?: Prisma.ContractDocumentUpdateManyWithoutContractNestedInput
+  payments?: Prisma.ContractPaymentUpdateManyWithoutContractNestedInput
+  transitions?: Prisma.ContractTransitionUpdateManyWithoutContractNestedInput
+  events?: Prisma.ContractEventUpdateManyWithoutContractNestedInput
 }
 
-export type ContractUncheckedUpdateWithoutPropertyInput = {
+export type ContractUncheckedUpdateWithoutPropertyUnitInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  buyerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  buyerId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contractNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPayment?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPaymentPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  principal?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  termMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   terminatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  phases?: Prisma.ContractPhaseUncheckedUpdateManyWithoutContractNestedInput
   documents?: Prisma.ContractDocumentUncheckedUpdateManyWithoutContractNestedInput
+  payments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutContractNestedInput
+  transitions?: Prisma.ContractTransitionUncheckedUpdateManyWithoutContractNestedInput
+  events?: Prisma.ContractEventUncheckedUpdateManyWithoutContractNestedInput
 }
 
-export type ContractUncheckedUpdateManyWithoutPropertyInput = {
+export type ContractUncheckedUpdateManyWithoutPropertyUnitInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  buyerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  buyerId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contractNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPayment?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPaymentPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  principal?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  termMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ContractCreateManyPaymentMethodInput = {
+  id?: string
+  propertyUnitId: string
+  buyerId: string
+  sellerId?: string | null
+  contractNumber: string
+  title: string
+  description?: string | null
+  contractType: string
+  totalAmount: number
+  downPayment?: number
+  downPaymentPaid?: number
+  principal?: number | null
+  interestRate?: number | null
+  termMonths?: number | null
+  periodicPayment?: number | null
+  totalPaidToDate?: number
+  totalInterestPaid?: number
+  status?: string
+  state?: string
+  currentPhaseId?: string | null
+  nextPaymentDueDate?: Date | string | null
+  lastReminderSentAt?: Date | string | null
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  signedAt?: Date | string | null
+  terminatedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ContractUpdateWithoutPaymentMethodInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  contractNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPayment?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPaymentPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  principal?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  termMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  propertyUnit?: Prisma.PropertyUnitUpdateOneRequiredWithoutContractsNestedInput
+  buyer?: Prisma.UserUpdateOneRequiredWithoutContractsNestedInput
+  seller?: Prisma.UserUpdateOneWithoutSoldContractsNestedInput
+  phases?: Prisma.ContractPhaseUpdateManyWithoutContractNestedInput
+  documents?: Prisma.ContractDocumentUpdateManyWithoutContractNestedInput
+  payments?: Prisma.ContractPaymentUpdateManyWithoutContractNestedInput
+  transitions?: Prisma.ContractTransitionUpdateManyWithoutContractNestedInput
+  events?: Prisma.ContractEventUpdateManyWithoutContractNestedInput
+}
+
+export type ContractUncheckedUpdateWithoutPaymentMethodInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  propertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
+  buyerId?: Prisma.StringFieldUpdateOperationsInput | string
+  sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPayment?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPaymentPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  principal?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  termMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  phases?: Prisma.ContractPhaseUncheckedUpdateManyWithoutContractNestedInput
+  documents?: Prisma.ContractDocumentUncheckedUpdateManyWithoutContractNestedInput
+  payments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutContractNestedInput
+  transitions?: Prisma.ContractTransitionUncheckedUpdateManyWithoutContractNestedInput
+  events?: Prisma.ContractEventUncheckedUpdateManyWithoutContractNestedInput
+}
+
+export type ContractUncheckedUpdateManyWithoutPaymentMethodInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  propertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
+  buyerId?: Prisma.StringFieldUpdateOperationsInput | string
+  sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPayment?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPaymentPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  principal?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  termMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1387,11 +2997,19 @@ export type ContractUncheckedUpdateManyWithoutPropertyInput = {
  */
 
 export type ContractCountOutputType = {
+  phases: number
   documents: number
+  payments: number
+  transitions: number
+  events: number
 }
 
 export type ContractCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  phases?: boolean | ContractCountOutputTypeCountPhasesArgs
   documents?: boolean | ContractCountOutputTypeCountDocumentsArgs
+  payments?: boolean | ContractCountOutputTypeCountPaymentsArgs
+  transitions?: boolean | ContractCountOutputTypeCountTransitionsArgs
+  events?: boolean | ContractCountOutputTypeCountEventsArgs
 }
 
 /**
@@ -1407,33 +3025,78 @@ export type ContractCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Ext
 /**
  * ContractCountOutputType without action
  */
+export type ContractCountOutputTypeCountPhasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ContractPhaseWhereInput
+}
+
+/**
+ * ContractCountOutputType without action
+ */
 export type ContractCountOutputTypeCountDocumentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ContractDocumentWhereInput
+}
+
+/**
+ * ContractCountOutputType without action
+ */
+export type ContractCountOutputTypeCountPaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ContractPaymentWhereInput
+}
+
+/**
+ * ContractCountOutputType without action
+ */
+export type ContractCountOutputTypeCountTransitionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ContractTransitionWhereInput
+}
+
+/**
+ * ContractCountOutputType without action
+ */
+export type ContractCountOutputTypeCountEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ContractEventWhereInput
 }
 
 
 export type ContractSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  propertyId?: boolean
-  paymentPlanId?: boolean
+  propertyUnitId?: boolean
   buyerId?: boolean
   sellerId?: boolean
-  contractType?: boolean
+  paymentMethodId?: boolean
   contractNumber?: boolean
   title?: boolean
   description?: boolean
+  contractType?: boolean
+  totalAmount?: boolean
+  downPayment?: boolean
+  downPaymentPaid?: boolean
+  principal?: boolean
+  interestRate?: boolean
+  termMonths?: boolean
+  periodicPayment?: boolean
+  totalPaidToDate?: boolean
+  totalInterestPaid?: boolean
   status?: boolean
+  state?: boolean
+  currentPhaseId?: boolean
+  nextPaymentDueDate?: boolean
+  lastReminderSentAt?: boolean
   startDate?: boolean
   endDate?: boolean
   signedAt?: boolean
   terminatedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
-  paymentPlan?: boolean | Prisma.Contract$paymentPlanArgs<ExtArgs>
-  buyer?: boolean | Prisma.Contract$buyerArgs<ExtArgs>
+  propertyUnit?: boolean | Prisma.PropertyUnitDefaultArgs<ExtArgs>
+  buyer?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   seller?: boolean | Prisma.Contract$sellerArgs<ExtArgs>
+  paymentMethod?: boolean | Prisma.Contract$paymentMethodArgs<ExtArgs>
+  phases?: boolean | Prisma.Contract$phasesArgs<ExtArgs>
   documents?: boolean | Prisma.Contract$documentsArgs<ExtArgs>
+  payments?: boolean | Prisma.Contract$paymentsArgs<ExtArgs>
+  transitions?: boolean | Prisma.Contract$transitionsArgs<ExtArgs>
+  events?: boolean | Prisma.Contract$eventsArgs<ExtArgs>
   _count?: boolean | Prisma.ContractCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["contract"]>
 
@@ -1441,15 +3104,28 @@ export type ContractSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
 
 export type ContractSelectScalar = {
   id?: boolean
-  propertyId?: boolean
-  paymentPlanId?: boolean
+  propertyUnitId?: boolean
   buyerId?: boolean
   sellerId?: boolean
-  contractType?: boolean
+  paymentMethodId?: boolean
   contractNumber?: boolean
   title?: boolean
   description?: boolean
+  contractType?: boolean
+  totalAmount?: boolean
+  downPayment?: boolean
+  downPaymentPaid?: boolean
+  principal?: boolean
+  interestRate?: boolean
+  termMonths?: boolean
+  periodicPayment?: boolean
+  totalPaidToDate?: boolean
+  totalInterestPaid?: boolean
   status?: boolean
+  state?: boolean
+  currentPhaseId?: boolean
+  nextPaymentDueDate?: boolean
+  lastReminderSentAt?: boolean
   startDate?: boolean
   endDate?: boolean
   signedAt?: boolean
@@ -1458,36 +3134,57 @@ export type ContractSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ContractOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "propertyId" | "paymentPlanId" | "buyerId" | "sellerId" | "contractType" | "contractNumber" | "title" | "description" | "status" | "startDate" | "endDate" | "signedAt" | "terminatedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["contract"]>
+export type ContractOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "propertyUnitId" | "buyerId" | "sellerId" | "paymentMethodId" | "contractNumber" | "title" | "description" | "contractType" | "totalAmount" | "downPayment" | "downPaymentPaid" | "principal" | "interestRate" | "termMonths" | "periodicPayment" | "totalPaidToDate" | "totalInterestPaid" | "status" | "state" | "currentPhaseId" | "nextPaymentDueDate" | "lastReminderSentAt" | "startDate" | "endDate" | "signedAt" | "terminatedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["contract"]>
 export type ContractInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
-  paymentPlan?: boolean | Prisma.Contract$paymentPlanArgs<ExtArgs>
-  buyer?: boolean | Prisma.Contract$buyerArgs<ExtArgs>
+  propertyUnit?: boolean | Prisma.PropertyUnitDefaultArgs<ExtArgs>
+  buyer?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   seller?: boolean | Prisma.Contract$sellerArgs<ExtArgs>
+  paymentMethod?: boolean | Prisma.Contract$paymentMethodArgs<ExtArgs>
+  phases?: boolean | Prisma.Contract$phasesArgs<ExtArgs>
   documents?: boolean | Prisma.Contract$documentsArgs<ExtArgs>
+  payments?: boolean | Prisma.Contract$paymentsArgs<ExtArgs>
+  transitions?: boolean | Prisma.Contract$transitionsArgs<ExtArgs>
+  events?: boolean | Prisma.Contract$eventsArgs<ExtArgs>
   _count?: boolean | Prisma.ContractCountOutputTypeDefaultArgs<ExtArgs>
 }
 
 export type $ContractPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Contract"
   objects: {
-    property: Prisma.$PropertyPayload<ExtArgs>
-    paymentPlan: Prisma.$PaymentPlanPayload<ExtArgs> | null
-    buyer: Prisma.$UserPayload<ExtArgs> | null
+    propertyUnit: Prisma.$PropertyUnitPayload<ExtArgs>
+    buyer: Prisma.$UserPayload<ExtArgs>
     seller: Prisma.$UserPayload<ExtArgs> | null
+    paymentMethod: Prisma.$PropertyPaymentMethodPayload<ExtArgs> | null
+    phases: Prisma.$ContractPhasePayload<ExtArgs>[]
     documents: Prisma.$ContractDocumentPayload<ExtArgs>[]
+    payments: Prisma.$ContractPaymentPayload<ExtArgs>[]
+    transitions: Prisma.$ContractTransitionPayload<ExtArgs>[]
+    events: Prisma.$ContractEventPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    propertyId: string
-    paymentPlanId: string | null
-    buyerId: string | null
+    propertyUnitId: string
+    buyerId: string
     sellerId: string | null
-    contractType: string
+    paymentMethodId: string | null
     contractNumber: string
     title: string
     description: string | null
+    contractType: string
+    totalAmount: number
+    downPayment: number
+    downPaymentPaid: number
+    principal: number | null
+    interestRate: number | null
+    termMonths: number | null
+    periodicPayment: number | null
+    totalPaidToDate: number
+    totalInterestPaid: number
     status: string
+    state: string
+    currentPhaseId: string | null
+    nextPaymentDueDate: Date | null
+    lastReminderSentAt: Date | null
     startDate: Date | null
     endDate: Date | null
     signedAt: Date | null
@@ -1834,11 +3531,15 @@ readonly fields: ContractFieldRefs;
  */
 export interface Prisma__ContractClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  property<T extends Prisma.PropertyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyDefaultArgs<ExtArgs>>): Prisma.Prisma__PropertyClient<runtime.Types.Result.GetResult<Prisma.$PropertyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  paymentPlan<T extends Prisma.Contract$paymentPlanArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contract$paymentPlanArgs<ExtArgs>>): Prisma.Prisma__PaymentPlanClient<runtime.Types.Result.GetResult<Prisma.$PaymentPlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  buyer<T extends Prisma.Contract$buyerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contract$buyerArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  propertyUnit<T extends Prisma.PropertyUnitDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyUnitDefaultArgs<ExtArgs>>): Prisma.Prisma__PropertyUnitClient<runtime.Types.Result.GetResult<Prisma.$PropertyUnitPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  buyer<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   seller<T extends Prisma.Contract$sellerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contract$sellerArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  paymentMethod<T extends Prisma.Contract$paymentMethodArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contract$paymentMethodArgs<ExtArgs>>): Prisma.Prisma__PropertyPaymentMethodClient<runtime.Types.Result.GetResult<Prisma.$PropertyPaymentMethodPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  phases<T extends Prisma.Contract$phasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contract$phasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContractPhasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   documents<T extends Prisma.Contract$documentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contract$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContractDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  payments<T extends Prisma.Contract$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contract$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContractPaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  transitions<T extends Prisma.Contract$transitionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contract$transitionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContractTransitionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  events<T extends Prisma.Contract$eventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contract$eventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContractEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1869,15 +3570,28 @@ export interface Prisma__ContractClient<T, Null = never, ExtArgs extends runtime
  */
 export interface ContractFieldRefs {
   readonly id: Prisma.FieldRef<"Contract", 'String'>
-  readonly propertyId: Prisma.FieldRef<"Contract", 'String'>
-  readonly paymentPlanId: Prisma.FieldRef<"Contract", 'String'>
+  readonly propertyUnitId: Prisma.FieldRef<"Contract", 'String'>
   readonly buyerId: Prisma.FieldRef<"Contract", 'String'>
   readonly sellerId: Prisma.FieldRef<"Contract", 'String'>
-  readonly contractType: Prisma.FieldRef<"Contract", 'String'>
+  readonly paymentMethodId: Prisma.FieldRef<"Contract", 'String'>
   readonly contractNumber: Prisma.FieldRef<"Contract", 'String'>
   readonly title: Prisma.FieldRef<"Contract", 'String'>
   readonly description: Prisma.FieldRef<"Contract", 'String'>
+  readonly contractType: Prisma.FieldRef<"Contract", 'String'>
+  readonly totalAmount: Prisma.FieldRef<"Contract", 'Float'>
+  readonly downPayment: Prisma.FieldRef<"Contract", 'Float'>
+  readonly downPaymentPaid: Prisma.FieldRef<"Contract", 'Float'>
+  readonly principal: Prisma.FieldRef<"Contract", 'Float'>
+  readonly interestRate: Prisma.FieldRef<"Contract", 'Float'>
+  readonly termMonths: Prisma.FieldRef<"Contract", 'Int'>
+  readonly periodicPayment: Prisma.FieldRef<"Contract", 'Float'>
+  readonly totalPaidToDate: Prisma.FieldRef<"Contract", 'Float'>
+  readonly totalInterestPaid: Prisma.FieldRef<"Contract", 'Float'>
   readonly status: Prisma.FieldRef<"Contract", 'String'>
+  readonly state: Prisma.FieldRef<"Contract", 'String'>
+  readonly currentPhaseId: Prisma.FieldRef<"Contract", 'String'>
+  readonly nextPaymentDueDate: Prisma.FieldRef<"Contract", 'DateTime'>
+  readonly lastReminderSentAt: Prisma.FieldRef<"Contract", 'DateTime'>
   readonly startDate: Prisma.FieldRef<"Contract", 'DateTime'>
   readonly endDate: Prisma.FieldRef<"Contract", 'DateTime'>
   readonly signedAt: Prisma.FieldRef<"Contract", 'DateTime'>
@@ -2227,44 +3941,6 @@ export type ContractDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
 }
 
 /**
- * Contract.paymentPlan
- */
-export type Contract$paymentPlanArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the PaymentPlan
-   */
-  select?: Prisma.PaymentPlanSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the PaymentPlan
-   */
-  omit?: Prisma.PaymentPlanOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PaymentPlanInclude<ExtArgs> | null
-  where?: Prisma.PaymentPlanWhereInput
-}
-
-/**
- * Contract.buyer
- */
-export type Contract$buyerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the User
-   */
-  select?: Prisma.UserSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the User
-   */
-  omit?: Prisma.UserOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.UserInclude<ExtArgs> | null
-  where?: Prisma.UserWhereInput
-}
-
-/**
  * Contract.seller
  */
 export type Contract$sellerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2281,6 +3957,49 @@ export type Contract$sellerArgs<ExtArgs extends runtime.Types.Extensions.Interna
    */
   include?: Prisma.UserInclude<ExtArgs> | null
   where?: Prisma.UserWhereInput
+}
+
+/**
+ * Contract.paymentMethod
+ */
+export type Contract$paymentMethodArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PropertyPaymentMethod
+   */
+  select?: Prisma.PropertyPaymentMethodSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PropertyPaymentMethod
+   */
+  omit?: Prisma.PropertyPaymentMethodOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PropertyPaymentMethodInclude<ExtArgs> | null
+  where?: Prisma.PropertyPaymentMethodWhereInput
+}
+
+/**
+ * Contract.phases
+ */
+export type Contract$phasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ContractPhase
+   */
+  select?: Prisma.ContractPhaseSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ContractPhase
+   */
+  omit?: Prisma.ContractPhaseOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ContractPhaseInclude<ExtArgs> | null
+  where?: Prisma.ContractPhaseWhereInput
+  orderBy?: Prisma.ContractPhaseOrderByWithRelationInput | Prisma.ContractPhaseOrderByWithRelationInput[]
+  cursor?: Prisma.ContractPhaseWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ContractPhaseScalarFieldEnum | Prisma.ContractPhaseScalarFieldEnum[]
 }
 
 /**
@@ -2305,6 +4024,78 @@ export type Contract$documentsArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.ContractDocumentScalarFieldEnum | Prisma.ContractDocumentScalarFieldEnum[]
+}
+
+/**
+ * Contract.payments
+ */
+export type Contract$paymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ContractPayment
+   */
+  select?: Prisma.ContractPaymentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ContractPayment
+   */
+  omit?: Prisma.ContractPaymentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ContractPaymentInclude<ExtArgs> | null
+  where?: Prisma.ContractPaymentWhereInput
+  orderBy?: Prisma.ContractPaymentOrderByWithRelationInput | Prisma.ContractPaymentOrderByWithRelationInput[]
+  cursor?: Prisma.ContractPaymentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ContractPaymentScalarFieldEnum | Prisma.ContractPaymentScalarFieldEnum[]
+}
+
+/**
+ * Contract.transitions
+ */
+export type Contract$transitionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ContractTransition
+   */
+  select?: Prisma.ContractTransitionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ContractTransition
+   */
+  omit?: Prisma.ContractTransitionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ContractTransitionInclude<ExtArgs> | null
+  where?: Prisma.ContractTransitionWhereInput
+  orderBy?: Prisma.ContractTransitionOrderByWithRelationInput | Prisma.ContractTransitionOrderByWithRelationInput[]
+  cursor?: Prisma.ContractTransitionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ContractTransitionScalarFieldEnum | Prisma.ContractTransitionScalarFieldEnum[]
+}
+
+/**
+ * Contract.events
+ */
+export type Contract$eventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ContractEvent
+   */
+  select?: Prisma.ContractEventSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ContractEvent
+   */
+  omit?: Prisma.ContractEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ContractEventInclude<ExtArgs> | null
+  where?: Prisma.ContractEventWhereInput
+  orderBy?: Prisma.ContractEventOrderByWithRelationInput | Prisma.ContractEventOrderByWithRelationInput[]
+  cursor?: Prisma.ContractEventWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ContractEventScalarFieldEnum | Prisma.ContractEventScalarFieldEnum[]
 }
 
 /**
