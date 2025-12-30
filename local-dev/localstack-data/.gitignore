@@ -1,0 +1,6 @@
+# Local Development Data
+# This directory is used by LocalStack and MySQL for persistent data
+# It is ignored by git
+
+*
+!.gitignore

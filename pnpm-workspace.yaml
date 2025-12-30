@@ -8,3 +8,4 @@ packages:
   - 'services/property-service'
   - 'services/authorizer-service'
   - 'infrastructure'
+  - 'local-dev'
