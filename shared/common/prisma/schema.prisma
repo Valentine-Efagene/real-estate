@@ -59,6 +59,11 @@ model User {
   stepApprovals ContractPhaseStepApproval[] @relation("PhaseStepApprover")
   uploadedDocs  ContractDocument[]          @relation("DocumentUploader")
 
+  // Prequalification and payment method changes
+  prequalifications           Prequalification[]
+  paymentMethodChangeRequests PaymentMethodChangeRequest[] @relation("ChangeRequestor")
+  reviewedChangeRequests      PaymentMethodChangeRequest[] @relation("ChangeReviewer")
+
   @@index([email])
   @@index([tenantId])
   @@map("users")
@@ -127,6 +132,11 @@ model Tenant {
   paymentPlans   PaymentPlan[]
   paymentMethods PropertyPaymentMethod[]
   contracts      Contract[]
+
+  // Prequalification and payment method changes
+  prequalifications           Prequalification[]
+  paymentMethodChangeRequests PaymentMethodChangeRequest[]
+  documentRequirementRules    DocumentRequirementRule[]
 
   @@index([subdomain])
   @@map("tenants")
@@ -303,11 +313,12 @@ model Property {
   updatedAt      DateTime       @updatedAt
 
   // Relations
-  documents      PropertyDocument[]
-  media          PropertyMedia[]             @relation("PropertyMedia")
-  amenities      PropertyAmenity[] // Shared amenities (gym, pool, security)
-  paymentMethods PropertyPaymentMethodLink[]
-  variants       PropertyVariant[]
+  documents         PropertyDocument[]
+  media             PropertyMedia[]             @relation("PropertyMedia")
+  amenities         PropertyAmenity[] // Shared amenities (gym, pool, security)
+  paymentMethods    PropertyPaymentMethodLink[]
+  variants          PropertyVariant[]
+  prequalifications Prequalification[]
 
   @@index([tenantId])
   @@index([userId])
@@ -552,6 +563,18 @@ model PropertyPaymentMethod {
   // Contracts using this method
   contracts  Contract[]
 
+  // Prequalifications for this payment method
+  prequalifications Prequalification[]
+
+  // Payment method change tracking
+  changeRequestsFrom PaymentMethodChangeRequest[] @relation("ChangeFromMethod")
+  changeRequestsTo   PaymentMethodChangeRequest[] @relation("ChangeToMethod")
+
+  // Document requirement rules
+  documentRules   DocumentRequirementRule[] @relation("RulePaymentMethod")
+  changeRulesFrom DocumentRequirementRule[] @relation("RuleFromMethod")
+  changeRulesTo   DocumentRequirementRule[] @relation("RuleToMethod")
+
   @@unique([tenantId, name]) // Unique per tenant
   @@index([tenantId])
   @@map("property_payment_methods")
@@ -671,6 +694,11 @@ model Contract {
   payments    ContractPayment[]
   transitions ContractTransition[]
   events      ContractEvent[]
+
+  // Prequalification that led to this contract (optional)
+  prequalification            Prequalification?
+  // Payment method change requests for this contract
+  paymentMethodChangeRequests PaymentMethodChangeRequest[]
 
   @@index([tenantId])
   @@index([propertyUnitId])
@@ -912,6 +940,198 @@ model ContractEvent {
 
   @@index([contractId])
   @@map("contract_events")
+}
+
+// =============================================================================
+// PREQUALIFICATION - Eligibility assessment before contract creation
+// =============================================================================
+// Prequalification is a separate aggregate that evaluates a user's eligibility
+// for a specific product (property + payment method). It captures their answers
+// to eligibility questions and calculates a score. Once approved, it can be
+// linked to a Contract to provide context about how the buyer qualified.
+// =============================================================================
+
+enum PrequalificationStatus {
+  DRAFT
+  SUBMITTED
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+  EXPIRED
+}
+
+model Prequalification {
+  id       String @id @default(cuid())
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  userId   String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // What they're applying for
+  propertyId      String
+  property        Property              @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  paymentMethodId String
+  paymentMethod   PropertyPaymentMethod @relation(fields: [paymentMethodId], references: [id])
+
+  // Questionnaire responses and scoring
+  answers Json // Array of {questionId, answer, weight, score}
+  score   Float? // Computed eligibility score (0-100)
+
+  // Financial assessment
+  requestedAmount     Float? // How much they want to finance
+  monthlyIncome       Float? // Self-reported monthly income
+  monthlyExpenses     Float? // Self-reported monthly expenses
+  debtToIncomeRatio   Float? // Computed DTI
+  suggestedTermMonths Int? // System-suggested term based on affordability
+
+  // Status tracking
+  status     PrequalificationStatus @default(DRAFT)
+  notes      String?                @db.Text // Admin notes
+  reviewedBy String? // Admin who reviewed
+  reviewedAt DateTime?
+  expiresAt  DateTime? // Prequalification validity period
+
+  // If approved, may be linked to eventual contract
+  contractId String?   @unique
+  contract   Contract? @relation(fields: [contractId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tenantId])
+  @@index([userId])
+  @@index([propertyId])
+  @@index([status])
+  @@map("prequalifications")
+}
+
+// =============================================================================
+// PAYMENT METHOD CHANGE REQUEST - Mid-contract payment method changes
+// =============================================================================
+// When a user wants to change their payment method after contract creation,
+// this aggregate tracks the request, required documentation, approvals, and
+// final execution. Different from-to combinations may require different docs.
+// =============================================================================
+
+enum PaymentMethodChangeStatus {
+  PENDING_DOCUMENTS
+  DOCUMENTS_SUBMITTED
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+  EXECUTED
+  CANCELLED
+}
+
+model PaymentMethodChangeRequest {
+  id         String   @id @default(cuid())
+  tenantId   String
+  tenant     Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  contractId String
+  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+
+  // The change being requested
+  fromPaymentMethodId String
+  fromPaymentMethod   PropertyPaymentMethod @relation("ChangeFromMethod", fields: [fromPaymentMethodId], references: [id])
+  toPaymentMethodId   String
+  toPaymentMethod     PropertyPaymentMethod @relation("ChangeToMethod", fields: [toPaymentMethodId], references: [id])
+
+  // Who requested and why
+  requestorId String
+  requestor   User    @relation("ChangeRequestor", fields: [requestorId], references: [id])
+  reason      String? @db.Text
+
+  // Documentation requirements (determined by DocumentRequirementRule)
+  requiredDocumentTypes String? // CSV: BANK_STATEMENT,INCOME_PROOF,NEW_EMPLOYER_LETTER
+  submittedDocuments    Json? // [{type, s3Key, uploadedAt, status}]
+
+  // Financial impact assessment
+  currentOutstanding   Float? // Outstanding balance at time of request
+  newTermMonths        Int? // New term if applicable
+  newInterestRate      Float? // New rate if applicable
+  newMonthlyPayment    Float? // Projected new payment
+  penaltyAmount        Float? // Early change penalty if applicable
+  financialImpactNotes String? @db.Text
+
+  // Status and workflow
+  status      PaymentMethodChangeStatus @default(PENDING_DOCUMENTS)
+  reviewerId  String?
+  reviewer    User?                     @relation("ChangeReviewer", fields: [reviewerId], references: [id])
+  reviewNotes String?                   @db.Text
+  reviewedAt  DateTime?
+
+  // Execution details
+  executedAt        DateTime?
+  previousPhaseData Json? // Snapshot of phases before change
+  newPhaseData      Json? // New phases created after change
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tenantId])
+  @@index([contractId])
+  @@index([status])
+  @@index([requestorId])
+  @@map("payment_method_change_requests")
+}
+
+// =============================================================================
+// DOCUMENT REQUIREMENT RULES - Configurable document requirements
+// =============================================================================
+// Admins can configure which documents are required for specific scenarios:
+// - Prequalification for a payment method type
+// - Contract phases
+// - Payment method changes (from-to combinations)
+// This allows tenants to customize documentation workflows per product.
+// =============================================================================
+
+enum DocumentRequirementContext {
+  PREQUALIFICATION // During prequalification
+  CONTRACT_PHASE // During a contract phase
+  PAYMENT_METHOD_CHANGE // When changing payment method mid-contract
+}
+
+model DocumentRequirementRule {
+  id       String @id @default(cuid())
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  // Rule context
+  context DocumentRequirementContext
+
+  // Scoping (which situations this rule applies to)
+  // For PREQUALIFICATION: paymentMethodId
+  // For CONTRACT_PHASE: phaseType
+  // For PAYMENT_METHOD_CHANGE: fromMethodId + toMethodId
+  paymentMethodId     String?
+  paymentMethod       PropertyPaymentMethod? @relation("RulePaymentMethod", fields: [paymentMethodId], references: [id])
+  phaseType           String? // KYC, VERIFICATION, DOWNPAYMENT, etc.
+  fromPaymentMethodId String?
+  fromPaymentMethod   PropertyPaymentMethod? @relation("RuleFromMethod", fields: [fromPaymentMethodId], references: [id])
+  toPaymentMethodId   String?
+  toPaymentMethod     PropertyPaymentMethod? @relation("RuleToMethod", fields: [toPaymentMethodId], references: [id])
+
+  // Document requirements
+  documentType     String // ID_CARD, PASSPORT, BANK_STATEMENT, INCOME_PROOF, etc.
+  isRequired       Boolean @default(true)
+  description      String? // Instructions for the user
+  maxSizeBytes     Int? // Max file size allowed
+  allowedMimeTypes String? // CSV: application/pdf,image/jpeg,image/png
+
+  // Validation rules
+  expiryDays           Int? // Document must not be older than X days
+  requiresManualReview Boolean @default(false)
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tenantId])
+  @@index([context])
+  @@index([paymentMethodId])
+  @@index([phaseType])
+  @@index([fromPaymentMethodId, toPaymentMethodId])
+  @@map("document_requirement_rules")
 }
 
 // =============================================================================

@@ -356,6 +356,7 @@ export type PropertyWhereInput = {
   amenities?: Prisma.PropertyAmenityListRelationFilter
   paymentMethods?: Prisma.PropertyPaymentMethodLinkListRelationFilter
   variants?: Prisma.PropertyVariantListRelationFilter
+  prequalifications?: Prisma.PrequalificationListRelationFilter
 }
 
 export type PropertyOrderByWithRelationInput = {
@@ -388,6 +389,7 @@ export type PropertyOrderByWithRelationInput = {
   amenities?: Prisma.PropertyAmenityOrderByRelationAggregateInput
   paymentMethods?: Prisma.PropertyPaymentMethodLinkOrderByRelationAggregateInput
   variants?: Prisma.PropertyVariantOrderByRelationAggregateInput
+  prequalifications?: Prisma.PrequalificationOrderByRelationAggregateInput
   _relevance?: Prisma.PropertyOrderByRelevanceInput
 }
 
@@ -424,6 +426,7 @@ export type PropertyWhereUniqueInput = Prisma.AtLeast<{
   amenities?: Prisma.PropertyAmenityListRelationFilter
   paymentMethods?: Prisma.PropertyPaymentMethodLinkListRelationFilter
   variants?: Prisma.PropertyVariantListRelationFilter
+  prequalifications?: Prisma.PrequalificationListRelationFilter
 }, "id">
 
 export type PropertyOrderByWithAggregationInput = {
@@ -509,6 +512,7 @@ export type PropertyCreateInput = {
   amenities?: Prisma.PropertyAmenityCreateNestedManyWithoutPropertyInput
   paymentMethods?: Prisma.PropertyPaymentMethodLinkCreateNestedManyWithoutPropertyInput
   variants?: Prisma.PropertyVariantCreateNestedManyWithoutPropertyInput
+  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutPropertyInput
 }
 
 export type PropertyUncheckedCreateInput = {
@@ -538,6 +542,7 @@ export type PropertyUncheckedCreateInput = {
   amenities?: Prisma.PropertyAmenityUncheckedCreateNestedManyWithoutPropertyInput
   paymentMethods?: Prisma.PropertyPaymentMethodLinkUncheckedCreateNestedManyWithoutPropertyInput
   variants?: Prisma.PropertyVariantUncheckedCreateNestedManyWithoutPropertyInput
+  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutPropertyInput
 }
 
 export type PropertyUpdateInput = {
@@ -567,6 +572,7 @@ export type PropertyUpdateInput = {
   amenities?: Prisma.PropertyAmenityUpdateManyWithoutPropertyNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodLinkUpdateManyWithoutPropertyNestedInput
   variants?: Prisma.PropertyVariantUpdateManyWithoutPropertyNestedInput
+  prequalifications?: Prisma.PrequalificationUpdateManyWithoutPropertyNestedInput
 }
 
 export type PropertyUncheckedUpdateInput = {
@@ -596,6 +602,7 @@ export type PropertyUncheckedUpdateInput = {
   amenities?: Prisma.PropertyAmenityUncheckedUpdateManyWithoutPropertyNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodLinkUncheckedUpdateManyWithoutPropertyNestedInput
   variants?: Prisma.PropertyVariantUncheckedUpdateManyWithoutPropertyNestedInput
+  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutPropertyNestedInput
 }
 
 export type PropertyCreateManyInput = {
@@ -974,6 +981,20 @@ export type PropertyUpdateOneRequiredWithoutPaymentMethodsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.PropertyUpdateToOneWithWhereWithoutPaymentMethodsInput, Prisma.PropertyUpdateWithoutPaymentMethodsInput>, Prisma.PropertyUncheckedUpdateWithoutPaymentMethodsInput>
 }
 
+export type PropertyCreateNestedOneWithoutPrequalificationsInput = {
+  create?: Prisma.XOR<Prisma.PropertyCreateWithoutPrequalificationsInput, Prisma.PropertyUncheckedCreateWithoutPrequalificationsInput>
+  connectOrCreate?: Prisma.PropertyCreateOrConnectWithoutPrequalificationsInput
+  connect?: Prisma.PropertyWhereUniqueInput
+}
+
+export type PropertyUpdateOneRequiredWithoutPrequalificationsNestedInput = {
+  create?: Prisma.XOR<Prisma.PropertyCreateWithoutPrequalificationsInput, Prisma.PropertyUncheckedCreateWithoutPrequalificationsInput>
+  connectOrCreate?: Prisma.PropertyCreateOrConnectWithoutPrequalificationsInput
+  upsert?: Prisma.PropertyUpsertWithoutPrequalificationsInput
+  connect?: Prisma.PropertyWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PropertyUpdateToOneWithWhereWithoutPrequalificationsInput, Prisma.PropertyUpdateWithoutPrequalificationsInput>, Prisma.PropertyUncheckedUpdateWithoutPrequalificationsInput>
+}
+
 export type PropertyCreateWithoutUserInput = {
   id?: string
   title: string
@@ -1000,6 +1021,7 @@ export type PropertyCreateWithoutUserInput = {
   amenities?: Prisma.PropertyAmenityCreateNestedManyWithoutPropertyInput
   paymentMethods?: Prisma.PropertyPaymentMethodLinkCreateNestedManyWithoutPropertyInput
   variants?: Prisma.PropertyVariantCreateNestedManyWithoutPropertyInput
+  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutPropertyInput
 }
 
 export type PropertyUncheckedCreateWithoutUserInput = {
@@ -1028,6 +1050,7 @@ export type PropertyUncheckedCreateWithoutUserInput = {
   amenities?: Prisma.PropertyAmenityUncheckedCreateNestedManyWithoutPropertyInput
   paymentMethods?: Prisma.PropertyPaymentMethodLinkUncheckedCreateNestedManyWithoutPropertyInput
   variants?: Prisma.PropertyVariantUncheckedCreateNestedManyWithoutPropertyInput
+  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutPropertyInput
 }
 
 export type PropertyCreateOrConnectWithoutUserInput = {
@@ -1109,6 +1132,7 @@ export type PropertyCreateWithoutTenantInput = {
   amenities?: Prisma.PropertyAmenityCreateNestedManyWithoutPropertyInput
   paymentMethods?: Prisma.PropertyPaymentMethodLinkCreateNestedManyWithoutPropertyInput
   variants?: Prisma.PropertyVariantCreateNestedManyWithoutPropertyInput
+  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutPropertyInput
 }
 
 export type PropertyUncheckedCreateWithoutTenantInput = {
@@ -1137,6 +1161,7 @@ export type PropertyUncheckedCreateWithoutTenantInput = {
   amenities?: Prisma.PropertyAmenityUncheckedCreateNestedManyWithoutPropertyInput
   paymentMethods?: Prisma.PropertyPaymentMethodLinkUncheckedCreateNestedManyWithoutPropertyInput
   variants?: Prisma.PropertyVariantUncheckedCreateNestedManyWithoutPropertyInput
+  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutPropertyInput
 }
 
 export type PropertyCreateOrConnectWithoutTenantInput = {
@@ -1191,6 +1216,7 @@ export type PropertyCreateWithoutMediaInput = {
   amenities?: Prisma.PropertyAmenityCreateNestedManyWithoutPropertyInput
   paymentMethods?: Prisma.PropertyPaymentMethodLinkCreateNestedManyWithoutPropertyInput
   variants?: Prisma.PropertyVariantCreateNestedManyWithoutPropertyInput
+  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutPropertyInput
 }
 
 export type PropertyUncheckedCreateWithoutMediaInput = {
@@ -1219,6 +1245,7 @@ export type PropertyUncheckedCreateWithoutMediaInput = {
   amenities?: Prisma.PropertyAmenityUncheckedCreateNestedManyWithoutPropertyInput
   paymentMethods?: Prisma.PropertyPaymentMethodLinkUncheckedCreateNestedManyWithoutPropertyInput
   variants?: Prisma.PropertyVariantUncheckedCreateNestedManyWithoutPropertyInput
+  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutPropertyInput
 }
 
 export type PropertyCreateOrConnectWithoutMediaInput = {
@@ -1252,6 +1279,7 @@ export type PropertyCreateWithoutDisplayImageInput = {
   amenities?: Prisma.PropertyAmenityCreateNestedManyWithoutPropertyInput
   paymentMethods?: Prisma.PropertyPaymentMethodLinkCreateNestedManyWithoutPropertyInput
   variants?: Prisma.PropertyVariantCreateNestedManyWithoutPropertyInput
+  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutPropertyInput
 }
 
 export type PropertyUncheckedCreateWithoutDisplayImageInput = {
@@ -1280,6 +1308,7 @@ export type PropertyUncheckedCreateWithoutDisplayImageInput = {
   amenities?: Prisma.PropertyAmenityUncheckedCreateNestedManyWithoutPropertyInput
   paymentMethods?: Prisma.PropertyPaymentMethodLinkUncheckedCreateNestedManyWithoutPropertyInput
   variants?: Prisma.PropertyVariantUncheckedCreateNestedManyWithoutPropertyInput
+  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutPropertyInput
 }
 
 export type PropertyCreateOrConnectWithoutDisplayImageInput = {
@@ -1329,6 +1358,7 @@ export type PropertyUpdateWithoutMediaInput = {
   amenities?: Prisma.PropertyAmenityUpdateManyWithoutPropertyNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodLinkUpdateManyWithoutPropertyNestedInput
   variants?: Prisma.PropertyVariantUpdateManyWithoutPropertyNestedInput
+  prequalifications?: Prisma.PrequalificationUpdateManyWithoutPropertyNestedInput
 }
 
 export type PropertyUncheckedUpdateWithoutMediaInput = {
@@ -1357,6 +1387,7 @@ export type PropertyUncheckedUpdateWithoutMediaInput = {
   amenities?: Prisma.PropertyAmenityUncheckedUpdateManyWithoutPropertyNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodLinkUncheckedUpdateManyWithoutPropertyNestedInput
   variants?: Prisma.PropertyVariantUncheckedUpdateManyWithoutPropertyNestedInput
+  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutPropertyNestedInput
 }
 
 export type PropertyUpsertWithWhereUniqueWithoutDisplayImageInput = {
@@ -1401,6 +1432,7 @@ export type PropertyCreateWithoutDocumentsInput = {
   amenities?: Prisma.PropertyAmenityCreateNestedManyWithoutPropertyInput
   paymentMethods?: Prisma.PropertyPaymentMethodLinkCreateNestedManyWithoutPropertyInput
   variants?: Prisma.PropertyVariantCreateNestedManyWithoutPropertyInput
+  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutPropertyInput
 }
 
 export type PropertyUncheckedCreateWithoutDocumentsInput = {
@@ -1429,6 +1461,7 @@ export type PropertyUncheckedCreateWithoutDocumentsInput = {
   amenities?: Prisma.PropertyAmenityUncheckedCreateNestedManyWithoutPropertyInput
   paymentMethods?: Prisma.PropertyPaymentMethodLinkUncheckedCreateNestedManyWithoutPropertyInput
   variants?: Prisma.PropertyVariantUncheckedCreateNestedManyWithoutPropertyInput
+  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutPropertyInput
 }
 
 export type PropertyCreateOrConnectWithoutDocumentsInput = {
@@ -1473,6 +1506,7 @@ export type PropertyUpdateWithoutDocumentsInput = {
   amenities?: Prisma.PropertyAmenityUpdateManyWithoutPropertyNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodLinkUpdateManyWithoutPropertyNestedInput
   variants?: Prisma.PropertyVariantUpdateManyWithoutPropertyNestedInput
+  prequalifications?: Prisma.PrequalificationUpdateManyWithoutPropertyNestedInput
 }
 
 export type PropertyUncheckedUpdateWithoutDocumentsInput = {
@@ -1501,6 +1535,7 @@ export type PropertyUncheckedUpdateWithoutDocumentsInput = {
   amenities?: Prisma.PropertyAmenityUncheckedUpdateManyWithoutPropertyNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodLinkUncheckedUpdateManyWithoutPropertyNestedInput
   variants?: Prisma.PropertyVariantUncheckedUpdateManyWithoutPropertyNestedInput
+  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutPropertyNestedInput
 }
 
 export type PropertyCreateWithoutVariantsInput = {
@@ -1529,6 +1564,7 @@ export type PropertyCreateWithoutVariantsInput = {
   media?: Prisma.PropertyMediaCreateNestedManyWithoutPropertyInput
   amenities?: Prisma.PropertyAmenityCreateNestedManyWithoutPropertyInput
   paymentMethods?: Prisma.PropertyPaymentMethodLinkCreateNestedManyWithoutPropertyInput
+  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutPropertyInput
 }
 
 export type PropertyUncheckedCreateWithoutVariantsInput = {
@@ -1557,6 +1593,7 @@ export type PropertyUncheckedCreateWithoutVariantsInput = {
   media?: Prisma.PropertyMediaUncheckedCreateNestedManyWithoutPropertyInput
   amenities?: Prisma.PropertyAmenityUncheckedCreateNestedManyWithoutPropertyInput
   paymentMethods?: Prisma.PropertyPaymentMethodLinkUncheckedCreateNestedManyWithoutPropertyInput
+  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutPropertyInput
 }
 
 export type PropertyCreateOrConnectWithoutVariantsInput = {
@@ -1601,6 +1638,7 @@ export type PropertyUpdateWithoutVariantsInput = {
   media?: Prisma.PropertyMediaUpdateManyWithoutPropertyNestedInput
   amenities?: Prisma.PropertyAmenityUpdateManyWithoutPropertyNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodLinkUpdateManyWithoutPropertyNestedInput
+  prequalifications?: Prisma.PrequalificationUpdateManyWithoutPropertyNestedInput
 }
 
 export type PropertyUncheckedUpdateWithoutVariantsInput = {
@@ -1629,6 +1667,7 @@ export type PropertyUncheckedUpdateWithoutVariantsInput = {
   media?: Prisma.PropertyMediaUncheckedUpdateManyWithoutPropertyNestedInput
   amenities?: Prisma.PropertyAmenityUncheckedUpdateManyWithoutPropertyNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodLinkUncheckedUpdateManyWithoutPropertyNestedInput
+  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutPropertyNestedInput
 }
 
 export type PropertyCreateWithoutAmenitiesInput = {
@@ -1657,6 +1696,7 @@ export type PropertyCreateWithoutAmenitiesInput = {
   media?: Prisma.PropertyMediaCreateNestedManyWithoutPropertyInput
   paymentMethods?: Prisma.PropertyPaymentMethodLinkCreateNestedManyWithoutPropertyInput
   variants?: Prisma.PropertyVariantCreateNestedManyWithoutPropertyInput
+  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutPropertyInput
 }
 
 export type PropertyUncheckedCreateWithoutAmenitiesInput = {
@@ -1685,6 +1725,7 @@ export type PropertyUncheckedCreateWithoutAmenitiesInput = {
   media?: Prisma.PropertyMediaUncheckedCreateNestedManyWithoutPropertyInput
   paymentMethods?: Prisma.PropertyPaymentMethodLinkUncheckedCreateNestedManyWithoutPropertyInput
   variants?: Prisma.PropertyVariantUncheckedCreateNestedManyWithoutPropertyInput
+  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutPropertyInput
 }
 
 export type PropertyCreateOrConnectWithoutAmenitiesInput = {
@@ -1729,6 +1770,7 @@ export type PropertyUpdateWithoutAmenitiesInput = {
   media?: Prisma.PropertyMediaUpdateManyWithoutPropertyNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodLinkUpdateManyWithoutPropertyNestedInput
   variants?: Prisma.PropertyVariantUpdateManyWithoutPropertyNestedInput
+  prequalifications?: Prisma.PrequalificationUpdateManyWithoutPropertyNestedInput
 }
 
 export type PropertyUncheckedUpdateWithoutAmenitiesInput = {
@@ -1757,6 +1799,7 @@ export type PropertyUncheckedUpdateWithoutAmenitiesInput = {
   media?: Prisma.PropertyMediaUncheckedUpdateManyWithoutPropertyNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodLinkUncheckedUpdateManyWithoutPropertyNestedInput
   variants?: Prisma.PropertyVariantUncheckedUpdateManyWithoutPropertyNestedInput
+  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutPropertyNestedInput
 }
 
 export type PropertyCreateWithoutPaymentMethodsInput = {
@@ -1785,6 +1828,7 @@ export type PropertyCreateWithoutPaymentMethodsInput = {
   media?: Prisma.PropertyMediaCreateNestedManyWithoutPropertyInput
   amenities?: Prisma.PropertyAmenityCreateNestedManyWithoutPropertyInput
   variants?: Prisma.PropertyVariantCreateNestedManyWithoutPropertyInput
+  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutPropertyInput
 }
 
 export type PropertyUncheckedCreateWithoutPaymentMethodsInput = {
@@ -1813,6 +1857,7 @@ export type PropertyUncheckedCreateWithoutPaymentMethodsInput = {
   media?: Prisma.PropertyMediaUncheckedCreateNestedManyWithoutPropertyInput
   amenities?: Prisma.PropertyAmenityUncheckedCreateNestedManyWithoutPropertyInput
   variants?: Prisma.PropertyVariantUncheckedCreateNestedManyWithoutPropertyInput
+  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutPropertyInput
 }
 
 export type PropertyCreateOrConnectWithoutPaymentMethodsInput = {
@@ -1857,6 +1902,7 @@ export type PropertyUpdateWithoutPaymentMethodsInput = {
   media?: Prisma.PropertyMediaUpdateManyWithoutPropertyNestedInput
   amenities?: Prisma.PropertyAmenityUpdateManyWithoutPropertyNestedInput
   variants?: Prisma.PropertyVariantUpdateManyWithoutPropertyNestedInput
+  prequalifications?: Prisma.PrequalificationUpdateManyWithoutPropertyNestedInput
 }
 
 export type PropertyUncheckedUpdateWithoutPaymentMethodsInput = {
@@ -1884,6 +1930,139 @@ export type PropertyUncheckedUpdateWithoutPaymentMethodsInput = {
   documents?: Prisma.PropertyDocumentUncheckedUpdateManyWithoutPropertyNestedInput
   media?: Prisma.PropertyMediaUncheckedUpdateManyWithoutPropertyNestedInput
   amenities?: Prisma.PropertyAmenityUncheckedUpdateManyWithoutPropertyNestedInput
+  variants?: Prisma.PropertyVariantUncheckedUpdateManyWithoutPropertyNestedInput
+  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutPropertyNestedInput
+}
+
+export type PropertyCreateWithoutPrequalificationsInput = {
+  id?: string
+  title: string
+  category: string
+  propertyType: string
+  country: string
+  currency: string
+  city: string
+  district?: string | null
+  zipCode?: string | null
+  streetAddress?: string | null
+  longitude?: number | null
+  latitude?: number | null
+  status?: string
+  description?: string | null
+  isPublished?: boolean
+  publishedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutPropertiesInput
+  user: Prisma.UserCreateNestedOneWithoutPropertiesInput
+  displayImage?: Prisma.PropertyMediaCreateNestedOneWithoutDisplayForPropertiesInput
+  documents?: Prisma.PropertyDocumentCreateNestedManyWithoutPropertyInput
+  media?: Prisma.PropertyMediaCreateNestedManyWithoutPropertyInput
+  amenities?: Prisma.PropertyAmenityCreateNestedManyWithoutPropertyInput
+  paymentMethods?: Prisma.PropertyPaymentMethodLinkCreateNestedManyWithoutPropertyInput
+  variants?: Prisma.PropertyVariantCreateNestedManyWithoutPropertyInput
+}
+
+export type PropertyUncheckedCreateWithoutPrequalificationsInput = {
+  id?: string
+  tenantId: string
+  userId: string
+  title: string
+  category: string
+  propertyType: string
+  country: string
+  currency: string
+  city: string
+  district?: string | null
+  zipCode?: string | null
+  streetAddress?: string | null
+  longitude?: number | null
+  latitude?: number | null
+  status?: string
+  description?: string | null
+  displayImageId?: string | null
+  isPublished?: boolean
+  publishedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  documents?: Prisma.PropertyDocumentUncheckedCreateNestedManyWithoutPropertyInput
+  media?: Prisma.PropertyMediaUncheckedCreateNestedManyWithoutPropertyInput
+  amenities?: Prisma.PropertyAmenityUncheckedCreateNestedManyWithoutPropertyInput
+  paymentMethods?: Prisma.PropertyPaymentMethodLinkUncheckedCreateNestedManyWithoutPropertyInput
+  variants?: Prisma.PropertyVariantUncheckedCreateNestedManyWithoutPropertyInput
+}
+
+export type PropertyCreateOrConnectWithoutPrequalificationsInput = {
+  where: Prisma.PropertyWhereUniqueInput
+  create: Prisma.XOR<Prisma.PropertyCreateWithoutPrequalificationsInput, Prisma.PropertyUncheckedCreateWithoutPrequalificationsInput>
+}
+
+export type PropertyUpsertWithoutPrequalificationsInput = {
+  update: Prisma.XOR<Prisma.PropertyUpdateWithoutPrequalificationsInput, Prisma.PropertyUncheckedUpdateWithoutPrequalificationsInput>
+  create: Prisma.XOR<Prisma.PropertyCreateWithoutPrequalificationsInput, Prisma.PropertyUncheckedCreateWithoutPrequalificationsInput>
+  where?: Prisma.PropertyWhereInput
+}
+
+export type PropertyUpdateToOneWithWhereWithoutPrequalificationsInput = {
+  where?: Prisma.PropertyWhereInput
+  data: Prisma.XOR<Prisma.PropertyUpdateWithoutPrequalificationsInput, Prisma.PropertyUncheckedUpdateWithoutPrequalificationsInput>
+}
+
+export type PropertyUpdateWithoutPrequalificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.StringFieldUpdateOperationsInput | string
+  propertyType?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  zipCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  streetAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutPropertiesNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutPropertiesNestedInput
+  displayImage?: Prisma.PropertyMediaUpdateOneWithoutDisplayForPropertiesNestedInput
+  documents?: Prisma.PropertyDocumentUpdateManyWithoutPropertyNestedInput
+  media?: Prisma.PropertyMediaUpdateManyWithoutPropertyNestedInput
+  amenities?: Prisma.PropertyAmenityUpdateManyWithoutPropertyNestedInput
+  paymentMethods?: Prisma.PropertyPaymentMethodLinkUpdateManyWithoutPropertyNestedInput
+  variants?: Prisma.PropertyVariantUpdateManyWithoutPropertyNestedInput
+}
+
+export type PropertyUncheckedUpdateWithoutPrequalificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.StringFieldUpdateOperationsInput | string
+  propertyType?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  district?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  zipCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  streetAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  displayImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  documents?: Prisma.PropertyDocumentUncheckedUpdateManyWithoutPropertyNestedInput
+  media?: Prisma.PropertyMediaUncheckedUpdateManyWithoutPropertyNestedInput
+  amenities?: Prisma.PropertyAmenityUncheckedUpdateManyWithoutPropertyNestedInput
+  paymentMethods?: Prisma.PropertyPaymentMethodLinkUncheckedUpdateManyWithoutPropertyNestedInput
   variants?: Prisma.PropertyVariantUncheckedUpdateManyWithoutPropertyNestedInput
 }
 
@@ -1936,6 +2115,7 @@ export type PropertyUpdateWithoutUserInput = {
   amenities?: Prisma.PropertyAmenityUpdateManyWithoutPropertyNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodLinkUpdateManyWithoutPropertyNestedInput
   variants?: Prisma.PropertyVariantUpdateManyWithoutPropertyNestedInput
+  prequalifications?: Prisma.PrequalificationUpdateManyWithoutPropertyNestedInput
 }
 
 export type PropertyUncheckedUpdateWithoutUserInput = {
@@ -1964,6 +2144,7 @@ export type PropertyUncheckedUpdateWithoutUserInput = {
   amenities?: Prisma.PropertyAmenityUncheckedUpdateManyWithoutPropertyNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodLinkUncheckedUpdateManyWithoutPropertyNestedInput
   variants?: Prisma.PropertyVariantUncheckedUpdateManyWithoutPropertyNestedInput
+  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutPropertyNestedInput
 }
 
 export type PropertyUncheckedUpdateManyWithoutUserInput = {
@@ -2038,6 +2219,7 @@ export type PropertyUpdateWithoutTenantInput = {
   amenities?: Prisma.PropertyAmenityUpdateManyWithoutPropertyNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodLinkUpdateManyWithoutPropertyNestedInput
   variants?: Prisma.PropertyVariantUpdateManyWithoutPropertyNestedInput
+  prequalifications?: Prisma.PrequalificationUpdateManyWithoutPropertyNestedInput
 }
 
 export type PropertyUncheckedUpdateWithoutTenantInput = {
@@ -2066,6 +2248,7 @@ export type PropertyUncheckedUpdateWithoutTenantInput = {
   amenities?: Prisma.PropertyAmenityUncheckedUpdateManyWithoutPropertyNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodLinkUncheckedUpdateManyWithoutPropertyNestedInput
   variants?: Prisma.PropertyVariantUncheckedUpdateManyWithoutPropertyNestedInput
+  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutPropertyNestedInput
 }
 
 export type PropertyUncheckedUpdateManyWithoutTenantInput = {
@@ -2140,6 +2323,7 @@ export type PropertyUpdateWithoutDisplayImageInput = {
   amenities?: Prisma.PropertyAmenityUpdateManyWithoutPropertyNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodLinkUpdateManyWithoutPropertyNestedInput
   variants?: Prisma.PropertyVariantUpdateManyWithoutPropertyNestedInput
+  prequalifications?: Prisma.PrequalificationUpdateManyWithoutPropertyNestedInput
 }
 
 export type PropertyUncheckedUpdateWithoutDisplayImageInput = {
@@ -2168,6 +2352,7 @@ export type PropertyUncheckedUpdateWithoutDisplayImageInput = {
   amenities?: Prisma.PropertyAmenityUncheckedUpdateManyWithoutPropertyNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodLinkUncheckedUpdateManyWithoutPropertyNestedInput
   variants?: Prisma.PropertyVariantUncheckedUpdateManyWithoutPropertyNestedInput
+  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutPropertyNestedInput
 }
 
 export type PropertyUncheckedUpdateManyWithoutDisplayImageInput = {
@@ -2204,6 +2389,7 @@ export type PropertyCountOutputType = {
   amenities: number
   paymentMethods: number
   variants: number
+  prequalifications: number
 }
 
 export type PropertyCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2212,6 +2398,7 @@ export type PropertyCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensio
   amenities?: boolean | PropertyCountOutputTypeCountAmenitiesArgs
   paymentMethods?: boolean | PropertyCountOutputTypeCountPaymentMethodsArgs
   variants?: boolean | PropertyCountOutputTypeCountVariantsArgs
+  prequalifications?: boolean | PropertyCountOutputTypeCountPrequalificationsArgs
 }
 
 /**
@@ -2259,6 +2446,13 @@ export type PropertyCountOutputTypeCountVariantsArgs<ExtArgs extends runtime.Typ
   where?: Prisma.PropertyVariantWhereInput
 }
 
+/**
+ * PropertyCountOutputType without action
+ */
+export type PropertyCountOutputTypeCountPrequalificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PrequalificationWhereInput
+}
+
 
 export type PropertySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2290,6 +2484,7 @@ export type PropertySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   amenities?: boolean | Prisma.Property$amenitiesArgs<ExtArgs>
   paymentMethods?: boolean | Prisma.Property$paymentMethodsArgs<ExtArgs>
   variants?: boolean | Prisma.Property$variantsArgs<ExtArgs>
+  prequalifications?: boolean | Prisma.Property$prequalificationsArgs<ExtArgs>
   _count?: boolean | Prisma.PropertyCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["property"]>
 
@@ -2329,6 +2524,7 @@ export type PropertyInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
   amenities?: boolean | Prisma.Property$amenitiesArgs<ExtArgs>
   paymentMethods?: boolean | Prisma.Property$paymentMethodsArgs<ExtArgs>
   variants?: boolean | Prisma.Property$variantsArgs<ExtArgs>
+  prequalifications?: boolean | Prisma.Property$prequalificationsArgs<ExtArgs>
   _count?: boolean | Prisma.PropertyCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -2343,6 +2539,7 @@ export type $PropertyPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     amenities: Prisma.$PropertyAmenityPayload<ExtArgs>[]
     paymentMethods: Prisma.$PropertyPaymentMethodLinkPayload<ExtArgs>[]
     variants: Prisma.$PropertyVariantPayload<ExtArgs>[]
+    prequalifications: Prisma.$PrequalificationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2714,6 +2911,7 @@ export interface Prisma__PropertyClient<T, Null = never, ExtArgs extends runtime
   amenities<T extends Prisma.Property$amenitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Property$amenitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyAmenityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   paymentMethods<T extends Prisma.Property$paymentMethodsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Property$paymentMethodsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyPaymentMethodLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   variants<T extends Prisma.Property$variantsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Property$variantsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyVariantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  prequalifications<T extends Prisma.Property$prequalificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Property$prequalificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PrequalificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3243,6 +3441,30 @@ export type Property$variantsArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.PropertyVariantScalarFieldEnum | Prisma.PropertyVariantScalarFieldEnum[]
+}
+
+/**
+ * Property.prequalifications
+ */
+export type Property$prequalificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Prequalification
+   */
+  select?: Prisma.PrequalificationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Prequalification
+   */
+  omit?: Prisma.PrequalificationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PrequalificationInclude<ExtArgs> | null
+  where?: Prisma.PrequalificationWhereInput
+  orderBy?: Prisma.PrequalificationOrderByWithRelationInput | Prisma.PrequalificationOrderByWithRelationInput[]
+  cursor?: Prisma.PrequalificationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PrequalificationScalarFieldEnum | Prisma.PrequalificationScalarFieldEnum[]
 }
 
 /**

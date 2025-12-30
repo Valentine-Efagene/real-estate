@@ -89,6 +89,9 @@ export const ModelName = {
   ContractDocument: 'ContractDocument',
   ContractTransition: 'ContractTransition',
   ContractEvent: 'ContractEvent',
+  Prequalification: 'Prequalification',
+  PaymentMethodChangeRequest: 'PaymentMethodChangeRequest',
+  DocumentRequirementRule: 'DocumentRequirementRule',
   DomainEvent: 'DomainEvent'
 } as const
 
@@ -700,6 +703,85 @@ export const ContractEventScalarFieldEnum = {
 export type ContractEventScalarFieldEnum = (typeof ContractEventScalarFieldEnum)[keyof typeof ContractEventScalarFieldEnum]
 
 
+export const PrequalificationScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  userId: 'userId',
+  propertyId: 'propertyId',
+  paymentMethodId: 'paymentMethodId',
+  answers: 'answers',
+  score: 'score',
+  requestedAmount: 'requestedAmount',
+  monthlyIncome: 'monthlyIncome',
+  monthlyExpenses: 'monthlyExpenses',
+  debtToIncomeRatio: 'debtToIncomeRatio',
+  suggestedTermMonths: 'suggestedTermMonths',
+  status: 'status',
+  notes: 'notes',
+  reviewedBy: 'reviewedBy',
+  reviewedAt: 'reviewedAt',
+  expiresAt: 'expiresAt',
+  contractId: 'contractId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PrequalificationScalarFieldEnum = (typeof PrequalificationScalarFieldEnum)[keyof typeof PrequalificationScalarFieldEnum]
+
+
+export const PaymentMethodChangeRequestScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  contractId: 'contractId',
+  fromPaymentMethodId: 'fromPaymentMethodId',
+  toPaymentMethodId: 'toPaymentMethodId',
+  requestorId: 'requestorId',
+  reason: 'reason',
+  requiredDocumentTypes: 'requiredDocumentTypes',
+  submittedDocuments: 'submittedDocuments',
+  currentOutstanding: 'currentOutstanding',
+  newTermMonths: 'newTermMonths',
+  newInterestRate: 'newInterestRate',
+  newMonthlyPayment: 'newMonthlyPayment',
+  penaltyAmount: 'penaltyAmount',
+  financialImpactNotes: 'financialImpactNotes',
+  status: 'status',
+  reviewerId: 'reviewerId',
+  reviewNotes: 'reviewNotes',
+  reviewedAt: 'reviewedAt',
+  executedAt: 'executedAt',
+  previousPhaseData: 'previousPhaseData',
+  newPhaseData: 'newPhaseData',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PaymentMethodChangeRequestScalarFieldEnum = (typeof PaymentMethodChangeRequestScalarFieldEnum)[keyof typeof PaymentMethodChangeRequestScalarFieldEnum]
+
+
+export const DocumentRequirementRuleScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  context: 'context',
+  paymentMethodId: 'paymentMethodId',
+  phaseType: 'phaseType',
+  fromPaymentMethodId: 'fromPaymentMethodId',
+  toPaymentMethodId: 'toPaymentMethodId',
+  documentType: 'documentType',
+  isRequired: 'isRequired',
+  description: 'description',
+  maxSizeBytes: 'maxSizeBytes',
+  allowedMimeTypes: 'allowedMimeTypes',
+  expiryDays: 'expiryDays',
+  requiresManualReview: 'requiresManualReview',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DocumentRequirementRuleScalarFieldEnum = (typeof DocumentRequirementRuleScalarFieldEnum)[keyof typeof DocumentRequirementRuleScalarFieldEnum]
+
+
 export const DomainEventScalarFieldEnum = {
   id: 'id',
   eventType: 'eventType',
@@ -729,6 +811,21 @@ export const SortOrder = {
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const JsonNullValueInput = {
+  JsonNull: 'JsonNull'
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: 'DbNull',
+  JsonNull: 'JsonNull'
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const NullsOrder = {
@@ -1161,6 +1258,69 @@ export const ContractEventOrderByRelevanceFieldEnum = {
 } as const
 
 export type ContractEventOrderByRelevanceFieldEnum = (typeof ContractEventOrderByRelevanceFieldEnum)[keyof typeof ContractEventOrderByRelevanceFieldEnum]
+
+
+export const JsonNullValueFilter = {
+  DbNull: 'DbNull',
+  JsonNull: 'JsonNull',
+  AnyNull: 'AnyNull'
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+export const QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+} as const
+
+export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const PrequalificationOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  userId: 'userId',
+  propertyId: 'propertyId',
+  paymentMethodId: 'paymentMethodId',
+  notes: 'notes',
+  reviewedBy: 'reviewedBy',
+  contractId: 'contractId'
+} as const
+
+export type PrequalificationOrderByRelevanceFieldEnum = (typeof PrequalificationOrderByRelevanceFieldEnum)[keyof typeof PrequalificationOrderByRelevanceFieldEnum]
+
+
+export const PaymentMethodChangeRequestOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  contractId: 'contractId',
+  fromPaymentMethodId: 'fromPaymentMethodId',
+  toPaymentMethodId: 'toPaymentMethodId',
+  requestorId: 'requestorId',
+  reason: 'reason',
+  requiredDocumentTypes: 'requiredDocumentTypes',
+  financialImpactNotes: 'financialImpactNotes',
+  reviewerId: 'reviewerId',
+  reviewNotes: 'reviewNotes'
+} as const
+
+export type PaymentMethodChangeRequestOrderByRelevanceFieldEnum = (typeof PaymentMethodChangeRequestOrderByRelevanceFieldEnum)[keyof typeof PaymentMethodChangeRequestOrderByRelevanceFieldEnum]
+
+
+export const DocumentRequirementRuleOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  paymentMethodId: 'paymentMethodId',
+  phaseType: 'phaseType',
+  fromPaymentMethodId: 'fromPaymentMethodId',
+  toPaymentMethodId: 'toPaymentMethodId',
+  documentType: 'documentType',
+  description: 'description',
+  allowedMimeTypes: 'allowedMimeTypes'
+} as const
+
+export type DocumentRequirementRuleOrderByRelevanceFieldEnum = (typeof DocumentRequirementRuleOrderByRelevanceFieldEnum)[keyof typeof DocumentRequirementRuleOrderByRelevanceFieldEnum]
 
 
 export const DomainEventOrderByRelevanceFieldEnum = {

@@ -422,6 +422,9 @@ export const ModelName = {
   ContractDocument: 'ContractDocument',
   ContractTransition: 'ContractTransition',
   ContractEvent: 'ContractEvent',
+  Prequalification: 'Prequalification',
+  PaymentMethodChangeRequest: 'PaymentMethodChangeRequest',
+  DocumentRequirementRule: 'DocumentRequirementRule',
   DomainEvent: 'DomainEvent'
 } as const
 
@@ -438,7 +441,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenant" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "contract" | "contractPhase" | "contractPhaseStep" | "contractPhaseStepApproval" | "contractInstallment" | "contractPayment" | "contractDocument" | "contractTransition" | "contractEvent" | "domainEvent"
+    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenant" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "contract" | "contractPhase" | "contractPhaseStep" | "contractPhaseStepApproval" | "contractInstallment" | "contractPayment" | "contractDocument" | "contractTransition" | "contractEvent" | "prequalification" | "paymentMethodChangeRequest" | "documentRequirementRule" | "domainEvent"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2950,6 +2953,204 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Prequalification: {
+      payload: Prisma.$PrequalificationPayload<ExtArgs>
+      fields: Prisma.PrequalificationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PrequalificationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PrequalificationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PrequalificationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PrequalificationPayload>
+        }
+        findFirst: {
+          args: Prisma.PrequalificationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PrequalificationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PrequalificationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PrequalificationPayload>
+        }
+        findMany: {
+          args: Prisma.PrequalificationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PrequalificationPayload>[]
+        }
+        create: {
+          args: Prisma.PrequalificationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PrequalificationPayload>
+        }
+        createMany: {
+          args: Prisma.PrequalificationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.PrequalificationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PrequalificationPayload>
+        }
+        update: {
+          args: Prisma.PrequalificationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PrequalificationPayload>
+        }
+        deleteMany: {
+          args: Prisma.PrequalificationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PrequalificationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.PrequalificationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PrequalificationPayload>
+        }
+        aggregate: {
+          args: Prisma.PrequalificationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePrequalification>
+        }
+        groupBy: {
+          args: Prisma.PrequalificationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PrequalificationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PrequalificationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PrequalificationCountAggregateOutputType> | number
+        }
+      }
+    }
+    PaymentMethodChangeRequest: {
+      payload: Prisma.$PaymentMethodChangeRequestPayload<ExtArgs>
+      fields: Prisma.PaymentMethodChangeRequestFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PaymentMethodChangeRequestFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodChangeRequestPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PaymentMethodChangeRequestFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodChangeRequestPayload>
+        }
+        findFirst: {
+          args: Prisma.PaymentMethodChangeRequestFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodChangeRequestPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PaymentMethodChangeRequestFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodChangeRequestPayload>
+        }
+        findMany: {
+          args: Prisma.PaymentMethodChangeRequestFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodChangeRequestPayload>[]
+        }
+        create: {
+          args: Prisma.PaymentMethodChangeRequestCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodChangeRequestPayload>
+        }
+        createMany: {
+          args: Prisma.PaymentMethodChangeRequestCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.PaymentMethodChangeRequestDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodChangeRequestPayload>
+        }
+        update: {
+          args: Prisma.PaymentMethodChangeRequestUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodChangeRequestPayload>
+        }
+        deleteMany: {
+          args: Prisma.PaymentMethodChangeRequestDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PaymentMethodChangeRequestUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.PaymentMethodChangeRequestUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodChangeRequestPayload>
+        }
+        aggregate: {
+          args: Prisma.PaymentMethodChangeRequestAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePaymentMethodChangeRequest>
+        }
+        groupBy: {
+          args: Prisma.PaymentMethodChangeRequestGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaymentMethodChangeRequestGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PaymentMethodChangeRequestCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaymentMethodChangeRequestCountAggregateOutputType> | number
+        }
+      }
+    }
+    DocumentRequirementRule: {
+      payload: Prisma.$DocumentRequirementRulePayload<ExtArgs>
+      fields: Prisma.DocumentRequirementRuleFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DocumentRequirementRuleFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentRequirementRulePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DocumentRequirementRuleFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentRequirementRulePayload>
+        }
+        findFirst: {
+          args: Prisma.DocumentRequirementRuleFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentRequirementRulePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DocumentRequirementRuleFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentRequirementRulePayload>
+        }
+        findMany: {
+          args: Prisma.DocumentRequirementRuleFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentRequirementRulePayload>[]
+        }
+        create: {
+          args: Prisma.DocumentRequirementRuleCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentRequirementRulePayload>
+        }
+        createMany: {
+          args: Prisma.DocumentRequirementRuleCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.DocumentRequirementRuleDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentRequirementRulePayload>
+        }
+        update: {
+          args: Prisma.DocumentRequirementRuleUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentRequirementRulePayload>
+        }
+        deleteMany: {
+          args: Prisma.DocumentRequirementRuleDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DocumentRequirementRuleUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.DocumentRequirementRuleUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentRequirementRulePayload>
+        }
+        aggregate: {
+          args: Prisma.DocumentRequirementRuleAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDocumentRequirementRule>
+        }
+        groupBy: {
+          args: Prisma.DocumentRequirementRuleGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentRequirementRuleGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DocumentRequirementRuleCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentRequirementRuleCountAggregateOutputType> | number
+        }
+      }
+    }
     DomainEvent: {
       payload: Prisma.$DomainEventPayload<ExtArgs>
       fields: Prisma.DomainEventFieldRefs
@@ -3647,6 +3848,85 @@ export const ContractEventScalarFieldEnum = {
 export type ContractEventScalarFieldEnum = (typeof ContractEventScalarFieldEnum)[keyof typeof ContractEventScalarFieldEnum]
 
 
+export const PrequalificationScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  userId: 'userId',
+  propertyId: 'propertyId',
+  paymentMethodId: 'paymentMethodId',
+  answers: 'answers',
+  score: 'score',
+  requestedAmount: 'requestedAmount',
+  monthlyIncome: 'monthlyIncome',
+  monthlyExpenses: 'monthlyExpenses',
+  debtToIncomeRatio: 'debtToIncomeRatio',
+  suggestedTermMonths: 'suggestedTermMonths',
+  status: 'status',
+  notes: 'notes',
+  reviewedBy: 'reviewedBy',
+  reviewedAt: 'reviewedAt',
+  expiresAt: 'expiresAt',
+  contractId: 'contractId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PrequalificationScalarFieldEnum = (typeof PrequalificationScalarFieldEnum)[keyof typeof PrequalificationScalarFieldEnum]
+
+
+export const PaymentMethodChangeRequestScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  contractId: 'contractId',
+  fromPaymentMethodId: 'fromPaymentMethodId',
+  toPaymentMethodId: 'toPaymentMethodId',
+  requestorId: 'requestorId',
+  reason: 'reason',
+  requiredDocumentTypes: 'requiredDocumentTypes',
+  submittedDocuments: 'submittedDocuments',
+  currentOutstanding: 'currentOutstanding',
+  newTermMonths: 'newTermMonths',
+  newInterestRate: 'newInterestRate',
+  newMonthlyPayment: 'newMonthlyPayment',
+  penaltyAmount: 'penaltyAmount',
+  financialImpactNotes: 'financialImpactNotes',
+  status: 'status',
+  reviewerId: 'reviewerId',
+  reviewNotes: 'reviewNotes',
+  reviewedAt: 'reviewedAt',
+  executedAt: 'executedAt',
+  previousPhaseData: 'previousPhaseData',
+  newPhaseData: 'newPhaseData',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PaymentMethodChangeRequestScalarFieldEnum = (typeof PaymentMethodChangeRequestScalarFieldEnum)[keyof typeof PaymentMethodChangeRequestScalarFieldEnum]
+
+
+export const DocumentRequirementRuleScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  context: 'context',
+  paymentMethodId: 'paymentMethodId',
+  phaseType: 'phaseType',
+  fromPaymentMethodId: 'fromPaymentMethodId',
+  toPaymentMethodId: 'toPaymentMethodId',
+  documentType: 'documentType',
+  isRequired: 'isRequired',
+  description: 'description',
+  maxSizeBytes: 'maxSizeBytes',
+  allowedMimeTypes: 'allowedMimeTypes',
+  expiryDays: 'expiryDays',
+  requiresManualReview: 'requiresManualReview',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DocumentRequirementRuleScalarFieldEnum = (typeof DocumentRequirementRuleScalarFieldEnum)[keyof typeof DocumentRequirementRuleScalarFieldEnum]
+
+
 export const DomainEventScalarFieldEnum = {
   id: 'id',
   eventType: 'eventType',
@@ -3676,6 +3956,21 @@ export const SortOrder = {
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const NullsOrder = {
@@ -4110,6 +4405,69 @@ export const ContractEventOrderByRelevanceFieldEnum = {
 export type ContractEventOrderByRelevanceFieldEnum = (typeof ContractEventOrderByRelevanceFieldEnum)[keyof typeof ContractEventOrderByRelevanceFieldEnum]
 
 
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+export const QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+} as const
+
+export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const PrequalificationOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  userId: 'userId',
+  propertyId: 'propertyId',
+  paymentMethodId: 'paymentMethodId',
+  notes: 'notes',
+  reviewedBy: 'reviewedBy',
+  contractId: 'contractId'
+} as const
+
+export type PrequalificationOrderByRelevanceFieldEnum = (typeof PrequalificationOrderByRelevanceFieldEnum)[keyof typeof PrequalificationOrderByRelevanceFieldEnum]
+
+
+export const PaymentMethodChangeRequestOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  contractId: 'contractId',
+  fromPaymentMethodId: 'fromPaymentMethodId',
+  toPaymentMethodId: 'toPaymentMethodId',
+  requestorId: 'requestorId',
+  reason: 'reason',
+  requiredDocumentTypes: 'requiredDocumentTypes',
+  financialImpactNotes: 'financialImpactNotes',
+  reviewerId: 'reviewerId',
+  reviewNotes: 'reviewNotes'
+} as const
+
+export type PaymentMethodChangeRequestOrderByRelevanceFieldEnum = (typeof PaymentMethodChangeRequestOrderByRelevanceFieldEnum)[keyof typeof PaymentMethodChangeRequestOrderByRelevanceFieldEnum]
+
+
+export const DocumentRequirementRuleOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  paymentMethodId: 'paymentMethodId',
+  phaseType: 'phaseType',
+  fromPaymentMethodId: 'fromPaymentMethodId',
+  toPaymentMethodId: 'toPaymentMethodId',
+  documentType: 'documentType',
+  description: 'description',
+  allowedMimeTypes: 'allowedMimeTypes'
+} as const
+
+export type DocumentRequirementRuleOrderByRelevanceFieldEnum = (typeof DocumentRequirementRuleOrderByRelevanceFieldEnum)[keyof typeof DocumentRequirementRuleOrderByRelevanceFieldEnum]
+
+
 export const DomainEventOrderByRelevanceFieldEnum = {
   id: 'id',
   eventType: 'eventType',
@@ -4164,6 +4522,41 @@ export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, '
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
+ * Reference to a field of type 'PrequalificationStatus'
+ */
+export type EnumPrequalificationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PrequalificationStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'PaymentMethodChangeStatus'
+ */
+export type EnumPaymentMethodChangeStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentMethodChangeStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'DocumentRequirementContext'
+ */
+export type EnumDocumentRequirementContextFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentRequirementContext'>
     
 
 /**
@@ -4299,6 +4692,9 @@ export type GlobalOmitConfig = {
   contractDocument?: Prisma.ContractDocumentOmit
   contractTransition?: Prisma.ContractTransitionOmit
   contractEvent?: Prisma.ContractEventOmit
+  prequalification?: Prisma.PrequalificationOmit
+  paymentMethodChangeRequest?: Prisma.PaymentMethodChangeRequestOmit
+  documentRequirementRule?: Prisma.DocumentRequirementRuleOmit
   domainEvent?: Prisma.DomainEventOmit
 }
 

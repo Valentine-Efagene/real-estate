@@ -230,6 +230,21 @@ export type ContractTransition = Prisma.ContractTransitionModel
  */
 export type ContractEvent = Prisma.ContractEventModel
 /**
+ * Model Prequalification
+ * 
+ */
+export type Prequalification = Prisma.PrequalificationModel
+/**
+ * Model PaymentMethodChangeRequest
+ * 
+ */
+export type PaymentMethodChangeRequest = Prisma.PaymentMethodChangeRequestModel
+/**
+ * Model DocumentRequirementRule
+ * 
+ */
+export type DocumentRequirementRule = Prisma.DocumentRequirementRuleModel
+/**
  * Model DomainEvent
  * 
  */

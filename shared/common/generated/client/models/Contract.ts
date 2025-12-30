@@ -458,6 +458,8 @@ export type ContractWhereInput = {
   payments?: Prisma.ContractPaymentListRelationFilter
   transitions?: Prisma.ContractTransitionListRelationFilter
   events?: Prisma.ContractEventListRelationFilter
+  prequalification?: Prisma.XOR<Prisma.PrequalificationNullableScalarRelationFilter, Prisma.PrequalificationWhereInput> | null
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestListRelationFilter
 }
 
 export type ContractOrderByWithRelationInput = {
@@ -501,6 +503,8 @@ export type ContractOrderByWithRelationInput = {
   payments?: Prisma.ContractPaymentOrderByRelationAggregateInput
   transitions?: Prisma.ContractTransitionOrderByRelationAggregateInput
   events?: Prisma.ContractEventOrderByRelationAggregateInput
+  prequalification?: Prisma.PrequalificationOrderByWithRelationInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestOrderByRelationAggregateInput
   _relevance?: Prisma.ContractOrderByRelevanceInput
 }
 
@@ -548,6 +552,8 @@ export type ContractWhereUniqueInput = Prisma.AtLeast<{
   payments?: Prisma.ContractPaymentListRelationFilter
   transitions?: Prisma.ContractTransitionListRelationFilter
   events?: Prisma.ContractEventListRelationFilter
+  prequalification?: Prisma.XOR<Prisma.PrequalificationNullableScalarRelationFilter, Prisma.PrequalificationWhereInput> | null
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestListRelationFilter
 }, "id" | "contractNumber">
 
 export type ContractOrderByWithAggregationInput = {
@@ -660,6 +666,8 @@ export type ContractCreateInput = {
   payments?: Prisma.ContractPaymentCreateNestedManyWithoutContractInput
   transitions?: Prisma.ContractTransitionCreateNestedManyWithoutContractInput
   events?: Prisma.ContractEventCreateNestedManyWithoutContractInput
+  prequalification?: Prisma.PrequalificationCreateNestedOneWithoutContractInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutContractInput
 }
 
 export type ContractUncheckedCreateInput = {
@@ -698,6 +706,8 @@ export type ContractUncheckedCreateInput = {
   payments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutContractInput
   transitions?: Prisma.ContractTransitionUncheckedCreateNestedManyWithoutContractInput
   events?: Prisma.ContractEventUncheckedCreateNestedManyWithoutContractInput
+  prequalification?: Prisma.PrequalificationUncheckedCreateNestedOneWithoutContractInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutContractInput
 }
 
 export type ContractUpdateInput = {
@@ -736,6 +746,8 @@ export type ContractUpdateInput = {
   payments?: Prisma.ContractPaymentUpdateManyWithoutContractNestedInput
   transitions?: Prisma.ContractTransitionUpdateManyWithoutContractNestedInput
   events?: Prisma.ContractEventUpdateManyWithoutContractNestedInput
+  prequalification?: Prisma.PrequalificationUpdateOneWithoutContractNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateInput = {
@@ -774,6 +786,8 @@ export type ContractUncheckedUpdateInput = {
   payments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutContractNestedInput
   transitions?: Prisma.ContractTransitionUncheckedUpdateManyWithoutContractNestedInput
   events?: Prisma.ContractEventUncheckedUpdateManyWithoutContractNestedInput
+  prequalification?: Prisma.PrequalificationUncheckedUpdateOneWithoutContractNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutContractNestedInput
 }
 
 export type ContractCreateManyInput = {
@@ -1012,6 +1026,11 @@ export type ContractSumOrderByAggregateInput = {
 export type ContractScalarRelationFilter = {
   is?: Prisma.ContractWhereInput
   isNot?: Prisma.ContractWhereInput
+}
+
+export type ContractNullableScalarRelationFilter = {
+  is?: Prisma.ContractWhereInput | null
+  isNot?: Prisma.ContractWhereInput | null
 }
 
 export type ContractCreateNestedManyWithoutBuyerInput = {
@@ -1294,6 +1313,36 @@ export type ContractUpdateOneRequiredWithoutEventsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ContractUpdateToOneWithWhereWithoutEventsInput, Prisma.ContractUpdateWithoutEventsInput>, Prisma.ContractUncheckedUpdateWithoutEventsInput>
 }
 
+export type ContractCreateNestedOneWithoutPrequalificationInput = {
+  create?: Prisma.XOR<Prisma.ContractCreateWithoutPrequalificationInput, Prisma.ContractUncheckedCreateWithoutPrequalificationInput>
+  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutPrequalificationInput
+  connect?: Prisma.ContractWhereUniqueInput
+}
+
+export type ContractUpdateOneWithoutPrequalificationNestedInput = {
+  create?: Prisma.XOR<Prisma.ContractCreateWithoutPrequalificationInput, Prisma.ContractUncheckedCreateWithoutPrequalificationInput>
+  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutPrequalificationInput
+  upsert?: Prisma.ContractUpsertWithoutPrequalificationInput
+  disconnect?: Prisma.ContractWhereInput | boolean
+  delete?: Prisma.ContractWhereInput | boolean
+  connect?: Prisma.ContractWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ContractUpdateToOneWithWhereWithoutPrequalificationInput, Prisma.ContractUpdateWithoutPrequalificationInput>, Prisma.ContractUncheckedUpdateWithoutPrequalificationInput>
+}
+
+export type ContractCreateNestedOneWithoutPaymentMethodChangeRequestsInput = {
+  create?: Prisma.XOR<Prisma.ContractCreateWithoutPaymentMethodChangeRequestsInput, Prisma.ContractUncheckedCreateWithoutPaymentMethodChangeRequestsInput>
+  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutPaymentMethodChangeRequestsInput
+  connect?: Prisma.ContractWhereUniqueInput
+}
+
+export type ContractUpdateOneRequiredWithoutPaymentMethodChangeRequestsNestedInput = {
+  create?: Prisma.XOR<Prisma.ContractCreateWithoutPaymentMethodChangeRequestsInput, Prisma.ContractUncheckedCreateWithoutPaymentMethodChangeRequestsInput>
+  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutPaymentMethodChangeRequestsInput
+  upsert?: Prisma.ContractUpsertWithoutPaymentMethodChangeRequestsInput
+  connect?: Prisma.ContractWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ContractUpdateToOneWithWhereWithoutPaymentMethodChangeRequestsInput, Prisma.ContractUpdateWithoutPaymentMethodChangeRequestsInput>, Prisma.ContractUncheckedUpdateWithoutPaymentMethodChangeRequestsInput>
+}
+
 export type ContractCreateWithoutBuyerInput = {
   id?: string
   contractNumber: string
@@ -1329,6 +1378,8 @@ export type ContractCreateWithoutBuyerInput = {
   payments?: Prisma.ContractPaymentCreateNestedManyWithoutContractInput
   transitions?: Prisma.ContractTransitionCreateNestedManyWithoutContractInput
   events?: Prisma.ContractEventCreateNestedManyWithoutContractInput
+  prequalification?: Prisma.PrequalificationCreateNestedOneWithoutContractInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutContractInput
 }
 
 export type ContractUncheckedCreateWithoutBuyerInput = {
@@ -1366,6 +1417,8 @@ export type ContractUncheckedCreateWithoutBuyerInput = {
   payments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutContractInput
   transitions?: Prisma.ContractTransitionUncheckedCreateNestedManyWithoutContractInput
   events?: Prisma.ContractEventUncheckedCreateNestedManyWithoutContractInput
+  prequalification?: Prisma.PrequalificationUncheckedCreateNestedOneWithoutContractInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutContractInput
 }
 
 export type ContractCreateOrConnectWithoutBuyerInput = {
@@ -1413,6 +1466,8 @@ export type ContractCreateWithoutSellerInput = {
   payments?: Prisma.ContractPaymentCreateNestedManyWithoutContractInput
   transitions?: Prisma.ContractTransitionCreateNestedManyWithoutContractInput
   events?: Prisma.ContractEventCreateNestedManyWithoutContractInput
+  prequalification?: Prisma.PrequalificationCreateNestedOneWithoutContractInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutContractInput
 }
 
 export type ContractUncheckedCreateWithoutSellerInput = {
@@ -1450,6 +1505,8 @@ export type ContractUncheckedCreateWithoutSellerInput = {
   payments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutContractInput
   transitions?: Prisma.ContractTransitionUncheckedCreateNestedManyWithoutContractInput
   events?: Prisma.ContractEventUncheckedCreateNestedManyWithoutContractInput
+  prequalification?: Prisma.PrequalificationUncheckedCreateNestedOneWithoutContractInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutContractInput
 }
 
 export type ContractCreateOrConnectWithoutSellerInput = {
@@ -1565,6 +1622,8 @@ export type ContractCreateWithoutTenantInput = {
   payments?: Prisma.ContractPaymentCreateNestedManyWithoutContractInput
   transitions?: Prisma.ContractTransitionCreateNestedManyWithoutContractInput
   events?: Prisma.ContractEventCreateNestedManyWithoutContractInput
+  prequalification?: Prisma.PrequalificationCreateNestedOneWithoutContractInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutContractInput
 }
 
 export type ContractUncheckedCreateWithoutTenantInput = {
@@ -1602,6 +1661,8 @@ export type ContractUncheckedCreateWithoutTenantInput = {
   payments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutContractInput
   transitions?: Prisma.ContractTransitionUncheckedCreateNestedManyWithoutContractInput
   events?: Prisma.ContractEventUncheckedCreateNestedManyWithoutContractInput
+  prequalification?: Prisma.PrequalificationUncheckedCreateNestedOneWithoutContractInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutContractInput
 }
 
 export type ContractCreateOrConnectWithoutTenantInput = {
@@ -1665,6 +1726,8 @@ export type ContractCreateWithoutPropertyUnitInput = {
   payments?: Prisma.ContractPaymentCreateNestedManyWithoutContractInput
   transitions?: Prisma.ContractTransitionCreateNestedManyWithoutContractInput
   events?: Prisma.ContractEventCreateNestedManyWithoutContractInput
+  prequalification?: Prisma.PrequalificationCreateNestedOneWithoutContractInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutContractInput
 }
 
 export type ContractUncheckedCreateWithoutPropertyUnitInput = {
@@ -1702,6 +1765,8 @@ export type ContractUncheckedCreateWithoutPropertyUnitInput = {
   payments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutContractInput
   transitions?: Prisma.ContractTransitionUncheckedCreateNestedManyWithoutContractInput
   events?: Prisma.ContractEventUncheckedCreateNestedManyWithoutContractInput
+  prequalification?: Prisma.PrequalificationUncheckedCreateNestedOneWithoutContractInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutContractInput
 }
 
 export type ContractCreateOrConnectWithoutPropertyUnitInput = {
@@ -1765,6 +1830,8 @@ export type ContractCreateWithoutPaymentMethodInput = {
   payments?: Prisma.ContractPaymentCreateNestedManyWithoutContractInput
   transitions?: Prisma.ContractTransitionCreateNestedManyWithoutContractInput
   events?: Prisma.ContractEventCreateNestedManyWithoutContractInput
+  prequalification?: Prisma.PrequalificationCreateNestedOneWithoutContractInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutContractInput
 }
 
 export type ContractUncheckedCreateWithoutPaymentMethodInput = {
@@ -1802,6 +1869,8 @@ export type ContractUncheckedCreateWithoutPaymentMethodInput = {
   payments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutContractInput
   transitions?: Prisma.ContractTransitionUncheckedCreateNestedManyWithoutContractInput
   events?: Prisma.ContractEventUncheckedCreateNestedManyWithoutContractInput
+  prequalification?: Prisma.PrequalificationUncheckedCreateNestedOneWithoutContractInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutContractInput
 }
 
 export type ContractCreateOrConnectWithoutPaymentMethodInput = {
@@ -1865,6 +1934,8 @@ export type ContractCreateWithoutPhasesInput = {
   payments?: Prisma.ContractPaymentCreateNestedManyWithoutContractInput
   transitions?: Prisma.ContractTransitionCreateNestedManyWithoutContractInput
   events?: Prisma.ContractEventCreateNestedManyWithoutContractInput
+  prequalification?: Prisma.PrequalificationCreateNestedOneWithoutContractInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutContractInput
 }
 
 export type ContractUncheckedCreateWithoutPhasesInput = {
@@ -1902,6 +1973,8 @@ export type ContractUncheckedCreateWithoutPhasesInput = {
   payments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutContractInput
   transitions?: Prisma.ContractTransitionUncheckedCreateNestedManyWithoutContractInput
   events?: Prisma.ContractEventUncheckedCreateNestedManyWithoutContractInput
+  prequalification?: Prisma.PrequalificationUncheckedCreateNestedOneWithoutContractInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutContractInput
 }
 
 export type ContractCreateOrConnectWithoutPhasesInput = {
@@ -1955,6 +2028,8 @@ export type ContractUpdateWithoutPhasesInput = {
   payments?: Prisma.ContractPaymentUpdateManyWithoutContractNestedInput
   transitions?: Prisma.ContractTransitionUpdateManyWithoutContractNestedInput
   events?: Prisma.ContractEventUpdateManyWithoutContractNestedInput
+  prequalification?: Prisma.PrequalificationUpdateOneWithoutContractNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateWithoutPhasesInput = {
@@ -1992,6 +2067,8 @@ export type ContractUncheckedUpdateWithoutPhasesInput = {
   payments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutContractNestedInput
   transitions?: Prisma.ContractTransitionUncheckedUpdateManyWithoutContractNestedInput
   events?: Prisma.ContractEventUncheckedUpdateManyWithoutContractNestedInput
+  prequalification?: Prisma.PrequalificationUncheckedUpdateOneWithoutContractNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutContractNestedInput
 }
 
 export type ContractCreateWithoutPaymentsInput = {
@@ -2029,6 +2106,8 @@ export type ContractCreateWithoutPaymentsInput = {
   documents?: Prisma.ContractDocumentCreateNestedManyWithoutContractInput
   transitions?: Prisma.ContractTransitionCreateNestedManyWithoutContractInput
   events?: Prisma.ContractEventCreateNestedManyWithoutContractInput
+  prequalification?: Prisma.PrequalificationCreateNestedOneWithoutContractInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutContractInput
 }
 
 export type ContractUncheckedCreateWithoutPaymentsInput = {
@@ -2066,6 +2145,8 @@ export type ContractUncheckedCreateWithoutPaymentsInput = {
   documents?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutContractInput
   transitions?: Prisma.ContractTransitionUncheckedCreateNestedManyWithoutContractInput
   events?: Prisma.ContractEventUncheckedCreateNestedManyWithoutContractInput
+  prequalification?: Prisma.PrequalificationUncheckedCreateNestedOneWithoutContractInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutContractInput
 }
 
 export type ContractCreateOrConnectWithoutPaymentsInput = {
@@ -2119,6 +2200,8 @@ export type ContractUpdateWithoutPaymentsInput = {
   documents?: Prisma.ContractDocumentUpdateManyWithoutContractNestedInput
   transitions?: Prisma.ContractTransitionUpdateManyWithoutContractNestedInput
   events?: Prisma.ContractEventUpdateManyWithoutContractNestedInput
+  prequalification?: Prisma.PrequalificationUpdateOneWithoutContractNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateWithoutPaymentsInput = {
@@ -2156,6 +2239,8 @@ export type ContractUncheckedUpdateWithoutPaymentsInput = {
   documents?: Prisma.ContractDocumentUncheckedUpdateManyWithoutContractNestedInput
   transitions?: Prisma.ContractTransitionUncheckedUpdateManyWithoutContractNestedInput
   events?: Prisma.ContractEventUncheckedUpdateManyWithoutContractNestedInput
+  prequalification?: Prisma.PrequalificationUncheckedUpdateOneWithoutContractNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutContractNestedInput
 }
 
 export type ContractCreateWithoutDocumentsInput = {
@@ -2193,6 +2278,8 @@ export type ContractCreateWithoutDocumentsInput = {
   payments?: Prisma.ContractPaymentCreateNestedManyWithoutContractInput
   transitions?: Prisma.ContractTransitionCreateNestedManyWithoutContractInput
   events?: Prisma.ContractEventCreateNestedManyWithoutContractInput
+  prequalification?: Prisma.PrequalificationCreateNestedOneWithoutContractInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutContractInput
 }
 
 export type ContractUncheckedCreateWithoutDocumentsInput = {
@@ -2230,6 +2317,8 @@ export type ContractUncheckedCreateWithoutDocumentsInput = {
   payments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutContractInput
   transitions?: Prisma.ContractTransitionUncheckedCreateNestedManyWithoutContractInput
   events?: Prisma.ContractEventUncheckedCreateNestedManyWithoutContractInput
+  prequalification?: Prisma.PrequalificationUncheckedCreateNestedOneWithoutContractInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutContractInput
 }
 
 export type ContractCreateOrConnectWithoutDocumentsInput = {
@@ -2283,6 +2372,8 @@ export type ContractUpdateWithoutDocumentsInput = {
   payments?: Prisma.ContractPaymentUpdateManyWithoutContractNestedInput
   transitions?: Prisma.ContractTransitionUpdateManyWithoutContractNestedInput
   events?: Prisma.ContractEventUpdateManyWithoutContractNestedInput
+  prequalification?: Prisma.PrequalificationUpdateOneWithoutContractNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateWithoutDocumentsInput = {
@@ -2320,6 +2411,8 @@ export type ContractUncheckedUpdateWithoutDocumentsInput = {
   payments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutContractNestedInput
   transitions?: Prisma.ContractTransitionUncheckedUpdateManyWithoutContractNestedInput
   events?: Prisma.ContractEventUncheckedUpdateManyWithoutContractNestedInput
+  prequalification?: Prisma.PrequalificationUncheckedUpdateOneWithoutContractNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutContractNestedInput
 }
 
 export type ContractCreateWithoutTransitionsInput = {
@@ -2357,6 +2450,8 @@ export type ContractCreateWithoutTransitionsInput = {
   documents?: Prisma.ContractDocumentCreateNestedManyWithoutContractInput
   payments?: Prisma.ContractPaymentCreateNestedManyWithoutContractInput
   events?: Prisma.ContractEventCreateNestedManyWithoutContractInput
+  prequalification?: Prisma.PrequalificationCreateNestedOneWithoutContractInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutContractInput
 }
 
 export type ContractUncheckedCreateWithoutTransitionsInput = {
@@ -2394,6 +2489,8 @@ export type ContractUncheckedCreateWithoutTransitionsInput = {
   documents?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutContractInput
   payments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutContractInput
   events?: Prisma.ContractEventUncheckedCreateNestedManyWithoutContractInput
+  prequalification?: Prisma.PrequalificationUncheckedCreateNestedOneWithoutContractInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutContractInput
 }
 
 export type ContractCreateOrConnectWithoutTransitionsInput = {
@@ -2447,6 +2544,8 @@ export type ContractUpdateWithoutTransitionsInput = {
   documents?: Prisma.ContractDocumentUpdateManyWithoutContractNestedInput
   payments?: Prisma.ContractPaymentUpdateManyWithoutContractNestedInput
   events?: Prisma.ContractEventUpdateManyWithoutContractNestedInput
+  prequalification?: Prisma.PrequalificationUpdateOneWithoutContractNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateWithoutTransitionsInput = {
@@ -2484,6 +2583,8 @@ export type ContractUncheckedUpdateWithoutTransitionsInput = {
   documents?: Prisma.ContractDocumentUncheckedUpdateManyWithoutContractNestedInput
   payments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutContractNestedInput
   events?: Prisma.ContractEventUncheckedUpdateManyWithoutContractNestedInput
+  prequalification?: Prisma.PrequalificationUncheckedUpdateOneWithoutContractNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutContractNestedInput
 }
 
 export type ContractCreateWithoutEventsInput = {
@@ -2521,6 +2622,8 @@ export type ContractCreateWithoutEventsInput = {
   documents?: Prisma.ContractDocumentCreateNestedManyWithoutContractInput
   payments?: Prisma.ContractPaymentCreateNestedManyWithoutContractInput
   transitions?: Prisma.ContractTransitionCreateNestedManyWithoutContractInput
+  prequalification?: Prisma.PrequalificationCreateNestedOneWithoutContractInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutContractInput
 }
 
 export type ContractUncheckedCreateWithoutEventsInput = {
@@ -2558,6 +2661,8 @@ export type ContractUncheckedCreateWithoutEventsInput = {
   documents?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutContractInput
   payments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutContractInput
   transitions?: Prisma.ContractTransitionUncheckedCreateNestedManyWithoutContractInput
+  prequalification?: Prisma.PrequalificationUncheckedCreateNestedOneWithoutContractInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutContractInput
 }
 
 export type ContractCreateOrConnectWithoutEventsInput = {
@@ -2611,6 +2716,8 @@ export type ContractUpdateWithoutEventsInput = {
   documents?: Prisma.ContractDocumentUpdateManyWithoutContractNestedInput
   payments?: Prisma.ContractPaymentUpdateManyWithoutContractNestedInput
   transitions?: Prisma.ContractTransitionUpdateManyWithoutContractNestedInput
+  prequalification?: Prisma.PrequalificationUpdateOneWithoutContractNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateWithoutEventsInput = {
@@ -2648,6 +2755,352 @@ export type ContractUncheckedUpdateWithoutEventsInput = {
   documents?: Prisma.ContractDocumentUncheckedUpdateManyWithoutContractNestedInput
   payments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutContractNestedInput
   transitions?: Prisma.ContractTransitionUncheckedUpdateManyWithoutContractNestedInput
+  prequalification?: Prisma.PrequalificationUncheckedUpdateOneWithoutContractNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutContractNestedInput
+}
+
+export type ContractCreateWithoutPrequalificationInput = {
+  id?: string
+  contractNumber: string
+  title: string
+  description?: string | null
+  contractType: string
+  totalAmount: number
+  downPayment?: number
+  downPaymentPaid?: number
+  principal?: number | null
+  interestRate?: number | null
+  termMonths?: number | null
+  periodicPayment?: number | null
+  totalPaidToDate?: number
+  totalInterestPaid?: number
+  status?: string
+  state?: string
+  currentPhaseId?: string | null
+  nextPaymentDueDate?: Date | string | null
+  lastReminderSentAt?: Date | string | null
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  signedAt?: Date | string | null
+  terminatedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutContractsInput
+  propertyUnit: Prisma.PropertyUnitCreateNestedOneWithoutContractsInput
+  buyer: Prisma.UserCreateNestedOneWithoutContractsInput
+  seller?: Prisma.UserCreateNestedOneWithoutSoldContractsInput
+  paymentMethod?: Prisma.PropertyPaymentMethodCreateNestedOneWithoutContractsInput
+  phases?: Prisma.ContractPhaseCreateNestedManyWithoutContractInput
+  documents?: Prisma.ContractDocumentCreateNestedManyWithoutContractInput
+  payments?: Prisma.ContractPaymentCreateNestedManyWithoutContractInput
+  transitions?: Prisma.ContractTransitionCreateNestedManyWithoutContractInput
+  events?: Prisma.ContractEventCreateNestedManyWithoutContractInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutContractInput
+}
+
+export type ContractUncheckedCreateWithoutPrequalificationInput = {
+  id?: string
+  tenantId: string
+  propertyUnitId: string
+  buyerId: string
+  sellerId?: string | null
+  paymentMethodId?: string | null
+  contractNumber: string
+  title: string
+  description?: string | null
+  contractType: string
+  totalAmount: number
+  downPayment?: number
+  downPaymentPaid?: number
+  principal?: number | null
+  interestRate?: number | null
+  termMonths?: number | null
+  periodicPayment?: number | null
+  totalPaidToDate?: number
+  totalInterestPaid?: number
+  status?: string
+  state?: string
+  currentPhaseId?: string | null
+  nextPaymentDueDate?: Date | string | null
+  lastReminderSentAt?: Date | string | null
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  signedAt?: Date | string | null
+  terminatedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  phases?: Prisma.ContractPhaseUncheckedCreateNestedManyWithoutContractInput
+  documents?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutContractInput
+  payments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutContractInput
+  transitions?: Prisma.ContractTransitionUncheckedCreateNestedManyWithoutContractInput
+  events?: Prisma.ContractEventUncheckedCreateNestedManyWithoutContractInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutContractInput
+}
+
+export type ContractCreateOrConnectWithoutPrequalificationInput = {
+  where: Prisma.ContractWhereUniqueInput
+  create: Prisma.XOR<Prisma.ContractCreateWithoutPrequalificationInput, Prisma.ContractUncheckedCreateWithoutPrequalificationInput>
+}
+
+export type ContractUpsertWithoutPrequalificationInput = {
+  update: Prisma.XOR<Prisma.ContractUpdateWithoutPrequalificationInput, Prisma.ContractUncheckedUpdateWithoutPrequalificationInput>
+  create: Prisma.XOR<Prisma.ContractCreateWithoutPrequalificationInput, Prisma.ContractUncheckedCreateWithoutPrequalificationInput>
+  where?: Prisma.ContractWhereInput
+}
+
+export type ContractUpdateToOneWithWhereWithoutPrequalificationInput = {
+  where?: Prisma.ContractWhereInput
+  data: Prisma.XOR<Prisma.ContractUpdateWithoutPrequalificationInput, Prisma.ContractUncheckedUpdateWithoutPrequalificationInput>
+}
+
+export type ContractUpdateWithoutPrequalificationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  contractNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPayment?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPaymentPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  principal?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  termMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutContractsNestedInput
+  propertyUnit?: Prisma.PropertyUnitUpdateOneRequiredWithoutContractsNestedInput
+  buyer?: Prisma.UserUpdateOneRequiredWithoutContractsNestedInput
+  seller?: Prisma.UserUpdateOneWithoutSoldContractsNestedInput
+  paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneWithoutContractsNestedInput
+  phases?: Prisma.ContractPhaseUpdateManyWithoutContractNestedInput
+  documents?: Prisma.ContractDocumentUpdateManyWithoutContractNestedInput
+  payments?: Prisma.ContractPaymentUpdateManyWithoutContractNestedInput
+  transitions?: Prisma.ContractTransitionUpdateManyWithoutContractNestedInput
+  events?: Prisma.ContractEventUpdateManyWithoutContractNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutContractNestedInput
+}
+
+export type ContractUncheckedUpdateWithoutPrequalificationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  propertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
+  buyerId?: Prisma.StringFieldUpdateOperationsInput | string
+  sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPayment?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPaymentPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  principal?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  termMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  phases?: Prisma.ContractPhaseUncheckedUpdateManyWithoutContractNestedInput
+  documents?: Prisma.ContractDocumentUncheckedUpdateManyWithoutContractNestedInput
+  payments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutContractNestedInput
+  transitions?: Prisma.ContractTransitionUncheckedUpdateManyWithoutContractNestedInput
+  events?: Prisma.ContractEventUncheckedUpdateManyWithoutContractNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutContractNestedInput
+}
+
+export type ContractCreateWithoutPaymentMethodChangeRequestsInput = {
+  id?: string
+  contractNumber: string
+  title: string
+  description?: string | null
+  contractType: string
+  totalAmount: number
+  downPayment?: number
+  downPaymentPaid?: number
+  principal?: number | null
+  interestRate?: number | null
+  termMonths?: number | null
+  periodicPayment?: number | null
+  totalPaidToDate?: number
+  totalInterestPaid?: number
+  status?: string
+  state?: string
+  currentPhaseId?: string | null
+  nextPaymentDueDate?: Date | string | null
+  lastReminderSentAt?: Date | string | null
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  signedAt?: Date | string | null
+  terminatedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutContractsInput
+  propertyUnit: Prisma.PropertyUnitCreateNestedOneWithoutContractsInput
+  buyer: Prisma.UserCreateNestedOneWithoutContractsInput
+  seller?: Prisma.UserCreateNestedOneWithoutSoldContractsInput
+  paymentMethod?: Prisma.PropertyPaymentMethodCreateNestedOneWithoutContractsInput
+  phases?: Prisma.ContractPhaseCreateNestedManyWithoutContractInput
+  documents?: Prisma.ContractDocumentCreateNestedManyWithoutContractInput
+  payments?: Prisma.ContractPaymentCreateNestedManyWithoutContractInput
+  transitions?: Prisma.ContractTransitionCreateNestedManyWithoutContractInput
+  events?: Prisma.ContractEventCreateNestedManyWithoutContractInput
+  prequalification?: Prisma.PrequalificationCreateNestedOneWithoutContractInput
+}
+
+export type ContractUncheckedCreateWithoutPaymentMethodChangeRequestsInput = {
+  id?: string
+  tenantId: string
+  propertyUnitId: string
+  buyerId: string
+  sellerId?: string | null
+  paymentMethodId?: string | null
+  contractNumber: string
+  title: string
+  description?: string | null
+  contractType: string
+  totalAmount: number
+  downPayment?: number
+  downPaymentPaid?: number
+  principal?: number | null
+  interestRate?: number | null
+  termMonths?: number | null
+  periodicPayment?: number | null
+  totalPaidToDate?: number
+  totalInterestPaid?: number
+  status?: string
+  state?: string
+  currentPhaseId?: string | null
+  nextPaymentDueDate?: Date | string | null
+  lastReminderSentAt?: Date | string | null
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  signedAt?: Date | string | null
+  terminatedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  phases?: Prisma.ContractPhaseUncheckedCreateNestedManyWithoutContractInput
+  documents?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutContractInput
+  payments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutContractInput
+  transitions?: Prisma.ContractTransitionUncheckedCreateNestedManyWithoutContractInput
+  events?: Prisma.ContractEventUncheckedCreateNestedManyWithoutContractInput
+  prequalification?: Prisma.PrequalificationUncheckedCreateNestedOneWithoutContractInput
+}
+
+export type ContractCreateOrConnectWithoutPaymentMethodChangeRequestsInput = {
+  where: Prisma.ContractWhereUniqueInput
+  create: Prisma.XOR<Prisma.ContractCreateWithoutPaymentMethodChangeRequestsInput, Prisma.ContractUncheckedCreateWithoutPaymentMethodChangeRequestsInput>
+}
+
+export type ContractUpsertWithoutPaymentMethodChangeRequestsInput = {
+  update: Prisma.XOR<Prisma.ContractUpdateWithoutPaymentMethodChangeRequestsInput, Prisma.ContractUncheckedUpdateWithoutPaymentMethodChangeRequestsInput>
+  create: Prisma.XOR<Prisma.ContractCreateWithoutPaymentMethodChangeRequestsInput, Prisma.ContractUncheckedCreateWithoutPaymentMethodChangeRequestsInput>
+  where?: Prisma.ContractWhereInput
+}
+
+export type ContractUpdateToOneWithWhereWithoutPaymentMethodChangeRequestsInput = {
+  where?: Prisma.ContractWhereInput
+  data: Prisma.XOR<Prisma.ContractUpdateWithoutPaymentMethodChangeRequestsInput, Prisma.ContractUncheckedUpdateWithoutPaymentMethodChangeRequestsInput>
+}
+
+export type ContractUpdateWithoutPaymentMethodChangeRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  contractNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPayment?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPaymentPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  principal?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  termMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutContractsNestedInput
+  propertyUnit?: Prisma.PropertyUnitUpdateOneRequiredWithoutContractsNestedInput
+  buyer?: Prisma.UserUpdateOneRequiredWithoutContractsNestedInput
+  seller?: Prisma.UserUpdateOneWithoutSoldContractsNestedInput
+  paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneWithoutContractsNestedInput
+  phases?: Prisma.ContractPhaseUpdateManyWithoutContractNestedInput
+  documents?: Prisma.ContractDocumentUpdateManyWithoutContractNestedInput
+  payments?: Prisma.ContractPaymentUpdateManyWithoutContractNestedInput
+  transitions?: Prisma.ContractTransitionUpdateManyWithoutContractNestedInput
+  events?: Prisma.ContractEventUpdateManyWithoutContractNestedInput
+  prequalification?: Prisma.PrequalificationUpdateOneWithoutContractNestedInput
+}
+
+export type ContractUncheckedUpdateWithoutPaymentMethodChangeRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  propertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
+  buyerId?: Prisma.StringFieldUpdateOperationsInput | string
+  sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contractType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPayment?: Prisma.FloatFieldUpdateOperationsInput | number
+  downPaymentPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  principal?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  termMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  phases?: Prisma.ContractPhaseUncheckedUpdateManyWithoutContractNestedInput
+  documents?: Prisma.ContractDocumentUncheckedUpdateManyWithoutContractNestedInput
+  payments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutContractNestedInput
+  transitions?: Prisma.ContractTransitionUncheckedUpdateManyWithoutContractNestedInput
+  events?: Prisma.ContractEventUncheckedUpdateManyWithoutContractNestedInput
+  prequalification?: Prisma.PrequalificationUncheckedUpdateOneWithoutContractNestedInput
 }
 
 export type ContractCreateManyBuyerInput = {
@@ -2749,6 +3202,8 @@ export type ContractUpdateWithoutBuyerInput = {
   payments?: Prisma.ContractPaymentUpdateManyWithoutContractNestedInput
   transitions?: Prisma.ContractTransitionUpdateManyWithoutContractNestedInput
   events?: Prisma.ContractEventUpdateManyWithoutContractNestedInput
+  prequalification?: Prisma.PrequalificationUpdateOneWithoutContractNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateWithoutBuyerInput = {
@@ -2786,6 +3241,8 @@ export type ContractUncheckedUpdateWithoutBuyerInput = {
   payments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutContractNestedInput
   transitions?: Prisma.ContractTransitionUncheckedUpdateManyWithoutContractNestedInput
   events?: Prisma.ContractEventUncheckedUpdateManyWithoutContractNestedInput
+  prequalification?: Prisma.PrequalificationUncheckedUpdateOneWithoutContractNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateManyWithoutBuyerInput = {
@@ -2855,6 +3312,8 @@ export type ContractUpdateWithoutSellerInput = {
   payments?: Prisma.ContractPaymentUpdateManyWithoutContractNestedInput
   transitions?: Prisma.ContractTransitionUpdateManyWithoutContractNestedInput
   events?: Prisma.ContractEventUpdateManyWithoutContractNestedInput
+  prequalification?: Prisma.PrequalificationUpdateOneWithoutContractNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateWithoutSellerInput = {
@@ -2892,6 +3351,8 @@ export type ContractUncheckedUpdateWithoutSellerInput = {
   payments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutContractNestedInput
   transitions?: Prisma.ContractTransitionUncheckedUpdateManyWithoutContractNestedInput
   events?: Prisma.ContractEventUncheckedUpdateManyWithoutContractNestedInput
+  prequalification?: Prisma.PrequalificationUncheckedUpdateOneWithoutContractNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateManyWithoutSellerInput = {
@@ -2993,6 +3454,8 @@ export type ContractUpdateWithoutTenantInput = {
   payments?: Prisma.ContractPaymentUpdateManyWithoutContractNestedInput
   transitions?: Prisma.ContractTransitionUpdateManyWithoutContractNestedInput
   events?: Prisma.ContractEventUpdateManyWithoutContractNestedInput
+  prequalification?: Prisma.PrequalificationUpdateOneWithoutContractNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateWithoutTenantInput = {
@@ -3030,6 +3493,8 @@ export type ContractUncheckedUpdateWithoutTenantInput = {
   payments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutContractNestedInput
   transitions?: Prisma.ContractTransitionUncheckedUpdateManyWithoutContractNestedInput
   events?: Prisma.ContractEventUncheckedUpdateManyWithoutContractNestedInput
+  prequalification?: Prisma.PrequalificationUncheckedUpdateOneWithoutContractNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateManyWithoutTenantInput = {
@@ -3131,6 +3596,8 @@ export type ContractUpdateWithoutPropertyUnitInput = {
   payments?: Prisma.ContractPaymentUpdateManyWithoutContractNestedInput
   transitions?: Prisma.ContractTransitionUpdateManyWithoutContractNestedInput
   events?: Prisma.ContractEventUpdateManyWithoutContractNestedInput
+  prequalification?: Prisma.PrequalificationUpdateOneWithoutContractNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateWithoutPropertyUnitInput = {
@@ -3168,6 +3635,8 @@ export type ContractUncheckedUpdateWithoutPropertyUnitInput = {
   payments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutContractNestedInput
   transitions?: Prisma.ContractTransitionUncheckedUpdateManyWithoutContractNestedInput
   events?: Prisma.ContractEventUncheckedUpdateManyWithoutContractNestedInput
+  prequalification?: Prisma.PrequalificationUncheckedUpdateOneWithoutContractNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateManyWithoutPropertyUnitInput = {
@@ -3269,6 +3738,8 @@ export type ContractUpdateWithoutPaymentMethodInput = {
   payments?: Prisma.ContractPaymentUpdateManyWithoutContractNestedInput
   transitions?: Prisma.ContractTransitionUpdateManyWithoutContractNestedInput
   events?: Prisma.ContractEventUpdateManyWithoutContractNestedInput
+  prequalification?: Prisma.PrequalificationUpdateOneWithoutContractNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateWithoutPaymentMethodInput = {
@@ -3306,6 +3777,8 @@ export type ContractUncheckedUpdateWithoutPaymentMethodInput = {
   payments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutContractNestedInput
   transitions?: Prisma.ContractTransitionUncheckedUpdateManyWithoutContractNestedInput
   events?: Prisma.ContractEventUncheckedUpdateManyWithoutContractNestedInput
+  prequalification?: Prisma.PrequalificationUncheckedUpdateOneWithoutContractNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateManyWithoutPaymentMethodInput = {
@@ -3351,6 +3824,7 @@ export type ContractCountOutputType = {
   payments: number
   transitions: number
   events: number
+  paymentMethodChangeRequests: number
 }
 
 export type ContractCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3359,6 +3833,7 @@ export type ContractCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensio
   payments?: boolean | ContractCountOutputTypeCountPaymentsArgs
   transitions?: boolean | ContractCountOutputTypeCountTransitionsArgs
   events?: boolean | ContractCountOutputTypeCountEventsArgs
+  paymentMethodChangeRequests?: boolean | ContractCountOutputTypeCountPaymentMethodChangeRequestsArgs
 }
 
 /**
@@ -3406,6 +3881,13 @@ export type ContractCountOutputTypeCountEventsArgs<ExtArgs extends runtime.Types
   where?: Prisma.ContractEventWhereInput
 }
 
+/**
+ * ContractCountOutputType without action
+ */
+export type ContractCountOutputTypeCountPaymentMethodChangeRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PaymentMethodChangeRequestWhereInput
+}
+
 
 export type ContractSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -3448,6 +3930,8 @@ export type ContractSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   payments?: boolean | Prisma.Contract$paymentsArgs<ExtArgs>
   transitions?: boolean | Prisma.Contract$transitionsArgs<ExtArgs>
   events?: boolean | Prisma.Contract$eventsArgs<ExtArgs>
+  prequalification?: boolean | Prisma.Contract$prequalificationArgs<ExtArgs>
+  paymentMethodChangeRequests?: boolean | Prisma.Contract$paymentMethodChangeRequestsArgs<ExtArgs>
   _count?: boolean | Prisma.ContractCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["contract"]>
 
@@ -3498,6 +3982,8 @@ export type ContractInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
   payments?: boolean | Prisma.Contract$paymentsArgs<ExtArgs>
   transitions?: boolean | Prisma.Contract$transitionsArgs<ExtArgs>
   events?: boolean | Prisma.Contract$eventsArgs<ExtArgs>
+  prequalification?: boolean | Prisma.Contract$prequalificationArgs<ExtArgs>
+  paymentMethodChangeRequests?: boolean | Prisma.Contract$paymentMethodChangeRequestsArgs<ExtArgs>
   _count?: boolean | Prisma.ContractCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -3514,6 +4000,8 @@ export type $ContractPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     payments: Prisma.$ContractPaymentPayload<ExtArgs>[]
     transitions: Prisma.$ContractTransitionPayload<ExtArgs>[]
     events: Prisma.$ContractEventPayload<ExtArgs>[]
+    prequalification: Prisma.$PrequalificationPayload<ExtArgs> | null
+    paymentMethodChangeRequests: Prisma.$PaymentMethodChangeRequestPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -3896,6 +4384,8 @@ export interface Prisma__ContractClient<T, Null = never, ExtArgs extends runtime
   payments<T extends Prisma.Contract$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contract$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContractPaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   transitions<T extends Prisma.Contract$transitionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contract$transitionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContractTransitionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   events<T extends Prisma.Contract$eventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contract$eventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContractEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  prequalification<T extends Prisma.Contract$prequalificationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contract$prequalificationArgs<ExtArgs>>): Prisma.Prisma__PrequalificationClient<runtime.Types.Result.GetResult<Prisma.$PrequalificationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  paymentMethodChangeRequests<T extends Prisma.Contract$paymentMethodChangeRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contract$paymentMethodChangeRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentMethodChangeRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4453,6 +4943,49 @@ export type Contract$eventsArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.ContractEventScalarFieldEnum | Prisma.ContractEventScalarFieldEnum[]
+}
+
+/**
+ * Contract.prequalification
+ */
+export type Contract$prequalificationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Prequalification
+   */
+  select?: Prisma.PrequalificationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Prequalification
+   */
+  omit?: Prisma.PrequalificationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PrequalificationInclude<ExtArgs> | null
+  where?: Prisma.PrequalificationWhereInput
+}
+
+/**
+ * Contract.paymentMethodChangeRequests
+ */
+export type Contract$paymentMethodChangeRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PaymentMethodChangeRequest
+   */
+  select?: Prisma.PaymentMethodChangeRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PaymentMethodChangeRequest
+   */
+  omit?: Prisma.PaymentMethodChangeRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaymentMethodChangeRequestInclude<ExtArgs> | null
+  where?: Prisma.PaymentMethodChangeRequestWhereInput
+  orderBy?: Prisma.PaymentMethodChangeRequestOrderByWithRelationInput | Prisma.PaymentMethodChangeRequestOrderByWithRelationInput[]
+  cursor?: Prisma.PaymentMethodChangeRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PaymentMethodChangeRequestScalarFieldEnum | Prisma.PaymentMethodChangeRequestScalarFieldEnum[]
 }
 
 /**

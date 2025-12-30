@@ -294,6 +294,9 @@ export type UserWhereInput = {
   assignedSteps?: Prisma.ContractPhaseStepListRelationFilter
   stepApprovals?: Prisma.ContractPhaseStepApprovalListRelationFilter
   uploadedDocs?: Prisma.ContractDocumentListRelationFilter
+  prequalifications?: Prisma.PrequalificationListRelationFilter
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestListRelationFilter
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -330,6 +333,9 @@ export type UserOrderByWithRelationInput = {
   assignedSteps?: Prisma.ContractPhaseStepOrderByRelationAggregateInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalOrderByRelationAggregateInput
   uploadedDocs?: Prisma.ContractDocumentOrderByRelationAggregateInput
+  prequalifications?: Prisma.PrequalificationOrderByRelationAggregateInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestOrderByRelationAggregateInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestOrderByRelationAggregateInput
   _relevance?: Prisma.UserOrderByRelevanceInput
 }
 
@@ -370,6 +376,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   assignedSteps?: Prisma.ContractPhaseStepListRelationFilter
   stepApprovals?: Prisma.ContractPhaseStepApprovalListRelationFilter
   uploadedDocs?: Prisma.ContractDocumentListRelationFilter
+  prequalifications?: Prisma.PrequalificationListRelationFilter
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestListRelationFilter
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestListRelationFilter
 }, "id" | "email" | "phone" | "walletId">
 
 export type UserOrderByWithAggregationInput = {
@@ -450,6 +459,9 @@ export type UserCreateInput = {
   assignedSteps?: Prisma.ContractPhaseStepCreateNestedManyWithoutAssigneeInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ContractDocumentCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutReviewerInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -484,6 +496,9 @@ export type UserUncheckedCreateInput = {
   assignedSteps?: Prisma.ContractPhaseStepUncheckedCreateNestedManyWithoutAssigneeInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
 }
 
 export type UserUpdateInput = {
@@ -518,6 +533,9 @@ export type UserUpdateInput = {
   assignedSteps?: Prisma.ContractPhaseStepUpdateManyWithoutAssigneeNestedInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ContractDocumentUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -552,6 +570,9 @@ export type UserUncheckedUpdateInput = {
   assignedSteps?: Prisma.ContractPhaseStepUncheckedUpdateManyWithoutAssigneeNestedInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ContractDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -998,6 +1019,50 @@ export type UserUpdateOneWithoutUploadedDocsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUploadedDocsInput, Prisma.UserUpdateWithoutUploadedDocsInput>, Prisma.UserUncheckedUpdateWithoutUploadedDocsInput>
 }
 
+export type UserCreateNestedOneWithoutPrequalificationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPrequalificationsInput, Prisma.UserUncheckedCreateWithoutPrequalificationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPrequalificationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPrequalificationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPrequalificationsInput, Prisma.UserUncheckedCreateWithoutPrequalificationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPrequalificationsInput
+  upsert?: Prisma.UserUpsertWithoutPrequalificationsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPrequalificationsInput, Prisma.UserUpdateWithoutPrequalificationsInput>, Prisma.UserUncheckedUpdateWithoutPrequalificationsInput>
+}
+
+export type UserCreateNestedOneWithoutPaymentMethodChangeRequestsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPaymentMethodChangeRequestsInput, Prisma.UserUncheckedCreateWithoutPaymentMethodChangeRequestsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPaymentMethodChangeRequestsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutReviewedChangeRequestsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReviewedChangeRequestsInput, Prisma.UserUncheckedCreateWithoutReviewedChangeRequestsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReviewedChangeRequestsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPaymentMethodChangeRequestsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPaymentMethodChangeRequestsInput, Prisma.UserUncheckedCreateWithoutPaymentMethodChangeRequestsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPaymentMethodChangeRequestsInput
+  upsert?: Prisma.UserUpsertWithoutPaymentMethodChangeRequestsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPaymentMethodChangeRequestsInput, Prisma.UserUpdateWithoutPaymentMethodChangeRequestsInput>, Prisma.UserUncheckedUpdateWithoutPaymentMethodChangeRequestsInput>
+}
+
+export type UserUpdateOneWithoutReviewedChangeRequestsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReviewedChangeRequestsInput, Prisma.UserUncheckedCreateWithoutReviewedChangeRequestsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReviewedChangeRequestsInput
+  upsert?: Prisma.UserUpsertWithoutReviewedChangeRequestsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReviewedChangeRequestsInput, Prisma.UserUpdateWithoutReviewedChangeRequestsInput>, Prisma.UserUncheckedUpdateWithoutReviewedChangeRequestsInput>
+}
+
 export type UserCreateWithoutUserRolesInput = {
   id?: string
   email: string
@@ -1029,6 +1094,9 @@ export type UserCreateWithoutUserRolesInput = {
   assignedSteps?: Prisma.ContractPhaseStepCreateNestedManyWithoutAssigneeInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ContractDocumentCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutReviewerInput
 }
 
 export type UserUncheckedCreateWithoutUserRolesInput = {
@@ -1062,6 +1130,9 @@ export type UserUncheckedCreateWithoutUserRolesInput = {
   assignedSteps?: Prisma.ContractPhaseStepUncheckedCreateNestedManyWithoutAssigneeInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
 }
 
 export type UserCreateOrConnectWithoutUserRolesInput = {
@@ -1111,6 +1182,9 @@ export type UserUpdateWithoutUserRolesInput = {
   assignedSteps?: Prisma.ContractPhaseStepUpdateManyWithoutAssigneeNestedInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ContractDocumentUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUserRolesInput = {
@@ -1144,6 +1218,9 @@ export type UserUncheckedUpdateWithoutUserRolesInput = {
   assignedSteps?: Prisma.ContractPhaseStepUncheckedUpdateManyWithoutAssigneeNestedInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ContractDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserCreateWithoutTenantInput = {
@@ -1177,6 +1254,9 @@ export type UserCreateWithoutTenantInput = {
   assignedSteps?: Prisma.ContractPhaseStepCreateNestedManyWithoutAssigneeInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ContractDocumentCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutReviewerInput
 }
 
 export type UserUncheckedCreateWithoutTenantInput = {
@@ -1210,6 +1290,9 @@ export type UserUncheckedCreateWithoutTenantInput = {
   assignedSteps?: Prisma.ContractPhaseStepUncheckedCreateNestedManyWithoutAssigneeInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
 }
 
 export type UserCreateOrConnectWithoutTenantInput = {
@@ -1292,6 +1375,9 @@ export type UserCreateWithoutRefreshTokensInput = {
   assignedSteps?: Prisma.ContractPhaseStepCreateNestedManyWithoutAssigneeInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ContractDocumentCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutReviewerInput
 }
 
 export type UserUncheckedCreateWithoutRefreshTokensInput = {
@@ -1325,6 +1411,9 @@ export type UserUncheckedCreateWithoutRefreshTokensInput = {
   assignedSteps?: Prisma.ContractPhaseStepUncheckedCreateNestedManyWithoutAssigneeInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
 }
 
 export type UserCreateOrConnectWithoutRefreshTokensInput = {
@@ -1374,6 +1463,9 @@ export type UserUpdateWithoutRefreshTokensInput = {
   assignedSteps?: Prisma.ContractPhaseStepUpdateManyWithoutAssigneeNestedInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ContractDocumentUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRefreshTokensInput = {
@@ -1407,6 +1499,9 @@ export type UserUncheckedUpdateWithoutRefreshTokensInput = {
   assignedSteps?: Prisma.ContractPhaseStepUncheckedUpdateManyWithoutAssigneeNestedInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ContractDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserCreateWithoutPasswordResetsInput = {
@@ -1440,6 +1535,9 @@ export type UserCreateWithoutPasswordResetsInput = {
   assignedSteps?: Prisma.ContractPhaseStepCreateNestedManyWithoutAssigneeInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ContractDocumentCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutReviewerInput
 }
 
 export type UserUncheckedCreateWithoutPasswordResetsInput = {
@@ -1473,6 +1571,9 @@ export type UserUncheckedCreateWithoutPasswordResetsInput = {
   assignedSteps?: Prisma.ContractPhaseStepUncheckedCreateNestedManyWithoutAssigneeInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
 }
 
 export type UserCreateOrConnectWithoutPasswordResetsInput = {
@@ -1522,6 +1623,9 @@ export type UserUpdateWithoutPasswordResetsInput = {
   assignedSteps?: Prisma.ContractPhaseStepUpdateManyWithoutAssigneeNestedInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ContractDocumentUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPasswordResetsInput = {
@@ -1555,6 +1659,9 @@ export type UserUncheckedUpdateWithoutPasswordResetsInput = {
   assignedSteps?: Prisma.ContractPhaseStepUncheckedUpdateManyWithoutAssigneeNestedInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ContractDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserCreateWithoutSuspensionsInput = {
@@ -1588,6 +1695,9 @@ export type UserCreateWithoutSuspensionsInput = {
   assignedSteps?: Prisma.ContractPhaseStepCreateNestedManyWithoutAssigneeInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ContractDocumentCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutReviewerInput
 }
 
 export type UserUncheckedCreateWithoutSuspensionsInput = {
@@ -1621,6 +1731,9 @@ export type UserUncheckedCreateWithoutSuspensionsInput = {
   assignedSteps?: Prisma.ContractPhaseStepUncheckedCreateNestedManyWithoutAssigneeInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
 }
 
 export type UserCreateOrConnectWithoutSuspensionsInput = {
@@ -1670,6 +1783,9 @@ export type UserUpdateWithoutSuspensionsInput = {
   assignedSteps?: Prisma.ContractPhaseStepUpdateManyWithoutAssigneeNestedInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ContractDocumentUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSuspensionsInput = {
@@ -1703,6 +1819,9 @@ export type UserUncheckedUpdateWithoutSuspensionsInput = {
   assignedSteps?: Prisma.ContractPhaseStepUncheckedUpdateManyWithoutAssigneeNestedInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ContractDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserCreateWithoutEmailPreferencesInput = {
@@ -1736,6 +1855,9 @@ export type UserCreateWithoutEmailPreferencesInput = {
   assignedSteps?: Prisma.ContractPhaseStepCreateNestedManyWithoutAssigneeInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ContractDocumentCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutReviewerInput
 }
 
 export type UserUncheckedCreateWithoutEmailPreferencesInput = {
@@ -1769,6 +1891,9 @@ export type UserUncheckedCreateWithoutEmailPreferencesInput = {
   assignedSteps?: Prisma.ContractPhaseStepUncheckedCreateNestedManyWithoutAssigneeInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
 }
 
 export type UserCreateOrConnectWithoutEmailPreferencesInput = {
@@ -1818,6 +1943,9 @@ export type UserUpdateWithoutEmailPreferencesInput = {
   assignedSteps?: Prisma.ContractPhaseStepUpdateManyWithoutAssigneeNestedInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ContractDocumentUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutEmailPreferencesInput = {
@@ -1851,6 +1979,9 @@ export type UserUncheckedUpdateWithoutEmailPreferencesInput = {
   assignedSteps?: Prisma.ContractPhaseStepUncheckedUpdateManyWithoutAssigneeNestedInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ContractDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserCreateWithoutDeviceEndpointsInput = {
@@ -1884,6 +2015,9 @@ export type UserCreateWithoutDeviceEndpointsInput = {
   assignedSteps?: Prisma.ContractPhaseStepCreateNestedManyWithoutAssigneeInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ContractDocumentCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutReviewerInput
 }
 
 export type UserUncheckedCreateWithoutDeviceEndpointsInput = {
@@ -1917,6 +2051,9 @@ export type UserUncheckedCreateWithoutDeviceEndpointsInput = {
   assignedSteps?: Prisma.ContractPhaseStepUncheckedCreateNestedManyWithoutAssigneeInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
 }
 
 export type UserCreateOrConnectWithoutDeviceEndpointsInput = {
@@ -1966,6 +2103,9 @@ export type UserUpdateWithoutDeviceEndpointsInput = {
   assignedSteps?: Prisma.ContractPhaseStepUpdateManyWithoutAssigneeNestedInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ContractDocumentUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDeviceEndpointsInput = {
@@ -1999,6 +2139,9 @@ export type UserUncheckedUpdateWithoutDeviceEndpointsInput = {
   assignedSteps?: Prisma.ContractPhaseStepUncheckedUpdateManyWithoutAssigneeNestedInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ContractDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserCreateWithoutSocialsInput = {
@@ -2032,6 +2175,9 @@ export type UserCreateWithoutSocialsInput = {
   assignedSteps?: Prisma.ContractPhaseStepCreateNestedManyWithoutAssigneeInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ContractDocumentCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutReviewerInput
 }
 
 export type UserUncheckedCreateWithoutSocialsInput = {
@@ -2065,6 +2211,9 @@ export type UserUncheckedCreateWithoutSocialsInput = {
   assignedSteps?: Prisma.ContractPhaseStepUncheckedCreateNestedManyWithoutAssigneeInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
 }
 
 export type UserCreateOrConnectWithoutSocialsInput = {
@@ -2114,6 +2263,9 @@ export type UserUpdateWithoutSocialsInput = {
   assignedSteps?: Prisma.ContractPhaseStepUpdateManyWithoutAssigneeNestedInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ContractDocumentUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSocialsInput = {
@@ -2147,6 +2299,9 @@ export type UserUncheckedUpdateWithoutSocialsInput = {
   assignedSteps?: Prisma.ContractPhaseStepUncheckedUpdateManyWithoutAssigneeNestedInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ContractDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserCreateWithoutWalletInput = {
@@ -2180,6 +2335,9 @@ export type UserCreateWithoutWalletInput = {
   assignedSteps?: Prisma.ContractPhaseStepCreateNestedManyWithoutAssigneeInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ContractDocumentCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutReviewerInput
 }
 
 export type UserUncheckedCreateWithoutWalletInput = {
@@ -2213,6 +2371,9 @@ export type UserUncheckedCreateWithoutWalletInput = {
   assignedSteps?: Prisma.ContractPhaseStepUncheckedCreateNestedManyWithoutAssigneeInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
 }
 
 export type UserCreateOrConnectWithoutWalletInput = {
@@ -2262,6 +2423,9 @@ export type UserUpdateWithoutWalletInput = {
   assignedSteps?: Prisma.ContractPhaseStepUpdateManyWithoutAssigneeNestedInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ContractDocumentUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWalletInput = {
@@ -2295,6 +2459,9 @@ export type UserUncheckedUpdateWithoutWalletInput = {
   assignedSteps?: Prisma.ContractPhaseStepUncheckedUpdateManyWithoutAssigneeNestedInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ContractDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserCreateWithoutPropertiesInput = {
@@ -2328,6 +2495,9 @@ export type UserCreateWithoutPropertiesInput = {
   assignedSteps?: Prisma.ContractPhaseStepCreateNestedManyWithoutAssigneeInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ContractDocumentCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutReviewerInput
 }
 
 export type UserUncheckedCreateWithoutPropertiesInput = {
@@ -2361,6 +2531,9 @@ export type UserUncheckedCreateWithoutPropertiesInput = {
   assignedSteps?: Prisma.ContractPhaseStepUncheckedCreateNestedManyWithoutAssigneeInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
 }
 
 export type UserCreateOrConnectWithoutPropertiesInput = {
@@ -2410,6 +2583,9 @@ export type UserUpdateWithoutPropertiesInput = {
   assignedSteps?: Prisma.ContractPhaseStepUpdateManyWithoutAssigneeNestedInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ContractDocumentUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPropertiesInput = {
@@ -2443,6 +2619,9 @@ export type UserUncheckedUpdateWithoutPropertiesInput = {
   assignedSteps?: Prisma.ContractPhaseStepUncheckedUpdateManyWithoutAssigneeNestedInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ContractDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserCreateWithoutContractsInput = {
@@ -2476,6 +2655,9 @@ export type UserCreateWithoutContractsInput = {
   assignedSteps?: Prisma.ContractPhaseStepCreateNestedManyWithoutAssigneeInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ContractDocumentCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutReviewerInput
 }
 
 export type UserUncheckedCreateWithoutContractsInput = {
@@ -2509,6 +2691,9 @@ export type UserUncheckedCreateWithoutContractsInput = {
   assignedSteps?: Prisma.ContractPhaseStepUncheckedCreateNestedManyWithoutAssigneeInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
 }
 
 export type UserCreateOrConnectWithoutContractsInput = {
@@ -2547,6 +2732,9 @@ export type UserCreateWithoutSoldContractsInput = {
   assignedSteps?: Prisma.ContractPhaseStepCreateNestedManyWithoutAssigneeInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ContractDocumentCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutReviewerInput
 }
 
 export type UserUncheckedCreateWithoutSoldContractsInput = {
@@ -2580,6 +2768,9 @@ export type UserUncheckedCreateWithoutSoldContractsInput = {
   assignedSteps?: Prisma.ContractPhaseStepUncheckedCreateNestedManyWithoutAssigneeInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
 }
 
 export type UserCreateOrConnectWithoutSoldContractsInput = {
@@ -2629,6 +2820,9 @@ export type UserUpdateWithoutContractsInput = {
   assignedSteps?: Prisma.ContractPhaseStepUpdateManyWithoutAssigneeNestedInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ContractDocumentUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutContractsInput = {
@@ -2662,6 +2856,9 @@ export type UserUncheckedUpdateWithoutContractsInput = {
   assignedSteps?: Prisma.ContractPhaseStepUncheckedUpdateManyWithoutAssigneeNestedInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ContractDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserUpsertWithoutSoldContractsInput = {
@@ -2706,6 +2903,9 @@ export type UserUpdateWithoutSoldContractsInput = {
   assignedSteps?: Prisma.ContractPhaseStepUpdateManyWithoutAssigneeNestedInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ContractDocumentUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSoldContractsInput = {
@@ -2739,6 +2939,9 @@ export type UserUncheckedUpdateWithoutSoldContractsInput = {
   assignedSteps?: Prisma.ContractPhaseStepUncheckedUpdateManyWithoutAssigneeNestedInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ContractDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserCreateWithoutAssignedStepsInput = {
@@ -2772,6 +2975,9 @@ export type UserCreateWithoutAssignedStepsInput = {
   contractPayments?: Prisma.ContractPaymentCreateNestedManyWithoutPayerInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ContractDocumentCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutReviewerInput
 }
 
 export type UserUncheckedCreateWithoutAssignedStepsInput = {
@@ -2805,6 +3011,9 @@ export type UserUncheckedCreateWithoutAssignedStepsInput = {
   contractPayments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutPayerInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
 }
 
 export type UserCreateOrConnectWithoutAssignedStepsInput = {
@@ -2854,6 +3063,9 @@ export type UserUpdateWithoutAssignedStepsInput = {
   contractPayments?: Prisma.ContractPaymentUpdateManyWithoutPayerNestedInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ContractDocumentUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssignedStepsInput = {
@@ -2887,6 +3099,9 @@ export type UserUncheckedUpdateWithoutAssignedStepsInput = {
   contractPayments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutPayerNestedInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ContractDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserCreateWithoutStepApprovalsInput = {
@@ -2920,6 +3135,9 @@ export type UserCreateWithoutStepApprovalsInput = {
   contractPayments?: Prisma.ContractPaymentCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.ContractPhaseStepCreateNestedManyWithoutAssigneeInput
   uploadedDocs?: Prisma.ContractDocumentCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutReviewerInput
 }
 
 export type UserUncheckedCreateWithoutStepApprovalsInput = {
@@ -2953,6 +3171,9 @@ export type UserUncheckedCreateWithoutStepApprovalsInput = {
   contractPayments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.ContractPhaseStepUncheckedCreateNestedManyWithoutAssigneeInput
   uploadedDocs?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
 }
 
 export type UserCreateOrConnectWithoutStepApprovalsInput = {
@@ -3002,6 +3223,9 @@ export type UserUpdateWithoutStepApprovalsInput = {
   contractPayments?: Prisma.ContractPaymentUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.ContractPhaseStepUpdateManyWithoutAssigneeNestedInput
   uploadedDocs?: Prisma.ContractDocumentUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStepApprovalsInput = {
@@ -3035,6 +3259,9 @@ export type UserUncheckedUpdateWithoutStepApprovalsInput = {
   contractPayments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.ContractPhaseStepUncheckedUpdateManyWithoutAssigneeNestedInput
   uploadedDocs?: Prisma.ContractDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserCreateWithoutContractPaymentsInput = {
@@ -3068,6 +3295,9 @@ export type UserCreateWithoutContractPaymentsInput = {
   assignedSteps?: Prisma.ContractPhaseStepCreateNestedManyWithoutAssigneeInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ContractDocumentCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutReviewerInput
 }
 
 export type UserUncheckedCreateWithoutContractPaymentsInput = {
@@ -3101,6 +3331,9 @@ export type UserUncheckedCreateWithoutContractPaymentsInput = {
   assignedSteps?: Prisma.ContractPhaseStepUncheckedCreateNestedManyWithoutAssigneeInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
 }
 
 export type UserCreateOrConnectWithoutContractPaymentsInput = {
@@ -3150,6 +3383,9 @@ export type UserUpdateWithoutContractPaymentsInput = {
   assignedSteps?: Prisma.ContractPhaseStepUpdateManyWithoutAssigneeNestedInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ContractDocumentUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutContractPaymentsInput = {
@@ -3183,6 +3419,9 @@ export type UserUncheckedUpdateWithoutContractPaymentsInput = {
   assignedSteps?: Prisma.ContractPhaseStepUncheckedUpdateManyWithoutAssigneeNestedInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ContractDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserCreateWithoutUploadedDocsInput = {
@@ -3216,6 +3455,9 @@ export type UserCreateWithoutUploadedDocsInput = {
   contractPayments?: Prisma.ContractPaymentCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.ContractPhaseStepCreateNestedManyWithoutAssigneeInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalCreateNestedManyWithoutApproverInput
+  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutReviewerInput
 }
 
 export type UserUncheckedCreateWithoutUploadedDocsInput = {
@@ -3249,6 +3491,9 @@ export type UserUncheckedCreateWithoutUploadedDocsInput = {
   contractPayments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.ContractPhaseStepUncheckedCreateNestedManyWithoutAssigneeInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedCreateNestedManyWithoutApproverInput
+  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
 }
 
 export type UserCreateOrConnectWithoutUploadedDocsInput = {
@@ -3298,6 +3543,9 @@ export type UserUpdateWithoutUploadedDocsInput = {
   contractPayments?: Prisma.ContractPaymentUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.ContractPhaseStepUpdateManyWithoutAssigneeNestedInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUpdateManyWithoutApproverNestedInput
+  prequalifications?: Prisma.PrequalificationUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUploadedDocsInput = {
@@ -3331,6 +3579,489 @@ export type UserUncheckedUpdateWithoutUploadedDocsInput = {
   contractPayments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.ContractPhaseStepUncheckedUpdateManyWithoutAssigneeNestedInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
+  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
+}
+
+export type UserCreateWithoutPrequalificationsInput = {
+  id?: string
+  email: string
+  password?: string | null
+  phone?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  isActive?: boolean
+  isEmailVerified?: boolean
+  googleId?: string | null
+  avatar?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  emailVerifiedAt?: Date | string | null
+  emailVerificationToken?: string | null
+  lastLoginAt?: Date | string | null
+  tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  passwordResets?: Prisma.PasswordResetCreateNestedManyWithoutUserInput
+  suspensions?: Prisma.UserSuspensionCreateNestedManyWithoutUserInput
+  emailPreferences?: Prisma.EmailPreferenceCreateNestedManyWithoutUserInput
+  deviceEndpoints?: Prisma.DeviceEndpointCreateNestedManyWithoutUserInput
+  socials?: Prisma.SocialCreateNestedManyWithoutUserInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutUserInput
+  contracts?: Prisma.ContractCreateNestedManyWithoutBuyerInput
+  soldContracts?: Prisma.ContractCreateNestedManyWithoutSellerInput
+  contractPayments?: Prisma.ContractPaymentCreateNestedManyWithoutPayerInput
+  assignedSteps?: Prisma.ContractPhaseStepCreateNestedManyWithoutAssigneeInput
+  stepApprovals?: Prisma.ContractPhaseStepApprovalCreateNestedManyWithoutApproverInput
+  uploadedDocs?: Prisma.ContractDocumentCreateNestedManyWithoutUploadedByInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutReviewerInput
+}
+
+export type UserUncheckedCreateWithoutPrequalificationsInput = {
+  id?: string
+  email: string
+  password?: string | null
+  phone?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  isActive?: boolean
+  isEmailVerified?: boolean
+  googleId?: string | null
+  avatar?: string | null
+  tenantId?: string | null
+  walletId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  emailVerifiedAt?: Date | string | null
+  emailVerificationToken?: string | null
+  lastLoginAt?: Date | string | null
+  userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
+  suspensions?: Prisma.UserSuspensionUncheckedCreateNestedManyWithoutUserInput
+  emailPreferences?: Prisma.EmailPreferenceUncheckedCreateNestedManyWithoutUserInput
+  deviceEndpoints?: Prisma.DeviceEndpointUncheckedCreateNestedManyWithoutUserInput
+  socials?: Prisma.SocialUncheckedCreateNestedManyWithoutUserInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutUserInput
+  contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutBuyerInput
+  soldContracts?: Prisma.ContractUncheckedCreateNestedManyWithoutSellerInput
+  contractPayments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutPayerInput
+  assignedSteps?: Prisma.ContractPhaseStepUncheckedCreateNestedManyWithoutAssigneeInput
+  stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedCreateNestedManyWithoutApproverInput
+  uploadedDocs?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
+}
+
+export type UserCreateOrConnectWithoutPrequalificationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPrequalificationsInput, Prisma.UserUncheckedCreateWithoutPrequalificationsInput>
+}
+
+export type UserUpsertWithoutPrequalificationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPrequalificationsInput, Prisma.UserUncheckedUpdateWithoutPrequalificationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPrequalificationsInput, Prisma.UserUncheckedCreateWithoutPrequalificationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPrequalificationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPrequalificationsInput, Prisma.UserUncheckedUpdateWithoutPrequalificationsInput>
+}
+
+export type UserUpdateWithoutPrequalificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  passwordResets?: Prisma.PasswordResetUpdateManyWithoutUserNestedInput
+  suspensions?: Prisma.UserSuspensionUpdateManyWithoutUserNestedInput
+  emailPreferences?: Prisma.EmailPreferenceUpdateManyWithoutUserNestedInput
+  deviceEndpoints?: Prisma.DeviceEndpointUpdateManyWithoutUserNestedInput
+  socials?: Prisma.SocialUpdateManyWithoutUserNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutUserNestedInput
+  contracts?: Prisma.ContractUpdateManyWithoutBuyerNestedInput
+  soldContracts?: Prisma.ContractUpdateManyWithoutSellerNestedInput
+  contractPayments?: Prisma.ContractPaymentUpdateManyWithoutPayerNestedInput
+  assignedSteps?: Prisma.ContractPhaseStepUpdateManyWithoutAssigneeNestedInput
+  stepApprovals?: Prisma.ContractPhaseStepApprovalUpdateManyWithoutApproverNestedInput
+  uploadedDocs?: Prisma.ContractDocumentUpdateManyWithoutUploadedByNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutReviewerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPrequalificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tenantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  walletId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+  suspensions?: Prisma.UserSuspensionUncheckedUpdateManyWithoutUserNestedInput
+  emailPreferences?: Prisma.EmailPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  deviceEndpoints?: Prisma.DeviceEndpointUncheckedUpdateManyWithoutUserNestedInput
+  socials?: Prisma.SocialUncheckedUpdateManyWithoutUserNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutUserNestedInput
+  contracts?: Prisma.ContractUncheckedUpdateManyWithoutBuyerNestedInput
+  soldContracts?: Prisma.ContractUncheckedUpdateManyWithoutSellerNestedInput
+  contractPayments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutPayerNestedInput
+  assignedSteps?: Prisma.ContractPhaseStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
+  uploadedDocs?: Prisma.ContractDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
+}
+
+export type UserCreateWithoutPaymentMethodChangeRequestsInput = {
+  id?: string
+  email: string
+  password?: string | null
+  phone?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  isActive?: boolean
+  isEmailVerified?: boolean
+  googleId?: string | null
+  avatar?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  emailVerifiedAt?: Date | string | null
+  emailVerificationToken?: string | null
+  lastLoginAt?: Date | string | null
+  tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  passwordResets?: Prisma.PasswordResetCreateNestedManyWithoutUserInput
+  suspensions?: Prisma.UserSuspensionCreateNestedManyWithoutUserInput
+  emailPreferences?: Prisma.EmailPreferenceCreateNestedManyWithoutUserInput
+  deviceEndpoints?: Prisma.DeviceEndpointCreateNestedManyWithoutUserInput
+  socials?: Prisma.SocialCreateNestedManyWithoutUserInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutUserInput
+  contracts?: Prisma.ContractCreateNestedManyWithoutBuyerInput
+  soldContracts?: Prisma.ContractCreateNestedManyWithoutSellerInput
+  contractPayments?: Prisma.ContractPaymentCreateNestedManyWithoutPayerInput
+  assignedSteps?: Prisma.ContractPhaseStepCreateNestedManyWithoutAssigneeInput
+  stepApprovals?: Prisma.ContractPhaseStepApprovalCreateNestedManyWithoutApproverInput
+  uploadedDocs?: Prisma.ContractDocumentCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutUserInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutReviewerInput
+}
+
+export type UserUncheckedCreateWithoutPaymentMethodChangeRequestsInput = {
+  id?: string
+  email: string
+  password?: string | null
+  phone?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  isActive?: boolean
+  isEmailVerified?: boolean
+  googleId?: string | null
+  avatar?: string | null
+  tenantId?: string | null
+  walletId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  emailVerifiedAt?: Date | string | null
+  emailVerificationToken?: string | null
+  lastLoginAt?: Date | string | null
+  userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
+  suspensions?: Prisma.UserSuspensionUncheckedCreateNestedManyWithoutUserInput
+  emailPreferences?: Prisma.EmailPreferenceUncheckedCreateNestedManyWithoutUserInput
+  deviceEndpoints?: Prisma.DeviceEndpointUncheckedCreateNestedManyWithoutUserInput
+  socials?: Prisma.SocialUncheckedCreateNestedManyWithoutUserInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutUserInput
+  contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutBuyerInput
+  soldContracts?: Prisma.ContractUncheckedCreateNestedManyWithoutSellerInput
+  contractPayments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutPayerInput
+  assignedSteps?: Prisma.ContractPhaseStepUncheckedCreateNestedManyWithoutAssigneeInput
+  stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedCreateNestedManyWithoutApproverInput
+  uploadedDocs?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutUserInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
+}
+
+export type UserCreateOrConnectWithoutPaymentMethodChangeRequestsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPaymentMethodChangeRequestsInput, Prisma.UserUncheckedCreateWithoutPaymentMethodChangeRequestsInput>
+}
+
+export type UserCreateWithoutReviewedChangeRequestsInput = {
+  id?: string
+  email: string
+  password?: string | null
+  phone?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  isActive?: boolean
+  isEmailVerified?: boolean
+  googleId?: string | null
+  avatar?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  emailVerifiedAt?: Date | string | null
+  emailVerificationToken?: string | null
+  lastLoginAt?: Date | string | null
+  tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  passwordResets?: Prisma.PasswordResetCreateNestedManyWithoutUserInput
+  suspensions?: Prisma.UserSuspensionCreateNestedManyWithoutUserInput
+  emailPreferences?: Prisma.EmailPreferenceCreateNestedManyWithoutUserInput
+  deviceEndpoints?: Prisma.DeviceEndpointCreateNestedManyWithoutUserInput
+  socials?: Prisma.SocialCreateNestedManyWithoutUserInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutUserInput
+  contracts?: Prisma.ContractCreateNestedManyWithoutBuyerInput
+  soldContracts?: Prisma.ContractCreateNestedManyWithoutSellerInput
+  contractPayments?: Prisma.ContractPaymentCreateNestedManyWithoutPayerInput
+  assignedSteps?: Prisma.ContractPhaseStepCreateNestedManyWithoutAssigneeInput
+  stepApprovals?: Prisma.ContractPhaseStepApprovalCreateNestedManyWithoutApproverInput
+  uploadedDocs?: Prisma.ContractDocumentCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
+}
+
+export type UserUncheckedCreateWithoutReviewedChangeRequestsInput = {
+  id?: string
+  email: string
+  password?: string | null
+  phone?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  isActive?: boolean
+  isEmailVerified?: boolean
+  googleId?: string | null
+  avatar?: string | null
+  tenantId?: string | null
+  walletId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  emailVerifiedAt?: Date | string | null
+  emailVerificationToken?: string | null
+  lastLoginAt?: Date | string | null
+  userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
+  suspensions?: Prisma.UserSuspensionUncheckedCreateNestedManyWithoutUserInput
+  emailPreferences?: Prisma.EmailPreferenceUncheckedCreateNestedManyWithoutUserInput
+  deviceEndpoints?: Prisma.DeviceEndpointUncheckedCreateNestedManyWithoutUserInput
+  socials?: Prisma.SocialUncheckedCreateNestedManyWithoutUserInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutUserInput
+  contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutBuyerInput
+  soldContracts?: Prisma.ContractUncheckedCreateNestedManyWithoutSellerInput
+  contractPayments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutPayerInput
+  assignedSteps?: Prisma.ContractPhaseStepUncheckedCreateNestedManyWithoutAssigneeInput
+  stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedCreateNestedManyWithoutApproverInput
+  uploadedDocs?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutUserInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
+}
+
+export type UserCreateOrConnectWithoutReviewedChangeRequestsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutReviewedChangeRequestsInput, Prisma.UserUncheckedCreateWithoutReviewedChangeRequestsInput>
+}
+
+export type UserUpsertWithoutPaymentMethodChangeRequestsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPaymentMethodChangeRequestsInput, Prisma.UserUncheckedUpdateWithoutPaymentMethodChangeRequestsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPaymentMethodChangeRequestsInput, Prisma.UserUncheckedCreateWithoutPaymentMethodChangeRequestsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPaymentMethodChangeRequestsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPaymentMethodChangeRequestsInput, Prisma.UserUncheckedUpdateWithoutPaymentMethodChangeRequestsInput>
+}
+
+export type UserUpdateWithoutPaymentMethodChangeRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  passwordResets?: Prisma.PasswordResetUpdateManyWithoutUserNestedInput
+  suspensions?: Prisma.UserSuspensionUpdateManyWithoutUserNestedInput
+  emailPreferences?: Prisma.EmailPreferenceUpdateManyWithoutUserNestedInput
+  deviceEndpoints?: Prisma.DeviceEndpointUpdateManyWithoutUserNestedInput
+  socials?: Prisma.SocialUpdateManyWithoutUserNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutUserNestedInput
+  contracts?: Prisma.ContractUpdateManyWithoutBuyerNestedInput
+  soldContracts?: Prisma.ContractUpdateManyWithoutSellerNestedInput
+  contractPayments?: Prisma.ContractPaymentUpdateManyWithoutPayerNestedInput
+  assignedSteps?: Prisma.ContractPhaseStepUpdateManyWithoutAssigneeNestedInput
+  stepApprovals?: Prisma.ContractPhaseStepApprovalUpdateManyWithoutApproverNestedInput
+  uploadedDocs?: Prisma.ContractDocumentUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUpdateManyWithoutUserNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutReviewerNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPaymentMethodChangeRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tenantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  walletId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+  suspensions?: Prisma.UserSuspensionUncheckedUpdateManyWithoutUserNestedInput
+  emailPreferences?: Prisma.EmailPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  deviceEndpoints?: Prisma.DeviceEndpointUncheckedUpdateManyWithoutUserNestedInput
+  socials?: Prisma.SocialUncheckedUpdateManyWithoutUserNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutUserNestedInput
+  contracts?: Prisma.ContractUncheckedUpdateManyWithoutBuyerNestedInput
+  soldContracts?: Prisma.ContractUncheckedUpdateManyWithoutSellerNestedInput
+  contractPayments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutPayerNestedInput
+  assignedSteps?: Prisma.ContractPhaseStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
+  uploadedDocs?: Prisma.ContractDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutUserNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
+}
+
+export type UserUpsertWithoutReviewedChangeRequestsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutReviewedChangeRequestsInput, Prisma.UserUncheckedUpdateWithoutReviewedChangeRequestsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutReviewedChangeRequestsInput, Prisma.UserUncheckedCreateWithoutReviewedChangeRequestsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutReviewedChangeRequestsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutReviewedChangeRequestsInput, Prisma.UserUncheckedUpdateWithoutReviewedChangeRequestsInput>
+}
+
+export type UserUpdateWithoutReviewedChangeRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  passwordResets?: Prisma.PasswordResetUpdateManyWithoutUserNestedInput
+  suspensions?: Prisma.UserSuspensionUpdateManyWithoutUserNestedInput
+  emailPreferences?: Prisma.EmailPreferenceUpdateManyWithoutUserNestedInput
+  deviceEndpoints?: Prisma.DeviceEndpointUpdateManyWithoutUserNestedInput
+  socials?: Prisma.SocialUpdateManyWithoutUserNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutUserNestedInput
+  contracts?: Prisma.ContractUpdateManyWithoutBuyerNestedInput
+  soldContracts?: Prisma.ContractUpdateManyWithoutSellerNestedInput
+  contractPayments?: Prisma.ContractPaymentUpdateManyWithoutPayerNestedInput
+  assignedSteps?: Prisma.ContractPhaseStepUpdateManyWithoutAssigneeNestedInput
+  stepApprovals?: Prisma.ContractPhaseStepApprovalUpdateManyWithoutApproverNestedInput
+  uploadedDocs?: Prisma.ContractDocumentUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
+}
+
+export type UserUncheckedUpdateWithoutReviewedChangeRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tenantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  walletId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+  suspensions?: Prisma.UserSuspensionUncheckedUpdateManyWithoutUserNestedInput
+  emailPreferences?: Prisma.EmailPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  deviceEndpoints?: Prisma.DeviceEndpointUncheckedUpdateManyWithoutUserNestedInput
+  socials?: Prisma.SocialUncheckedUpdateManyWithoutUserNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutUserNestedInput
+  contracts?: Prisma.ContractUncheckedUpdateManyWithoutBuyerNestedInput
+  soldContracts?: Prisma.ContractUncheckedUpdateManyWithoutSellerNestedInput
+  contractPayments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutPayerNestedInput
+  assignedSteps?: Prisma.ContractPhaseStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
+  uploadedDocs?: Prisma.ContractDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
 }
 
 export type UserCreateManyTenantInput = {
@@ -3383,6 +4114,9 @@ export type UserUpdateWithoutTenantInput = {
   assignedSteps?: Prisma.ContractPhaseStepUpdateManyWithoutAssigneeNestedInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ContractDocumentUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTenantInput = {
@@ -3416,6 +4150,9 @@ export type UserUncheckedUpdateWithoutTenantInput = {
   assignedSteps?: Prisma.ContractPhaseStepUncheckedUpdateManyWithoutAssigneeNestedInput
   stepApprovals?: Prisma.ContractPhaseStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ContractDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutUserNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutTenantInput = {
@@ -3457,6 +4194,9 @@ export type UserCountOutputType = {
   assignedSteps: number
   stepApprovals: number
   uploadedDocs: number
+  prequalifications: number
+  paymentMethodChangeRequests: number
+  reviewedChangeRequests: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3474,6 +4214,9 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   assignedSteps?: boolean | UserCountOutputTypeCountAssignedStepsArgs
   stepApprovals?: boolean | UserCountOutputTypeCountStepApprovalsArgs
   uploadedDocs?: boolean | UserCountOutputTypeCountUploadedDocsArgs
+  prequalifications?: boolean | UserCountOutputTypeCountPrequalificationsArgs
+  paymentMethodChangeRequests?: boolean | UserCountOutputTypeCountPaymentMethodChangeRequestsArgs
+  reviewedChangeRequests?: boolean | UserCountOutputTypeCountReviewedChangeRequestsArgs
 }
 
 /**
@@ -3584,6 +4327,27 @@ export type UserCountOutputTypeCountUploadedDocsArgs<ExtArgs extends runtime.Typ
   where?: Prisma.ContractDocumentWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPrequalificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PrequalificationWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPaymentMethodChangeRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PaymentMethodChangeRequestWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountReviewedChangeRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PaymentMethodChangeRequestWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -3619,6 +4383,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   assignedSteps?: boolean | Prisma.User$assignedStepsArgs<ExtArgs>
   stepApprovals?: boolean | Prisma.User$stepApprovalsArgs<ExtArgs>
   uploadedDocs?: boolean | Prisma.User$uploadedDocsArgs<ExtArgs>
+  prequalifications?: boolean | Prisma.User$prequalificationsArgs<ExtArgs>
+  paymentMethodChangeRequests?: boolean | Prisma.User$paymentMethodChangeRequestsArgs<ExtArgs>
+  reviewedChangeRequests?: boolean | Prisma.User$reviewedChangeRequestsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -3662,6 +4429,9 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   assignedSteps?: boolean | Prisma.User$assignedStepsArgs<ExtArgs>
   stepApprovals?: boolean | Prisma.User$stepApprovalsArgs<ExtArgs>
   uploadedDocs?: boolean | Prisma.User$uploadedDocsArgs<ExtArgs>
+  prequalifications?: boolean | Prisma.User$prequalificationsArgs<ExtArgs>
+  paymentMethodChangeRequests?: boolean | Prisma.User$paymentMethodChangeRequestsArgs<ExtArgs>
+  reviewedChangeRequests?: boolean | Prisma.User$reviewedChangeRequestsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -3684,6 +4454,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     assignedSteps: Prisma.$ContractPhaseStepPayload<ExtArgs>[]
     stepApprovals: Prisma.$ContractPhaseStepApprovalPayload<ExtArgs>[]
     uploadedDocs: Prisma.$ContractDocumentPayload<ExtArgs>[]
+    prequalifications: Prisma.$PrequalificationPayload<ExtArgs>[]
+    paymentMethodChangeRequests: Prisma.$PaymentMethodChangeRequestPayload<ExtArgs>[]
+    reviewedChangeRequests: Prisma.$PaymentMethodChangeRequestPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -4059,6 +4832,9 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   assignedSteps<T extends Prisma.User$assignedStepsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$assignedStepsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContractPhaseStepPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   stepApprovals<T extends Prisma.User$stepApprovalsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$stepApprovalsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContractPhaseStepApprovalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   uploadedDocs<T extends Prisma.User$uploadedDocsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$uploadedDocsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContractDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  prequalifications<T extends Prisma.User$prequalificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$prequalificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PrequalificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  paymentMethodChangeRequests<T extends Prisma.User$paymentMethodChangeRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$paymentMethodChangeRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentMethodChangeRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  reviewedChangeRequests<T extends Prisma.User$reviewedChangeRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reviewedChangeRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentMethodChangeRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4819,6 +5595,78 @@ export type User$uploadedDocsArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.ContractDocumentScalarFieldEnum | Prisma.ContractDocumentScalarFieldEnum[]
+}
+
+/**
+ * User.prequalifications
+ */
+export type User$prequalificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Prequalification
+   */
+  select?: Prisma.PrequalificationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Prequalification
+   */
+  omit?: Prisma.PrequalificationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PrequalificationInclude<ExtArgs> | null
+  where?: Prisma.PrequalificationWhereInput
+  orderBy?: Prisma.PrequalificationOrderByWithRelationInput | Prisma.PrequalificationOrderByWithRelationInput[]
+  cursor?: Prisma.PrequalificationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PrequalificationScalarFieldEnum | Prisma.PrequalificationScalarFieldEnum[]
+}
+
+/**
+ * User.paymentMethodChangeRequests
+ */
+export type User$paymentMethodChangeRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PaymentMethodChangeRequest
+   */
+  select?: Prisma.PaymentMethodChangeRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PaymentMethodChangeRequest
+   */
+  omit?: Prisma.PaymentMethodChangeRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaymentMethodChangeRequestInclude<ExtArgs> | null
+  where?: Prisma.PaymentMethodChangeRequestWhereInput
+  orderBy?: Prisma.PaymentMethodChangeRequestOrderByWithRelationInput | Prisma.PaymentMethodChangeRequestOrderByWithRelationInput[]
+  cursor?: Prisma.PaymentMethodChangeRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PaymentMethodChangeRequestScalarFieldEnum | Prisma.PaymentMethodChangeRequestScalarFieldEnum[]
+}
+
+/**
+ * User.reviewedChangeRequests
+ */
+export type User$reviewedChangeRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PaymentMethodChangeRequest
+   */
+  select?: Prisma.PaymentMethodChangeRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PaymentMethodChangeRequest
+   */
+  omit?: Prisma.PaymentMethodChangeRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaymentMethodChangeRequestInclude<ExtArgs> | null
+  where?: Prisma.PaymentMethodChangeRequestWhereInput
+  orderBy?: Prisma.PaymentMethodChangeRequestOrderByWithRelationInput | Prisma.PaymentMethodChangeRequestOrderByWithRelationInput[]
+  cursor?: Prisma.PaymentMethodChangeRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PaymentMethodChangeRequestScalarFieldEnum | Prisma.PaymentMethodChangeRequestScalarFieldEnum[]
 }
 
 /**

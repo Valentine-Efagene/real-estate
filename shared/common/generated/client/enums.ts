@@ -9,7 +9,35 @@
 * 🟢 You can import this file directly.
 */
 
+export const PrequalificationStatus = {
+  DRAFT: 'DRAFT',
+  SUBMITTED: 'SUBMITTED',
+  UNDER_REVIEW: 'UNDER_REVIEW',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type PrequalificationStatus = (typeof PrequalificationStatus)[keyof typeof PrequalificationStatus]
 
 
-// This file is empty because there are no enums in the schema.
-export {}
+export const PaymentMethodChangeStatus = {
+  PENDING_DOCUMENTS: 'PENDING_DOCUMENTS',
+  DOCUMENTS_SUBMITTED: 'DOCUMENTS_SUBMITTED',
+  UNDER_REVIEW: 'UNDER_REVIEW',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  EXECUTED: 'EXECUTED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type PaymentMethodChangeStatus = (typeof PaymentMethodChangeStatus)[keyof typeof PaymentMethodChangeStatus]
+
+
+export const DocumentRequirementContext = {
+  PREQUALIFICATION: 'PREQUALIFICATION',
+  CONTRACT_PHASE: 'CONTRACT_PHASE',
+  PAYMENT_METHOD_CHANGE: 'PAYMENT_METHOD_CHANGE'
+} as const
+
+export type DocumentRequirementContext = (typeof DocumentRequirementContext)[keyof typeof DocumentRequirementContext]
