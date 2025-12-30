@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Verify Email</title>
+</head>
+
+<body style="margin:0; padding:0; background-color:#F5F7FA; font-family:Arial, sans-serif;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#F5F7FA; padding: 40px 0;">
+        <tr>
+            <td align="center">
+                <table width="460" cellpadding="0" cellspacing="0"
+                    style=" border-radius:10px; overflow:hidden;">
+                    <tr>
+                        <td>
+                            <img src="{{bannerUrl}}" width="460" height="78" alt="ContriBuild"
+                                style="display:block;" />
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Container -->
+                <table width="460" cellpadding="0" cellspacing="0"
+                    style="background-color:#ffffff; border-radius:10px; overflow:hidden; margin: 20px 0;">
+
+                    <!-- Header -->
+
+
+                    <!-- Content -->
+                    <tr>
+                        <td style="padding: 24px; ">
+
+                            <h2 style="margin:0 0 10px 0; font-size:22px; font-weight:semibold;">
+                                Welcome to ContriBuild! 🏡 <br /> Please verify your account
+                            </h2>
+
+                            <p style="font-size:14px; line-height:22px; margin:25px 0;">
+                                Hello {{homeBuyerName}} 👋,
+                            </p>
+
+                            <p style="font-size:14px; line-height:22px; margin:10px 0 25px;">
+                                Thank you for joining the ContriBuild family! Please enter the OTP below to verify your
+                                account:
+                            </p>
+
+                            <p style="font-size:24px; font-weight:semibold; letter-spacing:4px; margin:0 0 20px;">
+                                {{otp}}
+                            </p>
+
+                            <p style="font-size:14px; line-height:20px; margin:0 0 25px;">
+                                This code expires in {{ttl}} minutes.
+                            </p>
+
+                            <p style="font-size:14px; line-height:20px; margin:0;">
+                                If you didn't sign up on ContriBuild, please reach out to us at<br>
+                                <a href="mailto:{{supportEmail}}"
+                                    style="color:#1E1E1E; text-decoration:underline;">
+                                    {{supportEmail}}
+                                </a>
+                            </p>
+
+                            <p style="font-size:14px; line-height:20px; margin-top:30px;">
+                                Best, <br />
+                                The ContriBuild Team.
+                            </p>
+
+                        </td>
+                    </tr>
+
+                </table>
+
+                <!-- Footer -->
+                <table width="600" cellpadding="0" cellspacing="0"
+                    style="margin-top:15px; text-align:center; color:#033950">
+                    <tr>
+                        <td style="font-size:13px; padding:10px;">
+                            Need help? send an email to
+                            <a href="mailto:{{supportEmail}}" style="color:#033950; text-decoration:underline;">
+                                {{supportEmail}}
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:13px; padding-bottom:10px;">
+                            ContriBuild © {{year}}
+                        </td>
+                    </tr>
+                </table>
+
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

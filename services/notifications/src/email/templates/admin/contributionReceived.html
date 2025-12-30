@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Property Allocation</title>
+</head>
+
+<body style="margin:0; padding:0; background-color:#F5F7FA; font-family:Arial, sans-serif;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#F5F7FA; padding: 40px 0;">
+        <tr>
+
+            <!-- Header -->
+            <td align="center">
+                <table width="460" cellpadding="0" cellspacing="0" style=" border-radius:10px; overflow:hidden;">
+                    <tr>
+                        <td>
+                            <img src="{{bannerUrl}}" width="460" height="78" alt="ContriBuild" style="display:block;" />
+
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Container -->
+                <table width="460" cellpadding="0" cellspacing="0"
+                    style="background-color:#ffffff; border-radius:10px; overflow:hidden; margin: 20px 0;">
+
+                    <!-- Content -->
+                    <tr>
+                        <td style="padding: 24px; ">
+
+                            <h2 style="margin:0 0 10px 0; font-size:22px; font-weight:semibold;">
+                                🔔 New Contribution Received: {{amount}} from {{customerName}}
+                            </h2>
+                            <p style="font-size:14px; line-height:22px; margin:10px 0;">
+                                <span style="font-weight: 600;">Reconciliation Alert:</span>
+                                A new contribution of {{amount}} has been deposited from Homebuyer
+                                {{customerName}}.
+                            </p>
+
+                            <p style="font-size:14px; line-height:22px; margin:5px 0;">
+                                Please reconcile this payment against the bank statement and update the status in the
+                                Contribution Ledger.
+                            </p>
+                            <p style="font-size:14px; line-height:22px; margin:5px 0;">
+                                Transaction ID: {{transactionID}} </p>
+                            <p style="font-size:14px; line-height:20px; margin-top:30px;">
+                                System Alert - ContriBuild Admin
+                            </p>
+
+                        </td>
+                    </tr>
+
+                </table>
+
+                <!-- Footer -->
+                <table width="600" cellpadding="0" cellspacing="0"
+                    style="margin-top:15px; text-align:center; color:#033950">
+                    <tr>
+                        <td style="font-size:13px; padding:10px;">
+                            Need help? send an email to
+                            <a href="mailto:{{supportEmail}}" style="color:#033950; text-decoration:underline;">
+                                {{supportEmail}}
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:13px; padding-bottom:10px;">
+                            ContriBuild © {{year}}
+                        </td>
+                    </tr>
+                </table>
+
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>
