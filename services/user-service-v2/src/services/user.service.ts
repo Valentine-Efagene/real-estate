@@ -1,12 +1,12 @@
 import bcrypt from 'bcryptjs';
-import { prisma } from '../lib/prisma.js';
+import { prisma } from '../lib/prisma';
 import { NotFoundError, ConflictError } from '@valentine-efagene/qshelter-common';
 import {
     createUserSchema,
     updateUserSchema,
     CreateUserInput,
     UpdateUserInput
-} from '../validators/user.validator.js';
+} from '../validators/user.validator';
 
 export interface PaginationParams {
     page?: number;

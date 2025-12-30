@@ -1,11 +1,11 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import { paymentMethodService } from '../services/payment-method.service.js';
+import { paymentMethodService } from '../services/payment-method.service';
 import {
     CreatePaymentMethodSchema,
     UpdatePaymentMethodSchema,
     AddPhaseSchema,
     LinkToPropertySchema,
-} from '../validators/payment-method.validator.js';
+} from '../validators/payment-method.validator';
 import { z } from 'zod';
 
 const router = Router();

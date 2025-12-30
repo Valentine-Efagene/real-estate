@@ -4,8 +4,8 @@ import { prisma } from '../lib/prisma';
 import {
     createPropertySchema,
     updatePropertySchema,
-} from '../validators/property.validator.js';
-import { propertyService } from '../services/property.service.js';
+} from '../validators/property.validator';
+import { propertyService } from '../services/property.service';
 
 export const propertyRouter: RouterType = Router();
 
@@ -23,9 +23,13 @@ propertyRouter.get('/db/ping', async (req, res, next) => {
 propertyRouter.post('/properties', async (req, res, next) => {
     try {
         const data = createPropertySchema.parse(req.body);
-        // TODO: Extract userId from auth context/JWT
-        const userId = (req as any).userId || 'temp-user-id';
-        const property = await propertyService.createProperty(data, userId);
+        // Extract from tenant context (set by tenant middleware)
+        const userId = req.tenantContext?.userId || 'temp-user-id';
+        const tenantId = req.tenantContext?.tenantId;
+        if (!tenantId) {
+            return res.status(400).json({ success: false, error: 'Tenant context required' });
+        }
+        const property = await propertyService.createProperty(data, userId, tenantId);
         res.status(201).json(successResponse(property));
     } catch (error) {
         next(error);

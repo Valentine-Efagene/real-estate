@@ -1,4 +1,4 @@
-import { prisma } from '../lib/prisma.js';
+import { prisma } from '../lib/prisma';
 import { AppError } from '@valentine-efagene/qshelter-common';
 import { v4 as uuidv4 } from 'uuid';
 import type {
@@ -7,8 +7,8 @@ import type {
     UploadDocumentInput,
     ApproveDocumentInput,
     GenerateInstallmentsInput,
-} from '../validators/contract-phase.validator.js';
-import { paymentPlanService } from './payment-plan.service.js';
+} from '../validators/contract-phase.validator';
+import { paymentPlanService } from './payment-plan.service';
 
 class ContractPhaseService {
     async findById(phaseId: string) {

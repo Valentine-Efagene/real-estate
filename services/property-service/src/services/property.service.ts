@@ -3,11 +3,12 @@ import { AppError } from '@valentine-efagene/qshelter-common';
 import type { CreatePropertyInput, UpdatePropertyInput } from '../validators/property.validator';
 
 class PropertyService {
-    async createProperty(data: CreatePropertyInput, userId: string) {
+    async createProperty(data: CreatePropertyInput, userId: string, tenantId: string) {
         const property = await prisma.property.create({
             data: {
                 ...data,
                 userId,
+                tenantId,
             },
         });
         return property;

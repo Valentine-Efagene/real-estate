@@ -1,13 +1,13 @@
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
-import { authRouter } from './routes/auth.js';
-import { userRouter } from './routes/users.js';
-import { roleRouter } from './routes/roles.js';
-import { tenantRouter } from './routes/tenants.js';
-import { socialRouter } from './routes/socials.js';
-import { errorHandler } from './middleware/error-handler.js';
-import { requestLogger } from './middleware/request-logger.js';
-import { generateOpenAPIDocument } from './config/swagger.js';
+import { authRouter } from './routes/auth';
+import { userRouter } from './routes/users';
+import { roleRouter } from './routes/roles';
+import { tenantRouter } from './routes/tenants';
+import { socialRouter } from './routes/socials';
+import { errorHandler } from './middleware/error-handler';
+import { requestLogger } from './middleware/request-logger';
+import { generateOpenAPIDocument } from './config/swagger';
 
 export const app = express();
 

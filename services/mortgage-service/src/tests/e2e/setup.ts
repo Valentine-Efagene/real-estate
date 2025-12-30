@@ -1,19 +1,21 @@
-import { prisma } from '../../lib/prisma.js';
+import { prisma } from '../../lib/prisma';
 
 /**
  * Clean all data from database
  */
 export async function cleanDatabase() {
     // Delete in order to respect foreign key constraints
+    // Using the new Contract-based schema
     await prisma.$transaction([
-        prisma.payment.deleteMany(),
-        prisma.mortgageDownpaymentPayment.deleteMany(),
-        prisma.mortgageDownpaymentInstallment.deleteMany(),
-        prisma.mortgageDownpaymentPlan.deleteMany(),
-        prisma.mortgageDocument.deleteMany(),
-        prisma.mortgageStep.deleteMany(),
-        prisma.mortgage.deleteMany(),
-        prisma.mortgageType.deleteMany(),
+        prisma.contractPayment.deleteMany(),
+        prisma.contractDocument.deleteMany(),
+        prisma.contractPhaseStepApproval.deleteMany(),
+        prisma.contractPhaseStep.deleteMany(),
+        prisma.contractInstallment.deleteMany(),
+        prisma.contractPhase.deleteMany(),
+        prisma.contract.deleteMany(),
+        prisma.propertyPaymentMethod.deleteMany(),
+        prisma.paymentPlan.deleteMany(),
     ]);
 }
 

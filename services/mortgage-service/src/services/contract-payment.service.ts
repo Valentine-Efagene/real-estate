@@ -1,11 +1,11 @@
-import { prisma } from '../lib/prisma.js';
+import { prisma } from '../lib/prisma';
 import { AppError } from '@valentine-efagene/qshelter-common';
 import { v4 as uuidv4 } from 'uuid';
 import type {
     CreatePaymentInput,
     ProcessPaymentInput,
     RefundPaymentInput,
-} from '../validators/contract-payment.validator.js';
+} from '../validators/contract-payment.validator';
 
 class ContractPaymentService {
     /**

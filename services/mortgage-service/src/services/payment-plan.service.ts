@@ -45,9 +45,18 @@ class PaymentPlanService {
         return plan;
     }
 
-    async findByName(name: string) {
+    async findByName(tenantId: string | null, name: string) {
+        // For global plans (tenantId is null), search by name only
+        // For tenant-specific plans, search by tenantId + name compound key
+        if (!tenantId) {
+            const plan = await prisma.paymentPlan.findFirst({
+                where: { name, tenantId: null },
+            });
+            return plan;
+        }
+
         const plan = await prisma.paymentPlan.findUnique({
-            where: { name },
+            where: { tenantId_name: { tenantId, name } },
         });
 
         return plan;

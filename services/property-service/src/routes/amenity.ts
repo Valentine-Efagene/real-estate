@@ -1,7 +1,7 @@
 import { Router, type Router as RouterType } from 'express';
 import { successResponse } from '@valentine-efagene/qshelter-common';
-import { createAmenitySchema, updateAmenitySchema } from '../validators/amenity.validator.js';
-import { amenityService } from '../services/amenity.service.js';
+import { createAmenitySchema, updateAmenitySchema } from '../validators/amenity.validator';
+import { amenityService } from '../services/amenity.service';
 
 export const amenityRouter: RouterType = Router();
 

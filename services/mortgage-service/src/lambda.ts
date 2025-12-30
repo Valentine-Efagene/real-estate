@@ -1,6 +1,6 @@
 import serverlessExpress from '@codegenie/serverless-express';
 import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from 'aws-lambda';
-import { app } from './app.js';
+import { app } from './app';
 
 let serverlessExpressInstance: any;
 

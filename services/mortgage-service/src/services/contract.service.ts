@@ -1,12 +1,12 @@
-import { prisma as defaultPrisma } from '../lib/prisma.js';
+import { prisma as defaultPrisma } from '../lib/prisma';
 import { AppError, PrismaClient } from '@valentine-efagene/qshelter-common';
 import { v4 as uuidv4 } from 'uuid';
 import type {
     CreateContractInput,
     UpdateContractInput,
     TransitionContractInput,
-} from '../validators/contract.validator.js';
-import { createPaymentMethodService } from './payment-method.service.js';
+} from '../validators/contract.validator';
+import { createPaymentMethodService } from './payment-method.service';
 
 type AnyPrismaClient = PrismaClient;
 

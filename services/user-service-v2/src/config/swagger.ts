@@ -1,7 +1,7 @@
 import { OpenAPIRegistry, OpenApiGeneratorV3 } from '@asteasolutions/zod-to-openapi';
 import { z } from 'zod';
 import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
-import { loginSchema, signupSchema, refreshTokenSchema, authResponseSchema } from '../validators/auth.validator.js';
+import { loginSchema, signupSchema, refreshTokenSchema, authResponseSchema } from '../validators/auth.validator';
 
 extendZodWithOpenApi(z);
 

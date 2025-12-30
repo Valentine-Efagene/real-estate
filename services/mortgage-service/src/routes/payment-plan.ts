@@ -1,6 +1,6 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import { paymentPlanService } from '../services/payment-plan.service.js';
-import { CreatePaymentPlanSchema, UpdatePaymentPlanSchema } from '../validators/payment-plan.validator.js';
+import { paymentPlanService } from '../services/payment-plan.service';
+import { CreatePaymentPlanSchema, UpdatePaymentPlanSchema } from '../validators/payment-plan.validator';
 import { z } from 'zod';
 
 const router = Router();

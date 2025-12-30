@@ -1,6 +1,6 @@
-import { prisma } from '../lib/prisma.js';
+import { prisma } from '../lib/prisma';
 import { AppError } from '@valentine-efagene/qshelter-common';
-import type { CreateAmenityInput, UpdateAmenityInput } from '../validators/amenity.validator.js';
+import type { CreateAmenityInput, UpdateAmenityInput } from '../validators/amenity.validator';
 
 class AmenityService {
     async createAmenity(data: CreateAmenityInput) {

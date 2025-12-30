@@ -15,19 +15,33 @@ declare global {
         interface Request {
             tenantContext?: TenantContext;
             tenantPrisma?: TenantPrismaClient | PrismaClient;
+            /**
+             * API Gateway context added by serverless-express
+             */
+            apiGateway?: {
+                event: {
+                    requestContext: {
+                        authorizer?: {
+                            userId?: string;
+                            email?: string;
+                            roles?: string;
+                            tenantId?: string;
+                        };
+                    };
+                };
+            };
         }
     }
 }
 
 /**
- * JWT payload structure passed from API Gateway authorizer
- * The authorizer sets these headers from the JWT claims
+ * Fallback headers for local development or alternative setups
  */
 interface AuthorizerHeaders {
     'x-user-id'?: string;
     'x-tenant-id'?: string;
     'x-user-email'?: string;
-    'x-user-roles'?: string; // Comma-separated roles
+    'x-user-roles'?: string;
 }
 
 /**
@@ -71,10 +85,14 @@ export function createTenantMiddleware(options: TenantMiddlewareOptions) {
         next: NextFunction
     ) {
         try {
+            // 1. Try Lambda authorizer context first (production)
+            const authorizerContext = req.apiGateway?.event?.requestContext?.authorizer;
+
+            // 2. Fall back to headers (local dev or alternative setups)
             const headers = req.headers as unknown as AuthorizerHeaders;
 
-            const tenantId = headers['x-tenant-id'];
-            const userId = headers['x-user-id'];
+            const tenantId = authorizerContext?.tenantId || headers['x-tenant-id'];
+            const userId = authorizerContext?.userId || headers['x-user-id'];
 
             if (!tenantId) {
                 // For now, allow requests without tenant context for development

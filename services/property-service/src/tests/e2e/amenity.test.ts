@@ -1,8 +1,8 @@
 import request from 'supertest';
 import { faker } from '@faker-js/faker';
-import { app } from '../../app.js';
-import { cleanDatabase } from './setup.js';
-import { prisma } from '../../lib/prisma.js';
+import { app } from '../../app';
+import { cleanDatabase } from './setup';
+import { prisma } from '../../lib/prisma';
 
 describe('Amenity Service E2E Tests', () => {
     beforeAll(async () => {

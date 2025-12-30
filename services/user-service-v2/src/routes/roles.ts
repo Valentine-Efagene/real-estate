@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { successResponse } from '@valentine-efagene/qshelter-common';
-import { roleService } from '../services/role.service.js';
+import { roleService } from '../services/role.service';
 import { z } from 'zod';
 
 export const roleRouter = Router();

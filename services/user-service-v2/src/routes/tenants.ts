@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { successResponse } from '@valentine-efagene/qshelter-common';
-import { tenantService } from '../services/tenant.service.js';
+import { tenantService } from '../services/tenant.service';
 import { z } from 'zod';
 
 export const tenantRouter = Router();

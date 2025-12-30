@@ -44,7 +44,7 @@ class AuthService {
         console.log(`Verification token for ${user.email}: ${emailVerificationToken}`);
         console.log(`Verification link: ${process.env.FRONTEND_BASE_URL}/auth/verify-email?token=${emailVerificationToken}`);
 
-        return this.generateTokens(user.id, user.email, []);
+        return this.generateTokens(user.id, user.email, [], null);
     }
 
     async login(data: LoginInput): Promise<AuthResponse> {
@@ -82,7 +82,7 @@ class AuthService {
         });
 
         const roleNames = user.userRoles?.map((ur) => ur.role.name) || [];
-        return this.generateTokens(user.id, user.email, roleNames);
+        return this.generateTokens(user.id, user.email, roleNames, user.tenantId);
     }
 
     async verifyEmail(token: string) {
@@ -216,7 +216,7 @@ class AuthService {
             });
 
             const roleNames = user.userRoles?.map((ur) => ur.role.name) || [];
-            return this.generateTokens(user.id, user.email, roleNames);
+            return this.generateTokens(user.id, user.email, roleNames, user.tenantId);
         } catch (error) {
             throw new UnauthorizedError('Invalid or expired token');
         }
@@ -254,7 +254,7 @@ class AuthService {
                 });
 
                 const roleNames = user.userRoles?.map((ur) => ur.role.name) || [];
-                return this.generateTokens(user.id, user.email, roleNames);
+                return this.generateTokens(user.id, user.email, roleNames, user.tenantId);
             }
 
             // Create new user
@@ -282,7 +282,7 @@ class AuthService {
             });
 
             const roleNames = user.userRoles?.map((ur) => ur.role.name) || [];
-            return this.generateTokens(user.id, user.email, roleNames);
+            return this.generateTokens(user.id, user.email, roleNames, user.tenantId);
         } catch (error) {
             throw new UnauthorizedError('Invalid Google token');
         }
@@ -361,7 +361,7 @@ class AuthService {
                 });
 
                 const roleNames = user.userRoles?.map((ur) => ur.role.name) || [];
-                return this.generateTokens(user.id, user.email, roleNames);
+                return this.generateTokens(user.id, user.email, roleNames, user.tenantId);
             }
 
             // Create new user
@@ -389,7 +389,7 @@ class AuthService {
             });
 
             const roleNames = user.userRoles?.map((ur) => ur.role.name) || [];
-            return this.generateTokens(user.id, user.email, roleNames);
+            return this.generateTokens(user.id, user.email, roleNames, user.tenantId);
         } catch (error) {
             throw new UnauthorizedError('Failed to authenticate with Google');
         }
@@ -431,7 +431,7 @@ class AuthService {
         return user;
     }
 
-    private async generateTokens(userId: string, email: string, roles: string[]): Promise<AuthResponse> {
+    private async generateTokens(userId: string, email: string, roles: string[], tenantId?: string | null): Promise<AuthResponse> {
         const accessSecret = process.env.JWT_ACCESS_SECRET!;
         const refreshSecret = process.env.JWT_REFRESH_SECRET!;
         const accessExpiry = process.env.JWT_ACCESS_EXPIRY || '15m';
@@ -447,8 +447,21 @@ class AuthService {
         const accessJti = randomUUID();
         const refreshJti = randomUUID();
 
-        const accessToken = jwt.sign({ userId, email, roles, jti: accessJti }, accessSecret, { expiresIn: accessExpiry } as jwt.SignOptions);
-        const refreshToken = jwt.sign({ userId, email, roles, jti: refreshJti }, refreshSecret, { expiresIn: refreshExpiry } as jwt.SignOptions);
+        // Build payload with optional tenantId
+        const payload: { sub: string; email: string; roles: string[]; jti: string; tenantId?: string } = {
+            sub: userId,
+            email,
+            roles,
+            jti: accessJti,
+        };
+        if (tenantId) {
+            payload.tenantId = tenantId;
+        }
+
+        const refreshPayload = { ...payload, jti: refreshJti };
+
+        const accessToken = jwt.sign(payload, accessSecret, { expiresIn: accessExpiry } as jwt.SignOptions);
+        const refreshToken = jwt.sign(refreshPayload, refreshSecret, { expiresIn: refreshExpiry } as jwt.SignOptions);
 
         // Clean up old refresh tokens for this user
         await prisma.refreshToken.deleteMany({

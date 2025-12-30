@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { successResponse } from '@valentine-efagene/qshelter-common';
-import { loginSchema, signupSchema, refreshTokenSchema } from '../validators/auth.validator.js';
-import { authService } from '../services/auth.service.js';
+import { loginSchema, signupSchema, refreshTokenSchema } from '../validators/auth.validator';
+import { authService } from '../services/auth.service';
 import { z } from 'zod';
 
 export const authRouter = Router();
