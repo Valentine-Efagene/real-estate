@@ -3257,6 +3257,7 @@ export type SettingsScalarFieldEnum = (typeof SettingsScalarFieldEnum)[keyof typ
 
 export const PropertyScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   userId: 'userId',
   title: 'title',
   category: 'category',
@@ -3399,6 +3400,7 @@ export type PropertyAmenityScalarFieldEnum = (typeof PropertyAmenityScalarFieldE
 
 export const PaymentPlanScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   name: 'name',
   description: 'description',
   isActive: 'isActive',
@@ -3416,6 +3418,7 @@ export type PaymentPlanScalarFieldEnum = (typeof PaymentPlanScalarFieldEnum)[key
 
 export const PropertyPaymentMethodScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   name: 'name',
   description: 'description',
   isActive: 'isActive',
@@ -3465,6 +3468,7 @@ export type PropertyPaymentMethodPhaseScalarFieldEnum = (typeof PropertyPaymentM
 
 export const ContractScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   propertyUnitId: 'propertyUnitId',
   buyerId: 'buyerId',
   sellerId: 'sellerId',
@@ -3840,6 +3844,7 @@ export type SettingsOrderByRelevanceFieldEnum = (typeof SettingsOrderByRelevance
 
 export const PropertyOrderByRelevanceFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   userId: 'userId',
   title: 'title',
   category: 'category',
@@ -3944,6 +3949,7 @@ export type PropertyAmenityOrderByRelevanceFieldEnum = (typeof PropertyAmenityOr
 
 export const PaymentPlanOrderByRelevanceFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   name: 'name',
   description: 'description',
   paymentFrequency: 'paymentFrequency'
@@ -3954,6 +3960,7 @@ export type PaymentPlanOrderByRelevanceFieldEnum = (typeof PaymentPlanOrderByRel
 
 export const PropertyPaymentMethodOrderByRelevanceFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   name: 'name',
   description: 'description'
 } as const
@@ -3986,6 +3993,7 @@ export type PropertyPaymentMethodPhaseOrderByRelevanceFieldEnum = (typeof Proper
 
 export const ContractOrderByRelevanceFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   propertyUnitId: 'propertyUnitId',
   buyerId: 'buyerId',
   sellerId: 'sellerId',

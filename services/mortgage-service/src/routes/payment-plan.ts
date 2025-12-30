@@ -13,7 +13,7 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
         res.status(201).json(plan);
     } catch (error) {
         if (error instanceof z.ZodError) {
-            res.status(400).json({ error: 'Validation failed', details: error.errors });
+            res.status(400).json({ error: 'Validation failed', details: error.issues });
             return;
         }
         next(error);
@@ -49,7 +49,7 @@ router.patch('/:id', async (req: Request, res: Response, next: NextFunction) => 
         res.json(plan);
     } catch (error) {
         if (error instanceof z.ZodError) {
-            res.status(400).json({ error: 'Validation failed', details: error.errors });
+            res.status(400).json({ error: 'Validation failed', details: error.issues });
             return;
         }
         next(error);

@@ -29,7 +29,7 @@ export const ProcessPaymentSchema = z
     .object({
         reference: z.string(),
         status: z.enum(['COMPLETED', 'FAILED']),
-        gatewayResponse: z.record(z.any()).optional(),
+        gatewayResponse: z.record(z.string(), z.any()).optional(),
     })
     .openapi('ProcessPayment');
 

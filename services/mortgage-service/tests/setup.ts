@@ -1,8 +1,21 @@
+import { config } from 'dotenv';
+config({ path: '.env.local' });
+
+import { PrismaMariaDb } from '@prisma/adapter-mariadb';
 import { PrismaClient } from '@valentine-efagene/qshelter-common';
 import { faker } from '@faker-js/faker';
 
+// Create adapter for test database
+const adapter = new PrismaMariaDb({
+    host: process.env.DB_HOST || 'localhost',
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || '',
+    database: process.env.DB_NAME || 'qshelter_test',
+    connectionLimit: 5,
+});
+
 // Database client for tests
-export const prisma = new PrismaClient();
+export const prisma = new PrismaClient({ adapter });
 
 // Before all tests - ensure database is connected
 beforeAll(async () => {

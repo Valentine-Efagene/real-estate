@@ -18,7 +18,7 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
         res.status(201).json(method);
     } catch (error) {
         if (error instanceof z.ZodError) {
-            res.status(400).json({ error: 'Validation failed', details: error.errors });
+            res.status(400).json({ error: 'Validation failed', details: error.issues });
             return;
         }
         next(error);
@@ -54,7 +54,7 @@ router.patch('/:id', async (req: Request, res: Response, next: NextFunction) => 
         res.json(method);
     } catch (error) {
         if (error instanceof z.ZodError) {
-            res.status(400).json({ error: 'Validation failed', details: error.errors });
+            res.status(400).json({ error: 'Validation failed', details: error.issues });
             return;
         }
         next(error);
@@ -79,7 +79,7 @@ router.post('/:id/phases', async (req: Request, res: Response, next: NextFunctio
         res.status(201).json(phase);
     } catch (error) {
         if (error instanceof z.ZodError) {
-            res.status(400).json({ error: 'Validation failed', details: error.errors });
+            res.status(400).json({ error: 'Validation failed', details: error.issues });
             return;
         }
         next(error);
@@ -94,7 +94,7 @@ router.patch('/:id/phases/:phaseId', async (req: Request, res: Response, next: N
         res.json(phase);
     } catch (error) {
         if (error instanceof z.ZodError) {
-            res.status(400).json({ error: 'Validation failed', details: error.errors });
+            res.status(400).json({ error: 'Validation failed', details: error.issues });
             return;
         }
         next(error);
@@ -134,7 +134,7 @@ router.post('/:id/properties', async (req: Request, res: Response, next: NextFun
         res.status(201).json(link);
     } catch (error) {
         if (error instanceof z.ZodError) {
-            res.status(400).json({ error: 'Validation failed', details: error.errors });
+            res.status(400).json({ error: 'Validation failed', details: error.issues });
             return;
         }
         next(error);

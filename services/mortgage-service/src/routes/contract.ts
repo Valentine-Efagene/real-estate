@@ -1,23 +1,23 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import { contractService } from '../services/contract.service.js';
-import { contractPhaseService } from '../services/contract-phase.service.js';
-import { contractPaymentService } from '../services/contract-payment.service.js';
+import { contractService } from '../services/contract.service';
+import { contractPhaseService } from '../services/contract-phase.service';
+import { contractPaymentService } from '../services/contract-payment.service';
 import {
     CreateContractSchema,
     UpdateContractSchema,
     TransitionContractSchema,
-} from '../validators/contract.validator.js';
+} from '../validators/contract.validator';
 import {
     ActivatePhaseSchema,
     CompleteStepSchema,
     UploadDocumentSchema,
     GenerateInstallmentsSchema,
-} from '../validators/contract-phase.validator.js';
+} from '../validators/contract-phase.validator';
 import {
     CreatePaymentSchema,
     ProcessPaymentSchema,
     RefundPaymentSchema,
-} from '../validators/contract-payment.validator.js';
+} from '../validators/contract-payment.validator';
 import { z } from 'zod';
 
 const router = Router();
@@ -34,7 +34,7 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
         res.status(201).json(contract);
     } catch (error) {
         if (error instanceof z.ZodError) {
-            res.status(400).json({ error: 'Validation failed', details: error.errors });
+            res.status(400).json({ error: 'Validation failed', details: error.issues });
             return;
         }
         next(error);
@@ -44,10 +44,10 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
 // Get all contracts
 router.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { buyerId, propertyId, status } = req.query;
+        const { buyerId, propertyUnitId, status } = req.query;
         const contracts = await contractService.findAll({
             buyerId: buyerId as string,
-            propertyId: propertyId as string,
+            propertyUnitId: propertyUnitId as string,
             status: status as string,
         });
         res.json(contracts);
@@ -85,7 +85,7 @@ router.patch('/:id', async (req: Request, res: Response, next: NextFunction) => 
         res.json(contract);
     } catch (error) {
         if (error instanceof z.ZodError) {
-            res.status(400).json({ error: 'Validation failed', details: error.errors });
+            res.status(400).json({ error: 'Validation failed', details: error.issues });
             return;
         }
         next(error);
@@ -101,7 +101,7 @@ router.post('/:id/transition', async (req: Request, res: Response, next: NextFun
         res.json(contract);
     } catch (error) {
         if (error instanceof z.ZodError) {
-            res.status(400).json({ error: 'Validation failed', details: error.errors });
+            res.status(400).json({ error: 'Validation failed', details: error.issues });
             return;
         }
         next(error);
@@ -175,7 +175,7 @@ router.post('/:id/phases/:phaseId/activate', async (req: Request, res: Response,
         res.json(phase);
     } catch (error) {
         if (error instanceof z.ZodError) {
-            res.status(400).json({ error: 'Validation failed', details: error.errors });
+            res.status(400).json({ error: 'Validation failed', details: error.issues });
             return;
         }
         next(error);
@@ -191,7 +191,7 @@ router.post('/:id/phases/:phaseId/installments', async (req: Request, res: Respo
         res.json(phase);
     } catch (error) {
         if (error instanceof z.ZodError) {
-            res.status(400).json({ error: 'Validation failed', details: error.errors });
+            res.status(400).json({ error: 'Validation failed', details: error.issues });
             return;
         }
         next(error);
@@ -207,7 +207,7 @@ router.post('/:id/phases/:phaseId/steps/complete', async (req: Request, res: Res
         res.json(phase);
     } catch (error) {
         if (error instanceof z.ZodError) {
-            res.status(400).json({ error: 'Validation failed', details: error.errors });
+            res.status(400).json({ error: 'Validation failed', details: error.issues });
             return;
         }
         next(error);
@@ -223,7 +223,7 @@ router.post('/:id/phases/:phaseId/documents', async (req: Request, res: Response
         res.status(201).json(document);
     } catch (error) {
         if (error instanceof z.ZodError) {
-            res.status(400).json({ error: 'Validation failed', details: error.errors });
+            res.status(400).json({ error: 'Validation failed', details: error.issues });
             return;
         }
         next(error);
@@ -269,7 +269,7 @@ router.post('/:id/payments', async (req: Request, res: Response, next: NextFunct
         res.status(201).json(payment);
     } catch (error) {
         if (error instanceof z.ZodError) {
-            res.status(400).json({ error: 'Validation failed', details: error.errors });
+            res.status(400).json({ error: 'Validation failed', details: error.issues });
             return;
         }
         next(error);
@@ -304,7 +304,7 @@ router.post('/payments/process', async (req: Request, res: Response, next: NextF
         res.json(payment);
     } catch (error) {
         if (error instanceof z.ZodError) {
-            res.status(400).json({ error: 'Validation failed', details: error.errors });
+            res.status(400).json({ error: 'Validation failed', details: error.issues });
             return;
         }
         next(error);
@@ -320,7 +320,7 @@ router.post('/:id/payments/:paymentId/refund', async (req: Request, res: Respons
         res.json(payment);
     } catch (error) {
         if (error instanceof z.ZodError) {
-            res.status(400).json({ error: 'Validation failed', details: error.errors });
+            res.status(400).json({ error: 'Validation failed', details: error.issues });
             return;
         }
         next(error);

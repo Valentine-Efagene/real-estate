@@ -1,49 +1,138 @@
-import { prisma } from '../lib/prisma.js';
-import { AppError } from '@valentine-efagene/qshelter-common';
+import { prisma as defaultPrisma } from '../lib/prisma.js';
+import { AppError, PrismaClient } from '@valentine-efagene/qshelter-common';
 import { v4 as uuidv4 } from 'uuid';
 import type {
     CreateContractInput,
     UpdateContractInput,
     TransitionContractInput,
 } from '../validators/contract.validator.js';
-import { paymentMethodService } from './payment-method.service.js';
+import { createPaymentMethodService } from './payment-method.service.js';
 
-class ContractService {
-    /**
-     * Generate a unique contract number
-     */
-    private generateContractNumber(): string {
-        const timestamp = Date.now().toString(36).toUpperCase();
-        const random = Math.random().toString(36).substring(2, 6).toUpperCase();
-        return `CTR-${timestamp}-${random}`;
+type AnyPrismaClient = PrismaClient;
+
+/**
+ * Generate a unique contract number
+ */
+function generateContractNumber(): string {
+    const timestamp = Date.now().toString(36).toUpperCase();
+    const random = Math.random().toString(36).substring(2, 6).toUpperCase();
+    return `CTR-${timestamp}-${random}`;
+}
+
+/**
+ * Calculate monthly payment using standard amortization formula
+ */
+function calculatePeriodicPayment(
+    principal: number,
+    annualRate: number,
+    termMonths: number
+): number {
+    if (annualRate === 0) {
+        return principal / termMonths;
     }
 
-    /**
-     * Calculate monthly payment using standard amortization formula
-     */
-    private calculatePeriodicPayment(
-        principal: number,
-        annualRate: number,
-        termMonths: number
-    ): number {
-        if (annualRate === 0) {
-            return principal / termMonths;
+    const monthlyRate = annualRate / 100 / 12;
+    const payment =
+        (principal * monthlyRate * Math.pow(1 + monthlyRate, termMonths)) /
+        (Math.pow(1 + monthlyRate, termMonths) - 1);
+
+    return Math.round(payment * 100) / 100;
+}
+
+/**
+ * Parse step definitions from phase template
+ */
+function parseStepDefinitions(phaseTemplate: {
+    requiredDocumentTypes: string | null;
+    stepDefinitions: string | null;
+}): Array<{
+    name: string;
+    description?: string;
+    stepType: string;
+    order: number;
+    requiredDocumentTypes?: string;
+}> {
+    if (phaseTemplate.stepDefinitions) {
+        try {
+            return JSON.parse(phaseTemplate.stepDefinitions);
+        } catch {
+            // Fall through to default generation
         }
-
-        const monthlyRate = annualRate / 100 / 12;
-        const payment =
-            (principal * monthlyRate * Math.pow(1 + monthlyRate, termMonths)) /
-            (Math.pow(1 + monthlyRate, termMonths) - 1);
-
-        return Math.round(payment * 100) / 100;
     }
 
-    /**
-     * Create a contract from a payment method
-     * Instantiates phases from the method's phase templates
-     */
-    async create(data: CreateContractInput) {
-        // Load payment method with phases
+    const steps: Array<{
+        name: string;
+        description?: string;
+        stepType: string;
+        order: number;
+        requiredDocumentTypes?: string;
+    }> = [];
+
+    if (phaseTemplate.requiredDocumentTypes) {
+        steps.push({
+            name: 'Document Upload',
+            stepType: 'UPLOAD',
+            order: 0,
+            requiredDocumentTypes: phaseTemplate.requiredDocumentTypes,
+        });
+        steps.push({
+            name: 'Document Review',
+            stepType: 'REVIEW',
+            order: 1,
+        });
+        steps.push({
+            name: 'Final Approval',
+            stepType: 'APPROVAL',
+            order: 2,
+        });
+    }
+
+    return steps;
+}
+
+/**
+ * Simple state machine for contract states
+ */
+function getNextState(currentState: string, trigger: string): string | null {
+    const transitions: Record<string, Record<string, string>> = {
+        DRAFT: {
+            SUBMIT: 'PENDING',
+            CANCEL: 'CANCELLED',
+        },
+        PENDING: {
+            APPROVE: 'ACTIVE',
+            REJECT: 'CANCELLED',
+            CANCEL: 'CANCELLED',
+        },
+        ACTIVE: {
+            COMPLETE: 'COMPLETED',
+            TERMINATE: 'TERMINATED',
+        },
+    };
+
+    return transitions[currentState]?.[trigger] ?? null;
+}
+
+function mapStateToStatus(state: string): string {
+    const mapping: Record<string, string> = {
+        DRAFT: 'DRAFT',
+        PENDING: 'PENDING',
+        ACTIVE: 'ACTIVE',
+        COMPLETED: 'COMPLETED',
+        CANCELLED: 'CANCELLED',
+        TERMINATED: 'TERMINATED',
+    };
+    return mapping[state] ?? state;
+}
+
+/**
+ * Create a contract service with the given Prisma client
+ * Use this for tenant-scoped operations
+ */
+export function createContractService(prisma: AnyPrismaClient = defaultPrisma) {
+    const paymentMethodService = createPaymentMethodService(prisma);
+
+    async function create(data: CreateContractInput) {
         const method = await paymentMethodService.findById(data.paymentMethodId);
 
         if (!method.isActive) {
@@ -54,7 +143,6 @@ class ContractService {
             throw new AppError(400, 'Payment method has no phases configured');
         }
 
-        // Verify property unit exists and is available
         const propertyUnit = await prisma.propertyUnit.findUnique({
             where: { id: data.propertyUnitId },
             include: {
@@ -74,7 +162,6 @@ class ContractService {
             throw new AppError(400, `Property unit is not available (status: ${propertyUnit.status})`);
         }
 
-        // Verify buyer exists
         const buyer = await prisma.user.findUnique({
             where: { id: data.buyerId },
         });
@@ -83,7 +170,6 @@ class ContractService {
             throw new AppError(404, 'Buyer not found');
         }
 
-        // Calculate financial details - use unit price (with override) or provided amount
         const unitPrice = propertyUnit.priceOverride ?? propertyUnit.variant.price;
         const totalAmount = data.totalAmount ?? unitPrice;
         const downPayment = data.downPayment ?? 0;
@@ -93,11 +179,10 @@ class ContractService {
 
         let periodicPayment: number | null = null;
         if (termMonths && principal > 0) {
-            periodicPayment = this.calculatePeriodicPayment(principal, interestRate, termMonths);
+            periodicPayment = calculatePeriodicPayment(principal, interestRate, termMonths);
         }
 
-        const contract = await prisma.$transaction(async (tx) => {
-            // Reserve the unit
+        const contract = await prisma.$transaction(async (tx: any) => {
             await tx.propertyUnit.update({
                 where: { id: data.propertyUnitId },
                 data: {
@@ -107,7 +192,6 @@ class ContractService {
                 },
             });
 
-            // Update variant inventory counters
             await tx.propertyVariant.update({
                 where: { id: propertyUnit.variantId },
                 data: {
@@ -116,14 +200,13 @@ class ContractService {
                 },
             });
 
-            // Create the contract
             const created = await tx.contract.create({
                 data: {
                     propertyUnitId: data.propertyUnitId,
                     buyerId: data.buyerId,
                     sellerId: data.sellerId ?? propertyUnit.variant.property.userId,
                     paymentMethodId: data.paymentMethodId,
-                    contractNumber: this.generateContractNumber(),
+                    contractNumber: generateContractNumber(),
                     title: data.title,
                     description: data.description,
                     contractType: data.contractType,
@@ -139,9 +222,7 @@ class ContractService {
                 },
             });
 
-            // Instantiate phases from method templates
             for (const phaseTemplate of method.phases) {
-                // Calculate phase amount based on percentOfPrice
                 let phaseAmount: number | null = null;
                 if (phaseTemplate.percentOfPrice) {
                     phaseAmount = (totalAmount * phaseTemplate.percentOfPrice) / 100;
@@ -165,9 +246,8 @@ class ContractService {
                     },
                 });
 
-                // For DOCUMENTATION phases, create steps from template
                 if (phaseTemplate.phaseCategory === 'DOCUMENTATION') {
-                    const steps = this.parseStepDefinitions(phaseTemplate);
+                    const steps = parseStepDefinitions(phaseTemplate);
                     for (const step of steps) {
                         await tx.contractPhaseStep.create({
                             data: {
@@ -184,7 +264,6 @@ class ContractService {
                 }
             }
 
-            // Write domain event
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
@@ -204,68 +283,10 @@ class ContractService {
             return created;
         });
 
-        return this.findById(contract.id);
+        return findById(contract.id);
     }
 
-    /**
-     * Parse step definitions from phase template
-     */
-    private parseStepDefinitions(phaseTemplate: {
-        requiredDocumentTypes: string | null;
-        stepDefinitions: string | null;
-    }): Array<{
-        name: string;
-        description?: string;
-        stepType: string;
-        order: number;
-        requiredDocumentTypes?: string;
-    }> {
-        // If stepDefinitions is provided as JSON, parse it
-        if (phaseTemplate.stepDefinitions) {
-            try {
-                return JSON.parse(phaseTemplate.stepDefinitions);
-            } catch {
-                // Fall through to default generation
-            }
-        }
-
-        // Generate default steps from requiredDocumentTypes
-        const steps: Array<{
-            name: string;
-            description?: string;
-            stepType: string;
-            order: number;
-            requiredDocumentTypes?: string;
-        }> = [];
-
-        if (phaseTemplate.requiredDocumentTypes) {
-            // Upload step
-            steps.push({
-                name: 'Document Upload',
-                stepType: 'UPLOAD',
-                order: 0,
-                requiredDocumentTypes: phaseTemplate.requiredDocumentTypes,
-            });
-
-            // Review step
-            steps.push({
-                name: 'Document Review',
-                stepType: 'REVIEW',
-                order: 1,
-            });
-
-            // Approval step
-            steps.push({
-                name: 'Final Approval',
-                stepType: 'APPROVAL',
-                order: 2,
-            });
-        }
-
-        return steps;
-    }
-
-    async findAll(filters?: {
+    async function findAll(filters?: {
         buyerId?: string;
         propertyUnitId?: string;
         status?: string;
@@ -300,7 +321,7 @@ class ContractService {
         return contracts;
     }
 
-    async findById(id: string) {
+    async function findById(id: string) {
         const contract = await prisma.contract.findUnique({
             where: { id },
             include: {
@@ -361,7 +382,7 @@ class ContractService {
         return contract;
     }
 
-    async findByContractNumber(contractNumber: string) {
+    async function findByContractNumber(contractNumber: string) {
         const contract = await prisma.contract.findUnique({
             where: { contractNumber },
             include: {
@@ -378,10 +399,9 @@ class ContractService {
         return contract;
     }
 
-    async update(id: string, data: UpdateContractInput, userId: string) {
-        const contract = await this.findById(id);
+    async function update(id: string, data: UpdateContractInput, userId: string) {
+        const contract = await findById(id);
 
-        // Check authorization (buyer or seller can update)
         if (contract.buyerId !== userId && contract.sellerId !== userId) {
             throw new AppError(403, 'Unauthorized to update this contract');
         }
@@ -391,30 +411,28 @@ class ContractService {
             data,
         });
 
-        return this.findById(updated.id);
+        return findById(updated.id);
     }
 
-    async transition(id: string, data: TransitionContractInput, userId: string) {
-        const contract = await this.findById(id);
+    async function transition(id: string, data: TransitionContractInput, userId: string) {
+        const contract = await findById(id);
 
         const fromState = contract.state;
-        const toState = this.getNextState(fromState, data.trigger);
+        const toState = getNextState(fromState, data.trigger);
 
         if (!toState) {
             throw new AppError(400, `Invalid transition: ${data.trigger} from state ${fromState}`);
         }
 
-        const updated = await prisma.$transaction(async (tx) => {
-            // Update contract state
+        const updated = await prisma.$transaction(async (tx: any) => {
             const result = await tx.contract.update({
                 where: { id },
                 data: {
                     state: toState,
-                    status: this.mapStateToStatus(toState),
+                    status: mapStateToStatus(toState),
                 },
             });
 
-            // Record transition
             await tx.contractTransition.create({
                 data: {
                     contractId: id,
@@ -425,7 +443,6 @@ class ContractService {
                 },
             });
 
-            // Write domain event
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
@@ -446,46 +463,11 @@ class ContractService {
             return result;
         });
 
-        return this.findById(updated.id);
+        return findById(updated.id);
     }
 
-    /**
-     * Simple state machine for contract states
-     */
-    private getNextState(currentState: string, trigger: string): string | null {
-        const transitions: Record<string, Record<string, string>> = {
-            DRAFT: {
-                SUBMIT: 'PENDING',
-                CANCEL: 'CANCELLED',
-            },
-            PENDING: {
-                APPROVE: 'ACTIVE',
-                REJECT: 'CANCELLED',
-                CANCEL: 'CANCELLED',
-            },
-            ACTIVE: {
-                COMPLETE: 'COMPLETED',
-                TERMINATE: 'TERMINATED',
-            },
-        };
-
-        return transitions[currentState]?.[trigger] ?? null;
-    }
-
-    private mapStateToStatus(state: string): string {
-        const mapping: Record<string, string> = {
-            DRAFT: 'DRAFT',
-            PENDING: 'PENDING',
-            ACTIVE: 'ACTIVE',
-            COMPLETED: 'COMPLETED',
-            CANCELLED: 'CANCELLED',
-            TERMINATED: 'TERMINATED',
-        };
-        return mapping[state] ?? state;
-    }
-
-    async sign(id: string, userId: string) {
-        const contract = await this.findById(id);
+    async function sign(id: string, userId: string) {
+        const contract = await findById(id);
 
         if (contract.signedAt) {
             throw new AppError(400, 'Contract already signed');
@@ -504,17 +486,17 @@ class ContractService {
             },
         });
 
-        return this.findById(updated.id);
+        return findById(updated.id);
     }
 
-    async cancel(id: string, userId: string, reason?: string) {
-        const contract = await this.findById(id);
+    async function cancel(id: string, userId: string, reason?: string) {
+        const contract = await findById(id);
 
         if (contract.status === 'COMPLETED' || contract.status === 'CANCELLED') {
             throw new AppError(400, `Cannot cancel contract in ${contract.status} status`);
         }
 
-        const updated = await prisma.$transaction(async (tx) => {
+        const updated = await prisma.$transaction(async (tx: any) => {
             const result = await tx.contract.update({
                 where: { id },
                 data: {
@@ -553,11 +535,11 @@ class ContractService {
             return result;
         });
 
-        return this.findById(updated.id);
+        return findById(updated.id);
     }
 
-    async delete(id: string, userId: string) {
-        const contract = await this.findById(id);
+    async function deleteContract(id: string, userId: string) {
+        const contract = await findById(id);
 
         if (contract.status !== 'DRAFT') {
             throw new AppError(400, 'Only draft contracts can be deleted');
@@ -567,12 +549,10 @@ class ContractService {
             throw new AppError(403, 'Only the buyer can delete the contract');
         }
 
-        await prisma.$transaction(async (tx) => {
-            // Delete in order of dependencies
+        await prisma.$transaction(async (tx: any) => {
             await tx.contractPayment.deleteMany({ where: { contractId: id } });
             await tx.contractDocument.deleteMany({ where: { contractId: id } });
 
-            // Delete phase-related data
             const phases = await tx.contractPhase.findMany({ where: { contractId: id } });
             for (const phase of phases) {
                 await tx.contractPhaseStepApproval.deleteMany({
@@ -590,6 +570,19 @@ class ContractService {
 
         return { success: true };
     }
+
+    return {
+        create,
+        findAll,
+        findById,
+        findByContractNumber,
+        update,
+        transition,
+        sign,
+        cancel,
+        delete: deleteContract,
+    };
 }
 
-export const contractService = new ContractService();
+// Default instance for backward compatibility
+export const contractService = createContractService();

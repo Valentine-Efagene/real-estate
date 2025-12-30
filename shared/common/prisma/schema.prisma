@@ -118,9 +118,15 @@ model Tenant {
   name      String
   subdomain String   @unique
   isActive  Boolean  @default(true)
-  users     User[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // Back-relations for multitenancy
+  users          User[]
+  properties     Property[]
+  paymentPlans   PaymentPlan[]
+  paymentMethods PropertyPaymentMethod[]
+  contracts      Contract[]
 
   @@index([subdomain])
   @@map("tenants")
@@ -272,6 +278,8 @@ model Settings {
 
 model Property {
   id             String         @id @default(cuid())
+  tenantId       String
+  tenant         Tenant         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   userId         String
   user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   title          String
@@ -301,6 +309,7 @@ model Property {
   paymentMethods PropertyPaymentMethodLink[]
   variants       PropertyVariant[]
 
+  @@index([tenantId])
   @@index([userId])
   @@index([category])
   @@index([propertyType])
@@ -488,7 +497,9 @@ model PropertyAmenity {
 // Examples: "Monthly360" (360 monthly payments), "Weekly52", "OneTime"
 model PaymentPlan {
   id          String  @id @default(cuid())
-  name        String  @unique
+  tenantId    String? // NULL = global template available to all tenants
+  tenant      Tenant? @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  name        String
   description String? @db.Text
   isActive    Boolean @default(true)
 
@@ -507,6 +518,8 @@ model PaymentPlan {
   // Used by instantiated contract phases
   contractPhases ContractPhase[]
 
+  @@unique([tenantId, name]) // Unique per tenant, or globally if tenantId is null
+  @@index([tenantId])
   @@map("payment_plans")
 }
 
@@ -517,6 +530,8 @@ model PaymentPlan {
 // PropertyPaymentMethod = how a property can be purchased (e.g., "Standard Mortgage", "Cash", "Rent-to-Own")
 model PropertyPaymentMethod {
   id          String  @id @default(cuid())
+  tenantId    String
+  tenant      Tenant  @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   name        String // "Standard Mortgage", "Flexible Payment", "Cash Purchase"
   description String? @db.Text
   isActive    Boolean @default(true)
@@ -537,6 +552,8 @@ model PropertyPaymentMethod {
   // Contracts using this method
   contracts  Contract[]
 
+  @@unique([tenantId, name]) // Unique per tenant
+  @@index([tenantId])
   @@map("property_payment_methods")
 }
 
@@ -604,6 +621,8 @@ model PropertyPaymentMethodPhase {
 
 model Contract {
   id              String                 @id @default(cuid())
+  tenantId        String
+  tenant          Tenant                 @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   // Link to specific unit being purchased/rented
   propertyUnitId  String
   propertyUnit    PropertyUnit           @relation(fields: [propertyUnitId], references: [id], onDelete: Cascade)
@@ -653,6 +672,7 @@ model Contract {
   transitions ContractTransition[]
   events      ContractEvent[]
 
+  @@index([tenantId])
   @@index([propertyUnitId])
   @@index([buyerId])
   @@index([sellerId])

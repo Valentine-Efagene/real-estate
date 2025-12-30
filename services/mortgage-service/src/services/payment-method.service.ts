@@ -1,5 +1,5 @@
-import { prisma } from '../lib/prisma';
-import { AppError } from '@valentine-efagene/qshelter-common';
+import { prisma as defaultPrisma } from '../lib/prisma.js';
+import { AppError, PrismaClient } from '@valentine-efagene/qshelter-common';
 import type {
     CreatePaymentMethodInput,
     UpdatePaymentMethodInput,
@@ -7,12 +7,17 @@ import type {
     LinkToPropertyInput,
 } from '../validators/payment-method.validator.js';
 
-class PaymentMethodService {
-    async create(data: CreatePaymentMethodInput) {
+type AnyPrismaClient = PrismaClient;
+
+/**
+ * Create a payment method service with the given Prisma client
+ * Use this for tenant-scoped operations
+ */
+export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPrisma) {
+    async function create(data: CreatePaymentMethodInput) {
         const { phases, ...methodData } = data;
 
-        const method = await prisma.$transaction(async (tx) => {
-            // Create the payment method
+        const method = await prisma.$transaction(async (tx: any) => {
             const created = await tx.propertyPaymentMethod.create({
                 data: {
                     name: methodData.name,
@@ -25,10 +30,8 @@ class PaymentMethodService {
                 },
             });
 
-            // Create phases if provided
             if (phases && phases.length > 0) {
                 for (const phase of phases) {
-                    // Validate: PAYMENT phases require paymentPlanId
                     if (phase.phaseCategory === 'PAYMENT' && !phase.paymentPlanId) {
                         throw new AppError(400, `Phase "${phase.name}" is a PAYMENT phase and requires paymentPlanId`);
                     }
@@ -56,10 +59,10 @@ class PaymentMethodService {
             return created;
         });
 
-        return this.findById(method.id);
+        return findById(method.id);
     }
 
-    async findAll(filters?: { isActive?: boolean }) {
+    async function findAll(filters?: { isActive?: boolean }) {
         const methods = await prisma.propertyPaymentMethod.findMany({
             where: filters,
             orderBy: { name: 'asc' },
@@ -75,7 +78,7 @@ class PaymentMethodService {
         return methods;
     }
 
-    async findById(id: string) {
+    async function findById(id: string) {
         const method = await prisma.propertyPaymentMethod.findUnique({
             where: { id },
             include: {
@@ -100,8 +103,8 @@ class PaymentMethodService {
         return method;
     }
 
-    async update(id: string, data: UpdatePaymentMethodInput) {
-        await this.findById(id);
+    async function update(id: string, data: UpdatePaymentMethodInput) {
+        await findById(id);
 
         const { phases, ...methodData } = data;
 
@@ -110,13 +113,12 @@ class PaymentMethodService {
             data: methodData,
         });
 
-        return this.findById(updated.id);
+        return findById(updated.id);
     }
 
-    async delete(id: string) {
-        await this.findById(id);
+    async function deleteMethod(id: string) {
+        await findById(id);
 
-        // Check if method is in use by contracts
         const contractCount = await prisma.contract.count({
             where: { paymentMethodId: id },
         });
@@ -125,18 +127,15 @@ class PaymentMethodService {
             throw new AppError(400, `Cannot delete payment method: used by ${contractCount} contract(s)`);
         }
 
-        await prisma.$transaction(async (tx) => {
-            // Delete phases first
+        await prisma.$transaction(async (tx: any) => {
             await tx.propertyPaymentMethodPhase.deleteMany({
                 where: { paymentMethodId: id },
             });
 
-            // Delete property links
             await tx.propertyPaymentMethodLink.deleteMany({
                 where: { paymentMethodId: id },
             });
 
-            // Delete method
             await tx.propertyPaymentMethod.delete({
                 where: { id },
             });
@@ -145,10 +144,9 @@ class PaymentMethodService {
         return { success: true };
     }
 
-    async addPhase(methodId: string, data: AddPhaseInput) {
-        await this.findById(methodId);
+    async function addPhase(methodId: string, data: AddPhaseInput) {
+        await findById(methodId);
 
-        // Validate: PAYMENT phases require paymentPlanId
         if (data.phaseCategory === 'PAYMENT' && !data.paymentPlanId) {
             throw new AppError(400, 'PAYMENT phases require paymentPlanId');
         }
@@ -177,7 +175,7 @@ class PaymentMethodService {
         return phase;
     }
 
-    async updatePhase(phaseId: string, data: Partial<AddPhaseInput>) {
+    async function updatePhase(phaseId: string, data: Partial<AddPhaseInput>) {
         const phase = await prisma.propertyPaymentMethodPhase.findUnique({
             where: { id: phaseId },
         });
@@ -197,7 +195,7 @@ class PaymentMethodService {
         return updated;
     }
 
-    async deletePhase(phaseId: string) {
+    async function deletePhase(phaseId: string) {
         const phase = await prisma.propertyPaymentMethodPhase.findUnique({
             where: { id: phaseId },
         });
@@ -213,10 +211,10 @@ class PaymentMethodService {
         return { success: true };
     }
 
-    async reorderPhases(methodId: string, phaseOrders: { phaseId: string; order: number }[]) {
-        await this.findById(methodId);
+    async function reorderPhases(methodId: string, phaseOrders: { phaseId: string; order: number }[]) {
+        await findById(methodId);
 
-        await prisma.$transaction(async (tx) => {
+        await prisma.$transaction(async (tx: any) => {
             for (const { phaseId, order } of phaseOrders) {
                 await tx.propertyPaymentMethodPhase.update({
                     where: { id: phaseId },
@@ -225,13 +223,12 @@ class PaymentMethodService {
             }
         });
 
-        return this.findById(methodId);
+        return findById(methodId);
     }
 
-    async linkToProperty(methodId: string, data: LinkToPropertyInput) {
-        await this.findById(methodId);
+    async function linkToProperty(methodId: string, data: LinkToPropertyInput) {
+        await findById(methodId);
 
-        // Check if property exists
         const property = await prisma.property.findUnique({
             where: { id: data.propertyId },
         });
@@ -240,7 +237,6 @@ class PaymentMethodService {
             throw new AppError(404, 'Property not found');
         }
 
-        // Create or update link
         const link = await prisma.propertyPaymentMethodLink.upsert({
             where: {
                 propertyId_paymentMethodId: {
@@ -263,7 +259,7 @@ class PaymentMethodService {
         return link;
     }
 
-    async unlinkFromProperty(methodId: string, propertyId: string) {
+    async function unlinkFromProperty(methodId: string, propertyId: string) {
         await prisma.propertyPaymentMethodLink.delete({
             where: {
                 propertyId_paymentMethodId: {
@@ -276,7 +272,7 @@ class PaymentMethodService {
         return { success: true };
     }
 
-    async getMethodsForProperty(propertyId: string) {
+    async function getMethodsForProperty(propertyId: string) {
         const links = await prisma.propertyPaymentMethodLink.findMany({
             where: {
                 propertyId,
@@ -298,6 +294,22 @@ class PaymentMethodService {
 
         return links;
     }
+
+    return {
+        create,
+        findAll,
+        findById,
+        update,
+        delete: deleteMethod,
+        addPhase,
+        updatePhase,
+        deletePhase,
+        reorderPhases,
+        linkToProperty,
+        unlinkFromProperty,
+        getMethodsForProperty,
+    };
 }
 
-export const paymentMethodService = new PaymentMethodService();
+// Default instance for backward compatibility
+export const paymentMethodService = createPaymentMethodService();

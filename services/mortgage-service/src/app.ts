@@ -1,18 +1,25 @@
 import express, { Application } from 'express';
 import swaggerUi from 'swagger-ui-express';
-import { requestLogger } from './middleware/request-logger.js';
-import { errorHandler } from './middleware/error-handler.js';
-import { generateOpenAPIDocument } from './config/swagger.js';
+import {
+  requestLogger,
+  errorHandler,
+  createTenantMiddleware,
+} from '@valentine-efagene/qshelter-common';
+import { generateOpenAPIDocument } from './config/swagger';
+import { prisma } from './lib/prisma';
 
 // New unified contract-based routes
-import paymentPlanRouter from './routes/payment-plan.js';
-import paymentMethodRouter from './routes/payment-method.js';
-import contractRouter from './routes/contract.js';
+import paymentPlanRouter from './routes/payment-plan';
+import paymentMethodRouter from './routes/payment-method';
+import contractRouter from './routes/contract';
 
 export const app: Application = express();
 
 app.use(express.json());
 app.use(requestLogger);
+
+// Apply tenant middleware to extract tenant context from all requests
+app.use(createTenantMiddleware({ prisma }));
 
 app.get('/health', (req, res) => {
   res.json({ status: 'healthy', service: 'mortgage-service' });

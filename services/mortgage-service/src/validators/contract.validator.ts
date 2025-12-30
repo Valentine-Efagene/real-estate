@@ -33,7 +33,7 @@ export const UpdateContractSchema = z
 export const TransitionContractSchema = z
     .object({
         trigger: z.string().min(1).openapi({ example: 'SUBMIT' }),
-        metadata: z.record(z.any()).optional(),
+        metadata: z.record(z.string(), z.any()).optional(),
     })
     .openapi('TransitionContract');
 
