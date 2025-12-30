@@ -156,6 +156,8 @@ export async function cleanupTestData() {
     await prisma.contractPhaseStep.deleteMany();
     await prisma.contractDocument.deleteMany();
     await prisma.contractPhase.deleteMany();
+    await prisma.paymentMethodChangeRequest.deleteMany();
+    await prisma.prequalification.deleteMany();
     await prisma.contract.deleteMany();
     await prisma.propertyUnit.deleteMany();
     await prisma.propertyVariantAmenity.deleteMany();
@@ -163,8 +165,9 @@ export async function cleanupTestData() {
     await prisma.propertyVariant.deleteMany();
     await prisma.propertyPaymentMethodLink.deleteMany();
     await prisma.propertyPaymentMethodPhase.deleteMany();
+    await prisma.documentRequirementRule.deleteMany();
     await prisma.propertyPaymentMethod.deleteMany();
     await prisma.paymentPlan.deleteMany();
     await prisma.domainEvent.deleteMany();
-    // Note: Not deleting properties and users - they may be shared
+    // Note: Not deleting properties, users, tenants - they may be shared
 }

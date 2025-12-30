@@ -8,6 +8,7 @@ export default {
     transform: {
         '^.+\\.tsx?$': ['ts-jest', {
             useESM: true,
+            tsconfig: 'tsconfig.test.json',
         }],
     },
     testMatch: ['**/__tests__/**/*.test.ts', '**/?(*.)+(spec|test).ts'],
