@@ -13,7 +13,8 @@ export const ActivatePhaseSchema = z
 // Complete documentation step
 export const CompleteStepSchema = z
     .object({
-        stepId: z.string(),
+        stepId: z.string().optional(),
+        stepName: z.string().optional(),
         decision: z.enum(['APPROVED', 'REJECTED', 'REQUEST_CHANGES']).optional(),
         comment: z.string().optional(),
     })
@@ -23,10 +24,17 @@ export const CompleteStepSchema = z
 export const UploadDocumentSchema = z
     .object({
         stepId: z.string().optional(),
-        name: z.string().min(1).max(200),
+        name: z.string().min(1).max(200).optional(),
+        documentType: z.string().optional(),
         url: z.string().url(),
-        type: z.string().min(1).max(50).openapi({ example: 'ID' }),
+        type: z.string().min(1).max(50).optional().openapi({ example: 'ID' }),
+        fileName: z.string().optional(),
     })
+    .transform((data) => ({
+        ...data,
+        name: data.name || data.fileName || 'Document',
+        type: data.type || data.documentType || 'OTHER',
+    }))
     .openapi('UploadDocument');
 
 // Approve document
@@ -34,7 +42,12 @@ export const ApproveDocumentSchema = z
     .object({
         status: z.enum(['APPROVED', 'REJECTED']),
         comment: z.string().optional(),
+        note: z.string().optional(),
     })
+    .transform((data) => ({
+        status: data.status,
+        comment: data.comment || data.note,
+    }))
     .openapi('ApproveDocument');
 
 // Generate installments for a payment phase

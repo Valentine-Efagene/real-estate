@@ -184,9 +184,10 @@ class PrequalificationService {
         const documents = currentAnswers.documents || [];
         documents.push({
             documentType: data.documentType,
-            documentUrl: data.documentUrl,
+            documentUrl: data.url,
             fileName: data.fileName,
             mimeType: data.mimeType,
+            sizeBytes: data.sizeBytes,
             uploadedAt: new Date().toISOString(),
             uploadedBy: userId,
         });
@@ -201,7 +202,7 @@ class PrequalificationService {
         return {
             id: prequalId,
             documentType: data.documentType,
-            documentUrl: data.documentUrl,
+            documentUrl: data.url,
             status: 'PENDING',
         };
     }

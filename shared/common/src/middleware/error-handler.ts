@@ -15,6 +15,7 @@ export function errorHandler(
     if (err instanceof ZodError) {
         return res.status(400).json({
             success: false,
+            message: 'Validation Error',
             error: 'Validation Error',
             details: err.issues,
         });
@@ -23,6 +24,7 @@ export function errorHandler(
     if (err instanceof AppError) {
         return res.status(err.statusCode).json({
             success: false,
+            message: err.message,
             error: err.message,
         });
     }
@@ -30,6 +32,7 @@ export function errorHandler(
     console.error('Unhandled error:', err);
     return res.status(500).json({
         success: false,
+        message: 'Internal Server Error',
         error: 'Internal Server Error',
     });
 }

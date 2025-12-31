@@ -6,8 +6,9 @@ extendZodWithOpenApi(z);
 // Create contract from payment method
 export const CreateContractSchema = z
     .object({
+        prequalificationId: z.string().optional(),
         propertyUnitId: z.string(),
-        buyerId: z.string(),
+        buyerId: z.string().optional(), // Will use x-user-id header if not provided
         sellerId: z.string().optional(),
         paymentMethodId: z.string(),
         title: z.string().min(1).max(200).openapi({ example: 'Purchase Agreement - Unit A1' }),
@@ -32,9 +33,15 @@ export const UpdateContractSchema = z
 // Transition contract state
 export const TransitionContractSchema = z
     .object({
-        trigger: z.string().min(1).openapi({ example: 'SUBMIT' }),
+        trigger: z.string().min(1).optional().openapi({ example: 'SUBMIT' }),
+        action: z.string().min(1).optional().openapi({ example: 'SUBMIT' }),
+        note: z.string().optional(),
         metadata: z.record(z.string(), z.any()).optional(),
     })
+    .transform((data) => ({
+        ...data,
+        trigger: data.trigger || data.action!, // Normalize action to trigger
+    }))
     .openapi('TransitionContract');
 
 // Sign contract

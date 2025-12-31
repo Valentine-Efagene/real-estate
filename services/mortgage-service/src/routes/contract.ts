@@ -12,6 +12,7 @@ import {
     CompleteStepSchema,
     UploadDocumentSchema,
     GenerateInstallmentsSchema,
+    ApproveDocumentSchema,
 } from '../validators/contract-phase.validator';
 import {
     CreatePaymentSchema,
@@ -29,11 +30,21 @@ const router = Router();
 // Create contract from payment method
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const tenantId = req.headers['x-tenant-id'] as string;
+        const userId = req.headers['x-user-id'] as string;
+        if (!tenantId || !userId) {
+            return res.status(400).json({ error: 'Missing tenant or user context' });
+        }
+
         const data = CreateContractSchema.parse(req.body);
-        const contract = await contractService.create(data);
+        // Use userId from header as buyerId if not provided in body
+        const contractData = { ...data, tenantId, buyerId: data.buyerId || userId };
+        const contract = await contractService.create(contractData);
         res.status(201).json(contract);
-    } catch (error) {
+    } catch (error: any) {
+        console.error('Contract create error:', error.message);
         if (error instanceof z.ZodError) {
+            console.error('Zod validation error:', JSON.stringify(error.issues, null, 2));
             res.status(400).json({ error: 'Validation failed', details: error.issues });
             return;
         }
@@ -188,7 +199,15 @@ router.post('/:id/phases/:phaseId/installments', async (req: Request, res: Respo
         const data = GenerateInstallmentsSchema.parse(req.body);
         const userId = req.headers['x-user-id'] as string;
         const phase = await contractPhaseService.generateInstallments(req.params.phaseId, data, userId);
-        res.json(phase);
+        // Transform installments to include amountDue for backwards compatibility
+        const responsePhase = {
+            ...phase,
+            installments: phase.installments.map((inst: any) => ({
+                ...inst,
+                amountDue: inst.amount,
+            })),
+        };
+        res.json(responsePhase);
     } catch (error) {
         if (error instanceof z.ZodError) {
             res.status(400).json({ error: 'Validation failed', details: error.issues });
@@ -221,6 +240,22 @@ router.post('/:id/phases/:phaseId/documents', async (req: Request, res: Response
         const userId = req.headers['x-user-id'] as string;
         const document = await contractPhaseService.uploadDocument(req.params.phaseId, data, userId);
         res.status(201).json(document);
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            res.status(400).json({ error: 'Validation failed', details: error.issues });
+            return;
+        }
+        next(error);
+    }
+});
+
+// Review/approve a document
+router.post('/:id/documents/:documentId/review', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const data = ApproveDocumentSchema.parse(req.body);
+        const userId = req.headers['x-user-id'] as string;
+        const document = await contractPhaseService.approveDocument(req.params.documentId, data, userId);
+        res.json(document);
     } catch (error) {
         if (error instanceof z.ZodError) {
             res.status(400).json({ error: 'Validation failed', details: error.issues });

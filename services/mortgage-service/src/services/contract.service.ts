@@ -202,6 +202,7 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma) {
 
             const created = await tx.contract.create({
                 data: {
+                    tenantId: (data as any).tenantId,
                     propertyUnitId: data.propertyUnitId,
                     buyerId: data.buyerId,
                     sellerId: data.sellerId ?? propertyUnit.variant.property.userId,
@@ -226,6 +227,8 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma) {
                 let phaseAmount: number | null = null;
                 if (phaseTemplate.percentOfPrice) {
                     phaseAmount = (totalAmount * phaseTemplate.percentOfPrice) / 100;
+                } else if (phaseTemplate.phaseCategory === 'DOCUMENTATION') {
+                    phaseAmount = 0; // Documentation phases have no monetary amount
                 }
 
                 const phase = await tx.contractPhase.create({
@@ -279,6 +282,14 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma) {
                     }),
                 },
             });
+
+            // Link prequalification to contract if provided
+            if ((data as any).prequalificationId) {
+                await tx.prequalification.update({
+                    where: { id: (data as any).prequalificationId },
+                    data: { contractId: created.id },
+                });
+            }
 
             return created;
         });
@@ -477,13 +488,43 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma) {
             throw new AppError(403, 'Only the buyer can sign the contract');
         }
 
-        const updated = await prisma.contract.update({
-            where: { id },
-            data: {
-                signedAt: new Date(),
-                status: 'ACTIVE',
-                state: 'ACTIVE',
-            },
+        const updated = await prisma.$transaction(async (tx: any) => {
+            const result = await tx.contract.update({
+                where: { id },
+                data: {
+                    signedAt: new Date(),
+                    status: 'ACTIVE',
+                    state: 'ACTIVE',
+                },
+            });
+
+            // Record the transition to ACTIVE
+            await tx.contractTransition.create({
+                data: {
+                    contractId: id,
+                    fromState: contract.state,
+                    toState: 'ACTIVE',
+                    trigger: 'SIGN',
+                },
+            });
+
+            // Write CONTRACT.SIGNED domain event
+            await tx.domainEvent.create({
+                data: {
+                    id: uuidv4(),
+                    eventType: 'CONTRACT.SIGNED',
+                    aggregateType: 'Contract',
+                    aggregateId: id,
+                    queueName: 'notifications',
+                    payload: JSON.stringify({
+                        contractId: id,
+                        buyerId: contract.buyerId,
+                    }),
+                    actorId: userId,
+                },
+            });
+
+            return result;
         });
 
         return findById(updated.id);

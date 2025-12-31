@@ -23,6 +23,7 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { tenantId, userId } = extractContext(req);
         if (!tenantId || !userId) {
+            console.error('Missing tenant or user context', { tenantId, userId, headers: req.headers });
             return res.status(400).json({ error: 'Missing tenant or user context' });
         }
 
@@ -40,8 +41,10 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
         }
 
         res.status(201).json(result);
-    } catch (error) {
+    } catch (error: any) {
+        console.error('Prequalification create error:', error.message);
         if (error instanceof z.ZodError) {
+            console.error('Zod error details:', JSON.stringify(error.issues, null, 2));
             return res.status(400).json({ error: 'Validation error', details: error.issues });
         }
         next(error);
@@ -134,8 +137,10 @@ router.post('/:id/documents', async (req: Request, res: Response, next: NextFunc
         }
 
         res.status(201).json(result);
-    } catch (error) {
+    } catch (error: any) {
+        console.error('Submit document error:', error.message);
         if (error instanceof z.ZodError) {
+            console.error('Zod validation error:', JSON.stringify(error.issues, null, 2));
             return res.status(400).json({ error: 'Validation error', details: error.issues });
         }
         next(error);
@@ -185,8 +190,10 @@ router.post('/:id/review', async (req: Request, res: Response, next: NextFunctio
         }
 
         res.json(result);
-    } catch (error) {
+    } catch (error: any) {
+        console.error('Review prequalification error:', error.message);
         if (error instanceof z.ZodError) {
+            console.error('Zod validation error:', JSON.stringify(error.issues, null, 2));
             return res.status(400).json({ error: 'Validation error', details: error.issues });
         }
         next(error);

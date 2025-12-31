@@ -898,6 +898,13 @@ describe('Full Mortgage Flow E2E', () => {
     // ============================================================================
     describe('Part 8: Audit Trail & Event Verification', () => {
         it('should have complete event trail', async () => {
+            // Get all payment IDs for this contract
+            const payments = await prisma.contractPayment.findMany({
+                where: { contractId },
+                select: { id: true },
+            });
+            const paymentIds = payments.map((p) => p.id);
+
             const events = await prisma.domainEvent.findMany({
                 where: {
                     OR: [
@@ -906,6 +913,7 @@ describe('Full Mortgage Flow E2E', () => {
                         { aggregateId: documentationPhaseId },
                         { aggregateId: downpaymentPhaseId },
                         { aggregateId: mortgagePhaseId },
+                        { aggregateId: { in: paymentIds } },
                     ],
                 },
                 orderBy: { occurredAt: 'asc' },

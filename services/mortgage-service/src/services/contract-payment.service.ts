@@ -73,7 +73,7 @@ class ContractPaymentService {
                     payerId: userId,
                     amount: data.amount,
                     paymentMethod: data.paymentMethod,
-                    status: 'INITIATED',
+                    status: 'PENDING',
                     reference,
                 },
             });
@@ -238,14 +238,75 @@ class ContractPaymentService {
                 if (phase) {
                     const newPaidAmount = phase.paidAmount + payment.amount;
                     const newRemainingAmount = (phase.totalAmount ?? 0) - newPaidAmount;
+                    const isFullyPaid = newRemainingAmount <= 0;
 
                     await tx.contractPhase.update({
                         where: { id: payment.phaseId },
                         data: {
                             paidAmount: newPaidAmount,
                             remainingAmount: Math.max(0, newRemainingAmount),
+                            status: isFullyPaid ? 'COMPLETED' : phase.status,
+                            completedAt: isFullyPaid ? new Date() : phase.completedAt,
                         },
                     });
+
+                    // If phase is completed, auto-activate next phase
+                    if (isFullyPaid) {
+                        // Write phase completed event
+                        await tx.domainEvent.create({
+                            data: {
+                                id: uuidv4(),
+                                eventType: 'PHASE.COMPLETED',
+                                aggregateType: 'ContractPhase',
+                                aggregateId: payment.phaseId,
+                                queueName: 'contract-steps',
+                                payload: JSON.stringify({
+                                    phaseId: payment.phaseId,
+                                    contractId: payment.contractId,
+                                    phaseType: phase.phaseType,
+                                }),
+                            },
+                        });
+
+                        // Auto-activate next phase
+                        const nextPhase = await tx.contractPhase.findFirst({
+                            where: {
+                                contractId: payment.contractId,
+                                order: phase.order + 1,
+                            },
+                        });
+
+                        if (nextPhase) {
+                            await tx.contractPhase.update({
+                                where: { id: nextPhase.id },
+                                data: {
+                                    status: 'IN_PROGRESS',
+                                },
+                            });
+
+                            // Update contract's current phase
+                            await tx.contract.update({
+                                where: { id: payment.contractId },
+                                data: { currentPhaseId: nextPhase.id },
+                            });
+
+                            // Write phase activated event
+                            await tx.domainEvent.create({
+                                data: {
+                                    id: uuidv4(),
+                                    eventType: 'PHASE.ACTIVATED',
+                                    aggregateType: 'ContractPhase',
+                                    aggregateId: nextPhase.id,
+                                    queueName: 'contract-steps',
+                                    payload: JSON.stringify({
+                                        phaseId: nextPhase.id,
+                                        contractId: payment.contractId,
+                                        phaseType: nextPhase.phaseType,
+                                    }),
+                                },
+                            });
+                        }
+                    }
                 }
             }
 

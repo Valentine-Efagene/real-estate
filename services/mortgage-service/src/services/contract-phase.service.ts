@@ -243,7 +243,17 @@ class ContractPhaseService {
         }
 
         // Calculate periodic rate based on interval
-        const periodsPerYear = intervalDays > 0 ? 365 / intervalDays : 12;
+        // For monthly payments (30 days), use 12 periods per year for standard mortgage calculations
+        let periodsPerYear: number;
+        if (intervalDays === 30) {
+            periodsPerYear = 12; // Standard monthly
+        } else if (intervalDays === 14) {
+            periodsPerYear = 26; // Biweekly
+        } else if (intervalDays === 7) {
+            periodsPerYear = 52; // Weekly
+        } else {
+            periodsPerYear = intervalDays > 0 ? 365 / intervalDays : 12;
+        }
         const periodicRate = annualRate / 100 / periodsPerYear;
 
         // Calculate periodic payment using amortization formula
@@ -289,9 +299,24 @@ class ContractPhaseService {
             throw new AppError(400, 'Can only complete steps for DOCUMENTATION phases');
         }
 
-        const step = phase.steps.find((s) => s.id === data.stepId);
+        // Find step by ID or by name
+        let step = data.stepId
+            ? phase.steps.find((s) => s.id === data.stepId)
+            : phase.steps.find((s) => s.name === (data as any).stepName);
+
         if (!step) {
             throw new AppError(404, 'Step not found in this phase');
+        }
+
+        const stepId = step.id;
+
+        // Check if step requires admin approval
+        if (step.stepType === 'APPROVAL') {
+            // APPROVAL steps can only be completed by the seller (property owner/admin)
+            // The buyer cannot complete their own approval
+            if (phase.contract.buyerId === userId) {
+                throw new AppError(403, 'This step requires admin approval');
+            }
         }
 
         if (step.status === 'COMPLETED') {
@@ -301,7 +326,7 @@ class ContractPhaseService {
         await prisma.$transaction(async (tx) => {
             // Update step status
             await tx.contractPhaseStep.update({
-                where: { id: data.stepId },
+                where: { id: stepId },
                 data: {
                     status: 'COMPLETED',
                     completedAt: new Date(),
@@ -312,7 +337,7 @@ class ContractPhaseService {
             if (data.decision) {
                 await tx.contractPhaseStepApproval.create({
                     data: {
-                        stepId: data.stepId,
+                        stepId: stepId,
                         approverId: userId,
                         decision: data.decision,
                         comment: data.comment,
@@ -325,7 +350,7 @@ class ContractPhaseService {
                 where: {
                     phaseId,
                     status: { not: 'COMPLETED' },
-                    id: { not: data.stepId },
+                    id: { not: stepId },
                 },
             });
 
@@ -355,6 +380,46 @@ class ContractPhaseService {
                         actorId: userId,
                     },
                 });
+
+                // Auto-activate next phase
+                const nextPhase = await tx.contractPhase.findFirst({
+                    where: {
+                        contractId: phase.contractId,
+                        order: phase.order + 1,
+                    },
+                });
+
+                if (nextPhase) {
+                    await tx.contractPhase.update({
+                        where: { id: nextPhase.id },
+                        data: {
+                            status: 'IN_PROGRESS',
+                        },
+                    });
+
+                    // Update contract's current phase
+                    await tx.contract.update({
+                        where: { id: phase.contractId },
+                        data: { currentPhaseId: nextPhase.id },
+                    });
+
+                    // Write phase activated event
+                    await tx.domainEvent.create({
+                        data: {
+                            id: uuidv4(),
+                            eventType: 'PHASE.ACTIVATED',
+                            aggregateType: 'ContractPhase',
+                            aggregateId: nextPhase.id,
+                            queueName: 'contract-steps',
+                            payload: JSON.stringify({
+                                phaseId: nextPhase.id,
+                                contractId: phase.contractId,
+                                phaseType: nextPhase.phaseType,
+                            }),
+                            actorId: userId,
+                        },
+                    });
+                }
             }
 
             // Write step completed event
@@ -363,10 +428,10 @@ class ContractPhaseService {
                     id: uuidv4(),
                     eventType: 'PHASE.STEP.COMPLETED',
                     aggregateType: 'ContractPhaseStep',
-                    aggregateId: data.stepId,
+                    aggregateId: stepId,
                     queueName: 'notifications',
                     payload: JSON.stringify({
-                        stepId: data.stepId,
+                        stepId: stepId,
                         phaseId,
                         contractId: phase.contractId,
                         decision: data.decision,
