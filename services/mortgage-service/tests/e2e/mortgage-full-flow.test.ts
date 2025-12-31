@@ -2,6 +2,15 @@ import request from 'supertest';
 import { app } from '../../src/app.js';
 import { prisma, cleanupTestData } from '../setup.js';
 import { faker } from '@faker-js/faker';
+import { randomUUID } from 'crypto';
+
+// Unique test run ID to ensure idempotency across retries
+const TEST_RUN_ID = randomUUID();
+
+// Generate deterministic idempotency keys for each operation
+function idempotencyKey(operation: string): string {
+    return `${TEST_RUN_ID}:${operation}`;
+}
 
 /**
  * E2E Tests: Full Mortgage Flow with Prequalification, Approval Gates & Events
@@ -156,6 +165,7 @@ describe('Full Mortgage Flow E2E', () => {
                 .post('/payment-plans')
                 .set('x-tenant-id', tenantId)
                 .set('x-user-id', adminUserId)
+                .set('x-idempotency-key', idempotencyKey('create-downpayment-plan'))
                 .send({
                     name: 'One-Off Downpayment',
                     description: 'Single payment for 10% downpayment',
@@ -185,6 +195,7 @@ describe('Full Mortgage Flow E2E', () => {
                 .post('/payment-plans')
                 .set('x-tenant-id', tenantId)
                 .set('x-user-id', adminUserId)
+                .set('x-idempotency-key', idempotencyKey('create-mortgage-plan'))
                 .send({
                     name: 'Standard 20-Year Mortgage',
                     description: 'Monthly payments at 9.5% annual interest',
@@ -204,6 +215,7 @@ describe('Full Mortgage Flow E2E', () => {
                 .post('/payment-methods')
                 .set('x-tenant-id', tenantId)
                 .set('x-user-id', adminUserId)
+                .set('x-idempotency-key', idempotencyKey('create-payment-method'))
                 .send({
                     name: 'Premium Mortgage Package',
                     description: 'Full mortgage flow: Prequal → Docs → Approval → Downpayment → Mortgage',
@@ -263,6 +275,7 @@ describe('Full Mortgage Flow E2E', () => {
                 .post(`/payment-methods/${paymentMethodId}/properties`)
                 .set('x-tenant-id', tenantId)
                 .set('x-user-id', adminUserId)
+                .set('x-idempotency-key', idempotencyKey('link-payment-method-property'))
                 .send({
                     propertyId,
                     isDefault: true,
@@ -334,6 +347,7 @@ describe('Full Mortgage Flow E2E', () => {
                 .post('/prequalifications')
                 .set('x-tenant-id', tenantId)
                 .set('x-user-id', buyerUserId)
+                .set('x-idempotency-key', idempotencyKey('create-prequalification'))
                 .send({
                     propertyId,
                     paymentMethodId,
@@ -393,11 +407,13 @@ describe('Full Mortgage Flow E2E', () => {
                 },
             ];
 
-            for (const doc of documents) {
+            for (let i = 0; i < documents.length; i++) {
+                const doc = documents[i];
                 const response = await request(app)
                     .post(`/prequalifications/${prequalificationId}/documents`)
                     .set('x-tenant-id', tenantId)
                     .set('x-user-id', buyerUserId)
+                    .set('x-idempotency-key', idempotencyKey(`prequal-doc-${doc.documentType}`))
                     .send(doc);
 
                 expect(response.status).toBe(201);
@@ -408,7 +424,8 @@ describe('Full Mortgage Flow E2E', () => {
             const response = await request(app)
                 .post(`/prequalifications/${prequalificationId}/submit`)
                 .set('x-tenant-id', tenantId)
-                .set('x-user-id', buyerUserId);
+                .set('x-user-id', buyerUserId)
+                .set('x-idempotency-key', idempotencyKey('submit-prequalification'));
 
             expect(response.status).toBe(200);
             expect(response.body.status).toBe('SUBMITTED');
@@ -457,6 +474,7 @@ describe('Full Mortgage Flow E2E', () => {
                 .post(`/prequalifications/${prequalificationId}/review`)
                 .set('x-tenant-id', tenantId)
                 .set('x-user-id', adminUserId)
+                .set('x-idempotency-key', idempotencyKey('review-prequalification'))
                 .send({
                     decision: 'APPROVED',
                     notes: 'Good credit history, stable income, DTI within acceptable range',
@@ -500,6 +518,7 @@ describe('Full Mortgage Flow E2E', () => {
                 .post('/contracts')
                 .set('x-tenant-id', tenantId)
                 .set('x-user-id', buyerUserId)
+                .set('x-idempotency-key', idempotencyKey('create-contract'))
                 .send({
                     prequalificationId,
                     propertyUnitId,
@@ -577,6 +596,7 @@ describe('Full Mortgage Flow E2E', () => {
                 .post(`/contracts/${contractId}/transition`)
                 .set('x-tenant-id', tenantId)
                 .set('x-user-id', buyerUserId)
+                .set('x-idempotency-key', idempotencyKey('contract-transition-submit'))
                 .send({
                     action: 'SUBMIT',
                     note: 'Submitting contract for processing',
@@ -596,7 +616,8 @@ describe('Full Mortgage Flow E2E', () => {
             const response = await request(app)
                 .post(`/contracts/${contractId}/phases/${documentationPhaseId}/activate`)
                 .set('x-tenant-id', tenantId)
-                .set('x-user-id', buyerUserId);
+                .set('x-user-id', buyerUserId)
+                .set('x-idempotency-key', idempotencyKey('activate-documentation-phase'));
 
             expect(response.status).toBe(200);
             expect(response.body.status).toBe('IN_PROGRESS');
@@ -631,11 +652,13 @@ describe('Full Mortgage Flow E2E', () => {
                 },
             ];
 
-            for (const doc of documents) {
+            for (let i = 0; i < documents.length; i++) {
+                const doc = documents[i];
                 const response = await request(app)
                     .post(`/contracts/${contractId}/phases/${documentationPhaseId}/documents`)
                     .set('x-tenant-id', tenantId)
                     .set('x-user-id', buyerUserId)
+                    .set('x-idempotency-key', idempotencyKey(`contract-doc-${doc.documentType}`))
                     .send(doc);
 
                 expect(response.status).toBe(201);
@@ -647,11 +670,13 @@ describe('Full Mortgage Flow E2E', () => {
             // Complete upload steps (user action)
             const uploadSteps = ['Upload ID', 'Upload Bank Statement', 'Upload Proof of Income'];
 
-            for (const stepName of uploadSteps) {
+            for (let i = 0; i < uploadSteps.length; i++) {
+                const stepName = uploadSteps[i];
                 const response = await request(app)
                     .post(`/contracts/${contractId}/phases/${documentationPhaseId}/steps/complete`)
                     .set('x-tenant-id', tenantId)
                     .set('x-user-id', buyerUserId)
+                    .set('x-idempotency-key', idempotencyKey(`complete-step-${stepName.replace(/\s+/g, '-').toLowerCase()}`))
                     .send({ stepName });
 
                 expect(response.status).toBe(200);
@@ -676,11 +701,13 @@ describe('Full Mortgage Flow E2E', () => {
                 where: { phaseId: documentationPhaseId },
             });
 
-            for (const doc of docs) {
+            for (let i = 0; i < docs.length; i++) {
+                const doc = docs[i];
                 const response = await request(app)
                     .post(`/contracts/${contractId}/documents/${doc.id}/review`)
                     .set('x-tenant-id', tenantId)
                     .set('x-user-id', adminUserId)
+                    .set('x-idempotency-key', idempotencyKey(`approve-doc-${i}`))
                     .send({
                         status: 'APPROVED',
                         note: 'Document verified',
@@ -694,6 +721,7 @@ describe('Full Mortgage Flow E2E', () => {
                 .post(`/contracts/${contractId}/phases/${documentationPhaseId}/steps/complete`)
                 .set('x-tenant-id', tenantId)
                 .set('x-user-id', adminUserId)
+                .set('x-idempotency-key', idempotencyKey('complete-admin-review-step'))
                 .send({
                     stepName: 'Admin Review',
                     note: 'All documents verified and approved',
@@ -737,6 +765,7 @@ describe('Full Mortgage Flow E2E', () => {
                 .post(`/contracts/${contractId}/phases/${downpaymentPhaseId}/installments`)
                 .set('x-tenant-id', tenantId)
                 .set('x-user-id', buyerUserId)
+                .set('x-idempotency-key', idempotencyKey('generate-downpayment-installments'))
                 .send({
                     startDate: new Date().toISOString(),
                 });
@@ -758,12 +787,13 @@ describe('Full Mortgage Flow E2E', () => {
                 .post(`/contracts/${contractId}/payments`)
                 .set('x-tenant-id', tenantId)
                 .set('x-user-id', buyerUserId)
+                .set('x-idempotency-key', idempotencyKey('create-downpayment-payment'))
                 .send({
                     phaseId: downpaymentPhaseId,
                     installmentId: installment.id,
                     amount: 100000,
                     paymentMethod: 'BANK_TRANSFER',
-                    externalReference: faker.string.uuid(),
+                    externalReference: idempotencyKey('downpayment-external-ref'),
                 });
 
             expect(response.status).toBe(201);
@@ -778,10 +808,11 @@ describe('Full Mortgage Flow E2E', () => {
             const response = await request(app)
                 .post('/contracts/payments/process')
                 .set('x-tenant-id', tenantId)
+                .set('x-idempotency-key', idempotencyKey('process-downpayment'))
                 .send({
                     reference: payment!.reference,
                     status: 'COMPLETED',
-                    gatewayTransactionId: faker.string.uuid(),
+                    gatewayTransactionId: idempotencyKey('downpayment-gateway-txn'),
                 });
 
             expect(response.status).toBe(200);
@@ -824,6 +855,7 @@ describe('Full Mortgage Flow E2E', () => {
                 .post(`/contracts/${contractId}/phases/${mortgagePhaseId}/installments`)
                 .set('x-tenant-id', tenantId)
                 .set('x-user-id', buyerUserId)
+                .set('x-idempotency-key', idempotencyKey('generate-mortgage-installments'))
                 .send({
                     startDate: new Date().toISOString(),
                 });
@@ -842,7 +874,8 @@ describe('Full Mortgage Flow E2E', () => {
             const response = await request(app)
                 .post(`/contracts/${contractId}/sign`)
                 .set('x-tenant-id', tenantId)
-                .set('x-user-id', buyerUserId);
+                .set('x-user-id', buyerUserId)
+                .set('x-idempotency-key', idempotencyKey('sign-contract'));
 
             expect(response.status).toBe(200);
             expect(response.body.status).toBe('ACTIVE');

@@ -3,7 +3,7 @@ import { AppError } from '@valentine-efagene/qshelter-common';
 import type { CreatePaymentPlanInput, UpdatePaymentPlanInput } from '../validators/payment-plan.validator';
 
 class PaymentPlanService {
-    async create(data: CreatePaymentPlanInput) {
+    async create(tenantId: string, data: CreatePaymentPlanInput) {
         // Validate custom frequency
         if (data.paymentFrequency === 'CUSTOM' && !data.customFrequencyDays) {
             throw new AppError(400, 'customFrequencyDays is required for CUSTOM frequency');
@@ -11,6 +11,7 @@ class PaymentPlanService {
 
         const plan = await prisma.paymentPlan.create({
             data: {
+                tenantId,
                 name: data.name,
                 description: data.description,
                 isActive: data.isActive ?? true,

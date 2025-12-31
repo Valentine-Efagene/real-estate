@@ -14,12 +14,13 @@ type AnyPrismaClient = PrismaClient;
  * Use this for tenant-scoped operations
  */
 export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPrisma) {
-    async function create(data: CreatePaymentMethodInput) {
+    async function create(tenantId: string, data: CreatePaymentMethodInput) {
         const { phases, ...methodData } = data;
 
         const method = await prisma.$transaction(async (tx: any) => {
             const created = await tx.propertyPaymentMethod.create({
                 data: {
+                    tenantId,
                     name: methodData.name,
                     description: methodData.description,
                     isActive: methodData.isActive ?? true,

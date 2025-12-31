@@ -7,11 +7,13 @@ import { faker } from '@faker-js/faker';
 
 // Create adapter for test database
 const adapter = new PrismaMariaDb({
-    host: process.env.DB_HOST || 'localhost',
+    host: process.env.DB_HOST || '127.0.0.1',
+    port: parseInt(process.env.DB_PORT || '3307'),
     user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || '',
+    password: process.env.DB_PASSWORD || 'rootpassword',
     database: process.env.DB_NAME || 'qshelter_test',
-    connectionLimit: 5,
+    connectionLimit: 10,
+    allowPublicKeyRetrieval: true,
 });
 
 // Database client for tests
@@ -44,7 +46,7 @@ export const testData = {
     },
 
     // Create a property with variant and units
-    async createPropertyWithUnits(userId: string, options?: {
+    async createPropertyWithUnits(tenantId: string, userId: string, options?: {
         variantCount?: number;
         unitsPerVariant?: number;
         price?: number;
@@ -55,6 +57,7 @@ export const testData = {
 
         const property = await prisma.property.create({
             data: {
+                tenantId,
                 userId,
                 title: faker.location.streetAddress() + ' Estate',
                 category: 'SALE',

@@ -13,8 +13,13 @@ const router = Router();
 // Create payment method
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const tenantId = req.headers['x-tenant-id'] as string;
+        if (!tenantId) {
+            res.status(400).json({ error: 'x-tenant-id header is required' });
+            return;
+        }
         const data = CreatePaymentMethodSchema.parse(req.body);
-        const method = await paymentMethodService.create(data);
+        const method = await paymentMethodService.create(tenantId, data);
         res.status(201).json(method);
     } catch (error) {
         if (error instanceof z.ZodError) {

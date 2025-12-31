@@ -9,11 +9,13 @@ const stage = process.env.NODE_ENV || process.env.STAGE || 'dev';
 async function createAdapter() {
     if (stage === 'local') {
         return new PrismaMariaDb({
-            host: process.env.DB_HOST,
-            user: process.env.DB_USER,
-            password: process.env.DB_PASSWORD,
-            database: process.env.DB_NAME,
-            connectionLimit: 5,
+            host: process.env.DB_HOST || '127.0.0.1',
+            port: parseInt(process.env.DB_PORT || '3307'),
+            user: process.env.DB_USER || 'root',
+            password: process.env.DB_PASSWORD || 'rootpassword',
+            database: process.env.DB_NAME || 'qshelter_test',
+            connectionLimit: 10,
+            allowPublicKeyRetrieval: true,
         });
     }
 

@@ -8,8 +8,13 @@ const router = Router();
 // Create payment plan
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const tenantId = req.headers['x-tenant-id'] as string;
+        if (!tenantId) {
+            res.status(400).json({ error: 'x-tenant-id header is required' });
+            return;
+        }
         const data = CreatePaymentPlanSchema.parse(req.body);
-        const plan = await paymentPlanService.create(data);
+        const plan = await paymentPlanService.create(tenantId, data);
         res.status(201).json(plan);
     } catch (error) {
         if (error instanceof z.ZodError) {
