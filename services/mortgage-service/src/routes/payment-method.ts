@@ -21,7 +21,8 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
         const data = CreatePaymentMethodSchema.parse(req.body);
         const method = await paymentMethodService.create(tenantId, data);
         res.status(201).json(method);
-    } catch (error) {
+    } catch (error: any) {
+        console.error('Payment method create error:', error.message, error.statusCode || error.code);
         if (error instanceof z.ZodError) {
             res.status(400).json({ error: 'Validation failed', details: error.issues });
             return;

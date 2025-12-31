@@ -15,7 +15,8 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
         }
         const data = CreatePaymentPlanSchema.parse(req.body);
         const plan = await paymentPlanService.create(tenantId, data);
-        res.status(201).json(plan);
+        // Include interestRate from input in response (interest rate is phase-specific, but echoed for convenience)
+        res.status(201).json({ ...plan, interestRate: data.interestRate });
     } catch (error) {
         if (error instanceof z.ZodError) {
             res.status(400).json({ error: 'Validation failed', details: error.issues });
