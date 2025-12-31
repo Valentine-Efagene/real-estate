@@ -7,9 +7,10 @@ import {
     ReviewPrequalificationSchema,
 } from '../validators/prequalification.validator';
 import { z } from 'zod';
+import * as express from 'express'
 import { checkIdempotency, setIdempotencyResponse } from '../lib/idempotency';
 
-const router = Router();
+const router: express.Router = Router();
 
 // Middleware to extract tenant and user info from headers
 const extractContext = (req: Request) => {

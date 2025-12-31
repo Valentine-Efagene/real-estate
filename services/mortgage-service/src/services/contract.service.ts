@@ -132,7 +132,7 @@ function mapStateToStatus(state: string): string {
 export function createContractService(prisma: AnyPrismaClient = defaultPrisma) {
     const paymentMethodService = createPaymentMethodService(prisma);
 
-    async function create(data: CreateContractInput) {
+    async function create(data: CreateContractInput): Promise<any> {
         const method = await paymentMethodService.findById(data.paymentMethodId);
 
         if (!method.isActive) {
@@ -332,7 +332,7 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma) {
         return contracts;
     }
 
-    async function findById(id: string) {
+    async function findById(id: string): Promise<any> {
         const contract = await prisma.contract.findUnique({
             where: { id },
             include: {

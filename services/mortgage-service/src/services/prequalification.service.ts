@@ -8,7 +8,7 @@ import type {
 } from '../validators/prequalification.validator';
 
 class PrequalificationService {
-    async create(tenantId: string, userId: string, data: CreatePrequalificationInput) {
+    async create(tenantId: string, userId: string, data: CreatePrequalificationInput): Promise<any> {
         // Check if property exists
         const property = await prisma.property.findUnique({
             where: { id: data.propertyId },
@@ -53,7 +53,7 @@ class PrequalificationService {
         return prequal;
     }
 
-    async findById(id: string) {
+    async findById(id: string): Promise<any> {
         const prequal = await prisma.prequalification.findUnique({
             where: { id },
             include: {
@@ -83,7 +83,7 @@ class PrequalificationService {
         return prequal;
     }
 
-    async findAll(tenantId: string, filters?: { status?: string; userId?: string }) {
+    async findAll(tenantId: string, filters?: { status?: string; userId?: string }): Promise<any[]> {
         const where: Record<string, any> = { tenantId };
 
         if (filters?.status) {
@@ -112,7 +112,7 @@ class PrequalificationService {
         return prequals;
     }
 
-    async update(id: string, data: UpdatePrequalificationInput) {
+    async update(id: string, data: UpdatePrequalificationInput): Promise<any> {
         const existing = await this.findById(id);
 
         if (existing.status !== PrequalificationStatus.DRAFT) {
@@ -207,7 +207,7 @@ class PrequalificationService {
         };
     }
 
-    async submit(id: string) {
+    async submit(id: string): Promise<any> {
         const prequal = await this.findById(id);
 
         if (prequal.status !== PrequalificationStatus.DRAFT) {
@@ -273,7 +273,7 @@ class PrequalificationService {
         return updated;
     }
 
-    async review(id: string, reviewerId: string, data: ReviewPrequalificationInput) {
+    async review(id: string, reviewerId: string, data: ReviewPrequalificationInput): Promise<any> {
         const prequal = await this.findById(id);
 
         if (prequal.status !== PrequalificationStatus.SUBMITTED) {
