@@ -1,0 +1,87 @@
+service: qshelter-notifications
+
+frameworkVersion: '4'
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+  stage: ${opt:stage, 'dev'}
+  memorySize: 512
+  timeout: 30
+  
+  # Create own HTTP API Gateway for this service
+  httpApi:
+    cors: true
+    authorizers:
+      NotificationsServiceAuthorizer:
+        type: request
+        functionArn: ${ssm:/qshelter/${self:provider.stage}/authorizer-lambda-arn}
+        enableSimpleResponses: true
+        payloadVersion: '2.0'
+        identitySource:
+          - $request.header.Authorization
+  
+  environment:
+    NODE_ENV: ${self:provider.stage}
+
+  iam:
+    role:
+      statements:
+        # SSM Parameter Store access for infrastructure config
+        - Effect: Allow
+          Action:
+            - ssm:GetParameter
+            - ssm:GetParameters
+            - ssm:GetParametersByPath
+          Resource:
+            - arn:aws:ssm:${self:provider.region}:*:parameter/qshelter/${self:provider.stage}/*
+        # Secrets Manager access for sensitive credentials
+        - Effect: Allow
+          Action:
+            - secretsmanager:GetSecretValue
+          Resource:
+            - arn:aws:secretsmanager:${self:provider.region}:*:secret:qshelter/${self:provider.stage}/*
+        # SNS for push notifications
+        - Effect: Allow
+          Action:
+            - sns:Publish
+            - sns:CreatePlatformEndpoint
+            - sns:GetEndpointAttributes
+          Resource:
+            - arn:aws:sns:${self:provider.region}:*:*
+
+package:
+  patterns:
+    - '!src/**'
+    - '!test/**'
+    - '!tests/**'
+    - '!**/*.test.ts'
+    - '!**/*.test.js'
+    - '!**/*.spec.ts'
+    - '!**/*.spec.js'
+    - '!node_modules/.prisma/client/libquery_engine*'
+    - 'node_modules/.prisma/client/libquery_engine-rhel*'
+    - 'src/templates/**'
+
+functions:
+  api:
+    handler: dist/lambda.handler
+    events:
+      - httpApi:
+          path: /{proxy+}
+          method: ANY
+          authorizer:
+            name: NotificationsServiceAuthorizer
+      - httpApi:
+          path: /health
+          method: GET
+      - httpApi:
+          path: /api-docs
+          method: GET
+      - httpApi:
+          path: /api-docs/{proxy+}
+          method: GET
+      - httpApi:
+          path: /openapi.json
+          method: GET

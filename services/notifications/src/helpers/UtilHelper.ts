@@ -1,13 +1,8 @@
-import { Logger } from "@nestjs/common";
 import * as Handlebars from 'handlebars';
-import { CheckTemplateFileExistsDto } from "../email/email.dto";
-import path from "path";
-import { FileSystemHelper } from "./FileSystemHelper";
+import * as path from 'path';
+import { FileSystemHelper } from './FileSystemHelper';
 
-
-export default class UtilHelper {
-    private static logger = new Logger(UtilHelper.name)
-
+export class UtilHelper {
     public static readonly constants = {
         firstEmail: process.env.FIRST_EMAIL,
         secondEmail: process.env.QSHELTER_INFO_EMAIL,
@@ -19,7 +14,6 @@ export default class UtilHelper {
         firstPhoneNumber: process.env.FIRST_PHONE_NUMBER,
         secondPhoneNumber: process.env.SECOND_PHONE_NUMBER,
         officeAddress: process.env.OFFICE_ADDRESS,
-
         facebookLink: process.env.FACEBOOK_LINK,
         facebookLogo: process.env.FACEBOOK_LOGO,
         twitterLink: process.env.TWITTER_LINK,
@@ -38,13 +32,11 @@ export default class UtilHelper {
         supportEmail: process.env.SUPPORT_EMAIL,
         companyLogo: process.env.COMPANY_LOGO,
         bannerUrl: process.env.BANNER_URL,
-
         projectName: process.env.PROJECT_NAME,
         poweredBy: process.env.POWERED_BY,
         companySignature: process.env.COMPANY_SIGNATURE,
-
         year: new Date().getFullYear(),
-    }
+    };
 
     public static removeNullishProperties<T extends object>(obj: T): Partial<T> {
         const result: Partial<T> = {};
@@ -55,7 +47,7 @@ export default class UtilHelper {
             }
 
             if (value == 0) {
-                result[key as keyof T] = '0' as any;
+                result[key as keyof T] = '0' as never;
             }
         });
 
@@ -63,7 +55,7 @@ export default class UtilHelper {
     }
 
     public static buildTemplateName(templateName: string) {
-        return templateName
+        return templateName;
     }
 
     private static initialized = false;
@@ -74,23 +66,22 @@ export default class UtilHelper {
 
         Handlebars.registerHelper('debug', function (optionalValue) {
             console.log("DEBUG:", optionalValue);
-            return ''; // return empty string so it doesn't render "undefined"
+            return '';
         });
     }
 
-    public static async compileTemplate(template: string, data: any) {
-        // this.initHandlebarsHelpers()
+    public static async compileTemplate(template: string, data: Record<string, unknown>) {
         const compiledTemplate = Handlebars.compile(template);
         return compiledTemplate(data);
     }
 
-    public static async checkTemplateFileExists(dto: CheckTemplateFileExistsDto): Promise<boolean> {
+    public static async checkTemplateFileExists(module: string, fileName: string): Promise<boolean> {
         try {
-            const filePath = path.join(dto.module, dto.fileName);
-            return FileSystemHelper.checkFileExists(filePath)
+            const filePath = path.join(module, fileName);
+            return FileSystemHelper.checkFileExists(filePath);
         } catch (error) {
-            console.log(error)
-            return false
+            console.log(error);
+            return false;
         }
-    };
+    }
 }
