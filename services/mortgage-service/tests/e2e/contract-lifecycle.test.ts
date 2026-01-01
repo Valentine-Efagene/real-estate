@@ -21,7 +21,7 @@ describe('Contract Lifecycle E2E', () => {
   let documentationPhaseId: string;
   let downpaymentPhaseId: string;
   let mortgagePhaseId: string;
-  
+
   // Test entities created in database
   let testUser: Awaited<ReturnType<typeof testData.createUser>>;
   let testProperty: Awaited<ReturnType<typeof testData.createPropertyWithUnits>>;
@@ -30,17 +30,17 @@ describe('Contract Lifecycle E2E', () => {
 
   beforeAll(async () => {
     await cleanupTestData();
-    
+
     // Create real test user
     testUser = await testData.createUser();
-    
+
     // Create real property with variants and units
     testProperty = await testData.createPropertyWithUnits(testUser.id, {
       variantCount: 2,
       unitsPerVariant: 5,
       price: totalPrice,
     });
-    
+
     // Get first available unit for testing
     const unit = await prisma.propertyUnit.findFirst({
       where: {
@@ -57,10 +57,10 @@ describe('Contract Lifecycle E2E', () => {
     if (testProperty?.property?.id) {
       await prisma.propertyUnit.deleteMany({ where: { variant: { propertyId: testProperty.property.id } } });
       await prisma.propertyVariant.deleteMany({ where: { propertyId: testProperty.property.id } });
-      await prisma.property.delete({ where: { id: testProperty.property.id } }).catch(() => {});
+      await prisma.property.delete({ where: { id: testProperty.property.id } }).catch(() => { });
     }
     if (testUser?.id) {
-      await prisma.user.delete({ where: { id: testUser.id } }).catch(() => {});
+      await prisma.user.delete({ where: { id: testUser.id } }).catch(() => { });
     }
   });
 
@@ -83,7 +83,7 @@ describe('Contract Lifecycle E2E', () => {
       expect(response.status).toBe(201);
       expect(response.body.id).toBeDefined();
       expect(response.body.frequency).toBe('MONTHLY');
-      
+
       // Store for use in payment method
       paymentPlanId = response.body.id;
     });
@@ -130,7 +130,12 @@ describe('Contract Lifecycle E2E', () => {
               phaseType: 'KYC',
               order: 1,
               percentageOfTotal: 0,
-              stepDefinitions: 'UPLOAD_ID,VERIFY_INCOME,CREDIT_CHECK,SIGN_AGREEMENT',
+              stepDefinitions: [
+                { name: 'Upload ID', stepType: 'UPLOAD', order: 1 },
+                { name: 'Verify Income', stepType: 'VERIFICATION', order: 2 },
+                { name: 'Credit Check', stepType: 'VERIFICATION', order: 3 },
+                { name: 'Sign Agreement', stepType: 'SIGNATURE', order: 4 },
+              ],
             },
             {
               name: '20% Downpayment',
@@ -154,7 +159,7 @@ describe('Contract Lifecycle E2E', () => {
       expect(response.status).toBe(201);
       expect(response.body.id).toBeDefined();
       expect(response.body.phases.length).toBe(3);
-      
+
       paymentMethodId = response.body.id;
     });
 
@@ -202,9 +207,9 @@ describe('Contract Lifecycle E2E', () => {
       expect(response.body.status).toBe('DRAFT');
       expect(response.body.totalAmount).toBe(totalPrice);
       expect(response.body.phases.length).toBe(3);
-      
+
       contractId = response.body.id;
-      
+
       // Extract phase IDs
       const phases = response.body.phases;
       documentationPhaseId = phases.find((p: any) => p.phaseType === 'KYC').id;
@@ -216,18 +221,18 @@ describe('Contract Lifecycle E2E', () => {
       const unit = await prisma.propertyUnit.findUnique({
         where: { id: propertyUnitId },
       });
-      
+
       expect(unit?.status).toBe('RESERVED');
       expect(unit?.reservedById).toBe(testUser.id);
     });
 
     it('should update variant inventory counters', async () => {
       const variant = await prisma.propertyVariant.findFirst({
-        where: { 
+        where: {
           units: { some: { id: propertyUnitId } },
         },
       });
-      
+
       expect(variant?.reservedUnits).toBe(1);
       expect(variant?.availableUnits).toBe(4); // Started with 5, 1 reserved
     });
@@ -237,12 +242,12 @@ describe('Contract Lifecycle E2E', () => {
         .get(`/contracts/${contractId}/phases`);
 
       expect(response.status).toBe(200);
-      
+
       const phases = response.body;
       const docPhase = phases.find((p: any) => p.phaseType === 'KYC');
       const downPayPhase = phases.find((p: any) => p.phaseType === 'DOWNPAYMENT');
       const mortPhase = phases.find((p: any) => p.phaseType === 'MORTGAGE');
-      
+
       expect(docPhase.targetAmount).toBe(0);
       expect(downPayPhase.targetAmount).toBe(100000); // 20% of 500k
       expect(mortPhase.targetAmount).toBe(400000); // 80% of 500k
@@ -292,7 +297,7 @@ describe('Contract Lifecycle E2E', () => {
 
     it('should complete documentation steps one by one', async () => {
       const steps = ['UPLOAD_ID', 'VERIFY_INCOME', 'CREDIT_CHECK', 'SIGN_AGREEMENT'];
-      
+
       for (const stepName of steps) {
         const response = await request(app)
           .post(`/contracts/${contractId}/phases/${documentationPhaseId}/steps/complete`)
@@ -339,7 +344,7 @@ describe('Contract Lifecycle E2E', () => {
 
       expect(response.status).toBe(200);
       expect(response.body.installments.length).toBe(6); // 6 monthly installments
-      
+
       // Each installment should be ~$16,666.67 (100k / 6)
       const firstInstallment = response.body.installments[0];
       expect(firstInstallment.amountDue).toBeCloseTo(16666.67, 0);
@@ -349,9 +354,9 @@ describe('Contract Lifecycle E2E', () => {
       // Get installments first
       const phaseResponse = await request(app)
         .get(`/contracts/${contractId}/phases/${downpaymentPhaseId}`);
-      
+
       const firstInstallment = phaseResponse.body.installments[0];
-      
+
       const response = await request(app)
         .post(`/contracts/${contractId}/payments`)
         .set('x-user-id', testUser.id)
@@ -371,9 +376,9 @@ describe('Contract Lifecycle E2E', () => {
       // Get the pending payment
       const paymentsResponse = await request(app)
         .get(`/contracts/${contractId}/payments`);
-      
+
       const pendingPayment = paymentsResponse.body.find((p: any) => p.status === 'PENDING');
-      
+
       // Simulate payment gateway callback
       const response = await request(app)
         .post('/contracts/payments/process')
@@ -390,12 +395,12 @@ describe('Contract Lifecycle E2E', () => {
     it('should update phase and contract totals after payment', async () => {
       const phaseResponse = await request(app)
         .get(`/contracts/${contractId}/phases/${downpaymentPhaseId}`);
-      
+
       expect(phaseResponse.body.paidAmount).toBeCloseTo(16666.67, 0);
-      
+
       const contractResponse = await request(app)
         .get(`/contracts/${contractId}`);
-      
+
       expect(contractResponse.body.paidAmount).toBeCloseTo(16666.67, 0);
     });
   });
@@ -408,9 +413,9 @@ describe('Contract Lifecycle E2E', () => {
       // Calculate remaining amount (~$83,333.33)
       const phaseResponse = await request(app)
         .get(`/contracts/${contractId}/phases/${downpaymentPhaseId}`);
-      
+
       const remainingAmount = phaseResponse.body.targetAmount - phaseResponse.body.paidAmount;
-      
+
       const response = await request(app)
         .post(`/contracts/${contractId}/pay-ahead`)
         .set('x-user-id', testUser.id)
@@ -451,7 +456,7 @@ describe('Contract Lifecycle E2E', () => {
 
       expect(response.status).toBe(200);
       expect(response.body.installments.length).toBe(6); // Using same 6-month plan for simplicity
-      
+
       // With 6.5% annual interest on $400k over 6 months, payments should be higher
       const firstInstallment = response.body.installments[0];
       expect(firstInstallment.amountDue).toBeGreaterThan(66666.67); // Principal + interest

@@ -50,8 +50,8 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                             percentOfPrice: phase.percentOfPrice,
                             requiresPreviousPhaseCompletion: phase.requiresPreviousPhaseCompletion ?? true,
                             minimumCompletionPercentage: phase.minimumCompletionPercentage,
-                            requiredDocumentTypes: phase.requiredDocumentTypes,
-                            stepDefinitions: phase.stepDefinitions,
+                            requiredDocumentTypes: phase.requiredDocumentTypes ? phase.requiredDocumentTypes.join(',') : undefined,
+                            stepDefinitions: phase.stepDefinitions ? JSON.stringify(phase.stepDefinitions) : undefined,
                         },
                     });
                 }
@@ -165,8 +165,8 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                 percentOfPrice: data.percentOfPrice,
                 requiresPreviousPhaseCompletion: data.requiresPreviousPhaseCompletion ?? true,
                 minimumCompletionPercentage: data.minimumCompletionPercentage,
-                requiredDocumentTypes: data.requiredDocumentTypes,
-                stepDefinitions: data.stepDefinitions,
+                requiredDocumentTypes: data.requiredDocumentTypes ? data.requiredDocumentTypes.join(',') : undefined,
+                stepDefinitions: data.stepDefinitions ? JSON.stringify(data.stepDefinitions) : undefined,
             },
             include: {
                 paymentPlan: true,

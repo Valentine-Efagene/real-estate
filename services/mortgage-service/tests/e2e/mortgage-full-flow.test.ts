@@ -226,13 +226,13 @@ describe('Full Mortgage Flow E2E', () => {
                             phaseCategory: 'DOCUMENTATION',
                             phaseType: 'KYC',
                             order: 1,
-                            requiredDocumentTypes: 'ID_CARD,BANK_STATEMENT,PROOF_OF_INCOME',
-                            stepDefinitions: JSON.stringify([
+                            requiredDocumentTypes: ['ID_CARD', 'BANK_STATEMENT', 'PROOF_OF_INCOME'],
+                            stepDefinitions: [
                                 { name: 'Upload ID', stepType: 'UPLOAD', order: 1 },
                                 { name: 'Upload Bank Statement', stepType: 'UPLOAD', order: 2 },
                                 { name: 'Upload Proof of Income', stepType: 'UPLOAD', order: 3 },
                                 { name: 'Admin Review', stepType: 'APPROVAL', order: 4 },
-                            ]),
+                            ],
                         },
                         {
                             name: '10% Downpayment',

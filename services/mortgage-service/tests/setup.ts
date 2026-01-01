@@ -126,7 +126,11 @@ export const testData = {
                 phaseType: 'KYC',
                 order: 1,
                 percentageOfTotal: 0,
-                stepDefinitions: 'UPLOAD_ID,VERIFY_ADDRESS,SIGN_CONTRACT',
+                stepDefinitions: [
+                    { name: 'Upload ID', stepType: 'UPLOAD' as const, order: 1 },
+                    { name: 'Verify Address', stepType: 'VERIFICATION' as const, order: 2 },
+                    { name: 'Sign Contract', stepType: 'SIGNATURE' as const, order: 3 },
+                ],
             },
             {
                 name: 'Downpayment',

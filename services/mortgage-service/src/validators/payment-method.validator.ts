@@ -6,6 +6,14 @@ extendZodWithOpenApi(z);
 // Phase category enum
 export const PhaseCategory = z.enum(['DOCUMENTATION', 'PAYMENT']);
 
+// Step definition schema for DOCUMENTATION phases
+export const StepDefinitionSchema = z.object({
+    name: z.string().min(1).openapi({ example: 'Upload ID' }),
+    stepType: z.enum(['UPLOAD', 'APPROVAL', 'VERIFICATION', 'SIGNATURE']).openapi({ example: 'UPLOAD' }),
+    order: z.number().int().min(1).openapi({ example: 1 }),
+    requiredDocumentTypes: z.array(z.string()).optional().openapi({ example: ['ID_CARD'] }),
+}).openapi('StepDefinition');
+
 // Phase template schema (for creating phases within a payment method)
 export const PaymentMethodPhaseSchema = z
     .object({
@@ -19,8 +27,8 @@ export const PaymentMethodPhaseSchema = z
         percentOfPrice: z.number().min(0).max(100).optional().openapi({ example: 10 }),
         requiresPreviousPhaseCompletion: z.boolean().default(true),
         minimumCompletionPercentage: z.number().min(0).max(100).optional(),
-        requiredDocumentTypes: z.string().optional().openapi({ example: 'ID,BANK_STATEMENT,INCOME_PROOF' }),
-        stepDefinitions: z.string().optional().openapi({ description: 'JSON array of step definitions for DOCUMENTATION phases' }),
+        requiredDocumentTypes: z.array(z.string()).optional().openapi({ example: ['ID_CARD', 'BANK_STATEMENT', 'PROOF_OF_INCOME'] }),
+        stepDefinitions: z.array(StepDefinitionSchema).optional().openapi({ description: 'Step definitions for DOCUMENTATION phases' }),
     })
     .openapi('PaymentMethodPhase');
 
