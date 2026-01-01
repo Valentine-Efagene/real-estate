@@ -1,10 +1,28 @@
 #!/bin/bash
 # LocalStack initialization script - runs automatically when LocalStack is ready
 # This sets up all AWS resources needed for e2e testing
+# Requires: local-dev/.env file with secrets
 
 set -e
 
 echo "🚀 Initializing LocalStack AWS resources for QShelter..."
+
+# Determine script directory and load .env
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ENV_FILE="${SCRIPT_DIR}/../.env"
+
+if [ ! -f "$ENV_FILE" ]; then
+  echo "❌ Error: .env file not found at $ENV_FILE"
+  echo "   Copy .env.example to .env and fill in the values"
+  exit 1
+fi
+
+# Load environment variables from .env
+set -a
+source "$ENV_FILE"
+set +a
+
+echo "✅ Loaded environment from $ENV_FILE"
 
 ENDPOINT="http://localhost:4566"
 REGION="us-east-1"
@@ -63,43 +81,44 @@ awslocal ssm put-parameter --name "/qshelter/${STAGE}/dynamodb-table-role-polici
   --value "qshelter-${STAGE}-role-policies" \
   --type "String" --overwrite || true
 
-# Notification service parameters
+# Notification service parameters (from .env)
 awslocal ssm put-parameter --name "/qshelter/${STAGE}/OFFICE365_CLIENT_ID" \
-  --value "test-office365-client-id" \
+  --value "${OFFICE365_CLIENT_ID}" \
   --type "SecureString" --overwrite || true
 
 awslocal ssm put-parameter --name "/qshelter/${STAGE}/OFFICE365_CLIENT_SECRET" \
-  --value "test-office365-client-secret" \
+  --value "${OFFICE365_CLIENT_SECRET}" \
   --type "SecureString" --overwrite || true
 
 awslocal ssm put-parameter --name "/qshelter/${STAGE}/OFFICE365_TENANT_ID" \
-  --value "test-office365-tenant-id" \
+  --value "${OFFICE365_TENANT_ID}" \
   --type "SecureString" --overwrite || true
 
 awslocal ssm put-parameter --name "/qshelter/${STAGE}/OFFICE365_SENDER_EMAIL" \
-  --value "info@qshelter.ng" \
+  --value "${OFFICE365_SENDER_EMAIL:-info@qshelter.ng}" \
   --type "SecureString" --overwrite || true
 
 awslocal ssm put-parameter --name "/qshelter/${STAGE}/SMTP_HOST" \
-  --value "smtp.mailtrap.io" \
+  --value "${SMTP_HOST:-smtp.mailtrap.io}" \
   --type "SecureString" --overwrite || true
 
 awslocal ssm put-parameter --name "/qshelter/${STAGE}/SMTP_PORT" \
-  --value "2525" \
+  --value "${SMTP_PORT:-2525}" \
   --type "SecureString" --overwrite || true
 
 awslocal ssm put-parameter --name "/qshelter/${STAGE}/SMTP_USERNAME" \
-  --value "test-smtp-username" \
+  --value "${SMTP_USERNAME}" \
   --type "SecureString" --overwrite || true
 
 awslocal ssm put-parameter --name "/qshelter/${STAGE}/SMTP_PASSWORD" \
-  --value "test-smtp-password" \
+  --value "${SMTP_PASSWORD}" \
   --type "SecureString" --overwrite || true
 
 awslocal ssm put-parameter --name "/qshelter/${STAGE}/SMTP_ENCRYPTION" \
-  --value "STARTTLS" \
+  --value "${SMTP_ENCRYPTION:-STARTTLS}" \
   --type "SecureString" --overwrite || true
 
+# For LocalStack, use test credentials
 awslocal ssm put-parameter --name "/qshelter/${STAGE}/AWS_ACCESS_KEY_ID" \
   --value "test" \
   --type "SecureString" --overwrite || true
