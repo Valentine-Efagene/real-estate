@@ -9,11 +9,27 @@ import type {
 
 type AnyPrismaClient = PrismaClient;
 
+/** Service interface to avoid non-portable inferred types */
+export interface PaymentMethodService {
+    create(tenantId: string, data: CreatePaymentMethodInput): Promise<any>;
+    findAll(filters?: { isActive?: boolean }): Promise<any[]>;
+    findById(id: string): Promise<any>;
+    update(id: string, data: UpdatePaymentMethodInput): Promise<any>;
+    delete(id: string): Promise<{ success: boolean }>;
+    addPhase(methodId: string, data: AddPhaseInput): Promise<any>;
+    updatePhase(phaseId: string, data: Partial<AddPhaseInput>): Promise<any>;
+    deletePhase(phaseId: string): Promise<{ success: boolean }>;
+    reorderPhases(methodId: string, phaseOrders: { phaseId: string; order: number }[]): Promise<any>;
+    linkToProperty(methodId: string, data: LinkToPropertyInput): Promise<any>;
+    unlinkFromProperty(methodId: string, propertyId: string): Promise<{ success: boolean }>;
+    getMethodsForProperty(propertyId: string): Promise<any[]>;
+}
+
 /**
  * Create a payment method service with the given Prisma client
  * Use this for tenant-scoped operations
  */
-export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPrisma) {
+export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPrisma): PaymentMethodService {
     async function create(tenantId: string, data: CreatePaymentMethodInput) {
         const { phases, ...methodData } = data;
 
@@ -472,4 +488,4 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
 }
 
 // Default instance for backward compatibility
-export const paymentMethodService = createPaymentMethodService();
+export const paymentMethodService: PaymentMethodService = createPaymentMethodService();

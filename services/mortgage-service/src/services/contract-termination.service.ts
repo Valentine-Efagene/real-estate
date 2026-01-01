@@ -47,6 +47,50 @@ type TerminationInitiator = 'BUYER' | 'SELLER' | 'ADMIN' | 'SYSTEM';
 
 type AnyPrismaClient = PrismaClient;
 
+/** Service interface to avoid non-portable inferred types */
+export interface ContractTerminationService {
+    requestTermination(
+        contractId: string,
+        userId: string,
+        data: RequestTerminationInput,
+        opts?: { idempotencyKey?: string }
+    ): Promise<any>;
+    adminTerminate(
+        contractId: string,
+        adminId: string,
+        data: AdminTerminationInput,
+        opts?: { idempotencyKey?: string }
+    ): Promise<any>;
+    reviewTermination(
+        terminationId: string,
+        reviewerId: string,
+        data: ReviewTerminationInput
+    ): Promise<any>;
+    processRefund(
+        terminationId: string,
+        adminId: string,
+        data: ProcessRefundInput
+    ): Promise<any>;
+    completeRefund(
+        terminationId: string,
+        adminId: string,
+        data: CompleteRefundInput
+    ): Promise<any>;
+    executeTermination(
+        terminationId: string,
+        actorId: string,
+        txOrPrisma?: any
+    ): Promise<any>;
+    cancelTermination(
+        terminationId: string,
+        userId: string,
+        data?: CancelTerminationInput
+    ): Promise<any>;
+    findById(terminationId: string): Promise<any>;
+    findByContract(contractId: string): Promise<any[]>;
+    findPendingReview(tenantId: string): Promise<any[]>;
+}
+
 /**
  * Generate a unique termination request number
  */
@@ -175,7 +219,7 @@ function calculateSettlement(
 /**
  * Create a contract termination service
  */
-export function createContractTerminationService(prisma: AnyPrismaClient = defaultPrisma) {
+export function createContractTerminationService(prisma: AnyPrismaClient = defaultPrisma): ContractTerminationService {
 
     /**
      * Request termination (buyer/seller initiated)
@@ -939,4 +983,4 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
 }
 
 // Default instance
-export const contractTerminationService = createContractTerminationService();
+export const contractTerminationService: ContractTerminationService = createContractTerminationService();
