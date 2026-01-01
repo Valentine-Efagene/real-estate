@@ -3878,6 +3878,7 @@ export const PaymentPlanScalarFieldEnum = {
   numberOfInstallments: 'numberOfInstallments',
   calculateInterestDaily: 'calculateInterestDaily',
   gracePeriodDays: 'gracePeriodDays',
+  collectFunds: 'collectFunds',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -3924,6 +3925,7 @@ export const PropertyPaymentMethodPhaseScalarFieldEnum = {
   order: 'order',
   interestRate: 'interestRate',
   percentOfPrice: 'percentOfPrice',
+  collectFunds: 'collectFunds',
   requiresPreviousPhaseCompletion: 'requiresPreviousPhaseCompletion',
   minimumCompletionPercentage: 'minimumCompletionPercentage',
   completionCriterion: 'completionCriterion',
@@ -4015,6 +4017,7 @@ export const ContractPhaseScalarFieldEnum = {
   paidAmount: 'paidAmount',
   remainingAmount: 'remainingAmount',
   interestRate: 'interestRate',
+  collectFunds: 'collectFunds',
   approvedDocumentsCount: 'approvedDocumentsCount',
   requiredDocumentsCount: 'requiredDocumentsCount',
   completedStepsCount: 'completedStepsCount',

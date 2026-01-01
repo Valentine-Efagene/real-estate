@@ -42,6 +42,13 @@ class ContractPaymentService {
             if (!phase || phase.contractId !== data.contractId) {
                 throw new AppError(400, 'Invalid phase for this contract');
             }
+
+            // Check if this phase collects funds
+            // If collectFunds = false, we don't create payment records via this endpoint
+            // (they would come from external bank webhooks / reconciliation)
+            if (phase.collectFunds === false) {
+                throw new AppError(400, 'This phase does not collect funds directly. Payments are tracked via external bank reconciliation.');
+            }
         }
 
         // Validate installment if provided
@@ -49,10 +56,16 @@ class ContractPaymentService {
         if (data.installmentId) {
             installment = await prisma.contractInstallment.findUnique({
                 where: { id: data.installmentId },
+                include: { phase: true },
             });
 
             if (!installment) {
                 throw new AppError(404, 'Installment not found');
+            }
+
+            // Check if the installment's phase collects funds
+            if (installment.phase && installment.phase.collectFunds === false) {
+                throw new AppError(400, 'This phase does not collect funds directly. Payments are tracked via external bank reconciliation.');
             }
 
             // Auto-set phase from installment

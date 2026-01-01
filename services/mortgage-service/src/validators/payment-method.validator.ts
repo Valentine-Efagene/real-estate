@@ -41,6 +41,11 @@ const PaymentMethodPhaseBaseSchema = z.object({
     order: z.number().int().min(0).openapi({ example: 1 }),
     interestRate: z.number().min(0).max(100).optional().openapi({ example: 5.5 }),
     percentOfPrice: z.number().min(0).max(100).optional().openapi({ example: 10 }),
+    // Fund collection behavior (overrides PaymentPlan.collectFunds if set)
+    // true = we collect funds via wallet/gateway (e.g., downpayment)
+    // false = external payment, we only track/reconcile (e.g., bank mortgage)
+    // null/undefined = inherit from PaymentPlan
+    collectFunds: z.boolean().optional().openapi({ example: true, description: 'Whether we collect funds (null = inherit from PaymentPlan)' }),
     requiresPreviousPhaseCompletion: z.boolean().default(true),
     minimumCompletionPercentage: z.number().min(0).max(100).optional(),
     // New normalized format for required documents

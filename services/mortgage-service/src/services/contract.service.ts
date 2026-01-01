@@ -261,6 +261,8 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma) {
                         totalAmount: phaseAmount,
                         remainingAmount: phaseAmount,
                         interestRate: phaseTemplate.interestRate,
+                        // Determine collectFunds: phase override > paymentPlan setting > default true
+                        collectFunds: phaseTemplate.collectFunds ?? phaseTemplate.paymentPlan?.collectFunds ?? true,
                         requiresPreviousPhaseCompletion: phaseTemplate.requiresPreviousPhaseCompletion,
                         minimumCompletionPercentage: phaseTemplate.minimumCompletionPercentage,
                         // Store snapshots for audit

@@ -669,6 +669,11 @@ model PaymentPlan {
   calculateInterestDaily Boolean          @default(false)
   gracePeriodDays        Int              @default(0)
 
+  // Fund collection behavior
+  // true = we collect funds via wallet/gateway (e.g., downpayment)
+  // false = external payment, we only track/reconcile (e.g., bank mortgage)
+  collectFunds Boolean @default(true)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -764,6 +769,11 @@ model PropertyPaymentMethodPhase {
   // Financial configuration (for PAYMENT phases)
   interestRate   Float?
   percentOfPrice Float? // e.g., 10.0 for 10% downpayment
+
+  // Fund collection behavior (inherited from PaymentPlan if not set)
+  // true = we collect funds via wallet/gateway (e.g., downpayment)
+  // false = external payment, we only track/reconcile (e.g., bank mortgage)
+  collectFunds Boolean? // null = inherit from PaymentPlan
 
   // Activation rules
   requiresPreviousPhaseCompletion Boolean              @default(true)
@@ -927,6 +937,11 @@ model ContractPhase {
   paidAmount      Float  @default(0)
   remainingAmount Float?
   interestRate    Float?
+
+  // Fund collection behavior (snapshotted from template at contract creation)
+  // true = we collect funds via wallet/gateway (e.g., downpayment)
+  // false = external payment, we only track/reconcile (e.g., bank mortgage)
+  collectFunds Boolean @default(true)
 
   // Progress counters (for efficient activation checks)
   approvedDocumentsCount Int @default(0)

@@ -287,6 +287,11 @@ export type EnumPhaseTypeFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumPhaseTypeFilter<$PrismaModel> | $Enums.PhaseType
 }
 
+export type BoolNullableFilter<$PrismaModel = never> = {
+  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedBoolNullableFilter<$PrismaModel> | boolean | null
+}
+
 export type EnumCompletionCriterionNullableFilter<$PrismaModel = never> = {
   equals?: $Enums.CompletionCriterion | Prisma.EnumCompletionCriterionFieldRefInput<$PrismaModel> | null
   in?: $Enums.CompletionCriterion[] | null
@@ -336,6 +341,14 @@ export type EnumPhaseTypeWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumPhaseTypeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumPhaseTypeFilter<$PrismaModel>
+}
+
+export type BoolNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedBoolNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedBoolNullableFilter<$PrismaModel>
 }
 
 export type EnumCompletionCriterionNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -949,6 +962,11 @@ export type NestedEnumPhaseTypeFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumPhaseTypeFilter<$PrismaModel> | $Enums.PhaseType
 }
 
+export type NestedBoolNullableFilter<$PrismaModel = never> = {
+  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedBoolNullableFilter<$PrismaModel> | boolean | null
+}
+
 export type NestedEnumCompletionCriterionNullableFilter<$PrismaModel = never> = {
   equals?: $Enums.CompletionCriterion | Prisma.EnumCompletionCriterionFieldRefInput<$PrismaModel> | null
   in?: $Enums.CompletionCriterion[] | null
@@ -974,6 +992,14 @@ export type NestedEnumPhaseTypeWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumPhaseTypeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumPhaseTypeFilter<$PrismaModel>
+}
+
+export type NestedBoolNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedBoolNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedBoolNullableFilter<$PrismaModel>
 }
 
 export type NestedEnumCompletionCriterionNullableWithAggregatesFilter<$PrismaModel = never> = {

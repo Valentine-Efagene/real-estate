@@ -66,6 +66,7 @@ export type ContractPhaseMinAggregateOutputType = {
   paidAmount: number | null
   remainingAmount: number | null
   interestRate: number | null
+  collectFunds: boolean | null
   approvedDocumentsCount: number | null
   requiredDocumentsCount: number | null
   completedStepsCount: number | null
@@ -96,6 +97,7 @@ export type ContractPhaseMaxAggregateOutputType = {
   paidAmount: number | null
   remainingAmount: number | null
   interestRate: number | null
+  collectFunds: boolean | null
   approvedDocumentsCount: number | null
   requiredDocumentsCount: number | null
   completedStepsCount: number | null
@@ -126,6 +128,7 @@ export type ContractPhaseCountAggregateOutputType = {
   paidAmount: number
   remainingAmount: number
   interestRate: number
+  collectFunds: number
   approvedDocumentsCount: number
   requiredDocumentsCount: number
   completedStepsCount: number
@@ -187,6 +190,7 @@ export type ContractPhaseMinAggregateInputType = {
   paidAmount?: true
   remainingAmount?: true
   interestRate?: true
+  collectFunds?: true
   approvedDocumentsCount?: true
   requiredDocumentsCount?: true
   completedStepsCount?: true
@@ -217,6 +221,7 @@ export type ContractPhaseMaxAggregateInputType = {
   paidAmount?: true
   remainingAmount?: true
   interestRate?: true
+  collectFunds?: true
   approvedDocumentsCount?: true
   requiredDocumentsCount?: true
   completedStepsCount?: true
@@ -247,6 +252,7 @@ export type ContractPhaseCountAggregateInputType = {
   paidAmount?: true
   remainingAmount?: true
   interestRate?: true
+  collectFunds?: true
   approvedDocumentsCount?: true
   requiredDocumentsCount?: true
   completedStepsCount?: true
@@ -367,6 +373,7 @@ export type ContractPhaseGroupByOutputType = {
   paidAmount: number
   remainingAmount: number | null
   interestRate: number | null
+  collectFunds: boolean
   approvedDocumentsCount: number
   requiredDocumentsCount: number
   completedStepsCount: number
@@ -423,6 +430,7 @@ export type ContractPhaseWhereInput = {
   paidAmount?: Prisma.FloatFilter<"ContractPhase"> | number
   remainingAmount?: Prisma.FloatNullableFilter<"ContractPhase"> | number | null
   interestRate?: Prisma.FloatNullableFilter<"ContractPhase"> | number | null
+  collectFunds?: Prisma.BoolFilter<"ContractPhase"> | boolean
   approvedDocumentsCount?: Prisma.IntFilter<"ContractPhase"> | number
   requiredDocumentsCount?: Prisma.IntFilter<"ContractPhase"> | number
   completedStepsCount?: Prisma.IntFilter<"ContractPhase"> | number
@@ -461,6 +469,7 @@ export type ContractPhaseOrderByWithRelationInput = {
   paidAmount?: Prisma.SortOrder
   remainingAmount?: Prisma.SortOrderInput | Prisma.SortOrder
   interestRate?: Prisma.SortOrderInput | Prisma.SortOrder
+  collectFunds?: Prisma.SortOrder
   approvedDocumentsCount?: Prisma.SortOrder
   requiredDocumentsCount?: Prisma.SortOrder
   completedStepsCount?: Prisma.SortOrder
@@ -503,6 +512,7 @@ export type ContractPhaseWhereUniqueInput = Prisma.AtLeast<{
   paidAmount?: Prisma.FloatFilter<"ContractPhase"> | number
   remainingAmount?: Prisma.FloatNullableFilter<"ContractPhase"> | number | null
   interestRate?: Prisma.FloatNullableFilter<"ContractPhase"> | number | null
+  collectFunds?: Prisma.BoolFilter<"ContractPhase"> | boolean
   approvedDocumentsCount?: Prisma.IntFilter<"ContractPhase"> | number
   requiredDocumentsCount?: Prisma.IntFilter<"ContractPhase"> | number
   completedStepsCount?: Prisma.IntFilter<"ContractPhase"> | number
@@ -541,6 +551,7 @@ export type ContractPhaseOrderByWithAggregationInput = {
   paidAmount?: Prisma.SortOrder
   remainingAmount?: Prisma.SortOrderInput | Prisma.SortOrder
   interestRate?: Prisma.SortOrderInput | Prisma.SortOrder
+  collectFunds?: Prisma.SortOrder
   approvedDocumentsCount?: Prisma.SortOrder
   requiredDocumentsCount?: Prisma.SortOrder
   completedStepsCount?: Prisma.SortOrder
@@ -582,6 +593,7 @@ export type ContractPhaseScalarWhereWithAggregatesInput = {
   paidAmount?: Prisma.FloatWithAggregatesFilter<"ContractPhase"> | number
   remainingAmount?: Prisma.FloatNullableWithAggregatesFilter<"ContractPhase"> | number | null
   interestRate?: Prisma.FloatNullableWithAggregatesFilter<"ContractPhase"> | number | null
+  collectFunds?: Prisma.BoolWithAggregatesFilter<"ContractPhase"> | boolean
   approvedDocumentsCount?: Prisma.IntWithAggregatesFilter<"ContractPhase"> | number
   requiredDocumentsCount?: Prisma.IntWithAggregatesFilter<"ContractPhase"> | number
   completedStepsCount?: Prisma.IntWithAggregatesFilter<"ContractPhase"> | number
@@ -613,6 +625,7 @@ export type ContractPhaseCreateInput = {
   paidAmount?: number
   remainingAmount?: number | null
   interestRate?: number | null
+  collectFunds?: boolean
   approvedDocumentsCount?: number
   requiredDocumentsCount?: number
   completedStepsCount?: number
@@ -651,6 +664,7 @@ export type ContractPhaseUncheckedCreateInput = {
   paidAmount?: number
   remainingAmount?: number | null
   interestRate?: number | null
+  collectFunds?: boolean
   approvedDocumentsCount?: number
   requiredDocumentsCount?: number
   completedStepsCount?: number
@@ -685,6 +699,7 @@ export type ContractPhaseUpdateInput = {
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   remainingAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -723,6 +738,7 @@ export type ContractPhaseUncheckedUpdateInput = {
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   remainingAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -759,6 +775,7 @@ export type ContractPhaseCreateManyInput = {
   paidAmount?: number
   remainingAmount?: number | null
   interestRate?: number | null
+  collectFunds?: boolean
   approvedDocumentsCount?: number
   requiredDocumentsCount?: number
   completedStepsCount?: number
@@ -790,6 +807,7 @@ export type ContractPhaseUpdateManyMutationInput = {
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   remainingAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -823,6 +841,7 @@ export type ContractPhaseUncheckedUpdateManyInput = {
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   remainingAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -872,6 +891,7 @@ export type ContractPhaseCountOrderByAggregateInput = {
   paidAmount?: Prisma.SortOrder
   remainingAmount?: Prisma.SortOrder
   interestRate?: Prisma.SortOrder
+  collectFunds?: Prisma.SortOrder
   approvedDocumentsCount?: Prisma.SortOrder
   requiredDocumentsCount?: Prisma.SortOrder
   completedStepsCount?: Prisma.SortOrder
@@ -918,6 +938,7 @@ export type ContractPhaseMaxOrderByAggregateInput = {
   paidAmount?: Prisma.SortOrder
   remainingAmount?: Prisma.SortOrder
   interestRate?: Prisma.SortOrder
+  collectFunds?: Prisma.SortOrder
   approvedDocumentsCount?: Prisma.SortOrder
   requiredDocumentsCount?: Prisma.SortOrder
   completedStepsCount?: Prisma.SortOrder
@@ -948,6 +969,7 @@ export type ContractPhaseMinOrderByAggregateInput = {
   paidAmount?: Prisma.SortOrder
   remainingAmount?: Prisma.SortOrder
   interestRate?: Prisma.SortOrder
+  collectFunds?: Prisma.SortOrder
   approvedDocumentsCount?: Prisma.SortOrder
   requiredDocumentsCount?: Prisma.SortOrder
   completedStepsCount?: Prisma.SortOrder
@@ -1131,6 +1153,7 @@ export type ContractPhaseCreateWithoutPaymentPlanInput = {
   paidAmount?: number
   remainingAmount?: number | null
   interestRate?: number | null
+  collectFunds?: boolean
   approvedDocumentsCount?: number
   requiredDocumentsCount?: number
   completedStepsCount?: number
@@ -1167,6 +1190,7 @@ export type ContractPhaseUncheckedCreateWithoutPaymentPlanInput = {
   paidAmount?: number
   remainingAmount?: number | null
   interestRate?: number | null
+  collectFunds?: boolean
   approvedDocumentsCount?: number
   requiredDocumentsCount?: number
   completedStepsCount?: number
@@ -1232,6 +1256,7 @@ export type ContractPhaseScalarWhereInput = {
   paidAmount?: Prisma.FloatFilter<"ContractPhase"> | number
   remainingAmount?: Prisma.FloatNullableFilter<"ContractPhase"> | number | null
   interestRate?: Prisma.FloatNullableFilter<"ContractPhase"> | number | null
+  collectFunds?: Prisma.BoolFilter<"ContractPhase"> | boolean
   approvedDocumentsCount?: Prisma.IntFilter<"ContractPhase"> | number
   requiredDocumentsCount?: Prisma.IntFilter<"ContractPhase"> | number
   completedStepsCount?: Prisma.IntFilter<"ContractPhase"> | number
@@ -1263,6 +1288,7 @@ export type ContractPhaseCreateWithoutContractInput = {
   paidAmount?: number
   remainingAmount?: number | null
   interestRate?: number | null
+  collectFunds?: boolean
   approvedDocumentsCount?: number
   requiredDocumentsCount?: number
   completedStepsCount?: number
@@ -1299,6 +1325,7 @@ export type ContractPhaseUncheckedCreateWithoutContractInput = {
   paidAmount?: number
   remainingAmount?: number | null
   interestRate?: number | null
+  collectFunds?: boolean
   approvedDocumentsCount?: number
   requiredDocumentsCount?: number
   completedStepsCount?: number
@@ -1359,6 +1386,7 @@ export type ContractPhaseCreateWithoutStepsInput = {
   paidAmount?: number
   remainingAmount?: number | null
   interestRate?: number | null
+  collectFunds?: boolean
   approvedDocumentsCount?: number
   requiredDocumentsCount?: number
   completedStepsCount?: number
@@ -1396,6 +1424,7 @@ export type ContractPhaseUncheckedCreateWithoutStepsInput = {
   paidAmount?: number
   remainingAmount?: number | null
   interestRate?: number | null
+  collectFunds?: boolean
   approvedDocumentsCount?: number
   requiredDocumentsCount?: number
   completedStepsCount?: number
@@ -1445,6 +1474,7 @@ export type ContractPhaseUpdateWithoutStepsInput = {
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   remainingAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1482,6 +1512,7 @@ export type ContractPhaseUncheckedUpdateWithoutStepsInput = {
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   remainingAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1515,6 +1546,7 @@ export type ContractPhaseCreateWithoutInstallmentsInput = {
   paidAmount?: number
   remainingAmount?: number | null
   interestRate?: number | null
+  collectFunds?: boolean
   approvedDocumentsCount?: number
   requiredDocumentsCount?: number
   completedStepsCount?: number
@@ -1552,6 +1584,7 @@ export type ContractPhaseUncheckedCreateWithoutInstallmentsInput = {
   paidAmount?: number
   remainingAmount?: number | null
   interestRate?: number | null
+  collectFunds?: boolean
   approvedDocumentsCount?: number
   requiredDocumentsCount?: number
   completedStepsCount?: number
@@ -1601,6 +1634,7 @@ export type ContractPhaseUpdateWithoutInstallmentsInput = {
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   remainingAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1638,6 +1672,7 @@ export type ContractPhaseUncheckedUpdateWithoutInstallmentsInput = {
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   remainingAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1671,6 +1706,7 @@ export type ContractPhaseCreateWithoutPaymentsInput = {
   paidAmount?: number
   remainingAmount?: number | null
   interestRate?: number | null
+  collectFunds?: boolean
   approvedDocumentsCount?: number
   requiredDocumentsCount?: number
   completedStepsCount?: number
@@ -1708,6 +1744,7 @@ export type ContractPhaseUncheckedCreateWithoutPaymentsInput = {
   paidAmount?: number
   remainingAmount?: number | null
   interestRate?: number | null
+  collectFunds?: boolean
   approvedDocumentsCount?: number
   requiredDocumentsCount?: number
   completedStepsCount?: number
@@ -1757,6 +1794,7 @@ export type ContractPhaseUpdateWithoutPaymentsInput = {
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   remainingAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1794,6 +1832,7 @@ export type ContractPhaseUncheckedUpdateWithoutPaymentsInput = {
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   remainingAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1828,6 +1867,7 @@ export type ContractPhaseCreateManyPaymentPlanInput = {
   paidAmount?: number
   remainingAmount?: number | null
   interestRate?: number | null
+  collectFunds?: boolean
   approvedDocumentsCount?: number
   requiredDocumentsCount?: number
   completedStepsCount?: number
@@ -1859,6 +1899,7 @@ export type ContractPhaseUpdateWithoutPaymentPlanInput = {
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   remainingAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1895,6 +1936,7 @@ export type ContractPhaseUncheckedUpdateWithoutPaymentPlanInput = {
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   remainingAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1930,6 +1972,7 @@ export type ContractPhaseUncheckedUpdateManyWithoutPaymentPlanInput = {
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   remainingAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1962,6 +2005,7 @@ export type ContractPhaseCreateManyContractInput = {
   paidAmount?: number
   remainingAmount?: number | null
   interestRate?: number | null
+  collectFunds?: boolean
   approvedDocumentsCount?: number
   requiredDocumentsCount?: number
   completedStepsCount?: number
@@ -1993,6 +2037,7 @@ export type ContractPhaseUpdateWithoutContractInput = {
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   remainingAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2029,6 +2074,7 @@ export type ContractPhaseUncheckedUpdateWithoutContractInput = {
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   remainingAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2064,6 +2110,7 @@ export type ContractPhaseUncheckedUpdateManyWithoutContractInput = {
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   remainingAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -2146,6 +2193,7 @@ export type ContractPhaseSelect<ExtArgs extends runtime.Types.Extensions.Interna
   paidAmount?: boolean
   remainingAmount?: boolean
   interestRate?: boolean
+  collectFunds?: boolean
   approvedDocumentsCount?: boolean
   requiredDocumentsCount?: boolean
   completedStepsCount?: boolean
@@ -2187,6 +2235,7 @@ export type ContractPhaseSelectScalar = {
   paidAmount?: boolean
   remainingAmount?: boolean
   interestRate?: boolean
+  collectFunds?: boolean
   approvedDocumentsCount?: boolean
   requiredDocumentsCount?: boolean
   completedStepsCount?: boolean
@@ -2206,7 +2255,7 @@ export type ContractPhaseSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ContractPhaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "contractId" | "paymentPlanId" | "name" | "description" | "phaseCategory" | "phaseType" | "order" | "status" | "totalAmount" | "paidAmount" | "remainingAmount" | "interestRate" | "approvedDocumentsCount" | "requiredDocumentsCount" | "completedStepsCount" | "totalStepsCount" | "dueDate" | "startDate" | "endDate" | "activatedAt" | "completedAt" | "requiresPreviousPhaseCompletion" | "minimumCompletionPercentage" | "completionCriterion" | "paymentPlanSnapshot" | "stepDefinitionsSnapshot" | "requiredDocumentSnapshot" | "createdAt" | "updatedAt", ExtArgs["result"]["contractPhase"]>
+export type ContractPhaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "contractId" | "paymentPlanId" | "name" | "description" | "phaseCategory" | "phaseType" | "order" | "status" | "totalAmount" | "paidAmount" | "remainingAmount" | "interestRate" | "collectFunds" | "approvedDocumentsCount" | "requiredDocumentsCount" | "completedStepsCount" | "totalStepsCount" | "dueDate" | "startDate" | "endDate" | "activatedAt" | "completedAt" | "requiresPreviousPhaseCompletion" | "minimumCompletionPercentage" | "completionCriterion" | "paymentPlanSnapshot" | "stepDefinitionsSnapshot" | "requiredDocumentSnapshot" | "createdAt" | "updatedAt", ExtArgs["result"]["contractPhase"]>
 export type ContractPhaseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
   paymentPlan?: boolean | Prisma.ContractPhase$paymentPlanArgs<ExtArgs>
@@ -2239,6 +2288,7 @@ export type $ContractPhasePayload<ExtArgs extends runtime.Types.Extensions.Inter
     paidAmount: number
     remainingAmount: number | null
     interestRate: number | null
+    collectFunds: boolean
     approvedDocumentsCount: number
     requiredDocumentsCount: number
     completedStepsCount: number
@@ -2643,6 +2693,7 @@ export interface ContractPhaseFieldRefs {
   readonly paidAmount: Prisma.FieldRef<"ContractPhase", 'Float'>
   readonly remainingAmount: Prisma.FieldRef<"ContractPhase", 'Float'>
   readonly interestRate: Prisma.FieldRef<"ContractPhase", 'Float'>
+  readonly collectFunds: Prisma.FieldRef<"ContractPhase", 'Boolean'>
   readonly approvedDocumentsCount: Prisma.FieldRef<"ContractPhase", 'Int'>
   readonly requiredDocumentsCount: Prisma.FieldRef<"ContractPhase", 'Int'>
   readonly completedStepsCount: Prisma.FieldRef<"ContractPhase", 'Int'>

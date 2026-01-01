@@ -24,6 +24,10 @@ const PaymentPlanBaseSchema = z.object({
     calculateInterestDaily: z.boolean().default(false),
     gracePeriodDays: z.number().int().min(0).default(0).openapi({ example: 5 }),
     interestRate: z.number().min(0).optional().openapi({ example: 9.5 }),
+    // Fund collection behavior
+    // true = we collect funds via wallet/gateway (e.g., downpayment)
+    // false = external payment, we only track/reconcile (e.g., bank mortgage)
+    collectFunds: z.boolean().default(true).openapi({ example: true, description: 'Whether we collect funds or just track external payments' }),
 });
 
 // Create payment plan schema with transform

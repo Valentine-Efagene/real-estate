@@ -49,6 +49,7 @@ export type PaymentPlanMinAggregateOutputType = {
   numberOfInstallments: number | null
   calculateInterestDaily: boolean | null
   gracePeriodDays: number | null
+  collectFunds: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -64,6 +65,7 @@ export type PaymentPlanMaxAggregateOutputType = {
   numberOfInstallments: number | null
   calculateInterestDaily: boolean | null
   gracePeriodDays: number | null
+  collectFunds: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -79,6 +81,7 @@ export type PaymentPlanCountAggregateOutputType = {
   numberOfInstallments: number
   calculateInterestDaily: number
   gracePeriodDays: number
+  collectFunds: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -108,6 +111,7 @@ export type PaymentPlanMinAggregateInputType = {
   numberOfInstallments?: true
   calculateInterestDaily?: true
   gracePeriodDays?: true
+  collectFunds?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -123,6 +127,7 @@ export type PaymentPlanMaxAggregateInputType = {
   numberOfInstallments?: true
   calculateInterestDaily?: true
   gracePeriodDays?: true
+  collectFunds?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -138,6 +143,7 @@ export type PaymentPlanCountAggregateInputType = {
   numberOfInstallments?: true
   calculateInterestDaily?: true
   gracePeriodDays?: true
+  collectFunds?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -240,6 +246,7 @@ export type PaymentPlanGroupByOutputType = {
   numberOfInstallments: number
   calculateInterestDaily: boolean
   gracePeriodDays: number
+  collectFunds: boolean
   createdAt: Date
   updatedAt: Date
   _count: PaymentPlanCountAggregateOutputType | null
@@ -278,6 +285,7 @@ export type PaymentPlanWhereInput = {
   numberOfInstallments?: Prisma.IntFilter<"PaymentPlan"> | number
   calculateInterestDaily?: Prisma.BoolFilter<"PaymentPlan"> | boolean
   gracePeriodDays?: Prisma.IntFilter<"PaymentPlan"> | number
+  collectFunds?: Prisma.BoolFilter<"PaymentPlan"> | boolean
   createdAt?: Prisma.DateTimeFilter<"PaymentPlan"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PaymentPlan"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantNullableScalarRelationFilter, Prisma.TenantWhereInput> | null
@@ -296,6 +304,7 @@ export type PaymentPlanOrderByWithRelationInput = {
   numberOfInstallments?: Prisma.SortOrder
   calculateInterestDaily?: Prisma.SortOrder
   gracePeriodDays?: Prisma.SortOrder
+  collectFunds?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   tenant?: Prisma.TenantOrderByWithRelationInput
@@ -319,6 +328,7 @@ export type PaymentPlanWhereUniqueInput = Prisma.AtLeast<{
   numberOfInstallments?: Prisma.IntFilter<"PaymentPlan"> | number
   calculateInterestDaily?: Prisma.BoolFilter<"PaymentPlan"> | boolean
   gracePeriodDays?: Prisma.IntFilter<"PaymentPlan"> | number
+  collectFunds?: Prisma.BoolFilter<"PaymentPlan"> | boolean
   createdAt?: Prisma.DateTimeFilter<"PaymentPlan"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PaymentPlan"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantNullableScalarRelationFilter, Prisma.TenantWhereInput> | null
@@ -337,6 +347,7 @@ export type PaymentPlanOrderByWithAggregationInput = {
   numberOfInstallments?: Prisma.SortOrder
   calculateInterestDaily?: Prisma.SortOrder
   gracePeriodDays?: Prisma.SortOrder
+  collectFunds?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.PaymentPlanCountOrderByAggregateInput
@@ -360,6 +371,7 @@ export type PaymentPlanScalarWhereWithAggregatesInput = {
   numberOfInstallments?: Prisma.IntWithAggregatesFilter<"PaymentPlan"> | number
   calculateInterestDaily?: Prisma.BoolWithAggregatesFilter<"PaymentPlan"> | boolean
   gracePeriodDays?: Prisma.IntWithAggregatesFilter<"PaymentPlan"> | number
+  collectFunds?: Prisma.BoolWithAggregatesFilter<"PaymentPlan"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"PaymentPlan"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"PaymentPlan"> | Date | string
 }
@@ -374,6 +386,7 @@ export type PaymentPlanCreateInput = {
   numberOfInstallments: number
   calculateInterestDaily?: boolean
   gracePeriodDays?: number
+  collectFunds?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant?: Prisma.TenantCreateNestedOneWithoutPaymentPlansInput
@@ -392,6 +405,7 @@ export type PaymentPlanUncheckedCreateInput = {
   numberOfInstallments: number
   calculateInterestDaily?: boolean
   gracePeriodDays?: number
+  collectFunds?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutPaymentPlanInput
@@ -408,6 +422,7 @@ export type PaymentPlanUpdateInput = {
   numberOfInstallments?: Prisma.IntFieldUpdateOperationsInput | number
   calculateInterestDaily?: Prisma.BoolFieldUpdateOperationsInput | boolean
   gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
+  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneWithoutPaymentPlansNestedInput
@@ -426,6 +441,7 @@ export type PaymentPlanUncheckedUpdateInput = {
   numberOfInstallments?: Prisma.IntFieldUpdateOperationsInput | number
   calculateInterestDaily?: Prisma.BoolFieldUpdateOperationsInput | boolean
   gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
+  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutPaymentPlanNestedInput
@@ -443,6 +459,7 @@ export type PaymentPlanCreateManyInput = {
   numberOfInstallments: number
   calculateInterestDaily?: boolean
   gracePeriodDays?: number
+  collectFunds?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -457,6 +474,7 @@ export type PaymentPlanUpdateManyMutationInput = {
   numberOfInstallments?: Prisma.IntFieldUpdateOperationsInput | number
   calculateInterestDaily?: Prisma.BoolFieldUpdateOperationsInput | boolean
   gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
+  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -472,6 +490,7 @@ export type PaymentPlanUncheckedUpdateManyInput = {
   numberOfInstallments?: Prisma.IntFieldUpdateOperationsInput | number
   calculateInterestDaily?: Prisma.BoolFieldUpdateOperationsInput | boolean
   gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
+  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -508,6 +527,7 @@ export type PaymentPlanCountOrderByAggregateInput = {
   numberOfInstallments?: Prisma.SortOrder
   calculateInterestDaily?: Prisma.SortOrder
   gracePeriodDays?: Prisma.SortOrder
+  collectFunds?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -529,6 +549,7 @@ export type PaymentPlanMaxOrderByAggregateInput = {
   numberOfInstallments?: Prisma.SortOrder
   calculateInterestDaily?: Prisma.SortOrder
   gracePeriodDays?: Prisma.SortOrder
+  collectFunds?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -544,6 +565,7 @@ export type PaymentPlanMinOrderByAggregateInput = {
   numberOfInstallments?: Prisma.SortOrder
   calculateInterestDaily?: Prisma.SortOrder
   gracePeriodDays?: Prisma.SortOrder
+  collectFunds?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -647,6 +669,7 @@ export type PaymentPlanCreateWithoutTenantInput = {
   numberOfInstallments: number
   calculateInterestDaily?: boolean
   gracePeriodDays?: number
+  collectFunds?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   methodPhases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutPaymentPlanInput
@@ -663,6 +686,7 @@ export type PaymentPlanUncheckedCreateWithoutTenantInput = {
   numberOfInstallments: number
   calculateInterestDaily?: boolean
   gracePeriodDays?: number
+  collectFunds?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutPaymentPlanInput
@@ -709,6 +733,7 @@ export type PaymentPlanScalarWhereInput = {
   numberOfInstallments?: Prisma.IntFilter<"PaymentPlan"> | number
   calculateInterestDaily?: Prisma.BoolFilter<"PaymentPlan"> | boolean
   gracePeriodDays?: Prisma.IntFilter<"PaymentPlan"> | number
+  collectFunds?: Prisma.BoolFilter<"PaymentPlan"> | boolean
   createdAt?: Prisma.DateTimeFilter<"PaymentPlan"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PaymentPlan"> | Date | string
 }
@@ -723,6 +748,7 @@ export type PaymentPlanCreateWithoutMethodPhasesInput = {
   numberOfInstallments: number
   calculateInterestDaily?: boolean
   gracePeriodDays?: number
+  collectFunds?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant?: Prisma.TenantCreateNestedOneWithoutPaymentPlansInput
@@ -740,6 +766,7 @@ export type PaymentPlanUncheckedCreateWithoutMethodPhasesInput = {
   numberOfInstallments: number
   calculateInterestDaily?: boolean
   gracePeriodDays?: number
+  collectFunds?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   contractPhases?: Prisma.ContractPhaseUncheckedCreateNestedManyWithoutPaymentPlanInput
@@ -771,6 +798,7 @@ export type PaymentPlanUpdateWithoutMethodPhasesInput = {
   numberOfInstallments?: Prisma.IntFieldUpdateOperationsInput | number
   calculateInterestDaily?: Prisma.BoolFieldUpdateOperationsInput | boolean
   gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
+  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneWithoutPaymentPlansNestedInput
@@ -788,6 +816,7 @@ export type PaymentPlanUncheckedUpdateWithoutMethodPhasesInput = {
   numberOfInstallments?: Prisma.IntFieldUpdateOperationsInput | number
   calculateInterestDaily?: Prisma.BoolFieldUpdateOperationsInput | boolean
   gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
+  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contractPhases?: Prisma.ContractPhaseUncheckedUpdateManyWithoutPaymentPlanNestedInput
@@ -803,6 +832,7 @@ export type PaymentPlanCreateWithoutContractPhasesInput = {
   numberOfInstallments: number
   calculateInterestDaily?: boolean
   gracePeriodDays?: number
+  collectFunds?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant?: Prisma.TenantCreateNestedOneWithoutPaymentPlansInput
@@ -820,6 +850,7 @@ export type PaymentPlanUncheckedCreateWithoutContractPhasesInput = {
   numberOfInstallments: number
   calculateInterestDaily?: boolean
   gracePeriodDays?: number
+  collectFunds?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutPaymentPlanInput
@@ -851,6 +882,7 @@ export type PaymentPlanUpdateWithoutContractPhasesInput = {
   numberOfInstallments?: Prisma.IntFieldUpdateOperationsInput | number
   calculateInterestDaily?: Prisma.BoolFieldUpdateOperationsInput | boolean
   gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
+  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneWithoutPaymentPlansNestedInput
@@ -868,6 +900,7 @@ export type PaymentPlanUncheckedUpdateWithoutContractPhasesInput = {
   numberOfInstallments?: Prisma.IntFieldUpdateOperationsInput | number
   calculateInterestDaily?: Prisma.BoolFieldUpdateOperationsInput | boolean
   gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
+  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutPaymentPlanNestedInput
@@ -883,6 +916,7 @@ export type PaymentPlanCreateManyTenantInput = {
   numberOfInstallments: number
   calculateInterestDaily?: boolean
   gracePeriodDays?: number
+  collectFunds?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -897,6 +931,7 @@ export type PaymentPlanUpdateWithoutTenantInput = {
   numberOfInstallments?: Prisma.IntFieldUpdateOperationsInput | number
   calculateInterestDaily?: Prisma.BoolFieldUpdateOperationsInput | boolean
   gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
+  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutPaymentPlanNestedInput
@@ -913,6 +948,7 @@ export type PaymentPlanUncheckedUpdateWithoutTenantInput = {
   numberOfInstallments?: Prisma.IntFieldUpdateOperationsInput | number
   calculateInterestDaily?: Prisma.BoolFieldUpdateOperationsInput | boolean
   gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
+  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutPaymentPlanNestedInput
@@ -929,6 +965,7 @@ export type PaymentPlanUncheckedUpdateManyWithoutTenantInput = {
   numberOfInstallments?: Prisma.IntFieldUpdateOperationsInput | number
   calculateInterestDaily?: Prisma.BoolFieldUpdateOperationsInput | boolean
   gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
+  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -984,6 +1021,7 @@ export type PaymentPlanSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   numberOfInstallments?: boolean
   calculateInterestDaily?: boolean
   gracePeriodDays?: boolean
+  collectFunds?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   tenant?: boolean | Prisma.PaymentPlan$tenantArgs<ExtArgs>
@@ -1005,11 +1043,12 @@ export type PaymentPlanSelectScalar = {
   numberOfInstallments?: boolean
   calculateInterestDaily?: boolean
   gracePeriodDays?: boolean
+  collectFunds?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type PaymentPlanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "name" | "description" | "isActive" | "paymentFrequency" | "customFrequencyDays" | "numberOfInstallments" | "calculateInterestDaily" | "gracePeriodDays" | "createdAt" | "updatedAt", ExtArgs["result"]["paymentPlan"]>
+export type PaymentPlanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "name" | "description" | "isActive" | "paymentFrequency" | "customFrequencyDays" | "numberOfInstallments" | "calculateInterestDaily" | "gracePeriodDays" | "collectFunds" | "createdAt" | "updatedAt", ExtArgs["result"]["paymentPlan"]>
 export type PaymentPlanInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.PaymentPlan$tenantArgs<ExtArgs>
   methodPhases?: boolean | Prisma.PaymentPlan$methodPhasesArgs<ExtArgs>
@@ -1035,6 +1074,7 @@ export type $PaymentPlanPayload<ExtArgs extends runtime.Types.Extensions.Interna
     numberOfInstallments: number
     calculateInterestDaily: boolean
     gracePeriodDays: number
+    collectFunds: boolean
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["paymentPlan"]>
@@ -1419,6 +1459,7 @@ export interface PaymentPlanFieldRefs {
   readonly numberOfInstallments: Prisma.FieldRef<"PaymentPlan", 'Int'>
   readonly calculateInterestDaily: Prisma.FieldRef<"PaymentPlan", 'Boolean'>
   readonly gracePeriodDays: Prisma.FieldRef<"PaymentPlan", 'Int'>
+  readonly collectFunds: Prisma.FieldRef<"PaymentPlan", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"PaymentPlan", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"PaymentPlan", 'DateTime'>
 }
