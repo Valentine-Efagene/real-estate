@@ -24,9 +24,40 @@ app.get('/health', (_req, res) => {
 
 // Swagger documentation
 const openApiDocument = generateOpenAPIDocument();
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openApiDocument));
 app.get('/openapi.json', (_req, res) => {
     res.json(openApiDocument);
+});
+
+// Serve Swagger UI using CDN (works better in serverless)
+app.get('/api-docs', (_req, res) => {
+    // Use relative URL - browser will resolve it correctly
+    const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>API Documentation - Notifications Service</title>
+    <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@5/swagger-ui.css" />
+</head>
+<body>
+    <div id="swagger-ui"></div>
+    <script src="https://unpkg.com/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
+    <script>
+        window.onload = () => {
+            // Get the current page URL and replace /api-docs with /openapi.json
+            const specUrl = window.location.href.replace(/\\/api-docs\\/?$/, '/openapi.json');
+            window.ui = SwaggerUIBundle({
+                url: specUrl,
+                dom_id: '#swagger-ui',
+                deepLinking: true,
+                presets: [
+                    SwaggerUIBundle.presets.apis
+                ]
+            });
+        };
+    </script>
+</body>
+</html>`;
+    res.send(html);
 });
 
 // Notification routes
