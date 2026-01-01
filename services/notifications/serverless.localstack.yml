@@ -20,6 +20,56 @@ provider:
 
   environment:
     NODE_ENV: ${self:provider.stage}
+    PORT: 3001
+    OFFICE365_CLIENT_ID: ${env:OFFICE365_CLIENT_ID}
+    OFFICE365_CLIENT_SECRET: ${env:OFFICE365_CLIENT_SECRET}
+    OFFICE365_TENANT_ID: ${env:OFFICE365_TENANT_ID}
+    OFFICE365_SENDER_EMAIL: ${env:OFFICE365_SENDER_EMAIL}
+    FIRST_EMAIL: 'info@mreif.com.ng'
+    QSHELTER_INFO_EMAIL: 'mreif@qshelter.ng'
+    QSHELTER_EMAIL: 'csupport@qshelter.ng'
+    WEBSITE_LINK: 'https://mreif.com.ng/'
+    LOGO_URL: 'https://d18ryawavfvuz3.cloudfront.net/MREIF-Logo.png'
+    FIRST_PHONE_LINK: '+234(0)2013301829'
+    SECOND_PHONE_LINK: '+234(0)2013301829'
+    FIRST_PHONE_NUMBER: '+234(0)2014145855'
+    SECOND_PHONE_NUMBER: '+234(0)2013301828'
+    SUPPORT_EMAIL: 'mreif@quickshelter.ng'
+    SUPPORT_PHONE: '+234(0)2013301828'
+    FACEBOOK_LINK: 'https://www.facebook.com/mreifng'
+    FACEBOOK_LOGO: 'https://d18ryawavfvuz3.cloudfront.net/mreif-fb-green.png'
+    TWITTER_LINK: 'https://x.com/mreifng'
+    TWITTER_LOGO: 'https://d18ryawavfvuz3.cloudfront.net/mreif-X-green.png'
+    INSTAGRAM_LINK: 'https://www.instagram.com/mreifng'
+    INSTAGRAM_LOGO: 'https://d18ryawavfvuz3.cloudfront.net/mreif-igram-green.png'
+    YOUTUBE_LINK: 'https://www.youtube.com/@mreifng'
+    YOUTUBE_LOGO: 'https://d18ryawavfvuz3.cloudfront.net/mreif-ytube-green.png'
+    LINKEDIN_LINK: 'https://www.linkedin.com/company/mreifng/'
+    LINKEDIN_LOGO: 'https://d18ryawavfvuz3.cloudfront.net/mreif-linkedin-green.png'
+    PROJECT_NAME: 'mreif'
+    POWERED_BY: 'Qshelter'
+    COMPANY_SIGNATURE: 'MREIF Team'
+    QSHELTER_LINK: 'https://qshelter.ng/'
+    QSHELTER_LOGO: 'https://www.mreif.com.ng/qshelter-light.png'
+    COMPANY_LOGO: 'https://talentindisabilities.com/wp-content/uploads/2025/11/Contribuild.png'
+    SMTP_HOST: smtp.mailtrap.io
+    SMTP_PORT: 2525
+    SMTP_USERNAME: ec27b9c33d0ca2
+    SMTP_PASSWORD: 08ea8bf2472cc5
+    SMTP_ENCRYPTION: STARTTLS
+    AWS_ACCESS_KEY_ID: ${env:AWS_ACCESS_KEY_ID}
+    AWS_SECRET_ACCESS_KEY: ${env:AWS_SECRET_ACCESS_KEY}
+    AWS_REGION: 'us-east-1'
+    SQS_URL: ${env:SQS_URL}
+    FROM_EMAIL: 'info@mailer.qshelter.ng'
+    LOG_EMAIL: 'efagenevalentine@gmail.com'
+    REPLY_EMAIL: 'info@mailer.qshelter.ng'
+    SWAGGER_USER: 'qshelter'
+    SWAGGER_PASSWORD: '14ml0rd0f7h15c457l3'
+    DOMAIN: 'https://api.qshelter.ng'
+    BASE_PATH: 'testnotify'
+    PLATFORM_APPLICATION_ARN: ${env:PLATFORM_APPLICATION_ARN}
+    OFFICE_ADDRESS: '7B, Ondo Street, Osborne Foreshore Estate, Ikoyi, Lagos'
 
   iam:
     role:
