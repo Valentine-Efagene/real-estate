@@ -5,8 +5,8 @@ import { app } from './app';
 let serverlessExpressInstance: any;
 
 async function setup() {
-    const server = app.listen();
-    serverlessExpressInstance = serverlessExpress({ app: server as any });
+    // Pass the Express app directly, not a running server
+    serverlessExpressInstance = serverlessExpress({ app });
     return serverlessExpressInstance;
 }
 

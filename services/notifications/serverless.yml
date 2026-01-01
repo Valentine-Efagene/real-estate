@@ -13,14 +13,6 @@ provider:
   # HTTP API Gateway (v2) for production
   httpApi:
     cors: true
-    authorizers:
-      NotificationsServiceAuthorizer:
-        type: request
-        functionArn: ${ssm:/qshelter/${self:provider.stage}/authorizer-lambda-arn}
-        enableSimpleResponses: true
-        payloadVersion: '2.0'
-        identitySource:
-          - $request.header.Authorization
 
   environment:
     NODE_ENV: ${self:provider.stage}
@@ -148,8 +140,6 @@ functions:
       - httpApi:
           path: /{proxy+}
           method: ANY
-          authorizer:
-            name: NotificationsServiceAuthorizer
       - httpApi:
           path: /health
           method: GET

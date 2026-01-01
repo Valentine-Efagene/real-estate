@@ -7,7 +7,8 @@ import { ConfigService, PrismaClient } from '@valentine-efagene/qshelter-common'
 const stage = process.env.NODE_ENV || process.env.STAGE || 'dev';
 
 async function createAdapter() {
-    if (stage === 'local') {
+    // Use local DB config for test stage (LocalStack) - avoids SSM lookup
+    if (stage === 'test') {
         return new PrismaMariaDb({
             host: process.env.DB_HOST || '127.0.0.1',
             port: parseInt(process.env.DB_PORT || '3307'),
