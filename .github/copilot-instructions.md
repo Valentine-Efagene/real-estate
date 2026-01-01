@@ -20,3 +20,5 @@
 - Use config service from @valentine-efagene/qshelter-common for configuration management in all services.
 - Don't add .js extensions to import statements.
 - Anything that recurs across services should go into the shared library.
+- We use AWS SSM Parameter Store and Secrets Manager for configuration and secrets management.
+- We use AWS for live development (staging) and production environments, and LocalStack for local development.

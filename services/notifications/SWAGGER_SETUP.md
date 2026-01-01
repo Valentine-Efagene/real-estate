@@ -120,4 +120,44 @@ When setting up Swagger in other services (property, mortgage, user-v2), use thi
 
 1. CDN for Swagger UI CSS/JS
 2. Inline spec embedded in HTML
-3. Empty string `''` for server URL to use relative paths
+3. Client-side URL detection from `window.location` to build server URL
+
+---
+
+# SSM Parameters for Notification Service
+
+The notification service reads secrets from SSM Parameter Store in AWS. For local development, use `.env.test` with `${env:...}` references.
+
+## Production (serverless.yml)
+
+Uses SSM references: `${ssm:/qshelter/${self:provider.stage}/PARAMETER_NAME~true}`
+
+## LocalStack (serverless.localstack.yml)
+
+Uses env vars from `.env.test`: `${env:PARAMETER_NAME}`
+
+## SSM Parameters Required
+
+The CDK stack creates these in AWS. LocalStack creates them in `local-dev/init-scripts/setup-aws.sh`:
+
+```
+/qshelter/{stage}/OFFICE365_CLIENT_ID
+/qshelter/{stage}/OFFICE365_CLIENT_SECRET
+/qshelter/{stage}/OFFICE365_TENANT_ID
+/qshelter/{stage}/OFFICE365_SENDER_EMAIL
+/qshelter/{stage}/SMTP_HOST
+/qshelter/{stage}/SMTP_PORT
+/qshelter/{stage}/SMTP_USERNAME
+/qshelter/{stage}/SMTP_PASSWORD
+/qshelter/{stage}/SMTP_ENCRYPTION
+/qshelter/{stage}/AWS_ACCESS_KEY_ID
+/qshelter/{stage}/AWS_SECRET_ACCESS_KEY
+/qshelter/{stage}/SQS_URL
+/qshelter/{stage}/PLATFORM_APPLICATION_ARN
+```
+
+## To Deploy CDK Stack
+
+1. Copy `infrastructure/.env.example` to `infrastructure/.env`
+2. Fill in the values
+3. Run: `cd infrastructure && npm run cdk deploy -- -c stage=dev`

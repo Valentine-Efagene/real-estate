@@ -19,8 +19,8 @@ export class RealEstateStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    // Load environment variables from .env file
-    dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+    // Load environment variables from .env file in infrastructure folder
+    dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
     // Get stage from context or default to 'dev'
     const stage = this.node.tryGetContext('stage') || 'dev';
@@ -230,6 +230,100 @@ export class RealEstateStack extends cdk.Stack {
       parameterName: `/qshelter/${stage}/http-api-id`,
       stringValue: process.env.HTTP_API_ID || 'REPLACE_ME',
       description: 'HTTP API Gateway ID (set by infra or CI/CD after API deployment)',
+    });
+
+    // === Notification Service SSM Parameters ===
+    // These are SecureString parameters read by the notification service serverless.yml
+
+    new ssm.StringParameter(this, 'Office365ClientIdParameter', {
+      parameterName: `/qshelter/${stage}/OFFICE365_CLIENT_ID`,
+      stringValue: process.env.OFFICE365_CLIENT_ID || 'UPDATE_ME',
+      description: 'Office365 OAuth Client ID',
+      type: ssm.ParameterType.SECURE_STRING,
+    });
+
+    new ssm.StringParameter(this, 'Office365ClientSecretParameter', {
+      parameterName: `/qshelter/${stage}/OFFICE365_CLIENT_SECRET`,
+      stringValue: process.env.OFFICE365_CLIENT_SECRET || 'UPDATE_ME',
+      description: 'Office365 OAuth Client Secret',
+      type: ssm.ParameterType.SECURE_STRING,
+    });
+
+    new ssm.StringParameter(this, 'Office365TenantIdParameter', {
+      parameterName: `/qshelter/${stage}/OFFICE365_TENANT_ID`,
+      stringValue: process.env.OFFICE365_TENANT_ID || 'UPDATE_ME',
+      description: 'Office365 Tenant ID',
+      type: ssm.ParameterType.SECURE_STRING,
+    });
+
+    new ssm.StringParameter(this, 'Office365SenderEmailParameter', {
+      parameterName: `/qshelter/${stage}/OFFICE365_SENDER_EMAIL`,
+      stringValue: process.env.OFFICE365_SENDER_EMAIL || 'info@qshelter.ng',
+      description: 'Office365 Sender Email',
+      type: ssm.ParameterType.SECURE_STRING,
+    });
+
+    new ssm.StringParameter(this, 'SmtpHostParameter', {
+      parameterName: `/qshelter/${stage}/SMTP_HOST`,
+      stringValue: process.env.SMTP_HOST || 'smtp.mailtrap.io',
+      description: 'SMTP Host',
+      type: ssm.ParameterType.SECURE_STRING,
+    });
+
+    new ssm.StringParameter(this, 'SmtpPortParameter', {
+      parameterName: `/qshelter/${stage}/SMTP_PORT`,
+      stringValue: process.env.SMTP_PORT || '2525',
+      description: 'SMTP Port',
+      type: ssm.ParameterType.SECURE_STRING,
+    });
+
+    new ssm.StringParameter(this, 'SmtpUsernameParameter', {
+      parameterName: `/qshelter/${stage}/SMTP_USERNAME`,
+      stringValue: process.env.SMTP_USERNAME || 'UPDATE_ME',
+      description: 'SMTP Username',
+      type: ssm.ParameterType.SECURE_STRING,
+    });
+
+    new ssm.StringParameter(this, 'SmtpPasswordParameter', {
+      parameterName: `/qshelter/${stage}/SMTP_PASSWORD`,
+      stringValue: process.env.SMTP_PASSWORD || 'UPDATE_ME',
+      description: 'SMTP Password',
+      type: ssm.ParameterType.SECURE_STRING,
+    });
+
+    new ssm.StringParameter(this, 'SmtpEncryptionParameter', {
+      parameterName: `/qshelter/${stage}/SMTP_ENCRYPTION`,
+      stringValue: process.env.SMTP_ENCRYPTION || 'STARTTLS',
+      description: 'SMTP Encryption Type',
+      type: ssm.ParameterType.SECURE_STRING,
+    });
+
+    new ssm.StringParameter(this, 'NotificationAwsAccessKeyIdParameter', {
+      parameterName: `/qshelter/${stage}/AWS_ACCESS_KEY_ID`,
+      stringValue: process.env.NOTIFICATION_AWS_ACCESS_KEY_ID || 'UPDATE_ME',
+      description: 'AWS Access Key ID for SNS/SQS in notification service',
+      type: ssm.ParameterType.SECURE_STRING,
+    });
+
+    new ssm.StringParameter(this, 'NotificationAwsSecretAccessKeyParameter', {
+      parameterName: `/qshelter/${stage}/AWS_SECRET_ACCESS_KEY`,
+      stringValue: process.env.NOTIFICATION_AWS_SECRET_ACCESS_KEY || 'UPDATE_ME',
+      description: 'AWS Secret Access Key for SNS/SQS in notification service',
+      type: ssm.ParameterType.SECURE_STRING,
+    });
+
+    new ssm.StringParameter(this, 'SqsUrlParameter', {
+      parameterName: `/qshelter/${stage}/SQS_URL`,
+      stringValue: process.env.SQS_URL || 'UPDATE_ME',
+      description: 'SQS Queue URL for notifications',
+      type: ssm.ParameterType.SECURE_STRING,
+    });
+
+    new ssm.StringParameter(this, 'PlatformApplicationArnParameter', {
+      parameterName: `/qshelter/${stage}/PLATFORM_APPLICATION_ARN`,
+      stringValue: process.env.PLATFORM_APPLICATION_ARN || 'UPDATE_ME',
+      description: 'SNS Platform Application ARN for push notifications',
+      type: ssm.ParameterType.SECURE_STRING,
     });
 
     // === Secrets Manager (Sensitive Values) ===

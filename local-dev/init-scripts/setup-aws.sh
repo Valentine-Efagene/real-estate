@@ -63,6 +63,59 @@ awslocal ssm put-parameter --name "/qshelter/${STAGE}/dynamodb-table-role-polici
   --value "qshelter-${STAGE}-role-policies" \
   --type "String" --overwrite || true
 
+# Notification service parameters
+awslocal ssm put-parameter --name "/qshelter/${STAGE}/OFFICE365_CLIENT_ID" \
+  --value "test-office365-client-id" \
+  --type "SecureString" --overwrite || true
+
+awslocal ssm put-parameter --name "/qshelter/${STAGE}/OFFICE365_CLIENT_SECRET" \
+  --value "test-office365-client-secret" \
+  --type "SecureString" --overwrite || true
+
+awslocal ssm put-parameter --name "/qshelter/${STAGE}/OFFICE365_TENANT_ID" \
+  --value "test-office365-tenant-id" \
+  --type "SecureString" --overwrite || true
+
+awslocal ssm put-parameter --name "/qshelter/${STAGE}/OFFICE365_SENDER_EMAIL" \
+  --value "info@qshelter.ng" \
+  --type "SecureString" --overwrite || true
+
+awslocal ssm put-parameter --name "/qshelter/${STAGE}/SMTP_HOST" \
+  --value "smtp.mailtrap.io" \
+  --type "SecureString" --overwrite || true
+
+awslocal ssm put-parameter --name "/qshelter/${STAGE}/SMTP_PORT" \
+  --value "2525" \
+  --type "SecureString" --overwrite || true
+
+awslocal ssm put-parameter --name "/qshelter/${STAGE}/SMTP_USERNAME" \
+  --value "test-smtp-username" \
+  --type "SecureString" --overwrite || true
+
+awslocal ssm put-parameter --name "/qshelter/${STAGE}/SMTP_PASSWORD" \
+  --value "test-smtp-password" \
+  --type "SecureString" --overwrite || true
+
+awslocal ssm put-parameter --name "/qshelter/${STAGE}/SMTP_ENCRYPTION" \
+  --value "STARTTLS" \
+  --type "SecureString" --overwrite || true
+
+awslocal ssm put-parameter --name "/qshelter/${STAGE}/AWS_ACCESS_KEY_ID" \
+  --value "test" \
+  --type "SecureString" --overwrite || true
+
+awslocal ssm put-parameter --name "/qshelter/${STAGE}/AWS_SECRET_ACCESS_KEY" \
+  --value "test" \
+  --type "SecureString" --overwrite || true
+
+awslocal ssm put-parameter --name "/qshelter/${STAGE}/SQS_URL" \
+  --value "http://localhost:4566/000000000000/qshelter-${STAGE}-notifications" \
+  --type "SecureString" --overwrite || true
+
+awslocal ssm put-parameter --name "/qshelter/${STAGE}/PLATFORM_APPLICATION_ARN" \
+  --value "arn:aws:sns:${REGION}:000000000000:app/GCM/qshelter-push" \
+  --type "SecureString" --overwrite || true
+
 # =============================================================================
 # SECRETS MANAGER
 # =============================================================================
