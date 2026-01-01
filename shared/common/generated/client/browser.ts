@@ -163,6 +163,16 @@ export type PropertyPaymentMethodLink = Prisma.PropertyPaymentMethodLinkModel
  */
 export type PropertyPaymentMethodPhase = Prisma.PropertyPaymentMethodPhaseModel
 /**
+ * Model PaymentMethodPhaseStep
+ * 
+ */
+export type PaymentMethodPhaseStep = Prisma.PaymentMethodPhaseStepModel
+/**
+ * Model PaymentMethodPhaseDocument
+ * 
+ */
+export type PaymentMethodPhaseDocument = Prisma.PaymentMethodPhaseDocumentModel
+/**
  * Model Contract
  * 
  */
@@ -177,6 +187,11 @@ export type ContractPhase = Prisma.ContractPhaseModel
  * 
  */
 export type ContractPhaseStep = Prisma.ContractPhaseStepModel
+/**
+ * Model ContractPhaseStepDocument
+ * 
+ */
+export type ContractPhaseStepDocument = Prisma.ContractPhaseStepDocumentModel
 /**
  * Model ContractPhaseStepApproval
  * 

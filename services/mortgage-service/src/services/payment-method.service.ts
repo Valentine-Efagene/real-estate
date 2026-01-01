@@ -185,9 +185,20 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
             throw new AppError(404, 'Phase not found');
         }
 
+        // Convert arrays to strings for DB storage
+        const { requiredDocumentTypes, stepDefinitions, ...rest } = data;
+        const updateData: Record<string, any> = { ...rest };
+
+        if (requiredDocumentTypes !== undefined) {
+            updateData.requiredDocumentTypes = requiredDocumentTypes ? requiredDocumentTypes.join(',') : null;
+        }
+        if (stepDefinitions !== undefined) {
+            updateData.stepDefinitions = stepDefinitions ? JSON.stringify(stepDefinitions) : null;
+        }
+
         const updated = await prisma.propertyPaymentMethodPhase.update({
             where: { id: phaseId },
-            data,
+            data: updateData,
             include: {
                 paymentPlan: true,
             },

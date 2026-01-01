@@ -70,8 +70,8 @@ export type ContractMinAggregateOutputType = {
   periodicPayment: number | null
   totalPaidToDate: number | null
   totalInterestPaid: number | null
-  status: string | null
-  state: string | null
+  status: $Enums.ContractStatus | null
+  state: $Enums.ContractStatus | null
   currentPhaseId: string | null
   nextPaymentDueDate: Date | null
   lastReminderSentAt: Date | null
@@ -103,8 +103,8 @@ export type ContractMaxAggregateOutputType = {
   periodicPayment: number | null
   totalPaidToDate: number | null
   totalInterestPaid: number | null
-  status: string | null
-  state: string | null
+  status: $Enums.ContractStatus | null
+  state: $Enums.ContractStatus | null
   currentPhaseId: string | null
   nextPaymentDueDate: Date | null
   lastReminderSentAt: Date | null
@@ -381,8 +381,8 @@ export type ContractGroupByOutputType = {
   periodicPayment: number | null
   totalPaidToDate: number
   totalInterestPaid: number
-  status: string
-  state: string
+  status: $Enums.ContractStatus
+  state: $Enums.ContractStatus
   currentPhaseId: string | null
   nextPaymentDueDate: Date | null
   lastReminderSentAt: Date | null
@@ -437,8 +437,8 @@ export type ContractWhereInput = {
   periodicPayment?: Prisma.FloatNullableFilter<"Contract"> | number | null
   totalPaidToDate?: Prisma.FloatFilter<"Contract"> | number
   totalInterestPaid?: Prisma.FloatFilter<"Contract"> | number
-  status?: Prisma.StringFilter<"Contract"> | string
-  state?: Prisma.StringFilter<"Contract"> | string
+  status?: Prisma.EnumContractStatusFilter<"Contract"> | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFilter<"Contract"> | $Enums.ContractStatus
   currentPhaseId?: Prisma.StringNullableFilter<"Contract"> | string | null
   nextPaymentDueDate?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
   lastReminderSentAt?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
@@ -531,8 +531,8 @@ export type ContractWhereUniqueInput = Prisma.AtLeast<{
   periodicPayment?: Prisma.FloatNullableFilter<"Contract"> | number | null
   totalPaidToDate?: Prisma.FloatFilter<"Contract"> | number
   totalInterestPaid?: Prisma.FloatFilter<"Contract"> | number
-  status?: Prisma.StringFilter<"Contract"> | string
-  state?: Prisma.StringFilter<"Contract"> | string
+  status?: Prisma.EnumContractStatusFilter<"Contract"> | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFilter<"Contract"> | $Enums.ContractStatus
   currentPhaseId?: Prisma.StringNullableFilter<"Contract"> | string | null
   nextPaymentDueDate?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
   lastReminderSentAt?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
@@ -617,8 +617,8 @@ export type ContractScalarWhereWithAggregatesInput = {
   periodicPayment?: Prisma.FloatNullableWithAggregatesFilter<"Contract"> | number | null
   totalPaidToDate?: Prisma.FloatWithAggregatesFilter<"Contract"> | number
   totalInterestPaid?: Prisma.FloatWithAggregatesFilter<"Contract"> | number
-  status?: Prisma.StringWithAggregatesFilter<"Contract"> | string
-  state?: Prisma.StringWithAggregatesFilter<"Contract"> | string
+  status?: Prisma.EnumContractStatusWithAggregatesFilter<"Contract"> | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusWithAggregatesFilter<"Contract"> | $Enums.ContractStatus
   currentPhaseId?: Prisma.StringNullableWithAggregatesFilter<"Contract"> | string | null
   nextPaymentDueDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Contract"> | Date | string | null
   lastReminderSentAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Contract"> | Date | string | null
@@ -645,8 +645,8 @@ export type ContractCreateInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
-  status?: string
-  state?: string
+  status?: $Enums.ContractStatus
+  state?: $Enums.ContractStatus
   currentPhaseId?: string | null
   nextPaymentDueDate?: Date | string | null
   lastReminderSentAt?: Date | string | null
@@ -690,8 +690,8 @@ export type ContractUncheckedCreateInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
-  status?: string
-  state?: string
+  status?: $Enums.ContractStatus
+  state?: $Enums.ContractStatus
   currentPhaseId?: string | null
   nextPaymentDueDate?: Date | string | null
   lastReminderSentAt?: Date | string | null
@@ -725,8 +725,8 @@ export type ContractUpdateInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  state?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -770,8 +770,8 @@ export type ContractUncheckedUpdateInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  state?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -810,8 +810,8 @@ export type ContractCreateManyInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
-  status?: string
-  state?: string
+  status?: $Enums.ContractStatus
+  state?: $Enums.ContractStatus
   currentPhaseId?: string | null
   nextPaymentDueDate?: Date | string | null
   lastReminderSentAt?: Date | string | null
@@ -838,8 +838,8 @@ export type ContractUpdateManyMutationInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  state?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -871,8 +871,8 @@ export type ContractUncheckedUpdateManyInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  state?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1243,6 +1243,10 @@ export type ContractUncheckedUpdateManyWithoutPaymentMethodNestedInput = {
   deleteMany?: Prisma.ContractScalarWhereInput | Prisma.ContractScalarWhereInput[]
 }
 
+export type EnumContractStatusFieldUpdateOperationsInput = {
+  set?: $Enums.ContractStatus
+}
+
 export type ContractCreateNestedOneWithoutPhasesInput = {
   create?: Prisma.XOR<Prisma.ContractCreateWithoutPhasesInput, Prisma.ContractUncheckedCreateWithoutPhasesInput>
   connectOrCreate?: Prisma.ContractCreateOrConnectWithoutPhasesInput
@@ -1358,8 +1362,8 @@ export type ContractCreateWithoutBuyerInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
-  status?: string
-  state?: string
+  status?: $Enums.ContractStatus
+  state?: $Enums.ContractStatus
   currentPhaseId?: string | null
   nextPaymentDueDate?: Date | string | null
   lastReminderSentAt?: Date | string | null
@@ -1401,8 +1405,8 @@ export type ContractUncheckedCreateWithoutBuyerInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
-  status?: string
-  state?: string
+  status?: $Enums.ContractStatus
+  state?: $Enums.ContractStatus
   currentPhaseId?: string | null
   nextPaymentDueDate?: Date | string | null
   lastReminderSentAt?: Date | string | null
@@ -1446,8 +1450,8 @@ export type ContractCreateWithoutSellerInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
-  status?: string
-  state?: string
+  status?: $Enums.ContractStatus
+  state?: $Enums.ContractStatus
   currentPhaseId?: string | null
   nextPaymentDueDate?: Date | string | null
   lastReminderSentAt?: Date | string | null
@@ -1489,8 +1493,8 @@ export type ContractUncheckedCreateWithoutSellerInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
-  status?: string
-  state?: string
+  status?: $Enums.ContractStatus
+  state?: $Enums.ContractStatus
   currentPhaseId?: string | null
   nextPaymentDueDate?: Date | string | null
   lastReminderSentAt?: Date | string | null
@@ -1558,8 +1562,8 @@ export type ContractScalarWhereInput = {
   periodicPayment?: Prisma.FloatNullableFilter<"Contract"> | number | null
   totalPaidToDate?: Prisma.FloatFilter<"Contract"> | number
   totalInterestPaid?: Prisma.FloatFilter<"Contract"> | number
-  status?: Prisma.StringFilter<"Contract"> | string
-  state?: Prisma.StringFilter<"Contract"> | string
+  status?: Prisma.EnumContractStatusFilter<"Contract"> | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFilter<"Contract"> | $Enums.ContractStatus
   currentPhaseId?: Prisma.StringNullableFilter<"Contract"> | string | null
   nextPaymentDueDate?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
   lastReminderSentAt?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
@@ -1602,8 +1606,8 @@ export type ContractCreateWithoutTenantInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
-  status?: string
-  state?: string
+  status?: $Enums.ContractStatus
+  state?: $Enums.ContractStatus
   currentPhaseId?: string | null
   nextPaymentDueDate?: Date | string | null
   lastReminderSentAt?: Date | string | null
@@ -1645,8 +1649,8 @@ export type ContractUncheckedCreateWithoutTenantInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
-  status?: string
-  state?: string
+  status?: $Enums.ContractStatus
+  state?: $Enums.ContractStatus
   currentPhaseId?: string | null
   nextPaymentDueDate?: Date | string | null
   lastReminderSentAt?: Date | string | null
@@ -1706,8 +1710,8 @@ export type ContractCreateWithoutPropertyUnitInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
-  status?: string
-  state?: string
+  status?: $Enums.ContractStatus
+  state?: $Enums.ContractStatus
   currentPhaseId?: string | null
   nextPaymentDueDate?: Date | string | null
   lastReminderSentAt?: Date | string | null
@@ -1749,8 +1753,8 @@ export type ContractUncheckedCreateWithoutPropertyUnitInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
-  status?: string
-  state?: string
+  status?: $Enums.ContractStatus
+  state?: $Enums.ContractStatus
   currentPhaseId?: string | null
   nextPaymentDueDate?: Date | string | null
   lastReminderSentAt?: Date | string | null
@@ -1810,8 +1814,8 @@ export type ContractCreateWithoutPaymentMethodInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
-  status?: string
-  state?: string
+  status?: $Enums.ContractStatus
+  state?: $Enums.ContractStatus
   currentPhaseId?: string | null
   nextPaymentDueDate?: Date | string | null
   lastReminderSentAt?: Date | string | null
@@ -1853,8 +1857,8 @@ export type ContractUncheckedCreateWithoutPaymentMethodInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
-  status?: string
-  state?: string
+  status?: $Enums.ContractStatus
+  state?: $Enums.ContractStatus
   currentPhaseId?: string | null
   nextPaymentDueDate?: Date | string | null
   lastReminderSentAt?: Date | string | null
@@ -1914,8 +1918,8 @@ export type ContractCreateWithoutPhasesInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
-  status?: string
-  state?: string
+  status?: $Enums.ContractStatus
+  state?: $Enums.ContractStatus
   currentPhaseId?: string | null
   nextPaymentDueDate?: Date | string | null
   lastReminderSentAt?: Date | string | null
@@ -1958,8 +1962,8 @@ export type ContractUncheckedCreateWithoutPhasesInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
-  status?: string
-  state?: string
+  status?: $Enums.ContractStatus
+  state?: $Enums.ContractStatus
   currentPhaseId?: string | null
   nextPaymentDueDate?: Date | string | null
   lastReminderSentAt?: Date | string | null
@@ -2008,8 +2012,8 @@ export type ContractUpdateWithoutPhasesInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  state?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2052,8 +2056,8 @@ export type ContractUncheckedUpdateWithoutPhasesInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  state?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2086,8 +2090,8 @@ export type ContractCreateWithoutPaymentsInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
-  status?: string
-  state?: string
+  status?: $Enums.ContractStatus
+  state?: $Enums.ContractStatus
   currentPhaseId?: string | null
   nextPaymentDueDate?: Date | string | null
   lastReminderSentAt?: Date | string | null
@@ -2130,8 +2134,8 @@ export type ContractUncheckedCreateWithoutPaymentsInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
-  status?: string
-  state?: string
+  status?: $Enums.ContractStatus
+  state?: $Enums.ContractStatus
   currentPhaseId?: string | null
   nextPaymentDueDate?: Date | string | null
   lastReminderSentAt?: Date | string | null
@@ -2180,8 +2184,8 @@ export type ContractUpdateWithoutPaymentsInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  state?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2224,8 +2228,8 @@ export type ContractUncheckedUpdateWithoutPaymentsInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  state?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2258,8 +2262,8 @@ export type ContractCreateWithoutDocumentsInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
-  status?: string
-  state?: string
+  status?: $Enums.ContractStatus
+  state?: $Enums.ContractStatus
   currentPhaseId?: string | null
   nextPaymentDueDate?: Date | string | null
   lastReminderSentAt?: Date | string | null
@@ -2302,8 +2306,8 @@ export type ContractUncheckedCreateWithoutDocumentsInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
-  status?: string
-  state?: string
+  status?: $Enums.ContractStatus
+  state?: $Enums.ContractStatus
   currentPhaseId?: string | null
   nextPaymentDueDate?: Date | string | null
   lastReminderSentAt?: Date | string | null
@@ -2352,8 +2356,8 @@ export type ContractUpdateWithoutDocumentsInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  state?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2396,8 +2400,8 @@ export type ContractUncheckedUpdateWithoutDocumentsInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  state?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2430,8 +2434,8 @@ export type ContractCreateWithoutTransitionsInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
-  status?: string
-  state?: string
+  status?: $Enums.ContractStatus
+  state?: $Enums.ContractStatus
   currentPhaseId?: string | null
   nextPaymentDueDate?: Date | string | null
   lastReminderSentAt?: Date | string | null
@@ -2474,8 +2478,8 @@ export type ContractUncheckedCreateWithoutTransitionsInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
-  status?: string
-  state?: string
+  status?: $Enums.ContractStatus
+  state?: $Enums.ContractStatus
   currentPhaseId?: string | null
   nextPaymentDueDate?: Date | string | null
   lastReminderSentAt?: Date | string | null
@@ -2524,8 +2528,8 @@ export type ContractUpdateWithoutTransitionsInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  state?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2568,8 +2572,8 @@ export type ContractUncheckedUpdateWithoutTransitionsInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  state?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2602,8 +2606,8 @@ export type ContractCreateWithoutEventsInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
-  status?: string
-  state?: string
+  status?: $Enums.ContractStatus
+  state?: $Enums.ContractStatus
   currentPhaseId?: string | null
   nextPaymentDueDate?: Date | string | null
   lastReminderSentAt?: Date | string | null
@@ -2646,8 +2650,8 @@ export type ContractUncheckedCreateWithoutEventsInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
-  status?: string
-  state?: string
+  status?: $Enums.ContractStatus
+  state?: $Enums.ContractStatus
   currentPhaseId?: string | null
   nextPaymentDueDate?: Date | string | null
   lastReminderSentAt?: Date | string | null
@@ -2696,8 +2700,8 @@ export type ContractUpdateWithoutEventsInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  state?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2740,8 +2744,8 @@ export type ContractUncheckedUpdateWithoutEventsInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  state?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2774,8 +2778,8 @@ export type ContractCreateWithoutPrequalificationInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
-  status?: string
-  state?: string
+  status?: $Enums.ContractStatus
+  state?: $Enums.ContractStatus
   currentPhaseId?: string | null
   nextPaymentDueDate?: Date | string | null
   lastReminderSentAt?: Date | string | null
@@ -2818,8 +2822,8 @@ export type ContractUncheckedCreateWithoutPrequalificationInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
-  status?: string
-  state?: string
+  status?: $Enums.ContractStatus
+  state?: $Enums.ContractStatus
   currentPhaseId?: string | null
   nextPaymentDueDate?: Date | string | null
   lastReminderSentAt?: Date | string | null
@@ -2868,8 +2872,8 @@ export type ContractUpdateWithoutPrequalificationInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  state?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2912,8 +2916,8 @@ export type ContractUncheckedUpdateWithoutPrequalificationInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  state?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2946,8 +2950,8 @@ export type ContractCreateWithoutPaymentMethodChangeRequestsInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
-  status?: string
-  state?: string
+  status?: $Enums.ContractStatus
+  state?: $Enums.ContractStatus
   currentPhaseId?: string | null
   nextPaymentDueDate?: Date | string | null
   lastReminderSentAt?: Date | string | null
@@ -2990,8 +2994,8 @@ export type ContractUncheckedCreateWithoutPaymentMethodChangeRequestsInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
-  status?: string
-  state?: string
+  status?: $Enums.ContractStatus
+  state?: $Enums.ContractStatus
   currentPhaseId?: string | null
   nextPaymentDueDate?: Date | string | null
   lastReminderSentAt?: Date | string | null
@@ -3040,8 +3044,8 @@ export type ContractUpdateWithoutPaymentMethodChangeRequestsInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  state?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3084,8 +3088,8 @@ export type ContractUncheckedUpdateWithoutPaymentMethodChangeRequestsInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  state?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3122,8 +3126,8 @@ export type ContractCreateManyBuyerInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
-  status?: string
-  state?: string
+  status?: $Enums.ContractStatus
+  state?: $Enums.ContractStatus
   currentPhaseId?: string | null
   nextPaymentDueDate?: Date | string | null
   lastReminderSentAt?: Date | string | null
@@ -3154,8 +3158,8 @@ export type ContractCreateManySellerInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
-  status?: string
-  state?: string
+  status?: $Enums.ContractStatus
+  state?: $Enums.ContractStatus
   currentPhaseId?: string | null
   nextPaymentDueDate?: Date | string | null
   lastReminderSentAt?: Date | string | null
@@ -3182,8 +3186,8 @@ export type ContractUpdateWithoutBuyerInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  state?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3225,8 +3229,8 @@ export type ContractUncheckedUpdateWithoutBuyerInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  state?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3264,8 +3268,8 @@ export type ContractUncheckedUpdateManyWithoutBuyerInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  state?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3292,8 +3296,8 @@ export type ContractUpdateWithoutSellerInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  state?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3335,8 +3339,8 @@ export type ContractUncheckedUpdateWithoutSellerInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  state?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3374,8 +3378,8 @@ export type ContractUncheckedUpdateManyWithoutSellerInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  state?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3406,8 +3410,8 @@ export type ContractCreateManyTenantInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
-  status?: string
-  state?: string
+  status?: $Enums.ContractStatus
+  state?: $Enums.ContractStatus
   currentPhaseId?: string | null
   nextPaymentDueDate?: Date | string | null
   lastReminderSentAt?: Date | string | null
@@ -3434,8 +3438,8 @@ export type ContractUpdateWithoutTenantInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  state?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3477,8 +3481,8 @@ export type ContractUncheckedUpdateWithoutTenantInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  state?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3516,8 +3520,8 @@ export type ContractUncheckedUpdateManyWithoutTenantInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  state?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3548,8 +3552,8 @@ export type ContractCreateManyPropertyUnitInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
-  status?: string
-  state?: string
+  status?: $Enums.ContractStatus
+  state?: $Enums.ContractStatus
   currentPhaseId?: string | null
   nextPaymentDueDate?: Date | string | null
   lastReminderSentAt?: Date | string | null
@@ -3576,8 +3580,8 @@ export type ContractUpdateWithoutPropertyUnitInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  state?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3619,8 +3623,8 @@ export type ContractUncheckedUpdateWithoutPropertyUnitInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  state?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3658,8 +3662,8 @@ export type ContractUncheckedUpdateManyWithoutPropertyUnitInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  state?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3690,8 +3694,8 @@ export type ContractCreateManyPaymentMethodInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
-  status?: string
-  state?: string
+  status?: $Enums.ContractStatus
+  state?: $Enums.ContractStatus
   currentPhaseId?: string | null
   nextPaymentDueDate?: Date | string | null
   lastReminderSentAt?: Date | string | null
@@ -3718,8 +3722,8 @@ export type ContractUpdateWithoutPaymentMethodInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  state?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3761,8 +3765,8 @@ export type ContractUncheckedUpdateWithoutPaymentMethodInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  state?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3800,8 +3804,8 @@ export type ContractUncheckedUpdateManyWithoutPaymentMethodInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  state?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4023,8 +4027,8 @@ export type $ContractPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     periodicPayment: number | null
     totalPaidToDate: number
     totalInterestPaid: number
-    status: string
-    state: string
+    status: $Enums.ContractStatus
+    state: $Enums.ContractStatus
     currentPhaseId: string | null
     nextPaymentDueDate: Date | null
     lastReminderSentAt: Date | null
@@ -4434,8 +4438,8 @@ export interface ContractFieldRefs {
   readonly periodicPayment: Prisma.FieldRef<"Contract", 'Float'>
   readonly totalPaidToDate: Prisma.FieldRef<"Contract", 'Float'>
   readonly totalInterestPaid: Prisma.FieldRef<"Contract", 'Float'>
-  readonly status: Prisma.FieldRef<"Contract", 'String'>
-  readonly state: Prisma.FieldRef<"Contract", 'String'>
+  readonly status: Prisma.FieldRef<"Contract", 'ContractStatus'>
+  readonly state: Prisma.FieldRef<"Contract", 'ContractStatus'>
   readonly currentPhaseId: Prisma.FieldRef<"Contract", 'String'>
   readonly nextPaymentDueDate: Prisma.FieldRef<"Contract", 'DateTime'>
   readonly lastReminderSentAt: Prisma.FieldRef<"Contract", 'DateTime'>

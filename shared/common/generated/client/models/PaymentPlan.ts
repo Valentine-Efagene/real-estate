@@ -44,7 +44,7 @@ export type PaymentPlanMinAggregateOutputType = {
   name: string | null
   description: string | null
   isActive: boolean | null
-  paymentFrequency: string | null
+  paymentFrequency: $Enums.PaymentFrequency | null
   customFrequencyDays: number | null
   numberOfInstallments: number | null
   calculateInterestDaily: boolean | null
@@ -59,7 +59,7 @@ export type PaymentPlanMaxAggregateOutputType = {
   name: string | null
   description: string | null
   isActive: boolean | null
-  paymentFrequency: string | null
+  paymentFrequency: $Enums.PaymentFrequency | null
   customFrequencyDays: number | null
   numberOfInstallments: number | null
   calculateInterestDaily: boolean | null
@@ -235,7 +235,7 @@ export type PaymentPlanGroupByOutputType = {
   name: string
   description: string | null
   isActive: boolean
-  paymentFrequency: string
+  paymentFrequency: $Enums.PaymentFrequency
   customFrequencyDays: number | null
   numberOfInstallments: number
   calculateInterestDaily: boolean
@@ -273,7 +273,7 @@ export type PaymentPlanWhereInput = {
   name?: Prisma.StringFilter<"PaymentPlan"> | string
   description?: Prisma.StringNullableFilter<"PaymentPlan"> | string | null
   isActive?: Prisma.BoolFilter<"PaymentPlan"> | boolean
-  paymentFrequency?: Prisma.StringFilter<"PaymentPlan"> | string
+  paymentFrequency?: Prisma.EnumPaymentFrequencyFilter<"PaymentPlan"> | $Enums.PaymentFrequency
   customFrequencyDays?: Prisma.IntNullableFilter<"PaymentPlan"> | number | null
   numberOfInstallments?: Prisma.IntFilter<"PaymentPlan"> | number
   calculateInterestDaily?: Prisma.BoolFilter<"PaymentPlan"> | boolean
@@ -314,7 +314,7 @@ export type PaymentPlanWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"PaymentPlan"> | string
   description?: Prisma.StringNullableFilter<"PaymentPlan"> | string | null
   isActive?: Prisma.BoolFilter<"PaymentPlan"> | boolean
-  paymentFrequency?: Prisma.StringFilter<"PaymentPlan"> | string
+  paymentFrequency?: Prisma.EnumPaymentFrequencyFilter<"PaymentPlan"> | $Enums.PaymentFrequency
   customFrequencyDays?: Prisma.IntNullableFilter<"PaymentPlan"> | number | null
   numberOfInstallments?: Prisma.IntFilter<"PaymentPlan"> | number
   calculateInterestDaily?: Prisma.BoolFilter<"PaymentPlan"> | boolean
@@ -355,7 +355,7 @@ export type PaymentPlanScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"PaymentPlan"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"PaymentPlan"> | string | null
   isActive?: Prisma.BoolWithAggregatesFilter<"PaymentPlan"> | boolean
-  paymentFrequency?: Prisma.StringWithAggregatesFilter<"PaymentPlan"> | string
+  paymentFrequency?: Prisma.EnumPaymentFrequencyWithAggregatesFilter<"PaymentPlan"> | $Enums.PaymentFrequency
   customFrequencyDays?: Prisma.IntNullableWithAggregatesFilter<"PaymentPlan"> | number | null
   numberOfInstallments?: Prisma.IntWithAggregatesFilter<"PaymentPlan"> | number
   calculateInterestDaily?: Prisma.BoolWithAggregatesFilter<"PaymentPlan"> | boolean
@@ -369,7 +369,7 @@ export type PaymentPlanCreateInput = {
   name: string
   description?: string | null
   isActive?: boolean
-  paymentFrequency: string
+  paymentFrequency: $Enums.PaymentFrequency
   customFrequencyDays?: number | null
   numberOfInstallments: number
   calculateInterestDaily?: boolean
@@ -387,7 +387,7 @@ export type PaymentPlanUncheckedCreateInput = {
   name: string
   description?: string | null
   isActive?: boolean
-  paymentFrequency: string
+  paymentFrequency: $Enums.PaymentFrequency
   customFrequencyDays?: number | null
   numberOfInstallments: number
   calculateInterestDaily?: boolean
@@ -403,7 +403,7 @@ export type PaymentPlanUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  paymentFrequency?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentFrequency?: Prisma.EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
   customFrequencyDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   numberOfInstallments?: Prisma.IntFieldUpdateOperationsInput | number
   calculateInterestDaily?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -421,7 +421,7 @@ export type PaymentPlanUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  paymentFrequency?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentFrequency?: Prisma.EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
   customFrequencyDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   numberOfInstallments?: Prisma.IntFieldUpdateOperationsInput | number
   calculateInterestDaily?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -438,7 +438,7 @@ export type PaymentPlanCreateManyInput = {
   name: string
   description?: string | null
   isActive?: boolean
-  paymentFrequency: string
+  paymentFrequency: $Enums.PaymentFrequency
   customFrequencyDays?: number | null
   numberOfInstallments: number
   calculateInterestDaily?: boolean
@@ -452,7 +452,7 @@ export type PaymentPlanUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  paymentFrequency?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentFrequency?: Prisma.EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
   customFrequencyDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   numberOfInstallments?: Prisma.IntFieldUpdateOperationsInput | number
   calculateInterestDaily?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -467,7 +467,7 @@ export type PaymentPlanUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  paymentFrequency?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentFrequency?: Prisma.EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
   customFrequencyDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   numberOfInstallments?: Prisma.IntFieldUpdateOperationsInput | number
   calculateInterestDaily?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -601,6 +601,10 @@ export type PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput = {
   deleteMany?: Prisma.PaymentPlanScalarWhereInput | Prisma.PaymentPlanScalarWhereInput[]
 }
 
+export type EnumPaymentFrequencyFieldUpdateOperationsInput = {
+  set?: $Enums.PaymentFrequency
+}
+
 export type PaymentPlanCreateNestedOneWithoutMethodPhasesInput = {
   create?: Prisma.XOR<Prisma.PaymentPlanCreateWithoutMethodPhasesInput, Prisma.PaymentPlanUncheckedCreateWithoutMethodPhasesInput>
   connectOrCreate?: Prisma.PaymentPlanCreateOrConnectWithoutMethodPhasesInput
@@ -638,7 +642,7 @@ export type PaymentPlanCreateWithoutTenantInput = {
   name: string
   description?: string | null
   isActive?: boolean
-  paymentFrequency: string
+  paymentFrequency: $Enums.PaymentFrequency
   customFrequencyDays?: number | null
   numberOfInstallments: number
   calculateInterestDaily?: boolean
@@ -654,7 +658,7 @@ export type PaymentPlanUncheckedCreateWithoutTenantInput = {
   name: string
   description?: string | null
   isActive?: boolean
-  paymentFrequency: string
+  paymentFrequency: $Enums.PaymentFrequency
   customFrequencyDays?: number | null
   numberOfInstallments: number
   calculateInterestDaily?: boolean
@@ -700,7 +704,7 @@ export type PaymentPlanScalarWhereInput = {
   name?: Prisma.StringFilter<"PaymentPlan"> | string
   description?: Prisma.StringNullableFilter<"PaymentPlan"> | string | null
   isActive?: Prisma.BoolFilter<"PaymentPlan"> | boolean
-  paymentFrequency?: Prisma.StringFilter<"PaymentPlan"> | string
+  paymentFrequency?: Prisma.EnumPaymentFrequencyFilter<"PaymentPlan"> | $Enums.PaymentFrequency
   customFrequencyDays?: Prisma.IntNullableFilter<"PaymentPlan"> | number | null
   numberOfInstallments?: Prisma.IntFilter<"PaymentPlan"> | number
   calculateInterestDaily?: Prisma.BoolFilter<"PaymentPlan"> | boolean
@@ -714,7 +718,7 @@ export type PaymentPlanCreateWithoutMethodPhasesInput = {
   name: string
   description?: string | null
   isActive?: boolean
-  paymentFrequency: string
+  paymentFrequency: $Enums.PaymentFrequency
   customFrequencyDays?: number | null
   numberOfInstallments: number
   calculateInterestDaily?: boolean
@@ -731,7 +735,7 @@ export type PaymentPlanUncheckedCreateWithoutMethodPhasesInput = {
   name: string
   description?: string | null
   isActive?: boolean
-  paymentFrequency: string
+  paymentFrequency: $Enums.PaymentFrequency
   customFrequencyDays?: number | null
   numberOfInstallments: number
   calculateInterestDaily?: boolean
@@ -762,7 +766,7 @@ export type PaymentPlanUpdateWithoutMethodPhasesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  paymentFrequency?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentFrequency?: Prisma.EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
   customFrequencyDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   numberOfInstallments?: Prisma.IntFieldUpdateOperationsInput | number
   calculateInterestDaily?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -779,7 +783,7 @@ export type PaymentPlanUncheckedUpdateWithoutMethodPhasesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  paymentFrequency?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentFrequency?: Prisma.EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
   customFrequencyDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   numberOfInstallments?: Prisma.IntFieldUpdateOperationsInput | number
   calculateInterestDaily?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -794,7 +798,7 @@ export type PaymentPlanCreateWithoutContractPhasesInput = {
   name: string
   description?: string | null
   isActive?: boolean
-  paymentFrequency: string
+  paymentFrequency: $Enums.PaymentFrequency
   customFrequencyDays?: number | null
   numberOfInstallments: number
   calculateInterestDaily?: boolean
@@ -811,7 +815,7 @@ export type PaymentPlanUncheckedCreateWithoutContractPhasesInput = {
   name: string
   description?: string | null
   isActive?: boolean
-  paymentFrequency: string
+  paymentFrequency: $Enums.PaymentFrequency
   customFrequencyDays?: number | null
   numberOfInstallments: number
   calculateInterestDaily?: boolean
@@ -842,7 +846,7 @@ export type PaymentPlanUpdateWithoutContractPhasesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  paymentFrequency?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentFrequency?: Prisma.EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
   customFrequencyDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   numberOfInstallments?: Prisma.IntFieldUpdateOperationsInput | number
   calculateInterestDaily?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -859,7 +863,7 @@ export type PaymentPlanUncheckedUpdateWithoutContractPhasesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  paymentFrequency?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentFrequency?: Prisma.EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
   customFrequencyDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   numberOfInstallments?: Prisma.IntFieldUpdateOperationsInput | number
   calculateInterestDaily?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -874,7 +878,7 @@ export type PaymentPlanCreateManyTenantInput = {
   name: string
   description?: string | null
   isActive?: boolean
-  paymentFrequency: string
+  paymentFrequency: $Enums.PaymentFrequency
   customFrequencyDays?: number | null
   numberOfInstallments: number
   calculateInterestDaily?: boolean
@@ -888,7 +892,7 @@ export type PaymentPlanUpdateWithoutTenantInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  paymentFrequency?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentFrequency?: Prisma.EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
   customFrequencyDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   numberOfInstallments?: Prisma.IntFieldUpdateOperationsInput | number
   calculateInterestDaily?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -904,7 +908,7 @@ export type PaymentPlanUncheckedUpdateWithoutTenantInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  paymentFrequency?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentFrequency?: Prisma.EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
   customFrequencyDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   numberOfInstallments?: Prisma.IntFieldUpdateOperationsInput | number
   calculateInterestDaily?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -920,7 +924,7 @@ export type PaymentPlanUncheckedUpdateManyWithoutTenantInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  paymentFrequency?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentFrequency?: Prisma.EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
   customFrequencyDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   numberOfInstallments?: Prisma.IntFieldUpdateOperationsInput | number
   calculateInterestDaily?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1026,7 +1030,7 @@ export type $PaymentPlanPayload<ExtArgs extends runtime.Types.Extensions.Interna
     name: string
     description: string | null
     isActive: boolean
-    paymentFrequency: string
+    paymentFrequency: $Enums.PaymentFrequency
     customFrequencyDays: number | null
     numberOfInstallments: number
     calculateInterestDaily: boolean
@@ -1410,7 +1414,7 @@ export interface PaymentPlanFieldRefs {
   readonly name: Prisma.FieldRef<"PaymentPlan", 'String'>
   readonly description: Prisma.FieldRef<"PaymentPlan", 'String'>
   readonly isActive: Prisma.FieldRef<"PaymentPlan", 'Boolean'>
-  readonly paymentFrequency: Prisma.FieldRef<"PaymentPlan", 'String'>
+  readonly paymentFrequency: Prisma.FieldRef<"PaymentPlan", 'PaymentFrequency'>
   readonly customFrequencyDays: Prisma.FieldRef<"PaymentPlan", 'Int'>
   readonly numberOfInstallments: Prisma.FieldRef<"PaymentPlan", 'Int'>
   readonly calculateInterestDaily: Prisma.FieldRef<"PaymentPlan", 'Boolean'>

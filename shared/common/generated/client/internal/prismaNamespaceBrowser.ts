@@ -80,9 +80,12 @@ export const ModelName = {
   PropertyPaymentMethod: 'PropertyPaymentMethod',
   PropertyPaymentMethodLink: 'PropertyPaymentMethodLink',
   PropertyPaymentMethodPhase: 'PropertyPaymentMethodPhase',
+  PaymentMethodPhaseStep: 'PaymentMethodPhaseStep',
+  PaymentMethodPhaseDocument: 'PaymentMethodPhaseDocument',
   Contract: 'Contract',
   ContractPhase: 'ContractPhase',
   ContractPhaseStep: 'ContractPhaseStep',
+  ContractPhaseStepDocument: 'ContractPhaseStepDocument',
   ContractPhaseStepApproval: 'ContractPhaseStepApproval',
   ContractInstallment: 'ContractInstallment',
   ContractPayment: 'ContractPayment',
@@ -513,13 +516,43 @@ export const PropertyPaymentMethodPhaseScalarFieldEnum = {
   percentOfPrice: 'percentOfPrice',
   requiresPreviousPhaseCompletion: 'requiresPreviousPhaseCompletion',
   minimumCompletionPercentage: 'minimumCompletionPercentage',
-  requiredDocumentTypes: 'requiredDocumentTypes',
-  stepDefinitions: 'stepDefinitions',
+  completionCriterion: 'completionCriterion',
+  stepDefinitionsSnapshot: 'stepDefinitionsSnapshot',
+  requiredDocumentSnapshot: 'requiredDocumentSnapshot',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type PropertyPaymentMethodPhaseScalarFieldEnum = (typeof PropertyPaymentMethodPhaseScalarFieldEnum)[keyof typeof PropertyPaymentMethodPhaseScalarFieldEnum]
+
+
+export const PaymentMethodPhaseStepScalarFieldEnum = {
+  id: 'id',
+  phaseId: 'phaseId',
+  name: 'name',
+  stepType: 'stepType',
+  order: 'order',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PaymentMethodPhaseStepScalarFieldEnum = (typeof PaymentMethodPhaseStepScalarFieldEnum)[keyof typeof PaymentMethodPhaseStepScalarFieldEnum]
+
+
+export const PaymentMethodPhaseDocumentScalarFieldEnum = {
+  id: 'id',
+  phaseId: 'phaseId',
+  documentType: 'documentType',
+  isRequired: 'isRequired',
+  description: 'description',
+  allowedMimeTypes: 'allowedMimeTypes',
+  maxSizeBytes: 'maxSizeBytes',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+} as const
+
+export type PaymentMethodPhaseDocumentScalarFieldEnum = (typeof PaymentMethodPhaseDocumentScalarFieldEnum)[keyof typeof PaymentMethodPhaseDocumentScalarFieldEnum]
 
 
 export const ContractScalarFieldEnum = {
@@ -572,6 +605,10 @@ export const ContractPhaseScalarFieldEnum = {
   paidAmount: 'paidAmount',
   remainingAmount: 'remainingAmount',
   interestRate: 'interestRate',
+  approvedDocumentsCount: 'approvedDocumentsCount',
+  requiredDocumentsCount: 'requiredDocumentsCount',
+  completedStepsCount: 'completedStepsCount',
+  totalStepsCount: 'totalStepsCount',
   dueDate: 'dueDate',
   startDate: 'startDate',
   endDate: 'endDate',
@@ -579,6 +616,10 @@ export const ContractPhaseScalarFieldEnum = {
   completedAt: 'completedAt',
   requiresPreviousPhaseCompletion: 'requiresPreviousPhaseCompletion',
   minimumCompletionPercentage: 'minimumCompletionPercentage',
+  completionCriterion: 'completionCriterion',
+  paymentPlanSnapshot: 'paymentPlanSnapshot',
+  stepDefinitionsSnapshot: 'stepDefinitionsSnapshot',
+  requiredDocumentSnapshot: 'requiredDocumentSnapshot',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -595,7 +636,6 @@ export const ContractPhaseStepScalarFieldEnum = {
   order: 'order',
   status: 'status',
   assigneeId: 'assigneeId',
-  requiredDocumentTypes: 'requiredDocumentTypes',
   dueDate: 'dueDate',
   completedAt: 'completedAt',
   createdAt: 'createdAt',
@@ -603,6 +643,17 @@ export const ContractPhaseStepScalarFieldEnum = {
 } as const
 
 export type ContractPhaseStepScalarFieldEnum = (typeof ContractPhaseStepScalarFieldEnum)[keyof typeof ContractPhaseStepScalarFieldEnum]
+
+
+export const ContractPhaseStepDocumentScalarFieldEnum = {
+  id: 'id',
+  stepId: 'stepId',
+  documentType: 'documentType',
+  isRequired: 'isRequired',
+  createdAt: 'createdAt'
+} as const
+
+export type ContractPhaseStepDocumentScalarFieldEnum = (typeof ContractPhaseStepDocumentScalarFieldEnum)[keyof typeof ContractPhaseStepDocumentScalarFieldEnum]
 
 
 export const ContractPhaseStepApprovalScalarFieldEnum = {
@@ -813,19 +864,19 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
-export const JsonNullValueInput = {
-  JsonNull: 'JsonNull'
-} as const
-
-export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
-
-
 export const NullableJsonNullValueInput = {
   DbNull: 'DbNull',
   JsonNull: 'JsonNull'
 } as const
 
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+export const JsonNullValueInput = {
+  JsonNull: 'JsonNull'
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const NullsOrder = {
@@ -1101,8 +1152,7 @@ export const PaymentPlanOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   name: 'name',
-  description: 'description',
-  paymentFrequency: 'paymentFrequency'
+  description: 'description'
 } as const
 
 export type PaymentPlanOrderByRelevanceFieldEnum = (typeof PaymentPlanOrderByRelevanceFieldEnum)[keyof typeof PaymentPlanOrderByRelevanceFieldEnum]
@@ -1126,19 +1176,52 @@ export const PropertyPaymentMethodLinkOrderByRelevanceFieldEnum = {
 export type PropertyPaymentMethodLinkOrderByRelevanceFieldEnum = (typeof PropertyPaymentMethodLinkOrderByRelevanceFieldEnum)[keyof typeof PropertyPaymentMethodLinkOrderByRelevanceFieldEnum]
 
 
+export const JsonNullValueFilter = {
+  DbNull: 'DbNull',
+  JsonNull: 'JsonNull',
+  AnyNull: 'AnyNull'
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+export const QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+} as const
+
+export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
 export const PropertyPaymentMethodPhaseOrderByRelevanceFieldEnum = {
   id: 'id',
   paymentMethodId: 'paymentMethodId',
   paymentPlanId: 'paymentPlanId',
   name: 'name',
-  description: 'description',
-  phaseCategory: 'phaseCategory',
-  phaseType: 'phaseType',
-  requiredDocumentTypes: 'requiredDocumentTypes',
-  stepDefinitions: 'stepDefinitions'
+  description: 'description'
 } as const
 
 export type PropertyPaymentMethodPhaseOrderByRelevanceFieldEnum = (typeof PropertyPaymentMethodPhaseOrderByRelevanceFieldEnum)[keyof typeof PropertyPaymentMethodPhaseOrderByRelevanceFieldEnum]
+
+
+export const PaymentMethodPhaseStepOrderByRelevanceFieldEnum = {
+  id: 'id',
+  phaseId: 'phaseId',
+  name: 'name'
+} as const
+
+export type PaymentMethodPhaseStepOrderByRelevanceFieldEnum = (typeof PaymentMethodPhaseStepOrderByRelevanceFieldEnum)[keyof typeof PaymentMethodPhaseStepOrderByRelevanceFieldEnum]
+
+
+export const PaymentMethodPhaseDocumentOrderByRelevanceFieldEnum = {
+  id: 'id',
+  phaseId: 'phaseId',
+  documentType: 'documentType',
+  description: 'description',
+  allowedMimeTypes: 'allowedMimeTypes'
+} as const
+
+export type PaymentMethodPhaseDocumentOrderByRelevanceFieldEnum = (typeof PaymentMethodPhaseDocumentOrderByRelevanceFieldEnum)[keyof typeof PaymentMethodPhaseDocumentOrderByRelevanceFieldEnum]
 
 
 export const ContractOrderByRelevanceFieldEnum = {
@@ -1152,8 +1235,6 @@ export const ContractOrderByRelevanceFieldEnum = {
   title: 'title',
   description: 'description',
   contractType: 'contractType',
-  status: 'status',
-  state: 'state',
   currentPhaseId: 'currentPhaseId'
 } as const
 
@@ -1165,10 +1246,7 @@ export const ContractPhaseOrderByRelevanceFieldEnum = {
   contractId: 'contractId',
   paymentPlanId: 'paymentPlanId',
   name: 'name',
-  description: 'description',
-  phaseCategory: 'phaseCategory',
-  phaseType: 'phaseType',
-  status: 'status'
+  description: 'description'
 } as const
 
 export type ContractPhaseOrderByRelevanceFieldEnum = (typeof ContractPhaseOrderByRelevanceFieldEnum)[keyof typeof ContractPhaseOrderByRelevanceFieldEnum]
@@ -1179,20 +1257,25 @@ export const ContractPhaseStepOrderByRelevanceFieldEnum = {
   phaseId: 'phaseId',
   name: 'name',
   description: 'description',
-  stepType: 'stepType',
-  status: 'status',
-  assigneeId: 'assigneeId',
-  requiredDocumentTypes: 'requiredDocumentTypes'
+  assigneeId: 'assigneeId'
 } as const
 
 export type ContractPhaseStepOrderByRelevanceFieldEnum = (typeof ContractPhaseStepOrderByRelevanceFieldEnum)[keyof typeof ContractPhaseStepOrderByRelevanceFieldEnum]
+
+
+export const ContractPhaseStepDocumentOrderByRelevanceFieldEnum = {
+  id: 'id',
+  stepId: 'stepId',
+  documentType: 'documentType'
+} as const
+
+export type ContractPhaseStepDocumentOrderByRelevanceFieldEnum = (typeof ContractPhaseStepDocumentOrderByRelevanceFieldEnum)[keyof typeof ContractPhaseStepDocumentOrderByRelevanceFieldEnum]
 
 
 export const ContractPhaseStepApprovalOrderByRelevanceFieldEnum = {
   id: 'id',
   stepId: 'stepId',
   approverId: 'approverId',
-  decision: 'decision',
   comment: 'comment'
 } as const
 
@@ -1201,8 +1284,7 @@ export type ContractPhaseStepApprovalOrderByRelevanceFieldEnum = (typeof Contrac
 
 export const ContractInstallmentOrderByRelevanceFieldEnum = {
   id: 'id',
-  phaseId: 'phaseId',
-  status: 'status'
+  phaseId: 'phaseId'
 } as const
 
 export type ContractInstallmentOrderByRelevanceFieldEnum = (typeof ContractInstallmentOrderByRelevanceFieldEnum)[keyof typeof ContractInstallmentOrderByRelevanceFieldEnum]
@@ -1215,7 +1297,6 @@ export const ContractPaymentOrderByRelevanceFieldEnum = {
   installmentId: 'installmentId',
   payerId: 'payerId',
   paymentMethod: 'paymentMethod',
-  status: 'status',
   reference: 'reference',
   gatewayResponse: 'gatewayResponse'
 } as const
@@ -1231,8 +1312,7 @@ export const ContractDocumentOrderByRelevanceFieldEnum = {
   name: 'name',
   url: 'url',
   type: 'type',
-  uploadedById: 'uploadedById',
-  status: 'status'
+  uploadedById: 'uploadedById'
 } as const
 
 export type ContractDocumentOrderByRelevanceFieldEnum = (typeof ContractDocumentOrderByRelevanceFieldEnum)[keyof typeof ContractDocumentOrderByRelevanceFieldEnum]
@@ -1258,23 +1338,6 @@ export const ContractEventOrderByRelevanceFieldEnum = {
 } as const
 
 export type ContractEventOrderByRelevanceFieldEnum = (typeof ContractEventOrderByRelevanceFieldEnum)[keyof typeof ContractEventOrderByRelevanceFieldEnum]
-
-
-export const JsonNullValueFilter = {
-  DbNull: 'DbNull',
-  JsonNull: 'JsonNull',
-  AnyNull: 'AnyNull'
-} as const
-
-export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
-
-
-export const QueryMode = {
-  default: 'default',
-  insensitive: 'insensitive'
-} as const
-
-export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 
 export const PrequalificationOrderByRelevanceFieldEnum = {

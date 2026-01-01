@@ -16,6 +16,102 @@ datasource db {
 }
 
 // =============================================================================
+// ENUMS - Database-enforced value constraints
+// =============================================================================
+
+enum PhaseCategory {
+  DOCUMENTATION
+  PAYMENT
+}
+
+enum PhaseType {
+  KYC
+  VERIFICATION
+  DOWNPAYMENT
+  MORTGAGE
+  BALLOON
+  CUSTOM
+}
+
+enum PaymentFrequency {
+  MONTHLY
+  BIWEEKLY
+  WEEKLY
+  ONE_TIME
+  CUSTOM
+}
+
+enum ContractStatus {
+  DRAFT
+  PENDING
+  ACTIVE
+  COMPLETED
+  CANCELLED
+  TERMINATED
+}
+
+enum PhaseStatus {
+  PENDING
+  IN_PROGRESS
+  AWAITING_APPROVAL
+  ACTIVE
+  COMPLETED
+  SKIPPED
+  FAILED
+}
+
+enum StepType {
+  UPLOAD
+  REVIEW
+  SIGNATURE
+  APPROVAL
+  EXTERNAL_CHECK
+  WAIT
+}
+
+enum StepStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  FAILED
+  SKIPPED
+}
+
+enum InstallmentStatus {
+  PENDING
+  PAID
+  OVERDUE
+  PARTIALLY_PAID
+  WAIVED
+}
+
+enum PaymentStatus {
+  INITIATED
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+enum ApprovalDecision {
+  APPROVED
+  REJECTED
+  REQUEST_CHANGES
+}
+
+enum CompletionCriterion {
+  DOCUMENT_APPROVALS
+  PAYMENT_AMOUNT
+  STEPS_COMPLETED
+}
+
+enum DocumentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+// =============================================================================
 // USER & AUTH DOMAIN
 // =============================================================================
 
@@ -515,11 +611,11 @@ model PaymentPlan {
   isActive    Boolean @default(true)
 
   // Structure configuration
-  paymentFrequency       String // MONTHLY, BIWEEKLY, WEEKLY, ONE_TIME, CUSTOM
+  paymentFrequency       PaymentFrequency
   customFrequencyDays    Int?
   numberOfInstallments   Int // 1 for one-time, 360 for 30yr monthly, etc
-  calculateInterestDaily Boolean @default(false)
-  gracePeriodDays        Int     @default(0)
+  calculateInterestDaily Boolean          @default(false)
+  gracePeriodDays        Int              @default(0)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -608,9 +704,9 @@ model PropertyPaymentMethodPhase {
   name        String
   description String? @db.Text
 
-  // Phase classification
-  phaseCategory String // DOCUMENTATION, PAYMENT
-  phaseType     String // Admin-defined: KYC, VERIFICATION, DOWNPAYMENT, MORTGAGE, BALLOON, CUSTOM, etc.
+  // Phase classification (DB-enforced enums)
+  phaseCategory PhaseCategory
+  phaseType     PhaseType
   order         Int
 
   // Financial configuration (for PAYMENT phases)
@@ -618,20 +714,62 @@ model PropertyPaymentMethodPhase {
   percentOfPrice Float? // e.g., 10.0 for 10% downpayment
 
   // Activation rules
-  requiresPreviousPhaseCompletion Boolean @default(true)
+  requiresPreviousPhaseCompletion Boolean              @default(true)
   minimumCompletionPercentage     Float?
+  completionCriterion             CompletionCriterion?
 
-  // For DOCUMENTATION phases: define required steps
-  requiredDocumentTypes String? // CSV: ID,BANK_STATEMENT,INCOME_PROOF
-  stepDefinitions       String? @db.Text // JSON: [{name, stepType, order}]
+  // Snapshots for audit (original config at creation time)
+  stepDefinitionsSnapshot  Json?
+  requiredDocumentSnapshot Json?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // Normalized child tables (for DOCUMENTATION phases)
+  steps             PaymentMethodPhaseStep[]
+  requiredDocuments PaymentMethodPhaseDocument[]
 
   @@index([paymentMethodId])
   @@index([paymentPlanId])
   @@index([phaseCategory])
   @@map("property_payment_method_phases")
+}
+
+// Step template within a DOCUMENTATION phase
+model PaymentMethodPhaseStep {
+  id      String                     @id @default(cuid())
+  phaseId String
+  phase   PropertyPaymentMethodPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+
+  name     String
+  stepType StepType
+  order    Int
+
+  metadata  Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([phaseId])
+  @@map("payment_method_phase_steps")
+}
+
+// Required document within a DOCUMENTATION phase
+model PaymentMethodPhaseDocument {
+  id      String                     @id @default(cuid())
+  phaseId String
+  phase   PropertyPaymentMethodPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+
+  documentType     String
+  isRequired       Boolean @default(true)
+  description      String? @db.Text
+  allowedMimeTypes String? // CSV: application/pdf,image/jpeg
+  maxSizeBytes     Int?
+
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  @@index([phaseId, documentType])
+  @@map("payment_method_phase_documents")
 }
 
 // =============================================================================
@@ -673,9 +811,9 @@ model Contract {
   totalPaidToDate   Float  @default(0)
   totalInterestPaid Float  @default(0)
 
-  // FSM state
-  status         String  @default("DRAFT") // DRAFT, PENDING, ACTIVE, COMPLETED, CANCELLED, TERMINATED
-  state          String  @default("DRAFT") // FSM state for workflow
+  // FSM state (DB-enforced enums)
+  status         ContractStatus @default(DRAFT)
+  state          ContractStatus @default(DRAFT) // FSM state for workflow
   currentPhaseId String?
 
   // Timing
@@ -723,19 +861,25 @@ model ContractPhase {
   name        String
   description String? @db.Text
 
-  // Phase classification
-  phaseCategory String // DOCUMENTATION, PAYMENT
-  phaseType     String // Admin-defined: DOWNPAYMENT, MORTGAGE, KYC, VERIFICATION, BALLOON, CUSTOM, etc.
+  // Phase classification (DB-enforced enums)
+  phaseCategory PhaseCategory
+  phaseType     PhaseType
   order         Int
 
-  // FSM state for this phase
-  status String @default("PENDING") // PENDING, IN_PROGRESS, AWAITING_APPROVAL, ACTIVE, COMPLETED, SKIPPED, FAILED
+  // FSM state for this phase (DB-enforced enum)
+  status PhaseStatus @default(PENDING)
 
   // Financial details (for PAYMENT phases)
   totalAmount     Float?
   paidAmount      Float  @default(0)
   remainingAmount Float?
   interestRate    Float?
+
+  // Progress counters (for efficient activation checks)
+  approvedDocumentsCount Int @default(0)
+  requiredDocumentsCount Int @default(0)
+  completedStepsCount    Int @default(0)
+  totalStepsCount        Int @default(0)
 
   // Timing
   dueDate     DateTime?
@@ -745,8 +889,14 @@ model ContractPhase {
   completedAt DateTime?
 
   // Activation rules
-  requiresPreviousPhaseCompletion Boolean @default(true)
+  requiresPreviousPhaseCompletion Boolean              @default(true)
   minimumCompletionPercentage     Float?
+  completionCriterion             CompletionCriterion?
+
+  // Snapshots for audit (effective config at contract creation)
+  paymentPlanSnapshot      Json?
+  stepDefinitionsSnapshot  Json?
+  requiredDocumentSnapshot Json?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -771,18 +921,18 @@ model ContractPhaseStep {
   phase   ContractPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
 
   name        String
-  description String? @db.Text
-  stepType    String // UPLOAD, REVIEW, SIGNATURE, APPROVAL, EXTERNAL_CHECK, WAIT
+  description String?  @db.Text
+  stepType    StepType
   order       Int
 
-  status String @default("PENDING") // PENDING, IN_PROGRESS, COMPLETED, FAILED, SKIPPED
+  status StepStatus @default(PENDING)
 
   // Assignment
   assigneeId String?
   assignee   User?   @relation("PhaseStepAssignee", fields: [assigneeId], references: [id])
 
-  // Required document types for UPLOAD steps
-  requiredDocumentTypes String? // CSV: ID,BANK_STATEMENT,INCOME_PROOF
+  // Required document types for UPLOAD steps (normalized)
+  requiredDocuments ContractPhaseStepDocument[]
 
   // Timing
   dueDate     DateTime?
@@ -799,6 +949,21 @@ model ContractPhaseStep {
   @@map("contract_phase_steps")
 }
 
+// Required documents for a step (normalized from CSV)
+model ContractPhaseStepDocument {
+  id     String            @id @default(cuid())
+  stepId String
+  step   ContractPhaseStep @relation(fields: [stepId], references: [id], onDelete: Cascade)
+
+  documentType String
+  isRequired   Boolean @default(true)
+
+  createdAt DateTime @default(now())
+
+  @@index([stepId, documentType])
+  @@map("contract_phase_step_documents")
+}
+
 // Approvals for documentation steps
 model ContractPhaseStepApproval {
   id         String            @id @default(cuid())
@@ -807,9 +972,9 @@ model ContractPhaseStepApproval {
   approverId String?
   approver   User?             @relation("PhaseStepApprover", fields: [approverId], references: [id])
 
-  decision  String // APPROVED, REJECTED, REQUEST_CHANGES
-  comment   String?  @db.Text
-  decidedAt DateTime @default(now())
+  decision  ApprovalDecision
+  comment   String?          @db.Text
+  decidedAt DateTime         @default(now())
 
   createdAt DateTime @default(now())
 
@@ -830,7 +995,7 @@ model ContractInstallment {
   interestAmount  Float @default(0)
 
   dueDate DateTime
-  status  String   @default("PENDING") // PENDING, PAID, OVERDUE, PARTIALLY_PAID, WAIVED
+  status  InstallmentStatus @default(PENDING)
 
   paidAmount Float     @default(0)
   paidDate   DateTime?
@@ -869,7 +1034,7 @@ model ContractPayment {
   lateFeeAmount   Float @default(0)
 
   paymentMethod String // BANK_TRANSFER, CREDIT_CARD, WALLET, CASH, CHECK
-  status        String @default("INITIATED") // INITIATED, PENDING, COMPLETED, FAILED, REFUNDED
+  status        PaymentStatus @default(INITIATED)
 
   reference       String? @unique
   gatewayResponse String? @db.Text // JSON
@@ -901,7 +1066,7 @@ model ContractDocument {
   uploadedById String?
   uploadedBy   User?   @relation("DocumentUploader", fields: [uploadedById], references: [id])
 
-  status String @default("PENDING") // PENDING, APPROVED, REJECTED
+  status DocumentStatus @default(PENDING)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

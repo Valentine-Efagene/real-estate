@@ -33,7 +33,7 @@ export type ContractDocumentMinAggregateOutputType = {
   url: string | null
   type: string | null
   uploadedById: string | null
-  status: string | null
+  status: $Enums.DocumentStatus | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -47,7 +47,7 @@ export type ContractDocumentMaxAggregateOutputType = {
   url: string | null
   type: string | null
   uploadedById: string | null
-  status: string | null
+  status: $Enums.DocumentStatus | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -192,7 +192,7 @@ export type ContractDocumentGroupByOutputType = {
   url: string
   type: string
   uploadedById: string | null
-  status: string
+  status: $Enums.DocumentStatus
   createdAt: Date
   updatedAt: Date
   _count: ContractDocumentCountAggregateOutputType | null
@@ -227,7 +227,7 @@ export type ContractDocumentWhereInput = {
   url?: Prisma.StringFilter<"ContractDocument"> | string
   type?: Prisma.StringFilter<"ContractDocument"> | string
   uploadedById?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
-  status?: Prisma.StringFilter<"ContractDocument"> | string
+  status?: Prisma.EnumDocumentStatusFilter<"ContractDocument"> | $Enums.DocumentStatus
   createdAt?: Prisma.DateTimeFilter<"ContractDocument"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ContractDocument"> | Date | string
   contract?: Prisma.XOR<Prisma.ContractScalarRelationFilter, Prisma.ContractWhereInput>
@@ -263,7 +263,7 @@ export type ContractDocumentWhereUniqueInput = Prisma.AtLeast<{
   url?: Prisma.StringFilter<"ContractDocument"> | string
   type?: Prisma.StringFilter<"ContractDocument"> | string
   uploadedById?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
-  status?: Prisma.StringFilter<"ContractDocument"> | string
+  status?: Prisma.EnumDocumentStatusFilter<"ContractDocument"> | $Enums.DocumentStatus
   createdAt?: Prisma.DateTimeFilter<"ContractDocument"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ContractDocument"> | Date | string
   contract?: Prisma.XOR<Prisma.ContractScalarRelationFilter, Prisma.ContractWhereInput>
@@ -299,7 +299,7 @@ export type ContractDocumentScalarWhereWithAggregatesInput = {
   url?: Prisma.StringWithAggregatesFilter<"ContractDocument"> | string
   type?: Prisma.StringWithAggregatesFilter<"ContractDocument"> | string
   uploadedById?: Prisma.StringNullableWithAggregatesFilter<"ContractDocument"> | string | null
-  status?: Prisma.StringWithAggregatesFilter<"ContractDocument"> | string
+  status?: Prisma.EnumDocumentStatusWithAggregatesFilter<"ContractDocument"> | $Enums.DocumentStatus
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ContractDocument"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ContractDocument"> | Date | string
 }
@@ -311,7 +311,7 @@ export type ContractDocumentCreateInput = {
   name: string
   url: string
   type: string
-  status?: string
+  status?: $Enums.DocumentStatus
   createdAt?: Date | string
   updatedAt?: Date | string
   contract: Prisma.ContractCreateNestedOneWithoutDocumentsInput
@@ -327,7 +327,7 @@ export type ContractDocumentUncheckedCreateInput = {
   url: string
   type: string
   uploadedById?: string | null
-  status?: string
+  status?: $Enums.DocumentStatus
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -339,7 +339,7 @@ export type ContractDocumentUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contract?: Prisma.ContractUpdateOneRequiredWithoutDocumentsNestedInput
@@ -355,7 +355,7 @@ export type ContractDocumentUncheckedUpdateInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -369,7 +369,7 @@ export type ContractDocumentCreateManyInput = {
   url: string
   type: string
   uploadedById?: string | null
-  status?: string
+  status?: $Enums.DocumentStatus
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -381,7 +381,7 @@ export type ContractDocumentUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -395,7 +395,7 @@ export type ContractDocumentUncheckedUpdateManyInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -542,6 +542,10 @@ export type ContractDocumentUncheckedUpdateManyWithoutContractNestedInput = {
   deleteMany?: Prisma.ContractDocumentScalarWhereInput | Prisma.ContractDocumentScalarWhereInput[]
 }
 
+export type EnumDocumentStatusFieldUpdateOperationsInput = {
+  set?: $Enums.DocumentStatus
+}
+
 export type ContractDocumentCreateWithoutUploadedByInput = {
   id?: string
   phaseId?: string | null
@@ -549,7 +553,7 @@ export type ContractDocumentCreateWithoutUploadedByInput = {
   name: string
   url: string
   type: string
-  status?: string
+  status?: $Enums.DocumentStatus
   createdAt?: Date | string
   updatedAt?: Date | string
   contract: Prisma.ContractCreateNestedOneWithoutDocumentsInput
@@ -563,7 +567,7 @@ export type ContractDocumentUncheckedCreateWithoutUploadedByInput = {
   name: string
   url: string
   type: string
-  status?: string
+  status?: $Enums.DocumentStatus
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -606,7 +610,7 @@ export type ContractDocumentScalarWhereInput = {
   url?: Prisma.StringFilter<"ContractDocument"> | string
   type?: Prisma.StringFilter<"ContractDocument"> | string
   uploadedById?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
-  status?: Prisma.StringFilter<"ContractDocument"> | string
+  status?: Prisma.EnumDocumentStatusFilter<"ContractDocument"> | $Enums.DocumentStatus
   createdAt?: Prisma.DateTimeFilter<"ContractDocument"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ContractDocument"> | Date | string
 }
@@ -618,7 +622,7 @@ export type ContractDocumentCreateWithoutContractInput = {
   name: string
   url: string
   type: string
-  status?: string
+  status?: $Enums.DocumentStatus
   createdAt?: Date | string
   updatedAt?: Date | string
   uploadedBy?: Prisma.UserCreateNestedOneWithoutUploadedDocsInput
@@ -632,7 +636,7 @@ export type ContractDocumentUncheckedCreateWithoutContractInput = {
   url: string
   type: string
   uploadedById?: string | null
-  status?: string
+  status?: $Enums.DocumentStatus
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -671,7 +675,7 @@ export type ContractDocumentCreateManyUploadedByInput = {
   name: string
   url: string
   type: string
-  status?: string
+  status?: $Enums.DocumentStatus
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -683,7 +687,7 @@ export type ContractDocumentUpdateWithoutUploadedByInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contract?: Prisma.ContractUpdateOneRequiredWithoutDocumentsNestedInput
@@ -697,7 +701,7 @@ export type ContractDocumentUncheckedUpdateWithoutUploadedByInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -710,7 +714,7 @@ export type ContractDocumentUncheckedUpdateManyWithoutUploadedByInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -723,7 +727,7 @@ export type ContractDocumentCreateManyContractInput = {
   url: string
   type: string
   uploadedById?: string | null
-  status?: string
+  status?: $Enums.DocumentStatus
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -735,7 +739,7 @@ export type ContractDocumentUpdateWithoutContractInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   uploadedBy?: Prisma.UserUpdateOneWithoutUploadedDocsNestedInput
@@ -749,7 +753,7 @@ export type ContractDocumentUncheckedUpdateWithoutContractInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -762,7 +766,7 @@ export type ContractDocumentUncheckedUpdateManyWithoutContractInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -822,7 +826,7 @@ export type $ContractDocumentPayload<ExtArgs extends runtime.Types.Extensions.In
     url: string
     type: string
     uploadedById: string | null
-    status: string
+    status: $Enums.DocumentStatus
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["contractDocument"]>
@@ -1204,7 +1208,7 @@ export interface ContractDocumentFieldRefs {
   readonly url: Prisma.FieldRef<"ContractDocument", 'String'>
   readonly type: Prisma.FieldRef<"ContractDocument", 'String'>
   readonly uploadedById: Prisma.FieldRef<"ContractDocument", 'String'>
-  readonly status: Prisma.FieldRef<"ContractDocument", 'String'>
+  readonly status: Prisma.FieldRef<"ContractDocument", 'DocumentStatus'>
   readonly createdAt: Prisma.FieldRef<"ContractDocument", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"ContractDocument", 'DateTime'>
 }

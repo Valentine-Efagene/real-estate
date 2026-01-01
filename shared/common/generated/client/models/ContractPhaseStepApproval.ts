@@ -28,7 +28,7 @@ export type ContractPhaseStepApprovalMinAggregateOutputType = {
   id: string | null
   stepId: string | null
   approverId: string | null
-  decision: string | null
+  decision: $Enums.ApprovalDecision | null
   comment: string | null
   decidedAt: Date | null
   createdAt: Date | null
@@ -38,7 +38,7 @@ export type ContractPhaseStepApprovalMaxAggregateOutputType = {
   id: string | null
   stepId: string | null
   approverId: string | null
-  decision: string | null
+  decision: $Enums.ApprovalDecision | null
   comment: string | null
   decidedAt: Date | null
   createdAt: Date | null
@@ -163,7 +163,7 @@ export type ContractPhaseStepApprovalGroupByOutputType = {
   id: string
   stepId: string
   approverId: string | null
-  decision: string
+  decision: $Enums.ApprovalDecision
   comment: string | null
   decidedAt: Date
   createdAt: Date
@@ -194,7 +194,7 @@ export type ContractPhaseStepApprovalWhereInput = {
   id?: Prisma.StringFilter<"ContractPhaseStepApproval"> | string
   stepId?: Prisma.StringFilter<"ContractPhaseStepApproval"> | string
   approverId?: Prisma.StringNullableFilter<"ContractPhaseStepApproval"> | string | null
-  decision?: Prisma.StringFilter<"ContractPhaseStepApproval"> | string
+  decision?: Prisma.EnumApprovalDecisionFilter<"ContractPhaseStepApproval"> | $Enums.ApprovalDecision
   comment?: Prisma.StringNullableFilter<"ContractPhaseStepApproval"> | string | null
   decidedAt?: Prisma.DateTimeFilter<"ContractPhaseStepApproval"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"ContractPhaseStepApproval"> | Date | string
@@ -222,7 +222,7 @@ export type ContractPhaseStepApprovalWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.ContractPhaseStepApprovalWhereInput | Prisma.ContractPhaseStepApprovalWhereInput[]
   stepId?: Prisma.StringFilter<"ContractPhaseStepApproval"> | string
   approverId?: Prisma.StringNullableFilter<"ContractPhaseStepApproval"> | string | null
-  decision?: Prisma.StringFilter<"ContractPhaseStepApproval"> | string
+  decision?: Prisma.EnumApprovalDecisionFilter<"ContractPhaseStepApproval"> | $Enums.ApprovalDecision
   comment?: Prisma.StringNullableFilter<"ContractPhaseStepApproval"> | string | null
   decidedAt?: Prisma.DateTimeFilter<"ContractPhaseStepApproval"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"ContractPhaseStepApproval"> | Date | string
@@ -250,7 +250,7 @@ export type ContractPhaseStepApprovalScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"ContractPhaseStepApproval"> | string
   stepId?: Prisma.StringWithAggregatesFilter<"ContractPhaseStepApproval"> | string
   approverId?: Prisma.StringNullableWithAggregatesFilter<"ContractPhaseStepApproval"> | string | null
-  decision?: Prisma.StringWithAggregatesFilter<"ContractPhaseStepApproval"> | string
+  decision?: Prisma.EnumApprovalDecisionWithAggregatesFilter<"ContractPhaseStepApproval"> | $Enums.ApprovalDecision
   comment?: Prisma.StringNullableWithAggregatesFilter<"ContractPhaseStepApproval"> | string | null
   decidedAt?: Prisma.DateTimeWithAggregatesFilter<"ContractPhaseStepApproval"> | Date | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ContractPhaseStepApproval"> | Date | string
@@ -258,7 +258,7 @@ export type ContractPhaseStepApprovalScalarWhereWithAggregatesInput = {
 
 export type ContractPhaseStepApprovalCreateInput = {
   id?: string
-  decision: string
+  decision: $Enums.ApprovalDecision
   comment?: string | null
   decidedAt?: Date | string
   createdAt?: Date | string
@@ -270,7 +270,7 @@ export type ContractPhaseStepApprovalUncheckedCreateInput = {
   id?: string
   stepId: string
   approverId?: string | null
-  decision: string
+  decision: $Enums.ApprovalDecision
   comment?: string | null
   decidedAt?: Date | string
   createdAt?: Date | string
@@ -278,7 +278,7 @@ export type ContractPhaseStepApprovalUncheckedCreateInput = {
 
 export type ContractPhaseStepApprovalUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  decision?: Prisma.StringFieldUpdateOperationsInput | string
+  decision?: Prisma.EnumApprovalDecisionFieldUpdateOperationsInput | $Enums.ApprovalDecision
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decidedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -290,7 +290,7 @@ export type ContractPhaseStepApprovalUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   stepId?: Prisma.StringFieldUpdateOperationsInput | string
   approverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  decision?: Prisma.StringFieldUpdateOperationsInput | string
+  decision?: Prisma.EnumApprovalDecisionFieldUpdateOperationsInput | $Enums.ApprovalDecision
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decidedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -300,7 +300,7 @@ export type ContractPhaseStepApprovalCreateManyInput = {
   id?: string
   stepId: string
   approverId?: string | null
-  decision: string
+  decision: $Enums.ApprovalDecision
   comment?: string | null
   decidedAt?: Date | string
   createdAt?: Date | string
@@ -308,7 +308,7 @@ export type ContractPhaseStepApprovalCreateManyInput = {
 
 export type ContractPhaseStepApprovalUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  decision?: Prisma.StringFieldUpdateOperationsInput | string
+  decision?: Prisma.EnumApprovalDecisionFieldUpdateOperationsInput | $Enums.ApprovalDecision
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decidedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -318,7 +318,7 @@ export type ContractPhaseStepApprovalUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   stepId?: Prisma.StringFieldUpdateOperationsInput | string
   approverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  decision?: Prisma.StringFieldUpdateOperationsInput | string
+  decision?: Prisma.EnumApprovalDecisionFieldUpdateOperationsInput | $Enums.ApprovalDecision
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decidedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -454,9 +454,13 @@ export type ContractPhaseStepApprovalUncheckedUpdateManyWithoutStepNestedInput =
   deleteMany?: Prisma.ContractPhaseStepApprovalScalarWhereInput | Prisma.ContractPhaseStepApprovalScalarWhereInput[]
 }
 
+export type EnumApprovalDecisionFieldUpdateOperationsInput = {
+  set?: $Enums.ApprovalDecision
+}
+
 export type ContractPhaseStepApprovalCreateWithoutApproverInput = {
   id?: string
-  decision: string
+  decision: $Enums.ApprovalDecision
   comment?: string | null
   decidedAt?: Date | string
   createdAt?: Date | string
@@ -466,7 +470,7 @@ export type ContractPhaseStepApprovalCreateWithoutApproverInput = {
 export type ContractPhaseStepApprovalUncheckedCreateWithoutApproverInput = {
   id?: string
   stepId: string
-  decision: string
+  decision: $Enums.ApprovalDecision
   comment?: string | null
   decidedAt?: Date | string
   createdAt?: Date | string
@@ -505,7 +509,7 @@ export type ContractPhaseStepApprovalScalarWhereInput = {
   id?: Prisma.StringFilter<"ContractPhaseStepApproval"> | string
   stepId?: Prisma.StringFilter<"ContractPhaseStepApproval"> | string
   approverId?: Prisma.StringNullableFilter<"ContractPhaseStepApproval"> | string | null
-  decision?: Prisma.StringFilter<"ContractPhaseStepApproval"> | string
+  decision?: Prisma.EnumApprovalDecisionFilter<"ContractPhaseStepApproval"> | $Enums.ApprovalDecision
   comment?: Prisma.StringNullableFilter<"ContractPhaseStepApproval"> | string | null
   decidedAt?: Prisma.DateTimeFilter<"ContractPhaseStepApproval"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"ContractPhaseStepApproval"> | Date | string
@@ -513,7 +517,7 @@ export type ContractPhaseStepApprovalScalarWhereInput = {
 
 export type ContractPhaseStepApprovalCreateWithoutStepInput = {
   id?: string
-  decision: string
+  decision: $Enums.ApprovalDecision
   comment?: string | null
   decidedAt?: Date | string
   createdAt?: Date | string
@@ -523,7 +527,7 @@ export type ContractPhaseStepApprovalCreateWithoutStepInput = {
 export type ContractPhaseStepApprovalUncheckedCreateWithoutStepInput = {
   id?: string
   approverId?: string | null
-  decision: string
+  decision: $Enums.ApprovalDecision
   comment?: string | null
   decidedAt?: Date | string
   createdAt?: Date | string
@@ -558,7 +562,7 @@ export type ContractPhaseStepApprovalUpdateManyWithWhereWithoutStepInput = {
 export type ContractPhaseStepApprovalCreateManyApproverInput = {
   id?: string
   stepId: string
-  decision: string
+  decision: $Enums.ApprovalDecision
   comment?: string | null
   decidedAt?: Date | string
   createdAt?: Date | string
@@ -566,7 +570,7 @@ export type ContractPhaseStepApprovalCreateManyApproverInput = {
 
 export type ContractPhaseStepApprovalUpdateWithoutApproverInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  decision?: Prisma.StringFieldUpdateOperationsInput | string
+  decision?: Prisma.EnumApprovalDecisionFieldUpdateOperationsInput | $Enums.ApprovalDecision
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decidedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -576,7 +580,7 @@ export type ContractPhaseStepApprovalUpdateWithoutApproverInput = {
 export type ContractPhaseStepApprovalUncheckedUpdateWithoutApproverInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   stepId?: Prisma.StringFieldUpdateOperationsInput | string
-  decision?: Prisma.StringFieldUpdateOperationsInput | string
+  decision?: Prisma.EnumApprovalDecisionFieldUpdateOperationsInput | $Enums.ApprovalDecision
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decidedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -585,7 +589,7 @@ export type ContractPhaseStepApprovalUncheckedUpdateWithoutApproverInput = {
 export type ContractPhaseStepApprovalUncheckedUpdateManyWithoutApproverInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   stepId?: Prisma.StringFieldUpdateOperationsInput | string
-  decision?: Prisma.StringFieldUpdateOperationsInput | string
+  decision?: Prisma.EnumApprovalDecisionFieldUpdateOperationsInput | $Enums.ApprovalDecision
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decidedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -594,7 +598,7 @@ export type ContractPhaseStepApprovalUncheckedUpdateManyWithoutApproverInput = {
 export type ContractPhaseStepApprovalCreateManyStepInput = {
   id?: string
   approverId?: string | null
-  decision: string
+  decision: $Enums.ApprovalDecision
   comment?: string | null
   decidedAt?: Date | string
   createdAt?: Date | string
@@ -602,7 +606,7 @@ export type ContractPhaseStepApprovalCreateManyStepInput = {
 
 export type ContractPhaseStepApprovalUpdateWithoutStepInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  decision?: Prisma.StringFieldUpdateOperationsInput | string
+  decision?: Prisma.EnumApprovalDecisionFieldUpdateOperationsInput | $Enums.ApprovalDecision
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decidedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -612,7 +616,7 @@ export type ContractPhaseStepApprovalUpdateWithoutStepInput = {
 export type ContractPhaseStepApprovalUncheckedUpdateWithoutStepInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   approverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  decision?: Prisma.StringFieldUpdateOperationsInput | string
+  decision?: Prisma.EnumApprovalDecisionFieldUpdateOperationsInput | $Enums.ApprovalDecision
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decidedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -621,7 +625,7 @@ export type ContractPhaseStepApprovalUncheckedUpdateWithoutStepInput = {
 export type ContractPhaseStepApprovalUncheckedUpdateManyWithoutStepInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   approverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  decision?: Prisma.StringFieldUpdateOperationsInput | string
+  decision?: Prisma.EnumApprovalDecisionFieldUpdateOperationsInput | $Enums.ApprovalDecision
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decidedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -669,7 +673,7 @@ export type $ContractPhaseStepApprovalPayload<ExtArgs extends runtime.Types.Exte
     id: string
     stepId: string
     approverId: string | null
-    decision: string
+    decision: $Enums.ApprovalDecision
     comment: string | null
     decidedAt: Date
     createdAt: Date
@@ -1047,7 +1051,7 @@ export interface ContractPhaseStepApprovalFieldRefs {
   readonly id: Prisma.FieldRef<"ContractPhaseStepApproval", 'String'>
   readonly stepId: Prisma.FieldRef<"ContractPhaseStepApproval", 'String'>
   readonly approverId: Prisma.FieldRef<"ContractPhaseStepApproval", 'String'>
-  readonly decision: Prisma.FieldRef<"ContractPhaseStepApproval", 'String'>
+  readonly decision: Prisma.FieldRef<"ContractPhaseStepApproval", 'ApprovalDecision'>
   readonly comment: Prisma.FieldRef<"ContractPhaseStepApproval", 'String'>
   readonly decidedAt: Prisma.FieldRef<"ContractPhaseStepApproval", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"ContractPhaseStepApproval", 'DateTime'>

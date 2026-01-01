@@ -51,7 +51,7 @@ export type ContractPaymentMinAggregateOutputType = {
   interestAmount: number | null
   lateFeeAmount: number | null
   paymentMethod: string | null
-  status: string | null
+  status: $Enums.PaymentStatus | null
   reference: string | null
   gatewayResponse: string | null
   processedAt: Date | null
@@ -70,7 +70,7 @@ export type ContractPaymentMaxAggregateOutputType = {
   interestAmount: number | null
   lateFeeAmount: number | null
   paymentMethod: string | null
-  status: string | null
+  status: $Enums.PaymentStatus | null
   reference: string | null
   gatewayResponse: string | null
   processedAt: Date | null
@@ -268,7 +268,7 @@ export type ContractPaymentGroupByOutputType = {
   interestAmount: number
   lateFeeAmount: number
   paymentMethod: string
-  status: string
+  status: $Enums.PaymentStatus
   reference: string | null
   gatewayResponse: string | null
   processedAt: Date | null
@@ -310,7 +310,7 @@ export type ContractPaymentWhereInput = {
   interestAmount?: Prisma.FloatFilter<"ContractPayment"> | number
   lateFeeAmount?: Prisma.FloatFilter<"ContractPayment"> | number
   paymentMethod?: Prisma.StringFilter<"ContractPayment"> | string
-  status?: Prisma.StringFilter<"ContractPayment"> | string
+  status?: Prisma.EnumPaymentStatusFilter<"ContractPayment"> | $Enums.PaymentStatus
   reference?: Prisma.StringNullableFilter<"ContractPayment"> | string | null
   gatewayResponse?: Prisma.StringNullableFilter<"ContractPayment"> | string | null
   processedAt?: Prisma.DateTimeNullableFilter<"ContractPayment"> | Date | string | null
@@ -361,7 +361,7 @@ export type ContractPaymentWhereUniqueInput = Prisma.AtLeast<{
   interestAmount?: Prisma.FloatFilter<"ContractPayment"> | number
   lateFeeAmount?: Prisma.FloatFilter<"ContractPayment"> | number
   paymentMethod?: Prisma.StringFilter<"ContractPayment"> | string
-  status?: Prisma.StringFilter<"ContractPayment"> | string
+  status?: Prisma.EnumPaymentStatusFilter<"ContractPayment"> | $Enums.PaymentStatus
   gatewayResponse?: Prisma.StringNullableFilter<"ContractPayment"> | string | null
   processedAt?: Prisma.DateTimeNullableFilter<"ContractPayment"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"ContractPayment"> | Date | string
@@ -410,7 +410,7 @@ export type ContractPaymentScalarWhereWithAggregatesInput = {
   interestAmount?: Prisma.FloatWithAggregatesFilter<"ContractPayment"> | number
   lateFeeAmount?: Prisma.FloatWithAggregatesFilter<"ContractPayment"> | number
   paymentMethod?: Prisma.StringWithAggregatesFilter<"ContractPayment"> | string
-  status?: Prisma.StringWithAggregatesFilter<"ContractPayment"> | string
+  status?: Prisma.EnumPaymentStatusWithAggregatesFilter<"ContractPayment"> | $Enums.PaymentStatus
   reference?: Prisma.StringNullableWithAggregatesFilter<"ContractPayment"> | string | null
   gatewayResponse?: Prisma.StringNullableWithAggregatesFilter<"ContractPayment"> | string | null
   processedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ContractPayment"> | Date | string | null
@@ -425,7 +425,7 @@ export type ContractPaymentCreateInput = {
   interestAmount?: number
   lateFeeAmount?: number
   paymentMethod: string
-  status?: string
+  status?: $Enums.PaymentStatus
   reference?: string | null
   gatewayResponse?: string | null
   processedAt?: Date | string | null
@@ -448,7 +448,7 @@ export type ContractPaymentUncheckedCreateInput = {
   interestAmount?: number
   lateFeeAmount?: number
   paymentMethod: string
-  status?: string
+  status?: $Enums.PaymentStatus
   reference?: string | null
   gatewayResponse?: string | null
   processedAt?: Date | string | null
@@ -463,7 +463,7 @@ export type ContractPaymentUpdateInput = {
   interestAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   lateFeeAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentMethod?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatewayResponse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -486,7 +486,7 @@ export type ContractPaymentUncheckedUpdateInput = {
   interestAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   lateFeeAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentMethod?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatewayResponse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -505,7 +505,7 @@ export type ContractPaymentCreateManyInput = {
   interestAmount?: number
   lateFeeAmount?: number
   paymentMethod: string
-  status?: string
+  status?: $Enums.PaymentStatus
   reference?: string | null
   gatewayResponse?: string | null
   processedAt?: Date | string | null
@@ -520,7 +520,7 @@ export type ContractPaymentUpdateManyMutationInput = {
   interestAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   lateFeeAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentMethod?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatewayResponse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -539,7 +539,7 @@ export type ContractPaymentUncheckedUpdateManyInput = {
   interestAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   lateFeeAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentMethod?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatewayResponse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -802,6 +802,10 @@ export type ContractPaymentUncheckedUpdateManyWithoutInstallmentNestedInput = {
   deleteMany?: Prisma.ContractPaymentScalarWhereInput | Prisma.ContractPaymentScalarWhereInput[]
 }
 
+export type EnumPaymentStatusFieldUpdateOperationsInput = {
+  set?: $Enums.PaymentStatus
+}
+
 export type ContractPaymentCreateWithoutPayerInput = {
   id?: string
   amount: number
@@ -809,7 +813,7 @@ export type ContractPaymentCreateWithoutPayerInput = {
   interestAmount?: number
   lateFeeAmount?: number
   paymentMethod: string
-  status?: string
+  status?: $Enums.PaymentStatus
   reference?: string | null
   gatewayResponse?: string | null
   processedAt?: Date | string | null
@@ -830,7 +834,7 @@ export type ContractPaymentUncheckedCreateWithoutPayerInput = {
   interestAmount?: number
   lateFeeAmount?: number
   paymentMethod: string
-  status?: string
+  status?: $Enums.PaymentStatus
   reference?: string | null
   gatewayResponse?: string | null
   processedAt?: Date | string | null
@@ -878,7 +882,7 @@ export type ContractPaymentScalarWhereInput = {
   interestAmount?: Prisma.FloatFilter<"ContractPayment"> | number
   lateFeeAmount?: Prisma.FloatFilter<"ContractPayment"> | number
   paymentMethod?: Prisma.StringFilter<"ContractPayment"> | string
-  status?: Prisma.StringFilter<"ContractPayment"> | string
+  status?: Prisma.EnumPaymentStatusFilter<"ContractPayment"> | $Enums.PaymentStatus
   reference?: Prisma.StringNullableFilter<"ContractPayment"> | string | null
   gatewayResponse?: Prisma.StringNullableFilter<"ContractPayment"> | string | null
   processedAt?: Prisma.DateTimeNullableFilter<"ContractPayment"> | Date | string | null
@@ -893,7 +897,7 @@ export type ContractPaymentCreateWithoutContractInput = {
   interestAmount?: number
   lateFeeAmount?: number
   paymentMethod: string
-  status?: string
+  status?: $Enums.PaymentStatus
   reference?: string | null
   gatewayResponse?: string | null
   processedAt?: Date | string | null
@@ -914,7 +918,7 @@ export type ContractPaymentUncheckedCreateWithoutContractInput = {
   interestAmount?: number
   lateFeeAmount?: number
   paymentMethod: string
-  status?: string
+  status?: $Enums.PaymentStatus
   reference?: string | null
   gatewayResponse?: string | null
   processedAt?: Date | string | null
@@ -955,7 +959,7 @@ export type ContractPaymentCreateWithoutPhaseInput = {
   interestAmount?: number
   lateFeeAmount?: number
   paymentMethod: string
-  status?: string
+  status?: $Enums.PaymentStatus
   reference?: string | null
   gatewayResponse?: string | null
   processedAt?: Date | string | null
@@ -976,7 +980,7 @@ export type ContractPaymentUncheckedCreateWithoutPhaseInput = {
   interestAmount?: number
   lateFeeAmount?: number
   paymentMethod: string
-  status?: string
+  status?: $Enums.PaymentStatus
   reference?: string | null
   gatewayResponse?: string | null
   processedAt?: Date | string | null
@@ -1017,7 +1021,7 @@ export type ContractPaymentCreateWithoutInstallmentInput = {
   interestAmount?: number
   lateFeeAmount?: number
   paymentMethod: string
-  status?: string
+  status?: $Enums.PaymentStatus
   reference?: string | null
   gatewayResponse?: string | null
   processedAt?: Date | string | null
@@ -1038,7 +1042,7 @@ export type ContractPaymentUncheckedCreateWithoutInstallmentInput = {
   interestAmount?: number
   lateFeeAmount?: number
   paymentMethod: string
-  status?: string
+  status?: $Enums.PaymentStatus
   reference?: string | null
   gatewayResponse?: string | null
   processedAt?: Date | string | null
@@ -1082,7 +1086,7 @@ export type ContractPaymentCreateManyPayerInput = {
   interestAmount?: number
   lateFeeAmount?: number
   paymentMethod: string
-  status?: string
+  status?: $Enums.PaymentStatus
   reference?: string | null
   gatewayResponse?: string | null
   processedAt?: Date | string | null
@@ -1097,7 +1101,7 @@ export type ContractPaymentUpdateWithoutPayerInput = {
   interestAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   lateFeeAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentMethod?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatewayResponse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1118,7 +1122,7 @@ export type ContractPaymentUncheckedUpdateWithoutPayerInput = {
   interestAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   lateFeeAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentMethod?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatewayResponse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1136,7 +1140,7 @@ export type ContractPaymentUncheckedUpdateManyWithoutPayerInput = {
   interestAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   lateFeeAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentMethod?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatewayResponse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1154,7 +1158,7 @@ export type ContractPaymentCreateManyContractInput = {
   interestAmount?: number
   lateFeeAmount?: number
   paymentMethod: string
-  status?: string
+  status?: $Enums.PaymentStatus
   reference?: string | null
   gatewayResponse?: string | null
   processedAt?: Date | string | null
@@ -1169,7 +1173,7 @@ export type ContractPaymentUpdateWithoutContractInput = {
   interestAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   lateFeeAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentMethod?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatewayResponse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1190,7 +1194,7 @@ export type ContractPaymentUncheckedUpdateWithoutContractInput = {
   interestAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   lateFeeAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentMethod?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatewayResponse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1208,7 +1212,7 @@ export type ContractPaymentUncheckedUpdateManyWithoutContractInput = {
   interestAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   lateFeeAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentMethod?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatewayResponse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1226,7 +1230,7 @@ export type ContractPaymentCreateManyPhaseInput = {
   interestAmount?: number
   lateFeeAmount?: number
   paymentMethod: string
-  status?: string
+  status?: $Enums.PaymentStatus
   reference?: string | null
   gatewayResponse?: string | null
   processedAt?: Date | string | null
@@ -1241,7 +1245,7 @@ export type ContractPaymentUpdateWithoutPhaseInput = {
   interestAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   lateFeeAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentMethod?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatewayResponse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1262,7 +1266,7 @@ export type ContractPaymentUncheckedUpdateWithoutPhaseInput = {
   interestAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   lateFeeAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentMethod?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatewayResponse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1280,7 +1284,7 @@ export type ContractPaymentUncheckedUpdateManyWithoutPhaseInput = {
   interestAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   lateFeeAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentMethod?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatewayResponse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1298,7 +1302,7 @@ export type ContractPaymentCreateManyInstallmentInput = {
   interestAmount?: number
   lateFeeAmount?: number
   paymentMethod: string
-  status?: string
+  status?: $Enums.PaymentStatus
   reference?: string | null
   gatewayResponse?: string | null
   processedAt?: Date | string | null
@@ -1313,7 +1317,7 @@ export type ContractPaymentUpdateWithoutInstallmentInput = {
   interestAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   lateFeeAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentMethod?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatewayResponse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1334,7 +1338,7 @@ export type ContractPaymentUncheckedUpdateWithoutInstallmentInput = {
   interestAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   lateFeeAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentMethod?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatewayResponse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1352,7 +1356,7 @@ export type ContractPaymentUncheckedUpdateManyWithoutInstallmentInput = {
   interestAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   lateFeeAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentMethod?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
   reference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gatewayResponse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1433,7 +1437,7 @@ export type $ContractPaymentPayload<ExtArgs extends runtime.Types.Extensions.Int
     interestAmount: number
     lateFeeAmount: number
     paymentMethod: string
-    status: string
+    status: $Enums.PaymentStatus
     reference: string | null
     gatewayResponse: string | null
     processedAt: Date | null
@@ -1822,7 +1826,7 @@ export interface ContractPaymentFieldRefs {
   readonly interestAmount: Prisma.FieldRef<"ContractPayment", 'Float'>
   readonly lateFeeAmount: Prisma.FieldRef<"ContractPayment", 'Float'>
   readonly paymentMethod: Prisma.FieldRef<"ContractPayment", 'String'>
-  readonly status: Prisma.FieldRef<"ContractPayment", 'String'>
+  readonly status: Prisma.FieldRef<"ContractPayment", 'PaymentStatus'>
   readonly reference: Prisma.FieldRef<"ContractPayment", 'String'>
   readonly gatewayResponse: Prisma.FieldRef<"ContractPayment", 'String'>
   readonly processedAt: Prisma.FieldRef<"ContractPayment", 'DateTime'>

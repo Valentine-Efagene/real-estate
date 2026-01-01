@@ -413,9 +413,12 @@ export const ModelName = {
   PropertyPaymentMethod: 'PropertyPaymentMethod',
   PropertyPaymentMethodLink: 'PropertyPaymentMethodLink',
   PropertyPaymentMethodPhase: 'PropertyPaymentMethodPhase',
+  PaymentMethodPhaseStep: 'PaymentMethodPhaseStep',
+  PaymentMethodPhaseDocument: 'PaymentMethodPhaseDocument',
   Contract: 'Contract',
   ContractPhase: 'ContractPhase',
   ContractPhaseStep: 'ContractPhaseStep',
+  ContractPhaseStepDocument: 'ContractPhaseStepDocument',
   ContractPhaseStepApproval: 'ContractPhaseStepApproval',
   ContractInstallment: 'ContractInstallment',
   ContractPayment: 'ContractPayment',
@@ -441,7 +444,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenant" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "contract" | "contractPhase" | "contractPhaseStep" | "contractPhaseStepApproval" | "contractInstallment" | "contractPayment" | "contractDocument" | "contractTransition" | "contractEvent" | "prequalification" | "paymentMethodChangeRequest" | "documentRequirementRule" | "domainEvent"
+    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenant" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "paymentMethodPhaseStep" | "paymentMethodPhaseDocument" | "contract" | "contractPhase" | "contractPhaseStep" | "contractPhaseStepDocument" | "contractPhaseStepApproval" | "contractInstallment" | "contractPayment" | "contractDocument" | "contractTransition" | "contractEvent" | "prequalification" | "paymentMethodChangeRequest" | "documentRequirementRule" | "domainEvent"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2359,6 +2362,138 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    PaymentMethodPhaseStep: {
+      payload: Prisma.$PaymentMethodPhaseStepPayload<ExtArgs>
+      fields: Prisma.PaymentMethodPhaseStepFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PaymentMethodPhaseStepFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseStepPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PaymentMethodPhaseStepFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseStepPayload>
+        }
+        findFirst: {
+          args: Prisma.PaymentMethodPhaseStepFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseStepPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PaymentMethodPhaseStepFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseStepPayload>
+        }
+        findMany: {
+          args: Prisma.PaymentMethodPhaseStepFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseStepPayload>[]
+        }
+        create: {
+          args: Prisma.PaymentMethodPhaseStepCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseStepPayload>
+        }
+        createMany: {
+          args: Prisma.PaymentMethodPhaseStepCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.PaymentMethodPhaseStepDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseStepPayload>
+        }
+        update: {
+          args: Prisma.PaymentMethodPhaseStepUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseStepPayload>
+        }
+        deleteMany: {
+          args: Prisma.PaymentMethodPhaseStepDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PaymentMethodPhaseStepUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.PaymentMethodPhaseStepUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseStepPayload>
+        }
+        aggregate: {
+          args: Prisma.PaymentMethodPhaseStepAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePaymentMethodPhaseStep>
+        }
+        groupBy: {
+          args: Prisma.PaymentMethodPhaseStepGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaymentMethodPhaseStepGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PaymentMethodPhaseStepCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaymentMethodPhaseStepCountAggregateOutputType> | number
+        }
+      }
+    }
+    PaymentMethodPhaseDocument: {
+      payload: Prisma.$PaymentMethodPhaseDocumentPayload<ExtArgs>
+      fields: Prisma.PaymentMethodPhaseDocumentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PaymentMethodPhaseDocumentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseDocumentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PaymentMethodPhaseDocumentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseDocumentPayload>
+        }
+        findFirst: {
+          args: Prisma.PaymentMethodPhaseDocumentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseDocumentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PaymentMethodPhaseDocumentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseDocumentPayload>
+        }
+        findMany: {
+          args: Prisma.PaymentMethodPhaseDocumentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseDocumentPayload>[]
+        }
+        create: {
+          args: Prisma.PaymentMethodPhaseDocumentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseDocumentPayload>
+        }
+        createMany: {
+          args: Prisma.PaymentMethodPhaseDocumentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.PaymentMethodPhaseDocumentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseDocumentPayload>
+        }
+        update: {
+          args: Prisma.PaymentMethodPhaseDocumentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseDocumentPayload>
+        }
+        deleteMany: {
+          args: Prisma.PaymentMethodPhaseDocumentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PaymentMethodPhaseDocumentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.PaymentMethodPhaseDocumentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseDocumentPayload>
+        }
+        aggregate: {
+          args: Prisma.PaymentMethodPhaseDocumentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePaymentMethodPhaseDocument>
+        }
+        groupBy: {
+          args: Prisma.PaymentMethodPhaseDocumentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaymentMethodPhaseDocumentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PaymentMethodPhaseDocumentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaymentMethodPhaseDocumentCountAggregateOutputType> | number
+        }
+      }
+    }
     Contract: {
       payload: Prisma.$ContractPayload<ExtArgs>
       fields: Prisma.ContractFieldRefs
@@ -2554,6 +2689,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.ContractPhaseStepCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.ContractPhaseStepCountAggregateOutputType> | number
+        }
+      }
+    }
+    ContractPhaseStepDocument: {
+      payload: Prisma.$ContractPhaseStepDocumentPayload<ExtArgs>
+      fields: Prisma.ContractPhaseStepDocumentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ContractPhaseStepDocumentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepDocumentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ContractPhaseStepDocumentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepDocumentPayload>
+        }
+        findFirst: {
+          args: Prisma.ContractPhaseStepDocumentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepDocumentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ContractPhaseStepDocumentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepDocumentPayload>
+        }
+        findMany: {
+          args: Prisma.ContractPhaseStepDocumentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepDocumentPayload>[]
+        }
+        create: {
+          args: Prisma.ContractPhaseStepDocumentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepDocumentPayload>
+        }
+        createMany: {
+          args: Prisma.ContractPhaseStepDocumentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.ContractPhaseStepDocumentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepDocumentPayload>
+        }
+        update: {
+          args: Prisma.ContractPhaseStepDocumentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepDocumentPayload>
+        }
+        deleteMany: {
+          args: Prisma.ContractPhaseStepDocumentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ContractPhaseStepDocumentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.ContractPhaseStepDocumentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepDocumentPayload>
+        }
+        aggregate: {
+          args: Prisma.ContractPhaseStepDocumentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateContractPhaseStepDocument>
+        }
+        groupBy: {
+          args: Prisma.ContractPhaseStepDocumentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ContractPhaseStepDocumentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ContractPhaseStepDocumentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ContractPhaseStepDocumentCountAggregateOutputType> | number
         }
       }
     }
@@ -3658,13 +3859,43 @@ export const PropertyPaymentMethodPhaseScalarFieldEnum = {
   percentOfPrice: 'percentOfPrice',
   requiresPreviousPhaseCompletion: 'requiresPreviousPhaseCompletion',
   minimumCompletionPercentage: 'minimumCompletionPercentage',
-  requiredDocumentTypes: 'requiredDocumentTypes',
-  stepDefinitions: 'stepDefinitions',
+  completionCriterion: 'completionCriterion',
+  stepDefinitionsSnapshot: 'stepDefinitionsSnapshot',
+  requiredDocumentSnapshot: 'requiredDocumentSnapshot',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type PropertyPaymentMethodPhaseScalarFieldEnum = (typeof PropertyPaymentMethodPhaseScalarFieldEnum)[keyof typeof PropertyPaymentMethodPhaseScalarFieldEnum]
+
+
+export const PaymentMethodPhaseStepScalarFieldEnum = {
+  id: 'id',
+  phaseId: 'phaseId',
+  name: 'name',
+  stepType: 'stepType',
+  order: 'order',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PaymentMethodPhaseStepScalarFieldEnum = (typeof PaymentMethodPhaseStepScalarFieldEnum)[keyof typeof PaymentMethodPhaseStepScalarFieldEnum]
+
+
+export const PaymentMethodPhaseDocumentScalarFieldEnum = {
+  id: 'id',
+  phaseId: 'phaseId',
+  documentType: 'documentType',
+  isRequired: 'isRequired',
+  description: 'description',
+  allowedMimeTypes: 'allowedMimeTypes',
+  maxSizeBytes: 'maxSizeBytes',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+} as const
+
+export type PaymentMethodPhaseDocumentScalarFieldEnum = (typeof PaymentMethodPhaseDocumentScalarFieldEnum)[keyof typeof PaymentMethodPhaseDocumentScalarFieldEnum]
 
 
 export const ContractScalarFieldEnum = {
@@ -3717,6 +3948,10 @@ export const ContractPhaseScalarFieldEnum = {
   paidAmount: 'paidAmount',
   remainingAmount: 'remainingAmount',
   interestRate: 'interestRate',
+  approvedDocumentsCount: 'approvedDocumentsCount',
+  requiredDocumentsCount: 'requiredDocumentsCount',
+  completedStepsCount: 'completedStepsCount',
+  totalStepsCount: 'totalStepsCount',
   dueDate: 'dueDate',
   startDate: 'startDate',
   endDate: 'endDate',
@@ -3724,6 +3959,10 @@ export const ContractPhaseScalarFieldEnum = {
   completedAt: 'completedAt',
   requiresPreviousPhaseCompletion: 'requiresPreviousPhaseCompletion',
   minimumCompletionPercentage: 'minimumCompletionPercentage',
+  completionCriterion: 'completionCriterion',
+  paymentPlanSnapshot: 'paymentPlanSnapshot',
+  stepDefinitionsSnapshot: 'stepDefinitionsSnapshot',
+  requiredDocumentSnapshot: 'requiredDocumentSnapshot',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -3740,7 +3979,6 @@ export const ContractPhaseStepScalarFieldEnum = {
   order: 'order',
   status: 'status',
   assigneeId: 'assigneeId',
-  requiredDocumentTypes: 'requiredDocumentTypes',
   dueDate: 'dueDate',
   completedAt: 'completedAt',
   createdAt: 'createdAt',
@@ -3748,6 +3986,17 @@ export const ContractPhaseStepScalarFieldEnum = {
 } as const
 
 export type ContractPhaseStepScalarFieldEnum = (typeof ContractPhaseStepScalarFieldEnum)[keyof typeof ContractPhaseStepScalarFieldEnum]
+
+
+export const ContractPhaseStepDocumentScalarFieldEnum = {
+  id: 'id',
+  stepId: 'stepId',
+  documentType: 'documentType',
+  isRequired: 'isRequired',
+  createdAt: 'createdAt'
+} as const
+
+export type ContractPhaseStepDocumentScalarFieldEnum = (typeof ContractPhaseStepDocumentScalarFieldEnum)[keyof typeof ContractPhaseStepDocumentScalarFieldEnum]
 
 
 export const ContractPhaseStepApprovalScalarFieldEnum = {
@@ -3958,19 +4207,19 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
-export const JsonNullValueInput = {
-  JsonNull: JsonNull
-} as const
-
-export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
-
-
 export const NullableJsonNullValueInput = {
   DbNull: DbNull,
   JsonNull: JsonNull
 } as const
 
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const NullsOrder = {
@@ -4246,8 +4495,7 @@ export const PaymentPlanOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   name: 'name',
-  description: 'description',
-  paymentFrequency: 'paymentFrequency'
+  description: 'description'
 } as const
 
 export type PaymentPlanOrderByRelevanceFieldEnum = (typeof PaymentPlanOrderByRelevanceFieldEnum)[keyof typeof PaymentPlanOrderByRelevanceFieldEnum]
@@ -4271,19 +4519,52 @@ export const PropertyPaymentMethodLinkOrderByRelevanceFieldEnum = {
 export type PropertyPaymentMethodLinkOrderByRelevanceFieldEnum = (typeof PropertyPaymentMethodLinkOrderByRelevanceFieldEnum)[keyof typeof PropertyPaymentMethodLinkOrderByRelevanceFieldEnum]
 
 
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+export const QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+} as const
+
+export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
 export const PropertyPaymentMethodPhaseOrderByRelevanceFieldEnum = {
   id: 'id',
   paymentMethodId: 'paymentMethodId',
   paymentPlanId: 'paymentPlanId',
   name: 'name',
-  description: 'description',
-  phaseCategory: 'phaseCategory',
-  phaseType: 'phaseType',
-  requiredDocumentTypes: 'requiredDocumentTypes',
-  stepDefinitions: 'stepDefinitions'
+  description: 'description'
 } as const
 
 export type PropertyPaymentMethodPhaseOrderByRelevanceFieldEnum = (typeof PropertyPaymentMethodPhaseOrderByRelevanceFieldEnum)[keyof typeof PropertyPaymentMethodPhaseOrderByRelevanceFieldEnum]
+
+
+export const PaymentMethodPhaseStepOrderByRelevanceFieldEnum = {
+  id: 'id',
+  phaseId: 'phaseId',
+  name: 'name'
+} as const
+
+export type PaymentMethodPhaseStepOrderByRelevanceFieldEnum = (typeof PaymentMethodPhaseStepOrderByRelevanceFieldEnum)[keyof typeof PaymentMethodPhaseStepOrderByRelevanceFieldEnum]
+
+
+export const PaymentMethodPhaseDocumentOrderByRelevanceFieldEnum = {
+  id: 'id',
+  phaseId: 'phaseId',
+  documentType: 'documentType',
+  description: 'description',
+  allowedMimeTypes: 'allowedMimeTypes'
+} as const
+
+export type PaymentMethodPhaseDocumentOrderByRelevanceFieldEnum = (typeof PaymentMethodPhaseDocumentOrderByRelevanceFieldEnum)[keyof typeof PaymentMethodPhaseDocumentOrderByRelevanceFieldEnum]
 
 
 export const ContractOrderByRelevanceFieldEnum = {
@@ -4297,8 +4578,6 @@ export const ContractOrderByRelevanceFieldEnum = {
   title: 'title',
   description: 'description',
   contractType: 'contractType',
-  status: 'status',
-  state: 'state',
   currentPhaseId: 'currentPhaseId'
 } as const
 
@@ -4310,10 +4589,7 @@ export const ContractPhaseOrderByRelevanceFieldEnum = {
   contractId: 'contractId',
   paymentPlanId: 'paymentPlanId',
   name: 'name',
-  description: 'description',
-  phaseCategory: 'phaseCategory',
-  phaseType: 'phaseType',
-  status: 'status'
+  description: 'description'
 } as const
 
 export type ContractPhaseOrderByRelevanceFieldEnum = (typeof ContractPhaseOrderByRelevanceFieldEnum)[keyof typeof ContractPhaseOrderByRelevanceFieldEnum]
@@ -4324,20 +4600,25 @@ export const ContractPhaseStepOrderByRelevanceFieldEnum = {
   phaseId: 'phaseId',
   name: 'name',
   description: 'description',
-  stepType: 'stepType',
-  status: 'status',
-  assigneeId: 'assigneeId',
-  requiredDocumentTypes: 'requiredDocumentTypes'
+  assigneeId: 'assigneeId'
 } as const
 
 export type ContractPhaseStepOrderByRelevanceFieldEnum = (typeof ContractPhaseStepOrderByRelevanceFieldEnum)[keyof typeof ContractPhaseStepOrderByRelevanceFieldEnum]
+
+
+export const ContractPhaseStepDocumentOrderByRelevanceFieldEnum = {
+  id: 'id',
+  stepId: 'stepId',
+  documentType: 'documentType'
+} as const
+
+export type ContractPhaseStepDocumentOrderByRelevanceFieldEnum = (typeof ContractPhaseStepDocumentOrderByRelevanceFieldEnum)[keyof typeof ContractPhaseStepDocumentOrderByRelevanceFieldEnum]
 
 
 export const ContractPhaseStepApprovalOrderByRelevanceFieldEnum = {
   id: 'id',
   stepId: 'stepId',
   approverId: 'approverId',
-  decision: 'decision',
   comment: 'comment'
 } as const
 
@@ -4346,8 +4627,7 @@ export type ContractPhaseStepApprovalOrderByRelevanceFieldEnum = (typeof Contrac
 
 export const ContractInstallmentOrderByRelevanceFieldEnum = {
   id: 'id',
-  phaseId: 'phaseId',
-  status: 'status'
+  phaseId: 'phaseId'
 } as const
 
 export type ContractInstallmentOrderByRelevanceFieldEnum = (typeof ContractInstallmentOrderByRelevanceFieldEnum)[keyof typeof ContractInstallmentOrderByRelevanceFieldEnum]
@@ -4360,7 +4640,6 @@ export const ContractPaymentOrderByRelevanceFieldEnum = {
   installmentId: 'installmentId',
   payerId: 'payerId',
   paymentMethod: 'paymentMethod',
-  status: 'status',
   reference: 'reference',
   gatewayResponse: 'gatewayResponse'
 } as const
@@ -4376,8 +4655,7 @@ export const ContractDocumentOrderByRelevanceFieldEnum = {
   name: 'name',
   url: 'url',
   type: 'type',
-  uploadedById: 'uploadedById',
-  status: 'status'
+  uploadedById: 'uploadedById'
 } as const
 
 export type ContractDocumentOrderByRelevanceFieldEnum = (typeof ContractDocumentOrderByRelevanceFieldEnum)[keyof typeof ContractDocumentOrderByRelevanceFieldEnum]
@@ -4403,23 +4681,6 @@ export const ContractEventOrderByRelevanceFieldEnum = {
 } as const
 
 export type ContractEventOrderByRelevanceFieldEnum = (typeof ContractEventOrderByRelevanceFieldEnum)[keyof typeof ContractEventOrderByRelevanceFieldEnum]
-
-
-export const JsonNullValueFilter = {
-  DbNull: DbNull,
-  JsonNull: JsonNull,
-  AnyNull: AnyNull
-} as const
-
-export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
-
-
-export const QueryMode = {
-  default: 'default',
-  insensitive: 'insensitive'
-} as const
-
-export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 
 export const PrequalificationOrderByRelevanceFieldEnum = {
@@ -4526,6 +4787,34 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
 
 
 /**
+ * Reference to a field of type 'PaymentFrequency'
+ */
+export type EnumPaymentFrequencyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentFrequency'>
+    
+
+
+/**
+ * Reference to a field of type 'PhaseCategory'
+ */
+export type EnumPhaseCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PhaseCategory'>
+    
+
+
+/**
+ * Reference to a field of type 'PhaseType'
+ */
+export type EnumPhaseTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PhaseType'>
+    
+
+
+/**
+ * Reference to a field of type 'CompletionCriterion'
+ */
+export type EnumCompletionCriterionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CompletionCriterion'>
+    
+
+
+/**
  * Reference to a field of type 'Json'
  */
 export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
@@ -4536,6 +4825,62 @@ export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'J
  * Reference to a field of type 'QueryMode'
  */
 export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
+ * Reference to a field of type 'StepType'
+ */
+export type EnumStepTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StepType'>
+    
+
+
+/**
+ * Reference to a field of type 'ContractStatus'
+ */
+export type EnumContractStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ContractStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'PhaseStatus'
+ */
+export type EnumPhaseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PhaseStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'StepStatus'
+ */
+export type EnumStepStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StepStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'ApprovalDecision'
+ */
+export type EnumApprovalDecisionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ApprovalDecision'>
+    
+
+
+/**
+ * Reference to a field of type 'InstallmentStatus'
+ */
+export type EnumInstallmentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InstallmentStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'PaymentStatus'
+ */
+export type EnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'DocumentStatus'
+ */
+export type EnumDocumentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentStatus'>
     
 
 
@@ -4683,9 +5028,12 @@ export type GlobalOmitConfig = {
   propertyPaymentMethod?: Prisma.PropertyPaymentMethodOmit
   propertyPaymentMethodLink?: Prisma.PropertyPaymentMethodLinkOmit
   propertyPaymentMethodPhase?: Prisma.PropertyPaymentMethodPhaseOmit
+  paymentMethodPhaseStep?: Prisma.PaymentMethodPhaseStepOmit
+  paymentMethodPhaseDocument?: Prisma.PaymentMethodPhaseDocumentOmit
   contract?: Prisma.ContractOmit
   contractPhase?: Prisma.ContractPhaseOmit
   contractPhaseStep?: Prisma.ContractPhaseStepOmit
+  contractPhaseStepDocument?: Prisma.ContractPhaseStepDocumentOmit
   contractPhaseStepApproval?: Prisma.ContractPhaseStepApprovalOmit
   contractInstallment?: Prisma.ContractInstallmentOmit
   contractPayment?: Prisma.ContractPaymentOmit

@@ -54,7 +54,7 @@ export type ContractInstallmentMinAggregateOutputType = {
   principalAmount: number | null
   interestAmount: number | null
   dueDate: Date | null
-  status: string | null
+  status: $Enums.InstallmentStatus | null
   paidAmount: number | null
   paidDate: Date | null
   lateFee: number | null
@@ -73,7 +73,7 @@ export type ContractInstallmentMaxAggregateOutputType = {
   principalAmount: number | null
   interestAmount: number | null
   dueDate: Date | null
-  status: string | null
+  status: $Enums.InstallmentStatus | null
   paidAmount: number | null
   paidDate: Date | null
   lateFee: number | null
@@ -277,7 +277,7 @@ export type ContractInstallmentGroupByOutputType = {
   principalAmount: number
   interestAmount: number
   dueDate: Date
-  status: string
+  status: $Enums.InstallmentStatus
   paidAmount: number
   paidDate: Date | null
   lateFee: number
@@ -319,7 +319,7 @@ export type ContractInstallmentWhereInput = {
   principalAmount?: Prisma.FloatFilter<"ContractInstallment"> | number
   interestAmount?: Prisma.FloatFilter<"ContractInstallment"> | number
   dueDate?: Prisma.DateTimeFilter<"ContractInstallment"> | Date | string
-  status?: Prisma.StringFilter<"ContractInstallment"> | string
+  status?: Prisma.EnumInstallmentStatusFilter<"ContractInstallment"> | $Enums.InstallmentStatus
   paidAmount?: Prisma.FloatFilter<"ContractInstallment"> | number
   paidDate?: Prisma.DateTimeNullableFilter<"ContractInstallment"> | Date | string | null
   lateFee?: Prisma.FloatFilter<"ContractInstallment"> | number
@@ -365,7 +365,7 @@ export type ContractInstallmentWhereUniqueInput = Prisma.AtLeast<{
   principalAmount?: Prisma.FloatFilter<"ContractInstallment"> | number
   interestAmount?: Prisma.FloatFilter<"ContractInstallment"> | number
   dueDate?: Prisma.DateTimeFilter<"ContractInstallment"> | Date | string
-  status?: Prisma.StringFilter<"ContractInstallment"> | string
+  status?: Prisma.EnumInstallmentStatusFilter<"ContractInstallment"> | $Enums.InstallmentStatus
   paidAmount?: Prisma.FloatFilter<"ContractInstallment"> | number
   paidDate?: Prisma.DateTimeNullableFilter<"ContractInstallment"> | Date | string | null
   lateFee?: Prisma.FloatFilter<"ContractInstallment"> | number
@@ -413,7 +413,7 @@ export type ContractInstallmentScalarWhereWithAggregatesInput = {
   principalAmount?: Prisma.FloatWithAggregatesFilter<"ContractInstallment"> | number
   interestAmount?: Prisma.FloatWithAggregatesFilter<"ContractInstallment"> | number
   dueDate?: Prisma.DateTimeWithAggregatesFilter<"ContractInstallment"> | Date | string
-  status?: Prisma.StringWithAggregatesFilter<"ContractInstallment"> | string
+  status?: Prisma.EnumInstallmentStatusWithAggregatesFilter<"ContractInstallment"> | $Enums.InstallmentStatus
   paidAmount?: Prisma.FloatWithAggregatesFilter<"ContractInstallment"> | number
   paidDate?: Prisma.DateTimeNullableWithAggregatesFilter<"ContractInstallment"> | Date | string | null
   lateFee?: Prisma.FloatWithAggregatesFilter<"ContractInstallment"> | number
@@ -431,7 +431,7 @@ export type ContractInstallmentCreateInput = {
   principalAmount?: number
   interestAmount?: number
   dueDate: Date | string
-  status?: string
+  status?: $Enums.InstallmentStatus
   paidAmount?: number
   paidDate?: Date | string | null
   lateFee?: number
@@ -452,7 +452,7 @@ export type ContractInstallmentUncheckedCreateInput = {
   principalAmount?: number
   interestAmount?: number
   dueDate: Date | string
-  status?: string
+  status?: $Enums.InstallmentStatus
   paidAmount?: number
   paidDate?: Date | string | null
   lateFee?: number
@@ -471,7 +471,7 @@ export type ContractInstallmentUpdateInput = {
   principalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   interestAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumInstallmentStatusFieldUpdateOperationsInput | $Enums.InstallmentStatus
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paidDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lateFee?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -492,7 +492,7 @@ export type ContractInstallmentUncheckedUpdateInput = {
   principalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   interestAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumInstallmentStatusFieldUpdateOperationsInput | $Enums.InstallmentStatus
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paidDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lateFee?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -512,7 +512,7 @@ export type ContractInstallmentCreateManyInput = {
   principalAmount?: number
   interestAmount?: number
   dueDate: Date | string
-  status?: string
+  status?: $Enums.InstallmentStatus
   paidAmount?: number
   paidDate?: Date | string | null
   lateFee?: number
@@ -530,7 +530,7 @@ export type ContractInstallmentUpdateManyMutationInput = {
   principalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   interestAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumInstallmentStatusFieldUpdateOperationsInput | $Enums.InstallmentStatus
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paidDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lateFee?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -549,7 +549,7 @@ export type ContractInstallmentUncheckedUpdateManyInput = {
   principalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   interestAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumInstallmentStatusFieldUpdateOperationsInput | $Enums.InstallmentStatus
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paidDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lateFee?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -700,6 +700,10 @@ export type ContractInstallmentUncheckedUpdateManyWithoutPhaseNestedInput = {
   deleteMany?: Prisma.ContractInstallmentScalarWhereInput | Prisma.ContractInstallmentScalarWhereInput[]
 }
 
+export type EnumInstallmentStatusFieldUpdateOperationsInput = {
+  set?: $Enums.InstallmentStatus
+}
+
 export type ContractInstallmentCreateNestedOneWithoutPaymentsInput = {
   create?: Prisma.XOR<Prisma.ContractInstallmentCreateWithoutPaymentsInput, Prisma.ContractInstallmentUncheckedCreateWithoutPaymentsInput>
   connectOrCreate?: Prisma.ContractInstallmentCreateOrConnectWithoutPaymentsInput
@@ -723,7 +727,7 @@ export type ContractInstallmentCreateWithoutPhaseInput = {
   principalAmount?: number
   interestAmount?: number
   dueDate: Date | string
-  status?: string
+  status?: $Enums.InstallmentStatus
   paidAmount?: number
   paidDate?: Date | string | null
   lateFee?: number
@@ -742,7 +746,7 @@ export type ContractInstallmentUncheckedCreateWithoutPhaseInput = {
   principalAmount?: number
   interestAmount?: number
   dueDate: Date | string
-  status?: string
+  status?: $Enums.InstallmentStatus
   paidAmount?: number
   paidDate?: Date | string | null
   lateFee?: number
@@ -791,7 +795,7 @@ export type ContractInstallmentScalarWhereInput = {
   principalAmount?: Prisma.FloatFilter<"ContractInstallment"> | number
   interestAmount?: Prisma.FloatFilter<"ContractInstallment"> | number
   dueDate?: Prisma.DateTimeFilter<"ContractInstallment"> | Date | string
-  status?: Prisma.StringFilter<"ContractInstallment"> | string
+  status?: Prisma.EnumInstallmentStatusFilter<"ContractInstallment"> | $Enums.InstallmentStatus
   paidAmount?: Prisma.FloatFilter<"ContractInstallment"> | number
   paidDate?: Prisma.DateTimeNullableFilter<"ContractInstallment"> | Date | string | null
   lateFee?: Prisma.FloatFilter<"ContractInstallment"> | number
@@ -809,7 +813,7 @@ export type ContractInstallmentCreateWithoutPaymentsInput = {
   principalAmount?: number
   interestAmount?: number
   dueDate: Date | string
-  status?: string
+  status?: $Enums.InstallmentStatus
   paidAmount?: number
   paidDate?: Date | string | null
   lateFee?: number
@@ -829,7 +833,7 @@ export type ContractInstallmentUncheckedCreateWithoutPaymentsInput = {
   principalAmount?: number
   interestAmount?: number
   dueDate: Date | string
-  status?: string
+  status?: $Enums.InstallmentStatus
   paidAmount?: number
   paidDate?: Date | string | null
   lateFee?: number
@@ -863,7 +867,7 @@ export type ContractInstallmentUpdateWithoutPaymentsInput = {
   principalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   interestAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumInstallmentStatusFieldUpdateOperationsInput | $Enums.InstallmentStatus
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paidDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lateFee?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -883,7 +887,7 @@ export type ContractInstallmentUncheckedUpdateWithoutPaymentsInput = {
   principalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   interestAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumInstallmentStatusFieldUpdateOperationsInput | $Enums.InstallmentStatus
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paidDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lateFee?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -901,7 +905,7 @@ export type ContractInstallmentCreateManyPhaseInput = {
   principalAmount?: number
   interestAmount?: number
   dueDate: Date | string
-  status?: string
+  status?: $Enums.InstallmentStatus
   paidAmount?: number
   paidDate?: Date | string | null
   lateFee?: number
@@ -919,7 +923,7 @@ export type ContractInstallmentUpdateWithoutPhaseInput = {
   principalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   interestAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumInstallmentStatusFieldUpdateOperationsInput | $Enums.InstallmentStatus
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paidDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lateFee?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -938,7 +942,7 @@ export type ContractInstallmentUncheckedUpdateWithoutPhaseInput = {
   principalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   interestAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumInstallmentStatusFieldUpdateOperationsInput | $Enums.InstallmentStatus
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paidDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lateFee?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -957,7 +961,7 @@ export type ContractInstallmentUncheckedUpdateManyWithoutPhaseInput = {
   principalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   interestAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumInstallmentStatusFieldUpdateOperationsInput | $Enums.InstallmentStatus
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paidDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lateFee?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -1063,7 +1067,7 @@ export type $ContractInstallmentPayload<ExtArgs extends runtime.Types.Extensions
     principalAmount: number
     interestAmount: number
     dueDate: Date
-    status: string
+    status: $Enums.InstallmentStatus
     paidAmount: number
     paidDate: Date | null
     lateFee: number
@@ -1450,7 +1454,7 @@ export interface ContractInstallmentFieldRefs {
   readonly principalAmount: Prisma.FieldRef<"ContractInstallment", 'Float'>
   readonly interestAmount: Prisma.FieldRef<"ContractInstallment", 'Float'>
   readonly dueDate: Prisma.FieldRef<"ContractInstallment", 'DateTime'>
-  readonly status: Prisma.FieldRef<"ContractInstallment", 'String'>
+  readonly status: Prisma.FieldRef<"ContractInstallment", 'InstallmentStatus'>
   readonly paidAmount: Prisma.FieldRef<"ContractInstallment", 'Float'>
   readonly paidDate: Prisma.FieldRef<"ContractInstallment", 'DateTime'>
   readonly lateFee: Prisma.FieldRef<"ContractInstallment", 'Float'>

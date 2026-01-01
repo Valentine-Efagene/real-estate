@@ -9,6 +9,134 @@
 * 🟢 You can import this file directly.
 */
 
+export const PhaseCategory = {
+  DOCUMENTATION: 'DOCUMENTATION',
+  PAYMENT: 'PAYMENT'
+} as const
+
+export type PhaseCategory = (typeof PhaseCategory)[keyof typeof PhaseCategory]
+
+
+export const PhaseType = {
+  KYC: 'KYC',
+  VERIFICATION: 'VERIFICATION',
+  DOWNPAYMENT: 'DOWNPAYMENT',
+  MORTGAGE: 'MORTGAGE',
+  BALLOON: 'BALLOON',
+  CUSTOM: 'CUSTOM'
+} as const
+
+export type PhaseType = (typeof PhaseType)[keyof typeof PhaseType]
+
+
+export const PaymentFrequency = {
+  MONTHLY: 'MONTHLY',
+  BIWEEKLY: 'BIWEEKLY',
+  WEEKLY: 'WEEKLY',
+  ONE_TIME: 'ONE_TIME',
+  CUSTOM: 'CUSTOM'
+} as const
+
+export type PaymentFrequency = (typeof PaymentFrequency)[keyof typeof PaymentFrequency]
+
+
+export const ContractStatus = {
+  DRAFT: 'DRAFT',
+  PENDING: 'PENDING',
+  ACTIVE: 'ACTIVE',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED',
+  TERMINATED: 'TERMINATED'
+} as const
+
+export type ContractStatus = (typeof ContractStatus)[keyof typeof ContractStatus]
+
+
+export const PhaseStatus = {
+  PENDING: 'PENDING',
+  IN_PROGRESS: 'IN_PROGRESS',
+  AWAITING_APPROVAL: 'AWAITING_APPROVAL',
+  ACTIVE: 'ACTIVE',
+  COMPLETED: 'COMPLETED',
+  SKIPPED: 'SKIPPED',
+  FAILED: 'FAILED'
+} as const
+
+export type PhaseStatus = (typeof PhaseStatus)[keyof typeof PhaseStatus]
+
+
+export const StepType = {
+  UPLOAD: 'UPLOAD',
+  REVIEW: 'REVIEW',
+  SIGNATURE: 'SIGNATURE',
+  APPROVAL: 'APPROVAL',
+  EXTERNAL_CHECK: 'EXTERNAL_CHECK',
+  WAIT: 'WAIT'
+} as const
+
+export type StepType = (typeof StepType)[keyof typeof StepType]
+
+
+export const StepStatus = {
+  PENDING: 'PENDING',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  SKIPPED: 'SKIPPED'
+} as const
+
+export type StepStatus = (typeof StepStatus)[keyof typeof StepStatus]
+
+
+export const InstallmentStatus = {
+  PENDING: 'PENDING',
+  PAID: 'PAID',
+  OVERDUE: 'OVERDUE',
+  PARTIALLY_PAID: 'PARTIALLY_PAID',
+  WAIVED: 'WAIVED'
+} as const
+
+export type InstallmentStatus = (typeof InstallmentStatus)[keyof typeof InstallmentStatus]
+
+
+export const PaymentStatus = {
+  INITIATED: 'INITIATED',
+  PENDING: 'PENDING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  REFUNDED: 'REFUNDED'
+} as const
+
+export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
+
+
+export const ApprovalDecision = {
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  REQUEST_CHANGES: 'REQUEST_CHANGES'
+} as const
+
+export type ApprovalDecision = (typeof ApprovalDecision)[keyof typeof ApprovalDecision]
+
+
+export const CompletionCriterion = {
+  DOCUMENT_APPROVALS: 'DOCUMENT_APPROVALS',
+  PAYMENT_AMOUNT: 'PAYMENT_AMOUNT',
+  STEPS_COMPLETED: 'STEPS_COMPLETED'
+} as const
+
+export type CompletionCriterion = (typeof CompletionCriterion)[keyof typeof CompletionCriterion]
+
+
+export const DocumentStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type DocumentStatus = (typeof DocumentStatus)[keyof typeof DocumentStatus]
+
+
 export const PrequalificationStatus = {
   DRAFT: 'DRAFT',
   SUBMITTED: 'SUBMITTED',
