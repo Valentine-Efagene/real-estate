@@ -4,6 +4,7 @@
 
 1. LocalStack running via Docker (provides SNS, SSM, Secrets Manager, API Gateway emulation).
 2. Local MySQL on port 3307 (via `local-dev/docker-compose.yml`).
+3. Run `local-dev/scripts/start.sh` to initialize LocalStack with required SSM parameters.
 
 ## Setup
 
@@ -12,7 +13,7 @@
 pnpm install   # or npm install
 
 # Push Prisma schema to local DB
-NODE_ENV=local prisma db push --schema=../../shared/common/prisma/schema.prisma
+NODE_ENV=test prisma db push --schema=../../shared/common/prisma/schema.prisma
 ```
 
 ## Running Locally
@@ -20,10 +21,10 @@ NODE_ENV=local prisma db push --schema=../../shared/common/prisma/schema.prisma
 ### Option A: Deploy to LocalStack (recommended for testing real AWS integrations)
 
 ```bash
-npm run deploy:local
+npm run deploy:test
 ```
 
-This deploys the Lambda + API Gateway into LocalStack. Invoke via `http://localhost:4566/restapis/<api-id>/local/_user_request_/...`.
+This deploys the Lambda + API Gateway into LocalStack. Invoke via `http://localhost:4566/restapis/<api-id>/test/_user_request_/...`.
 
 ### Option B: Run Express directly (faster iteration, no Lambda emulation)
 
@@ -35,5 +36,6 @@ This runs the Express server at `http://localhost:3004`.
 
 ## Notes
 
-- `.env.local` points AWS SDKs at `http://localhost:4566`.
-- The `serverless-localstack` plugin routes `sls deploy --stage local` to LocalStack automatically.
+- `.env.test` points AWS SDKs at `http://localhost:4566`.
+- The `serverless-localstack` plugin routes `sls deploy --stage test` to LocalStack automatically.
+- SSM parameters for the `test` stage are seeded by `local-dev/init-scripts/setup-aws.sh`.

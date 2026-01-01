@@ -203,7 +203,7 @@ plugins:
 custom:
   localstack:
     stages:
-      - local
+      - test
     host: http://localhost
     edgePort: 4566
     autostart: false

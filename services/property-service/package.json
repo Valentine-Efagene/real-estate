@@ -14,11 +14,11 @@
     "deploy": "npm run deploy:dev",
     "format": "prettier --write \"src/**/*.ts\"",
     "start": "npm run build && node dist/local.mjs",
-    "deploy:local": "npm run build && npx sls deploy --stage local",
+    "deploy:test": "npm run build && npx sls deploy --stage test",
     "start:dev": "npm run start",
     "lint": "eslint \"{src,test}/**/*.ts\" --fix",
     "test": "node --experimental-vm-modules --no-warnings=ExperimentalWarning node_modules/jest/bin/jest.js",
-    "test:e2e": "NODE_ENV=local NODE_OPTIONS='--experimental-vm-modules --no-warnings=ExperimentalWarning' jest --config jest.e2e.config.js"
+    "test:e2e": "NODE_ENV=test NODE_OPTIONS='--experimental-vm-modules --no-warnings=ExperimentalWarning' jest --config jest.e2e.config.js"
   },
   "dependencies": {
     "@asteasolutions/zod-to-openapi": "^8.2.0",

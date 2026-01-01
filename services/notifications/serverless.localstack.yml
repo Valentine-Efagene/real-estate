@@ -1,3 +1,7 @@
+# LocalStack-specific serverless config
+# Uses REST API (v1) for better LocalStack compatibility
+# Usage: npx sls deploy --config serverless.localstack.yml --stage test
+
 service: qshelter-notifications
 
 frameworkVersion: '4'
@@ -6,21 +10,13 @@ provider:
   name: aws
   runtime: nodejs20.x
   region: us-east-1
-  stage: ${opt:stage, 'dev'}
+  stage: ${opt:stage, 'test'}
   memorySize: 512
   timeout: 30
   
-  # HTTP API Gateway (v2) for production
-  httpApi:
-    cors: true
-    authorizers:
-      NotificationsServiceAuthorizer:
-        type: request
-        functionArn: ${ssm:/qshelter/${self:provider.stage}/authorizer-lambda-arn}
-        enableSimpleResponses: true
-        payloadVersion: '2.0'
-        identitySource:
-          - $request.header.Authorization
+  # REST API (v1) for LocalStack compatibility
+  apiGateway:
+    shouldStartNameWithService: true
 
   environment:
     NODE_ENV: ${self:provider.stage}
@@ -28,7 +24,6 @@ provider:
   iam:
     role:
       statements:
-        # SSM Parameter Store access for infrastructure config
         - Effect: Allow
           Action:
             - ssm:GetParameter
@@ -36,13 +31,11 @@ provider:
             - ssm:GetParametersByPath
           Resource:
             - arn:aws:ssm:${self:provider.region}:*:parameter/qshelter/${self:provider.stage}/*
-        # Secrets Manager access for sensitive credentials
         - Effect: Allow
           Action:
             - secretsmanager:GetSecretValue
           Resource:
             - arn:aws:secretsmanager:${self:provider.region}:*:secret:qshelter/${self:provider.stage}/*
-        # SNS for push notifications
         - Effect: Allow
           Action:
             - sns:Publish
@@ -61,7 +54,6 @@ package:
     - '!**/*.test.js'
     - '!**/*.spec.ts'
     - '!**/*.spec.js'
-    - '!dist/**/*.js'
     - '!dist/**/*.d.ts'
     - '!node_modules/@aws-sdk/**'
     - '!node_modules/aws-sdk/**'
@@ -74,7 +66,7 @@ package:
     - '!node_modules/@prisma/client/runtime/*sqlserver*'
     - '!node_modules/@prisma/client/runtime/*postgresql*'
     - '!node_modules/@prisma/client/runtime/*sqlite*'
-    - 'dist/**/*.mjs'
+    - 'dist/lambda.js'
     - '!**/*.map'
     - '!**/*.ts'
     - '!**/*.tsx'
@@ -95,20 +87,31 @@ functions:
   api:
     handler: dist/lambda.handler
     events:
-      - httpApi:
+      # REST API (v1) events - no authorizer for LocalStack simplicity
+      - http:
           path: /{proxy+}
           method: ANY
-          authorizer:
-            name: NotificationsServiceAuthorizer
-      - httpApi:
+          cors: true
+      - http:
           path: /health
           method: GET
-      - httpApi:
+          cors: true
+      - http:
           path: /api-docs
           method: GET
-      - httpApi:
-          path: /api-docs/{proxy+}
-          method: GET
-      - httpApi:
+          cors: true
+      - http:
           path: /openapi.json
           method: GET
+          cors: true
+
+plugins:
+  - serverless-localstack
+
+custom:
+  localstack:
+    stages:
+      - test
+    host: http://localhost
+    edgePort: 4566
+    autostart: false
