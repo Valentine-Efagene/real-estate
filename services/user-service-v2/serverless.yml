@@ -198,7 +198,15 @@ functions:
             name: UserServiceAuthorizer
 
 plugins:
-  - serverless-offline
+  - serverless-localstack
+
+custom:
+  localstack:
+    stages:
+      - local
+    host: http://localhost
+    edgePort: 4566
+    autostart: false
 
 package:
   patterns:

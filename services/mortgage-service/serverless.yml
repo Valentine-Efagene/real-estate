@@ -122,3 +122,14 @@ functions:
   # Note: EventBridge bus name will be fetched from ConfigService at runtime
   fsmEventHandler:
     handler: dist/fsm-event-handler.handler
+
+plugins:
+  - serverless-localstack
+
+custom:
+  localstack:
+    stages:
+      - local
+    host: http://localhost
+    edgePort: 4566
+    autostart: false

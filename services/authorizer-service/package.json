@@ -9,6 +9,7 @@
         "deploy:staging": "npm run build && npx sls deploy --stage staging",
         "deploy:prod": "npm run build && npx sls deploy --stage prod",
         "deploy": "npm run deploy:dev",
+        "deploy:local": "npm run build && npx sls deploy --stage local",
         "start": "node dist/index.js"
     },
     "dependencies": {
@@ -22,7 +23,8 @@
         "@types/jsonwebtoken": "^9.0.5",
         "@types/node": "^20.11.19",
         "serverless-dotenv-plugin": "^6.0.0",
-        "serverless-offline": "^14.4.0",
+        "serverless": "^4.9.0",
+        "serverless-localstack": "^1.2.0",
         "serverless-plugin-typescript": "^2.1.5",
         "typescript": "^5.3.3"
     }
