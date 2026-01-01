@@ -1,5 +1,4 @@
 import express, { Application } from 'express';
-import swaggerUi from 'swagger-ui-express';
 import {
     requestLogger,
     errorHandler,
@@ -22,15 +21,19 @@ app.get('/health', (_req, res) => {
     res.json({ status: 'healthy', service: 'notifications' });
 });
 
-// Swagger documentation
-const openApiDocument = generateOpenAPIDocument();
+// Swagger documentation - generate with dynamic base URL
 app.get('/openapi.json', (_req, res) => {
+    // Use empty string for server URL so Swagger UI uses relative paths from current origin
+    const openApiDocument = generateOpenAPIDocument('');
     res.json(openApiDocument);
 });
 
 // Serve Swagger UI using CDN (works better in serverless)
 app.get('/api-docs', (_req, res) => {
-    // Use relative URL - browser will resolve it correctly
+    // Generate spec inline to avoid CORS/fetch issues
+    const openApiDocument = generateOpenAPIDocument('');
+    const specJson = JSON.stringify(openApiDocument);
+
     const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,15 +46,13 @@ app.get('/api-docs', (_req, res) => {
     <script src="https://unpkg.com/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
     <script>
         window.onload = () => {
-            // Get the current page URL and replace /api-docs with /openapi.json
-            const specUrl = window.location.href.replace(/\\/api-docs\\/?$/, '/openapi.json');
+            // Use inline spec instead of fetching via URL
+            const spec = ${specJson};
             window.ui = SwaggerUIBundle({
-                url: specUrl,
+                spec: spec,
                 dom_id: '#swagger-ui',
                 deepLinking: true,
-                presets: [
-                    SwaggerUIBundle.presets.apis
-                ]
+                presets: [SwaggerUIBundle.presets.apis]
             });
         };
     </script>

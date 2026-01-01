@@ -272,7 +272,7 @@ registry.registerPath({
     responses: { 200: { description: 'Message sent successfully' } },
 });
 
-export function generateOpenAPIDocument() {
+export function generateOpenAPIDocument(baseUrl?: string) {
     const generator = new OpenApiGeneratorV31(registry.definitions);
 
     return generator.generateDocument({
@@ -282,8 +282,10 @@ export function generateOpenAPIDocument() {
             version: '1.0.0',
             description: 'Email, SMS, Push, Slack, and WhatsApp notification service',
         },
-        servers: [
-            { url: 'http://localhost:3004', description: 'Local development' },
-        ],
+        servers: baseUrl !== undefined
+            ? [{ url: baseUrl, description: 'Current environment' }]
+            : [
+                { url: 'http://localhost:3004', description: 'Local development' },
+            ],
     });
 }
