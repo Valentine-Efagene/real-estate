@@ -169,7 +169,7 @@ describe('Full Mortgage Flow E2E', () => {
                 .send({
                     name: 'One-Off Downpayment',
                     description: 'Single payment for 10% downpayment',
-                    frequency: 'ONE_OFF',
+                    frequency: 'ONE_TIME',
                     numberOfInstallments: 1,
                     interestRate: 0,
                     gracePeriodDays: 0,

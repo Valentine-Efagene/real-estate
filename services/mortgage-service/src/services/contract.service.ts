@@ -1,5 +1,5 @@
 import { prisma as defaultPrisma } from '../lib/prisma';
-import { AppError, PrismaClient } from '@valentine-efagene/qshelter-common';
+import { AppError, PrismaClient, StepType, ContractStatus, PhaseStatus, StepStatus } from '@valentine-efagene/qshelter-common';
 import { v4 as uuidv4 } from 'uuid';
 import type {
     CreateContractInput,
@@ -41,48 +41,65 @@ function calculatePeriodicPayment(
 
 /**
  * Parse step definitions from phase template
+ * Now reads from the child table `steps` instead of JSON string
  */
 function parseStepDefinitions(phaseTemplate: {
-    requiredDocumentTypes: string | null;
-    stepDefinitions: string | null;
+    steps?: Array<{
+        name: string;
+        stepType: StepType;
+        order: number;
+        metadata?: any;
+    }>;
+    requiredDocuments?: Array<{
+        documentType: string;
+        isRequired: boolean;
+    }>;
 }): Array<{
     name: string;
     description?: string;
-    stepType: string;
+    stepType: StepType;
     order: number;
-    requiredDocumentTypes?: string;
+    requiredDocuments?: Array<{
+        documentType: string;
+        isRequired: boolean;
+    }>;
 }> {
-    if (phaseTemplate.stepDefinitions) {
-        try {
-            return JSON.parse(phaseTemplate.stepDefinitions);
-        } catch {
-            // Fall through to default generation
-        }
+    // If we have normalized steps, use them
+    if (phaseTemplate.steps && phaseTemplate.steps.length > 0) {
+        return phaseTemplate.steps.map((step, idx) => ({
+            name: step.name,
+            stepType: step.stepType,
+            order: step.order,
+        }));
     }
 
+    // Generate default steps if we have required documents but no explicit steps
     const steps: Array<{
         name: string;
         description?: string;
-        stepType: string;
+        stepType: StepType;
         order: number;
-        requiredDocumentTypes?: string;
+        requiredDocuments?: Array<{
+            documentType: string;
+            isRequired: boolean;
+        }>;
     }> = [];
 
-    if (phaseTemplate.requiredDocumentTypes) {
+    if (phaseTemplate.requiredDocuments && phaseTemplate.requiredDocuments.length > 0) {
         steps.push({
             name: 'Document Upload',
-            stepType: 'UPLOAD',
+            stepType: 'UPLOAD' as StepType,
             order: 0,
-            requiredDocumentTypes: phaseTemplate.requiredDocumentTypes,
+            requiredDocuments: phaseTemplate.requiredDocuments,
         });
         steps.push({
             name: 'Document Review',
-            stepType: 'REVIEW',
+            stepType: 'REVIEW' as StepType,
             order: 1,
         });
         steps.push({
             name: 'Final Approval',
-            stepType: 'APPROVAL',
+            stepType: 'APPROVAL' as StepType,
             order: 2,
         });
     }
@@ -93,36 +110,32 @@ function parseStepDefinitions(phaseTemplate: {
 /**
  * Simple state machine for contract states
  */
-function getNextState(currentState: string, trigger: string): string | null {
-    const transitions: Record<string, Record<string, string>> = {
+function getNextState(currentState: ContractStatus, trigger: string): ContractStatus | null {
+    const transitions: Record<ContractStatus, Record<string, ContractStatus>> = {
         DRAFT: {
-            SUBMIT: 'PENDING',
-            CANCEL: 'CANCELLED',
+            SUBMIT: 'PENDING' as ContractStatus,
+            CANCEL: 'CANCELLED' as ContractStatus,
         },
         PENDING: {
-            APPROVE: 'ACTIVE',
-            REJECT: 'CANCELLED',
-            CANCEL: 'CANCELLED',
+            APPROVE: 'ACTIVE' as ContractStatus,
+            REJECT: 'CANCELLED' as ContractStatus,
+            CANCEL: 'CANCELLED' as ContractStatus,
         },
         ACTIVE: {
-            COMPLETE: 'COMPLETED',
-            TERMINATE: 'TERMINATED',
+            COMPLETE: 'COMPLETED' as ContractStatus,
+            TERMINATE: 'TERMINATED' as ContractStatus,
         },
+        COMPLETED: {},
+        CANCELLED: {},
+        TERMINATED: {},
     };
 
     return transitions[currentState]?.[trigger] ?? null;
 }
 
-function mapStateToStatus(state: string): string {
-    const mapping: Record<string, string> = {
-        DRAFT: 'DRAFT',
-        PENDING: 'PENDING',
-        ACTIVE: 'ACTIVE',
-        COMPLETED: 'COMPLETED',
-        CANCELLED: 'CANCELLED',
-        TERMINATED: 'TERMINATED',
-    };
-    return mapping[state] ?? state;
+function mapStateToStatus(state: ContractStatus): ContractStatus {
+    // State and status are now the same type
+    return state;
 }
 
 /**
@@ -231,6 +244,10 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma) {
                     phaseAmount = 0; // Documentation phases have no monetary amount
                 }
 
+                // Get step definitions and required documents from child tables
+                const steps = parseStepDefinitions(phaseTemplate);
+                const requiredDocs = phaseTemplate.requiredDocuments || [];
+
                 const phase = await tx.contractPhase.create({
                     data: {
                         contractId: created.id,
@@ -240,29 +257,48 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma) {
                         phaseCategory: phaseTemplate.phaseCategory,
                         phaseType: phaseTemplate.phaseType,
                         order: phaseTemplate.order,
-                        status: 'PENDING',
+                        status: 'PENDING' as PhaseStatus,
                         totalAmount: phaseAmount,
                         remainingAmount: phaseAmount,
                         interestRate: phaseTemplate.interestRate,
                         requiresPreviousPhaseCompletion: phaseTemplate.requiresPreviousPhaseCompletion,
                         minimumCompletionPercentage: phaseTemplate.minimumCompletionPercentage,
+                        // Store snapshots for audit
+                        stepDefinitionsSnapshot: phaseTemplate.stepDefinitionsSnapshot,
+                        requiredDocumentSnapshot: phaseTemplate.requiredDocumentSnapshot,
+                        // Initialize progress counters
+                        totalStepsCount: steps.length,
+                        completedStepsCount: 0,
+                        requiredDocumentsCount: requiredDocs.filter((d: any) => d.isRequired).length,
+                        approvedDocumentsCount: 0,
                     },
                 });
 
                 if (phaseTemplate.phaseCategory === 'DOCUMENTATION') {
-                    const steps = parseStepDefinitions(phaseTemplate);
                     for (const step of steps) {
-                        await tx.contractPhaseStep.create({
+                        const createdStep = await tx.contractPhaseStep.create({
                             data: {
                                 phaseId: phase.id,
                                 name: step.name,
                                 description: step.description,
-                                stepType: step.stepType,
+                                stepType: step.stepType as StepType,
                                 order: step.order,
-                                status: 'PENDING',
-                                requiredDocumentTypes: step.requiredDocumentTypes,
+                                status: 'PENDING' as StepStatus,
                             },
                         });
+
+                        // Create required document records for this step (if any)
+                        if (step.requiredDocuments && step.requiredDocuments.length > 0) {
+                            for (const doc of step.requiredDocuments) {
+                                await tx.contractPhaseStepDocument.create({
+                                    data: {
+                                        stepId: createdStep.id,
+                                        documentType: doc.documentType,
+                                        isRequired: doc.isRequired ?? true,
+                                    },
+                                });
+                            }
+                        }
                     }
                 }
             }
@@ -300,7 +336,7 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma) {
     async function findAll(filters?: {
         buyerId?: string;
         propertyUnitId?: string;
-        status?: string;
+        status?: ContractStatus;
     }) {
         const contracts = await prisma.contract.findMany({
             where: filters,

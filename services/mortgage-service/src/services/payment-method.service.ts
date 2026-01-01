@@ -1,5 +1,5 @@
 import { prisma as defaultPrisma } from '../lib/prisma';
-import { AppError, PrismaClient } from '@valentine-efagene/qshelter-common';
+import { AppError, PrismaClient, PhaseType, StepType } from '@valentine-efagene/qshelter-common';
 import type {
     CreatePaymentMethodInput,
     UpdatePaymentMethodInput,
@@ -37,23 +37,59 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                         throw new AppError(400, `Phase "${phase.name}" is a PAYMENT phase and requires paymentPlanId`);
                     }
 
-                    await tx.propertyPaymentMethodPhase.create({
+                    // Store snapshots for audit
+                    const stepDefinitionsSnapshot = phase.stepDefinitions ? phase.stepDefinitions : null;
+                    const requiredDocumentSnapshot = phase.requiredDocuments ? phase.requiredDocuments : null;
+
+                    const createdPhase = await tx.propertyPaymentMethodPhase.create({
                         data: {
                             paymentMethodId: created.id,
                             paymentPlanId: phase.paymentPlanId,
                             name: phase.name,
                             description: phase.description,
                             phaseCategory: phase.phaseCategory,
-                            phaseType: phase.phaseType,
+                            phaseType: phase.phaseType as PhaseType,
                             order: phase.order,
                             interestRate: phase.interestRate,
                             percentOfPrice: phase.percentOfPrice,
                             requiresPreviousPhaseCompletion: phase.requiresPreviousPhaseCompletion ?? true,
                             minimumCompletionPercentage: phase.minimumCompletionPercentage,
-                            requiredDocumentTypes: phase.requiredDocumentTypes ? phase.requiredDocumentTypes.join(',') : undefined,
-                            stepDefinitions: phase.stepDefinitions ? JSON.stringify(phase.stepDefinitions) : undefined,
+                            stepDefinitionsSnapshot,
+                            requiredDocumentSnapshot,
                         },
                     });
+
+                    // Create step child records
+                    if (phase.stepDefinitions && phase.stepDefinitions.length > 0) {
+                        for (const step of phase.stepDefinitions) {
+                            await tx.paymentMethodPhaseStep.create({
+                                data: {
+                                    phaseId: createdPhase.id,
+                                    name: step.name,
+                                    stepType: step.stepType as StepType,
+                                    order: step.order,
+                                    metadata: step.metadata,
+                                },
+                            });
+                        }
+                    }
+
+                    // Create required document child records
+                    if (phase.requiredDocuments && phase.requiredDocuments.length > 0) {
+                        for (const doc of phase.requiredDocuments) {
+                            await tx.paymentMethodPhaseDocument.create({
+                                data: {
+                                    phaseId: createdPhase.id,
+                                    documentType: doc.documentType,
+                                    isRequired: doc.isRequired ?? true,
+                                    description: doc.description,
+                                    allowedMimeTypes: doc.allowedMimeTypes?.join(','),
+                                    maxSizeBytes: doc.maxSizeBytes,
+                                    metadata: doc.metadata,
+                                },
+                            });
+                        }
+                    }
                 }
             }
 
@@ -72,6 +108,10 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                     orderBy: { order: 'asc' },
                     include: {
                         paymentPlan: true,
+                        steps: {
+                            orderBy: { order: 'asc' },
+                        },
+                        requiredDocuments: true,
                     },
                 },
             },
@@ -87,6 +127,10 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                     orderBy: { order: 'asc' },
                     include: {
                         paymentPlan: true,
+                        steps: {
+                            orderBy: { order: 'asc' },
+                        },
+                        requiredDocuments: true,
                     },
                 },
                 properties: {
@@ -152,28 +196,74 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
             throw new AppError(400, 'PAYMENT phases require paymentPlanId');
         }
 
-        const phase = await prisma.propertyPaymentMethodPhase.create({
-            data: {
-                paymentMethodId: methodId,
-                paymentPlanId: data.paymentPlanId,
-                name: data.name,
-                description: data.description,
-                phaseCategory: data.phaseCategory,
-                phaseType: data.phaseType,
-                order: data.order,
-                interestRate: data.interestRate,
-                percentOfPrice: data.percentOfPrice,
-                requiresPreviousPhaseCompletion: data.requiresPreviousPhaseCompletion ?? true,
-                minimumCompletionPercentage: data.minimumCompletionPercentage,
-                requiredDocumentTypes: data.requiredDocumentTypes ? data.requiredDocumentTypes.join(',') : undefined,
-                stepDefinitions: data.stepDefinitions ? JSON.stringify(data.stepDefinitions) : undefined,
-            },
-            include: {
-                paymentPlan: true,
-            },
+        // Store snapshots for audit
+        const stepDefinitionsSnapshot = data.stepDefinitions ? data.stepDefinitions : null;
+        const requiredDocumentSnapshot = data.requiredDocuments ? data.requiredDocuments : null;
+
+        const phase = await prisma.$transaction(async (tx: any) => {
+            const createdPhase = await tx.propertyPaymentMethodPhase.create({
+                data: {
+                    paymentMethodId: methodId,
+                    paymentPlanId: data.paymentPlanId,
+                    name: data.name,
+                    description: data.description,
+                    phaseCategory: data.phaseCategory,
+                    phaseType: data.phaseType as PhaseType,
+                    order: data.order,
+                    interestRate: data.interestRate,
+                    percentOfPrice: data.percentOfPrice,
+                    requiresPreviousPhaseCompletion: data.requiresPreviousPhaseCompletion ?? true,
+                    minimumCompletionPercentage: data.minimumCompletionPercentage,
+                    stepDefinitionsSnapshot,
+                    requiredDocumentSnapshot,
+                },
+            });
+
+            // Create step child records
+            if (data.stepDefinitions && data.stepDefinitions.length > 0) {
+                for (const step of data.stepDefinitions) {
+                    await tx.paymentMethodPhaseStep.create({
+                        data: {
+                            phaseId: createdPhase.id,
+                            name: step.name,
+                            stepType: step.stepType as StepType,
+                            order: step.order,
+                            metadata: step.metadata,
+                        },
+                    });
+                }
+            }
+
+            // Create required document child records
+            if (data.requiredDocuments && data.requiredDocuments.length > 0) {
+                for (const doc of data.requiredDocuments) {
+                    await tx.paymentMethodPhaseDocument.create({
+                        data: {
+                            phaseId: createdPhase.id,
+                            documentType: doc.documentType,
+                            isRequired: doc.isRequired ?? true,
+                            description: doc.description,
+                            allowedMimeTypes: doc.allowedMimeTypes?.join(','),
+                            maxSizeBytes: doc.maxSizeBytes,
+                            metadata: doc.metadata,
+                        },
+                    });
+                }
+            }
+
+            return createdPhase;
         });
 
-        return phase;
+        return prisma.propertyPaymentMethodPhase.findUnique({
+            where: { id: phase.id },
+            include: {
+                paymentPlan: true,
+                steps: {
+                    orderBy: { order: 'asc' },
+                },
+                requiredDocuments: true,
+            },
+        });
     }
 
     async function updatePhase(phaseId: string, data: Partial<AddPhaseInput>) {
@@ -185,26 +275,80 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
             throw new AppError(404, 'Phase not found');
         }
 
-        // Convert arrays to strings for DB storage
-        const { requiredDocumentTypes, stepDefinitions, ...rest } = data;
+        // Extract child data
+        const { requiredDocuments, stepDefinitions, phaseType, ...rest } = data;
         const updateData: Record<string, any> = { ...rest };
 
-        if (requiredDocumentTypes !== undefined) {
-            updateData.requiredDocumentTypes = requiredDocumentTypes ? requiredDocumentTypes.join(',') : null;
-        }
-        if (stepDefinitions !== undefined) {
-            updateData.stepDefinitions = stepDefinitions ? JSON.stringify(stepDefinitions) : null;
+        // Add phaseType if provided (as enum)
+        if (phaseType !== undefined) {
+            updateData.phaseType = phaseType;
         }
 
-        const updated = await prisma.propertyPaymentMethodPhase.update({
-            where: { id: phaseId },
-            data: updateData,
-            include: {
-                paymentPlan: true,
-            },
+        // Update snapshots if new data is provided
+        if (stepDefinitions !== undefined) {
+            updateData.stepDefinitionsSnapshot = stepDefinitions;
+        }
+        if (requiredDocuments !== undefined) {
+            updateData.requiredDocumentSnapshot = requiredDocuments;
+        }
+
+        const updated = await prisma.$transaction(async (tx: any) => {
+            const updatedPhase = await tx.propertyPaymentMethodPhase.update({
+                where: { id: phaseId },
+                data: updateData,
+            });
+
+            // Replace step child records if provided
+            if (stepDefinitions !== undefined) {
+                await tx.paymentMethodPhaseStep.deleteMany({ where: { phaseId } });
+                if (stepDefinitions && stepDefinitions.length > 0) {
+                    for (const step of stepDefinitions) {
+                        await tx.paymentMethodPhaseStep.create({
+                            data: {
+                                phaseId,
+                                name: step.name,
+                                stepType: step.stepType as StepType,
+                                order: step.order,
+                                metadata: step.metadata,
+                            },
+                        });
+                    }
+                }
+            }
+
+            // Replace required document child records if provided
+            if (requiredDocuments !== undefined) {
+                await tx.paymentMethodPhaseDocument.deleteMany({ where: { phaseId } });
+                if (requiredDocuments && requiredDocuments.length > 0) {
+                    for (const doc of requiredDocuments) {
+                        await tx.paymentMethodPhaseDocument.create({
+                            data: {
+                                phaseId,
+                                documentType: doc.documentType,
+                                isRequired: doc.isRequired ?? true,
+                                description: doc.description,
+                                allowedMimeTypes: doc.allowedMimeTypes?.join(','),
+                                maxSizeBytes: doc.maxSizeBytes,
+                                metadata: doc.metadata,
+                            },
+                        });
+                    }
+                }
+            }
+
+            return updatedPhase;
         });
 
-        return updated;
+        return prisma.propertyPaymentMethodPhase.findUnique({
+            where: { id: updated.id },
+            include: {
+                paymentPlan: true,
+                steps: {
+                    orderBy: { order: 'asc' },
+                },
+                requiredDocuments: true,
+            },
+        });
     }
 
     async function deletePhase(phaseId: string) {
@@ -297,6 +441,10 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                             orderBy: { order: 'asc' },
                             include: {
                                 paymentPlan: true,
+                                steps: {
+                                    orderBy: { order: 'asc' },
+                                },
+                                requiredDocuments: true,
                             },
                         },
                     },

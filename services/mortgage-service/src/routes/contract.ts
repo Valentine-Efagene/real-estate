@@ -2,6 +2,7 @@ import { Router, Request, Response, NextFunction } from 'express';
 import { contractService } from '../services/contract.service';
 import { contractPhaseService } from '../services/contract-phase.service';
 import { contractPaymentService } from '../services/contract-payment.service';
+import { ContractStatus } from '@valentine-efagene/qshelter-common';
 import {
     CreateContractSchema,
     UpdateContractSchema,
@@ -59,7 +60,7 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
         const contracts = await contractService.findAll({
             buyerId: buyerId as string,
             propertyUnitId: propertyUnitId as string,
-            status: status as string,
+            status: status as ContractStatus | undefined,
         });
         res.json(contracts);
     } catch (error) {

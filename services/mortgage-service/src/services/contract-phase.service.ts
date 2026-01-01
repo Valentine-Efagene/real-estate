@@ -1,5 +1,5 @@
 import { prisma } from '../lib/prisma';
-import { AppError } from '@valentine-efagene/qshelter-common';
+import { AppError, PhaseStatus, StepStatus, InstallmentStatus, PaymentStatus, DocumentStatus } from '@valentine-efagene/qshelter-common';
 import { v4 as uuidv4 } from 'uuid';
 import type {
     ActivatePhaseInput,

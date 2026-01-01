@@ -123,19 +123,19 @@ export const testData = {
             {
                 name: 'Documentation',
                 phaseCategory: 'DOCUMENTATION' as const,
-                phaseType: 'KYC',
+                phaseType: 'KYC' as const,
                 order: 1,
                 percentageOfTotal: 0,
                 stepDefinitions: [
                     { name: 'Upload ID', stepType: 'UPLOAD' as const, order: 1 },
-                    { name: 'Verify Address', stepType: 'VERIFICATION' as const, order: 2 },
+                    { name: 'Verify Address', stepType: 'REVIEW' as const, order: 2 },
                     { name: 'Sign Contract', stepType: 'SIGNATURE' as const, order: 3 },
                 ],
             },
             {
                 name: 'Downpayment',
                 phaseCategory: 'PAYMENT' as const,
-                phaseType: 'DOWNPAYMENT',
+                phaseType: 'DOWNPAYMENT' as const,
                 order: 2,
                 percentageOfTotal: 20,
                 paymentPlanId,
@@ -143,7 +143,7 @@ export const testData = {
             {
                 name: 'Mortgage',
                 phaseCategory: 'PAYMENT' as const,
-                phaseType: 'MORTGAGE',
+                phaseType: 'MORTGAGE' as const,
                 order: 3,
                 percentageOfTotal: 80,
                 paymentPlanId,
@@ -160,6 +160,7 @@ export async function cleanupTestData() {
     await prisma.contractPayment.deleteMany();
     await prisma.contractInstallment.deleteMany();
     await prisma.contractPhaseStepApproval.deleteMany();
+    await prisma.contractPhaseStepDocument.deleteMany();
     await prisma.contractPhaseStep.deleteMany();
     await prisma.contractDocument.deleteMany();
     await prisma.contractPhase.deleteMany();
@@ -171,6 +172,8 @@ export async function cleanupTestData() {
     await prisma.propertyVariantMedia.deleteMany();
     await prisma.propertyVariant.deleteMany();
     await prisma.propertyPaymentMethodLink.deleteMany();
+    await prisma.paymentMethodPhaseStep.deleteMany();
+    await prisma.paymentMethodPhaseDocument.deleteMany();
     await prisma.propertyPaymentMethodPhase.deleteMany();
     await prisma.documentRequirementRule.deleteMany();
     await prisma.propertyPaymentMethod.deleteMany();

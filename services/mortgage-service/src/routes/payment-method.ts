@@ -4,6 +4,7 @@ import {
     CreatePaymentMethodSchema,
     UpdatePaymentMethodSchema,
     AddPhaseSchema,
+    PartialPhaseSchema,
     LinkToPropertySchema,
 } from '../validators/payment-method.validator';
 import { z } from 'zod';
@@ -95,7 +96,7 @@ router.post('/:id/phases', async (req: Request, res: Response, next: NextFunctio
 // Update phase
 router.patch('/:id/phases/:phaseId', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const data = AddPhaseSchema.partial().parse(req.body);
+        const data = PartialPhaseSchema.parse(req.body);
         const phase = await paymentMethodService.updatePhase(req.params.phaseId, data);
         res.json(phase);
     } catch (error) {
