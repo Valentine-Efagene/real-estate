@@ -3,6 +3,7 @@
 ## Problem
 
 `swagger-ui-express` **does not work** in serverless Lambda environments because:
+
 1. API Gateway Lambda proxy routes ALL requests through the handler
 2. Static file middleware (`express.static`) cannot serve `.js` and `.css` files properly
 3. All requests return HTML instead of the actual static assets
@@ -20,16 +21,16 @@ import { generateOpenAPIDocument } from './config/swagger';
 
 // Separate endpoint for JSON spec (optional, for external tools)
 app.get('/openapi.json', (_req, res) => {
-    const openApiDocument = generateOpenAPIDocument('');
-    res.json(openApiDocument);
+  const openApiDocument = generateOpenAPIDocument('');
+  res.json(openApiDocument);
 });
 
 // Swagger UI with inline spec
 app.get('/api-docs', (_req, res) => {
-    const openApiDocument = generateOpenAPIDocument('');
-    const specJson = JSON.stringify(openApiDocument);
-    
-    const html = `<!DOCTYPE html>
+  const openApiDocument = generateOpenAPIDocument('');
+  const specJson = JSON.stringify(openApiDocument);
+
+  const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -52,7 +53,7 @@ app.get('/api-docs', (_req, res) => {
     </script>
 </body>
 </html>`;
-    res.send(html);
+  res.send(html);
 });
 ```
 
@@ -61,25 +62,29 @@ app.get('/api-docs', (_req, res) => {
 ```typescript
 // config/swagger.ts
 export function generateOpenAPIDocument(baseUrl?: string) {
-    const generator = new OpenApiGeneratorV31(registry.definitions);
+  const generator = new OpenApiGeneratorV31(registry.definitions);
 
-    return generator.generateDocument({
-        openapi: '3.1.0',
-        info: {
-            title: 'Service Name API',
-            version: '1.0.0',
-            description: 'Service description',
-        },
-        servers: baseUrl !== undefined
-            ? [{ url: baseUrl, description: 'Current environment' }]
-            : [
-                { url: 'http://localhost:3000', description: 'Local development' },
-            ],
-    });
+  return generator.generateDocument({
+    openapi: '3.1.0',
+    info: {
+      title: 'Service Name API',
+      version: '1.0.0',
+      description: 'Service description',
+    },
+    servers:
+      baseUrl !== undefined
+        ? [{ url: baseUrl, description: 'Current environment' }]
+        : [{ url: 'http://localhost:3000', description: 'Local development' }],
+  });
 }
 ```
 
-**Important**: Use `baseUrl !== undefined` not `baseUrl` to allow empty string `''` as valid value.
+**Important**:
+
+- Use `baseUrl !== undefined` not `baseUrl` to allow empty string `''` as valid value
+- Pass empty string `''` for serverless to use relative URLs
+- The Swagger UI will show "- Current Environment" without displaying the URL - this is correct
+- Empty server URL tells Swagger UI to make requests relative to the current page URL
 
 ## Benefits
 
@@ -88,6 +93,7 @@ export function generateOpenAPIDocument(baseUrl?: string) {
 ✅ Works reliably through API Gateway
 ✅ No CORS issues (spec embedded in page)
 ✅ No URL resolution problems
+✅ Relative URLs work regardless of actual deployment URL (LocalStack, AWS, etc.)
 
 ## LocalStack Deployment
 
@@ -111,6 +117,7 @@ aws --endpoint-url=http://localhost:4566 apigateway create-stage \
 ## Apply to Other Services
 
 When setting up Swagger in other services (property, mortgage, user-v2), use this exact pattern:
+
 1. CDN for Swagger UI CSS/JS
 2. Inline spec embedded in HTML
 3. Empty string `''` for server URL to use relative paths

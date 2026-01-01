@@ -30,8 +30,8 @@ app.get('/openapi.json', (_req, res) => {
 
 // Serve Swagger UI using CDN (works better in serverless)
 app.get('/api-docs', (_req, res) => {
-    // Generate spec inline to avoid CORS/fetch issues
-    const openApiDocument = generateOpenAPIDocument('');
+    // Generate spec with placeholder that will be replaced client-side
+    const openApiDocument = generateOpenAPIDocument('__BASE_URL__');
     const specJson = JSON.stringify(openApiDocument);
 
     const html = `<!DOCTYPE html>
@@ -46,8 +46,19 @@ app.get('/api-docs', (_req, res) => {
     <script src="https://unpkg.com/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
     <script>
         window.onload = () => {
-            // Use inline spec instead of fetching via URL
-            const spec = ${specJson};
+            // Build the base URL from current location, removing /api-docs and hash
+            const url = new URL(window.location.href);
+            const basePath = url.pathname.replace(/\\/api-docs\\/?$/, '');
+            const currentPath = url.origin + basePath;
+            
+            // Parse the spec from JSON string
+            const specString = ${JSON.stringify(specJson)};
+            const spec = JSON.parse(specString);
+            
+            if (spec.servers && spec.servers[0]) {
+                spec.servers[0].url = currentPath;
+            }
+            
             window.ui = SwaggerUIBundle({
                 spec: spec,
                 dom_id: '#swagger-ui',
