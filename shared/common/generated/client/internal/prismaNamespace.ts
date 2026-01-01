@@ -425,6 +425,7 @@ export const ModelName = {
   ContractDocument: 'ContractDocument',
   ContractTransition: 'ContractTransition',
   ContractEvent: 'ContractEvent',
+  ContractTermination: 'ContractTermination',
   Prequalification: 'Prequalification',
   PaymentMethodChangeRequest: 'PaymentMethodChangeRequest',
   DocumentRequirementRule: 'DocumentRequirementRule',
@@ -444,7 +445,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenant" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "paymentMethodPhaseStep" | "paymentMethodPhaseDocument" | "contract" | "contractPhase" | "contractPhaseStep" | "contractPhaseStepDocument" | "contractPhaseStepApproval" | "contractInstallment" | "contractPayment" | "contractDocument" | "contractTransition" | "contractEvent" | "prequalification" | "paymentMethodChangeRequest" | "documentRequirementRule" | "domainEvent"
+    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenant" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "paymentMethodPhaseStep" | "paymentMethodPhaseDocument" | "contract" | "contractPhase" | "contractPhaseStep" | "contractPhaseStepDocument" | "contractPhaseStepApproval" | "contractInstallment" | "contractPayment" | "contractDocument" | "contractTransition" | "contractEvent" | "contractTermination" | "prequalification" | "paymentMethodChangeRequest" | "documentRequirementRule" | "domainEvent"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -3154,6 +3155,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ContractTermination: {
+      payload: Prisma.$ContractTerminationPayload<ExtArgs>
+      fields: Prisma.ContractTerminationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ContractTerminationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractTerminationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ContractTerminationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractTerminationPayload>
+        }
+        findFirst: {
+          args: Prisma.ContractTerminationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractTerminationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ContractTerminationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractTerminationPayload>
+        }
+        findMany: {
+          args: Prisma.ContractTerminationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractTerminationPayload>[]
+        }
+        create: {
+          args: Prisma.ContractTerminationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractTerminationPayload>
+        }
+        createMany: {
+          args: Prisma.ContractTerminationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.ContractTerminationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractTerminationPayload>
+        }
+        update: {
+          args: Prisma.ContractTerminationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractTerminationPayload>
+        }
+        deleteMany: {
+          args: Prisma.ContractTerminationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ContractTerminationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.ContractTerminationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractTerminationPayload>
+        }
+        aggregate: {
+          args: Prisma.ContractTerminationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateContractTermination>
+        }
+        groupBy: {
+          args: Prisma.ContractTerminationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ContractTerminationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ContractTerminationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ContractTerminationCountAggregateOutputType> | number
+        }
+      }
+    }
     Prequalification: {
       payload: Prisma.$PrequalificationPayload<ExtArgs>
       fields: Prisma.PrequalificationFieldRefs
@@ -4097,6 +4164,56 @@ export const ContractEventScalarFieldEnum = {
 export type ContractEventScalarFieldEnum = (typeof ContractEventScalarFieldEnum)[keyof typeof ContractEventScalarFieldEnum]
 
 
+export const ContractTerminationScalarFieldEnum = {
+  id: 'id',
+  contractId: 'contractId',
+  tenantId: 'tenantId',
+  requestNumber: 'requestNumber',
+  initiatedBy: 'initiatedBy',
+  initiatorId: 'initiatorId',
+  type: 'type',
+  reason: 'reason',
+  supportingDocs: 'supportingDocs',
+  status: 'status',
+  requiresApproval: 'requiresApproval',
+  autoApproveEligible: 'autoApproveEligible',
+  reviewedBy: 'reviewedBy',
+  reviewedAt: 'reviewedAt',
+  reviewNotes: 'reviewNotes',
+  rejectionReason: 'rejectionReason',
+  contractSnapshot: 'contractSnapshot',
+  totalContractAmount: 'totalContractAmount',
+  totalPaidToDate: 'totalPaidToDate',
+  outstandingBalance: 'outstandingBalance',
+  refundableAmount: 'refundableAmount',
+  penaltyAmount: 'penaltyAmount',
+  forfeitedAmount: 'forfeitedAmount',
+  adminFeeAmount: 'adminFeeAmount',
+  netRefundAmount: 'netRefundAmount',
+  settlementNotes: 'settlementNotes',
+  refundStatus: 'refundStatus',
+  refundReference: 'refundReference',
+  refundMethod: 'refundMethod',
+  refundAccountDetails: 'refundAccountDetails',
+  refundInitiatedAt: 'refundInitiatedAt',
+  refundCompletedAt: 'refundCompletedAt',
+  refundFailureReason: 'refundFailureReason',
+  unitReleasedAt: 'unitReleasedAt',
+  unitReservedForId: 'unitReservedForId',
+  requestedAt: 'requestedAt',
+  approvedAt: 'approvedAt',
+  executedAt: 'executedAt',
+  completedAt: 'completedAt',
+  cancelledAt: 'cancelledAt',
+  idempotencyKey: 'idempotencyKey',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ContractTerminationScalarFieldEnum = (typeof ContractTerminationScalarFieldEnum)[keyof typeof ContractTerminationScalarFieldEnum]
+
+
 export const PrequalificationScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -4683,6 +4800,27 @@ export const ContractEventOrderByRelevanceFieldEnum = {
 export type ContractEventOrderByRelevanceFieldEnum = (typeof ContractEventOrderByRelevanceFieldEnum)[keyof typeof ContractEventOrderByRelevanceFieldEnum]
 
 
+export const ContractTerminationOrderByRelevanceFieldEnum = {
+  id: 'id',
+  contractId: 'contractId',
+  tenantId: 'tenantId',
+  requestNumber: 'requestNumber',
+  initiatorId: 'initiatorId',
+  reason: 'reason',
+  reviewedBy: 'reviewedBy',
+  reviewNotes: 'reviewNotes',
+  rejectionReason: 'rejectionReason',
+  settlementNotes: 'settlementNotes',
+  refundReference: 'refundReference',
+  refundMethod: 'refundMethod',
+  refundFailureReason: 'refundFailureReason',
+  unitReservedForId: 'unitReservedForId',
+  idempotencyKey: 'idempotencyKey'
+} as const
+
+export type ContractTerminationOrderByRelevanceFieldEnum = (typeof ContractTerminationOrderByRelevanceFieldEnum)[keyof typeof ContractTerminationOrderByRelevanceFieldEnum]
+
+
 export const PrequalificationOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -4885,6 +5023,34 @@ export type EnumDocumentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$P
 
 
 /**
+ * Reference to a field of type 'TerminationInitiator'
+ */
+export type EnumTerminationInitiatorFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TerminationInitiator'>
+    
+
+
+/**
+ * Reference to a field of type 'TerminationType'
+ */
+export type EnumTerminationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TerminationType'>
+    
+
+
+/**
+ * Reference to a field of type 'TerminationStatus'
+ */
+export type EnumTerminationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TerminationStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'RefundStatus'
+ */
+export type EnumRefundStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RefundStatus'>
+    
+
+
+/**
  * Reference to a field of type 'PrequalificationStatus'
  */
 export type EnumPrequalificationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PrequalificationStatus'>
@@ -5040,6 +5206,7 @@ export type GlobalOmitConfig = {
   contractDocument?: Prisma.ContractDocumentOmit
   contractTransition?: Prisma.ContractTransitionOmit
   contractEvent?: Prisma.ContractEventOmit
+  contractTermination?: Prisma.ContractTerminationOmit
   prequalification?: Prisma.PrequalificationOmit
   paymentMethodChangeRequest?: Prisma.PaymentMethodChangeRequestOmit
   documentRequirementRule?: Prisma.DocumentRequirementRuleOmit

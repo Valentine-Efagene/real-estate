@@ -119,6 +119,59 @@ export const ApprovalDecision = {
 export type ApprovalDecision = (typeof ApprovalDecision)[keyof typeof ApprovalDecision]
 
 
+export const TerminationType = {
+  BUYER_WITHDRAWAL: 'BUYER_WITHDRAWAL',
+  SELLER_WITHDRAWAL: 'SELLER_WITHDRAWAL',
+  MUTUAL_AGREEMENT: 'MUTUAL_AGREEMENT',
+  PAYMENT_DEFAULT: 'PAYMENT_DEFAULT',
+  DOCUMENT_FAILURE: 'DOCUMENT_FAILURE',
+  FRAUD: 'FRAUD',
+  FORCE_MAJEURE: 'FORCE_MAJEURE',
+  PROPERTY_UNAVAILABLE: 'PROPERTY_UNAVAILABLE',
+  REGULATORY: 'REGULATORY',
+  OTHER: 'OTHER'
+} as const
+
+export type TerminationType = (typeof TerminationType)[keyof typeof TerminationType]
+
+
+export const TerminationStatus = {
+  REQUESTED: 'REQUESTED',
+  PENDING_REVIEW: 'PENDING_REVIEW',
+  PENDING_REFUND: 'PENDING_REFUND',
+  REFUND_IN_PROGRESS: 'REFUND_IN_PROGRESS',
+  REFUND_COMPLETED: 'REFUND_COMPLETED',
+  COMPLETED: 'COMPLETED',
+  REJECTED: 'REJECTED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type TerminationStatus = (typeof TerminationStatus)[keyof typeof TerminationStatus]
+
+
+export const RefundStatus = {
+  NOT_APPLICABLE: 'NOT_APPLICABLE',
+  PENDING: 'PENDING',
+  INITIATED: 'INITIATED',
+  PROCESSING: 'PROCESSING',
+  PARTIAL_COMPLETED: 'PARTIAL_COMPLETED',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED'
+} as const
+
+export type RefundStatus = (typeof RefundStatus)[keyof typeof RefundStatus]
+
+
+export const TerminationInitiator = {
+  BUYER: 'BUYER',
+  SELLER: 'SELLER',
+  ADMIN: 'ADMIN',
+  SYSTEM: 'SYSTEM'
+} as const
+
+export type TerminationInitiator = (typeof TerminationInitiator)[keyof typeof TerminationInitiator]
+
+
 export const CompletionCriterion = {
   DOCUMENT_APPROVALS: 'DOCUMENT_APPROVALS',
   PAYMENT_AMOUNT: 'PAYMENT_AMOUNT',

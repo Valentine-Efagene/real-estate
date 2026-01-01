@@ -8,6 +8,7 @@ export * from './ContractPhase';
 export * from './ContractPhaseStep';
 export * from './ContractPhaseStepApproval';
 export * from './ContractPhaseStepDocument';
+export * from './ContractTermination';
 export * from './ContractTransition';
 export * from './DeviceEndpoint';
 export * from './DocumentRequirementRule';

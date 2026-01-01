@@ -13,6 +13,7 @@ import paymentPlanRouter from './routes/payment-plan';
 import paymentMethodRouter from './routes/payment-method';
 import contractRouter from './routes/contract';
 import prequalificationRouter from './routes/prequalification';
+import terminationRouter from './routes/contract-termination';
 
 export const app: Application = express();
 
@@ -38,5 +39,6 @@ app.use('/payment-plans', paymentPlanRouter);
 app.use('/payment-methods', paymentMethodRouter);
 app.use('/contracts', contractRouter);
 app.use('/prequalifications', prequalificationRouter);
+app.use('/', terminationRouter); // Handles both /contracts/:id/... and /terminations/...
 
 app.use(errorHandler);

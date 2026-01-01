@@ -92,6 +92,7 @@ export const ModelName = {
   ContractDocument: 'ContractDocument',
   ContractTransition: 'ContractTransition',
   ContractEvent: 'ContractEvent',
+  ContractTermination: 'ContractTermination',
   Prequalification: 'Prequalification',
   PaymentMethodChangeRequest: 'PaymentMethodChangeRequest',
   DocumentRequirementRule: 'DocumentRequirementRule',
@@ -754,6 +755,56 @@ export const ContractEventScalarFieldEnum = {
 export type ContractEventScalarFieldEnum = (typeof ContractEventScalarFieldEnum)[keyof typeof ContractEventScalarFieldEnum]
 
 
+export const ContractTerminationScalarFieldEnum = {
+  id: 'id',
+  contractId: 'contractId',
+  tenantId: 'tenantId',
+  requestNumber: 'requestNumber',
+  initiatedBy: 'initiatedBy',
+  initiatorId: 'initiatorId',
+  type: 'type',
+  reason: 'reason',
+  supportingDocs: 'supportingDocs',
+  status: 'status',
+  requiresApproval: 'requiresApproval',
+  autoApproveEligible: 'autoApproveEligible',
+  reviewedBy: 'reviewedBy',
+  reviewedAt: 'reviewedAt',
+  reviewNotes: 'reviewNotes',
+  rejectionReason: 'rejectionReason',
+  contractSnapshot: 'contractSnapshot',
+  totalContractAmount: 'totalContractAmount',
+  totalPaidToDate: 'totalPaidToDate',
+  outstandingBalance: 'outstandingBalance',
+  refundableAmount: 'refundableAmount',
+  penaltyAmount: 'penaltyAmount',
+  forfeitedAmount: 'forfeitedAmount',
+  adminFeeAmount: 'adminFeeAmount',
+  netRefundAmount: 'netRefundAmount',
+  settlementNotes: 'settlementNotes',
+  refundStatus: 'refundStatus',
+  refundReference: 'refundReference',
+  refundMethod: 'refundMethod',
+  refundAccountDetails: 'refundAccountDetails',
+  refundInitiatedAt: 'refundInitiatedAt',
+  refundCompletedAt: 'refundCompletedAt',
+  refundFailureReason: 'refundFailureReason',
+  unitReleasedAt: 'unitReleasedAt',
+  unitReservedForId: 'unitReservedForId',
+  requestedAt: 'requestedAt',
+  approvedAt: 'approvedAt',
+  executedAt: 'executedAt',
+  completedAt: 'completedAt',
+  cancelledAt: 'cancelledAt',
+  idempotencyKey: 'idempotencyKey',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ContractTerminationScalarFieldEnum = (typeof ContractTerminationScalarFieldEnum)[keyof typeof ContractTerminationScalarFieldEnum]
+
+
 export const PrequalificationScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -1338,6 +1389,27 @@ export const ContractEventOrderByRelevanceFieldEnum = {
 } as const
 
 export type ContractEventOrderByRelevanceFieldEnum = (typeof ContractEventOrderByRelevanceFieldEnum)[keyof typeof ContractEventOrderByRelevanceFieldEnum]
+
+
+export const ContractTerminationOrderByRelevanceFieldEnum = {
+  id: 'id',
+  contractId: 'contractId',
+  tenantId: 'tenantId',
+  requestNumber: 'requestNumber',
+  initiatorId: 'initiatorId',
+  reason: 'reason',
+  reviewedBy: 'reviewedBy',
+  reviewNotes: 'reviewNotes',
+  rejectionReason: 'rejectionReason',
+  settlementNotes: 'settlementNotes',
+  refundReference: 'refundReference',
+  refundMethod: 'refundMethod',
+  refundFailureReason: 'refundFailureReason',
+  unitReservedForId: 'unitReservedForId',
+  idempotencyKey: 'idempotencyKey'
+} as const
+
+export type ContractTerminationOrderByRelevanceFieldEnum = (typeof ContractTerminationOrderByRelevanceFieldEnum)[keyof typeof ContractTerminationOrderByRelevanceFieldEnum]
 
 
 export const PrequalificationOrderByRelevanceFieldEnum = {

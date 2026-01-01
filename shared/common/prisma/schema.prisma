@@ -99,6 +99,51 @@ enum ApprovalDecision {
   REQUEST_CHANGES
 }
 
+// =============================================================================
+// CONTRACT TERMINATION / CANCELLATION ENUMS
+// =============================================================================
+
+enum TerminationType {
+  BUYER_WITHDRAWAL // Buyer wants to cancel (voluntary)
+  SELLER_WITHDRAWAL // Seller/developer cancels
+  MUTUAL_AGREEMENT // Both parties agree to terminate
+  PAYMENT_DEFAULT // Buyer failed payment obligations
+  DOCUMENT_FAILURE // Buyer failed to provide required documents
+  FRAUD // Fraudulent activity detected
+  FORCE_MAJEURE // External circumstances (disaster, etc.)
+  PROPERTY_UNAVAILABLE // Property no longer available
+  REGULATORY // Regulatory/legal requirement
+  OTHER // Other reasons (with notes)
+}
+
+enum TerminationStatus {
+  REQUESTED // Initial request submitted
+  PENDING_REVIEW // Awaiting admin review
+  PENDING_REFUND // Approved, awaiting refund processing
+  REFUND_IN_PROGRESS // Refund being processed
+  REFUND_COMPLETED // Refund completed
+  COMPLETED // Termination fully executed (no refund or refund done)
+  REJECTED // Termination request rejected
+  CANCELLED // Termination request was cancelled
+}
+
+enum RefundStatus {
+  NOT_APPLICABLE // No refund needed (no payments made)
+  PENDING // Refund not yet initiated
+  INITIATED // Refund request sent to payment gateway
+  PROCESSING // Gateway processing refund
+  PARTIAL_COMPLETED // Some refund completed (penalties deducted)
+  COMPLETED // Full refund completed
+  FAILED // Refund failed (needs manual intervention)
+}
+
+enum TerminationInitiator {
+  BUYER
+  SELLER
+  ADMIN
+  SYSTEM
+}
+
 enum CompletionCriterion {
   DOCUMENT_APPROVALS
   PAYMENT_AMOUNT
@@ -159,6 +204,10 @@ model User {
   prequalifications           Prequalification[]
   paymentMethodChangeRequests PaymentMethodChangeRequest[] @relation("ChangeRequestor")
   reviewedChangeRequests      PaymentMethodChangeRequest[] @relation("ChangeReviewer")
+
+  // Contract terminations
+  initiatedTerminations ContractTermination[] @relation("TerminationInitiator")
+  reviewedTerminations  ContractTermination[] @relation("TerminationReviewer")
 
   @@index([email])
   @@index([tenantId])
@@ -233,6 +282,9 @@ model Tenant {
   prequalifications           Prequalification[]
   paymentMethodChangeRequests PaymentMethodChangeRequest[]
   documentRequirementRules    DocumentRequirementRule[]
+
+  // Contract terminations
+  contractTerminations ContractTermination[]
 
   @@index([subdomain])
   @@map("tenants")
@@ -827,11 +879,12 @@ model Contract {
   updatedAt          DateTime  @updatedAt
 
   // Relations
-  phases      ContractPhase[]
-  documents   ContractDocument[]
-  payments    ContractPayment[]
-  transitions ContractTransition[]
-  events      ContractEvent[]
+  phases       ContractPhase[]
+  documents    ContractDocument[]
+  payments     ContractPayment[]
+  transitions  ContractTransition[]
+  events       ContractEvent[]
+  terminations ContractTermination[]
 
   // Prequalification that led to this contract (optional)
   prequalification            Prequalification?
@@ -1105,6 +1158,98 @@ model ContractEvent {
 
   @@index([contractId])
   @@map("contract_events")
+}
+
+// =============================================================================
+// CONTRACT TERMINATION - Full lifecycle for cancellation/termination
+// =============================================================================
+// Tracks termination requests from initiation through refund completion.
+// Industry-standard flow:
+// 1. Request created (by buyer/seller/admin/system)
+// 2. Admin reviews (if required by policy)
+// 3. Financial settlement calculated (refunds, penalties, forfeitures)
+// 4. Refund processed (if applicable)
+// 5. Contract marked terminated, unit released
+// =============================================================================
+
+model ContractTermination {
+  id         String   @id @default(cuid())
+  contractId String
+  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  tenantId   String
+  tenant     Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  // Request identification
+  requestNumber String @unique // TRM-XXXXXX
+
+  // Who initiated and why
+  initiatedBy    TerminationInitiator
+  initiatorId    String? // userId if BUYER/SELLER/ADMIN
+  initiator      User?                @relation("TerminationInitiator", fields: [initiatorId], references: [id])
+  type           TerminationType
+  reason         String?              @db.Text
+  supportingDocs Json? // [{type, url, uploadedAt}]
+
+  // Workflow status
+  status              TerminationStatus @default(REQUESTED)
+  requiresApproval    Boolean           @default(true)
+  autoApproveEligible Boolean           @default(false) // Pre-signature, no payments
+
+  // Admin review
+  reviewedBy      String?
+  reviewer        User?     @relation("TerminationReviewer", fields: [reviewedBy], references: [id])
+  reviewedAt      DateTime?
+  reviewNotes     String?   @db.Text
+  rejectionReason String?   @db.Text
+
+  // Financial snapshot at time of request
+  contractSnapshot    Json // Full contract state snapshot
+  totalContractAmount Float
+  totalPaidToDate     Float
+  outstandingBalance  Float
+
+  // Settlement calculation
+  refundableAmount Float   @default(0) // Amount eligible for refund
+  penaltyAmount    Float   @default(0) // Penalties/fees to deduct
+  forfeitedAmount  Float   @default(0) // Amount forfeited (non-refundable deposits)
+  adminFeeAmount   Float   @default(0) // Processing fees
+  netRefundAmount  Float   @default(0) // refundableAmount - penaltyAmount - adminFeeAmount
+  settlementNotes  String? @db.Text
+
+  // Refund processing
+  refundStatus         RefundStatus @default(NOT_APPLICABLE)
+  refundReference      String? // Payment gateway reference
+  refundMethod         String? // ORIGINAL_METHOD, BANK_TRANSFER, CHECK, WALLET
+  refundAccountDetails Json? // Encrypted bank details if needed
+  refundInitiatedAt    DateTime?
+  refundCompletedAt    DateTime?
+  refundFailureReason  String?      @db.Text
+
+  // Property unit handling
+  unitReleasedAt    DateTime?
+  unitReservedForId String? // If unit being held for another buyer
+
+  // Timing
+  requestedAt DateTime  @default(now())
+  approvedAt  DateTime?
+  executedAt  DateTime?
+  completedAt DateTime?
+  cancelledAt DateTime?
+
+  // Idempotency and audit
+  idempotencyKey String? @unique
+  metadata       Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([contractId])
+  @@index([tenantId])
+  @@index([status])
+  @@index([type])
+  @@index([initiatorId])
+  @@index([requestedAt])
+  @@map("contract_terminations")
 }
 
 // =============================================================================

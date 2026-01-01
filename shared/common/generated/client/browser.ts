@@ -223,6 +223,11 @@ export type ContractTransition = Prisma.ContractTransitionModel
  */
 export type ContractEvent = Prisma.ContractEventModel
 /**
+ * Model ContractTermination
+ * 
+ */
+export type ContractTermination = Prisma.ContractTerminationModel
+/**
  * Model Prequalification
  * 
  */

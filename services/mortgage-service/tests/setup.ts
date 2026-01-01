@@ -155,6 +155,7 @@ export const testData = {
 // Cleanup helper - removes all test data
 export async function cleanupTestData() {
     // Delete in correct order to respect foreign keys
+    await prisma.contractTermination.deleteMany();
     await prisma.contractEvent.deleteMany();
     await prisma.contractTransition.deleteMany();
     await prisma.contractPayment.deleteMany();

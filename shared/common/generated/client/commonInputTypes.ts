@@ -511,6 +511,27 @@ export type EnumDocumentStatusWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumDocumentStatusFilter<$PrismaModel>
 }
 
+export type EnumTerminationInitiatorFilter<$PrismaModel = never> = {
+  equals?: $Enums.TerminationInitiator | Prisma.EnumTerminationInitiatorFieldRefInput<$PrismaModel>
+  in?: $Enums.TerminationInitiator[]
+  notIn?: $Enums.TerminationInitiator[]
+  not?: Prisma.NestedEnumTerminationInitiatorFilter<$PrismaModel> | $Enums.TerminationInitiator
+}
+
+export type EnumTerminationTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.TerminationType | Prisma.EnumTerminationTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.TerminationType[]
+  notIn?: $Enums.TerminationType[]
+  not?: Prisma.NestedEnumTerminationTypeFilter<$PrismaModel> | $Enums.TerminationType
+}
+
+export type EnumTerminationStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.TerminationStatus | Prisma.EnumTerminationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TerminationStatus[]
+  notIn?: $Enums.TerminationStatus[]
+  not?: Prisma.NestedEnumTerminationStatusFilter<$PrismaModel> | $Enums.TerminationStatus
+}
+
 export type JsonFilter<$PrismaModel = never> =
 | Prisma.PatchUndefined<
     Prisma.Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
@@ -535,11 +556,41 @@ export type JsonFilterBase<$PrismaModel = never> = {
   not?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel> | Prisma.JsonNullValueFilter
 }
 
-export type EnumPrequalificationStatusFilter<$PrismaModel = never> = {
-  equals?: $Enums.PrequalificationStatus | Prisma.EnumPrequalificationStatusFieldRefInput<$PrismaModel>
-  in?: $Enums.PrequalificationStatus[]
-  notIn?: $Enums.PrequalificationStatus[]
-  not?: Prisma.NestedEnumPrequalificationStatusFilter<$PrismaModel> | $Enums.PrequalificationStatus
+export type EnumRefundStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.RefundStatus | Prisma.EnumRefundStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.RefundStatus[]
+  notIn?: $Enums.RefundStatus[]
+  not?: Prisma.NestedEnumRefundStatusFilter<$PrismaModel> | $Enums.RefundStatus
+}
+
+export type EnumTerminationInitiatorWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TerminationInitiator | Prisma.EnumTerminationInitiatorFieldRefInput<$PrismaModel>
+  in?: $Enums.TerminationInitiator[]
+  notIn?: $Enums.TerminationInitiator[]
+  not?: Prisma.NestedEnumTerminationInitiatorWithAggregatesFilter<$PrismaModel> | $Enums.TerminationInitiator
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTerminationInitiatorFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTerminationInitiatorFilter<$PrismaModel>
+}
+
+export type EnumTerminationTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TerminationType | Prisma.EnumTerminationTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.TerminationType[]
+  notIn?: $Enums.TerminationType[]
+  not?: Prisma.NestedEnumTerminationTypeWithAggregatesFilter<$PrismaModel> | $Enums.TerminationType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTerminationTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTerminationTypeFilter<$PrismaModel>
+}
+
+export type EnumTerminationStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TerminationStatus | Prisma.EnumTerminationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TerminationStatus[]
+  notIn?: $Enums.TerminationStatus[]
+  not?: Prisma.NestedEnumTerminationStatusWithAggregatesFilter<$PrismaModel> | $Enums.TerminationStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTerminationStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTerminationStatusFilter<$PrismaModel>
 }
 
 export type JsonWithAggregatesFilter<$PrismaModel = never> =
@@ -567,6 +618,23 @@ export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedJsonFilter<$PrismaModel>
   _max?: Prisma.NestedJsonFilter<$PrismaModel>
+}
+
+export type EnumRefundStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.RefundStatus | Prisma.EnumRefundStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.RefundStatus[]
+  notIn?: $Enums.RefundStatus[]
+  not?: Prisma.NestedEnumRefundStatusWithAggregatesFilter<$PrismaModel> | $Enums.RefundStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumRefundStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumRefundStatusFilter<$PrismaModel>
+}
+
+export type EnumPrequalificationStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.PrequalificationStatus | Prisma.EnumPrequalificationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.PrequalificationStatus[]
+  notIn?: $Enums.PrequalificationStatus[]
+  not?: Prisma.NestedEnumPrequalificationStatusFilter<$PrismaModel> | $Enums.PrequalificationStatus
 }
 
 export type EnumPrequalificationStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -1078,11 +1146,62 @@ export type NestedEnumDocumentStatusWithAggregatesFilter<$PrismaModel = never> =
   _max?: Prisma.NestedEnumDocumentStatusFilter<$PrismaModel>
 }
 
-export type NestedEnumPrequalificationStatusFilter<$PrismaModel = never> = {
-  equals?: $Enums.PrequalificationStatus | Prisma.EnumPrequalificationStatusFieldRefInput<$PrismaModel>
-  in?: $Enums.PrequalificationStatus[]
-  notIn?: $Enums.PrequalificationStatus[]
-  not?: Prisma.NestedEnumPrequalificationStatusFilter<$PrismaModel> | $Enums.PrequalificationStatus
+export type NestedEnumTerminationInitiatorFilter<$PrismaModel = never> = {
+  equals?: $Enums.TerminationInitiator | Prisma.EnumTerminationInitiatorFieldRefInput<$PrismaModel>
+  in?: $Enums.TerminationInitiator[]
+  notIn?: $Enums.TerminationInitiator[]
+  not?: Prisma.NestedEnumTerminationInitiatorFilter<$PrismaModel> | $Enums.TerminationInitiator
+}
+
+export type NestedEnumTerminationTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.TerminationType | Prisma.EnumTerminationTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.TerminationType[]
+  notIn?: $Enums.TerminationType[]
+  not?: Prisma.NestedEnumTerminationTypeFilter<$PrismaModel> | $Enums.TerminationType
+}
+
+export type NestedEnumTerminationStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.TerminationStatus | Prisma.EnumTerminationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TerminationStatus[]
+  notIn?: $Enums.TerminationStatus[]
+  not?: Prisma.NestedEnumTerminationStatusFilter<$PrismaModel> | $Enums.TerminationStatus
+}
+
+export type NestedEnumRefundStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.RefundStatus | Prisma.EnumRefundStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.RefundStatus[]
+  notIn?: $Enums.RefundStatus[]
+  not?: Prisma.NestedEnumRefundStatusFilter<$PrismaModel> | $Enums.RefundStatus
+}
+
+export type NestedEnumTerminationInitiatorWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TerminationInitiator | Prisma.EnumTerminationInitiatorFieldRefInput<$PrismaModel>
+  in?: $Enums.TerminationInitiator[]
+  notIn?: $Enums.TerminationInitiator[]
+  not?: Prisma.NestedEnumTerminationInitiatorWithAggregatesFilter<$PrismaModel> | $Enums.TerminationInitiator
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTerminationInitiatorFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTerminationInitiatorFilter<$PrismaModel>
+}
+
+export type NestedEnumTerminationTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TerminationType | Prisma.EnumTerminationTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.TerminationType[]
+  notIn?: $Enums.TerminationType[]
+  not?: Prisma.NestedEnumTerminationTypeWithAggregatesFilter<$PrismaModel> | $Enums.TerminationType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTerminationTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTerminationTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumTerminationStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TerminationStatus | Prisma.EnumTerminationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TerminationStatus[]
+  notIn?: $Enums.TerminationStatus[]
+  not?: Prisma.NestedEnumTerminationStatusWithAggregatesFilter<$PrismaModel> | $Enums.TerminationStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTerminationStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTerminationStatusFilter<$PrismaModel>
 }
 
 export type NestedJsonFilter<$PrismaModel = never> =
@@ -1107,6 +1226,23 @@ export type NestedJsonFilterBase<$PrismaModel = never> = {
   gt?: runtime.InputJsonValue
   gte?: runtime.InputJsonValue
   not?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel> | Prisma.JsonNullValueFilter
+}
+
+export type NestedEnumRefundStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.RefundStatus | Prisma.EnumRefundStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.RefundStatus[]
+  notIn?: $Enums.RefundStatus[]
+  not?: Prisma.NestedEnumRefundStatusWithAggregatesFilter<$PrismaModel> | $Enums.RefundStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumRefundStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumRefundStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumPrequalificationStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.PrequalificationStatus | Prisma.EnumPrequalificationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.PrequalificationStatus[]
+  notIn?: $Enums.PrequalificationStatus[]
+  not?: Prisma.NestedEnumPrequalificationStatusFilter<$PrismaModel> | $Enums.PrequalificationStatus
 }
 
 export type NestedEnumPrequalificationStatusWithAggregatesFilter<$PrismaModel = never> = {
