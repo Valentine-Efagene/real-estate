@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { UtilHelper } from '../helpers/UtilHelper';
-import { FileSystemHelper } from '../helpers/FileSystemHelper';
-import { DataHelper } from '../helpers/DataHelper';
+import { removeNullishProperties, compileTemplate } from '../helpers/utils';
+import { getFilePath, loadFileWithFullPath } from '../helpers/filesystem';
+import { templatePathMap, templateTitle } from '../helpers/data';
 import { TemplateTypeValue, BaseEmailInput } from '../validators/email.validator';
 
 export interface OAuth2Config {
@@ -247,18 +247,18 @@ export class Office365Service {
         }
     }
 
-    async sendTemplateEmail(dto: BaseEmailInput & { templateName: TemplateTypeValue; subject?: string; [key: string]: unknown }) {
+    async sendTemplateEmail(dto: BaseEmailInput & { templateName: TemplateTypeValue; subject?: string;[key: string]: unknown }) {
         try {
             const { to_email, templateName } = dto;
             console.log(`[Office365] Processing template email: ${templateName} for ${to_email}`);
 
-            const path: string = DataHelper.templatePathMap[templateName];
+            const templatePath: string = templatePathMap[templateName];
 
-            if (!path) {
+            if (!templatePath) {
                 throw new Error(`Template type ${templateName} not found in template path map`);
             }
 
-            const subject = dto.subject ?? DataHelper.templateTitle[templateName];
+            const subject = dto.subject ?? templateTitle[templateName];
 
             if (!subject) {
                 throw new Error('Subject is required');
@@ -267,14 +267,14 @@ export class Office365Service {
             let html: string;
 
             try {
-                const key: string = DataHelper.templatePathMap[templateName];
-                const filePath = await FileSystemHelper.getFilePath(key);
-                const templateSource = FileSystemHelper.loadFileWithFullPath(filePath);
+                const key: string = templatePathMap[templateName];
+                const filePath = getFilePath(key);
+                const templateSource = loadFileWithFullPath(filePath);
 
                 const finalDto = { subject, ...dto };
-                const reqData = UtilHelper.removeNullishProperties(finalDto);
+                const reqData = removeNullishProperties(finalDto);
 
-                html = await UtilHelper.compileTemplate(templateSource, reqData as Record<string, unknown>);
+                html = await compileTemplate(templateSource, reqData as Record<string, unknown>);
             } catch (error: unknown) {
                 const message = error instanceof Error ? error.message : 'Unknown error';
                 console.error(`[Office365] Error loading template: ${message}`);

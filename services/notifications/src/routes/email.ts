@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { getEmailService } from '../services/email.service';
 import { createResponse } from '../helpers/response';
-import { FormatHelper } from '../helpers/FormatHelper';
+import { formatNaira } from '../helpers/format';
 import {
     SendEmailSchema,
     SendRawHtmlEmailSchema,
@@ -101,7 +101,7 @@ router.post('/missed-payments', asyncHandler(async (req: Request, res: Response)
     const response = await emailService.sendTemplateEmail({
         templateName,
         ...parsed.data,
-        amount: FormatHelper.formatNaira(parsed.data.amount),
+        amount: formatNaira(parsed.data.amount),
     });
     res.json(createResponse(response.status, 'Email sent', response.headers));
 }));
@@ -182,8 +182,8 @@ router.post('/wallet-top-up', asyncHandler(async (req: Request, res: Response) =
     const response = await emailService.sendTemplateEmail({
         templateName,
         ...parsed.data,
-        amount: FormatHelper.formatNaira(parsed.data.amount),
-        walletBalance: FormatHelper.formatNaira(parsed.data.walletBalance),
+        amount: formatNaira(parsed.data.amount),
+        walletBalance: formatNaira(parsed.data.walletBalance),
     });
     res.json(createResponse(response.status, 'Email sent', response.headers));
 }));
@@ -200,7 +200,7 @@ router.post('/admin/contribution-received', asyncHandler(async (req: Request, re
     const response = await emailService.sendTemplateEmail({
         templateName,
         ...parsed.data,
-        amount: FormatHelper.formatNaira(parsed.data.amount),
+        amount: formatNaira(parsed.data.amount),
     });
     res.json(createResponse(response.status, 'Email sent', response.headers));
 }));

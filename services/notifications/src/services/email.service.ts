@@ -1,5 +1,5 @@
-import { FileSystemHelper } from '../helpers/FileSystemHelper';
-import { UtilHelper } from '../helpers/UtilHelper';
+import { loadFile, listHtmlFilesInTemplates } from '../helpers/filesystem';
+import { constants } from '../helpers/utils';
 import { getOffice365Service } from './office365.service';
 import {
     BaseEmailInput,
@@ -9,10 +9,10 @@ import {
 
 export class EmailService {
     private readonly office365Service = getOffice365Service();
-    private readonly constants = UtilHelper.constants;
+    private readonly constants = constants;
 
     async testTemp(path: string) {
-        return FileSystemHelper.loadFile(path);
+        return loadFile(path);
     }
 
     buildUnsubscribeLink(userId: string): string {
@@ -42,8 +42,7 @@ export class EmailService {
     }
 
     async listTemplateFiles(): Promise<string[]> {
-        const files = FileSystemHelper.listHtmlFilesInTemplates();
-        return files;
+        return listHtmlFilesInTemplates();
     }
 
     async sendEmail(dto: SendEmailInput) {
