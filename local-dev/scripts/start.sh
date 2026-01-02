@@ -5,13 +5,11 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LOCAL_DEV_DIR="$(dirname "$SCRIPT_DIR")"
+REPO_ROOT="$(dirname "$LOCAL_DEV_DIR")"
 
 echo "🚀 Starting QShelter local development environment..."
 
 cd "$LOCAL_DEV_DIR"
-
-# Make init scripts executable
-chmod +x init-scripts/setup-aws.sh 2>/dev/null || true
 
 # Start containers
 docker compose up -d
@@ -39,9 +37,15 @@ until docker exec qshelter-redis redis-cli ping 2>/dev/null | grep -q PONG; do
 done
 echo "  ✓ Redis is ready"
 
-# Run AWS setup script (in case auto-init didn't run)
-echo "🔧 Initializing AWS resources..."
-bash init-scripts/setup-aws.sh
+# Deploy infrastructure using CDK
+echo "🔧 Deploying AWS resources via CDK..."
+cd "$REPO_ROOT/infrastructure"
+pnpm localstack:bootstrap 2>/dev/null || true
+pnpm localstack:deploy
+
+# Seed role policies
+echo "🌱 Seeding role policies..."
+ROLE_POLICIES_TABLE_NAME=qshelter-test-role-policies AWS_ENDPOINT_URL=http://localhost:4566 node scripts/seed-role-policies.mjs || true
 
 echo ""
 echo "✅ Local environment is ready!"

@@ -60,8 +60,23 @@ export class ConfigService {
     private readonly CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
     private constructor(region: string = 'us-east-1') {
-        this.ssmClient = new SSMClient({ region });
-        this.secretsClient = new SecretsManagerClient({ region });
+        const stage = process.env.NODE_ENV || process.env.STAGE || 'dev';
+        const isLocalStack = stage === 'test' || process.env.LOCALSTACK_ENDPOINT;
+
+        // Configure AWS clients for LocalStack or AWS
+        const clientConfig: any = { region };
+
+        if (isLocalStack) {
+            const endpoint = process.env.LOCALSTACK_ENDPOINT || 'http://localhost:4566';
+            clientConfig.endpoint = endpoint;
+            clientConfig.credentials = {
+                accessKeyId: 'test',
+                secretAccessKey: 'test',
+            };
+        }
+
+        this.ssmClient = new SSMClient(clientConfig);
+        this.secretsClient = new SecretsManagerClient(clientConfig);
     }
 
     static getInstance(region?: string): ConfigService {
@@ -154,25 +169,71 @@ export class ConfigService {
     /**
      * Get database credentials - combines secret and infrastructure config
      * Returns a complete DatabaseCredentials object ready to use
+     * For test stage (LocalStack), reads directly from SSM parameters
      */
     async getDatabaseCredentials(stage: string = process.env.NODE_ENV || 'dev'): Promise<DatabaseCredentials> {
         const cacheKey = `db-credentials-${stage}`;
         const cached = this.getFromCache<DatabaseCredentials>(cacheKey);
         if (cached) return cached;
 
-        const infraConfig = await this.getInfrastructureConfig(stage);
-        const dbSecret = await this.getSecret<{ username: string; password: string }>(infraConfig.databaseSecretArn);
+        let credentials: DatabaseCredentials;
 
-        const credentials: DatabaseCredentials = {
-            username: dbSecret.username,
-            password: dbSecret.password,
-            host: infraConfig.dbHost,
-            port: infraConfig.dbPort,
-            database: `qshelter_${stage}`,
-        };
+        // For test stage (LocalStack), read directly from SSM parameters
+        if (stage === 'test') {
+            const pathPrefix = `/qshelter/${stage}/`;
+            const host = await this.getParameter(`${pathPrefix}DB_HOST`);
+            const port = await this.getParameter(`${pathPrefix}DB_PORT`);
+            const username = await this.getParameter(`${pathPrefix}DB_USER`);
+            const password = await this.getSecureParameter(`${pathPrefix}DB_PASSWORD`);
+            const database = await this.getParameter(`${pathPrefix}DB_NAME`);
+
+            credentials = {
+                username,
+                password,
+                host,
+                port: parseInt(port, 10),
+                database,
+            };
+        } else {
+            // For dev/prod, use infrastructure config + Secrets Manager
+            const infraConfig = await this.getInfrastructureConfig(stage);
+            const dbSecret = await this.getSecret<{ username: string; password: string }>(infraConfig.databaseSecretArn);
+
+            credentials = {
+                username: dbSecret.username,
+                password: dbSecret.password,
+                host: infraConfig.dbHost,
+                port: infraConfig.dbPort,
+                database: `qshelter_${stage}`,
+            };
+        }
 
         this.setCache(cacheKey, credentials);
         return credentials;
+    }
+
+    /**
+     * Get a secure parameter from SSM (with decryption)
+     */
+    async getSecureParameter(name: string): Promise<string> {
+        const cached = this.getFromCache<string>(`secure-${name}`);
+        if (cached) return cached;
+
+        try {
+            const command = new GetParameterCommand({
+                Name: name,
+                WithDecryption: true,
+            });
+
+            const response = await this.ssmClient.send(command);
+            const value = response.Parameter?.Value || '';
+
+            this.setCache(`secure-${name}`, value);
+            return value;
+        } catch (error: any) {
+            console.error(`Error fetching secure parameter ${name}:`, error);
+            throw new Error(`Failed to load secure parameter ${name}: ${error.message}`);
+        }
     }
 
     /**

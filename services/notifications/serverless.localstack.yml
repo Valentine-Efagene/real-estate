@@ -1,7 +1,7 @@
 # LocalStack-specific serverless config
 # Uses REST API (v1) for better LocalStack compatibility
 # Usage: npx sls deploy --config serverless.localstack.yml --stage test
-# Requires: LocalStack running with SSM parameters set up (local-dev/init-scripts/setup-aws.sh)
+# Requires: LocalStack running with CDK deployed (cd infrastructure && pnpm localstack:deploy)
 
 service: qshelter-notifications
 
@@ -21,7 +21,15 @@ provider:
 
   environment:
     NODE_ENV: ${self:provider.stage}
+    STAGE: ${self:provider.stage}
+    LOCALSTACK_ENDPOINT: http://localhost:4566
     PORT: 3001
+    # Database credentials from SSM
+    DB_HOST: ${ssm:/qshelter/${self:provider.stage}/DB_HOST}
+    DB_PORT: ${ssm:/qshelter/${self:provider.stage}/DB_PORT}
+    DB_USER: ${ssm:/qshelter/${self:provider.stage}/DB_USER}
+    DB_PASSWORD: ${ssm:/qshelter/${self:provider.stage}/DB_PASSWORD}
+    DB_NAME: ${ssm:/qshelter/${self:provider.stage}/DB_NAME}
     # Office365 credentials from SSM
     OFFICE365_CLIENT_ID: ${ssm:/qshelter/${self:provider.stage}/OFFICE365_CLIENT_ID}
     OFFICE365_CLIENT_SECRET: ${ssm:/qshelter/${self:provider.stage}/OFFICE365_CLIENT_SECRET}

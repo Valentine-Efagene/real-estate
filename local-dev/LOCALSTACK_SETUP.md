@@ -21,24 +21,24 @@ This environment is configured under the `local-dev/` directory.
 - Pre-seeded role policies — admin, buyer, agent with proper permissions
 - Test JWT utilities — generate auth headers for any test user
 
-## Files Added
+## Files
 
 - `local-dev/docker-compose.yml` — LocalStack + MySQL + Redis + Adminer compose file
-- `local-dev/.env.test` — Environment variables for tests (LocalStack endpoints, DB URL, JWT secrets)
-- `local-dev/init-scripts/setup-aws.sh` — Initialization script to create S3 buckets, SSM parameters, Secrets Manager secrets, DynamoDB tables, EventBridge bus, SQS/SNS, and CloudWatch log groups
+- `local-dev/.env` — Environment variables for local dev (copy from `.env.example`)
 - `local-dev/init-scripts/mysql/01-init.sql` — MySQL DB init script
 - `local-dev/lib/aws-clients.ts` — LocalStack-aware AWS SDK client factory
 - `local-dev/lib/test-utils.ts` — JWT helpers, predefined test users, utility functions
 - `local-dev/lib/db-cleanup.ts` — Prisma DB cleanup and seeding helpers for e2e tests
 - `local-dev/lib/index.ts` — Exports for local-dev utilities
-- `local-dev/scripts/start.sh` — Start script (brings up compose, waits for readiness, runs init)
+- `local-dev/scripts/start.sh` — Start script (brings up compose, waits for readiness, deploys CDK)
 - `local-dev/scripts/stop.sh` — Stop script
 - `local-dev/scripts/reset.sh` — Reset (down + remove volumes + localstack data)
 - `local-dev/scripts/logs.sh` — Tail container logs
 - `local-dev/scripts/migrate.sh` — Run Prisma migrate/generate against local DB
 - `local-dev/scripts/seed.sh` — Run Prisma seed (if present)
-- `local-dev/README.md` — High-level README for local dev (already present)
-- `local-dev/LOCALSTACK_SETUP.md` — (this file) summary and quick reference
+- `infrastructure/lib/localstack-stack.ts` — CDK stack for LocalStack resources
+- `infrastructure/bin/localstack-app.ts` — CDK app entry point for LocalStack
+- `infrastructure/scripts/seed-role-policies.mjs` — Seeds DynamoDB role policies table
 
 ---
 
@@ -84,15 +84,15 @@ pnpm local:reset
 
 ## Environment / Configuration Notes
 
-- LocalStack runs on `http://localhost:4566` (edge port). Configure clients with `AWS_ENDPOINT` or `LOCALSTACK_ENDPOINT`.
+- LocalStack runs on `http://localhost:4566` (edge port). Configure clients with `AWS_ENDPOINT_URL` or `LOCALSTACK_ENDPOINT`.
 - The test database is MySQL exposed on host port `3307` to avoid conflicts with any local MySQL instance.
-- `.env.test` contains variables used by services during e2e tests (DB URL, JWT secrets, AWS endpoint, etc.). Copy or source it in test runs as needed.
+- `.env` contains variables used by CDK during deployment (DB credentials, secrets, etc.). Copy `.env.example` to `.env` and fill in values.
 - S3 path-style addressing is enabled via `AWS_S3_FORCE_PATH_STYLE=true` to ensure compatibility with LocalStack.
 
-Example important env vars (from `.env.test`):
+Example important env vars:
 
 ```bash
-AWS_ENDPOINT=http://localhost:4566
+AWS_ENDPOINT_URL=http://localhost:4566
 AWS_ACCESS_KEY_ID=test
 AWS_SECRET_ACCESS_KEY=test
 DATABASE_URL="mysql://qshelter:qshelter_pass@127.0.0.1:3307/qshelter_test"
@@ -101,19 +101,42 @@ JWT_ACCESS_SECRET=test-jwt-access-secret-key-for-e2e-testing-min-32-chars
 
 ---
 
-## AWS Resources Provisioned by the Init Script
+## AWS Resources Provisioned by CDK
 
-The `init-scripts/setup-aws.sh` script creates the following resources in LocalStack for the `test` stage:
+The CDK stack (`infrastructure/lib/localstack-stack.ts`) creates the following resources in LocalStack for the `test` stage:
 
 - S3 buckets: `qshelter-test-uploads`, `qshelter-test-documents`
-- SSM parameters under `/qshelter/test/*` (database-url, s3-bucket-name, event-bus-name, redis-endpoint, authorizer-lambda-arn)
+- SSM parameters under `/qshelter/test/*` (DB credentials, s3-bucket-name, event-bus-name, redis-endpoint, authorizer-lambda-arn, notification service params)
 - Secrets Manager secrets: `qshelter/test/jwt-access-secret`, `qshelter/test/jwt-refresh-secret`, `qshelter/test/oauth`, `qshelter/test/paystack`
 - DynamoDB table: `qshelter-test-role-policies` (stores authorizer policies)
 - EventBridge bus: `qshelter-test-event-bus` and a catch-all rule
 - SQS queues: `qshelter-test-notifications`, `qshelter-test-contract-events`, and a DLQ
 - SNS topics for notifications and contract events
-- CloudWatch Logs groups for test lambda functions
-- Seeded role policies for `admin`, `buyer`, and `agent` in the role policies table
+- CloudWatch Logs groups for Lambda functions
+
+The seed script (`infrastructure/scripts/seed-role-policies.mjs`) populates role policies for `admin`, `buyer`, and `agent`.
+
+---
+
+## Manual CDK Deployment
+
+If you need to deploy or update infrastructure manually:
+
+```bash
+cd infrastructure
+
+# Bootstrap (one-time)
+pnpm localstack:bootstrap
+
+# Deploy
+pnpm localstack:deploy
+
+# View diff
+pnpm localstack:diff
+
+# Destroy
+pnpm localstack:destroy
+```
 
 ---
 

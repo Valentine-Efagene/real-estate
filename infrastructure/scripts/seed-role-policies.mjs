@@ -4,19 +4,31 @@
  * Migration script to seed DynamoDB with initial role policies
  * 
  * Usage:
- *   node scripts/seed-role-policies.js
+ *   node scripts/seed-role-policies.mjs
  * 
- * Environment variables required:
- *   - AWS_REGION_NAME
- *   - ROLE_POLICIES_TABLE_NAME
+ * Environment variables:
+ *   - AWS_REGION_NAME (default: us-east-1)
+ *   - ROLE_POLICIES_TABLE_NAME (required)
+ *   - AWS_ENDPOINT_URL (optional, for LocalStack)
  */
 
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, BatchWriteCommand } from '@aws-sdk/lib-dynamodb';
 
-const client = new DynamoDBClient({
+const clientConfig = {
     region: process.env.AWS_REGION_NAME || 'us-east-1'
-});
+};
+
+// Support LocalStack endpoint
+if (process.env.AWS_ENDPOINT_URL) {
+    clientConfig.endpoint = process.env.AWS_ENDPOINT_URL;
+    clientConfig.credentials = {
+        accessKeyId: 'test',
+        secretAccessKey: 'test',
+    };
+}
+
+const client = new DynamoDBClient(clientConfig);
 const docClient = DynamoDBDocumentClient.from(client);
 
 const tableName = process.env.ROLE_POLICIES_TABLE_NAME || 'role-policies';

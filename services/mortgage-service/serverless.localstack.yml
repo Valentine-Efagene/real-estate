@@ -1,0 +1,122 @@
+# LocalStack-specific serverless config for Mortgage Service
+# Uses REST API (v1) for better LocalStack compatibility
+# Usage: npx sls deploy --config serverless.localstack.yml --stage test
+# Requires: LocalStack running with CDK deployed (cd infrastructure && pnpm localstack:deploy)
+
+service: qshelter-mortgage-service
+
+frameworkVersion: '4'
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+  stage: ${opt:stage, 'test'}
+  memorySize: 512
+  timeout: 30
+  
+  # REST API (v1) for LocalStack compatibility - no authorizer
+  apiGateway:
+    shouldStartNameWithService: true
+
+  environment:
+    NODE_ENV: ${self:provider.stage}
+    STAGE: ${self:provider.stage}
+    LOCALSTACK_ENDPOINT: http://localhost:4566
+    # Database credentials from SSM
+    DB_HOST: ${ssm:/qshelter/${self:provider.stage}/DB_HOST}
+    DB_PORT: ${ssm:/qshelter/${self:provider.stage}/DB_PORT}
+    DB_USER: ${ssm:/qshelter/${self:provider.stage}/DB_USER}
+    DB_PASSWORD: ${ssm:/qshelter/${self:provider.stage}/DB_PASSWORD}
+    DB_NAME: ${ssm:/qshelter/${self:provider.stage}/DB_NAME}
+
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - ssm:GetParameter
+            - ssm:GetParameters
+            - ssm:GetParametersByPath
+          Resource:
+            - arn:aws:ssm:${self:provider.region}:*:parameter/qshelter/${self:provider.stage}/*
+        - Effect: Allow
+          Action:
+            - secretsmanager:GetSecretValue
+          Resource:
+            - arn:aws:secretsmanager:${self:provider.region}:*:secret:qshelter/${self:provider.stage}/*
+        - Effect: Allow
+          Action:
+            - events:PutEvents
+          Resource:
+            - arn:aws:events:${self:provider.region}:*:event-bus/*
+
+package:
+  patterns:
+    - '!src/**'
+    - '!test/**'
+    - '!tests/**'
+    - '!**/*.test.ts'
+    - '!**/*.test.js'
+    - '!**/*.spec.ts'
+    - '!**/*.spec.js'
+    - '!dist/**/*.d.ts'
+    - '!node_modules/@aws-sdk/**'
+    - '!node_modules/aws-sdk/**'
+    - '!node_modules/prisma/**'
+    - '!node_modules/@prisma/engines/**'
+    - '!node_modules/@prisma/studio/**'
+    - '!node_modules/@prisma/studio-core/**'
+    - '!node_modules/@electric-sql/**'
+    - '!node_modules/@prisma/client/runtime/*cockroachdb*'
+    - '!node_modules/@prisma/client/runtime/*sqlserver*'
+    - '!node_modules/@prisma/client/runtime/*postgresql*'
+    - '!node_modules/@prisma/client/runtime/*sqlite*'
+    - 'dist/lambda.js'
+    - '!**/*.map'
+    - '!**/*.ts'
+    - '!**/*.tsx'
+    - '!**/*.md'
+    - '!**/.git/**'
+    - '!**/.github/**'
+    - '!**/Dockerfile'
+    - '!**/docker/**'
+    - '!node_modules/**/test/**'
+    - '!node_modules/**/tests/**'
+    - '!node_modules/**/example/**'
+    - '!node_modules/**/examples/**'
+    - '!node_modules/.prisma/**'
+    - 'package.json'
+
+functions:
+  main:
+    handler: dist/lambda.handler
+    events:
+      # REST API (v1) events - no authorizer for LocalStack simplicity
+      - http:
+          path: /{proxy+}
+          method: ANY
+          cors: true
+      - http:
+          path: /health
+          method: GET
+          cors: true
+      - http:
+          path: /api-docs
+          method: GET
+          cors: true
+      - http:
+          path: /openapi.json
+          method: GET
+          cors: true
+
+plugins:
+  - serverless-localstack
+
+custom:
+  localstack:
+    stages:
+      - test
+    host: http://localhost
+    edgePort: 4566
+    autostart: false
