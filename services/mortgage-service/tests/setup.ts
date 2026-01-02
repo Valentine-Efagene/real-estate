@@ -1,5 +1,5 @@
 import { config } from 'dotenv';
-config({ path: '.env.local' });
+config({ path: '.env.test' });
 
 import { PrismaMariaDb } from '@prisma/adapter-mariadb';
 import { PrismaClient } from '@valentine-efagene/qshelter-common';
