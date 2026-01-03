@@ -199,6 +199,44 @@ export class LocalStackStack extends cdk.Stack {
             description: 'DynamoDB Role Policies Table Name',
         });
 
+        // === SSM Parameters - Infrastructure (Required by ConfigService) ===
+        // These are dummy values since LocalStack doesn't use VPC networking
+        new ssm.StringParameter(this, 'VpcIdParameter', {
+            parameterName: `/qshelter/${stage}/vpc-id`,
+            stringValue: 'vpc-localstack',
+            description: 'Dummy VPC ID for LocalStack',
+        });
+
+        new ssm.StringParameter(this, 'DbSecurityGroupIdParameter', {
+            parameterName: `/qshelter/${stage}/db-security-group-id`,
+            stringValue: 'sg-localstack',
+            description: 'Dummy Security Group ID for LocalStack',
+        });
+
+        new ssm.StringParameter(this, 'PrivateSubnetIdsParameter', {
+            parameterName: `/qshelter/${stage}/private-subnet-ids`,
+            stringValue: 'subnet-localstack-1,subnet-localstack-2',
+            description: 'Dummy Private Subnet IDs for LocalStack',
+        });
+
+        new ssm.StringParameter(this, 'DbHostParameter2', {
+            parameterName: `/qshelter/${stage}/db-host`,
+            stringValue: 'host.docker.internal',
+            description: 'Database Host for LocalStack',
+        });
+
+        new ssm.StringParameter(this, 'DbPortParameter2', {
+            parameterName: `/qshelter/${stage}/db-port`,
+            stringValue: process.env.DB_PORT || '3307',
+            description: 'Database Port for LocalStack',
+        });
+
+        new ssm.StringParameter(this, 'DatabaseSecretArnParameter', {
+            parameterName: `/qshelter/${stage}/database-secret-arn`,
+            stringValue: `arn:aws:secretsmanager:us-east-1:000000000000:secret:qshelter/${stage}/database-credentials`,
+            description: 'Database Secrets ARN for LocalStack',
+        });
+
         // === SSM Parameters - Notification Service ===
         new ssm.StringParameter(this, 'Office365ClientIdParameter', {
             parameterName: `/qshelter/${stage}/OFFICE365_CLIENT_ID`,
@@ -279,6 +317,16 @@ export class LocalStackStack extends cdk.Stack {
         });
 
         // === Secrets Manager ===
+        new secretsmanager.Secret(this, 'DatabaseCredentialsSecret', {
+            secretName: `qshelter/${stage}/database-credentials`,
+            secretStringValue: cdk.SecretValue.unsafePlainText(
+                JSON.stringify({
+                    username: process.env.DB_USER || 'qshelter',
+                    password: process.env.DB_PASSWORD || 'qshelter_pass',
+                })
+            ),
+        });
+
         new secretsmanager.Secret(this, 'JwtAccessSecret', {
             secretName: `qshelter/${stage}/jwt-access-secret`,
             secretStringValue: cdk.SecretValue.unsafePlainText(

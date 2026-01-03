@@ -7,8 +7,9 @@ import { ConfigService, PrismaClient } from '@valentine-efagene/qshelter-common'
 const stage = process.env.NODE_ENV || process.env.STAGE || 'dev';
 
 async function createAdapter() {
-    // For local development without LocalStack, use env vars directly
-    if (stage === 'local') {
+    // For local development and LocalStack (test stage), use env vars directly
+    // This avoids the need for VPC-related SSM parameters that LocalStack doesn't use
+    if (stage === 'local' || stage === 'test') {
         return new PrismaMariaDb({
             host: process.env.DB_HOST || '127.0.0.1',
             port: parseInt(process.env.DB_PORT || '3307'),
@@ -20,7 +21,7 @@ async function createAdapter() {
         });
     }
 
-    // For test stage (LocalStack) and AWS stages, use ConfigService to get DB credentials from SSM
+    // For AWS stages (dev, staging, prod), use ConfigService to get DB credentials from SSM
     const configService = ConfigService.getInstance();
     const dbCredentials = await configService.getDatabaseCredentials(stage);
 

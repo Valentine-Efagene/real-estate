@@ -1,13 +1,10 @@
 import { readFileSync, readdirSync, statSync } from 'fs';
 import { access, constants } from 'fs/promises';
 import { join, dirname, basename, extname, normalize, relative } from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 /** Root directory for templates */
-const TEMPLATES_ROOT = join(__dirname, '../templates/');
+// In Lambda, __dirname is /var/task/dist, templates are at /var/task/dist/templates
+const TEMPLATES_ROOT = join(__dirname, 'templates/');
 
 // Template cache for frequently accessed templates
 const templateCache = new Map<string, string>();

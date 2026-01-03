@@ -144,6 +144,7 @@ package:
     - '!node_modules/**/examples/**'
     - '!node_modules/.prisma/**'
     - 'src/templates/**'
+    - 'dist/templates/**'
     - 'package.json'
 
 functions:

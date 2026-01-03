@@ -124,6 +124,17 @@ Notes:
 
 - If you get an empty result from `apigateway get-rest-apis`, the service either hasn't been deployed or was deployed as an HTTP API (apigatewayv2) which may not be emulated depending on your LocalStack edition. Use `serverless.localstack.yml` which targets REST API v1 for LocalStack compatibility.
 - If the Serverless deploy fails with a missing `/cdk-bootstrap/...` SSM parameter, run the bootstrap step above; LocalStack state can be ephemeral.
+- If you get "The API id does not correspond to a deployed API Gateway API", the REST API exists but the stage wasn't deployed. Create a deployment:
+
+```bash
+# Create deployment for the test stage
+aws --endpoint-url=http://localhost:4566 apigateway create-deployment \
+  --rest-api-id <api-id> \
+  --stage-name test
+
+# Or use the npm script (from services/notifications)
+pnpm localstack:create-deployment
+```
 
 ## Staging Environment
 
