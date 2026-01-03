@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { removeNullishProperties, compileTemplate } from '../helpers/utils';
+import { removeNullishProperties, compileWithLayout } from '../helpers/utils';
 import { getFilePath, loadFileWithFullPath } from '../helpers/filesystem';
 import { templatePathMap, templateTitle } from '../helpers/data';
 import { TemplateTypeValue, BaseEmailInput } from '../validators/email.validator';
@@ -274,7 +274,13 @@ export class Office365Service {
                 const finalDto = { subject, ...dto };
                 const reqData = removeNullishProperties(finalDto);
 
-                html = await compileTemplate(templateSource, reqData as Record<string, unknown>);
+                // Use layout-based compilation for .hbs templates, direct compilation for .html
+                if (key.endsWith('.hbs')) {
+                    html = await compileWithLayout(templateSource, reqData as Record<string, unknown>);
+                } else {
+                    const { compileTemplate } = await import('../helpers/utils');
+                    html = await compileTemplate(templateSource, reqData as Record<string, unknown>);
+                }
             } catch (error: unknown) {
                 const message = error instanceof Error ? error.message : 'Unknown error';
                 console.error(`[Office365] Error loading template: ${message}`);

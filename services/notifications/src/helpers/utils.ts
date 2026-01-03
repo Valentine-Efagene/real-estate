@@ -92,7 +92,7 @@ function initHandlebars(): void {
  */
 function registerLayoutPartials(): void {
     try {
-        const layoutsDir = path.join(__dirname, '../templates/layouts');
+        const layoutsDir = path.join(__dirname, 'templates/layouts');
 
         if (fs.existsSync(layoutsDir)) {
             const layoutFiles = fs.readdirSync(layoutsDir).filter(f => f.endsWith('.hbs'));
@@ -137,7 +137,7 @@ export async function compileWithLayout(
     const bodyContent = contentCompiled(data);
 
     // Then compile the layout with the body content
-    const layoutPath = path.join(__dirname, '../templates/layouts', `${layoutName}.hbs`);
+    const layoutPath = path.join(__dirname, 'templates/layouts', `${layoutName}.hbs`);
     const layoutTemplate = fs.readFileSync(layoutPath, 'utf-8');
     const layoutCompiled = Handlebars.compile(layoutTemplate);
 

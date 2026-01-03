@@ -7,17 +7,17 @@ import { TemplateTypeValue } from '../validators/email.validator';
 export const templatePathMap: Readonly<Record<TemplateTypeValue, string>> = Object.freeze({
     'otp': 'otp.html',
     'welcomeMessage': 'welcome.html',
-    'accountSuspended': 'accountSuspended.html',
-    'accountVerified': 'accountVerified.html',
-    'missedPayments': 'missedPayments.html',
-    'propertyAllocation': 'propertyAllocation.html',
-    'resetPassword': 'resetPassword.html',
-    'updatedTermsAndConditions': 'updatedTermsAndCondition.html',
-    'verifyEmail': 'verifyEmail.html',
-    'walletTopUp': 'walletTopUp.html',
-    'adminContributionReceived': 'admin/contributionReceived.html',
-    'adminPropertyAllocation': 'admin/propertyAllocation.html',
-    'adminInviteAdmin': 'admin/inviteAdmin.html',
+    'accountSuspended': 'content/accountSuspended.hbs',
+    'accountVerified': 'content/accountVerified.hbs',
+    'missedPayments': 'content/missedPayments.hbs',
+    'propertyAllocation': 'content/propertyAllocation.hbs',
+    'resetPassword': 'content/resetPassword.hbs',
+    'updatedTermsAndConditions': 'content/updatedTermsAndConditions.hbs',
+    'verifyEmail': 'content/verifyEmail.hbs',
+    'walletTopUp': 'content/walletTopUp.hbs',
+    'adminContributionReceived': 'content/admin/contributionReceived.hbs',
+    'adminPropertyAllocation': 'content/admin/propertyAllocation.hbs',
+    'adminInviteAdmin': 'content/admin/inviteAdmin.hbs',
 });
 
 /**
