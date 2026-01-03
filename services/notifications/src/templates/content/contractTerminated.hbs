@@ -1,0 +1,66 @@
+<h2 style="margin:0 0 10px 0; font-size:22px; font-weight:600;">
+    Contract Terminated
+</h2>
+
+<p style="font-size:14px; line-height:22px; margin:25px 0;">
+    Hello {{homeBuyerName}},
+</p>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    This email confirms that your mortgage contract has been officially terminated and closed.
+</p>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    <strong>Final Contract Summary:</strong>
+</p>
+
+<table style="font-size:14px; line-height:22px; margin:10px 0; border-collapse:collapse;">
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Contract Number:</td>
+        <td style="padding:5px 0;"><strong>{{contractNumber}}</strong></td>
+    </tr>
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Property:</td>
+        <td style="padding:5px 0;">{{propertyName}}</td>
+    </tr>
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Contract Start Date:</td>
+        <td style="padding:5px 0;">{{startDate}}</td>
+    </tr>
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Termination Date:</td>
+        <td style="padding:5px 0;">{{terminationDate}}</td>
+    </tr>
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Total Payments Made:</td>
+        <td style="padding:5px 0;">{{totalPaymentsMade}}</td>
+    </tr>
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Total Amount Paid:</td>
+        <td style="padding:5px 0;">{{totalAmountPaid}}</td>
+    </tr>
+</table>
+
+{{#if refundStatus}}
+<p style="font-size:14px; line-height:22px; margin:15px 0;">
+    <strong>Refund Status:</strong> {{refundStatus}}
+</p>
+{{/if}}
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    All records related to this contract have been updated. You can still access your historical data through your dashboard for reference purposes.
+</p>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    Thank you for being a part of the {{projectName}} community. If you ever decide to pursue homeownership again, we would be honored to assist you.
+</p>
+
+<a href="{{dashboardLink}}"
+    style="color:#ffffff; padding:8px 20px; text-decoration:none; font-size:14px; font-family:Arial, sans-serif; border-radius:12px; display:inline-block; background: linear-gradient(180deg, #049DC8 0%, #0082B5 100%); border: none; margin-top:15px;">
+    View Contract History
+</a>
+
+<p style="font-size:14px; line-height:20px; margin-top:30px;">
+    Best, <br />
+    The {{projectName}} Team.
+</p>

@@ -1,0 +1,52 @@
+<h2 style="margin:0 0 10px 0; font-size:22px; font-weight:600;">
+    📅 Payment Reminder
+</h2>
+
+<p style="font-size:14px; line-height:22px; margin:25px 0;">
+    Hello {{homeBuyerName}},
+</p>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    This is a friendly reminder that your next mortgage payment is due soon.
+</p>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    <strong>Payment Details:</strong>
+</p>
+
+<table style="font-size:14px; line-height:22px; margin:10px 0; border-collapse:collapse;">
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Contract:</td>
+        <td style="padding:5px 0;"><strong>{{contractNumber}}</strong></td>
+    </tr>
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Property:</td>
+        <td style="padding:5px 0;">{{propertyName}}</td>
+    </tr>
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Amount Due:</td>
+        <td style="padding:5px 0;"><strong>{{amount}}</strong></td>
+    </tr>
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Due Date:</td>
+        <td style="padding:5px 0;"><strong>{{dueDate}}</strong></td>
+    </tr>
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Days Until Due:</td>
+        <td style="padding:5px 0;">{{daysUntilDue}} days</td>
+    </tr>
+</table>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    Making timely payments helps you stay on track toward your homeownership goals and maintains your good standing.
+</p>
+
+<a href="{{paymentLink}}"
+    style="color:#ffffff; padding:8px 20px; text-decoration:none; font-size:14px; font-family:Arial, sans-serif; border-radius:12px; display:inline-block; background: linear-gradient(180deg, #049DC8 0%, #0082B5 100%); border: none; margin-top:15px;">
+    Make Payment Now
+</a>
+
+<p style="font-size:14px; line-height:20px; margin-top:30px;">
+    Best, <br />
+    The {{projectName}} Team.
+</p>

@@ -1,6 +1,12 @@
 import { prisma as defaultPrisma } from '../lib/prisma';
 import { AppError, PrismaClient } from '@valentine-efagene/qshelter-common';
 import { v4 as uuidv4 } from 'uuid';
+import {
+    sendContractTerminationRequestedNotification,
+    sendContractTerminationApprovedNotification,
+    sendContractTerminatedNotification,
+    formatCurrency,
+} from '../lib/notifications';
 import type {
     RequestTerminationInput,
     AdminTerminationInput,
@@ -9,6 +15,8 @@ import type {
     CompleteRefundInput,
     CancelTerminationInput,
 } from '../validators/contract-termination.validator';
+
+const DASHBOARD_URL = process.env.DASHBOARD_URL || 'https://dashboard.qshelter.com';
 
 // Use string literal types instead of importing enums (they'll come from Prisma)
 type TerminationType =
@@ -359,6 +367,25 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
                 },
             });
 
+            // Send termination requested notification
+            try {
+                if (contract.buyer?.email) {
+                    await sendContractTerminationRequestedNotification({
+                        email: contract.buyer.email,
+                        userName: `${contract.buyer.firstName} ${contract.buyer.lastName}`,
+                        contractId: contract.id,
+                        contractNumber: contract.contractNumber,
+                        requestNumber: termination.requestNumber,
+                        terminationType: data.type,
+                        reason: data.reason || 'Not specified',
+                        requestDate: new Date(),
+                        statusUrl: `${DASHBOARD_URL}/mortgages/${contract.id}/termination/${termination.id}`,
+                    });
+                }
+            } catch (error) {
+                console.error('Failed to send termination requested notification:', error);
+            }
+
             return termination;
         });
     }
@@ -518,6 +545,9 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
                     },
                 });
 
+                // Note: Rejection notification not implemented as there's no template for it
+                // In the future, we could add a sendContractTerminationRejectedNotification
+
                 return updated;
             }
 
@@ -563,6 +593,28 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
                     actorId: reviewerId,
                 },
             });
+
+            // Send termination approved notification
+            try {
+                const contract = await tx.contract.findUnique({
+                    where: { id: termination.contractId },
+                    include: { buyer: true },
+                });
+
+                if (contract?.buyer?.email) {
+                    await sendContractTerminationApprovedNotification({
+                        email: contract.buyer.email,
+                        userName: `${contract.buyer.firstName} ${contract.buyer.lastName}`,
+                        contractId: contract.id,
+                        contractNumber: contract.contractNumber,
+                        refundAmount: updated.netRefundAmount || 0,
+                        processingTime: '5-7 business days',
+                        statusUrl: `${DASHBOARD_URL}/mortgages/${contract.id}/termination/${terminationId}`,
+                    });
+                }
+            } catch (error) {
+                console.error('Failed to send termination approved notification:', error);
+            }
 
             // If no refund needed, execute immediately
             if (updated.refundStatus === 'NOT_APPLICABLE' || updated.netRefundAmount <= 0) {
@@ -795,6 +847,28 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
                     actorId,
                 },
             });
+
+            // Send contract terminated notification
+            try {
+                const buyer = await tx.user.findUnique({
+                    where: { id: termination.contract.buyerId },
+                });
+
+                if (buyer?.email) {
+                    await sendContractTerminatedNotification({
+                        email: buyer.email,
+                        userName: `${buyer.firstName} ${buyer.lastName}`,
+                        contractId: termination.contractId,
+                        contractNumber: termination.contract.contractNumber,
+                        terminationDate: new Date(),
+                        refundAmount: termination.netRefundAmount || 0,
+                        refundStatus: termination.netRefundAmount > 0 ? 'Refund will be processed within 5-7 business days' : 'No refund applicable',
+                        supportUrl: `${DASHBOARD_URL}/support`,
+                    });
+                }
+            } catch (error) {
+                console.error('Failed to send contract terminated notification:', error);
+            }
 
             return updated;
         };

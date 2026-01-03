@@ -7,8 +7,17 @@ import type {
     TransitionContractInput,
 } from '../validators/contract.validator';
 import { createPaymentMethodService } from './payment-method.service';
+import {
+    sendContractCreatedNotification,
+    sendContractActivatedNotification,
+    formatCurrency,
+    formatDate,
+} from '../lib/notifications';
 
 type AnyPrismaClient = PrismaClient;
+
+// Dashboard URL base
+const DASHBOARD_URL = process.env.DASHBOARD_URL || 'https://app.contribuild.com';
 
 /**
  * Generate a unique contract number
@@ -139,10 +148,29 @@ function mapStateToStatus(state: ContractStatus): ContractStatus {
 }
 
 /**
+ * Contract service interface
+ */
+export interface ContractService {
+    create(data: CreateContractInput): Promise<any>;
+    findAll(filters?: {
+        buyerId?: string;
+        propertyUnitId?: string;
+        status?: ContractStatus;
+    }): Promise<any[]>;
+    findById(id: string): Promise<any>;
+    findByContractNumber(contractNumber: string): Promise<any>;
+    update(id: string, data: UpdateContractInput, userId: string): Promise<any>;
+    transition(id: string, data: TransitionContractInput, userId: string): Promise<any>;
+    sign(id: string, userId: string): Promise<any>;
+    cancel(id: string, userId: string, reason?: string): Promise<any>;
+    delete(id: string, userId: string): Promise<{ success: boolean }>;
+}
+
+/**
  * Create a contract service with the given Prisma client
  * Use this for tenant-scoped operations
  */
-export function createContractService(prisma: AnyPrismaClient = defaultPrisma) {
+export function createContractService(prisma: AnyPrismaClient = defaultPrisma): ContractService {
     const paymentMethodService = createPaymentMethodService(prisma);
 
     async function create(data: CreateContractInput): Promise<any> {
@@ -332,7 +360,25 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma) {
             return created;
         });
 
-        return findById(contract.id);
+        const fullContract = await findById(contract.id);
+
+        // Send contract created notification
+        try {
+            await sendContractCreatedNotification({
+                email: buyer.email,
+                userName: buyer.firstName || 'Valued Customer',
+                contractNumber: fullContract.contractNumber,
+                propertyName: propertyUnit.variant?.property?.title || 'Your Property',
+                totalAmount: formatCurrency(totalAmount),
+                termMonths: termMonths || 0,
+                monthlyPayment: formatCurrency(periodicPayment || 0),
+                dashboardUrl: `${DASHBOARD_URL}/contracts/${contract.id}`,
+            }, contract.id);
+        } catch (error) {
+            console.error('[Contract] Failed to send created notification', { id: contract.id, error });
+        }
+
+        return fullContract;
     }
 
     async function findAll(filters?: {
@@ -565,7 +611,31 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma) {
             return result;
         });
 
-        return findById(updated.id);
+        const activatedContract = await findById(updated.id);
+
+        // Send contract activated notification
+        try {
+            // Find next payment due date from first installment
+            const firstInstallment = activatedContract.phases?.[0]?.installments?.[0];
+            const nextPaymentDate = firstInstallment?.dueDate
+                ? formatDate(firstInstallment.dueDate)
+                : 'To be scheduled';
+
+            await sendContractActivatedNotification({
+                email: contract.buyer?.email || '',
+                userName: contract.buyer?.firstName || 'Valued Customer',
+                contractNumber: contract.contractNumber,
+                propertyName: contract.propertyUnit?.variant?.property?.title || 'Your Property',
+                startDate: formatDate(new Date()),
+                nextPaymentDate,
+                monthlyPayment: formatCurrency(contract.periodicPayment || 0),
+                dashboardUrl: `${DASHBOARD_URL}/contracts/${id}`,
+            }, id);
+        } catch (error) {
+            console.error('[Contract] Failed to send activated notification', { id, error });
+        }
+
+        return activatedContract;
     }
 
     async function cancel(id: string, userId: string, reason?: string) {
@@ -664,4 +734,4 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma) {
 }
 
 // Default instance for backward compatibility
-export const contractService = createContractService();
+export const contractService: ContractService = createContractService();

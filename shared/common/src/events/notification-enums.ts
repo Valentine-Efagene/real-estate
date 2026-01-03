@@ -13,12 +13,27 @@ export enum NotificationType {
     // Payments
     MISSED_PAYMENT = 'missedPayments',
     WALLET_TOP_UP = 'walletTopUp',
+    PAYMENT_RECEIVED = 'paymentReceived',
+    PAYMENT_FAILED = 'paymentFailed',
+    PAYMENT_REMINDER = 'paymentReminder',
 
     // Property
     PROPERTY_ALLOCATION = 'propertyAllocation',
 
     // Terms
     UPDATED_TERMS = 'updatedTermsAndConditions',
+
+    // Prequalification
+    PREQUALIFICATION_SUBMITTED = 'prequalificationSubmitted',
+    PREQUALIFICATION_APPROVED = 'prequalificationApproved',
+    PREQUALIFICATION_REJECTED = 'prequalificationRejected',
+
+    // Contract
+    CONTRACT_CREATED = 'contractCreated',
+    CONTRACT_ACTIVATED = 'contractActivated',
+    CONTRACT_TERMINATION_REQUESTED = 'contractTerminationRequested',
+    CONTRACT_TERMINATION_APPROVED = 'contractTerminationApproved',
+    CONTRACT_TERMINATED = 'contractTerminated',
 
     // Admin
     ADMIN_CONTRIBUTION_RECEIVED = 'adminContributionReceived',

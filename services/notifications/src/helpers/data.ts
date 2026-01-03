@@ -18,6 +18,20 @@ export const templatePathMap: Readonly<Record<TemplateTypeValue, string>> = Obje
     'adminContributionReceived': 'content/admin/contributionReceived.hbs',
     'adminPropertyAllocation': 'content/admin/propertyAllocation.hbs',
     'adminInviteAdmin': 'content/admin/inviteAdmin.hbs',
+    // Mortgage - Prequalification
+    'prequalificationSubmitted': 'content/prequalificationSubmitted.hbs',
+    'prequalificationApproved': 'content/prequalificationApproved.hbs',
+    'prequalificationRejected': 'content/prequalificationRejected.hbs',
+    // Mortgage - Contract
+    'contractCreated': 'content/contractCreated.hbs',
+    'contractActivated': 'content/contractActivated.hbs',
+    'contractTerminationRequested': 'content/contractTerminationRequested.hbs',
+    'contractTerminationApproved': 'content/contractTerminationApproved.hbs',
+    'contractTerminated': 'content/contractTerminated.hbs',
+    // Mortgage - Payments
+    'paymentReceived': 'content/paymentReceived.hbs',
+    'paymentFailed': 'content/paymentFailed.hbs',
+    'paymentReminder': 'content/paymentReminder.hbs',
 });
 
 /**
@@ -37,6 +51,20 @@ export const templateTitle: Readonly<Record<TemplateTypeValue, string>> = Object
     'adminContributionReceived': 'Contribution Received',
     'adminPropertyAllocation': 'Property Allocation',
     'adminInviteAdmin': 'Admin Invitation',
+    // Mortgage - Prequalification
+    'prequalificationSubmitted': 'Prequalification Application Received',
+    'prequalificationApproved': 'Congratulations! Your Prequalification is Approved',
+    'prequalificationRejected': 'Prequalification Application Update',
+    // Mortgage - Contract
+    'contractCreated': 'Your Mortgage Contract Has Been Created',
+    'contractActivated': 'Your Mortgage Contract is Now Active',
+    'contractTerminationRequested': 'Contract Termination Request Received',
+    'contractTerminationApproved': 'Contract Termination Approved',
+    'contractTerminated': 'Contract Terminated',
+    // Mortgage - Payments
+    'paymentReceived': 'Payment Received Successfully',
+    'paymentFailed': 'Payment Failed - Action Required',
+    'paymentReminder': 'Payment Reminder',
 });
 
 // Pre-computed set of dynamic templates for O(1) lookup

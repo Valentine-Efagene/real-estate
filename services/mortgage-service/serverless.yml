@@ -48,6 +48,12 @@ provider:
             - events:PutEvents
           Resource:
             - arn:aws:events:${self:provider.region}:*:event-bus/*
+        # SNS access for notifications
+        - Effect: Allow
+          Action:
+            - sns:Publish
+          Resource:
+            - arn:aws:sns:${self:provider.region}:*:qshelter-${self:provider.stage}-notifications
 
 package:
   patterns:

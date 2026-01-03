@@ -6,6 +6,16 @@ import type {
     SubmitDocumentInput,
     ReviewPrequalificationInput,
 } from '../validators/prequalification.validator';
+import {
+    sendPrequalificationSubmittedNotification,
+    sendPrequalificationApprovedNotification,
+    sendPrequalificationRejectedNotification,
+    formatCurrency,
+    formatDate,
+} from '../lib/notifications';
+
+// Dashboard URL base - would come from config in production
+const DASHBOARD_URL = process.env.DASHBOARD_URL || 'https://app.contribuild.com';
 
 class PrequalificationService {
     async create(tenantId: string, userId: string, data: CreatePrequalificationInput): Promise<any> {
@@ -270,6 +280,22 @@ class PrequalificationService {
             },
         });
 
+        // Send email notification
+        try {
+            await sendPrequalificationSubmittedNotification({
+                email: prequal.user.email,
+                userName: prequal.user.firstName || 'Valued Customer',
+                applicationId: id.substring(0, 8).toUpperCase(),
+                propertyName: prequal.property?.title || 'Your Selected Property',
+                requestedAmount: formatCurrency(prequal.requestedAmount || 0),
+                submittedDate: formatDate(new Date()),
+                dashboardUrl: `${DASHBOARD_URL}/prequalifications/${id}`,
+            }, id);
+        } catch (error) {
+            console.error('[Prequalification] Failed to send submitted notification', { id, error });
+            // Don't throw - notification failure shouldn't fail the main operation
+        }
+
         return updated;
     }
 
@@ -319,6 +345,33 @@ class PrequalificationService {
                 occurredAt: new Date(),
             },
         });
+
+        // Send email notification based on status
+        try {
+            if (data.status === 'APPROVED') {
+                await sendPrequalificationApprovedNotification({
+                    email: prequal.user.email,
+                    userName: prequal.user.firstName || 'Valued Customer',
+                    applicationId: id.substring(0, 8).toUpperCase(),
+                    propertyName: prequal.property?.title || 'Your Selected Property',
+                    approvedAmount: formatCurrency(prequal.requestedAmount || 0),
+                    termMonths: data.suggestedTermMonths || 120,
+                    expiryDate: formatDate(updated.expiresAt || new Date(Date.now() + 90 * 24 * 60 * 60 * 1000)),
+                    dashboardUrl: `${DASHBOARD_URL}/prequalifications/${id}`,
+                }, id);
+            } else if (data.status === 'REJECTED') {
+                await sendPrequalificationRejectedNotification({
+                    email: prequal.user.email,
+                    userName: prequal.user.firstName || 'Valued Customer',
+                    applicationId: id.substring(0, 8).toUpperCase(),
+                    propertyName: prequal.property?.title || 'Your Selected Property',
+                    reason: data.notes,
+                }, id);
+            }
+        } catch (error) {
+            console.error('[Prequalification] Failed to send review notification', { id, status: data.status, error });
+            // Don't throw - notification failure shouldn't fail the main operation
+        }
 
         return updated;
     }

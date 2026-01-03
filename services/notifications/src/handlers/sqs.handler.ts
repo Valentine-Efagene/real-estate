@@ -53,6 +53,20 @@ function getTemplateType(notificationType: NotificationType): TemplateTypeValue 
         [NotificationType.ADMIN_PROPERTY_ALLOCATION]: 'adminPropertyAllocation',
         [NotificationType.ADMIN_INVITE]: 'adminInviteAdmin',
         [NotificationType.OTP]: 'otp',
+        // Mortgage - Prequalification
+        [NotificationType.PREQUALIFICATION_SUBMITTED]: 'prequalificationSubmitted',
+        [NotificationType.PREQUALIFICATION_APPROVED]: 'prequalificationApproved',
+        [NotificationType.PREQUALIFICATION_REJECTED]: 'prequalificationRejected',
+        // Mortgage - Contract
+        [NotificationType.CONTRACT_CREATED]: 'contractCreated',
+        [NotificationType.CONTRACT_ACTIVATED]: 'contractActivated',
+        [NotificationType.CONTRACT_TERMINATION_REQUESTED]: 'contractTerminationRequested',
+        [NotificationType.CONTRACT_TERMINATION_APPROVED]: 'contractTerminationApproved',
+        [NotificationType.CONTRACT_TERMINATED]: 'contractTerminated',
+        // Mortgage - Payments
+        [NotificationType.PAYMENT_RECEIVED]: 'paymentReceived',
+        [NotificationType.PAYMENT_FAILED]: 'paymentFailed',
+        [NotificationType.PAYMENT_REMINDER]: 'paymentReminder',
     };
 
     return typeMap[notificationType] || null;

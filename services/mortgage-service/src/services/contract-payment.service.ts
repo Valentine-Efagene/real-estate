@@ -6,6 +6,15 @@ import type {
     ProcessPaymentInput,
     RefundPaymentInput,
 } from '../validators/contract-payment.validator';
+import {
+    sendPaymentReceivedNotification,
+    sendPaymentFailedNotification,
+    formatCurrency,
+    formatDate,
+} from '../lib/notifications';
+
+// Dashboard URL base
+const DASHBOARD_URL = process.env.DASHBOARD_URL || 'https://app.contribuild.com';
 
 class ContractPaymentService {
     /**
@@ -373,7 +382,51 @@ class ContractPaymentService {
             return result;
         });
 
-        return this.findById(updated.id);
+        const completedPayment = await this.findById(updated.id);
+
+        // Send payment received notification
+        try {
+            const contract = await prisma.contract.findUnique({
+                where: { id: payment.contractId },
+                include: {
+                    buyer: { select: { email: true, firstName: true } },
+                    propertyUnit: {
+                        include: {
+                            variant: { include: { property: true } }
+                        }
+                    },
+                },
+            });
+
+            if (contract?.buyer?.email) {
+                // Find next installment for next payment date
+                const nextInstallment = await prisma.contractInstallment.findFirst({
+                    where: {
+                        phase: { contractId: payment.contractId },
+                        status: { in: ['PENDING', 'PARTIALLY_PAID'] },
+                    },
+                    orderBy: { dueDate: 'asc' },
+                });
+
+                await sendPaymentReceivedNotification({
+                    email: contract.buyer.email,
+                    userName: contract.buyer.firstName || 'Valued Customer',
+                    contractId: contract.id,
+                    contractNumber: contract.contractNumber,
+                    paymentAmount: payment.amount,
+                    paymentDate: new Date(),
+                    paymentReference: payment.reference || `PAY-${paymentId.substring(0, 8)}`,
+                    remainingBalance: Math.max(0, contract.totalAmount - contract.totalPaidToDate - payment.amount),
+                    nextPaymentDate: nextInstallment?.dueDate,
+                    nextPaymentAmount: nextInstallment?.amount,
+                    dashboardUrl: `${DASHBOARD_URL}/contracts/${payment.contractId}`,
+                }, paymentId);
+            }
+        } catch (error) {
+            console.error('[Payment] Failed to send received notification', { paymentId, error });
+        }
+
+        return completedPayment;
     }
 
     /**
@@ -410,6 +463,37 @@ class ContractPaymentService {
 
             return result;
         });
+
+        // Send payment failed notification
+        try {
+            const contract = await prisma.contract.findUnique({
+                where: { id: updated.contractId },
+                include: { buyer: true },
+            });
+
+            if (contract?.buyer?.email) {
+                const nextInstallment = await prisma.contractInstallment.findFirst({
+                    where: {
+                        phase: { contractId: contract.id },
+                        status: { in: ['PENDING', 'PARTIALLY_PAID'] },
+                    },
+                    orderBy: { dueDate: 'asc' },
+                });
+
+                await sendPaymentFailedNotification({
+                    email: contract.buyer.email,
+                    userName: `${contract.buyer.firstName} ${contract.buyer.lastName}`,
+                    contractId: contract.id,
+                    paymentAmount: updated.amount,
+                    amountDue: nextInstallment?.amount || updated.amount,
+                    dueDate: nextInstallment?.dueDate || new Date(),
+                    retryUrl: `${DASHBOARD_URL}/mortgages/${contract.id}/payments/${updated.id}/retry`,
+                    supportUrl: `${DASHBOARD_URL}/support`,
+                });
+            }
+        } catch (error) {
+            console.error('Failed to send payment failed notification:', error);
+        }
 
         return this.findById(updated.id);
     }

@@ -1,0 +1,71 @@
+<h2 style="margin:0 0 10px 0; font-size:22px; font-weight:600;">
+    Contract Termination Approved
+</h2>
+
+<p style="font-size:14px; line-height:22px; margin:25px 0;">
+    Hello {{homeBuyerName}},
+</p>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    Your request to terminate your mortgage contract has been approved. Please review the details below.
+</p>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    <strong>Termination Details:</strong>
+</p>
+
+<table style="font-size:14px; line-height:22px; margin:10px 0; border-collapse:collapse;">
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Contract Number:</td>
+        <td style="padding:5px 0;"><strong>{{contractNumber}}</strong></td>
+    </tr>
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Property:</td>
+        <td style="padding:5px 0;">{{propertyName}}</td>
+    </tr>
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Termination Date:</td>
+        <td style="padding:5px 0;">{{terminationDate}}</td>
+    </tr>
+</table>
+
+{{#if refundAmount}}
+<p style="font-size:14px; line-height:22px; margin:15px 0;">
+    <strong>Refund Information:</strong>
+</p>
+
+<table style="font-size:14px; line-height:22px; margin:10px 0; border-collapse:collapse;">
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Total Paid:</td>
+        <td style="padding:5px 0;">{{totalPaid}}</td>
+    </tr>
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Refund Amount:</td>
+        <td style="padding:5px 0;"><strong>{{refundAmount}}</strong></td>
+    </tr>
+    {{#if deductions}}
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Deductions:</td>
+        <td style="padding:5px 0;">{{deductions}}</td>
+    </tr>
+    {{/if}}
+</table>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    Your refund will be processed within 7-14 business days to your original payment method.
+</p>
+{{/if}}
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    We're sorry to see you go. If your circumstances change in the future, we'd be happy to assist you on your homeownership journey.
+</p>
+
+<a href="{{dashboardLink}}"
+    style="color:#ffffff; padding:8px 20px; text-decoration:none; font-size:14px; font-family:Arial, sans-serif; border-radius:12px; display:inline-block; background: linear-gradient(180deg, #049DC8 0%, #0082B5 100%); border: none; margin-top:15px;">
+    View Details
+</a>
+
+<p style="font-size:14px; line-height:20px; margin-top:30px;">
+    Best, <br />
+    The {{projectName}} Team.
+</p>
