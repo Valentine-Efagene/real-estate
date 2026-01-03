@@ -169,6 +169,16 @@ functions:
           method: GET
           cors: true
 
+  # SQS consumer for event-driven notifications
+  sqsConsumer:
+    handler: dist/lambda.sqsHandler
+    timeout: 30
+    events:
+      - sqs:
+          arn: arn:aws:sqs:us-east-1:000000000000:qshelter-test-notifications
+          batchSize: 10
+          functionResponseType: ReportBatchItemFailures
+
 plugins:
   - serverless-localstack
 

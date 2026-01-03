@@ -6,6 +6,7 @@ import * as logs from 'aws-cdk-lib/aws-logs';
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as sns from 'aws-cdk-lib/aws-sns';
+import * as snsSubscriptions from 'aws-cdk-lib/aws-sns-subscriptions';
 import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
 import * as ssm from 'aws-cdk-lib/aws-ssm';
 import * as dotenv from 'dotenv';
@@ -117,6 +118,21 @@ export class LocalStackStack extends cdk.Stack {
             topicName: `${prefix}-contract-events`,
         });
 
+        // === SNS Subscriptions ===
+        // Subscribe notifications queue to notifications topic
+        notificationsTopic.addSubscription(
+            new snsSubscriptions.SqsSubscription(notificationsQueue, {
+                rawMessageDelivery: false, // Keep SNS envelope for traceability
+            })
+        );
+
+        // Subscribe contract events queue to contract events topic
+        contractEventsTopic.addSubscription(
+            new snsSubscriptions.SqsSubscription(contractEventsQueue, {
+                rawMessageDelivery: false,
+            })
+        );
+
         // === CloudWatch Log Groups ===
         const serviceLogGroups = ['user-service', 'property-service', 'mortgage-service', 'notifications-service', 'authorizer-service'];
         for (const service of serviceLogGroups) {
@@ -179,6 +195,18 @@ export class LocalStackStack extends cdk.Stack {
             parameterName: `/qshelter/${stage}/event-bus-name`,
             stringValue: eventBus.eventBusName,
             description: 'EventBridge Bus Name',
+        });
+
+        new ssm.StringParameter(this, 'NotificationsTopicArnParameter', {
+            parameterName: `/qshelter/${stage}/notifications-topic-arn`,
+            stringValue: notificationsTopic.topicArn,
+            description: 'SNS Notifications Topic ARN',
+        });
+
+        new ssm.StringParameter(this, 'NotificationsQueueUrlParameter', {
+            parameterName: `/qshelter/${stage}/notifications-queue-url`,
+            stringValue: notificationsQueue.queueUrl,
+            description: 'SQS Notifications Queue URL',
         });
 
         new ssm.StringParameter(this, 'RedisEndpointParameter', {

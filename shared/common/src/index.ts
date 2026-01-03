@@ -7,3 +7,4 @@ export * from '../generated/client/models';
 export * from './prisma/user';
 export * from './prisma/tenant';
 export * from './middleware';
+export * from './events';

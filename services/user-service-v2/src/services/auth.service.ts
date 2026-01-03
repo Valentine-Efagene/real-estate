@@ -3,8 +3,28 @@ import jwt from 'jsonwebtoken';
 import { randomBytes, randomUUID } from 'crypto';
 import { OAuth2Client } from 'google-auth-library';
 import { prisma } from '../lib/prisma';
-import { UnauthorizedError, ConflictError, ValidationError } from '@valentine-efagene/qshelter-common';
+import {
+    UnauthorizedError,
+    ConflictError,
+    ValidationError,
+    getEventPublisher,
+    NotificationType,
+    VerifyEmailPayload,
+    PasswordResetPayload,
+    AccountVerifiedPayload,
+} from '@valentine-efagene/qshelter-common';
 import { LoginInput, SignupInput, AuthResponse } from '../validators/auth.validator';
+
+const googleClient = new OAuth2Client(
+    process.env.GOOGLE_CLIENT_ID,
+    process.env.GOOGLE_CLIENT_SECRET,
+    process.env.GOOGLE_CALLBACK_URL || 'http://localhost:3000/auth/google/callback'
+);
+
+// Initialize event publisher for user-service
+const eventPublisher = getEventPublisher('user-service', {
+    topicArn: process.env.NOTIFICATIONS_TOPIC_ARN,
+});
 
 const googleClient = new OAuth2Client(
     process.env.GOOGLE_CLIENT_ID,
@@ -40,9 +60,23 @@ class AuthService {
             },
         });
 
-        // TODO: Publish event to send verification email
-        console.log(`Verification token for ${user.email}: ${emailVerificationToken}`);
-        console.log(`Verification link: ${process.env.FRONTEND_BASE_URL}/auth/verify-email?token=${emailVerificationToken}`);
+        // Publish verify email event to SNS
+        const verificationLink = `${process.env.FRONTEND_BASE_URL}/auth/verify-email?token=${emailVerificationToken}`;
+        try {
+            await eventPublisher.publishEmail<VerifyEmailPayload>(
+                NotificationType.VERIFY_EMAIL,
+                {
+                    to_email: user.email,
+                    homeBuyerName: `${user.firstName} ${user.lastName}`.trim() || 'User',
+                    verificationLink,
+                },
+                { userId: user.id }
+            );
+            console.log(`[AuthService] Verification email event published for ${user.email}`);
+        } catch (error) {
+            // Log but don't fail signup if email event fails
+            console.error(`[AuthService] Failed to publish verification email event:`, error);
+        }
 
         return this.generateTokens(user.id, user.email, [], null);
     }
@@ -103,6 +137,22 @@ class AuthService {
             },
         });
 
+        // Publish account verified email event
+        try {
+            await eventPublisher.publishEmail<AccountVerifiedPayload>(
+                NotificationType.ACCOUNT_VERIFIED,
+                {
+                    to_email: user.email,
+                    homeBuyerName: `${user.firstName} ${user.lastName}`.trim() || 'User',
+                    loginLink: `${process.env.FRONTEND_BASE_URL}/auth/login`,
+                },
+                { userId: user.id }
+            );
+            console.log(`[AuthService] Account verified email event published for ${user.email}`);
+        } catch (error) {
+            console.error(`[AuthService] Failed to publish account verified email event:`, error);
+        }
+
         return { message: 'Email verified successfully' };
     }
 
@@ -138,8 +188,22 @@ class AuthService {
 
         const resetUrl = `${process.env.FRONTEND_BASE_URL}/auth/reset-password?token=${token}`;
 
-        // TODO: Publish event to send password reset email
-        console.log(`Password reset link for ${user.email}: ${resetUrl}`);
+        // Publish password reset email event
+        try {
+            await eventPublisher.publishEmail<PasswordResetPayload>(
+                NotificationType.PASSWORD_RESET,
+                {
+                    to_email: user.email,
+                    homeBuyerName: `${user.firstName} ${user.lastName}`.trim() || 'User',
+                    otp: token,
+                    ttl: 30, // 30 minutes
+                },
+                { userId: user.id }
+            );
+            console.log(`[AuthService] Password reset email event published for ${user.email}`);
+        } catch (error) {
+            console.error(`[AuthService] Failed to publish password reset email event:`, error);
+        }
 
         return { message: 'If the email exists, a password reset link has been sent' };
     }

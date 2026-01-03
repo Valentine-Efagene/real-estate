@@ -22,6 +22,8 @@ provider:
   environment:
     NODE_ENV: ${self:provider.stage}
     STAGE: ${self:provider.stage}
+    NOTIFICATIONS_TOPIC_ARN: ${ssm:/qshelter/${self:provider.stage}/notifications-topic-arn, ''}
+    FRONTEND_BASE_URL: ${env:FRONTEND_BASE_URL, 'https://mreif.com.ng'}
   
   iam:
     role:
@@ -35,6 +37,10 @@ provider:
         - Effect: Allow
           Action: secretsmanager:GetSecretValue
           Resource: arn:aws:secretsmanager:${self:provider.region}:*:secret:qshelter/${self:provider.stage}/*
+        - Effect: Allow
+          Action:
+            - sns:Publish
+          Resource: arn:aws:sns:${self:provider.region}:*:qshelter-${self:provider.stage}-notifications
 
 functions:
   api:

@@ -2,6 +2,7 @@ import {
     OpenAPIRegistry,
     OpenApiGeneratorV31,
 } from '@asteasolutions/zod-to-openapi';
+import type { OpenAPIObject } from 'openapi3-ts/oas31';
 import { z } from 'zod';
 import {
     SendEmailSchema,
@@ -272,7 +273,7 @@ registry.registerPath({
     responses: { 200: { description: 'Message sent successfully' } },
 });
 
-export function generateOpenAPIDocument(baseUrl?: string) {
+export function generateOpenAPIDocument(baseUrl?: string): OpenAPIObject {
     const generator = new OpenApiGeneratorV31(registry.definitions);
 
     return generator.generateDocument({
