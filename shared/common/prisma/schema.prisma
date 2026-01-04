@@ -151,9 +151,31 @@ enum CompletionCriterion {
 }
 
 enum DocumentStatus {
+  DRAFT
   PENDING
+  PENDING_SIGNATURE
+  SENT
+  VIEWED
+  SIGNED
   APPROVED
   REJECTED
+  EXPIRED
+  CANCELLED
+}
+
+enum OfferLetterType {
+  PROVISIONAL
+  FINAL
+}
+
+enum OfferLetterStatus {
+  DRAFT
+  GENERATED
+  SENT
+  VIEWED
+  SIGNED
+  EXPIRED
+  CANCELLED
 }
 
 // =============================================================================
@@ -208,6 +230,10 @@ model User {
   // Contract terminations
   initiatedTerminations ContractTermination[] @relation("TerminationInitiator")
   reviewedTerminations  ContractTermination[] @relation("TerminationReviewer")
+
+  // Offer letters
+  offerLettersGenerated OfferLetter[] @relation("OfferLetterGenerator")
+  offerLettersSent      OfferLetter[] @relation("OfferLetterSender")
 
   @@index([email])
   @@index([tenantId])
@@ -285,6 +311,10 @@ model Tenant {
 
   // Contract terminations
   contractTerminations ContractTermination[]
+
+  // Offer letters and templates
+  documentTemplates DocumentTemplate[]
+  offerLetters      OfferLetter[]
 
   @@index([subdomain])
   @@map("tenants")
@@ -895,6 +925,7 @@ model Contract {
   transitions  ContractTransition[]
   events       ContractEvent[]
   terminations ContractTermination[]
+  offerLetters OfferLetter[]
 
   // Prequalification that led to this contract (optional)
   prequalification            Prequalification?
@@ -1173,6 +1204,94 @@ model ContractEvent {
 
   @@index([contractId])
   @@map("contract_events")
+}
+
+// =============================================================================
+// OFFER LETTERS - Provisional and Final offer documents
+// =============================================================================
+
+model DocumentTemplate {
+  id       String @id @default(cuid())
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  name        String // "Provisional Offer Letter", "Final Offer Letter"
+  code        String // PROVISIONAL_OFFER, FINAL_OFFER
+  description String?
+  version     Int     @default(1)
+
+  // Template content (Handlebars)
+  htmlTemplate String  @db.Text
+  cssStyles    String? @db.Text
+
+  // Merge field definitions for UI
+  mergeFields Json? // [{name, type, required, description}]
+
+  isActive  Boolean @default(true)
+  isDefault Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  offerLetters OfferLetter[]
+
+  @@unique([tenantId, code, version])
+  @@index([tenantId])
+  @@index([code])
+  @@map("document_templates")
+}
+
+model OfferLetter {
+  id         String   @id @default(cuid())
+  tenantId   String
+  tenant     Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  contractId String
+  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+
+  // Template used
+  templateId String
+  template   DocumentTemplate @relation(fields: [templateId], references: [id])
+
+  // Letter details
+  letterNumber String            @unique // OL-XXXXXX
+  type         OfferLetterType
+  status       OfferLetterStatus @default(DRAFT)
+
+  // Generated document
+  htmlContent String? @db.Text // Rendered HTML
+  pdfUrl      String? // S3 URL of generated PDF
+  pdfKey      String? // S3 key for deletion/access
+
+  // Merge data used (snapshot for audit)
+  mergeData Json? // All data merged into template
+
+  // Signing workflow
+  sentAt        DateTime?
+  viewedAt      DateTime?
+  signedAt      DateTime?
+  signatureIp   String?
+  signatureData Json? // {method, timestamp, metadata}
+
+  // Validity
+  expiresAt    DateTime?
+  expiredAt    DateTime?
+  cancelledAt  DateTime?
+  cancelReason String?
+
+  // Audit
+  generatedById String?
+  generatedBy   User?   @relation("OfferLetterGenerator", fields: [generatedById], references: [id])
+  sentById      String?
+  sentBy        User?   @relation("OfferLetterSender", fields: [sentById], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tenantId])
+  @@index([contractId])
+  @@index([type])
+  @@index([status])
+  @@map("offer_letters")
 }
 
 // =============================================================================

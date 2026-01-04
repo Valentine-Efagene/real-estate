@@ -524,6 +524,40 @@ export type EnumDocumentStatusWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumDocumentStatusFilter<$PrismaModel>
 }
 
+export type EnumOfferLetterTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.OfferLetterType | Prisma.EnumOfferLetterTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.OfferLetterType[]
+  notIn?: $Enums.OfferLetterType[]
+  not?: Prisma.NestedEnumOfferLetterTypeFilter<$PrismaModel> | $Enums.OfferLetterType
+}
+
+export type EnumOfferLetterStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.OfferLetterStatus | Prisma.EnumOfferLetterStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.OfferLetterStatus[]
+  notIn?: $Enums.OfferLetterStatus[]
+  not?: Prisma.NestedEnumOfferLetterStatusFilter<$PrismaModel> | $Enums.OfferLetterStatus
+}
+
+export type EnumOfferLetterTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.OfferLetterType | Prisma.EnumOfferLetterTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.OfferLetterType[]
+  notIn?: $Enums.OfferLetterType[]
+  not?: Prisma.NestedEnumOfferLetterTypeWithAggregatesFilter<$PrismaModel> | $Enums.OfferLetterType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumOfferLetterTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumOfferLetterTypeFilter<$PrismaModel>
+}
+
+export type EnumOfferLetterStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.OfferLetterStatus | Prisma.EnumOfferLetterStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.OfferLetterStatus[]
+  notIn?: $Enums.OfferLetterStatus[]
+  not?: Prisma.NestedEnumOfferLetterStatusWithAggregatesFilter<$PrismaModel> | $Enums.OfferLetterStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumOfferLetterStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumOfferLetterStatusFilter<$PrismaModel>
+}
+
 export type EnumTerminationInitiatorFilter<$PrismaModel = never> = {
   equals?: $Enums.TerminationInitiator | Prisma.EnumTerminationInitiatorFieldRefInput<$PrismaModel>
   in?: $Enums.TerminationInitiator[]
@@ -1170,6 +1204,40 @@ export type NestedEnumDocumentStatusWithAggregatesFilter<$PrismaModel = never> =
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumDocumentStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumDocumentStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumOfferLetterTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.OfferLetterType | Prisma.EnumOfferLetterTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.OfferLetterType[]
+  notIn?: $Enums.OfferLetterType[]
+  not?: Prisma.NestedEnumOfferLetterTypeFilter<$PrismaModel> | $Enums.OfferLetterType
+}
+
+export type NestedEnumOfferLetterStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.OfferLetterStatus | Prisma.EnumOfferLetterStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.OfferLetterStatus[]
+  notIn?: $Enums.OfferLetterStatus[]
+  not?: Prisma.NestedEnumOfferLetterStatusFilter<$PrismaModel> | $Enums.OfferLetterStatus
+}
+
+export type NestedEnumOfferLetterTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.OfferLetterType | Prisma.EnumOfferLetterTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.OfferLetterType[]
+  notIn?: $Enums.OfferLetterType[]
+  not?: Prisma.NestedEnumOfferLetterTypeWithAggregatesFilter<$PrismaModel> | $Enums.OfferLetterType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumOfferLetterTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumOfferLetterTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumOfferLetterStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.OfferLetterStatus | Prisma.EnumOfferLetterStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.OfferLetterStatus[]
+  notIn?: $Enums.OfferLetterStatus[]
+  not?: Prisma.NestedEnumOfferLetterStatusWithAggregatesFilter<$PrismaModel> | $Enums.OfferLetterStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumOfferLetterStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumOfferLetterStatusFilter<$PrismaModel>
 }
 
 export type NestedEnumTerminationInitiatorFilter<$PrismaModel = never> = {

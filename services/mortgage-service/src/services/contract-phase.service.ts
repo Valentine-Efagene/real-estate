@@ -11,7 +11,7 @@ import type {
 import { paymentPlanService } from './payment-plan.service';
 
 class ContractPhaseService {
-    async findById(phaseId: string) {
+    async findById(phaseId: string): Promise<any> {
         const phase = await prisma.contractPhase.findUnique({
             where: { id: phaseId },
             include: {
@@ -39,7 +39,7 @@ class ContractPhaseService {
         return phase;
     }
 
-    async getPhasesByContract(contractId: string) {
+    async getPhasesByContract(contractId: string): Promise<any[]> {
         const phases = await prisma.contractPhase.findMany({
             where: { contractId },
             orderBy: { order: 'asc' },
@@ -59,7 +59,7 @@ class ContractPhaseService {
     /**
      * Activate a phase - can only activate if previous phases are completed
      */
-    async activate(phaseId: string, data: ActivatePhaseInput, userId: string) {
+    async activate(phaseId: string, data: ActivatePhaseInput, userId: string): Promise<any> {
         const phase = await this.findById(phaseId);
 
         if (phase.status !== 'PENDING') {
@@ -126,7 +126,7 @@ class ContractPhaseService {
     /**
      * Generate installments for a PAYMENT phase
      */
-    async generateInstallments(phaseId: string, data: GenerateInstallmentsInput, userId: string) {
+    async generateInstallments(phaseId: string, data: GenerateInstallmentsInput, userId: string): Promise<any> {
         const phase = await this.findById(phaseId);
 
         if (phase.phaseCategory !== 'PAYMENT') {
@@ -292,7 +292,7 @@ class ContractPhaseService {
     /**
      * Complete a documentation step
      */
-    async completeStep(phaseId: string, data: CompleteStepInput, userId: string) {
+    async completeStep(phaseId: string, data: CompleteStepInput, userId: string): Promise<any> {
         const phase = await this.findById(phaseId);
 
         if (phase.phaseCategory !== 'DOCUMENTATION') {
@@ -301,8 +301,8 @@ class ContractPhaseService {
 
         // Find step by ID or by name
         let step = data.stepId
-            ? phase.steps.find((s) => s.id === data.stepId)
-            : phase.steps.find((s) => s.name === (data as any).stepName);
+            ? phase.steps.find((s: any) => s.id === data.stepId)
+            : phase.steps.find((s: any) => s.name === (data as any).stepName);
 
         if (!step) {
             throw new AppError(404, 'Step not found in this phase');
@@ -499,7 +499,7 @@ class ContractPhaseService {
     /**
      * Complete a phase manually
      */
-    async complete(phaseId: string, userId: string) {
+    async complete(phaseId: string, userId: string): Promise<any> {
         const phase = await this.findById(phaseId);
 
         if (phase.status === 'COMPLETED') {
@@ -509,7 +509,7 @@ class ContractPhaseService {
         // For PAYMENT phases, check if all installments are paid
         if (phase.phaseCategory === 'PAYMENT') {
             const unpaidInstallments = phase.installments.filter(
-                (i) => i.status !== 'PAID' && i.status !== 'WAIVED'
+                (i: any) => i.status !== 'PAID' && i.status !== 'WAIVED'
             );
             if (unpaidInstallments.length > 0) {
                 throw new AppError(400, `${unpaidInstallments.length} installments still unpaid`);
@@ -519,7 +519,7 @@ class ContractPhaseService {
         // For DOCUMENTATION phases, check if all steps are completed
         if (phase.phaseCategory === 'DOCUMENTATION') {
             const incompleteSteps = phase.steps.filter(
-                (s) => s.status !== 'COMPLETED' && s.status !== 'SKIPPED'
+                (s: any) => s.status !== 'COMPLETED' && s.status !== 'SKIPPED'
             );
             if (incompleteSteps.length > 0) {
                 throw new AppError(400, `${incompleteSteps.length} steps still incomplete`);
@@ -594,7 +594,7 @@ class ContractPhaseService {
     /**
      * Skip a phase (admin action)
      */
-    async skip(phaseId: string, userId: string, reason?: string) {
+    async skip(phaseId: string, userId: string, reason?: string): Promise<any> {
         const phase = await this.findById(phaseId);
 
         if (phase.status !== 'PENDING') {

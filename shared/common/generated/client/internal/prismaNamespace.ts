@@ -425,6 +425,8 @@ export const ModelName = {
   ContractDocument: 'ContractDocument',
   ContractTransition: 'ContractTransition',
   ContractEvent: 'ContractEvent',
+  DocumentTemplate: 'DocumentTemplate',
+  OfferLetter: 'OfferLetter',
   ContractTermination: 'ContractTermination',
   Prequalification: 'Prequalification',
   PaymentMethodChangeRequest: 'PaymentMethodChangeRequest',
@@ -445,7 +447,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenant" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "paymentMethodPhaseStep" | "paymentMethodPhaseDocument" | "contract" | "contractPhase" | "contractPhaseStep" | "contractPhaseStepDocument" | "contractPhaseStepApproval" | "contractInstallment" | "contractPayment" | "contractDocument" | "contractTransition" | "contractEvent" | "contractTermination" | "prequalification" | "paymentMethodChangeRequest" | "documentRequirementRule" | "domainEvent"
+    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenant" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "paymentMethodPhaseStep" | "paymentMethodPhaseDocument" | "contract" | "contractPhase" | "contractPhaseStep" | "contractPhaseStepDocument" | "contractPhaseStepApproval" | "contractInstallment" | "contractPayment" | "contractDocument" | "contractTransition" | "contractEvent" | "documentTemplate" | "offerLetter" | "contractTermination" | "prequalification" | "paymentMethodChangeRequest" | "documentRequirementRule" | "domainEvent"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -3155,6 +3157,138 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    DocumentTemplate: {
+      payload: Prisma.$DocumentTemplatePayload<ExtArgs>
+      fields: Prisma.DocumentTemplateFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DocumentTemplateFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentTemplatePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DocumentTemplateFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentTemplatePayload>
+        }
+        findFirst: {
+          args: Prisma.DocumentTemplateFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentTemplatePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DocumentTemplateFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentTemplatePayload>
+        }
+        findMany: {
+          args: Prisma.DocumentTemplateFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentTemplatePayload>[]
+        }
+        create: {
+          args: Prisma.DocumentTemplateCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentTemplatePayload>
+        }
+        createMany: {
+          args: Prisma.DocumentTemplateCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.DocumentTemplateDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentTemplatePayload>
+        }
+        update: {
+          args: Prisma.DocumentTemplateUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentTemplatePayload>
+        }
+        deleteMany: {
+          args: Prisma.DocumentTemplateDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DocumentTemplateUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.DocumentTemplateUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentTemplatePayload>
+        }
+        aggregate: {
+          args: Prisma.DocumentTemplateAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDocumentTemplate>
+        }
+        groupBy: {
+          args: Prisma.DocumentTemplateGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentTemplateGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DocumentTemplateCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentTemplateCountAggregateOutputType> | number
+        }
+      }
+    }
+    OfferLetter: {
+      payload: Prisma.$OfferLetterPayload<ExtArgs>
+      fields: Prisma.OfferLetterFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OfferLetterFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OfferLetterPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OfferLetterFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OfferLetterPayload>
+        }
+        findFirst: {
+          args: Prisma.OfferLetterFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OfferLetterPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OfferLetterFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OfferLetterPayload>
+        }
+        findMany: {
+          args: Prisma.OfferLetterFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OfferLetterPayload>[]
+        }
+        create: {
+          args: Prisma.OfferLetterCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OfferLetterPayload>
+        }
+        createMany: {
+          args: Prisma.OfferLetterCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.OfferLetterDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OfferLetterPayload>
+        }
+        update: {
+          args: Prisma.OfferLetterUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OfferLetterPayload>
+        }
+        deleteMany: {
+          args: Prisma.OfferLetterDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OfferLetterUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.OfferLetterUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OfferLetterPayload>
+        }
+        aggregate: {
+          args: Prisma.OfferLetterAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOfferLetter>
+        }
+        groupBy: {
+          args: Prisma.OfferLetterGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OfferLetterGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OfferLetterCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OfferLetterCountAggregateOutputType> | number
+        }
+      }
+    }
     ContractTermination: {
       payload: Prisma.$ContractTerminationPayload<ExtArgs>
       fields: Prisma.ContractTerminationFieldRefs
@@ -4167,6 +4301,55 @@ export const ContractEventScalarFieldEnum = {
 export type ContractEventScalarFieldEnum = (typeof ContractEventScalarFieldEnum)[keyof typeof ContractEventScalarFieldEnum]
 
 
+export const DocumentTemplateScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  name: 'name',
+  code: 'code',
+  description: 'description',
+  version: 'version',
+  htmlTemplate: 'htmlTemplate',
+  cssStyles: 'cssStyles',
+  mergeFields: 'mergeFields',
+  isActive: 'isActive',
+  isDefault: 'isDefault',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DocumentTemplateScalarFieldEnum = (typeof DocumentTemplateScalarFieldEnum)[keyof typeof DocumentTemplateScalarFieldEnum]
+
+
+export const OfferLetterScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  contractId: 'contractId',
+  templateId: 'templateId',
+  letterNumber: 'letterNumber',
+  type: 'type',
+  status: 'status',
+  htmlContent: 'htmlContent',
+  pdfUrl: 'pdfUrl',
+  pdfKey: 'pdfKey',
+  mergeData: 'mergeData',
+  sentAt: 'sentAt',
+  viewedAt: 'viewedAt',
+  signedAt: 'signedAt',
+  signatureIp: 'signatureIp',
+  signatureData: 'signatureData',
+  expiresAt: 'expiresAt',
+  expiredAt: 'expiredAt',
+  cancelledAt: 'cancelledAt',
+  cancelReason: 'cancelReason',
+  generatedById: 'generatedById',
+  sentById: 'sentById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OfferLetterScalarFieldEnum = (typeof OfferLetterScalarFieldEnum)[keyof typeof OfferLetterScalarFieldEnum]
+
+
 export const ContractTerminationScalarFieldEnum = {
   id: 'id',
   contractId: 'contractId',
@@ -4803,6 +4986,37 @@ export const ContractEventOrderByRelevanceFieldEnum = {
 export type ContractEventOrderByRelevanceFieldEnum = (typeof ContractEventOrderByRelevanceFieldEnum)[keyof typeof ContractEventOrderByRelevanceFieldEnum]
 
 
+export const DocumentTemplateOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  name: 'name',
+  code: 'code',
+  description: 'description',
+  htmlTemplate: 'htmlTemplate',
+  cssStyles: 'cssStyles'
+} as const
+
+export type DocumentTemplateOrderByRelevanceFieldEnum = (typeof DocumentTemplateOrderByRelevanceFieldEnum)[keyof typeof DocumentTemplateOrderByRelevanceFieldEnum]
+
+
+export const OfferLetterOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  contractId: 'contractId',
+  templateId: 'templateId',
+  letterNumber: 'letterNumber',
+  htmlContent: 'htmlContent',
+  pdfUrl: 'pdfUrl',
+  pdfKey: 'pdfKey',
+  signatureIp: 'signatureIp',
+  cancelReason: 'cancelReason',
+  generatedById: 'generatedById',
+  sentById: 'sentById'
+} as const
+
+export type OfferLetterOrderByRelevanceFieldEnum = (typeof OfferLetterOrderByRelevanceFieldEnum)[keyof typeof OfferLetterOrderByRelevanceFieldEnum]
+
+
 export const ContractTerminationOrderByRelevanceFieldEnum = {
   id: 'id',
   contractId: 'contractId',
@@ -5026,6 +5240,20 @@ export type EnumDocumentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$P
 
 
 /**
+ * Reference to a field of type 'OfferLetterType'
+ */
+export type EnumOfferLetterTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OfferLetterType'>
+    
+
+
+/**
+ * Reference to a field of type 'OfferLetterStatus'
+ */
+export type EnumOfferLetterStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OfferLetterStatus'>
+    
+
+
+/**
  * Reference to a field of type 'TerminationInitiator'
  */
 export type EnumTerminationInitiatorFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TerminationInitiator'>
@@ -5209,6 +5437,8 @@ export type GlobalOmitConfig = {
   contractDocument?: Prisma.ContractDocumentOmit
   contractTransition?: Prisma.ContractTransitionOmit
   contractEvent?: Prisma.ContractEventOmit
+  documentTemplate?: Prisma.DocumentTemplateOmit
+  offerLetter?: Prisma.OfferLetterOmit
   contractTermination?: Prisma.ContractTerminationOmit
   prequalification?: Prisma.PrequalificationOmit
   paymentMethodChangeRequest?: Prisma.PaymentMethodChangeRequestOmit

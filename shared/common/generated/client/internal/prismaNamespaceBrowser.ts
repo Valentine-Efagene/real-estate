@@ -92,6 +92,8 @@ export const ModelName = {
   ContractDocument: 'ContractDocument',
   ContractTransition: 'ContractTransition',
   ContractEvent: 'ContractEvent',
+  DocumentTemplate: 'DocumentTemplate',
+  OfferLetter: 'OfferLetter',
   ContractTermination: 'ContractTermination',
   Prequalification: 'Prequalification',
   PaymentMethodChangeRequest: 'PaymentMethodChangeRequest',
@@ -758,6 +760,55 @@ export const ContractEventScalarFieldEnum = {
 export type ContractEventScalarFieldEnum = (typeof ContractEventScalarFieldEnum)[keyof typeof ContractEventScalarFieldEnum]
 
 
+export const DocumentTemplateScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  name: 'name',
+  code: 'code',
+  description: 'description',
+  version: 'version',
+  htmlTemplate: 'htmlTemplate',
+  cssStyles: 'cssStyles',
+  mergeFields: 'mergeFields',
+  isActive: 'isActive',
+  isDefault: 'isDefault',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DocumentTemplateScalarFieldEnum = (typeof DocumentTemplateScalarFieldEnum)[keyof typeof DocumentTemplateScalarFieldEnum]
+
+
+export const OfferLetterScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  contractId: 'contractId',
+  templateId: 'templateId',
+  letterNumber: 'letterNumber',
+  type: 'type',
+  status: 'status',
+  htmlContent: 'htmlContent',
+  pdfUrl: 'pdfUrl',
+  pdfKey: 'pdfKey',
+  mergeData: 'mergeData',
+  sentAt: 'sentAt',
+  viewedAt: 'viewedAt',
+  signedAt: 'signedAt',
+  signatureIp: 'signatureIp',
+  signatureData: 'signatureData',
+  expiresAt: 'expiresAt',
+  expiredAt: 'expiredAt',
+  cancelledAt: 'cancelledAt',
+  cancelReason: 'cancelReason',
+  generatedById: 'generatedById',
+  sentById: 'sentById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OfferLetterScalarFieldEnum = (typeof OfferLetterScalarFieldEnum)[keyof typeof OfferLetterScalarFieldEnum]
+
+
 export const ContractTerminationScalarFieldEnum = {
   id: 'id',
   contractId: 'contractId',
@@ -1392,6 +1443,37 @@ export const ContractEventOrderByRelevanceFieldEnum = {
 } as const
 
 export type ContractEventOrderByRelevanceFieldEnum = (typeof ContractEventOrderByRelevanceFieldEnum)[keyof typeof ContractEventOrderByRelevanceFieldEnum]
+
+
+export const DocumentTemplateOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  name: 'name',
+  code: 'code',
+  description: 'description',
+  htmlTemplate: 'htmlTemplate',
+  cssStyles: 'cssStyles'
+} as const
+
+export type DocumentTemplateOrderByRelevanceFieldEnum = (typeof DocumentTemplateOrderByRelevanceFieldEnum)[keyof typeof DocumentTemplateOrderByRelevanceFieldEnum]
+
+
+export const OfferLetterOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  contractId: 'contractId',
+  templateId: 'templateId',
+  letterNumber: 'letterNumber',
+  htmlContent: 'htmlContent',
+  pdfUrl: 'pdfUrl',
+  pdfKey: 'pdfKey',
+  signatureIp: 'signatureIp',
+  cancelReason: 'cancelReason',
+  generatedById: 'generatedById',
+  sentById: 'sentById'
+} as const
+
+export type OfferLetterOrderByRelevanceFieldEnum = (typeof OfferLetterOrderByRelevanceFieldEnum)[keyof typeof OfferLetterOrderByRelevanceFieldEnum]
 
 
 export const ContractTerminationOrderByRelevanceFieldEnum = {

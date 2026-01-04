@@ -223,6 +223,16 @@ export type ContractTransition = Prisma.ContractTransitionModel
  */
 export type ContractEvent = Prisma.ContractEventModel
 /**
+ * Model DocumentTemplate
+ * 
+ */
+export type DocumentTemplate = Prisma.DocumentTemplateModel
+/**
+ * Model OfferLetter
+ * 
+ */
+export type OfferLetter = Prisma.OfferLetterModel
+/**
  * Model ContractTermination
  * 
  */

@@ -385,3 +385,71 @@ export async function sendPaymentReminderNotification(
         { correlationId },
     );
 }
+
+// ============== Offer Letter Notifications ==============
+
+export interface OfferLetterNotificationPayload {
+    email: string;
+    userName: string;
+    letterNumber: string;
+    letterType: string; // "Provisional Offer Letter" or "Final Offer Letter"
+    contractNumber: string;
+    propertyName: string;
+    expiryDate: string;
+    viewUrl: string;
+    customMessage?: string;
+}
+
+export async function sendOfferLetterNotification(
+    payload: OfferLetterNotificationPayload,
+    correlationId?: string,
+): Promise<void> {
+    const publisher = getPublisher();
+    await publisher.publishEmail(
+        NotificationType.OFFER_LETTER_SENT,
+        {
+            to_email: payload.email,
+            homeBuyerName: payload.userName,
+            letterNumber: payload.letterNumber,
+            letterType: payload.letterType,
+            contractNumber: payload.contractNumber,
+            propertyName: payload.propertyName,
+            expiryDate: payload.expiryDate,
+            viewLink: payload.viewUrl,
+            customMessage: payload.customMessage,
+        },
+        { correlationId },
+    );
+}
+
+export interface OfferLetterSignedPayload {
+    email: string;
+    userName: string;
+    letterNumber: string;
+    letterType: string;
+    contractNumber: string;
+    propertyName: string;
+    signedDate: string;
+    downloadUrl: string;
+}
+
+export async function sendOfferLetterSignedNotification(
+    payload: OfferLetterSignedPayload,
+    correlationId?: string,
+): Promise<void> {
+    const publisher = getPublisher();
+    await publisher.publishEmail(
+        NotificationType.OFFER_LETTER_SIGNED,
+        {
+            to_email: payload.email,
+            homeBuyerName: payload.userName,
+            letterNumber: payload.letterNumber,
+            letterType: payload.letterType,
+            contractNumber: payload.contractNumber,
+            propertyName: payload.propertyName,
+            signedDate: payload.signedDate,
+            downloadLink: payload.downloadUrl,
+        },
+        { correlationId },
+    );
+}

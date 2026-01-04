@@ -126,7 +126,7 @@ class ContractPaymentService {
         return payment;
     }
 
-    async findById(id: string) {
+    async findById(id: string): Promise<any> {
         const payment = await prisma.contractPayment.findUnique({
             where: { id },
             include: {
@@ -151,7 +151,7 @@ class ContractPaymentService {
         return payment;
     }
 
-    async findByReference(reference: string) {
+    async findByReference(reference: string): Promise<any> {
         const payment = await prisma.contractPayment.findUnique({
             where: { reference },
             include: {
@@ -168,7 +168,7 @@ class ContractPaymentService {
         return payment;
     }
 
-    async findByContract(contractId: string) {
+    async findByContract(contractId: string): Promise<any[]> {
         const payments = await prisma.contractPayment.findMany({
             where: { contractId },
             orderBy: { createdAt: 'desc' },
@@ -194,7 +194,7 @@ class ContractPaymentService {
     /**
      * Process a payment (typically called from webhook/callback)
      */
-    async process(data: ProcessPaymentInput) {
+    async process(data: ProcessPaymentInput): Promise<any> {
         const payment = await this.findByReference(data.reference);
 
         if (payment.status === 'COMPLETED') {
@@ -501,7 +501,7 @@ class ContractPaymentService {
     /**
      * Refund a payment
      */
-    async refund(paymentId: string, data: RefundPaymentInput, userId: string) {
+    async refund(paymentId: string, data: RefundPaymentInput, userId: string): Promise<any> {
         const payment = await this.findById(paymentId);
 
         if (payment.status !== 'COMPLETED') {

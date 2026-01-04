@@ -182,12 +182,40 @@ export type CompletionCriterion = (typeof CompletionCriterion)[keyof typeof Comp
 
 
 export const DocumentStatus = {
+  DRAFT: 'DRAFT',
   PENDING: 'PENDING',
+  PENDING_SIGNATURE: 'PENDING_SIGNATURE',
+  SENT: 'SENT',
+  VIEWED: 'VIEWED',
+  SIGNED: 'SIGNED',
   APPROVED: 'APPROVED',
-  REJECTED: 'REJECTED'
+  REJECTED: 'REJECTED',
+  EXPIRED: 'EXPIRED',
+  CANCELLED: 'CANCELLED'
 } as const
 
 export type DocumentStatus = (typeof DocumentStatus)[keyof typeof DocumentStatus]
+
+
+export const OfferLetterType = {
+  PROVISIONAL: 'PROVISIONAL',
+  FINAL: 'FINAL'
+} as const
+
+export type OfferLetterType = (typeof OfferLetterType)[keyof typeof OfferLetterType]
+
+
+export const OfferLetterStatus = {
+  DRAFT: 'DRAFT',
+  GENERATED: 'GENERATED',
+  SENT: 'SENT',
+  VIEWED: 'VIEWED',
+  SIGNED: 'SIGNED',
+  EXPIRED: 'EXPIRED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type OfferLetterStatus = (typeof OfferLetterStatus)[keyof typeof OfferLetterStatus]
 
 
 export const PrequalificationStatus = {

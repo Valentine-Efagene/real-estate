@@ -35,6 +35,11 @@ export enum NotificationType {
     CONTRACT_TERMINATION_APPROVED = 'contractTerminationApproved',
     CONTRACT_TERMINATED = 'contractTerminated',
 
+    // Offer Letters
+    OFFER_LETTER_SENT = 'offerLetterSent',
+    OFFER_LETTER_SIGNED = 'offerLetterSigned',
+    OFFER_LETTER_EXPIRED = 'offerLetterExpired',
+
     // Admin
     ADMIN_CONTRIBUTION_RECEIVED = 'adminContributionReceived',
     ADMIN_PROPERTY_ALLOCATION = 'adminPropertyAllocation',
