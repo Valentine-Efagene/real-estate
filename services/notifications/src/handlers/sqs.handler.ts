@@ -67,6 +67,9 @@ function getTemplateType(notificationType: NotificationType): TemplateTypeValue 
         [NotificationType.PAYMENT_RECEIVED]: 'paymentReceived',
         [NotificationType.PAYMENT_FAILED]: 'paymentFailed',
         [NotificationType.PAYMENT_REMINDER]: 'paymentReminder',
+        // Mortgage - Offer Letters
+        [NotificationType.OFFER_LETTER_SENT]: 'provisionalOfferLetter',
+        [NotificationType.OFFER_LETTER_SIGNED]: 'finalOfferLetter',
     };
 
     return typeMap[notificationType] || null;

@@ -32,6 +32,9 @@ export const templatePathMap: Readonly<Record<TemplateTypeValue, string>> = Obje
     'paymentReceived': 'content/paymentReceived.hbs',
     'paymentFailed': 'content/paymentFailed.hbs',
     'paymentReminder': 'content/paymentReminder.hbs',
+    // Mortgage - Offer Letters
+    'provisionalOfferLetter': 'provisionalOfferLetter.html',
+    'finalOfferLetter': 'finalOfferLetter.html',
 });
 
 /**
@@ -65,6 +68,9 @@ export const templateTitle: Readonly<Record<TemplateTypeValue, string>> = Object
     'paymentReceived': 'Payment Received Successfully',
     'paymentFailed': 'Payment Failed - Action Required',
     'paymentReminder': 'Payment Reminder',
+    // Mortgage - Offer Letters
+    'provisionalOfferLetter': 'Your Provisional Offer Letter is Ready',
+    'finalOfferLetter': 'Final Offer Letter - Contract Finalization',
 });
 
 // Pre-computed set of dynamic templates for O(1) lookup
