@@ -222,7 +222,7 @@ class ContractPaymentService {
 
         const { updated, activatedNextPhaseId } = await prisma.$transaction(async (tx) => {
             let activatedNextPhaseId: string | null = null;
-            
+
             // Update payment status
             const result = await tx.contractPayment.update({
                 where: { id: paymentId },
