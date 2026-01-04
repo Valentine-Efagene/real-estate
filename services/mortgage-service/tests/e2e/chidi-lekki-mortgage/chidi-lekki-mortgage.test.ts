@@ -664,7 +664,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         it('GENERATE_DOCUMENT step auto-executes and generates provisional offer', async () => {
             // After approval step completes, the GENERATE_DOCUMENT step should auto-execute
             // Check that the provisional offer was generated
-            const step = await prisma.contractPhaseStep.findFirst({
+            const step = await prisma.documentationStep.findFirst({
                 where: {
                     phaseId: documentationPhaseId,
                     name: 'Generate Provisional Offer',
@@ -762,7 +762,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         it('GENERATE_DOCUMENT step auto-executes and generates final offer', async () => {
             // After downpayment phase completes, Final Documentation phase activates
             // The GENERATE_DOCUMENT step should auto-execute
-            const step = await prisma.contractPhaseStep.findFirst({
+            const step = await prisma.documentationStep.findFirst({
                 where: {
                     phaseId: finalDocumentationPhaseId,
                     name: 'Generate Final Offer',

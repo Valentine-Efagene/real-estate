@@ -84,9 +84,9 @@ export const ModelName = {
   PaymentMethodPhaseDocument: 'PaymentMethodPhaseDocument',
   Contract: 'Contract',
   ContractPhase: 'ContractPhase',
-  ContractPhaseStep: 'ContractPhaseStep',
-  ContractPhaseStepDocument: 'ContractPhaseStepDocument',
-  ContractPhaseStepApproval: 'ContractPhaseStepApproval',
+  DocumentationStep: 'DocumentationStep',
+  DocumentationStepDocument: 'DocumentationStepDocument',
+  DocumentationStepApproval: 'DocumentationStepApproval',
   ContractInstallment: 'ContractInstallment',
   ContractPayment: 'ContractPayment',
   ContractDocument: 'ContractDocument',
@@ -634,7 +634,7 @@ export const ContractPhaseScalarFieldEnum = {
 export type ContractPhaseScalarFieldEnum = (typeof ContractPhaseScalarFieldEnum)[keyof typeof ContractPhaseScalarFieldEnum]
 
 
-export const ContractPhaseStepScalarFieldEnum = {
+export const DocumentationStepScalarFieldEnum = {
   id: 'id',
   phaseId: 'phaseId',
   name: 'name',
@@ -650,10 +650,10 @@ export const ContractPhaseStepScalarFieldEnum = {
   updatedAt: 'updatedAt'
 } as const
 
-export type ContractPhaseStepScalarFieldEnum = (typeof ContractPhaseStepScalarFieldEnum)[keyof typeof ContractPhaseStepScalarFieldEnum]
+export type DocumentationStepScalarFieldEnum = (typeof DocumentationStepScalarFieldEnum)[keyof typeof DocumentationStepScalarFieldEnum]
 
 
-export const ContractPhaseStepDocumentScalarFieldEnum = {
+export const DocumentationStepDocumentScalarFieldEnum = {
   id: 'id',
   stepId: 'stepId',
   documentType: 'documentType',
@@ -661,10 +661,10 @@ export const ContractPhaseStepDocumentScalarFieldEnum = {
   createdAt: 'createdAt'
 } as const
 
-export type ContractPhaseStepDocumentScalarFieldEnum = (typeof ContractPhaseStepDocumentScalarFieldEnum)[keyof typeof ContractPhaseStepDocumentScalarFieldEnum]
+export type DocumentationStepDocumentScalarFieldEnum = (typeof DocumentationStepDocumentScalarFieldEnum)[keyof typeof DocumentationStepDocumentScalarFieldEnum]
 
 
-export const ContractPhaseStepApprovalScalarFieldEnum = {
+export const DocumentationStepApprovalScalarFieldEnum = {
   id: 'id',
   stepId: 'stepId',
   approverId: 'approverId',
@@ -674,7 +674,7 @@ export const ContractPhaseStepApprovalScalarFieldEnum = {
   createdAt: 'createdAt'
 } as const
 
-export type ContractPhaseStepApprovalScalarFieldEnum = (typeof ContractPhaseStepApprovalScalarFieldEnum)[keyof typeof ContractPhaseStepApprovalScalarFieldEnum]
+export type DocumentationStepApprovalScalarFieldEnum = (typeof DocumentationStepApprovalScalarFieldEnum)[keyof typeof DocumentationStepApprovalScalarFieldEnum]
 
 
 export const ContractInstallmentScalarFieldEnum = {
@@ -1381,7 +1381,7 @@ export const ContractPhaseOrderByRelevanceFieldEnum = {
 export type ContractPhaseOrderByRelevanceFieldEnum = (typeof ContractPhaseOrderByRelevanceFieldEnum)[keyof typeof ContractPhaseOrderByRelevanceFieldEnum]
 
 
-export const ContractPhaseStepOrderByRelevanceFieldEnum = {
+export const DocumentationStepOrderByRelevanceFieldEnum = {
   id: 'id',
   phaseId: 'phaseId',
   name: 'name',
@@ -1389,26 +1389,26 @@ export const ContractPhaseStepOrderByRelevanceFieldEnum = {
   assigneeId: 'assigneeId'
 } as const
 
-export type ContractPhaseStepOrderByRelevanceFieldEnum = (typeof ContractPhaseStepOrderByRelevanceFieldEnum)[keyof typeof ContractPhaseStepOrderByRelevanceFieldEnum]
+export type DocumentationStepOrderByRelevanceFieldEnum = (typeof DocumentationStepOrderByRelevanceFieldEnum)[keyof typeof DocumentationStepOrderByRelevanceFieldEnum]
 
 
-export const ContractPhaseStepDocumentOrderByRelevanceFieldEnum = {
+export const DocumentationStepDocumentOrderByRelevanceFieldEnum = {
   id: 'id',
   stepId: 'stepId',
   documentType: 'documentType'
 } as const
 
-export type ContractPhaseStepDocumentOrderByRelevanceFieldEnum = (typeof ContractPhaseStepDocumentOrderByRelevanceFieldEnum)[keyof typeof ContractPhaseStepDocumentOrderByRelevanceFieldEnum]
+export type DocumentationStepDocumentOrderByRelevanceFieldEnum = (typeof DocumentationStepDocumentOrderByRelevanceFieldEnum)[keyof typeof DocumentationStepDocumentOrderByRelevanceFieldEnum]
 
 
-export const ContractPhaseStepApprovalOrderByRelevanceFieldEnum = {
+export const DocumentationStepApprovalOrderByRelevanceFieldEnum = {
   id: 'id',
   stepId: 'stepId',
   approverId: 'approverId',
   comment: 'comment'
 } as const
 
-export type ContractPhaseStepApprovalOrderByRelevanceFieldEnum = (typeof ContractPhaseStepApprovalOrderByRelevanceFieldEnum)[keyof typeof ContractPhaseStepApprovalOrderByRelevanceFieldEnum]
+export type DocumentationStepApprovalOrderByRelevanceFieldEnum = (typeof DocumentationStepApprovalOrderByRelevanceFieldEnum)[keyof typeof DocumentationStepApprovalOrderByRelevanceFieldEnum]
 
 
 export const ContractInstallmentOrderByRelevanceFieldEnum = {

@@ -68,7 +68,7 @@ export async function handleGenerateDocumentStep(
     error?: string;
 }> {
     // Get the step with its metadata
-    const step = await prisma.contractPhaseStep.findUnique({
+    const step = await prisma.documentationStep.findUnique({
         where: { id: stepId },
         select: {
             id: true,
@@ -141,7 +141,7 @@ export async function handleGenerateDocumentStep(
         }
 
         // Mark the step as completed
-        await prisma.contractPhaseStep.update({
+        await prisma.documentationStep.update({
             where: { id: stepId },
             data: {
                 status: 'COMPLETED',
@@ -168,7 +168,7 @@ export async function handleGenerateDocumentStep(
         });
 
         // Mark the step as failed
-        await prisma.contractPhaseStep.update({
+        await prisma.documentationStep.update({
             where: { id: stepId },
             data: {
                 status: 'FAILED',

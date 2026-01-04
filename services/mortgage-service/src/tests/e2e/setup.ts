@@ -9,8 +9,8 @@ export async function cleanDatabase() {
     await prisma.$transaction([
         prisma.contractPayment.deleteMany(),
         prisma.contractDocument.deleteMany(),
-        prisma.contractPhaseStepApproval.deleteMany(),
-        prisma.contractPhaseStep.deleteMany(),
+        prisma.documentationStepApproval.deleteMany(),
+        prisma.documentationStep.deleteMany(),
         prisma.contractInstallment.deleteMany(),
         prisma.contractPhase.deleteMany(),
         prisma.contract.deleteMany(),

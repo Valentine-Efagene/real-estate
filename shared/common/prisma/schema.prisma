@@ -225,9 +225,9 @@ model User {
   soldContracts    Contract[]        @relation("ContractSeller")
   contractPayments ContractPayment[] @relation("ContractPayer")
 
-  // Phase step assignments and approvals
-  assignedSteps ContractPhaseStep[]         @relation("PhaseStepAssignee")
-  stepApprovals ContractPhaseStepApproval[] @relation("PhaseStepApprover")
+  // Documentation step assignments and approvals
+  assignedSteps DocumentationStep[]         @relation("DocumentationStepAssignee")
+  stepApprovals DocumentationStepApproval[] @relation("DocumentationStepApprover")
   uploadedDocs  ContractDocument[]          @relation("DocumentUploader")
 
   // Prequalification and payment method changes
@@ -1014,7 +1014,7 @@ model ContractPhase {
   // Relations
   installments ContractInstallment[]
   payments     ContractPayment[]
-  steps        ContractPhaseStep[] // For DOCUMENTATION phases (FSM steps)
+  steps        DocumentationStep[] // For DOCUMENTATION phases (FSM steps)
 
   @@index([contractId])
   @@index([paymentPlanId])
@@ -1025,7 +1025,7 @@ model ContractPhase {
 }
 
 // Steps within a DOCUMENTATION phase (FSM for document collection/approval)
-model ContractPhaseStep {
+model DocumentationStep {
   id      String        @id @default(cuid())
   phaseId String
   phase   ContractPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
@@ -1042,10 +1042,10 @@ model ContractPhaseStep {
 
   // Assignment
   assigneeId String?
-  assignee   User?   @relation("PhaseStepAssignee", fields: [assigneeId], references: [id])
+  assignee   User?   @relation("DocumentationStepAssignee", fields: [assigneeId], references: [id])
 
   // Required document types for UPLOAD steps (normalized)
-  requiredDocuments ContractPhaseStepDocument[]
+  requiredDocuments DocumentationStepDocument[]
 
   // Timing
   dueDate     DateTime?
@@ -1054,7 +1054,7 @@ model ContractPhaseStep {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  approvals ContractPhaseStepApproval[]
+  approvals DocumentationStepApproval[]
 
   @@index([phaseId])
   @@index([status])
@@ -1063,10 +1063,10 @@ model ContractPhaseStep {
 }
 
 // Required documents for a step (normalized from CSV)
-model ContractPhaseStepDocument {
+model DocumentationStepDocument {
   id     String            @id @default(cuid())
   stepId String
-  step   ContractPhaseStep @relation(fields: [stepId], references: [id], onDelete: Cascade)
+  step   DocumentationStep @relation(fields: [stepId], references: [id], onDelete: Cascade)
 
   documentType String
   isRequired   Boolean @default(true)
@@ -1078,12 +1078,12 @@ model ContractPhaseStepDocument {
 }
 
 // Approvals for documentation steps
-model ContractPhaseStepApproval {
+model DocumentationStepApproval {
   id         String            @id @default(cuid())
   stepId     String
-  step       ContractPhaseStep @relation(fields: [stepId], references: [id], onDelete: Cascade)
+  step       DocumentationStep @relation(fields: [stepId], references: [id], onDelete: Cascade)
   approverId String?
-  approver   User?             @relation("PhaseStepApprover", fields: [approverId], references: [id])
+  approver   User?             @relation("DocumentationStepApprover", fields: [approverId], references: [id])
 
   decision  ApprovalDecision
   comment   String?          @db.Text

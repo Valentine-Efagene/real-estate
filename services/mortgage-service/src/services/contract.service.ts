@@ -309,7 +309,7 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
 
                 if (phaseTemplate.phaseCategory === 'DOCUMENTATION') {
                     for (const step of steps) {
-                        const createdStep = await tx.contractPhaseStep.create({
+                        const createdStep = await tx.documentationStep.create({
                             data: {
                                 phaseId: phase.id,
                                 name: step.name,
@@ -324,7 +324,7 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
                         // Create required document records for this step (if any)
                         if (step.requiredDocuments && step.requiredDocuments.length > 0) {
                             for (const doc of step.requiredDocuments) {
-                                await tx.contractPhaseStepDocument.create({
+                                await tx.documentationStepDocument.create({
                                     data: {
                                         stepId: createdStep.id,
                                         documentType: doc.documentType,
@@ -708,10 +708,10 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
 
             const phases = await tx.contractPhase.findMany({ where: { contractId: id } });
             for (const phase of phases) {
-                await tx.contractPhaseStepApproval.deleteMany({
+                await tx.documentationStepApproval.deleteMany({
                     where: { step: { phaseId: phase.id } },
                 });
-                await tx.contractPhaseStep.deleteMany({ where: { phaseId: phase.id } });
+                await tx.documentationStep.deleteMany({ where: { phaseId: phase.id } });
                 await tx.contractInstallment.deleteMany({ where: { phaseId: phase.id } });
             }
 

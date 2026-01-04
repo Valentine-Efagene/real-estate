@@ -417,9 +417,9 @@ export const ModelName = {
   PaymentMethodPhaseDocument: 'PaymentMethodPhaseDocument',
   Contract: 'Contract',
   ContractPhase: 'ContractPhase',
-  ContractPhaseStep: 'ContractPhaseStep',
-  ContractPhaseStepDocument: 'ContractPhaseStepDocument',
-  ContractPhaseStepApproval: 'ContractPhaseStepApproval',
+  DocumentationStep: 'DocumentationStep',
+  DocumentationStepDocument: 'DocumentationStepDocument',
+  DocumentationStepApproval: 'DocumentationStepApproval',
   ContractInstallment: 'ContractInstallment',
   ContractPayment: 'ContractPayment',
   ContractDocument: 'ContractDocument',
@@ -448,7 +448,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenant" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "paymentMethodPhaseStep" | "paymentMethodPhaseDocument" | "contract" | "contractPhase" | "contractPhaseStep" | "contractPhaseStepDocument" | "contractPhaseStepApproval" | "contractInstallment" | "contractPayment" | "contractDocument" | "contractTransition" | "contractEvent" | "documentTemplate" | "offerLetter" | "contractTermination" | "prequalification" | "underwritingDecision" | "paymentMethodChangeRequest" | "documentRequirementRule" | "domainEvent"
+    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenant" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "paymentMethodPhaseStep" | "paymentMethodPhaseDocument" | "contract" | "contractPhase" | "documentationStep" | "documentationStepDocument" | "documentationStepApproval" | "contractInstallment" | "contractPayment" | "contractDocument" | "contractTransition" | "contractEvent" | "documentTemplate" | "offerLetter" | "contractTermination" | "prequalification" | "underwritingDecision" | "paymentMethodChangeRequest" | "documentRequirementRule" | "domainEvent"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2630,201 +2630,201 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    ContractPhaseStep: {
-      payload: Prisma.$ContractPhaseStepPayload<ExtArgs>
-      fields: Prisma.ContractPhaseStepFieldRefs
+    DocumentationStep: {
+      payload: Prisma.$DocumentationStepPayload<ExtArgs>
+      fields: Prisma.DocumentationStepFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.ContractPhaseStepFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepPayload> | null
+          args: Prisma.DocumentationStepFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.ContractPhaseStepFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepPayload>
+          args: Prisma.DocumentationStepFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepPayload>
         }
         findFirst: {
-          args: Prisma.ContractPhaseStepFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepPayload> | null
+          args: Prisma.DocumentationStepFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.ContractPhaseStepFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepPayload>
+          args: Prisma.DocumentationStepFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepPayload>
         }
         findMany: {
-          args: Prisma.ContractPhaseStepFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepPayload>[]
+          args: Prisma.DocumentationStepFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepPayload>[]
         }
         create: {
-          args: Prisma.ContractPhaseStepCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepPayload>
+          args: Prisma.DocumentationStepCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepPayload>
         }
         createMany: {
-          args: Prisma.ContractPhaseStepCreateManyArgs<ExtArgs>
+          args: Prisma.DocumentationStepCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         delete: {
-          args: Prisma.ContractPhaseStepDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepPayload>
+          args: Prisma.DocumentationStepDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepPayload>
         }
         update: {
-          args: Prisma.ContractPhaseStepUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepPayload>
+          args: Prisma.DocumentationStepUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepPayload>
         }
         deleteMany: {
-          args: Prisma.ContractPhaseStepDeleteManyArgs<ExtArgs>
+          args: Prisma.DocumentationStepDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.ContractPhaseStepUpdateManyArgs<ExtArgs>
+          args: Prisma.DocumentationStepUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         upsert: {
-          args: Prisma.ContractPhaseStepUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepPayload>
+          args: Prisma.DocumentationStepUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepPayload>
         }
         aggregate: {
-          args: Prisma.ContractPhaseStepAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateContractPhaseStep>
+          args: Prisma.DocumentationStepAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDocumentationStep>
         }
         groupBy: {
-          args: Prisma.ContractPhaseStepGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ContractPhaseStepGroupByOutputType>[]
+          args: Prisma.DocumentationStepGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentationStepGroupByOutputType>[]
         }
         count: {
-          args: Prisma.ContractPhaseStepCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ContractPhaseStepCountAggregateOutputType> | number
+          args: Prisma.DocumentationStepCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentationStepCountAggregateOutputType> | number
         }
       }
     }
-    ContractPhaseStepDocument: {
-      payload: Prisma.$ContractPhaseStepDocumentPayload<ExtArgs>
-      fields: Prisma.ContractPhaseStepDocumentFieldRefs
+    DocumentationStepDocument: {
+      payload: Prisma.$DocumentationStepDocumentPayload<ExtArgs>
+      fields: Prisma.DocumentationStepDocumentFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.ContractPhaseStepDocumentFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepDocumentPayload> | null
+          args: Prisma.DocumentationStepDocumentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepDocumentPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.ContractPhaseStepDocumentFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepDocumentPayload>
+          args: Prisma.DocumentationStepDocumentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepDocumentPayload>
         }
         findFirst: {
-          args: Prisma.ContractPhaseStepDocumentFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepDocumentPayload> | null
+          args: Prisma.DocumentationStepDocumentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepDocumentPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.ContractPhaseStepDocumentFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepDocumentPayload>
+          args: Prisma.DocumentationStepDocumentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepDocumentPayload>
         }
         findMany: {
-          args: Prisma.ContractPhaseStepDocumentFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepDocumentPayload>[]
+          args: Prisma.DocumentationStepDocumentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepDocumentPayload>[]
         }
         create: {
-          args: Prisma.ContractPhaseStepDocumentCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepDocumentPayload>
+          args: Prisma.DocumentationStepDocumentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepDocumentPayload>
         }
         createMany: {
-          args: Prisma.ContractPhaseStepDocumentCreateManyArgs<ExtArgs>
+          args: Prisma.DocumentationStepDocumentCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         delete: {
-          args: Prisma.ContractPhaseStepDocumentDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepDocumentPayload>
+          args: Prisma.DocumentationStepDocumentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepDocumentPayload>
         }
         update: {
-          args: Prisma.ContractPhaseStepDocumentUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepDocumentPayload>
+          args: Prisma.DocumentationStepDocumentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepDocumentPayload>
         }
         deleteMany: {
-          args: Prisma.ContractPhaseStepDocumentDeleteManyArgs<ExtArgs>
+          args: Prisma.DocumentationStepDocumentDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.ContractPhaseStepDocumentUpdateManyArgs<ExtArgs>
+          args: Prisma.DocumentationStepDocumentUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         upsert: {
-          args: Prisma.ContractPhaseStepDocumentUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepDocumentPayload>
+          args: Prisma.DocumentationStepDocumentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepDocumentPayload>
         }
         aggregate: {
-          args: Prisma.ContractPhaseStepDocumentAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateContractPhaseStepDocument>
+          args: Prisma.DocumentationStepDocumentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDocumentationStepDocument>
         }
         groupBy: {
-          args: Prisma.ContractPhaseStepDocumentGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ContractPhaseStepDocumentGroupByOutputType>[]
+          args: Prisma.DocumentationStepDocumentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentationStepDocumentGroupByOutputType>[]
         }
         count: {
-          args: Prisma.ContractPhaseStepDocumentCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ContractPhaseStepDocumentCountAggregateOutputType> | number
+          args: Prisma.DocumentationStepDocumentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentationStepDocumentCountAggregateOutputType> | number
         }
       }
     }
-    ContractPhaseStepApproval: {
-      payload: Prisma.$ContractPhaseStepApprovalPayload<ExtArgs>
-      fields: Prisma.ContractPhaseStepApprovalFieldRefs
+    DocumentationStepApproval: {
+      payload: Prisma.$DocumentationStepApprovalPayload<ExtArgs>
+      fields: Prisma.DocumentationStepApprovalFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.ContractPhaseStepApprovalFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepApprovalPayload> | null
+          args: Prisma.DocumentationStepApprovalFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepApprovalPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.ContractPhaseStepApprovalFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepApprovalPayload>
+          args: Prisma.DocumentationStepApprovalFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepApprovalPayload>
         }
         findFirst: {
-          args: Prisma.ContractPhaseStepApprovalFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepApprovalPayload> | null
+          args: Prisma.DocumentationStepApprovalFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepApprovalPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.ContractPhaseStepApprovalFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepApprovalPayload>
+          args: Prisma.DocumentationStepApprovalFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepApprovalPayload>
         }
         findMany: {
-          args: Prisma.ContractPhaseStepApprovalFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepApprovalPayload>[]
+          args: Prisma.DocumentationStepApprovalFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepApprovalPayload>[]
         }
         create: {
-          args: Prisma.ContractPhaseStepApprovalCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepApprovalPayload>
+          args: Prisma.DocumentationStepApprovalCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepApprovalPayload>
         }
         createMany: {
-          args: Prisma.ContractPhaseStepApprovalCreateManyArgs<ExtArgs>
+          args: Prisma.DocumentationStepApprovalCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         delete: {
-          args: Prisma.ContractPhaseStepApprovalDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepApprovalPayload>
+          args: Prisma.DocumentationStepApprovalDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepApprovalPayload>
         }
         update: {
-          args: Prisma.ContractPhaseStepApprovalUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepApprovalPayload>
+          args: Prisma.DocumentationStepApprovalUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepApprovalPayload>
         }
         deleteMany: {
-          args: Prisma.ContractPhaseStepApprovalDeleteManyArgs<ExtArgs>
+          args: Prisma.DocumentationStepApprovalDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.ContractPhaseStepApprovalUpdateManyArgs<ExtArgs>
+          args: Prisma.DocumentationStepApprovalUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         upsert: {
-          args: Prisma.ContractPhaseStepApprovalUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhaseStepApprovalPayload>
+          args: Prisma.DocumentationStepApprovalUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepApprovalPayload>
         }
         aggregate: {
-          args: Prisma.ContractPhaseStepApprovalAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateContractPhaseStepApproval>
+          args: Prisma.DocumentationStepApprovalAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDocumentationStepApproval>
         }
         groupBy: {
-          args: Prisma.ContractPhaseStepApprovalGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ContractPhaseStepApprovalGroupByOutputType>[]
+          args: Prisma.DocumentationStepApprovalGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentationStepApprovalGroupByOutputType>[]
         }
         count: {
-          args: Prisma.ContractPhaseStepApprovalCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ContractPhaseStepApprovalCountAggregateOutputType> | number
+          args: Prisma.DocumentationStepApprovalCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentationStepApprovalCountAggregateOutputType> | number
         }
       }
     }
@@ -4241,7 +4241,7 @@ export const ContractPhaseScalarFieldEnum = {
 export type ContractPhaseScalarFieldEnum = (typeof ContractPhaseScalarFieldEnum)[keyof typeof ContractPhaseScalarFieldEnum]
 
 
-export const ContractPhaseStepScalarFieldEnum = {
+export const DocumentationStepScalarFieldEnum = {
   id: 'id',
   phaseId: 'phaseId',
   name: 'name',
@@ -4257,10 +4257,10 @@ export const ContractPhaseStepScalarFieldEnum = {
   updatedAt: 'updatedAt'
 } as const
 
-export type ContractPhaseStepScalarFieldEnum = (typeof ContractPhaseStepScalarFieldEnum)[keyof typeof ContractPhaseStepScalarFieldEnum]
+export type DocumentationStepScalarFieldEnum = (typeof DocumentationStepScalarFieldEnum)[keyof typeof DocumentationStepScalarFieldEnum]
 
 
-export const ContractPhaseStepDocumentScalarFieldEnum = {
+export const DocumentationStepDocumentScalarFieldEnum = {
   id: 'id',
   stepId: 'stepId',
   documentType: 'documentType',
@@ -4268,10 +4268,10 @@ export const ContractPhaseStepDocumentScalarFieldEnum = {
   createdAt: 'createdAt'
 } as const
 
-export type ContractPhaseStepDocumentScalarFieldEnum = (typeof ContractPhaseStepDocumentScalarFieldEnum)[keyof typeof ContractPhaseStepDocumentScalarFieldEnum]
+export type DocumentationStepDocumentScalarFieldEnum = (typeof DocumentationStepDocumentScalarFieldEnum)[keyof typeof DocumentationStepDocumentScalarFieldEnum]
 
 
-export const ContractPhaseStepApprovalScalarFieldEnum = {
+export const DocumentationStepApprovalScalarFieldEnum = {
   id: 'id',
   stepId: 'stepId',
   approverId: 'approverId',
@@ -4281,7 +4281,7 @@ export const ContractPhaseStepApprovalScalarFieldEnum = {
   createdAt: 'createdAt'
 } as const
 
-export type ContractPhaseStepApprovalScalarFieldEnum = (typeof ContractPhaseStepApprovalScalarFieldEnum)[keyof typeof ContractPhaseStepApprovalScalarFieldEnum]
+export type DocumentationStepApprovalScalarFieldEnum = (typeof DocumentationStepApprovalScalarFieldEnum)[keyof typeof DocumentationStepApprovalScalarFieldEnum]
 
 
 export const ContractInstallmentScalarFieldEnum = {
@@ -4988,7 +4988,7 @@ export const ContractPhaseOrderByRelevanceFieldEnum = {
 export type ContractPhaseOrderByRelevanceFieldEnum = (typeof ContractPhaseOrderByRelevanceFieldEnum)[keyof typeof ContractPhaseOrderByRelevanceFieldEnum]
 
 
-export const ContractPhaseStepOrderByRelevanceFieldEnum = {
+export const DocumentationStepOrderByRelevanceFieldEnum = {
   id: 'id',
   phaseId: 'phaseId',
   name: 'name',
@@ -4996,26 +4996,26 @@ export const ContractPhaseStepOrderByRelevanceFieldEnum = {
   assigneeId: 'assigneeId'
 } as const
 
-export type ContractPhaseStepOrderByRelevanceFieldEnum = (typeof ContractPhaseStepOrderByRelevanceFieldEnum)[keyof typeof ContractPhaseStepOrderByRelevanceFieldEnum]
+export type DocumentationStepOrderByRelevanceFieldEnum = (typeof DocumentationStepOrderByRelevanceFieldEnum)[keyof typeof DocumentationStepOrderByRelevanceFieldEnum]
 
 
-export const ContractPhaseStepDocumentOrderByRelevanceFieldEnum = {
+export const DocumentationStepDocumentOrderByRelevanceFieldEnum = {
   id: 'id',
   stepId: 'stepId',
   documentType: 'documentType'
 } as const
 
-export type ContractPhaseStepDocumentOrderByRelevanceFieldEnum = (typeof ContractPhaseStepDocumentOrderByRelevanceFieldEnum)[keyof typeof ContractPhaseStepDocumentOrderByRelevanceFieldEnum]
+export type DocumentationStepDocumentOrderByRelevanceFieldEnum = (typeof DocumentationStepDocumentOrderByRelevanceFieldEnum)[keyof typeof DocumentationStepDocumentOrderByRelevanceFieldEnum]
 
 
-export const ContractPhaseStepApprovalOrderByRelevanceFieldEnum = {
+export const DocumentationStepApprovalOrderByRelevanceFieldEnum = {
   id: 'id',
   stepId: 'stepId',
   approverId: 'approverId',
   comment: 'comment'
 } as const
 
-export type ContractPhaseStepApprovalOrderByRelevanceFieldEnum = (typeof ContractPhaseStepApprovalOrderByRelevanceFieldEnum)[keyof typeof ContractPhaseStepApprovalOrderByRelevanceFieldEnum]
+export type DocumentationStepApprovalOrderByRelevanceFieldEnum = (typeof DocumentationStepApprovalOrderByRelevanceFieldEnum)[keyof typeof DocumentationStepApprovalOrderByRelevanceFieldEnum]
 
 
 export const ContractInstallmentOrderByRelevanceFieldEnum = {
@@ -5538,9 +5538,9 @@ export type GlobalOmitConfig = {
   paymentMethodPhaseDocument?: Prisma.PaymentMethodPhaseDocumentOmit
   contract?: Prisma.ContractOmit
   contractPhase?: Prisma.ContractPhaseOmit
-  contractPhaseStep?: Prisma.ContractPhaseStepOmit
-  contractPhaseStepDocument?: Prisma.ContractPhaseStepDocumentOmit
-  contractPhaseStepApproval?: Prisma.ContractPhaseStepApprovalOmit
+  documentationStep?: Prisma.DocumentationStepOmit
+  documentationStepDocument?: Prisma.DocumentationStepDocumentOmit
+  documentationStepApproval?: Prisma.DocumentationStepApprovalOmit
   contractInstallment?: Prisma.ContractInstallmentOmit
   contractPayment?: Prisma.ContractPaymentOmit
   contractDocument?: Prisma.ContractDocumentOmit

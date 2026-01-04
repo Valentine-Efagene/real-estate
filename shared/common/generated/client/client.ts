@@ -205,20 +205,20 @@ export type Contract = Prisma.ContractModel
  */
 export type ContractPhase = Prisma.ContractPhaseModel
 /**
- * Model ContractPhaseStep
+ * Model DocumentationStep
  * 
  */
-export type ContractPhaseStep = Prisma.ContractPhaseStepModel
+export type DocumentationStep = Prisma.DocumentationStepModel
 /**
- * Model ContractPhaseStepDocument
+ * Model DocumentationStepDocument
  * 
  */
-export type ContractPhaseStepDocument = Prisma.ContractPhaseStepDocumentModel
+export type DocumentationStepDocument = Prisma.DocumentationStepDocumentModel
 /**
- * Model ContractPhaseStepApproval
+ * Model DocumentationStepApproval
  * 
  */
-export type ContractPhaseStepApproval = Prisma.ContractPhaseStepApprovalModel
+export type DocumentationStepApproval = Prisma.DocumentationStepApprovalModel
 /**
  * Model ContractInstallment
  * 

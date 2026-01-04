@@ -160,9 +160,9 @@ export async function cleanupTestData() {
     await prisma.contractTransition.deleteMany();
     await prisma.contractPayment.deleteMany();
     await prisma.contractInstallment.deleteMany();
-    await prisma.contractPhaseStepApproval.deleteMany();
-    await prisma.contractPhaseStepDocument.deleteMany();
-    await prisma.contractPhaseStep.deleteMany();
+    await prisma.documentationStepApproval.deleteMany();
+    await prisma.documentationStepDocument.deleteMany();
+    await prisma.documentationStep.deleteMany();
     await prisma.contractDocument.deleteMany();
     await prisma.contractPhase.deleteMany();
     await prisma.paymentMethodChangeRequest.deleteMany();

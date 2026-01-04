@@ -382,7 +382,7 @@ class ContractPhaseService {
 
         await prisma.$transaction(async (tx) => {
             // Update step status
-            await tx.contractPhaseStep.update({
+            await tx.documentationStep.update({
                 where: { id: stepId },
                 data: {
                     status: 'COMPLETED',
@@ -392,7 +392,7 @@ class ContractPhaseService {
 
             // Create approval record if decision provided
             if (data.decision) {
-                await tx.contractPhaseStepApproval.create({
+                await tx.documentationStepApproval.create({
                     data: {
                         stepId: stepId,
                         approverId: userId,
@@ -403,7 +403,7 @@ class ContractPhaseService {
             }
 
             // Check if all steps are completed
-            const pendingSteps = await tx.contractPhaseStep.count({
+            const pendingSteps = await tx.documentationStep.count({
                 where: {
                     phaseId,
                     status: { not: 'COMPLETED' },
@@ -484,7 +484,7 @@ class ContractPhaseService {
                 data: {
                     id: uuidv4(),
                     eventType: 'PHASE.STEP.COMPLETED',
-                    aggregateType: 'ContractPhaseStep',
+                    aggregateType: 'DocumentationStep',
                     aggregateId: stepId,
                     queueName: 'notifications',
                     payload: JSON.stringify({
@@ -525,7 +525,7 @@ class ContractPhaseService {
 
         // If step is provided, update step to IN_PROGRESS
         if (data.stepId) {
-            await prisma.contractPhaseStep.update({
+            await prisma.documentationStep.update({
                 where: { id: data.stepId },
                 data: { status: 'IN_PROGRESS' },
             });
