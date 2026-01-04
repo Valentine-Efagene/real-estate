@@ -58,6 +58,7 @@ enum PhaseStatus {
   COMPLETED
   SKIPPED
   FAILED
+  SUPERSEDED // Phase replaced by payment method change
 }
 
 enum StepType {

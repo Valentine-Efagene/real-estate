@@ -59,7 +59,8 @@ export const PhaseStatus = {
   ACTIVE: 'ACTIVE',
   COMPLETED: 'COMPLETED',
   SKIPPED: 'SKIPPED',
-  FAILED: 'FAILED'
+  FAILED: 'FAILED',
+  SUPERSEDED: 'SUPERSEDED'
 } as const
 
 export type PhaseStatus = (typeof PhaseStatus)[keyof typeof PhaseStatus]
