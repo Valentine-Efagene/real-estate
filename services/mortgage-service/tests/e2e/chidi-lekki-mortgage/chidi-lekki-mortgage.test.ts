@@ -486,31 +486,10 @@ describe("Chidi's Lekki Mortgage Flow", () => {
     });
 
     // =========================================================================
-    // Steps 5-8: Offer letter generation and signing
-    // (Provisional → Sign → Final → Sign)
+    // Note: Steps 5-8 (offer letter generation and signing) are now handled
+    // automatically by GENERATE_DOCUMENT and SIGNATURE steps within the contract
+    // phase flow. See the "Step 9" tests below for the actual implementation.
     // =========================================================================
-    describe('Steps 5-8: Offer letters are generated and signed', () => {
-        // Note: The current system may not have full offer letter flow implemented.
-        // These tests document the expected behavior per SCENARIO.md.
-        // If endpoints don't exist, tests will fail, indicating work to be done.
-
-        it.skip('System generates a provisional offer letter for Chidi', async () => {
-            // POST /prequalifications/:id/offer-letter?type=PROVISIONAL
-            // This would generate and send the provisional offer
-        });
-
-        it.skip('Chidi reviews and signs the provisional offer', async () => {
-            // POST /offer-letters/:id/sign
-        });
-
-        it.skip('System generates the final offer letter for Chidi', async () => {
-            // POST /prequalifications/:id/offer-letter?type=FINAL
-        });
-
-        it.skip('Chidi reviews and signs the final offer', async () => {
-            // POST /offer-letters/:id/sign
-        });
-    });
 
     // =========================================================================
     // Step 9: System creates and activates Chidi's contract
@@ -871,11 +850,6 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             });
 
             expect(notificationEvents.length).toBeGreaterThan(0);
-        });
-
-        it.skip('Final offer letter is shared with Sterling Bank', async () => {
-            // POST /contracts/:id/share-with-investor
-            // This endpoint would share the final offer letter URL with the investor
         });
 
         it('Complete event trail exists for audit', async () => {
