@@ -4,7 +4,6 @@ import {
     PrismaClient,
 } from '@valentine-efagene/qshelter-common';
 import { v4 as uuidv4 } from 'uuid';
-import Handlebars from 'handlebars';
 import type {
     GenerateOfferLetterInput,
     SendOfferLetterInput,
@@ -18,6 +17,7 @@ import {
     formatCurrency,
     formatDate,
 } from '../lib/notifications';
+import { documentsClient } from '../lib/documents-client';
 
 // Offer letter types - matches Prisma enum
 type OfferLetterType = 'PROVISIONAL' | 'FINAL';
@@ -92,14 +92,6 @@ function buildMergeData(contract: any, customData?: Record<string, any>): Record
 }
 
 /**
- * Compile and render Handlebars template
- */
-function renderTemplate(htmlTemplate: string, mergeData: Record<string, any>): string {
-    const template = Handlebars.compile(htmlTemplate);
-    return template(mergeData);
-}
-
-/**
  * Offer letter service interface
  */
 export interface OfferLetterService {
@@ -121,6 +113,7 @@ export interface OfferLetterService {
 export function createOfferLetterService(prisma: AnyPrismaClient = defaultPrisma): OfferLetterService {
     /**
      * Generate a new offer letter from template
+     * Calls the documents-service to render the template
      */
     async function generate(data: GenerateOfferLetterInput, userId: string): Promise<any> {
         // Get the contract with all related data
@@ -160,44 +153,7 @@ export function createOfferLetterService(prisma: AnyPrismaClient = defaultPrisma
             throw new AppError(404, 'Contract not found');
         }
 
-        // Get the template (provided or default)
-        let template;
-        if (data.templateId) {
-            template = await prisma.documentTemplate.findUnique({
-                where: { id: data.templateId },
-            });
-            if (!template) {
-                throw new AppError(404, 'Template not found');
-            }
-        } else {
-            // Find default template for this type
-            const templateCode = data.type === 'PROVISIONAL' ? 'PROVISIONAL_OFFER' : 'FINAL_OFFER';
-            template = await prisma.documentTemplate.findFirst({
-                where: {
-                    tenantId: (contract as any).tenantId,
-                    code: templateCode,
-                    isActive: true,
-                    isDefault: true,
-                },
-                orderBy: { version: 'desc' },
-            });
-
-            if (!template) {
-                // Try any active template for this type
-                template = await prisma.documentTemplate.findFirst({
-                    where: {
-                        tenantId: (contract as any).tenantId,
-                        code: templateCode,
-                        isActive: true,
-                    },
-                    orderBy: { version: 'desc' },
-                });
-            }
-
-            if (!template) {
-                throw new AppError(400, `No ${data.type.toLowerCase()} offer letter template configured for this tenant`);
-            }
-        }
+        const tenantId = (contract as any).tenantId;
 
         // Check for existing non-cancelled offer letter of this type
         const existing = await prisma.offerLetter.findFirst({
@@ -214,9 +170,21 @@ export function createOfferLetterService(prisma: AnyPrismaClient = defaultPrisma
             throw new AppError(400, `An active ${data.type.toLowerCase()} offer letter already exists for this contract`);
         }
 
-        // Build merge data and render template
+        // Build merge data
         const mergeData = buildMergeData(contract, data.customMergeData);
-        const htmlContent = renderTemplate(template.htmlTemplate, mergeData);
+
+        // Call documents-service to generate the HTML from template
+        let generatedDoc;
+        try {
+            generatedDoc = await documentsClient.generateOfferLetter(
+                data.type,
+                mergeData,
+                tenantId
+            );
+        } catch (error: any) {
+            console.error('[OfferLetter] Failed to generate document from template', { error: error.message });
+            throw new AppError(400, `Failed to generate offer letter: ${error.message}`);
+        }
 
         // Calculate expiration date
         const expiresAt = new Date();
@@ -226,14 +194,14 @@ export function createOfferLetterService(prisma: AnyPrismaClient = defaultPrisma
         const offerLetter = await prisma.$transaction(async (tx: any) => {
             const created = await tx.offerLetter.create({
                 data: {
-                    tenantId: (contract as any).tenantId,
+                    tenantId,
                     contractId: data.contractId,
-                    templateId: template.id,
+                    templateId: data.templateId || null, // Optional - documents-service handles default selection
                     letterNumber: generateLetterNumber(data.type),
                     type: data.type,
                     status: 'GENERATED',
-                    htmlContent,
-                    mergeData,
+                    htmlContent: generatedDoc.html,
+                    mergeData: generatedDoc.mergeData,
                     expiresAt,
                     generatedById: userId,
                 },
