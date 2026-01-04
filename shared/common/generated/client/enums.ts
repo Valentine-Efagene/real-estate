@@ -71,7 +71,8 @@ export const StepType = {
   SIGNATURE: 'SIGNATURE',
   APPROVAL: 'APPROVAL',
   EXTERNAL_CHECK: 'EXTERNAL_CHECK',
-  WAIT: 'WAIT'
+  WAIT: 'WAIT',
+  GENERATE_DOCUMENT: 'GENERATE_DOCUMENT'
 } as const
 
 export type StepType = (typeof StepType)[keyof typeof StepType]

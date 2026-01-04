@@ -12,6 +12,7 @@ import {
     formatCurrency,
     formatDate,
 } from '../lib/notifications';
+import { contractPhaseService } from './contract-phase.service';
 
 // Dashboard URL base
 const DASHBOARD_URL = process.env.DASHBOARD_URL || 'https://app.contribuild.com';
@@ -219,7 +220,9 @@ class ContractPaymentService {
     private async completePayment(paymentId: string, gatewayResponse?: Record<string, any>) {
         const payment = await this.findById(paymentId);
 
-        const updated = await prisma.$transaction(async (tx) => {
+        const { updated, activatedNextPhaseId } = await prisma.$transaction(async (tx) => {
+            let activatedNextPhaseId: string | null = null;
+            
             // Update payment status
             const result = await tx.contractPayment.update({
                 where: { id: paymentId },
@@ -306,6 +309,9 @@ class ContractPaymentService {
                                 },
                             });
 
+                            // Track the activated phase for post-transaction processing
+                            activatedNextPhaseId = nextPhase.id;
+
                             // Update contract's current phase
                             await tx.contract.update({
                                 where: { id: payment.contractId },
@@ -379,8 +385,25 @@ class ContractPaymentService {
                 },
             });
 
-            return result;
+            return { updated: result, activatedNextPhaseId };
         });
+
+        // If a new phase was activated, process any auto-executable steps (e.g., GENERATE_DOCUMENT)
+        if (activatedNextPhaseId) {
+            try {
+                // Use the contract's buyer ID for auto-generated documents
+                const userId = payment.contract?.buyerId || payment.payerId;
+                if (userId) {
+                    await contractPhaseService.processAutoExecutableSteps(activatedNextPhaseId, userId);
+                }
+            } catch (error) {
+                console.error('[ContractPaymentService] Failed to process auto-executable steps for activated phase', {
+                    phaseId: activatedNextPhaseId,
+                    error: error instanceof Error ? error.message : String(error),
+                });
+                // Don't throw - the phase is still activated, just auto-steps failed
+            }
+        }
 
         const completedPayment = await this.findById(updated.id);
 

@@ -1,13 +1,37 @@
 import { PrismaClient, Prisma } from "../../generated/client/client";
 
 /**
- * Models that require tenant scoping
+ * Models that require tenant scoping.
+ * 
+ * IMPORTANT: When adding a new model with tenantId to the schema,
+ * add it to this list so queries are automatically filtered by tenant.
+ * 
+ * Models with nullable tenantId (for global templates) should also be
+ * added to OPTIONAL_TENANT_MODELS below.
  */
 const TENANT_SCOPED_MODELS = [
+    // Property domain
     "property",
-    "paymentPlan",
     "propertyPaymentMethod",
+
+    // Payment plan domain
+    "paymentPlan",
+
+    // Contract domain
     "contract",
+    "contractTermination",
+
+    // Document domain
+    "documentTemplate",
+    "offerLetter",
+    "documentRequirementRule",
+
+    // Prequalification & underwriting domain
+    "prequalification",
+    "underwritingDecision",
+
+    // Payment method changes
+    "paymentMethodChangeRequest",
 ] as const;
 
 type TenantScopedModel = (typeof TENANT_SCOPED_MODELS)[number];

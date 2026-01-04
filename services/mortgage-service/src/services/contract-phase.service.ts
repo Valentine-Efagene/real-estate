@@ -8,6 +8,7 @@ import type {
     ApproveDocumentInput,
     GenerateInstallmentsInput,
 } from '../validators/contract-phase.validator';
+import { handleGenerateDocumentStep } from './step-handlers';
 import { paymentPlanService } from './payment-plan.service';
 
 class ContractPhaseService {
@@ -120,7 +121,63 @@ class ContractPhaseService {
             return result;
         });
 
+        // After activation, auto-execute any GENERATE_DOCUMENT steps that are ready
+        await this.processAutoExecutableSteps(phaseId, userId);
+
         return this.findById(updated.id);
+    }
+
+    /**
+     * Process any steps that can be auto-executed (GENERATE_DOCUMENT steps)
+     * These steps don't require user action - they execute automatically when their turn comes
+     */
+    async processAutoExecutableSteps(phaseId: string, userId: string): Promise<void> {
+        const phase = await this.findById(phaseId);
+
+        if (phase.phaseCategory !== 'DOCUMENTATION') {
+            return; // Only documentation phases have steps
+        }
+
+        // Find the next pending step
+        const nextStep = phase.steps.find((s: any) => s.status === 'PENDING');
+        if (!nextStep) {
+            return; // No pending steps
+        }
+
+        // Check if previous steps are completed
+        const previousSteps = phase.steps.filter((s: any) => s.order < nextStep.order);
+        const allPreviousCompleted = previousSteps.every((s: any) => s.status === 'COMPLETED');
+
+        if (!allPreviousCompleted) {
+            return; // Not ready to execute this step
+        }
+
+        // If this is a GENERATE_DOCUMENT step, execute it automatically
+        if (nextStep.stepType === 'GENERATE_DOCUMENT') {
+            console.info('[ContractPhaseService] Auto-executing GENERATE_DOCUMENT step', {
+                stepId: nextStep.id,
+                stepName: nextStep.name,
+                phaseId,
+            });
+
+            try {
+                await handleGenerateDocumentStep(
+                    nextStep.id,
+                    phaseId,
+                    phase.contractId,
+                    userId
+                );
+
+                // Recursively check for more auto-executable steps
+                await this.processAutoExecutableSteps(phaseId, userId);
+            } catch (error: any) {
+                console.error('[ContractPhaseService] GENERATE_DOCUMENT step failed', {
+                    stepId: nextStep.id,
+                    error: error.message,
+                });
+                // Don't throw - allow manual retry
+            }
+        }
     }
 
     /**
@@ -440,6 +497,9 @@ class ContractPhaseService {
                 },
             });
         });
+
+        // After completing a step, check for auto-executable next steps
+        await this.processAutoExecutableSteps(phaseId, userId);
 
         return this.findById(phaseId);
     }

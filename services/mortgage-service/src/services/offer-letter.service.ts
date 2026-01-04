@@ -196,7 +196,7 @@ export function createOfferLetterService(prisma: AnyPrismaClient = defaultPrisma
                 data: {
                     tenantId,
                     contractId: data.contractId,
-                    templateId: data.templateId || null, // Optional - documents-service handles default selection
+                    templateId: data.templateId || null,
                     letterNumber: generateLetterNumber(data.type),
                     type: data.type,
                     status: 'GENERATED',

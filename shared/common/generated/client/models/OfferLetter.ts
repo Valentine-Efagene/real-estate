@@ -257,7 +257,7 @@ export type OfferLetterGroupByOutputType = {
   id: string
   tenantId: string
   contractId: string
-  templateId: string
+  templateId: string | null
   letterNumber: string
   type: $Enums.OfferLetterType
   status: $Enums.OfferLetterStatus
@@ -305,7 +305,7 @@ export type OfferLetterWhereInput = {
   id?: Prisma.StringFilter<"OfferLetter"> | string
   tenantId?: Prisma.StringFilter<"OfferLetter"> | string
   contractId?: Prisma.StringFilter<"OfferLetter"> | string
-  templateId?: Prisma.StringFilter<"OfferLetter"> | string
+  templateId?: Prisma.StringNullableFilter<"OfferLetter"> | string | null
   letterNumber?: Prisma.StringFilter<"OfferLetter"> | string
   type?: Prisma.EnumOfferLetterTypeFilter<"OfferLetter"> | $Enums.OfferLetterType
   status?: Prisma.EnumOfferLetterStatusFilter<"OfferLetter"> | $Enums.OfferLetterStatus
@@ -328,7 +328,7 @@ export type OfferLetterWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"OfferLetter"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   contract?: Prisma.XOR<Prisma.ContractScalarRelationFilter, Prisma.ContractWhereInput>
-  template?: Prisma.XOR<Prisma.DocumentTemplateScalarRelationFilter, Prisma.DocumentTemplateWhereInput>
+  template?: Prisma.XOR<Prisma.DocumentTemplateNullableScalarRelationFilter, Prisma.DocumentTemplateWhereInput> | null
   generatedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   sentBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }
@@ -337,7 +337,7 @@ export type OfferLetterOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   contractId?: Prisma.SortOrder
-  templateId?: Prisma.SortOrder
+  templateId?: Prisma.SortOrderInput | Prisma.SortOrder
   letterNumber?: Prisma.SortOrder
   type?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -374,7 +374,7 @@ export type OfferLetterWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.OfferLetterWhereInput | Prisma.OfferLetterWhereInput[]
   tenantId?: Prisma.StringFilter<"OfferLetter"> | string
   contractId?: Prisma.StringFilter<"OfferLetter"> | string
-  templateId?: Prisma.StringFilter<"OfferLetter"> | string
+  templateId?: Prisma.StringNullableFilter<"OfferLetter"> | string | null
   type?: Prisma.EnumOfferLetterTypeFilter<"OfferLetter"> | $Enums.OfferLetterType
   status?: Prisma.EnumOfferLetterStatusFilter<"OfferLetter"> | $Enums.OfferLetterStatus
   htmlContent?: Prisma.StringNullableFilter<"OfferLetter"> | string | null
@@ -396,7 +396,7 @@ export type OfferLetterWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"OfferLetter"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   contract?: Prisma.XOR<Prisma.ContractScalarRelationFilter, Prisma.ContractWhereInput>
-  template?: Prisma.XOR<Prisma.DocumentTemplateScalarRelationFilter, Prisma.DocumentTemplateWhereInput>
+  template?: Prisma.XOR<Prisma.DocumentTemplateNullableScalarRelationFilter, Prisma.DocumentTemplateWhereInput> | null
   generatedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   sentBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }, "id" | "letterNumber">
@@ -405,7 +405,7 @@ export type OfferLetterOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   contractId?: Prisma.SortOrder
-  templateId?: Prisma.SortOrder
+  templateId?: Prisma.SortOrderInput | Prisma.SortOrder
   letterNumber?: Prisma.SortOrder
   type?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -438,7 +438,7 @@ export type OfferLetterScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"OfferLetter"> | string
   tenantId?: Prisma.StringWithAggregatesFilter<"OfferLetter"> | string
   contractId?: Prisma.StringWithAggregatesFilter<"OfferLetter"> | string
-  templateId?: Prisma.StringWithAggregatesFilter<"OfferLetter"> | string
+  templateId?: Prisma.StringNullableWithAggregatesFilter<"OfferLetter"> | string | null
   letterNumber?: Prisma.StringWithAggregatesFilter<"OfferLetter"> | string
   type?: Prisma.EnumOfferLetterTypeWithAggregatesFilter<"OfferLetter"> | $Enums.OfferLetterType
   status?: Prisma.EnumOfferLetterStatusWithAggregatesFilter<"OfferLetter"> | $Enums.OfferLetterStatus
@@ -483,7 +483,7 @@ export type OfferLetterCreateInput = {
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutOfferLettersInput
   contract: Prisma.ContractCreateNestedOneWithoutOfferLettersInput
-  template: Prisma.DocumentTemplateCreateNestedOneWithoutOfferLettersInput
+  template?: Prisma.DocumentTemplateCreateNestedOneWithoutOfferLettersInput
   generatedBy?: Prisma.UserCreateNestedOneWithoutOfferLettersGeneratedInput
   sentBy?: Prisma.UserCreateNestedOneWithoutOfferLettersSentInput
 }
@@ -492,7 +492,7 @@ export type OfferLetterUncheckedCreateInput = {
   id?: string
   tenantId: string
   contractId: string
-  templateId: string
+  templateId?: string | null
   letterNumber: string
   type: $Enums.OfferLetterType
   status?: $Enums.OfferLetterStatus
@@ -537,7 +537,7 @@ export type OfferLetterUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutOfferLettersNestedInput
   contract?: Prisma.ContractUpdateOneRequiredWithoutOfferLettersNestedInput
-  template?: Prisma.DocumentTemplateUpdateOneRequiredWithoutOfferLettersNestedInput
+  template?: Prisma.DocumentTemplateUpdateOneWithoutOfferLettersNestedInput
   generatedBy?: Prisma.UserUpdateOneWithoutOfferLettersGeneratedNestedInput
   sentBy?: Prisma.UserUpdateOneWithoutOfferLettersSentNestedInput
 }
@@ -546,7 +546,7 @@ export type OfferLetterUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   contractId?: Prisma.StringFieldUpdateOperationsInput | string
-  templateId?: Prisma.StringFieldUpdateOperationsInput | string
+  templateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   letterNumber?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumOfferLetterTypeFieldUpdateOperationsInput | $Enums.OfferLetterType
   status?: Prisma.EnumOfferLetterStatusFieldUpdateOperationsInput | $Enums.OfferLetterStatus
@@ -573,7 +573,7 @@ export type OfferLetterCreateManyInput = {
   id?: string
   tenantId: string
   contractId: string
-  templateId: string
+  templateId?: string | null
   letterNumber: string
   type: $Enums.OfferLetterType
   status?: $Enums.OfferLetterStatus
@@ -622,7 +622,7 @@ export type OfferLetterUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   contractId?: Prisma.StringFieldUpdateOperationsInput | string
-  templateId?: Prisma.StringFieldUpdateOperationsInput | string
+  templateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   letterNumber?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumOfferLetterTypeFieldUpdateOperationsInput | $Enums.OfferLetterType
   status?: Prisma.EnumOfferLetterStatusFieldUpdateOperationsInput | $Enums.OfferLetterStatus
@@ -978,7 +978,7 @@ export type OfferLetterCreateWithoutGeneratedByInput = {
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutOfferLettersInput
   contract: Prisma.ContractCreateNestedOneWithoutOfferLettersInput
-  template: Prisma.DocumentTemplateCreateNestedOneWithoutOfferLettersInput
+  template?: Prisma.DocumentTemplateCreateNestedOneWithoutOfferLettersInput
   sentBy?: Prisma.UserCreateNestedOneWithoutOfferLettersSentInput
 }
 
@@ -986,7 +986,7 @@ export type OfferLetterUncheckedCreateWithoutGeneratedByInput = {
   id?: string
   tenantId: string
   contractId: string
-  templateId: string
+  templateId?: string | null
   letterNumber: string
   type: $Enums.OfferLetterType
   status?: $Enums.OfferLetterStatus
@@ -1040,7 +1040,7 @@ export type OfferLetterCreateWithoutSentByInput = {
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutOfferLettersInput
   contract: Prisma.ContractCreateNestedOneWithoutOfferLettersInput
-  template: Prisma.DocumentTemplateCreateNestedOneWithoutOfferLettersInput
+  template?: Prisma.DocumentTemplateCreateNestedOneWithoutOfferLettersInput
   generatedBy?: Prisma.UserCreateNestedOneWithoutOfferLettersGeneratedInput
 }
 
@@ -1048,7 +1048,7 @@ export type OfferLetterUncheckedCreateWithoutSentByInput = {
   id?: string
   tenantId: string
   contractId: string
-  templateId: string
+  templateId?: string | null
   letterNumber: string
   type: $Enums.OfferLetterType
   status?: $Enums.OfferLetterStatus
@@ -1103,7 +1103,7 @@ export type OfferLetterScalarWhereInput = {
   id?: Prisma.StringFilter<"OfferLetter"> | string
   tenantId?: Prisma.StringFilter<"OfferLetter"> | string
   contractId?: Prisma.StringFilter<"OfferLetter"> | string
-  templateId?: Prisma.StringFilter<"OfferLetter"> | string
+  templateId?: Prisma.StringNullableFilter<"OfferLetter"> | string | null
   letterNumber?: Prisma.StringFilter<"OfferLetter"> | string
   type?: Prisma.EnumOfferLetterTypeFilter<"OfferLetter"> | $Enums.OfferLetterType
   status?: Prisma.EnumOfferLetterStatusFilter<"OfferLetter"> | $Enums.OfferLetterStatus
@@ -1163,7 +1163,7 @@ export type OfferLetterCreateWithoutTenantInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   contract: Prisma.ContractCreateNestedOneWithoutOfferLettersInput
-  template: Prisma.DocumentTemplateCreateNestedOneWithoutOfferLettersInput
+  template?: Prisma.DocumentTemplateCreateNestedOneWithoutOfferLettersInput
   generatedBy?: Prisma.UserCreateNestedOneWithoutOfferLettersGeneratedInput
   sentBy?: Prisma.UserCreateNestedOneWithoutOfferLettersSentInput
 }
@@ -1171,7 +1171,7 @@ export type OfferLetterCreateWithoutTenantInput = {
 export type OfferLetterUncheckedCreateWithoutTenantInput = {
   id?: string
   contractId: string
-  templateId: string
+  templateId?: string | null
   letterNumber: string
   type: $Enums.OfferLetterType
   status?: $Enums.OfferLetterStatus
@@ -1241,7 +1241,7 @@ export type OfferLetterCreateWithoutContractInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutOfferLettersInput
-  template: Prisma.DocumentTemplateCreateNestedOneWithoutOfferLettersInput
+  template?: Prisma.DocumentTemplateCreateNestedOneWithoutOfferLettersInput
   generatedBy?: Prisma.UserCreateNestedOneWithoutOfferLettersGeneratedInput
   sentBy?: Prisma.UserCreateNestedOneWithoutOfferLettersSentInput
 }
@@ -1249,7 +1249,7 @@ export type OfferLetterCreateWithoutContractInput = {
 export type OfferLetterUncheckedCreateWithoutContractInput = {
   id?: string
   tenantId: string
-  templateId: string
+  templateId?: string | null
   letterNumber: string
   type: $Enums.OfferLetterType
   status?: $Enums.OfferLetterStatus
@@ -1380,7 +1380,7 @@ export type OfferLetterCreateManyGeneratedByInput = {
   id?: string
   tenantId: string
   contractId: string
-  templateId: string
+  templateId?: string | null
   letterNumber: string
   type: $Enums.OfferLetterType
   status?: $Enums.OfferLetterStatus
@@ -1406,7 +1406,7 @@ export type OfferLetterCreateManySentByInput = {
   id?: string
   tenantId: string
   contractId: string
-  templateId: string
+  templateId?: string | null
   letterNumber: string
   type: $Enums.OfferLetterType
   status?: $Enums.OfferLetterStatus
@@ -1450,7 +1450,7 @@ export type OfferLetterUpdateWithoutGeneratedByInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutOfferLettersNestedInput
   contract?: Prisma.ContractUpdateOneRequiredWithoutOfferLettersNestedInput
-  template?: Prisma.DocumentTemplateUpdateOneRequiredWithoutOfferLettersNestedInput
+  template?: Prisma.DocumentTemplateUpdateOneWithoutOfferLettersNestedInput
   sentBy?: Prisma.UserUpdateOneWithoutOfferLettersSentNestedInput
 }
 
@@ -1458,7 +1458,7 @@ export type OfferLetterUncheckedUpdateWithoutGeneratedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   contractId?: Prisma.StringFieldUpdateOperationsInput | string
-  templateId?: Prisma.StringFieldUpdateOperationsInput | string
+  templateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   letterNumber?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumOfferLetterTypeFieldUpdateOperationsInput | $Enums.OfferLetterType
   status?: Prisma.EnumOfferLetterStatusFieldUpdateOperationsInput | $Enums.OfferLetterStatus
@@ -1484,7 +1484,7 @@ export type OfferLetterUncheckedUpdateManyWithoutGeneratedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   contractId?: Prisma.StringFieldUpdateOperationsInput | string
-  templateId?: Prisma.StringFieldUpdateOperationsInput | string
+  templateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   letterNumber?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumOfferLetterTypeFieldUpdateOperationsInput | $Enums.OfferLetterType
   status?: Prisma.EnumOfferLetterStatusFieldUpdateOperationsInput | $Enums.OfferLetterStatus
@@ -1528,7 +1528,7 @@ export type OfferLetterUpdateWithoutSentByInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutOfferLettersNestedInput
   contract?: Prisma.ContractUpdateOneRequiredWithoutOfferLettersNestedInput
-  template?: Prisma.DocumentTemplateUpdateOneRequiredWithoutOfferLettersNestedInput
+  template?: Prisma.DocumentTemplateUpdateOneWithoutOfferLettersNestedInput
   generatedBy?: Prisma.UserUpdateOneWithoutOfferLettersGeneratedNestedInput
 }
 
@@ -1536,7 +1536,7 @@ export type OfferLetterUncheckedUpdateWithoutSentByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   contractId?: Prisma.StringFieldUpdateOperationsInput | string
-  templateId?: Prisma.StringFieldUpdateOperationsInput | string
+  templateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   letterNumber?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumOfferLetterTypeFieldUpdateOperationsInput | $Enums.OfferLetterType
   status?: Prisma.EnumOfferLetterStatusFieldUpdateOperationsInput | $Enums.OfferLetterStatus
@@ -1562,7 +1562,7 @@ export type OfferLetterUncheckedUpdateManyWithoutSentByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   contractId?: Prisma.StringFieldUpdateOperationsInput | string
-  templateId?: Prisma.StringFieldUpdateOperationsInput | string
+  templateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   letterNumber?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumOfferLetterTypeFieldUpdateOperationsInput | $Enums.OfferLetterType
   status?: Prisma.EnumOfferLetterStatusFieldUpdateOperationsInput | $Enums.OfferLetterStatus
@@ -1587,7 +1587,7 @@ export type OfferLetterUncheckedUpdateManyWithoutSentByInput = {
 export type OfferLetterCreateManyTenantInput = {
   id?: string
   contractId: string
-  templateId: string
+  templateId?: string | null
   letterNumber: string
   type: $Enums.OfferLetterType
   status?: $Enums.OfferLetterStatus
@@ -1631,7 +1631,7 @@ export type OfferLetterUpdateWithoutTenantInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contract?: Prisma.ContractUpdateOneRequiredWithoutOfferLettersNestedInput
-  template?: Prisma.DocumentTemplateUpdateOneRequiredWithoutOfferLettersNestedInput
+  template?: Prisma.DocumentTemplateUpdateOneWithoutOfferLettersNestedInput
   generatedBy?: Prisma.UserUpdateOneWithoutOfferLettersGeneratedNestedInput
   sentBy?: Prisma.UserUpdateOneWithoutOfferLettersSentNestedInput
 }
@@ -1639,7 +1639,7 @@ export type OfferLetterUpdateWithoutTenantInput = {
 export type OfferLetterUncheckedUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   contractId?: Prisma.StringFieldUpdateOperationsInput | string
-  templateId?: Prisma.StringFieldUpdateOperationsInput | string
+  templateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   letterNumber?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumOfferLetterTypeFieldUpdateOperationsInput | $Enums.OfferLetterType
   status?: Prisma.EnumOfferLetterStatusFieldUpdateOperationsInput | $Enums.OfferLetterStatus
@@ -1665,7 +1665,7 @@ export type OfferLetterUncheckedUpdateWithoutTenantInput = {
 export type OfferLetterUncheckedUpdateManyWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   contractId?: Prisma.StringFieldUpdateOperationsInput | string
-  templateId?: Prisma.StringFieldUpdateOperationsInput | string
+  templateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   letterNumber?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumOfferLetterTypeFieldUpdateOperationsInput | $Enums.OfferLetterType
   status?: Prisma.EnumOfferLetterStatusFieldUpdateOperationsInput | $Enums.OfferLetterStatus
@@ -1691,7 +1691,7 @@ export type OfferLetterUncheckedUpdateManyWithoutTenantInput = {
 export type OfferLetterCreateManyContractInput = {
   id?: string
   tenantId: string
-  templateId: string
+  templateId?: string | null
   letterNumber: string
   type: $Enums.OfferLetterType
   status?: $Enums.OfferLetterStatus
@@ -1735,7 +1735,7 @@ export type OfferLetterUpdateWithoutContractInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutOfferLettersNestedInput
-  template?: Prisma.DocumentTemplateUpdateOneRequiredWithoutOfferLettersNestedInput
+  template?: Prisma.DocumentTemplateUpdateOneWithoutOfferLettersNestedInput
   generatedBy?: Prisma.UserUpdateOneWithoutOfferLettersGeneratedNestedInput
   sentBy?: Prisma.UserUpdateOneWithoutOfferLettersSentNestedInput
 }
@@ -1743,7 +1743,7 @@ export type OfferLetterUpdateWithoutContractInput = {
 export type OfferLetterUncheckedUpdateWithoutContractInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  templateId?: Prisma.StringFieldUpdateOperationsInput | string
+  templateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   letterNumber?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumOfferLetterTypeFieldUpdateOperationsInput | $Enums.OfferLetterType
   status?: Prisma.EnumOfferLetterStatusFieldUpdateOperationsInput | $Enums.OfferLetterStatus
@@ -1769,7 +1769,7 @@ export type OfferLetterUncheckedUpdateWithoutContractInput = {
 export type OfferLetterUncheckedUpdateManyWithoutContractInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  templateId?: Prisma.StringFieldUpdateOperationsInput | string
+  templateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   letterNumber?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumOfferLetterTypeFieldUpdateOperationsInput | $Enums.OfferLetterType
   status?: Prisma.EnumOfferLetterStatusFieldUpdateOperationsInput | $Enums.OfferLetterStatus
@@ -1925,7 +1925,7 @@ export type OfferLetterSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   updatedAt?: boolean
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
-  template?: boolean | Prisma.DocumentTemplateDefaultArgs<ExtArgs>
+  template?: boolean | Prisma.OfferLetter$templateArgs<ExtArgs>
   generatedBy?: boolean | Prisma.OfferLetter$generatedByArgs<ExtArgs>
   sentBy?: boolean | Prisma.OfferLetter$sentByArgs<ExtArgs>
 }, ExtArgs["result"]["offerLetter"]>
@@ -1963,7 +1963,7 @@ export type OfferLetterOmit<ExtArgs extends runtime.Types.Extensions.InternalArg
 export type OfferLetterInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
-  template?: boolean | Prisma.DocumentTemplateDefaultArgs<ExtArgs>
+  template?: boolean | Prisma.OfferLetter$templateArgs<ExtArgs>
   generatedBy?: boolean | Prisma.OfferLetter$generatedByArgs<ExtArgs>
   sentBy?: boolean | Prisma.OfferLetter$sentByArgs<ExtArgs>
 }
@@ -1973,7 +1973,7 @@ export type $OfferLetterPayload<ExtArgs extends runtime.Types.Extensions.Interna
   objects: {
     tenant: Prisma.$TenantPayload<ExtArgs>
     contract: Prisma.$ContractPayload<ExtArgs>
-    template: Prisma.$DocumentTemplatePayload<ExtArgs>
+    template: Prisma.$DocumentTemplatePayload<ExtArgs> | null
     generatedBy: Prisma.$UserPayload<ExtArgs> | null
     sentBy: Prisma.$UserPayload<ExtArgs> | null
   }
@@ -1981,7 +1981,7 @@ export type $OfferLetterPayload<ExtArgs extends runtime.Types.Extensions.Interna
     id: string
     tenantId: string
     contractId: string
-    templateId: string
+    templateId: string | null
     letterNumber: string
     type: $Enums.OfferLetterType
     status: $Enums.OfferLetterStatus
@@ -2344,7 +2344,7 @@ export interface Prisma__OfferLetterClient<T, Null = never, ExtArgs extends runt
   readonly [Symbol.toStringTag]: "PrismaPromise"
   tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   contract<T extends Prisma.ContractDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContractDefaultArgs<ExtArgs>>): Prisma.Prisma__ContractClient<runtime.Types.Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  template<T extends Prisma.DocumentTemplateDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentTemplateDefaultArgs<ExtArgs>>): Prisma.Prisma__DocumentTemplateClient<runtime.Types.Result.GetResult<Prisma.$DocumentTemplatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  template<T extends Prisma.OfferLetter$templateArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OfferLetter$templateArgs<ExtArgs>>): Prisma.Prisma__DocumentTemplateClient<runtime.Types.Result.GetResult<Prisma.$DocumentTemplatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   generatedBy<T extends Prisma.OfferLetter$generatedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OfferLetter$generatedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   sentBy<T extends Prisma.OfferLetter$sentByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OfferLetter$sentByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
@@ -2740,6 +2740,25 @@ export type OfferLetterDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Limit how many OfferLetters to delete.
    */
   limit?: number
+}
+
+/**
+ * OfferLetter.template
+ */
+export type OfferLetter$templateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DocumentTemplate
+   */
+  select?: Prisma.DocumentTemplateSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DocumentTemplate
+   */
+  omit?: Prisma.DocumentTemplateOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DocumentTemplateInclude<ExtArgs> | null
+  where?: Prisma.DocumentTemplateWhereInput
 }
 
 /**

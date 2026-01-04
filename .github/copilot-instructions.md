@@ -28,3 +28,12 @@
 - Each scenario flow describes the end-to-end business logic without technical implementation details; services and e2e tests interpret the flow and implement to best practice.
 - When asked to create a new feature or flow, produce a scenario document first (actors, context, numbered steps) before writing code.
 - Scenario flows live in the `docs/` folder and serve as the authoritative requirements for e2e tests and service implementations.
+
+## Tenant Scoping
+
+- This is a multi-tenant platform. All data must be isolated by tenant.
+- We use a tenant-aware Prisma wrapper (`createTenantPrisma`) that automatically filters queries and injects `tenantId` on creates for scoped models.
+- The wrapper is defined in `shared/common/src/prisma/tenant.ts`.
+- **When adding a new model with `tenantId` to the schema**, add its name (camelCase) to the `TENANT_SCOPED_MODELS` array in `tenant.ts`.
+- If the model has nullable `tenantId` (e.g., global templates), also add it to `OPTIONAL_TENANT_MODELS`.
+- The User model has optional `tenantId` and is NOT tenant-scoped (users can exist across tenants or without a tenant).

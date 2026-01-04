@@ -72,6 +72,7 @@ export type ContractPhaseStepCountAggregateOutputType = {
   stepType: number
   order: number
   status: number
+  metadata: number
   assigneeId: number
   dueDate: number
   completedAt: number
@@ -127,6 +128,7 @@ export type ContractPhaseStepCountAggregateInputType = {
   stepType?: true
   order?: true
   status?: true
+  metadata?: true
   assigneeId?: true
   dueDate?: true
   completedAt?: true
@@ -229,6 +231,7 @@ export type ContractPhaseStepGroupByOutputType = {
   stepType: $Enums.StepType
   order: number
   status: $Enums.StepStatus
+  metadata: runtime.JsonValue | null
   assigneeId: string | null
   dueDate: Date | null
   completedAt: Date | null
@@ -267,6 +270,7 @@ export type ContractPhaseStepWhereInput = {
   stepType?: Prisma.EnumStepTypeFilter<"ContractPhaseStep"> | $Enums.StepType
   order?: Prisma.IntFilter<"ContractPhaseStep"> | number
   status?: Prisma.EnumStepStatusFilter<"ContractPhaseStep"> | $Enums.StepStatus
+  metadata?: Prisma.JsonNullableFilter<"ContractPhaseStep">
   assigneeId?: Prisma.StringNullableFilter<"ContractPhaseStep"> | string | null
   dueDate?: Prisma.DateTimeNullableFilter<"ContractPhaseStep"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableFilter<"ContractPhaseStep"> | Date | string | null
@@ -286,6 +290,7 @@ export type ContractPhaseStepOrderByWithRelationInput = {
   stepType?: Prisma.SortOrder
   order?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   assigneeId?: Prisma.SortOrderInput | Prisma.SortOrder
   dueDate?: Prisma.SortOrderInput | Prisma.SortOrder
   completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -309,6 +314,7 @@ export type ContractPhaseStepWhereUniqueInput = Prisma.AtLeast<{
   stepType?: Prisma.EnumStepTypeFilter<"ContractPhaseStep"> | $Enums.StepType
   order?: Prisma.IntFilter<"ContractPhaseStep"> | number
   status?: Prisma.EnumStepStatusFilter<"ContractPhaseStep"> | $Enums.StepStatus
+  metadata?: Prisma.JsonNullableFilter<"ContractPhaseStep">
   assigneeId?: Prisma.StringNullableFilter<"ContractPhaseStep"> | string | null
   dueDate?: Prisma.DateTimeNullableFilter<"ContractPhaseStep"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableFilter<"ContractPhaseStep"> | Date | string | null
@@ -328,6 +334,7 @@ export type ContractPhaseStepOrderByWithAggregationInput = {
   stepType?: Prisma.SortOrder
   order?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   assigneeId?: Prisma.SortOrderInput | Prisma.SortOrder
   dueDate?: Prisma.SortOrderInput | Prisma.SortOrder
   completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -351,6 +358,7 @@ export type ContractPhaseStepScalarWhereWithAggregatesInput = {
   stepType?: Prisma.EnumStepTypeWithAggregatesFilter<"ContractPhaseStep"> | $Enums.StepType
   order?: Prisma.IntWithAggregatesFilter<"ContractPhaseStep"> | number
   status?: Prisma.EnumStepStatusWithAggregatesFilter<"ContractPhaseStep"> | $Enums.StepStatus
+  metadata?: Prisma.JsonNullableWithAggregatesFilter<"ContractPhaseStep">
   assigneeId?: Prisma.StringNullableWithAggregatesFilter<"ContractPhaseStep"> | string | null
   dueDate?: Prisma.DateTimeNullableWithAggregatesFilter<"ContractPhaseStep"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ContractPhaseStep"> | Date | string | null
@@ -365,6 +373,7 @@ export type ContractPhaseStepCreateInput = {
   stepType: $Enums.StepType
   order: number
   status?: $Enums.StepStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   dueDate?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -383,6 +392,7 @@ export type ContractPhaseStepUncheckedCreateInput = {
   stepType: $Enums.StepType
   order: number
   status?: $Enums.StepStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeId?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
@@ -399,6 +409,7 @@ export type ContractPhaseStepUpdateInput = {
   stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -417,6 +428,7 @@ export type ContractPhaseStepUncheckedUpdateInput = {
   stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -434,6 +446,7 @@ export type ContractPhaseStepCreateManyInput = {
   stepType: $Enums.StepType
   order: number
   status?: $Enums.StepStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeId?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
@@ -448,6 +461,7 @@ export type ContractPhaseStepUpdateManyMutationInput = {
   stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -462,6 +476,7 @@ export type ContractPhaseStepUncheckedUpdateManyInput = {
   stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -493,6 +508,7 @@ export type ContractPhaseStepCountOrderByAggregateInput = {
   stepType?: Prisma.SortOrder
   order?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  metadata?: Prisma.SortOrder
   assigneeId?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
@@ -666,6 +682,7 @@ export type ContractPhaseStepCreateWithoutAssigneeInput = {
   stepType: $Enums.StepType
   order: number
   status?: $Enums.StepStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   dueDate?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -683,6 +700,7 @@ export type ContractPhaseStepUncheckedCreateWithoutAssigneeInput = {
   stepType: $Enums.StepType
   order: number
   status?: $Enums.StepStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   dueDate?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -728,6 +746,7 @@ export type ContractPhaseStepScalarWhereInput = {
   stepType?: Prisma.EnumStepTypeFilter<"ContractPhaseStep"> | $Enums.StepType
   order?: Prisma.IntFilter<"ContractPhaseStep"> | number
   status?: Prisma.EnumStepStatusFilter<"ContractPhaseStep"> | $Enums.StepStatus
+  metadata?: Prisma.JsonNullableFilter<"ContractPhaseStep">
   assigneeId?: Prisma.StringNullableFilter<"ContractPhaseStep"> | string | null
   dueDate?: Prisma.DateTimeNullableFilter<"ContractPhaseStep"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableFilter<"ContractPhaseStep"> | Date | string | null
@@ -742,6 +761,7 @@ export type ContractPhaseStepCreateWithoutPhaseInput = {
   stepType: $Enums.StepType
   order: number
   status?: $Enums.StepStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   dueDate?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -758,6 +778,7 @@ export type ContractPhaseStepUncheckedCreateWithoutPhaseInput = {
   stepType: $Enums.StepType
   order: number
   status?: $Enums.StepStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeId?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
@@ -800,6 +821,7 @@ export type ContractPhaseStepCreateWithoutRequiredDocumentsInput = {
   stepType: $Enums.StepType
   order: number
   status?: $Enums.StepStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   dueDate?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -817,6 +839,7 @@ export type ContractPhaseStepUncheckedCreateWithoutRequiredDocumentsInput = {
   stepType: $Enums.StepType
   order: number
   status?: $Enums.StepStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeId?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
@@ -848,6 +871,7 @@ export type ContractPhaseStepUpdateWithoutRequiredDocumentsInput = {
   stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -865,6 +889,7 @@ export type ContractPhaseStepUncheckedUpdateWithoutRequiredDocumentsInput = {
   stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -880,6 +905,7 @@ export type ContractPhaseStepCreateWithoutApprovalsInput = {
   stepType: $Enums.StepType
   order: number
   status?: $Enums.StepStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   dueDate?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -897,6 +923,7 @@ export type ContractPhaseStepUncheckedCreateWithoutApprovalsInput = {
   stepType: $Enums.StepType
   order: number
   status?: $Enums.StepStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeId?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
@@ -928,6 +955,7 @@ export type ContractPhaseStepUpdateWithoutApprovalsInput = {
   stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -945,6 +973,7 @@ export type ContractPhaseStepUncheckedUpdateWithoutApprovalsInput = {
   stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -961,6 +990,7 @@ export type ContractPhaseStepCreateManyAssigneeInput = {
   stepType: $Enums.StepType
   order: number
   status?: $Enums.StepStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   dueDate?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -974,6 +1004,7 @@ export type ContractPhaseStepUpdateWithoutAssigneeInput = {
   stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -991,6 +1022,7 @@ export type ContractPhaseStepUncheckedUpdateWithoutAssigneeInput = {
   stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1007,6 +1039,7 @@ export type ContractPhaseStepUncheckedUpdateManyWithoutAssigneeInput = {
   stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1020,6 +1053,7 @@ export type ContractPhaseStepCreateManyPhaseInput = {
   stepType: $Enums.StepType
   order: number
   status?: $Enums.StepStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeId?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
@@ -1034,6 +1068,7 @@ export type ContractPhaseStepUpdateWithoutPhaseInput = {
   stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1050,6 +1085,7 @@ export type ContractPhaseStepUncheckedUpdateWithoutPhaseInput = {
   stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1066,6 +1102,7 @@ export type ContractPhaseStepUncheckedUpdateManyWithoutPhaseInput = {
   stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1121,6 +1158,7 @@ export type ContractPhaseStepSelect<ExtArgs extends runtime.Types.Extensions.Int
   stepType?: boolean
   order?: boolean
   status?: boolean
+  metadata?: boolean
   assigneeId?: boolean
   dueDate?: boolean
   completedAt?: boolean
@@ -1143,6 +1181,7 @@ export type ContractPhaseStepSelectScalar = {
   stepType?: boolean
   order?: boolean
   status?: boolean
+  metadata?: boolean
   assigneeId?: boolean
   dueDate?: boolean
   completedAt?: boolean
@@ -1150,7 +1189,7 @@ export type ContractPhaseStepSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ContractPhaseStepOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "phaseId" | "name" | "description" | "stepType" | "order" | "status" | "assigneeId" | "dueDate" | "completedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["contractPhaseStep"]>
+export type ContractPhaseStepOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "phaseId" | "name" | "description" | "stepType" | "order" | "status" | "metadata" | "assigneeId" | "dueDate" | "completedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["contractPhaseStep"]>
 export type ContractPhaseStepInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   phase?: boolean | Prisma.ContractPhaseDefaultArgs<ExtArgs>
   assignee?: boolean | Prisma.ContractPhaseStep$assigneeArgs<ExtArgs>
@@ -1175,6 +1214,7 @@ export type $ContractPhaseStepPayload<ExtArgs extends runtime.Types.Extensions.I
     stepType: $Enums.StepType
     order: number
     status: $Enums.StepStatus
+    metadata: runtime.JsonValue | null
     assigneeId: string | null
     dueDate: Date | null
     completedAt: Date | null
@@ -1560,6 +1600,7 @@ export interface ContractPhaseStepFieldRefs {
   readonly stepType: Prisma.FieldRef<"ContractPhaseStep", 'StepType'>
   readonly order: Prisma.FieldRef<"ContractPhaseStep", 'Int'>
   readonly status: Prisma.FieldRef<"ContractPhaseStep", 'StepStatus'>
+  readonly metadata: Prisma.FieldRef<"ContractPhaseStep", 'Json'>
   readonly assigneeId: Prisma.FieldRef<"ContractPhaseStep", 'String'>
   readonly dueDate: Prisma.FieldRef<"ContractPhaseStep", 'DateTime'>
   readonly completedAt: Prisma.FieldRef<"ContractPhaseStep", 'DateTime'>

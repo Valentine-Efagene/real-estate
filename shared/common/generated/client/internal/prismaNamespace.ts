@@ -4249,6 +4249,7 @@ export const ContractPhaseStepScalarFieldEnum = {
   stepType: 'stepType',
   order: 'order',
   status: 'status',
+  metadata: 'metadata',
   assigneeId: 'assigneeId',
   dueDate: 'dueDate',
   completedAt: 'completedAt',

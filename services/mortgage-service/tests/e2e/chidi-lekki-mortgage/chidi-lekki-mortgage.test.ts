@@ -45,6 +45,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
     let contractId: string;
     let documentationPhaseId: string;
     let downpaymentPhaseId: string;
+    let finalDocumentationPhaseId: string;
     let mortgagePhaseId: string;
 
     // Realistic Nigerian property pricing
@@ -203,7 +204,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             mortgagePlanId = response.body.id;
         });
 
-        it('Adaeze creates a payment method with KYC, downpayment, and mortgage phases', async () => {
+        it('Adaeze creates a payment method with 4 phases per SCENARIO.md', async () => {
             const response = await request(app)
                 .post('/payment-methods')
                 .set('x-tenant-id', tenantId)
@@ -211,11 +212,12 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                 .set('x-idempotency-key', idempotencyKey('adaeze-create-payment-method'))
                 .send({
                     name: '10/90 Lekki Mortgage',
-                    description: 'KYC → 10% Downpayment → 90% Mortgage over 20 years',
+                    description: 'Underwriting → Downpayment → Final Documentation → Mortgage',
                     requiresManualApproval: true,
                     phases: [
+                        // Phase 1: Underwriting & Documentation
                         {
-                            name: 'KYC Documentation',
+                            name: 'Underwriting & Documentation',
                             phaseCategory: 'DOCUMENTATION',
                             phaseType: 'KYC',
                             order: 1,
@@ -225,8 +227,20 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                                 { name: 'Upload Bank Statements', stepType: 'UPLOAD', order: 2 },
                                 { name: 'Upload Employment Letter', stepType: 'UPLOAD', order: 3 },
                                 { name: 'Adaeze Reviews Documents', stepType: 'APPROVAL', order: 4 },
+                                {
+                                    name: 'Generate Provisional Offer',
+                                    stepType: 'GENERATE_DOCUMENT',
+                                    order: 5,
+                                    metadata: {
+                                        documentType: 'PROVISIONAL_OFFER',
+                                        autoSend: true,
+                                        expiresInDays: 30,
+                                    },
+                                },
+                                { name: 'Customer Signs Provisional Offer', stepType: 'SIGNATURE', order: 6 },
                             ],
                         },
+                        // Phase 2: Downpayment
                         {
                             name: '10% Downpayment',
                             phaseCategory: 'PAYMENT',
@@ -235,11 +249,32 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                             percentOfPrice: downpaymentPercent,
                             paymentPlanId: downpaymentPlanId,
                         },
+                        // Phase 3: Final Documentation (after downpayment per Sterling Bank's requirements)
+                        {
+                            name: 'Final Documentation',
+                            phaseCategory: 'DOCUMENTATION',
+                            phaseType: 'VERIFICATION',
+                            order: 3,
+                            stepDefinitions: [
+                                {
+                                    name: 'Generate Final Offer',
+                                    stepType: 'GENERATE_DOCUMENT',
+                                    order: 1,
+                                    metadata: {
+                                        documentType: 'FINAL_OFFER',
+                                        autoSend: true,
+                                        expiresInDays: 30,
+                                    },
+                                },
+                                { name: 'Customer Signs Final Offer', stepType: 'SIGNATURE', order: 2 },
+                            ],
+                        },
+                        // Phase 4: Mortgage
                         {
                             name: '20-Year Mortgage',
                             phaseCategory: 'PAYMENT',
                             phaseType: 'MORTGAGE',
-                            order: 3,
+                            order: 4,
                             percentOfPrice: mortgagePercent,
                             interestRate: mortgageInterestRate,
                             paymentPlanId: mortgagePlanId,
@@ -249,7 +284,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
             expect(response.status).toBe(201);
             expect(response.body.id).toBeDefined();
-            expect(response.body.phases.length).toBe(3);
+            expect(response.body.phases.length).toBe(4);
             paymentMethodId = response.body.id;
         });
 
@@ -500,14 +535,15 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             expect(response.body.id).toBeDefined();
             expect(response.body.contractNumber).toBeDefined();
             expect(response.body.status).toBe('DRAFT');
-            expect(response.body.phases.length).toBe(3);
+            expect(response.body.phases.length).toBe(4);
 
             contractId = response.body.id;
 
-            // Extract phase IDs
+            // Extract phase IDs (4 phases per SCENARIO.md)
             const phases = response.body.phases;
             documentationPhaseId = phases.find((p: any) => p.phaseType === 'KYC').id;
             downpaymentPhaseId = phases.find((p: any) => p.phaseType === 'DOWNPAYMENT').id;
+            finalDocumentationPhaseId = phases.find((p: any) => p.phaseType === 'VERIFICATION').id;
             mortgagePhaseId = phases.find((p: any) => p.phaseType === 'MORTGAGE').id;
 
             // Verify CONTRACT.CREATED event
@@ -528,13 +564,16 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                 .set('x-user-id', chidiId);
 
             expect(response.status).toBe(200);
+            expect(response.body.length).toBe(4);
 
             const docPhase = response.body.find((p: any) => p.phaseType === 'KYC');
             const downPhase = response.body.find((p: any) => p.phaseType === 'DOWNPAYMENT');
+            const finalDocPhase = response.body.find((p: any) => p.phaseType === 'VERIFICATION');
             const mortPhase = response.body.find((p: any) => p.phaseType === 'MORTGAGE');
 
             expect(docPhase.totalAmount).toBe(0);
             expect(downPhase.totalAmount).toBe(8_500_000);  // 10% of ₦85M
+            expect(finalDocPhase.totalAmount).toBe(0);      // Documentation phase, no payment
             expect(mortPhase.totalAmount).toBe(76_500_000); // 90% of ₦85M
             expect(mortPhase.interestRate).toBe(mortgageInterestRate);
         });
@@ -641,8 +680,35 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                 });
 
             expect(response.status).toBe(200);
+        });
 
-            // Verify phase is completed
+        it('GENERATE_DOCUMENT step auto-executes and generates provisional offer', async () => {
+            // After approval step completes, the GENERATE_DOCUMENT step should auto-execute
+            // Check that the provisional offer was generated
+            const step = await prisma.contractPhaseStep.findFirst({
+                where: {
+                    phaseId: documentationPhaseId,
+                    name: 'Generate Provisional Offer',
+                },
+            });
+
+            // Step should be completed (auto-executed)
+            expect(step?.status).toBe('COMPLETED');
+        });
+
+        it('Chidi signs the provisional offer', async () => {
+            const response = await request(app)
+                .post(`/contracts/${contractId}/phases/${documentationPhaseId}/steps/complete`)
+                .set('x-tenant-id', tenantId)
+                .set('x-user-id', chidiId)
+                .set('x-idempotency-key', idempotencyKey('chidi-signs-provisional'))
+                .send({
+                    stepName: 'Customer Signs Provisional Offer',
+                });
+
+            expect(response.status).toBe(200);
+
+            // Verify phase is completed after signature
             const phase = await prisma.contractPhase.findUnique({
                 where: { id: documentationPhaseId },
             });
@@ -706,7 +772,48 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             expect(processResponse.status).toBe(200);
         });
 
-        it('Mortgage phase auto-activates after downpayment', async () => {
+        it('Final Documentation phase auto-activates after downpayment', async () => {
+            const phase = await prisma.contractPhase.findUnique({
+                where: { id: finalDocumentationPhaseId },
+            });
+
+            expect(phase?.status).toBe('IN_PROGRESS');
+        });
+
+        it('GENERATE_DOCUMENT step auto-executes and generates final offer', async () => {
+            // After downpayment phase completes, Final Documentation phase activates
+            // The GENERATE_DOCUMENT step should auto-execute
+            const step = await prisma.contractPhaseStep.findFirst({
+                where: {
+                    phaseId: finalDocumentationPhaseId,
+                    name: 'Generate Final Offer',
+                },
+            });
+
+            // Step should be completed (auto-executed)
+            expect(step?.status).toBe('COMPLETED');
+        });
+
+        it('Chidi signs the final offer', async () => {
+            const response = await request(app)
+                .post(`/contracts/${contractId}/phases/${finalDocumentationPhaseId}/steps/complete`)
+                .set('x-tenant-id', tenantId)
+                .set('x-user-id', chidiId)
+                .set('x-idempotency-key', idempotencyKey('chidi-signs-final-offer'))
+                .send({
+                    stepName: 'Customer Signs Final Offer',
+                });
+
+            expect(response.status).toBe(200);
+
+            // Verify phase is completed after signature
+            const phase = await prisma.contractPhase.findUnique({
+                where: { id: finalDocumentationPhaseId },
+            });
+            expect(phase?.status).toBe('COMPLETED');
+        });
+
+        it('Mortgage phase auto-activates after final documentation', async () => {
             const phase = await prisma.contractPhase.findUnique({
                 where: { id: mortgagePhaseId },
             });
@@ -785,6 +892,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                         { aggregateId: contractId },
                         { aggregateId: documentationPhaseId },
                         { aggregateId: downpaymentPhaseId },
+                        { aggregateId: finalDocumentationPhaseId },
                         { aggregateId: mortgagePhaseId },
                         { aggregateId: { in: paymentIds } },
                     ],

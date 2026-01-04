@@ -67,6 +67,7 @@ enum StepType {
   APPROVAL
   EXTERNAL_CHECK
   WAIT
+  GENERATE_DOCUMENT // Triggers document generation (offer letters, contracts, etc.)
 }
 
 enum StepStatus {
@@ -1035,6 +1036,9 @@ model ContractPhaseStep {
 
   status StepStatus @default(PENDING)
 
+  // Configuration metadata (for GENERATE_DOCUMENT steps, etc.)
+  metadata Json?
+
   // Assignment
   assigneeId String?
   assignee   User?   @relation("PhaseStepAssignee", fields: [assigneeId], references: [id])
@@ -1257,9 +1261,9 @@ model OfferLetter {
   contractId String
   contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
 
-  // Template used
-  templateId String
-  template   DocumentTemplate @relation(fields: [templateId], references: [id])
+  // Template used (optional - documents-service may handle default selection)
+  templateId String?
+  template   DocumentTemplate? @relation(fields: [templateId], references: [id])
 
   // Letter details
   letterNumber String            @unique // OL-XXXXXX

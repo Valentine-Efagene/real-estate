@@ -10,7 +10,7 @@ export const PhaseCategoryEnum = z.enum(['DOCUMENTATION', 'PAYMENT']);
 export const PhaseTypeEnum = z.enum(['KYC', 'VERIFICATION', 'DOWNPAYMENT', 'MORTGAGE', 'BALLOON', 'CUSTOM']);
 
 // Step type enum (matches Prisma StepType)
-export const StepTypeEnum = z.enum(['UPLOAD', 'REVIEW', 'SIGNATURE', 'APPROVAL', 'EXTERNAL_CHECK', 'WAIT']);
+export const StepTypeEnum = z.enum(['UPLOAD', 'REVIEW', 'SIGNATURE', 'APPROVAL', 'EXTERNAL_CHECK', 'WAIT', 'GENERATE_DOCUMENT']);
 
 // Step definition schema for DOCUMENTATION phases
 export const StepDefinitionSchema = z.object({

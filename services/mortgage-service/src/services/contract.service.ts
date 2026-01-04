@@ -68,6 +68,7 @@ function parseStepDefinitions(phaseTemplate: {
     description?: string;
     stepType: StepType;
     order: number;
+    metadata?: any;
     requiredDocuments?: Array<{
         documentType: string;
         isRequired: boolean;
@@ -79,6 +80,7 @@ function parseStepDefinitions(phaseTemplate: {
             name: step.name,
             stepType: step.stepType,
             order: step.order,
+            metadata: step.metadata, // Include metadata for GENERATE_DOCUMENT steps
         }));
     }
 
@@ -88,6 +90,7 @@ function parseStepDefinitions(phaseTemplate: {
         description?: string;
         stepType: StepType;
         order: number;
+        metadata?: any;
         requiredDocuments?: Array<{
             documentType: string;
             isRequired: boolean;
@@ -314,6 +317,7 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
                                 stepType: step.stepType as StepType,
                                 order: step.order,
                                 status: 'PENDING' as StepStatus,
+                                metadata: step.metadata ?? null, // Copy metadata from template (for GENERATE_DOCUMENT steps)
                             },
                         });
 
