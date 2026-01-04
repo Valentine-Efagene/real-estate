@@ -429,6 +429,7 @@ export const ModelName = {
   OfferLetter: 'OfferLetter',
   ContractTermination: 'ContractTermination',
   Prequalification: 'Prequalification',
+  UnderwritingDecision: 'UnderwritingDecision',
   PaymentMethodChangeRequest: 'PaymentMethodChangeRequest',
   DocumentRequirementRule: 'DocumentRequirementRule',
   DomainEvent: 'DomainEvent'
@@ -447,7 +448,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenant" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "paymentMethodPhaseStep" | "paymentMethodPhaseDocument" | "contract" | "contractPhase" | "contractPhaseStep" | "contractPhaseStepDocument" | "contractPhaseStepApproval" | "contractInstallment" | "contractPayment" | "contractDocument" | "contractTransition" | "contractEvent" | "documentTemplate" | "offerLetter" | "contractTermination" | "prequalification" | "paymentMethodChangeRequest" | "documentRequirementRule" | "domainEvent"
+    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenant" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "paymentMethodPhaseStep" | "paymentMethodPhaseDocument" | "contract" | "contractPhase" | "contractPhaseStep" | "contractPhaseStepDocument" | "contractPhaseStepApproval" | "contractInstallment" | "contractPayment" | "contractDocument" | "contractTransition" | "contractEvent" | "documentTemplate" | "offerLetter" | "contractTermination" | "prequalification" | "underwritingDecision" | "paymentMethodChangeRequest" | "documentRequirementRule" | "domainEvent"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -3421,6 +3422,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    UnderwritingDecision: {
+      payload: Prisma.$UnderwritingDecisionPayload<ExtArgs>
+      fields: Prisma.UnderwritingDecisionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.UnderwritingDecisionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UnderwritingDecisionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.UnderwritingDecisionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UnderwritingDecisionPayload>
+        }
+        findFirst: {
+          args: Prisma.UnderwritingDecisionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UnderwritingDecisionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.UnderwritingDecisionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UnderwritingDecisionPayload>
+        }
+        findMany: {
+          args: Prisma.UnderwritingDecisionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UnderwritingDecisionPayload>[]
+        }
+        create: {
+          args: Prisma.UnderwritingDecisionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UnderwritingDecisionPayload>
+        }
+        createMany: {
+          args: Prisma.UnderwritingDecisionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.UnderwritingDecisionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UnderwritingDecisionPayload>
+        }
+        update: {
+          args: Prisma.UnderwritingDecisionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UnderwritingDecisionPayload>
+        }
+        deleteMany: {
+          args: Prisma.UnderwritingDecisionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.UnderwritingDecisionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.UnderwritingDecisionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UnderwritingDecisionPayload>
+        }
+        aggregate: {
+          args: Prisma.UnderwritingDecisionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateUnderwritingDecision>
+        }
+        groupBy: {
+          args: Prisma.UnderwritingDecisionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UnderwritingDecisionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.UnderwritingDecisionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UnderwritingDecisionCountAggregateOutputType> | number
+        }
+      }
+    }
     PaymentMethodChangeRequest: {
       payload: Prisma.$PaymentMethodChangeRequestPayload<ExtArgs>
       fields: Prisma.PaymentMethodChangeRequestFieldRefs
@@ -4426,6 +4493,28 @@ export const PrequalificationScalarFieldEnum = {
 export type PrequalificationScalarFieldEnum = (typeof PrequalificationScalarFieldEnum)[keyof typeof PrequalificationScalarFieldEnum]
 
 
+export const UnderwritingDecisionScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  prequalificationId: 'prequalificationId',
+  decision: 'decision',
+  score: 'score',
+  reasons: 'reasons',
+  conditions: 'conditions',
+  rulesVersion: 'rulesVersion',
+  ruleResults: 'ruleResults',
+  externalChecks: 'externalChecks',
+  isManualReview: 'isManualReview',
+  reviewedBy: 'reviewedBy',
+  reviewedAt: 'reviewedAt',
+  reviewNotes: 'reviewNotes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UnderwritingDecisionScalarFieldEnum = (typeof UnderwritingDecisionScalarFieldEnum)[keyof typeof UnderwritingDecisionScalarFieldEnum]
+
+
 export const PaymentMethodChangeRequestScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -5052,6 +5141,18 @@ export const PrequalificationOrderByRelevanceFieldEnum = {
 export type PrequalificationOrderByRelevanceFieldEnum = (typeof PrequalificationOrderByRelevanceFieldEnum)[keyof typeof PrequalificationOrderByRelevanceFieldEnum]
 
 
+export const UnderwritingDecisionOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  prequalificationId: 'prequalificationId',
+  rulesVersion: 'rulesVersion',
+  reviewedBy: 'reviewedBy',
+  reviewNotes: 'reviewNotes'
+} as const
+
+export type UnderwritingDecisionOrderByRelevanceFieldEnum = (typeof UnderwritingDecisionOrderByRelevanceFieldEnum)[keyof typeof UnderwritingDecisionOrderByRelevanceFieldEnum]
+
+
 export const PaymentMethodChangeRequestOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -5289,6 +5390,13 @@ export type EnumPrequalificationStatusFieldRefInput<$PrismaModel> = FieldRefInpu
 
 
 /**
+ * Reference to a field of type 'UnderwritingDecisionKind'
+ */
+export type EnumUnderwritingDecisionKindFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UnderwritingDecisionKind'>
+    
+
+
+/**
  * Reference to a field of type 'PaymentMethodChangeStatus'
  */
 export type EnumPaymentMethodChangeStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentMethodChangeStatus'>
@@ -5441,6 +5549,7 @@ export type GlobalOmitConfig = {
   offerLetter?: Prisma.OfferLetterOmit
   contractTermination?: Prisma.ContractTerminationOmit
   prequalification?: Prisma.PrequalificationOmit
+  underwritingDecision?: Prisma.UnderwritingDecisionOmit
   paymentMethodChangeRequest?: Prisma.PaymentMethodChangeRequestOmit
   documentRequirementRule?: Prisma.DocumentRequirementRuleOmit
   domainEvent?: Prisma.DomainEventOmit

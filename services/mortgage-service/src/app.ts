@@ -14,6 +14,7 @@ import contractRouter from './routes/contract';
 import prequalificationRouter from './routes/prequalification';
 import terminationRouter from './routes/contract-termination';
 import offerLetterRouter from './routes/offer-letter';
+import underwritingRouter from './routes/underwriting';
 
 export const app: Application = express();
 
@@ -94,6 +95,7 @@ app.use('/payment-methods', paymentMethodRouter);
 app.use('/contracts', contractRouter);
 app.use('/prequalifications', prequalificationRouter);
 app.use('/offer-letters', offerLetterRouter);
+app.use('/underwriting', underwritingRouter);
 app.use('/', terminationRouter); // Handles both /contracts/:id/... and /terminations/...
 
 app.use(errorHandler);

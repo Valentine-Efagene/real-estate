@@ -218,6 +218,15 @@ export const OfferLetterStatus = {
 export type OfferLetterStatus = (typeof OfferLetterStatus)[keyof typeof OfferLetterStatus]
 
 
+export const UnderwritingDecisionKind = {
+  APPROVE: 'APPROVE',
+  REJECT: 'REJECT',
+  CONDITIONAL: 'CONDITIONAL'
+} as const
+
+export type UnderwritingDecisionKind = (typeof UnderwritingDecisionKind)[keyof typeof UnderwritingDecisionKind]
+
+
 export const PrequalificationStatus = {
   DRAFT: 'DRAFT',
   SUBMITTED: 'SUBMITTED',

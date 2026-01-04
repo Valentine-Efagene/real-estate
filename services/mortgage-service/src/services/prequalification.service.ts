@@ -13,6 +13,7 @@ import {
     formatCurrency,
     formatDate,
 } from '../lib/notifications';
+import { UnderwritingService } from './underwriting.service';
 
 // Dashboard URL base - would come from config in production
 const DASHBOARD_URL = process.env.DASHBOARD_URL || 'https://app.contribuild.com';
@@ -294,6 +295,24 @@ class PrequalificationService {
         } catch (error) {
             console.error('[Prequalification] Failed to send submitted notification', { id, error });
             // Don't throw - notification failure shouldn't fail the main operation
+        }
+
+        // Trigger automated underwriting
+        try {
+            const underwritingService = new UnderwritingService(prisma);
+            const underwritingResult = await underwritingService.evaluate(id, prequal.userId);
+            console.info('[Prequalification] Underwriting completed', {
+                id,
+                decision: underwritingResult.decision,
+                score: underwritingResult.score,
+            });
+
+            // Re-fetch to get updated status from underwriting
+            return await this.findById(id);
+        } catch (error) {
+            console.error('[Prequalification] Underwriting evaluation failed', { id, error });
+            // Don't throw - underwriting failure shouldn't fail submission
+            // The prequalification remains SUBMITTED and can be re-evaluated
         }
 
         return updated;

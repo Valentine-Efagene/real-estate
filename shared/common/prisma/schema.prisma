@@ -178,6 +178,12 @@ enum OfferLetterStatus {
   CANCELLED
 }
 
+enum UnderwritingDecisionKind {
+  APPROVE
+  REJECT
+  CONDITIONAL
+}
+
 // =============================================================================
 // USER & AUTH DOMAIN
 // =============================================================================
@@ -315,6 +321,9 @@ model Tenant {
   // Offer letters and templates
   documentTemplates DocumentTemplate[]
   offerLetters      OfferLetter[]
+
+  // Underwriting
+  underwritingDecisions UnderwritingDecision[]
 
   @@index([subdomain])
   @@map("tenants")
@@ -1439,6 +1448,9 @@ model Prequalification {
   contractId String?   @unique
   contract   Contract? @relation(fields: [contractId], references: [id])
 
+  // Underwriting decisions for this prequalification
+  underwritingDecisions UnderwritingDecision[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -1447,6 +1459,54 @@ model Prequalification {
   @@index([propertyId])
   @@index([status])
   @@map("prequalifications")
+}
+
+// =============================================================================
+// UNDERWRITING DECISION - Automated/manual credit decisions
+// =============================================================================
+// Records each underwriting decision for a prequalification. Multiple decisions
+// may exist if re-evaluation occurs (e.g., after document submission).
+// =============================================================================
+
+model UnderwritingDecision {
+  id       String @id @default(cuid())
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  // Link to prequalification being evaluated
+  prequalificationId String
+  prequalification   Prequalification @relation(fields: [prequalificationId], references: [id], onDelete: Cascade)
+
+  // Decision outcome
+  decision UnderwritingDecisionKind
+
+  // Scoring and rationale
+  score      Float? // Computed risk score (0-100)
+  reasons    Json? // Array of reason codes/messages for decision
+  conditions Json? // Array of conditions for CONDITIONAL decisions
+
+  // Rule engine metadata
+  rulesVersion String? // Version of rules/model used
+  ruleResults  Json? // Detailed rule evaluation results
+
+  // External data references (credit bureau, verifications)
+  externalChecks Json? // { creditBureau: {...}, incomeVerification: {...} }
+
+  // Manual review (if escalated)
+  isManualReview Boolean   @default(false)
+  reviewedBy     String? // Admin who reviewed
+  reviewedAt     DateTime?
+  reviewNotes    String?   @db.Text
+
+  // Audit
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tenantId])
+  @@index([prequalificationId])
+  @@index([decision])
+  @@index([createdAt])
+  @@map("underwriting_decisions")
 }
 
 // =============================================================================

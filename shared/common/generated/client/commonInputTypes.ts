@@ -694,6 +694,23 @@ export type EnumPrequalificationStatusWithAggregatesFilter<$PrismaModel = never>
   _max?: Prisma.NestedEnumPrequalificationStatusFilter<$PrismaModel>
 }
 
+export type EnumUnderwritingDecisionKindFilter<$PrismaModel = never> = {
+  equals?: $Enums.UnderwritingDecisionKind | Prisma.EnumUnderwritingDecisionKindFieldRefInput<$PrismaModel>
+  in?: $Enums.UnderwritingDecisionKind[]
+  notIn?: $Enums.UnderwritingDecisionKind[]
+  not?: Prisma.NestedEnumUnderwritingDecisionKindFilter<$PrismaModel> | $Enums.UnderwritingDecisionKind
+}
+
+export type EnumUnderwritingDecisionKindWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.UnderwritingDecisionKind | Prisma.EnumUnderwritingDecisionKindFieldRefInput<$PrismaModel>
+  in?: $Enums.UnderwritingDecisionKind[]
+  notIn?: $Enums.UnderwritingDecisionKind[]
+  not?: Prisma.NestedEnumUnderwritingDecisionKindWithAggregatesFilter<$PrismaModel> | $Enums.UnderwritingDecisionKind
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumUnderwritingDecisionKindFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumUnderwritingDecisionKindFilter<$PrismaModel>
+}
+
 export type EnumPaymentMethodChangeStatusFilter<$PrismaModel = never> = {
   equals?: $Enums.PaymentMethodChangeStatus | Prisma.EnumPaymentMethodChangeStatusFieldRefInput<$PrismaModel>
   in?: $Enums.PaymentMethodChangeStatus[]
@@ -1347,6 +1364,23 @@ export type NestedEnumPrequalificationStatusWithAggregatesFilter<$PrismaModel = 
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumPrequalificationStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumPrequalificationStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumUnderwritingDecisionKindFilter<$PrismaModel = never> = {
+  equals?: $Enums.UnderwritingDecisionKind | Prisma.EnumUnderwritingDecisionKindFieldRefInput<$PrismaModel>
+  in?: $Enums.UnderwritingDecisionKind[]
+  notIn?: $Enums.UnderwritingDecisionKind[]
+  not?: Prisma.NestedEnumUnderwritingDecisionKindFilter<$PrismaModel> | $Enums.UnderwritingDecisionKind
+}
+
+export type NestedEnumUnderwritingDecisionKindWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.UnderwritingDecisionKind | Prisma.EnumUnderwritingDecisionKindFieldRefInput<$PrismaModel>
+  in?: $Enums.UnderwritingDecisionKind[]
+  notIn?: $Enums.UnderwritingDecisionKind[]
+  not?: Prisma.NestedEnumUnderwritingDecisionKindWithAggregatesFilter<$PrismaModel> | $Enums.UnderwritingDecisionKind
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumUnderwritingDecisionKindFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumUnderwritingDecisionKindFilter<$PrismaModel>
 }
 
 export type NestedEnumPaymentMethodChangeStatusFilter<$PrismaModel = never> = {

@@ -1,13 +1,8 @@
 - Structure things into modules as much as possible.
-- Use the `@nestjs/config` package to manage environment variables.
-- Use `@nestjs/typeorm` for database interactions.
-- Use `@nestjs/mailer` for sending emails.
 - Don't worry about unit tests for now.
 - Only focus on e2e tests, and give them clear user stories.
-- Use `class-validator` and `class-transformer` for DTO validation and transformation.
 - We intend to break the application into microservices in the future, so design with that in mind.
 - Use TypeScript features like interfaces, types, and generics effectively.
-- Follow NestJS best practices for folder structure, dependency injection, and module organization.
 - The software should be production-ready, with proper error handling, logging, and security considerations.
 - The application is a real estate management platform with user authentication, property listings, and mortgage management.
 - The application is broken into services that will each be deployed as AWS Lambda functions behind an API Gateway.
@@ -22,3 +17,7 @@
 - Anything that recurs across services should go into the shared library.
 - We use AWS SSM Parameter Store and Secrets Manager for configuration and secrets management.
 - We use AWS for live development (staging) and production environments, and LocalStack for local development.
+- Our architecture is serverless-first, so design with that in mind.
+- Our main techs are Node.js, TypeScript, Express, AWS Lambda, API Gateway, DynamoDB, S3, prisma, zod and LocalStack for local emulation.
+- Our framework for serverless apps is the Serverless Framework with serverless-localstack for local development.
+- We use zod to generate our openapi/swagger documentation.

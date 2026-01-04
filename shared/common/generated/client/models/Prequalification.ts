@@ -357,6 +357,7 @@ export type PrequalificationWhereInput = {
   property?: Prisma.XOR<Prisma.PropertyScalarRelationFilter, Prisma.PropertyWhereInput>
   paymentMethod?: Prisma.XOR<Prisma.PropertyPaymentMethodScalarRelationFilter, Prisma.PropertyPaymentMethodWhereInput>
   contract?: Prisma.XOR<Prisma.ContractNullableScalarRelationFilter, Prisma.ContractWhereInput> | null
+  underwritingDecisions?: Prisma.UnderwritingDecisionListRelationFilter
 }
 
 export type PrequalificationOrderByWithRelationInput = {
@@ -385,6 +386,7 @@ export type PrequalificationOrderByWithRelationInput = {
   property?: Prisma.PropertyOrderByWithRelationInput
   paymentMethod?: Prisma.PropertyPaymentMethodOrderByWithRelationInput
   contract?: Prisma.ContractOrderByWithRelationInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionOrderByRelationAggregateInput
   _relevance?: Prisma.PrequalificationOrderByRelevanceInput
 }
 
@@ -417,6 +419,7 @@ export type PrequalificationWhereUniqueInput = Prisma.AtLeast<{
   property?: Prisma.XOR<Prisma.PropertyScalarRelationFilter, Prisma.PropertyWhereInput>
   paymentMethod?: Prisma.XOR<Prisma.PropertyPaymentMethodScalarRelationFilter, Prisma.PropertyPaymentMethodWhereInput>
   contract?: Prisma.XOR<Prisma.ContractNullableScalarRelationFilter, Prisma.ContractWhereInput> | null
+  underwritingDecisions?: Prisma.UnderwritingDecisionListRelationFilter
 }, "id" | "contractId">
 
 export type PrequalificationOrderByWithAggregationInput = {
@@ -494,6 +497,7 @@ export type PrequalificationCreateInput = {
   property: Prisma.PropertyCreateNestedOneWithoutPrequalificationsInput
   paymentMethod: Prisma.PropertyPaymentMethodCreateNestedOneWithoutPrequalificationsInput
   contract?: Prisma.ContractCreateNestedOneWithoutPrequalificationInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionCreateNestedManyWithoutPrequalificationInput
 }
 
 export type PrequalificationUncheckedCreateInput = {
@@ -517,6 +521,7 @@ export type PrequalificationUncheckedCreateInput = {
   contractId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedCreateNestedManyWithoutPrequalificationInput
 }
 
 export type PrequalificationUpdateInput = {
@@ -540,6 +545,7 @@ export type PrequalificationUpdateInput = {
   property?: Prisma.PropertyUpdateOneRequiredWithoutPrequalificationsNestedInput
   paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneRequiredWithoutPrequalificationsNestedInput
   contract?: Prisma.ContractUpdateOneWithoutPrequalificationNestedInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUpdateManyWithoutPrequalificationNestedInput
 }
 
 export type PrequalificationUncheckedUpdateInput = {
@@ -563,6 +569,7 @@ export type PrequalificationUncheckedUpdateInput = {
   contractId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedUpdateManyWithoutPrequalificationNestedInput
 }
 
 export type PrequalificationCreateManyInput = {
@@ -733,6 +740,11 @@ export type PrequalificationSumOrderByAggregateInput = {
   monthlyExpenses?: Prisma.SortOrder
   debtToIncomeRatio?: Prisma.SortOrder
   suggestedTermMonths?: Prisma.SortOrder
+}
+
+export type PrequalificationScalarRelationFilter = {
+  is?: Prisma.PrequalificationWhereInput
+  isNot?: Prisma.PrequalificationWhereInput
 }
 
 export type PrequalificationCreateNestedManyWithoutUserInput = {
@@ -939,6 +951,20 @@ export type EnumPrequalificationStatusFieldUpdateOperationsInput = {
   set?: $Enums.PrequalificationStatus
 }
 
+export type PrequalificationCreateNestedOneWithoutUnderwritingDecisionsInput = {
+  create?: Prisma.XOR<Prisma.PrequalificationCreateWithoutUnderwritingDecisionsInput, Prisma.PrequalificationUncheckedCreateWithoutUnderwritingDecisionsInput>
+  connectOrCreate?: Prisma.PrequalificationCreateOrConnectWithoutUnderwritingDecisionsInput
+  connect?: Prisma.PrequalificationWhereUniqueInput
+}
+
+export type PrequalificationUpdateOneRequiredWithoutUnderwritingDecisionsNestedInput = {
+  create?: Prisma.XOR<Prisma.PrequalificationCreateWithoutUnderwritingDecisionsInput, Prisma.PrequalificationUncheckedCreateWithoutUnderwritingDecisionsInput>
+  connectOrCreate?: Prisma.PrequalificationCreateOrConnectWithoutUnderwritingDecisionsInput
+  upsert?: Prisma.PrequalificationUpsertWithoutUnderwritingDecisionsInput
+  connect?: Prisma.PrequalificationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PrequalificationUpdateToOneWithWhereWithoutUnderwritingDecisionsInput, Prisma.PrequalificationUpdateWithoutUnderwritingDecisionsInput>, Prisma.PrequalificationUncheckedUpdateWithoutUnderwritingDecisionsInput>
+}
+
 export type PrequalificationCreateWithoutUserInput = {
   id?: string
   answers: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -959,6 +985,7 @@ export type PrequalificationCreateWithoutUserInput = {
   property: Prisma.PropertyCreateNestedOneWithoutPrequalificationsInput
   paymentMethod: Prisma.PropertyPaymentMethodCreateNestedOneWithoutPrequalificationsInput
   contract?: Prisma.ContractCreateNestedOneWithoutPrequalificationInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionCreateNestedManyWithoutPrequalificationInput
 }
 
 export type PrequalificationUncheckedCreateWithoutUserInput = {
@@ -981,6 +1008,7 @@ export type PrequalificationUncheckedCreateWithoutUserInput = {
   contractId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedCreateNestedManyWithoutPrequalificationInput
 }
 
 export type PrequalificationCreateOrConnectWithoutUserInput = {
@@ -1055,6 +1083,7 @@ export type PrequalificationCreateWithoutTenantInput = {
   property: Prisma.PropertyCreateNestedOneWithoutPrequalificationsInput
   paymentMethod: Prisma.PropertyPaymentMethodCreateNestedOneWithoutPrequalificationsInput
   contract?: Prisma.ContractCreateNestedOneWithoutPrequalificationInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionCreateNestedManyWithoutPrequalificationInput
 }
 
 export type PrequalificationUncheckedCreateWithoutTenantInput = {
@@ -1077,6 +1106,7 @@ export type PrequalificationUncheckedCreateWithoutTenantInput = {
   contractId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedCreateNestedManyWithoutPrequalificationInput
 }
 
 export type PrequalificationCreateOrConnectWithoutTenantInput = {
@@ -1125,6 +1155,7 @@ export type PrequalificationCreateWithoutPropertyInput = {
   user: Prisma.UserCreateNestedOneWithoutPrequalificationsInput
   paymentMethod: Prisma.PropertyPaymentMethodCreateNestedOneWithoutPrequalificationsInput
   contract?: Prisma.ContractCreateNestedOneWithoutPrequalificationInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionCreateNestedManyWithoutPrequalificationInput
 }
 
 export type PrequalificationUncheckedCreateWithoutPropertyInput = {
@@ -1147,6 +1178,7 @@ export type PrequalificationUncheckedCreateWithoutPropertyInput = {
   contractId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedCreateNestedManyWithoutPrequalificationInput
 }
 
 export type PrequalificationCreateOrConnectWithoutPropertyInput = {
@@ -1195,6 +1227,7 @@ export type PrequalificationCreateWithoutPaymentMethodInput = {
   user: Prisma.UserCreateNestedOneWithoutPrequalificationsInput
   property: Prisma.PropertyCreateNestedOneWithoutPrequalificationsInput
   contract?: Prisma.ContractCreateNestedOneWithoutPrequalificationInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionCreateNestedManyWithoutPrequalificationInput
 }
 
 export type PrequalificationUncheckedCreateWithoutPaymentMethodInput = {
@@ -1217,6 +1250,7 @@ export type PrequalificationUncheckedCreateWithoutPaymentMethodInput = {
   contractId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedCreateNestedManyWithoutPrequalificationInput
 }
 
 export type PrequalificationCreateOrConnectWithoutPaymentMethodInput = {
@@ -1265,6 +1299,7 @@ export type PrequalificationCreateWithoutContractInput = {
   user: Prisma.UserCreateNestedOneWithoutPrequalificationsInput
   property: Prisma.PropertyCreateNestedOneWithoutPrequalificationsInput
   paymentMethod: Prisma.PropertyPaymentMethodCreateNestedOneWithoutPrequalificationsInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionCreateNestedManyWithoutPrequalificationInput
 }
 
 export type PrequalificationUncheckedCreateWithoutContractInput = {
@@ -1287,6 +1322,7 @@ export type PrequalificationUncheckedCreateWithoutContractInput = {
   expiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedCreateNestedManyWithoutPrequalificationInput
 }
 
 export type PrequalificationCreateOrConnectWithoutContractInput = {
@@ -1325,6 +1361,7 @@ export type PrequalificationUpdateWithoutContractInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutPrequalificationsNestedInput
   property?: Prisma.PropertyUpdateOneRequiredWithoutPrequalificationsNestedInput
   paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneRequiredWithoutPrequalificationsNestedInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUpdateManyWithoutPrequalificationNestedInput
 }
 
 export type PrequalificationUncheckedUpdateWithoutContractInput = {
@@ -1345,6 +1382,115 @@ export type PrequalificationUncheckedUpdateWithoutContractInput = {
   reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedUpdateManyWithoutPrequalificationNestedInput
+}
+
+export type PrequalificationCreateWithoutUnderwritingDecisionsInput = {
+  id?: string
+  answers: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  score?: number | null
+  requestedAmount?: number | null
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  debtToIncomeRatio?: number | null
+  suggestedTermMonths?: number | null
+  status?: $Enums.PrequalificationStatus
+  notes?: string | null
+  reviewedBy?: string | null
+  reviewedAt?: Date | string | null
+  expiresAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutPrequalificationsInput
+  user: Prisma.UserCreateNestedOneWithoutPrequalificationsInput
+  property: Prisma.PropertyCreateNestedOneWithoutPrequalificationsInput
+  paymentMethod: Prisma.PropertyPaymentMethodCreateNestedOneWithoutPrequalificationsInput
+  contract?: Prisma.ContractCreateNestedOneWithoutPrequalificationInput
+}
+
+export type PrequalificationUncheckedCreateWithoutUnderwritingDecisionsInput = {
+  id?: string
+  tenantId: string
+  userId: string
+  propertyId: string
+  paymentMethodId: string
+  answers: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  score?: number | null
+  requestedAmount?: number | null
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  debtToIncomeRatio?: number | null
+  suggestedTermMonths?: number | null
+  status?: $Enums.PrequalificationStatus
+  notes?: string | null
+  reviewedBy?: string | null
+  reviewedAt?: Date | string | null
+  expiresAt?: Date | string | null
+  contractId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PrequalificationCreateOrConnectWithoutUnderwritingDecisionsInput = {
+  where: Prisma.PrequalificationWhereUniqueInput
+  create: Prisma.XOR<Prisma.PrequalificationCreateWithoutUnderwritingDecisionsInput, Prisma.PrequalificationUncheckedCreateWithoutUnderwritingDecisionsInput>
+}
+
+export type PrequalificationUpsertWithoutUnderwritingDecisionsInput = {
+  update: Prisma.XOR<Prisma.PrequalificationUpdateWithoutUnderwritingDecisionsInput, Prisma.PrequalificationUncheckedUpdateWithoutUnderwritingDecisionsInput>
+  create: Prisma.XOR<Prisma.PrequalificationCreateWithoutUnderwritingDecisionsInput, Prisma.PrequalificationUncheckedCreateWithoutUnderwritingDecisionsInput>
+  where?: Prisma.PrequalificationWhereInput
+}
+
+export type PrequalificationUpdateToOneWithWhereWithoutUnderwritingDecisionsInput = {
+  where?: Prisma.PrequalificationWhereInput
+  data: Prisma.XOR<Prisma.PrequalificationUpdateWithoutUnderwritingDecisionsInput, Prisma.PrequalificationUncheckedUpdateWithoutUnderwritingDecisionsInput>
+}
+
+export type PrequalificationUpdateWithoutUnderwritingDecisionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  answers?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  score?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  requestedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  suggestedTermMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumPrequalificationStatusFieldUpdateOperationsInput | $Enums.PrequalificationStatus
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutPrequalificationsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutPrequalificationsNestedInput
+  property?: Prisma.PropertyUpdateOneRequiredWithoutPrequalificationsNestedInput
+  paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneRequiredWithoutPrequalificationsNestedInput
+  contract?: Prisma.ContractUpdateOneWithoutPrequalificationNestedInput
+}
+
+export type PrequalificationUncheckedUpdateWithoutUnderwritingDecisionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  propertyId?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
+  answers?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  score?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  requestedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  suggestedTermMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumPrequalificationStatusFieldUpdateOperationsInput | $Enums.PrequalificationStatus
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  contractId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1391,6 +1537,7 @@ export type PrequalificationUpdateWithoutUserInput = {
   property?: Prisma.PropertyUpdateOneRequiredWithoutPrequalificationsNestedInput
   paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneRequiredWithoutPrequalificationsNestedInput
   contract?: Prisma.ContractUpdateOneWithoutPrequalificationNestedInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUpdateManyWithoutPrequalificationNestedInput
 }
 
 export type PrequalificationUncheckedUpdateWithoutUserInput = {
@@ -1413,6 +1560,7 @@ export type PrequalificationUncheckedUpdateWithoutUserInput = {
   contractId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedUpdateManyWithoutPrequalificationNestedInput
 }
 
 export type PrequalificationUncheckedUpdateManyWithoutUserInput = {
@@ -1479,6 +1627,7 @@ export type PrequalificationUpdateWithoutTenantInput = {
   property?: Prisma.PropertyUpdateOneRequiredWithoutPrequalificationsNestedInput
   paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneRequiredWithoutPrequalificationsNestedInput
   contract?: Prisma.ContractUpdateOneWithoutPrequalificationNestedInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUpdateManyWithoutPrequalificationNestedInput
 }
 
 export type PrequalificationUncheckedUpdateWithoutTenantInput = {
@@ -1501,6 +1650,7 @@ export type PrequalificationUncheckedUpdateWithoutTenantInput = {
   contractId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedUpdateManyWithoutPrequalificationNestedInput
 }
 
 export type PrequalificationUncheckedUpdateManyWithoutTenantInput = {
@@ -1567,6 +1717,7 @@ export type PrequalificationUpdateWithoutPropertyInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutPrequalificationsNestedInput
   paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneRequiredWithoutPrequalificationsNestedInput
   contract?: Prisma.ContractUpdateOneWithoutPrequalificationNestedInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUpdateManyWithoutPrequalificationNestedInput
 }
 
 export type PrequalificationUncheckedUpdateWithoutPropertyInput = {
@@ -1589,6 +1740,7 @@ export type PrequalificationUncheckedUpdateWithoutPropertyInput = {
   contractId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedUpdateManyWithoutPrequalificationNestedInput
 }
 
 export type PrequalificationUncheckedUpdateManyWithoutPropertyInput = {
@@ -1655,6 +1807,7 @@ export type PrequalificationUpdateWithoutPaymentMethodInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutPrequalificationsNestedInput
   property?: Prisma.PropertyUpdateOneRequiredWithoutPrequalificationsNestedInput
   contract?: Prisma.ContractUpdateOneWithoutPrequalificationNestedInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUpdateManyWithoutPrequalificationNestedInput
 }
 
 export type PrequalificationUncheckedUpdateWithoutPaymentMethodInput = {
@@ -1677,6 +1830,7 @@ export type PrequalificationUncheckedUpdateWithoutPaymentMethodInput = {
   contractId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedUpdateManyWithoutPrequalificationNestedInput
 }
 
 export type PrequalificationUncheckedUpdateManyWithoutPaymentMethodInput = {
@@ -1701,6 +1855,35 @@ export type PrequalificationUncheckedUpdateManyWithoutPaymentMethodInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+
+/**
+ * Count Type PrequalificationCountOutputType
+ */
+
+export type PrequalificationCountOutputType = {
+  underwritingDecisions: number
+}
+
+export type PrequalificationCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  underwritingDecisions?: boolean | PrequalificationCountOutputTypeCountUnderwritingDecisionsArgs
+}
+
+/**
+ * PrequalificationCountOutputType without action
+ */
+export type PrequalificationCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PrequalificationCountOutputType
+   */
+  select?: Prisma.PrequalificationCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * PrequalificationCountOutputType without action
+ */
+export type PrequalificationCountOutputTypeCountUnderwritingDecisionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UnderwritingDecisionWhereInput
+}
 
 
 export type PrequalificationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1729,6 +1912,8 @@ export type PrequalificationSelect<ExtArgs extends runtime.Types.Extensions.Inte
   property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
   paymentMethod?: boolean | Prisma.PropertyPaymentMethodDefaultArgs<ExtArgs>
   contract?: boolean | Prisma.Prequalification$contractArgs<ExtArgs>
+  underwritingDecisions?: boolean | Prisma.Prequalification$underwritingDecisionsArgs<ExtArgs>
+  _count?: boolean | Prisma.PrequalificationCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["prequalification"]>
 
 
@@ -1763,6 +1948,8 @@ export type PrequalificationInclude<ExtArgs extends runtime.Types.Extensions.Int
   property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
   paymentMethod?: boolean | Prisma.PropertyPaymentMethodDefaultArgs<ExtArgs>
   contract?: boolean | Prisma.Prequalification$contractArgs<ExtArgs>
+  underwritingDecisions?: boolean | Prisma.Prequalification$underwritingDecisionsArgs<ExtArgs>
+  _count?: boolean | Prisma.PrequalificationCountOutputTypeDefaultArgs<ExtArgs>
 }
 
 export type $PrequalificationPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1773,6 +1960,7 @@ export type $PrequalificationPayload<ExtArgs extends runtime.Types.Extensions.In
     property: Prisma.$PropertyPayload<ExtArgs>
     paymentMethod: Prisma.$PropertyPaymentMethodPayload<ExtArgs>
     contract: Prisma.$ContractPayload<ExtArgs> | null
+    underwritingDecisions: Prisma.$UnderwritingDecisionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2140,6 +2328,7 @@ export interface Prisma__PrequalificationClient<T, Null = never, ExtArgs extends
   property<T extends Prisma.PropertyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyDefaultArgs<ExtArgs>>): Prisma.Prisma__PropertyClient<runtime.Types.Result.GetResult<Prisma.$PropertyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   paymentMethod<T extends Prisma.PropertyPaymentMethodDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyPaymentMethodDefaultArgs<ExtArgs>>): Prisma.Prisma__PropertyPaymentMethodClient<runtime.Types.Result.GetResult<Prisma.$PropertyPaymentMethodPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   contract<T extends Prisma.Prequalification$contractArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Prequalification$contractArgs<ExtArgs>>): Prisma.Prisma__ContractClient<runtime.Types.Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  underwritingDecisions<T extends Prisma.Prequalification$underwritingDecisionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Prequalification$underwritingDecisionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UnderwritingDecisionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2548,6 +2737,30 @@ export type Prequalification$contractArgs<ExtArgs extends runtime.Types.Extensio
    */
   include?: Prisma.ContractInclude<ExtArgs> | null
   where?: Prisma.ContractWhereInput
+}
+
+/**
+ * Prequalification.underwritingDecisions
+ */
+export type Prequalification$underwritingDecisionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UnderwritingDecision
+   */
+  select?: Prisma.UnderwritingDecisionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UnderwritingDecision
+   */
+  omit?: Prisma.UnderwritingDecisionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UnderwritingDecisionInclude<ExtArgs> | null
+  where?: Prisma.UnderwritingDecisionWhereInput
+  orderBy?: Prisma.UnderwritingDecisionOrderByWithRelationInput | Prisma.UnderwritingDecisionOrderByWithRelationInput[]
+  cursor?: Prisma.UnderwritingDecisionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UnderwritingDecisionScalarFieldEnum | Prisma.UnderwritingDecisionScalarFieldEnum[]
 }
 
 /**

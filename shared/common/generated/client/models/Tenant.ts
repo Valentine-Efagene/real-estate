@@ -201,6 +201,7 @@ export type TenantWhereInput = {
   contractTerminations?: Prisma.ContractTerminationListRelationFilter
   documentTemplates?: Prisma.DocumentTemplateListRelationFilter
   offerLetters?: Prisma.OfferLetterListRelationFilter
+  underwritingDecisions?: Prisma.UnderwritingDecisionListRelationFilter
 }
 
 export type TenantOrderByWithRelationInput = {
@@ -221,6 +222,7 @@ export type TenantOrderByWithRelationInput = {
   contractTerminations?: Prisma.ContractTerminationOrderByRelationAggregateInput
   documentTemplates?: Prisma.DocumentTemplateOrderByRelationAggregateInput
   offerLetters?: Prisma.OfferLetterOrderByRelationAggregateInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionOrderByRelationAggregateInput
   _relevance?: Prisma.TenantOrderByRelevanceInput
 }
 
@@ -245,6 +247,7 @@ export type TenantWhereUniqueInput = Prisma.AtLeast<{
   contractTerminations?: Prisma.ContractTerminationListRelationFilter
   documentTemplates?: Prisma.DocumentTemplateListRelationFilter
   offerLetters?: Prisma.OfferLetterListRelationFilter
+  underwritingDecisions?: Prisma.UnderwritingDecisionListRelationFilter
 }, "id" | "subdomain">
 
 export type TenantOrderByWithAggregationInput = {
@@ -289,6 +292,7 @@ export type TenantCreateInput = {
   contractTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutTenantInput
   documentTemplates?: Prisma.DocumentTemplateCreateNestedManyWithoutTenantInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutTenantInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateInput = {
@@ -309,6 +313,7 @@ export type TenantUncheckedCreateInput = {
   contractTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutTenantInput
   documentTemplates?: Prisma.DocumentTemplateUncheckedCreateNestedManyWithoutTenantInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutTenantInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUpdateInput = {
@@ -329,6 +334,7 @@ export type TenantUpdateInput = {
   contractTerminations?: Prisma.ContractTerminationUpdateManyWithoutTenantNestedInput
   documentTemplates?: Prisma.DocumentTemplateUpdateManyWithoutTenantNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutTenantNestedInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateInput = {
@@ -349,6 +355,7 @@ export type TenantUncheckedUpdateInput = {
   contractTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutTenantNestedInput
   documentTemplates?: Prisma.DocumentTemplateUncheckedUpdateManyWithoutTenantNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutTenantNestedInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateManyInput = {
@@ -551,6 +558,20 @@ export type TenantUpdateOneRequiredWithoutPrequalificationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutPrequalificationsInput, Prisma.TenantUpdateWithoutPrequalificationsInput>, Prisma.TenantUncheckedUpdateWithoutPrequalificationsInput>
 }
 
+export type TenantCreateNestedOneWithoutUnderwritingDecisionsInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutUnderwritingDecisionsInput, Prisma.TenantUncheckedCreateWithoutUnderwritingDecisionsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutUnderwritingDecisionsInput
+  connect?: Prisma.TenantWhereUniqueInput
+}
+
+export type TenantUpdateOneRequiredWithoutUnderwritingDecisionsNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutUnderwritingDecisionsInput, Prisma.TenantUncheckedCreateWithoutUnderwritingDecisionsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutUnderwritingDecisionsInput
+  upsert?: Prisma.TenantUpsertWithoutUnderwritingDecisionsInput
+  connect?: Prisma.TenantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutUnderwritingDecisionsInput, Prisma.TenantUpdateWithoutUnderwritingDecisionsInput>, Prisma.TenantUncheckedUpdateWithoutUnderwritingDecisionsInput>
+}
+
 export type TenantCreateNestedOneWithoutPaymentMethodChangeRequestsInput = {
   create?: Prisma.XOR<Prisma.TenantCreateWithoutPaymentMethodChangeRequestsInput, Prisma.TenantUncheckedCreateWithoutPaymentMethodChangeRequestsInput>
   connectOrCreate?: Prisma.TenantCreateOrConnectWithoutPaymentMethodChangeRequestsInput
@@ -596,6 +617,7 @@ export type TenantCreateWithoutUsersInput = {
   contractTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutTenantInput
   documentTemplates?: Prisma.DocumentTemplateCreateNestedManyWithoutTenantInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutTenantInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutUsersInput = {
@@ -615,6 +637,7 @@ export type TenantUncheckedCreateWithoutUsersInput = {
   contractTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutTenantInput
   documentTemplates?: Prisma.DocumentTemplateUncheckedCreateNestedManyWithoutTenantInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutTenantInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutUsersInput = {
@@ -650,6 +673,7 @@ export type TenantUpdateWithoutUsersInput = {
   contractTerminations?: Prisma.ContractTerminationUpdateManyWithoutTenantNestedInput
   documentTemplates?: Prisma.DocumentTemplateUpdateManyWithoutTenantNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutTenantNestedInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutUsersInput = {
@@ -669,6 +693,7 @@ export type TenantUncheckedUpdateWithoutUsersInput = {
   contractTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutTenantNestedInput
   documentTemplates?: Prisma.DocumentTemplateUncheckedUpdateManyWithoutTenantNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutTenantNestedInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPropertiesInput = {
@@ -688,6 +713,7 @@ export type TenantCreateWithoutPropertiesInput = {
   contractTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutTenantInput
   documentTemplates?: Prisma.DocumentTemplateCreateNestedManyWithoutTenantInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutTenantInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPropertiesInput = {
@@ -707,6 +733,7 @@ export type TenantUncheckedCreateWithoutPropertiesInput = {
   contractTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutTenantInput
   documentTemplates?: Prisma.DocumentTemplateUncheckedCreateNestedManyWithoutTenantInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutTenantInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPropertiesInput = {
@@ -742,6 +769,7 @@ export type TenantUpdateWithoutPropertiesInput = {
   contractTerminations?: Prisma.ContractTerminationUpdateManyWithoutTenantNestedInput
   documentTemplates?: Prisma.DocumentTemplateUpdateManyWithoutTenantNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutTenantNestedInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPropertiesInput = {
@@ -761,6 +789,7 @@ export type TenantUncheckedUpdateWithoutPropertiesInput = {
   contractTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutTenantNestedInput
   documentTemplates?: Prisma.DocumentTemplateUncheckedUpdateManyWithoutTenantNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutTenantNestedInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPaymentPlansInput = {
@@ -780,6 +809,7 @@ export type TenantCreateWithoutPaymentPlansInput = {
   contractTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutTenantInput
   documentTemplates?: Prisma.DocumentTemplateCreateNestedManyWithoutTenantInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutTenantInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPaymentPlansInput = {
@@ -799,6 +829,7 @@ export type TenantUncheckedCreateWithoutPaymentPlansInput = {
   contractTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutTenantInput
   documentTemplates?: Prisma.DocumentTemplateUncheckedCreateNestedManyWithoutTenantInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutTenantInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPaymentPlansInput = {
@@ -834,6 +865,7 @@ export type TenantUpdateWithoutPaymentPlansInput = {
   contractTerminations?: Prisma.ContractTerminationUpdateManyWithoutTenantNestedInput
   documentTemplates?: Prisma.DocumentTemplateUpdateManyWithoutTenantNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutTenantNestedInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPaymentPlansInput = {
@@ -853,6 +885,7 @@ export type TenantUncheckedUpdateWithoutPaymentPlansInput = {
   contractTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutTenantNestedInput
   documentTemplates?: Prisma.DocumentTemplateUncheckedUpdateManyWithoutTenantNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutTenantNestedInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPaymentMethodsInput = {
@@ -872,6 +905,7 @@ export type TenantCreateWithoutPaymentMethodsInput = {
   contractTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutTenantInput
   documentTemplates?: Prisma.DocumentTemplateCreateNestedManyWithoutTenantInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutTenantInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPaymentMethodsInput = {
@@ -891,6 +925,7 @@ export type TenantUncheckedCreateWithoutPaymentMethodsInput = {
   contractTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutTenantInput
   documentTemplates?: Prisma.DocumentTemplateUncheckedCreateNestedManyWithoutTenantInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutTenantInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPaymentMethodsInput = {
@@ -926,6 +961,7 @@ export type TenantUpdateWithoutPaymentMethodsInput = {
   contractTerminations?: Prisma.ContractTerminationUpdateManyWithoutTenantNestedInput
   documentTemplates?: Prisma.DocumentTemplateUpdateManyWithoutTenantNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutTenantNestedInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPaymentMethodsInput = {
@@ -945,6 +981,7 @@ export type TenantUncheckedUpdateWithoutPaymentMethodsInput = {
   contractTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutTenantNestedInput
   documentTemplates?: Prisma.DocumentTemplateUncheckedUpdateManyWithoutTenantNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutTenantNestedInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutContractsInput = {
@@ -964,6 +1001,7 @@ export type TenantCreateWithoutContractsInput = {
   contractTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutTenantInput
   documentTemplates?: Prisma.DocumentTemplateCreateNestedManyWithoutTenantInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutTenantInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutContractsInput = {
@@ -983,6 +1021,7 @@ export type TenantUncheckedCreateWithoutContractsInput = {
   contractTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutTenantInput
   documentTemplates?: Prisma.DocumentTemplateUncheckedCreateNestedManyWithoutTenantInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutTenantInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutContractsInput = {
@@ -1018,6 +1057,7 @@ export type TenantUpdateWithoutContractsInput = {
   contractTerminations?: Prisma.ContractTerminationUpdateManyWithoutTenantNestedInput
   documentTemplates?: Prisma.DocumentTemplateUpdateManyWithoutTenantNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutTenantNestedInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutContractsInput = {
@@ -1037,6 +1077,7 @@ export type TenantUncheckedUpdateWithoutContractsInput = {
   contractTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutTenantNestedInput
   documentTemplates?: Prisma.DocumentTemplateUncheckedUpdateManyWithoutTenantNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutTenantNestedInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutDocumentTemplatesInput = {
@@ -1056,6 +1097,7 @@ export type TenantCreateWithoutDocumentTemplatesInput = {
   documentRequirementRules?: Prisma.DocumentRequirementRuleCreateNestedManyWithoutTenantInput
   contractTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutTenantInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutTenantInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutDocumentTemplatesInput = {
@@ -1075,6 +1117,7 @@ export type TenantUncheckedCreateWithoutDocumentTemplatesInput = {
   documentRequirementRules?: Prisma.DocumentRequirementRuleUncheckedCreateNestedManyWithoutTenantInput
   contractTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutTenantInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutTenantInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutDocumentTemplatesInput = {
@@ -1110,6 +1153,7 @@ export type TenantUpdateWithoutDocumentTemplatesInput = {
   documentRequirementRules?: Prisma.DocumentRequirementRuleUpdateManyWithoutTenantNestedInput
   contractTerminations?: Prisma.ContractTerminationUpdateManyWithoutTenantNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutTenantNestedInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutDocumentTemplatesInput = {
@@ -1129,6 +1173,7 @@ export type TenantUncheckedUpdateWithoutDocumentTemplatesInput = {
   documentRequirementRules?: Prisma.DocumentRequirementRuleUncheckedUpdateManyWithoutTenantNestedInput
   contractTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutTenantNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutTenantNestedInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutOfferLettersInput = {
@@ -1148,6 +1193,7 @@ export type TenantCreateWithoutOfferLettersInput = {
   documentRequirementRules?: Prisma.DocumentRequirementRuleCreateNestedManyWithoutTenantInput
   contractTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutTenantInput
   documentTemplates?: Prisma.DocumentTemplateCreateNestedManyWithoutTenantInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutOfferLettersInput = {
@@ -1167,6 +1213,7 @@ export type TenantUncheckedCreateWithoutOfferLettersInput = {
   documentRequirementRules?: Prisma.DocumentRequirementRuleUncheckedCreateNestedManyWithoutTenantInput
   contractTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutTenantInput
   documentTemplates?: Prisma.DocumentTemplateUncheckedCreateNestedManyWithoutTenantInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutOfferLettersInput = {
@@ -1202,6 +1249,7 @@ export type TenantUpdateWithoutOfferLettersInput = {
   documentRequirementRules?: Prisma.DocumentRequirementRuleUpdateManyWithoutTenantNestedInput
   contractTerminations?: Prisma.ContractTerminationUpdateManyWithoutTenantNestedInput
   documentTemplates?: Prisma.DocumentTemplateUpdateManyWithoutTenantNestedInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutOfferLettersInput = {
@@ -1221,6 +1269,7 @@ export type TenantUncheckedUpdateWithoutOfferLettersInput = {
   documentRequirementRules?: Prisma.DocumentRequirementRuleUncheckedUpdateManyWithoutTenantNestedInput
   contractTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutTenantNestedInput
   documentTemplates?: Prisma.DocumentTemplateUncheckedUpdateManyWithoutTenantNestedInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutContractTerminationsInput = {
@@ -1240,6 +1289,7 @@ export type TenantCreateWithoutContractTerminationsInput = {
   documentRequirementRules?: Prisma.DocumentRequirementRuleCreateNestedManyWithoutTenantInput
   documentTemplates?: Prisma.DocumentTemplateCreateNestedManyWithoutTenantInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutTenantInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutContractTerminationsInput = {
@@ -1259,6 +1309,7 @@ export type TenantUncheckedCreateWithoutContractTerminationsInput = {
   documentRequirementRules?: Prisma.DocumentRequirementRuleUncheckedCreateNestedManyWithoutTenantInput
   documentTemplates?: Prisma.DocumentTemplateUncheckedCreateNestedManyWithoutTenantInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutTenantInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutContractTerminationsInput = {
@@ -1294,6 +1345,7 @@ export type TenantUpdateWithoutContractTerminationsInput = {
   documentRequirementRules?: Prisma.DocumentRequirementRuleUpdateManyWithoutTenantNestedInput
   documentTemplates?: Prisma.DocumentTemplateUpdateManyWithoutTenantNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutTenantNestedInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutContractTerminationsInput = {
@@ -1313,6 +1365,7 @@ export type TenantUncheckedUpdateWithoutContractTerminationsInput = {
   documentRequirementRules?: Prisma.DocumentRequirementRuleUncheckedUpdateManyWithoutTenantNestedInput
   documentTemplates?: Prisma.DocumentTemplateUncheckedUpdateManyWithoutTenantNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutTenantNestedInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPrequalificationsInput = {
@@ -1332,6 +1385,7 @@ export type TenantCreateWithoutPrequalificationsInput = {
   contractTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutTenantInput
   documentTemplates?: Prisma.DocumentTemplateCreateNestedManyWithoutTenantInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutTenantInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPrequalificationsInput = {
@@ -1351,6 +1405,7 @@ export type TenantUncheckedCreateWithoutPrequalificationsInput = {
   contractTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutTenantInput
   documentTemplates?: Prisma.DocumentTemplateUncheckedCreateNestedManyWithoutTenantInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutTenantInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPrequalificationsInput = {
@@ -1386,6 +1441,7 @@ export type TenantUpdateWithoutPrequalificationsInput = {
   contractTerminations?: Prisma.ContractTerminationUpdateManyWithoutTenantNestedInput
   documentTemplates?: Prisma.DocumentTemplateUpdateManyWithoutTenantNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutTenantNestedInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPrequalificationsInput = {
@@ -1400,6 +1456,103 @@ export type TenantUncheckedUpdateWithoutPrequalificationsInput = {
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   contracts?: Prisma.ContractUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleUncheckedUpdateManyWithoutTenantNestedInput
+  contractTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutTenantNestedInput
+  documentTemplates?: Prisma.DocumentTemplateUncheckedUpdateManyWithoutTenantNestedInput
+  offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutTenantNestedInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantCreateWithoutUnderwritingDecisionsInput = {
+  id?: string
+  name: string
+  subdomain: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserCreateNestedManyWithoutTenantInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
+  paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
+  contracts?: Prisma.ContractCreateNestedManyWithoutTenantInput
+  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutTenantInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutTenantInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleCreateNestedManyWithoutTenantInput
+  contractTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutTenantInput
+  documentTemplates?: Prisma.DocumentTemplateCreateNestedManyWithoutTenantInput
+  offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutTenantInput
+}
+
+export type TenantUncheckedCreateWithoutUnderwritingDecisionsInput = {
+  id?: string
+  name: string
+  subdomain: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
+  paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutTenantInput
+  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutTenantInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleUncheckedCreateNestedManyWithoutTenantInput
+  contractTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutTenantInput
+  documentTemplates?: Prisma.DocumentTemplateUncheckedCreateNestedManyWithoutTenantInput
+  offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type TenantCreateOrConnectWithoutUnderwritingDecisionsInput = {
+  where: Prisma.TenantWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantCreateWithoutUnderwritingDecisionsInput, Prisma.TenantUncheckedCreateWithoutUnderwritingDecisionsInput>
+}
+
+export type TenantUpsertWithoutUnderwritingDecisionsInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutUnderwritingDecisionsInput, Prisma.TenantUncheckedUpdateWithoutUnderwritingDecisionsInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutUnderwritingDecisionsInput, Prisma.TenantUncheckedCreateWithoutUnderwritingDecisionsInput>
+  where?: Prisma.TenantWhereInput
+}
+
+export type TenantUpdateToOneWithWhereWithoutUnderwritingDecisionsInput = {
+  where?: Prisma.TenantWhereInput
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutUnderwritingDecisionsInput, Prisma.TenantUncheckedUpdateWithoutUnderwritingDecisionsInput>
+}
+
+export type TenantUpdateWithoutUnderwritingDecisionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  subdomain?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserUpdateManyWithoutTenantNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
+  paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
+  contracts?: Prisma.ContractUpdateManyWithoutTenantNestedInput
+  prequalifications?: Prisma.PrequalificationUpdateManyWithoutTenantNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutTenantNestedInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleUpdateManyWithoutTenantNestedInput
+  contractTerminations?: Prisma.ContractTerminationUpdateManyWithoutTenantNestedInput
+  documentTemplates?: Prisma.DocumentTemplateUpdateManyWithoutTenantNestedInput
+  offerLetters?: Prisma.OfferLetterUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateWithoutUnderwritingDecisionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  subdomain?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
+  paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  contracts?: Prisma.ContractUncheckedUpdateManyWithoutTenantNestedInput
+  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
   documentRequirementRules?: Prisma.DocumentRequirementRuleUncheckedUpdateManyWithoutTenantNestedInput
   contractTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutTenantNestedInput
@@ -1424,6 +1577,7 @@ export type TenantCreateWithoutPaymentMethodChangeRequestsInput = {
   contractTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutTenantInput
   documentTemplates?: Prisma.DocumentTemplateCreateNestedManyWithoutTenantInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutTenantInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPaymentMethodChangeRequestsInput = {
@@ -1443,6 +1597,7 @@ export type TenantUncheckedCreateWithoutPaymentMethodChangeRequestsInput = {
   contractTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutTenantInput
   documentTemplates?: Prisma.DocumentTemplateUncheckedCreateNestedManyWithoutTenantInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutTenantInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPaymentMethodChangeRequestsInput = {
@@ -1478,6 +1633,7 @@ export type TenantUpdateWithoutPaymentMethodChangeRequestsInput = {
   contractTerminations?: Prisma.ContractTerminationUpdateManyWithoutTenantNestedInput
   documentTemplates?: Prisma.DocumentTemplateUpdateManyWithoutTenantNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutTenantNestedInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPaymentMethodChangeRequestsInput = {
@@ -1497,6 +1653,7 @@ export type TenantUncheckedUpdateWithoutPaymentMethodChangeRequestsInput = {
   contractTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutTenantNestedInput
   documentTemplates?: Prisma.DocumentTemplateUncheckedUpdateManyWithoutTenantNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutTenantNestedInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutDocumentRequirementRulesInput = {
@@ -1516,6 +1673,7 @@ export type TenantCreateWithoutDocumentRequirementRulesInput = {
   contractTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutTenantInput
   documentTemplates?: Prisma.DocumentTemplateCreateNestedManyWithoutTenantInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutTenantInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutDocumentRequirementRulesInput = {
@@ -1535,6 +1693,7 @@ export type TenantUncheckedCreateWithoutDocumentRequirementRulesInput = {
   contractTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutTenantInput
   documentTemplates?: Prisma.DocumentTemplateUncheckedCreateNestedManyWithoutTenantInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutTenantInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutDocumentRequirementRulesInput = {
@@ -1570,6 +1729,7 @@ export type TenantUpdateWithoutDocumentRequirementRulesInput = {
   contractTerminations?: Prisma.ContractTerminationUpdateManyWithoutTenantNestedInput
   documentTemplates?: Prisma.DocumentTemplateUpdateManyWithoutTenantNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutTenantNestedInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutDocumentRequirementRulesInput = {
@@ -1589,6 +1749,7 @@ export type TenantUncheckedUpdateWithoutDocumentRequirementRulesInput = {
   contractTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutTenantNestedInput
   documentTemplates?: Prisma.DocumentTemplateUncheckedUpdateManyWithoutTenantNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutTenantNestedInput
+  underwritingDecisions?: Prisma.UnderwritingDecisionUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 
@@ -1608,6 +1769,7 @@ export type TenantCountOutputType = {
   contractTerminations: number
   documentTemplates: number
   offerLetters: number
+  underwritingDecisions: number
 }
 
 export type TenantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1622,6 +1784,7 @@ export type TenantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions
   contractTerminations?: boolean | TenantCountOutputTypeCountContractTerminationsArgs
   documentTemplates?: boolean | TenantCountOutputTypeCountDocumentTemplatesArgs
   offerLetters?: boolean | TenantCountOutputTypeCountOfferLettersArgs
+  underwritingDecisions?: boolean | TenantCountOutputTypeCountUnderwritingDecisionsArgs
 }
 
 /**
@@ -1711,6 +1874,13 @@ export type TenantCountOutputTypeCountOfferLettersArgs<ExtArgs extends runtime.T
   where?: Prisma.OfferLetterWhereInput
 }
 
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountUnderwritingDecisionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UnderwritingDecisionWhereInput
+}
+
 
 export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1730,6 +1900,7 @@ export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   contractTerminations?: boolean | Prisma.Tenant$contractTerminationsArgs<ExtArgs>
   documentTemplates?: boolean | Prisma.Tenant$documentTemplatesArgs<ExtArgs>
   offerLetters?: boolean | Prisma.Tenant$offerLettersArgs<ExtArgs>
+  underwritingDecisions?: boolean | Prisma.Tenant$underwritingDecisionsArgs<ExtArgs>
   _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tenant"]>
 
@@ -1757,6 +1928,7 @@ export type TenantInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   contractTerminations?: boolean | Prisma.Tenant$contractTerminationsArgs<ExtArgs>
   documentTemplates?: boolean | Prisma.Tenant$documentTemplatesArgs<ExtArgs>
   offerLetters?: boolean | Prisma.Tenant$offerLettersArgs<ExtArgs>
+  underwritingDecisions?: boolean | Prisma.Tenant$underwritingDecisionsArgs<ExtArgs>
   _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -1774,6 +1946,7 @@ export type $TenantPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     contractTerminations: Prisma.$ContractTerminationPayload<ExtArgs>[]
     documentTemplates: Prisma.$DocumentTemplatePayload<ExtArgs>[]
     offerLetters: Prisma.$OfferLetterPayload<ExtArgs>[]
+    underwritingDecisions: Prisma.$UnderwritingDecisionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2133,6 +2306,7 @@ export interface Prisma__TenantClient<T, Null = never, ExtArgs extends runtime.T
   contractTerminations<T extends Prisma.Tenant$contractTerminationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$contractTerminationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContractTerminationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   documentTemplates<T extends Prisma.Tenant$documentTemplatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$documentTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   offerLetters<T extends Prisma.Tenant$offerLettersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$offerLettersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OfferLetterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  underwritingDecisions<T extends Prisma.Tenant$underwritingDecisionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$underwritingDecisionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UnderwritingDecisionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2772,6 +2946,30 @@ export type Tenant$offerLettersArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.OfferLetterScalarFieldEnum | Prisma.OfferLetterScalarFieldEnum[]
+}
+
+/**
+ * Tenant.underwritingDecisions
+ */
+export type Tenant$underwritingDecisionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UnderwritingDecision
+   */
+  select?: Prisma.UnderwritingDecisionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UnderwritingDecision
+   */
+  omit?: Prisma.UnderwritingDecisionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UnderwritingDecisionInclude<ExtArgs> | null
+  where?: Prisma.UnderwritingDecisionWhereInput
+  orderBy?: Prisma.UnderwritingDecisionOrderByWithRelationInput | Prisma.UnderwritingDecisionOrderByWithRelationInput[]
+  cursor?: Prisma.UnderwritingDecisionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UnderwritingDecisionScalarFieldEnum | Prisma.UnderwritingDecisionScalarFieldEnum[]
 }
 
 /**

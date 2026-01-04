@@ -40,6 +40,11 @@ export enum NotificationType {
     OFFER_LETTER_SIGNED = 'offerLetterSigned',
     OFFER_LETTER_EXPIRED = 'offerLetterExpired',
 
+    // Underwriting
+    UNDERWRITING_APPROVED = 'underwritingApproved',
+    UNDERWRITING_REJECTED = 'underwritingRejected',
+    UNDERWRITING_CONDITIONAL = 'underwritingConditional',
+
     // Admin
     ADMIN_CONTRIBUTION_RECEIVED = 'adminContributionReceived',
     ADMIN_PROPERTY_ALLOCATION = 'adminPropertyAllocation',

@@ -96,6 +96,7 @@ export const ModelName = {
   OfferLetter: 'OfferLetter',
   ContractTermination: 'ContractTermination',
   Prequalification: 'Prequalification',
+  UnderwritingDecision: 'UnderwritingDecision',
   PaymentMethodChangeRequest: 'PaymentMethodChangeRequest',
   DocumentRequirementRule: 'DocumentRequirementRule',
   DomainEvent: 'DomainEvent'
@@ -885,6 +886,28 @@ export const PrequalificationScalarFieldEnum = {
 export type PrequalificationScalarFieldEnum = (typeof PrequalificationScalarFieldEnum)[keyof typeof PrequalificationScalarFieldEnum]
 
 
+export const UnderwritingDecisionScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  prequalificationId: 'prequalificationId',
+  decision: 'decision',
+  score: 'score',
+  reasons: 'reasons',
+  conditions: 'conditions',
+  rulesVersion: 'rulesVersion',
+  ruleResults: 'ruleResults',
+  externalChecks: 'externalChecks',
+  isManualReview: 'isManualReview',
+  reviewedBy: 'reviewedBy',
+  reviewedAt: 'reviewedAt',
+  reviewNotes: 'reviewNotes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UnderwritingDecisionScalarFieldEnum = (typeof UnderwritingDecisionScalarFieldEnum)[keyof typeof UnderwritingDecisionScalarFieldEnum]
+
+
 export const PaymentMethodChangeRequestScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -1509,6 +1532,18 @@ export const PrequalificationOrderByRelevanceFieldEnum = {
 } as const
 
 export type PrequalificationOrderByRelevanceFieldEnum = (typeof PrequalificationOrderByRelevanceFieldEnum)[keyof typeof PrequalificationOrderByRelevanceFieldEnum]
+
+
+export const UnderwritingDecisionOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  prequalificationId: 'prequalificationId',
+  rulesVersion: 'rulesVersion',
+  reviewedBy: 'reviewedBy',
+  reviewNotes: 'reviewNotes'
+} as const
+
+export type UnderwritingDecisionOrderByRelevanceFieldEnum = (typeof UnderwritingDecisionOrderByRelevanceFieldEnum)[keyof typeof UnderwritingDecisionOrderByRelevanceFieldEnum]
 
 
 export const PaymentMethodChangeRequestOrderByRelevanceFieldEnum = {
