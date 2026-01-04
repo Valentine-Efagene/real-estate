@@ -13,7 +13,7 @@ import { contractPhaseService } from './contract-phase.service';
  * 3. Execute the change (supersede old phase, create new phase)
  */
 export class PaymentMethodChangeService {
-    constructor(private readonly db: PrismaClient) {}
+    constructor(private readonly db: PrismaClient) { }
 
     /**
      * Create a new payment method change request.
@@ -90,10 +90,10 @@ export class PaymentMethodChangeService {
 
         // Calculate financial impact
         const currentOutstanding = contract.totalAmount - contract.totalPaidToDate;
-        
+
         // Get payment plan from the new method's payment phases
         const paymentPhase = newPaymentMethod.phases.find(p => p.phaseCategory === 'PAYMENT');
-        
+
         // Calculate new terms based on new payment method
         let newTermMonths: number | null = null;
         let newInterestRate: number | null = null;
@@ -102,7 +102,7 @@ export class PaymentMethodChangeService {
         if (paymentPhase) {
             // Interest rate is on the phase template, term is from plan's numberOfInstallments
             newInterestRate = paymentPhase.interestRate ?? null;
-            
+
             if (paymentPhase.paymentPlan) {
                 const plan = paymentPhase.paymentPlan;
                 // numberOfInstallments is effectively the term in months for monthly payments
@@ -112,11 +112,11 @@ export class PaymentMethodChangeService {
                 if (plan.numberOfInstallments && paymentPhase.interestRate) {
                     const monthlyRate = paymentPhase.interestRate / 100 / 12;
                     const numPayments = plan.numberOfInstallments;
-                    
+
                     // PMT formula for amortization
                     if (monthlyRate > 0) {
-                        newMonthlyPayment = currentOutstanding * 
-                            (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / 
+                        newMonthlyPayment = currentOutstanding *
+                            (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) /
                             (Math.pow(1 + monthlyRate, numPayments) - 1);
                     } else {
                         newMonthlyPayment = currentOutstanding / numPayments;
@@ -546,7 +546,7 @@ export class PaymentMethodChangeService {
                         remainingAmount: phaseAmount,
                         interestRate: template.interestRate,
                         collectFunds: template.collectFunds ?? true,
-                        paymentPlanSnapshot: template.paymentPlan 
+                        paymentPlanSnapshot: template.paymentPlan
                             ? (JSON.stringify(template.paymentPlan) as unknown as Prisma.InputJsonValue)
                             : Prisma.DbNull,
                     },
