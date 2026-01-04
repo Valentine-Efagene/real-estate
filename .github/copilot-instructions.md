@@ -21,3 +21,10 @@
 - Our main techs are Node.js, TypeScript, Express, AWS Lambda, API Gateway, DynamoDB, S3, prisma, zod and LocalStack for local emulation.
 - Our framework for serverless apps is the Serverless Framework with serverless-localstack for local development.
 - We use zod to generate our openapi/swagger documentation.
+
+## Scenario-Based Business Flows
+
+- We document features as **scenario flows**: concrete, real-life narratives with named actors, specific properties, and realistic terms (see `docs/LOS_STORY.md` as an example).
+- Each scenario flow describes the end-to-end business logic without technical implementation details; services and e2e tests interpret the flow and implement to best practice.
+- When asked to create a new feature or flow, produce a scenario document first (actors, context, numbered steps) before writing code.
+- Scenario flows live in the `docs/` folder and serve as the authoritative requirements for e2e tests and service implementations.

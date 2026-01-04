@@ -35,6 +35,7 @@ export const templatePathMap: Readonly<Record<TemplateTypeValue, string>> = Obje
     // Mortgage - Offer Letters
     'provisionalOfferLetter': 'provisionalOfferLetter.html',
     'finalOfferLetter': 'finalOfferLetter.html',
+    'contractCongratulations': 'content/contractCongratulations.hbs',
 });
 
 /**
@@ -71,6 +72,7 @@ export const templateTitle: Readonly<Record<TemplateTypeValue, string>> = Object
     // Mortgage - Offer Letters
     'provisionalOfferLetter': 'Your Provisional Offer Letter is Ready',
     'finalOfferLetter': 'Final Offer Letter - Contract Finalization',
+    'contractCongratulations': 'Congratulations! Your Property Purchase is Complete',
 });
 
 // Pre-computed set of dynamic templates for O(1) lookup

@@ -1,0 +1,81 @@
+<h2 style="margin:0 0 10px 0; font-size:22px; font-weight:600;">
+    🎉 Congratulations on Your New Home!
+</h2>
+
+<p style="font-size:14px; line-height:22px; margin:25px 0;">
+    Dear {{homeBuyerName}},
+</p>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    We are thrilled to officially welcome you as a homeowner! Your purchase of <strong>{{propertyName}}</strong> is now complete, and your contract has been activated.
+</p>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    <strong>Your Purchase Summary:</strong>
+</p>
+
+<table style="font-size:14px; line-height:22px; margin:10px 0; border-collapse:collapse;">
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Contract Number:</td>
+        <td style="padding:5px 0;"><strong>{{contractNumber}}</strong></td>
+    </tr>
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Property:</td>
+        <td style="padding:5px 0;">{{propertyName}}</td>
+    </tr>
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Unit:</td>
+        <td style="padding:5px 0;">{{unitNumber}}</td>
+    </tr>
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Total Amount:</td>
+        <td style="padding:5px 0;">{{totalAmount}}</td>
+    </tr>
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Payment Plan:</td>
+        <td style="padding:5px 0;">{{paymentPlanName}}</td>
+    </tr>
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">First Payment Due:</td>
+        <td style="padding:5px 0;">{{firstPaymentDate}}</td>
+    </tr>
+</table>
+
+<p style="font-size:14px; line-height:22px; margin:20px 0;">
+    <strong>📄 Your Final Offer Letter</strong>
+</p>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    Your signed final offer letter is attached to this email and has also been saved to your profile for future reference. You can access it anytime from your dashboard.
+</p>
+
+{{#if offerLetterUrl}}
+<a href="{{offerLetterUrl}}"
+    style="color:#ffffff; padding:8px 20px; text-decoration:none; font-size:14px; font-family:Arial, sans-serif; border-radius:12px; display:inline-block; background: linear-gradient(180deg, #28a745 0%, #218838 100%); border: none; margin-top:10px;">
+    View Final Offer Letter
+</a>
+{{/if}}
+
+<p style="font-size:14px; line-height:22px; margin:25px 0;">
+    <strong>What's Next?</strong>
+</p>
+
+<ul style="font-size:14px; line-height:24px; margin:10px 0; padding-left:20px;">
+    <li>Your payment schedule has been set up according to your chosen plan</li>
+    <li>You will receive payment reminders before each due date</li>
+    <li>Track your progress and manage payments from your dashboard</li>
+</ul>
+
+<a href="{{dashboardLink}}"
+    style="color:#ffffff; padding:8px 20px; text-decoration:none; font-size:14px; font-family:Arial, sans-serif; border-radius:12px; display:inline-block; background: linear-gradient(180deg, #049DC8 0%, #0082B5 100%); border: none; margin-top:15px;">
+    Go to Dashboard
+</a>
+
+<p style="font-size:14px; line-height:22px; margin:25px 0;">
+    Thank you for choosing {{projectName}}. We're honored to be part of your homeownership journey!
+</p>
+
+<p style="font-size:14px; line-height:20px; margin-top:30px;">
+    Best regards, <br />
+    The {{projectName}} Team.
+</p>
