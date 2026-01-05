@@ -76,7 +76,9 @@ class ContractPhaseService {
                 },
             });
 
-            if (previousPhase && previousPhase.status !== 'COMPLETED') {
+            // SUPERSEDED is treated as completed for the purpose of activating the next phase
+            // (occurs when a phase is replaced during a payment method change)
+            if (previousPhase && !['COMPLETED', 'SUPERSEDED'].includes(previousPhase.status)) {
                 throw new AppError(400, 'Previous phase must be completed first');
             }
         }

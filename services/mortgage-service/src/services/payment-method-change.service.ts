@@ -92,7 +92,11 @@ export class PaymentMethodChangeService {
         const currentOutstanding = contract.totalAmount - contract.totalPaidToDate;
 
         // Get payment plan from the new method's payment phases
-        const paymentPhase = newPaymentMethod.phases.find(p => p.phaseCategory === 'PAYMENT');
+        // Prefer MORTGAGE phase for term calculation, as it's the main installment payment
+        const mortgagePhase = newPaymentMethod.phases.find(
+            p => p.phaseCategory === 'PAYMENT' && p.phaseType === 'MORTGAGE'
+        );
+        const paymentPhase = mortgagePhase || newPaymentMethod.phases.find(p => p.phaseCategory === 'PAYMENT');
 
         // Calculate new terms based on new payment method
         let newTermMonths: number | null = null;
