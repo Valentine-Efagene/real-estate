@@ -1,16 +1,18 @@
 import { config } from 'dotenv';
 // Load environment variables FIRST, before checking NODE_ENV
-config({ path: '.env.local' });
+// Use .env.test for test environment
+const envFile = process.env.NODE_ENV === 'test' ? '.env.test' : '.env';
+config({ path: envFile });
 
 import { PrismaMariaDb } from '@prisma/adapter-mariadb';
 import { ConfigService, PrismaClient } from '@valentine-efagene/qshelter-common';
 
-// Load environment variables from .env.local for local development
+// Load environment variables from .env.test for local development
 const stage = process.env.NODE_ENV || 'dev';
 
 async function createAdapter() {
-    // For local development without LocalStack, use env vars directly
-    if (stage === 'local') {
+    // For local/test development, use env vars directly
+    if (stage === 'local' || stage === 'test') {
         return new PrismaMariaDb({
             host: process.env.DB_HOST || '127.0.0.1',
             port: parseInt(process.env.DB_PORT || '3307'),
