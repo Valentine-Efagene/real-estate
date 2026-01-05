@@ -73,7 +73,9 @@ export const StepType = {
   APPROVAL: 'APPROVAL',
   EXTERNAL_CHECK: 'EXTERNAL_CHECK',
   WAIT: 'WAIT',
-  GENERATE_DOCUMENT: 'GENERATE_DOCUMENT'
+  GENERATE_DOCUMENT: 'GENERATE_DOCUMENT',
+  PRE_APPROVAL: 'PRE_APPROVAL',
+  UNDERWRITING: 'UNDERWRITING'
 } as const
 
 export type StepType = (typeof StepType)[keyof typeof StepType]
@@ -220,27 +222,6 @@ export const OfferLetterStatus = {
 export type OfferLetterStatus = (typeof OfferLetterStatus)[keyof typeof OfferLetterStatus]
 
 
-export const UnderwritingDecisionKind = {
-  APPROVE: 'APPROVE',
-  REJECT: 'REJECT',
-  CONDITIONAL: 'CONDITIONAL'
-} as const
-
-export type UnderwritingDecisionKind = (typeof UnderwritingDecisionKind)[keyof typeof UnderwritingDecisionKind]
-
-
-export const PrequalificationStatus = {
-  DRAFT: 'DRAFT',
-  SUBMITTED: 'SUBMITTED',
-  UNDER_REVIEW: 'UNDER_REVIEW',
-  APPROVED: 'APPROVED',
-  REJECTED: 'REJECTED',
-  EXPIRED: 'EXPIRED'
-} as const
-
-export type PrequalificationStatus = (typeof PrequalificationStatus)[keyof typeof PrequalificationStatus]
-
-
 export const PaymentMethodChangeStatus = {
   PENDING_DOCUMENTS: 'PENDING_DOCUMENTS',
   DOCUMENTS_SUBMITTED: 'DOCUMENTS_SUBMITTED',
@@ -255,7 +236,6 @@ export type PaymentMethodChangeStatus = (typeof PaymentMethodChangeStatus)[keyof
 
 
 export const DocumentRequirementContext = {
-  PREQUALIFICATION: 'PREQUALIFICATION',
   CONTRACT_PHASE: 'CONTRACT_PHASE',
   PAYMENT_METHOD_CHANGE: 'PAYMENT_METHOD_CHANGE'
 } as const

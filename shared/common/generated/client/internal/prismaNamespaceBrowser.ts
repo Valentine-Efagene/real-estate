@@ -95,8 +95,6 @@ export const ModelName = {
   DocumentTemplate: 'DocumentTemplate',
   OfferLetter: 'OfferLetter',
   ContractTermination: 'ContractTermination',
-  Prequalification: 'Prequalification',
-  UnderwritingDecision: 'UnderwritingDecision',
   PaymentMethodChangeRequest: 'PaymentMethodChangeRequest',
   DocumentRequirementRule: 'DocumentRequirementRule',
   DomainEvent: 'DomainEvent'
@@ -581,6 +579,11 @@ export const ContractScalarFieldEnum = {
   periodicPayment: 'periodicPayment',
   totalPaidToDate: 'totalPaidToDate',
   totalInterestPaid: 'totalInterestPaid',
+  monthlyIncome: 'monthlyIncome',
+  monthlyExpenses: 'monthlyExpenses',
+  preApprovalAnswers: 'preApprovalAnswers',
+  underwritingScore: 'underwritingScore',
+  debtToIncomeRatio: 'debtToIncomeRatio',
   status: 'status',
   state: 'state',
   currentPhaseId: 'currentPhaseId',
@@ -643,6 +646,11 @@ export const DocumentationStepScalarFieldEnum = {
   order: 'order',
   status: 'status',
   metadata: 'metadata',
+  preApprovalAnswers: 'preApprovalAnswers',
+  underwritingScore: 'underwritingScore',
+  debtToIncomeRatio: 'debtToIncomeRatio',
+  underwritingDecision: 'underwritingDecision',
+  underwritingNotes: 'underwritingNotes',
   assigneeId: 'assigneeId',
   dueDate: 'dueDate',
   completedAt: 'completedAt',
@@ -859,54 +867,6 @@ export const ContractTerminationScalarFieldEnum = {
 } as const
 
 export type ContractTerminationScalarFieldEnum = (typeof ContractTerminationScalarFieldEnum)[keyof typeof ContractTerminationScalarFieldEnum]
-
-
-export const PrequalificationScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  userId: 'userId',
-  propertyId: 'propertyId',
-  paymentMethodId: 'paymentMethodId',
-  answers: 'answers',
-  score: 'score',
-  requestedAmount: 'requestedAmount',
-  monthlyIncome: 'monthlyIncome',
-  monthlyExpenses: 'monthlyExpenses',
-  debtToIncomeRatio: 'debtToIncomeRatio',
-  suggestedTermMonths: 'suggestedTermMonths',
-  status: 'status',
-  notes: 'notes',
-  reviewedBy: 'reviewedBy',
-  reviewedAt: 'reviewedAt',
-  expiresAt: 'expiresAt',
-  contractId: 'contractId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type PrequalificationScalarFieldEnum = (typeof PrequalificationScalarFieldEnum)[keyof typeof PrequalificationScalarFieldEnum]
-
-
-export const UnderwritingDecisionScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  prequalificationId: 'prequalificationId',
-  decision: 'decision',
-  score: 'score',
-  reasons: 'reasons',
-  conditions: 'conditions',
-  rulesVersion: 'rulesVersion',
-  ruleResults: 'ruleResults',
-  externalChecks: 'externalChecks',
-  isManualReview: 'isManualReview',
-  reviewedBy: 'reviewedBy',
-  reviewedAt: 'reviewedAt',
-  reviewNotes: 'reviewNotes',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type UnderwritingDecisionScalarFieldEnum = (typeof UnderwritingDecisionScalarFieldEnum)[keyof typeof UnderwritingDecisionScalarFieldEnum]
 
 
 export const PaymentMethodChangeRequestScalarFieldEnum = {
@@ -1386,6 +1346,8 @@ export const DocumentationStepOrderByRelevanceFieldEnum = {
   phaseId: 'phaseId',
   name: 'name',
   description: 'description',
+  underwritingDecision: 'underwritingDecision',
+  underwritingNotes: 'underwritingNotes',
   assigneeId: 'assigneeId'
 } as const
 
@@ -1519,32 +1481,6 @@ export const ContractTerminationOrderByRelevanceFieldEnum = {
 } as const
 
 export type ContractTerminationOrderByRelevanceFieldEnum = (typeof ContractTerminationOrderByRelevanceFieldEnum)[keyof typeof ContractTerminationOrderByRelevanceFieldEnum]
-
-
-export const PrequalificationOrderByRelevanceFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  userId: 'userId',
-  propertyId: 'propertyId',
-  paymentMethodId: 'paymentMethodId',
-  notes: 'notes',
-  reviewedBy: 'reviewedBy',
-  contractId: 'contractId'
-} as const
-
-export type PrequalificationOrderByRelevanceFieldEnum = (typeof PrequalificationOrderByRelevanceFieldEnum)[keyof typeof PrequalificationOrderByRelevanceFieldEnum]
-
-
-export const UnderwritingDecisionOrderByRelevanceFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  prequalificationId: 'prequalificationId',
-  rulesVersion: 'rulesVersion',
-  reviewedBy: 'reviewedBy',
-  reviewNotes: 'reviewNotes'
-} as const
-
-export type UnderwritingDecisionOrderByRelevanceFieldEnum = (typeof UnderwritingDecisionOrderByRelevanceFieldEnum)[keyof typeof UnderwritingDecisionOrderByRelevanceFieldEnum]
 
 
 export const PaymentMethodChangeRequestOrderByRelevanceFieldEnum = {

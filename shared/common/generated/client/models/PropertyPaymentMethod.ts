@@ -268,7 +268,6 @@ export type PropertyPaymentMethodWhereInput = {
   properties?: Prisma.PropertyPaymentMethodLinkListRelationFilter
   phases?: Prisma.PropertyPaymentMethodPhaseListRelationFilter
   contracts?: Prisma.ContractListRelationFilter
-  prequalifications?: Prisma.PrequalificationListRelationFilter
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestListRelationFilter
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestListRelationFilter
   documentRules?: Prisma.DocumentRequirementRuleListRelationFilter
@@ -292,7 +291,6 @@ export type PropertyPaymentMethodOrderByWithRelationInput = {
   properties?: Prisma.PropertyPaymentMethodLinkOrderByRelationAggregateInput
   phases?: Prisma.PropertyPaymentMethodPhaseOrderByRelationAggregateInput
   contracts?: Prisma.ContractOrderByRelationAggregateInput
-  prequalifications?: Prisma.PrequalificationOrderByRelationAggregateInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestOrderByRelationAggregateInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestOrderByRelationAggregateInput
   documentRules?: Prisma.DocumentRequirementRuleOrderByRelationAggregateInput
@@ -321,7 +319,6 @@ export type PropertyPaymentMethodWhereUniqueInput = Prisma.AtLeast<{
   properties?: Prisma.PropertyPaymentMethodLinkListRelationFilter
   phases?: Prisma.PropertyPaymentMethodPhaseListRelationFilter
   contracts?: Prisma.ContractListRelationFilter
-  prequalifications?: Prisma.PrequalificationListRelationFilter
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestListRelationFilter
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestListRelationFilter
   documentRules?: Prisma.DocumentRequirementRuleListRelationFilter
@@ -380,7 +377,6 @@ export type PropertyPaymentMethodCreateInput = {
   properties?: Prisma.PropertyPaymentMethodLinkCreateNestedManyWithoutPaymentMethodInput
   phases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutPaymentMethodInput
   contracts?: Prisma.ContractCreateNestedManyWithoutPaymentMethodInput
-  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutPaymentMethodInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutFromPaymentMethodInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutToPaymentMethodInput
   documentRules?: Prisma.DocumentRequirementRuleCreateNestedManyWithoutPaymentMethodInput
@@ -403,7 +399,6 @@ export type PropertyPaymentMethodUncheckedCreateInput = {
   properties?: Prisma.PropertyPaymentMethodLinkUncheckedCreateNestedManyWithoutPaymentMethodInput
   phases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutPaymentMethodInput
   contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutPaymentMethodInput
-  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutPaymentMethodInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutFromPaymentMethodInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutToPaymentMethodInput
   documentRules?: Prisma.DocumentRequirementRuleUncheckedCreateNestedManyWithoutPaymentMethodInput
@@ -426,7 +421,6 @@ export type PropertyPaymentMethodUpdateInput = {
   properties?: Prisma.PropertyPaymentMethodLinkUpdateManyWithoutPaymentMethodNestedInput
   phases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutPaymentMethodNestedInput
   contracts?: Prisma.ContractUpdateManyWithoutPaymentMethodNestedInput
-  prequalifications?: Prisma.PrequalificationUpdateManyWithoutPaymentMethodNestedInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutFromPaymentMethodNestedInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutToPaymentMethodNestedInput
   documentRules?: Prisma.DocumentRequirementRuleUpdateManyWithoutPaymentMethodNestedInput
@@ -449,7 +443,6 @@ export type PropertyPaymentMethodUncheckedUpdateInput = {
   properties?: Prisma.PropertyPaymentMethodLinkUncheckedUpdateManyWithoutPaymentMethodNestedInput
   phases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutPaymentMethodNestedInput
   contracts?: Prisma.ContractUncheckedUpdateManyWithoutPaymentMethodNestedInput
-  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutPaymentMethodNestedInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutFromPaymentMethodNestedInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutToPaymentMethodNestedInput
   documentRules?: Prisma.DocumentRequirementRuleUncheckedUpdateManyWithoutPaymentMethodNestedInput
@@ -665,20 +658,6 @@ export type PropertyPaymentMethodUpdateOneWithoutContractsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.PropertyPaymentMethodUpdateToOneWithWhereWithoutContractsInput, Prisma.PropertyPaymentMethodUpdateWithoutContractsInput>, Prisma.PropertyPaymentMethodUncheckedUpdateWithoutContractsInput>
 }
 
-export type PropertyPaymentMethodCreateNestedOneWithoutPrequalificationsInput = {
-  create?: Prisma.XOR<Prisma.PropertyPaymentMethodCreateWithoutPrequalificationsInput, Prisma.PropertyPaymentMethodUncheckedCreateWithoutPrequalificationsInput>
-  connectOrCreate?: Prisma.PropertyPaymentMethodCreateOrConnectWithoutPrequalificationsInput
-  connect?: Prisma.PropertyPaymentMethodWhereUniqueInput
-}
-
-export type PropertyPaymentMethodUpdateOneRequiredWithoutPrequalificationsNestedInput = {
-  create?: Prisma.XOR<Prisma.PropertyPaymentMethodCreateWithoutPrequalificationsInput, Prisma.PropertyPaymentMethodUncheckedCreateWithoutPrequalificationsInput>
-  connectOrCreate?: Prisma.PropertyPaymentMethodCreateOrConnectWithoutPrequalificationsInput
-  upsert?: Prisma.PropertyPaymentMethodUpsertWithoutPrequalificationsInput
-  connect?: Prisma.PropertyPaymentMethodWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.PropertyPaymentMethodUpdateToOneWithWhereWithoutPrequalificationsInput, Prisma.PropertyPaymentMethodUpdateWithoutPrequalificationsInput>, Prisma.PropertyPaymentMethodUncheckedUpdateWithoutPrequalificationsInput>
-}
-
 export type PropertyPaymentMethodCreateNestedOneWithoutChangeRequestsFromInput = {
   create?: Prisma.XOR<Prisma.PropertyPaymentMethodCreateWithoutChangeRequestsFromInput, Prisma.PropertyPaymentMethodUncheckedCreateWithoutChangeRequestsFromInput>
   connectOrCreate?: Prisma.PropertyPaymentMethodCreateOrConnectWithoutChangeRequestsFromInput
@@ -769,7 +748,6 @@ export type PropertyPaymentMethodCreateWithoutTenantInput = {
   properties?: Prisma.PropertyPaymentMethodLinkCreateNestedManyWithoutPaymentMethodInput
   phases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutPaymentMethodInput
   contracts?: Prisma.ContractCreateNestedManyWithoutPaymentMethodInput
-  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutPaymentMethodInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutFromPaymentMethodInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutToPaymentMethodInput
   documentRules?: Prisma.DocumentRequirementRuleCreateNestedManyWithoutPaymentMethodInput
@@ -791,7 +769,6 @@ export type PropertyPaymentMethodUncheckedCreateWithoutTenantInput = {
   properties?: Prisma.PropertyPaymentMethodLinkUncheckedCreateNestedManyWithoutPaymentMethodInput
   phases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutPaymentMethodInput
   contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutPaymentMethodInput
-  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutPaymentMethodInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutFromPaymentMethodInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutToPaymentMethodInput
   documentRules?: Prisma.DocumentRequirementRuleUncheckedCreateNestedManyWithoutPaymentMethodInput
@@ -856,7 +833,6 @@ export type PropertyPaymentMethodCreateWithoutPropertiesInput = {
   tenant: Prisma.TenantCreateNestedOneWithoutPaymentMethodsInput
   phases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutPaymentMethodInput
   contracts?: Prisma.ContractCreateNestedManyWithoutPaymentMethodInput
-  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutPaymentMethodInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutFromPaymentMethodInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutToPaymentMethodInput
   documentRules?: Prisma.DocumentRequirementRuleCreateNestedManyWithoutPaymentMethodInput
@@ -878,7 +854,6 @@ export type PropertyPaymentMethodUncheckedCreateWithoutPropertiesInput = {
   updatedAt?: Date | string
   phases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutPaymentMethodInput
   contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutPaymentMethodInput
-  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutPaymentMethodInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutFromPaymentMethodInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutToPaymentMethodInput
   documentRules?: Prisma.DocumentRequirementRuleUncheckedCreateNestedManyWithoutPaymentMethodInput
@@ -916,7 +891,6 @@ export type PropertyPaymentMethodUpdateWithoutPropertiesInput = {
   tenant?: Prisma.TenantUpdateOneRequiredWithoutPaymentMethodsNestedInput
   phases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutPaymentMethodNestedInput
   contracts?: Prisma.ContractUpdateManyWithoutPaymentMethodNestedInput
-  prequalifications?: Prisma.PrequalificationUpdateManyWithoutPaymentMethodNestedInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutFromPaymentMethodNestedInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutToPaymentMethodNestedInput
   documentRules?: Prisma.DocumentRequirementRuleUpdateManyWithoutPaymentMethodNestedInput
@@ -938,7 +912,6 @@ export type PropertyPaymentMethodUncheckedUpdateWithoutPropertiesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   phases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutPaymentMethodNestedInput
   contracts?: Prisma.ContractUncheckedUpdateManyWithoutPaymentMethodNestedInput
-  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutPaymentMethodNestedInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutFromPaymentMethodNestedInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutToPaymentMethodNestedInput
   documentRules?: Prisma.DocumentRequirementRuleUncheckedUpdateManyWithoutPaymentMethodNestedInput
@@ -960,7 +933,6 @@ export type PropertyPaymentMethodCreateWithoutPhasesInput = {
   tenant: Prisma.TenantCreateNestedOneWithoutPaymentMethodsInput
   properties?: Prisma.PropertyPaymentMethodLinkCreateNestedManyWithoutPaymentMethodInput
   contracts?: Prisma.ContractCreateNestedManyWithoutPaymentMethodInput
-  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutPaymentMethodInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutFromPaymentMethodInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutToPaymentMethodInput
   documentRules?: Prisma.DocumentRequirementRuleCreateNestedManyWithoutPaymentMethodInput
@@ -982,7 +954,6 @@ export type PropertyPaymentMethodUncheckedCreateWithoutPhasesInput = {
   updatedAt?: Date | string
   properties?: Prisma.PropertyPaymentMethodLinkUncheckedCreateNestedManyWithoutPaymentMethodInput
   contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutPaymentMethodInput
-  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutPaymentMethodInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutFromPaymentMethodInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutToPaymentMethodInput
   documentRules?: Prisma.DocumentRequirementRuleUncheckedCreateNestedManyWithoutPaymentMethodInput
@@ -1020,7 +991,6 @@ export type PropertyPaymentMethodUpdateWithoutPhasesInput = {
   tenant?: Prisma.TenantUpdateOneRequiredWithoutPaymentMethodsNestedInput
   properties?: Prisma.PropertyPaymentMethodLinkUpdateManyWithoutPaymentMethodNestedInput
   contracts?: Prisma.ContractUpdateManyWithoutPaymentMethodNestedInput
-  prequalifications?: Prisma.PrequalificationUpdateManyWithoutPaymentMethodNestedInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutFromPaymentMethodNestedInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutToPaymentMethodNestedInput
   documentRules?: Prisma.DocumentRequirementRuleUpdateManyWithoutPaymentMethodNestedInput
@@ -1042,7 +1012,6 @@ export type PropertyPaymentMethodUncheckedUpdateWithoutPhasesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   properties?: Prisma.PropertyPaymentMethodLinkUncheckedUpdateManyWithoutPaymentMethodNestedInput
   contracts?: Prisma.ContractUncheckedUpdateManyWithoutPaymentMethodNestedInput
-  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutPaymentMethodNestedInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutFromPaymentMethodNestedInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutToPaymentMethodNestedInput
   documentRules?: Prisma.DocumentRequirementRuleUncheckedUpdateManyWithoutPaymentMethodNestedInput
@@ -1064,7 +1033,6 @@ export type PropertyPaymentMethodCreateWithoutContractsInput = {
   tenant: Prisma.TenantCreateNestedOneWithoutPaymentMethodsInput
   properties?: Prisma.PropertyPaymentMethodLinkCreateNestedManyWithoutPaymentMethodInput
   phases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutPaymentMethodInput
-  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutPaymentMethodInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutFromPaymentMethodInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutToPaymentMethodInput
   documentRules?: Prisma.DocumentRequirementRuleCreateNestedManyWithoutPaymentMethodInput
@@ -1086,7 +1054,6 @@ export type PropertyPaymentMethodUncheckedCreateWithoutContractsInput = {
   updatedAt?: Date | string
   properties?: Prisma.PropertyPaymentMethodLinkUncheckedCreateNestedManyWithoutPaymentMethodInput
   phases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutPaymentMethodInput
-  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutPaymentMethodInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutFromPaymentMethodInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutToPaymentMethodInput
   documentRules?: Prisma.DocumentRequirementRuleUncheckedCreateNestedManyWithoutPaymentMethodInput
@@ -1124,7 +1091,6 @@ export type PropertyPaymentMethodUpdateWithoutContractsInput = {
   tenant?: Prisma.TenantUpdateOneRequiredWithoutPaymentMethodsNestedInput
   properties?: Prisma.PropertyPaymentMethodLinkUpdateManyWithoutPaymentMethodNestedInput
   phases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutPaymentMethodNestedInput
-  prequalifications?: Prisma.PrequalificationUpdateManyWithoutPaymentMethodNestedInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutFromPaymentMethodNestedInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutToPaymentMethodNestedInput
   documentRules?: Prisma.DocumentRequirementRuleUpdateManyWithoutPaymentMethodNestedInput
@@ -1146,111 +1112,6 @@ export type PropertyPaymentMethodUncheckedUpdateWithoutContractsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   properties?: Prisma.PropertyPaymentMethodLinkUncheckedUpdateManyWithoutPaymentMethodNestedInput
   phases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutPaymentMethodNestedInput
-  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutPaymentMethodNestedInput
-  changeRequestsFrom?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutFromPaymentMethodNestedInput
-  changeRequestsTo?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutToPaymentMethodNestedInput
-  documentRules?: Prisma.DocumentRequirementRuleUncheckedUpdateManyWithoutPaymentMethodNestedInput
-  changeRulesFrom?: Prisma.DocumentRequirementRuleUncheckedUpdateManyWithoutFromPaymentMethodNestedInput
-  changeRulesTo?: Prisma.DocumentRequirementRuleUncheckedUpdateManyWithoutToPaymentMethodNestedInput
-}
-
-export type PropertyPaymentMethodCreateWithoutPrequalificationsInput = {
-  id?: string
-  name: string
-  description?: string | null
-  isActive?: boolean
-  allowEarlyPayoff?: boolean
-  earlyPayoffPenaltyRate?: number | null
-  autoActivatePhases?: boolean
-  requiresManualApproval?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  tenant: Prisma.TenantCreateNestedOneWithoutPaymentMethodsInput
-  properties?: Prisma.PropertyPaymentMethodLinkCreateNestedManyWithoutPaymentMethodInput
-  phases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutPaymentMethodInput
-  contracts?: Prisma.ContractCreateNestedManyWithoutPaymentMethodInput
-  changeRequestsFrom?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutFromPaymentMethodInput
-  changeRequestsTo?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutToPaymentMethodInput
-  documentRules?: Prisma.DocumentRequirementRuleCreateNestedManyWithoutPaymentMethodInput
-  changeRulesFrom?: Prisma.DocumentRequirementRuleCreateNestedManyWithoutFromPaymentMethodInput
-  changeRulesTo?: Prisma.DocumentRequirementRuleCreateNestedManyWithoutToPaymentMethodInput
-}
-
-export type PropertyPaymentMethodUncheckedCreateWithoutPrequalificationsInput = {
-  id?: string
-  tenantId: string
-  name: string
-  description?: string | null
-  isActive?: boolean
-  allowEarlyPayoff?: boolean
-  earlyPayoffPenaltyRate?: number | null
-  autoActivatePhases?: boolean
-  requiresManualApproval?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  properties?: Prisma.PropertyPaymentMethodLinkUncheckedCreateNestedManyWithoutPaymentMethodInput
-  phases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutPaymentMethodInput
-  contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutPaymentMethodInput
-  changeRequestsFrom?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutFromPaymentMethodInput
-  changeRequestsTo?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutToPaymentMethodInput
-  documentRules?: Prisma.DocumentRequirementRuleUncheckedCreateNestedManyWithoutPaymentMethodInput
-  changeRulesFrom?: Prisma.DocumentRequirementRuleUncheckedCreateNestedManyWithoutFromPaymentMethodInput
-  changeRulesTo?: Prisma.DocumentRequirementRuleUncheckedCreateNestedManyWithoutToPaymentMethodInput
-}
-
-export type PropertyPaymentMethodCreateOrConnectWithoutPrequalificationsInput = {
-  where: Prisma.PropertyPaymentMethodWhereUniqueInput
-  create: Prisma.XOR<Prisma.PropertyPaymentMethodCreateWithoutPrequalificationsInput, Prisma.PropertyPaymentMethodUncheckedCreateWithoutPrequalificationsInput>
-}
-
-export type PropertyPaymentMethodUpsertWithoutPrequalificationsInput = {
-  update: Prisma.XOR<Prisma.PropertyPaymentMethodUpdateWithoutPrequalificationsInput, Prisma.PropertyPaymentMethodUncheckedUpdateWithoutPrequalificationsInput>
-  create: Prisma.XOR<Prisma.PropertyPaymentMethodCreateWithoutPrequalificationsInput, Prisma.PropertyPaymentMethodUncheckedCreateWithoutPrequalificationsInput>
-  where?: Prisma.PropertyPaymentMethodWhereInput
-}
-
-export type PropertyPaymentMethodUpdateToOneWithWhereWithoutPrequalificationsInput = {
-  where?: Prisma.PropertyPaymentMethodWhereInput
-  data: Prisma.XOR<Prisma.PropertyPaymentMethodUpdateWithoutPrequalificationsInput, Prisma.PropertyPaymentMethodUncheckedUpdateWithoutPrequalificationsInput>
-}
-
-export type PropertyPaymentMethodUpdateWithoutPrequalificationsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  allowEarlyPayoff?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  earlyPayoffPenaltyRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  autoActivatePhases?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  requiresManualApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  tenant?: Prisma.TenantUpdateOneRequiredWithoutPaymentMethodsNestedInput
-  properties?: Prisma.PropertyPaymentMethodLinkUpdateManyWithoutPaymentMethodNestedInput
-  phases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutPaymentMethodNestedInput
-  contracts?: Prisma.ContractUpdateManyWithoutPaymentMethodNestedInput
-  changeRequestsFrom?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutFromPaymentMethodNestedInput
-  changeRequestsTo?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutToPaymentMethodNestedInput
-  documentRules?: Prisma.DocumentRequirementRuleUpdateManyWithoutPaymentMethodNestedInput
-  changeRulesFrom?: Prisma.DocumentRequirementRuleUpdateManyWithoutFromPaymentMethodNestedInput
-  changeRulesTo?: Prisma.DocumentRequirementRuleUpdateManyWithoutToPaymentMethodNestedInput
-}
-
-export type PropertyPaymentMethodUncheckedUpdateWithoutPrequalificationsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  allowEarlyPayoff?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  earlyPayoffPenaltyRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  autoActivatePhases?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  requiresManualApproval?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  properties?: Prisma.PropertyPaymentMethodLinkUncheckedUpdateManyWithoutPaymentMethodNestedInput
-  phases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutPaymentMethodNestedInput
-  contracts?: Prisma.ContractUncheckedUpdateManyWithoutPaymentMethodNestedInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutFromPaymentMethodNestedInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutToPaymentMethodNestedInput
   documentRules?: Prisma.DocumentRequirementRuleUncheckedUpdateManyWithoutPaymentMethodNestedInput
@@ -1273,7 +1134,6 @@ export type PropertyPaymentMethodCreateWithoutChangeRequestsFromInput = {
   properties?: Prisma.PropertyPaymentMethodLinkCreateNestedManyWithoutPaymentMethodInput
   phases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutPaymentMethodInput
   contracts?: Prisma.ContractCreateNestedManyWithoutPaymentMethodInput
-  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutPaymentMethodInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutToPaymentMethodInput
   documentRules?: Prisma.DocumentRequirementRuleCreateNestedManyWithoutPaymentMethodInput
   changeRulesFrom?: Prisma.DocumentRequirementRuleCreateNestedManyWithoutFromPaymentMethodInput
@@ -1295,7 +1155,6 @@ export type PropertyPaymentMethodUncheckedCreateWithoutChangeRequestsFromInput =
   properties?: Prisma.PropertyPaymentMethodLinkUncheckedCreateNestedManyWithoutPaymentMethodInput
   phases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutPaymentMethodInput
   contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutPaymentMethodInput
-  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutPaymentMethodInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutToPaymentMethodInput
   documentRules?: Prisma.DocumentRequirementRuleUncheckedCreateNestedManyWithoutPaymentMethodInput
   changeRulesFrom?: Prisma.DocumentRequirementRuleUncheckedCreateNestedManyWithoutFromPaymentMethodInput
@@ -1322,7 +1181,6 @@ export type PropertyPaymentMethodCreateWithoutChangeRequestsToInput = {
   properties?: Prisma.PropertyPaymentMethodLinkCreateNestedManyWithoutPaymentMethodInput
   phases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutPaymentMethodInput
   contracts?: Prisma.ContractCreateNestedManyWithoutPaymentMethodInput
-  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutPaymentMethodInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutFromPaymentMethodInput
   documentRules?: Prisma.DocumentRequirementRuleCreateNestedManyWithoutPaymentMethodInput
   changeRulesFrom?: Prisma.DocumentRequirementRuleCreateNestedManyWithoutFromPaymentMethodInput
@@ -1344,7 +1202,6 @@ export type PropertyPaymentMethodUncheckedCreateWithoutChangeRequestsToInput = {
   properties?: Prisma.PropertyPaymentMethodLinkUncheckedCreateNestedManyWithoutPaymentMethodInput
   phases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutPaymentMethodInput
   contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutPaymentMethodInput
-  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutPaymentMethodInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutFromPaymentMethodInput
   documentRules?: Prisma.DocumentRequirementRuleUncheckedCreateNestedManyWithoutPaymentMethodInput
   changeRulesFrom?: Prisma.DocumentRequirementRuleUncheckedCreateNestedManyWithoutFromPaymentMethodInput
@@ -1382,7 +1239,6 @@ export type PropertyPaymentMethodUpdateWithoutChangeRequestsFromInput = {
   properties?: Prisma.PropertyPaymentMethodLinkUpdateManyWithoutPaymentMethodNestedInput
   phases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutPaymentMethodNestedInput
   contracts?: Prisma.ContractUpdateManyWithoutPaymentMethodNestedInput
-  prequalifications?: Prisma.PrequalificationUpdateManyWithoutPaymentMethodNestedInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutToPaymentMethodNestedInput
   documentRules?: Prisma.DocumentRequirementRuleUpdateManyWithoutPaymentMethodNestedInput
   changeRulesFrom?: Prisma.DocumentRequirementRuleUpdateManyWithoutFromPaymentMethodNestedInput
@@ -1404,7 +1260,6 @@ export type PropertyPaymentMethodUncheckedUpdateWithoutChangeRequestsFromInput =
   properties?: Prisma.PropertyPaymentMethodLinkUncheckedUpdateManyWithoutPaymentMethodNestedInput
   phases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutPaymentMethodNestedInput
   contracts?: Prisma.ContractUncheckedUpdateManyWithoutPaymentMethodNestedInput
-  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutPaymentMethodNestedInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutToPaymentMethodNestedInput
   documentRules?: Prisma.DocumentRequirementRuleUncheckedUpdateManyWithoutPaymentMethodNestedInput
   changeRulesFrom?: Prisma.DocumentRequirementRuleUncheckedUpdateManyWithoutFromPaymentMethodNestedInput
@@ -1437,7 +1292,6 @@ export type PropertyPaymentMethodUpdateWithoutChangeRequestsToInput = {
   properties?: Prisma.PropertyPaymentMethodLinkUpdateManyWithoutPaymentMethodNestedInput
   phases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutPaymentMethodNestedInput
   contracts?: Prisma.ContractUpdateManyWithoutPaymentMethodNestedInput
-  prequalifications?: Prisma.PrequalificationUpdateManyWithoutPaymentMethodNestedInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutFromPaymentMethodNestedInput
   documentRules?: Prisma.DocumentRequirementRuleUpdateManyWithoutPaymentMethodNestedInput
   changeRulesFrom?: Prisma.DocumentRequirementRuleUpdateManyWithoutFromPaymentMethodNestedInput
@@ -1459,7 +1313,6 @@ export type PropertyPaymentMethodUncheckedUpdateWithoutChangeRequestsToInput = {
   properties?: Prisma.PropertyPaymentMethodLinkUncheckedUpdateManyWithoutPaymentMethodNestedInput
   phases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutPaymentMethodNestedInput
   contracts?: Prisma.ContractUncheckedUpdateManyWithoutPaymentMethodNestedInput
-  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutPaymentMethodNestedInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutFromPaymentMethodNestedInput
   documentRules?: Prisma.DocumentRequirementRuleUncheckedUpdateManyWithoutPaymentMethodNestedInput
   changeRulesFrom?: Prisma.DocumentRequirementRuleUncheckedUpdateManyWithoutFromPaymentMethodNestedInput
@@ -1481,7 +1334,6 @@ export type PropertyPaymentMethodCreateWithoutDocumentRulesInput = {
   properties?: Prisma.PropertyPaymentMethodLinkCreateNestedManyWithoutPaymentMethodInput
   phases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutPaymentMethodInput
   contracts?: Prisma.ContractCreateNestedManyWithoutPaymentMethodInput
-  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutPaymentMethodInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutFromPaymentMethodInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutToPaymentMethodInput
   changeRulesFrom?: Prisma.DocumentRequirementRuleCreateNestedManyWithoutFromPaymentMethodInput
@@ -1503,7 +1355,6 @@ export type PropertyPaymentMethodUncheckedCreateWithoutDocumentRulesInput = {
   properties?: Prisma.PropertyPaymentMethodLinkUncheckedCreateNestedManyWithoutPaymentMethodInput
   phases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutPaymentMethodInput
   contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutPaymentMethodInput
-  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutPaymentMethodInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutFromPaymentMethodInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutToPaymentMethodInput
   changeRulesFrom?: Prisma.DocumentRequirementRuleUncheckedCreateNestedManyWithoutFromPaymentMethodInput
@@ -1530,7 +1381,6 @@ export type PropertyPaymentMethodCreateWithoutChangeRulesFromInput = {
   properties?: Prisma.PropertyPaymentMethodLinkCreateNestedManyWithoutPaymentMethodInput
   phases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutPaymentMethodInput
   contracts?: Prisma.ContractCreateNestedManyWithoutPaymentMethodInput
-  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutPaymentMethodInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutFromPaymentMethodInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutToPaymentMethodInput
   documentRules?: Prisma.DocumentRequirementRuleCreateNestedManyWithoutPaymentMethodInput
@@ -1552,7 +1402,6 @@ export type PropertyPaymentMethodUncheckedCreateWithoutChangeRulesFromInput = {
   properties?: Prisma.PropertyPaymentMethodLinkUncheckedCreateNestedManyWithoutPaymentMethodInput
   phases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutPaymentMethodInput
   contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutPaymentMethodInput
-  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutPaymentMethodInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutFromPaymentMethodInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutToPaymentMethodInput
   documentRules?: Prisma.DocumentRequirementRuleUncheckedCreateNestedManyWithoutPaymentMethodInput
@@ -1579,7 +1428,6 @@ export type PropertyPaymentMethodCreateWithoutChangeRulesToInput = {
   properties?: Prisma.PropertyPaymentMethodLinkCreateNestedManyWithoutPaymentMethodInput
   phases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutPaymentMethodInput
   contracts?: Prisma.ContractCreateNestedManyWithoutPaymentMethodInput
-  prequalifications?: Prisma.PrequalificationCreateNestedManyWithoutPaymentMethodInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutFromPaymentMethodInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutToPaymentMethodInput
   documentRules?: Prisma.DocumentRequirementRuleCreateNestedManyWithoutPaymentMethodInput
@@ -1601,7 +1449,6 @@ export type PropertyPaymentMethodUncheckedCreateWithoutChangeRulesToInput = {
   properties?: Prisma.PropertyPaymentMethodLinkUncheckedCreateNestedManyWithoutPaymentMethodInput
   phases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutPaymentMethodInput
   contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutPaymentMethodInput
-  prequalifications?: Prisma.PrequalificationUncheckedCreateNestedManyWithoutPaymentMethodInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutFromPaymentMethodInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutToPaymentMethodInput
   documentRules?: Prisma.DocumentRequirementRuleUncheckedCreateNestedManyWithoutPaymentMethodInput
@@ -1639,7 +1486,6 @@ export type PropertyPaymentMethodUpdateWithoutDocumentRulesInput = {
   properties?: Prisma.PropertyPaymentMethodLinkUpdateManyWithoutPaymentMethodNestedInput
   phases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutPaymentMethodNestedInput
   contracts?: Prisma.ContractUpdateManyWithoutPaymentMethodNestedInput
-  prequalifications?: Prisma.PrequalificationUpdateManyWithoutPaymentMethodNestedInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutFromPaymentMethodNestedInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutToPaymentMethodNestedInput
   changeRulesFrom?: Prisma.DocumentRequirementRuleUpdateManyWithoutFromPaymentMethodNestedInput
@@ -1661,7 +1507,6 @@ export type PropertyPaymentMethodUncheckedUpdateWithoutDocumentRulesInput = {
   properties?: Prisma.PropertyPaymentMethodLinkUncheckedUpdateManyWithoutPaymentMethodNestedInput
   phases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutPaymentMethodNestedInput
   contracts?: Prisma.ContractUncheckedUpdateManyWithoutPaymentMethodNestedInput
-  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutPaymentMethodNestedInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutFromPaymentMethodNestedInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutToPaymentMethodNestedInput
   changeRulesFrom?: Prisma.DocumentRequirementRuleUncheckedUpdateManyWithoutFromPaymentMethodNestedInput
@@ -1694,7 +1539,6 @@ export type PropertyPaymentMethodUpdateWithoutChangeRulesFromInput = {
   properties?: Prisma.PropertyPaymentMethodLinkUpdateManyWithoutPaymentMethodNestedInput
   phases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutPaymentMethodNestedInput
   contracts?: Prisma.ContractUpdateManyWithoutPaymentMethodNestedInput
-  prequalifications?: Prisma.PrequalificationUpdateManyWithoutPaymentMethodNestedInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutFromPaymentMethodNestedInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutToPaymentMethodNestedInput
   documentRules?: Prisma.DocumentRequirementRuleUpdateManyWithoutPaymentMethodNestedInput
@@ -1716,7 +1560,6 @@ export type PropertyPaymentMethodUncheckedUpdateWithoutChangeRulesFromInput = {
   properties?: Prisma.PropertyPaymentMethodLinkUncheckedUpdateManyWithoutPaymentMethodNestedInput
   phases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutPaymentMethodNestedInput
   contracts?: Prisma.ContractUncheckedUpdateManyWithoutPaymentMethodNestedInput
-  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutPaymentMethodNestedInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutFromPaymentMethodNestedInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutToPaymentMethodNestedInput
   documentRules?: Prisma.DocumentRequirementRuleUncheckedUpdateManyWithoutPaymentMethodNestedInput
@@ -1749,7 +1592,6 @@ export type PropertyPaymentMethodUpdateWithoutChangeRulesToInput = {
   properties?: Prisma.PropertyPaymentMethodLinkUpdateManyWithoutPaymentMethodNestedInput
   phases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutPaymentMethodNestedInput
   contracts?: Prisma.ContractUpdateManyWithoutPaymentMethodNestedInput
-  prequalifications?: Prisma.PrequalificationUpdateManyWithoutPaymentMethodNestedInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutFromPaymentMethodNestedInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutToPaymentMethodNestedInput
   documentRules?: Prisma.DocumentRequirementRuleUpdateManyWithoutPaymentMethodNestedInput
@@ -1771,7 +1613,6 @@ export type PropertyPaymentMethodUncheckedUpdateWithoutChangeRulesToInput = {
   properties?: Prisma.PropertyPaymentMethodLinkUncheckedUpdateManyWithoutPaymentMethodNestedInput
   phases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutPaymentMethodNestedInput
   contracts?: Prisma.ContractUncheckedUpdateManyWithoutPaymentMethodNestedInput
-  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutPaymentMethodNestedInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutFromPaymentMethodNestedInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutToPaymentMethodNestedInput
   documentRules?: Prisma.DocumentRequirementRuleUncheckedUpdateManyWithoutPaymentMethodNestedInput
@@ -1805,7 +1646,6 @@ export type PropertyPaymentMethodUpdateWithoutTenantInput = {
   properties?: Prisma.PropertyPaymentMethodLinkUpdateManyWithoutPaymentMethodNestedInput
   phases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutPaymentMethodNestedInput
   contracts?: Prisma.ContractUpdateManyWithoutPaymentMethodNestedInput
-  prequalifications?: Prisma.PrequalificationUpdateManyWithoutPaymentMethodNestedInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutFromPaymentMethodNestedInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutToPaymentMethodNestedInput
   documentRules?: Prisma.DocumentRequirementRuleUpdateManyWithoutPaymentMethodNestedInput
@@ -1827,7 +1667,6 @@ export type PropertyPaymentMethodUncheckedUpdateWithoutTenantInput = {
   properties?: Prisma.PropertyPaymentMethodLinkUncheckedUpdateManyWithoutPaymentMethodNestedInput
   phases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutPaymentMethodNestedInput
   contracts?: Prisma.ContractUncheckedUpdateManyWithoutPaymentMethodNestedInput
-  prequalifications?: Prisma.PrequalificationUncheckedUpdateManyWithoutPaymentMethodNestedInput
   changeRequestsFrom?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutFromPaymentMethodNestedInput
   changeRequestsTo?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutToPaymentMethodNestedInput
   documentRules?: Prisma.DocumentRequirementRuleUncheckedUpdateManyWithoutPaymentMethodNestedInput
@@ -1857,7 +1696,6 @@ export type PropertyPaymentMethodCountOutputType = {
   properties: number
   phases: number
   contracts: number
-  prequalifications: number
   changeRequestsFrom: number
   changeRequestsTo: number
   documentRules: number
@@ -1869,7 +1707,6 @@ export type PropertyPaymentMethodCountOutputTypeSelect<ExtArgs extends runtime.T
   properties?: boolean | PropertyPaymentMethodCountOutputTypeCountPropertiesArgs
   phases?: boolean | PropertyPaymentMethodCountOutputTypeCountPhasesArgs
   contracts?: boolean | PropertyPaymentMethodCountOutputTypeCountContractsArgs
-  prequalifications?: boolean | PropertyPaymentMethodCountOutputTypeCountPrequalificationsArgs
   changeRequestsFrom?: boolean | PropertyPaymentMethodCountOutputTypeCountChangeRequestsFromArgs
   changeRequestsTo?: boolean | PropertyPaymentMethodCountOutputTypeCountChangeRequestsToArgs
   documentRules?: boolean | PropertyPaymentMethodCountOutputTypeCountDocumentRulesArgs
@@ -1906,13 +1743,6 @@ export type PropertyPaymentMethodCountOutputTypeCountPhasesArgs<ExtArgs extends 
  */
 export type PropertyPaymentMethodCountOutputTypeCountContractsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ContractWhereInput
-}
-
-/**
- * PropertyPaymentMethodCountOutputType without action
- */
-export type PropertyPaymentMethodCountOutputTypeCountPrequalificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.PrequalificationWhereInput
 }
 
 /**
@@ -1967,7 +1797,6 @@ export type PropertyPaymentMethodSelect<ExtArgs extends runtime.Types.Extensions
   properties?: boolean | Prisma.PropertyPaymentMethod$propertiesArgs<ExtArgs>
   phases?: boolean | Prisma.PropertyPaymentMethod$phasesArgs<ExtArgs>
   contracts?: boolean | Prisma.PropertyPaymentMethod$contractsArgs<ExtArgs>
-  prequalifications?: boolean | Prisma.PropertyPaymentMethod$prequalificationsArgs<ExtArgs>
   changeRequestsFrom?: boolean | Prisma.PropertyPaymentMethod$changeRequestsFromArgs<ExtArgs>
   changeRequestsTo?: boolean | Prisma.PropertyPaymentMethod$changeRequestsToArgs<ExtArgs>
   documentRules?: boolean | Prisma.PropertyPaymentMethod$documentRulesArgs<ExtArgs>
@@ -1998,7 +1827,6 @@ export type PropertyPaymentMethodInclude<ExtArgs extends runtime.Types.Extension
   properties?: boolean | Prisma.PropertyPaymentMethod$propertiesArgs<ExtArgs>
   phases?: boolean | Prisma.PropertyPaymentMethod$phasesArgs<ExtArgs>
   contracts?: boolean | Prisma.PropertyPaymentMethod$contractsArgs<ExtArgs>
-  prequalifications?: boolean | Prisma.PropertyPaymentMethod$prequalificationsArgs<ExtArgs>
   changeRequestsFrom?: boolean | Prisma.PropertyPaymentMethod$changeRequestsFromArgs<ExtArgs>
   changeRequestsTo?: boolean | Prisma.PropertyPaymentMethod$changeRequestsToArgs<ExtArgs>
   documentRules?: boolean | Prisma.PropertyPaymentMethod$documentRulesArgs<ExtArgs>
@@ -2014,7 +1842,6 @@ export type $PropertyPaymentMethodPayload<ExtArgs extends runtime.Types.Extensio
     properties: Prisma.$PropertyPaymentMethodLinkPayload<ExtArgs>[]
     phases: Prisma.$PropertyPaymentMethodPhasePayload<ExtArgs>[]
     contracts: Prisma.$ContractPayload<ExtArgs>[]
-    prequalifications: Prisma.$PrequalificationPayload<ExtArgs>[]
     changeRequestsFrom: Prisma.$PaymentMethodChangeRequestPayload<ExtArgs>[]
     changeRequestsTo: Prisma.$PaymentMethodChangeRequestPayload<ExtArgs>[]
     documentRules: Prisma.$DocumentRequirementRulePayload<ExtArgs>[]
@@ -2377,7 +2204,6 @@ export interface Prisma__PropertyPaymentMethodClient<T, Null = never, ExtArgs ex
   properties<T extends Prisma.PropertyPaymentMethod$propertiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyPaymentMethod$propertiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyPaymentMethodLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   phases<T extends Prisma.PropertyPaymentMethod$phasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyPaymentMethod$phasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyPaymentMethodPhasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   contracts<T extends Prisma.PropertyPaymentMethod$contractsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyPaymentMethod$contractsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  prequalifications<T extends Prisma.PropertyPaymentMethod$prequalificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyPaymentMethod$prequalificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PrequalificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   changeRequestsFrom<T extends Prisma.PropertyPaymentMethod$changeRequestsFromArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyPaymentMethod$changeRequestsFromArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentMethodChangeRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   changeRequestsTo<T extends Prisma.PropertyPaymentMethod$changeRequestsToArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyPaymentMethod$changeRequestsToArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentMethodChangeRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   documentRules<T extends Prisma.PropertyPaymentMethod$documentRulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyPaymentMethod$documentRulesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentRequirementRulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2835,30 +2661,6 @@ export type PropertyPaymentMethod$contractsArgs<ExtArgs extends runtime.Types.Ex
   take?: number
   skip?: number
   distinct?: Prisma.ContractScalarFieldEnum | Prisma.ContractScalarFieldEnum[]
-}
-
-/**
- * PropertyPaymentMethod.prequalifications
- */
-export type PropertyPaymentMethod$prequalificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Prequalification
-   */
-  select?: Prisma.PrequalificationSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Prequalification
-   */
-  omit?: Prisma.PrequalificationOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PrequalificationInclude<ExtArgs> | null
-  where?: Prisma.PrequalificationWhereInput
-  orderBy?: Prisma.PrequalificationOrderByWithRelationInput | Prisma.PrequalificationOrderByWithRelationInput[]
-  cursor?: Prisma.PrequalificationWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.PrequalificationScalarFieldEnum | Prisma.PrequalificationScalarFieldEnum[]
 }
 
 /**

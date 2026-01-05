@@ -69,6 +69,8 @@ enum StepType {
   EXTERNAL_CHECK
   WAIT
   GENERATE_DOCUMENT // Triggers document generation (offer letters, contracts, etc.)
+  PRE_APPROVAL // Customer answers eligibility questionnaire
+  UNDERWRITING // System evaluates DTI, score, eligibility
 }
 
 enum StepStatus {
@@ -180,12 +182,6 @@ enum OfferLetterStatus {
   CANCELLED
 }
 
-enum UnderwritingDecisionKind {
-  APPROVE
-  REJECT
-  CONDITIONAL
-}
-
 // =============================================================================
 // USER & AUTH DOMAIN
 // =============================================================================
@@ -230,8 +226,7 @@ model User {
   stepApprovals DocumentationStepApproval[] @relation("DocumentationStepApprover")
   uploadedDocs  ContractDocument[]          @relation("DocumentUploader")
 
-  // Prequalification and payment method changes
-  prequalifications           Prequalification[]
+  // Payment method changes
   paymentMethodChangeRequests PaymentMethodChangeRequest[] @relation("ChangeRequestor")
   reviewedChangeRequests      PaymentMethodChangeRequest[] @relation("ChangeReviewer")
 
@@ -312,8 +307,7 @@ model Tenant {
   paymentMethods PropertyPaymentMethod[]
   contracts      Contract[]
 
-  // Prequalification and payment method changes
-  prequalifications           Prequalification[]
+  // Payment method changes
   paymentMethodChangeRequests PaymentMethodChangeRequest[]
   documentRequirementRules    DocumentRequirementRule[]
 
@@ -323,9 +317,6 @@ model Tenant {
   // Offer letters and templates
   documentTemplates DocumentTemplate[]
   offerLetters      OfferLetter[]
-
-  // Underwriting
-  underwritingDecisions UnderwritingDecision[]
 
   @@index([subdomain])
   @@map("tenants")
@@ -502,12 +493,11 @@ model Property {
   updatedAt      DateTime       @updatedAt
 
   // Relations
-  documents         PropertyDocument[]
-  media             PropertyMedia[]             @relation("PropertyMedia")
-  amenities         PropertyAmenity[] // Shared amenities (gym, pool, security)
-  paymentMethods    PropertyPaymentMethodLink[]
-  variants          PropertyVariant[]
-  prequalifications Prequalification[]
+  documents      PropertyDocument[]
+  media          PropertyMedia[]             @relation("PropertyMedia")
+  amenities      PropertyAmenity[] // Shared amenities (gym, pool, security)
+  paymentMethods PropertyPaymentMethodLink[]
+  variants       PropertyVariant[]
 
   @@index([tenantId])
   @@index([userId])
@@ -757,9 +747,6 @@ model PropertyPaymentMethod {
   // Contracts using this method
   contracts  Contract[]
 
-  // Prequalifications for this payment method
-  prequalifications Prequalification[]
-
   // Payment method change tracking
   changeRequestsFrom PaymentMethodChangeRequest[] @relation("ChangeFromMethod")
   changeRequestsTo   PaymentMethodChangeRequest[] @relation("ChangeToMethod")
@@ -914,6 +901,13 @@ model Contract {
   totalPaidToDate   Float  @default(0)
   totalInterestPaid Float  @default(0)
 
+  // Pre-approval and underwriting data (moved from prequalification)
+  monthlyIncome      Float? // Buyer's monthly income
+  monthlyExpenses    Float? // Buyer's monthly expenses
+  preApprovalAnswers Json? // Questionnaire answers from PRE_APPROVAL step
+  underwritingScore  Float? // Aggregate score from underwriting evaluation
+  debtToIncomeRatio  Float? // Calculated DTI ratio
+
   // FSM state (DB-enforced enums)
   status         ContractStatus @default(DRAFT)
   state          ContractStatus @default(DRAFT) // FSM state for workflow
@@ -938,8 +932,6 @@ model Contract {
   terminations ContractTermination[]
   offerLetters OfferLetter[]
 
-  // Prequalification that led to this contract (optional)
-  prequalification            Prequalification?
   // Payment method change requests for this contract
   paymentMethodChangeRequests PaymentMethodChangeRequest[]
 
@@ -1039,6 +1031,15 @@ model DocumentationStep {
 
   // Configuration metadata (for GENERATE_DOCUMENT steps, etc.)
   metadata Json?
+
+  // For PRE_APPROVAL steps: store questionnaire answers
+  preApprovalAnswers Json?
+
+  // For UNDERWRITING steps: store evaluation results
+  underwritingScore    Float?
+  debtToIncomeRatio    Float?
+  underwritingDecision String? // APPROVED, CONDITIONAL, DECLINED
+  underwritingNotes    String? @db.Text
 
   // Assignment
   assigneeId String?
@@ -1401,120 +1402,6 @@ model ContractTermination {
 }
 
 // =============================================================================
-// PREQUALIFICATION - Eligibility assessment before contract creation
-// =============================================================================
-// Prequalification is a separate aggregate that evaluates a user's eligibility
-// for a specific product (property + payment method). It captures their answers
-// to eligibility questions and calculates a score. Once approved, it can be
-// linked to a Contract to provide context about how the buyer qualified.
-// =============================================================================
-
-enum PrequalificationStatus {
-  DRAFT
-  SUBMITTED
-  UNDER_REVIEW
-  APPROVED
-  REJECTED
-  EXPIRED
-}
-
-model Prequalification {
-  id       String @id @default(cuid())
-  tenantId String
-  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  userId   String
-  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  // What they're applying for
-  propertyId      String
-  property        Property              @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  paymentMethodId String
-  paymentMethod   PropertyPaymentMethod @relation(fields: [paymentMethodId], references: [id])
-
-  // Questionnaire responses and scoring
-  answers Json // Array of {questionId, answer, weight, score}
-  score   Float? // Computed eligibility score (0-100)
-
-  // Financial assessment
-  requestedAmount     Float? // How much they want to finance
-  monthlyIncome       Float? // Self-reported monthly income
-  monthlyExpenses     Float? // Self-reported monthly expenses
-  debtToIncomeRatio   Float? // Computed DTI
-  suggestedTermMonths Int? // System-suggested term based on affordability
-
-  // Status tracking
-  status     PrequalificationStatus @default(DRAFT)
-  notes      String?                @db.Text // Admin notes
-  reviewedBy String? // Admin who reviewed
-  reviewedAt DateTime?
-  expiresAt  DateTime? // Prequalification validity period
-
-  // If approved, may be linked to eventual contract
-  contractId String?   @unique
-  contract   Contract? @relation(fields: [contractId], references: [id])
-
-  // Underwriting decisions for this prequalification
-  underwritingDecisions UnderwritingDecision[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([tenantId])
-  @@index([userId])
-  @@index([propertyId])
-  @@index([status])
-  @@map("prequalifications")
-}
-
-// =============================================================================
-// UNDERWRITING DECISION - Automated/manual credit decisions
-// =============================================================================
-// Records each underwriting decision for a prequalification. Multiple decisions
-// may exist if re-evaluation occurs (e.g., after document submission).
-// =============================================================================
-
-model UnderwritingDecision {
-  id       String @id @default(cuid())
-  tenantId String
-  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-
-  // Link to prequalification being evaluated
-  prequalificationId String
-  prequalification   Prequalification @relation(fields: [prequalificationId], references: [id], onDelete: Cascade)
-
-  // Decision outcome
-  decision UnderwritingDecisionKind
-
-  // Scoring and rationale
-  score      Float? // Computed risk score (0-100)
-  reasons    Json? // Array of reason codes/messages for decision
-  conditions Json? // Array of conditions for CONDITIONAL decisions
-
-  // Rule engine metadata
-  rulesVersion String? // Version of rules/model used
-  ruleResults  Json? // Detailed rule evaluation results
-
-  // External data references (credit bureau, verifications)
-  externalChecks Json? // { creditBureau: {...}, incomeVerification: {...} }
-
-  // Manual review (if escalated)
-  isManualReview Boolean   @default(false)
-  reviewedBy     String? // Admin who reviewed
-  reviewedAt     DateTime?
-  reviewNotes    String?   @db.Text
-
-  // Audit
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([tenantId])
-  @@index([prequalificationId])
-  @@index([decision])
-  @@index([createdAt])
-  @@map("underwriting_decisions")
-}
-
-// =============================================================================
 // PAYMENT METHOD CHANGE REQUEST - Mid-contract payment method changes
 // =============================================================================
 // When a user wants to change their payment method after contract creation,
@@ -1595,7 +1482,6 @@ model PaymentMethodChangeRequest {
 // =============================================================================
 
 enum DocumentRequirementContext {
-  PREQUALIFICATION // During prequalification
   CONTRACT_PHASE // During a contract phase
   PAYMENT_METHOD_CHANGE // When changing payment method mid-contract
 }

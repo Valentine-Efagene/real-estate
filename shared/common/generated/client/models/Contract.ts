@@ -36,6 +36,10 @@ export type ContractAvgAggregateOutputType = {
   periodicPayment: number | null
   totalPaidToDate: number | null
   totalInterestPaid: number | null
+  monthlyIncome: number | null
+  monthlyExpenses: number | null
+  underwritingScore: number | null
+  debtToIncomeRatio: number | null
 }
 
 export type ContractSumAggregateOutputType = {
@@ -48,6 +52,10 @@ export type ContractSumAggregateOutputType = {
   periodicPayment: number | null
   totalPaidToDate: number | null
   totalInterestPaid: number | null
+  monthlyIncome: number | null
+  monthlyExpenses: number | null
+  underwritingScore: number | null
+  debtToIncomeRatio: number | null
 }
 
 export type ContractMinAggregateOutputType = {
@@ -70,6 +78,10 @@ export type ContractMinAggregateOutputType = {
   periodicPayment: number | null
   totalPaidToDate: number | null
   totalInterestPaid: number | null
+  monthlyIncome: number | null
+  monthlyExpenses: number | null
+  underwritingScore: number | null
+  debtToIncomeRatio: number | null
   status: $Enums.ContractStatus | null
   state: $Enums.ContractStatus | null
   currentPhaseId: string | null
@@ -103,6 +115,10 @@ export type ContractMaxAggregateOutputType = {
   periodicPayment: number | null
   totalPaidToDate: number | null
   totalInterestPaid: number | null
+  monthlyIncome: number | null
+  monthlyExpenses: number | null
+  underwritingScore: number | null
+  debtToIncomeRatio: number | null
   status: $Enums.ContractStatus | null
   state: $Enums.ContractStatus | null
   currentPhaseId: string | null
@@ -136,6 +152,11 @@ export type ContractCountAggregateOutputType = {
   periodicPayment: number
   totalPaidToDate: number
   totalInterestPaid: number
+  monthlyIncome: number
+  monthlyExpenses: number
+  preApprovalAnswers: number
+  underwritingScore: number
+  debtToIncomeRatio: number
   status: number
   state: number
   currentPhaseId: number
@@ -161,6 +182,10 @@ export type ContractAvgAggregateInputType = {
   periodicPayment?: true
   totalPaidToDate?: true
   totalInterestPaid?: true
+  monthlyIncome?: true
+  monthlyExpenses?: true
+  underwritingScore?: true
+  debtToIncomeRatio?: true
 }
 
 export type ContractSumAggregateInputType = {
@@ -173,6 +198,10 @@ export type ContractSumAggregateInputType = {
   periodicPayment?: true
   totalPaidToDate?: true
   totalInterestPaid?: true
+  monthlyIncome?: true
+  monthlyExpenses?: true
+  underwritingScore?: true
+  debtToIncomeRatio?: true
 }
 
 export type ContractMinAggregateInputType = {
@@ -195,6 +224,10 @@ export type ContractMinAggregateInputType = {
   periodicPayment?: true
   totalPaidToDate?: true
   totalInterestPaid?: true
+  monthlyIncome?: true
+  monthlyExpenses?: true
+  underwritingScore?: true
+  debtToIncomeRatio?: true
   status?: true
   state?: true
   currentPhaseId?: true
@@ -228,6 +261,10 @@ export type ContractMaxAggregateInputType = {
   periodicPayment?: true
   totalPaidToDate?: true
   totalInterestPaid?: true
+  monthlyIncome?: true
+  monthlyExpenses?: true
+  underwritingScore?: true
+  debtToIncomeRatio?: true
   status?: true
   state?: true
   currentPhaseId?: true
@@ -261,6 +298,11 @@ export type ContractCountAggregateInputType = {
   periodicPayment?: true
   totalPaidToDate?: true
   totalInterestPaid?: true
+  monthlyIncome?: true
+  monthlyExpenses?: true
+  preApprovalAnswers?: true
+  underwritingScore?: true
+  debtToIncomeRatio?: true
   status?: true
   state?: true
   currentPhaseId?: true
@@ -381,6 +423,11 @@ export type ContractGroupByOutputType = {
   periodicPayment: number | null
   totalPaidToDate: number
   totalInterestPaid: number
+  monthlyIncome: number | null
+  monthlyExpenses: number | null
+  preApprovalAnswers: runtime.JsonValue | null
+  underwritingScore: number | null
+  debtToIncomeRatio: number | null
   status: $Enums.ContractStatus
   state: $Enums.ContractStatus
   currentPhaseId: string | null
@@ -437,6 +484,11 @@ export type ContractWhereInput = {
   periodicPayment?: Prisma.FloatNullableFilter<"Contract"> | number | null
   totalPaidToDate?: Prisma.FloatFilter<"Contract"> | number
   totalInterestPaid?: Prisma.FloatFilter<"Contract"> | number
+  monthlyIncome?: Prisma.FloatNullableFilter<"Contract"> | number | null
+  monthlyExpenses?: Prisma.FloatNullableFilter<"Contract"> | number | null
+  preApprovalAnswers?: Prisma.JsonNullableFilter<"Contract">
+  underwritingScore?: Prisma.FloatNullableFilter<"Contract"> | number | null
+  debtToIncomeRatio?: Prisma.FloatNullableFilter<"Contract"> | number | null
   status?: Prisma.EnumContractStatusFilter<"Contract"> | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFilter<"Contract"> | $Enums.ContractStatus
   currentPhaseId?: Prisma.StringNullableFilter<"Contract"> | string | null
@@ -460,7 +512,6 @@ export type ContractWhereInput = {
   events?: Prisma.ContractEventListRelationFilter
   terminations?: Prisma.ContractTerminationListRelationFilter
   offerLetters?: Prisma.OfferLetterListRelationFilter
-  prequalification?: Prisma.XOR<Prisma.PrequalificationNullableScalarRelationFilter, Prisma.PrequalificationWhereInput> | null
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestListRelationFilter
 }
 
@@ -484,6 +535,11 @@ export type ContractOrderByWithRelationInput = {
   periodicPayment?: Prisma.SortOrderInput | Prisma.SortOrder
   totalPaidToDate?: Prisma.SortOrder
   totalInterestPaid?: Prisma.SortOrder
+  monthlyIncome?: Prisma.SortOrderInput | Prisma.SortOrder
+  monthlyExpenses?: Prisma.SortOrderInput | Prisma.SortOrder
+  preApprovalAnswers?: Prisma.SortOrderInput | Prisma.SortOrder
+  underwritingScore?: Prisma.SortOrderInput | Prisma.SortOrder
+  debtToIncomeRatio?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   state?: Prisma.SortOrder
   currentPhaseId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -507,7 +563,6 @@ export type ContractOrderByWithRelationInput = {
   events?: Prisma.ContractEventOrderByRelationAggregateInput
   terminations?: Prisma.ContractTerminationOrderByRelationAggregateInput
   offerLetters?: Prisma.OfferLetterOrderByRelationAggregateInput
-  prequalification?: Prisma.PrequalificationOrderByWithRelationInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestOrderByRelationAggregateInput
   _relevance?: Prisma.ContractOrderByRelevanceInput
 }
@@ -535,6 +590,11 @@ export type ContractWhereUniqueInput = Prisma.AtLeast<{
   periodicPayment?: Prisma.FloatNullableFilter<"Contract"> | number | null
   totalPaidToDate?: Prisma.FloatFilter<"Contract"> | number
   totalInterestPaid?: Prisma.FloatFilter<"Contract"> | number
+  monthlyIncome?: Prisma.FloatNullableFilter<"Contract"> | number | null
+  monthlyExpenses?: Prisma.FloatNullableFilter<"Contract"> | number | null
+  preApprovalAnswers?: Prisma.JsonNullableFilter<"Contract">
+  underwritingScore?: Prisma.FloatNullableFilter<"Contract"> | number | null
+  debtToIncomeRatio?: Prisma.FloatNullableFilter<"Contract"> | number | null
   status?: Prisma.EnumContractStatusFilter<"Contract"> | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFilter<"Contract"> | $Enums.ContractStatus
   currentPhaseId?: Prisma.StringNullableFilter<"Contract"> | string | null
@@ -558,7 +618,6 @@ export type ContractWhereUniqueInput = Prisma.AtLeast<{
   events?: Prisma.ContractEventListRelationFilter
   terminations?: Prisma.ContractTerminationListRelationFilter
   offerLetters?: Prisma.OfferLetterListRelationFilter
-  prequalification?: Prisma.XOR<Prisma.PrequalificationNullableScalarRelationFilter, Prisma.PrequalificationWhereInput> | null
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestListRelationFilter
 }, "id" | "contractNumber">
 
@@ -582,6 +641,11 @@ export type ContractOrderByWithAggregationInput = {
   periodicPayment?: Prisma.SortOrderInput | Prisma.SortOrder
   totalPaidToDate?: Prisma.SortOrder
   totalInterestPaid?: Prisma.SortOrder
+  monthlyIncome?: Prisma.SortOrderInput | Prisma.SortOrder
+  monthlyExpenses?: Prisma.SortOrderInput | Prisma.SortOrder
+  preApprovalAnswers?: Prisma.SortOrderInput | Prisma.SortOrder
+  underwritingScore?: Prisma.SortOrderInput | Prisma.SortOrder
+  debtToIncomeRatio?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   state?: Prisma.SortOrder
   currentPhaseId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -623,6 +687,11 @@ export type ContractScalarWhereWithAggregatesInput = {
   periodicPayment?: Prisma.FloatNullableWithAggregatesFilter<"Contract"> | number | null
   totalPaidToDate?: Prisma.FloatWithAggregatesFilter<"Contract"> | number
   totalInterestPaid?: Prisma.FloatWithAggregatesFilter<"Contract"> | number
+  monthlyIncome?: Prisma.FloatNullableWithAggregatesFilter<"Contract"> | number | null
+  monthlyExpenses?: Prisma.FloatNullableWithAggregatesFilter<"Contract"> | number | null
+  preApprovalAnswers?: Prisma.JsonNullableWithAggregatesFilter<"Contract">
+  underwritingScore?: Prisma.FloatNullableWithAggregatesFilter<"Contract"> | number | null
+  debtToIncomeRatio?: Prisma.FloatNullableWithAggregatesFilter<"Contract"> | number | null
   status?: Prisma.EnumContractStatusWithAggregatesFilter<"Contract"> | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusWithAggregatesFilter<"Contract"> | $Enums.ContractStatus
   currentPhaseId?: Prisma.StringNullableWithAggregatesFilter<"Contract"> | string | null
@@ -651,6 +720,11 @@ export type ContractCreateInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
   status?: $Enums.ContractStatus
   state?: $Enums.ContractStatus
   currentPhaseId?: string | null
@@ -674,7 +748,6 @@ export type ContractCreateInput = {
   events?: Prisma.ContractEventCreateNestedManyWithoutContractInput
   terminations?: Prisma.ContractTerminationCreateNestedManyWithoutContractInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutContractInput
-  prequalification?: Prisma.PrequalificationCreateNestedOneWithoutContractInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutContractInput
 }
 
@@ -698,6 +771,11 @@ export type ContractUncheckedCreateInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
   status?: $Enums.ContractStatus
   state?: $Enums.ContractStatus
   currentPhaseId?: string | null
@@ -716,7 +794,6 @@ export type ContractUncheckedCreateInput = {
   events?: Prisma.ContractEventUncheckedCreateNestedManyWithoutContractInput
   terminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutContractInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutContractInput
-  prequalification?: Prisma.PrequalificationUncheckedCreateNestedOneWithoutContractInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutContractInput
 }
 
@@ -735,6 +812,11 @@ export type ContractUpdateInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -758,7 +840,6 @@ export type ContractUpdateInput = {
   events?: Prisma.ContractEventUpdateManyWithoutContractNestedInput
   terminations?: Prisma.ContractTerminationUpdateManyWithoutContractNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutContractNestedInput
-  prequalification?: Prisma.PrequalificationUpdateOneWithoutContractNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutContractNestedInput
 }
 
@@ -782,6 +863,11 @@ export type ContractUncheckedUpdateInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -800,7 +886,6 @@ export type ContractUncheckedUpdateInput = {
   events?: Prisma.ContractEventUncheckedUpdateManyWithoutContractNestedInput
   terminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutContractNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutContractNestedInput
-  prequalification?: Prisma.PrequalificationUncheckedUpdateOneWithoutContractNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutContractNestedInput
 }
 
@@ -824,6 +909,11 @@ export type ContractCreateManyInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
   status?: $Enums.ContractStatus
   state?: $Enums.ContractStatus
   currentPhaseId?: string | null
@@ -852,6 +942,11 @@ export type ContractUpdateManyMutationInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -885,6 +980,11 @@ export type ContractUncheckedUpdateManyInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -934,6 +1034,11 @@ export type ContractCountOrderByAggregateInput = {
   periodicPayment?: Prisma.SortOrder
   totalPaidToDate?: Prisma.SortOrder
   totalInterestPaid?: Prisma.SortOrder
+  monthlyIncome?: Prisma.SortOrder
+  monthlyExpenses?: Prisma.SortOrder
+  preApprovalAnswers?: Prisma.SortOrder
+  underwritingScore?: Prisma.SortOrder
+  debtToIncomeRatio?: Prisma.SortOrder
   status?: Prisma.SortOrder
   state?: Prisma.SortOrder
   currentPhaseId?: Prisma.SortOrder
@@ -957,6 +1062,10 @@ export type ContractAvgOrderByAggregateInput = {
   periodicPayment?: Prisma.SortOrder
   totalPaidToDate?: Prisma.SortOrder
   totalInterestPaid?: Prisma.SortOrder
+  monthlyIncome?: Prisma.SortOrder
+  monthlyExpenses?: Prisma.SortOrder
+  underwritingScore?: Prisma.SortOrder
+  debtToIncomeRatio?: Prisma.SortOrder
 }
 
 export type ContractMaxOrderByAggregateInput = {
@@ -979,6 +1088,10 @@ export type ContractMaxOrderByAggregateInput = {
   periodicPayment?: Prisma.SortOrder
   totalPaidToDate?: Prisma.SortOrder
   totalInterestPaid?: Prisma.SortOrder
+  monthlyIncome?: Prisma.SortOrder
+  monthlyExpenses?: Prisma.SortOrder
+  underwritingScore?: Prisma.SortOrder
+  debtToIncomeRatio?: Prisma.SortOrder
   status?: Prisma.SortOrder
   state?: Prisma.SortOrder
   currentPhaseId?: Prisma.SortOrder
@@ -1012,6 +1125,10 @@ export type ContractMinOrderByAggregateInput = {
   periodicPayment?: Prisma.SortOrder
   totalPaidToDate?: Prisma.SortOrder
   totalInterestPaid?: Prisma.SortOrder
+  monthlyIncome?: Prisma.SortOrder
+  monthlyExpenses?: Prisma.SortOrder
+  underwritingScore?: Prisma.SortOrder
+  debtToIncomeRatio?: Prisma.SortOrder
   status?: Prisma.SortOrder
   state?: Prisma.SortOrder
   currentPhaseId?: Prisma.SortOrder
@@ -1035,16 +1152,15 @@ export type ContractSumOrderByAggregateInput = {
   periodicPayment?: Prisma.SortOrder
   totalPaidToDate?: Prisma.SortOrder
   totalInterestPaid?: Prisma.SortOrder
+  monthlyIncome?: Prisma.SortOrder
+  monthlyExpenses?: Prisma.SortOrder
+  underwritingScore?: Prisma.SortOrder
+  debtToIncomeRatio?: Prisma.SortOrder
 }
 
 export type ContractScalarRelationFilter = {
   is?: Prisma.ContractWhereInput
   isNot?: Prisma.ContractWhereInput
-}
-
-export type ContractNullableScalarRelationFilter = {
-  is?: Prisma.ContractWhereInput | null
-  isNot?: Prisma.ContractWhereInput | null
 }
 
 export type ContractCreateNestedManyWithoutBuyerInput = {
@@ -1359,22 +1475,6 @@ export type ContractUpdateOneRequiredWithoutTerminationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ContractUpdateToOneWithWhereWithoutTerminationsInput, Prisma.ContractUpdateWithoutTerminationsInput>, Prisma.ContractUncheckedUpdateWithoutTerminationsInput>
 }
 
-export type ContractCreateNestedOneWithoutPrequalificationInput = {
-  create?: Prisma.XOR<Prisma.ContractCreateWithoutPrequalificationInput, Prisma.ContractUncheckedCreateWithoutPrequalificationInput>
-  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutPrequalificationInput
-  connect?: Prisma.ContractWhereUniqueInput
-}
-
-export type ContractUpdateOneWithoutPrequalificationNestedInput = {
-  create?: Prisma.XOR<Prisma.ContractCreateWithoutPrequalificationInput, Prisma.ContractUncheckedCreateWithoutPrequalificationInput>
-  connectOrCreate?: Prisma.ContractCreateOrConnectWithoutPrequalificationInput
-  upsert?: Prisma.ContractUpsertWithoutPrequalificationInput
-  disconnect?: Prisma.ContractWhereInput | boolean
-  delete?: Prisma.ContractWhereInput | boolean
-  connect?: Prisma.ContractWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.ContractUpdateToOneWithWhereWithoutPrequalificationInput, Prisma.ContractUpdateWithoutPrequalificationInput>, Prisma.ContractUncheckedUpdateWithoutPrequalificationInput>
-}
-
 export type ContractCreateNestedOneWithoutPaymentMethodChangeRequestsInput = {
   create?: Prisma.XOR<Prisma.ContractCreateWithoutPaymentMethodChangeRequestsInput, Prisma.ContractUncheckedCreateWithoutPaymentMethodChangeRequestsInput>
   connectOrCreate?: Prisma.ContractCreateOrConnectWithoutPaymentMethodChangeRequestsInput
@@ -1404,6 +1504,11 @@ export type ContractCreateWithoutBuyerInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
   status?: $Enums.ContractStatus
   state?: $Enums.ContractStatus
   currentPhaseId?: string | null
@@ -1426,7 +1531,6 @@ export type ContractCreateWithoutBuyerInput = {
   events?: Prisma.ContractEventCreateNestedManyWithoutContractInput
   terminations?: Prisma.ContractTerminationCreateNestedManyWithoutContractInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutContractInput
-  prequalification?: Prisma.PrequalificationCreateNestedOneWithoutContractInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutContractInput
 }
 
@@ -1449,6 +1553,11 @@ export type ContractUncheckedCreateWithoutBuyerInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
   status?: $Enums.ContractStatus
   state?: $Enums.ContractStatus
   currentPhaseId?: string | null
@@ -1467,7 +1576,6 @@ export type ContractUncheckedCreateWithoutBuyerInput = {
   events?: Prisma.ContractEventUncheckedCreateNestedManyWithoutContractInput
   terminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutContractInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutContractInput
-  prequalification?: Prisma.PrequalificationUncheckedCreateNestedOneWithoutContractInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutContractInput
 }
 
@@ -1496,6 +1604,11 @@ export type ContractCreateWithoutSellerInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
   status?: $Enums.ContractStatus
   state?: $Enums.ContractStatus
   currentPhaseId?: string | null
@@ -1518,7 +1631,6 @@ export type ContractCreateWithoutSellerInput = {
   events?: Prisma.ContractEventCreateNestedManyWithoutContractInput
   terminations?: Prisma.ContractTerminationCreateNestedManyWithoutContractInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutContractInput
-  prequalification?: Prisma.PrequalificationCreateNestedOneWithoutContractInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutContractInput
 }
 
@@ -1541,6 +1653,11 @@ export type ContractUncheckedCreateWithoutSellerInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
   status?: $Enums.ContractStatus
   state?: $Enums.ContractStatus
   currentPhaseId?: string | null
@@ -1559,7 +1676,6 @@ export type ContractUncheckedCreateWithoutSellerInput = {
   events?: Prisma.ContractEventUncheckedCreateNestedManyWithoutContractInput
   terminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutContractInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutContractInput
-  prequalification?: Prisma.PrequalificationUncheckedCreateNestedOneWithoutContractInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutContractInput
 }
 
@@ -1612,6 +1728,11 @@ export type ContractScalarWhereInput = {
   periodicPayment?: Prisma.FloatNullableFilter<"Contract"> | number | null
   totalPaidToDate?: Prisma.FloatFilter<"Contract"> | number
   totalInterestPaid?: Prisma.FloatFilter<"Contract"> | number
+  monthlyIncome?: Prisma.FloatNullableFilter<"Contract"> | number | null
+  monthlyExpenses?: Prisma.FloatNullableFilter<"Contract"> | number | null
+  preApprovalAnswers?: Prisma.JsonNullableFilter<"Contract">
+  underwritingScore?: Prisma.FloatNullableFilter<"Contract"> | number | null
+  debtToIncomeRatio?: Prisma.FloatNullableFilter<"Contract"> | number | null
   status?: Prisma.EnumContractStatusFilter<"Contract"> | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFilter<"Contract"> | $Enums.ContractStatus
   currentPhaseId?: Prisma.StringNullableFilter<"Contract"> | string | null
@@ -1656,6 +1777,11 @@ export type ContractCreateWithoutTenantInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
   status?: $Enums.ContractStatus
   state?: $Enums.ContractStatus
   currentPhaseId?: string | null
@@ -1678,7 +1804,6 @@ export type ContractCreateWithoutTenantInput = {
   events?: Prisma.ContractEventCreateNestedManyWithoutContractInput
   terminations?: Prisma.ContractTerminationCreateNestedManyWithoutContractInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutContractInput
-  prequalification?: Prisma.PrequalificationCreateNestedOneWithoutContractInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutContractInput
 }
 
@@ -1701,6 +1826,11 @@ export type ContractUncheckedCreateWithoutTenantInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
   status?: $Enums.ContractStatus
   state?: $Enums.ContractStatus
   currentPhaseId?: string | null
@@ -1719,7 +1849,6 @@ export type ContractUncheckedCreateWithoutTenantInput = {
   events?: Prisma.ContractEventUncheckedCreateNestedManyWithoutContractInput
   terminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutContractInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutContractInput
-  prequalification?: Prisma.PrequalificationUncheckedCreateNestedOneWithoutContractInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutContractInput
 }
 
@@ -1764,6 +1893,11 @@ export type ContractCreateWithoutPropertyUnitInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
   status?: $Enums.ContractStatus
   state?: $Enums.ContractStatus
   currentPhaseId?: string | null
@@ -1786,7 +1920,6 @@ export type ContractCreateWithoutPropertyUnitInput = {
   events?: Prisma.ContractEventCreateNestedManyWithoutContractInput
   terminations?: Prisma.ContractTerminationCreateNestedManyWithoutContractInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutContractInput
-  prequalification?: Prisma.PrequalificationCreateNestedOneWithoutContractInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutContractInput
 }
 
@@ -1809,6 +1942,11 @@ export type ContractUncheckedCreateWithoutPropertyUnitInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
   status?: $Enums.ContractStatus
   state?: $Enums.ContractStatus
   currentPhaseId?: string | null
@@ -1827,7 +1965,6 @@ export type ContractUncheckedCreateWithoutPropertyUnitInput = {
   events?: Prisma.ContractEventUncheckedCreateNestedManyWithoutContractInput
   terminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutContractInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutContractInput
-  prequalification?: Prisma.PrequalificationUncheckedCreateNestedOneWithoutContractInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutContractInput
 }
 
@@ -1872,6 +2009,11 @@ export type ContractCreateWithoutPaymentMethodInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
   status?: $Enums.ContractStatus
   state?: $Enums.ContractStatus
   currentPhaseId?: string | null
@@ -1894,7 +2036,6 @@ export type ContractCreateWithoutPaymentMethodInput = {
   events?: Prisma.ContractEventCreateNestedManyWithoutContractInput
   terminations?: Prisma.ContractTerminationCreateNestedManyWithoutContractInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutContractInput
-  prequalification?: Prisma.PrequalificationCreateNestedOneWithoutContractInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutContractInput
 }
 
@@ -1917,6 +2058,11 @@ export type ContractUncheckedCreateWithoutPaymentMethodInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
   status?: $Enums.ContractStatus
   state?: $Enums.ContractStatus
   currentPhaseId?: string | null
@@ -1935,7 +2081,6 @@ export type ContractUncheckedCreateWithoutPaymentMethodInput = {
   events?: Prisma.ContractEventUncheckedCreateNestedManyWithoutContractInput
   terminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutContractInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutContractInput
-  prequalification?: Prisma.PrequalificationUncheckedCreateNestedOneWithoutContractInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutContractInput
 }
 
@@ -1980,6 +2125,11 @@ export type ContractCreateWithoutPhasesInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
   status?: $Enums.ContractStatus
   state?: $Enums.ContractStatus
   currentPhaseId?: string | null
@@ -2002,7 +2152,6 @@ export type ContractCreateWithoutPhasesInput = {
   events?: Prisma.ContractEventCreateNestedManyWithoutContractInput
   terminations?: Prisma.ContractTerminationCreateNestedManyWithoutContractInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutContractInput
-  prequalification?: Prisma.PrequalificationCreateNestedOneWithoutContractInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutContractInput
 }
 
@@ -2026,6 +2175,11 @@ export type ContractUncheckedCreateWithoutPhasesInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
   status?: $Enums.ContractStatus
   state?: $Enums.ContractStatus
   currentPhaseId?: string | null
@@ -2043,7 +2197,6 @@ export type ContractUncheckedCreateWithoutPhasesInput = {
   events?: Prisma.ContractEventUncheckedCreateNestedManyWithoutContractInput
   terminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutContractInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutContractInput
-  prequalification?: Prisma.PrequalificationUncheckedCreateNestedOneWithoutContractInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutContractInput
 }
 
@@ -2078,6 +2231,11 @@ export type ContractUpdateWithoutPhasesInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2100,7 +2258,6 @@ export type ContractUpdateWithoutPhasesInput = {
   events?: Prisma.ContractEventUpdateManyWithoutContractNestedInput
   terminations?: Prisma.ContractTerminationUpdateManyWithoutContractNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutContractNestedInput
-  prequalification?: Prisma.PrequalificationUpdateOneWithoutContractNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutContractNestedInput
 }
 
@@ -2124,6 +2281,11 @@ export type ContractUncheckedUpdateWithoutPhasesInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2141,7 +2303,6 @@ export type ContractUncheckedUpdateWithoutPhasesInput = {
   events?: Prisma.ContractEventUncheckedUpdateManyWithoutContractNestedInput
   terminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutContractNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutContractNestedInput
-  prequalification?: Prisma.PrequalificationUncheckedUpdateOneWithoutContractNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutContractNestedInput
 }
 
@@ -2160,6 +2321,11 @@ export type ContractCreateWithoutPaymentsInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
   status?: $Enums.ContractStatus
   state?: $Enums.ContractStatus
   currentPhaseId?: string | null
@@ -2182,7 +2348,6 @@ export type ContractCreateWithoutPaymentsInput = {
   events?: Prisma.ContractEventCreateNestedManyWithoutContractInput
   terminations?: Prisma.ContractTerminationCreateNestedManyWithoutContractInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutContractInput
-  prequalification?: Prisma.PrequalificationCreateNestedOneWithoutContractInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutContractInput
 }
 
@@ -2206,6 +2371,11 @@ export type ContractUncheckedCreateWithoutPaymentsInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
   status?: $Enums.ContractStatus
   state?: $Enums.ContractStatus
   currentPhaseId?: string | null
@@ -2223,7 +2393,6 @@ export type ContractUncheckedCreateWithoutPaymentsInput = {
   events?: Prisma.ContractEventUncheckedCreateNestedManyWithoutContractInput
   terminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutContractInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutContractInput
-  prequalification?: Prisma.PrequalificationUncheckedCreateNestedOneWithoutContractInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutContractInput
 }
 
@@ -2258,6 +2427,11 @@ export type ContractUpdateWithoutPaymentsInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2280,7 +2454,6 @@ export type ContractUpdateWithoutPaymentsInput = {
   events?: Prisma.ContractEventUpdateManyWithoutContractNestedInput
   terminations?: Prisma.ContractTerminationUpdateManyWithoutContractNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutContractNestedInput
-  prequalification?: Prisma.PrequalificationUpdateOneWithoutContractNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutContractNestedInput
 }
 
@@ -2304,6 +2477,11 @@ export type ContractUncheckedUpdateWithoutPaymentsInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2321,7 +2499,6 @@ export type ContractUncheckedUpdateWithoutPaymentsInput = {
   events?: Prisma.ContractEventUncheckedUpdateManyWithoutContractNestedInput
   terminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutContractNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutContractNestedInput
-  prequalification?: Prisma.PrequalificationUncheckedUpdateOneWithoutContractNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutContractNestedInput
 }
 
@@ -2340,6 +2517,11 @@ export type ContractCreateWithoutDocumentsInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
   status?: $Enums.ContractStatus
   state?: $Enums.ContractStatus
   currentPhaseId?: string | null
@@ -2362,7 +2544,6 @@ export type ContractCreateWithoutDocumentsInput = {
   events?: Prisma.ContractEventCreateNestedManyWithoutContractInput
   terminations?: Prisma.ContractTerminationCreateNestedManyWithoutContractInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutContractInput
-  prequalification?: Prisma.PrequalificationCreateNestedOneWithoutContractInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutContractInput
 }
 
@@ -2386,6 +2567,11 @@ export type ContractUncheckedCreateWithoutDocumentsInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
   status?: $Enums.ContractStatus
   state?: $Enums.ContractStatus
   currentPhaseId?: string | null
@@ -2403,7 +2589,6 @@ export type ContractUncheckedCreateWithoutDocumentsInput = {
   events?: Prisma.ContractEventUncheckedCreateNestedManyWithoutContractInput
   terminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutContractInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutContractInput
-  prequalification?: Prisma.PrequalificationUncheckedCreateNestedOneWithoutContractInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutContractInput
 }
 
@@ -2438,6 +2623,11 @@ export type ContractUpdateWithoutDocumentsInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2460,7 +2650,6 @@ export type ContractUpdateWithoutDocumentsInput = {
   events?: Prisma.ContractEventUpdateManyWithoutContractNestedInput
   terminations?: Prisma.ContractTerminationUpdateManyWithoutContractNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutContractNestedInput
-  prequalification?: Prisma.PrequalificationUpdateOneWithoutContractNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutContractNestedInput
 }
 
@@ -2484,6 +2673,11 @@ export type ContractUncheckedUpdateWithoutDocumentsInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2501,7 +2695,6 @@ export type ContractUncheckedUpdateWithoutDocumentsInput = {
   events?: Prisma.ContractEventUncheckedUpdateManyWithoutContractNestedInput
   terminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutContractNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutContractNestedInput
-  prequalification?: Prisma.PrequalificationUncheckedUpdateOneWithoutContractNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutContractNestedInput
 }
 
@@ -2520,6 +2713,11 @@ export type ContractCreateWithoutTransitionsInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
   status?: $Enums.ContractStatus
   state?: $Enums.ContractStatus
   currentPhaseId?: string | null
@@ -2542,7 +2740,6 @@ export type ContractCreateWithoutTransitionsInput = {
   events?: Prisma.ContractEventCreateNestedManyWithoutContractInput
   terminations?: Prisma.ContractTerminationCreateNestedManyWithoutContractInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutContractInput
-  prequalification?: Prisma.PrequalificationCreateNestedOneWithoutContractInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutContractInput
 }
 
@@ -2566,6 +2763,11 @@ export type ContractUncheckedCreateWithoutTransitionsInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
   status?: $Enums.ContractStatus
   state?: $Enums.ContractStatus
   currentPhaseId?: string | null
@@ -2583,7 +2785,6 @@ export type ContractUncheckedCreateWithoutTransitionsInput = {
   events?: Prisma.ContractEventUncheckedCreateNestedManyWithoutContractInput
   terminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutContractInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutContractInput
-  prequalification?: Prisma.PrequalificationUncheckedCreateNestedOneWithoutContractInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutContractInput
 }
 
@@ -2618,6 +2819,11 @@ export type ContractUpdateWithoutTransitionsInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2640,7 +2846,6 @@ export type ContractUpdateWithoutTransitionsInput = {
   events?: Prisma.ContractEventUpdateManyWithoutContractNestedInput
   terminations?: Prisma.ContractTerminationUpdateManyWithoutContractNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutContractNestedInput
-  prequalification?: Prisma.PrequalificationUpdateOneWithoutContractNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutContractNestedInput
 }
 
@@ -2664,6 +2869,11 @@ export type ContractUncheckedUpdateWithoutTransitionsInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2681,7 +2891,6 @@ export type ContractUncheckedUpdateWithoutTransitionsInput = {
   events?: Prisma.ContractEventUncheckedUpdateManyWithoutContractNestedInput
   terminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutContractNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutContractNestedInput
-  prequalification?: Prisma.PrequalificationUncheckedUpdateOneWithoutContractNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutContractNestedInput
 }
 
@@ -2700,6 +2909,11 @@ export type ContractCreateWithoutEventsInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
   status?: $Enums.ContractStatus
   state?: $Enums.ContractStatus
   currentPhaseId?: string | null
@@ -2722,7 +2936,6 @@ export type ContractCreateWithoutEventsInput = {
   transitions?: Prisma.ContractTransitionCreateNestedManyWithoutContractInput
   terminations?: Prisma.ContractTerminationCreateNestedManyWithoutContractInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutContractInput
-  prequalification?: Prisma.PrequalificationCreateNestedOneWithoutContractInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutContractInput
 }
 
@@ -2746,6 +2959,11 @@ export type ContractUncheckedCreateWithoutEventsInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
   status?: $Enums.ContractStatus
   state?: $Enums.ContractStatus
   currentPhaseId?: string | null
@@ -2763,7 +2981,6 @@ export type ContractUncheckedCreateWithoutEventsInput = {
   transitions?: Prisma.ContractTransitionUncheckedCreateNestedManyWithoutContractInput
   terminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutContractInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutContractInput
-  prequalification?: Prisma.PrequalificationUncheckedCreateNestedOneWithoutContractInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutContractInput
 }
 
@@ -2798,6 +3015,11 @@ export type ContractUpdateWithoutEventsInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2820,7 +3042,6 @@ export type ContractUpdateWithoutEventsInput = {
   transitions?: Prisma.ContractTransitionUpdateManyWithoutContractNestedInput
   terminations?: Prisma.ContractTerminationUpdateManyWithoutContractNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutContractNestedInput
-  prequalification?: Prisma.PrequalificationUpdateOneWithoutContractNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutContractNestedInput
 }
 
@@ -2844,6 +3065,11 @@ export type ContractUncheckedUpdateWithoutEventsInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2861,7 +3087,6 @@ export type ContractUncheckedUpdateWithoutEventsInput = {
   transitions?: Prisma.ContractTransitionUncheckedUpdateManyWithoutContractNestedInput
   terminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutContractNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutContractNestedInput
-  prequalification?: Prisma.PrequalificationUncheckedUpdateOneWithoutContractNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutContractNestedInput
 }
 
@@ -2880,6 +3105,11 @@ export type ContractCreateWithoutOfferLettersInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
   status?: $Enums.ContractStatus
   state?: $Enums.ContractStatus
   currentPhaseId?: string | null
@@ -2902,7 +3132,6 @@ export type ContractCreateWithoutOfferLettersInput = {
   transitions?: Prisma.ContractTransitionCreateNestedManyWithoutContractInput
   events?: Prisma.ContractEventCreateNestedManyWithoutContractInput
   terminations?: Prisma.ContractTerminationCreateNestedManyWithoutContractInput
-  prequalification?: Prisma.PrequalificationCreateNestedOneWithoutContractInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutContractInput
 }
 
@@ -2926,6 +3155,11 @@ export type ContractUncheckedCreateWithoutOfferLettersInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
   status?: $Enums.ContractStatus
   state?: $Enums.ContractStatus
   currentPhaseId?: string | null
@@ -2943,7 +3177,6 @@ export type ContractUncheckedCreateWithoutOfferLettersInput = {
   transitions?: Prisma.ContractTransitionUncheckedCreateNestedManyWithoutContractInput
   events?: Prisma.ContractEventUncheckedCreateNestedManyWithoutContractInput
   terminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutContractInput
-  prequalification?: Prisma.PrequalificationUncheckedCreateNestedOneWithoutContractInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutContractInput
 }
 
@@ -2978,6 +3211,11 @@ export type ContractUpdateWithoutOfferLettersInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3000,7 +3238,6 @@ export type ContractUpdateWithoutOfferLettersInput = {
   transitions?: Prisma.ContractTransitionUpdateManyWithoutContractNestedInput
   events?: Prisma.ContractEventUpdateManyWithoutContractNestedInput
   terminations?: Prisma.ContractTerminationUpdateManyWithoutContractNestedInput
-  prequalification?: Prisma.PrequalificationUpdateOneWithoutContractNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutContractNestedInput
 }
 
@@ -3024,6 +3261,11 @@ export type ContractUncheckedUpdateWithoutOfferLettersInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3041,7 +3283,6 @@ export type ContractUncheckedUpdateWithoutOfferLettersInput = {
   transitions?: Prisma.ContractTransitionUncheckedUpdateManyWithoutContractNestedInput
   events?: Prisma.ContractEventUncheckedUpdateManyWithoutContractNestedInput
   terminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutContractNestedInput
-  prequalification?: Prisma.PrequalificationUncheckedUpdateOneWithoutContractNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutContractNestedInput
 }
 
@@ -3060,6 +3301,11 @@ export type ContractCreateWithoutTerminationsInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
   status?: $Enums.ContractStatus
   state?: $Enums.ContractStatus
   currentPhaseId?: string | null
@@ -3082,7 +3328,6 @@ export type ContractCreateWithoutTerminationsInput = {
   transitions?: Prisma.ContractTransitionCreateNestedManyWithoutContractInput
   events?: Prisma.ContractEventCreateNestedManyWithoutContractInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutContractInput
-  prequalification?: Prisma.PrequalificationCreateNestedOneWithoutContractInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutContractInput
 }
 
@@ -3106,6 +3351,11 @@ export type ContractUncheckedCreateWithoutTerminationsInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
   status?: $Enums.ContractStatus
   state?: $Enums.ContractStatus
   currentPhaseId?: string | null
@@ -3123,7 +3373,6 @@ export type ContractUncheckedCreateWithoutTerminationsInput = {
   transitions?: Prisma.ContractTransitionUncheckedCreateNestedManyWithoutContractInput
   events?: Prisma.ContractEventUncheckedCreateNestedManyWithoutContractInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutContractInput
-  prequalification?: Prisma.PrequalificationUncheckedCreateNestedOneWithoutContractInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutContractInput
 }
 
@@ -3158,6 +3407,11 @@ export type ContractUpdateWithoutTerminationsInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3180,7 +3434,6 @@ export type ContractUpdateWithoutTerminationsInput = {
   transitions?: Prisma.ContractTransitionUpdateManyWithoutContractNestedInput
   events?: Prisma.ContractEventUpdateManyWithoutContractNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutContractNestedInput
-  prequalification?: Prisma.PrequalificationUpdateOneWithoutContractNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutContractNestedInput
 }
 
@@ -3204,6 +3457,11 @@ export type ContractUncheckedUpdateWithoutTerminationsInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3220,187 +3478,6 @@ export type ContractUncheckedUpdateWithoutTerminationsInput = {
   payments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutContractNestedInput
   transitions?: Prisma.ContractTransitionUncheckedUpdateManyWithoutContractNestedInput
   events?: Prisma.ContractEventUncheckedUpdateManyWithoutContractNestedInput
-  offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutContractNestedInput
-  prequalification?: Prisma.PrequalificationUncheckedUpdateOneWithoutContractNestedInput
-  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutContractNestedInput
-}
-
-export type ContractCreateWithoutPrequalificationInput = {
-  id?: string
-  contractNumber: string
-  title: string
-  description?: string | null
-  contractType: string
-  totalAmount: number
-  downPayment?: number
-  downPaymentPaid?: number
-  principal?: number | null
-  interestRate?: number | null
-  termMonths?: number | null
-  periodicPayment?: number | null
-  totalPaidToDate?: number
-  totalInterestPaid?: number
-  status?: $Enums.ContractStatus
-  state?: $Enums.ContractStatus
-  currentPhaseId?: string | null
-  nextPaymentDueDate?: Date | string | null
-  lastReminderSentAt?: Date | string | null
-  startDate?: Date | string | null
-  endDate?: Date | string | null
-  signedAt?: Date | string | null
-  terminatedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  tenant: Prisma.TenantCreateNestedOneWithoutContractsInput
-  propertyUnit: Prisma.PropertyUnitCreateNestedOneWithoutContractsInput
-  buyer: Prisma.UserCreateNestedOneWithoutContractsInput
-  seller?: Prisma.UserCreateNestedOneWithoutSoldContractsInput
-  paymentMethod?: Prisma.PropertyPaymentMethodCreateNestedOneWithoutContractsInput
-  phases?: Prisma.ContractPhaseCreateNestedManyWithoutContractInput
-  documents?: Prisma.ContractDocumentCreateNestedManyWithoutContractInput
-  payments?: Prisma.ContractPaymentCreateNestedManyWithoutContractInput
-  transitions?: Prisma.ContractTransitionCreateNestedManyWithoutContractInput
-  events?: Prisma.ContractEventCreateNestedManyWithoutContractInput
-  terminations?: Prisma.ContractTerminationCreateNestedManyWithoutContractInput
-  offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutContractInput
-  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutContractInput
-}
-
-export type ContractUncheckedCreateWithoutPrequalificationInput = {
-  id?: string
-  tenantId: string
-  propertyUnitId: string
-  buyerId: string
-  sellerId?: string | null
-  paymentMethodId?: string | null
-  contractNumber: string
-  title: string
-  description?: string | null
-  contractType: string
-  totalAmount: number
-  downPayment?: number
-  downPaymentPaid?: number
-  principal?: number | null
-  interestRate?: number | null
-  termMonths?: number | null
-  periodicPayment?: number | null
-  totalPaidToDate?: number
-  totalInterestPaid?: number
-  status?: $Enums.ContractStatus
-  state?: $Enums.ContractStatus
-  currentPhaseId?: string | null
-  nextPaymentDueDate?: Date | string | null
-  lastReminderSentAt?: Date | string | null
-  startDate?: Date | string | null
-  endDate?: Date | string | null
-  signedAt?: Date | string | null
-  terminatedAt?: Date | string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  phases?: Prisma.ContractPhaseUncheckedCreateNestedManyWithoutContractInput
-  documents?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutContractInput
-  payments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutContractInput
-  transitions?: Prisma.ContractTransitionUncheckedCreateNestedManyWithoutContractInput
-  events?: Prisma.ContractEventUncheckedCreateNestedManyWithoutContractInput
-  terminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutContractInput
-  offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutContractInput
-  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutContractInput
-}
-
-export type ContractCreateOrConnectWithoutPrequalificationInput = {
-  where: Prisma.ContractWhereUniqueInput
-  create: Prisma.XOR<Prisma.ContractCreateWithoutPrequalificationInput, Prisma.ContractUncheckedCreateWithoutPrequalificationInput>
-}
-
-export type ContractUpsertWithoutPrequalificationInput = {
-  update: Prisma.XOR<Prisma.ContractUpdateWithoutPrequalificationInput, Prisma.ContractUncheckedUpdateWithoutPrequalificationInput>
-  create: Prisma.XOR<Prisma.ContractCreateWithoutPrequalificationInput, Prisma.ContractUncheckedCreateWithoutPrequalificationInput>
-  where?: Prisma.ContractWhereInput
-}
-
-export type ContractUpdateToOneWithWhereWithoutPrequalificationInput = {
-  where?: Prisma.ContractWhereInput
-  data: Prisma.XOR<Prisma.ContractUpdateWithoutPrequalificationInput, Prisma.ContractUncheckedUpdateWithoutPrequalificationInput>
-}
-
-export type ContractUpdateWithoutPrequalificationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  contractNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contractType?: Prisma.StringFieldUpdateOperationsInput | string
-  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  downPayment?: Prisma.FloatFieldUpdateOperationsInput | number
-  downPaymentPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  principal?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  termMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
-  totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
-  state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
-  currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  terminatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  tenant?: Prisma.TenantUpdateOneRequiredWithoutContractsNestedInput
-  propertyUnit?: Prisma.PropertyUnitUpdateOneRequiredWithoutContractsNestedInput
-  buyer?: Prisma.UserUpdateOneRequiredWithoutContractsNestedInput
-  seller?: Prisma.UserUpdateOneWithoutSoldContractsNestedInput
-  paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneWithoutContractsNestedInput
-  phases?: Prisma.ContractPhaseUpdateManyWithoutContractNestedInput
-  documents?: Prisma.ContractDocumentUpdateManyWithoutContractNestedInput
-  payments?: Prisma.ContractPaymentUpdateManyWithoutContractNestedInput
-  transitions?: Prisma.ContractTransitionUpdateManyWithoutContractNestedInput
-  events?: Prisma.ContractEventUpdateManyWithoutContractNestedInput
-  terminations?: Prisma.ContractTerminationUpdateManyWithoutContractNestedInput
-  offerLetters?: Prisma.OfferLetterUpdateManyWithoutContractNestedInput
-  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutContractNestedInput
-}
-
-export type ContractUncheckedUpdateWithoutPrequalificationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  propertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
-  buyerId?: Prisma.StringFieldUpdateOperationsInput | string
-  sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contractNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contractType?: Prisma.StringFieldUpdateOperationsInput | string
-  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  downPayment?: Prisma.FloatFieldUpdateOperationsInput | number
-  downPaymentPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  principal?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  termMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
-  totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
-  status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
-  state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
-  currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  terminatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  phases?: Prisma.ContractPhaseUncheckedUpdateManyWithoutContractNestedInput
-  documents?: Prisma.ContractDocumentUncheckedUpdateManyWithoutContractNestedInput
-  payments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutContractNestedInput
-  transitions?: Prisma.ContractTransitionUncheckedUpdateManyWithoutContractNestedInput
-  events?: Prisma.ContractEventUncheckedUpdateManyWithoutContractNestedInput
-  terminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutContractNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutContractNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutContractNestedInput
 }
@@ -3420,6 +3497,11 @@ export type ContractCreateWithoutPaymentMethodChangeRequestsInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
   status?: $Enums.ContractStatus
   state?: $Enums.ContractStatus
   currentPhaseId?: string | null
@@ -3443,7 +3525,6 @@ export type ContractCreateWithoutPaymentMethodChangeRequestsInput = {
   events?: Prisma.ContractEventCreateNestedManyWithoutContractInput
   terminations?: Prisma.ContractTerminationCreateNestedManyWithoutContractInput
   offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutContractInput
-  prequalification?: Prisma.PrequalificationCreateNestedOneWithoutContractInput
 }
 
 export type ContractUncheckedCreateWithoutPaymentMethodChangeRequestsInput = {
@@ -3466,6 +3547,11 @@ export type ContractUncheckedCreateWithoutPaymentMethodChangeRequestsInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
   status?: $Enums.ContractStatus
   state?: $Enums.ContractStatus
   currentPhaseId?: string | null
@@ -3484,7 +3570,6 @@ export type ContractUncheckedCreateWithoutPaymentMethodChangeRequestsInput = {
   events?: Prisma.ContractEventUncheckedCreateNestedManyWithoutContractInput
   terminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutContractInput
   offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutContractInput
-  prequalification?: Prisma.PrequalificationUncheckedCreateNestedOneWithoutContractInput
 }
 
 export type ContractCreateOrConnectWithoutPaymentMethodChangeRequestsInput = {
@@ -3518,6 +3603,11 @@ export type ContractUpdateWithoutPaymentMethodChangeRequestsInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3541,7 +3631,6 @@ export type ContractUpdateWithoutPaymentMethodChangeRequestsInput = {
   events?: Prisma.ContractEventUpdateManyWithoutContractNestedInput
   terminations?: Prisma.ContractTerminationUpdateManyWithoutContractNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutContractNestedInput
-  prequalification?: Prisma.PrequalificationUpdateOneWithoutContractNestedInput
 }
 
 export type ContractUncheckedUpdateWithoutPaymentMethodChangeRequestsInput = {
@@ -3564,6 +3653,11 @@ export type ContractUncheckedUpdateWithoutPaymentMethodChangeRequestsInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3582,7 +3676,6 @@ export type ContractUncheckedUpdateWithoutPaymentMethodChangeRequestsInput = {
   events?: Prisma.ContractEventUncheckedUpdateManyWithoutContractNestedInput
   terminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutContractNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutContractNestedInput
-  prequalification?: Prisma.PrequalificationUncheckedUpdateOneWithoutContractNestedInput
 }
 
 export type ContractCreateManyBuyerInput = {
@@ -3604,6 +3697,11 @@ export type ContractCreateManyBuyerInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
   status?: $Enums.ContractStatus
   state?: $Enums.ContractStatus
   currentPhaseId?: string | null
@@ -3636,6 +3734,11 @@ export type ContractCreateManySellerInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
   status?: $Enums.ContractStatus
   state?: $Enums.ContractStatus
   currentPhaseId?: string | null
@@ -3664,6 +3767,11 @@ export type ContractUpdateWithoutBuyerInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3686,7 +3794,6 @@ export type ContractUpdateWithoutBuyerInput = {
   events?: Prisma.ContractEventUpdateManyWithoutContractNestedInput
   terminations?: Prisma.ContractTerminationUpdateManyWithoutContractNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutContractNestedInput
-  prequalification?: Prisma.PrequalificationUpdateOneWithoutContractNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutContractNestedInput
 }
 
@@ -3709,6 +3816,11 @@ export type ContractUncheckedUpdateWithoutBuyerInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3727,7 +3839,6 @@ export type ContractUncheckedUpdateWithoutBuyerInput = {
   events?: Prisma.ContractEventUncheckedUpdateManyWithoutContractNestedInput
   terminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutContractNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutContractNestedInput
-  prequalification?: Prisma.PrequalificationUncheckedUpdateOneWithoutContractNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutContractNestedInput
 }
 
@@ -3750,6 +3861,11 @@ export type ContractUncheckedUpdateManyWithoutBuyerInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3778,6 +3894,11 @@ export type ContractUpdateWithoutSellerInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3800,7 +3921,6 @@ export type ContractUpdateWithoutSellerInput = {
   events?: Prisma.ContractEventUpdateManyWithoutContractNestedInput
   terminations?: Prisma.ContractTerminationUpdateManyWithoutContractNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutContractNestedInput
-  prequalification?: Prisma.PrequalificationUpdateOneWithoutContractNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutContractNestedInput
 }
 
@@ -3823,6 +3943,11 @@ export type ContractUncheckedUpdateWithoutSellerInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3841,7 +3966,6 @@ export type ContractUncheckedUpdateWithoutSellerInput = {
   events?: Prisma.ContractEventUncheckedUpdateManyWithoutContractNestedInput
   terminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutContractNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutContractNestedInput
-  prequalification?: Prisma.PrequalificationUncheckedUpdateOneWithoutContractNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutContractNestedInput
 }
 
@@ -3864,6 +3988,11 @@ export type ContractUncheckedUpdateManyWithoutSellerInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3896,6 +4025,11 @@ export type ContractCreateManyTenantInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
   status?: $Enums.ContractStatus
   state?: $Enums.ContractStatus
   currentPhaseId?: string | null
@@ -3924,6 +4058,11 @@ export type ContractUpdateWithoutTenantInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3946,7 +4085,6 @@ export type ContractUpdateWithoutTenantInput = {
   events?: Prisma.ContractEventUpdateManyWithoutContractNestedInput
   terminations?: Prisma.ContractTerminationUpdateManyWithoutContractNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutContractNestedInput
-  prequalification?: Prisma.PrequalificationUpdateOneWithoutContractNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutContractNestedInput
 }
 
@@ -3969,6 +4107,11 @@ export type ContractUncheckedUpdateWithoutTenantInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3987,7 +4130,6 @@ export type ContractUncheckedUpdateWithoutTenantInput = {
   events?: Prisma.ContractEventUncheckedUpdateManyWithoutContractNestedInput
   terminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutContractNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutContractNestedInput
-  prequalification?: Prisma.PrequalificationUncheckedUpdateOneWithoutContractNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutContractNestedInput
 }
 
@@ -4010,6 +4152,11 @@ export type ContractUncheckedUpdateManyWithoutTenantInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4042,6 +4189,11 @@ export type ContractCreateManyPropertyUnitInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
   status?: $Enums.ContractStatus
   state?: $Enums.ContractStatus
   currentPhaseId?: string | null
@@ -4070,6 +4222,11 @@ export type ContractUpdateWithoutPropertyUnitInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4092,7 +4249,6 @@ export type ContractUpdateWithoutPropertyUnitInput = {
   events?: Prisma.ContractEventUpdateManyWithoutContractNestedInput
   terminations?: Prisma.ContractTerminationUpdateManyWithoutContractNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutContractNestedInput
-  prequalification?: Prisma.PrequalificationUpdateOneWithoutContractNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutContractNestedInput
 }
 
@@ -4115,6 +4271,11 @@ export type ContractUncheckedUpdateWithoutPropertyUnitInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4133,7 +4294,6 @@ export type ContractUncheckedUpdateWithoutPropertyUnitInput = {
   events?: Prisma.ContractEventUncheckedUpdateManyWithoutContractNestedInput
   terminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutContractNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutContractNestedInput
-  prequalification?: Prisma.PrequalificationUncheckedUpdateOneWithoutContractNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutContractNestedInput
 }
 
@@ -4156,6 +4316,11 @@ export type ContractUncheckedUpdateManyWithoutPropertyUnitInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4188,6 +4353,11 @@ export type ContractCreateManyPaymentMethodInput = {
   periodicPayment?: number | null
   totalPaidToDate?: number
   totalInterestPaid?: number
+  monthlyIncome?: number | null
+  monthlyExpenses?: number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
   status?: $Enums.ContractStatus
   state?: $Enums.ContractStatus
   currentPhaseId?: string | null
@@ -4216,6 +4386,11 @@ export type ContractUpdateWithoutPaymentMethodInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4238,7 +4413,6 @@ export type ContractUpdateWithoutPaymentMethodInput = {
   events?: Prisma.ContractEventUpdateManyWithoutContractNestedInput
   terminations?: Prisma.ContractTerminationUpdateManyWithoutContractNestedInput
   offerLetters?: Prisma.OfferLetterUpdateManyWithoutContractNestedInput
-  prequalification?: Prisma.PrequalificationUpdateOneWithoutContractNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutContractNestedInput
 }
 
@@ -4261,6 +4435,11 @@ export type ContractUncheckedUpdateWithoutPaymentMethodInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4279,7 +4458,6 @@ export type ContractUncheckedUpdateWithoutPaymentMethodInput = {
   events?: Prisma.ContractEventUncheckedUpdateManyWithoutContractNestedInput
   terminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutContractNestedInput
   offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutContractNestedInput
-  prequalification?: Prisma.PrequalificationUncheckedUpdateOneWithoutContractNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutContractNestedInput
 }
 
@@ -4302,6 +4480,11 @@ export type ContractUncheckedUpdateManyWithoutPaymentMethodInput = {
   periodicPayment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   totalInterestPaid?: Prisma.FloatFieldUpdateOperationsInput | number
+  monthlyIncome?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyExpenses?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   state?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4429,6 +4612,11 @@ export type ContractSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   periodicPayment?: boolean
   totalPaidToDate?: boolean
   totalInterestPaid?: boolean
+  monthlyIncome?: boolean
+  monthlyExpenses?: boolean
+  preApprovalAnswers?: boolean
+  underwritingScore?: boolean
+  debtToIncomeRatio?: boolean
   status?: boolean
   state?: boolean
   currentPhaseId?: boolean
@@ -4452,7 +4640,6 @@ export type ContractSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   events?: boolean | Prisma.Contract$eventsArgs<ExtArgs>
   terminations?: boolean | Prisma.Contract$terminationsArgs<ExtArgs>
   offerLetters?: boolean | Prisma.Contract$offerLettersArgs<ExtArgs>
-  prequalification?: boolean | Prisma.Contract$prequalificationArgs<ExtArgs>
   paymentMethodChangeRequests?: boolean | Prisma.Contract$paymentMethodChangeRequestsArgs<ExtArgs>
   _count?: boolean | Prisma.ContractCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["contract"]>
@@ -4479,6 +4666,11 @@ export type ContractSelectScalar = {
   periodicPayment?: boolean
   totalPaidToDate?: boolean
   totalInterestPaid?: boolean
+  monthlyIncome?: boolean
+  monthlyExpenses?: boolean
+  preApprovalAnswers?: boolean
+  underwritingScore?: boolean
+  debtToIncomeRatio?: boolean
   status?: boolean
   state?: boolean
   currentPhaseId?: boolean
@@ -4492,7 +4684,7 @@ export type ContractSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ContractOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "propertyUnitId" | "buyerId" | "sellerId" | "paymentMethodId" | "contractNumber" | "title" | "description" | "contractType" | "totalAmount" | "downPayment" | "downPaymentPaid" | "principal" | "interestRate" | "termMonths" | "periodicPayment" | "totalPaidToDate" | "totalInterestPaid" | "status" | "state" | "currentPhaseId" | "nextPaymentDueDate" | "lastReminderSentAt" | "startDate" | "endDate" | "signedAt" | "terminatedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["contract"]>
+export type ContractOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "propertyUnitId" | "buyerId" | "sellerId" | "paymentMethodId" | "contractNumber" | "title" | "description" | "contractType" | "totalAmount" | "downPayment" | "downPaymentPaid" | "principal" | "interestRate" | "termMonths" | "periodicPayment" | "totalPaidToDate" | "totalInterestPaid" | "monthlyIncome" | "monthlyExpenses" | "preApprovalAnswers" | "underwritingScore" | "debtToIncomeRatio" | "status" | "state" | "currentPhaseId" | "nextPaymentDueDate" | "lastReminderSentAt" | "startDate" | "endDate" | "signedAt" | "terminatedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["contract"]>
 export type ContractInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   propertyUnit?: boolean | Prisma.PropertyUnitDefaultArgs<ExtArgs>
@@ -4506,7 +4698,6 @@ export type ContractInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
   events?: boolean | Prisma.Contract$eventsArgs<ExtArgs>
   terminations?: boolean | Prisma.Contract$terminationsArgs<ExtArgs>
   offerLetters?: boolean | Prisma.Contract$offerLettersArgs<ExtArgs>
-  prequalification?: boolean | Prisma.Contract$prequalificationArgs<ExtArgs>
   paymentMethodChangeRequests?: boolean | Prisma.Contract$paymentMethodChangeRequestsArgs<ExtArgs>
   _count?: boolean | Prisma.ContractCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -4526,7 +4717,6 @@ export type $ContractPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     events: Prisma.$ContractEventPayload<ExtArgs>[]
     terminations: Prisma.$ContractTerminationPayload<ExtArgs>[]
     offerLetters: Prisma.$OfferLetterPayload<ExtArgs>[]
-    prequalification: Prisma.$PrequalificationPayload<ExtArgs> | null
     paymentMethodChangeRequests: Prisma.$PaymentMethodChangeRequestPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -4549,6 +4739,11 @@ export type $ContractPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     periodicPayment: number | null
     totalPaidToDate: number
     totalInterestPaid: number
+    monthlyIncome: number | null
+    monthlyExpenses: number | null
+    preApprovalAnswers: runtime.JsonValue | null
+    underwritingScore: number | null
+    debtToIncomeRatio: number | null
     status: $Enums.ContractStatus
     state: $Enums.ContractStatus
     currentPhaseId: string | null
@@ -4912,7 +5107,6 @@ export interface Prisma__ContractClient<T, Null = never, ExtArgs extends runtime
   events<T extends Prisma.Contract$eventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contract$eventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContractEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   terminations<T extends Prisma.Contract$terminationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contract$terminationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContractTerminationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   offerLetters<T extends Prisma.Contract$offerLettersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contract$offerLettersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OfferLetterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  prequalification<T extends Prisma.Contract$prequalificationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contract$prequalificationArgs<ExtArgs>>): Prisma.Prisma__PrequalificationClient<runtime.Types.Result.GetResult<Prisma.$PrequalificationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   paymentMethodChangeRequests<T extends Prisma.Contract$paymentMethodChangeRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contract$paymentMethodChangeRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentMethodChangeRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -4962,6 +5156,11 @@ export interface ContractFieldRefs {
   readonly periodicPayment: Prisma.FieldRef<"Contract", 'Float'>
   readonly totalPaidToDate: Prisma.FieldRef<"Contract", 'Float'>
   readonly totalInterestPaid: Prisma.FieldRef<"Contract", 'Float'>
+  readonly monthlyIncome: Prisma.FieldRef<"Contract", 'Float'>
+  readonly monthlyExpenses: Prisma.FieldRef<"Contract", 'Float'>
+  readonly preApprovalAnswers: Prisma.FieldRef<"Contract", 'Json'>
+  readonly underwritingScore: Prisma.FieldRef<"Contract", 'Float'>
+  readonly debtToIncomeRatio: Prisma.FieldRef<"Contract", 'Float'>
   readonly status: Prisma.FieldRef<"Contract", 'ContractStatus'>
   readonly state: Prisma.FieldRef<"Contract", 'ContractStatus'>
   readonly currentPhaseId: Prisma.FieldRef<"Contract", 'String'>
@@ -5519,25 +5718,6 @@ export type Contract$offerLettersArgs<ExtArgs extends runtime.Types.Extensions.I
   take?: number
   skip?: number
   distinct?: Prisma.OfferLetterScalarFieldEnum | Prisma.OfferLetterScalarFieldEnum[]
-}
-
-/**
- * Contract.prequalification
- */
-export type Contract$prequalificationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Prequalification
-   */
-  select?: Prisma.PrequalificationSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Prequalification
-   */
-  omit?: Prisma.PrequalificationOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PrequalificationInclude<ExtArgs> | null
-  where?: Prisma.PrequalificationWhereInput
 }
 
 /**

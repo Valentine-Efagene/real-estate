@@ -69,6 +69,8 @@ Order, track, and attach title/insurance results to loan files.
 
 Payment posting, escrow, amortization schedules, statements, and remittance.
 
+- [x] Payment method change flow (E2E tests, SUPERSEDED enum migration, contract-phase and payment-method-change service fixes) — 2026-01-05
+
 ### 11. Payments & PCI Compliance
 
 Payment gateway integrations, tokenization/vaulting, reconciliation, and refunds.

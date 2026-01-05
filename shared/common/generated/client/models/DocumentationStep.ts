@@ -28,10 +28,14 @@ export type AggregateDocumentationStep = {
 
 export type DocumentationStepAvgAggregateOutputType = {
   order: number | null
+  underwritingScore: number | null
+  debtToIncomeRatio: number | null
 }
 
 export type DocumentationStepSumAggregateOutputType = {
   order: number | null
+  underwritingScore: number | null
+  debtToIncomeRatio: number | null
 }
 
 export type DocumentationStepMinAggregateOutputType = {
@@ -42,6 +46,10 @@ export type DocumentationStepMinAggregateOutputType = {
   stepType: $Enums.StepType | null
   order: number | null
   status: $Enums.StepStatus | null
+  underwritingScore: number | null
+  debtToIncomeRatio: number | null
+  underwritingDecision: string | null
+  underwritingNotes: string | null
   assigneeId: string | null
   dueDate: Date | null
   completedAt: Date | null
@@ -57,6 +65,10 @@ export type DocumentationStepMaxAggregateOutputType = {
   stepType: $Enums.StepType | null
   order: number | null
   status: $Enums.StepStatus | null
+  underwritingScore: number | null
+  debtToIncomeRatio: number | null
+  underwritingDecision: string | null
+  underwritingNotes: string | null
   assigneeId: string | null
   dueDate: Date | null
   completedAt: Date | null
@@ -73,6 +85,11 @@ export type DocumentationStepCountAggregateOutputType = {
   order: number
   status: number
   metadata: number
+  preApprovalAnswers: number
+  underwritingScore: number
+  debtToIncomeRatio: number
+  underwritingDecision: number
+  underwritingNotes: number
   assigneeId: number
   dueDate: number
   completedAt: number
@@ -84,10 +101,14 @@ export type DocumentationStepCountAggregateOutputType = {
 
 export type DocumentationStepAvgAggregateInputType = {
   order?: true
+  underwritingScore?: true
+  debtToIncomeRatio?: true
 }
 
 export type DocumentationStepSumAggregateInputType = {
   order?: true
+  underwritingScore?: true
+  debtToIncomeRatio?: true
 }
 
 export type DocumentationStepMinAggregateInputType = {
@@ -98,6 +119,10 @@ export type DocumentationStepMinAggregateInputType = {
   stepType?: true
   order?: true
   status?: true
+  underwritingScore?: true
+  debtToIncomeRatio?: true
+  underwritingDecision?: true
+  underwritingNotes?: true
   assigneeId?: true
   dueDate?: true
   completedAt?: true
@@ -113,6 +138,10 @@ export type DocumentationStepMaxAggregateInputType = {
   stepType?: true
   order?: true
   status?: true
+  underwritingScore?: true
+  debtToIncomeRatio?: true
+  underwritingDecision?: true
+  underwritingNotes?: true
   assigneeId?: true
   dueDate?: true
   completedAt?: true
@@ -129,6 +158,11 @@ export type DocumentationStepCountAggregateInputType = {
   order?: true
   status?: true
   metadata?: true
+  preApprovalAnswers?: true
+  underwritingScore?: true
+  debtToIncomeRatio?: true
+  underwritingDecision?: true
+  underwritingNotes?: true
   assigneeId?: true
   dueDate?: true
   completedAt?: true
@@ -232,6 +266,11 @@ export type DocumentationStepGroupByOutputType = {
   order: number
   status: $Enums.StepStatus
   metadata: runtime.JsonValue | null
+  preApprovalAnswers: runtime.JsonValue | null
+  underwritingScore: number | null
+  debtToIncomeRatio: number | null
+  underwritingDecision: string | null
+  underwritingNotes: string | null
   assigneeId: string | null
   dueDate: Date | null
   completedAt: Date | null
@@ -271,6 +310,11 @@ export type DocumentationStepWhereInput = {
   order?: Prisma.IntFilter<"DocumentationStep"> | number
   status?: Prisma.EnumStepStatusFilter<"DocumentationStep"> | $Enums.StepStatus
   metadata?: Prisma.JsonNullableFilter<"DocumentationStep">
+  preApprovalAnswers?: Prisma.JsonNullableFilter<"DocumentationStep">
+  underwritingScore?: Prisma.FloatNullableFilter<"DocumentationStep"> | number | null
+  debtToIncomeRatio?: Prisma.FloatNullableFilter<"DocumentationStep"> | number | null
+  underwritingDecision?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
+  underwritingNotes?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
   assigneeId?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
   dueDate?: Prisma.DateTimeNullableFilter<"DocumentationStep"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableFilter<"DocumentationStep"> | Date | string | null
@@ -291,6 +335,11 @@ export type DocumentationStepOrderByWithRelationInput = {
   order?: Prisma.SortOrder
   status?: Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
+  preApprovalAnswers?: Prisma.SortOrderInput | Prisma.SortOrder
+  underwritingScore?: Prisma.SortOrderInput | Prisma.SortOrder
+  debtToIncomeRatio?: Prisma.SortOrderInput | Prisma.SortOrder
+  underwritingDecision?: Prisma.SortOrderInput | Prisma.SortOrder
+  underwritingNotes?: Prisma.SortOrderInput | Prisma.SortOrder
   assigneeId?: Prisma.SortOrderInput | Prisma.SortOrder
   dueDate?: Prisma.SortOrderInput | Prisma.SortOrder
   completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -315,6 +364,11 @@ export type DocumentationStepWhereUniqueInput = Prisma.AtLeast<{
   order?: Prisma.IntFilter<"DocumentationStep"> | number
   status?: Prisma.EnumStepStatusFilter<"DocumentationStep"> | $Enums.StepStatus
   metadata?: Prisma.JsonNullableFilter<"DocumentationStep">
+  preApprovalAnswers?: Prisma.JsonNullableFilter<"DocumentationStep">
+  underwritingScore?: Prisma.FloatNullableFilter<"DocumentationStep"> | number | null
+  debtToIncomeRatio?: Prisma.FloatNullableFilter<"DocumentationStep"> | number | null
+  underwritingDecision?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
+  underwritingNotes?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
   assigneeId?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
   dueDate?: Prisma.DateTimeNullableFilter<"DocumentationStep"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableFilter<"DocumentationStep"> | Date | string | null
@@ -335,6 +389,11 @@ export type DocumentationStepOrderByWithAggregationInput = {
   order?: Prisma.SortOrder
   status?: Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
+  preApprovalAnswers?: Prisma.SortOrderInput | Prisma.SortOrder
+  underwritingScore?: Prisma.SortOrderInput | Prisma.SortOrder
+  debtToIncomeRatio?: Prisma.SortOrderInput | Prisma.SortOrder
+  underwritingDecision?: Prisma.SortOrderInput | Prisma.SortOrder
+  underwritingNotes?: Prisma.SortOrderInput | Prisma.SortOrder
   assigneeId?: Prisma.SortOrderInput | Prisma.SortOrder
   dueDate?: Prisma.SortOrderInput | Prisma.SortOrder
   completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -359,6 +418,11 @@ export type DocumentationStepScalarWhereWithAggregatesInput = {
   order?: Prisma.IntWithAggregatesFilter<"DocumentationStep"> | number
   status?: Prisma.EnumStepStatusWithAggregatesFilter<"DocumentationStep"> | $Enums.StepStatus
   metadata?: Prisma.JsonNullableWithAggregatesFilter<"DocumentationStep">
+  preApprovalAnswers?: Prisma.JsonNullableWithAggregatesFilter<"DocumentationStep">
+  underwritingScore?: Prisma.FloatNullableWithAggregatesFilter<"DocumentationStep"> | number | null
+  debtToIncomeRatio?: Prisma.FloatNullableWithAggregatesFilter<"DocumentationStep"> | number | null
+  underwritingDecision?: Prisma.StringNullableWithAggregatesFilter<"DocumentationStep"> | string | null
+  underwritingNotes?: Prisma.StringNullableWithAggregatesFilter<"DocumentationStep"> | string | null
   assigneeId?: Prisma.StringNullableWithAggregatesFilter<"DocumentationStep"> | string | null
   dueDate?: Prisma.DateTimeNullableWithAggregatesFilter<"DocumentationStep"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"DocumentationStep"> | Date | string | null
@@ -374,6 +438,11 @@ export type DocumentationStepCreateInput = {
   order: number
   status?: $Enums.StepStatus
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
+  underwritingDecision?: string | null
+  underwritingNotes?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -393,6 +462,11 @@ export type DocumentationStepUncheckedCreateInput = {
   order: number
   status?: $Enums.StepStatus
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
+  underwritingDecision?: string | null
+  underwritingNotes?: string | null
   assigneeId?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
@@ -410,6 +484,11 @@ export type DocumentationStepUpdateInput = {
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  underwritingDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  underwritingNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -429,6 +508,11 @@ export type DocumentationStepUncheckedUpdateInput = {
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  underwritingDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  underwritingNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -447,6 +531,11 @@ export type DocumentationStepCreateManyInput = {
   order: number
   status?: $Enums.StepStatus
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
+  underwritingDecision?: string | null
+  underwritingNotes?: string | null
   assigneeId?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
@@ -462,6 +551,11 @@ export type DocumentationStepUpdateManyMutationInput = {
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  underwritingDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  underwritingNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -477,6 +571,11 @@ export type DocumentationStepUncheckedUpdateManyInput = {
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  underwritingDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  underwritingNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -509,6 +608,11 @@ export type DocumentationStepCountOrderByAggregateInput = {
   order?: Prisma.SortOrder
   status?: Prisma.SortOrder
   metadata?: Prisma.SortOrder
+  preApprovalAnswers?: Prisma.SortOrder
+  underwritingScore?: Prisma.SortOrder
+  debtToIncomeRatio?: Prisma.SortOrder
+  underwritingDecision?: Prisma.SortOrder
+  underwritingNotes?: Prisma.SortOrder
   assigneeId?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
@@ -518,6 +622,8 @@ export type DocumentationStepCountOrderByAggregateInput = {
 
 export type DocumentationStepAvgOrderByAggregateInput = {
   order?: Prisma.SortOrder
+  underwritingScore?: Prisma.SortOrder
+  debtToIncomeRatio?: Prisma.SortOrder
 }
 
 export type DocumentationStepMaxOrderByAggregateInput = {
@@ -528,6 +634,10 @@ export type DocumentationStepMaxOrderByAggregateInput = {
   stepType?: Prisma.SortOrder
   order?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  underwritingScore?: Prisma.SortOrder
+  debtToIncomeRatio?: Prisma.SortOrder
+  underwritingDecision?: Prisma.SortOrder
+  underwritingNotes?: Prisma.SortOrder
   assigneeId?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
@@ -543,6 +653,10 @@ export type DocumentationStepMinOrderByAggregateInput = {
   stepType?: Prisma.SortOrder
   order?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  underwritingScore?: Prisma.SortOrder
+  debtToIncomeRatio?: Prisma.SortOrder
+  underwritingDecision?: Prisma.SortOrder
+  underwritingNotes?: Prisma.SortOrder
   assigneeId?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
@@ -552,6 +666,8 @@ export type DocumentationStepMinOrderByAggregateInput = {
 
 export type DocumentationStepSumOrderByAggregateInput = {
   order?: Prisma.SortOrder
+  underwritingScore?: Prisma.SortOrder
+  debtToIncomeRatio?: Prisma.SortOrder
 }
 
 export type DocumentationStepScalarRelationFilter = {
@@ -683,6 +799,11 @@ export type DocumentationStepCreateWithoutAssigneeInput = {
   order: number
   status?: $Enums.StepStatus
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
+  underwritingDecision?: string | null
+  underwritingNotes?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -701,6 +822,11 @@ export type DocumentationStepUncheckedCreateWithoutAssigneeInput = {
   order: number
   status?: $Enums.StepStatus
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
+  underwritingDecision?: string | null
+  underwritingNotes?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -747,6 +873,11 @@ export type DocumentationStepScalarWhereInput = {
   order?: Prisma.IntFilter<"DocumentationStep"> | number
   status?: Prisma.EnumStepStatusFilter<"DocumentationStep"> | $Enums.StepStatus
   metadata?: Prisma.JsonNullableFilter<"DocumentationStep">
+  preApprovalAnswers?: Prisma.JsonNullableFilter<"DocumentationStep">
+  underwritingScore?: Prisma.FloatNullableFilter<"DocumentationStep"> | number | null
+  debtToIncomeRatio?: Prisma.FloatNullableFilter<"DocumentationStep"> | number | null
+  underwritingDecision?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
+  underwritingNotes?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
   assigneeId?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
   dueDate?: Prisma.DateTimeNullableFilter<"DocumentationStep"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableFilter<"DocumentationStep"> | Date | string | null
@@ -762,6 +893,11 @@ export type DocumentationStepCreateWithoutPhaseInput = {
   order: number
   status?: $Enums.StepStatus
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
+  underwritingDecision?: string | null
+  underwritingNotes?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -779,6 +915,11 @@ export type DocumentationStepUncheckedCreateWithoutPhaseInput = {
   order: number
   status?: $Enums.StepStatus
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
+  underwritingDecision?: string | null
+  underwritingNotes?: string | null
   assigneeId?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
@@ -822,6 +963,11 @@ export type DocumentationStepCreateWithoutRequiredDocumentsInput = {
   order: number
   status?: $Enums.StepStatus
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
+  underwritingDecision?: string | null
+  underwritingNotes?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -840,6 +986,11 @@ export type DocumentationStepUncheckedCreateWithoutRequiredDocumentsInput = {
   order: number
   status?: $Enums.StepStatus
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
+  underwritingDecision?: string | null
+  underwritingNotes?: string | null
   assigneeId?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
@@ -872,6 +1023,11 @@ export type DocumentationStepUpdateWithoutRequiredDocumentsInput = {
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  underwritingDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  underwritingNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -890,6 +1046,11 @@ export type DocumentationStepUncheckedUpdateWithoutRequiredDocumentsInput = {
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  underwritingDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  underwritingNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -906,6 +1067,11 @@ export type DocumentationStepCreateWithoutApprovalsInput = {
   order: number
   status?: $Enums.StepStatus
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
+  underwritingDecision?: string | null
+  underwritingNotes?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -924,6 +1090,11 @@ export type DocumentationStepUncheckedCreateWithoutApprovalsInput = {
   order: number
   status?: $Enums.StepStatus
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
+  underwritingDecision?: string | null
+  underwritingNotes?: string | null
   assigneeId?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
@@ -956,6 +1127,11 @@ export type DocumentationStepUpdateWithoutApprovalsInput = {
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  underwritingDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  underwritingNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -974,6 +1150,11 @@ export type DocumentationStepUncheckedUpdateWithoutApprovalsInput = {
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  underwritingDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  underwritingNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -991,6 +1172,11 @@ export type DocumentationStepCreateManyAssigneeInput = {
   order: number
   status?: $Enums.StepStatus
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
+  underwritingDecision?: string | null
+  underwritingNotes?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -1005,6 +1191,11 @@ export type DocumentationStepUpdateWithoutAssigneeInput = {
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  underwritingDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  underwritingNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1023,6 +1214,11 @@ export type DocumentationStepUncheckedUpdateWithoutAssigneeInput = {
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  underwritingDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  underwritingNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1040,6 +1236,11 @@ export type DocumentationStepUncheckedUpdateManyWithoutAssigneeInput = {
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  underwritingDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  underwritingNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1054,6 +1255,11 @@ export type DocumentationStepCreateManyPhaseInput = {
   order: number
   status?: $Enums.StepStatus
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
+  underwritingDecision?: string | null
+  underwritingNotes?: string | null
   assigneeId?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
@@ -1069,6 +1275,11 @@ export type DocumentationStepUpdateWithoutPhaseInput = {
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  underwritingDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  underwritingNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1086,6 +1297,11 @@ export type DocumentationStepUncheckedUpdateWithoutPhaseInput = {
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  underwritingDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  underwritingNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1103,6 +1319,11 @@ export type DocumentationStepUncheckedUpdateManyWithoutPhaseInput = {
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  underwritingDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  underwritingNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1159,6 +1380,11 @@ export type DocumentationStepSelect<ExtArgs extends runtime.Types.Extensions.Int
   order?: boolean
   status?: boolean
   metadata?: boolean
+  preApprovalAnswers?: boolean
+  underwritingScore?: boolean
+  debtToIncomeRatio?: boolean
+  underwritingDecision?: boolean
+  underwritingNotes?: boolean
   assigneeId?: boolean
   dueDate?: boolean
   completedAt?: boolean
@@ -1182,6 +1408,11 @@ export type DocumentationStepSelectScalar = {
   order?: boolean
   status?: boolean
   metadata?: boolean
+  preApprovalAnswers?: boolean
+  underwritingScore?: boolean
+  debtToIncomeRatio?: boolean
+  underwritingDecision?: boolean
+  underwritingNotes?: boolean
   assigneeId?: boolean
   dueDate?: boolean
   completedAt?: boolean
@@ -1189,7 +1420,7 @@ export type DocumentationStepSelectScalar = {
   updatedAt?: boolean
 }
 
-export type DocumentationStepOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "phaseId" | "name" | "description" | "stepType" | "order" | "status" | "metadata" | "assigneeId" | "dueDate" | "completedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["documentationStep"]>
+export type DocumentationStepOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "phaseId" | "name" | "description" | "stepType" | "order" | "status" | "metadata" | "preApprovalAnswers" | "underwritingScore" | "debtToIncomeRatio" | "underwritingDecision" | "underwritingNotes" | "assigneeId" | "dueDate" | "completedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["documentationStep"]>
 export type DocumentationStepInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   phase?: boolean | Prisma.ContractPhaseDefaultArgs<ExtArgs>
   assignee?: boolean | Prisma.DocumentationStep$assigneeArgs<ExtArgs>
@@ -1215,6 +1446,11 @@ export type $DocumentationStepPayload<ExtArgs extends runtime.Types.Extensions.I
     order: number
     status: $Enums.StepStatus
     metadata: runtime.JsonValue | null
+    preApprovalAnswers: runtime.JsonValue | null
+    underwritingScore: number | null
+    debtToIncomeRatio: number | null
+    underwritingDecision: string | null
+    underwritingNotes: string | null
     assigneeId: string | null
     dueDate: Date | null
     completedAt: Date | null
@@ -1601,6 +1837,11 @@ export interface DocumentationStepFieldRefs {
   readonly order: Prisma.FieldRef<"DocumentationStep", 'Int'>
   readonly status: Prisma.FieldRef<"DocumentationStep", 'StepStatus'>
   readonly metadata: Prisma.FieldRef<"DocumentationStep", 'Json'>
+  readonly preApprovalAnswers: Prisma.FieldRef<"DocumentationStep", 'Json'>
+  readonly underwritingScore: Prisma.FieldRef<"DocumentationStep", 'Float'>
+  readonly debtToIncomeRatio: Prisma.FieldRef<"DocumentationStep", 'Float'>
+  readonly underwritingDecision: Prisma.FieldRef<"DocumentationStep", 'String'>
+  readonly underwritingNotes: Prisma.FieldRef<"DocumentationStep", 'String'>
   readonly assigneeId: Prisma.FieldRef<"DocumentationStep", 'String'>
   readonly dueDate: Prisma.FieldRef<"DocumentationStep", 'DateTime'>
   readonly completedAt: Prisma.FieldRef<"DocumentationStep", 'DateTime'>

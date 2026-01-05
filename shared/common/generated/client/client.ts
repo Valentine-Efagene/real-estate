@@ -260,16 +260,6 @@ export type OfferLetter = Prisma.OfferLetterModel
  */
 export type ContractTermination = Prisma.ContractTerminationModel
 /**
- * Model Prequalification
- * 
- */
-export type Prequalification = Prisma.PrequalificationModel
-/**
- * Model UnderwritingDecision
- * 
- */
-export type UnderwritingDecision = Prisma.UnderwritingDecisionModel
-/**
  * Model PaymentMethodChangeRequest
  * 
  */
