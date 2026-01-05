@@ -18,8 +18,19 @@ export class JwtService {
 
             const decoded = jwt.verify(cleanToken, this.secret) as JwtPayload;
 
-            if (!decoded.sub || !decoded.roles || !Array.isArray(decoded.roles)) {
-                throw new Error('Invalid token payload: missing required fields');
+            if (!decoded.sub) {
+                throw new Error('Invalid token payload: missing sub');
+            }
+
+            // Defaults for backward compatibility
+            if (!decoded.roles || !Array.isArray(decoded.roles)) {
+                decoded.roles = [];
+            }
+            if (!decoded.tenantId) {
+                decoded.tenantId = '';
+            }
+            if (!decoded.principalType) {
+                decoded.principalType = 'user';
             }
 
             return decoded;

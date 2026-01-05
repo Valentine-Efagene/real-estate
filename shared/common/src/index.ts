@@ -8,3 +8,4 @@ export * from './prisma/user';
 export * from './prisma/tenant';
 export * from './middleware';
 export * from './events';
+export * from './auth';

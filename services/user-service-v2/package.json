@@ -32,7 +32,7 @@
     "@codegenie/serverless-express": "^4.14.1",
     "@prisma/adapter-mariadb": "^7.2.0",
     "@prisma/client": "^7.0.0",
-    "@valentine-efagene/qshelter-common": "^2.0.50",
+    "@valentine-efagene/qshelter-common": "^2.0.63",
     "bcryptjs": "^3.0.3",
     "dotenv": "^17.2.3",
     "express": "^4.21.2",

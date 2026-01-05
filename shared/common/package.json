@@ -1,6 +1,6 @@
 {
   "name": "@valentine-efagene/qshelter-common",
-  "version": "2.0.61",
+  "version": "2.0.63",
   "description": "Shared database schemas and utilities for QShelter services",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
@@ -28,9 +28,11 @@
     "prisma"
   ],
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.962.0",
     "@aws-sdk/client-secrets-manager": "^3.500.0",
     "@aws-sdk/client-sns": "^3.500.0",
     "@aws-sdk/client-ssm": "^3.500.0",
+    "@aws-sdk/util-dynamodb": "^3.962.0",
     "@prisma/client": "^7.0.0",
     "dotenv": "^17.2.3",
     "prisma": "^7.0.0"
