@@ -2,17 +2,14 @@ import { Router, Request, Response, NextFunction } from 'express';
 import { paymentPlanService } from '../services/payment-plan.service';
 import { CreatePaymentPlanSchema, UpdatePaymentPlanSchema } from '../validators/payment-plan.validator';
 import { z } from 'zod';
+import { getAuthContext } from '@valentine-efagene/qshelter-common';
 
 const router = Router();
 
 // Create payment plan
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const tenantId = req.headers['x-tenant-id'] as string;
-        if (!tenantId) {
-            res.status(400).json({ error: 'x-tenant-id header is required' });
-            return;
-        }
+        const { tenantId } = getAuthContext(req);
         const data = CreatePaymentPlanSchema.parse(req.body);
         const plan = await paymentPlanService.create(tenantId, data);
         // Include interestRate from input in response (interest rate is phase-specific, but echoed for convenience)

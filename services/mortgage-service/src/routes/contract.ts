@@ -21,6 +21,7 @@ import {
     RefundPaymentSchema,
 } from '../validators/contract-payment.validator';
 import { z } from 'zod';
+import { getAuthContext } from '@valentine-efagene/qshelter-common';
 
 const router = Router();
 
@@ -31,13 +32,8 @@ const router = Router();
 // Create contract from payment method
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const tenantId = req.headers['x-tenant-id'] as string;
-        const userId = req.headers['x-user-id'] as string;
-        if (!tenantId || !userId) {
-            return res.status(400).json({ error: 'Missing tenant or user context' });
-        }
-
-        const data = CreateContractSchema.parse(req.body);
+        const { tenantId, userId } = getAuthContext(req);
+                const data = CreateContractSchema.parse(req.body);
         // Use userId from header as buyerId if not provided in body
         const contractData = { ...data, tenantId, buyerId: data.buyerId || userId };
         const contract = await contractService.create(contractData);
@@ -92,7 +88,7 @@ router.get('/number/:contractNumber', async (req: Request, res: Response, next: 
 router.patch('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = UpdateContractSchema.parse(req.body);
-        const userId = req.headers['x-user-id'] as string;
+        const { userId } = getAuthContext(req);
         const contract = await contractService.update(req.params.id, data, userId);
         res.json(contract);
     } catch (error) {
@@ -108,7 +104,7 @@ router.patch('/:id', async (req: Request, res: Response, next: NextFunction) => 
 router.post('/:id/transition', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = TransitionContractSchema.parse(req.body);
-        const userId = req.headers['x-user-id'] as string;
+        const { userId } = getAuthContext(req);
         const contract = await contractService.transition(req.params.id, data, userId);
         res.json(contract);
     } catch (error) {
@@ -123,7 +119,7 @@ router.post('/:id/transition', async (req: Request, res: Response, next: NextFun
 // Sign contract
 router.post('/:id/sign', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userId = req.headers['x-user-id'] as string;
+        const { userId } = getAuthContext(req);
         const contract = await contractService.sign(req.params.id, userId);
         res.json(contract);
     } catch (error) {
@@ -134,7 +130,7 @@ router.post('/:id/sign', async (req: Request, res: Response, next: NextFunction)
 // Cancel contract
 router.post('/:id/cancel', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userId = req.headers['x-user-id'] as string;
+        const { userId } = getAuthContext(req);
         const { reason } = req.body;
         const contract = await contractService.cancel(req.params.id, userId, reason);
         res.json(contract);
@@ -146,7 +142,7 @@ router.post('/:id/cancel', async (req: Request, res: Response, next: NextFunctio
 // Delete contract (draft only)
 router.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userId = req.headers['x-user-id'] as string;
+        const { userId } = getAuthContext(req);
         const result = await contractService.delete(req.params.id, userId);
         res.json(result);
     } catch (error) {
@@ -182,7 +178,7 @@ router.get('/:id/phases/:phaseId', async (req: Request, res: Response, next: Nex
 router.post('/:id/phases/:phaseId/activate', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = ActivatePhaseSchema.parse(req.body);
-        const userId = req.headers['x-user-id'] as string;
+        const { userId } = getAuthContext(req);
         const phase = await contractPhaseService.activate(req.params.phaseId, data, userId);
         res.json(phase);
     } catch (error) {
@@ -198,7 +194,7 @@ router.post('/:id/phases/:phaseId/activate', async (req: Request, res: Response,
 router.post('/:id/phases/:phaseId/installments', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = GenerateInstallmentsSchema.parse(req.body);
-        const userId = req.headers['x-user-id'] as string;
+        const { userId } = getAuthContext(req);
         const phase = await contractPhaseService.generateInstallments(req.params.phaseId, data, userId);
         // Transform installments to include amountDue for backwards compatibility
         const responsePhase = {
@@ -222,7 +218,7 @@ router.post('/:id/phases/:phaseId/installments', async (req: Request, res: Respo
 router.post('/:id/phases/:phaseId/steps/complete', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = CompleteStepSchema.parse(req.body);
-        const userId = req.headers['x-user-id'] as string;
+        const { userId } = getAuthContext(req);
         const phase = await contractPhaseService.completeStep(req.params.phaseId, data, userId);
         res.json(phase);
     } catch (error) {
@@ -238,7 +234,7 @@ router.post('/:id/phases/:phaseId/steps/complete', async (req: Request, res: Res
 router.post('/:id/phases/:phaseId/documents', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = UploadDocumentSchema.parse(req.body);
-        const userId = req.headers['x-user-id'] as string;
+        const { userId } = getAuthContext(req);
         const document = await contractPhaseService.uploadDocument(req.params.phaseId, data, userId);
         res.status(201).json(document);
     } catch (error) {
@@ -254,7 +250,7 @@ router.post('/:id/phases/:phaseId/documents', async (req: Request, res: Response
 router.post('/:id/documents/:documentId/review', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = ApproveDocumentSchema.parse(req.body);
-        const userId = req.headers['x-user-id'] as string;
+        const { userId } = getAuthContext(req);
         const document = await contractPhaseService.approveDocument(req.params.documentId, data, userId);
         res.json(document);
     } catch (error) {
@@ -269,7 +265,7 @@ router.post('/:id/documents/:documentId/review', async (req: Request, res: Respo
 // Complete phase
 router.post('/:id/phases/:phaseId/complete', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userId = req.headers['x-user-id'] as string;
+        const { userId } = getAuthContext(req);
         const phase = await contractPhaseService.complete(req.params.phaseId, userId);
         res.json(phase);
     } catch (error) {
@@ -280,7 +276,7 @@ router.post('/:id/phases/:phaseId/complete', async (req: Request, res: Response,
 // Skip phase (admin)
 router.post('/:id/phases/:phaseId/skip', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userId = req.headers['x-user-id'] as string;
+        const { userId } = getAuthContext(req);
         const { reason } = req.body;
         const phase = await contractPhaseService.skip(req.params.phaseId, userId, reason);
         res.json(phase);
@@ -300,7 +296,7 @@ router.post('/:id/payments', async (req: Request, res: Response, next: NextFunct
             ...req.body,
             contractId: req.params.id,
         });
-        const userId = req.headers['x-user-id'] as string;
+        const { userId } = getAuthContext(req);
         const payment = await contractPaymentService.create(data, userId);
         res.status(201).json(payment);
     } catch (error) {
@@ -351,7 +347,7 @@ router.post('/payments/process', async (req: Request, res: Response, next: NextF
 router.post('/:id/payments/:paymentId/refund', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = RefundPaymentSchema.parse(req.body);
-        const userId = req.headers['x-user-id'] as string;
+        const { userId } = getAuthContext(req);
         const payment = await contractPaymentService.refund(req.params.paymentId, data, userId);
         res.json(payment);
     } catch (error) {
@@ -371,7 +367,7 @@ router.post('/:id/pay-ahead', async (req: Request, res: Response, next: NextFunc
             res.status(400).json({ error: 'amount must be a positive number' });
             return;
         }
-        const userId = req.headers['x-user-id'] as string;
+        const { userId } = getAuthContext(req);
         const result = await contractPaymentService.payAhead(req.params.id, amount, userId);
         res.json(result);
     } catch (error) {

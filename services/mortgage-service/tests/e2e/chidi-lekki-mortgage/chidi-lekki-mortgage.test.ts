@@ -3,6 +3,7 @@ import { app } from '../../../src/app.js';
 import { prisma, cleanupTestData } from '../../setup.js';
 import { faker } from '@faker-js/faker';
 import { randomUUID } from 'crypto';
+import { authHeaders } from '@valentine-efagene/qshelter-common';
 
 /**
  * E2E Test: Chidi's Lekki Mortgage Flow
@@ -157,8 +158,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         it('Adaeze creates a one-off downpayment plan (10%)', async () => {
             const response = await request(app)
                 .post('/payment-plans')
-                .set('x-tenant-id', tenantId)
-                .set('x-user-id', adaezeId)
+                .set(authHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('adaeze-create-downpayment-plan'))
                 .send({
                     name: '10% One-Off Downpayment',
@@ -187,8 +187,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         it('Adaeze creates a 20-year mortgage plan at 9.5% p.a.', async () => {
             const response = await request(app)
                 .post('/payment-plans')
-                .set('x-tenant-id', tenantId)
-                .set('x-user-id', adaezeId)
+                .set(authHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('adaeze-create-mortgage-plan'))
                 .send({
                     name: '20-Year Mortgage at 9.5%',
@@ -207,8 +206,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         it('Adaeze creates a payment method with 4 phases per SCENARIO.md', async () => {
             const response = await request(app)
                 .post('/payment-methods')
-                .set('x-tenant-id', tenantId)
-                .set('x-user-id', adaezeId)
+                .set(authHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('adaeze-create-payment-method'))
                 .send({
                     name: '10/90 Lekki Mortgage',
@@ -291,8 +289,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         it('Adaeze links the payment method to Lekki Gardens Estate', async () => {
             const response = await request(app)
                 .post(`/payment-methods/${paymentMethodId}/properties`)
-                .set('x-tenant-id', tenantId)
-                .set('x-user-id', adaezeId)
+                .set(authHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('adaeze-link-payment-method'))
                 .send({
                     propertyId,
@@ -353,8 +350,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         it('Chidi creates a prequalification application for Unit 14B', async () => {
             const response = await request(app)
                 .post('/prequalifications')
-                .set('x-tenant-id', tenantId)
-                .set('x-user-id', chidiId)
+                .set(authHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-create-application'))
                 .send({
                     propertyId,
@@ -384,8 +380,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         it('Chidi sees the required documents for his application', async () => {
             const response = await request(app)
                 .get(`/prequalifications/${prequalificationId}/required-documents`)
-                .set('x-tenant-id', tenantId)
-                .set('x-user-id', chidiId);
+                .set(authHeaders(chidiId, tenantId));
 
             expect(response.status).toBe(200);
             expect(response.body.length).toBe(3);
@@ -422,8 +417,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             for (const doc of chidiDocuments) {
                 const response = await request(app)
                     .post(`/prequalifications/${prequalificationId}/documents`)
-                    .set('x-tenant-id', tenantId)
-                    .set('x-user-id', chidiId)
+                    .set(authHeaders(chidiId, tenantId))
                     .set('x-idempotency-key', idempotencyKey(`chidi-doc-${doc.documentType}`))
                     .send(doc);
 
@@ -434,8 +428,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         it('Chidi submits his application', async () => {
             const response = await request(app)
                 .post(`/prequalifications/${prequalificationId}/submit`)
-                .set('x-tenant-id', tenantId)
-                .set('x-user-id', chidiId)
+                .set(authHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-submit-application'));
 
             expect(response.status).toBe(200);
@@ -498,8 +491,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         it('System creates a contract from Chidi\'s approved application', async () => {
             const response = await request(app)
                 .post('/contracts')
-                .set('x-tenant-id', tenantId)
-                .set('x-user-id', chidiId)
+                .set(authHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-create-contract'))
                 .send({
                     prequalificationId,
@@ -539,8 +531,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         it('Contract has correct phase amounts (₦8.5M downpayment, ₦76.5M mortgage)', async () => {
             const response = await request(app)
                 .get(`/contracts/${contractId}/phases`)
-                .set('x-tenant-id', tenantId)
-                .set('x-user-id', chidiId);
+                .set(authHeaders(chidiId, tenantId));
 
             expect(response.status).toBe(200);
             expect(response.body.length).toBe(4);
@@ -569,8 +560,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         it('Chidi submits the contract for processing', async () => {
             const response = await request(app)
                 .post(`/contracts/${contractId}/transition`)
-                .set('x-tenant-id', tenantId)
-                .set('x-user-id', chidiId)
+                .set(authHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-submit-contract'))
                 .send({
                     action: 'SUBMIT',
@@ -584,8 +574,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         it('Documentation phase is activated', async () => {
             const response = await request(app)
                 .post(`/contracts/${contractId}/phases/${documentationPhaseId}/activate`)
-                .set('x-tenant-id', tenantId)
-                .set('x-user-id', chidiId)
+                .set(authHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-activate-kyc-phase'));
 
             expect(response.status).toBe(200);
@@ -602,8 +591,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             for (const doc of documents) {
                 const response = await request(app)
                     .post(`/contracts/${contractId}/phases/${documentationPhaseId}/documents`)
-                    .set('x-tenant-id', tenantId)
-                    .set('x-user-id', chidiId)
+                    .set(authHeaders(chidiId, tenantId))
                     .set('x-idempotency-key', idempotencyKey(`chidi-contract-doc-${doc.documentType}`))
                     .send(doc);
 
@@ -617,8 +605,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             for (const stepName of uploadSteps) {
                 const response = await request(app)
                     .post(`/contracts/${contractId}/phases/${documentationPhaseId}/steps/complete`)
-                    .set('x-tenant-id', tenantId)
-                    .set('x-user-id', chidiId)
+                    .set(authHeaders(chidiId, tenantId))
                     .set('x-idempotency-key', idempotencyKey(`chidi-complete-${stepName.replace(/\s+/g, '-').toLowerCase()}`))
                     .send({ stepName });
 
@@ -636,8 +623,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                 const doc = docs[i];
                 const response = await request(app)
                     .post(`/contracts/${contractId}/documents/${doc.id}/review`)
-                    .set('x-tenant-id', tenantId)
-                    .set('x-user-id', adaezeId)
+                    .set(authHeaders(adaezeId, tenantId))
                     .set('x-idempotency-key', idempotencyKey(`adaeze-approve-doc-${i}`))
                     .send({
                         status: 'APPROVED',
@@ -650,8 +636,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             // Adaeze completes approval step
             const response = await request(app)
                 .post(`/contracts/${contractId}/phases/${documentationPhaseId}/steps/complete`)
-                .set('x-tenant-id', tenantId)
-                .set('x-user-id', adaezeId)
+                .set(authHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('adaeze-complete-review'))
                 .send({
                     stepName: 'Adaeze Reviews Documents',
@@ -678,8 +663,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         it('Chidi signs the provisional offer', async () => {
             const response = await request(app)
                 .post(`/contracts/${contractId}/phases/${documentationPhaseId}/steps/complete`)
-                .set('x-tenant-id', tenantId)
-                .set('x-user-id', chidiId)
+                .set(authHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-signs-provisional'))
                 .send({
                     stepName: 'Customer Signs Provisional Offer',
@@ -706,8 +690,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             // Generate installment
             await request(app)
                 .post(`/contracts/${contractId}/phases/${downpaymentPhaseId}/installments`)
-                .set('x-tenant-id', tenantId)
-                .set('x-user-id', chidiId)
+                .set(authHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-generate-downpayment'))
                 .send({ startDate: new Date().toISOString() });
 
@@ -720,8 +703,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             // Record payment
             const paymentResponse = await request(app)
                 .post(`/contracts/${contractId}/payments`)
-                .set('x-tenant-id', tenantId)
-                .set('x-user-id', chidiId)
+                .set(authHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-downpayment'))
                 .send({
                     phaseId: downpaymentPhaseId,
@@ -740,7 +722,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
             const processResponse = await request(app)
                 .post('/contracts/payments/process')
-                .set('x-tenant-id', tenantId)
+                .set(authHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('process-chidi-downpayment'))
                 .send({
                     reference: payment!.reference,
@@ -776,8 +758,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         it('Chidi signs the final offer', async () => {
             const response = await request(app)
                 .post(`/contracts/${contractId}/phases/${finalDocumentationPhaseId}/steps/complete`)
-                .set('x-tenant-id', tenantId)
-                .set('x-user-id', chidiId)
+                .set(authHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-signs-final-offer'))
                 .send({
                     stepName: 'Customer Signs Final Offer',
@@ -803,8 +784,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         it('System generates 240 monthly mortgage installments', async () => {
             const response = await request(app)
                 .post(`/contracts/${contractId}/phases/${mortgagePhaseId}/installments`)
-                .set('x-tenant-id', tenantId)
-                .set('x-user-id', chidiId)
+                .set(authHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-generate-mortgage-installments'))
                 .send({ startDate: new Date().toISOString() });
 
@@ -815,8 +795,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         it('Chidi signs and activates the contract', async () => {
             const response = await request(app)
                 .post(`/contracts/${contractId}/sign`)
-                .set('x-tenant-id', tenantId)
-                .set('x-user-id', chidiId)
+                .set(authHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-signs-contract'));
 
             expect(response.status).toBe(200);

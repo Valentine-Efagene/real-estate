@@ -9,24 +9,14 @@ import {
 import { z } from 'zod';
 import * as express from 'express'
 import { checkIdempotency, setIdempotencyResponse } from '../lib/idempotency';
+import { getAuthContext } from '@valentine-efagene/qshelter-common';
 
 const router: express.Router = Router();
-
-// Middleware to extract tenant and user info from headers
-const extractContext = (req: Request) => {
-    const tenantId = req.headers['x-tenant-id'] as string;
-    const userId = req.headers['x-user-id'] as string;
-    return { tenantId, userId };
-};
 
 // Create a new prequalification
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { tenantId, userId } = extractContext(req);
-        if (!tenantId || !userId) {
-            console.error('Missing tenant or user context', { tenantId, userId, headers: req.headers });
-            return res.status(400).json({ error: 'Missing tenant or user context' });
-        }
+        const { tenantId, userId } = getAuthContext(req);
 
         const idempotencyKey = req.headers['x-idempotency-key'] as string;
         if (idempotencyKey) {
@@ -55,10 +45,7 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
 // Get all prequalifications for tenant
 router.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { tenantId } = extractContext(req);
-        if (!tenantId) {
-            return res.status(400).json({ error: 'Missing tenant context' });
-        }
+        const { tenantId } = getAuthContext(req);
 
         const filters = {
             status: req.query.status as string | undefined,
@@ -119,7 +106,7 @@ router.get('/:id/required-documents', async (req: Request, res: Response, next: 
 // Submit a document
 router.post('/:id/documents', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { userId } = extractContext(req);
+        const { userId } = getAuthContext(req);
         if (!userId) {
             return res.status(400).json({ error: 'Missing user context' });
         }
@@ -172,7 +159,7 @@ router.post('/:id/submit', async (req: Request, res: Response, next: NextFunctio
 // Review a prequalification (admin action)
 router.post('/:id/review', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { userId } = extractContext(req);
+        const { userId } = getAuthContext(req);
         if (!userId) {
             return res.status(400).json({ error: 'Missing user context' });
         }

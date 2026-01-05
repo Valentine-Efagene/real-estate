@@ -8,17 +8,14 @@ import {
     LinkToPropertySchema,
 } from '../validators/payment-method.validator';
 import { z } from 'zod';
+import { getAuthContext } from '@valentine-efagene/qshelter-common';
 
 const router = Router();
 
 // Create payment method
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const tenantId = req.headers['x-tenant-id'] as string;
-        if (!tenantId) {
-            res.status(400).json({ error: 'x-tenant-id header is required' });
-            return;
-        }
+        const { tenantId } = getAuthContext(req);
         const data = CreatePaymentMethodSchema.parse(req.body);
         const method = await paymentMethodService.create(tenantId, data);
         res.status(201).json(method);

@@ -9,6 +9,7 @@ import {
     ListOfferLettersSchema,
 } from '../validators/offer-letter.validator';
 import { z } from 'zod';
+import { getAuthContext } from '@valentine-efagene/qshelter-common';
 
 const router = Router();
 
@@ -22,7 +23,7 @@ const router = Router();
  */
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userId = req.headers['x-user-id'] as string;
+        const { userId } = getAuthContext(req);
         if (!userId) {
             return res.status(400).json({ error: 'Missing user context' });
         }
@@ -90,7 +91,7 @@ router.get('/contract/:contractId', async (req: Request, res: Response, next: Ne
  */
 router.post('/:id/send', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userId = req.headers['x-user-id'] as string;
+        const { userId } = getAuthContext(req);
         if (!userId) {
             return res.status(400).json({ error: 'Missing user context' });
         }
@@ -148,7 +149,7 @@ router.post('/:id/sign', async (req: Request, res: Response, next: NextFunction)
  */
 router.patch('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userId = req.headers['x-user-id'] as string;
+        const { userId } = getAuthContext(req);
         if (!userId) {
             return res.status(400).json({ error: 'Missing user context' });
         }
@@ -171,7 +172,7 @@ router.patch('/:id', async (req: Request, res: Response, next: NextFunction) => 
  */
 router.post('/:id/cancel', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userId = req.headers['x-user-id'] as string;
+        const { userId } = getAuthContext(req);
         if (!userId) {
             return res.status(400).json({ error: 'Missing user context' });
         }

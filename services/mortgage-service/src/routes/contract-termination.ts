@@ -1,5 +1,5 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import { AppError } from '@valentine-efagene/qshelter-common';
+import { AppError, getAuthContext } from '@valentine-efagene/qshelter-common';
 import {
     RequestTerminationSchema,
     AdminTerminationSchema,
@@ -22,7 +22,7 @@ terminationRouter.post(
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { contractId } = req.params;
-            const userId = req.headers['x-user-id'] as string;
+            const { userId } = getAuthContext(req);
 
             if (!userId) {
                 return res.status(401).json({ error: 'User not authenticated' });
@@ -69,7 +69,7 @@ terminationRouter.post(
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { contractId } = req.params;
-            const userId = req.headers['x-user-id'] as string;
+            const { userId } = getAuthContext(req);
 
             if (!userId) {
                 return res.status(401).json({ error: 'User not authenticated' });
@@ -115,7 +115,7 @@ terminationRouter.get(
     '/terminations/pending',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const tenantId = req.headers['x-tenant-id'] as string;
+            const { tenantId } = getAuthContext(req);
 
             if (!tenantId) {
                 return res.status(400).json({ error: 'Tenant context required' });
@@ -189,7 +189,7 @@ terminationRouter.post(
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { terminationId } = req.params;
-            const userId = req.headers['x-user-id'] as string;
+            const { userId } = getAuthContext(req);
 
             if (!userId) {
                 return res.status(401).json({ error: 'User not authenticated' });
@@ -234,7 +234,7 @@ terminationRouter.post(
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { terminationId } = req.params;
-            const userId = req.headers['x-user-id'] as string;
+            const { userId } = getAuthContext(req);
 
             if (!userId) {
                 return res.status(401).json({ error: 'User not authenticated' });
@@ -276,7 +276,7 @@ terminationRouter.post(
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { terminationId } = req.params;
-            const userId = req.headers['x-user-id'] as string;
+            const { userId } = getAuthContext(req);
 
             if (!userId) {
                 return res.status(401).json({ error: 'User not authenticated' });
@@ -318,7 +318,7 @@ terminationRouter.post(
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { terminationId } = req.params;
-            const userId = req.headers['x-user-id'] as string;
+            const { userId } = getAuthContext(req);
 
             if (!userId) {
                 return res.status(401).json({ error: 'User not authenticated' });

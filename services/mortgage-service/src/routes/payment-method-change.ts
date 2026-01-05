@@ -1,16 +1,9 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { z } from 'zod';
 import { paymentMethodChangeService } from '../services/payment-method-change.service';
-import { AppError } from '@valentine-efagene/qshelter-common';
+import { AppError, getAuthContext } from '@valentine-efagene/qshelter-common';
 
 const router = Router();
-
-// Helper to extract context from headers
-function extractContext(req: Request) {
-    const tenantId = req.headers['x-tenant-id'] as string;
-    const userId = req.headers['x-user-id'] as string;
-    return { tenantId, userId };
-}
 
 // =============================================================================
 // Validation Schemas
@@ -41,10 +34,7 @@ router.post(
     '/contracts/:contractId/payment-method-change-requests',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { tenantId, userId } = extractContext(req);
-            if (!tenantId || !userId) {
-                throw new AppError(400, 'Missing tenant or user context');
-            }
+            const { tenantId, userId } = getAuthContext(req);
             const { contractId } = req.params;
 
             const body = createRequestSchema.parse(req.body);
@@ -72,7 +62,7 @@ router.get(
     '/contracts/:contractId/payment-method-change-requests',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { tenantId } = extractContext(req);
+            const { tenantId } = getAuthContext(req);
             if (!tenantId) {
                 throw new AppError(400, 'Missing tenant context');
             }
@@ -95,7 +85,7 @@ router.get(
     '/contracts/:contractId/payment-method-change-requests/:requestId',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { tenantId } = extractContext(req);
+            const { tenantId } = getAuthContext(req);
             if (!tenantId) {
                 throw new AppError(400, 'Missing tenant context');
             }
@@ -118,7 +108,7 @@ router.post(
     '/contracts/:contractId/payment-method-change-requests/:requestId/submit-documents',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { tenantId } = extractContext(req);
+            const { tenantId } = getAuthContext(req);
             if (!tenantId) {
                 throw new AppError(400, 'Missing tenant context');
             }
@@ -141,7 +131,7 @@ router.post(
     '/contracts/:contractId/payment-method-change-requests/:requestId/cancel',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { tenantId, userId } = extractContext(req);
+            const { tenantId, userId } = getAuthContext(req);
             if (!tenantId || !userId) {
                 throw new AppError(400, 'Missing tenant or user context');
             }
@@ -168,7 +158,7 @@ router.get(
     '/payment-method-change-requests',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { tenantId } = extractContext(req);
+            const { tenantId } = getAuthContext(req);
             if (!tenantId) {
                 throw new AppError(400, 'Missing tenant context');
             }
@@ -190,7 +180,7 @@ router.post(
     '/payment-method-change-requests/:requestId/start-review',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { tenantId, userId } = extractContext(req);
+            const { tenantId, userId } = getAuthContext(req);
             if (!tenantId || !userId) {
                 throw new AppError(400, 'Missing tenant or user context');
             }
@@ -213,7 +203,7 @@ router.post(
     '/payment-method-change-requests/:requestId/approve',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { tenantId, userId } = extractContext(req);
+            const { tenantId, userId } = getAuthContext(req);
             if (!tenantId || !userId) {
                 throw new AppError(400, 'Missing tenant or user context');
             }
@@ -243,7 +233,7 @@ router.post(
     '/payment-method-change-requests/:requestId/reject',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { tenantId, userId } = extractContext(req);
+            const { tenantId, userId } = getAuthContext(req);
             if (!tenantId || !userId) {
                 throw new AppError(400, 'Missing tenant or user context');
             }
@@ -274,7 +264,7 @@ router.post(
     '/payment-method-change-requests/:requestId/execute',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { tenantId, userId } = extractContext(req);
+            const { tenantId, userId } = getAuthContext(req);
             if (!tenantId || !userId) {
                 throw new AppError(400, 'Missing tenant or user context');
             }
