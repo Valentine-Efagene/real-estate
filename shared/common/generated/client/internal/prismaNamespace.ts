@@ -423,7 +423,6 @@ export const ModelName = {
   ContractInstallment: 'ContractInstallment',
   ContractPayment: 'ContractPayment',
   ContractDocument: 'ContractDocument',
-  ContractTransition: 'ContractTransition',
   ContractEvent: 'ContractEvent',
   DocumentTemplate: 'DocumentTemplate',
   OfferLetter: 'OfferLetter',
@@ -446,7 +445,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenant" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "paymentMethodPhaseStep" | "paymentMethodPhaseDocument" | "contract" | "contractPhase" | "documentationStep" | "documentationStepDocument" | "documentationStepApproval" | "contractInstallment" | "contractPayment" | "contractDocument" | "contractTransition" | "contractEvent" | "documentTemplate" | "offerLetter" | "contractTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "domainEvent"
+    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenant" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "paymentMethodPhaseStep" | "paymentMethodPhaseDocument" | "contract" | "contractPhase" | "documentationStep" | "documentationStepDocument" | "documentationStepApproval" | "contractInstallment" | "contractPayment" | "contractDocument" | "contractEvent" | "documentTemplate" | "offerLetter" | "contractTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "domainEvent"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -3024,72 +3023,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    ContractTransition: {
-      payload: Prisma.$ContractTransitionPayload<ExtArgs>
-      fields: Prisma.ContractTransitionFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.ContractTransitionFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractTransitionPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.ContractTransitionFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractTransitionPayload>
-        }
-        findFirst: {
-          args: Prisma.ContractTransitionFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractTransitionPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.ContractTransitionFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractTransitionPayload>
-        }
-        findMany: {
-          args: Prisma.ContractTransitionFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractTransitionPayload>[]
-        }
-        create: {
-          args: Prisma.ContractTransitionCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractTransitionPayload>
-        }
-        createMany: {
-          args: Prisma.ContractTransitionCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        delete: {
-          args: Prisma.ContractTransitionDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractTransitionPayload>
-        }
-        update: {
-          args: Prisma.ContractTransitionUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractTransitionPayload>
-        }
-        deleteMany: {
-          args: Prisma.ContractTransitionDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.ContractTransitionUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        upsert: {
-          args: Prisma.ContractTransitionUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractTransitionPayload>
-        }
-        aggregate: {
-          args: Prisma.ContractTransitionAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateContractTransition>
-        }
-        groupBy: {
-          args: Prisma.ContractTransitionGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ContractTransitionGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.ContractTransitionCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ContractTransitionCountAggregateOutputType> | number
-        }
-      }
-    }
     ContractEvent: {
       payload: Prisma.$ContractEventPayload<ExtArgs>
       fields: Prisma.ContractEventFieldRefs
@@ -4221,25 +4154,18 @@ export const ContractDocumentScalarFieldEnum = {
 export type ContractDocumentScalarFieldEnum = (typeof ContractDocumentScalarFieldEnum)[keyof typeof ContractDocumentScalarFieldEnum]
 
 
-export const ContractTransitionScalarFieldEnum = {
-  id: 'id',
-  contractId: 'contractId',
-  fromState: 'fromState',
-  toState: 'toState',
-  trigger: 'trigger',
-  metadata: 'metadata',
-  transitionedAt: 'transitionedAt'
-} as const
-
-export type ContractTransitionScalarFieldEnum = (typeof ContractTransitionScalarFieldEnum)[keyof typeof ContractTransitionScalarFieldEnum]
-
-
 export const ContractEventScalarFieldEnum = {
   id: 'id',
   contractId: 'contractId',
-  event: 'event',
+  eventType: 'eventType',
+  eventGroup: 'eventGroup',
+  fromState: 'fromState',
+  toState: 'toState',
+  trigger: 'trigger',
   data: 'data',
-  createdAt: 'createdAt'
+  actorId: 'actorId',
+  actorType: 'actorType',
+  occurredAt: 'occurredAt'
 } as const
 
 export type ContractEventScalarFieldEnum = (typeof ContractEventScalarFieldEnum)[keyof typeof ContractEventScalarFieldEnum]
@@ -4884,23 +4810,16 @@ export const ContractDocumentOrderByRelevanceFieldEnum = {
 export type ContractDocumentOrderByRelevanceFieldEnum = (typeof ContractDocumentOrderByRelevanceFieldEnum)[keyof typeof ContractDocumentOrderByRelevanceFieldEnum]
 
 
-export const ContractTransitionOrderByRelevanceFieldEnum = {
-  id: 'id',
-  contractId: 'contractId',
-  fromState: 'fromState',
-  toState: 'toState',
-  trigger: 'trigger',
-  metadata: 'metadata'
-} as const
-
-export type ContractTransitionOrderByRelevanceFieldEnum = (typeof ContractTransitionOrderByRelevanceFieldEnum)[keyof typeof ContractTransitionOrderByRelevanceFieldEnum]
-
-
 export const ContractEventOrderByRelevanceFieldEnum = {
   id: 'id',
   contractId: 'contractId',
-  event: 'event',
-  data: 'data'
+  eventType: 'eventType',
+  eventGroup: 'eventGroup',
+  fromState: 'fromState',
+  toState: 'toState',
+  trigger: 'trigger',
+  actorId: 'actorId',
+  actorType: 'actorType'
 } as const
 
 export type ContractEventOrderByRelevanceFieldEnum = (typeof ContractEventOrderByRelevanceFieldEnum)[keyof typeof ContractEventOrderByRelevanceFieldEnum]
@@ -5334,7 +5253,6 @@ export type GlobalOmitConfig = {
   contractInstallment?: Prisma.ContractInstallmentOmit
   contractPayment?: Prisma.ContractPaymentOmit
   contractDocument?: Prisma.ContractDocumentOmit
-  contractTransition?: Prisma.ContractTransitionOmit
   contractEvent?: Prisma.ContractEventOmit
   documentTemplate?: Prisma.DocumentTemplateOmit
   offerLetter?: Prisma.OfferLetterOmit

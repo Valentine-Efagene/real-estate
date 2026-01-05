@@ -235,11 +235,6 @@ export type ContractPayment = Prisma.ContractPaymentModel
  */
 export type ContractDocument = Prisma.ContractDocumentModel
 /**
- * Model ContractTransition
- * 
- */
-export type ContractTransition = Prisma.ContractTransitionModel
-/**
  * Model ContractEvent
  * 
  */

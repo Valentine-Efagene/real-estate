@@ -6,7 +6,6 @@ extendZodWithOpenApi(z);
 // Create contract from payment method
 export const CreateContractSchema = z
     .object({
-        prequalificationId: z.string().optional(),
         propertyUnitId: z.string(),
         buyerId: z.string().optional(), // Will use x-user-id header if not provided
         sellerId: z.string().optional(),
@@ -19,6 +18,9 @@ export const CreateContractSchema = z
         interestRate: z.number().min(0).max(100).optional().openapi({ example: 5.5 }),
         termMonths: z.number().int().positive().optional().openapi({ example: 360 }),
         startDate: z.string().datetime().optional(),
+        // Pre-approval data (for underwriting)
+        monthlyIncome: z.number().positive().optional().openapi({ example: 500000 }),
+        monthlyExpenses: z.number().min(0).optional().openapi({ example: 150000 }),
     })
     .openapi('CreateContract');
 

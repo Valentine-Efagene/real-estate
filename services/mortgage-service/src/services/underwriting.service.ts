@@ -1,7 +1,6 @@
 import {
     PrismaClient,
     NotificationType,
-    getEventPublisher,
 } from '@valentine-efagene/qshelter-common';
 import { enqueueOutboxInTx, publishAfterCommit } from '../lib/outbox';
 import {
@@ -15,13 +14,13 @@ const RULES_VERSION = '1.0.0';
 // ============== Rule Definitions ==============
 
 interface RuleContext {
-    prequalification: {
-        score: number | null;
+    contract: {
+        underwritingScore: number | null;
         monthlyIncome: number | null;
         monthlyExpenses: number | null;
         debtToIncomeRatio: number | null;
-        requestedAmount: number | null;
-        answers: any[];
+        totalAmount: number;
+        preApprovalAnswers: any | null;
     };
     property: {
         price: number;
@@ -50,7 +49,7 @@ const rules: Rule[] = [
         name: 'Minimum Eligibility Score',
         weight: 30,
         evaluate: (ctx) => {
-            const score = ctx.prequalification.score ?? 0;
+            const score = ctx.contract.underwritingScore ?? 0;
             if (score >= 70) return { passed: true, score: 100, message: 'Excellent eligibility score' };
             if (score >= 50) return { passed: true, score: 70, message: 'Acceptable eligibility score' };
             if (score >= 30) return { passed: false, score: 40, message: 'Below minimum eligibility score' };
@@ -62,7 +61,7 @@ const rules: Rule[] = [
         name: 'Debt-to-Income Ratio',
         weight: 25,
         evaluate: (ctx) => {
-            const dti = ctx.prequalification.debtToIncomeRatio;
+            const dti = ctx.contract.debtToIncomeRatio;
             if (dti === null) return { passed: true, score: 50, message: 'DTI not calculated' };
             if (dti <= 0.3) return { passed: true, score: 100, message: 'Excellent DTI ratio' };
             if (dti <= 0.4) return { passed: true, score: 80, message: 'Good DTI ratio' };
@@ -75,13 +74,12 @@ const rules: Rule[] = [
         name: 'Income Coverage',
         weight: 25,
         evaluate: (ctx) => {
-            const income = ctx.prequalification.monthlyIncome ?? 0;
-            const expenses = ctx.prequalification.monthlyExpenses ?? 0;
-            const requestedAmount = ctx.prequalification.requestedAmount ?? 0;
-            const propertyPrice = ctx.property.price;
+            const income = ctx.contract.monthlyIncome ?? 0;
+            const expenses = ctx.contract.monthlyExpenses ?? 0;
+            const totalAmount = ctx.contract.totalAmount;
 
             // Estimate monthly payment (simple: amount / 120 months)
-            const estimatedMonthlyPayment = (requestedAmount || propertyPrice) / 120;
+            const estimatedMonthlyPayment = totalAmount / 120;
             const disposableIncome = income - expenses;
 
             if (disposableIncome <= 0) {
@@ -99,7 +97,7 @@ const rules: Rule[] = [
         name: 'Loan-to-Value Ratio',
         weight: 20,
         evaluate: (ctx) => {
-            const requestedAmount = ctx.prequalification.requestedAmount ?? 0;
+            const requestedAmount = ctx.contract.totalAmount;
             const propertyPrice = ctx.property.price;
 
             if (propertyPrice <= 0) return { passed: true, score: 50, message: 'Property price not set' };
@@ -146,7 +144,7 @@ function determineDecision(
     score: number,
     allPassed: boolean,
     results: RuleResult[]
-): { decision: 'APPROVE' | 'REJECT' | 'CONDITIONAL'; reasons: string[]; conditions: UnderwritingCondition[] } {
+): { decision: 'APPROVED' | 'DECLINED' | 'CONDITIONAL'; reasons: string[]; conditions: UnderwritingCondition[] } {
     const reasons: string[] = [];
     const conditions: UnderwritingCondition[] = [];
 
@@ -158,11 +156,11 @@ function determineDecision(
     }
 
     if (allPassed && score >= 70) {
-        return { decision: 'APPROVE', reasons: ['All eligibility criteria met'], conditions: [] };
+        return { decision: 'APPROVED', reasons: ['All eligibility criteria met'], conditions: [] };
     }
 
     if (score < 40) {
-        return { decision: 'REJECT', reasons, conditions: [] };
+        return { decision: 'DECLINED', reasons, conditions: [] };
     }
 
     // Conditional approval — add conditions based on failed rules
@@ -188,7 +186,7 @@ function determineDecision(
                 conditions.push({
                     code: 'INCREASE_DOWN_PAYMENT',
                     message: 'Increase down payment to reduce LTV below 90%',
-                    field: 'requestedAmount',
+                    field: 'totalAmount',
                     required: true,
                 });
             }
@@ -196,7 +194,7 @@ function determineDecision(
                 conditions.push({
                     code: 'COMPLETE_QUESTIONNAIRE',
                     message: 'Complete all eligibility questions',
-                    field: 'answers',
+                    field: 'preApprovalAnswers',
                     required: true,
                 });
             }
@@ -212,43 +210,72 @@ export class UnderwritingService {
     constructor(private prisma: PrismaClient) { }
 
     /**
-     * Evaluate a prequalification and create an underwriting decision.
-     * Emits notification event after decision.
+     * Evaluate a contract's underwriting step.
+     * Called when an UNDERWRITING step is being completed.
+     * 
+     * @param contractId - The contract to evaluate
+     * @param stepId - The UNDERWRITING step being completed
+     * @param actorId - The user triggering the evaluation
      */
-    async evaluate(prequalificationId: string, actorId?: string): Promise<UnderwritingResponse> {
-        // Fetch prequalification with related data
-        const prequalification = await this.prisma.prequalification.findUnique({
-            where: { id: prequalificationId },
+    async evaluateForStep(
+        contractId: string,
+        stepId: string,
+        actorId?: string
+    ): Promise<UnderwritingResponse> {
+        // Fetch contract with related data
+        const contract = await this.prisma.contract.findUnique({
+            where: { id: contractId },
             include: {
-                property: true,
-                user: true,
+                buyer: true,
+                propertyUnit: {
+                    include: {
+                        variant: {
+                            include: { property: true },
+                        },
+                    },
+                },
                 tenant: true,
             },
         });
 
-        if (!prequalification) {
-            throw new Error(`Prequalification ${prequalificationId} not found`);
+        if (!contract) {
+            throw new Error(`Contract ${contractId} not found`);
         }
 
-        // Build rule context
+        const step = await this.prisma.documentationStep.findUnique({
+            where: { id: stepId },
+        });
+
+        if (!step) {
+            throw new Error(`Step ${stepId} not found`);
+        }
+
+        if (step.stepType !== 'UNDERWRITING') {
+            throw new Error(`Step ${stepId} is not an UNDERWRITING step`);
+        }
+
+        // Build rule context from contract data
+        const propertyPrice = contract.propertyUnit?.variant?.price ?? contract.totalAmount;
+        const propertyName = contract.propertyUnit?.variant?.property?.title ?? 'Unknown Property';
+
         const ctx: RuleContext = {
-            prequalification: {
-                score: prequalification.score,
-                monthlyIncome: prequalification.monthlyIncome,
-                monthlyExpenses: prequalification.monthlyExpenses,
-                debtToIncomeRatio: prequalification.debtToIncomeRatio,
-                requestedAmount: prequalification.requestedAmount,
-                answers: (prequalification.answers as any[]) || [],
+            contract: {
+                underwritingScore: contract.underwritingScore,
+                monthlyIncome: contract.monthlyIncome,
+                monthlyExpenses: contract.monthlyExpenses,
+                debtToIncomeRatio: contract.debtToIncomeRatio,
+                totalAmount: contract.totalAmount,
+                preApprovalAnswers: contract.preApprovalAnswers,
             },
             property: {
-                price: prequalification.requestedAmount ?? 0, // Use requested amount as proxy for property price
-                name: prequalification.property.title,
+                price: propertyPrice,
+                name: propertyName,
             },
             user: {
-                id: prequalification.user.id,
-                email: prequalification.user.email,
-                firstName: prequalification.user.firstName,
-                lastName: prequalification.user.lastName,
+                id: contract.buyer.id,
+                email: contract.buyer.email,
+                firstName: contract.buyer.firstName,
+                lastName: contract.buyer.lastName,
             },
         };
 
@@ -256,50 +283,77 @@ export class UnderwritingService {
         const { score, results, allPassed } = runRules(ctx);
         const { decision, reasons, conditions } = determineDecision(score, allPassed, results);
 
-        // Create decision and emit event in transaction
+        // Calculate DTI if not already set
+        let calculatedDti = contract.debtToIncomeRatio;
+        if (calculatedDti === null && contract.monthlyIncome && contract.monthlyIncome > 0) {
+            const monthlyPayment = contract.totalAmount / (contract.termMonths || 120);
+            calculatedDti = ((contract.monthlyExpenses ?? 0) + monthlyPayment) / contract.monthlyIncome;
+        }
+
+        // Update step and contract in transaction
         const result = await this.prisma.$transaction(async (tx: any) => {
-            // Create underwriting decision
-            const underwritingDecision = await tx.underwritingDecision.create({
+            // Update the UNDERWRITING step with results
+            await tx.documentationStep.update({
+                where: { id: stepId },
                 data: {
-                    tenantId: prequalification.tenantId,
-                    prequalificationId,
-                    decision,
-                    score,
-                    reasons: reasons,
-                    conditions: conditions,
-                    rulesVersion: RULES_VERSION,
-                    ruleResults: results,
-                    isManualReview: false,
+                    underwritingScore: score,
+                    debtToIncomeRatio: calculatedDti,
+                    underwritingDecision: decision,
+                    underwritingNotes: JSON.stringify({
+                        reasons,
+                        conditions,
+                        ruleResults: results,
+                        rulesVersion: RULES_VERSION,
+                    }),
+                    status: 'COMPLETED',
+                    completedAt: new Date(),
                 },
             });
 
-            // Update prequalification status based on decision
-            const newStatus = decision === 'APPROVE' ? 'APPROVED' : decision === 'REJECT' ? 'REJECTED' : 'UNDER_REVIEW';
-            await tx.prequalification.update({
-                where: { id: prequalificationId },
+            // Update contract with underwriting results
+            await tx.contract.update({
+                where: { id: contractId },
                 data: {
-                    status: newStatus,
-                    reviewedAt: new Date(),
+                    underwritingScore: score,
+                    debtToIncomeRatio: calculatedDti,
+                },
+            });
+
+            // Record contract event
+            await tx.contractEvent.create({
+                data: {
+                    contractId,
+                    eventType: 'UNDERWRITING.COMPLETED',
+                    eventGroup: 'DOCUMENT',
+                    data: {
+                        stepId,
+                        decision,
+                        score,
+                        reasons,
+                        conditions,
+                    },
+                    actorId,
+                    actorType: actorId ? 'USER' : 'SYSTEM',
                 },
             });
 
             // Determine notification type
             const notificationType =
-                decision === 'APPROVE'
+                decision === 'APPROVED'
                     ? NotificationType.UNDERWRITING_APPROVED
-                    : decision === 'REJECT'
+                    : decision === 'DECLINED'
                         ? NotificationType.UNDERWRITING_REJECTED
                         : NotificationType.UNDERWRITING_CONDITIONAL;
 
             // Enqueue domain event for notification
             const outboxId = await enqueueOutboxInTx(tx, {
                 eventType: notificationType,
-                aggregateType: 'UnderwritingDecision',
-                aggregateId: underwritingDecision.id,
+                aggregateType: 'Contract',
+                aggregateId: contractId,
                 queueName: 'qshelter-notifications',
                 payload: {
-                    decisionId: underwritingDecision.id,
-                    prequalificationId,
+                    contractId,
+                    stepId,
                     decision,
                     score,
                     reasons,
@@ -320,162 +374,83 @@ export class UnderwritingService {
                 actorRole: 'system',
             });
 
-            return { underwritingDecision, outboxId };
+            return { outboxId };
         });
 
         // Attempt immediate publish (best-effort)
         await publishAfterCommit(this.prisma, result.outboxId);
 
         return {
-            decisionId: result.underwritingDecision.id,
-            prequalificationId,
+            decisionId: stepId, // Use step ID as decision ID
+            contractId,
             decision,
             score,
             reasons,
             conditions,
             rulesVersion: RULES_VERSION,
             ruleResults: results,
-            evaluatedAt: result.underwritingDecision.createdAt.toISOString(),
+            evaluatedAt: new Date().toISOString(),
         };
     }
 
     /**
-     * Get an underwriting decision by ID
+     * Get underwriting results for a contract step
      */
-    async getById(decisionId: string): Promise<UnderwritingResponse | null> {
-        const decision = await this.prisma.underwritingDecision.findUnique({
-            where: { id: decisionId },
+    async getByStepId(stepId: string): Promise<UnderwritingResponse | null> {
+        const step = await this.prisma.documentationStep.findUnique({
+            where: { id: stepId },
+            include: {
+                phase: {
+                    include: { contract: true },
+                },
+            },
         });
 
-        if (!decision) return null;
+        if (!step || step.stepType !== 'UNDERWRITING') return null;
+
+        const notes = step.underwritingNotes ? JSON.parse(step.underwritingNotes) : {};
 
         return {
-            decisionId: decision.id,
-            prequalificationId: decision.prequalificationId,
-            decision: decision.decision as 'APPROVE' | 'REJECT' | 'CONDITIONAL',
-            score: decision.score,
-            reasons: (decision.reasons as string[]) || [],
-            conditions: (decision.conditions as UnderwritingCondition[]) || [],
-            rulesVersion: decision.rulesVersion || RULES_VERSION,
-            ruleResults: (decision.ruleResults as RuleResult[]) || [],
-            evaluatedAt: decision.createdAt.toISOString(),
+            decisionId: step.id,
+            contractId: step.phase.contractId,
+            decision: (step.underwritingDecision as 'APPROVED' | 'DECLINED' | 'CONDITIONAL') || 'CONDITIONAL',
+            score: step.underwritingScore ?? 0,
+            reasons: notes.reasons || [],
+            conditions: notes.conditions || [],
+            rulesVersion: notes.rulesVersion || RULES_VERSION,
+            ruleResults: notes.ruleResults || [],
+            evaluatedAt: step.completedAt?.toISOString() || step.createdAt.toISOString(),
         };
     }
 
     /**
-     * Get all decisions for a prequalification
+     * Get all underwriting steps for a contract
      */
-    async getByPrequalificationId(prequalificationId: string): Promise<UnderwritingResponse[]> {
-        const decisions = await this.prisma.underwritingDecision.findMany({
-            where: { prequalificationId },
+    async getByContractId(contractId: string): Promise<UnderwritingResponse[]> {
+        const steps = await this.prisma.documentationStep.findMany({
+            where: {
+                stepType: 'UNDERWRITING',
+                phase: { contractId },
+            },
+            include: {
+                phase: true,
+            },
             orderBy: { createdAt: 'desc' },
         });
 
-        return decisions.map((d) => ({
-            decisionId: d.id,
-            prequalificationId: d.prequalificationId,
-            decision: d.decision as 'APPROVE' | 'REJECT' | 'CONDITIONAL',
-            score: d.score,
-            reasons: (d.reasons as string[]) || [],
-            conditions: (d.conditions as UnderwritingCondition[]) || [],
-            rulesVersion: d.rulesVersion || RULES_VERSION,
-            ruleResults: (d.ruleResults as RuleResult[]) || [],
-            evaluatedAt: d.createdAt.toISOString(),
-        }));
-    }
-
-    /**
-     * Manual review override
-     */
-    async manualReview(
-        decisionId: string,
-        reviewerId: string,
-        decision: 'APPROVE' | 'REJECT' | 'CONDITIONAL',
-        notes?: string,
-        conditions?: UnderwritingCondition[]
-    ): Promise<UnderwritingResponse> {
-        const existing = await this.prisma.underwritingDecision.findUnique({
-            where: { id: decisionId },
-            include: { prequalification: { include: { user: true, property: true } } },
+        return steps.map((step) => {
+            const notes = step.underwritingNotes ? JSON.parse(step.underwritingNotes) : {};
+            return {
+                decisionId: step.id,
+                contractId,
+                decision: (step.underwritingDecision as 'APPROVED' | 'DECLINED' | 'CONDITIONAL') || 'CONDITIONAL',
+                score: step.underwritingScore ?? 0,
+                reasons: notes.reasons || [],
+                conditions: notes.conditions || [],
+                rulesVersion: notes.rulesVersion || RULES_VERSION,
+                ruleResults: notes.ruleResults || [],
+                evaluatedAt: step.completedAt?.toISOString() || step.createdAt.toISOString(),
+            };
         });
-
-        if (!existing) {
-            throw new Error(`UnderwritingDecision ${decisionId} not found`);
-        }
-
-        const result = await this.prisma.$transaction(async (tx: any) => {
-            // Update decision with manual review
-            const updated = await tx.underwritingDecision.update({
-                where: { id: decisionId },
-                data: {
-                    decision,
-                    conditions: conditions ?? existing.conditions,
-                    isManualReview: true,
-                    reviewedBy: reviewerId,
-                    reviewedAt: new Date(),
-                    reviewNotes: notes,
-                },
-            });
-
-            // Update prequalification status
-            const newStatus = decision === 'APPROVE' ? 'APPROVED' : decision === 'REJECT' ? 'REJECTED' : 'UNDER_REVIEW';
-            await tx.prequalification.update({
-                where: { id: existing.prequalificationId },
-                data: { status: newStatus, reviewedBy: reviewerId, reviewedAt: new Date() },
-            });
-
-            // Emit notification event
-            const notificationType =
-                decision === 'APPROVE'
-                    ? NotificationType.UNDERWRITING_APPROVED
-                    : decision === 'REJECT'
-                        ? NotificationType.UNDERWRITING_REJECTED
-                        : NotificationType.UNDERWRITING_CONDITIONAL;
-
-            const outboxId = await enqueueOutboxInTx(tx, {
-                eventType: notificationType,
-                aggregateType: 'UnderwritingDecision',
-                aggregateId: updated.id,
-                queueName: 'qshelter-notifications',
-                payload: {
-                    decisionId: updated.id,
-                    prequalificationId: existing.prequalificationId,
-                    decision,
-                    score: updated.score,
-                    reasons: updated.reasons,
-                    conditions: updated.conditions,
-                    isManualReview: true,
-                    reviewedBy: reviewerId,
-                    user: {
-                        id: existing.prequalification.user.id,
-                        email: existing.prequalification.user.email,
-                        firstName: existing.prequalification.user.firstName,
-                        lastName: existing.prequalification.user.lastName,
-                    },
-                    property: {
-                        name: existing.prequalification.property.title,
-                    },
-                    evaluatedAt: new Date().toISOString(),
-                },
-                actorId: reviewerId,
-                actorRole: 'admin',
-            });
-
-            return { updated, outboxId };
-        });
-
-        await publishAfterCommit(this.prisma, result.outboxId);
-
-        return {
-            decisionId: result.updated.id,
-            prequalificationId: existing.prequalificationId,
-            decision,
-            score: result.updated.score,
-            reasons: (result.updated.reasons as string[]) || [],
-            conditions: (result.updated.conditions as UnderwritingCondition[]) || [],
-            rulesVersion: result.updated.rulesVersion || RULES_VERSION,
-            ruleResults: (result.updated.ruleResults as RuleResult[]) || [],
-            evaluatedAt: result.updated.createdAt.toISOString(),
-        };
     }
 }

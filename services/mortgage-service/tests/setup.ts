@@ -157,7 +157,6 @@ export async function cleanupTestData() {
     // Delete in correct order to respect foreign keys
     await prisma.contractTermination.deleteMany();
     await prisma.contractEvent.deleteMany();
-    await prisma.contractTransition.deleteMany();
     await prisma.contractPayment.deleteMany();
     await prisma.contractInstallment.deleteMany();
     await prisma.documentationStepApproval.deleteMany();
@@ -166,7 +165,6 @@ export async function cleanupTestData() {
     await prisma.contractDocument.deleteMany();
     await prisma.contractPhase.deleteMany();
     await prisma.paymentMethodChangeRequest.deleteMany();
-    await prisma.prequalification.deleteMany();
     await prisma.contract.deleteMany();
     await prisma.propertyUnit.deleteMany();
     await prisma.propertyVariantAmenity.deleteMany();

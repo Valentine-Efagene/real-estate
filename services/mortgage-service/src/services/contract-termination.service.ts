@@ -803,18 +803,22 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
             }
 
             // Record transition
-            await tx.contractTransition.create({
+            await tx.contractEvent.create({
                 data: {
                     contractId: termination.contractId,
+                    eventType: 'STATE.TRANSITION',
+                    eventGroup: 'STATE_CHANGE',
                     fromState: termination.contract.status,
                     toState: 'TERMINATED',
                     trigger: 'TERMINATE',
-                    metadata: JSON.stringify({
+                    data: {
                         terminationId,
                         type: termination.type,
                         reason: termination.reason,
                         netRefundAmount: termination.netRefundAmount,
-                    }),
+                    },
+                    actorId: actorId,
+                    actorType: 'USER',
                 },
             });
 

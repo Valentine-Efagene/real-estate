@@ -3,14 +3,13 @@ import { prisma } from '../lib/prisma';
 import { UnderwritingService } from '../services/underwriting.service';
 import {
     UnderwritingRequestSchema,
-    ManualReviewRequestSchema,
 } from '../validators/underwriting.validator';
 
 const router = Router();
 
 /**
  * POST /underwriting/evaluate
- * Trigger automated underwriting for a prequalification
+ * Trigger automated underwriting for a contract's UNDERWRITING step
  */
 router.post('/evaluate', async (req: Request, res: Response): Promise<any> => {
     try {
@@ -25,7 +24,11 @@ router.post('/evaluate', async (req: Request, res: Response): Promise<any> => {
         const service = new UnderwritingService(prisma);
 
         const actorId = (req as any).user?.id;
-        const result = await service.evaluate(parsed.data.prequalificationId, actorId);
+        const result = await service.evaluateForStep(
+            parsed.data.contractId,
+            parsed.data.stepId,
+            actorId
+        );
 
         return res.status(200).json(result);
     } catch (error: any) {
@@ -38,88 +41,47 @@ router.post('/evaluate', async (req: Request, res: Response): Promise<any> => {
 });
 
 /**
- * GET /underwriting/:id
- * Get an underwriting decision by ID
+ * GET /underwriting/step/:stepId
+ * Get underwriting results for a specific step
  */
-router.get('/:id', async (req: Request, res: Response): Promise<any> => {
+router.get('/step/:stepId', async (req: Request, res: Response): Promise<any> => {
     try {
-        const { id } = req.params;
+        const { stepId } = req.params;
 
         const service = new UnderwritingService(prisma);
 
-        const result = await service.getById(id);
+        const result = await service.getByStepId(stepId);
         if (!result) {
-            return res.status(404).json({ error: 'Decision not found' });
+            return res.status(404).json({ error: 'Underwriting step not found' });
         }
 
         return res.status(200).json(result);
     } catch (error: any) {
-        console.error('Failed to get underwriting decision', error);
+        console.error('Failed to get underwriting result', error);
         return res.status(500).json({
-            error: 'Failed to get underwriting decision',
+            error: 'Failed to get underwriting result',
             message: error.message,
         });
     }
 });
 
 /**
- * GET /underwriting/prequalification/:prequalificationId
- * Get all underwriting decisions for a prequalification
+ * GET /underwriting/contract/:contractId
+ * Get all underwriting results for a contract
  */
-router.get('/prequalification/:prequalificationId', async (req: Request, res: Response): Promise<any> => {
+router.get('/contract/:contractId', async (req: Request, res: Response): Promise<any> => {
     try {
-        const { prequalificationId } = req.params;
+        const { contractId } = req.params;
 
         const service = new UnderwritingService(prisma);
 
-        const results = await service.getByPrequalificationId(prequalificationId);
+        const results = await service.getByContractId(contractId);
 
         return res.status(200).json(results);
     } catch (error: any) {
-        console.error('Failed to get underwriting decisions', error);
+        console.error('Failed to get underwriting results', error);
         return res.status(500).json({
-            error: 'Failed to get underwriting decisions',
-            message: error.message,
-        });
-    }
-});
-
-/**
- * POST /underwriting/:id/review
- * Manual review override for an underwriting decision (admin only)
- */
-router.post('/:id/review', async (req: Request, res: Response): Promise<any> => {
-    try {
-        const { id } = req.params;
-        const parsed = ManualReviewRequestSchema.safeParse({ ...req.body, decisionId: id });
-
-        if (!parsed.success) {
-            return res.status(400).json({
-                error: 'Invalid request',
-                details: parsed.error.issues,
-            });
-        }
-
-        const reviewerId = (req as any).user?.id;
-        if (!reviewerId) {
-            return res.status(401).json({ error: 'Unauthorized - reviewer ID required' });
-        }
-
-        const service = new UnderwritingService(prisma);
-
-        const result = await service.manualReview(
-            id,
-            reviewerId,
-            parsed.data.decision,
-            parsed.data.notes,
-            parsed.data.conditions
-        );
-
-        return res.status(200).json(result);
-    } catch (error: any) {
-        console.error('Manual review failed', error);
-        return res.status(500).json({
-            error: 'Manual review failed',
+            error: 'Failed to get underwriting results',
             message: error.message,
         });
     }

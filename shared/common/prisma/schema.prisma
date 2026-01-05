@@ -927,7 +927,6 @@ model Contract {
   phases       ContractPhase[]
   documents    ContractDocument[]
   payments     ContractPayment[]
-  transitions  ContractTransition[]
   events       ContractEvent[]
   terminations ContractTermination[]
   offerLetters OfferLetter[]
@@ -1193,31 +1192,35 @@ model ContractDocument {
   @@map("contract_documents")
 }
 
-// FSM transitions for audit
-model ContractTransition {
-  id             String   @id @default(cuid())
-  contractId     String
-  contract       Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
-  fromState      String
-  toState        String
-  trigger        String
-  metadata       String?  @db.Text // JSON
-  transitionedAt DateTime @default(now())
-
-  @@index([contractId])
-  @@map("contract_transitions")
-}
-
-// Domain events for audit and integration
+// Contract domain events (FSM transitions, payments, documents, etc.)
 model ContractEvent {
   id         String   @id @default(cuid())
   contractId String
   contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
-  event      String
-  data       String?  @db.Text // JSON
-  createdAt  DateTime @default(now())
+
+  // Event classification
+  eventType  String // STATE.TRANSITION, PHASE.ACTIVATED, PAYMENT.COMPLETED, etc.
+  eventGroup String? // STATE_CHANGE, PAYMENT, DOCUMENT, NOTIFICATION (for filtering)
+
+  // For state transitions (optional - only populated for STATE.TRANSITION events)
+  fromState String?
+  toState   String?
+  trigger   String?
+
+  // Event payload (all event-specific data)
+  data Json?
+
+  // Actor tracking
+  actorId   String?
+  actorType String? // USER, SYSTEM, WEBHOOK
+
+  // Timing
+  occurredAt DateTime @default(now())
 
   @@index([contractId])
+  @@index([eventType])
+  @@index([eventGroup])
+  @@index([occurredAt])
   @@map("contract_events")
 }
 

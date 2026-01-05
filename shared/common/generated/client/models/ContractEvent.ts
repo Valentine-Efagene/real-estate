@@ -27,25 +27,41 @@ export type AggregateContractEvent = {
 export type ContractEventMinAggregateOutputType = {
   id: string | null
   contractId: string | null
-  event: string | null
-  data: string | null
-  createdAt: Date | null
+  eventType: string | null
+  eventGroup: string | null
+  fromState: string | null
+  toState: string | null
+  trigger: string | null
+  actorId: string | null
+  actorType: string | null
+  occurredAt: Date | null
 }
 
 export type ContractEventMaxAggregateOutputType = {
   id: string | null
   contractId: string | null
-  event: string | null
-  data: string | null
-  createdAt: Date | null
+  eventType: string | null
+  eventGroup: string | null
+  fromState: string | null
+  toState: string | null
+  trigger: string | null
+  actorId: string | null
+  actorType: string | null
+  occurredAt: Date | null
 }
 
 export type ContractEventCountAggregateOutputType = {
   id: number
   contractId: number
-  event: number
+  eventType: number
+  eventGroup: number
+  fromState: number
+  toState: number
+  trigger: number
   data: number
-  createdAt: number
+  actorId: number
+  actorType: number
+  occurredAt: number
   _all: number
 }
 
@@ -53,25 +69,41 @@ export type ContractEventCountAggregateOutputType = {
 export type ContractEventMinAggregateInputType = {
   id?: true
   contractId?: true
-  event?: true
-  data?: true
-  createdAt?: true
+  eventType?: true
+  eventGroup?: true
+  fromState?: true
+  toState?: true
+  trigger?: true
+  actorId?: true
+  actorType?: true
+  occurredAt?: true
 }
 
 export type ContractEventMaxAggregateInputType = {
   id?: true
   contractId?: true
-  event?: true
-  data?: true
-  createdAt?: true
+  eventType?: true
+  eventGroup?: true
+  fromState?: true
+  toState?: true
+  trigger?: true
+  actorId?: true
+  actorType?: true
+  occurredAt?: true
 }
 
 export type ContractEventCountAggregateInputType = {
   id?: true
   contractId?: true
-  event?: true
+  eventType?: true
+  eventGroup?: true
+  fromState?: true
+  toState?: true
+  trigger?: true
   data?: true
-  createdAt?: true
+  actorId?: true
+  actorType?: true
+  occurredAt?: true
   _all?: true
 }
 
@@ -150,9 +182,15 @@ export type ContractEventGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
 export type ContractEventGroupByOutputType = {
   id: string
   contractId: string
-  event: string
-  data: string | null
-  createdAt: Date
+  eventType: string
+  eventGroup: string | null
+  fromState: string | null
+  toState: string | null
+  trigger: string | null
+  data: runtime.JsonValue | null
+  actorId: string | null
+  actorType: string | null
+  occurredAt: Date
   _count: ContractEventCountAggregateOutputType | null
   _min: ContractEventMinAggregateOutputType | null
   _max: ContractEventMaxAggregateOutputType | null
@@ -179,18 +217,30 @@ export type ContractEventWhereInput = {
   NOT?: Prisma.ContractEventWhereInput | Prisma.ContractEventWhereInput[]
   id?: Prisma.StringFilter<"ContractEvent"> | string
   contractId?: Prisma.StringFilter<"ContractEvent"> | string
-  event?: Prisma.StringFilter<"ContractEvent"> | string
-  data?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"ContractEvent"> | Date | string
+  eventType?: Prisma.StringFilter<"ContractEvent"> | string
+  eventGroup?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
+  fromState?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
+  toState?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
+  trigger?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
+  data?: Prisma.JsonNullableFilter<"ContractEvent">
+  actorId?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
+  actorType?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
+  occurredAt?: Prisma.DateTimeFilter<"ContractEvent"> | Date | string
   contract?: Prisma.XOR<Prisma.ContractScalarRelationFilter, Prisma.ContractWhereInput>
 }
 
 export type ContractEventOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   contractId?: Prisma.SortOrder
-  event?: Prisma.SortOrder
+  eventType?: Prisma.SortOrder
+  eventGroup?: Prisma.SortOrderInput | Prisma.SortOrder
+  fromState?: Prisma.SortOrderInput | Prisma.SortOrder
+  toState?: Prisma.SortOrderInput | Prisma.SortOrder
+  trigger?: Prisma.SortOrderInput | Prisma.SortOrder
   data?: Prisma.SortOrderInput | Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
+  actorId?: Prisma.SortOrderInput | Prisma.SortOrder
+  actorType?: Prisma.SortOrderInput | Prisma.SortOrder
+  occurredAt?: Prisma.SortOrder
   contract?: Prisma.ContractOrderByWithRelationInput
   _relevance?: Prisma.ContractEventOrderByRelevanceInput
 }
@@ -201,18 +251,30 @@ export type ContractEventWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.ContractEventWhereInput[]
   NOT?: Prisma.ContractEventWhereInput | Prisma.ContractEventWhereInput[]
   contractId?: Prisma.StringFilter<"ContractEvent"> | string
-  event?: Prisma.StringFilter<"ContractEvent"> | string
-  data?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"ContractEvent"> | Date | string
+  eventType?: Prisma.StringFilter<"ContractEvent"> | string
+  eventGroup?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
+  fromState?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
+  toState?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
+  trigger?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
+  data?: Prisma.JsonNullableFilter<"ContractEvent">
+  actorId?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
+  actorType?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
+  occurredAt?: Prisma.DateTimeFilter<"ContractEvent"> | Date | string
   contract?: Prisma.XOR<Prisma.ContractScalarRelationFilter, Prisma.ContractWhereInput>
 }, "id">
 
 export type ContractEventOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   contractId?: Prisma.SortOrder
-  event?: Prisma.SortOrder
+  eventType?: Prisma.SortOrder
+  eventGroup?: Prisma.SortOrderInput | Prisma.SortOrder
+  fromState?: Prisma.SortOrderInput | Prisma.SortOrder
+  toState?: Prisma.SortOrderInput | Prisma.SortOrder
+  trigger?: Prisma.SortOrderInput | Prisma.SortOrder
   data?: Prisma.SortOrderInput | Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
+  actorId?: Prisma.SortOrderInput | Prisma.SortOrder
+  actorType?: Prisma.SortOrderInput | Prisma.SortOrder
+  occurredAt?: Prisma.SortOrder
   _count?: Prisma.ContractEventCountOrderByAggregateInput
   _max?: Prisma.ContractEventMaxOrderByAggregateInput
   _min?: Prisma.ContractEventMinOrderByAggregateInput
@@ -224,64 +286,112 @@ export type ContractEventScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ContractEventScalarWhereWithAggregatesInput | Prisma.ContractEventScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"ContractEvent"> | string
   contractId?: Prisma.StringWithAggregatesFilter<"ContractEvent"> | string
-  event?: Prisma.StringWithAggregatesFilter<"ContractEvent"> | string
-  data?: Prisma.StringNullableWithAggregatesFilter<"ContractEvent"> | string | null
-  createdAt?: Prisma.DateTimeWithAggregatesFilter<"ContractEvent"> | Date | string
+  eventType?: Prisma.StringWithAggregatesFilter<"ContractEvent"> | string
+  eventGroup?: Prisma.StringNullableWithAggregatesFilter<"ContractEvent"> | string | null
+  fromState?: Prisma.StringNullableWithAggregatesFilter<"ContractEvent"> | string | null
+  toState?: Prisma.StringNullableWithAggregatesFilter<"ContractEvent"> | string | null
+  trigger?: Prisma.StringNullableWithAggregatesFilter<"ContractEvent"> | string | null
+  data?: Prisma.JsonNullableWithAggregatesFilter<"ContractEvent">
+  actorId?: Prisma.StringNullableWithAggregatesFilter<"ContractEvent"> | string | null
+  actorType?: Prisma.StringNullableWithAggregatesFilter<"ContractEvent"> | string | null
+  occurredAt?: Prisma.DateTimeWithAggregatesFilter<"ContractEvent"> | Date | string
 }
 
 export type ContractEventCreateInput = {
   id?: string
-  event: string
-  data?: string | null
-  createdAt?: Date | string
+  eventType: string
+  eventGroup?: string | null
+  fromState?: string | null
+  toState?: string | null
+  trigger?: string | null
+  data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actorId?: string | null
+  actorType?: string | null
+  occurredAt?: Date | string
   contract: Prisma.ContractCreateNestedOneWithoutEventsInput
 }
 
 export type ContractEventUncheckedCreateInput = {
   id?: string
   contractId: string
-  event: string
-  data?: string | null
-  createdAt?: Date | string
+  eventType: string
+  eventGroup?: string | null
+  fromState?: string | null
+  toState?: string | null
+  trigger?: string | null
+  data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actorId?: string | null
+  actorType?: string | null
+  occurredAt?: Date | string
 }
 
 export type ContractEventUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  event?: Prisma.StringFieldUpdateOperationsInput | string
-  data?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  eventType?: Prisma.StringFieldUpdateOperationsInput | string
+  eventGroup?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fromState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  toState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trigger?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  actorType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contract?: Prisma.ContractUpdateOneRequiredWithoutEventsNestedInput
 }
 
 export type ContractEventUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   contractId?: Prisma.StringFieldUpdateOperationsInput | string
-  event?: Prisma.StringFieldUpdateOperationsInput | string
-  data?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  eventType?: Prisma.StringFieldUpdateOperationsInput | string
+  eventGroup?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fromState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  toState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trigger?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  actorType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ContractEventCreateManyInput = {
   id?: string
   contractId: string
-  event: string
-  data?: string | null
-  createdAt?: Date | string
+  eventType: string
+  eventGroup?: string | null
+  fromState?: string | null
+  toState?: string | null
+  trigger?: string | null
+  data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actorId?: string | null
+  actorType?: string | null
+  occurredAt?: Date | string
 }
 
 export type ContractEventUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  event?: Prisma.StringFieldUpdateOperationsInput | string
-  data?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  eventType?: Prisma.StringFieldUpdateOperationsInput | string
+  eventGroup?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fromState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  toState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trigger?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  actorType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ContractEventUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   contractId?: Prisma.StringFieldUpdateOperationsInput | string
-  event?: Prisma.StringFieldUpdateOperationsInput | string
-  data?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  eventType?: Prisma.StringFieldUpdateOperationsInput | string
+  eventGroup?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fromState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  toState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trigger?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  actorType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ContractEventListRelationFilter = {
@@ -303,25 +413,41 @@ export type ContractEventOrderByRelevanceInput = {
 export type ContractEventCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   contractId?: Prisma.SortOrder
-  event?: Prisma.SortOrder
+  eventType?: Prisma.SortOrder
+  eventGroup?: Prisma.SortOrder
+  fromState?: Prisma.SortOrder
+  toState?: Prisma.SortOrder
+  trigger?: Prisma.SortOrder
   data?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
+  actorId?: Prisma.SortOrder
+  actorType?: Prisma.SortOrder
+  occurredAt?: Prisma.SortOrder
 }
 
 export type ContractEventMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   contractId?: Prisma.SortOrder
-  event?: Prisma.SortOrder
-  data?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
+  eventType?: Prisma.SortOrder
+  eventGroup?: Prisma.SortOrder
+  fromState?: Prisma.SortOrder
+  toState?: Prisma.SortOrder
+  trigger?: Prisma.SortOrder
+  actorId?: Prisma.SortOrder
+  actorType?: Prisma.SortOrder
+  occurredAt?: Prisma.SortOrder
 }
 
 export type ContractEventMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   contractId?: Prisma.SortOrder
-  event?: Prisma.SortOrder
-  data?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
+  eventType?: Prisma.SortOrder
+  eventGroup?: Prisma.SortOrder
+  fromState?: Prisma.SortOrder
+  toState?: Prisma.SortOrder
+  trigger?: Prisma.SortOrder
+  actorId?: Prisma.SortOrder
+  actorType?: Prisma.SortOrder
+  occurredAt?: Prisma.SortOrder
 }
 
 export type ContractEventCreateNestedManyWithoutContractInput = {
@@ -368,16 +494,28 @@ export type ContractEventUncheckedUpdateManyWithoutContractNestedInput = {
 
 export type ContractEventCreateWithoutContractInput = {
   id?: string
-  event: string
-  data?: string | null
-  createdAt?: Date | string
+  eventType: string
+  eventGroup?: string | null
+  fromState?: string | null
+  toState?: string | null
+  trigger?: string | null
+  data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actorId?: string | null
+  actorType?: string | null
+  occurredAt?: Date | string
 }
 
 export type ContractEventUncheckedCreateWithoutContractInput = {
   id?: string
-  event: string
-  data?: string | null
-  createdAt?: Date | string
+  eventType: string
+  eventGroup?: string | null
+  fromState?: string | null
+  toState?: string | null
+  trigger?: string | null
+  data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actorId?: string | null
+  actorType?: string | null
+  occurredAt?: Date | string
 }
 
 export type ContractEventCreateOrConnectWithoutContractInput = {
@@ -412,37 +550,67 @@ export type ContractEventScalarWhereInput = {
   NOT?: Prisma.ContractEventScalarWhereInput | Prisma.ContractEventScalarWhereInput[]
   id?: Prisma.StringFilter<"ContractEvent"> | string
   contractId?: Prisma.StringFilter<"ContractEvent"> | string
-  event?: Prisma.StringFilter<"ContractEvent"> | string
-  data?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"ContractEvent"> | Date | string
+  eventType?: Prisma.StringFilter<"ContractEvent"> | string
+  eventGroup?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
+  fromState?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
+  toState?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
+  trigger?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
+  data?: Prisma.JsonNullableFilter<"ContractEvent">
+  actorId?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
+  actorType?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
+  occurredAt?: Prisma.DateTimeFilter<"ContractEvent"> | Date | string
 }
 
 export type ContractEventCreateManyContractInput = {
   id?: string
-  event: string
-  data?: string | null
-  createdAt?: Date | string
+  eventType: string
+  eventGroup?: string | null
+  fromState?: string | null
+  toState?: string | null
+  trigger?: string | null
+  data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actorId?: string | null
+  actorType?: string | null
+  occurredAt?: Date | string
 }
 
 export type ContractEventUpdateWithoutContractInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  event?: Prisma.StringFieldUpdateOperationsInput | string
-  data?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  eventType?: Prisma.StringFieldUpdateOperationsInput | string
+  eventGroup?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fromState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  toState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trigger?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  actorType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ContractEventUncheckedUpdateWithoutContractInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  event?: Prisma.StringFieldUpdateOperationsInput | string
-  data?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  eventType?: Prisma.StringFieldUpdateOperationsInput | string
+  eventGroup?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fromState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  toState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trigger?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  actorType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ContractEventUncheckedUpdateManyWithoutContractInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  event?: Prisma.StringFieldUpdateOperationsInput | string
-  data?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  eventType?: Prisma.StringFieldUpdateOperationsInput | string
+  eventGroup?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fromState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  toState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  trigger?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  actorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  actorType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -450,9 +618,15 @@ export type ContractEventUncheckedUpdateManyWithoutContractInput = {
 export type ContractEventSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   contractId?: boolean
-  event?: boolean
+  eventType?: boolean
+  eventGroup?: boolean
+  fromState?: boolean
+  toState?: boolean
+  trigger?: boolean
   data?: boolean
-  createdAt?: boolean
+  actorId?: boolean
+  actorType?: boolean
+  occurredAt?: boolean
   contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["contractEvent"]>
 
@@ -461,12 +635,18 @@ export type ContractEventSelect<ExtArgs extends runtime.Types.Extensions.Interna
 export type ContractEventSelectScalar = {
   id?: boolean
   contractId?: boolean
-  event?: boolean
+  eventType?: boolean
+  eventGroup?: boolean
+  fromState?: boolean
+  toState?: boolean
+  trigger?: boolean
   data?: boolean
-  createdAt?: boolean
+  actorId?: boolean
+  actorType?: boolean
+  occurredAt?: boolean
 }
 
-export type ContractEventOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "contractId" | "event" | "data" | "createdAt", ExtArgs["result"]["contractEvent"]>
+export type ContractEventOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "contractId" | "eventType" | "eventGroup" | "fromState" | "toState" | "trigger" | "data" | "actorId" | "actorType" | "occurredAt", ExtArgs["result"]["contractEvent"]>
 export type ContractEventInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
 }
@@ -479,9 +659,15 @@ export type $ContractEventPayload<ExtArgs extends runtime.Types.Extensions.Inter
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     contractId: string
-    event: string
-    data: string | null
-    createdAt: Date
+    eventType: string
+    eventGroup: string | null
+    fromState: string | null
+    toState: string | null
+    trigger: string | null
+    data: runtime.JsonValue | null
+    actorId: string | null
+    actorType: string | null
+    occurredAt: Date
   }, ExtArgs["result"]["contractEvent"]>
   composites: {}
 }
@@ -854,9 +1040,15 @@ export interface Prisma__ContractEventClient<T, Null = never, ExtArgs extends ru
 export interface ContractEventFieldRefs {
   readonly id: Prisma.FieldRef<"ContractEvent", 'String'>
   readonly contractId: Prisma.FieldRef<"ContractEvent", 'String'>
-  readonly event: Prisma.FieldRef<"ContractEvent", 'String'>
-  readonly data: Prisma.FieldRef<"ContractEvent", 'String'>
-  readonly createdAt: Prisma.FieldRef<"ContractEvent", 'DateTime'>
+  readonly eventType: Prisma.FieldRef<"ContractEvent", 'String'>
+  readonly eventGroup: Prisma.FieldRef<"ContractEvent", 'String'>
+  readonly fromState: Prisma.FieldRef<"ContractEvent", 'String'>
+  readonly toState: Prisma.FieldRef<"ContractEvent", 'String'>
+  readonly trigger: Prisma.FieldRef<"ContractEvent", 'String'>
+  readonly data: Prisma.FieldRef<"ContractEvent", 'Json'>
+  readonly actorId: Prisma.FieldRef<"ContractEvent", 'String'>
+  readonly actorType: Prisma.FieldRef<"ContractEvent", 'String'>
+  readonly occurredAt: Prisma.FieldRef<"ContractEvent", 'DateTime'>
 }
     
 

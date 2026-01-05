@@ -353,14 +353,6 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
                 },
             });
 
-            // Link prequalification to contract if provided
-            if ((data as any).prequalificationId) {
-                await tx.prequalification.update({
-                    where: { id: (data as any).prequalificationId },
-                    data: { contractId: created.id },
-                });
-            }
-
             return created;
         });
 
@@ -532,13 +524,17 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
                 },
             });
 
-            await tx.contractTransition.create({
+            await tx.contractEvent.create({
                 data: {
                     contractId: id,
+                    eventType: 'STATE.TRANSITION',
+                    eventGroup: 'STATE_CHANGE',
                     fromState,
                     toState,
                     trigger: data.trigger,
-                    metadata: data.metadata ? JSON.stringify(data.metadata) : null,
+                    data: data.metadata || undefined,
+                    actorId: userId,
+                    actorType: 'USER',
                 },
             });
 
@@ -587,12 +583,16 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
             });
 
             // Record the transition to ACTIVE
-            await tx.contractTransition.create({
+            await tx.contractEvent.create({
                 data: {
                     contractId: id,
+                    eventType: 'STATE.TRANSITION',
+                    eventGroup: 'STATE_CHANGE',
                     fromState: contract.state,
                     toState: 'ACTIVE',
                     trigger: 'SIGN',
+                    actorId: userId,
+                    actorType: 'USER',
                 },
             });
 
@@ -659,13 +659,17 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
                 },
             });
 
-            await tx.contractTransition.create({
+            await tx.contractEvent.create({
                 data: {
                     contractId: id,
+                    eventType: 'STATE.TRANSITION',
+                    eventGroup: 'STATE_CHANGE',
                     fromState: contract.state,
                     toState: 'CANCELLED',
                     trigger: 'CANCEL',
-                    metadata: reason ? JSON.stringify({ reason }) : null,
+                    data: reason ? { reason } : undefined,
+                    actorId: userId,
+                    actorType: 'USER',
                 },
             });
 
@@ -716,7 +720,6 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
             }
 
             await tx.contractPhase.deleteMany({ where: { contractId: id } });
-            await tx.contractTransition.deleteMany({ where: { contractId: id } });
             await tx.contractEvent.deleteMany({ where: { contractId: id } });
             await tx.contract.delete({ where: { id } });
         });

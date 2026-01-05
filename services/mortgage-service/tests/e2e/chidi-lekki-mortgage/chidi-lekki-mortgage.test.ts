@@ -41,8 +41,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
     let mortgagePlanId: string;
     let paymentMethodId: string;
 
-    // Chidi's application and contract
-    let prequalificationId: string;
+    // Chidi's contract
     let contractId: string;
     let documentationPhaseId: string;
     let downpaymentPhaseId: string;
@@ -304,8 +303,9 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                 data: [
                     {
                         tenantId,
-                        context: 'PREQUALIFICATION',
+                        context: 'CONTRACT_PHASE',
                         paymentMethodId,
+                        phaseType: 'KYC',
                         documentType: 'ID_CARD',
                         isRequired: true,
                         description: 'Valid government-issued ID (NIN, Passport, or Driver License)',
@@ -314,8 +314,9 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                     },
                     {
                         tenantId,
-                        context: 'PREQUALIFICATION',
+                        context: 'CONTRACT_PHASE',
                         paymentMethodId,
+                        phaseType: 'KYC',
                         documentType: 'BANK_STATEMENT',
                         isRequired: true,
                         description: 'Last 6 months bank statements',
@@ -325,8 +326,9 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                     },
                     {
                         tenantId,
-                        context: 'PREQUALIFICATION',
+                        context: 'CONTRACT_PHASE',
                         paymentMethodId,
+                        phaseType: 'KYC',
                         documentType: 'EMPLOYMENT_LETTER',
                         isRequired: true,
                         description: 'Employment confirmation letter',
@@ -344,162 +346,24 @@ describe("Chidi's Lekki Mortgage Flow", () => {
     });
 
     // =========================================================================
-    // Step 2: Chidi selects Unit 14B and creates a draft application
+    // Step 2: Chidi creates a contract for Unit 14B
+    // Note: Prequalification has been merged into the contract documentation phase.
+    // Underwriting now happens as a step within the KYC phase.
     // =========================================================================
-    describe('Step 2: Chidi selects Unit 14B and creates a draft application', () => {
-        it('Chidi creates a prequalification application for Unit 14B', async () => {
-            const response = await request(app)
-                .post('/prequalifications')
-                .set(authHeaders(chidiId, tenantId))
-                .set('x-idempotency-key', idempotencyKey('chidi-create-application'))
-                .send({
-                    propertyId,
-                    paymentMethodId,
-                    requestedAmount: propertyPrice,
-                    monthlyIncome: 2_500_000, // ₦2.5M/month
-                    monthlyExpenses: 800_000,  // ₦800k/month
-                    answers: [
-                        { questionId: 'employment_status', answer: 'EMPLOYED_FULL_TIME', weight: 1, score: 10 },
-                        { questionId: 'years_employed', answer: '7', weight: 1.5, score: 15 },
-                        { questionId: 'credit_history', answer: 'GOOD', weight: 2, score: 18 },
-                        { questionId: 'existing_debt', answer: 'LOW', weight: 1, score: 10 },
-                    ],
-                });
-
-            expect(response.status).toBe(201);
-            expect(response.body.id).toBeDefined();
-            expect(response.body.status).toBe('DRAFT');
-            prequalificationId = response.body.id;
-        });
-    });
-
-    // =========================================================================
-    // Step 3: Chidi submits the application with documents
-    // =========================================================================
-    describe('Step 3: Chidi submits the application with documents', () => {
-        it('Chidi sees the required documents for his application', async () => {
-            const response = await request(app)
-                .get(`/prequalifications/${prequalificationId}/required-documents`)
-                .set(authHeaders(chidiId, tenantId));
-
-            expect(response.status).toBe(200);
-            expect(response.body.length).toBe(3);
-            expect(response.body.map((d: any) => d.documentType)).toContain('ID_CARD');
-            expect(response.body.map((d: any) => d.documentType)).toContain('BANK_STATEMENT');
-            expect(response.body.map((d: any) => d.documentType)).toContain('EMPLOYMENT_LETTER');
-        });
-
-        it('Chidi uploads his employment letter, bank statements, and valid ID', async () => {
-            const chidiDocuments = [
-                {
-                    documentType: 'ID_CARD',
-                    url: 'https://s3.amazonaws.com/qshelter-uploads/chidi/nin-slip.pdf',
-                    fileName: 'chidi-nin-slip.pdf',
-                    mimeType: 'application/pdf',
-                    sizeBytes: 1024000,
-                },
-                {
-                    documentType: 'BANK_STATEMENT',
-                    url: 'https://s3.amazonaws.com/qshelter-uploads/chidi/gtbank-6months.pdf',
-                    fileName: 'chidi-gtbank-statement.pdf',
-                    mimeType: 'application/pdf',
-                    sizeBytes: 2048000,
-                },
-                {
-                    documentType: 'EMPLOYMENT_LETTER',
-                    url: 'https://s3.amazonaws.com/qshelter-uploads/chidi/employment-letter.pdf',
-                    fileName: 'chidi-employment-letter.pdf',
-                    mimeType: 'application/pdf',
-                    sizeBytes: 512000,
-                },
-            ];
-
-            for (const doc of chidiDocuments) {
-                const response = await request(app)
-                    .post(`/prequalifications/${prequalificationId}/documents`)
-                    .set(authHeaders(chidiId, tenantId))
-                    .set('x-idempotency-key', idempotencyKey(`chidi-doc-${doc.documentType}`))
-                    .send(doc);
-
-                expect(response.status).toBe(201);
-            }
-        });
-
-        it('Chidi submits his application', async () => {
-            const response = await request(app)
-                .post(`/prequalifications/${prequalificationId}/submit`)
-                .set(authHeaders(chidiId, tenantId))
-                .set('x-idempotency-key', idempotencyKey('chidi-submit-application'));
-
-            expect(response.status).toBe(200);
-            // System automatically runs underwriting and transitions to UNDER_REVIEW
-            expect(['SUBMITTED', 'UNDER_REVIEW']).toContain(response.body.status);
-
-            // Verify PREQUALIFICATION.SUBMITTED event
-            const event = await prisma.domainEvent.findFirst({
-                where: {
-                    aggregateType: 'Prequalification',
-                    aggregateId: prequalificationId,
-                    eventType: 'PREQUALIFICATION.SUBMITTED',
-                },
-            });
-            expect(event).toBeDefined();
-        });
-    });
-
-    // =========================================================================
-    // Step 4: System evaluates Chidi's eligibility
-    // Note: The current system auto-advances after underwriting evaluation.
-    // Manual admin review is optional based on payment method configuration.
-    // =========================================================================
-    describe("Step 4: System evaluates Chidi's eligibility", () => {
-        it("Chidi's eligibility score and DTI are calculated", async () => {
-            const prequal = await prisma.prequalification.findUnique({
-                where: { id: prequalificationId },
-            });
-
-            expect(prequal?.score).toBeDefined();
-            expect(prequal?.debtToIncomeRatio).toBeDefined();
-            // DTI = 800k / 2.5M = 0.32 (32%)
-            expect(prequal?.debtToIncomeRatio).toBeCloseTo(0.32, 2);
-        });
-
-        it('System auto-approves Chidi based on underwriting score', async () => {
-            // The underwriting system evaluates and auto-advances if score passes
-            // For applications that need manual review, status would be UNDER_REVIEW
-            const prequal = await prisma.prequalification.findUnique({
-                where: { id: prequalificationId },
-            });
-
-            // Verify underwriting was performed
-            expect(prequal?.score).toBeGreaterThan(0);
-            // Status should be UNDER_REVIEW (awaiting or passed underwriting)
-            expect(['UNDER_REVIEW', 'APPROVED', 'CONDITIONAL']).toContain(prequal?.status);
-        });
-    });
-
-    // =========================================================================
-    // Note: Steps 5-8 (offer letter generation and signing) are now handled
-    // automatically by GENERATE_DOCUMENT and SIGNATURE steps within the contract
-    // phase flow. See the "Step 9" tests below for the actual implementation.
-    // =========================================================================
-
-    // =========================================================================
-    // Step 9: System creates and activates Chidi's contract
-    // =========================================================================
-    describe("Step 9: System creates and activates Chidi's contract", () => {
-        it('System creates a contract from Chidi\'s approved application', async () => {
+    describe("Step 2: Chidi creates and activates a contract", () => {
+        it('Chidi creates a contract for Unit 14B', async () => {
             const response = await request(app)
                 .post('/contracts')
                 .set(authHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-create-contract'))
                 .send({
-                    prequalificationId,
                     propertyUnitId: unit14BId,
                     paymentMethodId,
                     title: 'Purchase Agreement - Lekki Gardens Unit 14B',
                     contractType: 'MORTGAGE',
                     totalAmount: propertyPrice,
+                    monthlyIncome: 2_500_000, // ₦2.5M/month
+                    monthlyExpenses: 800_000,  // ₦800k/month
                 });
 
             expect(response.status).toBe(201);
@@ -841,7 +705,6 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             const events = await prisma.domainEvent.findMany({
                 where: {
                     OR: [
-                        { aggregateId: prequalificationId },
                         { aggregateId: contractId },
                         { aggregateId: documentationPhaseId },
                         { aggregateId: downpaymentPhaseId },
@@ -855,8 +718,6 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
             const eventTypes = events.map((e) => e.eventType);
 
-            expect(eventTypes).toContain('PREQUALIFICATION.SUBMITTED');
-            // Note: PREQUALIFICATION.APPROVED may not be emitted if auto-advanced
             expect(eventTypes).toContain('CONTRACT.CREATED');
             expect(eventTypes).toContain('PHASE.ACTIVATED');
             expect(eventTypes).toContain('PHASE.COMPLETED');
@@ -873,9 +734,12 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         });
 
         it('Contract transitions are recorded', async () => {
-            const transitions = await prisma.contractTransition.findMany({
-                where: { contractId },
-                orderBy: { transitionedAt: 'asc' },
+            const transitions = await prisma.contractEvent.findMany({
+                where: {
+                    contractId,
+                    eventType: 'STATE.TRANSITION',
+                },
+                orderBy: { occurredAt: 'asc' },
             });
 
             expect(transitions.length).toBeGreaterThan(0);

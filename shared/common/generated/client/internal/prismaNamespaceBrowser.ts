@@ -90,7 +90,6 @@ export const ModelName = {
   ContractInstallment: 'ContractInstallment',
   ContractPayment: 'ContractPayment',
   ContractDocument: 'ContractDocument',
-  ContractTransition: 'ContractTransition',
   ContractEvent: 'ContractEvent',
   DocumentTemplate: 'DocumentTemplate',
   OfferLetter: 'OfferLetter',
@@ -746,25 +745,18 @@ export const ContractDocumentScalarFieldEnum = {
 export type ContractDocumentScalarFieldEnum = (typeof ContractDocumentScalarFieldEnum)[keyof typeof ContractDocumentScalarFieldEnum]
 
 
-export const ContractTransitionScalarFieldEnum = {
-  id: 'id',
-  contractId: 'contractId',
-  fromState: 'fromState',
-  toState: 'toState',
-  trigger: 'trigger',
-  metadata: 'metadata',
-  transitionedAt: 'transitionedAt'
-} as const
-
-export type ContractTransitionScalarFieldEnum = (typeof ContractTransitionScalarFieldEnum)[keyof typeof ContractTransitionScalarFieldEnum]
-
-
 export const ContractEventScalarFieldEnum = {
   id: 'id',
   contractId: 'contractId',
-  event: 'event',
+  eventType: 'eventType',
+  eventGroup: 'eventGroup',
+  fromState: 'fromState',
+  toState: 'toState',
+  trigger: 'trigger',
   data: 'data',
-  createdAt: 'createdAt'
+  actorId: 'actorId',
+  actorType: 'actorType',
+  occurredAt: 'occurredAt'
 } as const
 
 export type ContractEventScalarFieldEnum = (typeof ContractEventScalarFieldEnum)[keyof typeof ContractEventScalarFieldEnum]
@@ -1409,23 +1401,16 @@ export const ContractDocumentOrderByRelevanceFieldEnum = {
 export type ContractDocumentOrderByRelevanceFieldEnum = (typeof ContractDocumentOrderByRelevanceFieldEnum)[keyof typeof ContractDocumentOrderByRelevanceFieldEnum]
 
 
-export const ContractTransitionOrderByRelevanceFieldEnum = {
-  id: 'id',
-  contractId: 'contractId',
-  fromState: 'fromState',
-  toState: 'toState',
-  trigger: 'trigger',
-  metadata: 'metadata'
-} as const
-
-export type ContractTransitionOrderByRelevanceFieldEnum = (typeof ContractTransitionOrderByRelevanceFieldEnum)[keyof typeof ContractTransitionOrderByRelevanceFieldEnum]
-
-
 export const ContractEventOrderByRelevanceFieldEnum = {
   id: 'id',
   contractId: 'contractId',
-  event: 'event',
-  data: 'data'
+  eventType: 'eventType',
+  eventGroup: 'eventGroup',
+  fromState: 'fromState',
+  toState: 'toState',
+  trigger: 'trigger',
+  actorId: 'actorId',
+  actorType: 'actorType'
 } as const
 
 export type ContractEventOrderByRelevanceFieldEnum = (typeof ContractEventOrderByRelevanceFieldEnum)[keyof typeof ContractEventOrderByRelevanceFieldEnum]

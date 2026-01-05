@@ -3,7 +3,8 @@ import { z } from 'zod';
 // ============== Underwriting Request ==============
 
 export const UnderwritingRequestSchema = z.object({
-    prequalificationId: z.string().cuid(),
+    contractId: z.string().cuid(),
+    stepId: z.string().cuid(),
 });
 
 export type UnderwritingRequest = z.infer<typeof UnderwritingRequestSchema>;
@@ -36,8 +37,8 @@ export type RuleResult = z.infer<typeof RuleResultSchema>;
 
 export const UnderwritingResponseSchema = z.object({
     decisionId: z.string(),
-    prequalificationId: z.string(),
-    decision: z.enum(['APPROVE', 'REJECT', 'CONDITIONAL']),
+    contractId: z.string(),
+    decision: z.enum(['APPROVED', 'DECLINED', 'CONDITIONAL']),
     score: z.number().nullable(),
     reasons: z.array(z.string()).optional(),
     conditions: z.array(UnderwritingConditionSchema).optional(),

@@ -6,7 +6,6 @@ export * from './ContractInstallment';
 export * from './ContractPayment';
 export * from './ContractPhase';
 export * from './ContractTermination';
-export * from './ContractTransition';
 export * from './DeviceEndpoint';
 export * from './DocumentRequirementRule';
 export * from './DocumentTemplate';
