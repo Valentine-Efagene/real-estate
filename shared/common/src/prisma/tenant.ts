@@ -1,55 +1,57 @@
 import { PrismaClient, Prisma } from "../../generated/client/client";
 
 /**
- * Models that require tenant scoping.
+ * INVERTED APPROACH: All models are tenant-scoped by default.
+ * Only list models that are explicitly GLOBAL (no tenant scoping).
  * 
- * IMPORTANT: When adding a new model with tenantId to the schema,
- * add it to this list so queries are automatically filtered by tenant.
- * 
- * Models with nullable tenantId (for global templates) should also be
- * added to OPTIONAL_TENANT_MODELS below.
+ * This reduces the risk of accidentally omitting a new model from tenant scoping.
  */
-const TENANT_SCOPED_MODELS = [
-    // Property domain
-    "property",
-    "propertyPaymentMethod",
-
-    // Payment plan domain
-    "paymentPlan",
-
-    // Contract domain
-    "contract",
-    "contractTermination",
-
-    // Document domain
-    "documentTemplate",
-    "offerLetter",
-    "documentRequirementRule",
-
-    // Prequalification & underwriting domain
-    "prequalification",
-    "underwritingDecision",
-
-    // Payment method changes
-    "paymentMethodChangeRequest",
-] as const;
-
-type TenantScopedModel = (typeof TENANT_SCOPED_MODELS)[number];
 
 /**
- * Models that can optionally have tenant scoping (nullable tenantId)
- * PaymentPlan has nullable tenantId for global templates
+ * Models that are intentionally GLOBAL and should NOT be tenant-scoped.
+ * These models either:
+ * - Don't have a tenantId field (system tables)
+ * - Have optional tenantId but are designed to work across tenants (User)
+ */
+const GLOBAL_MODELS = [
+    // User can exist across tenants or without a tenant
+    "user",
+    // System/infrastructure tables without tenantId
+    "tenant",
+    "role",
+    "permission",
+    "rolePermission",
+    "userRole",
+    "refreshToken",
+    "passwordReset",
+    "wallet",
+    "domainEvent",
+] as const;
+
+type GlobalModel = (typeof GLOBAL_MODELS)[number];
+
+/**
+ * Models that have OPTIONAL tenant scoping (nullable tenantId).
+ * These can be global templates (tenantId = null) or tenant-specific.
+ * Queries will return both global AND tenant-specific records.
  */
 const OPTIONAL_TENANT_MODELS = ["paymentPlan"] as const;
 
 type OptionalTenantModel = (typeof OPTIONAL_TENANT_MODELS)[number];
 
-function isTenantScopedModel(model: string): model is TenantScopedModel {
-    return TENANT_SCOPED_MODELS.includes(model as TenantScopedModel);
+function isGlobalModel(model: string): model is GlobalModel {
+    return GLOBAL_MODELS.includes(model as GlobalModel);
 }
 
 function isOptionalTenantModel(model: string): model is OptionalTenantModel {
     return OPTIONAL_TENANT_MODELS.includes(model as OptionalTenantModel);
+}
+
+/**
+ * A model is tenant-scoped by default unless explicitly listed as global.
+ */
+function isTenantScopedModel(model: string): boolean {
+    return !isGlobalModel(model);
 }
 
 /**
