@@ -453,3 +453,69 @@ export async function sendOfferLetterSignedNotification(
         { correlationId },
     );
 }
+
+// ============== Document Notifications ==============
+
+export interface DocumentApprovedPayload {
+    email: string;
+    userName: string;
+    documentName: string;
+    stepName: string;
+    contractNumber: string;
+    propertyName?: string;
+    approvedDate: string;
+    dashboardUrl: string;
+}
+
+export async function sendDocumentApprovedNotification(
+    payload: DocumentApprovedPayload,
+    correlationId?: string,
+): Promise<void> {
+    const publisher = getPublisher();
+    await publisher.publishEmail(
+        NotificationType.DOCUMENT_APPROVED,
+        {
+            to_email: payload.email,
+            homeBuyerName: payload.userName,
+            documentName: payload.documentName,
+            stepName: payload.stepName,
+            contractNumber: payload.contractNumber,
+            propertyName: payload.propertyName,
+            approvedDate: payload.approvedDate,
+            dashboardLink: payload.dashboardUrl,
+        },
+        { correlationId },
+    );
+}
+
+export interface DocumentRejectedPayload {
+    email: string;
+    userName: string;
+    documentName: string;
+    stepName: string;
+    contractNumber: string;
+    propertyName?: string;
+    reason: string;
+    dashboardUrl: string;
+}
+
+export async function sendDocumentRejectedNotification(
+    payload: DocumentRejectedPayload,
+    correlationId?: string,
+): Promise<void> {
+    const publisher = getPublisher();
+    await publisher.publishEmail(
+        NotificationType.DOCUMENT_REJECTED,
+        {
+            to_email: payload.email,
+            homeBuyerName: payload.userName,
+            documentName: payload.documentName,
+            stepName: payload.stepName,
+            contractNumber: payload.contractNumber,
+            propertyName: payload.propertyName,
+            reason: payload.reason,
+            dashboardLink: payload.dashboardUrl,
+        },
+        { correlationId },
+    );
+}

@@ -70,6 +70,9 @@ function getTemplateType(notificationType: NotificationType): TemplateTypeValue 
         // Mortgage - Offer Letters
         [NotificationType.OFFER_LETTER_SENT]: 'provisionalOfferLetter',
         [NotificationType.OFFER_LETTER_SIGNED]: 'finalOfferLetter',
+        // Documents
+        [NotificationType.DOCUMENT_APPROVED]: 'documentApproved',
+        [NotificationType.DOCUMENT_REJECTED]: 'documentRejected',
     };
 
     return typeMap[notificationType] || null;

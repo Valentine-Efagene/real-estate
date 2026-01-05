@@ -36,6 +36,9 @@ export const templatePathMap: Readonly<Record<TemplateTypeValue, string>> = Obje
     'provisionalOfferLetter': 'provisionalOfferLetter.html',
     'finalOfferLetter': 'finalOfferLetter.html',
     'contractCongratulations': 'content/contractCongratulations.hbs',
+    // Documents
+    'documentApproved': 'content/documentApproved.hbs',
+    'documentRejected': 'content/documentRejected.hbs',
 });
 
 /**
@@ -73,6 +76,9 @@ export const templateTitle: Readonly<Record<TemplateTypeValue, string>> = Object
     'provisionalOfferLetter': 'Your Provisional Offer Letter is Ready',
     'finalOfferLetter': 'Final Offer Letter - Contract Finalization',
     'contractCongratulations': 'Congratulations! Your Property Purchase is Complete',
+    // Documents
+    'documentApproved': 'Your Document Has Been Approved',
+    'documentRejected': 'Document Requires Resubmission',
 });
 
 // Pre-computed set of dynamic templates for O(1) lookup

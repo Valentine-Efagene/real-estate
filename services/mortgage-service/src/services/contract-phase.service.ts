@@ -10,13 +10,31 @@ import type {
 } from '../validators/contract-phase.validator';
 import { handleGenerateDocumentStep } from './step-handlers';
 import { paymentPlanService } from './payment-plan.service';
+import {
+    sendDocumentApprovedNotification,
+    sendDocumentRejectedNotification,
+    formatDate,
+} from '../lib/notifications';
 
 class ContractPhaseService {
     async findById(phaseId: string): Promise<any> {
         const phase = await prisma.contractPhase.findUnique({
             where: { id: phaseId },
             include: {
-                contract: true,
+                contract: {
+                    include: {
+                        buyer: true,
+                        propertyUnit: {
+                            include: {
+                                variant: {
+                                    include: {
+                                        property: true,
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
                 paymentPlan: true,
                 currentStep: true,
                 steps: {
@@ -688,6 +706,25 @@ class ContractPhaseService {
             });
         });
 
+        // Send rejection notification to the buyer
+        const buyer = phase.contract?.buyer;
+        const propertyName = phase.contract?.propertyUnit?.variant?.property?.title;
+        if (buyer?.email) {
+            const dashboardUrl = process.env.DASHBOARD_URL || 'https://app.qshelter.com';
+            await sendDocumentRejectedNotification({
+                email: buyer.email,
+                userName: buyer.firstName || buyer.email,
+                documentName: step.name,
+                stepName: step.name,
+                contractNumber: phase.contract?.contractNumber || '',
+                propertyName,
+                reason: reason,
+                dashboardUrl: `${dashboardUrl}/contracts/${phase.contractId}`,
+            }).catch((err) => {
+                console.error('[ContractPhaseService] Failed to send step rejected notification', err);
+            });
+        }
+
         return this.findById(phaseId);
     }
 
@@ -764,12 +801,41 @@ class ContractPhaseService {
      * Approve or reject a document
      */
     async approveDocument(documentId: string, data: ApproveDocumentInput, userId: string) {
+        // Get document with full context for notifications
         const document = await prisma.contractDocument.findUnique({
             where: { id: documentId },
+            include: {
+                contract: {
+                    include: {
+                        buyer: true,
+                        propertyUnit: {
+                            include: {
+                                variant: {
+                                    include: {
+                                        property: true,
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            },
         });
 
         if (!document) {
             throw new AppError(404, 'Document not found');
+        }
+
+        // Get step name if stepId is present
+        let stepName = 'Document Submission';
+        if (document.stepId) {
+            const step = await prisma.documentationStep.findUnique({
+                where: { id: document.stepId },
+                select: { name: true },
+            });
+            if (step) {
+                stepName = step.name;
+            }
         }
 
         const updated = await prisma.contractDocument.update({
@@ -778,6 +844,41 @@ class ContractPhaseService {
                 status: data.status,
             },
         });
+
+        // Send notification to the buyer
+        const buyer = document.contract?.buyer;
+        const propertyName = document.contract?.propertyUnit?.variant?.property?.title;
+        if (buyer?.email) {
+            const dashboardUrl = process.env.DASHBOARD_URL || 'https://app.qshelter.com';
+
+            if (data.status === 'APPROVED') {
+                await sendDocumentApprovedNotification({
+                    email: buyer.email,
+                    userName: buyer.firstName || buyer.email,
+                    documentName: document.name,
+                    stepName,
+                    contractNumber: document.contract?.contractNumber || '',
+                    propertyName,
+                    approvedDate: formatDate(new Date()),
+                    dashboardUrl: `${dashboardUrl}/contracts/${document.contractId}`,
+                }).catch((err) => {
+                    console.error('[ContractPhaseService] Failed to send document approved notification', err);
+                });
+            } else if (data.status === 'REJECTED') {
+                await sendDocumentRejectedNotification({
+                    email: buyer.email,
+                    userName: buyer.firstName || buyer.email,
+                    documentName: document.name,
+                    stepName,
+                    contractNumber: document.contract?.contractNumber || '',
+                    propertyName,
+                    reason: data.comment || 'Please resubmit with the correct document.',
+                    dashboardUrl: `${dashboardUrl}/contracts/${document.contractId}`,
+                }).catch((err) => {
+                    console.error('[ContractPhaseService] Failed to send document rejected notification', err);
+                });
+            }
+        }
 
         return updated;
     }

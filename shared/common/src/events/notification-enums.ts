@@ -45,6 +45,10 @@ export enum NotificationType {
     UNDERWRITING_REJECTED = 'underwritingRejected',
     UNDERWRITING_CONDITIONAL = 'underwritingConditional',
 
+    // Documents
+    DOCUMENT_APPROVED = 'documentApproved',
+    DOCUMENT_REJECTED = 'documentRejected',
+
     // Admin
     ADMIN_CONTRIBUTION_RECEIVED = 'adminContributionReceived',
     ADMIN_PROPERTY_ALLOCATION = 'adminPropertyAllocation',

@@ -37,6 +37,9 @@ export const TemplateType = z.enum([
     'provisionalOfferLetter',
     'finalOfferLetter',
     'contractCongratulations',
+    // Documents
+    'documentApproved',
+    'documentRejected',
 ]);
 
 export type TemplateTypeValue = z.infer<typeof TemplateType>;

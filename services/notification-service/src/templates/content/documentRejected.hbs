@@ -1,0 +1,64 @@
+<h2 style="margin:0 0 10px 0; font-size:22px; font-weight:600;">
+    ⚠️ Document Requires Resubmission
+</h2>
+
+<p style="font-size:14px; line-height:22px; margin:25px 0;">
+    Hello {{homeBuyerName}},
+</p>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    Your document submission requires attention. Please review the details below and resubmit as needed.
+</p>
+
+<table style="font-size:14px; line-height:22px; margin:20px 0; border-collapse:collapse;">
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Document:</td>
+        <td style="padding:5px 0;"><strong>{{documentName}}</strong></td>
+    </tr>
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Step:</td>
+        <td style="padding:5px 0;">{{stepName}}</td>
+    </tr>
+    {{#if contractNumber}}
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Contract:</td>
+        <td style="padding:5px 0;">{{contractNumber}}</td>
+    </tr>
+    {{/if}}
+    {{#if propertyName}}
+    <tr>
+        <td style="padding:5px 20px 5px 0; color:#666;">Property:</td>
+        <td style="padding:5px 0;">{{propertyName}}</td>
+    </tr>
+    {{/if}}
+</table>
+
+<div style="background-color:#FFF8E1; border-left:4px solid #FFC107; padding:15px; margin:20px 0;">
+    <p style="font-size:14px; line-height:22px; margin:0;">
+        <strong>Reason:</strong><br/>
+        {{reason}}
+    </p>
+</div>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    <strong>What to do next:</strong>
+</p>
+<ol style="font-size:14px; line-height:22px; margin:10px 0; padding-left:20px;">
+    <li>Review the reason provided above</li>
+    <li>Prepare the correct document</li>
+    <li>Log in to your dashboard and resubmit</li>
+</ol>
+
+<a href="{{dashboardLink}}"
+   style="display:inline-block; background-color:#19C2AB; color:#ffffff; font-size:14px; font-weight:600; text-decoration:none; padding:12px 25px; border-radius:5px; margin:20px 0;">
+    Resubmit Document
+</a>
+
+<p style="font-size:14px; line-height:22px; margin:25px 0 10px 0;">
+    If you have any questions, please don't hesitate to reach out to our support team.
+</p>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    Best regards,<br/>
+    The QShelter Team
+</p>
