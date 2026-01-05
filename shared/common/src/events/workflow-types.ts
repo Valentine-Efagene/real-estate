@@ -76,7 +76,7 @@ export interface WorkflowHandlerConfig {
 
 /**
  * Configuration for NOTIFICATION handler type
- * Sends notifications via various channels
+ * Sends notifications via various channels (internal handling)
  */
 export interface NotificationHandlerConfig {
     type: 'NOTIFICATION';
@@ -92,6 +92,34 @@ export interface NotificationHandlerConfig {
     };
     /** Priority */
     priority?: 'low' | 'normal' | 'high' | 'urgent';
+}
+
+/**
+ * Configuration for SNS handler type
+ * Publishes to SNS topic, which triggers the notification-service via SQS
+ * Uses the NotificationEvent format expected by notification-service
+ */
+export interface SnsHandlerConfig {
+    type: 'SNS';
+    /** SNS Topic ARN (optional - defaults to notifications topic) */
+    topicArn?: string;
+    /** Notification type (from NotificationType enum) */
+    notificationType: string;
+    /** Notification channel (email, sms, push) */
+    channel: 'email' | 'sms' | 'push';
+    /**
+     * Payload mapping - maps event payload to notification payload
+     * Uses JSONPath-like expressions (e.g., $.user.email -> to_email)
+     */
+    payloadMapping?: Record<string, string>;
+    /**
+     * Static payload fields to merge with mapped payload
+     */
+    staticPayload?: Record<string, unknown>;
+    /**
+     * Email recipient field path in the event payload (e.g., $.user.email)
+     */
+    recipientPath?: string;
 }
 
 /**
@@ -116,6 +144,7 @@ export type HandlerConfig =
     | WebhookHandlerConfig
     | WorkflowHandlerConfig
     | NotificationHandlerConfig
+    | SnsHandlerConfig
     | ScriptHandlerConfig;
 
 // =============================================================================

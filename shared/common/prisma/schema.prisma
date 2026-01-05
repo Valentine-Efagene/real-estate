@@ -194,7 +194,8 @@ enum EventHandlerType {
   INTERNAL     // Call an internal service method
   WEBHOOK      // Send a webhook to an external URL
   WORKFLOW     // Trigger or advance a workflow
-  NOTIFICATION // Send a notification (email, SMS, push)
+  NOTIFICATION // Send a notification (email, SMS, push) - internal
+  SNS          // Publish to SNS topic (for notification-service)
   SCRIPT       // Execute a custom script/expression
 }
 

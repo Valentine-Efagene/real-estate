@@ -230,6 +230,7 @@ export const EventHandlerType = {
   WEBHOOK: 'WEBHOOK',
   WORKFLOW: 'WORKFLOW',
   NOTIFICATION: 'NOTIFICATION',
+  SNS: 'SNS',
   SCRIPT: 'SCRIPT'
 } as const
 

@@ -42,7 +42,10 @@ import type {
     WebhookHandlerConfig,
     WorkflowHandlerConfig,
     NotificationHandlerConfig,
+    SnsHandlerConfig,
 } from './workflow-types';
+import { EventPublisher } from './event-publisher';
+import { NotificationType, NotificationChannel } from './notification-enums';
 
 /**
  * Service registry interface for internal handlers
@@ -69,12 +72,15 @@ class InMemoryServiceRegistry implements ServiceRegistry {
 
 export class WorkflowEventService {
     private serviceRegistry: ServiceRegistry;
+    private eventPublisher: EventPublisher;
 
     constructor(
         private prisma: PrismaClient,
-        serviceRegistry?: ServiceRegistry
+        serviceRegistry?: ServiceRegistry,
+        eventPublisher?: EventPublisher
     ) {
         this.serviceRegistry = serviceRegistry || new InMemoryServiceRegistry();
+        this.eventPublisher = eventPublisher || new EventPublisher('workflow-event-service');
     }
 
     /**
@@ -437,6 +443,8 @@ export class WorkflowEventService {
                     payload,
                     tenantId
                 );
+            case 'SNS':
+                return this.executeSnsHandler(config as SnsHandlerConfig, payload, tenantId);
             case 'SCRIPT':
                 // TODO: Implement script execution (sandboxed)
                 throw new Error('Script handlers not yet implemented');
@@ -561,6 +569,94 @@ export class WorkflowEventService {
             data: payload,
             tenantId,
         };
+    }
+
+    /**
+     * Execute an SNS handler
+     *
+     * Publishes to SNS topic using the EventPublisher, which triggers
+     * the notification-service via SNS->SQS subscription.
+     *
+     * The config specifies the notification type, channel, and how to
+     * map the event payload to the notification payload.
+     */
+    private async executeSnsHandler(
+        config: SnsHandlerConfig,
+        payload: Record<string, unknown>,
+        tenantId: string
+    ): Promise<unknown> {
+        // Build the notification payload from config
+        const notificationPayload = this.buildSnsPayload(config, payload);
+
+        // Map channel string to NotificationChannel enum
+        const channelMap: Record<string, NotificationChannel> = {
+            email: NotificationChannel.EMAIL,
+            sms: NotificationChannel.SMS,
+            push: NotificationChannel.PUSH,
+        };
+        const channel = channelMap[config.channel] || NotificationChannel.EMAIL;
+
+        // Validate notification type is a valid enum value
+        const notificationType = config.notificationType as NotificationType;
+        if (!Object.values(NotificationType).includes(notificationType)) {
+            throw new Error(`Invalid notification type: ${config.notificationType}`);
+        }
+
+        // Publish to SNS via EventPublisher
+        const messageId = await this.eventPublisher.publish(
+            notificationType,
+            channel,
+            notificationPayload,
+            {
+                tenantId,
+                correlationId: (payload.correlationId as string) || undefined,
+                userId: (payload.userId as string) || (payload.actorId as string) || undefined,
+            }
+        );
+
+        return {
+            success: true,
+            messageId,
+            notificationType: config.notificationType,
+            channel: config.channel,
+            payload: notificationPayload,
+            tenantId,
+        };
+    }
+
+    /**
+     * Build the notification payload for SNS from config and event payload
+     */
+    private buildSnsPayload(
+        config: SnsHandlerConfig,
+        payload: Record<string, unknown>
+    ): Record<string, unknown> {
+        const result: Record<string, unknown> = {};
+
+        // Apply static payload first
+        if (config.staticPayload) {
+            Object.assign(result, config.staticPayload);
+        }
+
+        // Apply payload mapping (map from event payload to notification payload)
+        if (config.payloadMapping) {
+            for (const [targetField, sourcePath] of Object.entries(config.payloadMapping)) {
+                const value = this.resolvePath(payload, sourcePath.replace(/^\$\./, ''));
+                if (value !== undefined) {
+                    result[targetField] = value;
+                }
+            }
+        }
+
+        // If recipientPath is specified, extract the recipient email
+        if (config.recipientPath) {
+            const email = this.resolvePath(payload, config.recipientPath.replace(/^\$\./, ''));
+            if (email && typeof email === 'string') {
+                result.to_email = email;
+            }
+        }
+
+        return result;
     }
 
     // ==========================================
