@@ -430,6 +430,11 @@ export const ModelName = {
   ContractTermination: 'ContractTermination',
   PaymentMethodChangeRequest: 'PaymentMethodChangeRequest',
   DocumentRequirementRule: 'DocumentRequirementRule',
+  EventChannel: 'EventChannel',
+  EventType: 'EventType',
+  EventHandler: 'EventHandler',
+  WorkflowEvent: 'WorkflowEvent',
+  EventHandlerExecution: 'EventHandlerExecution',
   DomainEvent: 'DomainEvent'
 } as const
 
@@ -446,7 +451,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "paymentMethodPhaseStep" | "paymentMethodPhaseDocument" | "contract" | "contractPhase" | "documentationStep" | "documentationStepDocument" | "documentationStepApproval" | "contractInstallment" | "contractPayment" | "contractDocument" | "contractEvent" | "documentTemplate" | "offerLetter" | "contractTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "domainEvent"
+    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "paymentMethodPhaseStep" | "paymentMethodPhaseDocument" | "contract" | "contractPhase" | "documentationStep" | "documentationStepDocument" | "documentationStepApproval" | "contractInstallment" | "contractPayment" | "contractDocument" | "contractEvent" | "documentTemplate" | "offerLetter" | "contractTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "workflowEvent" | "eventHandlerExecution" | "domainEvent"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -3486,6 +3491,336 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    EventChannel: {
+      payload: Prisma.$EventChannelPayload<ExtArgs>
+      fields: Prisma.EventChannelFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.EventChannelFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventChannelPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.EventChannelFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventChannelPayload>
+        }
+        findFirst: {
+          args: Prisma.EventChannelFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventChannelPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.EventChannelFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventChannelPayload>
+        }
+        findMany: {
+          args: Prisma.EventChannelFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventChannelPayload>[]
+        }
+        create: {
+          args: Prisma.EventChannelCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventChannelPayload>
+        }
+        createMany: {
+          args: Prisma.EventChannelCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.EventChannelDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventChannelPayload>
+        }
+        update: {
+          args: Prisma.EventChannelUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventChannelPayload>
+        }
+        deleteMany: {
+          args: Prisma.EventChannelDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.EventChannelUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.EventChannelUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventChannelPayload>
+        }
+        aggregate: {
+          args: Prisma.EventChannelAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateEventChannel>
+        }
+        groupBy: {
+          args: Prisma.EventChannelGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EventChannelGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.EventChannelCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EventChannelCountAggregateOutputType> | number
+        }
+      }
+    }
+    EventType: {
+      payload: Prisma.$EventTypePayload<ExtArgs>
+      fields: Prisma.EventTypeFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.EventTypeFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventTypePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.EventTypeFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventTypePayload>
+        }
+        findFirst: {
+          args: Prisma.EventTypeFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventTypePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.EventTypeFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventTypePayload>
+        }
+        findMany: {
+          args: Prisma.EventTypeFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventTypePayload>[]
+        }
+        create: {
+          args: Prisma.EventTypeCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventTypePayload>
+        }
+        createMany: {
+          args: Prisma.EventTypeCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.EventTypeDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventTypePayload>
+        }
+        update: {
+          args: Prisma.EventTypeUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventTypePayload>
+        }
+        deleteMany: {
+          args: Prisma.EventTypeDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.EventTypeUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.EventTypeUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventTypePayload>
+        }
+        aggregate: {
+          args: Prisma.EventTypeAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateEventType>
+        }
+        groupBy: {
+          args: Prisma.EventTypeGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EventTypeGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.EventTypeCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EventTypeCountAggregateOutputType> | number
+        }
+      }
+    }
+    EventHandler: {
+      payload: Prisma.$EventHandlerPayload<ExtArgs>
+      fields: Prisma.EventHandlerFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.EventHandlerFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventHandlerPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.EventHandlerFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventHandlerPayload>
+        }
+        findFirst: {
+          args: Prisma.EventHandlerFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventHandlerPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.EventHandlerFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventHandlerPayload>
+        }
+        findMany: {
+          args: Prisma.EventHandlerFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventHandlerPayload>[]
+        }
+        create: {
+          args: Prisma.EventHandlerCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventHandlerPayload>
+        }
+        createMany: {
+          args: Prisma.EventHandlerCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.EventHandlerDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventHandlerPayload>
+        }
+        update: {
+          args: Prisma.EventHandlerUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventHandlerPayload>
+        }
+        deleteMany: {
+          args: Prisma.EventHandlerDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.EventHandlerUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.EventHandlerUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventHandlerPayload>
+        }
+        aggregate: {
+          args: Prisma.EventHandlerAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateEventHandler>
+        }
+        groupBy: {
+          args: Prisma.EventHandlerGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EventHandlerGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.EventHandlerCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EventHandlerCountAggregateOutputType> | number
+        }
+      }
+    }
+    WorkflowEvent: {
+      payload: Prisma.$WorkflowEventPayload<ExtArgs>
+      fields: Prisma.WorkflowEventFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.WorkflowEventFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowEventPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.WorkflowEventFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowEventPayload>
+        }
+        findFirst: {
+          args: Prisma.WorkflowEventFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowEventPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.WorkflowEventFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowEventPayload>
+        }
+        findMany: {
+          args: Prisma.WorkflowEventFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowEventPayload>[]
+        }
+        create: {
+          args: Prisma.WorkflowEventCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowEventPayload>
+        }
+        createMany: {
+          args: Prisma.WorkflowEventCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.WorkflowEventDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowEventPayload>
+        }
+        update: {
+          args: Prisma.WorkflowEventUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowEventPayload>
+        }
+        deleteMany: {
+          args: Prisma.WorkflowEventDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.WorkflowEventUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.WorkflowEventUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowEventPayload>
+        }
+        aggregate: {
+          args: Prisma.WorkflowEventAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateWorkflowEvent>
+        }
+        groupBy: {
+          args: Prisma.WorkflowEventGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WorkflowEventGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.WorkflowEventCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WorkflowEventCountAggregateOutputType> | number
+        }
+      }
+    }
+    EventHandlerExecution: {
+      payload: Prisma.$EventHandlerExecutionPayload<ExtArgs>
+      fields: Prisma.EventHandlerExecutionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.EventHandlerExecutionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventHandlerExecutionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.EventHandlerExecutionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventHandlerExecutionPayload>
+        }
+        findFirst: {
+          args: Prisma.EventHandlerExecutionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventHandlerExecutionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.EventHandlerExecutionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventHandlerExecutionPayload>
+        }
+        findMany: {
+          args: Prisma.EventHandlerExecutionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventHandlerExecutionPayload>[]
+        }
+        create: {
+          args: Prisma.EventHandlerExecutionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventHandlerExecutionPayload>
+        }
+        createMany: {
+          args: Prisma.EventHandlerExecutionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.EventHandlerExecutionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventHandlerExecutionPayload>
+        }
+        update: {
+          args: Prisma.EventHandlerExecutionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventHandlerExecutionPayload>
+        }
+        deleteMany: {
+          args: Prisma.EventHandlerExecutionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.EventHandlerExecutionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.EventHandlerExecutionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventHandlerExecutionPayload>
+        }
+        aggregate: {
+          args: Prisma.EventHandlerExecutionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateEventHandlerExecution>
+        }
+        groupBy: {
+          args: Prisma.EventHandlerExecutionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EventHandlerExecutionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.EventHandlerExecutionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EventHandlerExecutionCountAggregateOutputType> | number
+        }
+      }
+    }
     DomainEvent: {
       payload: Prisma.$DomainEventPayload<ExtArgs>
       fields: Prisma.DomainEventFieldRefs
@@ -4415,6 +4750,94 @@ export const DocumentRequirementRuleScalarFieldEnum = {
 export type DocumentRequirementRuleScalarFieldEnum = (typeof DocumentRequirementRuleScalarFieldEnum)[keyof typeof DocumentRequirementRuleScalarFieldEnum]
 
 
+export const EventChannelScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  code: 'code',
+  name: 'name',
+  description: 'description',
+  enabled: 'enabled',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EventChannelScalarFieldEnum = (typeof EventChannelScalarFieldEnum)[keyof typeof EventChannelScalarFieldEnum]
+
+
+export const EventTypeScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  channelId: 'channelId',
+  code: 'code',
+  name: 'name',
+  description: 'description',
+  payloadSchema: 'payloadSchema',
+  enabled: 'enabled',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EventTypeScalarFieldEnum = (typeof EventTypeScalarFieldEnum)[keyof typeof EventTypeScalarFieldEnum]
+
+
+export const EventHandlerScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  eventTypeId: 'eventTypeId',
+  name: 'name',
+  description: 'description',
+  handlerType: 'handlerType',
+  config: 'config',
+  priority: 'priority',
+  enabled: 'enabled',
+  maxRetries: 'maxRetries',
+  retryDelayMs: 'retryDelayMs',
+  filterCondition: 'filterCondition',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EventHandlerScalarFieldEnum = (typeof EventHandlerScalarFieldEnum)[keyof typeof EventHandlerScalarFieldEnum]
+
+
+export const WorkflowEventScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  eventTypeId: 'eventTypeId',
+  payload: 'payload',
+  correlationId: 'correlationId',
+  causationId: 'causationId',
+  source: 'source',
+  actorId: 'actorId',
+  actorType: 'actorType',
+  status: 'status',
+  error: 'error',
+  processedAt: 'processedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type WorkflowEventScalarFieldEnum = (typeof WorkflowEventScalarFieldEnum)[keyof typeof WorkflowEventScalarFieldEnum]
+
+
+export const EventHandlerExecutionScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  handlerId: 'handlerId',
+  status: 'status',
+  attempt: 'attempt',
+  input: 'input',
+  output: 'output',
+  error: 'error',
+  errorCode: 'errorCode',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  durationMs: 'durationMs',
+  createdAt: 'createdAt'
+} as const
+
+export type EventHandlerExecutionScalarFieldEnum = (typeof EventHandlerExecutionScalarFieldEnum)[keyof typeof EventHandlerExecutionScalarFieldEnum]
+
+
 export const DomainEventScalarFieldEnum = {
   id: 'id',
   eventType: 'eventType',
@@ -5017,6 +5440,66 @@ export const DocumentRequirementRuleOrderByRelevanceFieldEnum = {
 export type DocumentRequirementRuleOrderByRelevanceFieldEnum = (typeof DocumentRequirementRuleOrderByRelevanceFieldEnum)[keyof typeof DocumentRequirementRuleOrderByRelevanceFieldEnum]
 
 
+export const EventChannelOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  code: 'code',
+  name: 'name',
+  description: 'description'
+} as const
+
+export type EventChannelOrderByRelevanceFieldEnum = (typeof EventChannelOrderByRelevanceFieldEnum)[keyof typeof EventChannelOrderByRelevanceFieldEnum]
+
+
+export const EventTypeOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  channelId: 'channelId',
+  code: 'code',
+  name: 'name',
+  description: 'description'
+} as const
+
+export type EventTypeOrderByRelevanceFieldEnum = (typeof EventTypeOrderByRelevanceFieldEnum)[keyof typeof EventTypeOrderByRelevanceFieldEnum]
+
+
+export const EventHandlerOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  eventTypeId: 'eventTypeId',
+  name: 'name',
+  description: 'description',
+  filterCondition: 'filterCondition'
+} as const
+
+export type EventHandlerOrderByRelevanceFieldEnum = (typeof EventHandlerOrderByRelevanceFieldEnum)[keyof typeof EventHandlerOrderByRelevanceFieldEnum]
+
+
+export const WorkflowEventOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  eventTypeId: 'eventTypeId',
+  correlationId: 'correlationId',
+  causationId: 'causationId',
+  source: 'source',
+  actorId: 'actorId',
+  error: 'error'
+} as const
+
+export type WorkflowEventOrderByRelevanceFieldEnum = (typeof WorkflowEventOrderByRelevanceFieldEnum)[keyof typeof WorkflowEventOrderByRelevanceFieldEnum]
+
+
+export const EventHandlerExecutionOrderByRelevanceFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  handlerId: 'handlerId',
+  error: 'error',
+  errorCode: 'errorCode'
+} as const
+
+export type EventHandlerExecutionOrderByRelevanceFieldEnum = (typeof EventHandlerExecutionOrderByRelevanceFieldEnum)[keyof typeof EventHandlerExecutionOrderByRelevanceFieldEnum]
+
+
 export const DomainEventOrderByRelevanceFieldEnum = {
   id: 'id',
   eventType: 'eventType',
@@ -5227,6 +5710,34 @@ export type EnumPaymentMethodChangeStatusFieldRefInput<$PrismaModel> = FieldRefI
 export type EnumDocumentRequirementContextFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentRequirementContext'>
     
 
+
+/**
+ * Reference to a field of type 'EventHandlerType'
+ */
+export type EnumEventHandlerTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EventHandlerType'>
+    
+
+
+/**
+ * Reference to a field of type 'ActorType'
+ */
+export type EnumActorTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ActorType'>
+    
+
+
+/**
+ * Reference to a field of type 'WorkflowEventStatus'
+ */
+export type EnumWorkflowEventStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WorkflowEventStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'ExecutionStatus'
+ */
+export type EnumExecutionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExecutionStatus'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -5368,6 +5879,11 @@ export type GlobalOmitConfig = {
   contractTermination?: Prisma.ContractTerminationOmit
   paymentMethodChangeRequest?: Prisma.PaymentMethodChangeRequestOmit
   documentRequirementRule?: Prisma.DocumentRequirementRuleOmit
+  eventChannel?: Prisma.EventChannelOmit
+  eventType?: Prisma.EventTypeOmit
+  eventHandler?: Prisma.EventHandlerOmit
+  workflowEvent?: Prisma.WorkflowEventOmit
+  eventHandlerExecution?: Prisma.EventHandlerExecutionOmit
   domainEvent?: Prisma.DomainEventOmit
 }
 

@@ -225,6 +225,50 @@ export const OfferLetterStatus = {
 export type OfferLetterStatus = (typeof OfferLetterStatus)[keyof typeof OfferLetterStatus]
 
 
+export const EventHandlerType = {
+  INTERNAL: 'INTERNAL',
+  WEBHOOK: 'WEBHOOK',
+  WORKFLOW: 'WORKFLOW',
+  NOTIFICATION: 'NOTIFICATION',
+  SCRIPT: 'SCRIPT'
+} as const
+
+export type EventHandlerType = (typeof EventHandlerType)[keyof typeof EventHandlerType]
+
+
+export const ActorType = {
+  USER: 'USER',
+  API_KEY: 'API_KEY',
+  SYSTEM: 'SYSTEM',
+  WEBHOOK: 'WEBHOOK'
+} as const
+
+export type ActorType = (typeof ActorType)[keyof typeof ActorType]
+
+
+export const WorkflowEventStatus = {
+  PENDING: 'PENDING',
+  PROCESSING: 'PROCESSING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  SKIPPED: 'SKIPPED'
+} as const
+
+export type WorkflowEventStatus = (typeof WorkflowEventStatus)[keyof typeof WorkflowEventStatus]
+
+
+export const ExecutionStatus = {
+  PENDING: 'PENDING',
+  RUNNING: 'RUNNING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  RETRYING: 'RETRYING',
+  SKIPPED: 'SKIPPED'
+} as const
+
+export type ExecutionStatus = (typeof ExecutionStatus)[keyof typeof ExecutionStatus]
+
+
 export const PaymentMethodChangeStatus = {
   PENDING_DOCUMENTS: 'PENDING_DOCUMENTS',
   DOCUMENTS_SUBMITTED: 'DOCUMENTS_SUBMITTED',

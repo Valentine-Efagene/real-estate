@@ -270,6 +270,35 @@ export type PaymentMethodChangeRequest = Prisma.PaymentMethodChangeRequestModel
  */
 export type DocumentRequirementRule = Prisma.DocumentRequirementRuleModel
 /**
+ * Model EventChannel
+ * Event Channel - A logical grouping of events
+ * Channels help organize events and route them to appropriate handlers
+ */
+export type EventChannel = Prisma.EventChannelModel
+/**
+ * Model EventType
+ * Event Type - Defines a type of event that can occur
+ * Each event type belongs to a channel and can have multiple handlers
+ */
+export type EventType = Prisma.EventTypeModel
+/**
+ * Model EventHandler
+ * Event Handler - Defines what should happen when an event fires
+ * Handlers can be internal (call a service), external (webhook), or workflow triggers
+ */
+export type EventHandler = Prisma.EventHandlerModel
+/**
+ * Model WorkflowEvent
+ * Workflow Event - An actual event instance that occurred
+ * This is the audit log of all events in the system
+ */
+export type WorkflowEvent = Prisma.WorkflowEventModel
+/**
+ * Model EventHandlerExecution
+ * Event Handler Execution - Log of a handler processing an event
+ */
+export type EventHandlerExecution = Prisma.EventHandlerExecutionModel
+/**
  * Model DomainEvent
  * 
  */

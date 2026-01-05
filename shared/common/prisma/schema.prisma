@@ -186,6 +186,46 @@ enum OfferLetterStatus {
 }
 
 // =============================================================================
+// EVENT-DRIVEN WORKFLOW ENUMS
+// =============================================================================
+
+/// Handler Type - What kind of action the handler performs
+enum EventHandlerType {
+  INTERNAL     // Call an internal service method
+  WEBHOOK      // Send a webhook to an external URL
+  WORKFLOW     // Trigger or advance a workflow
+  NOTIFICATION // Send a notification (email, SMS, push)
+  SCRIPT       // Execute a custom script/expression
+}
+
+/// Actor Type - Who triggered an event
+enum ActorType {
+  USER
+  API_KEY
+  SYSTEM
+  WEBHOOK
+}
+
+/// Workflow Event Status
+enum WorkflowEventStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  SKIPPED
+}
+
+/// Handler Execution Status
+enum ExecutionStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+  RETRYING
+  SKIPPED
+}
+
+// =============================================================================
 // USER & AUTH DOMAIN
 // =============================================================================
 
@@ -323,6 +363,12 @@ model Tenant {
 
   // API keys for third-party integrations
   apiKeys ApiKey[]
+
+  // Event-driven workflow
+  eventChannels  EventChannel[]
+  eventTypes     EventType[]
+  eventHandlers  EventHandler[]
+  workflowEvents WorkflowEvent[]
 
   @@index([subdomain])
   @@map("tenants")
@@ -1614,6 +1660,231 @@ model DocumentRequirementRule {
   @@index([phaseType])
   @@index([fromPaymentMethodId, toPaymentMethodId])
   @@map("document_requirement_rules")
+}
+
+// =============================================================================
+// EVENT-DRIVEN WORKFLOW CONFIGURATION
+// =============================================================================
+// This system allows admins to configure event channels, types, and handlers
+// for a flexible, configurable event-driven workflow system.
+//
+// Architecture:
+// 1. EventChannel - Logical grouping of events (e.g., "contracts", "payments")
+// 2. EventType - Specific event types (e.g., "DOCUMENT_UPLOADED", "STEP_COMPLETED")
+// 3. EventHandler - What to do when an event fires (webhook, internal call, etc.)
+// 4. WorkflowEvent - Actual event instances (audit log)
+// 5. EventHandlerExecution - Log of handler executions
+// =============================================================================
+
+/// Event Channel - A logical grouping of events
+/// Channels help organize events and route them to appropriate handlers
+model EventChannel {
+  id          String  @id @default(cuid())
+  tenantId    String
+  tenant      Tenant  @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  /// Unique code for the channel (e.g., "CONTRACTS", "PAYMENTS")
+  code        String
+  /// Human-readable name
+  name        String
+  /// Description of what this channel handles
+  description String? @db.Text
+
+  /// Whether this channel is active
+  enabled     Boolean @default(true)
+
+  /// Event types that belong to this channel
+  eventTypes EventType[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([tenantId, code])
+  @@index([tenantId])
+  @@map("event_channels")
+}
+
+/// Event Type - Defines a type of event that can occur
+/// Each event type belongs to a channel and can have multiple handlers
+model EventType {
+  id          String  @id @default(cuid())
+  tenantId    String
+  tenant      Tenant  @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  /// The channel this event type belongs to
+  channelId String
+  channel   EventChannel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+
+  /// Unique code for this event type (e.g., "DOCUMENT_UPLOADED")
+  code        String
+  /// Human-readable name
+  name        String
+  /// Description of when this event fires
+  description String? @db.Text
+
+  /// JSON schema for event payload validation (optional)
+  payloadSchema Json?
+
+  /// Whether this event type is active
+  enabled Boolean @default(true)
+
+  /// Handlers subscribed to this event type
+  handlers EventHandler[]
+
+  /// Actual event instances of this type
+  events WorkflowEvent[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([tenantId, code])
+  @@unique([channelId, code])
+  @@index([tenantId])
+  @@index([channelId])
+  @@map("event_types")
+}
+
+/// Event Handler - Defines what should happen when an event fires
+/// Handlers can be internal (call a service), external (webhook), or workflow triggers
+model EventHandler {
+  id          String  @id @default(cuid())
+  tenantId    String
+  tenant      Tenant  @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  /// The event type this handler responds to
+  eventTypeId String
+  eventType   EventType @relation(fields: [eventTypeId], references: [id], onDelete: Cascade)
+
+  /// Human-readable name
+  name        String
+  /// Description of what this handler does
+  description String? @db.Text
+
+  /// Handler type determines how the event is processed
+  handlerType EventHandlerType
+
+  /// Configuration for the handler (JSON, depends on handlerType)
+  /// INTERNAL: { "service": "contract", "method": "completeStep" }
+  /// WEBHOOK: { "url": "https://...", "method": "POST", "headers": {...} }
+  /// WORKFLOW: { "workflowId": "...", "action": "advance" }
+  /// NOTIFICATION: { "template": "...", "channels": ["email", "sms"] }
+  config Json
+
+  /// Order of execution when multiple handlers exist (lower = first)
+  priority Int @default(100)
+
+  /// Whether this handler is active
+  enabled Boolean @default(true)
+
+  /// Retry configuration
+  maxRetries   Int @default(3)
+  retryDelayMs Int @default(1000)
+
+  /// Filter condition (JSONPath expression) to conditionally run
+  /// e.g., "$.payload.status == 'approved'"
+  filterCondition String? @db.Text
+
+  /// Handler execution logs
+  executions EventHandlerExecution[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tenantId])
+  @@index([eventTypeId])
+  @@index([handlerType])
+  @@map("event_handlers")
+}
+
+/// Workflow Event - An actual event instance that occurred
+/// This is the audit log of all events in the system
+model WorkflowEvent {
+  id       String @id @default(cuid())
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  /// The type of this event
+  eventTypeId String
+  eventType   EventType @relation(fields: [eventTypeId], references: [id], onDelete: Cascade)
+
+  /// The event payload (actual data)
+  payload Json
+
+  /// Optional correlation ID to link related events
+  correlationId String?
+
+  /// Optional causation ID (which event caused this one)
+  causationId String?
+
+  /// Source of the event (service name, user action, etc.)
+  source String
+
+  /// Actor who triggered the event (user ID, API key ID, "system")
+  actorId   String?
+  actorType ActorType @default(SYSTEM)
+
+  /// Event status
+  status WorkflowEventStatus @default(PENDING)
+
+  /// Error message if processing failed
+  error String? @db.Text
+
+  /// When the event was processed
+  processedAt DateTime?
+
+  /// Handler executions for this event
+  executions EventHandlerExecution[]
+
+  createdAt DateTime @default(now())
+
+  @@index([tenantId])
+  @@index([eventTypeId])
+  @@index([correlationId])
+  @@index([causationId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("workflow_events")
+}
+
+/// Event Handler Execution - Log of a handler processing an event
+model EventHandlerExecution {
+  id String @id @default(cuid())
+
+  /// The event being processed
+  eventId String
+  event   WorkflowEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  /// The handler that processed this event
+  handlerId String
+  handler   EventHandler @relation(fields: [handlerId], references: [id], onDelete: Cascade)
+
+  /// Execution status
+  status ExecutionStatus @default(PENDING)
+
+  /// Attempt number (1 for first try, increments on retry)
+  attempt Int @default(1)
+
+  /// Input to the handler (may be transformed payload)
+  input Json?
+
+  /// Output from the handler
+  output Json?
+
+  /// Error details if failed
+  error     String? @db.Text
+  errorCode String?
+
+  /// Timing
+  startedAt   DateTime?
+  completedAt DateTime?
+  durationMs  Int?
+
+  createdAt DateTime @default(now())
+
+  @@index([eventId])
+  @@index([handlerId])
+  @@index([status])
+  @@map("event_handler_executions")
 }
 
 // =============================================================================

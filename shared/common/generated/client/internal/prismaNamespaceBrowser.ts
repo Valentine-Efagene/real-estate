@@ -97,6 +97,11 @@ export const ModelName = {
   ContractTermination: 'ContractTermination',
   PaymentMethodChangeRequest: 'PaymentMethodChangeRequest',
   DocumentRequirementRule: 'DocumentRequirementRule',
+  EventChannel: 'EventChannel',
+  EventType: 'EventType',
+  EventHandler: 'EventHandler',
+  WorkflowEvent: 'WorkflowEvent',
+  EventHandlerExecution: 'EventHandlerExecution',
   DomainEvent: 'DomainEvent'
 } as const
 
@@ -940,6 +945,94 @@ export const DocumentRequirementRuleScalarFieldEnum = {
 export type DocumentRequirementRuleScalarFieldEnum = (typeof DocumentRequirementRuleScalarFieldEnum)[keyof typeof DocumentRequirementRuleScalarFieldEnum]
 
 
+export const EventChannelScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  code: 'code',
+  name: 'name',
+  description: 'description',
+  enabled: 'enabled',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EventChannelScalarFieldEnum = (typeof EventChannelScalarFieldEnum)[keyof typeof EventChannelScalarFieldEnum]
+
+
+export const EventTypeScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  channelId: 'channelId',
+  code: 'code',
+  name: 'name',
+  description: 'description',
+  payloadSchema: 'payloadSchema',
+  enabled: 'enabled',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EventTypeScalarFieldEnum = (typeof EventTypeScalarFieldEnum)[keyof typeof EventTypeScalarFieldEnum]
+
+
+export const EventHandlerScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  eventTypeId: 'eventTypeId',
+  name: 'name',
+  description: 'description',
+  handlerType: 'handlerType',
+  config: 'config',
+  priority: 'priority',
+  enabled: 'enabled',
+  maxRetries: 'maxRetries',
+  retryDelayMs: 'retryDelayMs',
+  filterCondition: 'filterCondition',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EventHandlerScalarFieldEnum = (typeof EventHandlerScalarFieldEnum)[keyof typeof EventHandlerScalarFieldEnum]
+
+
+export const WorkflowEventScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  eventTypeId: 'eventTypeId',
+  payload: 'payload',
+  correlationId: 'correlationId',
+  causationId: 'causationId',
+  source: 'source',
+  actorId: 'actorId',
+  actorType: 'actorType',
+  status: 'status',
+  error: 'error',
+  processedAt: 'processedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type WorkflowEventScalarFieldEnum = (typeof WorkflowEventScalarFieldEnum)[keyof typeof WorkflowEventScalarFieldEnum]
+
+
+export const EventHandlerExecutionScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  handlerId: 'handlerId',
+  status: 'status',
+  attempt: 'attempt',
+  input: 'input',
+  output: 'output',
+  error: 'error',
+  errorCode: 'errorCode',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  durationMs: 'durationMs',
+  createdAt: 'createdAt'
+} as const
+
+export type EventHandlerExecutionScalarFieldEnum = (typeof EventHandlerExecutionScalarFieldEnum)[keyof typeof EventHandlerExecutionScalarFieldEnum]
+
+
 export const DomainEventScalarFieldEnum = {
   id: 'id',
   eventType: 'eventType',
@@ -1540,6 +1633,66 @@ export const DocumentRequirementRuleOrderByRelevanceFieldEnum = {
 } as const
 
 export type DocumentRequirementRuleOrderByRelevanceFieldEnum = (typeof DocumentRequirementRuleOrderByRelevanceFieldEnum)[keyof typeof DocumentRequirementRuleOrderByRelevanceFieldEnum]
+
+
+export const EventChannelOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  code: 'code',
+  name: 'name',
+  description: 'description'
+} as const
+
+export type EventChannelOrderByRelevanceFieldEnum = (typeof EventChannelOrderByRelevanceFieldEnum)[keyof typeof EventChannelOrderByRelevanceFieldEnum]
+
+
+export const EventTypeOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  channelId: 'channelId',
+  code: 'code',
+  name: 'name',
+  description: 'description'
+} as const
+
+export type EventTypeOrderByRelevanceFieldEnum = (typeof EventTypeOrderByRelevanceFieldEnum)[keyof typeof EventTypeOrderByRelevanceFieldEnum]
+
+
+export const EventHandlerOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  eventTypeId: 'eventTypeId',
+  name: 'name',
+  description: 'description',
+  filterCondition: 'filterCondition'
+} as const
+
+export type EventHandlerOrderByRelevanceFieldEnum = (typeof EventHandlerOrderByRelevanceFieldEnum)[keyof typeof EventHandlerOrderByRelevanceFieldEnum]
+
+
+export const WorkflowEventOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  eventTypeId: 'eventTypeId',
+  correlationId: 'correlationId',
+  causationId: 'causationId',
+  source: 'source',
+  actorId: 'actorId',
+  error: 'error'
+} as const
+
+export type WorkflowEventOrderByRelevanceFieldEnum = (typeof WorkflowEventOrderByRelevanceFieldEnum)[keyof typeof WorkflowEventOrderByRelevanceFieldEnum]
+
+
+export const EventHandlerExecutionOrderByRelevanceFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  handlerId: 'handlerId',
+  error: 'error',
+  errorCode: 'errorCode'
+} as const
+
+export type EventHandlerExecutionOrderByRelevanceFieldEnum = (typeof EventHandlerExecutionOrderByRelevanceFieldEnum)[keyof typeof EventHandlerExecutionOrderByRelevanceFieldEnum]
 
 
 export const DomainEventOrderByRelevanceFieldEnum = {
