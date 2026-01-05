@@ -609,6 +609,7 @@ export const ContractPhaseScalarFieldEnum = {
   phaseType: 'phaseType',
   order: 'order',
   status: 'status',
+  currentStepId: 'currentStepId',
   totalAmount: 'totalAmount',
   paidAmount: 'paidAmount',
   remainingAmount: 'remainingAmount',
@@ -644,6 +645,9 @@ export const DocumentationStepScalarFieldEnum = {
   stepType: 'stepType',
   order: 'order',
   status: 'status',
+  actionReason: 'actionReason',
+  submissionCount: 'submissionCount',
+  lastSubmittedAt: 'lastSubmittedAt',
   metadata: 'metadata',
   preApprovalAnswers: 'preApprovalAnswers',
   underwritingScore: 'underwritingScore',
@@ -1327,7 +1331,8 @@ export const ContractPhaseOrderByRelevanceFieldEnum = {
   contractId: 'contractId',
   paymentPlanId: 'paymentPlanId',
   name: 'name',
-  description: 'description'
+  description: 'description',
+  currentStepId: 'currentStepId'
 } as const
 
 export type ContractPhaseOrderByRelevanceFieldEnum = (typeof ContractPhaseOrderByRelevanceFieldEnum)[keyof typeof ContractPhaseOrderByRelevanceFieldEnum]
@@ -1338,6 +1343,7 @@ export const DocumentationStepOrderByRelevanceFieldEnum = {
   phaseId: 'phaseId',
   name: 'name',
   description: 'description',
+  actionReason: 'actionReason',
   underwritingDecision: 'underwritingDecision',
   underwritingNotes: 'underwritingNotes',
   assigneeId: 'assigneeId'

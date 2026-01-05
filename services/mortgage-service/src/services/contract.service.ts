@@ -167,6 +167,7 @@ export interface ContractService {
     sign(id: string, userId: string): Promise<any>;
     cancel(id: string, userId: string, reason?: string): Promise<any>;
     delete(id: string, userId: string): Promise<{ success: boolean }>;
+    getCurrentAction(id: string): Promise<any>;
 }
 
 /**
@@ -727,6 +728,217 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
         return { success: true };
     }
 
+    /**
+     * Get the current action required for a contract
+     * Returns the current phase, current step, required action, and relevant documents
+     * This is the canonical endpoint for the app to know what to show the user
+     */
+    async function getCurrentAction(id: string): Promise<{
+        contractId: string;
+        contractStatus: ContractStatus;
+        currentPhase: {
+            id: string;
+            name: string;
+            phaseCategory: string;
+            phaseType: string;
+            status: string;
+            order: number;
+        } | null;
+        currentStep: {
+            id: string;
+            name: string;
+            stepType: string;
+            status: string;
+            order: number;
+            actionReason: string | null;
+            submissionCount: number;
+            requiredDocuments: Array<{
+                documentType: string;
+                isRequired: boolean;
+            }>;
+            latestApproval: {
+                decision: string;
+                comment: string | null;
+                decidedAt: Date;
+            } | null;
+        } | null;
+        uploadedDocuments: Array<{
+            id: string;
+            name: string;
+            type: string;
+            status: string;
+            stepId: string | null;
+            createdAt: Date;
+        }>;
+        actionRequired: 'NONE' | 'UPLOAD' | 'RESUBMIT' | 'SIGN' | 'WAIT_FOR_REVIEW' | 'PAYMENT' | 'COMPLETE';
+        actionMessage: string;
+    }> {
+        // Use any to avoid Prisma type issues with new relations
+        const contract: any = await prisma.contract.findUnique({
+            where: { id },
+            include: {
+                phases: {
+                    orderBy: { order: 'asc' },
+                    include: {
+                        steps: {
+                            orderBy: { order: 'asc' },
+                            include: {
+                                requiredDocuments: true,
+                                approvals: {
+                                    orderBy: { decidedAt: 'desc' },
+                                    take: 1,
+                                },
+                            },
+                        },
+                    },
+                },
+                documents: {
+                    orderBy: { createdAt: 'desc' },
+                },
+            },
+        });
+
+        if (!contract) {
+            throw new AppError(404, 'Contract not found');
+        }
+
+        // Find current phase (IN_PROGRESS or ACTIVE)
+        const currentPhase = contract.phases.find(
+            (p: any) => p.status === 'IN_PROGRESS' || p.status === 'ACTIVE' || p.status === 'AWAITING_APPROVAL'
+        );
+
+        // If no active phase, check contract status
+        if (!currentPhase) {
+            return {
+                contractId: contract.id,
+                contractStatus: contract.status,
+                currentPhase: null,
+                currentStep: null,
+                uploadedDocuments: contract.documents.map((d: any) => ({
+                    id: d.id,
+                    name: d.name,
+                    type: d.type,
+                    status: d.status,
+                    stepId: d.stepId,
+                    createdAt: d.createdAt,
+                })),
+                actionRequired: contract.status === 'COMPLETED' ? 'COMPLETE' : 'NONE',
+                actionMessage: contract.status === 'COMPLETED'
+                    ? 'Contract completed successfully'
+                    : 'No action required at this time',
+            };
+        }
+
+        // Find current step - use currentStepId if set, otherwise find next actionable
+        let currentStep: any = null;
+        if (currentPhase.currentStepId) {
+            currentStep = currentPhase.steps.find((s: any) => s.id === currentPhase.currentStepId);
+        }
+        if (!currentStep) {
+            // Fallback: find next actionable step
+            currentStep = currentPhase.steps.find(
+                (s: any) => s.status === 'NEEDS_RESUBMISSION' || s.status === 'ACTION_REQUIRED'
+            );
+            if (!currentStep) {
+                currentStep = currentPhase.steps.find(
+                    (s: any) => s.status === 'PENDING' || s.status === 'IN_PROGRESS' || s.status === 'AWAITING_REVIEW'
+                );
+            }
+        }
+
+        // Determine action required based on step status
+        let actionRequired: 'NONE' | 'UPLOAD' | 'RESUBMIT' | 'SIGN' | 'WAIT_FOR_REVIEW' | 'PAYMENT' | 'COMPLETE' = 'NONE';
+        let actionMessage = 'No action required';
+
+        if (currentPhase.phaseCategory === 'PAYMENT') {
+            actionRequired = 'PAYMENT';
+            actionMessage = 'Payment is required for this phase';
+        } else if (currentStep) {
+            switch (currentStep.status) {
+                case 'NEEDS_RESUBMISSION':
+                    actionRequired = 'RESUBMIT';
+                    actionMessage = currentStep.actionReason || 'Please resubmit the required documents';
+                    break;
+                case 'ACTION_REQUIRED':
+                    actionRequired = 'UPLOAD';
+                    actionMessage = currentStep.actionReason || 'Please address the requested changes';
+                    break;
+                case 'PENDING':
+                case 'IN_PROGRESS':
+                    if (currentStep.stepType === 'UPLOAD') {
+                        actionRequired = 'UPLOAD';
+                        actionMessage = `Please upload the required documents for: ${currentStep.name}`;
+                    } else if (currentStep.stepType === 'SIGNATURE') {
+                        actionRequired = 'SIGN';
+                        actionMessage = 'Please sign the document';
+                    } else if (currentStep.stepType === 'PRE_APPROVAL') {
+                        actionRequired = 'UPLOAD';
+                        actionMessage = 'Please complete the pre-approval questionnaire';
+                    } else {
+                        actionRequired = 'WAIT_FOR_REVIEW';
+                        actionMessage = 'Your submission is being processed';
+                    }
+                    break;
+                case 'AWAITING_REVIEW':
+                    actionRequired = 'WAIT_FOR_REVIEW';
+                    actionMessage = 'Your submission is under review';
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        // Get documents for this phase
+        const phaseDocuments = contract.documents.filter(
+            (d: any) => d.phaseId === currentPhase.id
+        );
+
+        return {
+            contractId: contract.id,
+            contractStatus: contract.status,
+            currentPhase: {
+                id: currentPhase.id,
+                name: currentPhase.name,
+                phaseCategory: currentPhase.phaseCategory,
+                phaseType: currentPhase.phaseType,
+                status: currentPhase.status,
+                order: currentPhase.order,
+            },
+            currentStep: currentStep
+                ? {
+                    id: currentStep.id,
+                    name: currentStep.name,
+                    stepType: currentStep.stepType,
+                    status: currentStep.status,
+                    order: currentStep.order,
+                    actionReason: currentStep.actionReason,
+                    submissionCount: currentStep.submissionCount ?? 0,
+                    requiredDocuments: currentStep.requiredDocuments.map((d: any) => ({
+                        documentType: d.documentType,
+                        isRequired: d.isRequired,
+                    })),
+                    latestApproval: currentStep.approvals[0]
+                        ? {
+                            decision: currentStep.approvals[0].decision,
+                            comment: currentStep.approvals[0].comment,
+                            decidedAt: currentStep.approvals[0].decidedAt,
+                        }
+                        : null,
+                }
+                : null,
+            uploadedDocuments: phaseDocuments.map((d: any) => ({
+                id: d.id,
+                name: d.name,
+                type: d.type,
+                status: d.status,
+                stepId: d.stepId,
+                createdAt: d.createdAt,
+            })),
+            actionRequired,
+            actionMessage,
+        };
+    }
+
     return {
         create,
         findAll,
@@ -737,6 +949,7 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
         sign,
         cancel,
         delete: deleteContract,
+        getCurrentAction,
     };
 }
 

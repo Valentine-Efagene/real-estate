@@ -33,7 +33,7 @@ const router = Router();
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { tenantId, userId } = getAuthContext(req);
-                const data = CreateContractSchema.parse(req.body);
+        const data = CreateContractSchema.parse(req.body);
         // Use userId from header as buyerId if not provided in body
         const contractData = { ...data, tenantId, buyerId: data.buyerId || userId };
         const contract = await contractService.create(contractData);
@@ -69,6 +69,17 @@ router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const contract = await contractService.findById(req.params.id);
         res.json(contract);
+    } catch (error) {
+        next(error);
+    }
+});
+
+// Get current action required for a contract
+// This is the canonical endpoint for the app to know what to show the user
+router.get('/:id/current-action', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const result = await contractService.getCurrentAction(req.params.id);
+        res.json(result);
     } catch (error) {
         next(error);
     }
@@ -226,6 +237,38 @@ router.post('/:id/phases/:phaseId/steps/complete', async (req: Request, res: Res
             res.status(400).json({ error: 'Validation failed', details: error.issues });
             return;
         }
+        next(error);
+    }
+});
+
+// Reject a step in a documentation phase (admin action)
+router.post('/:id/phases/:phaseId/steps/:stepId/reject', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { reason } = req.body;
+        if (!reason) {
+            res.status(400).json({ error: 'Rejection reason is required' });
+            return;
+        }
+        const { userId } = getAuthContext(req);
+        const phase = await contractPhaseService.rejectStep(req.params.phaseId, req.params.stepId, reason, userId);
+        res.json(phase);
+    } catch (error) {
+        next(error);
+    }
+});
+
+// Request changes on a step (admin action)
+router.post('/:id/phases/:phaseId/steps/:stepId/request-changes', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { reason } = req.body;
+        if (!reason) {
+            res.status(400).json({ error: 'Change request reason is required' });
+            return;
+        }
+        const { userId } = getAuthContext(req);
+        const phase = await contractPhaseService.requestStepChanges(req.params.phaseId, req.params.stepId, reason, userId);
+        res.json(phase);
+    } catch (error) {
         next(error);
     }
 });

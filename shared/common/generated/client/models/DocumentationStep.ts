@@ -28,12 +28,14 @@ export type AggregateDocumentationStep = {
 
 export type DocumentationStepAvgAggregateOutputType = {
   order: number | null
+  submissionCount: number | null
   underwritingScore: number | null
   debtToIncomeRatio: number | null
 }
 
 export type DocumentationStepSumAggregateOutputType = {
   order: number | null
+  submissionCount: number | null
   underwritingScore: number | null
   debtToIncomeRatio: number | null
 }
@@ -46,6 +48,9 @@ export type DocumentationStepMinAggregateOutputType = {
   stepType: $Enums.StepType | null
   order: number | null
   status: $Enums.StepStatus | null
+  actionReason: string | null
+  submissionCount: number | null
+  lastSubmittedAt: Date | null
   underwritingScore: number | null
   debtToIncomeRatio: number | null
   underwritingDecision: string | null
@@ -65,6 +70,9 @@ export type DocumentationStepMaxAggregateOutputType = {
   stepType: $Enums.StepType | null
   order: number | null
   status: $Enums.StepStatus | null
+  actionReason: string | null
+  submissionCount: number | null
+  lastSubmittedAt: Date | null
   underwritingScore: number | null
   debtToIncomeRatio: number | null
   underwritingDecision: string | null
@@ -84,6 +92,9 @@ export type DocumentationStepCountAggregateOutputType = {
   stepType: number
   order: number
   status: number
+  actionReason: number
+  submissionCount: number
+  lastSubmittedAt: number
   metadata: number
   preApprovalAnswers: number
   underwritingScore: number
@@ -101,12 +112,14 @@ export type DocumentationStepCountAggregateOutputType = {
 
 export type DocumentationStepAvgAggregateInputType = {
   order?: true
+  submissionCount?: true
   underwritingScore?: true
   debtToIncomeRatio?: true
 }
 
 export type DocumentationStepSumAggregateInputType = {
   order?: true
+  submissionCount?: true
   underwritingScore?: true
   debtToIncomeRatio?: true
 }
@@ -119,6 +132,9 @@ export type DocumentationStepMinAggregateInputType = {
   stepType?: true
   order?: true
   status?: true
+  actionReason?: true
+  submissionCount?: true
+  lastSubmittedAt?: true
   underwritingScore?: true
   debtToIncomeRatio?: true
   underwritingDecision?: true
@@ -138,6 +154,9 @@ export type DocumentationStepMaxAggregateInputType = {
   stepType?: true
   order?: true
   status?: true
+  actionReason?: true
+  submissionCount?: true
+  lastSubmittedAt?: true
   underwritingScore?: true
   debtToIncomeRatio?: true
   underwritingDecision?: true
@@ -157,6 +176,9 @@ export type DocumentationStepCountAggregateInputType = {
   stepType?: true
   order?: true
   status?: true
+  actionReason?: true
+  submissionCount?: true
+  lastSubmittedAt?: true
   metadata?: true
   preApprovalAnswers?: true
   underwritingScore?: true
@@ -265,6 +287,9 @@ export type DocumentationStepGroupByOutputType = {
   stepType: $Enums.StepType
   order: number
   status: $Enums.StepStatus
+  actionReason: string | null
+  submissionCount: number
+  lastSubmittedAt: Date | null
   metadata: runtime.JsonValue | null
   preApprovalAnswers: runtime.JsonValue | null
   underwritingScore: number | null
@@ -309,6 +334,9 @@ export type DocumentationStepWhereInput = {
   stepType?: Prisma.EnumStepTypeFilter<"DocumentationStep"> | $Enums.StepType
   order?: Prisma.IntFilter<"DocumentationStep"> | number
   status?: Prisma.EnumStepStatusFilter<"DocumentationStep"> | $Enums.StepStatus
+  actionReason?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
+  submissionCount?: Prisma.IntFilter<"DocumentationStep"> | number
+  lastSubmittedAt?: Prisma.DateTimeNullableFilter<"DocumentationStep"> | Date | string | null
   metadata?: Prisma.JsonNullableFilter<"DocumentationStep">
   preApprovalAnswers?: Prisma.JsonNullableFilter<"DocumentationStep">
   underwritingScore?: Prisma.FloatNullableFilter<"DocumentationStep"> | number | null
@@ -324,6 +352,7 @@ export type DocumentationStepWhereInput = {
   assignee?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   requiredDocuments?: Prisma.DocumentationStepDocumentListRelationFilter
   approvals?: Prisma.DocumentationStepApprovalListRelationFilter
+  currentForPhase?: Prisma.ContractPhaseListRelationFilter
 }
 
 export type DocumentationStepOrderByWithRelationInput = {
@@ -334,6 +363,9 @@ export type DocumentationStepOrderByWithRelationInput = {
   stepType?: Prisma.SortOrder
   order?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  actionReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  submissionCount?: Prisma.SortOrder
+  lastSubmittedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   preApprovalAnswers?: Prisma.SortOrderInput | Prisma.SortOrder
   underwritingScore?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -349,6 +381,7 @@ export type DocumentationStepOrderByWithRelationInput = {
   assignee?: Prisma.UserOrderByWithRelationInput
   requiredDocuments?: Prisma.DocumentationStepDocumentOrderByRelationAggregateInput
   approvals?: Prisma.DocumentationStepApprovalOrderByRelationAggregateInput
+  currentForPhase?: Prisma.ContractPhaseOrderByRelationAggregateInput
   _relevance?: Prisma.DocumentationStepOrderByRelevanceInput
 }
 
@@ -363,6 +396,9 @@ export type DocumentationStepWhereUniqueInput = Prisma.AtLeast<{
   stepType?: Prisma.EnumStepTypeFilter<"DocumentationStep"> | $Enums.StepType
   order?: Prisma.IntFilter<"DocumentationStep"> | number
   status?: Prisma.EnumStepStatusFilter<"DocumentationStep"> | $Enums.StepStatus
+  actionReason?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
+  submissionCount?: Prisma.IntFilter<"DocumentationStep"> | number
+  lastSubmittedAt?: Prisma.DateTimeNullableFilter<"DocumentationStep"> | Date | string | null
   metadata?: Prisma.JsonNullableFilter<"DocumentationStep">
   preApprovalAnswers?: Prisma.JsonNullableFilter<"DocumentationStep">
   underwritingScore?: Prisma.FloatNullableFilter<"DocumentationStep"> | number | null
@@ -378,6 +414,7 @@ export type DocumentationStepWhereUniqueInput = Prisma.AtLeast<{
   assignee?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   requiredDocuments?: Prisma.DocumentationStepDocumentListRelationFilter
   approvals?: Prisma.DocumentationStepApprovalListRelationFilter
+  currentForPhase?: Prisma.ContractPhaseListRelationFilter
 }, "id">
 
 export type DocumentationStepOrderByWithAggregationInput = {
@@ -388,6 +425,9 @@ export type DocumentationStepOrderByWithAggregationInput = {
   stepType?: Prisma.SortOrder
   order?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  actionReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  submissionCount?: Prisma.SortOrder
+  lastSubmittedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   preApprovalAnswers?: Prisma.SortOrderInput | Prisma.SortOrder
   underwritingScore?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -417,6 +457,9 @@ export type DocumentationStepScalarWhereWithAggregatesInput = {
   stepType?: Prisma.EnumStepTypeWithAggregatesFilter<"DocumentationStep"> | $Enums.StepType
   order?: Prisma.IntWithAggregatesFilter<"DocumentationStep"> | number
   status?: Prisma.EnumStepStatusWithAggregatesFilter<"DocumentationStep"> | $Enums.StepStatus
+  actionReason?: Prisma.StringNullableWithAggregatesFilter<"DocumentationStep"> | string | null
+  submissionCount?: Prisma.IntWithAggregatesFilter<"DocumentationStep"> | number
+  lastSubmittedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"DocumentationStep"> | Date | string | null
   metadata?: Prisma.JsonNullableWithAggregatesFilter<"DocumentationStep">
   preApprovalAnswers?: Prisma.JsonNullableWithAggregatesFilter<"DocumentationStep">
   underwritingScore?: Prisma.FloatNullableWithAggregatesFilter<"DocumentationStep"> | number | null
@@ -437,6 +480,9 @@ export type DocumentationStepCreateInput = {
   stepType: $Enums.StepType
   order: number
   status?: $Enums.StepStatus
+  actionReason?: string | null
+  submissionCount?: number
+  lastSubmittedAt?: Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   underwritingScore?: number | null
@@ -451,6 +497,7 @@ export type DocumentationStepCreateInput = {
   assignee?: Prisma.UserCreateNestedOneWithoutAssignedStepsInput
   requiredDocuments?: Prisma.DocumentationStepDocumentCreateNestedManyWithoutStepInput
   approvals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutStepInput
+  currentForPhase?: Prisma.ContractPhaseCreateNestedManyWithoutCurrentStepInput
 }
 
 export type DocumentationStepUncheckedCreateInput = {
@@ -461,6 +508,9 @@ export type DocumentationStepUncheckedCreateInput = {
   stepType: $Enums.StepType
   order: number
   status?: $Enums.StepStatus
+  actionReason?: string | null
+  submissionCount?: number
+  lastSubmittedAt?: Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   underwritingScore?: number | null
@@ -474,6 +524,7 @@ export type DocumentationStepUncheckedCreateInput = {
   updatedAt?: Date | string
   requiredDocuments?: Prisma.DocumentationStepDocumentUncheckedCreateNestedManyWithoutStepInput
   approvals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutStepInput
+  currentForPhase?: Prisma.ContractPhaseUncheckedCreateNestedManyWithoutCurrentStepInput
 }
 
 export type DocumentationStepUpdateInput = {
@@ -483,6 +534,9 @@ export type DocumentationStepUpdateInput = {
   stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
+  actionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  submissionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -497,6 +551,7 @@ export type DocumentationStepUpdateInput = {
   assignee?: Prisma.UserUpdateOneWithoutAssignedStepsNestedInput
   requiredDocuments?: Prisma.DocumentationStepDocumentUpdateManyWithoutStepNestedInput
   approvals?: Prisma.DocumentationStepApprovalUpdateManyWithoutStepNestedInput
+  currentForPhase?: Prisma.ContractPhaseUpdateManyWithoutCurrentStepNestedInput
 }
 
 export type DocumentationStepUncheckedUpdateInput = {
@@ -507,6 +562,9 @@ export type DocumentationStepUncheckedUpdateInput = {
   stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
+  actionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  submissionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -520,6 +578,7 @@ export type DocumentationStepUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   requiredDocuments?: Prisma.DocumentationStepDocumentUncheckedUpdateManyWithoutStepNestedInput
   approvals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutStepNestedInput
+  currentForPhase?: Prisma.ContractPhaseUncheckedUpdateManyWithoutCurrentStepNestedInput
 }
 
 export type DocumentationStepCreateManyInput = {
@@ -530,6 +589,9 @@ export type DocumentationStepCreateManyInput = {
   stepType: $Enums.StepType
   order: number
   status?: $Enums.StepStatus
+  actionReason?: string | null
+  submissionCount?: number
+  lastSubmittedAt?: Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   underwritingScore?: number | null
@@ -550,6 +612,9 @@ export type DocumentationStepUpdateManyMutationInput = {
   stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
+  actionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  submissionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -570,6 +635,9 @@ export type DocumentationStepUncheckedUpdateManyInput = {
   stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
+  actionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  submissionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -593,6 +661,11 @@ export type DocumentationStepOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type DocumentationStepNullableScalarRelationFilter = {
+  is?: Prisma.DocumentationStepWhereInput | null
+  isNot?: Prisma.DocumentationStepWhereInput | null
+}
+
 export type DocumentationStepOrderByRelevanceInput = {
   fields: Prisma.DocumentationStepOrderByRelevanceFieldEnum | Prisma.DocumentationStepOrderByRelevanceFieldEnum[]
   sort: Prisma.SortOrder
@@ -607,6 +680,9 @@ export type DocumentationStepCountOrderByAggregateInput = {
   stepType?: Prisma.SortOrder
   order?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  actionReason?: Prisma.SortOrder
+  submissionCount?: Prisma.SortOrder
+  lastSubmittedAt?: Prisma.SortOrder
   metadata?: Prisma.SortOrder
   preApprovalAnswers?: Prisma.SortOrder
   underwritingScore?: Prisma.SortOrder
@@ -622,6 +698,7 @@ export type DocumentationStepCountOrderByAggregateInput = {
 
 export type DocumentationStepAvgOrderByAggregateInput = {
   order?: Prisma.SortOrder
+  submissionCount?: Prisma.SortOrder
   underwritingScore?: Prisma.SortOrder
   debtToIncomeRatio?: Prisma.SortOrder
 }
@@ -634,6 +711,9 @@ export type DocumentationStepMaxOrderByAggregateInput = {
   stepType?: Prisma.SortOrder
   order?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  actionReason?: Prisma.SortOrder
+  submissionCount?: Prisma.SortOrder
+  lastSubmittedAt?: Prisma.SortOrder
   underwritingScore?: Prisma.SortOrder
   debtToIncomeRatio?: Prisma.SortOrder
   underwritingDecision?: Prisma.SortOrder
@@ -653,6 +733,9 @@ export type DocumentationStepMinOrderByAggregateInput = {
   stepType?: Prisma.SortOrder
   order?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  actionReason?: Prisma.SortOrder
+  submissionCount?: Prisma.SortOrder
+  lastSubmittedAt?: Prisma.SortOrder
   underwritingScore?: Prisma.SortOrder
   debtToIncomeRatio?: Prisma.SortOrder
   underwritingDecision?: Prisma.SortOrder
@@ -666,6 +749,7 @@ export type DocumentationStepMinOrderByAggregateInput = {
 
 export type DocumentationStepSumOrderByAggregateInput = {
   order?: Prisma.SortOrder
+  submissionCount?: Prisma.SortOrder
   underwritingScore?: Prisma.SortOrder
   debtToIncomeRatio?: Prisma.SortOrder
 }
@@ -717,6 +801,12 @@ export type DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput = {
   deleteMany?: Prisma.DocumentationStepScalarWhereInput | Prisma.DocumentationStepScalarWhereInput[]
 }
 
+export type DocumentationStepCreateNestedOneWithoutCurrentForPhaseInput = {
+  create?: Prisma.XOR<Prisma.DocumentationStepCreateWithoutCurrentForPhaseInput, Prisma.DocumentationStepUncheckedCreateWithoutCurrentForPhaseInput>
+  connectOrCreate?: Prisma.DocumentationStepCreateOrConnectWithoutCurrentForPhaseInput
+  connect?: Prisma.DocumentationStepWhereUniqueInput
+}
+
 export type DocumentationStepCreateNestedManyWithoutPhaseInput = {
   create?: Prisma.XOR<Prisma.DocumentationStepCreateWithoutPhaseInput, Prisma.DocumentationStepUncheckedCreateWithoutPhaseInput> | Prisma.DocumentationStepCreateWithoutPhaseInput[] | Prisma.DocumentationStepUncheckedCreateWithoutPhaseInput[]
   connectOrCreate?: Prisma.DocumentationStepCreateOrConnectWithoutPhaseInput | Prisma.DocumentationStepCreateOrConnectWithoutPhaseInput[]
@@ -729,6 +819,16 @@ export type DocumentationStepUncheckedCreateNestedManyWithoutPhaseInput = {
   connectOrCreate?: Prisma.DocumentationStepCreateOrConnectWithoutPhaseInput | Prisma.DocumentationStepCreateOrConnectWithoutPhaseInput[]
   createMany?: Prisma.DocumentationStepCreateManyPhaseInputEnvelope
   connect?: Prisma.DocumentationStepWhereUniqueInput | Prisma.DocumentationStepWhereUniqueInput[]
+}
+
+export type DocumentationStepUpdateOneWithoutCurrentForPhaseNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentationStepCreateWithoutCurrentForPhaseInput, Prisma.DocumentationStepUncheckedCreateWithoutCurrentForPhaseInput>
+  connectOrCreate?: Prisma.DocumentationStepCreateOrConnectWithoutCurrentForPhaseInput
+  upsert?: Prisma.DocumentationStepUpsertWithoutCurrentForPhaseInput
+  disconnect?: Prisma.DocumentationStepWhereInput | boolean
+  delete?: Prisma.DocumentationStepWhereInput | boolean
+  connect?: Prisma.DocumentationStepWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentationStepUpdateToOneWithWhereWithoutCurrentForPhaseInput, Prisma.DocumentationStepUpdateWithoutCurrentForPhaseInput>, Prisma.DocumentationStepUncheckedUpdateWithoutCurrentForPhaseInput>
 }
 
 export type DocumentationStepUpdateManyWithoutPhaseNestedInput = {
@@ -798,6 +898,9 @@ export type DocumentationStepCreateWithoutAssigneeInput = {
   stepType: $Enums.StepType
   order: number
   status?: $Enums.StepStatus
+  actionReason?: string | null
+  submissionCount?: number
+  lastSubmittedAt?: Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   underwritingScore?: number | null
@@ -811,6 +914,7 @@ export type DocumentationStepCreateWithoutAssigneeInput = {
   phase: Prisma.ContractPhaseCreateNestedOneWithoutStepsInput
   requiredDocuments?: Prisma.DocumentationStepDocumentCreateNestedManyWithoutStepInput
   approvals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutStepInput
+  currentForPhase?: Prisma.ContractPhaseCreateNestedManyWithoutCurrentStepInput
 }
 
 export type DocumentationStepUncheckedCreateWithoutAssigneeInput = {
@@ -821,6 +925,9 @@ export type DocumentationStepUncheckedCreateWithoutAssigneeInput = {
   stepType: $Enums.StepType
   order: number
   status?: $Enums.StepStatus
+  actionReason?: string | null
+  submissionCount?: number
+  lastSubmittedAt?: Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   underwritingScore?: number | null
@@ -833,6 +940,7 @@ export type DocumentationStepUncheckedCreateWithoutAssigneeInput = {
   updatedAt?: Date | string
   requiredDocuments?: Prisma.DocumentationStepDocumentUncheckedCreateNestedManyWithoutStepInput
   approvals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutStepInput
+  currentForPhase?: Prisma.ContractPhaseUncheckedCreateNestedManyWithoutCurrentStepInput
 }
 
 export type DocumentationStepCreateOrConnectWithoutAssigneeInput = {
@@ -872,6 +980,9 @@ export type DocumentationStepScalarWhereInput = {
   stepType?: Prisma.EnumStepTypeFilter<"DocumentationStep"> | $Enums.StepType
   order?: Prisma.IntFilter<"DocumentationStep"> | number
   status?: Prisma.EnumStepStatusFilter<"DocumentationStep"> | $Enums.StepStatus
+  actionReason?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
+  submissionCount?: Prisma.IntFilter<"DocumentationStep"> | number
+  lastSubmittedAt?: Prisma.DateTimeNullableFilter<"DocumentationStep"> | Date | string | null
   metadata?: Prisma.JsonNullableFilter<"DocumentationStep">
   preApprovalAnswers?: Prisma.JsonNullableFilter<"DocumentationStep">
   underwritingScore?: Prisma.FloatNullableFilter<"DocumentationStep"> | number | null
@@ -885,13 +996,16 @@ export type DocumentationStepScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"DocumentationStep"> | Date | string
 }
 
-export type DocumentationStepCreateWithoutPhaseInput = {
+export type DocumentationStepCreateWithoutCurrentForPhaseInput = {
   id?: string
   name: string
   description?: string | null
   stepType: $Enums.StepType
   order: number
   status?: $Enums.StepStatus
+  actionReason?: string | null
+  submissionCount?: number
+  lastSubmittedAt?: Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   underwritingScore?: number | null
@@ -902,18 +1016,23 @@ export type DocumentationStepCreateWithoutPhaseInput = {
   completedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  phase: Prisma.ContractPhaseCreateNestedOneWithoutStepsInput
   assignee?: Prisma.UserCreateNestedOneWithoutAssignedStepsInput
   requiredDocuments?: Prisma.DocumentationStepDocumentCreateNestedManyWithoutStepInput
   approvals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutStepInput
 }
 
-export type DocumentationStepUncheckedCreateWithoutPhaseInput = {
+export type DocumentationStepUncheckedCreateWithoutCurrentForPhaseInput = {
   id?: string
+  phaseId: string
   name: string
   description?: string | null
   stepType: $Enums.StepType
   order: number
   status?: $Enums.StepStatus
+  actionReason?: string | null
+  submissionCount?: number
+  lastSubmittedAt?: Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   underwritingScore?: number | null
@@ -929,6 +1048,63 @@ export type DocumentationStepUncheckedCreateWithoutPhaseInput = {
   approvals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutStepInput
 }
 
+export type DocumentationStepCreateOrConnectWithoutCurrentForPhaseInput = {
+  where: Prisma.DocumentationStepWhereUniqueInput
+  create: Prisma.XOR<Prisma.DocumentationStepCreateWithoutCurrentForPhaseInput, Prisma.DocumentationStepUncheckedCreateWithoutCurrentForPhaseInput>
+}
+
+export type DocumentationStepCreateWithoutPhaseInput = {
+  id?: string
+  name: string
+  description?: string | null
+  stepType: $Enums.StepType
+  order: number
+  status?: $Enums.StepStatus
+  actionReason?: string | null
+  submissionCount?: number
+  lastSubmittedAt?: Date | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
+  underwritingDecision?: string | null
+  underwritingNotes?: string | null
+  dueDate?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  assignee?: Prisma.UserCreateNestedOneWithoutAssignedStepsInput
+  requiredDocuments?: Prisma.DocumentationStepDocumentCreateNestedManyWithoutStepInput
+  approvals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutStepInput
+  currentForPhase?: Prisma.ContractPhaseCreateNestedManyWithoutCurrentStepInput
+}
+
+export type DocumentationStepUncheckedCreateWithoutPhaseInput = {
+  id?: string
+  name: string
+  description?: string | null
+  stepType: $Enums.StepType
+  order: number
+  status?: $Enums.StepStatus
+  actionReason?: string | null
+  submissionCount?: number
+  lastSubmittedAt?: Date | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
+  underwritingDecision?: string | null
+  underwritingNotes?: string | null
+  assigneeId?: string | null
+  dueDate?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  requiredDocuments?: Prisma.DocumentationStepDocumentUncheckedCreateNestedManyWithoutStepInput
+  approvals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutStepInput
+  currentForPhase?: Prisma.ContractPhaseUncheckedCreateNestedManyWithoutCurrentStepInput
+}
+
 export type DocumentationStepCreateOrConnectWithoutPhaseInput = {
   where: Prisma.DocumentationStepWhereUniqueInput
   create: Prisma.XOR<Prisma.DocumentationStepCreateWithoutPhaseInput, Prisma.DocumentationStepUncheckedCreateWithoutPhaseInput>
@@ -937,6 +1113,69 @@ export type DocumentationStepCreateOrConnectWithoutPhaseInput = {
 export type DocumentationStepCreateManyPhaseInputEnvelope = {
   data: Prisma.DocumentationStepCreateManyPhaseInput | Prisma.DocumentationStepCreateManyPhaseInput[]
   skipDuplicates?: boolean
+}
+
+export type DocumentationStepUpsertWithoutCurrentForPhaseInput = {
+  update: Prisma.XOR<Prisma.DocumentationStepUpdateWithoutCurrentForPhaseInput, Prisma.DocumentationStepUncheckedUpdateWithoutCurrentForPhaseInput>
+  create: Prisma.XOR<Prisma.DocumentationStepCreateWithoutCurrentForPhaseInput, Prisma.DocumentationStepUncheckedCreateWithoutCurrentForPhaseInput>
+  where?: Prisma.DocumentationStepWhereInput
+}
+
+export type DocumentationStepUpdateToOneWithWhereWithoutCurrentForPhaseInput = {
+  where?: Prisma.DocumentationStepWhereInput
+  data: Prisma.XOR<Prisma.DocumentationStepUpdateWithoutCurrentForPhaseInput, Prisma.DocumentationStepUncheckedUpdateWithoutCurrentForPhaseInput>
+}
+
+export type DocumentationStepUpdateWithoutCurrentForPhaseInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
+  actionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  submissionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  underwritingDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  underwritingNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  phase?: Prisma.ContractPhaseUpdateOneRequiredWithoutStepsNestedInput
+  assignee?: Prisma.UserUpdateOneWithoutAssignedStepsNestedInput
+  requiredDocuments?: Prisma.DocumentationStepDocumentUpdateManyWithoutStepNestedInput
+  approvals?: Prisma.DocumentationStepApprovalUpdateManyWithoutStepNestedInput
+}
+
+export type DocumentationStepUncheckedUpdateWithoutCurrentForPhaseInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
+  actionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  submissionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  underwritingDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  underwritingNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  requiredDocuments?: Prisma.DocumentationStepDocumentUncheckedUpdateManyWithoutStepNestedInput
+  approvals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutStepNestedInput
 }
 
 export type DocumentationStepUpsertWithWhereUniqueWithoutPhaseInput = {
@@ -962,6 +1201,9 @@ export type DocumentationStepCreateWithoutRequiredDocumentsInput = {
   stepType: $Enums.StepType
   order: number
   status?: $Enums.StepStatus
+  actionReason?: string | null
+  submissionCount?: number
+  lastSubmittedAt?: Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   underwritingScore?: number | null
@@ -975,6 +1217,7 @@ export type DocumentationStepCreateWithoutRequiredDocumentsInput = {
   phase: Prisma.ContractPhaseCreateNestedOneWithoutStepsInput
   assignee?: Prisma.UserCreateNestedOneWithoutAssignedStepsInput
   approvals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutStepInput
+  currentForPhase?: Prisma.ContractPhaseCreateNestedManyWithoutCurrentStepInput
 }
 
 export type DocumentationStepUncheckedCreateWithoutRequiredDocumentsInput = {
@@ -985,6 +1228,9 @@ export type DocumentationStepUncheckedCreateWithoutRequiredDocumentsInput = {
   stepType: $Enums.StepType
   order: number
   status?: $Enums.StepStatus
+  actionReason?: string | null
+  submissionCount?: number
+  lastSubmittedAt?: Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   underwritingScore?: number | null
@@ -997,6 +1243,7 @@ export type DocumentationStepUncheckedCreateWithoutRequiredDocumentsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   approvals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutStepInput
+  currentForPhase?: Prisma.ContractPhaseUncheckedCreateNestedManyWithoutCurrentStepInput
 }
 
 export type DocumentationStepCreateOrConnectWithoutRequiredDocumentsInput = {
@@ -1022,6 +1269,9 @@ export type DocumentationStepUpdateWithoutRequiredDocumentsInput = {
   stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
+  actionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  submissionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1035,6 +1285,7 @@ export type DocumentationStepUpdateWithoutRequiredDocumentsInput = {
   phase?: Prisma.ContractPhaseUpdateOneRequiredWithoutStepsNestedInput
   assignee?: Prisma.UserUpdateOneWithoutAssignedStepsNestedInput
   approvals?: Prisma.DocumentationStepApprovalUpdateManyWithoutStepNestedInput
+  currentForPhase?: Prisma.ContractPhaseUpdateManyWithoutCurrentStepNestedInput
 }
 
 export type DocumentationStepUncheckedUpdateWithoutRequiredDocumentsInput = {
@@ -1045,6 +1296,9 @@ export type DocumentationStepUncheckedUpdateWithoutRequiredDocumentsInput = {
   stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
+  actionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  submissionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1057,6 +1311,7 @@ export type DocumentationStepUncheckedUpdateWithoutRequiredDocumentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   approvals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutStepNestedInput
+  currentForPhase?: Prisma.ContractPhaseUncheckedUpdateManyWithoutCurrentStepNestedInput
 }
 
 export type DocumentationStepCreateWithoutApprovalsInput = {
@@ -1066,6 +1321,9 @@ export type DocumentationStepCreateWithoutApprovalsInput = {
   stepType: $Enums.StepType
   order: number
   status?: $Enums.StepStatus
+  actionReason?: string | null
+  submissionCount?: number
+  lastSubmittedAt?: Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   underwritingScore?: number | null
@@ -1079,6 +1337,7 @@ export type DocumentationStepCreateWithoutApprovalsInput = {
   phase: Prisma.ContractPhaseCreateNestedOneWithoutStepsInput
   assignee?: Prisma.UserCreateNestedOneWithoutAssignedStepsInput
   requiredDocuments?: Prisma.DocumentationStepDocumentCreateNestedManyWithoutStepInput
+  currentForPhase?: Prisma.ContractPhaseCreateNestedManyWithoutCurrentStepInput
 }
 
 export type DocumentationStepUncheckedCreateWithoutApprovalsInput = {
@@ -1089,6 +1348,9 @@ export type DocumentationStepUncheckedCreateWithoutApprovalsInput = {
   stepType: $Enums.StepType
   order: number
   status?: $Enums.StepStatus
+  actionReason?: string | null
+  submissionCount?: number
+  lastSubmittedAt?: Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   underwritingScore?: number | null
@@ -1101,6 +1363,7 @@ export type DocumentationStepUncheckedCreateWithoutApprovalsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   requiredDocuments?: Prisma.DocumentationStepDocumentUncheckedCreateNestedManyWithoutStepInput
+  currentForPhase?: Prisma.ContractPhaseUncheckedCreateNestedManyWithoutCurrentStepInput
 }
 
 export type DocumentationStepCreateOrConnectWithoutApprovalsInput = {
@@ -1126,6 +1389,9 @@ export type DocumentationStepUpdateWithoutApprovalsInput = {
   stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
+  actionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  submissionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1139,6 +1405,7 @@ export type DocumentationStepUpdateWithoutApprovalsInput = {
   phase?: Prisma.ContractPhaseUpdateOneRequiredWithoutStepsNestedInput
   assignee?: Prisma.UserUpdateOneWithoutAssignedStepsNestedInput
   requiredDocuments?: Prisma.DocumentationStepDocumentUpdateManyWithoutStepNestedInput
+  currentForPhase?: Prisma.ContractPhaseUpdateManyWithoutCurrentStepNestedInput
 }
 
 export type DocumentationStepUncheckedUpdateWithoutApprovalsInput = {
@@ -1149,6 +1416,9 @@ export type DocumentationStepUncheckedUpdateWithoutApprovalsInput = {
   stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
+  actionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  submissionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1161,6 +1431,7 @@ export type DocumentationStepUncheckedUpdateWithoutApprovalsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   requiredDocuments?: Prisma.DocumentationStepDocumentUncheckedUpdateManyWithoutStepNestedInput
+  currentForPhase?: Prisma.ContractPhaseUncheckedUpdateManyWithoutCurrentStepNestedInput
 }
 
 export type DocumentationStepCreateManyAssigneeInput = {
@@ -1171,6 +1442,9 @@ export type DocumentationStepCreateManyAssigneeInput = {
   stepType: $Enums.StepType
   order: number
   status?: $Enums.StepStatus
+  actionReason?: string | null
+  submissionCount?: number
+  lastSubmittedAt?: Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   underwritingScore?: number | null
@@ -1190,6 +1464,9 @@ export type DocumentationStepUpdateWithoutAssigneeInput = {
   stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
+  actionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  submissionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1203,6 +1480,7 @@ export type DocumentationStepUpdateWithoutAssigneeInput = {
   phase?: Prisma.ContractPhaseUpdateOneRequiredWithoutStepsNestedInput
   requiredDocuments?: Prisma.DocumentationStepDocumentUpdateManyWithoutStepNestedInput
   approvals?: Prisma.DocumentationStepApprovalUpdateManyWithoutStepNestedInput
+  currentForPhase?: Prisma.ContractPhaseUpdateManyWithoutCurrentStepNestedInput
 }
 
 export type DocumentationStepUncheckedUpdateWithoutAssigneeInput = {
@@ -1213,6 +1491,9 @@ export type DocumentationStepUncheckedUpdateWithoutAssigneeInput = {
   stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
+  actionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  submissionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1225,6 +1506,7 @@ export type DocumentationStepUncheckedUpdateWithoutAssigneeInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   requiredDocuments?: Prisma.DocumentationStepDocumentUncheckedUpdateManyWithoutStepNestedInput
   approvals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutStepNestedInput
+  currentForPhase?: Prisma.ContractPhaseUncheckedUpdateManyWithoutCurrentStepNestedInput
 }
 
 export type DocumentationStepUncheckedUpdateManyWithoutAssigneeInput = {
@@ -1235,6 +1517,9 @@ export type DocumentationStepUncheckedUpdateManyWithoutAssigneeInput = {
   stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
+  actionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  submissionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1254,6 +1539,9 @@ export type DocumentationStepCreateManyPhaseInput = {
   stepType: $Enums.StepType
   order: number
   status?: $Enums.StepStatus
+  actionReason?: string | null
+  submissionCount?: number
+  lastSubmittedAt?: Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   underwritingScore?: number | null
@@ -1274,6 +1562,9 @@ export type DocumentationStepUpdateWithoutPhaseInput = {
   stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
+  actionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  submissionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1287,6 +1578,7 @@ export type DocumentationStepUpdateWithoutPhaseInput = {
   assignee?: Prisma.UserUpdateOneWithoutAssignedStepsNestedInput
   requiredDocuments?: Prisma.DocumentationStepDocumentUpdateManyWithoutStepNestedInput
   approvals?: Prisma.DocumentationStepApprovalUpdateManyWithoutStepNestedInput
+  currentForPhase?: Prisma.ContractPhaseUpdateManyWithoutCurrentStepNestedInput
 }
 
 export type DocumentationStepUncheckedUpdateWithoutPhaseInput = {
@@ -1296,6 +1588,9 @@ export type DocumentationStepUncheckedUpdateWithoutPhaseInput = {
   stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
+  actionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  submissionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1309,6 +1604,7 @@ export type DocumentationStepUncheckedUpdateWithoutPhaseInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   requiredDocuments?: Prisma.DocumentationStepDocumentUncheckedUpdateManyWithoutStepNestedInput
   approvals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutStepNestedInput
+  currentForPhase?: Prisma.ContractPhaseUncheckedUpdateManyWithoutCurrentStepNestedInput
 }
 
 export type DocumentationStepUncheckedUpdateManyWithoutPhaseInput = {
@@ -1318,6 +1614,9 @@ export type DocumentationStepUncheckedUpdateManyWithoutPhaseInput = {
   stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
+  actionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  submissionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   preApprovalAnswers?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1339,11 +1638,13 @@ export type DocumentationStepUncheckedUpdateManyWithoutPhaseInput = {
 export type DocumentationStepCountOutputType = {
   requiredDocuments: number
   approvals: number
+  currentForPhase: number
 }
 
 export type DocumentationStepCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   requiredDocuments?: boolean | DocumentationStepCountOutputTypeCountRequiredDocumentsArgs
   approvals?: boolean | DocumentationStepCountOutputTypeCountApprovalsArgs
+  currentForPhase?: boolean | DocumentationStepCountOutputTypeCountCurrentForPhaseArgs
 }
 
 /**
@@ -1370,6 +1671,13 @@ export type DocumentationStepCountOutputTypeCountApprovalsArgs<ExtArgs extends r
   where?: Prisma.DocumentationStepApprovalWhereInput
 }
 
+/**
+ * DocumentationStepCountOutputType without action
+ */
+export type DocumentationStepCountOutputTypeCountCurrentForPhaseArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ContractPhaseWhereInput
+}
+
 
 export type DocumentationStepSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1379,6 +1687,9 @@ export type DocumentationStepSelect<ExtArgs extends runtime.Types.Extensions.Int
   stepType?: boolean
   order?: boolean
   status?: boolean
+  actionReason?: boolean
+  submissionCount?: boolean
+  lastSubmittedAt?: boolean
   metadata?: boolean
   preApprovalAnswers?: boolean
   underwritingScore?: boolean
@@ -1394,6 +1705,7 @@ export type DocumentationStepSelect<ExtArgs extends runtime.Types.Extensions.Int
   assignee?: boolean | Prisma.DocumentationStep$assigneeArgs<ExtArgs>
   requiredDocuments?: boolean | Prisma.DocumentationStep$requiredDocumentsArgs<ExtArgs>
   approvals?: boolean | Prisma.DocumentationStep$approvalsArgs<ExtArgs>
+  currentForPhase?: boolean | Prisma.DocumentationStep$currentForPhaseArgs<ExtArgs>
   _count?: boolean | Prisma.DocumentationStepCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["documentationStep"]>
 
@@ -1407,6 +1719,9 @@ export type DocumentationStepSelectScalar = {
   stepType?: boolean
   order?: boolean
   status?: boolean
+  actionReason?: boolean
+  submissionCount?: boolean
+  lastSubmittedAt?: boolean
   metadata?: boolean
   preApprovalAnswers?: boolean
   underwritingScore?: boolean
@@ -1420,12 +1735,13 @@ export type DocumentationStepSelectScalar = {
   updatedAt?: boolean
 }
 
-export type DocumentationStepOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "phaseId" | "name" | "description" | "stepType" | "order" | "status" | "metadata" | "preApprovalAnswers" | "underwritingScore" | "debtToIncomeRatio" | "underwritingDecision" | "underwritingNotes" | "assigneeId" | "dueDate" | "completedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["documentationStep"]>
+export type DocumentationStepOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "phaseId" | "name" | "description" | "stepType" | "order" | "status" | "actionReason" | "submissionCount" | "lastSubmittedAt" | "metadata" | "preApprovalAnswers" | "underwritingScore" | "debtToIncomeRatio" | "underwritingDecision" | "underwritingNotes" | "assigneeId" | "dueDate" | "completedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["documentationStep"]>
 export type DocumentationStepInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   phase?: boolean | Prisma.ContractPhaseDefaultArgs<ExtArgs>
   assignee?: boolean | Prisma.DocumentationStep$assigneeArgs<ExtArgs>
   requiredDocuments?: boolean | Prisma.DocumentationStep$requiredDocumentsArgs<ExtArgs>
   approvals?: boolean | Prisma.DocumentationStep$approvalsArgs<ExtArgs>
+  currentForPhase?: boolean | Prisma.DocumentationStep$currentForPhaseArgs<ExtArgs>
   _count?: boolean | Prisma.DocumentationStepCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -1436,6 +1752,7 @@ export type $DocumentationStepPayload<ExtArgs extends runtime.Types.Extensions.I
     assignee: Prisma.$UserPayload<ExtArgs> | null
     requiredDocuments: Prisma.$DocumentationStepDocumentPayload<ExtArgs>[]
     approvals: Prisma.$DocumentationStepApprovalPayload<ExtArgs>[]
+    currentForPhase: Prisma.$ContractPhasePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1445,6 +1762,9 @@ export type $DocumentationStepPayload<ExtArgs extends runtime.Types.Extensions.I
     stepType: $Enums.StepType
     order: number
     status: $Enums.StepStatus
+    actionReason: string | null
+    submissionCount: number
+    lastSubmittedAt: Date | null
     metadata: runtime.JsonValue | null
     preApprovalAnswers: runtime.JsonValue | null
     underwritingScore: number | null
@@ -1800,6 +2120,7 @@ export interface Prisma__DocumentationStepClient<T, Null = never, ExtArgs extend
   assignee<T extends Prisma.DocumentationStep$assigneeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentationStep$assigneeArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   requiredDocuments<T extends Prisma.DocumentationStep$requiredDocumentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentationStep$requiredDocumentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentationStepDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   approvals<T extends Prisma.DocumentationStep$approvalsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentationStep$approvalsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentationStepApprovalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  currentForPhase<T extends Prisma.DocumentationStep$currentForPhaseArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentationStep$currentForPhaseArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContractPhasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1836,6 +2157,9 @@ export interface DocumentationStepFieldRefs {
   readonly stepType: Prisma.FieldRef<"DocumentationStep", 'StepType'>
   readonly order: Prisma.FieldRef<"DocumentationStep", 'Int'>
   readonly status: Prisma.FieldRef<"DocumentationStep", 'StepStatus'>
+  readonly actionReason: Prisma.FieldRef<"DocumentationStep", 'String'>
+  readonly submissionCount: Prisma.FieldRef<"DocumentationStep", 'Int'>
+  readonly lastSubmittedAt: Prisma.FieldRef<"DocumentationStep", 'DateTime'>
   readonly metadata: Prisma.FieldRef<"DocumentationStep", 'Json'>
   readonly preApprovalAnswers: Prisma.FieldRef<"DocumentationStep", 'Json'>
   readonly underwritingScore: Prisma.FieldRef<"DocumentationStep", 'Float'>
@@ -2254,6 +2578,30 @@ export type DocumentationStep$approvalsArgs<ExtArgs extends runtime.Types.Extens
   take?: number
   skip?: number
   distinct?: Prisma.DocumentationStepApprovalScalarFieldEnum | Prisma.DocumentationStepApprovalScalarFieldEnum[]
+}
+
+/**
+ * DocumentationStep.currentForPhase
+ */
+export type DocumentationStep$currentForPhaseArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ContractPhase
+   */
+  select?: Prisma.ContractPhaseSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ContractPhase
+   */
+  omit?: Prisma.ContractPhaseOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ContractPhaseInclude<ExtArgs> | null
+  where?: Prisma.ContractPhaseWhereInput
+  orderBy?: Prisma.ContractPhaseOrderByWithRelationInput | Prisma.ContractPhaseOrderByWithRelationInput[]
+  cursor?: Prisma.ContractPhaseWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ContractPhaseScalarFieldEnum | Prisma.ContractPhaseScalarFieldEnum[]
 }
 
 /**

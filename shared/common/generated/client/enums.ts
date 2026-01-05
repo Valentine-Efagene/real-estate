@@ -86,7 +86,10 @@ export const StepStatus = {
   IN_PROGRESS: 'IN_PROGRESS',
   COMPLETED: 'COMPLETED',
   FAILED: 'FAILED',
-  SKIPPED: 'SKIPPED'
+  SKIPPED: 'SKIPPED',
+  NEEDS_RESUBMISSION: 'NEEDS_RESUBMISSION',
+  ACTION_REQUIRED: 'ACTION_REQUIRED',
+  AWAITING_REVIEW: 'AWAITING_REVIEW'
 } as const
 
 export type StepStatus = (typeof StepStatus)[keyof typeof StepStatus]

@@ -79,6 +79,9 @@ enum StepStatus {
   COMPLETED
   FAILED
   SKIPPED
+  NEEDS_RESUBMISSION // User must re-upload or correct something (after rejection)
+  ACTION_REQUIRED // User action needed (generic - check actionReason)
+  AWAITING_REVIEW // Submitted, waiting for admin/system review
 }
 
 enum InstallmentStatus {
@@ -965,6 +968,15 @@ model ContractPhase {
   // FSM state for this phase (DB-enforced enum)
   status PhaseStatus @default(PENDING)
 
+  // =========================================================================
+  // WORKFLOW TRACKING - Current step pointer for UX and orchestration
+  // =========================================================================
+  // Canonical pointer to the step currently requiring attention.
+  // Updated by service when: phase activates (→ first step), step completes (→ next),
+  // step rejected (→ same step with NEEDS_RESUBMISSION), or phase completes (→ null).
+  currentStepId String?
+  currentStep   DocumentationStep? @relation("CurrentStep", fields: [currentStepId], references: [id])
+
   // Financial details (for PAYMENT phases)
   totalAmount     Float?
   paidAmount      Float  @default(0)
@@ -1012,6 +1024,7 @@ model ContractPhase {
   @@index([phaseCategory])
   @@index([status])
   @@index([order])
+  @@index([currentStepId])
   @@map("contract_phases")
 }
 
@@ -1027,6 +1040,19 @@ model DocumentationStep {
   order       Int
 
   status StepStatus @default(PENDING)
+
+  // =========================================================================
+  // USER ACTION TRACKING - For rejection/resubmission flows
+  // =========================================================================
+  // When status is NEEDS_RESUBMISSION or ACTION_REQUIRED, this explains why.
+  // Populated from DocumentationStepApproval.comment on rejection.
+  actionReason String? @db.Text
+
+  // Number of times this step has been submitted (for tracking resubmissions)
+  submissionCount Int @default(0)
+
+  // Last submission timestamp (for tracking resubmission timing)
+  lastSubmittedAt DateTime?
 
   // Configuration metadata (for GENERATE_DOCUMENT steps, etc.)
   metadata Json?
@@ -1054,7 +1080,8 @@ model DocumentationStep {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  approvals DocumentationStepApproval[]
+  approvals       DocumentationStepApproval[]
+  currentForPhase ContractPhase[]             @relation("CurrentStep")
 
   @@index([phaseId])
   @@index([status])

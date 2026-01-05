@@ -18,10 +18,14 @@ class ContractPhaseService {
             include: {
                 contract: true,
                 paymentPlan: true,
+                currentStep: true,
                 steps: {
                     orderBy: { order: 'asc' },
                     include: {
-                        approvals: true,
+                        approvals: {
+                            orderBy: { decidedAt: 'desc' },
+                        },
+                        requiredDocuments: true,
                     },
                 },
                 installments: {
@@ -38,6 +42,40 @@ class ContractPhaseService {
         }
 
         return phase;
+    }
+
+    /**
+     * Get the next step requiring attention in a phase
+     * Order of priority:
+     * 1. NEEDS_RESUBMISSION / ACTION_REQUIRED (user must fix)
+     * 2. PENDING / IN_PROGRESS steps in order
+     */
+    private getNextActionableStep(steps: any[]): any | null {
+        // First check for steps needing user action (rejections)
+        const needsAction = steps.find(
+            (s: any) => s.status === 'NEEDS_RESUBMISSION' || s.status === 'ACTION_REQUIRED'
+        );
+        if (needsAction) return needsAction;
+
+        // Then find next pending/in-progress step in order
+        return steps.find(
+            (s: any) => s.status === 'PENDING' || s.status === 'IN_PROGRESS' || s.status === 'AWAITING_REVIEW'
+        ) || null;
+    }
+
+    /**
+     * Update the currentStepId pointer on the phase
+     */
+    private async updateCurrentStepPointer(
+        tx: any,
+        phaseId: string,
+        steps: any[]
+    ): Promise<void> {
+        const nextStep = this.getNextActionableStep(steps);
+        await tx.contractPhase.update({
+            where: { id: phaseId },
+            data: { currentStepId: nextStep?.id ?? null },
+        });
     }
 
     async getPhasesByContract(contractId: string): Promise<any[]> {
@@ -85,16 +123,28 @@ class ContractPhaseService {
 
         const startDate = data.startDate ? new Date(data.startDate) : new Date();
 
+        // Determine the first step to set as current
+        const firstStep = this.getNextActionableStep(phase.steps);
+
         const updated = await prisma.$transaction(async (tx) => {
-            // Update phase status
+            // Update phase status and set current step pointer
             const result = await tx.contractPhase.update({
                 where: { id: phaseId },
                 data: {
                     status: phase.phaseCategory === 'DOCUMENTATION' ? 'IN_PROGRESS' : 'ACTIVE',
                     activatedAt: new Date(),
                     startDate,
+                    currentStepId: firstStep?.id ?? null,
                 },
             });
+
+            // If there's a first step, mark it as IN_PROGRESS
+            if (firstStep && firstStep.status === 'PENDING') {
+                await tx.documentationStep.update({
+                    where: { id: firstStep.id },
+                    data: { status: 'IN_PROGRESS' },
+                });
+            }
 
             // Update contract's current phase
             await tx.contract.update({
@@ -140,10 +190,13 @@ class ContractPhaseService {
             return; // Only documentation phases have steps
         }
 
-        // Find the next pending step
-        const nextStep = phase.steps.find((s: any) => s.status === 'PENDING');
+        // Find the next actionable step - either PENDING or IN_PROGRESS (for auto-executable types)
+        // We check IN_PROGRESS because activate() marks the first step as IN_PROGRESS
+        const nextStep = phase.steps.find(
+            (s: any) => s.status === 'PENDING' || (s.status === 'IN_PROGRESS' && s.stepType === 'GENERATE_DOCUMENT')
+        );
         if (!nextStep) {
-            return; // No pending steps
+            return; // No actionable steps
         }
 
         // Check if previous steps are completed
@@ -405,21 +458,23 @@ class ContractPhaseService {
             }
 
             // Check if all steps are completed
-            const pendingSteps = await tx.documentationStep.count({
+            const remainingSteps = await tx.documentationStep.findMany({
                 where: {
                     phaseId,
-                    status: { not: 'COMPLETED' },
+                    status: { notIn: ['COMPLETED', 'SKIPPED'] },
                     id: { not: stepId },
                 },
+                orderBy: { order: 'asc' },
             });
 
-            if (pendingSteps === 0) {
-                // All steps completed - complete the phase
+            if (remainingSteps.length === 0) {
+                // All steps completed - complete the phase and clear currentStepId
                 await tx.contractPhase.update({
                     where: { id: phaseId },
                     data: {
                         status: 'COMPLETED',
                         completedAt: new Date(),
+                        currentStepId: null,
                     },
                 });
 
@@ -479,6 +534,21 @@ class ContractPhaseService {
                         },
                     });
                 }
+            } else {
+                // Advance currentStepId to the next actionable step
+                const nextStep = remainingSteps[0];
+                await tx.contractPhase.update({
+                    where: { id: phaseId },
+                    data: { currentStepId: nextStep.id },
+                });
+
+                // Mark the next step as IN_PROGRESS if it's PENDING
+                if (nextStep.status === 'PENDING') {
+                    await tx.documentationStep.update({
+                        where: { id: nextStep.id },
+                        data: { status: 'IN_PROGRESS' },
+                    });
+                }
             }
 
             // Write step completed event
@@ -525,15 +595,169 @@ class ContractPhaseService {
             },
         });
 
-        // If step is provided, update step to IN_PROGRESS
+        // If step is provided, update step status and track submission
         if (data.stepId) {
-            await prisma.documentationStep.update({
+            const step = await prisma.documentationStep.findUnique({
                 where: { id: data.stepId },
-                data: { status: 'IN_PROGRESS' },
             });
+
+            if (step) {
+                // If step was in NEEDS_RESUBMISSION, move to AWAITING_REVIEW
+                // Otherwise move to IN_PROGRESS
+                const newStatus = step.status === 'NEEDS_RESUBMISSION' ? 'AWAITING_REVIEW' : 'IN_PROGRESS';
+
+                await prisma.documentationStep.update({
+                    where: { id: data.stepId },
+                    data: {
+                        status: newStatus,
+                        submissionCount: { increment: 1 },
+                        lastSubmittedAt: new Date(),
+                        // Clear action reason when user resubmits
+                        actionReason: step.status === 'NEEDS_RESUBMISSION' ? null : step.actionReason,
+                    },
+                });
+            }
         }
 
         return document;
+    }
+
+    /**
+     * Reject a step - marks it as NEEDS_RESUBMISSION with reason
+     * Used when admin reviews and finds issues with submitted documents
+     */
+    async rejectStep(
+        phaseId: string,
+        stepId: string,
+        reason: string,
+        userId: string
+    ): Promise<any> {
+        const phase = await this.findById(phaseId);
+
+        const step = phase.steps.find((s: any) => s.id === stepId);
+        if (!step) {
+            throw new AppError(404, 'Step not found in this phase');
+        }
+
+        if (step.status === 'COMPLETED') {
+            throw new AppError(400, 'Cannot reject a completed step');
+        }
+
+        await prisma.$transaction(async (tx) => {
+            // Update step to NEEDS_RESUBMISSION with reason
+            await tx.documentationStep.update({
+                where: { id: stepId },
+                data: {
+                    status: 'NEEDS_RESUBMISSION',
+                    actionReason: reason,
+                },
+            });
+
+            // Create approval record with REJECTED decision
+            await tx.documentationStepApproval.create({
+                data: {
+                    stepId,
+                    approverId: userId,
+                    decision: 'REJECTED',
+                    comment: reason,
+                },
+            });
+
+            // Set currentStepId to this step (user needs to fix it)
+            await tx.contractPhase.update({
+                where: { id: phaseId },
+                data: { currentStepId: stepId },
+            });
+
+            // Write domain event
+            await tx.domainEvent.create({
+                data: {
+                    id: uuidv4(),
+                    eventType: 'PHASE.STEP.REJECTED',
+                    aggregateType: 'DocumentationStep',
+                    aggregateId: stepId,
+                    queueName: 'notifications',
+                    payload: JSON.stringify({
+                        stepId,
+                        phaseId,
+                        contractId: phase.contractId,
+                        reason,
+                    }),
+                    actorId: userId,
+                },
+            });
+        });
+
+        return this.findById(phaseId);
+    }
+
+    /**
+     * Request changes on a step - marks it as ACTION_REQUIRED
+     * Similar to reject but with REQUEST_CHANGES decision
+     */
+    async requestStepChanges(
+        phaseId: string,
+        stepId: string,
+        reason: string,
+        userId: string
+    ): Promise<any> {
+        const phase = await this.findById(phaseId);
+
+        const step = phase.steps.find((s: any) => s.id === stepId);
+        if (!step) {
+            throw new AppError(404, 'Step not found in this phase');
+        }
+
+        if (step.status === 'COMPLETED') {
+            throw new AppError(400, 'Cannot request changes on a completed step');
+        }
+
+        await prisma.$transaction(async (tx) => {
+            // Update step to ACTION_REQUIRED with reason
+            await tx.documentationStep.update({
+                where: { id: stepId },
+                data: {
+                    status: 'ACTION_REQUIRED',
+                    actionReason: reason,
+                },
+            });
+
+            // Create approval record with REQUEST_CHANGES decision
+            await tx.documentationStepApproval.create({
+                data: {
+                    stepId,
+                    approverId: userId,
+                    decision: 'REQUEST_CHANGES',
+                    comment: reason,
+                },
+            });
+
+            // Set currentStepId to this step (user needs to address it)
+            await tx.contractPhase.update({
+                where: { id: phaseId },
+                data: { currentStepId: stepId },
+            });
+
+            // Write domain event
+            await tx.domainEvent.create({
+                data: {
+                    id: uuidv4(),
+                    eventType: 'PHASE.STEP.CHANGES_REQUESTED',
+                    aggregateType: 'DocumentationStep',
+                    aggregateId: stepId,
+                    queueName: 'notifications',
+                    payload: JSON.stringify({
+                        stepId,
+                        phaseId,
+                        contractId: phase.contractId,
+                        reason,
+                    }),
+                    actorId: userId,
+                },
+            });
+        });
+
+        return this.findById(phaseId);
     }
 
     /**
