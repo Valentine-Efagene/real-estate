@@ -845,6 +845,17 @@ class ContractPhaseService {
             },
         });
 
+        // If document is rejected and has a stepId, revert the step to NEEDS_RESUBMISSION
+        if (data.status === 'REJECTED' && document.stepId) {
+            await prisma.documentationStep.update({
+                where: { id: document.stepId },
+                data: {
+                    status: 'NEEDS_RESUBMISSION',
+                    actionReason: data.comment || 'Document was rejected. Please resubmit.',
+                },
+            });
+        }
+
         // Send notification to the buyer
         const buyer = document.contract?.buyer;
         const propertyName = document.contract?.propertyUnit?.variant?.property?.title;
