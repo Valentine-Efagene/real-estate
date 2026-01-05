@@ -1,8 +1,22 @@
-import { PrismaClient, Prisma } from '@valentine-efagene/qshelter-common';
+import { PrismaClient, Prisma, PaymentMethodChangeRequestModel, ContractPhaseModel } from '@valentine-efagene/qshelter-common';
 import { AppError } from '@valentine-efagene/qshelter-common';
 import { v4 as uuidv4 } from 'uuid';
 import { prisma } from '../lib/prisma';
 import { contractPhaseService } from './contract-phase.service';
+
+// Extended types for methods that return data with relations
+type PaymentMethodChangeRequestWithRelations = PaymentMethodChangeRequestModel & {
+    contract?: unknown;
+    fromPaymentMethod?: unknown;
+    toPaymentMethod?: unknown;
+    requestor?: unknown;
+    reviewer?: unknown;
+};
+
+type ExecuteResult = {
+    request: PaymentMethodChangeRequestModel;
+    newPhases: ContractPhaseModel[];
+};
 
 /**
  * Service for managing payment method change requests.
@@ -25,7 +39,7 @@ export class PaymentMethodChangeService {
         reason?: string;
         requestorId: string;
         tenantId: string;
-    }) {
+    }): Promise<PaymentMethodChangeRequestWithRelations> {
         // Get the contract with current payment method
         const contract = await this.db.contract.findUnique({
             where: { id: data.contractId },
@@ -179,7 +193,7 @@ export class PaymentMethodChangeService {
     /**
      * Get a payment method change request by ID.
      */
-    async findById(requestId: string, tenantId: string) {
+    async findById(requestId: string, tenantId: string): Promise<PaymentMethodChangeRequestWithRelations> {
         const request = await this.db.paymentMethodChangeRequest.findUnique({
             where: { id: requestId },
             include: {
@@ -217,7 +231,7 @@ export class PaymentMethodChangeService {
     /**
      * List payment method change requests for a contract.
      */
-    async listByContract(contractId: string, tenantId: string) {
+    async listByContract(contractId: string, tenantId: string): Promise<PaymentMethodChangeRequestWithRelations[]> {
         return this.db.paymentMethodChangeRequest.findMany({
             where: { contractId, tenantId },
             include: {
@@ -234,7 +248,7 @@ export class PaymentMethodChangeService {
     /**
      * List all pending requests for admin review.
      */
-    async listPendingForReview(tenantId: string) {
+    async listPendingForReview(tenantId: string): Promise<PaymentMethodChangeRequestWithRelations[]> {
         return this.db.paymentMethodChangeRequest.findMany({
             where: {
                 tenantId,
@@ -261,7 +275,7 @@ export class PaymentMethodChangeService {
     /**
      * Submit documents for a pending request.
      */
-    async submitDocuments(requestId: string, tenantId: string) {
+    async submitDocuments(requestId: string, tenantId: string): Promise<PaymentMethodChangeRequestModel> {
         const request = await this.findById(requestId, tenantId);
 
         if (request.status !== 'PENDING_DOCUMENTS') {
@@ -277,7 +291,7 @@ export class PaymentMethodChangeService {
     /**
      * Start review of a request (admin action).
      */
-    async startReview(requestId: string, reviewerId: string, tenantId: string) {
+    async startReview(requestId: string, reviewerId: string, tenantId: string): Promise<PaymentMethodChangeRequestModel> {
         const request = await this.findById(requestId, tenantId);
 
         if (!['PENDING_DOCUMENTS', 'DOCUMENTS_SUBMITTED'].includes(request.status)) {
@@ -297,7 +311,7 @@ export class PaymentMethodChangeService {
      * Approve a payment method change request.
      * This validates the request and marks it as approved. Execution is separate.
      */
-    async approve(requestId: string, reviewerId: string, reviewNotes: string | undefined, tenantId: string) {
+    async approve(requestId: string, reviewerId: string, reviewNotes: string | undefined, tenantId: string): Promise<PaymentMethodChangeRequestModel> {
         const request = await this.findById(requestId, tenantId);
 
         if (!['DOCUMENTS_SUBMITTED', 'UNDER_REVIEW'].includes(request.status)) {
@@ -363,7 +377,7 @@ export class PaymentMethodChangeService {
         reviewerId: string,
         rejectionReason: string,
         tenantId: string
-    ) {
+    ): Promise<PaymentMethodChangeRequestModel> {
         const request = await this.findById(requestId, tenantId);
 
         if (!['PENDING_DOCUMENTS', 'DOCUMENTS_SUBMITTED', 'UNDER_REVIEW'].includes(request.status)) {
@@ -403,7 +417,7 @@ export class PaymentMethodChangeService {
     /**
      * Cancel a pending request (requestor action).
      */
-    async cancel(requestId: string, requestorId: string, tenantId: string) {
+    async cancel(requestId: string, requestorId: string, tenantId: string): Promise<PaymentMethodChangeRequestModel> {
         const request = await this.findById(requestId, tenantId);
 
         if (!['PENDING_DOCUMENTS', 'DOCUMENTS_SUBMITTED', 'UNDER_REVIEW'].includes(request.status)) {
@@ -445,7 +459,7 @@ export class PaymentMethodChangeService {
      * 2. Creates new payment phase(s) based on new payment method
      * 3. Updates contract's payment method reference
      */
-    async execute(requestId: string, executorId: string, tenantId: string) {
+    async execute(requestId: string, executorId: string, tenantId: string): Promise<ExecuteResult> {
         const request = await this.findById(requestId, tenantId);
 
         if (request.status !== 'APPROVED') {
