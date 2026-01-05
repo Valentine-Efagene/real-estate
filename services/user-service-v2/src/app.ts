@@ -5,6 +5,7 @@ import { userRouter } from './routes/users';
 import { roleRouter } from './routes/roles';
 import { tenantRouter } from './routes/tenants';
 import { socialRouter } from './routes/socials';
+import { apiKeyRouter } from './routes/api-keys';
 import { errorHandler } from './middleware/error-handler';
 import { requestLogger } from './middleware/request-logger';
 import { generateOpenAPIDocument } from './config/swagger';
@@ -30,5 +31,6 @@ app.use('/users', userRouter);
 app.use('/roles', roleRouter);
 app.use('/tenants', tenantRouter);
 app.use('/socials', socialRouter);
+app.use('/api-keys', apiKeyRouter);
 
 app.use(errorHandler);

@@ -57,6 +57,7 @@ export const ModelName = {
   RolePermission: 'RolePermission',
   UserRole: 'UserRole',
   Tenant: 'Tenant',
+  ApiKey: 'ApiKey',
   RefreshToken: 'RefreshToken',
   PasswordReset: 'PasswordReset',
   UserSuspension: 'UserSuspension',
@@ -190,6 +191,27 @@ export const TenantScalarFieldEnum = {
 } as const
 
 export type TenantScalarFieldEnum = (typeof TenantScalarFieldEnum)[keyof typeof TenantScalarFieldEnum]
+
+
+export const ApiKeyScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  name: 'name',
+  description: 'description',
+  provider: 'provider',
+  secretRef: 'secretRef',
+  scopes: 'scopes',
+  enabled: 'enabled',
+  expiresAt: 'expiresAt',
+  lastUsedAt: 'lastUsedAt',
+  revokedAt: 'revokedAt',
+  revokedBy: 'revokedBy',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ApiKeyScalarFieldEnum = (typeof ApiKeyScalarFieldEnum)[keyof typeof ApiKeyScalarFieldEnum]
 
 
 export const RefreshTokenScalarFieldEnum = {
@@ -949,19 +971,19 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const JsonNullValueInput = {
+  JsonNull: 'JsonNull'
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
 export const NullableJsonNullValueInput = {
   DbNull: 'DbNull',
   JsonNull: 'JsonNull'
 } as const
 
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
-
-
-export const JsonNullValueInput = {
-  JsonNull: 'JsonNull'
-} as const
-
-export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const NullsOrder = {
@@ -1032,6 +1054,37 @@ export const TenantOrderByRelevanceFieldEnum = {
 } as const
 
 export type TenantOrderByRelevanceFieldEnum = (typeof TenantOrderByRelevanceFieldEnum)[keyof typeof TenantOrderByRelevanceFieldEnum]
+
+
+export const JsonNullValueFilter = {
+  DbNull: 'DbNull',
+  JsonNull: 'JsonNull',
+  AnyNull: 'AnyNull'
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+export const QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+} as const
+
+export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const ApiKeyOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  name: 'name',
+  description: 'description',
+  provider: 'provider',
+  secretRef: 'secretRef',
+  revokedBy: 'revokedBy',
+  createdBy: 'createdBy'
+} as const
+
+export type ApiKeyOrderByRelevanceFieldEnum = (typeof ApiKeyOrderByRelevanceFieldEnum)[keyof typeof ApiKeyOrderByRelevanceFieldEnum]
 
 
 export const RefreshTokenOrderByRelevanceFieldEnum = {
@@ -1259,23 +1312,6 @@ export const PropertyPaymentMethodLinkOrderByRelevanceFieldEnum = {
 } as const
 
 export type PropertyPaymentMethodLinkOrderByRelevanceFieldEnum = (typeof PropertyPaymentMethodLinkOrderByRelevanceFieldEnum)[keyof typeof PropertyPaymentMethodLinkOrderByRelevanceFieldEnum]
-
-
-export const JsonNullValueFilter = {
-  DbNull: 'DbNull',
-  JsonNull: 'JsonNull',
-  AnyNull: 'AnyNull'
-} as const
-
-export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
-
-
-export const QueryMode = {
-  default: 'default',
-  insensitive: 'insensitive'
-} as const
-
-export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 
 export const PropertyPaymentMethodPhaseOrderByRelevanceFieldEnum = {

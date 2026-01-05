@@ -36,6 +36,6 @@ async function createAdapter() {
 }
 
 const adapter = await createAdapter();
-const prisma = new PrismaClient({ adapter });
+const prisma: PrismaClient = new PrismaClient({ adapter });
 
 export { prisma };

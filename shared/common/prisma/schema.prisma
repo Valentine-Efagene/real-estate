@@ -321,8 +321,65 @@ model Tenant {
   documentTemplates DocumentTemplate[]
   offerLetters      OfferLetter[]
 
+  // API keys for third-party integrations
+  apiKeys ApiKey[]
+
   @@index([subdomain])
   @@map("tenants")
+}
+
+// =============================================================================
+// API KEYS - Third-party integration credentials
+// =============================================================================
+// ApiKey enables partners/integrations to authenticate via token exchange.
+// 
+// Flow:
+// 1. Admin creates API key for a partner (POST /api-keys)
+// 2. System generates secret, stores in Secrets Manager, returns id.secret ONCE
+// 3. Partner calls token endpoint with id.secret (POST /api-keys/:id/token)
+// 4. Token endpoint validates via Secrets Manager, returns short-lived JWT
+// 5. Partner uses JWT for API requests; authorizer validates + resolves scopes
+//
+// Security:
+// - Raw secret stored ONLY in AWS Secrets Manager (secretRef = ARN)
+// - Secret returned only once at creation; admin must rotate if lost
+// - Scopes define allowed operations (e.g., ["contract:read", "payment:read"])
+// - Short-lived JWTs (5-15 min) minimize exposure on key compromise
+// =============================================================================
+
+model ApiKey {
+  id          String    @id @default(cuid())
+  tenantId    String
+  tenant      Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  // Identification
+  name        String                // Human-readable name (e.g., "Paystack Integration")
+  description String?   @db.Text    // Optional description
+  provider    String                // Partner/vendor name (e.g., "paystack", "flutterwave")
+
+  // Secret management (NEVER store raw secret in DB)
+  secretRef   String                // AWS Secrets Manager ARN or name
+
+  // Permissions - scopes this API key is allowed to request
+  // Examples: ["contract:read", "payment:*", "property:read"]
+  scopes      Json                  // JSON array of scope strings
+
+  // Lifecycle
+  enabled     Boolean   @default(true)
+  expiresAt   DateTime?             // Optional expiration date
+  lastUsedAt  DateTime?             // Updated on each token exchange
+  revokedAt   DateTime?             // Set when key is revoked
+  revokedBy   String?               // User ID who revoked
+
+  // Audit
+  createdBy   String?               // User ID who created
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([tenantId])
+  @@index([provider])
+  @@index([enabled])
+  @@map("api_keys")
 }
 
 model RefreshToken {

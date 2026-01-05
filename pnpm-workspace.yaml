@@ -4,6 +4,7 @@ packages:
   - 'shared/common'
   - 'shared/event-bus'
   - 'services/user-service'
+  - 'services/user-service-v2'
   - 'services/mortgage-service'
   - 'services/property-service'
   - 'services/authorizer-service'

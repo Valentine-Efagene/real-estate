@@ -26,12 +26,6 @@ const eventPublisher = getEventPublisher('user-service', {
     topicArn: process.env.NOTIFICATIONS_TOPIC_ARN,
 });
 
-const googleClient = new OAuth2Client(
-    process.env.GOOGLE_CLIENT_ID,
-    process.env.GOOGLE_CLIENT_SECRET,
-    process.env.GOOGLE_CALLBACK_URL || 'http://localhost:3000/auth/google/callback'
-);
-
 interface JWTPayload {
     userId: string;
     email: string;

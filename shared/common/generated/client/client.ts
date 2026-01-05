@@ -70,6 +70,11 @@ export type UserRole = Prisma.UserRoleModel
  */
 export type Tenant = Prisma.TenantModel
 /**
+ * Model ApiKey
+ * 
+ */
+export type ApiKey = Prisma.ApiKeyModel
+/**
  * Model RefreshToken
  * 
  */
