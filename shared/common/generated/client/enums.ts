@@ -95,6 +95,17 @@ export const StepStatus = {
 export type StepStatus = (typeof StepStatus)[keyof typeof StepStatus]
 
 
+export const StepTrigger = {
+  ON_COMPLETE: 'ON_COMPLETE',
+  ON_REJECT: 'ON_REJECT',
+  ON_SUBMIT: 'ON_SUBMIT',
+  ON_RESUBMIT: 'ON_RESUBMIT',
+  ON_START: 'ON_START'
+} as const
+
+export type StepTrigger = (typeof StepTrigger)[keyof typeof StepTrigger]
+
+
 export const InstallmentStatus = {
   PENDING: 'PENDING',
   PAID: 'PAID',

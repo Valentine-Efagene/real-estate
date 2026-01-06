@@ -529,6 +529,238 @@ describe("Jinx's Workflow Builder", () => {
     });
 
     // ================================================================
+    // STEP 9.1: Jinx configures event channels and types
+    // ================================================================
+    let channelId: string;
+    let stepCompletedEventTypeId: string;
+    let stepRejectedEventTypeId: string;
+    let creditCheckHandlerId: string;
+    let emailNotificationHandlerId: string;
+    let stepAttachmentId: string;
+
+    describe('Step 9.1: Configure Event Channels', () => {
+        it('Jinx creates a WORKFLOW event channel', async () => {
+            const response = await request(app)
+                .post('/event-config/channels')
+                .set(authHeaders(jinxId, tenantId))
+                .send({
+                    code: 'WORKFLOW',
+                    name: 'Workflow Events',
+                    description: 'Events related to workflow step transitions',
+                });
+
+            expect(response.status).toBe(201);
+            expect(response.body.code).toBe('WORKFLOW');
+            channelId = response.body.id;
+        });
+
+        it('Jinx creates a STEP_COMPLETED event type', async () => {
+            const response = await request(app)
+                .post('/event-config/types')
+                .set(authHeaders(jinxId, tenantId))
+                .send({
+                    channelId,
+                    code: 'STEP_COMPLETED',
+                    name: 'Step Completed',
+                    description: 'Fired when a workflow step is approved/completed',
+                });
+
+            expect(response.status).toBe(201);
+            expect(response.body.code).toBe('STEP_COMPLETED');
+            stepCompletedEventTypeId = response.body.id;
+        });
+
+        it('Jinx creates a STEP_REJECTED event type', async () => {
+            const response = await request(app)
+                .post('/event-config/types')
+                .set(authHeaders(jinxId, tenantId))
+                .send({
+                    channelId,
+                    code: 'STEP_REJECTED',
+                    name: 'Step Rejected',
+                    description: 'Fired when a workflow step is rejected',
+                });
+
+            expect(response.status).toBe(201);
+            expect(response.body.code).toBe('STEP_REJECTED');
+            stepRejectedEventTypeId = response.body.id;
+        });
+
+        it('Jinx can list event types for the channel', async () => {
+            const response = await request(app)
+                .get(`/event-config/types?channelId=${channelId}`)
+                .set(authHeaders(jinxId, tenantId));
+
+            expect(response.status).toBe(200);
+            expect(response.body).toHaveLength(2);
+        });
+    });
+
+    // ================================================================
+    // STEP 9.2: Jinx creates event handlers
+    // ================================================================
+    describe('Step 9.2: Create Event Handlers', () => {
+        it('Jinx creates a CALL_WEBHOOK handler for credit score API', async () => {
+            const response = await request(app)
+                .post('/event-config/handlers')
+                .set(authHeaders(jinxId, tenantId))
+                .send({
+                    eventTypeId: stepCompletedEventTypeId,
+                    name: 'Call Credit Bureau API',
+                    description: 'Fetch credit score when bank statements are approved',
+                    handlerType: 'CALL_WEBHOOK',
+                    config: {
+                        type: 'CALL_WEBHOOK',
+                        url: 'https://api.creditbureau.ng/v1/score',
+                        method: 'POST',
+                        headers: {
+                            'Authorization': 'Bearer {{secret:credit_api_key}}',
+                            'Content-Type': 'application/json',
+                        },
+                        bodyMapping: {
+                            customerId: '$.buyer.id',
+                            contractId: '$.contract.id',
+                        },
+                        timeoutMs: 30000,
+                    },
+                    priority: 50, // High priority - run first
+                    filterCondition: "$.stepType == 'UPLOAD'",
+                });
+
+            expect(response.status).toBe(201);
+            expect(response.body.name).toBe('Call Credit Bureau API');
+            expect(response.body.handlerType).toBe('CALL_WEBHOOK');
+            creditCheckHandlerId = response.body.id;
+        });
+
+        it('Jinx creates a SEND_EMAIL handler for document approval notifications', async () => {
+            const response = await request(app)
+                .post('/event-config/handlers')
+                .set(authHeaders(jinxId, tenantId))
+                .send({
+                    eventTypeId: stepCompletedEventTypeId,
+                    name: 'Send Document Approved Email',
+                    description: 'Notify buyer when their document is approved',
+                    handlerType: 'SEND_EMAIL',
+                    config: {
+                        type: 'SEND_EMAIL',
+                        template: 'documentApproved',
+                        notificationType: 'DOCUMENT_APPROVED',
+                        recipientPath: '$.buyer.email',
+                        templateData: {
+                            userName: '$.buyer.firstName',
+                            documentType: '$.step.name',
+                            contractNumber: '$.contract.contractNumber',
+                        },
+                        priority: 'normal',
+                    },
+                    priority: 100,
+                });
+
+            expect(response.status).toBe(201);
+            expect(response.body.name).toBe('Send Document Approved Email');
+            expect(response.body.handlerType).toBe('SEND_EMAIL');
+            emailNotificationHandlerId = response.body.id;
+        });
+
+        it('Jinx can list all handlers', async () => {
+            const response = await request(app)
+                .get('/event-config/handlers')
+                .set(authHeaders(jinxId, tenantId));
+
+            expect(response.status).toBe(200);
+            expect(response.body).toHaveLength(2);
+
+            const creditHandler = response.body.find((h: any) => h.id === creditCheckHandlerId);
+            const emailHandler = response.body.find((h: any) => h.id === emailNotificationHandlerId);
+
+            expect(creditHandler).toBeDefined();
+            expect(emailHandler).toBeDefined();
+        });
+    });
+
+    // ================================================================
+    // STEP 9.3: Jinx attaches handlers to workflow steps
+    // ================================================================
+    describe('Step 9.3: Attach Handlers to Steps', () => {
+        it('Jinx attaches credit check handler to bank statements step (ON_COMPLETE)', async () => {
+            const response = await request(app)
+                .post(`/payment-methods/${paymentMethodId}/phases/${phase1Id}/steps/${step3Id}/handlers`)
+                .set(authHeaders(jinxId, tenantId))
+                .send({
+                    handlerId: creditCheckHandlerId,
+                    trigger: 'ON_COMPLETE',
+                    priority: 50,
+                });
+
+            expect(response.status).toBe(201);
+            expect(response.body.trigger).toBe('ON_COMPLETE');
+            expect(response.body.handler.id).toBe(creditCheckHandlerId);
+            stepAttachmentId = response.body.id;
+        });
+
+        it('Jinx attaches email notification handler to ID upload step (ON_COMPLETE)', async () => {
+            const response = await request(app)
+                .post(`/payment-methods/${paymentMethodId}/phases/${phase1Id}/steps/${step2Id}/handlers`)
+                .set(authHeaders(jinxId, tenantId))
+                .send({
+                    handlerId: emailNotificationHandlerId,
+                    trigger: 'ON_COMPLETE',
+                    priority: 100,
+                });
+
+            expect(response.status).toBe(201);
+            expect(response.body.trigger).toBe('ON_COMPLETE');
+        });
+
+        it('Jinx can list handlers attached to a step', async () => {
+            const response = await request(app)
+                .get(`/payment-methods/${paymentMethodId}/phases/${phase1Id}/steps/${step3Id}/handlers`)
+                .set(authHeaders(jinxId, tenantId));
+
+            expect(response.status).toBe(200);
+            expect(response.body).toHaveLength(1);
+            expect(response.body[0].handler.name).toBe('Call Credit Bureau API');
+        });
+
+        it('Jinx can update a step attachment priority', async () => {
+            const response = await request(app)
+                .patch(`/payment-methods/${paymentMethodId}/phases/${phase1Id}/steps/${step3Id}/handlers/${stepAttachmentId}`)
+                .set(authHeaders(jinxId, tenantId))
+                .send({
+                    priority: 25, // Even higher priority now
+                });
+
+            expect(response.status).toBe(200);
+            expect(response.body.priority).toBe(25);
+        });
+
+        it('Jinx can disable a step attachment', async () => {
+            const response = await request(app)
+                .patch(`/payment-methods/${paymentMethodId}/phases/${phase1Id}/steps/${step3Id}/handlers/${stepAttachmentId}`)
+                .set(authHeaders(jinxId, tenantId))
+                .send({
+                    enabled: false,
+                });
+
+            expect(response.status).toBe(200);
+            expect(response.body.enabled).toBe(false);
+        });
+
+        it('Jinx re-enables the step attachment', async () => {
+            const response = await request(app)
+                .patch(`/payment-methods/${paymentMethodId}/phases/${phase1Id}/steps/${step3Id}/handlers/${stepAttachmentId}`)
+                .set(authHeaders(jinxId, tenantId))
+                .send({
+                    enabled: true,
+                });
+
+            expect(response.status).toBe(200);
+            expect(response.body.enabled).toBe(true);
+        });
+    });
+
+    // ================================================================
     // STEP 10: Jinx links the template to a property
     // ================================================================
     describe('Step 10: Link Template to Property', () => {

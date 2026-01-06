@@ -82,6 +82,7 @@ export const ModelName = {
   PropertyPaymentMethodLink: 'PropertyPaymentMethodLink',
   PropertyPaymentMethodPhase: 'PropertyPaymentMethodPhase',
   PaymentMethodPhaseStep: 'PaymentMethodPhaseStep',
+  StepEventAttachment: 'StepEventAttachment',
   PaymentMethodPhaseDocument: 'PaymentMethodPhaseDocument',
   Contract: 'Contract',
   ContractPhase: 'ContractPhase',
@@ -568,6 +569,20 @@ export const PaymentMethodPhaseStepScalarFieldEnum = {
 } as const
 
 export type PaymentMethodPhaseStepScalarFieldEnum = (typeof PaymentMethodPhaseStepScalarFieldEnum)[keyof typeof PaymentMethodPhaseStepScalarFieldEnum]
+
+
+export const StepEventAttachmentScalarFieldEnum = {
+  id: 'id',
+  stepId: 'stepId',
+  trigger: 'trigger',
+  handlerId: 'handlerId',
+  priority: 'priority',
+  enabled: 'enabled',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type StepEventAttachmentScalarFieldEnum = (typeof StepEventAttachmentScalarFieldEnum)[keyof typeof StepEventAttachmentScalarFieldEnum]
 
 
 export const PaymentMethodPhaseDocumentScalarFieldEnum = {
@@ -1425,6 +1440,15 @@ export const PaymentMethodPhaseStepOrderByRelevanceFieldEnum = {
 } as const
 
 export type PaymentMethodPhaseStepOrderByRelevanceFieldEnum = (typeof PaymentMethodPhaseStepOrderByRelevanceFieldEnum)[keyof typeof PaymentMethodPhaseStepOrderByRelevanceFieldEnum]
+
+
+export const StepEventAttachmentOrderByRelevanceFieldEnum = {
+  id: 'id',
+  stepId: 'stepId',
+  handlerId: 'handlerId'
+} as const
+
+export type StepEventAttachmentOrderByRelevanceFieldEnum = (typeof StepEventAttachmentOrderByRelevanceFieldEnum)[keyof typeof StepEventAttachmentOrderByRelevanceFieldEnum]
 
 
 export const PaymentMethodPhaseDocumentOrderByRelevanceFieldEnum = {

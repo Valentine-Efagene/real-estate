@@ -296,6 +296,7 @@ export type EventHandlerWhereInput = {
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   eventType?: Prisma.XOR<Prisma.EventTypeScalarRelationFilter, Prisma.EventTypeWhereInput>
   executions?: Prisma.EventHandlerExecutionListRelationFilter
+  stepAttachments?: Prisma.StepEventAttachmentListRelationFilter
 }
 
 export type EventHandlerOrderByWithRelationInput = {
@@ -316,6 +317,7 @@ export type EventHandlerOrderByWithRelationInput = {
   tenant?: Prisma.TenantOrderByWithRelationInput
   eventType?: Prisma.EventTypeOrderByWithRelationInput
   executions?: Prisma.EventHandlerExecutionOrderByRelationAggregateInput
+  stepAttachments?: Prisma.StepEventAttachmentOrderByRelationAggregateInput
   _relevance?: Prisma.EventHandlerOrderByRelevanceInput
 }
 
@@ -340,6 +342,7 @@ export type EventHandlerWhereUniqueInput = Prisma.AtLeast<{
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   eventType?: Prisma.XOR<Prisma.EventTypeScalarRelationFilter, Prisma.EventTypeWhereInput>
   executions?: Prisma.EventHandlerExecutionListRelationFilter
+  stepAttachments?: Prisma.StepEventAttachmentListRelationFilter
 }, "id">
 
 export type EventHandlerOrderByWithAggregationInput = {
@@ -400,6 +403,7 @@ export type EventHandlerCreateInput = {
   tenant: Prisma.TenantCreateNestedOneWithoutEventHandlersInput
   eventType: Prisma.EventTypeCreateNestedOneWithoutHandlersInput
   executions?: Prisma.EventHandlerExecutionCreateNestedManyWithoutHandlerInput
+  stepAttachments?: Prisma.StepEventAttachmentCreateNestedManyWithoutHandlerInput
 }
 
 export type EventHandlerUncheckedCreateInput = {
@@ -418,6 +422,7 @@ export type EventHandlerUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   executions?: Prisma.EventHandlerExecutionUncheckedCreateNestedManyWithoutHandlerInput
+  stepAttachments?: Prisma.StepEventAttachmentUncheckedCreateNestedManyWithoutHandlerInput
 }
 
 export type EventHandlerUpdateInput = {
@@ -436,6 +441,7 @@ export type EventHandlerUpdateInput = {
   tenant?: Prisma.TenantUpdateOneRequiredWithoutEventHandlersNestedInput
   eventType?: Prisma.EventTypeUpdateOneRequiredWithoutHandlersNestedInput
   executions?: Prisma.EventHandlerExecutionUpdateManyWithoutHandlerNestedInput
+  stepAttachments?: Prisma.StepEventAttachmentUpdateManyWithoutHandlerNestedInput
 }
 
 export type EventHandlerUncheckedUpdateInput = {
@@ -454,6 +460,7 @@ export type EventHandlerUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   executions?: Prisma.EventHandlerExecutionUncheckedUpdateManyWithoutHandlerNestedInput
+  stepAttachments?: Prisma.StepEventAttachmentUncheckedUpdateManyWithoutHandlerNestedInput
 }
 
 export type EventHandlerCreateManyInput = {
@@ -513,6 +520,11 @@ export type EventHandlerListRelationFilter = {
 
 export type EventHandlerOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type EventHandlerScalarRelationFilter = {
+  is?: Prisma.EventHandlerWhereInput
+  isNot?: Prisma.EventHandlerWhereInput
 }
 
 export type EventHandlerOrderByRelevanceInput = {
@@ -582,11 +594,6 @@ export type EventHandlerSumOrderByAggregateInput = {
   retryDelayMs?: Prisma.SortOrder
 }
 
-export type EventHandlerScalarRelationFilter = {
-  is?: Prisma.EventHandlerWhereInput
-  isNot?: Prisma.EventHandlerWhereInput
-}
-
 export type EventHandlerCreateNestedManyWithoutTenantInput = {
   create?: Prisma.XOR<Prisma.EventHandlerCreateWithoutTenantInput, Prisma.EventHandlerUncheckedCreateWithoutTenantInput> | Prisma.EventHandlerCreateWithoutTenantInput[] | Prisma.EventHandlerUncheckedCreateWithoutTenantInput[]
   connectOrCreate?: Prisma.EventHandlerCreateOrConnectWithoutTenantInput | Prisma.EventHandlerCreateOrConnectWithoutTenantInput[]
@@ -627,6 +634,20 @@ export type EventHandlerUncheckedUpdateManyWithoutTenantNestedInput = {
   update?: Prisma.EventHandlerUpdateWithWhereUniqueWithoutTenantInput | Prisma.EventHandlerUpdateWithWhereUniqueWithoutTenantInput[]
   updateMany?: Prisma.EventHandlerUpdateManyWithWhereWithoutTenantInput | Prisma.EventHandlerUpdateManyWithWhereWithoutTenantInput[]
   deleteMany?: Prisma.EventHandlerScalarWhereInput | Prisma.EventHandlerScalarWhereInput[]
+}
+
+export type EventHandlerCreateNestedOneWithoutStepAttachmentsInput = {
+  create?: Prisma.XOR<Prisma.EventHandlerCreateWithoutStepAttachmentsInput, Prisma.EventHandlerUncheckedCreateWithoutStepAttachmentsInput>
+  connectOrCreate?: Prisma.EventHandlerCreateOrConnectWithoutStepAttachmentsInput
+  connect?: Prisma.EventHandlerWhereUniqueInput
+}
+
+export type EventHandlerUpdateOneRequiredWithoutStepAttachmentsNestedInput = {
+  create?: Prisma.XOR<Prisma.EventHandlerCreateWithoutStepAttachmentsInput, Prisma.EventHandlerUncheckedCreateWithoutStepAttachmentsInput>
+  connectOrCreate?: Prisma.EventHandlerCreateOrConnectWithoutStepAttachmentsInput
+  upsert?: Prisma.EventHandlerUpsertWithoutStepAttachmentsInput
+  connect?: Prisma.EventHandlerWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EventHandlerUpdateToOneWithWhereWithoutStepAttachmentsInput, Prisma.EventHandlerUpdateWithoutStepAttachmentsInput>, Prisma.EventHandlerUncheckedUpdateWithoutStepAttachmentsInput>
 }
 
 export type EventHandlerCreateNestedManyWithoutEventTypeInput = {
@@ -704,6 +725,7 @@ export type EventHandlerCreateWithoutTenantInput = {
   updatedAt?: Date | string
   eventType: Prisma.EventTypeCreateNestedOneWithoutHandlersInput
   executions?: Prisma.EventHandlerExecutionCreateNestedManyWithoutHandlerInput
+  stepAttachments?: Prisma.StepEventAttachmentCreateNestedManyWithoutHandlerInput
 }
 
 export type EventHandlerUncheckedCreateWithoutTenantInput = {
@@ -721,6 +743,7 @@ export type EventHandlerUncheckedCreateWithoutTenantInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   executions?: Prisma.EventHandlerExecutionUncheckedCreateNestedManyWithoutHandlerInput
+  stepAttachments?: Prisma.StepEventAttachmentUncheckedCreateNestedManyWithoutHandlerInput
 }
 
 export type EventHandlerCreateOrConnectWithoutTenantInput = {
@@ -769,6 +792,94 @@ export type EventHandlerScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"EventHandler"> | Date | string
 }
 
+export type EventHandlerCreateWithoutStepAttachmentsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  handlerType: $Enums.EventHandlerType
+  config: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  priority?: number
+  enabled?: boolean
+  maxRetries?: number
+  retryDelayMs?: number
+  filterCondition?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutEventHandlersInput
+  eventType: Prisma.EventTypeCreateNestedOneWithoutHandlersInput
+  executions?: Prisma.EventHandlerExecutionCreateNestedManyWithoutHandlerInput
+}
+
+export type EventHandlerUncheckedCreateWithoutStepAttachmentsInput = {
+  id?: string
+  tenantId: string
+  eventTypeId: string
+  name: string
+  description?: string | null
+  handlerType: $Enums.EventHandlerType
+  config: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  priority?: number
+  enabled?: boolean
+  maxRetries?: number
+  retryDelayMs?: number
+  filterCondition?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  executions?: Prisma.EventHandlerExecutionUncheckedCreateNestedManyWithoutHandlerInput
+}
+
+export type EventHandlerCreateOrConnectWithoutStepAttachmentsInput = {
+  where: Prisma.EventHandlerWhereUniqueInput
+  create: Prisma.XOR<Prisma.EventHandlerCreateWithoutStepAttachmentsInput, Prisma.EventHandlerUncheckedCreateWithoutStepAttachmentsInput>
+}
+
+export type EventHandlerUpsertWithoutStepAttachmentsInput = {
+  update: Prisma.XOR<Prisma.EventHandlerUpdateWithoutStepAttachmentsInput, Prisma.EventHandlerUncheckedUpdateWithoutStepAttachmentsInput>
+  create: Prisma.XOR<Prisma.EventHandlerCreateWithoutStepAttachmentsInput, Prisma.EventHandlerUncheckedCreateWithoutStepAttachmentsInput>
+  where?: Prisma.EventHandlerWhereInput
+}
+
+export type EventHandlerUpdateToOneWithWhereWithoutStepAttachmentsInput = {
+  where?: Prisma.EventHandlerWhereInput
+  data: Prisma.XOR<Prisma.EventHandlerUpdateWithoutStepAttachmentsInput, Prisma.EventHandlerUncheckedUpdateWithoutStepAttachmentsInput>
+}
+
+export type EventHandlerUpdateWithoutStepAttachmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  handlerType?: Prisma.EnumEventHandlerTypeFieldUpdateOperationsInput | $Enums.EventHandlerType
+  config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  maxRetries?: Prisma.IntFieldUpdateOperationsInput | number
+  retryDelayMs?: Prisma.IntFieldUpdateOperationsInput | number
+  filterCondition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutEventHandlersNestedInput
+  eventType?: Prisma.EventTypeUpdateOneRequiredWithoutHandlersNestedInput
+  executions?: Prisma.EventHandlerExecutionUpdateManyWithoutHandlerNestedInput
+}
+
+export type EventHandlerUncheckedUpdateWithoutStepAttachmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  eventTypeId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  handlerType?: Prisma.EnumEventHandlerTypeFieldUpdateOperationsInput | $Enums.EventHandlerType
+  config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  maxRetries?: Prisma.IntFieldUpdateOperationsInput | number
+  retryDelayMs?: Prisma.IntFieldUpdateOperationsInput | number
+  filterCondition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  executions?: Prisma.EventHandlerExecutionUncheckedUpdateManyWithoutHandlerNestedInput
+}
+
 export type EventHandlerCreateWithoutEventTypeInput = {
   id?: string
   name: string
@@ -784,6 +895,7 @@ export type EventHandlerCreateWithoutEventTypeInput = {
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutEventHandlersInput
   executions?: Prisma.EventHandlerExecutionCreateNestedManyWithoutHandlerInput
+  stepAttachments?: Prisma.StepEventAttachmentCreateNestedManyWithoutHandlerInput
 }
 
 export type EventHandlerUncheckedCreateWithoutEventTypeInput = {
@@ -801,6 +913,7 @@ export type EventHandlerUncheckedCreateWithoutEventTypeInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   executions?: Prisma.EventHandlerExecutionUncheckedCreateNestedManyWithoutHandlerInput
+  stepAttachments?: Prisma.StepEventAttachmentUncheckedCreateNestedManyWithoutHandlerInput
 }
 
 export type EventHandlerCreateOrConnectWithoutEventTypeInput = {
@@ -844,6 +957,7 @@ export type EventHandlerCreateWithoutExecutionsInput = {
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutEventHandlersInput
   eventType: Prisma.EventTypeCreateNestedOneWithoutHandlersInput
+  stepAttachments?: Prisma.StepEventAttachmentCreateNestedManyWithoutHandlerInput
 }
 
 export type EventHandlerUncheckedCreateWithoutExecutionsInput = {
@@ -861,6 +975,7 @@ export type EventHandlerUncheckedCreateWithoutExecutionsInput = {
   filterCondition?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  stepAttachments?: Prisma.StepEventAttachmentUncheckedCreateNestedManyWithoutHandlerInput
 }
 
 export type EventHandlerCreateOrConnectWithoutExecutionsInput = {
@@ -894,6 +1009,7 @@ export type EventHandlerUpdateWithoutExecutionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutEventHandlersNestedInput
   eventType?: Prisma.EventTypeUpdateOneRequiredWithoutHandlersNestedInput
+  stepAttachments?: Prisma.StepEventAttachmentUpdateManyWithoutHandlerNestedInput
 }
 
 export type EventHandlerUncheckedUpdateWithoutExecutionsInput = {
@@ -911,6 +1027,7 @@ export type EventHandlerUncheckedUpdateWithoutExecutionsInput = {
   filterCondition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stepAttachments?: Prisma.StepEventAttachmentUncheckedUpdateManyWithoutHandlerNestedInput
 }
 
 export type EventHandlerCreateManyTenantInput = {
@@ -944,6 +1061,7 @@ export type EventHandlerUpdateWithoutTenantInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   eventType?: Prisma.EventTypeUpdateOneRequiredWithoutHandlersNestedInput
   executions?: Prisma.EventHandlerExecutionUpdateManyWithoutHandlerNestedInput
+  stepAttachments?: Prisma.StepEventAttachmentUpdateManyWithoutHandlerNestedInput
 }
 
 export type EventHandlerUncheckedUpdateWithoutTenantInput = {
@@ -961,6 +1079,7 @@ export type EventHandlerUncheckedUpdateWithoutTenantInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   executions?: Prisma.EventHandlerExecutionUncheckedUpdateManyWithoutHandlerNestedInput
+  stepAttachments?: Prisma.StepEventAttachmentUncheckedUpdateManyWithoutHandlerNestedInput
 }
 
 export type EventHandlerUncheckedUpdateManyWithoutTenantInput = {
@@ -1010,6 +1129,7 @@ export type EventHandlerUpdateWithoutEventTypeInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutEventHandlersNestedInput
   executions?: Prisma.EventHandlerExecutionUpdateManyWithoutHandlerNestedInput
+  stepAttachments?: Prisma.StepEventAttachmentUpdateManyWithoutHandlerNestedInput
 }
 
 export type EventHandlerUncheckedUpdateWithoutEventTypeInput = {
@@ -1027,6 +1147,7 @@ export type EventHandlerUncheckedUpdateWithoutEventTypeInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   executions?: Prisma.EventHandlerExecutionUncheckedUpdateManyWithoutHandlerNestedInput
+  stepAttachments?: Prisma.StepEventAttachmentUncheckedUpdateManyWithoutHandlerNestedInput
 }
 
 export type EventHandlerUncheckedUpdateManyWithoutEventTypeInput = {
@@ -1052,10 +1173,12 @@ export type EventHandlerUncheckedUpdateManyWithoutEventTypeInput = {
 
 export type EventHandlerCountOutputType = {
   executions: number
+  stepAttachments: number
 }
 
 export type EventHandlerCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   executions?: boolean | EventHandlerCountOutputTypeCountExecutionsArgs
+  stepAttachments?: boolean | EventHandlerCountOutputTypeCountStepAttachmentsArgs
 }
 
 /**
@@ -1073,6 +1196,13 @@ export type EventHandlerCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types
  */
 export type EventHandlerCountOutputTypeCountExecutionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.EventHandlerExecutionWhereInput
+}
+
+/**
+ * EventHandlerCountOutputType without action
+ */
+export type EventHandlerCountOutputTypeCountStepAttachmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.StepEventAttachmentWhereInput
 }
 
 
@@ -1094,6 +1224,7 @@ export type EventHandlerSelect<ExtArgs extends runtime.Types.Extensions.Internal
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   eventType?: boolean | Prisma.EventTypeDefaultArgs<ExtArgs>
   executions?: boolean | Prisma.EventHandler$executionsArgs<ExtArgs>
+  stepAttachments?: boolean | Prisma.EventHandler$stepAttachmentsArgs<ExtArgs>
   _count?: boolean | Prisma.EventHandlerCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["eventHandler"]>
 
@@ -1121,6 +1252,7 @@ export type EventHandlerInclude<ExtArgs extends runtime.Types.Extensions.Interna
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   eventType?: boolean | Prisma.EventTypeDefaultArgs<ExtArgs>
   executions?: boolean | Prisma.EventHandler$executionsArgs<ExtArgs>
+  stepAttachments?: boolean | Prisma.EventHandler$stepAttachmentsArgs<ExtArgs>
   _count?: boolean | Prisma.EventHandlerCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -1133,6 +1265,10 @@ export type $EventHandlerPayload<ExtArgs extends runtime.Types.Extensions.Intern
      * Handler execution logs
      */
     executions: Prisma.$EventHandlerExecutionPayload<ExtArgs>[]
+    /**
+     * Step attachments - steps that have attached this handler
+     */
+    stepAttachments: Prisma.$StepEventAttachmentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1524,6 +1660,7 @@ export interface Prisma__EventHandlerClient<T, Null = never, ExtArgs extends run
   tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   eventType<T extends Prisma.EventTypeDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EventTypeDefaultArgs<ExtArgs>>): Prisma.Prisma__EventTypeClient<runtime.Types.Result.GetResult<Prisma.$EventTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   executions<T extends Prisma.EventHandler$executionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EventHandler$executionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EventHandlerExecutionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  stepAttachments<T extends Prisma.EventHandler$stepAttachmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EventHandler$stepAttachmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StepEventAttachmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1931,6 +2068,30 @@ export type EventHandler$executionsArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   distinct?: Prisma.EventHandlerExecutionScalarFieldEnum | Prisma.EventHandlerExecutionScalarFieldEnum[]
+}
+
+/**
+ * EventHandler.stepAttachments
+ */
+export type EventHandler$stepAttachmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the StepEventAttachment
+   */
+  select?: Prisma.StepEventAttachmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the StepEventAttachment
+   */
+  omit?: Prisma.StepEventAttachmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StepEventAttachmentInclude<ExtArgs> | null
+  where?: Prisma.StepEventAttachmentWhereInput
+  orderBy?: Prisma.StepEventAttachmentOrderByWithRelationInput | Prisma.StepEventAttachmentOrderByWithRelationInput[]
+  cursor?: Prisma.StepEventAttachmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.StepEventAttachmentScalarFieldEnum | Prisma.StepEventAttachmentScalarFieldEnum[]
 }
 
 /**

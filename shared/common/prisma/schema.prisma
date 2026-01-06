@@ -84,6 +84,15 @@ enum StepStatus {
   AWAITING_REVIEW // Submitted, waiting for admin/system review
 }
 
+/// When a step event attachment should trigger
+enum StepTrigger {
+  ON_COMPLETE // When step is approved/completed
+  ON_REJECT // When step is rejected
+  ON_SUBMIT // When step is submitted for review
+  ON_RESUBMIT // When step is resubmitted after rejection
+  ON_START // When step transitions to IN_PROGRESS
+}
+
 enum InstallmentStatus {
   PENDING
   PAID
@@ -947,8 +956,40 @@ model PaymentMethodPhaseStep {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  // Event attachments - handlers that fire on step transitions
+  eventAttachments StepEventAttachment[]
+
   @@index([phaseId])
   @@map("payment_method_phase_steps")
+}
+
+/// Step Event Attachment - Links event handlers to step template triggers
+/// When a step transitions (complete, reject, etc.), attached handlers fire
+model StepEventAttachment {
+  id     String @id @default(cuid())
+  stepId String
+  step   PaymentMethodPhaseStep @relation(fields: [stepId], references: [id], onDelete: Cascade)
+
+  /// When this handler should fire
+  trigger StepTrigger
+
+  /// The event handler to execute
+  handlerId String
+  handler   EventHandler @relation(fields: [handlerId], references: [id], onDelete: Cascade)
+
+  /// Order of execution (lower = first)
+  priority Int @default(100)
+
+  /// Whether this attachment is active
+  enabled Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([stepId, handlerId, trigger])
+  @@index([stepId])
+  @@index([handlerId])
+  @@map("step_event_attachments")
 }
 
 // Required document within a DOCUMENTATION phase
@@ -1788,6 +1829,9 @@ model EventHandler {
 
   /// Handler execution logs
   executions EventHandlerExecution[]
+
+  /// Step attachments - steps that have attached this handler
+  stepAttachments StepEventAttachment[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

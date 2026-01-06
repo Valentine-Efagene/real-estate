@@ -173,6 +173,12 @@ export type PropertyPaymentMethodPhase = Prisma.PropertyPaymentMethodPhaseModel
  */
 export type PaymentMethodPhaseStep = Prisma.PaymentMethodPhaseStepModel
 /**
+ * Model StepEventAttachment
+ * Step Event Attachment - Links event handlers to step template triggers
+ * When a step transitions (complete, reject, etc.), attached handlers fire
+ */
+export type StepEventAttachment = Prisma.StepEventAttachmentModel
+/**
  * Model PaymentMethodPhaseDocument
  * 
  */
