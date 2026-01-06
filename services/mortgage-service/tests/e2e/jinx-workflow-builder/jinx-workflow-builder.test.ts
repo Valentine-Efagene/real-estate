@@ -102,10 +102,10 @@ describe("Jinx's Workflow Builder", () => {
 
     afterAll(async () => {
         await cleanupTestData();
-        await prisma.property.delete({ where: { id: propertyId } }).catch(() => {});
+        await prisma.property.delete({ where: { id: propertyId } }).catch(() => { });
         await prisma.paymentPlan.deleteMany({ where: { tenantId } });
         await prisma.user.deleteMany({ where: { tenantId } });
-        await prisma.tenant.delete({ where: { id: tenantId } }).catch(() => {});
+        await prisma.tenant.delete({ where: { id: tenantId } }).catch(() => { });
     });
 
     // ================================================================
@@ -496,7 +496,7 @@ describe("Jinx's Workflow Builder", () => {
 
             expect(response.status).toBe(200);
             expect(Array.isArray(response.body)).toBe(true);
-            
+
             // Verify the new order
             const bankStep = response.body.find((s: any) => s.id === step3Id);
             const idStep = response.body.find((s: any) => s.id === step2Id);
@@ -568,7 +568,7 @@ describe("Jinx's Workflow Builder", () => {
 
             // Verify phases were cloned
             expect(response.body.phases).toHaveLength(4);
-            
+
             // Verify steps were cloned in Phase 1
             const clonedPhase1 = response.body.phases.find((p: any) => p.order === 1);
             expect(clonedPhase1.steps).toHaveLength(7);
@@ -585,39 +585,39 @@ describe("Jinx's Workflow Builder", () => {
                 .set(authHeaders(jinxId, tenantId));
 
             expect(response.status).toBe(200);
-            
+
             // Verify template metadata
             expect(response.body.name).toBe('Standard 10/90 Mortgage');
             expect(response.body.isActive).toBe(true);
             expect(response.body.requiresManualApproval).toBe(true);
-            
+
             // Verify 4 phases
             expect(response.body.phases).toHaveLength(4);
-            
+
             // Verify Phase 1: Underwriting & Documentation
             const phase1 = response.body.phases.find((p: any) => p.order === 1);
             expect(phase1.name).toBe('Underwriting & Documentation');
             expect(phase1.phaseCategory).toBe('DOCUMENTATION');
             expect(phase1.steps).toHaveLength(7);
             expect(phase1.requiredDocuments).toHaveLength(3);
-            
+
             // Verify Phase 2: Downpayment
             const phase2 = response.body.phases.find((p: any) => p.order === 2);
             expect(phase2.name).toBe('Downpayment');
             expect(phase2.phaseCategory).toBe('PAYMENT');
             expect(phase2.percentOfPrice).toBe(10);
-            
+
             // Verify Phase 3: Final Documentation
             const phase3 = response.body.phases.find((p: any) => p.order === 3);
             expect(phase3.name).toBe('Final Documentation');
             expect(phase3.steps).toHaveLength(2);
-            
+
             // Verify Phase 4: Mortgage
             const phase4 = response.body.phases.find((p: any) => p.order === 4);
             expect(phase4.name).toBe('Mortgage Payments');
             expect(phase4.percentOfPrice).toBe(90);
             expect(phase4.interestRate).toBe(9.5);
-            
+
             // Verify property is linked
             expect(response.body.properties).toHaveLength(1);
             expect(response.body.properties[0].property.id).toBe(propertyId);
@@ -630,14 +630,14 @@ describe("Jinx's Workflow Builder", () => {
                 .set(authHeaders(jinxId, tenantId));
 
             expect(response.status).toBe(200);
-            
+
             // Should have both original and cloned templates
             const templates = response.body;
             expect(templates.length).toBeGreaterThanOrEqual(2);
-            
+
             const original = templates.find((t: any) => t.name === 'Standard 10/90 Mortgage');
             const cloned = templates.find((t: any) => t.name === 'Premium 20/80 Mortgage');
-            
+
             expect(original).toBeDefined();
             expect(cloned).toBeDefined();
         });
