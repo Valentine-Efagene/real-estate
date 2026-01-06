@@ -6,6 +6,12 @@ import {
     AddPhaseSchema,
     PartialPhaseSchema,
     LinkToPropertySchema,
+    AddStepSchema,
+    UpdateStepSchema,
+    ReorderStepsSchema,
+    AddDocumentRequirementSchema,
+    UpdateDocumentRequirementSchema,
+    ClonePaymentMethodSchema,
 } from '../validators/payment-method.validator';
 import { z } from 'zod';
 import { getAuthContext } from '@valentine-efagene/qshelter-common';
@@ -125,6 +131,129 @@ router.post('/:id/phases/reorder', async (req: Request, res: Response, next: Nex
         }
         const method = await paymentMethodService.reorderPhases(req.params.id, phaseOrders);
         res.json(method);
+    } catch (error) {
+        next(error);
+    }
+});
+
+// ============================================================
+// Clone Template
+// ============================================================
+
+// Clone a payment method (duplicate template)
+router.post('/:id/clone', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { tenantId } = getAuthContext(req);
+        const data = ClonePaymentMethodSchema.parse(req.body);
+        const cloned = await paymentMethodService.clone(req.params.id, tenantId, data);
+        res.status(201).json(cloned);
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            res.status(400).json({ error: 'Validation failed', details: error.issues });
+            return;
+        }
+        next(error);
+    }
+});
+
+// ============================================================
+// Step CRUD within a Phase
+// ============================================================
+
+// Add step to phase
+router.post('/:id/phases/:phaseId/steps', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const data = AddStepSchema.parse(req.body);
+        const step = await paymentMethodService.addStep(req.params.phaseId, data);
+        res.status(201).json(step);
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            res.status(400).json({ error: 'Validation failed', details: error.issues });
+            return;
+        }
+        next(error);
+    }
+});
+
+// Update step
+router.patch('/:id/phases/:phaseId/steps/:stepId', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const data = UpdateStepSchema.parse(req.body);
+        const step = await paymentMethodService.updateStep(req.params.stepId, data);
+        res.json(step);
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            res.status(400).json({ error: 'Validation failed', details: error.issues });
+            return;
+        }
+        next(error);
+    }
+});
+
+// Delete step
+router.delete('/:id/phases/:phaseId/steps/:stepId', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const result = await paymentMethodService.deleteStep(req.params.stepId);
+        res.json(result);
+    } catch (error) {
+        next(error);
+    }
+});
+
+// Reorder steps within a phase
+router.post('/:id/phases/:phaseId/steps/reorder', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const data = ReorderStepsSchema.parse(req.body);
+        const steps = await paymentMethodService.reorderSteps(req.params.phaseId, data.stepOrders);
+        res.json(steps);
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            res.status(400).json({ error: 'Validation failed', details: error.issues });
+            return;
+        }
+        next(error);
+    }
+});
+
+// ============================================================
+// Document Requirement CRUD within a Phase
+// ============================================================
+
+// Add document requirement to phase
+router.post('/:id/phases/:phaseId/documents', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const data = AddDocumentRequirementSchema.parse(req.body);
+        const doc = await paymentMethodService.addDocumentRequirement(req.params.phaseId, data);
+        res.status(201).json(doc);
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            res.status(400).json({ error: 'Validation failed', details: error.issues });
+            return;
+        }
+        next(error);
+    }
+});
+
+// Update document requirement
+router.patch('/:id/phases/:phaseId/documents/:documentId', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const data = UpdateDocumentRequirementSchema.parse(req.body);
+        const doc = await paymentMethodService.updateDocumentRequirement(req.params.documentId, data);
+        res.json(doc);
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            res.status(400).json({ error: 'Validation failed', details: error.issues });
+            return;
+        }
+        next(error);
+    }
+});
+
+// Delete document requirement
+router.delete('/:id/phases/:phaseId/documents/:documentId', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const result = await paymentMethodService.deleteDocumentRequirement(req.params.documentId);
+        res.json(result);
     } catch (error) {
         next(error);
     }

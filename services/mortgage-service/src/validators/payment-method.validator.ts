@@ -123,7 +123,70 @@ export const PaymentMethodResponseSchema = z
     })
     .openapi('PaymentMethodResponse');
 
+// ============================================================
+// Step CRUD Schemas (for managing individual steps within phases)
+// ============================================================
+
+// Create a new step within a phase
+export const AddStepSchema = z.object({
+    name: z.string().min(1).max(100).openapi({ example: 'Upload ID Document' }),
+    stepType: StepTypeEnum.openapi({ example: 'UPLOAD' }),
+    order: z.number().int().min(1).openapi({ example: 1, description: 'Order within the phase' }),
+    requiredDocumentTypes: z.array(z.string()).optional().openapi({ example: ['ID_CARD', 'PASSPORT'] }),
+    metadata: z.record(z.string(), z.any()).optional().openapi({ description: 'Additional step configuration' }),
+}).openapi('AddStep');
+
+// Update an existing step
+export const UpdateStepSchema = z.object({
+    name: z.string().min(1).max(100).optional(),
+    stepType: StepTypeEnum.optional(),
+    order: z.number().int().min(1).optional(),
+    requiredDocumentTypes: z.array(z.string()).optional(),
+    metadata: z.record(z.string(), z.any()).optional(),
+}).openapi('UpdateStep');
+
+// Reorder steps within a phase
+export const ReorderStepsSchema = z.object({
+    stepOrders: z.array(z.object({
+        stepId: z.string(),
+        order: z.number().int().min(1),
+    })).min(1),
+}).openapi('ReorderSteps');
+
+// ============================================================
+// Document Requirement CRUD Schemas
+// ============================================================
+
+// Create a new document requirement within a phase
+export const AddDocumentRequirementSchema = DocumentRequirementSchema.openapi('AddDocumentRequirement');
+
+// Update an existing document requirement
+export const UpdateDocumentRequirementSchema = z.object({
+    documentType: z.string().min(1).optional(),
+    isRequired: z.boolean().optional(),
+    description: z.string().optional(),
+    allowedMimeTypes: z.array(z.string()).optional(),
+    maxSizeBytes: z.number().int().positive().optional(),
+    metadata: z.record(z.string(), z.any()).optional(),
+}).openapi('UpdateDocumentRequirement');
+
+// ============================================================
+// Clone Template Schema
+// ============================================================
+
+export const ClonePaymentMethodSchema = z.object({
+    name: z.string().min(1).max(100).openapi({ example: 'Standard Mortgage (Copy)' }),
+    description: z.string().optional(),
+}).openapi('ClonePaymentMethod');
+
+// Type exports
 export type CreatePaymentMethodInput = z.infer<typeof CreatePaymentMethodSchema>;
 export type UpdatePaymentMethodInput = z.infer<typeof UpdatePaymentMethodSchema>;
 export type AddPhaseInput = z.infer<typeof AddPhaseSchema>;
 export type LinkToPropertyInput = z.infer<typeof LinkToPropertySchema>;
+export type AddStepInput = z.infer<typeof AddStepSchema>;
+export type UpdateStepInput = z.infer<typeof UpdateStepSchema>;
+export type ReorderStepsInput = z.infer<typeof ReorderStepsSchema>;
+export type AddDocumentRequirementInput = z.infer<typeof AddDocumentRequirementSchema>;
+export type UpdateDocumentRequirementInput = z.infer<typeof UpdateDocumentRequirementSchema>;
+export type ClonePaymentMethodInput = z.infer<typeof ClonePaymentMethodSchema>;

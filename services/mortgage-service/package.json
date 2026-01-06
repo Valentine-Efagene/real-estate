@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "type": "module",
   "scripts": {
-    "build": "tsc && node esbuild.config.js",
+    "build": "tsc -p tsconfig.build.json && node esbuild.config.js",
     "deploy:dev": "npm run build && npx sls deploy --stage dev",
     "deploy:staging": "npm run build && npx sls deploy --stage staging",
     "deploy:prod": "npm run build && npx sls deploy --stage prod",
