@@ -1,0 +1,77 @@
+<h2 style="margin:0 0 10px 0; font-size:22px; font-weight:600;">
+    🎉 Final Offer Letter - Contract Finalization
+</h2>
+
+<p style="font-size:14px; line-height:22px; margin:25px 0;">
+    Hello {{buyerName}},
+</p>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    Congratulations! Your mortgage for <strong>{{propertyName}}</strong> is ready for final contract signing.
+</p>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    Your Final Offer Letter contains all the confirmed terms of your mortgage agreement:
+</p>
+
+<table width="100%" cellpadding="8" cellspacing="0" style="font-size:14px; margin:15px 0; border:1px solid #E5E7EB; border-radius:6px;">
+    <tr style="background-color:#F9FAFB;">
+        <td style="border-bottom:1px solid #E5E7EB; font-weight:bold;">Property</td>
+        <td style="border-bottom:1px solid #E5E7EB;">{{propertyName}}</td>
+    </tr>
+    <tr>
+        <td style="border-bottom:1px solid #E5E7EB; font-weight:bold;">Loan Amount</td>
+        <td style="border-bottom:1px solid #E5E7EB;">{{loanAmount}}</td>
+    </tr>
+    <tr style="background-color:#F9FAFB;">
+        <td style="border-bottom:1px solid #E5E7EB; font-weight:bold;">Interest Rate</td>
+        <td style="border-bottom:1px solid #E5E7EB;">{{interestRate}}% per annum</td>
+    </tr>
+    <tr>
+        <td style="border-bottom:1px solid #E5E7EB; font-weight:bold;">Loan Term</td>
+        <td style="border-bottom:1px solid #E5E7EB;">{{loanTerm}}</td>
+    </tr>
+    <tr style="background-color:#F9FAFB;">
+        <td style="border-bottom:1px solid #E5E7EB; font-weight:bold;">Monthly Payment</td>
+        <td style="border-bottom:1px solid #E5E7EB;">{{monthlyPayment}}</td>
+    </tr>
+    {{#if startDate}}
+    <tr>
+        <td style="font-weight:bold;">Contract Start Date</td>
+        <td>{{startDate}}</td>
+    </tr>
+    {{/if}}
+</table>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    By signing this final offer letter, you agree to the terms and conditions outlined in the full mortgage agreement. Please ensure you have reviewed all documentation before proceeding.
+</p>
+
+{{#if signatureUrl}}
+<table width="100%" cellpadding="0" cellspacing="0" style="margin:30px 0;">
+    <tr>
+        <td align="center">
+            <a href="{{signatureUrl}}" style="background-color:#059669; color:#ffffff; padding:14px 28px; text-decoration:none; border-radius:6px; font-size:14px; font-weight:bold; display:inline-block;">
+                Sign Final Offer Letter
+            </a>
+        </td>
+    </tr>
+</table>
+{{/if}}
+
+{{#if expiryDate}}
+<p style="font-size:12px; line-height:20px; color:#6B7280; margin:20px 0;">
+    This offer expires on <strong>{{expiryDate}}</strong>. Please sign before this date to secure your mortgage terms.
+</p>
+{{/if}}
+
+<div style="background-color:#FEF3C7; border:1px solid #F59E0B; border-radius:6px; padding:12px; margin:20px 0;">
+    <p style="font-size:12px; line-height:18px; color:#92400E; margin:0;">
+        <strong>Important:</strong> Once signed, this document becomes a legally binding agreement. If you have any concerns or questions, please contact us before signing.
+    </p>
+</div>
+
+<p style="font-size:14px; line-height:22px; margin:25px 0 10px 0;">
+    Congratulations on this milestone!<br />
+    <strong>The {{projectName}} Team</strong>
+</p>

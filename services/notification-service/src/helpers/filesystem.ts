@@ -95,10 +95,10 @@ export function splitFilePath(filePath: string): {
 }
 
 /**
- * List all HTML files in the templates directory recursively
+ * List all template files (.hbs) in the templates directory recursively
  */
 export function listHtmlFilesInTemplates(): string[] {
-    const htmlFiles: string[] = [];
+    const templateFiles: string[] = [];
 
     function getFilesRecursively(dir: string): void {
         try {
@@ -109,8 +109,8 @@ export function listHtmlFilesInTemplates(): string[] {
 
                 if (entry.isDirectory()) {
                     getFilesRecursively(fullPath);
-                } else if (entry.name.endsWith('.html')) {
-                    htmlFiles.push(relative(TEMPLATES_ROOT, fullPath));
+                } else if (entry.name.endsWith('.hbs')) {
+                    templateFiles.push(relative(TEMPLATES_ROOT, fullPath));
                 }
             }
         } catch (error) {
@@ -120,7 +120,7 @@ export function listHtmlFilesInTemplates(): string[] {
     }
 
     getFilesRecursively(TEMPLATES_ROOT);
-    return htmlFiles;
+    return templateFiles;
 }
 
 /**

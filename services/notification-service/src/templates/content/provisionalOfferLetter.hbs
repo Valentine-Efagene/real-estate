@@ -1,0 +1,53 @@
+<h2 style="margin:0 0 10px 0; font-size:22px; font-weight:600;">
+    📄 Provisional Offer Letter Ready
+</h2>
+
+<p style="font-size:14px; line-height:22px; margin:25px 0;">
+    Hello {{buyerName}},
+</p>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    Great news! Your prequalification for the mortgage on <strong>{{propertyName}}</strong> has been approved.
+</p>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    Your Provisional Offer Letter is now ready for your review. This letter outlines the preliminary terms of your mortgage, including:
+</p>
+
+<ul style="font-size:14px; line-height:22px; margin:10px 0; padding-left:20px;">
+    <li>Approved loan amount: <strong>{{loanAmount}}</strong></li>
+    <li>Interest rate: <strong>{{interestRate}}%</strong></li>
+    <li>Loan term: <strong>{{loanTerm}}</strong></li>
+    <li>Estimated monthly payment: <strong>{{monthlyPayment}}</strong></li>
+</ul>
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    Please review the offer letter carefully. If you agree to the terms, you can proceed to sign the document electronically.
+</p>
+
+{{#if signatureUrl}}
+<table width="100%" cellpadding="0" cellspacing="0" style="margin:30px 0;">
+    <tr>
+        <td align="center">
+            <a href="{{signatureUrl}}" style="background-color:#2563EB; color:#ffffff; padding:14px 28px; text-decoration:none; border-radius:6px; font-size:14px; font-weight:bold; display:inline-block;">
+                Review & Sign Offer Letter
+            </a>
+        </td>
+    </tr>
+</table>
+{{/if}}
+
+{{#if expiryDate}}
+<p style="font-size:12px; line-height:20px; color:#6B7280; margin:20px 0;">
+    This offer is valid until <strong>{{expiryDate}}</strong>. After this date, you may need to reapply for prequalification.
+</p>
+{{/if}}
+
+<p style="font-size:14px; line-height:22px; margin:10px 0;">
+    If you have any questions about the terms or need clarification, please don't hesitate to contact our support team.
+</p>
+
+<p style="font-size:14px; line-height:22px; margin:25px 0 10px 0;">
+    Best regards,<br />
+    <strong>The {{projectName}} Team</strong>
+</p>

@@ -2,19 +2,23 @@ import { TemplateTypeValue } from '../validators/email.validator';
 
 /**
  * Template path mappings - maps template names to file paths
+ * All templates use the layout system via content/*.hbs files
  * Using Object.freeze for immutability and potential V8 optimizations
  */
 export const templatePathMap: Readonly<Record<TemplateTypeValue, string>> = Object.freeze({
-    'otp': 'otp.html',
-    'welcomeMessage': 'welcome.html',
+    // General / Auth
+    'otp': 'content/otp.hbs',
+    'welcomeMessage': 'content/welcomeMessage.hbs',
     'accountSuspended': 'content/accountSuspended.hbs',
     'accountVerified': 'content/accountVerified.hbs',
+    'resetPassword': 'content/resetPassword.hbs',
+    'verifyEmail': 'content/verifyEmail.hbs',
+    // User Account
     'missedPayments': 'content/missedPayments.hbs',
     'propertyAllocation': 'content/propertyAllocation.hbs',
-    'resetPassword': 'content/resetPassword.hbs',
     'updatedTermsAndConditions': 'content/updatedTermsAndConditions.hbs',
-    'verifyEmail': 'content/verifyEmail.hbs',
     'walletTopUp': 'content/walletTopUp.hbs',
+    // Admin notifications
     'adminContributionReceived': 'content/admin/contributionReceived.hbs',
     'adminPropertyAllocation': 'content/admin/propertyAllocation.hbs',
     'adminInviteAdmin': 'content/admin/inviteAdmin.hbs',
@@ -33,8 +37,8 @@ export const templatePathMap: Readonly<Record<TemplateTypeValue, string>> = Obje
     'paymentFailed': 'content/paymentFailed.hbs',
     'paymentReminder': 'content/paymentReminder.hbs',
     // Mortgage - Offer Letters
-    'provisionalOfferLetter': 'provisionalOfferLetter.html',
-    'finalOfferLetter': 'finalOfferLetter.html',
+    'provisionalOfferLetter': 'content/provisionalOfferLetter.hbs',
+    'finalOfferLetter': 'content/finalOfferLetter.hbs',
     'contractCongratulations': 'content/contractCongratulations.hbs',
     // Documents
     'documentApproved': 'content/documentApproved.hbs',

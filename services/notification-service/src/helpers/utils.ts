@@ -162,23 +162,19 @@ export async function checkTemplateFileExists(
 
 /**
  * Load a content template and compile it with the main layout
+ * All templates are now in content/*.hbs format and use the layout system
  */
 export async function loadAndCompileTemplate(
     templatePath: string,
     data: Record<string, unknown>
 ): Promise<string> {
     const templatesRoot = getTemplatesRoot();
-    const contentPath = templatePath.replace('.html', '.hbs').replace(/^/, 'content/');
-    const fullPath = path.join(templatesRoot, contentPath);
+    const fullPath = path.join(templatesRoot, templatePath);
 
-    if (fs.existsSync(fullPath)) {
-        // New .hbs content template exists, use layout system
-        const contentTemplate = loadFileWithFullPath(fullPath, true);
-        return compileWithLayout(contentTemplate, data);
+    if (!fs.existsSync(fullPath)) {
+        throw new Error(`Template not found: ${templatePath}`);
     }
 
-    // Fall back to legacy HTML template
-    const legacyPath = path.join(templatesRoot, templatePath);
-    const template = loadFileWithFullPath(legacyPath);
-    return compileTemplate(template, data);
+    const contentTemplate = loadFileWithFullPath(fullPath, true);
+    return compileWithLayout(contentTemplate, data);
 }
