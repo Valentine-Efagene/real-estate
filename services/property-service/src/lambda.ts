@@ -1,21 +1,14 @@
 import serverlessExpress from '@codegenie/serverless-express';
-import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from 'aws-lambda';
+import { APIGatewayProxyEvent, Context, Callback } from 'aws-lambda';
 import { app } from './app';
 
-let serverlessExpressInstance: any;
+// Create handler once - pass Express app directly, not app.listen()
+const serverlessExpressInstance = serverlessExpress({ app });
 
-async function setup() {
-    const server = app.listen();
-    serverlessExpressInstance = serverlessExpress({ app: server as any });
-    return serverlessExpressInstance;
-}
-
-export const handler = async (
+export const handler = (
     event: APIGatewayProxyEvent,
     context: Context,
-): Promise<APIGatewayProxyResult> => {
-    if (!serverlessExpressInstance) {
-        await setup();
-    }
-    return serverlessExpressInstance(event, context);
+    callback: Callback,
+) => {
+    return serverlessExpressInstance(event, context, callback);
 };

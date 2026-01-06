@@ -22,6 +22,7 @@ provider:
   environment:
     NODE_ENV: ${self:provider.stage}
     STAGE: ${self:provider.stage}
+    LOCALSTACK_ENDPOINT: ${self:custom.localstackEndpoint.${self:provider.stage}, ''}
     NOTIFICATIONS_TOPIC_ARN: ${ssm:/qshelter/${self:provider.stage}/notifications-topic-arn, ''}
     FRONTEND_BASE_URL: ${env:FRONTEND_BASE_URL, 'https://mreif.com.ng'}
   
@@ -207,6 +208,8 @@ plugins:
   - serverless-localstack
 
 custom:
+  localstackEndpoint:
+    test: http://host.docker.internal:4566
   localstack:
     stages:
       - test

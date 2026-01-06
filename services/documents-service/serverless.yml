@@ -24,6 +24,7 @@ provider:
   
   environment:
     NODE_ENV: ${self:provider.stage}
+    LOCALSTACK_ENDPOINT: ${self:custom.localstackEndpoint.${self:provider.stage}, ''}
 
   iam:
     role:
@@ -120,6 +121,8 @@ plugins:
   - serverless-localstack
 
 custom:
+  localstackEndpoint:
+    test: http://host.docker.internal:4566
   localstack:
     stages:
       - test
