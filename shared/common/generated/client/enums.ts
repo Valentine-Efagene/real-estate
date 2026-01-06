@@ -226,12 +226,12 @@ export type OfferLetterStatus = (typeof OfferLetterStatus)[keyof typeof OfferLet
 
 
 export const EventHandlerType = {
-  INTERNAL: 'INTERNAL',
-  WEBHOOK: 'WEBHOOK',
-  WORKFLOW: 'WORKFLOW',
-  NOTIFICATION: 'NOTIFICATION',
-  SNS: 'SNS',
-  SCRIPT: 'SCRIPT'
+  SEND_EMAIL: 'SEND_EMAIL',
+  SEND_SMS: 'SEND_SMS',
+  SEND_PUSH: 'SEND_PUSH',
+  CALL_WEBHOOK: 'CALL_WEBHOOK',
+  ADVANCE_WORKFLOW: 'ADVANCE_WORKFLOW',
+  RUN_AUTOMATION: 'RUN_AUTOMATION'
 } as const
 
 export type EventHandlerType = (typeof EventHandlerType)[keyof typeof EventHandlerType]

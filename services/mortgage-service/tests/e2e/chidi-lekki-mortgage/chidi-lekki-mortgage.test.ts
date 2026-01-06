@@ -85,7 +85,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             data: {
                 id: faker.string.uuid(),
                 tenantId,
-                email: 'chidi.nnamdi@gmail.com',
+                email: 'efagenevalentine@gmail.com',
                 firstName: 'Chidi',
                 lastName: 'Nnamdi',
             },

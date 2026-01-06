@@ -190,13 +190,14 @@ enum OfferLetterStatus {
 // =============================================================================
 
 /// Handler Type - What kind of action the handler performs
+/// These are business-friendly names that admins can understand
 enum EventHandlerType {
-  INTERNAL     // Call an internal service method
-  WEBHOOK      // Send a webhook to an external URL
-  WORKFLOW     // Trigger or advance a workflow
-  NOTIFICATION // Send a notification (email, SMS, push) - internal
-  SNS          // Publish to SNS topic (for notification-service)
-  SCRIPT       // Execute a custom script/expression
+  SEND_EMAIL       // Send an email notification to recipient(s)
+  SEND_SMS         // Send an SMS text message
+  SEND_PUSH        // Send a push notification
+  CALL_WEBHOOK     // Call an external API/webhook
+  ADVANCE_WORKFLOW // Advance or complete a workflow step
+  RUN_AUTOMATION   // Execute internal business logic
 }
 
 /// Actor Type - Who triggered an event

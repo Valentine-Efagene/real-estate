@@ -38,21 +38,37 @@ import type {
     WorkflowEventData,
     ProcessEventResult,
     HandlerConfig,
-    InternalHandlerConfig,
-    WebhookHandlerConfig,
-    WorkflowHandlerConfig,
-    NotificationHandlerConfig,
-    SnsHandlerConfig,
+    SendEmailHandlerConfig,
+    SendSmsHandlerConfig,
+    SendPushHandlerConfig,
+    CallWebhookHandlerConfig,
+    AdvanceWorkflowHandlerConfig,
+    RunAutomationHandlerConfig,
 } from './workflow-types';
 import { EventPublisher } from './event-publisher';
 import { NotificationType, NotificationChannel } from './notification-enums';
 
 /**
- * Service registry interface for internal handlers
+ * Automation registry interface for RUN_AUTOMATION handlers
  */
-export interface ServiceRegistry {
-    get(serviceName: string): any | undefined;
-    register(serviceName: string, service: any): void;
+export interface AutomationRegistry {
+    get(automationName: string): ((inputs: Record<string, unknown>, tenantId: string) => Promise<unknown>) | undefined;
+    register(automationName: string, handler: (inputs: Record<string, unknown>, tenantId: string) => Promise<unknown>): void;
+}
+
+/**
+ * Simple in-memory automation registry
+ */
+class InMemoryAutomationRegistry implements AutomationRegistry {
+    private automations = new Map<string, (inputs: Record<string, unknown>, tenantId: string) => Promise<unknown>>();
+
+    get(automationName: string) {
+        return this.automations.get(automationName);
+    }
+
+    register(automationName: string, handler: (inputs: Record<string, unknown>, tenantId: string) => Promise<unknown>): void {
+        this.automations.set(automationName, handler);
+    }
 }
 
 /**
@@ -70,27 +86,38 @@ class InMemoryServiceRegistry implements ServiceRegistry {
     }
 }
 
+/**
+ * Service registry interface for internal handlers (legacy support)
+ */
+export interface ServiceRegistry {
+    get(serviceName: string): any | undefined;
+    register(serviceName: string, service: any): void;
+}
+
 export class WorkflowEventService {
-    private serviceRegistry: ServiceRegistry;
+    private automationRegistry: AutomationRegistry;
     private eventPublisher: EventPublisher;
 
     constructor(
         private prisma: PrismaClient,
-        serviceRegistry?: ServiceRegistry,
+        automationRegistry?: AutomationRegistry,
         eventPublisher?: EventPublisher
     ) {
-        this.serviceRegistry = serviceRegistry || new InMemoryServiceRegistry();
+        this.automationRegistry = automationRegistry || new InMemoryAutomationRegistry();
         this.eventPublisher = eventPublisher || new EventPublisher('workflow-event-service');
     }
 
     /**
-     * Register a service for internal event handlers
+     * Register an automation for RUN_AUTOMATION handlers
      *
-     * Services can be called by INTERNAL handler type configurations.
-     * The service should expose methods that match the handler config.
+     * Automations are business logic functions that can be triggered by events.
+     * Example: "calculateLateFee", "sendWelcomePackage", "archiveContract"
      */
-    registerService(name: string, service: any): void {
-        this.serviceRegistry.register(name, service);
+    registerAutomation(
+        name: string,
+        handler: (inputs: Record<string, unknown>, tenantId: string) => Promise<unknown>
+    ): void {
+        this.automationRegistry.register(name, handler);
     }
 
     /**
@@ -423,6 +450,14 @@ export class WorkflowEventService {
 
     /**
      * Execute a handler based on its type
+     *
+     * Handler types are business-friendly names that abstract the underlying implementation:
+     * - SEND_EMAIL: Send email via notification service (SNS → SQS → SES)
+     * - SEND_SMS: Send SMS via notification service
+     * - SEND_PUSH: Send push notification via notification service
+     * - CALL_WEBHOOK: Make HTTP request to external URL
+     * - ADVANCE_WORKFLOW: Move workflow steps forward/backward
+     * - RUN_AUTOMATION: Execute registered business logic automation
      */
     private async executeHandler(
         handlerType: string,
@@ -431,66 +466,202 @@ export class WorkflowEventService {
         tenantId: string
     ): Promise<unknown> {
         switch (handlerType) {
-            case 'INTERNAL':
-                return this.executeInternalHandler(config as InternalHandlerConfig, payload, tenantId);
-            case 'WEBHOOK':
-                return this.executeWebhookHandler(config as WebhookHandlerConfig, payload);
-            case 'WORKFLOW':
-                return this.executeWorkflowHandler(config as WorkflowHandlerConfig, payload, tenantId);
-            case 'NOTIFICATION':
-                return this.executeNotificationHandler(
-                    config as NotificationHandlerConfig,
+            case 'SEND_EMAIL':
+                return this.executeSendEmailHandler(config as SendEmailHandlerConfig, payload, tenantId);
+            case 'SEND_SMS':
+                return this.executeSendSmsHandler(config as SendSmsHandlerConfig, payload, tenantId);
+            case 'SEND_PUSH':
+                return this.executeSendPushHandler(config as SendPushHandlerConfig, payload, tenantId);
+            case 'CALL_WEBHOOK':
+                return this.executeCallWebhookHandler(config as CallWebhookHandlerConfig, payload);
+            case 'ADVANCE_WORKFLOW':
+                return this.executeAdvanceWorkflowHandler(
+                    config as AdvanceWorkflowHandlerConfig,
                     payload,
                     tenantId
                 );
-            case 'SNS':
-                return this.executeSnsHandler(config as SnsHandlerConfig, payload, tenantId);
-            case 'SCRIPT':
-                // TODO: Implement script execution (sandboxed)
-                throw new Error('Script handlers not yet implemented');
+            case 'RUN_AUTOMATION':
+                return this.executeRunAutomationHandler(
+                    config as RunAutomationHandlerConfig,
+                    payload,
+                    tenantId
+                );
             default:
                 throw new Error(`Unknown handler type: ${handlerType}`);
         }
     }
 
     /**
-     * Execute an internal service method
+     * Execute SEND_EMAIL handler
+     *
+     * Sends an email via the notification service using SNS → SQS → SES.
+     * Business users configure: template, recipient, and template data.
      */
-    private async executeInternalHandler(
-        config: InternalHandlerConfig,
+    private async executeSendEmailHandler(
+        config: SendEmailHandlerConfig,
         payload: Record<string, unknown>,
         tenantId: string
     ): Promise<unknown> {
-        // Get the service from the registry
-        const service = this.serviceRegistry.get(config.service);
-        if (!service) {
-            throw new Error(`Service '${config.service}' not found in registry`);
+        // Build the notification payload
+        const notificationPayload = this.buildNotificationPayload(config, payload);
+
+        // Resolve recipient email from the payload
+        if (config.recipientPath) {
+            const email = this.resolvePath(payload, config.recipientPath.replace(/^\$\./, ''));
+            if (email && typeof email === 'string') {
+                notificationPayload.to_email = email;
+            }
         }
 
-        // Get the method
-        const method = service[config.method];
-        if (typeof method !== 'function') {
-            throw new Error(`Method '${config.method}' not found on service '${config.service}'`);
-        }
+        // Publish to SNS via EventPublisher
+        const messageId = await this.eventPublisher.publish(
+            config.notificationType as NotificationType,
+            NotificationChannel.EMAIL,
+            notificationPayload,
+            {
+                tenantId,
+                correlationId: (payload.correlationId as string) || undefined,
+                userId: (payload.userId as string) || (payload.actorId as string) || undefined,
+            }
+        );
 
-        // Transform payload if mapping is defined
-        const transformedPayload = config.payloadMapping
-            ? this.transformPayload(payload, config.payloadMapping)
-            : payload;
-
-        // Call the method with tenantId and payload
-        return method.call(service, tenantId, transformedPayload);
+        return {
+            success: true,
+            messageId,
+            notificationType: config.notificationType,
+            channel: 'email',
+            payload: notificationPayload,
+            tenantId,
+        };
     }
 
     /**
-     * Execute a webhook handler
+     * Execute SEND_SMS handler
+     *
+     * Sends an SMS via the notification service.
+     * Business users configure: template, recipient phone, and template data.
      */
-    private async executeWebhookHandler(
-        config: WebhookHandlerConfig,
+    private async executeSendSmsHandler(
+        config: SendSmsHandlerConfig,
+        payload: Record<string, unknown>,
+        tenantId: string
+    ): Promise<unknown> {
+        // Build the notification payload
+        const notificationPayload = this.buildNotificationPayload(config, payload);
+
+        // Resolve recipient phone from the payload
+        if (config.recipientPath) {
+            const phone = this.resolvePath(payload, config.recipientPath.replace(/^\$\./, ''));
+            if (phone && typeof phone === 'string') {
+                notificationPayload.to_phone = phone;
+            }
+        }
+
+        // Publish to SNS via EventPublisher
+        const messageId = await this.eventPublisher.publish(
+            config.notificationType as NotificationType,
+            NotificationChannel.SMS,
+            notificationPayload,
+            {
+                tenantId,
+                correlationId: (payload.correlationId as string) || undefined,
+                userId: (payload.userId as string) || (payload.actorId as string) || undefined,
+            }
+        );
+
+        return {
+            success: true,
+            messageId,
+            notificationType: config.notificationType,
+            channel: 'sms',
+            payload: notificationPayload,
+            tenantId,
+        };
+    }
+
+    /**
+     * Execute SEND_PUSH handler
+     *
+     * Sends a push notification via the notification service.
+     * Business users configure: template, recipient user, and template data.
+     */
+    private async executeSendPushHandler(
+        config: SendPushHandlerConfig,
+        payload: Record<string, unknown>,
+        tenantId: string
+    ): Promise<unknown> {
+        // Build the notification payload
+        const notificationPayload = this.buildNotificationPayload(config, payload);
+
+        // Resolve recipient user ID from the payload
+        if (config.recipientPath) {
+            const userId = this.resolvePath(payload, config.recipientPath.replace(/^\$\./, ''));
+            if (userId && typeof userId === 'string') {
+                notificationPayload.to_user_id = userId;
+            }
+        }
+
+        // Publish to SNS via EventPublisher
+        const messageId = await this.eventPublisher.publish(
+            config.notificationType as NotificationType,
+            NotificationChannel.PUSH,
+            notificationPayload,
+            {
+                tenantId,
+                correlationId: (payload.correlationId as string) || undefined,
+                userId: (payload.userId as string) || (payload.actorId as string) || undefined,
+            }
+        );
+
+        return {
+            success: true,
+            messageId,
+            notificationType: config.notificationType,
+            channel: 'push',
+            payload: notificationPayload,
+            tenantId,
+        };
+    }
+
+    /**
+     * Build notification payload from config and event payload
+     */
+    private buildNotificationPayload(
+        config: SendEmailHandlerConfig | SendSmsHandlerConfig | SendPushHandlerConfig,
+        payload: Record<string, unknown>
+    ): Record<string, unknown> {
+        const result: Record<string, unknown> = {};
+
+        // Apply static template data first
+        if (config.staticData) {
+            Object.assign(result, config.staticData);
+        }
+
+        // Apply template data mapping (map from event payload to notification payload)
+        if (config.templateData) {
+            for (const [targetField, sourcePath] of Object.entries(config.templateData)) {
+                const value = this.resolvePath(payload, sourcePath.replace(/^\$\./, ''));
+                if (value !== undefined) {
+                    result[targetField] = value;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Execute CALL_WEBHOOK handler
+     *
+     * Makes an HTTP request to an external URL.
+     * Business users configure: URL, method, headers, and body mapping.
+     */
+    private async executeCallWebhookHandler(
+        config: CallWebhookHandlerConfig,
         payload: Record<string, unknown>
     ): Promise<unknown> {
-        const transformedPayload = config.payloadMapping
-            ? this.transformPayload(payload, config.payloadMapping)
+        const transformedPayload = config.bodyMapping
+            ? this.transformPayload(payload, config.bodyMapping)
             : payload;
 
         const controller = new AbortController();
@@ -526,137 +697,62 @@ export class WorkflowEventService {
     }
 
     /**
-     * Execute a workflow handler
+     * Execute ADVANCE_WORKFLOW handler
      *
-     * This emits a new event that the workflow service can pick up,
-     * creating loose coupling between event system and workflow engine.
+     * Advances or modifies workflow state.
+     * Business users configure: action (approve/reject/skip), step path, and data.
      */
-    private async executeWorkflowHandler(
-        config: WorkflowHandlerConfig,
+    private async executeAdvanceWorkflowHandler(
+        config: AdvanceWorkflowHandlerConfig,
         payload: Record<string, unknown>,
         tenantId: string
     ): Promise<unknown> {
+        // Resolve step ID from payload if path is provided
+        let stepId = config.stepId;
+        if (config.stepIdPath) {
+            const resolved = this.resolvePath(payload, config.stepIdPath.replace(/^\$\./, ''));
+            if (resolved && typeof resolved === 'string') {
+                stepId = resolved;
+            }
+        }
+
         // Return the workflow action data
-        // The workflow service should listen for WORKFLOW handler results
+        // The workflow service should listen for ADVANCE_WORKFLOW handler results
         return {
             action: config.action,
             workflowId: config.workflowId,
             phaseId: config.phaseId,
-            stepId: config.stepId,
+            stepId,
             data: { ...config.data, ...payload },
             tenantId,
         };
     }
 
     /**
-     * Execute a notification handler
+     * Execute RUN_AUTOMATION handler
      *
-     * This would integrate with a notification service.
-     * Returns what would be sent for logging purposes.
+     * Runs a registered business logic automation.
+     * Business users select from pre-defined automations like
+     * "Calculate Mortgage Payment", "Generate Contract", etc.
      */
-    private async executeNotificationHandler(
-        config: NotificationHandlerConfig,
+    private async executeRunAutomationHandler(
+        config: RunAutomationHandlerConfig,
         payload: Record<string, unknown>,
         tenantId: string
     ): Promise<unknown> {
-        // TODO: Integrate with actual notification service
-        // For now, return the notification data for logging
-        return {
-            template: config.template,
-            channels: config.channels,
-            recipients: this.resolveRecipients(config.recipients, payload),
-            priority: config.priority || 'normal',
-            data: payload,
-            tenantId,
-        };
-    }
-
-    /**
-     * Execute an SNS handler
-     *
-     * Publishes to SNS topic using the EventPublisher, which triggers
-     * the notification-service via SNS->SQS subscription.
-     *
-     * The config specifies the notification type, channel, and how to
-     * map the event payload to the notification payload.
-     */
-    private async executeSnsHandler(
-        config: SnsHandlerConfig,
-        payload: Record<string, unknown>,
-        tenantId: string
-    ): Promise<unknown> {
-        // Build the notification payload from config
-        const notificationPayload = this.buildSnsPayload(config, payload);
-
-        // Map channel string to NotificationChannel enum
-        const channelMap: Record<string, NotificationChannel> = {
-            email: NotificationChannel.EMAIL,
-            sms: NotificationChannel.SMS,
-            push: NotificationChannel.PUSH,
-        };
-        const channel = channelMap[config.channel] || NotificationChannel.EMAIL;
-
-        // Validate notification type is a valid enum value
-        const notificationType = config.notificationType as NotificationType;
-        if (!Object.values(NotificationType).includes(notificationType)) {
-            throw new Error(`Invalid notification type: ${config.notificationType}`);
+        // Get the automation function from the registry
+        const automationFn = this.automationRegistry.get(config.automation);
+        if (!automationFn) {
+            throw new Error(`Automation '${config.automation}' not found in registry`);
         }
 
-        // Publish to SNS via EventPublisher
-        const messageId = await this.eventPublisher.publish(
-            notificationType,
-            channel,
-            notificationPayload,
-            {
-                tenantId,
-                correlationId: (payload.correlationId as string) || undefined,
-                userId: (payload.userId as string) || (payload.actorId as string) || undefined,
-            }
-        );
+        // Transform payload if mapping is defined
+        const transformedPayload = config.inputMapping
+            ? this.transformPayload(payload, config.inputMapping)
+            : payload;
 
-        return {
-            success: true,
-            messageId,
-            notificationType: config.notificationType,
-            channel: config.channel,
-            payload: notificationPayload,
-            tenantId,
-        };
-    }
-
-    /**
-     * Build the notification payload for SNS from config and event payload
-     */
-    private buildSnsPayload(
-        config: SnsHandlerConfig,
-        payload: Record<string, unknown>
-    ): Record<string, unknown> {
-        const result: Record<string, unknown> = {};
-
-        // Apply static payload first
-        if (config.staticPayload) {
-            Object.assign(result, config.staticPayload);
-        }
-
-        // Apply payload mapping (map from event payload to notification payload)
-        if (config.payloadMapping) {
-            for (const [targetField, sourcePath] of Object.entries(config.payloadMapping)) {
-                const value = this.resolvePath(payload, sourcePath.replace(/^\$\./, ''));
-                if (value !== undefined) {
-                    result[targetField] = value;
-                }
-            }
-        }
-
-        // If recipientPath is specified, extract the recipient email
-        if (config.recipientPath) {
-            const email = this.resolvePath(payload, config.recipientPath.replace(/^\$\./, ''));
-            if (email && typeof email === 'string') {
-                result.to_email = email;
-            }
-        }
-
-        return result;
+        // Call the automation function with inputs and tenantId
+        return automationFn(transformedPayload, tenantId);
     }
 
     // ==========================================
@@ -755,61 +851,17 @@ export class WorkflowEventService {
         }
         return current;
     }
-
-    /**
-     * Resolve recipients from config, potentially using payload variables
-     */
-    private resolveRecipients(
-        recipients: NotificationHandlerConfig['recipients'],
-        payload: Record<string, unknown>
-    ): NotificationHandlerConfig['recipients'] {
-        if (!recipients) return undefined;
-
-        const resolved: NotificationHandlerConfig['recipients'] = {};
-
-        // Resolve email recipients
-        if (recipients.email) {
-            resolved.email = recipients.email.map((addr) => {
-                if (addr.startsWith('$.')) {
-                    const value = this.resolvePath(payload, addr);
-                    return typeof value === 'string' ? value : addr;
-                }
-                return addr;
-            });
-        }
-
-        // Resolve phone recipients
-        if (recipients.phone) {
-            resolved.phone = recipients.phone.map((phone) => {
-                if (phone.startsWith('$.')) {
-                    const value = this.resolvePath(payload, phone);
-                    return typeof value === 'string' ? value : phone;
-                }
-                return phone;
-            });
-        }
-
-        // Resolve userId recipients
-        if (recipients.userId) {
-            resolved.userId = recipients.userId.map((id) => {
-                if (id.startsWith('$.')) {
-                    const value = this.resolvePath(payload, id);
-                    return typeof value === 'string' ? value : id;
-                }
-                return id;
-            });
-        }
-
-        return resolved;
-    }
 }
 
 /**
  * Create a workflow event service instance
+ *
+ * @param prisma - Prisma client for database access
+ * @param automationRegistry - Optional registry of business automations
  */
 export function createWorkflowEventService(
     prisma: PrismaClient,
-    serviceRegistry?: ServiceRegistry
+    automationRegistry?: AutomationRegistry
 ): WorkflowEventService {
-    return new WorkflowEventService(prisma, serviceRegistry);
+    return new WorkflowEventService(prisma, automationRegistry);
 }
