@@ -121,6 +121,10 @@ deploy_service() {
   if [ -d "$REPO_ROOT/services/$service_dir" ]; then
     log_info "Deploying $service_name..."
     cd "$REPO_ROOT/services/$service_dir"
+    
+    # Clean serverless cache to avoid stale deployments
+    rm -rf .serverless
+    
     pnpm run build 2>/dev/null || npm run build
     
     # Check if serverless.localstack.yml exists, otherwise use serverless.yml with --stage test

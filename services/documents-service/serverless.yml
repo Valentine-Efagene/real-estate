@@ -56,42 +56,25 @@ provider:
             - arn:aws:sns:${self:provider.region}:*:*
 
 package:
+  individually: true
   patterns:
-    - '!src/**'
-    - '!test/**'
-    - '!tests/**'
-    - '!**/*.test.ts'
-    - '!**/*.test.js'
-    - '!**/*.spec.ts'
-    - '!**/*.spec.js'
-    - '!dist/**/*.js'
-    - '!dist/**/*.d.ts'
-    - '!node_modules/@aws-sdk/**'
-    - '!node_modules/aws-sdk/**'
-    - '!node_modules/prisma/**'
-    - '!node_modules/@prisma/engines/**'
-    - '!node_modules/@prisma/studio/**'
-    - '!node_modules/@prisma/studio-core/**'
-    - '!node_modules/@electric-sql/**'
+    - '!**'
+    - 'dist/**/*.mjs'
+    # Prisma generated client
+    - 'node_modules/.prisma/**'
+    # Prisma packages needed at runtime
+    - 'node_modules/@prisma/client/**'
+    - 'node_modules/@prisma/adapter-mariadb/**'
+    - 'node_modules/@prisma/client-runtime-utils/**'
+    - 'node_modules/@prisma/driver-adapter-utils/**'
+    - 'node_modules/@prisma/debug/**'
+    # Exclude unused DB adapters
     - '!node_modules/@prisma/client/runtime/*cockroachdb*'
     - '!node_modules/@prisma/client/runtime/*sqlserver*'
     - '!node_modules/@prisma/client/runtime/*postgresql*'
     - '!node_modules/@prisma/client/runtime/*sqlite*'
-    - 'dist/**/*.mjs'
-    - '!**/*.map'
-    - '!**/*.ts'
-    - '!**/*.tsx'
-    - '!**/*.md'
-    - '!**/.git/**'
-    - '!**/.github/**'
-    - '!**/Dockerfile'
-    - '!**/docker/**'
-    - '!node_modules/**/test/**'
-    - '!node_modules/**/tests/**'
-    - '!node_modules/**/example/**'
-    - '!node_modules/**/examples/**'
-    - '!node_modules/.prisma/**'
-    - 'package.json'
+    # MariaDB driver
+    - 'node_modules/mariadb/**'
 
 functions:
   main:

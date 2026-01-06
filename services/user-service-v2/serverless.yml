@@ -217,23 +217,23 @@ custom:
 package:
   individually: true
   patterns:
+    # Exclude everything first
     - '!**'
+    # Include only the bundled Lambda entry
     - 'dist/**/*.mjs'
-    # Prisma generated client
+    # Prisma client runtime dependencies
     - 'node_modules/.prisma/**'
-    # Prisma packages needed at runtime
     - 'node_modules/@prisma/client/**'
     - 'node_modules/@prisma/adapter-mariadb/**'
     - 'node_modules/@prisma/client-runtime-utils/**'
     - 'node_modules/@prisma/driver-adapter-utils/**'
     - 'node_modules/@prisma/debug/**'
-    # Exclude unused DB adapters
+    - 'node_modules/mariadb/**'
+    # Exclude unused Prisma runtime adapters
     - '!node_modules/@prisma/client/runtime/*cockroachdb*'
     - '!node_modules/@prisma/client/runtime/*sqlserver*'
     - '!node_modules/@prisma/client/runtime/*postgresql*'
     - '!node_modules/@prisma/client/runtime/*sqlite*'
-    # MariaDB driver
-    - 'node_modules/mariadb/**'
 
 resources:
   Resources:

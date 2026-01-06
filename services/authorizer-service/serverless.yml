@@ -38,11 +38,19 @@ provider:
           Resource:
             - arn:aws:dynamodb:${self:provider.region}:*:table/*
 
+package:
+  individually: true
+
 functions:
   authorizer:
     handler: dist/index.handler
     name: qshelter-authorizer-${self:provider.stage}
     description: Shared JWT authorizer for all QShelter services
+    package:
+      patterns:
+        - '!**'
+        - 'dist/index.mjs'
+        - 'dist/index.mjs.map'
 
 resources:
   Resources:

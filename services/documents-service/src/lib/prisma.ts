@@ -13,27 +13,23 @@ async function createAdapter() {
             host: process.env.DB_HOST || '127.0.0.1',
             port: parseInt(process.env.DB_PORT || '3307'),
             user: process.env.DB_USER || 'root',
-            password: process.env.DB_PASSWORD || 'password',
+            password: process.env.DB_PASSWORD || 'rootpassword',
             database: process.env.DB_NAME || 'qshelter_test',
+            connectionLimit: 10,
+            allowPublicKeyRetrieval: true,
         });
     }
 
-    // For deployed environments, use SSM + Secrets Manager
+    // For AWS stages, use ConfigService to get DB credentials from SSM
     const configService = ConfigService.getInstance();
-    const [host, port, database, username, password] = await Promise.all([
-        configService.getParameter('db-host'),
-        configService.getParameter('db-port'),
-        configService.getParameter('db-name'),
-        configService.getSecret('db-credentials', 'username'),
-        configService.getSecret('db-credentials', 'password'),
-    ]);
+    const dbCredentials = await configService.getDatabaseCredentials(stage);
 
     return new PrismaMariaDb({
-        host,
-        port: parseInt(port),
-        user: username,
-        password,
-        database,
+        host: dbCredentials.host,
+        user: dbCredentials.username,
+        password: dbCredentials.password,
+        database: dbCredentials.database,
+        connectionLimit: 5,
     });
 }
 
