@@ -16,6 +16,7 @@ import offerLetterRouter from './routes/offer-letter';
 import underwritingRouter from './routes/underwriting';
 import paymentMethodChangeRouter from './routes/payment-method-change';
 import eventConfigRouter from './routes/event-config';
+import propertyTransferRouter from './routes/property-transfer';
 
 export const app: Application = express();
 
@@ -102,5 +103,6 @@ app.use('/underwriting', underwritingRouter);
 app.use('/event-config', eventConfigRouter);
 app.use('/', terminationRouter); // Handles both /contracts/:id/... and /terminations/...
 app.use('/', paymentMethodChangeRouter); // Handles /contracts/:id/payment-method-change-requests and /payment-method-change-requests
+app.use('/', propertyTransferRouter); // Handles /contracts/:id/transfer-requests and /transfer-requests
 
 app.use(errorHandler);

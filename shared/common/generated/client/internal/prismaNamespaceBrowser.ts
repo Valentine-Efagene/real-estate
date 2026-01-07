@@ -103,7 +103,8 @@ export const ModelName = {
   EventHandler: 'EventHandler',
   WorkflowEvent: 'WorkflowEvent',
   EventHandlerExecution: 'EventHandlerExecution',
-  DomainEvent: 'DomainEvent'
+  DomainEvent: 'DomainEvent',
+  PropertyTransferRequest: 'PropertyTransferRequest'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -635,7 +636,8 @@ export const ContractScalarFieldEnum = {
   signedAt: 'signedAt',
   terminatedAt: 'terminatedAt',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  transferredFromId: 'transferredFromId'
 } as const
 
 export type ContractScalarFieldEnum = (typeof ContractScalarFieldEnum)[keyof typeof ContractScalarFieldEnum]
@@ -1071,6 +1073,31 @@ export const DomainEventScalarFieldEnum = {
 export type DomainEventScalarFieldEnum = (typeof DomainEventScalarFieldEnum)[keyof typeof DomainEventScalarFieldEnum]
 
 
+export const PropertyTransferRequestScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  sourceContractId: 'sourceContractId',
+  targetPropertyUnitId: 'targetPropertyUnitId',
+  requestedById: 'requestedById',
+  reviewedById: 'reviewedById',
+  status: 'status',
+  reason: 'reason',
+  reviewNotes: 'reviewNotes',
+  priceAdjustmentHandling: 'priceAdjustmentHandling',
+  sourceTotalAmount: 'sourceTotalAmount',
+  targetTotalAmount: 'targetTotalAmount',
+  priceAdjustment: 'priceAdjustment',
+  paymentsMigrated: 'paymentsMigrated',
+  targetContractId: 'targetContractId',
+  createdAt: 'createdAt',
+  reviewedAt: 'reviewedAt',
+  completedAt: 'completedAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PropertyTransferRequestScalarFieldEnum = (typeof PropertyTransferRequestScalarFieldEnum)[keyof typeof PropertyTransferRequestScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1473,7 +1500,8 @@ export const ContractOrderByRelevanceFieldEnum = {
   title: 'title',
   description: 'description',
   contractType: 'contractType',
-  currentPhaseId: 'currentPhaseId'
+  currentPhaseId: 'currentPhaseId',
+  transferredFromId: 'transferredFromId'
 } as const
 
 export type ContractOrderByRelevanceFieldEnum = (typeof ContractOrderByRelevanceFieldEnum)[keyof typeof ContractOrderByRelevanceFieldEnum]
@@ -1733,4 +1761,20 @@ export const DomainEventOrderByRelevanceFieldEnum = {
 } as const
 
 export type DomainEventOrderByRelevanceFieldEnum = (typeof DomainEventOrderByRelevanceFieldEnum)[keyof typeof DomainEventOrderByRelevanceFieldEnum]
+
+
+export const PropertyTransferRequestOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  sourceContractId: 'sourceContractId',
+  targetPropertyUnitId: 'targetPropertyUnitId',
+  requestedById: 'requestedById',
+  reviewedById: 'reviewedById',
+  reason: 'reason',
+  reviewNotes: 'reviewNotes',
+  priceAdjustmentHandling: 'priceAdjustmentHandling',
+  targetContractId: 'targetContractId'
+} as const
+
+export type PropertyTransferRequestOrderByRelevanceFieldEnum = (typeof PropertyTransferRequestOrderByRelevanceFieldEnum)[keyof typeof PropertyTransferRequestOrderByRelevanceFieldEnum]
 

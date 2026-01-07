@@ -306,6 +306,7 @@ export type PropertyUnitWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"PropertyUnit"> | Date | string
   variant?: Prisma.XOR<Prisma.PropertyVariantScalarRelationFilter, Prisma.PropertyVariantWhereInput>
   contracts?: Prisma.ContractListRelationFilter
+  transferRequests?: Prisma.PropertyTransferRequestListRelationFilter
 }
 
 export type PropertyUnitOrderByWithRelationInput = {
@@ -326,6 +327,7 @@ export type PropertyUnitOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   variant?: Prisma.PropertyVariantOrderByWithRelationInput
   contracts?: Prisma.ContractOrderByRelationAggregateInput
+  transferRequests?: Prisma.PropertyTransferRequestOrderByRelationAggregateInput
   _relevance?: Prisma.PropertyUnitOrderByRelevanceInput
 }
 
@@ -351,6 +353,7 @@ export type PropertyUnitWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"PropertyUnit"> | Date | string
   variant?: Prisma.XOR<Prisma.PropertyVariantScalarRelationFilter, Prisma.PropertyVariantWhereInput>
   contracts?: Prisma.ContractListRelationFilter
+  transferRequests?: Prisma.PropertyTransferRequestListRelationFilter
 }, "id" | "variantId_unitNumber">
 
 export type PropertyUnitOrderByWithAggregationInput = {
@@ -414,6 +417,7 @@ export type PropertyUnitCreateInput = {
   updatedAt?: Date | string
   variant: Prisma.PropertyVariantCreateNestedOneWithoutUnitsInput
   contracts?: Prisma.ContractCreateNestedManyWithoutPropertyUnitInput
+  transferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTargetPropertyUnitInput
 }
 
 export type PropertyUnitUncheckedCreateInput = {
@@ -433,6 +437,7 @@ export type PropertyUnitUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutPropertyUnitInput
+  transferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTargetPropertyUnitInput
 }
 
 export type PropertyUnitUpdateInput = {
@@ -452,6 +457,7 @@ export type PropertyUnitUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   variant?: Prisma.PropertyVariantUpdateOneRequiredWithoutUnitsNestedInput
   contracts?: Prisma.ContractUpdateManyWithoutPropertyUnitNestedInput
+  transferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTargetPropertyUnitNestedInput
 }
 
 export type PropertyUnitUncheckedUpdateInput = {
@@ -471,6 +477,7 @@ export type PropertyUnitUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contracts?: Prisma.ContractUncheckedUpdateManyWithoutPropertyUnitNestedInput
+  transferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTargetPropertyUnitNestedInput
 }
 
 export type PropertyUnitCreateManyInput = {
@@ -674,6 +681,20 @@ export type PropertyUnitUpdateOneRequiredWithoutContractsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.PropertyUnitUpdateToOneWithWhereWithoutContractsInput, Prisma.PropertyUnitUpdateWithoutContractsInput>, Prisma.PropertyUnitUncheckedUpdateWithoutContractsInput>
 }
 
+export type PropertyUnitCreateNestedOneWithoutTransferRequestsInput = {
+  create?: Prisma.XOR<Prisma.PropertyUnitCreateWithoutTransferRequestsInput, Prisma.PropertyUnitUncheckedCreateWithoutTransferRequestsInput>
+  connectOrCreate?: Prisma.PropertyUnitCreateOrConnectWithoutTransferRequestsInput
+  connect?: Prisma.PropertyUnitWhereUniqueInput
+}
+
+export type PropertyUnitUpdateOneRequiredWithoutTransferRequestsNestedInput = {
+  create?: Prisma.XOR<Prisma.PropertyUnitCreateWithoutTransferRequestsInput, Prisma.PropertyUnitUncheckedCreateWithoutTransferRequestsInput>
+  connectOrCreate?: Prisma.PropertyUnitCreateOrConnectWithoutTransferRequestsInput
+  upsert?: Prisma.PropertyUnitUpsertWithoutTransferRequestsInput
+  connect?: Prisma.PropertyUnitWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PropertyUnitUpdateToOneWithWhereWithoutTransferRequestsInput, Prisma.PropertyUnitUpdateWithoutTransferRequestsInput>, Prisma.PropertyUnitUncheckedUpdateWithoutTransferRequestsInput>
+}
+
 export type PropertyUnitCreateWithoutVariantInput = {
   id?: string
   unitNumber: string
@@ -690,6 +711,7 @@ export type PropertyUnitCreateWithoutVariantInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   contracts?: Prisma.ContractCreateNestedManyWithoutPropertyUnitInput
+  transferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTargetPropertyUnitInput
 }
 
 export type PropertyUnitUncheckedCreateWithoutVariantInput = {
@@ -708,6 +730,7 @@ export type PropertyUnitUncheckedCreateWithoutVariantInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutPropertyUnitInput
+  transferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTargetPropertyUnitInput
 }
 
 export type PropertyUnitCreateOrConnectWithoutVariantInput = {
@@ -773,6 +796,7 @@ export type PropertyUnitCreateWithoutContractsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   variant: Prisma.PropertyVariantCreateNestedOneWithoutUnitsInput
+  transferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTargetPropertyUnitInput
 }
 
 export type PropertyUnitUncheckedCreateWithoutContractsInput = {
@@ -791,6 +815,7 @@ export type PropertyUnitUncheckedCreateWithoutContractsInput = {
   ownerId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  transferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTargetPropertyUnitInput
 }
 
 export type PropertyUnitCreateOrConnectWithoutContractsInput = {
@@ -825,6 +850,7 @@ export type PropertyUnitUpdateWithoutContractsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   variant?: Prisma.PropertyVariantUpdateOneRequiredWithoutUnitsNestedInput
+  transferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTargetPropertyUnitNestedInput
 }
 
 export type PropertyUnitUncheckedUpdateWithoutContractsInput = {
@@ -843,6 +869,99 @@ export type PropertyUnitUncheckedUpdateWithoutContractsInput = {
   ownerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  transferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTargetPropertyUnitNestedInput
+}
+
+export type PropertyUnitCreateWithoutTransferRequestsInput = {
+  id?: string
+  unitNumber: string
+  floorNumber?: number | null
+  blockName?: string | null
+  priceOverride?: number | null
+  areaOverride?: number | null
+  notes?: string | null
+  status?: string
+  reservedAt?: Date | string | null
+  reservedUntil?: Date | string | null
+  reservedById?: string | null
+  ownerId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  variant: Prisma.PropertyVariantCreateNestedOneWithoutUnitsInput
+  contracts?: Prisma.ContractCreateNestedManyWithoutPropertyUnitInput
+}
+
+export type PropertyUnitUncheckedCreateWithoutTransferRequestsInput = {
+  id?: string
+  variantId: string
+  unitNumber: string
+  floorNumber?: number | null
+  blockName?: string | null
+  priceOverride?: number | null
+  areaOverride?: number | null
+  notes?: string | null
+  status?: string
+  reservedAt?: Date | string | null
+  reservedUntil?: Date | string | null
+  reservedById?: string | null
+  ownerId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutPropertyUnitInput
+}
+
+export type PropertyUnitCreateOrConnectWithoutTransferRequestsInput = {
+  where: Prisma.PropertyUnitWhereUniqueInput
+  create: Prisma.XOR<Prisma.PropertyUnitCreateWithoutTransferRequestsInput, Prisma.PropertyUnitUncheckedCreateWithoutTransferRequestsInput>
+}
+
+export type PropertyUnitUpsertWithoutTransferRequestsInput = {
+  update: Prisma.XOR<Prisma.PropertyUnitUpdateWithoutTransferRequestsInput, Prisma.PropertyUnitUncheckedUpdateWithoutTransferRequestsInput>
+  create: Prisma.XOR<Prisma.PropertyUnitCreateWithoutTransferRequestsInput, Prisma.PropertyUnitUncheckedCreateWithoutTransferRequestsInput>
+  where?: Prisma.PropertyUnitWhereInput
+}
+
+export type PropertyUnitUpdateToOneWithWhereWithoutTransferRequestsInput = {
+  where?: Prisma.PropertyUnitWhereInput
+  data: Prisma.XOR<Prisma.PropertyUnitUpdateWithoutTransferRequestsInput, Prisma.PropertyUnitUncheckedUpdateWithoutTransferRequestsInput>
+}
+
+export type PropertyUnitUpdateWithoutTransferRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  unitNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  floorNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  blockName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priceOverride?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  areaOverride?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  reservedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reservedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reservedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  variant?: Prisma.PropertyVariantUpdateOneRequiredWithoutUnitsNestedInput
+  contracts?: Prisma.ContractUpdateManyWithoutPropertyUnitNestedInput
+}
+
+export type PropertyUnitUncheckedUpdateWithoutTransferRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  variantId?: Prisma.StringFieldUpdateOperationsInput | string
+  unitNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  floorNumber?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  blockName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priceOverride?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  areaOverride?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  reservedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reservedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reservedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contracts?: Prisma.ContractUncheckedUpdateManyWithoutPropertyUnitNestedInput
 }
 
 export type PropertyUnitCreateManyVariantInput = {
@@ -878,6 +997,7 @@ export type PropertyUnitUpdateWithoutVariantInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contracts?: Prisma.ContractUpdateManyWithoutPropertyUnitNestedInput
+  transferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTargetPropertyUnitNestedInput
 }
 
 export type PropertyUnitUncheckedUpdateWithoutVariantInput = {
@@ -896,6 +1016,7 @@ export type PropertyUnitUncheckedUpdateWithoutVariantInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contracts?: Prisma.ContractUncheckedUpdateManyWithoutPropertyUnitNestedInput
+  transferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTargetPropertyUnitNestedInput
 }
 
 export type PropertyUnitUncheckedUpdateManyWithoutVariantInput = {
@@ -922,10 +1043,12 @@ export type PropertyUnitUncheckedUpdateManyWithoutVariantInput = {
 
 export type PropertyUnitCountOutputType = {
   contracts: number
+  transferRequests: number
 }
 
 export type PropertyUnitCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   contracts?: boolean | PropertyUnitCountOutputTypeCountContractsArgs
+  transferRequests?: boolean | PropertyUnitCountOutputTypeCountTransferRequestsArgs
 }
 
 /**
@@ -943,6 +1066,13 @@ export type PropertyUnitCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types
  */
 export type PropertyUnitCountOutputTypeCountContractsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ContractWhereInput
+}
+
+/**
+ * PropertyUnitCountOutputType without action
+ */
+export type PropertyUnitCountOutputTypeCountTransferRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PropertyTransferRequestWhereInput
 }
 
 
@@ -964,6 +1094,7 @@ export type PropertyUnitSelect<ExtArgs extends runtime.Types.Extensions.Internal
   updatedAt?: boolean
   variant?: boolean | Prisma.PropertyVariantDefaultArgs<ExtArgs>
   contracts?: boolean | Prisma.PropertyUnit$contractsArgs<ExtArgs>
+  transferRequests?: boolean | Prisma.PropertyUnit$transferRequestsArgs<ExtArgs>
   _count?: boolean | Prisma.PropertyUnitCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["propertyUnit"]>
 
@@ -991,6 +1122,7 @@ export type PropertyUnitOmit<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type PropertyUnitInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   variant?: boolean | Prisma.PropertyVariantDefaultArgs<ExtArgs>
   contracts?: boolean | Prisma.PropertyUnit$contractsArgs<ExtArgs>
+  transferRequests?: boolean | Prisma.PropertyUnit$transferRequestsArgs<ExtArgs>
   _count?: boolean | Prisma.PropertyUnitCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -999,6 +1131,7 @@ export type $PropertyUnitPayload<ExtArgs extends runtime.Types.Extensions.Intern
   objects: {
     variant: Prisma.$PropertyVariantPayload<ExtArgs>
     contracts: Prisma.$ContractPayload<ExtArgs>[]
+    transferRequests: Prisma.$PropertyTransferRequestPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1358,6 +1491,7 @@ export interface Prisma__PropertyUnitClient<T, Null = never, ExtArgs extends run
   readonly [Symbol.toStringTag]: "PrismaPromise"
   variant<T extends Prisma.PropertyVariantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyVariantDefaultArgs<ExtArgs>>): Prisma.Prisma__PropertyVariantClient<runtime.Types.Result.GetResult<Prisma.$PropertyVariantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   contracts<T extends Prisma.PropertyUnit$contractsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyUnit$contractsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  transferRequests<T extends Prisma.PropertyUnit$transferRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyUnit$transferRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyTransferRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1766,6 +1900,30 @@ export type PropertyUnit$contractsArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   distinct?: Prisma.ContractScalarFieldEnum | Prisma.ContractScalarFieldEnum[]
+}
+
+/**
+ * PropertyUnit.transferRequests
+ */
+export type PropertyUnit$transferRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PropertyTransferRequest
+   */
+  select?: Prisma.PropertyTransferRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PropertyTransferRequest
+   */
+  omit?: Prisma.PropertyTransferRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PropertyTransferRequestInclude<ExtArgs> | null
+  where?: Prisma.PropertyTransferRequestWhereInput
+  orderBy?: Prisma.PropertyTransferRequestOrderByWithRelationInput | Prisma.PropertyTransferRequestOrderByWithRelationInput[]
+  cursor?: Prisma.PropertyTransferRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PropertyTransferRequestScalarFieldEnum | Prisma.PropertyTransferRequestScalarFieldEnum[]
 }
 
 /**

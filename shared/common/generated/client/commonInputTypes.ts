@@ -796,6 +796,23 @@ export type EnumExecutionStatusWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumExecutionStatusFilter<$PrismaModel>
 }
 
+export type EnumTransferRequestStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.TransferRequestStatus | Prisma.EnumTransferRequestStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TransferRequestStatus[]
+  notIn?: $Enums.TransferRequestStatus[]
+  not?: Prisma.NestedEnumTransferRequestStatusFilter<$PrismaModel> | $Enums.TransferRequestStatus
+}
+
+export type EnumTransferRequestStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TransferRequestStatus | Prisma.EnumTransferRequestStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TransferRequestStatus[]
+  notIn?: $Enums.TransferRequestStatus[]
+  not?: Prisma.NestedEnumTransferRequestStatusWithAggregatesFilter<$PrismaModel> | $Enums.TransferRequestStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTransferRequestStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTransferRequestStatusFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[]
@@ -1517,6 +1534,23 @@ export type NestedEnumExecutionStatusWithAggregatesFilter<$PrismaModel = never> 
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumExecutionStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumExecutionStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumTransferRequestStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.TransferRequestStatus | Prisma.EnumTransferRequestStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TransferRequestStatus[]
+  notIn?: $Enums.TransferRequestStatus[]
+  not?: Prisma.NestedEnumTransferRequestStatusFilter<$PrismaModel> | $Enums.TransferRequestStatus
+}
+
+export type NestedEnumTransferRequestStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TransferRequestStatus | Prisma.EnumTransferRequestStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TransferRequestStatus[]
+  notIn?: $Enums.TransferRequestStatus[]
+  not?: Prisma.NestedEnumTransferRequestStatusWithAggregatesFilter<$PrismaModel> | $Enums.TransferRequestStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTransferRequestStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTransferRequestStatusFilter<$PrismaModel>
 }
 
 

@@ -309,3 +309,8 @@ export type EventHandlerExecution = Prisma.EventHandlerExecutionModel
  * 
  */
 export type DomainEvent = Prisma.DomainEventModel
+/**
+ * Model PropertyTransferRequest
+ * 
+ */
+export type PropertyTransferRequest = Prisma.PropertyTransferRequestModel

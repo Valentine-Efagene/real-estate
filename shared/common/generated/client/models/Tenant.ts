@@ -205,6 +205,7 @@ export type TenantWhereInput = {
   eventTypes?: Prisma.EventTypeListRelationFilter
   eventHandlers?: Prisma.EventHandlerListRelationFilter
   workflowEvents?: Prisma.WorkflowEventListRelationFilter
+  propertyTransferRequests?: Prisma.PropertyTransferRequestListRelationFilter
 }
 
 export type TenantOrderByWithRelationInput = {
@@ -229,6 +230,7 @@ export type TenantOrderByWithRelationInput = {
   eventTypes?: Prisma.EventTypeOrderByRelationAggregateInput
   eventHandlers?: Prisma.EventHandlerOrderByRelationAggregateInput
   workflowEvents?: Prisma.WorkflowEventOrderByRelationAggregateInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestOrderByRelationAggregateInput
   _relevance?: Prisma.TenantOrderByRelevanceInput
 }
 
@@ -257,6 +259,7 @@ export type TenantWhereUniqueInput = Prisma.AtLeast<{
   eventTypes?: Prisma.EventTypeListRelationFilter
   eventHandlers?: Prisma.EventHandlerListRelationFilter
   workflowEvents?: Prisma.WorkflowEventListRelationFilter
+  propertyTransferRequests?: Prisma.PropertyTransferRequestListRelationFilter
 }, "id" | "subdomain">
 
 export type TenantOrderByWithAggregationInput = {
@@ -305,6 +308,7 @@ export type TenantCreateInput = {
   eventTypes?: Prisma.EventTypeCreateNestedManyWithoutTenantInput
   eventHandlers?: Prisma.EventHandlerCreateNestedManyWithoutTenantInput
   workflowEvents?: Prisma.WorkflowEventCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateInput = {
@@ -329,6 +333,7 @@ export type TenantUncheckedCreateInput = {
   eventTypes?: Prisma.EventTypeUncheckedCreateNestedManyWithoutTenantInput
   eventHandlers?: Prisma.EventHandlerUncheckedCreateNestedManyWithoutTenantInput
   workflowEvents?: Prisma.WorkflowEventUncheckedCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUpdateInput = {
@@ -353,6 +358,7 @@ export type TenantUpdateInput = {
   eventTypes?: Prisma.EventTypeUpdateManyWithoutTenantNestedInput
   eventHandlers?: Prisma.EventHandlerUpdateManyWithoutTenantNestedInput
   workflowEvents?: Prisma.WorkflowEventUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateInput = {
@@ -377,6 +383,7 @@ export type TenantUncheckedUpdateInput = {
   eventTypes?: Prisma.EventTypeUncheckedUpdateManyWithoutTenantNestedInput
   eventHandlers?: Prisma.EventHandlerUncheckedUpdateManyWithoutTenantNestedInput
   workflowEvents?: Prisma.WorkflowEventUncheckedUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateManyInput = {
@@ -663,6 +670,20 @@ export type TenantUpdateOneRequiredWithoutWorkflowEventsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutWorkflowEventsInput, Prisma.TenantUpdateWithoutWorkflowEventsInput>, Prisma.TenantUncheckedUpdateWithoutWorkflowEventsInput>
 }
 
+export type TenantCreateNestedOneWithoutPropertyTransferRequestsInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutPropertyTransferRequestsInput, Prisma.TenantUncheckedCreateWithoutPropertyTransferRequestsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutPropertyTransferRequestsInput
+  connect?: Prisma.TenantWhereUniqueInput
+}
+
+export type TenantUpdateOneRequiredWithoutPropertyTransferRequestsNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutPropertyTransferRequestsInput, Prisma.TenantUncheckedCreateWithoutPropertyTransferRequestsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutPropertyTransferRequestsInput
+  upsert?: Prisma.TenantUpsertWithoutPropertyTransferRequestsInput
+  connect?: Prisma.TenantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutPropertyTransferRequestsInput, Prisma.TenantUpdateWithoutPropertyTransferRequestsInput>, Prisma.TenantUncheckedUpdateWithoutPropertyTransferRequestsInput>
+}
+
 export type TenantCreateWithoutUsersInput = {
   id?: string
   name: string
@@ -684,6 +705,7 @@ export type TenantCreateWithoutUsersInput = {
   eventTypes?: Prisma.EventTypeCreateNestedManyWithoutTenantInput
   eventHandlers?: Prisma.EventHandlerCreateNestedManyWithoutTenantInput
   workflowEvents?: Prisma.WorkflowEventCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutUsersInput = {
@@ -707,6 +729,7 @@ export type TenantUncheckedCreateWithoutUsersInput = {
   eventTypes?: Prisma.EventTypeUncheckedCreateNestedManyWithoutTenantInput
   eventHandlers?: Prisma.EventHandlerUncheckedCreateNestedManyWithoutTenantInput
   workflowEvents?: Prisma.WorkflowEventUncheckedCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutUsersInput = {
@@ -746,6 +769,7 @@ export type TenantUpdateWithoutUsersInput = {
   eventTypes?: Prisma.EventTypeUpdateManyWithoutTenantNestedInput
   eventHandlers?: Prisma.EventHandlerUpdateManyWithoutTenantNestedInput
   workflowEvents?: Prisma.WorkflowEventUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutUsersInput = {
@@ -769,6 +793,7 @@ export type TenantUncheckedUpdateWithoutUsersInput = {
   eventTypes?: Prisma.EventTypeUncheckedUpdateManyWithoutTenantNestedInput
   eventHandlers?: Prisma.EventHandlerUncheckedUpdateManyWithoutTenantNestedInput
   workflowEvents?: Prisma.WorkflowEventUncheckedUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutApiKeysInput = {
@@ -792,6 +817,7 @@ export type TenantCreateWithoutApiKeysInput = {
   eventTypes?: Prisma.EventTypeCreateNestedManyWithoutTenantInput
   eventHandlers?: Prisma.EventHandlerCreateNestedManyWithoutTenantInput
   workflowEvents?: Prisma.WorkflowEventCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutApiKeysInput = {
@@ -815,6 +841,7 @@ export type TenantUncheckedCreateWithoutApiKeysInput = {
   eventTypes?: Prisma.EventTypeUncheckedCreateNestedManyWithoutTenantInput
   eventHandlers?: Prisma.EventHandlerUncheckedCreateNestedManyWithoutTenantInput
   workflowEvents?: Prisma.WorkflowEventUncheckedCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutApiKeysInput = {
@@ -854,6 +881,7 @@ export type TenantUpdateWithoutApiKeysInput = {
   eventTypes?: Prisma.EventTypeUpdateManyWithoutTenantNestedInput
   eventHandlers?: Prisma.EventHandlerUpdateManyWithoutTenantNestedInput
   workflowEvents?: Prisma.WorkflowEventUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutApiKeysInput = {
@@ -877,6 +905,7 @@ export type TenantUncheckedUpdateWithoutApiKeysInput = {
   eventTypes?: Prisma.EventTypeUncheckedUpdateManyWithoutTenantNestedInput
   eventHandlers?: Prisma.EventHandlerUncheckedUpdateManyWithoutTenantNestedInput
   workflowEvents?: Prisma.WorkflowEventUncheckedUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPropertiesInput = {
@@ -900,6 +929,7 @@ export type TenantCreateWithoutPropertiesInput = {
   eventTypes?: Prisma.EventTypeCreateNestedManyWithoutTenantInput
   eventHandlers?: Prisma.EventHandlerCreateNestedManyWithoutTenantInput
   workflowEvents?: Prisma.WorkflowEventCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPropertiesInput = {
@@ -923,6 +953,7 @@ export type TenantUncheckedCreateWithoutPropertiesInput = {
   eventTypes?: Prisma.EventTypeUncheckedCreateNestedManyWithoutTenantInput
   eventHandlers?: Prisma.EventHandlerUncheckedCreateNestedManyWithoutTenantInput
   workflowEvents?: Prisma.WorkflowEventUncheckedCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPropertiesInput = {
@@ -962,6 +993,7 @@ export type TenantUpdateWithoutPropertiesInput = {
   eventTypes?: Prisma.EventTypeUpdateManyWithoutTenantNestedInput
   eventHandlers?: Prisma.EventHandlerUpdateManyWithoutTenantNestedInput
   workflowEvents?: Prisma.WorkflowEventUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPropertiesInput = {
@@ -985,6 +1017,7 @@ export type TenantUncheckedUpdateWithoutPropertiesInput = {
   eventTypes?: Prisma.EventTypeUncheckedUpdateManyWithoutTenantNestedInput
   eventHandlers?: Prisma.EventHandlerUncheckedUpdateManyWithoutTenantNestedInput
   workflowEvents?: Prisma.WorkflowEventUncheckedUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPaymentPlansInput = {
@@ -1008,6 +1041,7 @@ export type TenantCreateWithoutPaymentPlansInput = {
   eventTypes?: Prisma.EventTypeCreateNestedManyWithoutTenantInput
   eventHandlers?: Prisma.EventHandlerCreateNestedManyWithoutTenantInput
   workflowEvents?: Prisma.WorkflowEventCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPaymentPlansInput = {
@@ -1031,6 +1065,7 @@ export type TenantUncheckedCreateWithoutPaymentPlansInput = {
   eventTypes?: Prisma.EventTypeUncheckedCreateNestedManyWithoutTenantInput
   eventHandlers?: Prisma.EventHandlerUncheckedCreateNestedManyWithoutTenantInput
   workflowEvents?: Prisma.WorkflowEventUncheckedCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPaymentPlansInput = {
@@ -1070,6 +1105,7 @@ export type TenantUpdateWithoutPaymentPlansInput = {
   eventTypes?: Prisma.EventTypeUpdateManyWithoutTenantNestedInput
   eventHandlers?: Prisma.EventHandlerUpdateManyWithoutTenantNestedInput
   workflowEvents?: Prisma.WorkflowEventUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPaymentPlansInput = {
@@ -1093,6 +1129,7 @@ export type TenantUncheckedUpdateWithoutPaymentPlansInput = {
   eventTypes?: Prisma.EventTypeUncheckedUpdateManyWithoutTenantNestedInput
   eventHandlers?: Prisma.EventHandlerUncheckedUpdateManyWithoutTenantNestedInput
   workflowEvents?: Prisma.WorkflowEventUncheckedUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPaymentMethodsInput = {
@@ -1116,6 +1153,7 @@ export type TenantCreateWithoutPaymentMethodsInput = {
   eventTypes?: Prisma.EventTypeCreateNestedManyWithoutTenantInput
   eventHandlers?: Prisma.EventHandlerCreateNestedManyWithoutTenantInput
   workflowEvents?: Prisma.WorkflowEventCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPaymentMethodsInput = {
@@ -1139,6 +1177,7 @@ export type TenantUncheckedCreateWithoutPaymentMethodsInput = {
   eventTypes?: Prisma.EventTypeUncheckedCreateNestedManyWithoutTenantInput
   eventHandlers?: Prisma.EventHandlerUncheckedCreateNestedManyWithoutTenantInput
   workflowEvents?: Prisma.WorkflowEventUncheckedCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPaymentMethodsInput = {
@@ -1178,6 +1217,7 @@ export type TenantUpdateWithoutPaymentMethodsInput = {
   eventTypes?: Prisma.EventTypeUpdateManyWithoutTenantNestedInput
   eventHandlers?: Prisma.EventHandlerUpdateManyWithoutTenantNestedInput
   workflowEvents?: Prisma.WorkflowEventUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPaymentMethodsInput = {
@@ -1201,6 +1241,7 @@ export type TenantUncheckedUpdateWithoutPaymentMethodsInput = {
   eventTypes?: Prisma.EventTypeUncheckedUpdateManyWithoutTenantNestedInput
   eventHandlers?: Prisma.EventHandlerUncheckedUpdateManyWithoutTenantNestedInput
   workflowEvents?: Prisma.WorkflowEventUncheckedUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutContractsInput = {
@@ -1224,6 +1265,7 @@ export type TenantCreateWithoutContractsInput = {
   eventTypes?: Prisma.EventTypeCreateNestedManyWithoutTenantInput
   eventHandlers?: Prisma.EventHandlerCreateNestedManyWithoutTenantInput
   workflowEvents?: Prisma.WorkflowEventCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutContractsInput = {
@@ -1247,6 +1289,7 @@ export type TenantUncheckedCreateWithoutContractsInput = {
   eventTypes?: Prisma.EventTypeUncheckedCreateNestedManyWithoutTenantInput
   eventHandlers?: Prisma.EventHandlerUncheckedCreateNestedManyWithoutTenantInput
   workflowEvents?: Prisma.WorkflowEventUncheckedCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutContractsInput = {
@@ -1286,6 +1329,7 @@ export type TenantUpdateWithoutContractsInput = {
   eventTypes?: Prisma.EventTypeUpdateManyWithoutTenantNestedInput
   eventHandlers?: Prisma.EventHandlerUpdateManyWithoutTenantNestedInput
   workflowEvents?: Prisma.WorkflowEventUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutContractsInput = {
@@ -1309,6 +1353,7 @@ export type TenantUncheckedUpdateWithoutContractsInput = {
   eventTypes?: Prisma.EventTypeUncheckedUpdateManyWithoutTenantNestedInput
   eventHandlers?: Prisma.EventHandlerUncheckedUpdateManyWithoutTenantNestedInput
   workflowEvents?: Prisma.WorkflowEventUncheckedUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutDocumentTemplatesInput = {
@@ -1332,6 +1377,7 @@ export type TenantCreateWithoutDocumentTemplatesInput = {
   eventTypes?: Prisma.EventTypeCreateNestedManyWithoutTenantInput
   eventHandlers?: Prisma.EventHandlerCreateNestedManyWithoutTenantInput
   workflowEvents?: Prisma.WorkflowEventCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutDocumentTemplatesInput = {
@@ -1355,6 +1401,7 @@ export type TenantUncheckedCreateWithoutDocumentTemplatesInput = {
   eventTypes?: Prisma.EventTypeUncheckedCreateNestedManyWithoutTenantInput
   eventHandlers?: Prisma.EventHandlerUncheckedCreateNestedManyWithoutTenantInput
   workflowEvents?: Prisma.WorkflowEventUncheckedCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutDocumentTemplatesInput = {
@@ -1394,6 +1441,7 @@ export type TenantUpdateWithoutDocumentTemplatesInput = {
   eventTypes?: Prisma.EventTypeUpdateManyWithoutTenantNestedInput
   eventHandlers?: Prisma.EventHandlerUpdateManyWithoutTenantNestedInput
   workflowEvents?: Prisma.WorkflowEventUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutDocumentTemplatesInput = {
@@ -1417,6 +1465,7 @@ export type TenantUncheckedUpdateWithoutDocumentTemplatesInput = {
   eventTypes?: Prisma.EventTypeUncheckedUpdateManyWithoutTenantNestedInput
   eventHandlers?: Prisma.EventHandlerUncheckedUpdateManyWithoutTenantNestedInput
   workflowEvents?: Prisma.WorkflowEventUncheckedUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutOfferLettersInput = {
@@ -1440,6 +1489,7 @@ export type TenantCreateWithoutOfferLettersInput = {
   eventTypes?: Prisma.EventTypeCreateNestedManyWithoutTenantInput
   eventHandlers?: Prisma.EventHandlerCreateNestedManyWithoutTenantInput
   workflowEvents?: Prisma.WorkflowEventCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutOfferLettersInput = {
@@ -1463,6 +1513,7 @@ export type TenantUncheckedCreateWithoutOfferLettersInput = {
   eventTypes?: Prisma.EventTypeUncheckedCreateNestedManyWithoutTenantInput
   eventHandlers?: Prisma.EventHandlerUncheckedCreateNestedManyWithoutTenantInput
   workflowEvents?: Prisma.WorkflowEventUncheckedCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutOfferLettersInput = {
@@ -1502,6 +1553,7 @@ export type TenantUpdateWithoutOfferLettersInput = {
   eventTypes?: Prisma.EventTypeUpdateManyWithoutTenantNestedInput
   eventHandlers?: Prisma.EventHandlerUpdateManyWithoutTenantNestedInput
   workflowEvents?: Prisma.WorkflowEventUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutOfferLettersInput = {
@@ -1525,6 +1577,7 @@ export type TenantUncheckedUpdateWithoutOfferLettersInput = {
   eventTypes?: Prisma.EventTypeUncheckedUpdateManyWithoutTenantNestedInput
   eventHandlers?: Prisma.EventHandlerUncheckedUpdateManyWithoutTenantNestedInput
   workflowEvents?: Prisma.WorkflowEventUncheckedUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutContractTerminationsInput = {
@@ -1548,6 +1601,7 @@ export type TenantCreateWithoutContractTerminationsInput = {
   eventTypes?: Prisma.EventTypeCreateNestedManyWithoutTenantInput
   eventHandlers?: Prisma.EventHandlerCreateNestedManyWithoutTenantInput
   workflowEvents?: Prisma.WorkflowEventCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutContractTerminationsInput = {
@@ -1571,6 +1625,7 @@ export type TenantUncheckedCreateWithoutContractTerminationsInput = {
   eventTypes?: Prisma.EventTypeUncheckedCreateNestedManyWithoutTenantInput
   eventHandlers?: Prisma.EventHandlerUncheckedCreateNestedManyWithoutTenantInput
   workflowEvents?: Prisma.WorkflowEventUncheckedCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutContractTerminationsInput = {
@@ -1610,6 +1665,7 @@ export type TenantUpdateWithoutContractTerminationsInput = {
   eventTypes?: Prisma.EventTypeUpdateManyWithoutTenantNestedInput
   eventHandlers?: Prisma.EventHandlerUpdateManyWithoutTenantNestedInput
   workflowEvents?: Prisma.WorkflowEventUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutContractTerminationsInput = {
@@ -1633,6 +1689,7 @@ export type TenantUncheckedUpdateWithoutContractTerminationsInput = {
   eventTypes?: Prisma.EventTypeUncheckedUpdateManyWithoutTenantNestedInput
   eventHandlers?: Prisma.EventHandlerUncheckedUpdateManyWithoutTenantNestedInput
   workflowEvents?: Prisma.WorkflowEventUncheckedUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPaymentMethodChangeRequestsInput = {
@@ -1656,6 +1713,7 @@ export type TenantCreateWithoutPaymentMethodChangeRequestsInput = {
   eventTypes?: Prisma.EventTypeCreateNestedManyWithoutTenantInput
   eventHandlers?: Prisma.EventHandlerCreateNestedManyWithoutTenantInput
   workflowEvents?: Prisma.WorkflowEventCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPaymentMethodChangeRequestsInput = {
@@ -1679,6 +1737,7 @@ export type TenantUncheckedCreateWithoutPaymentMethodChangeRequestsInput = {
   eventTypes?: Prisma.EventTypeUncheckedCreateNestedManyWithoutTenantInput
   eventHandlers?: Prisma.EventHandlerUncheckedCreateNestedManyWithoutTenantInput
   workflowEvents?: Prisma.WorkflowEventUncheckedCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPaymentMethodChangeRequestsInput = {
@@ -1718,6 +1777,7 @@ export type TenantUpdateWithoutPaymentMethodChangeRequestsInput = {
   eventTypes?: Prisma.EventTypeUpdateManyWithoutTenantNestedInput
   eventHandlers?: Prisma.EventHandlerUpdateManyWithoutTenantNestedInput
   workflowEvents?: Prisma.WorkflowEventUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPaymentMethodChangeRequestsInput = {
@@ -1741,6 +1801,7 @@ export type TenantUncheckedUpdateWithoutPaymentMethodChangeRequestsInput = {
   eventTypes?: Prisma.EventTypeUncheckedUpdateManyWithoutTenantNestedInput
   eventHandlers?: Prisma.EventHandlerUncheckedUpdateManyWithoutTenantNestedInput
   workflowEvents?: Prisma.WorkflowEventUncheckedUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutDocumentRequirementRulesInput = {
@@ -1764,6 +1825,7 @@ export type TenantCreateWithoutDocumentRequirementRulesInput = {
   eventTypes?: Prisma.EventTypeCreateNestedManyWithoutTenantInput
   eventHandlers?: Prisma.EventHandlerCreateNestedManyWithoutTenantInput
   workflowEvents?: Prisma.WorkflowEventCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutDocumentRequirementRulesInput = {
@@ -1787,6 +1849,7 @@ export type TenantUncheckedCreateWithoutDocumentRequirementRulesInput = {
   eventTypes?: Prisma.EventTypeUncheckedCreateNestedManyWithoutTenantInput
   eventHandlers?: Prisma.EventHandlerUncheckedCreateNestedManyWithoutTenantInput
   workflowEvents?: Prisma.WorkflowEventUncheckedCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutDocumentRequirementRulesInput = {
@@ -1826,6 +1889,7 @@ export type TenantUpdateWithoutDocumentRequirementRulesInput = {
   eventTypes?: Prisma.EventTypeUpdateManyWithoutTenantNestedInput
   eventHandlers?: Prisma.EventHandlerUpdateManyWithoutTenantNestedInput
   workflowEvents?: Prisma.WorkflowEventUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutDocumentRequirementRulesInput = {
@@ -1849,6 +1913,7 @@ export type TenantUncheckedUpdateWithoutDocumentRequirementRulesInput = {
   eventTypes?: Prisma.EventTypeUncheckedUpdateManyWithoutTenantNestedInput
   eventHandlers?: Prisma.EventHandlerUncheckedUpdateManyWithoutTenantNestedInput
   workflowEvents?: Prisma.WorkflowEventUncheckedUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutEventChannelsInput = {
@@ -1872,6 +1937,7 @@ export type TenantCreateWithoutEventChannelsInput = {
   eventTypes?: Prisma.EventTypeCreateNestedManyWithoutTenantInput
   eventHandlers?: Prisma.EventHandlerCreateNestedManyWithoutTenantInput
   workflowEvents?: Prisma.WorkflowEventCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutEventChannelsInput = {
@@ -1895,6 +1961,7 @@ export type TenantUncheckedCreateWithoutEventChannelsInput = {
   eventTypes?: Prisma.EventTypeUncheckedCreateNestedManyWithoutTenantInput
   eventHandlers?: Prisma.EventHandlerUncheckedCreateNestedManyWithoutTenantInput
   workflowEvents?: Prisma.WorkflowEventUncheckedCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutEventChannelsInput = {
@@ -1934,6 +2001,7 @@ export type TenantUpdateWithoutEventChannelsInput = {
   eventTypes?: Prisma.EventTypeUpdateManyWithoutTenantNestedInput
   eventHandlers?: Prisma.EventHandlerUpdateManyWithoutTenantNestedInput
   workflowEvents?: Prisma.WorkflowEventUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutEventChannelsInput = {
@@ -1957,6 +2025,7 @@ export type TenantUncheckedUpdateWithoutEventChannelsInput = {
   eventTypes?: Prisma.EventTypeUncheckedUpdateManyWithoutTenantNestedInput
   eventHandlers?: Prisma.EventHandlerUncheckedUpdateManyWithoutTenantNestedInput
   workflowEvents?: Prisma.WorkflowEventUncheckedUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutEventTypesInput = {
@@ -1980,6 +2049,7 @@ export type TenantCreateWithoutEventTypesInput = {
   eventChannels?: Prisma.EventChannelCreateNestedManyWithoutTenantInput
   eventHandlers?: Prisma.EventHandlerCreateNestedManyWithoutTenantInput
   workflowEvents?: Prisma.WorkflowEventCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutEventTypesInput = {
@@ -2003,6 +2073,7 @@ export type TenantUncheckedCreateWithoutEventTypesInput = {
   eventChannels?: Prisma.EventChannelUncheckedCreateNestedManyWithoutTenantInput
   eventHandlers?: Prisma.EventHandlerUncheckedCreateNestedManyWithoutTenantInput
   workflowEvents?: Prisma.WorkflowEventUncheckedCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutEventTypesInput = {
@@ -2042,6 +2113,7 @@ export type TenantUpdateWithoutEventTypesInput = {
   eventChannels?: Prisma.EventChannelUpdateManyWithoutTenantNestedInput
   eventHandlers?: Prisma.EventHandlerUpdateManyWithoutTenantNestedInput
   workflowEvents?: Prisma.WorkflowEventUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutEventTypesInput = {
@@ -2065,6 +2137,7 @@ export type TenantUncheckedUpdateWithoutEventTypesInput = {
   eventChannels?: Prisma.EventChannelUncheckedUpdateManyWithoutTenantNestedInput
   eventHandlers?: Prisma.EventHandlerUncheckedUpdateManyWithoutTenantNestedInput
   workflowEvents?: Prisma.WorkflowEventUncheckedUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutEventHandlersInput = {
@@ -2088,6 +2161,7 @@ export type TenantCreateWithoutEventHandlersInput = {
   eventChannels?: Prisma.EventChannelCreateNestedManyWithoutTenantInput
   eventTypes?: Prisma.EventTypeCreateNestedManyWithoutTenantInput
   workflowEvents?: Prisma.WorkflowEventCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutEventHandlersInput = {
@@ -2111,6 +2185,7 @@ export type TenantUncheckedCreateWithoutEventHandlersInput = {
   eventChannels?: Prisma.EventChannelUncheckedCreateNestedManyWithoutTenantInput
   eventTypes?: Prisma.EventTypeUncheckedCreateNestedManyWithoutTenantInput
   workflowEvents?: Prisma.WorkflowEventUncheckedCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutEventHandlersInput = {
@@ -2150,6 +2225,7 @@ export type TenantUpdateWithoutEventHandlersInput = {
   eventChannels?: Prisma.EventChannelUpdateManyWithoutTenantNestedInput
   eventTypes?: Prisma.EventTypeUpdateManyWithoutTenantNestedInput
   workflowEvents?: Prisma.WorkflowEventUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutEventHandlersInput = {
@@ -2173,6 +2249,7 @@ export type TenantUncheckedUpdateWithoutEventHandlersInput = {
   eventChannels?: Prisma.EventChannelUncheckedUpdateManyWithoutTenantNestedInput
   eventTypes?: Prisma.EventTypeUncheckedUpdateManyWithoutTenantNestedInput
   workflowEvents?: Prisma.WorkflowEventUncheckedUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutWorkflowEventsInput = {
@@ -2196,6 +2273,7 @@ export type TenantCreateWithoutWorkflowEventsInput = {
   eventChannels?: Prisma.EventChannelCreateNestedManyWithoutTenantInput
   eventTypes?: Prisma.EventTypeCreateNestedManyWithoutTenantInput
   eventHandlers?: Prisma.EventHandlerCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutWorkflowEventsInput = {
@@ -2219,6 +2297,7 @@ export type TenantUncheckedCreateWithoutWorkflowEventsInput = {
   eventChannels?: Prisma.EventChannelUncheckedCreateNestedManyWithoutTenantInput
   eventTypes?: Prisma.EventTypeUncheckedCreateNestedManyWithoutTenantInput
   eventHandlers?: Prisma.EventHandlerUncheckedCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutWorkflowEventsInput = {
@@ -2258,6 +2337,7 @@ export type TenantUpdateWithoutWorkflowEventsInput = {
   eventChannels?: Prisma.EventChannelUpdateManyWithoutTenantNestedInput
   eventTypes?: Prisma.EventTypeUpdateManyWithoutTenantNestedInput
   eventHandlers?: Prisma.EventHandlerUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutWorkflowEventsInput = {
@@ -2281,6 +2361,119 @@ export type TenantUncheckedUpdateWithoutWorkflowEventsInput = {
   eventChannels?: Prisma.EventChannelUncheckedUpdateManyWithoutTenantNestedInput
   eventTypes?: Prisma.EventTypeUncheckedUpdateManyWithoutTenantNestedInput
   eventHandlers?: Prisma.EventHandlerUncheckedUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantCreateWithoutPropertyTransferRequestsInput = {
+  id?: string
+  name: string
+  subdomain: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserCreateNestedManyWithoutTenantInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
+  paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
+  contracts?: Prisma.ContractCreateNestedManyWithoutTenantInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutTenantInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleCreateNestedManyWithoutTenantInput
+  contractTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutTenantInput
+  documentTemplates?: Prisma.DocumentTemplateCreateNestedManyWithoutTenantInput
+  offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutTenantInput
+  apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutTenantInput
+  eventChannels?: Prisma.EventChannelCreateNestedManyWithoutTenantInput
+  eventTypes?: Prisma.EventTypeCreateNestedManyWithoutTenantInput
+  eventHandlers?: Prisma.EventHandlerCreateNestedManyWithoutTenantInput
+  workflowEvents?: Prisma.WorkflowEventCreateNestedManyWithoutTenantInput
+}
+
+export type TenantUncheckedCreateWithoutPropertyTransferRequestsInput = {
+  id?: string
+  name: string
+  subdomain: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
+  paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutTenantInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleUncheckedCreateNestedManyWithoutTenantInput
+  contractTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutTenantInput
+  documentTemplates?: Prisma.DocumentTemplateUncheckedCreateNestedManyWithoutTenantInput
+  offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutTenantInput
+  apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutTenantInput
+  eventChannels?: Prisma.EventChannelUncheckedCreateNestedManyWithoutTenantInput
+  eventTypes?: Prisma.EventTypeUncheckedCreateNestedManyWithoutTenantInput
+  eventHandlers?: Prisma.EventHandlerUncheckedCreateNestedManyWithoutTenantInput
+  workflowEvents?: Prisma.WorkflowEventUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type TenantCreateOrConnectWithoutPropertyTransferRequestsInput = {
+  where: Prisma.TenantWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantCreateWithoutPropertyTransferRequestsInput, Prisma.TenantUncheckedCreateWithoutPropertyTransferRequestsInput>
+}
+
+export type TenantUpsertWithoutPropertyTransferRequestsInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutPropertyTransferRequestsInput, Prisma.TenantUncheckedUpdateWithoutPropertyTransferRequestsInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutPropertyTransferRequestsInput, Prisma.TenantUncheckedCreateWithoutPropertyTransferRequestsInput>
+  where?: Prisma.TenantWhereInput
+}
+
+export type TenantUpdateToOneWithWhereWithoutPropertyTransferRequestsInput = {
+  where?: Prisma.TenantWhereInput
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutPropertyTransferRequestsInput, Prisma.TenantUncheckedUpdateWithoutPropertyTransferRequestsInput>
+}
+
+export type TenantUpdateWithoutPropertyTransferRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  subdomain?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserUpdateManyWithoutTenantNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
+  paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
+  contracts?: Prisma.ContractUpdateManyWithoutTenantNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutTenantNestedInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleUpdateManyWithoutTenantNestedInput
+  contractTerminations?: Prisma.ContractTerminationUpdateManyWithoutTenantNestedInput
+  documentTemplates?: Prisma.DocumentTemplateUpdateManyWithoutTenantNestedInput
+  offerLetters?: Prisma.OfferLetterUpdateManyWithoutTenantNestedInput
+  apiKeys?: Prisma.ApiKeyUpdateManyWithoutTenantNestedInput
+  eventChannels?: Prisma.EventChannelUpdateManyWithoutTenantNestedInput
+  eventTypes?: Prisma.EventTypeUpdateManyWithoutTenantNestedInput
+  eventHandlers?: Prisma.EventHandlerUpdateManyWithoutTenantNestedInput
+  workflowEvents?: Prisma.WorkflowEventUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateWithoutPropertyTransferRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  subdomain?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
+  paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  contracts?: Prisma.ContractUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleUncheckedUpdateManyWithoutTenantNestedInput
+  contractTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutTenantNestedInput
+  documentTemplates?: Prisma.DocumentTemplateUncheckedUpdateManyWithoutTenantNestedInput
+  offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutTenantNestedInput
+  apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutTenantNestedInput
+  eventChannels?: Prisma.EventChannelUncheckedUpdateManyWithoutTenantNestedInput
+  eventTypes?: Prisma.EventTypeUncheckedUpdateManyWithoutTenantNestedInput
+  eventHandlers?: Prisma.EventHandlerUncheckedUpdateManyWithoutTenantNestedInput
+  workflowEvents?: Prisma.WorkflowEventUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 
@@ -2304,6 +2497,7 @@ export type TenantCountOutputType = {
   eventTypes: number
   eventHandlers: number
   workflowEvents: number
+  propertyTransferRequests: number
 }
 
 export type TenantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2322,6 +2516,7 @@ export type TenantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions
   eventTypes?: boolean | TenantCountOutputTypeCountEventTypesArgs
   eventHandlers?: boolean | TenantCountOutputTypeCountEventHandlersArgs
   workflowEvents?: boolean | TenantCountOutputTypeCountWorkflowEventsArgs
+  propertyTransferRequests?: boolean | TenantCountOutputTypeCountPropertyTransferRequestsArgs
 }
 
 /**
@@ -2439,6 +2634,13 @@ export type TenantCountOutputTypeCountWorkflowEventsArgs<ExtArgs extends runtime
   where?: Prisma.WorkflowEventWhereInput
 }
 
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountPropertyTransferRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PropertyTransferRequestWhereInput
+}
+
 
 export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2462,6 +2664,7 @@ export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   eventTypes?: boolean | Prisma.Tenant$eventTypesArgs<ExtArgs>
   eventHandlers?: boolean | Prisma.Tenant$eventHandlersArgs<ExtArgs>
   workflowEvents?: boolean | Prisma.Tenant$workflowEventsArgs<ExtArgs>
+  propertyTransferRequests?: boolean | Prisma.Tenant$propertyTransferRequestsArgs<ExtArgs>
   _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tenant"]>
 
@@ -2493,6 +2696,7 @@ export type TenantInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   eventTypes?: boolean | Prisma.Tenant$eventTypesArgs<ExtArgs>
   eventHandlers?: boolean | Prisma.Tenant$eventHandlersArgs<ExtArgs>
   workflowEvents?: boolean | Prisma.Tenant$workflowEventsArgs<ExtArgs>
+  propertyTransferRequests?: boolean | Prisma.Tenant$propertyTransferRequestsArgs<ExtArgs>
   _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -2514,6 +2718,7 @@ export type $TenantPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     eventTypes: Prisma.$EventTypePayload<ExtArgs>[]
     eventHandlers: Prisma.$EventHandlerPayload<ExtArgs>[]
     workflowEvents: Prisma.$WorkflowEventPayload<ExtArgs>[]
+    propertyTransferRequests: Prisma.$PropertyTransferRequestPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2877,6 +3082,7 @@ export interface Prisma__TenantClient<T, Null = never, ExtArgs extends runtime.T
   eventTypes<T extends Prisma.Tenant$eventTypesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$eventTypesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EventTypePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   eventHandlers<T extends Prisma.Tenant$eventHandlersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$eventHandlersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EventHandlerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   workflowEvents<T extends Prisma.Tenant$workflowEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$workflowEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkflowEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  propertyTransferRequests<T extends Prisma.Tenant$propertyTransferRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$propertyTransferRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyTransferRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3612,6 +3818,30 @@ export type Tenant$workflowEventsArgs<ExtArgs extends runtime.Types.Extensions.I
   take?: number
   skip?: number
   distinct?: Prisma.WorkflowEventScalarFieldEnum | Prisma.WorkflowEventScalarFieldEnum[]
+}
+
+/**
+ * Tenant.propertyTransferRequests
+ */
+export type Tenant$propertyTransferRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PropertyTransferRequest
+   */
+  select?: Prisma.PropertyTransferRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PropertyTransferRequest
+   */
+  omit?: Prisma.PropertyTransferRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PropertyTransferRequestInclude<ExtArgs> | null
+  where?: Prisma.PropertyTransferRequestWhereInput
+  orderBy?: Prisma.PropertyTransferRequestOrderByWithRelationInput | Prisma.PropertyTransferRequestOrderByWithRelationInput[]
+  cursor?: Prisma.PropertyTransferRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PropertyTransferRequestScalarFieldEnum | Prisma.PropertyTransferRequestScalarFieldEnum[]
 }
 
 /**

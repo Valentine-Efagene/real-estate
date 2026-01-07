@@ -300,6 +300,8 @@ export type UserWhereInput = {
   reviewedTerminations?: Prisma.ContractTerminationListRelationFilter
   offerLettersGenerated?: Prisma.OfferLetterListRelationFilter
   offerLettersSent?: Prisma.OfferLetterListRelationFilter
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestListRelationFilter
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -342,6 +344,8 @@ export type UserOrderByWithRelationInput = {
   reviewedTerminations?: Prisma.ContractTerminationOrderByRelationAggregateInput
   offerLettersGenerated?: Prisma.OfferLetterOrderByRelationAggregateInput
   offerLettersSent?: Prisma.OfferLetterOrderByRelationAggregateInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestOrderByRelationAggregateInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestOrderByRelationAggregateInput
   _relevance?: Prisma.UserOrderByRelevanceInput
 }
 
@@ -388,6 +392,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   reviewedTerminations?: Prisma.ContractTerminationListRelationFilter
   offerLettersGenerated?: Prisma.OfferLetterListRelationFilter
   offerLettersSent?: Prisma.OfferLetterListRelationFilter
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestListRelationFilter
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestListRelationFilter
 }, "id" | "email" | "phone" | "walletId">
 
 export type UserOrderByWithAggregationInput = {
@@ -474,6 +480,8 @@ export type UserCreateInput = {
   reviewedTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -514,6 +522,8 @@ export type UserUncheckedCreateInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUpdateInput = {
@@ -554,6 +564,8 @@ export type UserUpdateInput = {
   reviewedTerminations?: Prisma.ContractTerminationUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -594,6 +606,8 @@ export type UserUncheckedUpdateInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUncheckedUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -1134,6 +1148,36 @@ export type UserUpdateOneWithoutReviewedChangeRequestsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReviewedChangeRequestsInput, Prisma.UserUpdateWithoutReviewedChangeRequestsInput>, Prisma.UserUncheckedUpdateWithoutReviewedChangeRequestsInput>
 }
 
+export type UserCreateNestedOneWithoutTransferRequestsSubmittedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTransferRequestsSubmittedInput, Prisma.UserUncheckedCreateWithoutTransferRequestsSubmittedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTransferRequestsSubmittedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutTransferRequestsReviewedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTransferRequestsReviewedInput, Prisma.UserUncheckedCreateWithoutTransferRequestsReviewedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTransferRequestsReviewedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutTransferRequestsSubmittedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTransferRequestsSubmittedInput, Prisma.UserUncheckedCreateWithoutTransferRequestsSubmittedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTransferRequestsSubmittedInput
+  upsert?: Prisma.UserUpsertWithoutTransferRequestsSubmittedInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTransferRequestsSubmittedInput, Prisma.UserUpdateWithoutTransferRequestsSubmittedInput>, Prisma.UserUncheckedUpdateWithoutTransferRequestsSubmittedInput>
+}
+
+export type UserUpdateOneWithoutTransferRequestsReviewedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTransferRequestsReviewedInput, Prisma.UserUncheckedCreateWithoutTransferRequestsReviewedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTransferRequestsReviewedInput
+  upsert?: Prisma.UserUpsertWithoutTransferRequestsReviewedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTransferRequestsReviewedInput, Prisma.UserUpdateWithoutTransferRequestsReviewedInput>, Prisma.UserUncheckedUpdateWithoutTransferRequestsReviewedInput>
+}
+
 export type UserCreateWithoutUserRolesInput = {
   id?: string
   email: string
@@ -1171,6 +1215,8 @@ export type UserCreateWithoutUserRolesInput = {
   reviewedTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUncheckedCreateWithoutUserRolesInput = {
@@ -1210,6 +1256,8 @@ export type UserUncheckedCreateWithoutUserRolesInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserCreateOrConnectWithoutUserRolesInput = {
@@ -1265,6 +1313,8 @@ export type UserUpdateWithoutUserRolesInput = {
   reviewedTerminations?: Prisma.ContractTerminationUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUserRolesInput = {
@@ -1304,6 +1354,8 @@ export type UserUncheckedUpdateWithoutUserRolesInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUncheckedUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserCreateWithoutTenantInput = {
@@ -1343,6 +1395,8 @@ export type UserCreateWithoutTenantInput = {
   reviewedTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUncheckedCreateWithoutTenantInput = {
@@ -1382,6 +1436,8 @@ export type UserUncheckedCreateWithoutTenantInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserCreateOrConnectWithoutTenantInput = {
@@ -1470,6 +1526,8 @@ export type UserCreateWithoutRefreshTokensInput = {
   reviewedTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUncheckedCreateWithoutRefreshTokensInput = {
@@ -1509,6 +1567,8 @@ export type UserUncheckedCreateWithoutRefreshTokensInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserCreateOrConnectWithoutRefreshTokensInput = {
@@ -1564,6 +1624,8 @@ export type UserUpdateWithoutRefreshTokensInput = {
   reviewedTerminations?: Prisma.ContractTerminationUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRefreshTokensInput = {
@@ -1603,6 +1665,8 @@ export type UserUncheckedUpdateWithoutRefreshTokensInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUncheckedUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserCreateWithoutPasswordResetsInput = {
@@ -1642,6 +1706,8 @@ export type UserCreateWithoutPasswordResetsInput = {
   reviewedTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUncheckedCreateWithoutPasswordResetsInput = {
@@ -1681,6 +1747,8 @@ export type UserUncheckedCreateWithoutPasswordResetsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserCreateOrConnectWithoutPasswordResetsInput = {
@@ -1736,6 +1804,8 @@ export type UserUpdateWithoutPasswordResetsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPasswordResetsInput = {
@@ -1775,6 +1845,8 @@ export type UserUncheckedUpdateWithoutPasswordResetsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUncheckedUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserCreateWithoutSuspensionsInput = {
@@ -1814,6 +1886,8 @@ export type UserCreateWithoutSuspensionsInput = {
   reviewedTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUncheckedCreateWithoutSuspensionsInput = {
@@ -1853,6 +1927,8 @@ export type UserUncheckedCreateWithoutSuspensionsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserCreateOrConnectWithoutSuspensionsInput = {
@@ -1908,6 +1984,8 @@ export type UserUpdateWithoutSuspensionsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSuspensionsInput = {
@@ -1947,6 +2025,8 @@ export type UserUncheckedUpdateWithoutSuspensionsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUncheckedUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserCreateWithoutEmailPreferencesInput = {
@@ -1986,6 +2066,8 @@ export type UserCreateWithoutEmailPreferencesInput = {
   reviewedTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUncheckedCreateWithoutEmailPreferencesInput = {
@@ -2025,6 +2107,8 @@ export type UserUncheckedCreateWithoutEmailPreferencesInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserCreateOrConnectWithoutEmailPreferencesInput = {
@@ -2080,6 +2164,8 @@ export type UserUpdateWithoutEmailPreferencesInput = {
   reviewedTerminations?: Prisma.ContractTerminationUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutEmailPreferencesInput = {
@@ -2119,6 +2205,8 @@ export type UserUncheckedUpdateWithoutEmailPreferencesInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUncheckedUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserCreateWithoutDeviceEndpointsInput = {
@@ -2158,6 +2246,8 @@ export type UserCreateWithoutDeviceEndpointsInput = {
   reviewedTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUncheckedCreateWithoutDeviceEndpointsInput = {
@@ -2197,6 +2287,8 @@ export type UserUncheckedCreateWithoutDeviceEndpointsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserCreateOrConnectWithoutDeviceEndpointsInput = {
@@ -2252,6 +2344,8 @@ export type UserUpdateWithoutDeviceEndpointsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDeviceEndpointsInput = {
@@ -2291,6 +2385,8 @@ export type UserUncheckedUpdateWithoutDeviceEndpointsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUncheckedUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserCreateWithoutSocialsInput = {
@@ -2330,6 +2426,8 @@ export type UserCreateWithoutSocialsInput = {
   reviewedTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUncheckedCreateWithoutSocialsInput = {
@@ -2369,6 +2467,8 @@ export type UserUncheckedCreateWithoutSocialsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserCreateOrConnectWithoutSocialsInput = {
@@ -2424,6 +2524,8 @@ export type UserUpdateWithoutSocialsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSocialsInput = {
@@ -2463,6 +2565,8 @@ export type UserUncheckedUpdateWithoutSocialsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUncheckedUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserCreateWithoutWalletInput = {
@@ -2502,6 +2606,8 @@ export type UserCreateWithoutWalletInput = {
   reviewedTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUncheckedCreateWithoutWalletInput = {
@@ -2541,6 +2647,8 @@ export type UserUncheckedCreateWithoutWalletInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserCreateOrConnectWithoutWalletInput = {
@@ -2596,6 +2704,8 @@ export type UserUpdateWithoutWalletInput = {
   reviewedTerminations?: Prisma.ContractTerminationUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWalletInput = {
@@ -2635,6 +2745,8 @@ export type UserUncheckedUpdateWithoutWalletInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUncheckedUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserCreateWithoutPropertiesInput = {
@@ -2674,6 +2786,8 @@ export type UserCreateWithoutPropertiesInput = {
   reviewedTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUncheckedCreateWithoutPropertiesInput = {
@@ -2713,6 +2827,8 @@ export type UserUncheckedCreateWithoutPropertiesInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserCreateOrConnectWithoutPropertiesInput = {
@@ -2768,6 +2884,8 @@ export type UserUpdateWithoutPropertiesInput = {
   reviewedTerminations?: Prisma.ContractTerminationUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPropertiesInput = {
@@ -2807,6 +2925,8 @@ export type UserUncheckedUpdateWithoutPropertiesInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUncheckedUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserCreateWithoutContractsInput = {
@@ -2846,6 +2966,8 @@ export type UserCreateWithoutContractsInput = {
   reviewedTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUncheckedCreateWithoutContractsInput = {
@@ -2885,6 +3007,8 @@ export type UserUncheckedCreateWithoutContractsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserCreateOrConnectWithoutContractsInput = {
@@ -2929,6 +3053,8 @@ export type UserCreateWithoutSoldContractsInput = {
   reviewedTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUncheckedCreateWithoutSoldContractsInput = {
@@ -2968,6 +3094,8 @@ export type UserUncheckedCreateWithoutSoldContractsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserCreateOrConnectWithoutSoldContractsInput = {
@@ -3023,6 +3151,8 @@ export type UserUpdateWithoutContractsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutContractsInput = {
@@ -3062,6 +3192,8 @@ export type UserUncheckedUpdateWithoutContractsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUncheckedUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUpsertWithoutSoldContractsInput = {
@@ -3112,6 +3244,8 @@ export type UserUpdateWithoutSoldContractsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSoldContractsInput = {
@@ -3151,6 +3285,8 @@ export type UserUncheckedUpdateWithoutSoldContractsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUncheckedUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserCreateWithoutAssignedStepsInput = {
@@ -3190,6 +3326,8 @@ export type UserCreateWithoutAssignedStepsInput = {
   reviewedTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUncheckedCreateWithoutAssignedStepsInput = {
@@ -3229,6 +3367,8 @@ export type UserUncheckedCreateWithoutAssignedStepsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserCreateOrConnectWithoutAssignedStepsInput = {
@@ -3284,6 +3424,8 @@ export type UserUpdateWithoutAssignedStepsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssignedStepsInput = {
@@ -3323,6 +3465,8 @@ export type UserUncheckedUpdateWithoutAssignedStepsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUncheckedUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserCreateWithoutStepApprovalsInput = {
@@ -3362,6 +3506,8 @@ export type UserCreateWithoutStepApprovalsInput = {
   reviewedTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUncheckedCreateWithoutStepApprovalsInput = {
@@ -3401,6 +3547,8 @@ export type UserUncheckedCreateWithoutStepApprovalsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserCreateOrConnectWithoutStepApprovalsInput = {
@@ -3456,6 +3604,8 @@ export type UserUpdateWithoutStepApprovalsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStepApprovalsInput = {
@@ -3495,6 +3645,8 @@ export type UserUncheckedUpdateWithoutStepApprovalsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUncheckedUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserCreateWithoutContractPaymentsInput = {
@@ -3534,6 +3686,8 @@ export type UserCreateWithoutContractPaymentsInput = {
   reviewedTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUncheckedCreateWithoutContractPaymentsInput = {
@@ -3573,6 +3727,8 @@ export type UserUncheckedCreateWithoutContractPaymentsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserCreateOrConnectWithoutContractPaymentsInput = {
@@ -3628,6 +3784,8 @@ export type UserUpdateWithoutContractPaymentsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutContractPaymentsInput = {
@@ -3667,6 +3825,8 @@ export type UserUncheckedUpdateWithoutContractPaymentsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUncheckedUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserCreateWithoutUploadedDocsInput = {
@@ -3706,6 +3866,8 @@ export type UserCreateWithoutUploadedDocsInput = {
   reviewedTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUncheckedCreateWithoutUploadedDocsInput = {
@@ -3745,6 +3907,8 @@ export type UserUncheckedCreateWithoutUploadedDocsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserCreateOrConnectWithoutUploadedDocsInput = {
@@ -3800,6 +3964,8 @@ export type UserUpdateWithoutUploadedDocsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUploadedDocsInput = {
@@ -3839,6 +4005,8 @@ export type UserUncheckedUpdateWithoutUploadedDocsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUncheckedUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserCreateWithoutOfferLettersGeneratedInput = {
@@ -3878,6 +4046,8 @@ export type UserCreateWithoutOfferLettersGeneratedInput = {
   initiatedTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutInitiatorInput
   reviewedTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutReviewerInput
   offerLettersSent?: Prisma.OfferLetterCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUncheckedCreateWithoutOfferLettersGeneratedInput = {
@@ -3917,6 +4087,8 @@ export type UserUncheckedCreateWithoutOfferLettersGeneratedInput = {
   initiatedTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutInitiatorInput
   reviewedTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutReviewerInput
   offerLettersSent?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserCreateOrConnectWithoutOfferLettersGeneratedInput = {
@@ -3961,6 +4133,8 @@ export type UserCreateWithoutOfferLettersSentInput = {
   initiatedTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutInitiatorInput
   reviewedTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterCreateNestedManyWithoutGeneratedByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUncheckedCreateWithoutOfferLettersSentInput = {
@@ -4000,6 +4174,8 @@ export type UserUncheckedCreateWithoutOfferLettersSentInput = {
   initiatedTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutInitiatorInput
   reviewedTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutGeneratedByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserCreateOrConnectWithoutOfferLettersSentInput = {
@@ -4055,6 +4231,8 @@ export type UserUpdateWithoutOfferLettersGeneratedInput = {
   initiatedTerminations?: Prisma.ContractTerminationUpdateManyWithoutInitiatorNestedInput
   reviewedTerminations?: Prisma.ContractTerminationUpdateManyWithoutReviewerNestedInput
   offerLettersSent?: Prisma.OfferLetterUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOfferLettersGeneratedInput = {
@@ -4094,6 +4272,8 @@ export type UserUncheckedUpdateWithoutOfferLettersGeneratedInput = {
   initiatedTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutInitiatorNestedInput
   reviewedTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutReviewerNestedInput
   offerLettersSent?: Prisma.OfferLetterUncheckedUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUpsertWithoutOfferLettersSentInput = {
@@ -4144,6 +4324,8 @@ export type UserUpdateWithoutOfferLettersSentInput = {
   initiatedTerminations?: Prisma.ContractTerminationUpdateManyWithoutInitiatorNestedInput
   reviewedTerminations?: Prisma.ContractTerminationUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUpdateManyWithoutGeneratedByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOfferLettersSentInput = {
@@ -4183,6 +4365,8 @@ export type UserUncheckedUpdateWithoutOfferLettersSentInput = {
   initiatedTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutInitiatorNestedInput
   reviewedTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedUpdateManyWithoutGeneratedByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserCreateWithoutInitiatedTerminationsInput = {
@@ -4222,6 +4406,8 @@ export type UserCreateWithoutInitiatedTerminationsInput = {
   reviewedTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUncheckedCreateWithoutInitiatedTerminationsInput = {
@@ -4261,6 +4447,8 @@ export type UserUncheckedCreateWithoutInitiatedTerminationsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserCreateOrConnectWithoutInitiatedTerminationsInput = {
@@ -4305,6 +4493,8 @@ export type UserCreateWithoutReviewedTerminationsInput = {
   initiatedTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutInitiatorInput
   offerLettersGenerated?: Prisma.OfferLetterCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUncheckedCreateWithoutReviewedTerminationsInput = {
@@ -4344,6 +4534,8 @@ export type UserUncheckedCreateWithoutReviewedTerminationsInput = {
   initiatedTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutInitiatorInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserCreateOrConnectWithoutReviewedTerminationsInput = {
@@ -4399,6 +4591,8 @@ export type UserUpdateWithoutInitiatedTerminationsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutInitiatedTerminationsInput = {
@@ -4438,6 +4632,8 @@ export type UserUncheckedUpdateWithoutInitiatedTerminationsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUncheckedUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUpsertWithoutReviewedTerminationsInput = {
@@ -4488,6 +4684,8 @@ export type UserUpdateWithoutReviewedTerminationsInput = {
   initiatedTerminations?: Prisma.ContractTerminationUpdateManyWithoutInitiatorNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewedTerminationsInput = {
@@ -4527,6 +4725,8 @@ export type UserUncheckedUpdateWithoutReviewedTerminationsInput = {
   initiatedTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutInitiatorNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUncheckedUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserCreateWithoutPaymentMethodChangeRequestsInput = {
@@ -4566,6 +4766,8 @@ export type UserCreateWithoutPaymentMethodChangeRequestsInput = {
   reviewedTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUncheckedCreateWithoutPaymentMethodChangeRequestsInput = {
@@ -4605,6 +4807,8 @@ export type UserUncheckedCreateWithoutPaymentMethodChangeRequestsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserCreateOrConnectWithoutPaymentMethodChangeRequestsInput = {
@@ -4649,6 +4853,8 @@ export type UserCreateWithoutReviewedChangeRequestsInput = {
   reviewedTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserUncheckedCreateWithoutReviewedChangeRequestsInput = {
@@ -4688,6 +4894,8 @@ export type UserUncheckedCreateWithoutReviewedChangeRequestsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutReviewerInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutGeneratedByInput
   offerLettersSent?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutReviewedByInput
 }
 
 export type UserCreateOrConnectWithoutReviewedChangeRequestsInput = {
@@ -4743,6 +4951,8 @@ export type UserUpdateWithoutPaymentMethodChangeRequestsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPaymentMethodChangeRequestsInput = {
@@ -4782,6 +4992,8 @@ export type UserUncheckedUpdateWithoutPaymentMethodChangeRequestsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUncheckedUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUpsertWithoutReviewedChangeRequestsInput = {
@@ -4832,6 +5044,8 @@ export type UserUpdateWithoutReviewedChangeRequestsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewedChangeRequestsInput = {
@@ -4871,6 +5085,368 @@ export type UserUncheckedUpdateWithoutReviewedChangeRequestsInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUncheckedUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+}
+
+export type UserCreateWithoutTransferRequestsSubmittedInput = {
+  id?: string
+  email: string
+  password?: string | null
+  phone?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  isActive?: boolean
+  isEmailVerified?: boolean
+  googleId?: string | null
+  avatar?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  emailVerifiedAt?: Date | string | null
+  emailVerificationToken?: string | null
+  lastLoginAt?: Date | string | null
+  tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  passwordResets?: Prisma.PasswordResetCreateNestedManyWithoutUserInput
+  suspensions?: Prisma.UserSuspensionCreateNestedManyWithoutUserInput
+  emailPreferences?: Prisma.EmailPreferenceCreateNestedManyWithoutUserInput
+  deviceEndpoints?: Prisma.DeviceEndpointCreateNestedManyWithoutUserInput
+  socials?: Prisma.SocialCreateNestedManyWithoutUserInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutUserInput
+  contracts?: Prisma.ContractCreateNestedManyWithoutBuyerInput
+  soldContracts?: Prisma.ContractCreateNestedManyWithoutSellerInput
+  contractPayments?: Prisma.ContractPaymentCreateNestedManyWithoutPayerInput
+  assignedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutAssigneeInput
+  stepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutApproverInput
+  uploadedDocs?: Prisma.ContractDocumentCreateNestedManyWithoutUploadedByInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutReviewerInput
+  initiatedTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutInitiatorInput
+  reviewedTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutReviewerInput
+  offerLettersGenerated?: Prisma.OfferLetterCreateNestedManyWithoutGeneratedByInput
+  offerLettersSent?: Prisma.OfferLetterCreateNestedManyWithoutSentByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestCreateNestedManyWithoutReviewedByInput
+}
+
+export type UserUncheckedCreateWithoutTransferRequestsSubmittedInput = {
+  id?: string
+  email: string
+  password?: string | null
+  phone?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  isActive?: boolean
+  isEmailVerified?: boolean
+  googleId?: string | null
+  avatar?: string | null
+  tenantId?: string | null
+  walletId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  emailVerifiedAt?: Date | string | null
+  emailVerificationToken?: string | null
+  lastLoginAt?: Date | string | null
+  userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
+  suspensions?: Prisma.UserSuspensionUncheckedCreateNestedManyWithoutUserInput
+  emailPreferences?: Prisma.EmailPreferenceUncheckedCreateNestedManyWithoutUserInput
+  deviceEndpoints?: Prisma.DeviceEndpointUncheckedCreateNestedManyWithoutUserInput
+  socials?: Prisma.SocialUncheckedCreateNestedManyWithoutUserInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutUserInput
+  contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutBuyerInput
+  soldContracts?: Prisma.ContractUncheckedCreateNestedManyWithoutSellerInput
+  contractPayments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutPayerInput
+  assignedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput
+  stepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutApproverInput
+  uploadedDocs?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
+  initiatedTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutInitiatorInput
+  reviewedTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutReviewerInput
+  offerLettersGenerated?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutGeneratedByInput
+  offerLettersSent?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutSentByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutReviewedByInput
+}
+
+export type UserCreateOrConnectWithoutTransferRequestsSubmittedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutTransferRequestsSubmittedInput, Prisma.UserUncheckedCreateWithoutTransferRequestsSubmittedInput>
+}
+
+export type UserCreateWithoutTransferRequestsReviewedInput = {
+  id?: string
+  email: string
+  password?: string | null
+  phone?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  isActive?: boolean
+  isEmailVerified?: boolean
+  googleId?: string | null
+  avatar?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  emailVerifiedAt?: Date | string | null
+  emailVerificationToken?: string | null
+  lastLoginAt?: Date | string | null
+  tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  passwordResets?: Prisma.PasswordResetCreateNestedManyWithoutUserInput
+  suspensions?: Prisma.UserSuspensionCreateNestedManyWithoutUserInput
+  emailPreferences?: Prisma.EmailPreferenceCreateNestedManyWithoutUserInput
+  deviceEndpoints?: Prisma.DeviceEndpointCreateNestedManyWithoutUserInput
+  socials?: Prisma.SocialCreateNestedManyWithoutUserInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutUserInput
+  contracts?: Prisma.ContractCreateNestedManyWithoutBuyerInput
+  soldContracts?: Prisma.ContractCreateNestedManyWithoutSellerInput
+  contractPayments?: Prisma.ContractPaymentCreateNestedManyWithoutPayerInput
+  assignedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutAssigneeInput
+  stepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutApproverInput
+  uploadedDocs?: Prisma.ContractDocumentCreateNestedManyWithoutUploadedByInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutReviewerInput
+  initiatedTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutInitiatorInput
+  reviewedTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutReviewerInput
+  offerLettersGenerated?: Prisma.OfferLetterCreateNestedManyWithoutGeneratedByInput
+  offerLettersSent?: Prisma.OfferLetterCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestCreateNestedManyWithoutRequestedByInput
+}
+
+export type UserUncheckedCreateWithoutTransferRequestsReviewedInput = {
+  id?: string
+  email: string
+  password?: string | null
+  phone?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  isActive?: boolean
+  isEmailVerified?: boolean
+  googleId?: string | null
+  avatar?: string | null
+  tenantId?: string | null
+  walletId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  emailVerifiedAt?: Date | string | null
+  emailVerificationToken?: string | null
+  lastLoginAt?: Date | string | null
+  userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
+  suspensions?: Prisma.UserSuspensionUncheckedCreateNestedManyWithoutUserInput
+  emailPreferences?: Prisma.EmailPreferenceUncheckedCreateNestedManyWithoutUserInput
+  deviceEndpoints?: Prisma.DeviceEndpointUncheckedCreateNestedManyWithoutUserInput
+  socials?: Prisma.SocialUncheckedCreateNestedManyWithoutUserInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutUserInput
+  contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutBuyerInput
+  soldContracts?: Prisma.ContractUncheckedCreateNestedManyWithoutSellerInput
+  contractPayments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutPayerInput
+  assignedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput
+  stepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutApproverInput
+  uploadedDocs?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
+  initiatedTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutInitiatorInput
+  reviewedTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutReviewerInput
+  offerLettersGenerated?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutGeneratedByInput
+  offerLettersSent?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutRequestedByInput
+}
+
+export type UserCreateOrConnectWithoutTransferRequestsReviewedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutTransferRequestsReviewedInput, Prisma.UserUncheckedCreateWithoutTransferRequestsReviewedInput>
+}
+
+export type UserUpsertWithoutTransferRequestsSubmittedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutTransferRequestsSubmittedInput, Prisma.UserUncheckedUpdateWithoutTransferRequestsSubmittedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutTransferRequestsSubmittedInput, Prisma.UserUncheckedCreateWithoutTransferRequestsSubmittedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutTransferRequestsSubmittedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutTransferRequestsSubmittedInput, Prisma.UserUncheckedUpdateWithoutTransferRequestsSubmittedInput>
+}
+
+export type UserUpdateWithoutTransferRequestsSubmittedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  passwordResets?: Prisma.PasswordResetUpdateManyWithoutUserNestedInput
+  suspensions?: Prisma.UserSuspensionUpdateManyWithoutUserNestedInput
+  emailPreferences?: Prisma.EmailPreferenceUpdateManyWithoutUserNestedInput
+  deviceEndpoints?: Prisma.DeviceEndpointUpdateManyWithoutUserNestedInput
+  socials?: Prisma.SocialUpdateManyWithoutUserNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutUserNestedInput
+  contracts?: Prisma.ContractUpdateManyWithoutBuyerNestedInput
+  soldContracts?: Prisma.ContractUpdateManyWithoutSellerNestedInput
+  contractPayments?: Prisma.ContractPaymentUpdateManyWithoutPayerNestedInput
+  assignedSteps?: Prisma.DocumentationStepUpdateManyWithoutAssigneeNestedInput
+  stepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutApproverNestedInput
+  uploadedDocs?: Prisma.ContractDocumentUpdateManyWithoutUploadedByNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutReviewerNestedInput
+  initiatedTerminations?: Prisma.ContractTerminationUpdateManyWithoutInitiatorNestedInput
+  reviewedTerminations?: Prisma.ContractTerminationUpdateManyWithoutReviewerNestedInput
+  offerLettersGenerated?: Prisma.OfferLetterUpdateManyWithoutGeneratedByNestedInput
+  offerLettersSent?: Prisma.OfferLetterUpdateManyWithoutSentByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUpdateManyWithoutReviewedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutTransferRequestsSubmittedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tenantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  walletId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+  suspensions?: Prisma.UserSuspensionUncheckedUpdateManyWithoutUserNestedInput
+  emailPreferences?: Prisma.EmailPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  deviceEndpoints?: Prisma.DeviceEndpointUncheckedUpdateManyWithoutUserNestedInput
+  socials?: Prisma.SocialUncheckedUpdateManyWithoutUserNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutUserNestedInput
+  contracts?: Prisma.ContractUncheckedUpdateManyWithoutBuyerNestedInput
+  soldContracts?: Prisma.ContractUncheckedUpdateManyWithoutSellerNestedInput
+  contractPayments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutPayerNestedInput
+  assignedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  stepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
+  uploadedDocs?: Prisma.ContractDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
+  initiatedTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutInitiatorNestedInput
+  reviewedTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutReviewerNestedInput
+  offerLettersGenerated?: Prisma.OfferLetterUncheckedUpdateManyWithoutGeneratedByNestedInput
+  offerLettersSent?: Prisma.OfferLetterUncheckedUpdateManyWithoutSentByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+}
+
+export type UserUpsertWithoutTransferRequestsReviewedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutTransferRequestsReviewedInput, Prisma.UserUncheckedUpdateWithoutTransferRequestsReviewedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutTransferRequestsReviewedInput, Prisma.UserUncheckedCreateWithoutTransferRequestsReviewedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutTransferRequestsReviewedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutTransferRequestsReviewedInput, Prisma.UserUncheckedUpdateWithoutTransferRequestsReviewedInput>
+}
+
+export type UserUpdateWithoutTransferRequestsReviewedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  passwordResets?: Prisma.PasswordResetUpdateManyWithoutUserNestedInput
+  suspensions?: Prisma.UserSuspensionUpdateManyWithoutUserNestedInput
+  emailPreferences?: Prisma.EmailPreferenceUpdateManyWithoutUserNestedInput
+  deviceEndpoints?: Prisma.DeviceEndpointUpdateManyWithoutUserNestedInput
+  socials?: Prisma.SocialUpdateManyWithoutUserNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutUserNestedInput
+  contracts?: Prisma.ContractUpdateManyWithoutBuyerNestedInput
+  soldContracts?: Prisma.ContractUpdateManyWithoutSellerNestedInput
+  contractPayments?: Prisma.ContractPaymentUpdateManyWithoutPayerNestedInput
+  assignedSteps?: Prisma.DocumentationStepUpdateManyWithoutAssigneeNestedInput
+  stepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutApproverNestedInput
+  uploadedDocs?: Prisma.ContractDocumentUpdateManyWithoutUploadedByNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutReviewerNestedInput
+  initiatedTerminations?: Prisma.ContractTerminationUpdateManyWithoutInitiatorNestedInput
+  reviewedTerminations?: Prisma.ContractTerminationUpdateManyWithoutReviewerNestedInput
+  offerLettersGenerated?: Prisma.OfferLetterUpdateManyWithoutGeneratedByNestedInput
+  offerLettersSent?: Prisma.OfferLetterUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUpdateManyWithoutRequestedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutTransferRequestsReviewedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tenantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  walletId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+  suspensions?: Prisma.UserSuspensionUncheckedUpdateManyWithoutUserNestedInput
+  emailPreferences?: Prisma.EmailPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  deviceEndpoints?: Prisma.DeviceEndpointUncheckedUpdateManyWithoutUserNestedInput
+  socials?: Prisma.SocialUncheckedUpdateManyWithoutUserNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutUserNestedInput
+  contracts?: Prisma.ContractUncheckedUpdateManyWithoutBuyerNestedInput
+  soldContracts?: Prisma.ContractUncheckedUpdateManyWithoutSellerNestedInput
+  contractPayments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutPayerNestedInput
+  assignedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  stepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
+  uploadedDocs?: Prisma.ContractDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
+  initiatedTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutInitiatorNestedInput
+  reviewedTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutReviewerNestedInput
+  offerLettersGenerated?: Prisma.OfferLetterUncheckedUpdateManyWithoutGeneratedByNestedInput
+  offerLettersSent?: Prisma.OfferLetterUncheckedUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutRequestedByNestedInput
 }
 
 export type UserCreateManyTenantInput = {
@@ -4929,6 +5505,8 @@ export type UserUpdateWithoutTenantInput = {
   reviewedTerminations?: Prisma.ContractTerminationUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTenantInput = {
@@ -4968,6 +5546,8 @@ export type UserUncheckedUpdateWithoutTenantInput = {
   reviewedTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutReviewerNestedInput
   offerLettersGenerated?: Prisma.OfferLetterUncheckedUpdateManyWithoutGeneratedByNestedInput
   offerLettersSent?: Prisma.OfferLetterUncheckedUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutReviewedByNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutTenantInput = {
@@ -5015,6 +5595,8 @@ export type UserCountOutputType = {
   reviewedTerminations: number
   offerLettersGenerated: number
   offerLettersSent: number
+  transferRequestsSubmitted: number
+  transferRequestsReviewed: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -5038,6 +5620,8 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   reviewedTerminations?: boolean | UserCountOutputTypeCountReviewedTerminationsArgs
   offerLettersGenerated?: boolean | UserCountOutputTypeCountOfferLettersGeneratedArgs
   offerLettersSent?: boolean | UserCountOutputTypeCountOfferLettersSentArgs
+  transferRequestsSubmitted?: boolean | UserCountOutputTypeCountTransferRequestsSubmittedArgs
+  transferRequestsReviewed?: boolean | UserCountOutputTypeCountTransferRequestsReviewedArgs
 }
 
 /**
@@ -5190,6 +5774,20 @@ export type UserCountOutputTypeCountOfferLettersSentArgs<ExtArgs extends runtime
   where?: Prisma.OfferLetterWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountTransferRequestsSubmittedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PropertyTransferRequestWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountTransferRequestsReviewedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PropertyTransferRequestWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -5231,6 +5829,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   reviewedTerminations?: boolean | Prisma.User$reviewedTerminationsArgs<ExtArgs>
   offerLettersGenerated?: boolean | Prisma.User$offerLettersGeneratedArgs<ExtArgs>
   offerLettersSent?: boolean | Prisma.User$offerLettersSentArgs<ExtArgs>
+  transferRequestsSubmitted?: boolean | Prisma.User$transferRequestsSubmittedArgs<ExtArgs>
+  transferRequestsReviewed?: boolean | Prisma.User$transferRequestsReviewedArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -5280,6 +5880,8 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   reviewedTerminations?: boolean | Prisma.User$reviewedTerminationsArgs<ExtArgs>
   offerLettersGenerated?: boolean | Prisma.User$offerLettersGeneratedArgs<ExtArgs>
   offerLettersSent?: boolean | Prisma.User$offerLettersSentArgs<ExtArgs>
+  transferRequestsSubmitted?: boolean | Prisma.User$transferRequestsSubmittedArgs<ExtArgs>
+  transferRequestsReviewed?: boolean | Prisma.User$transferRequestsReviewedArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -5308,6 +5910,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     reviewedTerminations: Prisma.$ContractTerminationPayload<ExtArgs>[]
     offerLettersGenerated: Prisma.$OfferLetterPayload<ExtArgs>[]
     offerLettersSent: Prisma.$OfferLetterPayload<ExtArgs>[]
+    transferRequestsSubmitted: Prisma.$PropertyTransferRequestPayload<ExtArgs>[]
+    transferRequestsReviewed: Prisma.$PropertyTransferRequestPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -5689,6 +6293,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   reviewedTerminations<T extends Prisma.User$reviewedTerminationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reviewedTerminationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContractTerminationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   offerLettersGenerated<T extends Prisma.User$offerLettersGeneratedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$offerLettersGeneratedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OfferLetterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   offerLettersSent<T extends Prisma.User$offerLettersSentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$offerLettersSentArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OfferLetterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  transferRequestsSubmitted<T extends Prisma.User$transferRequestsSubmittedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$transferRequestsSubmittedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyTransferRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  transferRequestsReviewed<T extends Prisma.User$transferRequestsReviewedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$transferRequestsReviewedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyTransferRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6593,6 +7199,54 @@ export type User$offerLettersSentArgs<ExtArgs extends runtime.Types.Extensions.I
   take?: number
   skip?: number
   distinct?: Prisma.OfferLetterScalarFieldEnum | Prisma.OfferLetterScalarFieldEnum[]
+}
+
+/**
+ * User.transferRequestsSubmitted
+ */
+export type User$transferRequestsSubmittedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PropertyTransferRequest
+   */
+  select?: Prisma.PropertyTransferRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PropertyTransferRequest
+   */
+  omit?: Prisma.PropertyTransferRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PropertyTransferRequestInclude<ExtArgs> | null
+  where?: Prisma.PropertyTransferRequestWhereInput
+  orderBy?: Prisma.PropertyTransferRequestOrderByWithRelationInput | Prisma.PropertyTransferRequestOrderByWithRelationInput[]
+  cursor?: Prisma.PropertyTransferRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PropertyTransferRequestScalarFieldEnum | Prisma.PropertyTransferRequestScalarFieldEnum[]
+}
+
+/**
+ * User.transferRequestsReviewed
+ */
+export type User$transferRequestsReviewedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PropertyTransferRequest
+   */
+  select?: Prisma.PropertyTransferRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PropertyTransferRequest
+   */
+  omit?: Prisma.PropertyTransferRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PropertyTransferRequestInclude<ExtArgs> | null
+  where?: Prisma.PropertyTransferRequestWhereInput
+  orderBy?: Prisma.PropertyTransferRequestOrderByWithRelationInput | Prisma.PropertyTransferRequestOrderByWithRelationInput[]
+  cursor?: Prisma.PropertyTransferRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PropertyTransferRequestScalarFieldEnum | Prisma.PropertyTransferRequestScalarFieldEnum[]
 }
 
 /**

@@ -46,10 +46,23 @@ export const ContractStatus = {
   ACTIVE: 'ACTIVE',
   COMPLETED: 'COMPLETED',
   CANCELLED: 'CANCELLED',
-  TERMINATED: 'TERMINATED'
+  TERMINATED: 'TERMINATED',
+  TRANSFERRED: 'TRANSFERRED'
 } as const
 
 export type ContractStatus = (typeof ContractStatus)[keyof typeof ContractStatus]
+
+
+export const TransferRequestStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED'
+} as const
+
+export type TransferRequestStatus = (typeof TransferRequestStatus)[keyof typeof TransferRequestStatus]
 
 
 export const PhaseStatus = {

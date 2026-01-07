@@ -48,6 +48,16 @@ enum ContractStatus {
   COMPLETED
   CANCELLED
   TERMINATED
+  TRANSFERRED // Contract was transferred to a different property
+}
+
+enum TransferRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  IN_PROGRESS
+  COMPLETED
+  FAILED
 }
 
 enum PhaseStatus {
@@ -292,6 +302,10 @@ model User {
   offerLettersGenerated OfferLetter[] @relation("OfferLetterGenerator")
   offerLettersSent      OfferLetter[] @relation("OfferLetterSender")
 
+  // Property transfer requests
+  transferRequestsSubmitted PropertyTransferRequest[] @relation("TransferRequestor")
+  transferRequestsReviewed  PropertyTransferRequest[] @relation("TransferReviewer")
+
   @@index([email])
   @@index([tenantId])
   @@map("users")
@@ -380,6 +394,9 @@ model Tenant {
   eventTypes     EventType[]
   eventHandlers  EventHandler[]
   workflowEvents WorkflowEvent[]
+
+  // Property transfer requests
+  propertyTransferRequests PropertyTransferRequest[]
 
   @@index([subdomain])
   @@map("tenants")
@@ -779,6 +796,9 @@ model PropertyUnit {
   // Relations
   contracts Contract[]
 
+  // Transfer requests targeting this unit
+  transferRequests PropertyTransferRequest[]
+
   @@unique([variantId, unitNumber])
   @@index([variantId])
   @@index([status])
@@ -1082,6 +1102,16 @@ model Contract {
 
   // Payment method change requests for this contract
   paymentMethodChangeRequests PaymentMethodChangeRequest[]
+
+  // Transfer tracking - when a contract is transferred to a different property
+  transferredFromId String?   @unique // Source contract if this was created via transfer
+  transferredFrom   Contract? @relation("ContractTransfer", fields: [transferredFromId], references: [id])
+  transferredTo     Contract? @relation("ContractTransfer")
+
+  // Transfer requests where this contract is the source
+  outgoingTransferRequests PropertyTransferRequest[] @relation("SourceContract")
+  // Transfer requests where this contract is the target (created after approval)
+  incomingTransferRequests PropertyTransferRequest[] @relation("TargetContract")
 
   @@index([tenantId])
   @@index([propertyUnitId])
@@ -1973,4 +2003,64 @@ model DomainEvent {
   @@index([queueName])
   @@index([occurredAt])
   @@map("domain_events")
+}
+
+// =============================================================================
+// Property Transfer Request
+// =============================================================================
+// Allows a buyer to request transferring their contract to a different property
+// while preserving payments, completed workflow steps, and progress.
+// =============================================================================
+
+model PropertyTransferRequest {
+  id       String @id @default(cuid())
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  // Source contract being transferred
+  sourceContractId String
+  sourceContract   Contract @relation("SourceContract", fields: [sourceContractId], references: [id], onDelete: Cascade)
+
+  // Target property unit
+  targetPropertyUnitId String
+  targetPropertyUnit   PropertyUnit @relation(fields: [targetPropertyUnitId], references: [id])
+
+  // Requestor (buyer) and reviewer (admin)
+  requestedById String
+  requestedBy   User    @relation("TransferRequestor", fields: [requestedById], references: [id])
+  reviewedById  String?
+  reviewedBy    User?   @relation("TransferReviewer", fields: [reviewedById], references: [id])
+
+  // Status and workflow
+  status TransferRequestStatus @default(PENDING)
+
+  // Request details
+  reason String? @db.Text // Buyer's reason for transfer
+
+  // Review details
+  reviewNotes             String? @db.Text // Admin notes on decision
+  priceAdjustmentHandling String? // How to handle price difference: ADD_TO_MORTGAGE, REQUIRE_PAYMENT, CREDIT_BUYER
+
+  // Computed values
+  sourceTotalAmount Float? // Original contract total
+  targetTotalAmount Float? // New contract total (based on target property)
+  priceAdjustment   Float? // Difference (positive = buyer owes more)
+  paymentsMigrated  Int?   // Number of payments migrated
+
+  // Result - new contract created after approval
+  targetContractId String?
+  targetContract   Contract? @relation("TargetContract", fields: [targetContractId], references: [id])
+
+  // Timestamps
+  createdAt   DateTime  @default(now())
+  reviewedAt  DateTime?
+  completedAt DateTime?
+  updatedAt   DateTime  @updatedAt
+
+  @@index([tenantId])
+  @@index([sourceContractId])
+  @@index([targetPropertyUnitId])
+  @@index([requestedById])
+  @@index([status])
+  @@map("property_transfer_requests")
 }

@@ -436,7 +436,8 @@ export const ModelName = {
   EventHandler: 'EventHandler',
   WorkflowEvent: 'WorkflowEvent',
   EventHandlerExecution: 'EventHandlerExecution',
-  DomainEvent: 'DomainEvent'
+  DomainEvent: 'DomainEvent',
+  PropertyTransferRequest: 'PropertyTransferRequest'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -452,7 +453,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "contract" | "contractPhase" | "documentationStep" | "documentationStepDocument" | "documentationStepApproval" | "contractInstallment" | "contractPayment" | "contractDocument" | "contractEvent" | "documentTemplate" | "offerLetter" | "contractTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "workflowEvent" | "eventHandlerExecution" | "domainEvent"
+    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "contract" | "contractPhase" | "documentationStep" | "documentationStepDocument" | "documentationStepApproval" | "contractInstallment" | "contractPayment" | "contractDocument" | "contractEvent" | "documentTemplate" | "offerLetter" | "contractTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "workflowEvent" | "eventHandlerExecution" | "domainEvent" | "propertyTransferRequest"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -3954,6 +3955,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    PropertyTransferRequest: {
+      payload: Prisma.$PropertyTransferRequestPayload<ExtArgs>
+      fields: Prisma.PropertyTransferRequestFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PropertyTransferRequestFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropertyTransferRequestPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PropertyTransferRequestFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropertyTransferRequestPayload>
+        }
+        findFirst: {
+          args: Prisma.PropertyTransferRequestFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropertyTransferRequestPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PropertyTransferRequestFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropertyTransferRequestPayload>
+        }
+        findMany: {
+          args: Prisma.PropertyTransferRequestFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropertyTransferRequestPayload>[]
+        }
+        create: {
+          args: Prisma.PropertyTransferRequestCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropertyTransferRequestPayload>
+        }
+        createMany: {
+          args: Prisma.PropertyTransferRequestCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.PropertyTransferRequestDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropertyTransferRequestPayload>
+        }
+        update: {
+          args: Prisma.PropertyTransferRequestUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropertyTransferRequestPayload>
+        }
+        deleteMany: {
+          args: Prisma.PropertyTransferRequestDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PropertyTransferRequestUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.PropertyTransferRequestUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PropertyTransferRequestPayload>
+        }
+        aggregate: {
+          args: Prisma.PropertyTransferRequestAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePropertyTransferRequest>
+        }
+        groupBy: {
+          args: Prisma.PropertyTransferRequestGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PropertyTransferRequestGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PropertyTransferRequestCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PropertyTransferRequestCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -4506,7 +4573,8 @@ export const ContractScalarFieldEnum = {
   signedAt: 'signedAt',
   terminatedAt: 'terminatedAt',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  transferredFromId: 'transferredFromId'
 } as const
 
 export type ContractScalarFieldEnum = (typeof ContractScalarFieldEnum)[keyof typeof ContractScalarFieldEnum]
@@ -4942,6 +5010,31 @@ export const DomainEventScalarFieldEnum = {
 export type DomainEventScalarFieldEnum = (typeof DomainEventScalarFieldEnum)[keyof typeof DomainEventScalarFieldEnum]
 
 
+export const PropertyTransferRequestScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  sourceContractId: 'sourceContractId',
+  targetPropertyUnitId: 'targetPropertyUnitId',
+  requestedById: 'requestedById',
+  reviewedById: 'reviewedById',
+  status: 'status',
+  reason: 'reason',
+  reviewNotes: 'reviewNotes',
+  priceAdjustmentHandling: 'priceAdjustmentHandling',
+  sourceTotalAmount: 'sourceTotalAmount',
+  targetTotalAmount: 'targetTotalAmount',
+  priceAdjustment: 'priceAdjustment',
+  paymentsMigrated: 'paymentsMigrated',
+  targetContractId: 'targetContractId',
+  createdAt: 'createdAt',
+  reviewedAt: 'reviewedAt',
+  completedAt: 'completedAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PropertyTransferRequestScalarFieldEnum = (typeof PropertyTransferRequestScalarFieldEnum)[keyof typeof PropertyTransferRequestScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -5344,7 +5437,8 @@ export const ContractOrderByRelevanceFieldEnum = {
   title: 'title',
   description: 'description',
   contractType: 'contractType',
-  currentPhaseId: 'currentPhaseId'
+  currentPhaseId: 'currentPhaseId',
+  transferredFromId: 'transferredFromId'
 } as const
 
 export type ContractOrderByRelevanceFieldEnum = (typeof ContractOrderByRelevanceFieldEnum)[keyof typeof ContractOrderByRelevanceFieldEnum]
@@ -5606,6 +5700,22 @@ export const DomainEventOrderByRelevanceFieldEnum = {
 export type DomainEventOrderByRelevanceFieldEnum = (typeof DomainEventOrderByRelevanceFieldEnum)[keyof typeof DomainEventOrderByRelevanceFieldEnum]
 
 
+export const PropertyTransferRequestOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  sourceContractId: 'sourceContractId',
+  targetPropertyUnitId: 'targetPropertyUnitId',
+  requestedById: 'requestedById',
+  reviewedById: 'reviewedById',
+  reason: 'reason',
+  reviewNotes: 'reviewNotes',
+  priceAdjustmentHandling: 'priceAdjustmentHandling',
+  targetContractId: 'targetContractId'
+} as const
+
+export type PropertyTransferRequestOrderByRelevanceFieldEnum = (typeof PropertyTransferRequestOrderByRelevanceFieldEnum)[keyof typeof PropertyTransferRequestOrderByRelevanceFieldEnum]
+
+
 
 /**
  * Field references
@@ -5835,6 +5945,13 @@ export type EnumWorkflowEventStatusFieldRefInput<$PrismaModel> = FieldRefInputTy
 export type EnumExecutionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExecutionStatus'>
     
 
+
+/**
+ * Reference to a field of type 'TransferRequestStatus'
+ */
+export type EnumTransferRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransferRequestStatus'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -5983,6 +6100,7 @@ export type GlobalOmitConfig = {
   workflowEvent?: Prisma.WorkflowEventOmit
   eventHandlerExecution?: Prisma.EventHandlerExecutionOmit
   domainEvent?: Prisma.DomainEventOmit
+  propertyTransferRequest?: Prisma.PropertyTransferRequestOmit
 }
 
 /* Types for Logging */

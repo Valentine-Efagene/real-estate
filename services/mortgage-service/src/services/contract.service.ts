@@ -136,10 +136,12 @@ function getNextState(currentState: ContractStatus, trigger: string): ContractSt
         ACTIVE: {
             COMPLETE: 'COMPLETED' as ContractStatus,
             TERMINATE: 'TERMINATED' as ContractStatus,
+            TRANSFER: 'TRANSFERRED' as ContractStatus,
         },
         COMPLETED: {},
         CANCELLED: {},
         TERMINATED: {},
+        TRANSFERRED: {},
     };
 
     return transitions[currentState]?.[trigger] ?? null;

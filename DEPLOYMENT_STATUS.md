@@ -77,6 +77,7 @@ aws --endpoint-url=http://localhost:4566 lambda list-functions --query 'Function
 ## E2E Tests Against Deployed APIs
 
 Tests can run in two modes:
+
 - **LOCAL** (default): Uses supertest in-process - fast, no network
 - **DEPLOYED**: Uses fetch against LocalStack REST APIs - tests real Lambda+API Gateway
 
