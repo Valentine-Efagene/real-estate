@@ -419,13 +419,13 @@ export const ModelName = {
   PaymentMethodPhaseDocument: 'PaymentMethodPhaseDocument',
   Contract: 'Contract',
   ContractPhase: 'ContractPhase',
+  ContractEvent: 'ContractEvent',
   DocumentationStep: 'DocumentationStep',
   DocumentationStepDocument: 'DocumentationStepDocument',
   DocumentationStepApproval: 'DocumentationStepApproval',
   ContractInstallment: 'ContractInstallment',
   ContractPayment: 'ContractPayment',
   ContractDocument: 'ContractDocument',
-  ContractEvent: 'ContractEvent',
   DocumentTemplate: 'DocumentTemplate',
   OfferLetter: 'OfferLetter',
   ContractTermination: 'ContractTermination',
@@ -454,7 +454,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "contract" | "contractPhase" | "documentationStep" | "documentationStepDocument" | "documentationStepApproval" | "contractInstallment" | "contractPayment" | "contractDocument" | "contractEvent" | "documentTemplate" | "offerLetter" | "contractTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "workflowEvent" | "eventHandlerExecution" | "domainEvent" | "propertyTransferRequest" | "approvalRequest"
+    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "contract" | "contractPhase" | "contractEvent" | "documentationStep" | "documentationStepDocument" | "documentationStepApproval" | "contractInstallment" | "contractPayment" | "contractDocument" | "documentTemplate" | "offerLetter" | "contractTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "workflowEvent" | "eventHandlerExecution" | "domainEvent" | "propertyTransferRequest" | "approvalRequest"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2768,6 +2768,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ContractEvent: {
+      payload: Prisma.$ContractEventPayload<ExtArgs>
+      fields: Prisma.ContractEventFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ContractEventFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractEventPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ContractEventFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractEventPayload>
+        }
+        findFirst: {
+          args: Prisma.ContractEventFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractEventPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ContractEventFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractEventPayload>
+        }
+        findMany: {
+          args: Prisma.ContractEventFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractEventPayload>[]
+        }
+        create: {
+          args: Prisma.ContractEventCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractEventPayload>
+        }
+        createMany: {
+          args: Prisma.ContractEventCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.ContractEventDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractEventPayload>
+        }
+        update: {
+          args: Prisma.ContractEventUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractEventPayload>
+        }
+        deleteMany: {
+          args: Prisma.ContractEventDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ContractEventUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.ContractEventUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractEventPayload>
+        }
+        aggregate: {
+          args: Prisma.ContractEventAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateContractEvent>
+        }
+        groupBy: {
+          args: Prisma.ContractEventGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ContractEventGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ContractEventCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ContractEventCountAggregateOutputType> | number
+        }
+      }
+    }
     DocumentationStep: {
       payload: Prisma.$DocumentationStepPayload<ExtArgs>
       fields: Prisma.DocumentationStepFieldRefs
@@ -3161,72 +3227,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.ContractDocumentCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.ContractDocumentCountAggregateOutputType> | number
-        }
-      }
-    }
-    ContractEvent: {
-      payload: Prisma.$ContractEventPayload<ExtArgs>
-      fields: Prisma.ContractEventFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.ContractEventFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractEventPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.ContractEventFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractEventPayload>
-        }
-        findFirst: {
-          args: Prisma.ContractEventFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractEventPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.ContractEventFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractEventPayload>
-        }
-        findMany: {
-          args: Prisma.ContractEventFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractEventPayload>[]
-        }
-        create: {
-          args: Prisma.ContractEventCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractEventPayload>
-        }
-        createMany: {
-          args: Prisma.ContractEventCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        delete: {
-          args: Prisma.ContractEventDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractEventPayload>
-        }
-        update: {
-          args: Prisma.ContractEventUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractEventPayload>
-        }
-        deleteMany: {
-          args: Prisma.ContractEventDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.ContractEventUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        upsert: {
-          args: Prisma.ContractEventUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractEventPayload>
-        }
-        aggregate: {
-          args: Prisma.ContractEventAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateContractEvent>
-        }
-        groupBy: {
-          args: Prisma.ContractEventGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ContractEventGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.ContractEventCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ContractEventCountAggregateOutputType> | number
         }
       }
     }
@@ -4685,6 +4685,23 @@ export const ContractPhaseScalarFieldEnum = {
 export type ContractPhaseScalarFieldEnum = (typeof ContractPhaseScalarFieldEnum)[keyof typeof ContractPhaseScalarFieldEnum]
 
 
+export const ContractEventScalarFieldEnum = {
+  id: 'id',
+  contractId: 'contractId',
+  eventType: 'eventType',
+  eventGroup: 'eventGroup',
+  fromState: 'fromState',
+  toState: 'toState',
+  trigger: 'trigger',
+  data: 'data',
+  actorId: 'actorId',
+  actorType: 'actorType',
+  occurredAt: 'occurredAt'
+} as const
+
+export type ContractEventScalarFieldEnum = (typeof ContractEventScalarFieldEnum)[keyof typeof ContractEventScalarFieldEnum]
+
+
 export const DocumentationStepScalarFieldEnum = {
   id: 'id',
   phaseId: 'phaseId',
@@ -4795,23 +4812,6 @@ export const ContractDocumentScalarFieldEnum = {
 } as const
 
 export type ContractDocumentScalarFieldEnum = (typeof ContractDocumentScalarFieldEnum)[keyof typeof ContractDocumentScalarFieldEnum]
-
-
-export const ContractEventScalarFieldEnum = {
-  id: 'id',
-  contractId: 'contractId',
-  eventType: 'eventType',
-  eventGroup: 'eventGroup',
-  fromState: 'fromState',
-  toState: 'toState',
-  trigger: 'trigger',
-  data: 'data',
-  actorId: 'actorId',
-  actorType: 'actorType',
-  occurredAt: 'occurredAt'
-} as const
-
-export type ContractEventScalarFieldEnum = (typeof ContractEventScalarFieldEnum)[keyof typeof ContractEventScalarFieldEnum]
 
 
 export const DocumentTemplateScalarFieldEnum = {
@@ -5550,6 +5550,21 @@ export const ContractPhaseOrderByRelevanceFieldEnum = {
 export type ContractPhaseOrderByRelevanceFieldEnum = (typeof ContractPhaseOrderByRelevanceFieldEnum)[keyof typeof ContractPhaseOrderByRelevanceFieldEnum]
 
 
+export const ContractEventOrderByRelevanceFieldEnum = {
+  id: 'id',
+  contractId: 'contractId',
+  eventType: 'eventType',
+  eventGroup: 'eventGroup',
+  fromState: 'fromState',
+  toState: 'toState',
+  trigger: 'trigger',
+  actorId: 'actorId',
+  actorType: 'actorType'
+} as const
+
+export type ContractEventOrderByRelevanceFieldEnum = (typeof ContractEventOrderByRelevanceFieldEnum)[keyof typeof ContractEventOrderByRelevanceFieldEnum]
+
+
 export const DocumentationStepOrderByRelevanceFieldEnum = {
   id: 'id',
   phaseId: 'phaseId',
@@ -5617,21 +5632,6 @@ export const ContractDocumentOrderByRelevanceFieldEnum = {
 } as const
 
 export type ContractDocumentOrderByRelevanceFieldEnum = (typeof ContractDocumentOrderByRelevanceFieldEnum)[keyof typeof ContractDocumentOrderByRelevanceFieldEnum]
-
-
-export const ContractEventOrderByRelevanceFieldEnum = {
-  id: 'id',
-  contractId: 'contractId',
-  eventType: 'eventType',
-  eventGroup: 'eventGroup',
-  fromState: 'fromState',
-  toState: 'toState',
-  trigger: 'trigger',
-  actorId: 'actorId',
-  actorType: 'actorType'
-} as const
-
-export type ContractEventOrderByRelevanceFieldEnum = (typeof ContractEventOrderByRelevanceFieldEnum)[keyof typeof ContractEventOrderByRelevanceFieldEnum]
 
 
 export const DocumentTemplateOrderByRelevanceFieldEnum = {
@@ -6213,13 +6213,13 @@ export type GlobalOmitConfig = {
   paymentMethodPhaseDocument?: Prisma.PaymentMethodPhaseDocumentOmit
   contract?: Prisma.ContractOmit
   contractPhase?: Prisma.ContractPhaseOmit
+  contractEvent?: Prisma.ContractEventOmit
   documentationStep?: Prisma.DocumentationStepOmit
   documentationStepDocument?: Prisma.DocumentationStepDocumentOmit
   documentationStepApproval?: Prisma.DocumentationStepApprovalOmit
   contractInstallment?: Prisma.ContractInstallmentOmit
   contractPayment?: Prisma.ContractPaymentOmit
   contractDocument?: Prisma.ContractDocumentOmit
-  contractEvent?: Prisma.ContractEventOmit
   documentTemplate?: Prisma.DocumentTemplateOmit
   offerLetter?: Prisma.OfferLetterOmit
   contractTermination?: Prisma.ContractTerminationOmit

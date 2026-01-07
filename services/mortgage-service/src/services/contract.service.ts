@@ -340,6 +340,43 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
                 }
             }
 
+            // Audit trail (permanent record)
+            await tx.contractEvent.create({
+                data: {
+                    contractId: created.id,
+                    eventType: 'CONTRACT_CREATED',
+                    eventGroup: 'STATE_CHANGE',
+                    data: {
+                        contractNumber: created.contractNumber,
+                        buyerId: data.buyerId,
+                        propertyUnitId: data.propertyUnitId,
+                        totalAmount,
+                        contractType: data.contractType,
+                    },
+                    actorId: data.buyerId,
+                    actorType: 'USER',
+                },
+            });
+
+            // Inter-service communication (triggers notifications)
+            await tx.domainEvent.create({
+                data: {
+                    id: uuidv4(),
+                    eventType: 'CONTRACT.CREATED',
+                    aggregateType: 'Contract',
+                    aggregateId: created.id,
+                    queueName: 'notifications',
+                    payload: JSON.stringify({
+                        contractId: created.id,
+                        contractNumber: created.contractNumber,
+                        buyerId: data.buyerId,
+                        propertyUnitId: data.propertyUnitId,
+                        totalAmount,
+                    }),
+                    actorId: data.buyerId,
+                },
+            });
+
             return created;
         });
 

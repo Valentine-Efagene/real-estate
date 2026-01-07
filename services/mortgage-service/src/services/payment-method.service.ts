@@ -11,10 +11,6 @@ import type {
     UpdateDocumentRequirementInput,
     ClonePaymentMethodInput,
 } from '../validators/payment-method.validator';
-import type {
-    AttachHandlerToStepInput,
-    UpdateStepAttachmentInput,
-} from '../validators/event-config.validator';
 
 type AnyPrismaClient = PrismaClient;
 
@@ -39,11 +35,6 @@ export interface PaymentMethodService {
     addDocumentRequirement(phaseId: string, data: AddDocumentRequirementInput): Promise<any>;
     updateDocumentRequirement(documentId: string, data: UpdateDocumentRequirementInput): Promise<any>;
     deleteDocumentRequirement(documentId: string): Promise<{ success: boolean }>;
-    // Step handler attachment CRUD
-    attachHandlerToStep(stepId: string, data: AttachHandlerToStepInput): Promise<any>;
-    listStepHandlers(stepId: string): Promise<any[]>;
-    updateStepAttachment(attachmentId: string, data: UpdateStepAttachmentInput): Promise<any>;
-    detachHandlerFromStep(attachmentId: string): Promise<{ success: boolean }>;
     // Property linking
     linkToProperty(methodId: string, data: LinkToPropertyInput): Promise<any>;
     unlinkFromProperty(methodId: string, propertyId: string): Promise<{ success: boolean }>;
@@ -644,142 +635,6 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
     }
 
     // ============================================================
-    // Step Handler Attachment CRUD Operations
-    // ============================================================
-
-    /**
-     * Attach an event handler to a step template
-     * When this step transitions (complete, reject, etc.), the handler fires
-     */
-    async function attachHandlerToStep(stepId: string, data: AttachHandlerToStepInput) {
-        // Verify step exists
-        const step = await prisma.paymentMethodPhaseStep.findUnique({
-            where: { id: stepId },
-        });
-
-        if (!step) {
-            throw new AppError(404, 'Step not found');
-        }
-
-        // Verify handler exists
-        const handler = await prisma.eventHandler.findUnique({
-            where: { id: data.handlerId },
-        });
-
-        if (!handler) {
-            throw new AppError(404, 'Event handler not found');
-        }
-
-        // Create the attachment
-        const attachment = await prisma.stepEventAttachment.create({
-            data: {
-                stepId,
-                handlerId: data.handlerId,
-                trigger: data.trigger as StepTrigger,
-                priority: data.priority ?? 100,
-                enabled: data.enabled ?? true,
-            },
-            include: {
-                handler: {
-                    select: {
-                        id: true,
-                        name: true,
-                        handlerType: true,
-                        enabled: true,
-                    },
-                },
-            },
-        });
-
-        return attachment;
-    }
-
-    /**
-     * List all handler attachments for a step
-     */
-    async function listStepHandlers(stepId: string) {
-        const step = await prisma.paymentMethodPhaseStep.findUnique({
-            where: { id: stepId },
-        });
-
-        if (!step) {
-            throw new AppError(404, 'Step not found');
-        }
-
-        const attachments = await prisma.stepEventAttachment.findMany({
-            where: { stepId },
-            include: {
-                handler: {
-                    select: {
-                        id: true,
-                        name: true,
-                        description: true,
-                        handlerType: true,
-                        config: true,
-                        enabled: true,
-                    },
-                },
-            },
-            orderBy: [{ trigger: 'asc' }, { priority: 'asc' }],
-        });
-
-        return attachments;
-    }
-
-    /**
-     * Update a step handler attachment (change priority, enable/disable)
-     */
-    async function updateStepAttachment(attachmentId: string, data: UpdateStepAttachmentInput) {
-        const attachment = await prisma.stepEventAttachment.findUnique({
-            where: { id: attachmentId },
-        });
-
-        if (!attachment) {
-            throw new AppError(404, 'Attachment not found');
-        }
-
-        const updateData: Record<string, any> = {};
-        if (data.priority !== undefined) updateData.priority = data.priority;
-        if (data.enabled !== undefined) updateData.enabled = data.enabled;
-
-        const updated = await prisma.stepEventAttachment.update({
-            where: { id: attachmentId },
-            data: updateData,
-            include: {
-                handler: {
-                    select: {
-                        id: true,
-                        name: true,
-                        handlerType: true,
-                        enabled: true,
-                    },
-                },
-            },
-        });
-
-        return updated;
-    }
-
-    /**
-     * Detach a handler from a step
-     */
-    async function detachHandlerFromStep(attachmentId: string) {
-        const attachment = await prisma.stepEventAttachment.findUnique({
-            where: { id: attachmentId },
-        });
-
-        if (!attachment) {
-            throw new AppError(404, 'Attachment not found');
-        }
-
-        await prisma.stepEventAttachment.delete({
-            where: { id: attachmentId },
-        });
-
-        return { success: true };
-    }
-
-    // ============================================================
     // Clone Template
     // ============================================================
 
@@ -949,11 +804,6 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
         addDocumentRequirement,
         updateDocumentRequirement,
         deleteDocumentRequirement,
-        // Step handler attachment CRUD
-        attachHandlerToStep,
-        listStepHandlers,
-        updateStepAttachment,
-        detachHandlerFromStep,
         // Property linking
         linkToProperty,
         unlinkFromProperty,

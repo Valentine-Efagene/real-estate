@@ -204,6 +204,42 @@ enum OfferLetterStatus {
   CANCELLED
 }
 
+enum ContractEventType {
+  CONTRACT_CREATED
+  CONTRACT_STATE_CHANGED
+  PHASE_ACTIVATED
+  PHASE_COMPLETED
+  STEP_COMPLETED
+  STEP_REJECTED
+  DOCUMENT_SUBMITTED
+  DOCUMENT_APPROVED
+  DOCUMENT_REJECTED
+  PAYMENT_INITIATED
+  PAYMENT_COMPLETED
+  PAYMENT_FAILED
+  INSTALLMENTS_GENERATED
+  CONTRACT_SIGNED
+  CONTRACT_TERMINATED
+  CONTRACT_TRANSFERRED
+  UNDERWRITING_COMPLETED
+  OFFER_LETTER_GENERATED
+}
+
+enum ContractEventGroup {
+  STATE_CHANGE
+  PAYMENT
+  DOCUMENT
+  NOTIFICATION
+  WORKFLOW
+}
+
+enum EventActorType {
+  USER
+  SYSTEM
+  WEBHOOK
+  ADMIN
+}
+
 // =============================================================================
 // EVENT-DRIVEN WORKFLOW ENUMS
 // =============================================================================
@@ -1120,6 +1156,9 @@ model Contract {
   // Transfer requests where this contract is the target (created after approval)
   incomingTransferRequests PropertyTransferRequest[] @relation("TargetContract")
 
+  // Audit trail
+  events ContractEvent[]
+
   @@index([tenantId])
   @@index([propertyUnitId])
   @@index([buyerId])
@@ -1209,6 +1248,44 @@ model ContractPhase {
   @@index([order])
   @@index([currentStepId])
   @@map("contract_phases")
+}
+
+// =============================================================================
+// CONTRACT EVENTS - Audit trail for contract lifecycle
+// =============================================================================
+// Tracks all significant events in a contract's lifecycle for audit, compliance,
+// and debugging. Unlike DomainEvent (which is for inter-service communication),
+// ContractEvent is purely for historical tracking and state machine transitions.
+// =============================================================================
+model ContractEvent {
+  id         String   @id @default(cuid())
+  contractId String
+  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+
+  // Event classification
+  eventType  ContractEventType
+  eventGroup ContractEventGroup?
+
+  // For state transitions (optional - only populated for CONTRACT_STATE_CHANGED events)
+  fromState String?
+  toState   String?
+  trigger   String?
+
+  // Event payload (all event-specific data)
+  data Json?
+
+  // Actor tracking
+  actorId   String?
+  actorType EventActorType?
+
+  // Timing
+  occurredAt DateTime @default(now())
+
+  @@index([contractId])
+  @@index([eventType])
+  @@index([eventGroup])
+  @@index([occurredAt])
+  @@map("contract_events")
 }
 
 // Steps within a DOCUMENTATION phase (FSM for document collection/approval)

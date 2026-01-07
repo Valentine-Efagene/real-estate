@@ -216,6 +216,11 @@ export type Contract = Prisma.ContractModel
  */
 export type ContractPhase = Prisma.ContractPhaseModel
 /**
+ * Model ContractEvent
+ * 
+ */
+export type ContractEvent = Prisma.ContractEventModel
+/**
  * Model DocumentationStep
  * 
  */
@@ -245,11 +250,6 @@ export type ContractPayment = Prisma.ContractPaymentModel
  * 
  */
 export type ContractDocument = Prisma.ContractDocumentModel
-/**
- * Model ContractEvent
- * 
- */
-export type ContractEvent = Prisma.ContractEventModel
 /**
  * Model DocumentTemplate
  * 

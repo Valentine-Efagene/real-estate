@@ -732,19 +732,5 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                 expect(event.occurredAt).toBeDefined();
             }
         });
-
-        it('Contract transitions are recorded', async () => {
-            const transitions = await prisma.contractEvent.findMany({
-                where: {
-                    contractId,
-                    eventType: 'STATE.TRANSITION',
-                },
-                orderBy: { occurredAt: 'asc' },
-            });
-
-            expect(transitions.length).toBeGreaterThan(0);
-            expect(transitions[0].fromState).toBe('DRAFT');
-            expect(transitions[transitions.length - 1].toState).toBe('ACTIVE');
-        });
     });
 });

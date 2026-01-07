@@ -86,13 +86,13 @@ export const ModelName = {
   PaymentMethodPhaseDocument: 'PaymentMethodPhaseDocument',
   Contract: 'Contract',
   ContractPhase: 'ContractPhase',
+  ContractEvent: 'ContractEvent',
   DocumentationStep: 'DocumentationStep',
   DocumentationStepDocument: 'DocumentationStepDocument',
   DocumentationStepApproval: 'DocumentationStepApproval',
   ContractInstallment: 'ContractInstallment',
   ContractPayment: 'ContractPayment',
   ContractDocument: 'ContractDocument',
-  ContractEvent: 'ContractEvent',
   DocumentTemplate: 'DocumentTemplate',
   OfferLetter: 'OfferLetter',
   ContractTermination: 'ContractTermination',
@@ -682,6 +682,23 @@ export const ContractPhaseScalarFieldEnum = {
 export type ContractPhaseScalarFieldEnum = (typeof ContractPhaseScalarFieldEnum)[keyof typeof ContractPhaseScalarFieldEnum]
 
 
+export const ContractEventScalarFieldEnum = {
+  id: 'id',
+  contractId: 'contractId',
+  eventType: 'eventType',
+  eventGroup: 'eventGroup',
+  fromState: 'fromState',
+  toState: 'toState',
+  trigger: 'trigger',
+  data: 'data',
+  actorId: 'actorId',
+  actorType: 'actorType',
+  occurredAt: 'occurredAt'
+} as const
+
+export type ContractEventScalarFieldEnum = (typeof ContractEventScalarFieldEnum)[keyof typeof ContractEventScalarFieldEnum]
+
+
 export const DocumentationStepScalarFieldEnum = {
   id: 'id',
   phaseId: 'phaseId',
@@ -792,23 +809,6 @@ export const ContractDocumentScalarFieldEnum = {
 } as const
 
 export type ContractDocumentScalarFieldEnum = (typeof ContractDocumentScalarFieldEnum)[keyof typeof ContractDocumentScalarFieldEnum]
-
-
-export const ContractEventScalarFieldEnum = {
-  id: 'id',
-  contractId: 'contractId',
-  eventType: 'eventType',
-  eventGroup: 'eventGroup',
-  fromState: 'fromState',
-  toState: 'toState',
-  trigger: 'trigger',
-  data: 'data',
-  actorId: 'actorId',
-  actorType: 'actorType',
-  occurredAt: 'occurredAt'
-} as const
-
-export type ContractEventScalarFieldEnum = (typeof ContractEventScalarFieldEnum)[keyof typeof ContractEventScalarFieldEnum]
 
 
 export const DocumentTemplateScalarFieldEnum = {
@@ -1547,6 +1547,21 @@ export const ContractPhaseOrderByRelevanceFieldEnum = {
 export type ContractPhaseOrderByRelevanceFieldEnum = (typeof ContractPhaseOrderByRelevanceFieldEnum)[keyof typeof ContractPhaseOrderByRelevanceFieldEnum]
 
 
+export const ContractEventOrderByRelevanceFieldEnum = {
+  id: 'id',
+  contractId: 'contractId',
+  eventType: 'eventType',
+  eventGroup: 'eventGroup',
+  fromState: 'fromState',
+  toState: 'toState',
+  trigger: 'trigger',
+  actorId: 'actorId',
+  actorType: 'actorType'
+} as const
+
+export type ContractEventOrderByRelevanceFieldEnum = (typeof ContractEventOrderByRelevanceFieldEnum)[keyof typeof ContractEventOrderByRelevanceFieldEnum]
+
+
 export const DocumentationStepOrderByRelevanceFieldEnum = {
   id: 'id',
   phaseId: 'phaseId',
@@ -1614,21 +1629,6 @@ export const ContractDocumentOrderByRelevanceFieldEnum = {
 } as const
 
 export type ContractDocumentOrderByRelevanceFieldEnum = (typeof ContractDocumentOrderByRelevanceFieldEnum)[keyof typeof ContractDocumentOrderByRelevanceFieldEnum]
-
-
-export const ContractEventOrderByRelevanceFieldEnum = {
-  id: 'id',
-  contractId: 'contractId',
-  eventType: 'eventType',
-  eventGroup: 'eventGroup',
-  fromState: 'fromState',
-  toState: 'toState',
-  trigger: 'trigger',
-  actorId: 'actorId',
-  actorType: 'actorType'
-} as const
-
-export type ContractEventOrderByRelevanceFieldEnum = (typeof ContractEventOrderByRelevanceFieldEnum)[keyof typeof ContractEventOrderByRelevanceFieldEnum]
 
 
 export const DocumentTemplateOrderByRelevanceFieldEnum = {

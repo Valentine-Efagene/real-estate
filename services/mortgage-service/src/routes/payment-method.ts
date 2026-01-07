@@ -13,10 +13,6 @@ import {
     UpdateDocumentRequirementSchema,
     ClonePaymentMethodSchema,
 } from '../validators/payment-method.validator';
-import {
-    AttachHandlerToStepSchema,
-    UpdateStepAttachmentSchema,
-} from '../validators/event-config.validator';
 import { z } from 'zod';
 import { getAuthContext } from '@valentine-efagene/qshelter-common';
 
@@ -293,60 +289,6 @@ router.get('/property/:propertyId', async (req: Request, res: Response, next: Ne
     try {
         const methods = await paymentMethodService.getMethodsForProperty(req.params.propertyId);
         res.json(methods);
-    } catch (error) {
-        next(error);
-    }
-});
-
-// ============================================================
-// Step Handler Attachment Routes
-// ============================================================
-
-// Attach a handler to a step
-router.post('/:id/phases/:phaseId/steps/:stepId/handlers', async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const data = AttachHandlerToStepSchema.parse(req.body);
-        const attachment = await paymentMethodService.attachHandlerToStep(req.params.stepId, data);
-        res.status(201).json(attachment);
-    } catch (error) {
-        if (error instanceof z.ZodError) {
-            res.status(400).json({ error: 'Validation failed', details: error.issues });
-            return;
-        }
-        next(error);
-    }
-});
-
-// List all handlers attached to a step
-router.get('/:id/phases/:phaseId/steps/:stepId/handlers', async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const attachments = await paymentMethodService.listStepHandlers(req.params.stepId);
-        res.json(attachments);
-    } catch (error) {
-        next(error);
-    }
-});
-
-// Update a step handler attachment
-router.patch('/:id/phases/:phaseId/steps/:stepId/handlers/:attachmentId', async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const data = UpdateStepAttachmentSchema.parse(req.body);
-        const attachment = await paymentMethodService.updateStepAttachment(req.params.attachmentId, data);
-        res.json(attachment);
-    } catch (error) {
-        if (error instanceof z.ZodError) {
-            res.status(400).json({ error: 'Validation failed', details: error.issues });
-            return;
-        }
-        next(error);
-    }
-});
-
-// Detach a handler from a step
-router.delete('/:id/phases/:phaseId/steps/:stepId/handlers/:attachmentId', async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const result = await paymentMethodService.detachHandlerFromStep(req.params.attachmentId);
-        res.json(result);
     } catch (error) {
         next(error);
     }

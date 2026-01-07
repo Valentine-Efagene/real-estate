@@ -249,6 +249,51 @@ export const OfferLetterStatus = {
 export type OfferLetterStatus = (typeof OfferLetterStatus)[keyof typeof OfferLetterStatus]
 
 
+export const ContractEventType = {
+  CONTRACT_CREATED: 'CONTRACT_CREATED',
+  CONTRACT_STATE_CHANGED: 'CONTRACT_STATE_CHANGED',
+  PHASE_ACTIVATED: 'PHASE_ACTIVATED',
+  PHASE_COMPLETED: 'PHASE_COMPLETED',
+  STEP_COMPLETED: 'STEP_COMPLETED',
+  STEP_REJECTED: 'STEP_REJECTED',
+  DOCUMENT_SUBMITTED: 'DOCUMENT_SUBMITTED',
+  DOCUMENT_APPROVED: 'DOCUMENT_APPROVED',
+  DOCUMENT_REJECTED: 'DOCUMENT_REJECTED',
+  PAYMENT_INITIATED: 'PAYMENT_INITIATED',
+  PAYMENT_COMPLETED: 'PAYMENT_COMPLETED',
+  PAYMENT_FAILED: 'PAYMENT_FAILED',
+  INSTALLMENTS_GENERATED: 'INSTALLMENTS_GENERATED',
+  CONTRACT_SIGNED: 'CONTRACT_SIGNED',
+  CONTRACT_TERMINATED: 'CONTRACT_TERMINATED',
+  CONTRACT_TRANSFERRED: 'CONTRACT_TRANSFERRED',
+  UNDERWRITING_COMPLETED: 'UNDERWRITING_COMPLETED',
+  OFFER_LETTER_GENERATED: 'OFFER_LETTER_GENERATED'
+} as const
+
+export type ContractEventType = (typeof ContractEventType)[keyof typeof ContractEventType]
+
+
+export const ContractEventGroup = {
+  STATE_CHANGE: 'STATE_CHANGE',
+  PAYMENT: 'PAYMENT',
+  DOCUMENT: 'DOCUMENT',
+  NOTIFICATION: 'NOTIFICATION',
+  WORKFLOW: 'WORKFLOW'
+} as const
+
+export type ContractEventGroup = (typeof ContractEventGroup)[keyof typeof ContractEventGroup]
+
+
+export const EventActorType = {
+  USER: 'USER',
+  SYSTEM: 'SYSTEM',
+  WEBHOOK: 'WEBHOOK',
+  ADMIN: 'ADMIN'
+} as const
+
+export type EventActorType = (typeof EventActorType)[keyof typeof EventActorType]
+
+
 export const EventHandlerType = {
   SEND_EMAIL: 'SEND_EMAIL',
   SEND_SMS: 'SEND_SMS',
