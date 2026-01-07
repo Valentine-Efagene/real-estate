@@ -363,7 +363,9 @@ class PropertyTransferService {
             // 2. Calculate new amounts based on target property price
             const targetPrice = request.targetPropertyUnit.priceOverride ??
                 request.targetPropertyUnit.variant.price;
-            const priceRatio = targetPrice / sourceContract.totalAmount;
+
+            // IMPORTANT: We recalculate EVERYTHING fresh as if it's a new contract
+            // Then figure out how many installments the paid amount covers
 
             // 3. Create new contract for target property
             const newContractNumber = `${sourceContract.contractNumber}-T`;
@@ -380,12 +382,19 @@ class PropertyTransferService {
                     description: sourceContract.description,
                     contractType: sourceContract.contractType,
                     totalAmount: targetPrice,
-                    downPayment: sourceContract.downPayment * priceRatio,
+                    // Recalculate downpayment and principal based on NEW price
+                    downPayment: sourceContract.downPayment
+                        ? (targetPrice * (sourceContract.downPayment / sourceContract.totalAmount))
+                        : undefined,
                     downPaymentPaid: sourceContract.downPaymentPaid, // Preserve actual paid amount
-                    principal: sourceContract.principal ? sourceContract.principal * priceRatio : null,
+                    principal: sourceContract.principal
+                        ? (targetPrice * (sourceContract.principal / sourceContract.totalAmount))
+                        : null,
                     interestRate: sourceContract.interestRate,
                     termMonths: sourceContract.termMonths,
-                    periodicPayment: sourceContract.periodicPayment ? sourceContract.periodicPayment * priceRatio : null,
+                    periodicPayment: sourceContract.periodicPayment
+                        ? (targetPrice / sourceContract.totalAmount) * sourceContract.periodicPayment
+                        : null,
                     totalPaidToDate: sourceContract.totalPaidToDate, // Preserve actual paid amount
                     totalInterestPaid: sourceContract.totalInterestPaid,
                     monthlyIncome: sourceContract.monthlyIncome,
@@ -400,10 +409,19 @@ class PropertyTransferService {
                 },
             });
 
-            // 4. Copy phases and their state (track old-to-new phase ID mapping)
+            // 4. Copy phases and recalculate amounts fresh (track old-to-new phase ID mapping)
             const phaseIdMap = new Map<string, string>();
 
             for (const phase of sourceContract.phases) {
+                // Calculate NEW phase amount based on target price (fresh calculation)
+                // Calculate the percentage this phase represents of the old total
+                const phasePercentage = phase.totalAmount
+                    ? (phase.totalAmount / sourceContract.totalAmount) * 100
+                    : 0;
+                const newPhaseAmount = phase.totalAmount
+                    ? (targetPrice * phasePercentage) / 100
+                    : null;
+
                 const newPhase = await tx.contractPhase.create({
                     data: {
                         contractId: newContract.id,
@@ -414,9 +432,9 @@ class PropertyTransferService {
                         phaseType: phase.phaseType,
                         order: phase.order,
                         status: phase.status, // Preserve completion status
-                        totalAmount: phase.totalAmount ? phase.totalAmount * priceRatio : null,
-                        paidAmount: phase.paidAmount, // Preserve actual paid
-                        remainingAmount: phase.remainingAmount ? phase.remainingAmount * priceRatio : null,
+                        totalAmount: newPhaseAmount,
+                        paidAmount: 0, // Will recalculate below based on installment coverage
+                        remainingAmount: newPhaseAmount,
                         interestRate: phase.interestRate,
                         collectFunds: phase.collectFunds,
                         approvedDocumentsCount: phase.approvedDocumentsCount,
@@ -480,32 +498,76 @@ class PropertyTransferService {
                     }
                 }
 
-                // Copy installments with adjusted amounts (track old-to-new installment ID mapping)
+                // Copy installments with FRESH recalculation
                 const installmentIdMap = new Map<string, string>();
+                const oldInstallments = phase.installments.sort((a, b) =>
+                    (a.dueDate?.getTime() || 0) - (b.dueDate?.getTime() || 0)
+                );
 
-                for (const installment of phase.installments) {
-                    const newInstallment = await tx.contractInstallment.create({
+                if (oldInstallments.length > 0 && newPhaseAmount && newPhaseAmount > 0) {
+                    // Calculate NEW installment amount based on NEW phase amount
+                    const totalInstallmentCount = oldInstallments.length;
+                    const newInstallmentAmount = newPhaseAmount / totalInstallmentCount;
+
+                    // Figure out how many installments the paid amount covers
+                    const totalPaidForPhase = phase.paidAmount;
+                    const completeInstallmentsPaid = Math.floor(totalPaidForPhase / newInstallmentAmount);
+                    const partialPaymentCredit = totalPaidForPhase - (completeInstallmentsPaid * newInstallmentAmount);
+
+                    let accumulatedPaidAmount = 0;
+
+                    for (let i = 0; i < totalInstallmentCount; i++) {
+                        const oldInstallment = oldInstallments[i];
+                        const isFullyPaid = i < completeInstallmentsPaid;
+                        const isPartiallyPaid = i === completeInstallmentsPaid && partialPaymentCredit > 0;
+
+                        let installmentStatus: 'PENDING' | 'PAID' | 'OVERDUE' | 'CANCELLED' = 'PENDING';
+                        let installmentPaidAmount = 0;
+                        let installmentPaidDate: Date | null = null;
+
+                        if (isFullyPaid) {
+                            installmentStatus = 'PAID';
+                            installmentPaidAmount = newInstallmentAmount;
+                            installmentPaidDate = oldInstallment.paidDate || new Date();
+                            accumulatedPaidAmount += newInstallmentAmount;
+                        } else if (isPartiallyPaid) {
+                            installmentStatus = 'PENDING';
+                            installmentPaidAmount = partialPaymentCredit;
+                            accumulatedPaidAmount += partialPaymentCredit;
+                        }
+
+                        const newInstallment = await tx.contractInstallment.create({
+                            data: {
+                                phaseId: newPhase.id,
+                                installmentNumber: oldInstallment.installmentNumber,
+                                amount: newInstallmentAmount, // NEW recalculated amount
+                                principalAmount: newInstallmentAmount, // Simplified - adjust if needed
+                                interestAmount: 0,
+                                dueDate: oldInstallment.dueDate,
+                                status: installmentStatus,
+                                paidAmount: installmentPaidAmount,
+                                paidDate: installmentPaidDate,
+                                lateFee: 0,
+                                lateFeeWaived: false,
+                                gracePeriodDays: oldInstallment.gracePeriodDays,
+                                gracePeriodEndDate: oldInstallment.gracePeriodEndDate,
+                            },
+                        });
+
+                        installmentIdMap.set(oldInstallment.id, newInstallment.id);
+                    }
+
+                    // Update phase with recalculated paid amount
+                    await tx.contractPhase.update({
+                        where: { id: newPhase.id },
                         data: {
-                            phaseId: newPhase.id,
-                            installmentNumber: installment.installmentNumber,
-                            // Adjust amount based on price ratio, but if already paid, preserve
-                            amount: installment.status === 'PAID'
-                                ? installment.amount
-                                : installment.amount * priceRatio,
-                            principalAmount: installment.principalAmount * priceRatio,
-                            interestAmount: installment.interestAmount * priceRatio,
-                            dueDate: installment.dueDate,
-                            status: installment.status, // Preserve payment status
-                            paidAmount: installment.paidAmount,
-                            paidDate: installment.paidDate,
-                            lateFee: installment.lateFee,
-                            lateFeeWaived: installment.lateFeeWaived,
-                            gracePeriodDays: installment.gracePeriodDays,
-                            gracePeriodEndDate: installment.gracePeriodEndDate,
+                            paidAmount: accumulatedPaidAmount,
+                            remainingAmount: newPhaseAmount - accumulatedPaidAmount,
                         },
                     });
-
-                    installmentIdMap.set(installment.id, newInstallment.id);
+                } else {
+                    // No installments - phase has different payment structure
+                    // Just preserve the phase without installments
                 }
 
                 // Update step ID maps for current phase

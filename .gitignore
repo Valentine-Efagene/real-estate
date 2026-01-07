@@ -83,3 +83,4 @@ cdk.context.json
 .env.bak
 services/mortgage-service/docs
 services/notification-service/lambda.zip
+dummy*
