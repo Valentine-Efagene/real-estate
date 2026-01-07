@@ -25,7 +25,9 @@
         "deploy:all": "pnpm run deploy:authorizer && pnpm run deploy:user && pnpm run deploy:property && pnpm run deploy:mortgage && pnpm run deploy:notifications && pnpm run deploy:documents",
         "test:e2e": "pnpm run start && pnpm run migrate && pnpm --filter '../services/**' run test:e2e",
         "test:e2e:mortgage": "pnpm --filter ../services/mortgage-service run test:e2e",
-        "test:e2e:user": "pnpm --filter ../services/user-service run test:e2e"
+        "test:e2e:user": "pnpm --filter ../services/user-service run test:e2e",
+        "test:e2e:deployed": "pnpm --filter ../services/mortgage-service run test:e2e:deployed",
+        "test:e2e:deployed:verbose": "API_BASE_URL=http://vf7kbi2plw.execute-api.localhost.localstack.cloud:4566/test pnpm --filter ../services/mortgage-service run test:e2e -- --verbose"
     },
     "dependencies": {
         "@aws-sdk/client-cloudwatch-logs": "^3.700.0",

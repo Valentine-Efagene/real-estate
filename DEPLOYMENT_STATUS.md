@@ -74,6 +74,28 @@ aws --endpoint-url=http://localhost:4566 apigateway get-rest-apis --query 'items
 aws --endpoint-url=http://localhost:4566 lambda list-functions --query 'Functions[].FunctionName' --output table
 ```
 
+## E2E Tests Against Deployed APIs
+
+Tests can run in two modes:
+- **LOCAL** (default): Uses supertest in-process - fast, no network
+- **DEPLOYED**: Uses fetch against LocalStack REST APIs - tests real Lambda+API Gateway
+
+```bash
+# Run e2e tests against local Express app (fast, in-process)
+cd services/mortgage-service
+pnpm test:e2e
+
+# Run e2e tests against deployed LocalStack APIs
+pnpm test:e2e:deployed
+
+# Or set API_BASE_URL manually
+API_BASE_URL=http://vf7kbi2plw.execute-api.localhost.localstack.cloud:4566/test pnpm test:e2e
+
+# From local-dev folder
+cd local-dev
+pnpm test:e2e:deployed
+```
+
 ## Deployment Notes
 
 - All services use `package.individually: true` with exclude-first patterns for minimal package sizes
