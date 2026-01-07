@@ -2,7 +2,10 @@ import { prisma } from '../lib/prisma';
 import {
     AppError,
     Prisma,
+    ApprovalRequestType,
+    ApprovalRequestPriority,
 } from '@valentine-efagene/qshelter-common';
+import { approvalRequestService } from './approval-request.service';
 
 // =============================================================================
 // Property Transfer Service
@@ -153,13 +156,31 @@ class PropertyTransferService {
             },
         });
 
+        // Create a unified ApprovalRequest for admin dashboard
+        const approvalRequest = await approvalRequestService.create(tenantId, {
+            type: ApprovalRequestType.PROPERTY_TRANSFER,
+            entityType: 'PropertyTransferRequest',
+            entityId: request.id,
+            title: `Property Transfer: ${request.sourceContract.contractNumber} → Unit ${targetUnit.variant?.property.title}`,
+            description: reason || `Transfer request for contract ${request.sourceContract.contractNumber} from unit ${sourceContract.propertyUnit.unitNumber} to unit ${targetUnit.unitNumber}`,
+            priority: priceAdjustment > 0 ? ApprovalRequestPriority.HIGH : ApprovalRequestPriority.NORMAL,
+            requestedById,
+            payload: {
+                sourceContractId,
+                targetPropertyUnitId,
+                priceAdjustment,
+                sourceTotalAmount: sourcePrice,
+                targetTotalAmount: targetPrice,
+            } as Prisma.InputJsonValue,
+        });
+
         return request;
     }
 
     /**
      * Get a transfer request by ID
      */
-    async getById(requestId: string, tenantId: string) {
+    async getById(requestId: string, tenantId: string): Promise<any> {
         const request = await prisma.propertyTransferRequest.findFirst({
             where: { id: requestId, tenantId },
             include: {
@@ -276,7 +297,7 @@ class PropertyTransferService {
     /**
      * Approve a transfer request and execute the transfer
      */
-    async approve(input: ApproveTransferInput) {
+    async approve(input: ApproveTransferInput): Promise<any> {
         const { requestId, reviewerId, reviewNotes, priceAdjustmentHandling, tenantId } = input;
 
         // Get the request with all needed relations

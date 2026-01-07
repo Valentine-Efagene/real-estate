@@ -437,7 +437,8 @@ export const ModelName = {
   WorkflowEvent: 'WorkflowEvent',
   EventHandlerExecution: 'EventHandlerExecution',
   DomainEvent: 'DomainEvent',
-  PropertyTransferRequest: 'PropertyTransferRequest'
+  PropertyTransferRequest: 'PropertyTransferRequest',
+  ApprovalRequest: 'ApprovalRequest'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -453,7 +454,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "contract" | "contractPhase" | "documentationStep" | "documentationStepDocument" | "documentationStepApproval" | "contractInstallment" | "contractPayment" | "contractDocument" | "contractEvent" | "documentTemplate" | "offerLetter" | "contractTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "workflowEvent" | "eventHandlerExecution" | "domainEvent" | "propertyTransferRequest"
+    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "contract" | "contractPhase" | "documentationStep" | "documentationStepDocument" | "documentationStepApproval" | "contractInstallment" | "contractPayment" | "contractDocument" | "contractEvent" | "documentTemplate" | "offerLetter" | "contractTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "workflowEvent" | "eventHandlerExecution" | "domainEvent" | "propertyTransferRequest" | "approvalRequest"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -4021,6 +4022,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ApprovalRequest: {
+      payload: Prisma.$ApprovalRequestPayload<ExtArgs>
+      fields: Prisma.ApprovalRequestFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ApprovalRequestFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalRequestPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ApprovalRequestFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalRequestPayload>
+        }
+        findFirst: {
+          args: Prisma.ApprovalRequestFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalRequestPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ApprovalRequestFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalRequestPayload>
+        }
+        findMany: {
+          args: Prisma.ApprovalRequestFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalRequestPayload>[]
+        }
+        create: {
+          args: Prisma.ApprovalRequestCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalRequestPayload>
+        }
+        createMany: {
+          args: Prisma.ApprovalRequestCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.ApprovalRequestDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalRequestPayload>
+        }
+        update: {
+          args: Prisma.ApprovalRequestUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalRequestPayload>
+        }
+        deleteMany: {
+          args: Prisma.ApprovalRequestDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ApprovalRequestUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.ApprovalRequestUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalRequestPayload>
+        }
+        aggregate: {
+          args: Prisma.ApprovalRequestAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateApprovalRequest>
+        }
+        groupBy: {
+          args: Prisma.ApprovalRequestGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApprovalRequestGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ApprovalRequestCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApprovalRequestCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -5035,6 +5102,33 @@ export const PropertyTransferRequestScalarFieldEnum = {
 export type PropertyTransferRequestScalarFieldEnum = (typeof PropertyTransferRequestScalarFieldEnum)[keyof typeof PropertyTransferRequestScalarFieldEnum]
 
 
+export const ApprovalRequestScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  type: 'type',
+  status: 'status',
+  priority: 'priority',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  title: 'title',
+  description: 'description',
+  payload: 'payload',
+  requestedById: 'requestedById',
+  assigneeId: 'assigneeId',
+  reviewedById: 'reviewedById',
+  reviewNotes: 'reviewNotes',
+  decision: 'decision',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  assignedAt: 'assignedAt',
+  reviewedAt: 'reviewedAt',
+  completedAt: 'completedAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ApprovalRequestScalarFieldEnum = (typeof ApprovalRequestScalarFieldEnum)[keyof typeof ApprovalRequestScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -5716,6 +5810,22 @@ export const PropertyTransferRequestOrderByRelevanceFieldEnum = {
 export type PropertyTransferRequestOrderByRelevanceFieldEnum = (typeof PropertyTransferRequestOrderByRelevanceFieldEnum)[keyof typeof PropertyTransferRequestOrderByRelevanceFieldEnum]
 
 
+export const ApprovalRequestOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  title: 'title',
+  description: 'description',
+  requestedById: 'requestedById',
+  assigneeId: 'assigneeId',
+  reviewedById: 'reviewedById',
+  reviewNotes: 'reviewNotes'
+} as const
+
+export type ApprovalRequestOrderByRelevanceFieldEnum = (typeof ApprovalRequestOrderByRelevanceFieldEnum)[keyof typeof ApprovalRequestOrderByRelevanceFieldEnum]
+
+
 
 /**
  * Field references
@@ -5952,6 +6062,27 @@ export type EnumExecutionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$
 export type EnumTransferRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransferRequestStatus'>
     
 
+
+/**
+ * Reference to a field of type 'ApprovalRequestType'
+ */
+export type EnumApprovalRequestTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ApprovalRequestType'>
+    
+
+
+/**
+ * Reference to a field of type 'ApprovalRequestStatus'
+ */
+export type EnumApprovalRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ApprovalRequestStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'ApprovalRequestPriority'
+ */
+export type EnumApprovalRequestPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ApprovalRequestPriority'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -6101,6 +6232,7 @@ export type GlobalOmitConfig = {
   eventHandlerExecution?: Prisma.EventHandlerExecutionOmit
   domainEvent?: Prisma.DomainEventOmit
   propertyTransferRequest?: Prisma.PropertyTransferRequestOmit
+  approvalRequest?: Prisma.ApprovalRequestOmit
 }
 
 /* Types for Logging */

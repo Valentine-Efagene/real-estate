@@ -314,3 +314,8 @@ export type DomainEvent = Prisma.DomainEventModel
  * 
  */
 export type PropertyTransferRequest = Prisma.PropertyTransferRequestModel
+/**
+ * Model ApprovalRequest
+ * 
+ */
+export type ApprovalRequest = Prisma.ApprovalRequestModel

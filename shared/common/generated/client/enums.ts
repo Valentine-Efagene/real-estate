@@ -313,3 +313,37 @@ export const DocumentRequirementContext = {
 } as const
 
 export type DocumentRequirementContext = (typeof DocumentRequirementContext)[keyof typeof DocumentRequirementContext]
+
+
+export const ApprovalRequestType = {
+  PROPERTY_TRANSFER: 'PROPERTY_TRANSFER',
+  PROPERTY_UPDATE: 'PROPERTY_UPDATE',
+  USER_WORKFLOW: 'USER_WORKFLOW',
+  CREDIT_CHECK: 'CREDIT_CHECK',
+  CONTRACT_TERMINATION: 'CONTRACT_TERMINATION',
+  REFUND_APPROVAL: 'REFUND_APPROVAL'
+} as const
+
+export type ApprovalRequestType = (typeof ApprovalRequestType)[keyof typeof ApprovalRequestType]
+
+
+export const ApprovalRequestStatus = {
+  PENDING: 'PENDING',
+  IN_REVIEW: 'IN_REVIEW',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  CANCELLED: 'CANCELLED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type ApprovalRequestStatus = (typeof ApprovalRequestStatus)[keyof typeof ApprovalRequestStatus]
+
+
+export const ApprovalRequestPriority = {
+  LOW: 'LOW',
+  NORMAL: 'NORMAL',
+  HIGH: 'HIGH',
+  URGENT: 'URGENT'
+} as const
+
+export type ApprovalRequestPriority = (typeof ApprovalRequestPriority)[keyof typeof ApprovalRequestPriority]

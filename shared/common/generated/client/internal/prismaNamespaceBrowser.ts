@@ -104,7 +104,8 @@ export const ModelName = {
   WorkflowEvent: 'WorkflowEvent',
   EventHandlerExecution: 'EventHandlerExecution',
   DomainEvent: 'DomainEvent',
-  PropertyTransferRequest: 'PropertyTransferRequest'
+  PropertyTransferRequest: 'PropertyTransferRequest',
+  ApprovalRequest: 'ApprovalRequest'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1098,6 +1099,33 @@ export const PropertyTransferRequestScalarFieldEnum = {
 export type PropertyTransferRequestScalarFieldEnum = (typeof PropertyTransferRequestScalarFieldEnum)[keyof typeof PropertyTransferRequestScalarFieldEnum]
 
 
+export const ApprovalRequestScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  type: 'type',
+  status: 'status',
+  priority: 'priority',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  title: 'title',
+  description: 'description',
+  payload: 'payload',
+  requestedById: 'requestedById',
+  assigneeId: 'assigneeId',
+  reviewedById: 'reviewedById',
+  reviewNotes: 'reviewNotes',
+  decision: 'decision',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  assignedAt: 'assignedAt',
+  reviewedAt: 'reviewedAt',
+  completedAt: 'completedAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ApprovalRequestScalarFieldEnum = (typeof ApprovalRequestScalarFieldEnum)[keyof typeof ApprovalRequestScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1777,4 +1805,20 @@ export const PropertyTransferRequestOrderByRelevanceFieldEnum = {
 } as const
 
 export type PropertyTransferRequestOrderByRelevanceFieldEnum = (typeof PropertyTransferRequestOrderByRelevanceFieldEnum)[keyof typeof PropertyTransferRequestOrderByRelevanceFieldEnum]
+
+
+export const ApprovalRequestOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  title: 'title',
+  description: 'description',
+  requestedById: 'requestedById',
+  assigneeId: 'assigneeId',
+  reviewedById: 'reviewedById',
+  reviewNotes: 'reviewNotes'
+} as const
+
+export type ApprovalRequestOrderByRelevanceFieldEnum = (typeof ApprovalRequestOrderByRelevanceFieldEnum)[keyof typeof ApprovalRequestOrderByRelevanceFieldEnum]
 

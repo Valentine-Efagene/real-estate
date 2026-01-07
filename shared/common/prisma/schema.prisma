@@ -306,6 +306,11 @@ model User {
   transferRequestsSubmitted PropertyTransferRequest[] @relation("TransferRequestor")
   transferRequestsReviewed  PropertyTransferRequest[] @relation("TransferReviewer")
 
+  // Unified approval requests
+  approvalRequestsSubmitted ApprovalRequest[] @relation("ApprovalRequestor")
+  approvalRequestsAssigned  ApprovalRequest[] @relation("ApprovalAssignee")
+  approvalRequestsReviewed  ApprovalRequest[] @relation("ApprovalReviewer")
+
   @@index([email])
   @@index([tenantId])
   @@map("users")
@@ -397,6 +402,9 @@ model Tenant {
 
   // Property transfer requests
   propertyTransferRequests PropertyTransferRequest[]
+
+  // Unified approval requests
+  approvalRequests ApprovalRequest[]
 
   @@index([subdomain])
   @@map("tenants")
@@ -2063,4 +2071,92 @@ model PropertyTransferRequest {
   @@index([requestedById])
   @@index([status])
   @@map("property_transfer_requests")
+}
+
+// =============================================================================
+// UNIFIED APPROVAL REQUESTS
+// =============================================================================
+
+enum ApprovalRequestType {
+  PROPERTY_TRANSFER    // Property unit transfer between contracts
+  PROPERTY_UPDATE      // Property/unit listing update requiring approval
+  USER_WORKFLOW        // User workflow step approval
+  CREDIT_CHECK         // Credit check result review
+  CONTRACT_TERMINATION // Contract termination approval
+  REFUND_APPROVAL      // Refund request approval
+}
+
+enum ApprovalRequestStatus {
+  PENDING      // Awaiting review
+  IN_REVIEW    // Assigned to reviewer
+  APPROVED     // Approved by reviewer
+  REJECTED     // Rejected by reviewer
+  CANCELLED    // Cancelled by requestor
+  EXPIRED      // Auto-expired (if TTL configured)
+}
+
+enum ApprovalRequestPriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+// Polymorphic approval request model for unified admin dashboard
+model ApprovalRequest {
+  id       String @id @default(cuid())
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  // Request type and status
+  type     ApprovalRequestType
+  status   ApprovalRequestStatus   @default(PENDING)
+  priority ApprovalRequestPriority @default(NORMAL)
+
+  // Polymorphic reference to the entity requiring approval
+  entityType String // e.g., "PropertyTransferRequest", "PropertyUnit", "User"
+  entityId   String // ID of the referenced entity
+
+  // Request metadata
+  title       String  @db.VarChar(255) // Human-readable title for the request
+  description String? @db.Text        // Detailed description
+
+  // Payload for any additional context (JSON)
+  payload Json? // Flexible data storage for type-specific details
+
+  // Requestor - who created the request
+  requestedById String
+  requestedBy   User   @relation("ApprovalRequestor", fields: [requestedById], references: [id])
+
+  // Assignee - admin/reviewer assigned to handle this request
+  assigneeId String?
+  assignee   User?   @relation("ApprovalAssignee", fields: [assigneeId], references: [id])
+
+  // Reviewer - who made the final decision (may differ from assignee)
+  reviewedById String?
+  reviewedBy   User?   @relation("ApprovalReviewer", fields: [reviewedById], references: [id])
+
+  // Review details
+  reviewNotes String? @db.Text // Reviewer's notes/comments
+  decision    ApprovalDecision? // APPROVED, REJECTED, REQUEST_CHANGES
+
+  // Expiration
+  expiresAt DateTime? // Optional TTL for auto-expiration
+
+  // Timestamps
+  createdAt   DateTime  @default(now())
+  assignedAt  DateTime? // When assigned to reviewer
+  reviewedAt  DateTime? // When decision was made
+  completedAt DateTime? // When fully processed
+  updatedAt   DateTime  @updatedAt
+
+  @@index([tenantId])
+  @@index([type])
+  @@index([status])
+  @@index([priority])
+  @@index([entityType, entityId])
+  @@index([requestedById])
+  @@index([assigneeId])
+  @@index([createdAt])
+  @@map("approval_requests")
 }
