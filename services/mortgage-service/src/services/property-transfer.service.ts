@@ -511,7 +511,8 @@ class PropertyTransferService {
                     const newInstallmentAmount = newPhaseAmount / totalInstallmentCount;
 
                     // Figure out how many installments the paid amount covers
-                    const totalPaidForPhase = phase.paidAmount;
+                    // Calculate from installments rather than trusting phase.paidAmount
+                    const totalPaidForPhase = oldInstallments.reduce((sum, inst) => sum + inst.paidAmount, 0);
                     const completeInstallmentsPaid = Math.floor(totalPaidForPhase / newInstallmentAmount);
                     const partialPaymentCredit = totalPaidForPhase - (completeInstallmentsPaid * newInstallmentAmount);
 
@@ -566,9 +567,23 @@ class PropertyTransferService {
                             remainingAmount: newPhaseAmount - accumulatedPaidAmount,
                         },
                     });
-                } else {
-                    // No installments - phase has different payment structure
-                    // Just preserve the phase without installments
+                }
+                
+                // If no installments were processed but source phase has paidAmount, preserve it
+                if (oldInstallments.length === 0 && phase.paidAmount > 0) {
+                    const effectiveNewPhaseAmount = newPhaseAmount ?? (
+                        phase.phaseType === 'DOWNPAYMENT' ? (newContract.downPayment ?? 0) :
+                        phase.phaseType === 'MORTGAGE' ? (newContract.principal ?? 0) :
+                        0
+                    );
+                    
+                    await tx.contractPhase.update({
+                        where: { id: newPhase.id },
+                        data: {
+                            paidAmount: phase.paidAmount,
+                            remainingAmount: Math.max(0, effectiveNewPhaseAmount - phase.paidAmount),
+                        },
+                    });
                 }
 
                 // Update step ID maps for current phase
@@ -598,7 +613,7 @@ class PropertyTransferService {
                         contractId: newContract.id,
                         amount: overpaymentAmount,
                         reason: `Overpayment from property transfer: ₦${totalPaidAmount.toLocaleString()} paid on old property, ₦${newDownpaymentRequired.toLocaleString()} required on new property`,
-                        status: RefundStatus.PENDING,
+                        status: 'PENDING',
                         requestedById: reviewerId,
                         requestedAt: new Date(),
                     },
