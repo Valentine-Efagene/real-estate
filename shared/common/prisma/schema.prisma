@@ -153,16 +153,6 @@ enum TerminationStatus {
   CANCELLED // Termination request was cancelled
 }
 
-enum RefundStatus {
-  NOT_APPLICABLE // No refund needed (no payments made)
-  PENDING // Refund not yet initiated
-  INITIATED // Refund request sent to payment gateway
-  PROCESSING // Gateway processing refund
-  PARTIAL_COMPLETED // Some refund completed (penalties deducted)
-  COMPLETED // Full refund completed
-  FAILED // Refund failed (needs manual intervention)
-}
-
 enum TerminationInitiator {
   BUYER
   SELLER
@@ -238,6 +228,16 @@ enum EventActorType {
   SYSTEM
   WEBHOOK
   ADMIN
+}
+
+enum RefundStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  PROCESSING
+  COMPLETED
+  FAILED
+  CANCELLED
 }
 
 // =============================================================================
@@ -347,6 +347,11 @@ model User {
   approvalRequestsAssigned  ApprovalRequest[] @relation("ApprovalAssignee")
   approvalRequestsReviewed  ApprovalRequest[] @relation("ApprovalReviewer")
 
+  // Contract refunds
+  requestedRefunds ContractRefund[] @relation("RefundRequester")
+  approvedRefunds  ContractRefund[] @relation("RefundApprover")
+  processedRefunds ContractRefund[] @relation("RefundProcessor")
+
   @@index([email])
   @@index([tenantId])
   @@map("users")
@@ -441,6 +446,9 @@ model Tenant {
 
   // Unified approval requests
   approvalRequests ApprovalRequest[]
+
+  // Contract refunds
+  contractRefunds ContractRefund[]
 
   @@index([subdomain])
   @@map("tenants")
@@ -1159,6 +1167,9 @@ model Contract {
   // Audit trail
   events ContractEvent[]
 
+  // Refund requests
+  refunds ContractRefund[]
+
   @@index([tenantId])
   @@index([propertyUnitId])
   @@index([buyerId])
@@ -1167,6 +1178,61 @@ model Contract {
   @@index([status])
   @@index([state])
   @@map("contracts")
+}
+
+// =============================================================================
+// CONTRACT REFUNDS - Track refund requests for overpayments or cancellations
+// =============================================================================
+model ContractRefund {
+  id       String @id @default(cuid())
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  contractId String
+  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+
+  amount Float
+  reason String       @db.Text
+  status RefundStatus @default(PENDING)
+
+  // Who requested the refund
+  requestedById String
+  requestedBy   User   @relation("RefundRequester", fields: [requestedById], references: [id])
+
+  // Who approved/rejected the refund
+  approvedById String?
+  approvedBy   User?   @relation("RefundApprover", fields: [approvedById], references: [id])
+
+  // Who processed the refund (finance team)
+  processedById String?
+  processedBy   User?   @relation("RefundProcessor", fields: [processedById], references: [id])
+
+  // Refund payment details
+  paymentMethod    String? // BANK_TRANSFER, CHEQUE, MOBILE_MONEY, etc.
+  referenceNumber  String? // Bank/payment reference
+  recipientName    String?
+  recipientAccount String?
+  recipientBank    String?
+
+  // Timestamps
+  requestedAt DateTime  @default(now())
+  approvedAt  DateTime?
+  rejectedAt  DateTime?
+  processedAt DateTime?
+
+  // Additional notes
+  approvalNotes   String? @db.Text
+  rejectionNotes  String? @db.Text
+  processingNotes String? @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([contractId])
+  @@index([status])
+  @@index([tenantId])
+  @@index([requestedById])
+  @@map("contract_refunds")
 }
 
 // Phase within a contract - can be DOCUMENTATION or PAYMENT type
@@ -1624,7 +1690,7 @@ model ContractTermination {
   settlementNotes  String? @db.Text
 
   // Refund processing
-  refundStatus         RefundStatus @default(NOT_APPLICABLE)
+  refundStatus         RefundStatus @default(PENDING)
   refundReference      String? // Payment gateway reference
   refundMethod         String? // ORIGINAL_METHOD, BANK_TRANSFER, CHECK, WALLET
   refundAccountDetails Json? // Encrypted bank details if needed

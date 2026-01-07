@@ -85,6 +85,7 @@ export const ModelName = {
   StepEventAttachment: 'StepEventAttachment',
   PaymentMethodPhaseDocument: 'PaymentMethodPhaseDocument',
   Contract: 'Contract',
+  ContractRefund: 'ContractRefund',
   ContractPhase: 'ContractPhase',
   ContractEvent: 'ContractEvent',
   DocumentationStep: 'DocumentationStep',
@@ -642,6 +643,35 @@ export const ContractScalarFieldEnum = {
 } as const
 
 export type ContractScalarFieldEnum = (typeof ContractScalarFieldEnum)[keyof typeof ContractScalarFieldEnum]
+
+
+export const ContractRefundScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  contractId: 'contractId',
+  amount: 'amount',
+  reason: 'reason',
+  status: 'status',
+  requestedById: 'requestedById',
+  approvedById: 'approvedById',
+  processedById: 'processedById',
+  paymentMethod: 'paymentMethod',
+  referenceNumber: 'referenceNumber',
+  recipientName: 'recipientName',
+  recipientAccount: 'recipientAccount',
+  recipientBank: 'recipientBank',
+  requestedAt: 'requestedAt',
+  approvedAt: 'approvedAt',
+  rejectedAt: 'rejectedAt',
+  processedAt: 'processedAt',
+  approvalNotes: 'approvalNotes',
+  rejectionNotes: 'rejectionNotes',
+  processingNotes: 'processingNotes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ContractRefundScalarFieldEnum = (typeof ContractRefundScalarFieldEnum)[keyof typeof ContractRefundScalarFieldEnum]
 
 
 export const ContractPhaseScalarFieldEnum = {
@@ -1535,6 +1565,27 @@ export const ContractOrderByRelevanceFieldEnum = {
 export type ContractOrderByRelevanceFieldEnum = (typeof ContractOrderByRelevanceFieldEnum)[keyof typeof ContractOrderByRelevanceFieldEnum]
 
 
+export const ContractRefundOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  contractId: 'contractId',
+  reason: 'reason',
+  requestedById: 'requestedById',
+  approvedById: 'approvedById',
+  processedById: 'processedById',
+  paymentMethod: 'paymentMethod',
+  referenceNumber: 'referenceNumber',
+  recipientName: 'recipientName',
+  recipientAccount: 'recipientAccount',
+  recipientBank: 'recipientBank',
+  approvalNotes: 'approvalNotes',
+  rejectionNotes: 'rejectionNotes',
+  processingNotes: 'processingNotes'
+} as const
+
+export type ContractRefundOrderByRelevanceFieldEnum = (typeof ContractRefundOrderByRelevanceFieldEnum)[keyof typeof ContractRefundOrderByRelevanceFieldEnum]
+
+
 export const ContractPhaseOrderByRelevanceFieldEnum = {
   id: 'id',
   contractId: 'contractId',
@@ -1550,13 +1601,10 @@ export type ContractPhaseOrderByRelevanceFieldEnum = (typeof ContractPhaseOrderB
 export const ContractEventOrderByRelevanceFieldEnum = {
   id: 'id',
   contractId: 'contractId',
-  eventType: 'eventType',
-  eventGroup: 'eventGroup',
   fromState: 'fromState',
   toState: 'toState',
   trigger: 'trigger',
-  actorId: 'actorId',
-  actorType: 'actorType'
+  actorId: 'actorId'
 } as const
 
 export type ContractEventOrderByRelevanceFieldEnum = (typeof ContractEventOrderByRelevanceFieldEnum)[keyof typeof ContractEventOrderByRelevanceFieldEnum]

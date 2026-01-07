@@ -27,26 +27,26 @@ export type AggregateContractEvent = {
 export type ContractEventMinAggregateOutputType = {
   id: string | null
   contractId: string | null
-  eventType: string | null
-  eventGroup: string | null
+  eventType: $Enums.ContractEventType | null
+  eventGroup: $Enums.ContractEventGroup | null
   fromState: string | null
   toState: string | null
   trigger: string | null
   actorId: string | null
-  actorType: string | null
+  actorType: $Enums.EventActorType | null
   occurredAt: Date | null
 }
 
 export type ContractEventMaxAggregateOutputType = {
   id: string | null
   contractId: string | null
-  eventType: string | null
-  eventGroup: string | null
+  eventType: $Enums.ContractEventType | null
+  eventGroup: $Enums.ContractEventGroup | null
   fromState: string | null
   toState: string | null
   trigger: string | null
   actorId: string | null
-  actorType: string | null
+  actorType: $Enums.EventActorType | null
   occurredAt: Date | null
 }
 
@@ -182,14 +182,14 @@ export type ContractEventGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
 export type ContractEventGroupByOutputType = {
   id: string
   contractId: string
-  eventType: string
-  eventGroup: string | null
+  eventType: $Enums.ContractEventType
+  eventGroup: $Enums.ContractEventGroup | null
   fromState: string | null
   toState: string | null
   trigger: string | null
   data: runtime.JsonValue | null
   actorId: string | null
-  actorType: string | null
+  actorType: $Enums.EventActorType | null
   occurredAt: Date
   _count: ContractEventCountAggregateOutputType | null
   _min: ContractEventMinAggregateOutputType | null
@@ -217,14 +217,14 @@ export type ContractEventWhereInput = {
   NOT?: Prisma.ContractEventWhereInput | Prisma.ContractEventWhereInput[]
   id?: Prisma.StringFilter<"ContractEvent"> | string
   contractId?: Prisma.StringFilter<"ContractEvent"> | string
-  eventType?: Prisma.StringFilter<"ContractEvent"> | string
-  eventGroup?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
+  eventType?: Prisma.EnumContractEventTypeFilter<"ContractEvent"> | $Enums.ContractEventType
+  eventGroup?: Prisma.EnumContractEventGroupNullableFilter<"ContractEvent"> | $Enums.ContractEventGroup | null
   fromState?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
   toState?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
   trigger?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
   data?: Prisma.JsonNullableFilter<"ContractEvent">
   actorId?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
-  actorType?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
+  actorType?: Prisma.EnumEventActorTypeNullableFilter<"ContractEvent"> | $Enums.EventActorType | null
   occurredAt?: Prisma.DateTimeFilter<"ContractEvent"> | Date | string
   contract?: Prisma.XOR<Prisma.ContractScalarRelationFilter, Prisma.ContractWhereInput>
 }
@@ -251,14 +251,14 @@ export type ContractEventWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.ContractEventWhereInput[]
   NOT?: Prisma.ContractEventWhereInput | Prisma.ContractEventWhereInput[]
   contractId?: Prisma.StringFilter<"ContractEvent"> | string
-  eventType?: Prisma.StringFilter<"ContractEvent"> | string
-  eventGroup?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
+  eventType?: Prisma.EnumContractEventTypeFilter<"ContractEvent"> | $Enums.ContractEventType
+  eventGroup?: Prisma.EnumContractEventGroupNullableFilter<"ContractEvent"> | $Enums.ContractEventGroup | null
   fromState?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
   toState?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
   trigger?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
   data?: Prisma.JsonNullableFilter<"ContractEvent">
   actorId?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
-  actorType?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
+  actorType?: Prisma.EnumEventActorTypeNullableFilter<"ContractEvent"> | $Enums.EventActorType | null
   occurredAt?: Prisma.DateTimeFilter<"ContractEvent"> | Date | string
   contract?: Prisma.XOR<Prisma.ContractScalarRelationFilter, Prisma.ContractWhereInput>
 }, "id">
@@ -286,27 +286,27 @@ export type ContractEventScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ContractEventScalarWhereWithAggregatesInput | Prisma.ContractEventScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"ContractEvent"> | string
   contractId?: Prisma.StringWithAggregatesFilter<"ContractEvent"> | string
-  eventType?: Prisma.StringWithAggregatesFilter<"ContractEvent"> | string
-  eventGroup?: Prisma.StringNullableWithAggregatesFilter<"ContractEvent"> | string | null
+  eventType?: Prisma.EnumContractEventTypeWithAggregatesFilter<"ContractEvent"> | $Enums.ContractEventType
+  eventGroup?: Prisma.EnumContractEventGroupNullableWithAggregatesFilter<"ContractEvent"> | $Enums.ContractEventGroup | null
   fromState?: Prisma.StringNullableWithAggregatesFilter<"ContractEvent"> | string | null
   toState?: Prisma.StringNullableWithAggregatesFilter<"ContractEvent"> | string | null
   trigger?: Prisma.StringNullableWithAggregatesFilter<"ContractEvent"> | string | null
   data?: Prisma.JsonNullableWithAggregatesFilter<"ContractEvent">
   actorId?: Prisma.StringNullableWithAggregatesFilter<"ContractEvent"> | string | null
-  actorType?: Prisma.StringNullableWithAggregatesFilter<"ContractEvent"> | string | null
+  actorType?: Prisma.EnumEventActorTypeNullableWithAggregatesFilter<"ContractEvent"> | $Enums.EventActorType | null
   occurredAt?: Prisma.DateTimeWithAggregatesFilter<"ContractEvent"> | Date | string
 }
 
 export type ContractEventCreateInput = {
   id?: string
-  eventType: string
-  eventGroup?: string | null
+  eventType: $Enums.ContractEventType
+  eventGroup?: $Enums.ContractEventGroup | null
   fromState?: string | null
   toState?: string | null
   trigger?: string | null
   data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   actorId?: string | null
-  actorType?: string | null
+  actorType?: $Enums.EventActorType | null
   occurredAt?: Date | string
   contract: Prisma.ContractCreateNestedOneWithoutEventsInput
 }
@@ -314,27 +314,27 @@ export type ContractEventCreateInput = {
 export type ContractEventUncheckedCreateInput = {
   id?: string
   contractId: string
-  eventType: string
-  eventGroup?: string | null
+  eventType: $Enums.ContractEventType
+  eventGroup?: $Enums.ContractEventGroup | null
   fromState?: string | null
   toState?: string | null
   trigger?: string | null
   data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   actorId?: string | null
-  actorType?: string | null
+  actorType?: $Enums.EventActorType | null
   occurredAt?: Date | string
 }
 
 export type ContractEventUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  eventType?: Prisma.StringFieldUpdateOperationsInput | string
-  eventGroup?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eventType?: Prisma.EnumContractEventTypeFieldUpdateOperationsInput | $Enums.ContractEventType
+  eventGroup?: Prisma.NullableEnumContractEventGroupFieldUpdateOperationsInput | $Enums.ContractEventGroup | null
   fromState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trigger?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   actorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  actorType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  actorType?: Prisma.NullableEnumEventActorTypeFieldUpdateOperationsInput | $Enums.EventActorType | null
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contract?: Prisma.ContractUpdateOneRequiredWithoutEventsNestedInput
 }
@@ -342,55 +342,55 @@ export type ContractEventUpdateInput = {
 export type ContractEventUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   contractId?: Prisma.StringFieldUpdateOperationsInput | string
-  eventType?: Prisma.StringFieldUpdateOperationsInput | string
-  eventGroup?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eventType?: Prisma.EnumContractEventTypeFieldUpdateOperationsInput | $Enums.ContractEventType
+  eventGroup?: Prisma.NullableEnumContractEventGroupFieldUpdateOperationsInput | $Enums.ContractEventGroup | null
   fromState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trigger?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   actorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  actorType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  actorType?: Prisma.NullableEnumEventActorTypeFieldUpdateOperationsInput | $Enums.EventActorType | null
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ContractEventCreateManyInput = {
   id?: string
   contractId: string
-  eventType: string
-  eventGroup?: string | null
+  eventType: $Enums.ContractEventType
+  eventGroup?: $Enums.ContractEventGroup | null
   fromState?: string | null
   toState?: string | null
   trigger?: string | null
   data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   actorId?: string | null
-  actorType?: string | null
+  actorType?: $Enums.EventActorType | null
   occurredAt?: Date | string
 }
 
 export type ContractEventUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  eventType?: Prisma.StringFieldUpdateOperationsInput | string
-  eventGroup?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eventType?: Prisma.EnumContractEventTypeFieldUpdateOperationsInput | $Enums.ContractEventType
+  eventGroup?: Prisma.NullableEnumContractEventGroupFieldUpdateOperationsInput | $Enums.ContractEventGroup | null
   fromState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trigger?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   actorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  actorType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  actorType?: Prisma.NullableEnumEventActorTypeFieldUpdateOperationsInput | $Enums.EventActorType | null
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ContractEventUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   contractId?: Prisma.StringFieldUpdateOperationsInput | string
-  eventType?: Prisma.StringFieldUpdateOperationsInput | string
-  eventGroup?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eventType?: Prisma.EnumContractEventTypeFieldUpdateOperationsInput | $Enums.ContractEventType
+  eventGroup?: Prisma.NullableEnumContractEventGroupFieldUpdateOperationsInput | $Enums.ContractEventGroup | null
   fromState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trigger?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   actorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  actorType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  actorType?: Prisma.NullableEnumEventActorTypeFieldUpdateOperationsInput | $Enums.EventActorType | null
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -492,29 +492,41 @@ export type ContractEventUncheckedUpdateManyWithoutContractNestedInput = {
   deleteMany?: Prisma.ContractEventScalarWhereInput | Prisma.ContractEventScalarWhereInput[]
 }
 
+export type EnumContractEventTypeFieldUpdateOperationsInput = {
+  set?: $Enums.ContractEventType
+}
+
+export type NullableEnumContractEventGroupFieldUpdateOperationsInput = {
+  set?: $Enums.ContractEventGroup | null
+}
+
+export type NullableEnumEventActorTypeFieldUpdateOperationsInput = {
+  set?: $Enums.EventActorType | null
+}
+
 export type ContractEventCreateWithoutContractInput = {
   id?: string
-  eventType: string
-  eventGroup?: string | null
+  eventType: $Enums.ContractEventType
+  eventGroup?: $Enums.ContractEventGroup | null
   fromState?: string | null
   toState?: string | null
   trigger?: string | null
   data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   actorId?: string | null
-  actorType?: string | null
+  actorType?: $Enums.EventActorType | null
   occurredAt?: Date | string
 }
 
 export type ContractEventUncheckedCreateWithoutContractInput = {
   id?: string
-  eventType: string
-  eventGroup?: string | null
+  eventType: $Enums.ContractEventType
+  eventGroup?: $Enums.ContractEventGroup | null
   fromState?: string | null
   toState?: string | null
   trigger?: string | null
   data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   actorId?: string | null
-  actorType?: string | null
+  actorType?: $Enums.EventActorType | null
   occurredAt?: Date | string
 }
 
@@ -550,66 +562,66 @@ export type ContractEventScalarWhereInput = {
   NOT?: Prisma.ContractEventScalarWhereInput | Prisma.ContractEventScalarWhereInput[]
   id?: Prisma.StringFilter<"ContractEvent"> | string
   contractId?: Prisma.StringFilter<"ContractEvent"> | string
-  eventType?: Prisma.StringFilter<"ContractEvent"> | string
-  eventGroup?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
+  eventType?: Prisma.EnumContractEventTypeFilter<"ContractEvent"> | $Enums.ContractEventType
+  eventGroup?: Prisma.EnumContractEventGroupNullableFilter<"ContractEvent"> | $Enums.ContractEventGroup | null
   fromState?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
   toState?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
   trigger?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
   data?: Prisma.JsonNullableFilter<"ContractEvent">
   actorId?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
-  actorType?: Prisma.StringNullableFilter<"ContractEvent"> | string | null
+  actorType?: Prisma.EnumEventActorTypeNullableFilter<"ContractEvent"> | $Enums.EventActorType | null
   occurredAt?: Prisma.DateTimeFilter<"ContractEvent"> | Date | string
 }
 
 export type ContractEventCreateManyContractInput = {
   id?: string
-  eventType: string
-  eventGroup?: string | null
+  eventType: $Enums.ContractEventType
+  eventGroup?: $Enums.ContractEventGroup | null
   fromState?: string | null
   toState?: string | null
   trigger?: string | null
   data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   actorId?: string | null
-  actorType?: string | null
+  actorType?: $Enums.EventActorType | null
   occurredAt?: Date | string
 }
 
 export type ContractEventUpdateWithoutContractInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  eventType?: Prisma.StringFieldUpdateOperationsInput | string
-  eventGroup?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eventType?: Prisma.EnumContractEventTypeFieldUpdateOperationsInput | $Enums.ContractEventType
+  eventGroup?: Prisma.NullableEnumContractEventGroupFieldUpdateOperationsInput | $Enums.ContractEventGroup | null
   fromState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trigger?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   actorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  actorType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  actorType?: Prisma.NullableEnumEventActorTypeFieldUpdateOperationsInput | $Enums.EventActorType | null
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ContractEventUncheckedUpdateWithoutContractInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  eventType?: Prisma.StringFieldUpdateOperationsInput | string
-  eventGroup?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eventType?: Prisma.EnumContractEventTypeFieldUpdateOperationsInput | $Enums.ContractEventType
+  eventGroup?: Prisma.NullableEnumContractEventGroupFieldUpdateOperationsInput | $Enums.ContractEventGroup | null
   fromState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trigger?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   actorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  actorType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  actorType?: Prisma.NullableEnumEventActorTypeFieldUpdateOperationsInput | $Enums.EventActorType | null
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ContractEventUncheckedUpdateManyWithoutContractInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  eventType?: Prisma.StringFieldUpdateOperationsInput | string
-  eventGroup?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eventType?: Prisma.EnumContractEventTypeFieldUpdateOperationsInput | $Enums.ContractEventType
+  eventGroup?: Prisma.NullableEnumContractEventGroupFieldUpdateOperationsInput | $Enums.ContractEventGroup | null
   fromState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   trigger?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   actorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  actorType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  actorType?: Prisma.NullableEnumEventActorTypeFieldUpdateOperationsInput | $Enums.EventActorType | null
   occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -659,14 +671,14 @@ export type $ContractEventPayload<ExtArgs extends runtime.Types.Extensions.Inter
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     contractId: string
-    eventType: string
-    eventGroup: string | null
+    eventType: $Enums.ContractEventType
+    eventGroup: $Enums.ContractEventGroup | null
     fromState: string | null
     toState: string | null
     trigger: string | null
     data: runtime.JsonValue | null
     actorId: string | null
-    actorType: string | null
+    actorType: $Enums.EventActorType | null
     occurredAt: Date
   }, ExtArgs["result"]["contractEvent"]>
   composites: {}
@@ -1040,14 +1052,14 @@ export interface Prisma__ContractEventClient<T, Null = never, ExtArgs extends ru
 export interface ContractEventFieldRefs {
   readonly id: Prisma.FieldRef<"ContractEvent", 'String'>
   readonly contractId: Prisma.FieldRef<"ContractEvent", 'String'>
-  readonly eventType: Prisma.FieldRef<"ContractEvent", 'String'>
-  readonly eventGroup: Prisma.FieldRef<"ContractEvent", 'String'>
+  readonly eventType: Prisma.FieldRef<"ContractEvent", 'ContractEventType'>
+  readonly eventGroup: Prisma.FieldRef<"ContractEvent", 'ContractEventGroup'>
   readonly fromState: Prisma.FieldRef<"ContractEvent", 'String'>
   readonly toState: Prisma.FieldRef<"ContractEvent", 'String'>
   readonly trigger: Prisma.FieldRef<"ContractEvent", 'String'>
   readonly data: Prisma.FieldRef<"ContractEvent", 'Json'>
   readonly actorId: Prisma.FieldRef<"ContractEvent", 'String'>
-  readonly actorType: Prisma.FieldRef<"ContractEvent", 'String'>
+  readonly actorType: Prisma.FieldRef<"ContractEvent", 'EventActorType'>
   readonly occurredAt: Prisma.FieldRef<"ContractEvent", 'DateTime'>
 }
     

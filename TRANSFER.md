@@ -192,6 +192,24 @@ Next Payment: ₦208,333.35 (to complete installment #5)
 - Next payment due: Installment #5 - ₦208,333.35 (₦541,666.67 - ₦333,333.32 credit)
 - Old contract visible in history as "TRANSFERRED"
 
+**What happens if transferring to CHEAPER property:**
+
+Example: Transfer from ₦65M to ₦50M property, having paid ₦2.5M:
+
+- New downpayment: 10% of ₦50M = ₦5,000,000
+- New installment: ₦5M ÷ 12 = ₦416,666.67
+- Installments covered: ₦2.5M ÷ ₦416,666.67 = 6 complete installments
+- Result: 6 installments PAID, exactly covers new amounts
+- No overpayment in this case
+
+**If buyer paid ₦4M and transfers to ₦50M:**
+
+- New downpayment: ₦5M
+- Installments covered: ₦4M ÷ ₦416,666.67 = 9.6 installments
+- Result: 9 installments PAID + ₦250,000 credit
+- All downpayment installments covered with ₦1M excess
+- Excess can be handled as credit to balance phase or future refund (admin decision)
+
 **What the buyer does:**
 
 - Pays ₦208,333.35 to complete installment #5
@@ -232,24 +250,72 @@ Next Payment: ₦208,333.35 (to complete installment #5)
 
 - Current: ₦50,000,000 (4-bedroom)
 - Target: ₦35,000,000 (3-bedroom)
-- DifRECALCULATE_FRESH\*\*
+- Difference: -₦15,000,000
 
-  - Entire contract recalculated at ₦35,000,000
-  - Downpayment: 10% of ₦35M = ₦3,500,000 (was ₦5M)
-  - Balance: 90% of ₦35M = ₦31,500,000 (was ₦45M)
-  - Installments: ₦291,666.67 each (was ₦416,666.67)
-  - Previous ₦2.5M paid now covers: ₦2.5M ÷ ₦291,666.67 = **8.57 installments**
-  - Result: 8 installments PAID + ₦166,666.64 credit toward #9
+**How It Works:**
 
-2. **REFUND_OVERPAYMENT** (if buyer paid more than new downpayment)
+**1. RECALCULATE_FRESH**
 
-   - If paid amount exceeds new downpayment total, refund excess
-   - Example: Paid ₦4M, new downpayment only ₦3.5M → Refund ₦500K
-   - Future payments reduced
+- Entire contract recalculated at ₦35,000,000
+- Downpayment: 10% of ₦35M = ₦3,500,000 (was ₦5M)
+- Balance: 90% of ₦35M = ₦31,500,000 (was ₦45M)
+- Installments: ₦291,666.67 each (was ₦416,666.67)
+- Previous ₦2.5M paid now covers: ₦2.5M ÷ ₦291,666.67 = **8.57 installments**
+- Result: 8 installments PAID + ₦166,666.64 credit toward #9
 
-3. **REFUND_OVERPAYMENT**
-   - Refund excess if buyer paid more than required for new property
-   - Requires admin approval
+**2. Handle Overpayment (if paid > new downpayment)**
+
+If the buyer paid more than the new downpayment total, the system automatically creates a refund request:
+
+**Example:**
+
+- Paid ₦4M on old contract
+- New downpayment total: ₦3.5M
+- **Overpayment: ₦500,000**
+
+**What Happens:**
+
+1. **Automatic Refund Request Creation**
+
+   - System detects overpayment during transfer execution
+   - Creates a `ContractRefund` record with status `PENDING`
+   - Amount: ₦500,000
+   - Reason: "Overpayment from property transfer: ₦4,000,000 paid on old property, ₦3,500,000 required on new property"
+   - Requested by: Admin who approved the transfer
+
+2. **Refund Approval Workflow**
+
+   - Admin reviews the refund request
+   - Verifies the calculation is correct
+   - Approves or rejects with notes
+   - Status changes to `APPROVED` or `REJECTED`
+
+3. **Finance Processing**
+
+   - Finance team processes approved refunds
+   - Updates payment method (bank transfer, etc.)
+   - Adds recipient account details
+   - Status changes to `PROCESSING` → `COMPLETED`
+
+4. **Buyer Notification**
+   - Email sent when refund is created
+   - Email sent when refund is approved
+   - Email sent when refund is completed
+   - Buyer can track refund status in dashboard
+
+**Future Enhancement Options** (not yet implemented):
+
+Alternative ways to handle overpayment:
+
+- **CREDIT_BALANCE**: Apply ₦500K to the 90% balance phase (reduces mortgage)
+- **CREDIT_NEXT_PAYMENT**: Store as credit for future payments
+
+**Current Behavior:**
+
+- All paid amounts are applied to installments at the new rate
+- If total paid exceeds new downpayment, a refund request is automatically created
+- Refund goes through approval → processing → completion workflow
+- Buyer receives the excess amount via their preferred payment method
 
 ---
 

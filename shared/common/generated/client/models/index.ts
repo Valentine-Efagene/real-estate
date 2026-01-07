@@ -7,6 +7,7 @@ export * from './ContractEvent';
 export * from './ContractInstallment';
 export * from './ContractPayment';
 export * from './ContractPhase';
+export * from './ContractRefund';
 export * from './ContractTermination';
 export * from './DeviceEndpoint';
 export * from './DocumentRequirementRule';

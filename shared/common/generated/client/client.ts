@@ -211,6 +211,11 @@ export type PaymentMethodPhaseDocument = Prisma.PaymentMethodPhaseDocumentModel
  */
 export type Contract = Prisma.ContractModel
 /**
+ * Model ContractRefund
+ * 
+ */
+export type ContractRefund = Prisma.ContractRefundModel
+/**
  * Model ContractPhase
  * 
  */

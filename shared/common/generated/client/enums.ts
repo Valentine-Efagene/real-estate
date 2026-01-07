@@ -180,19 +180,6 @@ export const TerminationStatus = {
 export type TerminationStatus = (typeof TerminationStatus)[keyof typeof TerminationStatus]
 
 
-export const RefundStatus = {
-  NOT_APPLICABLE: 'NOT_APPLICABLE',
-  PENDING: 'PENDING',
-  INITIATED: 'INITIATED',
-  PROCESSING: 'PROCESSING',
-  PARTIAL_COMPLETED: 'PARTIAL_COMPLETED',
-  COMPLETED: 'COMPLETED',
-  FAILED: 'FAILED'
-} as const
-
-export type RefundStatus = (typeof RefundStatus)[keyof typeof RefundStatus]
-
-
 export const TerminationInitiator = {
   BUYER: 'BUYER',
   SELLER: 'SELLER',
@@ -292,6 +279,19 @@ export const EventActorType = {
 } as const
 
 export type EventActorType = (typeof EventActorType)[keyof typeof EventActorType]
+
+
+export const RefundStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  PROCESSING: 'PROCESSING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type RefundStatus = (typeof RefundStatus)[keyof typeof RefundStatus]
 
 
 export const EventHandlerType = {

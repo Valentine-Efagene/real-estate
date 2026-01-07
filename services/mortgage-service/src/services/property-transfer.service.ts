@@ -4,6 +4,7 @@ import {
     Prisma,
     ApprovalRequestType,
     ApprovalRequestPriority,
+    RefundStatus,
 } from '@valentine-efagene/qshelter-common';
 import { approvalRequestService } from './approval-request.service';
 
@@ -580,6 +581,28 @@ class PropertyTransferService {
                         });
                     }
                 }
+            }
+
+            // 4.5. Check for overpayment and create refund request if necessary
+            // Calculate total new downpayment required
+            const newDownpaymentRequired = newContract.downPayment || 0;
+            const totalPaidAmount = sourceContract.downPaymentPaid || 0;
+
+            if (totalPaidAmount > newDownpaymentRequired) {
+                const overpaymentAmount = totalPaidAmount - newDownpaymentRequired;
+
+                // Create refund request for overpayment
+                await tx.contractRefund.create({
+                    data: {
+                        tenantId,
+                        contractId: newContract.id,
+                        amount: overpaymentAmount,
+                        reason: `Overpayment from property transfer: ₦${totalPaidAmount.toLocaleString()} paid on old property, ₦${newDownpaymentRequired.toLocaleString()} required on new property`,
+                        status: RefundStatus.PENDING,
+                        requestedById: reviewerId,
+                        requestedAt: new Date(),
+                    },
+                });
             }
 
             // 5. Migrate payments (create copies with references to new phase/installment IDs)

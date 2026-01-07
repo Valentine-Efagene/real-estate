@@ -1430,10 +1430,6 @@ export type EnumTerminationStatusFieldUpdateOperationsInput = {
   set?: $Enums.TerminationStatus
 }
 
-export type EnumRefundStatusFieldUpdateOperationsInput = {
-  set?: $Enums.RefundStatus
-}
-
 export type ContractTerminationCreateWithoutInitiatorInput = {
   id?: string
   requestNumber: string

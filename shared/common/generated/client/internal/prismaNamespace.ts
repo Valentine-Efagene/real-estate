@@ -418,6 +418,7 @@ export const ModelName = {
   StepEventAttachment: 'StepEventAttachment',
   PaymentMethodPhaseDocument: 'PaymentMethodPhaseDocument',
   Contract: 'Contract',
+  ContractRefund: 'ContractRefund',
   ContractPhase: 'ContractPhase',
   ContractEvent: 'ContractEvent',
   DocumentationStep: 'DocumentationStep',
@@ -454,7 +455,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "contract" | "contractPhase" | "contractEvent" | "documentationStep" | "documentationStepDocument" | "documentationStepApproval" | "contractInstallment" | "contractPayment" | "contractDocument" | "documentTemplate" | "offerLetter" | "contractTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "workflowEvent" | "eventHandlerExecution" | "domainEvent" | "propertyTransferRequest" | "approvalRequest"
+    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "contract" | "contractRefund" | "contractPhase" | "contractEvent" | "documentationStep" | "documentationStepDocument" | "documentationStepApproval" | "contractInstallment" | "contractPayment" | "contractDocument" | "documentTemplate" | "offerLetter" | "contractTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "workflowEvent" | "eventHandlerExecution" | "domainEvent" | "propertyTransferRequest" | "approvalRequest"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2702,6 +2703,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ContractRefund: {
+      payload: Prisma.$ContractRefundPayload<ExtArgs>
+      fields: Prisma.ContractRefundFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ContractRefundFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractRefundPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ContractRefundFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractRefundPayload>
+        }
+        findFirst: {
+          args: Prisma.ContractRefundFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractRefundPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ContractRefundFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractRefundPayload>
+        }
+        findMany: {
+          args: Prisma.ContractRefundFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractRefundPayload>[]
+        }
+        create: {
+          args: Prisma.ContractRefundCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractRefundPayload>
+        }
+        createMany: {
+          args: Prisma.ContractRefundCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.ContractRefundDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractRefundPayload>
+        }
+        update: {
+          args: Prisma.ContractRefundUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractRefundPayload>
+        }
+        deleteMany: {
+          args: Prisma.ContractRefundDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ContractRefundUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.ContractRefundUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractRefundPayload>
+        }
+        aggregate: {
+          args: Prisma.ContractRefundAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateContractRefund>
+        }
+        groupBy: {
+          args: Prisma.ContractRefundGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ContractRefundGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ContractRefundCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ContractRefundCountAggregateOutputType> | number
+        }
+      }
+    }
     ContractPhase: {
       payload: Prisma.$ContractPhasePayload<ExtArgs>
       fields: Prisma.ContractPhaseFieldRefs
@@ -4647,6 +4714,35 @@ export const ContractScalarFieldEnum = {
 export type ContractScalarFieldEnum = (typeof ContractScalarFieldEnum)[keyof typeof ContractScalarFieldEnum]
 
 
+export const ContractRefundScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  contractId: 'contractId',
+  amount: 'amount',
+  reason: 'reason',
+  status: 'status',
+  requestedById: 'requestedById',
+  approvedById: 'approvedById',
+  processedById: 'processedById',
+  paymentMethod: 'paymentMethod',
+  referenceNumber: 'referenceNumber',
+  recipientName: 'recipientName',
+  recipientAccount: 'recipientAccount',
+  recipientBank: 'recipientBank',
+  requestedAt: 'requestedAt',
+  approvedAt: 'approvedAt',
+  rejectedAt: 'rejectedAt',
+  processedAt: 'processedAt',
+  approvalNotes: 'approvalNotes',
+  rejectionNotes: 'rejectionNotes',
+  processingNotes: 'processingNotes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ContractRefundScalarFieldEnum = (typeof ContractRefundScalarFieldEnum)[keyof typeof ContractRefundScalarFieldEnum]
+
+
 export const ContractPhaseScalarFieldEnum = {
   id: 'id',
   contractId: 'contractId',
@@ -5538,6 +5634,27 @@ export const ContractOrderByRelevanceFieldEnum = {
 export type ContractOrderByRelevanceFieldEnum = (typeof ContractOrderByRelevanceFieldEnum)[keyof typeof ContractOrderByRelevanceFieldEnum]
 
 
+export const ContractRefundOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  contractId: 'contractId',
+  reason: 'reason',
+  requestedById: 'requestedById',
+  approvedById: 'approvedById',
+  processedById: 'processedById',
+  paymentMethod: 'paymentMethod',
+  referenceNumber: 'referenceNumber',
+  recipientName: 'recipientName',
+  recipientAccount: 'recipientAccount',
+  recipientBank: 'recipientBank',
+  approvalNotes: 'approvalNotes',
+  rejectionNotes: 'rejectionNotes',
+  processingNotes: 'processingNotes'
+} as const
+
+export type ContractRefundOrderByRelevanceFieldEnum = (typeof ContractRefundOrderByRelevanceFieldEnum)[keyof typeof ContractRefundOrderByRelevanceFieldEnum]
+
+
 export const ContractPhaseOrderByRelevanceFieldEnum = {
   id: 'id',
   contractId: 'contractId',
@@ -5553,13 +5670,10 @@ export type ContractPhaseOrderByRelevanceFieldEnum = (typeof ContractPhaseOrderB
 export const ContractEventOrderByRelevanceFieldEnum = {
   id: 'id',
   contractId: 'contractId',
-  eventType: 'eventType',
-  eventGroup: 'eventGroup',
   fromState: 'fromState',
   toState: 'toState',
   trigger: 'trigger',
-  actorId: 'actorId',
-  actorType: 'actorType'
+  actorId: 'actorId'
 } as const
 
 export type ContractEventOrderByRelevanceFieldEnum = (typeof ContractEventOrderByRelevanceFieldEnum)[keyof typeof ContractEventOrderByRelevanceFieldEnum]
@@ -5931,9 +6045,37 @@ export type EnumContractStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$P
 
 
 /**
+ * Reference to a field of type 'RefundStatus'
+ */
+export type EnumRefundStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RefundStatus'>
+    
+
+
+/**
  * Reference to a field of type 'PhaseStatus'
  */
 export type EnumPhaseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PhaseStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'ContractEventType'
+ */
+export type EnumContractEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ContractEventType'>
+    
+
+
+/**
+ * Reference to a field of type 'ContractEventGroup'
+ */
+export type EnumContractEventGroupFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ContractEventGroup'>
+    
+
+
+/**
+ * Reference to a field of type 'EventActorType'
+ */
+export type EnumEventActorTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EventActorType'>
     
 
 
@@ -6004,13 +6146,6 @@ export type EnumTerminationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$
  * Reference to a field of type 'TerminationStatus'
  */
 export type EnumTerminationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TerminationStatus'>
-    
-
-
-/**
- * Reference to a field of type 'RefundStatus'
- */
-export type EnumRefundStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RefundStatus'>
     
 
 
@@ -6212,6 +6347,7 @@ export type GlobalOmitConfig = {
   stepEventAttachment?: Prisma.StepEventAttachmentOmit
   paymentMethodPhaseDocument?: Prisma.PaymentMethodPhaseDocumentOmit
   contract?: Prisma.ContractOmit
+  contractRefund?: Prisma.ContractRefundOmit
   contractPhase?: Prisma.ContractPhaseOmit
   contractEvent?: Prisma.ContractEventOmit
   documentationStep?: Prisma.DocumentationStepOmit
