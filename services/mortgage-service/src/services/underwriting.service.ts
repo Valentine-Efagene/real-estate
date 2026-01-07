@@ -319,24 +319,6 @@ export class UnderwritingService {
                 },
             });
 
-            // Record contract event
-            await tx.contractEvent.create({
-                data: {
-                    contractId,
-                    eventType: 'UNDERWRITING.COMPLETED',
-                    eventGroup: 'DOCUMENT',
-                    data: {
-                        stepId,
-                        decision,
-                        score,
-                        reasons,
-                        conditions,
-                    },
-                    actorId,
-                    actorType: actorId ? 'USER' : 'SYSTEM',
-                },
-            });
-
             // Determine notification type
             const notificationType =
                 decision === 'APPROVED'

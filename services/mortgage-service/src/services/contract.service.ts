@@ -340,22 +340,6 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
                 }
             }
 
-            await tx.domainEvent.create({
-                data: {
-                    id: uuidv4(),
-                    eventType: 'CONTRACT.CREATED',
-                    aggregateType: 'Contract',
-                    aggregateId: created.id,
-                    queueName: 'contract-steps',
-                    payload: JSON.stringify({
-                        contractId: created.id,
-                        buyerId: data.buyerId,
-                        propertyUnitId: data.propertyUnitId,
-                        paymentMethodId: data.paymentMethodId,
-                    }),
-                },
-            });
-
             return created;
         });
 
@@ -527,20 +511,6 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
                 },
             });
 
-            await tx.contractEvent.create({
-                data: {
-                    contractId: id,
-                    eventType: 'STATE.TRANSITION',
-                    eventGroup: 'STATE_CHANGE',
-                    fromState,
-                    toState,
-                    trigger: data.trigger,
-                    data: data.metadata || undefined,
-                    actorId: userId,
-                    actorType: 'USER',
-                },
-            });
-
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
@@ -582,20 +552,6 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
                     signedAt: new Date(),
                     status: 'ACTIVE',
                     state: 'ACTIVE',
-                },
-            });
-
-            // Record the transition to ACTIVE
-            await tx.contractEvent.create({
-                data: {
-                    contractId: id,
-                    eventType: 'STATE.TRANSITION',
-                    eventGroup: 'STATE_CHANGE',
-                    fromState: contract.state,
-                    toState: 'ACTIVE',
-                    trigger: 'SIGN',
-                    actorId: userId,
-                    actorType: 'USER',
                 },
             });
 
@@ -659,20 +615,6 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
                     status: 'CANCELLED',
                     state: 'CANCELLED',
                     terminatedAt: new Date(),
-                },
-            });
-
-            await tx.contractEvent.create({
-                data: {
-                    contractId: id,
-                    eventType: 'STATE.TRANSITION',
-                    eventGroup: 'STATE_CHANGE',
-                    fromState: contract.state,
-                    toState: 'CANCELLED',
-                    trigger: 'CANCEL',
-                    data: reason ? { reason } : undefined,
-                    actorId: userId,
-                    actorType: 'USER',
                 },
             });
 

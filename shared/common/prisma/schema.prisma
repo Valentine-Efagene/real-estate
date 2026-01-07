@@ -211,12 +211,12 @@ enum OfferLetterStatus {
 /// Handler Type - What kind of action the handler performs
 /// These are business-friendly names that admins can understand
 enum EventHandlerType {
-  SEND_EMAIL       // Send an email notification to recipient(s)
-  SEND_SMS         // Send an SMS text message
-  SEND_PUSH        // Send a push notification
-  CALL_WEBHOOK     // Call an external API/webhook
+  SEND_EMAIL // Send an email notification to recipient(s)
+  SEND_SMS // Send an SMS text message
+  SEND_PUSH // Send a push notification
+  CALL_WEBHOOK // Call an external API/webhook
   ADVANCE_WORKFLOW // Advance or complete a workflow step
-  RUN_AUTOMATION   // Execute internal business logic
+  RUN_AUTOMATION // Execute internal business logic
 }
 
 /// Actor Type - Who triggered an event
@@ -430,33 +430,33 @@ model Tenant {
 // =============================================================================
 
 model ApiKey {
-  id          String    @id @default(cuid())
-  tenantId    String
-  tenant      Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  id       String @id @default(cuid())
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
   // Identification
-  name        String                // Human-readable name (e.g., "Paystack Integration")
-  description String?   @db.Text    // Optional description
-  provider    String                // Partner/vendor name (e.g., "paystack", "flutterwave")
+  name        String // Human-readable name (e.g., "Paystack Integration")
+  description String? @db.Text // Optional description
+  provider    String // Partner/vendor name (e.g., "paystack", "flutterwave")
 
   // Secret management (NEVER store raw secret in DB)
-  secretRef   String                // AWS Secrets Manager ARN or name
+  secretRef String // AWS Secrets Manager ARN or name
 
   // Permissions - scopes this API key is allowed to request
   // Examples: ["contract:read", "payment:*", "property:read"]
-  scopes      Json                  // JSON array of scope strings
+  scopes Json // JSON array of scope strings
 
   // Lifecycle
-  enabled     Boolean   @default(true)
-  expiresAt   DateTime?             // Optional expiration date
-  lastUsedAt  DateTime?             // Updated on each token exchange
-  revokedAt   DateTime?             // Set when key is revoked
-  revokedBy   String?               // User ID who revoked
+  enabled    Boolean   @default(true)
+  expiresAt  DateTime? // Optional expiration date
+  lastUsedAt DateTime? // Updated on each token exchange
+  revokedAt  DateTime? // Set when key is revoked
+  revokedBy  String? // User ID who revoked
 
   // Audit
-  createdBy   String?               // User ID who created
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdBy String? // User ID who created
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([tenantId])
   @@index([provider])
@@ -994,7 +994,7 @@ model PaymentMethodPhaseStep {
 /// Step Event Attachment - Links event handlers to step template triggers
 /// When a step transitions (complete, reject, etc.), attached handlers fire
 model StepEventAttachment {
-  id     String @id @default(cuid())
+  id     String                 @id @default(cuid())
   stepId String
   step   PaymentMethodPhaseStep @relation(fields: [stepId], references: [id], onDelete: Cascade)
 
@@ -1104,7 +1104,6 @@ model Contract {
   phases       ContractPhase[]
   documents    ContractDocument[]
   payments     ContractPayment[]
-  events       ContractEvent[]
   terminations ContractTermination[]
   offerLetters OfferLetter[]
 
@@ -1401,38 +1400,6 @@ model ContractDocument {
   @@index([type])
   @@index([status])
   @@map("contract_documents")
-}
-
-// Contract domain events (FSM transitions, payments, documents, etc.)
-model ContractEvent {
-  id         String   @id @default(cuid())
-  contractId String
-  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
-
-  // Event classification
-  eventType  String // STATE.TRANSITION, PHASE.ACTIVATED, PAYMENT.COMPLETED, etc.
-  eventGroup String? // STATE_CHANGE, PAYMENT, DOCUMENT, NOTIFICATION (for filtering)
-
-  // For state transitions (optional - only populated for STATE.TRANSITION events)
-  fromState String?
-  toState   String?
-  trigger   String?
-
-  // Event payload (all event-specific data)
-  data Json?
-
-  // Actor tracking
-  actorId   String?
-  actorType String? // USER, SYSTEM, WEBHOOK
-
-  // Timing
-  occurredAt DateTime @default(now())
-
-  @@index([contractId])
-  @@index([eventType])
-  @@index([eventGroup])
-  @@index([occurredAt])
-  @@map("contract_events")
 }
 
 // =============================================================================
@@ -1760,9 +1727,9 @@ model DocumentRequirementRule {
 /// Event Channel - A logical grouping of events
 /// Channels help organize events and route them to appropriate handlers
 model EventChannel {
-  id          String  @id @default(cuid())
-  tenantId    String
-  tenant      Tenant  @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  id       String @id @default(cuid())
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
   /// Unique code for the channel (e.g., "CONTRACTS", "PAYMENTS")
   code        String
@@ -1772,7 +1739,7 @@ model EventChannel {
   description String? @db.Text
 
   /// Whether this channel is active
-  enabled     Boolean @default(true)
+  enabled Boolean @default(true)
 
   /// Event types that belong to this channel
   eventTypes EventType[]
@@ -1788,9 +1755,9 @@ model EventChannel {
 /// Event Type - Defines a type of event that can occur
 /// Each event type belongs to a channel and can have multiple handlers
 model EventType {
-  id          String  @id @default(cuid())
-  tenantId    String
-  tenant      Tenant  @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  id       String @id @default(cuid())
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
   /// The channel this event type belongs to
   channelId String
@@ -1828,9 +1795,9 @@ model EventType {
 /// Event Handler - Defines what should happen when an event fires
 /// Handlers can be internal (call a service), external (webhook), or workflow triggers
 model EventHandler {
-  id          String  @id @default(cuid())
-  tenantId    String
-  tenant      Tenant  @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  id       String @id @default(cuid())
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
   /// The event type this handler responds to
   eventTypeId String
@@ -2053,7 +2020,7 @@ model PropertyTransferRequest {
   sourceTotalAmount Float? // Original contract total
   targetTotalAmount Float? // New contract total (based on target property)
   priceAdjustment   Float? // Difference (positive = buyer owes more)
-  paymentsMigrated  Int?   // Number of payments migrated
+  paymentsMigrated  Int? // Number of payments migrated
 
   // Result - new contract created after approval
   targetContractId String?
@@ -2078,21 +2045,21 @@ model PropertyTransferRequest {
 // =============================================================================
 
 enum ApprovalRequestType {
-  PROPERTY_TRANSFER    // Property unit transfer between contracts
-  PROPERTY_UPDATE      // Property/unit listing update requiring approval
-  USER_WORKFLOW        // User workflow step approval
-  CREDIT_CHECK         // Credit check result review
+  PROPERTY_TRANSFER // Property unit transfer between contracts
+  PROPERTY_UPDATE // Property/unit listing update requiring approval
+  USER_WORKFLOW // User workflow step approval
+  CREDIT_CHECK // Credit check result review
   CONTRACT_TERMINATION // Contract termination approval
-  REFUND_APPROVAL      // Refund request approval
+  REFUND_APPROVAL // Refund request approval
 }
 
 enum ApprovalRequestStatus {
-  PENDING      // Awaiting review
-  IN_REVIEW    // Assigned to reviewer
-  APPROVED     // Approved by reviewer
-  REJECTED     // Rejected by reviewer
-  CANCELLED    // Cancelled by requestor
-  EXPIRED      // Auto-expired (if TTL configured)
+  PENDING // Awaiting review
+  IN_REVIEW // Assigned to reviewer
+  APPROVED // Approved by reviewer
+  REJECTED // Rejected by reviewer
+  CANCELLED // Cancelled by requestor
+  EXPIRED // Auto-expired (if TTL configured)
 }
 
 enum ApprovalRequestPriority {
@@ -2119,7 +2086,7 @@ model ApprovalRequest {
 
   // Request metadata
   title       String  @db.VarChar(255) // Human-readable title for the request
-  description String? @db.Text        // Detailed description
+  description String? @db.Text // Detailed description
 
   // Payload for any additional context (JSON)
   payload Json? // Flexible data storage for type-specific details
@@ -2137,7 +2104,7 @@ model ApprovalRequest {
   reviewedBy   User?   @relation("ApprovalReviewer", fields: [reviewedById], references: [id])
 
   // Review details
-  reviewNotes String? @db.Text // Reviewer's notes/comments
+  reviewNotes String?           @db.Text // Reviewer's notes/comments
   decision    ApprovalDecision? // APPROVED, REJECTED, REQUEST_CHANGES
 
   // Expiration

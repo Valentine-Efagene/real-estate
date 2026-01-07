@@ -1,9 +1,8 @@
-// Notification events (legacy)
-export * from './notification-enums';
-export * from './notification-event';
-export * from './event-publisher';
+// Notification types and publisher (SNS-based)
+export * from './notifications/notification-enums';
+export * from './notifications/notification-event';
+export * from './notifications/event-publisher';
 
-// Event-driven workflow system
-export * from './workflow-types';
-export * from './event-config.service';
-export * from './workflow-event.service';
+// Event bus (multi-transport delivery)
+export * from './bus/event-bus.types';
+export * from './bus/event-bus.service';

@@ -24,7 +24,9 @@
         "@nestjs/axios": "^4.0.0"
     },
     "dependencies": {
-        "@aws-sdk/client-eventbridge": "^3.500.0"
+        "@aws-sdk/client-eventbridge": "^3.500.0",
+        "@aws-sdk/client-sns": "^3.500.0",
+        "@aws-sdk/client-sqs": "^3.500.0"
     },
     "devDependencies": {
         "@nestjs/common": "^10.0.0",

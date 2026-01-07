@@ -15,7 +15,6 @@ import terminationRouter from './routes/contract-termination';
 import offerLetterRouter from './routes/offer-letter';
 import underwritingRouter from './routes/underwriting';
 import paymentMethodChangeRouter from './routes/payment-method-change';
-import eventConfigRouter from './routes/event-config';
 import propertyTransferRouter from './routes/property-transfer';
 import approvalRequestRouter from './routes/approval-request';
 
@@ -101,7 +100,6 @@ app.use('/payment-methods', paymentMethodRouter);
 app.use('/contracts', contractRouter);
 app.use('/offer-letters', offerLetterRouter);
 app.use('/underwriting', underwritingRouter);
-app.use('/event-config', eventConfigRouter);
 app.use('/approval-requests', approvalRequestRouter);
 app.use('/', terminationRouter); // Handles both /contracts/:id/... and /terminations/...
 app.use('/', paymentMethodChangeRouter); // Handles /contracts/:id/payment-method-change-requests and /payment-method-change-requests

@@ -1,3 +1,9 @@
+/**
+ * Event Bus Types
+ *
+ * Type definitions for the EventBus system.
+ */
+
 export enum EventTransportType {
     HTTP = 'http',              // Direct HTTP webhook call
     SNS = 'sns',                // AWS SNS topic

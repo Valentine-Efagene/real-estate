@@ -10,6 +10,15 @@ import { prisma } from "../lib/prisma";
 // Type alias for the ApprovalRequest model from Prisma
 type ApprovalRequest = any;
 
+// Import domain services for dispatch (avoid circular deps by lazy loading)
+let propertyTransferService: any;
+const getPropertyTransferService = async () => {
+    if (!propertyTransferService) {
+        propertyTransferService = (await import('./property-transfer.service')).propertyTransferService;
+    }
+    return propertyTransferService;
+};
+
 interface CreateApprovalRequestDto {
     type: ApprovalRequestType;
     entityType: string;
@@ -325,6 +334,11 @@ export class ApprovalRequestService {
                 throw new Error(`Invalid decision: ${dto.decision}`);
         }
 
+        // Execute domain action if approved (dispatch by type)
+        if (dto.decision === ApprovalDecision.APPROVED) {
+            await this.executeApprovalAction(existing, dto.reviewedById, dto.reviewNotes);
+        }
+
         const updated = await db.approvalRequest.update({
             where: { id },
             data: {
@@ -355,6 +369,41 @@ export class ApprovalRequestService {
         // await emitDomainEvent(eventType, ...)
 
         return updated;
+    }
+
+    /**
+     * Execute the domain action for an approved request
+     * Dispatches to the appropriate service based on request type
+     */
+    private async executeApprovalAction(
+        approvalRequest: any,
+        reviewerId: string,
+        reviewNotes?: string
+    ): Promise<void> {
+        const { type, entityId, tenantId } = approvalRequest;
+
+        switch (type) {
+            case ApprovalRequestType.PROPERTY_TRANSFER: {
+                const transferService = await getPropertyTransferService();
+                await transferService.approve({
+                    requestId: entityId, // entityId is the PropertyTransferRequest.id
+                    reviewerId,
+                    reviewNotes,
+                    tenantId,
+                });
+                break;
+            }
+            // Add other approval types here as they're implemented:
+            // case ApprovalRequestType.PROPERTY_UPDATE:
+            //   await propertyUpdateService.approve({ ... });
+            //   break;
+            // case ApprovalRequestType.CONTRACT_TERMINATION:
+            //   await contractTerminationService.approve({ ... });
+            //   break;
+            default:
+                // Log or throw for unknown types
+                console.warn(`No handler registered for approval type: ${type}`);
+        }
     }
 
     async cancel(tenantId: string, id: string): Promise<ApprovalRequest> {

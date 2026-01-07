@@ -177,6 +177,8 @@ export const testData = {
 // Cleanup helper - removes all test data
 export async function cleanupTestData() {
     // Delete in correct order to respect foreign keys
+    await prisma.approvalRequest.deleteMany();
+    await prisma.propertyTransferRequest.deleteMany();
     await prisma.contractTermination.deleteMany();
     await prisma.contractEvent.deleteMany();
     await prisma.contractPayment.deleteMany();
@@ -200,5 +202,7 @@ export async function cleanupTestData() {
     await prisma.propertyPaymentMethod.deleteMany();
     await prisma.paymentPlan.deleteMany();
     await prisma.domainEvent.deleteMany();
-    // Note: Not deleting properties, users, tenants - they may be shared
+    await prisma.property.deleteMany();
+    await prisma.user.deleteMany();
+    await prisma.tenant.deleteMany();
 }

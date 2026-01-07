@@ -1,6 +1,14 @@
-import { Injectable, Logger, Inject, Optional } from '@nestjs/common';
-import { HttpService } from '@nestjs/axios';
-import { firstValueFrom } from 'rxjs';
+/**
+ * Event Bus Service
+ *
+ * Multi-transport event delivery system for serverless microservices.
+ * Supports HTTP webhooks, AWS SNS, SQS, and EventBridge.
+ *
+ * This is a plain TypeScript implementation (no NestJS) designed for Lambda/serverless environments.
+ */
+
+import axios, { AxiosInstance } from 'axios';
+import * as crypto from 'crypto';
 import {
     EventPayload,
     EventHandler,
@@ -8,30 +16,30 @@ import {
     EventTransportType,
     EventBusConfig,
 } from './event-bus.types';
-import * as crypto from 'crypto';
 
 /**
- * Event Bus Service - n8n-style event-driven architecture
- * Publishes events to various transports (HTTP, SNS, EventBridge)
- * Designed for microservices communication
+ * Event Bus Service - Multi-transport event delivery
  */
-@Injectable()
 export class EventBusService {
-    private readonly logger = new Logger(EventBusService.name);
     private eventHandlers: Map<string, EventHandler[]> = new Map();
     private readonly config: EventBusConfig;
+    private readonly httpClient: AxiosInstance;
 
-    constructor(
-        private readonly httpService: HttpService,
-        @Optional() @Inject('EVENT_BUS_OPTIONS') private readonly options?: any,
-    ) {
+    constructor(config?: Partial<EventBusConfig>) {
         this.config = {
-            defaultTransport: options?.defaultTransport || EventTransportType.HTTP,
-            defaultTimeout: options?.defaultTimeout || 30000,
-            defaultRetries: options?.defaultRetries || 3,
-            enableDeadLetterQueue: true,
-            awsRegion: options?.awsRegion || 'us-east-1',
+            defaultTransport: config?.defaultTransport || EventTransportType.HTTP,
+            defaultTimeout: config?.defaultTimeout || 30000,
+            defaultRetries: config?.defaultRetries || 3,
+            enableDeadLetterQueue: config?.enableDeadLetterQueue ?? true,
+            awsRegion: config?.awsRegion || process.env.AWS_REGION || 'us-east-1',
         };
+
+        this.httpClient = axios.create({
+            timeout: this.config.defaultTimeout,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
     }
 
     /**
@@ -42,8 +50,8 @@ export class EventBusService {
         handlers.push(handler);
         this.eventHandlers.set(handler.eventType, handlers);
 
-        this.logger.log(
-            `Registered ${handler.transport} handler for event: ${handler.eventType}`
+        console.log(
+            `[EventBus] Registered ${handler.transport} handler for event: ${handler.eventType}`
         );
     }
 
@@ -73,17 +81,17 @@ export class EventBusService {
             eventId,
             timestamp: new Date(),
             tenantId: options?.tenantId,
-            source: options?.source || 'mortgage-fsm',
+            source: options?.source || 'event-bus',
             data,
             metadata: options?.metadata,
             correlationId: options?.correlationId || eventId,
         };
 
-        this.logger.log(`Publishing event: ${eventType} [${eventId}]`);
+        console.log(`[EventBus] Publishing event: ${eventType} [${eventId}]`);
 
         const handlers = this.eventHandlers.get(eventType) || [];
         if (handlers.length === 0) {
-            this.logger.warn(`No handlers registered for event: ${eventType}`);
+            console.warn(`[EventBus] No handlers registered for event: ${eventType}`);
             return [];
         }
 
@@ -149,8 +157,8 @@ export class EventBusService {
                 }
 
                 const executionTime = Date.now() - startTime;
-                this.logger.log(
-                    `Event ${payload.eventId} executed successfully via ${handler.transport} (attempt ${attempt + 1}/${retryConfig.maxRetries + 1})`
+                console.log(
+                    `[EventBus] Event ${payload.eventId} executed successfully via ${handler.transport} (attempt ${attempt + 1}/${retryConfig.maxRetries + 1})`
                 );
 
                 return {
@@ -162,10 +170,10 @@ export class EventBusService {
                     executionTime,
                     transport: handler.transport,
                 };
-            } catch (error) {
+            } catch (error: any) {
                 lastError = error;
-                this.logger.error(
-                    `Event ${payload.eventId} failed via ${handler.transport} (attempt ${attempt + 1}/${retryConfig.maxRetries + 1}): ${error.message}`
+                console.error(
+                    `[EventBus] Event ${payload.eventId} failed via ${handler.transport} (attempt ${attempt + 1}/${retryConfig.maxRetries + 1}): ${error.message}`
                 );
 
                 if (attempt < retryConfig.maxRetries) {
@@ -204,7 +212,7 @@ export class EventBusService {
             throw new Error('HTTP handler requires endpoint');
         }
 
-        const headers = {
+        const headers: Record<string, string> = {
             'Content-Type': 'application/json',
             'X-Event-Id': payload.eventId,
             'X-Event-Type': payload.eventType,
@@ -229,12 +237,10 @@ export class EventBusService {
 
         const timeout = handler.timeout || this.config.defaultTimeout;
 
-        const response = await firstValueFrom(
-            this.httpService.post(handler.endpoint, payload, {
-                headers,
-                timeout,
-            })
-        );
+        const response = await this.httpClient.post(handler.endpoint, payload, {
+            headers,
+            timeout,
+        });
 
         return {
             statusCode: response.status,
@@ -263,22 +269,22 @@ export class EventBusService {
                 MessageAttributes: {
                     eventType: { DataType: 'String', StringValue: payload.eventType },
                     eventId: { DataType: 'String', StringValue: payload.eventId },
-                    tenantId: payload.tenantId ? { DataType: 'Number', StringValue: String(payload.tenantId) } : undefined,
-                    correlationId: payload.correlationId ? { DataType: 'String', StringValue: payload.correlationId } : undefined,
+                    ...(payload.tenantId && { tenantId: { DataType: 'Number', StringValue: String(payload.tenantId) } }),
+                    ...(payload.correlationId && { correlationId: { DataType: 'String', StringValue: payload.correlationId } }),
                 },
             });
 
             const result = await client.send(command);
-            this.logger.log(`Published event ${payload.eventId} to SNS topic: ${handler.snsTopicArn}`);
+            console.log(`[EventBus] Published event ${payload.eventId} to SNS topic: ${handler.snsTopicArn}`);
             return { MessageId: result.MessageId };
-        } catch (error) {
-            this.logger.error(`Failed to publish to SNS: ${error.message}`);
+        } catch (error: any) {
+            console.error(`[EventBus] Failed to publish to SNS: ${error.message}`);
             throw error;
         }
     }
 
     /**
-     * Publish to AWS EventBridge (placeholder - requires AWS SDK)
+     * Publish to AWS EventBridge
      */
     private async executeEventBridgeHandler(
         handler: EventHandler,
@@ -288,19 +294,26 @@ export class EventBusService {
             throw new Error('EventBridge handler requires event bus configuration');
         }
 
-        // TODO: Implement AWS EventBridge publishing
-        // const eventBridge = new AWS.EventBridge({ region: this.config.awsRegion });
-        // const result = await eventBridge.putEvents({
-        //     Entries: [{
-        //         EventBusName: handler.eventBridgeDetail.eventBusName,
-        //         Source: handler.eventBridgeDetail.source,
-        //         DetailType: handler.eventBridgeDetail.detailType,
-        //         Detail: JSON.stringify(payload),
-        //     }]
-        // }).promise();
+        try {
+            const { EventBridgeClient, PutEventsCommand } = await import('@aws-sdk/client-eventbridge');
+            const client = new EventBridgeClient({ region: this.config.awsRegion });
 
-        this.logger.warn('EventBridge transport not yet implemented - would publish to: ' + handler.eventBridgeDetail.eventBusName);
-        return { EventId: 'mock-eventbridge-id' };
+            const command = new PutEventsCommand({
+                Entries: [{
+                    EventBusName: handler.eventBridgeDetail.eventBusName,
+                    Source: handler.eventBridgeDetail.source,
+                    DetailType: handler.eventBridgeDetail.detailType,
+                    Detail: JSON.stringify(payload),
+                }],
+            });
+
+            const result = await client.send(command);
+            console.log(`[EventBus] Published event ${payload.eventId} to EventBridge: ${handler.eventBridgeDetail.eventBusName}`);
+            return { Entries: result.Entries };
+        } catch (error: any) {
+            console.error(`[EventBus] Failed to publish to EventBridge: ${error.message}`);
+            throw error;
+        }
     }
 
     /**
@@ -324,15 +337,15 @@ export class EventBusService {
                 MessageAttributes: {
                     eventType: { DataType: 'String', StringValue: payload.eventType },
                     eventId: { DataType: 'String', StringValue: payload.eventId },
-                    tenantId: payload.tenantId ? { DataType: 'Number', StringValue: String(payload.tenantId) } : undefined,
+                    ...(payload.tenantId && { tenantId: { DataType: 'Number', StringValue: String(payload.tenantId) } }),
                 },
             });
 
             const result = await client.send(command);
-            this.logger.log(`Sent event ${payload.eventId} to SQS queue: ${handler.sqsQueueUrl}`);
+            console.log(`[EventBus] Sent event ${payload.eventId} to SQS queue: ${handler.sqsQueueUrl}`);
             return { MessageId: result.MessageId };
-        } catch (error) {
-            this.logger.error(`Failed to send to SQS: ${error.message}`);
+        } catch (error: any) {
+            console.error(`[EventBus] Failed to send to SQS: ${error.message}`);
             throw error;
         }
     }
@@ -359,13 +372,12 @@ export class EventBusService {
         payload: EventPayload,
         error: any
     ): Promise<void> {
-        this.logger.error(
-            `Sending event ${payload.eventId} to dead letter queue after exhausting retries`
+        console.error(
+            `[EventBus] Sending event ${payload.eventId} to dead letter queue after exhausting retries`
         );
 
-        // TODO: Implement dead letter queue
-        // For now, just log it
-        this.logger.error({
+        // Log to CloudWatch/console (in Lambda, this goes to CloudWatch Logs)
+        console.error({
             message: 'Dead letter event',
             eventId: payload.eventId,
             eventType: payload.eventType,
@@ -376,6 +388,29 @@ export class EventBusService {
             error: error?.message,
             payload,
         });
+
+        // If DLQ URL is configured, send to SQS
+        if (this.config.deadLetterQueueUrl) {
+            try {
+                const { SQSClient, SendMessageCommand } = await import('@aws-sdk/client-sqs');
+                const client = new SQSClient({ region: this.config.awsRegion });
+
+                await client.send(new SendMessageCommand({
+                    QueueUrl: this.config.deadLetterQueueUrl,
+                    MessageBody: JSON.stringify({
+                        payload,
+                        handler: {
+                            transport: handler.transport,
+                            endpoint: handler.endpoint,
+                        },
+                        error: error?.message,
+                        failedAt: new Date().toISOString(),
+                    }),
+                }));
+            } catch (dlqError: any) {
+                console.error(`[EventBus] Failed to send to DLQ: ${dlqError.message}`);
+            }
+        }
     }
 
     /**
@@ -407,4 +442,24 @@ export class EventBusService {
     }
 }
 
-export default EventBusService;
+/**
+ * Create a singleton EventBus instance
+ */
+let eventBusInstance: EventBusService | null = null;
+
+export function createEventBus(config?: Partial<EventBusConfig>): EventBusService {
+    if (!eventBusInstance) {
+        eventBusInstance = new EventBusService(config);
+    }
+    return eventBusInstance;
+}
+
+/**
+ * Get the singleton EventBus instance (must be created first)
+ */
+export function getEventBus(): EventBusService {
+    if (!eventBusInstance) {
+        throw new Error('EventBus not initialized. Call createEventBus() first.');
+    }
+    return eventBusInstance;
+}

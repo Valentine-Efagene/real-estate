@@ -195,6 +195,8 @@ describe('Property Transfer with Progress Preservation', () => {
 
     afterAll(async () => {
         await cleanupTestData();
+        // Delete in correct order to avoid foreign key constraints
+        await prisma.propertyTransferRequest.deleteMany({ where: { tenantId } });
         await prisma.propertyUnit.deleteMany({ where: { variantId: { in: [variantXId, variantYId] } } });
         await prisma.propertyVariant.deleteMany({ where: { id: { in: [variantXId, variantYId] } } });
         await prisma.property.deleteMany({ where: { id: { in: [propertyXId, propertyYId] } } });
