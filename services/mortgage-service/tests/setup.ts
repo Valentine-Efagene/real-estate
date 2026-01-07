@@ -4,6 +4,28 @@ config({ path: '.env.test' });
 import { PrismaMariaDb } from '@prisma/adapter-mariadb';
 import { PrismaClient } from '@valentine-efagene/qshelter-common';
 import { faker } from '@faker-js/faker';
+import supertest from 'supertest';
+import { app } from '../src/app.js';
+
+/**
+ * E2E Test Mode Configuration
+ * 
+ * Set API_BASE_URL to test against deployed LocalStack APIs:
+ *   API_BASE_URL=http://vf7kbi2plw.execute-api.localhost.localstack.cloud:4566/test pnpm test:e2e
+ * 
+ * Leave unset for fast in-process testing with supertest(app)
+ */
+export const API_BASE_URL = process.env.API_BASE_URL;
+export const isDeployedMode = !!API_BASE_URL;
+
+// Create a supertest instance that works with both modes
+export const api = API_BASE_URL ? supertest(API_BASE_URL) : supertest(app);
+
+// Log the test mode on startup
+console.log(`[E2E] Mode: ${isDeployedMode ? 'DEPLOYED' : 'LOCAL'}`);
+if (isDeployedMode) {
+    console.log(`[E2E] API Base URL: ${API_BASE_URL}`);
+}
 
 // Create adapter for test database
 const adapter = new PrismaMariaDb({

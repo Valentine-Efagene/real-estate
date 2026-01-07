@@ -1,6 +1,6 @@
-import request from 'supertest';
-import { app } from '../../../src/app.js';
-import { prisma, cleanupTestData } from '../../setup.js';
+
+
+import { api, prisma, cleanupTestData } from '../../setup.js';
 import { faker } from '@faker-js/faker';
 import { randomUUID } from 'crypto';
 import { authHeaders } from '@valentine-efagene/qshelter-common';
@@ -155,7 +155,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
     // =========================================================================
     describe('Step 1: Adaeze configures the payment plan', () => {
         it('Adaeze creates a one-off downpayment plan (10%)', async () => {
-            const response = await request(app)
+            const response = await api
                 .post('/payment-plans')
                 .set(authHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('adaeze-create-downpayment-plan'))
@@ -184,7 +184,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         });
 
         it('Adaeze creates a 20-year mortgage plan at 9.5% p.a.', async () => {
-            const response = await request(app)
+            const response = await api
                 .post('/payment-plans')
                 .set(authHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('adaeze-create-mortgage-plan'))
@@ -203,7 +203,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         });
 
         it('Adaeze creates a payment method with 4 phases per SCENARIO.md', async () => {
-            const response = await request(app)
+            const response = await api
                 .post('/payment-methods')
                 .set(authHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('adaeze-create-payment-method'))
@@ -286,7 +286,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         });
 
         it('Adaeze links the payment method to Lekki Gardens Estate', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/payment-methods/${paymentMethodId}/properties`)
                 .set(authHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('adaeze-link-payment-method'))
@@ -352,7 +352,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
     // =========================================================================
     describe("Step 2: Chidi creates and activates a contract", () => {
         it('Chidi creates a contract for Unit 14B', async () => {
-            const response = await request(app)
+            const response = await api
                 .post('/contracts')
                 .set(authHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-create-contract'))
@@ -393,7 +393,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         });
 
         it('Contract has correct phase amounts (₦8.5M downpayment, ₦76.5M mortgage)', async () => {
-            const response = await request(app)
+            const response = await api
                 .get(`/contracts/${contractId}/phases`)
                 .set(authHeaders(chidiId, tenantId));
 
@@ -422,7 +422,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         });
 
         it('Chidi submits the contract for processing', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/contracts/${contractId}/transition`)
                 .set(authHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-submit-contract'))
@@ -436,7 +436,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         });
 
         it('Documentation phase is activated', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/contracts/${contractId}/phases/${documentationPhaseId}/activate`)
                 .set(authHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-activate-kyc-phase'));
@@ -453,7 +453,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             ];
 
             for (const doc of documents) {
-                const response = await request(app)
+                const response = await api
                     .post(`/contracts/${contractId}/phases/${documentationPhaseId}/documents`)
                     .set(authHeaders(chidiId, tenantId))
                     .set('x-idempotency-key', idempotencyKey(`chidi-contract-doc-${doc.documentType}`))
@@ -467,7 +467,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             const uploadSteps = ['Upload Valid ID', 'Upload Bank Statements', 'Upload Employment Letter'];
 
             for (const stepName of uploadSteps) {
-                const response = await request(app)
+                const response = await api
                     .post(`/contracts/${contractId}/phases/${documentationPhaseId}/steps/complete`)
                     .set(authHeaders(chidiId, tenantId))
                     .set('x-idempotency-key', idempotencyKey(`chidi-complete-${stepName.replace(/\s+/g, '-').toLowerCase()}`))
@@ -485,7 +485,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
             for (let i = 0; i < docs.length; i++) {
                 const doc = docs[i];
-                const response = await request(app)
+                const response = await api
                     .post(`/contracts/${contractId}/documents/${doc.id}/review`)
                     .set(authHeaders(adaezeId, tenantId))
                     .set('x-idempotency-key', idempotencyKey(`adaeze-approve-doc-${i}`))
@@ -498,7 +498,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             }
 
             // Adaeze completes approval step
-            const response = await request(app)
+            const response = await api
                 .post(`/contracts/${contractId}/phases/${documentationPhaseId}/steps/complete`)
                 .set(authHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('adaeze-complete-review'))
@@ -525,7 +525,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         });
 
         it('Chidi signs the provisional offer', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/contracts/${contractId}/phases/${documentationPhaseId}/steps/complete`)
                 .set(authHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-signs-provisional'))
@@ -552,7 +552,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
         it('Chidi pays the ₦8.5M downpayment', async () => {
             // Generate installment
-            await request(app)
+            await api
                 .post(`/contracts/${contractId}/phases/${downpaymentPhaseId}/installments`)
                 .set(authHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-generate-downpayment'))
@@ -565,7 +565,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             const installment = phase!.installments[0];
 
             // Record payment
-            const paymentResponse = await request(app)
+            const paymentResponse = await api
                 .post(`/contracts/${contractId}/payments`)
                 .set(authHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-downpayment'))
@@ -584,7 +584,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                 where: { phase: { contractId }, status: 'PENDING' },
             });
 
-            const processResponse = await request(app)
+            const processResponse = await api
                 .post('/contracts/payments/process')
                 .set(authHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('process-chidi-downpayment'))
@@ -620,7 +620,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         });
 
         it('Chidi signs the final offer', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/contracts/${contractId}/phases/${finalDocumentationPhaseId}/steps/complete`)
                 .set(authHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-signs-final-offer'))
@@ -646,7 +646,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         });
 
         it('System generates 240 monthly mortgage installments', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/contracts/${contractId}/phases/${mortgagePhaseId}/installments`)
                 .set(authHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-generate-mortgage-installments'))
@@ -657,7 +657,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         });
 
         it('Chidi signs and activates the contract', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/contracts/${contractId}/sign`)
                 .set(authHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-signs-contract'));

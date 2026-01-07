@@ -1,6 +1,4 @@
-import request from 'supertest';
-import { app } from '../../../src/app.js';
-import { prisma, cleanupTestData } from '../../setup.js';
+import { api, prisma, cleanupTestData } from '../../setup.js';
 import { faker } from '@faker-js/faker';
 import { randomUUID } from 'crypto';
 import { authHeaders } from '@valentine-efagene/qshelter-common';
@@ -113,7 +111,7 @@ describe("Jinx's Workflow Builder", () => {
     // ================================================================
     describe('Step 0: Create Payment Plans', () => {
         it('Jinx creates a one-off downpayment plan', async () => {
-            const response = await request(app)
+            const response = await api
                 .post('/payment-plans')
                 .set(authHeaders(jinxId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('jinx-create-downpayment-plan'))
@@ -131,7 +129,7 @@ describe("Jinx's Workflow Builder", () => {
         });
 
         it('Jinx creates a 20-year mortgage plan', async () => {
-            const response = await request(app)
+            const response = await api
                 .post('/payment-plans')
                 .set(authHeaders(jinxId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('jinx-create-mortgage-plan'))
@@ -154,7 +152,7 @@ describe("Jinx's Workflow Builder", () => {
     // ================================================================
     describe('Step 1: Create Payment Method Template', () => {
         it('Jinx creates "Standard 10/90 Mortgage" template', async () => {
-            const response = await request(app)
+            const response = await api
                 .post('/payment-methods')
                 .set(authHeaders(jinxId, tenantId))
                 .send({
@@ -179,7 +177,7 @@ describe("Jinx's Workflow Builder", () => {
     // ================================================================
     describe('Step 2: Add Phase 1 - Underwriting & Documentation', () => {
         it('Jinx adds the underwriting phase', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/payment-methods/${paymentMethodId}/phases`)
                 .set(authHeaders(jinxId, tenantId))
                 .send({
@@ -203,7 +201,7 @@ describe("Jinx's Workflow Builder", () => {
     // ================================================================
     describe('Step 3: Add Steps to Phase 1', () => {
         it('Jinx adds Step 1: Pre-Approval Questionnaire', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/payment-methods/${paymentMethodId}/phases/${phase1Id}/steps`)
                 .set(authHeaders(jinxId, tenantId))
                 .send({
@@ -222,7 +220,7 @@ describe("Jinx's Workflow Builder", () => {
         });
 
         it('Jinx adds Step 2: Upload Valid ID', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/payment-methods/${paymentMethodId}/phases/${phase1Id}/steps`)
                 .set(authHeaders(jinxId, tenantId))
                 .send({
@@ -237,7 +235,7 @@ describe("Jinx's Workflow Builder", () => {
         });
 
         it('Jinx adds Step 3: Upload Bank Statements', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/payment-methods/${paymentMethodId}/phases/${phase1Id}/steps`)
                 .set(authHeaders(jinxId, tenantId))
                 .send({
@@ -253,7 +251,7 @@ describe("Jinx's Workflow Builder", () => {
         });
 
         it('Jinx adds Step 4: Upload Employment Letter', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/payment-methods/${paymentMethodId}/phases/${phase1Id}/steps`)
                 .set(authHeaders(jinxId, tenantId))
                 .send({
@@ -268,7 +266,7 @@ describe("Jinx's Workflow Builder", () => {
         });
 
         it('Jinx adds Step 5: Admin Review & Approval', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/payment-methods/${paymentMethodId}/phases/${phase1Id}/steps`)
                 .set(authHeaders(jinxId, tenantId))
                 .send({
@@ -282,7 +280,7 @@ describe("Jinx's Workflow Builder", () => {
         });
 
         it('Jinx adds Step 6: Generate Provisional Offer', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/payment-methods/${paymentMethodId}/phases/${phase1Id}/steps`)
                 .set(authHeaders(jinxId, tenantId))
                 .send({
@@ -301,7 +299,7 @@ describe("Jinx's Workflow Builder", () => {
         });
 
         it('Jinx adds Step 7: Sign Provisional Offer', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/payment-methods/${paymentMethodId}/phases/${phase1Id}/steps`)
                 .set(authHeaders(jinxId, tenantId))
                 .send({
@@ -320,7 +318,7 @@ describe("Jinx's Workflow Builder", () => {
     // ================================================================
     describe('Step 4: Add Document Requirements to Phase 1', () => {
         it('Jinx adds Valid ID requirement', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/payment-methods/${paymentMethodId}/phases/${phase1Id}/documents`)
                 .set(authHeaders(jinxId, tenantId))
                 .send({
@@ -337,7 +335,7 @@ describe("Jinx's Workflow Builder", () => {
         });
 
         it('Jinx adds Bank Statement requirement', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/payment-methods/${paymentMethodId}/phases/${phase1Id}/documents`)
                 .set(authHeaders(jinxId, tenantId))
                 .send({
@@ -353,7 +351,7 @@ describe("Jinx's Workflow Builder", () => {
         });
 
         it('Jinx adds Employment Letter requirement', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/payment-methods/${paymentMethodId}/phases/${phase1Id}/documents`)
                 .set(authHeaders(jinxId, tenantId))
                 .send({
@@ -373,7 +371,7 @@ describe("Jinx's Workflow Builder", () => {
     // ================================================================
     describe('Step 5: Add Phase 2 - Downpayment', () => {
         it('Jinx adds the downpayment phase', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/payment-methods/${paymentMethodId}/phases`)
                 .set(authHeaders(jinxId, tenantId))
                 .send({
@@ -399,7 +397,7 @@ describe("Jinx's Workflow Builder", () => {
     // ================================================================
     describe('Step 6: Add Phase 3 - Final Documentation', () => {
         it('Jinx adds the final documentation phase', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/payment-methods/${paymentMethodId}/phases`)
                 .set(authHeaders(jinxId, tenantId))
                 .send({
@@ -416,7 +414,7 @@ describe("Jinx's Workflow Builder", () => {
         });
 
         it('Jinx adds Step 1: Generate Final Offer Letter', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/payment-methods/${paymentMethodId}/phases/${phase3Id}/steps`)
                 .set(authHeaders(jinxId, tenantId))
                 .send({
@@ -434,7 +432,7 @@ describe("Jinx's Workflow Builder", () => {
         });
 
         it('Jinx adds Step 2: Sign Final Offer', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/payment-methods/${paymentMethodId}/phases/${phase3Id}/steps`)
                 .set(authHeaders(jinxId, tenantId))
                 .send({
@@ -452,7 +450,7 @@ describe("Jinx's Workflow Builder", () => {
     // ================================================================
     describe('Step 7: Add Phase 4 - Mortgage', () => {
         it('Jinx adds the mortgage phase', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/payment-methods/${paymentMethodId}/phases`)
                 .set(authHeaders(jinxId, tenantId))
                 .send({
@@ -479,7 +477,7 @@ describe("Jinx's Workflow Builder", () => {
     // ================================================================
     describe('Step 8: Reorder Steps in Phase 1', () => {
         it('Jinx reorders steps - moves bank statements before ID upload', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/payment-methods/${paymentMethodId}/phases/${phase1Id}/steps/reorder`)
                 .set(authHeaders(jinxId, tenantId))
                 .send({
@@ -510,7 +508,7 @@ describe("Jinx's Workflow Builder", () => {
     // ================================================================
     describe('Step 9: Update Step Metadata', () => {
         it('Jinx updates the Generate Provisional Offer step with new expiry', async () => {
-            const response = await request(app)
+            const response = await api
                 .patch(`/payment-methods/${paymentMethodId}/phases/${phase1Id}/steps/${step6Id}`)
                 .set(authHeaders(jinxId, tenantId))
                 .send({
@@ -540,7 +538,7 @@ describe("Jinx's Workflow Builder", () => {
 
     describe('Step 9.1: Configure Event Channels', () => {
         it('Jinx creates a WORKFLOW event channel', async () => {
-            const response = await request(app)
+            const response = await api
                 .post('/event-config/channels')
                 .set(authHeaders(jinxId, tenantId))
                 .send({
@@ -555,7 +553,7 @@ describe("Jinx's Workflow Builder", () => {
         });
 
         it('Jinx creates a STEP_COMPLETED event type', async () => {
-            const response = await request(app)
+            const response = await api
                 .post('/event-config/types')
                 .set(authHeaders(jinxId, tenantId))
                 .send({
@@ -571,7 +569,7 @@ describe("Jinx's Workflow Builder", () => {
         });
 
         it('Jinx creates a STEP_REJECTED event type', async () => {
-            const response = await request(app)
+            const response = await api
                 .post('/event-config/types')
                 .set(authHeaders(jinxId, tenantId))
                 .send({
@@ -587,7 +585,7 @@ describe("Jinx's Workflow Builder", () => {
         });
 
         it('Jinx can list event types for the channel', async () => {
-            const response = await request(app)
+            const response = await api
                 .get(`/event-config/types?channelId=${channelId}`)
                 .set(authHeaders(jinxId, tenantId));
 
@@ -601,7 +599,7 @@ describe("Jinx's Workflow Builder", () => {
     // ================================================================
     describe('Step 9.2: Create Event Handlers', () => {
         it('Jinx creates a CALL_WEBHOOK handler for credit score API', async () => {
-            const response = await request(app)
+            const response = await api
                 .post('/event-config/handlers')
                 .set(authHeaders(jinxId, tenantId))
                 .send({
@@ -634,7 +632,7 @@ describe("Jinx's Workflow Builder", () => {
         });
 
         it('Jinx creates a SEND_EMAIL handler for document approval notifications', async () => {
-            const response = await request(app)
+            const response = await api
                 .post('/event-config/handlers')
                 .set(authHeaders(jinxId, tenantId))
                 .send({
@@ -664,7 +662,7 @@ describe("Jinx's Workflow Builder", () => {
         });
 
         it('Jinx can list all handlers', async () => {
-            const response = await request(app)
+            const response = await api
                 .get('/event-config/handlers')
                 .set(authHeaders(jinxId, tenantId));
 
@@ -684,7 +682,7 @@ describe("Jinx's Workflow Builder", () => {
     // ================================================================
     describe('Step 9.3: Attach Handlers to Steps', () => {
         it('Jinx attaches credit check handler to bank statements step (ON_COMPLETE)', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/payment-methods/${paymentMethodId}/phases/${phase1Id}/steps/${step3Id}/handlers`)
                 .set(authHeaders(jinxId, tenantId))
                 .send({
@@ -700,7 +698,7 @@ describe("Jinx's Workflow Builder", () => {
         });
 
         it('Jinx attaches email notification handler to ID upload step (ON_COMPLETE)', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/payment-methods/${paymentMethodId}/phases/${phase1Id}/steps/${step2Id}/handlers`)
                 .set(authHeaders(jinxId, tenantId))
                 .send({
@@ -714,7 +712,7 @@ describe("Jinx's Workflow Builder", () => {
         });
 
         it('Jinx can list handlers attached to a step', async () => {
-            const response = await request(app)
+            const response = await api
                 .get(`/payment-methods/${paymentMethodId}/phases/${phase1Id}/steps/${step3Id}/handlers`)
                 .set(authHeaders(jinxId, tenantId));
 
@@ -724,7 +722,7 @@ describe("Jinx's Workflow Builder", () => {
         });
 
         it('Jinx can update a step attachment priority', async () => {
-            const response = await request(app)
+            const response = await api
                 .patch(`/payment-methods/${paymentMethodId}/phases/${phase1Id}/steps/${step3Id}/handlers/${stepAttachmentId}`)
                 .set(authHeaders(jinxId, tenantId))
                 .send({
@@ -736,7 +734,7 @@ describe("Jinx's Workflow Builder", () => {
         });
 
         it('Jinx can disable a step attachment', async () => {
-            const response = await request(app)
+            const response = await api
                 .patch(`/payment-methods/${paymentMethodId}/phases/${phase1Id}/steps/${step3Id}/handlers/${stepAttachmentId}`)
                 .set(authHeaders(jinxId, tenantId))
                 .send({
@@ -748,7 +746,7 @@ describe("Jinx's Workflow Builder", () => {
         });
 
         it('Jinx re-enables the step attachment', async () => {
-            const response = await request(app)
+            const response = await api
                 .patch(`/payment-methods/${paymentMethodId}/phases/${phase1Id}/steps/${step3Id}/handlers/${stepAttachmentId}`)
                 .set(authHeaders(jinxId, tenantId))
                 .send({
@@ -765,7 +763,7 @@ describe("Jinx's Workflow Builder", () => {
     // ================================================================
     describe('Step 10: Link Template to Property', () => {
         it('Jinx links the payment method to Lekki Sunset Gardens', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/payment-methods/${paymentMethodId}/properties`)
                 .set(authHeaders(jinxId, tenantId))
                 .send({
@@ -785,7 +783,7 @@ describe("Jinx's Workflow Builder", () => {
     // ================================================================
     describe('Step 11: Clone Template', () => {
         it('Jinx clones the template as "Premium 20/80 Mortgage"', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/payment-methods/${paymentMethodId}/clone`)
                 .set(authHeaders(jinxId, tenantId))
                 .send({
@@ -812,7 +810,7 @@ describe("Jinx's Workflow Builder", () => {
     // ================================================================
     describe('Step 12: Verify Complete Template', () => {
         it('Jinx retrieves and verifies the complete template structure', async () => {
-            const response = await request(app)
+            const response = await api
                 .get(`/payment-methods/${paymentMethodId}`)
                 .set(authHeaders(jinxId, tenantId));
 
@@ -857,7 +855,7 @@ describe("Jinx's Workflow Builder", () => {
 
         it('The template is ready for customer applications', async () => {
             // Verify we can list active payment methods
-            const response = await request(app)
+            const response = await api
                 .get('/payment-methods?isActive=true')
                 .set(authHeaders(jinxId, tenantId));
 

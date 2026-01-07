@@ -37,3 +37,10 @@
 - **When adding a new model with `tenantId` to the schema**, add its name (camelCase) to the `TENANT_SCOPED_MODELS` array in `tenant.ts`.
 - If the model has nullable `tenantId` (e.g., global templates), also add it to `OPTIONAL_TENANT_MODELS`.
 - The User model has optional `tenantId` and is NOT tenant-scoped (users can exist across tenants or without a tenant).
+
+## Deployment Status Tracking
+
+- After every deployment, update the `DEPLOYMENT_STATUS.md` file in the project root.
+- The file tracks each service's package size, health status, and health check endpoint response.
+- When deploying a service, record the new package size and verify the health check works.
+- Include the deployment date in the "Last Updated" field.

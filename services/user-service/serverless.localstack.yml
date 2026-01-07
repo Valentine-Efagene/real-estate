@@ -1,9 +1,9 @@
-# LocalStack-specific serverless config for Mortgage Service
+# LocalStack-specific serverless config for User Service
 # Uses REST API (v1) for better LocalStack compatibility
 # Usage: npx sls deploy --config serverless.localstack.yml --stage test
 # Requires: LocalStack running with CDK deployed (cd infrastructure && pnpm localstack:deploy)
 
-service: qshelter-mortgage-service
+service: qshelter-user-service
 
 frameworkVersion: '4'
 
@@ -13,7 +13,7 @@ provider:
   region: us-east-1
   stage: ${opt:stage, 'test'}
   memorySize: 512
-  timeout: 30
+  timeout: 29
   
   # REST API (v1) for LocalStack compatibility - no authorizer
   apiGateway:
@@ -23,6 +23,8 @@ provider:
     NODE_ENV: ${self:provider.stage}
     STAGE: ${self:provider.stage}
     LOCALSTACK_ENDPOINT: http://host.docker.internal:4566
+    NOTIFICATIONS_TOPIC_ARN: ${ssm:/qshelter/${self:provider.stage}/notifications-topic-arn, ''}
+    FRONTEND_BASE_URL: ${env:FRONTEND_BASE_URL, 'https://mreif.com.ng'}
     # Database credentials from SSM
     DB_HOST: ${ssm:/qshelter/${self:provider.stage}/DB_HOST}
     DB_PORT: ${ssm:/qshelter/${self:provider.stage}/DB_PORT}
@@ -34,22 +36,18 @@ provider:
     role:
       statements:
         - Effect: Allow
-          Action:
+          Action: 
             - ssm:GetParameter
             - ssm:GetParameters
             - ssm:GetParametersByPath
-          Resource:
-            - arn:aws:ssm:${self:provider.region}:*:parameter/qshelter/${self:provider.stage}/*
+          Resource: arn:aws:ssm:${self:provider.region}:*:parameter/qshelter/${self:provider.stage}/*
+        - Effect: Allow
+          Action: secretsmanager:GetSecretValue
+          Resource: arn:aws:secretsmanager:${self:provider.region}:*:secret:qshelter/${self:provider.stage}/*
         - Effect: Allow
           Action:
-            - secretsmanager:GetSecretValue
-          Resource:
-            - arn:aws:secretsmanager:${self:provider.region}:*:secret:qshelter/${self:provider.stage}/*
-        - Effect: Allow
-          Action:
-            - events:PutEvents
-          Resource:
-            - arn:aws:events:${self:provider.region}:*:event-bus/*
+            - sns:Publish
+          Resource: arn:aws:sns:${self:provider.region}:*:qshelter-${self:provider.stage}-notifications
 
 package:
   individually: true
@@ -73,7 +71,7 @@ package:
     - '!node_modules/@prisma/client/runtime/*sqlite*'
 
 functions:
-  main:
+  api:
     handler: dist/lambda.handler
     events:
       # REST API (v1) events - no authorizer for LocalStack simplicity
@@ -86,17 +84,13 @@ functions:
           method: GET
           cors: true
       - http:
-          path: /api
+          path: /api-docs
           method: GET
           cors: true
       - http:
-          path: /api-json
+          path: /openapi.json
           method: GET
           cors: true
-
-  # FSM event listener (triggered by EventBridge)
-  fsmEventHandler:
-    handler: dist/fsm-event-handler.handler
 
 plugins:
   - serverless-localstack

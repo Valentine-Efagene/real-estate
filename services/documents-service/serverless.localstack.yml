@@ -1,9 +1,9 @@
-# LocalStack-specific serverless config for Mortgage Service
+# LocalStack-specific serverless config for Documents Service
 # Uses REST API (v1) for better LocalStack compatibility
 # Usage: npx sls deploy --config serverless.localstack.yml --stage test
 # Requires: LocalStack running with CDK deployed (cd infrastructure && pnpm localstack:deploy)
 
-service: qshelter-mortgage-service
+service: qshelter-documents-service
 
 frameworkVersion: '4'
 
@@ -33,6 +33,7 @@ provider:
   iam:
     role:
       statements:
+        # SSM Parameter Store access for infrastructure config
         - Effect: Allow
           Action:
             - ssm:GetParameter
@@ -40,16 +41,24 @@ provider:
             - ssm:GetParametersByPath
           Resource:
             - arn:aws:ssm:${self:provider.region}:*:parameter/qshelter/${self:provider.stage}/*
+        # Secrets Manager access for sensitive credentials
         - Effect: Allow
           Action:
             - secretsmanager:GetSecretValue
           Resource:
             - arn:aws:secretsmanager:${self:provider.region}:*:secret:qshelter/${self:provider.stage}/*
+        # EventBridge access
         - Effect: Allow
           Action:
             - events:PutEvents
           Resource:
             - arn:aws:events:${self:provider.region}:*:event-bus/*
+        # SNS access for notifications
+        - Effect: Allow
+          Action:
+            - sns:Publish
+          Resource:
+            - arn:aws:sns:${self:provider.region}:*:*
 
 package:
   individually: true
@@ -86,17 +95,13 @@ functions:
           method: GET
           cors: true
       - http:
-          path: /api
+          path: /api-docs
           method: GET
           cors: true
       - http:
-          path: /api-json
+          path: /openapi.json
           method: GET
           cors: true
-
-  # FSM event listener (triggered by EventBridge)
-  fsmEventHandler:
-    handler: dist/fsm-event-handler.handler
 
 plugins:
   - serverless-localstack

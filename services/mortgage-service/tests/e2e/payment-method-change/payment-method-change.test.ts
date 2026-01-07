@@ -1,6 +1,6 @@
-import request from 'supertest';
+
 import { app } from '../../../src/app';
-import { prisma, cleanupTestData } from '../../setup';
+import { api, prisma, cleanupTestData } from '../../setup';
 import { faker } from '@faker-js/faker';
 import { randomUUID } from 'crypto';
 import { authHeaders } from '@valentine-efagene/qshelter-common';
@@ -161,7 +161,7 @@ describe('Payment Method Change Flow', () => {
     // =========================================================================
     describe('Step 1: Setup payment plans and methods', () => {
         it('creates a one-off downpayment plan (10%)', async () => {
-            const response = await request(app)
+            const response = await api
                 .post('/payment-plans')
                 .set(authHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('create-downpayment-plan'))
@@ -179,7 +179,7 @@ describe('Payment Method Change Flow', () => {
         });
 
         it('creates the original 20-year mortgage plan at 9.5% p.a.', async () => {
-            const response = await request(app)
+            const response = await api
                 .post('/payment-plans')
                 .set(authHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('create-original-mortgage-plan'))
@@ -197,7 +197,7 @@ describe('Payment Method Change Flow', () => {
         });
 
         it('creates the alternative 15-year mortgage plan at 9.0% p.a.', async () => {
-            const response = await request(app)
+            const response = await api
                 .post('/payment-plans')
                 .set(authHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('create-alternative-mortgage-plan'))
@@ -215,7 +215,7 @@ describe('Payment Method Change Flow', () => {
         });
 
         it('creates the original payment method (20-year mortgage)', async () => {
-            const response = await request(app)
+            const response = await api
                 .post('/payment-methods')
                 .set(authHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('create-original-payment-method'))
@@ -260,7 +260,7 @@ describe('Payment Method Change Flow', () => {
         });
 
         it('creates the alternative payment method (15-year mortgage)', async () => {
-            const response = await request(app)
+            const response = await api
                 .post('/payment-methods')
                 .set(authHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('create-alternative-payment-method'))
@@ -306,7 +306,7 @@ describe('Payment Method Change Flow', () => {
 
         it('links both payment methods to the property', async () => {
             // Link original method
-            let response = await request(app)
+            let response = await api
                 .post(`/payment-methods/${originalPaymentMethodId}/properties`)
                 .set(authHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('link-original-method'))
@@ -315,7 +315,7 @@ describe('Payment Method Change Flow', () => {
             expect(response.status).toBe(201);
 
             // Link alternative method
-            response = await request(app)
+            response = await api
                 .post(`/payment-methods/${alternativePaymentMethodId}/properties`)
                 .set(authHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('link-alternative-method'))
@@ -412,7 +412,7 @@ describe('Payment Method Change Flow', () => {
     // =========================================================================
     describe('Step 3: Chidi requests payment method change', () => {
         it('Chidi creates a payment method change request', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/contracts/${contractId}/payment-method-change-requests`)
                 .set(authHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('create-change-request'))
@@ -431,7 +431,7 @@ describe('Payment Method Change Flow', () => {
         });
 
         it('Request has financial impact preview calculated', async () => {
-            const response = await request(app)
+            const response = await api
                 .get(`/contracts/${contractId}/payment-method-change-requests/${changeRequestId}`)
                 .set(authHeaders(chidiId, tenantId));
 
@@ -459,7 +459,7 @@ describe('Payment Method Change Flow', () => {
     // =========================================================================
     describe('Step 4: Chidi submits documents for the request', () => {
         it('Chidi submits documents for the change request', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/contracts/${contractId}/payment-method-change-requests/${changeRequestId}/submit-documents`)
                 .set(authHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('submit-change-documents'));
@@ -469,7 +469,7 @@ describe('Payment Method Change Flow', () => {
         });
 
         it('Request appears in admin pending review list', async () => {
-            const response = await request(app)
+            const response = await api
                 .get('/payment-method-change-requests')
                 .set(authHeaders(adaezeId, tenantId));
 
@@ -483,7 +483,7 @@ describe('Payment Method Change Flow', () => {
     // =========================================================================
     describe('Step 5: Adaeze reviews and approves the request', () => {
         it('Adaeze starts review of the request', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/payment-method-change-requests/${changeRequestId}/start-review`)
                 .set(authHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('start-review'));
@@ -494,7 +494,7 @@ describe('Payment Method Change Flow', () => {
         });
 
         it('Adaeze approves the payment method change', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/payment-method-change-requests/${changeRequestId}/approve`)
                 .set(authHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('approve-change'))
@@ -533,7 +533,7 @@ describe('Payment Method Change Flow', () => {
     // =========================================================================
     describe('Step 6: System executes the payment method change', () => {
         it('Admin executes the approved change', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/payment-method-change-requests/${changeRequestId}/execute`)
                 .set(authHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('execute-change'));
@@ -559,7 +559,7 @@ describe('Payment Method Change Flow', () => {
         });
 
         it('New mortgage phase is created with 15-year terms', async () => {
-            const phasesResponse = await request(app)
+            const phasesResponse = await api
                 .get(`/contracts/${contractId}/phases`)
                 .set(authHeaders(chidiId, tenantId));
 
@@ -612,7 +612,7 @@ describe('Payment Method Change Flow', () => {
     // =========================================================================
     describe('Step 7: Verify final state and audit trail', () => {
         it('Change request has complete audit data', async () => {
-            const response = await request(app)
+            const response = await api
                 .get(`/contracts/${contractId}/payment-method-change-requests/${changeRequestId}`)
                 .set(authHeaders(chidiId, tenantId));
 
@@ -730,7 +730,7 @@ describe('Payment Method Change - Alternative Flows', () => {
         });
 
         // Create simple payment methods
-        const origMethodResp = await request(app)
+        const origMethodResp = await api
             .post('/payment-methods')
             .set(authHeaders(adminId, tenantId))
             .send({
@@ -741,7 +741,7 @@ describe('Payment Method Change - Alternative Flows', () => {
             });
         originalPaymentMethodId = origMethodResp.body.id;
 
-        const altMethodResp = await request(app)
+        const altMethodResp = await api
             .post('/payment-methods')
             .set(authHeaders(adminId, tenantId))
             .send({
@@ -753,12 +753,12 @@ describe('Payment Method Change - Alternative Flows', () => {
         alternativePaymentMethodId = altMethodResp.body.id;
 
         // Link to property
-        await request(app)
+        await api
             .post(`/payment-methods/${originalPaymentMethodId}/properties`)
             .set(authHeaders(adminId, tenantId))
             .send({ propertyId: property.id });
 
-        await request(app)
+        await api
             .post(`/payment-methods/${alternativePaymentMethodId}/properties`)
             .set(authHeaders(adminId, tenantId))
             .send({ propertyId: property.id });
@@ -819,7 +819,7 @@ describe('Payment Method Change - Alternative Flows', () => {
         let rejectRequestId: string;
 
         it('Customer creates a change request', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/contracts/${contractId}/payment-method-change-requests`)
                 .set(authHeaders(customerId, tenantId))
                 .send({
@@ -832,7 +832,7 @@ describe('Payment Method Change - Alternative Flows', () => {
         });
 
         it('Customer submits documents', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/contracts/${contractId}/payment-method-change-requests/${rejectRequestId}/submit-documents`)
                 .set(authHeaders(customerId, tenantId));
 
@@ -841,11 +841,11 @@ describe('Payment Method Change - Alternative Flows', () => {
 
         it('Admin rejects the request with reason', async () => {
             // First start the review
-            await request(app)
+            await api
                 .post(`/payment-method-change-requests/${rejectRequestId}/start-review`)
                 .set(authHeaders(adminId, tenantId));
 
-            const response = await request(app)
+            const response = await api
                 .post(`/payment-method-change-requests/${rejectRequestId}/reject`)
                 .set(authHeaders(adminId, tenantId))
                 .send({
@@ -878,7 +878,7 @@ describe('Payment Method Change - Alternative Flows', () => {
         let cancelRequestId: string;
 
         it('Customer creates another change request', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/contracts/${contractId}/payment-method-change-requests`)
                 .set(authHeaders(customerId, tenantId))
                 .send({
@@ -891,7 +891,7 @@ describe('Payment Method Change - Alternative Flows', () => {
         });
 
         it('Customer cancels the request', async () => {
-            const response = await request(app)
+            const response = await api
                 .post(`/contracts/${contractId}/payment-method-change-requests/${cancelRequestId}/cancel`)
                 .set(authHeaders(customerId, tenantId));
 

@@ -18,7 +18,8 @@
     "start:dev": "npm run start",
     "lint": "eslint \"{src,test}/**/*.ts\" --fix",
     "test": "node --experimental-vm-modules --no-warnings=ExperimentalWarning node_modules/jest/bin/jest.js",
-    "test:e2e": "NODE_ENV=test NODE_OPTIONS='--experimental-vm-modules --no-warnings=ExperimentalWarning' jest --config jest.e2e.config.js"
+    "test:e2e": "NODE_ENV=test NODE_OPTIONS='--experimental-vm-modules --no-warnings=ExperimentalWarning' jest --config jest.e2e.config.js",
+    "test:e2e:deployed": "API_BASE_URL=http://vf7kbi2plw.execute-api.localhost.localstack.cloud:4566/test npm run test:e2e"
   },
   "dependencies": {
     "@asteasolutions/zod-to-openapi": "^8.2.0",
