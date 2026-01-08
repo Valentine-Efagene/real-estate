@@ -1,0 +1,109 @@
+# LocalStack-specific serverless config for Payment Service
+# Uses REST API (v1) for better LocalStack compatibility
+# Usage: npx sls deploy --config serverless.localstack.yml --stage test
+# Requires: LocalStack running with CDK deployed (cd infrastructure && pnpm localstack:deploy)
+
+service: qshelter-payment-service
+
+frameworkVersion: '4'
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+  stage: ${opt:stage, 'test'}
+  memorySize: 512
+  timeout: 30
+  
+  # REST API (v1) for LocalStack compatibility - no authorizer
+  apiGateway:
+    shouldStartNameWithService: true
+
+  environment:
+    NODE_ENV: ${self:provider.stage}
+    STAGE: ${self:provider.stage}
+    LOCALSTACK_ENDPOINT: http://host.docker.internal:4566
+    # Database credentials from SSM
+    DB_HOST: ${ssm:/qshelter/${self:provider.stage}/DB_HOST}
+    DB_PORT: ${ssm:/qshelter/${self:provider.stage}/DB_PORT}
+    DB_USER: ${ssm:/qshelter/${self:provider.stage}/DB_USER}
+    DB_PASSWORD: ${ssm:/qshelter/${self:provider.stage}/DB_PASSWORD}
+    DB_NAME: ${ssm:/qshelter/${self:provider.stage}/DB_NAME}
+    # BudPay integration
+    BUDPAY_SECRET_KEY: ${ssm:/qshelter/${self:provider.stage}/BUDPAY_SECRET_KEY, ''}
+
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - ssm:GetParameter
+            - ssm:GetParameters
+            - ssm:GetParametersByPath
+          Resource:
+            - arn:aws:ssm:${self:provider.region}:*:parameter/qshelter/${self:provider.stage}/*
+        - Effect: Allow
+          Action:
+            - secretsmanager:GetSecretValue
+          Resource:
+            - arn:aws:secretsmanager:${self:provider.region}:*:secret:qshelter/${self:provider.stage}/*
+        - Effect: Allow
+          Action:
+            - events:PutEvents
+          Resource:
+            - arn:aws:events:${self:provider.region}:*:event-bus/*
+
+package:
+  individually: true
+  patterns:
+    # Exclude everything first
+    - '!**'
+    # Include only the bundled Lambda entry
+    - 'dist/**/*.mjs'
+    # Prisma client runtime dependencies
+    - 'node_modules/.prisma/**'
+    - 'node_modules/@prisma/client/**'
+    - 'node_modules/@prisma/adapter-mariadb/**'
+    - 'node_modules/@prisma/client-runtime-utils/**'
+    - 'node_modules/@prisma/driver-adapter-utils/**'
+    - 'node_modules/@prisma/debug/**'
+    - 'node_modules/mariadb/**'
+    # Exclude unused Prisma runtime adapters
+    - '!node_modules/@prisma/client/runtime/*cockroachdb*'
+    - '!node_modules/@prisma/client/runtime/*sqlserver*'
+    - '!node_modules/@prisma/client/runtime/*postgresql*'
+    - '!node_modules/@prisma/client/runtime/*sqlite*'
+
+functions:
+  main:
+    handler: dist/lambda.handler
+    events:
+      # REST API (v1) events - no authorizer for LocalStack simplicity
+      - http:
+          path: /{proxy+}
+          method: ANY
+          cors: true
+      - http:
+          path: /health
+          method: GET
+          cors: true
+      # Webhook endpoints (no auth - verified by signature)
+      - http:
+          path: /webhooks/budpay
+          method: POST
+          cors: true
+      - http:
+          path: /webhooks/budpay/mock
+          method: POST
+          cors: true
+
+plugins:
+  - serverless-localstack
+
+custom:
+  localstack:
+    stages:
+      - test
+    host: http://localhost
+    edgePort: 4566
+    autostart: false

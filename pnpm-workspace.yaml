@@ -6,6 +6,7 @@ packages:
   - 'services/user-service'
   - 'services/user-service-v2'
   - 'services/mortgage-service'
+  - 'services/payment-service'
   - 'services/property-service'
   - 'services/authorizer-service'
   - 'infrastructure'

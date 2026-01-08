@@ -510,9 +510,13 @@ class PropertyTransferService {
                     const totalInstallmentCount = oldInstallments.length;
                     const newInstallmentAmount = newPhaseAmount / totalInstallmentCount;
 
-                    // Figure out how many installments the paid amount covers
-                    // Calculate from installments rather than trusting phase.paidAmount
-                    const totalPaidForPhase = oldInstallments.reduce((sum, inst) => sum + inst.paidAmount, 0);
+                    // Figure out how many NEW installments the paid amount covers
+                    // Use the higher of phase.paidAmount or sum of installment.paidAmount
+                    // (either one might be updated depending on payment flow implementation)
+                    const phasePaidAmount = phase.paidAmount;
+                    const installmentsPaidSum = oldInstallments.reduce((sum, inst) => sum + inst.paidAmount, 0);
+                    const totalPaidForPhase = Math.max(phasePaidAmount, installmentsPaidSum);
+
                     const completeInstallmentsPaid = Math.floor(totalPaidForPhase / newInstallmentAmount);
                     const partialPaymentCredit = totalPaidForPhase - (completeInstallmentsPaid * newInstallmentAmount);
 
