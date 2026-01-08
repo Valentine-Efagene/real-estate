@@ -2268,5 +2268,6 @@ model ApprovalRequest {
   @@index([requestedById])
   @@index([assigneeId])
   @@index([createdAt])
+  @@index([type, status]) // Efficient queries for approval dashboard
   @@map("approval_requests")
 }

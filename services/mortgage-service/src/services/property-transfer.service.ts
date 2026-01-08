@@ -607,7 +607,7 @@ class PropertyTransferService {
                 const overpaymentAmount = totalPaidAmount - newDownpaymentRequired;
 
                 // Create refund request for overpayment
-                await tx.contractRefund.create({
+                const refund = await tx.contractRefund.create({
                     data: {
                         tenantId,
                         contractId: newContract.id,
@@ -616,6 +616,44 @@ class PropertyTransferService {
                         status: 'PENDING',
                         requestedById: reviewerId,
                         requestedAt: new Date(),
+                    },
+                });
+
+                // Create approval request for the refund
+                await tx.approvalRequest.create({
+                    data: {
+                        tenantId,
+                        type: 'REFUND_APPROVAL',
+                        status: 'PENDING',
+                        priority: overpaymentAmount > 1000000 ? 'HIGH' : 'NORMAL',
+
+                        // Polymorphic reference to the refund
+                        entityType: 'ContractRefund',
+                        entityId: refund.id,
+
+                        // Human-readable details
+                        title: `Refund Approval: ₦${overpaymentAmount.toLocaleString()} - Transfer Overpayment`,
+                        description: `Property transfer from ${sourceContract.contractNumber} (₦${sourceContract.totalAmount.toLocaleString()}) to Unit ${request.targetPropertyUnit.unitNumber} (₦${targetPrice.toLocaleString()}) resulted in ₦${overpaymentAmount.toLocaleString()} overpayment. Buyer paid ₦${totalPaidAmount.toLocaleString()} but new downpayment requirement is only ₦${newDownpaymentRequired.toLocaleString()}.`,
+
+                        // Structured payload for admin dashboard
+                        payload: {
+                            refundId: refund.id,
+                            contractId: newContract.id,
+                            contractNumber: newContract.contractNumber,
+                            transferRequestId: request.id,
+                            overpaymentAmount,
+                            sourceContractId: sourceContract.id,
+                            sourceContractNumber: sourceContract.contractNumber,
+                            sourcePrice: sourceContract.totalAmount,
+                            targetUnitNumber: request.targetPropertyUnit.unitNumber,
+                            targetPrice,
+                            downpaymentPaid: totalPaidAmount,
+                            downpaymentRequired: newDownpaymentRequired,
+                            buyerId: sourceContract.buyerId,
+                        },
+
+                        // Requester is the admin who approved the transfer
+                        requestedById: reviewerId,
                     },
                 });
             }

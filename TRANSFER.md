@@ -214,11 +214,21 @@ Example: Paid ₦4M, new downpayment ₦3.5M → Overpayment: ₦500K
 **Current Implementation:**
 
 - System automatically creates `ContractRefund` record with status `PENDING`
+- System automatically creates `ApprovalRequest` linked to the refund
+- Refund appears in unified approval request dashboard
+- Priority: HIGH if amount > ₦1M, otherwise NORMAL
 - Refund amount: ₦500,000
 - Reason: Auto-generated with old/new amounts
-- Requested by: Admin who approved transfer
+- Requested by: Admin who approved the transfer
 
-## **Note:** Refund approval and processing workflow not yet implemented. Manual admin intervention required to complete refund.
+**Admin Approval Workflow:**
+
+1. Admin views refund in `/api/approval-requests?type=REFUND_APPROVAL&status=PENDING`
+2. Payload includes: refund details, transfer context, buyer info, amounts
+3. Admin approves → `ContractRefund.status`: PENDING → APPROVED
+4. Admin rejects → `ContractRefund.status`: PENDING → REJECTED
+
+**Note:** Refund processing (APPROVED → PROCESSING → COMPLETED) requires manual finance team intervention.
 
 ## Summary
 
@@ -279,3 +289,16 @@ Validation Rules
 ✅ **Data Integrity** - Referential integrity maintained  
 ✅ **Event Logging** - Both ContractEvent (audit) and DomainEvent (messaging) created  
 ✅ **Performance** - Completes in <2 seconds for typical contracts
+
+---
+
+## Current Limitations
+
+⚠️ **Not Yet Implemented:**
+
+- Refund processing workflow (APPROVED → PROCESSING → COMPLETED status transitions)
+- Finance team interface for processing approved refunds
+- Payment method selection and bank transfer initiation
+- Frontend buyer dashboard showing transfer details
+- Email notifications for transfer and refund events
+- Payment default validation before approval

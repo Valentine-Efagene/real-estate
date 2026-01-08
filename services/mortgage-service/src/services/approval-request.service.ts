@@ -334,9 +334,11 @@ export class ApprovalRequestService {
                 throw new Error(`Invalid decision: ${dto.decision}`);
         }
 
-        // Execute domain action if approved (dispatch by type)
+        // Execute domain action based on decision (dispatch by type)
         if (dto.decision === ApprovalDecision.APPROVED) {
             await this.executeApprovalAction(existing, dto.reviewedById, dto.reviewNotes);
+        } else if (dto.decision === ApprovalDecision.REJECTED) {
+            await this.executeRejectionAction(existing, dto.reviewedById, dto.reviewNotes);
         }
 
         const updated = await db.approvalRequest.update({
@@ -393,6 +395,43 @@ export class ApprovalRequestService {
                 });
                 break;
             }
+            case ApprovalRequestType.REFUND_APPROVAL: {
+                // Approve the refund
+                await prisma.contractRefund.update({
+                    where: { id: entityId },
+                    data: {
+                        status: 'APPROVED',
+                        approvedById: reviewerId,
+                        approvedAt: new Date(),
+                        approvalNotes: reviewNotes,
+                    },
+                });
+
+                // Create audit event
+                const refund = await prisma.contractRefund.findUnique({
+                    where: { id: entityId },
+                    select: { contractId: true, amount: true },
+                });
+
+                if (refund) {
+                    await prisma.contractEvent.create({
+                        data: {
+                            contractId: refund.contractId,
+                            eventType: 'PAYMENT_COMPLETED',
+                            eventGroup: 'PAYMENT',
+                            data: {
+                                refundId: entityId,
+                                amount: refund.amount,
+                                approvedBy: reviewerId,
+                                notes: reviewNotes,
+                            },
+                            actorId: reviewerId,
+                            actorType: 'USER',
+                        },
+                    });
+                }
+                break;
+            }
             // Add other approval types here as they're implemented:
             // case ApprovalRequestType.PROPERTY_UPDATE:
             //   await propertyUpdateService.approve({ ... });
@@ -403,6 +442,38 @@ export class ApprovalRequestService {
             default:
                 // Log or throw for unknown types
                 console.warn(`No handler registered for approval type: ${type}`);
+        }
+    }
+
+    /**
+     * Execute the rejection action for a rejected request
+     * Dispatches to the appropriate service based on request type
+     */
+    private async executeRejectionAction(
+        approvalRequest: any,
+        reviewerId: string,
+        reviewNotes?: string
+    ): Promise<void> {
+        const { type, entityId } = approvalRequest;
+
+        switch (type) {
+            case ApprovalRequestType.REFUND_APPROVAL: {
+                // Reject the refund
+                await prisma.contractRefund.update({
+                    where: { id: entityId },
+                    data: {
+                        status: 'REJECTED',
+                        rejectedAt: new Date(),
+                        rejectionNotes: reviewNotes,
+                    },
+                });
+                break;
+            }
+            // Add other rejection handlers as needed
+            default:
+                // Most approval types don't need special rejection handling
+                // The ApprovalRequest status change is sufficient
+                break;
         }
     }
 

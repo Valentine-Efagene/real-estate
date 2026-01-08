@@ -126,8 +126,8 @@ importers:
         specifier: ^7.2.0
         version: 7.2.0
       '@valentine-efagene/qshelter-common':
-        specifier: ^2.0.82
-        version: 2.0.82(@types/react@19.2.7)(express@4.21.2)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.6.3)(zod@4.2.1)
+        specifier: ^2.0.83
+        version: 2.0.83(@types/react@19.2.7)(express@4.21.2)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.6.3)(zod@4.2.1)
       dotenv:
         specifier: ^16.4.5
         version: 16.6.1
@@ -2103,8 +2103,8 @@ packages:
       zod:
         optional: true
 
-  '@valentine-efagene/qshelter-common@2.0.82':
-    resolution: {integrity: sha512-oYZ6mRW+qZM2KrhaPjB9VpcInb77TWyp9iFD/iNd+taaX06Ze5GfHyaFjL2OwoX1TigK1o+8mz4SYweFUR7vMw==}
+  '@valentine-efagene/qshelter-common@2.0.83':
+    resolution: {integrity: sha512-Ix2/PGd1ejiTPUD0NviOaoHSr30LHvfcnE0Zq62hXFFQ4fGmX+G0mivBro5t6xuBbNV2x56I4CQJnaOq0KK+4Q==}
     peerDependencies:
       express: ^4.0.0 || ^5.0.0
       zod: ^3.0.0 || ^4.0.0
@@ -7586,7 +7586,7 @@ snapshots:
       - react-dom
       - typescript
 
-  '@valentine-efagene/qshelter-common@2.0.82(@types/react@19.2.7)(express@4.21.2)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.6.3)(zod@4.2.1)':
+  '@valentine-efagene/qshelter-common@2.0.83(@types/react@19.2.7)(express@4.21.2)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.6.3)(zod@4.2.1)':
     dependencies:
       '@aws-sdk/client-dynamodb': 3.965.0
       '@aws-sdk/client-eventbridge': 3.965.0
