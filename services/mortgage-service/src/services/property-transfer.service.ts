@@ -568,15 +568,15 @@ class PropertyTransferService {
                         },
                     });
                 }
-                
+
                 // If no installments were processed but source phase has paidAmount, preserve it
                 if (oldInstallments.length === 0 && phase.paidAmount > 0) {
                     const effectiveNewPhaseAmount = newPhaseAmount ?? (
                         phase.phaseType === 'DOWNPAYMENT' ? (newContract.downPayment ?? 0) :
-                        phase.phaseType === 'MORTGAGE' ? (newContract.principal ?? 0) :
-                        0
+                            phase.phaseType === 'MORTGAGE' ? (newContract.principal ?? 0) :
+                                0
                     );
-                    
+
                     await tx.contractPhase.update({
                         where: { id: newPhase.id },
                         data: {

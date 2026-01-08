@@ -84,3 +84,4 @@ cdk.context.json
 services/mortgage-service/docs
 services/notification-service/lambda.zip
 dummy*
+TRANSFER.pdf

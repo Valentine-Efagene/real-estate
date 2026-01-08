@@ -2,100 +2,40 @@
 
 ## Overview
 
-**Yes, the platform supports mid-contract property transfers with full progress preservation.**
+The platform supports mid-contract property transfers with payment and phase progress preservation. Buyers can transfer to a different property, and the system recalculates everything at the new price while preserving how much they've paid.
 
-Buyers can transfer from their current property to a different one without losing any payments, completed documentation, or workflow progress. The system handles price adjustments automatically and maintains complete audit trails for compliance.
+## What Gets Preserved
 
----
-
-## What Gets Preserved During Transfer
-
-✅ **All Payments Made**
-
-- Every installment payment is migrated to the new contract
-- Payment dates and references are preserved
-- Transaction history remains intact for accounting
-
-✅ **Workflow Progress**
-
-- Completed documentation steps remain completed
-- Phase completion status is preserved (e.g., if 50% of downpayment is paid, it stays 50%)
-- Approved documents are linked to the new contract
-
-✅ **Payment Schedule Continuity**
-
-- Buyer continues from where they left off (e.g., payment #7 if they paid 6)
-- No need to restart payment schedule
-- Outstanding installments automatically recalculated based on new price
-
-✅ **Buyer Account Standing**
-
-- Payment history shows as continuous
-- No impact on buyer's record or credibility
-- All documentation approvals carry over
+✅ **Payment History** - All installment payments migrated to new contract with original dates and references  
+✅ **Phase Progress** - Phase completion percentages preserved (e.g., 50% of downpayment paid stays 50%)  
+✅ **Payment Schedule** - Buyer continues from where they left off, installments recalculated at new price  
+✅ **Account Standing** - Payment history remains continuous with no impact on buyer's record
 
 ---
 
-## How It Works (Business Steps)
+## Transfer Flow
 
-### Step 1: Buyer Initiates Transfer Request
+### 1. Initiate Transfer Request
 
-**What the buyer does:**
-
-- Browses available properties on the platform
-- Selects a different property/unit they want to transfer to
-- Submits transfer request with reason (e.g., "Need larger property")
-
-**What the system does:**
-
-- Validates that:
-  - Current contract is active (not draft or terminated)
-  - Target property is available (not already sold or reserved)
-  - Buyer has no outstanding issues
-- Calculates price difference (if target property is more/less expensive)
-- Creates transfer request with status "PENDING"
-- Notifies admin team for review
+- System validates:
+  - Source contract is ACTIVE
+  - Target property is AVAILABLE
+  - Not transferring to same unit
+- Creates transfer request with status `PENDING`
 
 **Example:**
 
 ```
-Current Property: 3-bedroom flat at ₦50,000,000
-Target Property:  4-bedroom duplex at ₦65,000,000
-Price Difference: +₦15,000,000
-Progress:         6 of 12 downpayment installments paid (₦2,500,000)
+Current: ₦50M (3-bed), Paid: ₦2.5M (6 installments)
+Target:  ₦65M (4-bed)
+Status:  PENDING
 ```
 
----
+### 2. Admin Review & Approval
 
-### Step 2: Admin Reviews Request
-
-**What the admin does:**
-
-- Views transfer request with full context:
-  - Buyer's payment history
-  - Current progress (installments paid, documents approved)
-  - Target property details
-  - Price adjustment amount
-- Verifies:
-  - Payment history is clean (no defaults)
-  - Target property is genuinely available
-  - Buyer can afford the price difference
-- Reviews recalculated contract details:
-  - New downpayment total (10% of new price)
-  - New balance total (90% of new price)
-  - How many installments the paid amount will cover
-  - Buyer's next payment amount
+- Admin views recalculated contract preview
+- Reviews payment coverage: ₦2.5M ÷ ₦541,666.67 = 4.61 installments → 4 complete + ₦333K credit
 - Approves or rejects with notes
-
-**Example Admin Decision:**
-
-```
-Review Notes: "Approved - contract recalculated at new price"
-Old Contract: ₦50M (₦5M down, ₦45M balance)
-New Contract: ₦65M (₦6.5M down, ₦58.5M balance)
-Paid Amount: ₦2.5M covers 4.61 installments → 4 complete + ₦333K credit
-Next Payment: ₦208,333.35 (to complete installment #5)
-```
 
 ---
 
@@ -135,85 +75,45 @@ Next Payment: ₦208,333.35 (to complete installment #5)
    **New Contract (₦65M) - Fresh Calculation:**
 
    - Downpayment (10%): ₦6,500,000
-   - Balance (90%): ₦58,500,000
-   - NEW installment amount: ₦6,500,000 ÷ 12 = ₦541,666.67
 
-   **Apply Previous Payments:**
+### 3. Atomic Transfer Execution
 
-   - Total paid: ₦2,500,000
-   - Installments covered: ₦2,500,000 ÷ ₦541,666.67 = 4.61
-   - **Round down to 4 complete installments**
+**Single transaction performs:**
 
-   **Result:**
+1. **Create New Contract** at target price (₦65M) with same payment plan (10/90)
 
-   - Installments 1-4: PAID (₦541,666.67 each = ₦2,166,666.68)
-   - Partial credit: ₦2,500,000 - ₦2,166,666.68 = ₦333,333.32
-   - Installment 5: PENDING with ₦333,333.32 credit
-     - Next payment: ₦541,666.67 - ₦333,333.32 = **₦208,333.35**
-   - Installments 6-12: PENDING (₦541,666.67 each)
+2. **Migrate Payments** - Copy all previous payments tagged as `MIGRATED`
 
-   **Key Point:** The paid amount doesn't cover as many installments anymore because each installment is now larger.
+3. **Recalculate Everything Fresh**
 
-4. **Preserve Workflow Progress**
+   ```
+   Old Contract (₦50M):
+   - Downpayment: ₦5M (12 × ₦416,666.67)
+   - Paid: ₦2.5M (6 installments)
 
-   - Copies phase structure (downpayment 50% complete, balance pending)
-   - Migrates documentation steps with completion status
-   - Links approved documents to new contract
-   - Provisional offer letter carries over
+   New Contract (₦65M):
+   - Downpayment: ₦6.5M (12 × ₦541,666.67)
+   - Balance: ₦58.5M
 
-5. **Update Property Availability**
+   Apply Previous Payments:
+   - ₦2.5M ÷ ₦541,666.67 = 4.61 installments
+   - Floor to 4 complete = ₦2,166,666.68
+   - Partial credit = ₦333,333.32
 
-   - Old unit (3-bedroom): Released back to "AVAILABLE"
-   - New unit (4-bedroom): Reserved for buyer
+   Result:
+   - Installments 1-4: PAID
+   - Installment 5: PENDING (₦333K paid, ₦208K remaining)
+   - Installments 6-12: PENDING
+   ```
 
-6. **Archive Old Contract**
-   - Status changed to "TRANSFERRED"
-   - Linked to new contract for audit trail
-   - No longer accepts payments
+4. **Copy Phase Structure** - Phases recreated at new amounts with completion status preserved
 
-**Transaction Guarantee:**
+5. **Update Properties** - Old unit → AVAILABLE, New unit → RESERVED
 
-- All steps succeed together, or all fail together
-- No partial states (e.g., new contract created but payments not migrated)
-- Complete audit trail of what happened
+6. **Archive Old Contract** - Status → TRANSFERRED, linked to new contract
 
----
+7. **Log Events** - ContractEvent and DomainEvent created for audit trails #6-12
 
-### Step 4: Buyer Continues with New Contract
-
-**What the buyer sees:**
-
-- New contract in their dashboard for 4-bedroom duplex
-- Total: ₦65,000,000
-- Downpayment (10%): ₦6,500,000
-- Balance (90%): ₦58,500,000
-- Progress: 4 complete installments paid + ₦333,333.32 credit
-- Payment history shows all 6 previous payments (tagged "MIGRATED")
-- Next payment due: Installment #5 - ₦208,333.35 (₦541,666.67 - ₦333,333.32 credit)
-- Old contract visible in history as "TRANSFERRED"
-
-**What happens if transferring to CHEAPER property:**
-
-Example: Transfer from ₦65M to ₦50M property, having paid ₦2.5M:
-
-- New downpayment: 10% of ₦50M = ₦5,000,000
-- New installment: ₦5M ÷ 12 = ₦416,666.67
-- Installments covered: ₦2.5M ÷ ₦416,666.67 = 6 complete installments
-- Result: 6 installments PAID, exactly covers new amounts
-- No overpayment in this case
-
-**If buyer paid ₦4M and transfers to ₦50M:**
-
-- New downpayment: ₦5M
-- Installments covered: ₦4M ÷ ₦416,666.67 = 9.6 installments
-- Result: 9 installments PAID + ₦250,000 credit
-- All downpayment installments covered with ₦1M excess
-- Excess can be handled as credit to balance phase or future refund (admin decision)
-
-**What the buyer does:**
-
-- Pays ₦208,333.35 to complete installment #5
-- Then pays ₦541,666.67 for installments #6-12
 - Completes downpayment phase
 - Proceeds to balance payment (₦58.5M - handled with bank/mortgage)
 
@@ -229,20 +129,13 @@ Example: Transfer from ₦65M to ₦50M property, having paid ₦2.5M:
 - Target: ₦65,000,000 (4-bedroom)
 - Difference: +₦15,000,000
 
-**AdmRECALCULATE_FRESH** (Only Option)
+System recalculates everything at new price:
 
-- Entire contract recalculated as if brand new at ₦65,000,000
 - Downpayment: 10% of ₦65M = ₦6,500,000 (was ₦5M)
 - Balance: 90% of ₦65M = ₦58,500,000 (was ₦45M)
-- Installments recalculated: ₦541,666.67 each (was ₦416,666.67)
-- Previous payments applied to determine how many new installments are covered
-- Buyer pays via existing payment plan (10/90)
-- Monthly installments adjust proportionally
-
-2. **REQUIRE_UPFRONT**
-   - Buyer pays ₦15,000,000 before transfer completes
-   - Contract total remains ₦65,000,000
-   - Used when buyer wants to reduce mortgage burden
+- Installments: ₦541,666.67 each (was ₦416,666.67)
+- Previous payments applied to determine installment coverage
+- Same payment plan structure preserved (10/90)
 
 ### Scenario B: Target Property Costs Less
 
@@ -258,64 +151,21 @@ Example: Transfer from ₦65M to ₦50M property, having paid ₦2.5M:
 
 - Entire contract recalculated at ₦35,000,000
 - Downpayment: 10% of ₦35M = ₦3,500,000 (was ₦5M)
-- Balance: 90% of ₦35M = ₦31,500,000 (was ₦45M)
-- Installments: ₦291,666.67 each (was ₦416,666.67)
-- Previous ₦2.5M paid now covers: ₦2.5M ÷ ₦291,666.67 = **8.57 installments**
-- Result: 8 installments PAID + ₦166,666.64 credit toward #9
 
-**2. Handle Overpayment (if paid > new downpayment)**
+### 4. Result
 
-If the buyer paid more than the new downpayment total, the system automatically creates a refund request:
+New contract active with:
 
-**Example:**
-
-- Paid ₦4M on old contract
-- New downpayment total: ₦3.5M
-- **Overpayment: ₦500,000**
-
-**What Happens:**
-
-1. **Automatic Refund Request Creation**
-
-   - System detects overpayment during transfer execution
-   - Creates a `ContractRefund` record with status `PENDING`
-   - Amount: ₦500,000
-   - Reason: "Overpayment from property transfer: ₦4,000,000 paid on old property, ₦3,500,000 required on new property"
-   - Requested by: Admin who approved the transfer
-
-2. **Refund Approval Workflow**
-
-   - Admin reviews the refund request
-   - Verifies the calculation is correct
-   - Approves or rejects with notes
-   - Status changes to `APPROVED` or `REJECTED`
-
-3. **Finance Processing**
-
-   - Finance team processes approved refunds
-   - Updates payment method (bank transfer, etc.)
-   - Adds recipient account details
-   - Status changes to `PROCESSING` → `COMPLETED`
-
-4. **Buyer Notification**
-   - Email sent when refund is created
-   - Email sent when refund is approved
-   - Email sent when refund is completed
-   - Buyer can track refund status in dashboard
-
-**Future Enhancement Options** (not yet implemented):
-
-Alternative ways to handle overpayment:
-
-- **CREDIT_BALANCE**: Apply ₦500K to the 90% balance phase (reduces mortgage)
-- **CREDIT_NEXT_PAYMENT**: Store as credit for future payments
+- Total: ₦65M
+- Progress: 4/12 installments PAID + ₦333K credit
+- Next payment: ₦208K to complete installment #5
+- Old contract archived as TRANSFERRED
 
 **Current Behavior:**
 
 - All paid amounts are applied to installments at the new rate
-- If total paid exceeds new downpayment, a refund request is automatically created
-- Refund goes through approval → processing → completion workflow
-- Buyer receives the excess amount via their preferred payment method
+- If total paid exceeds new downpayment, a refund request is automatically created with status `PENDING`
+- Refund request requires manual admin intervention to complete (approval/processing workflow not yet implemented)
 
 ---
 
@@ -332,104 +182,43 @@ Alternative ways to handle overpayment:
 
 ✅ Only admins can approve/reject transfer requests  
 ✅ Must specify how price adjustment will be handled  
-✅ Target property must still be available at approval time  
-✅ Cannot approve if buyer has payment defaults
+✅ Target property muScenarios
 
-### Transfer Execution
+### Upgrade (Target Costs More)
 
-✅ Old contract is immediately locked (no new payments accepted)  
-✅ All payments must migrate successfully (transaction fails otherwise)  
-✅ Property units update atomically (old released, new reserved)  
-✅ Complete audit trail created for compliance
+**Example: ₦50M → ₦65M**
 
-### Post-Transfer
+System recalculates everything at ₦65M:
 
-✅ Buyer cannot make payments to old contract  
-✅ Old contract cannot be reactivated  
-✅ Buyer can initiate another transfer from new contract if needed  
-✅ All historical data preserved for accounting and compliance
+- New downpayment: ₦6.5M (was ₦5M)
+- New installments: ₦541,666.67 each (was ₦416,666.67)
+- Previous ₦2.5M paid covers fewer installments (4 instead of 6)
+- Buyer continues with larger monthly payments
 
----
+### Downgrade (Target Costs Less)
 
-## Example: Real-World Transfer Scenario
+**Example: ₦50M → ₦35M**
 
-**Actor**: Chidi (Buyer)  
-**Current Contract**: 3-bedroom flat, Lekki Phase 1, ₦50M  
-**Progress**: 6 of 12 downpayment installments paid (₦2.5M total)  
-**Reason for Transfer**: Family growing, needs more space
+System recalculates everything at ₦35M:
 
-### Timeline
+- New downpayment: ₦3.5M (was ₦5M)
+- New installments: ₦291,666.67 each (was ₦416,666.67)
+- Previous ₦2.5M paid covers more installments (8.57 instead of 6)
 
-**Month 1**: Chidi buys 3-bedroom flat on 10/90 payment plan
+### Overpayment Handling
 
-**Months 2-7**: Chidi pays 6 monthly installments (₦2.5M total)
+**If paid amount exceeds new downpayment total:**
 
-**Month 8**:
+Example: Paid ₦4M, new downpayment ₦3.5M → Overpayment: ₦500K
 
-- Chidi finds a 4-bedroom duplex in Lekki Phase 2 (₦65M)
-- Submits transfer request: "Need larger property for growing family"
+**Current Implementation:**
 
-**Month 8 (Day 2)**:
+- System automatically creates `ContractRefund` record with status `PENDING`
+- Refund amount: ₦500,000
+- Reason: Auto-generated with old/new amounts
+- Requested by: Admin who approved transfer
 
-- Admin Jinx reviews request
-- Approves with note: "Price difference added to mortgage principal"
-- System executes transfer automatically
-
-**Month 8 (Day 3)**:
-
-- Chidi sees new contract in dashboard
-- Total: ₦65M (was ₦50M)
-- Downpayment: ₦6.5M (was ₦5M)
-- Balance: ₦58.5M (was ₦45M)
-- Progress: 4 of 12 installments fully paid + partial credit
-- Next payment: Installment #5 with ₦208,333.35 remaining
-- 3-bedroom unit released, 4-bedroom reserved
-
-**Month 9**: Chidi pays ₦208,333.35 to complete installment #5
-
-**Result**: Seamless transfer with zero disruption to payment schedule or progress
-
----
-
-## Audit Trail and Compliance
-
-Every transfer creates a complete audit trail:
-
-### Events Logged
-
-- `TRANSFER_REQUESTED` - When buyer submits request
-- `TRANSFER_APPROVED` - When admin approves
-- `CONTRACT_TRANSFERRED` - When old contract is archived
-- `CONTRACT_CREATED` - When new contract is activated
-- `PAYMENT_MIGRATED` (×6) - For each migrated payment
-
-### Data Preserved
-
-- Original contract with all historical data
-- Transfer request with reason and approval notes
-- Mapping between old and new contract IDs
-- Complete payment migration log
-- Property unit status change log
-
-### Queryable Information
-
-- "What was Chidi's payment history?" → Shows all payments across both contracts
-- "Why did this contract transfer happen?" → Shows transfer request reason
-- "Who approved this transfer?" → Shows admin name and timestamp
-- "What was the price adjustment?" → Shows old vs new amounts
-
----
-
-## Technical Guarantees
-
-✅ **Atomic Execution**: All transfer steps succeed or fail together (no partial state)  
-✅ **Data Integrity**: Referential integrity maintained across all tables  
-✅ **Idempotency**: Transfer can be retried safely if interrupted  
-✅ **Performance**: Transfer completes in <2 seconds for typical contracts  
-✅ **Scalability**: Handles contracts with hundreds of payments  
-✅ **Audit Compliance**: Complete event log for regulatory requirements
-
----
+## **Note:** Refund approval and processing workflow not yet implemented. Manual admin intervention required to complete refund.
 
 ## Summary
 
@@ -444,3 +233,49 @@ Every transfer creates a complete audit trail:
 - ✅ Zero disruption to buyer experience
 
 Buyers can upgrade, downgrade, or move to different properties without losing any progress or starting over.
+Validation Rules
+
+**Request Submission:**
+
+- Source contract must be ACTIVE
+- Target property must be AVAILABLE
+- Cannot transfer to same unit
+- One pending transfer per contract
+
+**Transfer Execution:**
+
+- Old contract locked (no new payments)
+- All steps atomic (succeed together or fail together)
+- Properties update atomically
+- Complete audit trail created
+
+**Post-Transfer:**
+
+- Old contract cannot receive payments
+- Old contract cannot be reactivated
+- Can initiate new transfer from new contractAudit Trail
+
+**Events Logged:**
+
+- `TRANSFER_REQUESTED` - Request submission
+- `TRANSFER_APPROVED` - Admin approval
+- `CONTRACT_TRANSFERRED` - Old contract archived
+- `CONTRACT_CREATED` - New contract activated
+- `PAYMENT_MIGRATED` - Each payment copied
+
+**Data Preserved:**
+
+- Original contract with all history
+- Transfer request with reason and approval notes
+- Old/new contract ID mapping
+- Complete payment migration log
+- Property status changes
+
+---
+
+## Technical Implementation
+
+✅ **Atomic Execution** - All steps succeed/fail together  
+✅ **Data Integrity** - Referential integrity maintained  
+✅ **Event Logging** - Both ContractEvent (audit) and DomainEvent (messaging) created  
+✅ **Performance** - Completes in <2 seconds for typical contracts
