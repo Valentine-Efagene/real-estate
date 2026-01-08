@@ -334,32 +334,36 @@ export class ApprovalRequestService {
                 throw new Error(`Invalid decision: ${dto.decision}`);
         }
 
-        // Execute domain action based on decision (dispatch by type)
-        if (dto.decision === ApprovalDecision.APPROVED) {
-            await this.executeApprovalAction(existing, dto.reviewedById, dto.reviewNotes);
-        } else if (dto.decision === ApprovalDecision.REJECTED) {
-            await this.executeRejectionAction(existing, dto.reviewedById, dto.reviewNotes);
-        }
+        // Execute domain action and update approval request in same transaction
+        const updated = await db.$transaction(async (tx) => {
+            // Execute domain action based on decision (dispatch by type)
+            if (dto.decision === ApprovalDecision.APPROVED) {
+                await this.executeApprovalAction(existing, dto.reviewedById, dto.reviewNotes, tx);
+            } else if (dto.decision === ApprovalDecision.REJECTED) {
+                await this.executeRejectionAction(existing, dto.reviewedById, dto.reviewNotes, tx);
+            }
 
-        const updated = await db.approvalRequest.update({
-            where: { id },
-            data: {
-                decision: dto.decision,
-                reviewNotes: dto.reviewNotes,
-                reviewedById: dto.reviewedById,
-                reviewedAt: new Date(),
-                status: newStatus,
-                completedAt:
-                    newStatus === ApprovalRequestStatus.APPROVED ||
-                        newStatus === ApprovalRequestStatus.REJECTED
-                        ? new Date()
-                        : undefined,
-            },
-            include: {
-                requestedBy: true,
-                assignee: true,
-                reviewedBy: true,
-            },
+            // Update approval request
+            return await tx.approvalRequest.update({
+                where: { id },
+                data: {
+                    decision: dto.decision,
+                    reviewNotes: dto.reviewNotes,
+                    reviewedById: dto.reviewedById,
+                    reviewedAt: new Date(),
+                    status: newStatus,
+                    completedAt:
+                        newStatus === ApprovalRequestStatus.APPROVED ||
+                            newStatus === ApprovalRequestStatus.REJECTED
+                            ? new Date()
+                            : undefined,
+                },
+                include: {
+                    requestedBy: true,
+                    assignee: true,
+                    reviewedBy: true,
+                },
+            });
         });
 
         // TODO: Emit domain event
@@ -380,9 +384,11 @@ export class ApprovalRequestService {
     private async executeApprovalAction(
         approvalRequest: any,
         reviewerId: string,
-        reviewNotes?: string
+        reviewNotes?: string,
+        tx?: any
     ): Promise<void> {
         const { type, entityId, tenantId } = approvalRequest;
+        const db = tx || prisma;
 
         switch (type) {
             case ApprovalRequestType.PROPERTY_TRANSFER: {
@@ -397,7 +403,7 @@ export class ApprovalRequestService {
             }
             case ApprovalRequestType.REFUND_APPROVAL: {
                 // Approve the refund
-                await prisma.contractRefund.update({
+                await db.contractRefund.update({
                     where: { id: entityId },
                     data: {
                         status: 'APPROVED',
@@ -408,13 +414,13 @@ export class ApprovalRequestService {
                 });
 
                 // Create audit event
-                const refund = await prisma.contractRefund.findUnique({
+                const refund = await db.contractRefund.findUnique({
                     where: { id: entityId },
                     select: { contractId: true, amount: true },
                 });
 
                 if (refund) {
-                    await prisma.contractEvent.create({
+                    await db.contractEvent.create({
                         data: {
                             contractId: refund.contractId,
                             eventType: 'PAYMENT_COMPLETED',
@@ -452,14 +458,16 @@ export class ApprovalRequestService {
     private async executeRejectionAction(
         approvalRequest: any,
         reviewerId: string,
-        reviewNotes?: string
+        reviewNotes?: string,
+        tx?: any
     ): Promise<void> {
         const { type, entityId } = approvalRequest;
+        const db = tx || prisma;
 
         switch (type) {
             case ApprovalRequestType.REFUND_APPROVAL: {
                 // Reject the refund
-                await prisma.contractRefund.update({
+                await db.contractRefund.update({
                     where: { id: entityId },
                     data: {
                         status: 'REJECTED',
