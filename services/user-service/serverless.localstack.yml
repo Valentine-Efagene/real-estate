@@ -98,7 +98,7 @@ plugins:
 custom:
   localstack:
     stages:
-      - test
+      - localstack
     host: http://localhost
     edgePort: 4566
     autostart: false

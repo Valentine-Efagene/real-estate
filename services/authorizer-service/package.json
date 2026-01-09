@@ -10,7 +10,7 @@
         "deploy:staging": "npm run build && npx sls deploy --stage staging",
         "deploy:prod": "npm run build && npx sls deploy --stage prod",
         "deploy": "npm run deploy:dev",
-        "deploy:localstack": "npm run build && npx sls deploy --stage localstack --config serverless.localstack.yml",
+        "deploy:localstack": "npm run build && npx sls deploy --stage localstack --config serverless.localstack.yml && ../../local-dev/scripts/fix-apigw-stage.sh",
         "start": "node dist/index.js"
     },
     "dependencies": {

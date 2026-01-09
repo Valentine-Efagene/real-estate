@@ -6,12 +6,12 @@ const stage = process.env.NODE_ENV || process.env.STAGE || 'dev';
  * Get the documents service base URL
  */
 async function getDocumentsServiceUrl(): Promise<string> {
-    // For local development/testing, use localhost
-    if (stage === 'test' || stage === 'local') {
+    // For local development (non-Lambda), use localhost
+    if (stage === 'local') {
         return process.env.DOCUMENTS_SERVICE_URL || 'http://localhost:3006';
     }
 
-    // For deployed environments, get from SSM
+    // For all deployed environments (including localstack), get from SSM
     const configService = ConfigService.getInstance();
     try {
         return await configService.getParameter('documents-service-url');
@@ -73,8 +73,8 @@ class DocumentsClientImpl implements DocumentsClient {
 
             return response.json() as Promise<{ html: string; mergeData: Record<string, any> }>;
         } catch (error: any) {
-            // In test mode, return a mock response if documents service is unavailable
-            if (stage === 'test') {
+            // In test/localstack mode, return a mock response if documents service is unavailable
+            if (stage === 'test' || stage === 'localstack') {
                 console.info('[DocumentsClient] Using mock offer letter in test mode');
                 return {
                     html: `<html><body><h1>${type} Offer Letter</h1><p>Mock document for testing</p></body></html>`,

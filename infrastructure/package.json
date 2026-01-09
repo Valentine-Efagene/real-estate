@@ -18,10 +18,10 @@
         "diff": "cdk diff",
         "destroy": "cdk destroy",
         "localstack:bootstrap": "AWS_ENDPOINT_URL=http://localhost:4566 AWS_ACCESS_KEY_ID=test AWS_SECRET_ACCESS_KEY=test cdklocal bootstrap --app 'npx ts-node bin/localstack-app.ts'",
-        "localstack:synth": "cdklocal synth --app 'npx ts-node bin/localstack-app.ts' --context stage=test",
-        "localstack:deploy": "AWS_ENDPOINT_URL=http://localhost:4566 AWS_ACCESS_KEY_ID=test AWS_SECRET_ACCESS_KEY=test cdklocal deploy --app 'npx ts-node bin/localstack-app.ts' --context stage=test --require-approval never",
-        "localstack:diff": "AWS_ENDPOINT_URL=http://localhost:4566 AWS_ACCESS_KEY_ID=test AWS_SECRET_ACCESS_KEY=test cdklocal diff --app 'npx ts-node bin/localstack-app.ts' --context stage=test",
-        "localstack:destroy": "AWS_ENDPOINT_URL=http://localhost:4566 AWS_ACCESS_KEY_ID=test AWS_SECRET_ACCESS_KEY=test cdklocal destroy --app 'npx ts-node bin/localstack-app.ts' --context stage=test"
+        "localstack:synth": "cdklocal synth --app 'npx ts-node bin/localstack-app.ts' --context stage=localstack",
+        "localstack:deploy": "AWS_ENDPOINT_URL=http://localhost:4566 AWS_ACCESS_KEY_ID=test AWS_SECRET_ACCESS_KEY=test cdklocal deploy --app 'npx ts-node bin/localstack-app.ts' --context stage=localstack --require-approval never",
+        "localstack:diff": "AWS_ENDPOINT_URL=http://localhost:4566 AWS_ACCESS_KEY_ID=test AWS_SECRET_ACCESS_KEY=test cdklocal diff --app 'npx ts-node bin/localstack-app.ts' --context stage=localstack",
+        "localstack:destroy": "AWS_ENDPOINT_URL=http://localhost:4566 AWS_ACCESS_KEY_ID=test AWS_SECRET_ACCESS_KEY=test cdklocal destroy --app 'npx ts-node bin/localstack-app.ts' --context stage=localstack --force"
     },
     "dependencies": {
         "aws-cdk-lib": "2.211.0",

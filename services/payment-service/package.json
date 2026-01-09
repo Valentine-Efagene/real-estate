@@ -14,7 +14,7 @@
         "deploy": "npm run deploy:dev",
         "format": "prettier --write \"src/**/*.ts\"",
         "start": "npm run build && node dist/local.mjs",
-        "deploy:localstack": "npm run build && npx sls deploy --stage localstack --config serverless.localstack.yml",
+        "deploy:localstack": "npm run build && npx sls deploy --stage localstack --config serverless.localstack.yml && ../../local-dev/scripts/fix-apigw-stage.sh",
         "test:e2e:deployed": "API_BASE_URL=http://$(aws --endpoint-url=http://localhost:4566 apigateway get-rest-apis --query \"items[?name=='qshelter-payment-service-localstack'].id\" --output text).execute-api.localhost.localstack.cloud:4566/localstack npm run test:e2e",
         "start:dev": "npm run start",
         "lint": "eslint \"{src,test}/**/*.ts\" --fix",

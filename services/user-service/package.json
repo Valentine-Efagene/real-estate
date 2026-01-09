@@ -11,7 +11,7 @@
     "build": "tsc && node esbuild.config.js",
     "deploy:dev": "npm run build && npx sls deploy --stage dev",
     "build:offline": "tsc && node esbuild.config.js",
-    "deploy:localstack": "npm run build && npx sls deploy --stage localstack --config serverless.localstack.yml",
+    "deploy:localstack": "npm run build && npx sls deploy --stage localstack --config serverless.localstack.yml && ../../local-dev/scripts/fix-apigw-stage.sh",
     "test": "node --experimental-vm-modules --no-warnings=ExperimentalWarning node_modules/jest/bin/jest.js",
     "test:e2e": "NODE_ENV=localstack NODE_OPTIONS='--experimental-vm-modules --no-warnings=ExperimentalWarning' jest --config jest.e2e.config.js",
     "prisma:generate": "prisma generate --schema=../../shared/common/prisma/schema.prisma",
