@@ -12,6 +12,9 @@ import * as apigatewayv2 from 'aws-cdk-lib/aws-apigatewayv2';
 import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
 import * as ssm from 'aws-cdk-lib/aws-ssm';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as sns from 'aws-cdk-lib/aws-sns';
+import * as snsSubscriptions from 'aws-cdk-lib/aws-sns-subscriptions';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
 
@@ -127,6 +130,68 @@ export class RealEstateStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
+    // === SQS Queues ===
+    const dlq = new sqs.Queue(this, 'DeadLetterQueue', {
+      queueName: `${prefix}-dlq`,
+      retentionPeriod: cdk.Duration.days(14),
+    });
+
+    const notificationsQueue = new sqs.Queue(this, 'NotificationsQueue', {
+      queueName: `${prefix}-notifications`,
+      deadLetterQueue: {
+        queue: dlq,
+        maxReceiveCount: 3,
+      },
+    });
+
+    const contractEventsQueue = new sqs.Queue(this, 'ContractEventsQueue', {
+      queueName: `${prefix}-contract-events`,
+      deadLetterQueue: {
+        queue: dlq,
+        maxReceiveCount: 3,
+      },
+    });
+
+    const paymentsQueue = new sqs.Queue(this, 'PaymentsQueue', {
+      queueName: `${prefix}-payments`,
+      deadLetterQueue: {
+        queue: dlq,
+        maxReceiveCount: 3,
+      },
+    });
+
+    // === SNS Topics ===
+    const notificationsTopic = new sns.Topic(this, 'NotificationsTopic', {
+      topicName: `${prefix}-notifications`,
+    });
+
+    const contractEventsTopic = new sns.Topic(this, 'ContractEventsTopic', {
+      topicName: `${prefix}-contract-events`,
+    });
+
+    const paymentsTopic = new sns.Topic(this, 'PaymentsTopic', {
+      topicName: `${prefix}-payments`,
+    });
+
+    // === SNS Subscriptions ===
+    notificationsTopic.addSubscription(
+      new snsSubscriptions.SqsSubscription(notificationsQueue, {
+        rawMessageDelivery: false,
+      })
+    );
+
+    contractEventsTopic.addSubscription(
+      new snsSubscriptions.SqsSubscription(contractEventsQueue, {
+        rawMessageDelivery: false,
+      })
+    );
+
+    paymentsTopic.addSubscription(
+      new snsSubscriptions.SqsSubscription(paymentsQueue, {
+        rawMessageDelivery: false,
+      })
+    );
+
     // === CloudWatch Log Groups for Services ===
     new logs.LogGroup(this, 'UserServiceLogGroup', {
       logGroupName: `/aws/lambda/${prefix}-user-service`,
@@ -223,6 +288,43 @@ export class RealEstateStack extends cdk.Stack {
       parameterName: `/qshelter/${stage}/eventbridge-bus-name`,
       stringValue: eventBus.eventBusName,
       description: 'EventBridge Bus Name',
+    });
+
+    // === SNS/SQS SSM Parameters ===
+    new ssm.StringParameter(this, 'NotificationsTopicArnParameter', {
+      parameterName: `/qshelter/${stage}/notifications-topic-arn`,
+      stringValue: notificationsTopic.topicArn,
+      description: 'Notifications SNS Topic ARN',
+    });
+
+    new ssm.StringParameter(this, 'NotificationsQueueUrlParameter', {
+      parameterName: `/qshelter/${stage}/notifications-queue-url`,
+      stringValue: notificationsQueue.queueUrl,
+      description: 'Notifications SQS Queue URL',
+    });
+
+    new ssm.StringParameter(this, 'PaymentsTopicArnParameter', {
+      parameterName: `/qshelter/${stage}/payments-topic-arn`,
+      stringValue: paymentsTopic.topicArn,
+      description: 'Payments SNS Topic ARN',
+    });
+
+    new ssm.StringParameter(this, 'PaymentsQueueUrlParameter', {
+      parameterName: `/qshelter/${stage}/payments-queue-url`,
+      stringValue: paymentsQueue.queueUrl,
+      description: 'Payments SQS Queue URL',
+    });
+
+    new ssm.StringParameter(this, 'ContractEventsTopicArnParameter', {
+      parameterName: `/qshelter/${stage}/contract-events-topic-arn`,
+      stringValue: contractEventsTopic.topicArn,
+      description: 'Contract Events SNS Topic ARN',
+    });
+
+    new ssm.StringParameter(this, 'ContractEventsQueueUrlParameter', {
+      parameterName: `/qshelter/${stage}/contract-events-queue-url`,
+      stringValue: contractEventsQueue.queueUrl,
+      description: 'Contract Events SQS Queue URL',
     });
 
     // HTTP API ID parameter (centralized)

@@ -109,6 +109,14 @@ export class LocalStackStack extends cdk.Stack {
             },
         });
 
+        const paymentsQueue = new sqs.Queue(this, 'PaymentsQueue', {
+            queueName: `${prefix}-payments`,
+            deadLetterQueue: {
+                queue: dlq,
+                maxReceiveCount: 3,
+            },
+        });
+
         // === SNS Topics ===
         const notificationsTopic = new sns.Topic(this, 'NotificationsTopic', {
             topicName: `${prefix}-notifications`,
@@ -116,6 +124,10 @@ export class LocalStackStack extends cdk.Stack {
 
         const contractEventsTopic = new sns.Topic(this, 'ContractEventsTopic', {
             topicName: `${prefix}-contract-events`,
+        });
+
+        const paymentsTopic = new sns.Topic(this, 'PaymentsTopic', {
+            topicName: `${prefix}-payments`,
         });
 
         // === SNS Subscriptions ===
@@ -129,6 +141,13 @@ export class LocalStackStack extends cdk.Stack {
         // Subscribe contract events queue to contract events topic
         contractEventsTopic.addSubscription(
             new snsSubscriptions.SqsSubscription(contractEventsQueue, {
+                rawMessageDelivery: false,
+            })
+        );
+
+        // Subscribe payments queue to payments topic
+        paymentsTopic.addSubscription(
+            new snsSubscriptions.SqsSubscription(paymentsQueue, {
                 rawMessageDelivery: false,
             })
         );
@@ -207,6 +226,30 @@ export class LocalStackStack extends cdk.Stack {
             parameterName: `/qshelter/${stage}/notifications-queue-url`,
             stringValue: notificationsQueue.queueUrl,
             description: 'SQS Notifications Queue URL',
+        });
+
+        new ssm.StringParameter(this, 'PaymentsTopicArnParameter', {
+            parameterName: `/qshelter/${stage}/payments-topic-arn`,
+            stringValue: paymentsTopic.topicArn,
+            description: 'SNS Payments Topic ARN',
+        });
+
+        new ssm.StringParameter(this, 'PaymentsQueueUrlParameter', {
+            parameterName: `/qshelter/${stage}/payments-queue-url`,
+            stringValue: paymentsQueue.queueUrl,
+            description: 'SQS Payments Queue URL',
+        });
+
+        new ssm.StringParameter(this, 'ContractEventsTopicArnParameter', {
+            parameterName: `/qshelter/${stage}/contract-events-topic-arn`,
+            stringValue: contractEventsTopic.topicArn,
+            description: 'SNS Contract Events Topic ARN',
+        });
+
+        new ssm.StringParameter(this, 'ContractEventsQueueUrlParameter', {
+            parameterName: `/qshelter/${stage}/contract-events-queue-url`,
+            stringValue: contractEventsQueue.queueUrl,
+            description: 'SQS Contract Events Queue URL',
         });
 
         new ssm.StringParameter(this, 'RedisEndpointParameter', {

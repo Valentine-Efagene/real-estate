@@ -16,6 +16,7 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "start": "npm run build && node dist/local.mjs",
     "deploy:test": "npm run build && npx sls deploy --stage test --config serverless.localstack.yml",
+    "test:e2e:deployed": "API_BASE_URL=http://$(aws --endpoint-url=http://localhost:4566 apigateway get-rest-apis --query \"items[?name=='qshelter-notifications-test'].id\" --output text).execute-api.localhost.localstack.cloud:4566/test npm run test:e2e",
     "start:dev": "npm run start",
     "lint": "eslint \"{src,test}/**/*.ts\" --fix",
     "test": "node --experimental-vm-modules --no-warnings=ExperimentalWarning node_modules/jest/bin/jest.js",
