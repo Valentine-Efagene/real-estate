@@ -10,6 +10,7 @@
 */
 
 export const PhaseCategory = {
+  QUESTIONNAIRE: 'QUESTIONNAIRE',
   DOCUMENTATION: 'DOCUMENTATION',
   PAYMENT: 'PAYMENT'
 } as const
@@ -18,6 +19,8 @@ export type PhaseCategory = (typeof PhaseCategory)[keyof typeof PhaseCategory]
 
 
 export const PhaseType = {
+  PRE_APPROVAL: 'PRE_APPROVAL',
+  UNDERWRITING: 'UNDERWRITING',
   KYC: 'KYC',
   VERIFICATION: 'VERIFICATION',
   DOWNPAYMENT: 'DOWNPAYMENT',
@@ -337,6 +340,24 @@ export const ExecutionStatus = {
 } as const
 
 export type ExecutionStatus = (typeof ExecutionStatus)[keyof typeof ExecutionStatus]
+
+
+export const FieldType = {
+  TEXT: 'TEXT',
+  TEXTAREA: 'TEXTAREA',
+  NUMBER: 'NUMBER',
+  CURRENCY: 'CURRENCY',
+  EMAIL: 'EMAIL',
+  PHONE: 'PHONE',
+  DATE: 'DATE',
+  SELECT: 'SELECT',
+  MULTI_SELECT: 'MULTI_SELECT',
+  CHECKBOX: 'CHECKBOX',
+  RADIO: 'RADIO',
+  FILE: 'FILE'
+} as const
+
+export type FieldType = (typeof FieldType)[keyof typeof FieldType]
 
 
 export const PaymentMethodChangeStatus = {

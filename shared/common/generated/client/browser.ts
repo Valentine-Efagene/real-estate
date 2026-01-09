@@ -184,6 +184,11 @@ export type StepEventAttachment = Prisma.StepEventAttachmentModel
  */
 export type PaymentMethodPhaseDocument = Prisma.PaymentMethodPhaseDocumentModel
 /**
+ * Model PaymentMethodPhaseField
+ * 
+ */
+export type PaymentMethodPhaseField = Prisma.PaymentMethodPhaseFieldModel
+/**
  * Model Contract
  * 
  */
@@ -198,6 +203,26 @@ export type ContractRefund = Prisma.ContractRefundModel
  * 
  */
 export type ContractPhase = Prisma.ContractPhaseModel
+/**
+ * Model QuestionnairePhase
+ * 
+ */
+export type QuestionnairePhase = Prisma.QuestionnairePhaseModel
+/**
+ * Model DocumentationPhase
+ * 
+ */
+export type DocumentationPhase = Prisma.DocumentationPhaseModel
+/**
+ * Model PaymentPhase
+ * 
+ */
+export type PaymentPhase = Prisma.PaymentPhaseModel
+/**
+ * Model QuestionnaireField
+ * 
+ */
+export type QuestionnaireField = Prisma.QuestionnaireFieldModel
 /**
  * Model ContractEvent
  * 

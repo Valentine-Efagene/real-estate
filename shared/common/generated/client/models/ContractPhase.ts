@@ -28,58 +28,27 @@ export type AggregateContractPhase = {
 
 export type ContractPhaseAvgAggregateOutputType = {
   order: number | null
-  totalAmount: number | null
-  paidAmount: number | null
-  remainingAmount: number | null
-  interestRate: number | null
-  approvedDocumentsCount: number | null
-  requiredDocumentsCount: number | null
-  completedStepsCount: number | null
-  totalStepsCount: number | null
-  minimumCompletionPercentage: number | null
 }
 
 export type ContractPhaseSumAggregateOutputType = {
   order: number | null
-  totalAmount: number | null
-  paidAmount: number | null
-  remainingAmount: number | null
-  interestRate: number | null
-  approvedDocumentsCount: number | null
-  requiredDocumentsCount: number | null
-  completedStepsCount: number | null
-  totalStepsCount: number | null
-  minimumCompletionPercentage: number | null
 }
 
 export type ContractPhaseMinAggregateOutputType = {
   id: string | null
   contractId: string | null
-  paymentPlanId: string | null
   name: string | null
   description: string | null
   phaseCategory: $Enums.PhaseCategory | null
   phaseType: $Enums.PhaseType | null
   order: number | null
   status: $Enums.PhaseStatus | null
-  currentStepId: string | null
-  totalAmount: number | null
-  paidAmount: number | null
-  remainingAmount: number | null
-  interestRate: number | null
-  collectFunds: boolean | null
-  approvedDocumentsCount: number | null
-  requiredDocumentsCount: number | null
-  completedStepsCount: number | null
-  totalStepsCount: number | null
   dueDate: Date | null
   startDate: Date | null
   endDate: Date | null
   activatedAt: Date | null
   completedAt: Date | null
   requiresPreviousPhaseCompletion: boolean | null
-  minimumCompletionPercentage: number | null
-  completionCriterion: $Enums.CompletionCriterion | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -87,31 +56,18 @@ export type ContractPhaseMinAggregateOutputType = {
 export type ContractPhaseMaxAggregateOutputType = {
   id: string | null
   contractId: string | null
-  paymentPlanId: string | null
   name: string | null
   description: string | null
   phaseCategory: $Enums.PhaseCategory | null
   phaseType: $Enums.PhaseType | null
   order: number | null
   status: $Enums.PhaseStatus | null
-  currentStepId: string | null
-  totalAmount: number | null
-  paidAmount: number | null
-  remainingAmount: number | null
-  interestRate: number | null
-  collectFunds: boolean | null
-  approvedDocumentsCount: number | null
-  requiredDocumentsCount: number | null
-  completedStepsCount: number | null
-  totalStepsCount: number | null
   dueDate: Date | null
   startDate: Date | null
   endDate: Date | null
   activatedAt: Date | null
   completedAt: Date | null
   requiresPreviousPhaseCompletion: boolean | null
-  minimumCompletionPercentage: number | null
-  completionCriterion: $Enums.CompletionCriterion | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -119,34 +75,18 @@ export type ContractPhaseMaxAggregateOutputType = {
 export type ContractPhaseCountAggregateOutputType = {
   id: number
   contractId: number
-  paymentPlanId: number
   name: number
   description: number
   phaseCategory: number
   phaseType: number
   order: number
   status: number
-  currentStepId: number
-  totalAmount: number
-  paidAmount: number
-  remainingAmount: number
-  interestRate: number
-  collectFunds: number
-  approvedDocumentsCount: number
-  requiredDocumentsCount: number
-  completedStepsCount: number
-  totalStepsCount: number
   dueDate: number
   startDate: number
   endDate: number
   activatedAt: number
   completedAt: number
   requiresPreviousPhaseCompletion: number
-  minimumCompletionPercentage: number
-  completionCriterion: number
-  paymentPlanSnapshot: number
-  stepDefinitionsSnapshot: number
-  requiredDocumentSnapshot: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -155,58 +95,27 @@ export type ContractPhaseCountAggregateOutputType = {
 
 export type ContractPhaseAvgAggregateInputType = {
   order?: true
-  totalAmount?: true
-  paidAmount?: true
-  remainingAmount?: true
-  interestRate?: true
-  approvedDocumentsCount?: true
-  requiredDocumentsCount?: true
-  completedStepsCount?: true
-  totalStepsCount?: true
-  minimumCompletionPercentage?: true
 }
 
 export type ContractPhaseSumAggregateInputType = {
   order?: true
-  totalAmount?: true
-  paidAmount?: true
-  remainingAmount?: true
-  interestRate?: true
-  approvedDocumentsCount?: true
-  requiredDocumentsCount?: true
-  completedStepsCount?: true
-  totalStepsCount?: true
-  minimumCompletionPercentage?: true
 }
 
 export type ContractPhaseMinAggregateInputType = {
   id?: true
   contractId?: true
-  paymentPlanId?: true
   name?: true
   description?: true
   phaseCategory?: true
   phaseType?: true
   order?: true
   status?: true
-  currentStepId?: true
-  totalAmount?: true
-  paidAmount?: true
-  remainingAmount?: true
-  interestRate?: true
-  collectFunds?: true
-  approvedDocumentsCount?: true
-  requiredDocumentsCount?: true
-  completedStepsCount?: true
-  totalStepsCount?: true
   dueDate?: true
   startDate?: true
   endDate?: true
   activatedAt?: true
   completedAt?: true
   requiresPreviousPhaseCompletion?: true
-  minimumCompletionPercentage?: true
-  completionCriterion?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -214,31 +123,18 @@ export type ContractPhaseMinAggregateInputType = {
 export type ContractPhaseMaxAggregateInputType = {
   id?: true
   contractId?: true
-  paymentPlanId?: true
   name?: true
   description?: true
   phaseCategory?: true
   phaseType?: true
   order?: true
   status?: true
-  currentStepId?: true
-  totalAmount?: true
-  paidAmount?: true
-  remainingAmount?: true
-  interestRate?: true
-  collectFunds?: true
-  approvedDocumentsCount?: true
-  requiredDocumentsCount?: true
-  completedStepsCount?: true
-  totalStepsCount?: true
   dueDate?: true
   startDate?: true
   endDate?: true
   activatedAt?: true
   completedAt?: true
   requiresPreviousPhaseCompletion?: true
-  minimumCompletionPercentage?: true
-  completionCriterion?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -246,34 +142,18 @@ export type ContractPhaseMaxAggregateInputType = {
 export type ContractPhaseCountAggregateInputType = {
   id?: true
   contractId?: true
-  paymentPlanId?: true
   name?: true
   description?: true
   phaseCategory?: true
   phaseType?: true
   order?: true
   status?: true
-  currentStepId?: true
-  totalAmount?: true
-  paidAmount?: true
-  remainingAmount?: true
-  interestRate?: true
-  collectFunds?: true
-  approvedDocumentsCount?: true
-  requiredDocumentsCount?: true
-  completedStepsCount?: true
-  totalStepsCount?: true
   dueDate?: true
   startDate?: true
   endDate?: true
   activatedAt?: true
   completedAt?: true
   requiresPreviousPhaseCompletion?: true
-  minimumCompletionPercentage?: true
-  completionCriterion?: true
-  paymentPlanSnapshot?: true
-  stepDefinitionsSnapshot?: true
-  requiredDocumentSnapshot?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -368,34 +248,18 @@ export type ContractPhaseGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
 export type ContractPhaseGroupByOutputType = {
   id: string
   contractId: string
-  paymentPlanId: string | null
   name: string
   description: string | null
   phaseCategory: $Enums.PhaseCategory
   phaseType: $Enums.PhaseType
   order: number
   status: $Enums.PhaseStatus
-  currentStepId: string | null
-  totalAmount: number | null
-  paidAmount: number
-  remainingAmount: number | null
-  interestRate: number | null
-  collectFunds: boolean
-  approvedDocumentsCount: number
-  requiredDocumentsCount: number
-  completedStepsCount: number
-  totalStepsCount: number
   dueDate: Date | null
   startDate: Date | null
   endDate: Date | null
   activatedAt: Date | null
   completedAt: Date | null
   requiresPreviousPhaseCompletion: boolean
-  minimumCompletionPercentage: number | null
-  completionCriterion: $Enums.CompletionCriterion | null
-  paymentPlanSnapshot: runtime.JsonValue | null
-  stepDefinitionsSnapshot: runtime.JsonValue | null
-  requiredDocumentSnapshot: runtime.JsonValue | null
   createdAt: Date
   updatedAt: Date
   _count: ContractPhaseCountAggregateOutputType | null
@@ -426,83 +290,51 @@ export type ContractPhaseWhereInput = {
   NOT?: Prisma.ContractPhaseWhereInput | Prisma.ContractPhaseWhereInput[]
   id?: Prisma.StringFilter<"ContractPhase"> | string
   contractId?: Prisma.StringFilter<"ContractPhase"> | string
-  paymentPlanId?: Prisma.StringNullableFilter<"ContractPhase"> | string | null
   name?: Prisma.StringFilter<"ContractPhase"> | string
   description?: Prisma.StringNullableFilter<"ContractPhase"> | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFilter<"ContractPhase"> | $Enums.PhaseCategory
   phaseType?: Prisma.EnumPhaseTypeFilter<"ContractPhase"> | $Enums.PhaseType
   order?: Prisma.IntFilter<"ContractPhase"> | number
   status?: Prisma.EnumPhaseStatusFilter<"ContractPhase"> | $Enums.PhaseStatus
-  currentStepId?: Prisma.StringNullableFilter<"ContractPhase"> | string | null
-  totalAmount?: Prisma.FloatNullableFilter<"ContractPhase"> | number | null
-  paidAmount?: Prisma.FloatFilter<"ContractPhase"> | number
-  remainingAmount?: Prisma.FloatNullableFilter<"ContractPhase"> | number | null
-  interestRate?: Prisma.FloatNullableFilter<"ContractPhase"> | number | null
-  collectFunds?: Prisma.BoolFilter<"ContractPhase"> | boolean
-  approvedDocumentsCount?: Prisma.IntFilter<"ContractPhase"> | number
-  requiredDocumentsCount?: Prisma.IntFilter<"ContractPhase"> | number
-  completedStepsCount?: Prisma.IntFilter<"ContractPhase"> | number
-  totalStepsCount?: Prisma.IntFilter<"ContractPhase"> | number
   dueDate?: Prisma.DateTimeNullableFilter<"ContractPhase"> | Date | string | null
   startDate?: Prisma.DateTimeNullableFilter<"ContractPhase"> | Date | string | null
   endDate?: Prisma.DateTimeNullableFilter<"ContractPhase"> | Date | string | null
   activatedAt?: Prisma.DateTimeNullableFilter<"ContractPhase"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableFilter<"ContractPhase"> | Date | string | null
   requiresPreviousPhaseCompletion?: Prisma.BoolFilter<"ContractPhase"> | boolean
-  minimumCompletionPercentage?: Prisma.FloatNullableFilter<"ContractPhase"> | number | null
-  completionCriterion?: Prisma.EnumCompletionCriterionNullableFilter<"ContractPhase"> | $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.JsonNullableFilter<"ContractPhase">
-  stepDefinitionsSnapshot?: Prisma.JsonNullableFilter<"ContractPhase">
-  requiredDocumentSnapshot?: Prisma.JsonNullableFilter<"ContractPhase">
   createdAt?: Prisma.DateTimeFilter<"ContractPhase"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ContractPhase"> | Date | string
   contract?: Prisma.XOR<Prisma.ContractScalarRelationFilter, Prisma.ContractWhereInput>
-  paymentPlan?: Prisma.XOR<Prisma.PaymentPlanNullableScalarRelationFilter, Prisma.PaymentPlanWhereInput> | null
-  currentStep?: Prisma.XOR<Prisma.DocumentationStepNullableScalarRelationFilter, Prisma.DocumentationStepWhereInput> | null
-  installments?: Prisma.ContractInstallmentListRelationFilter
+  questionnairePhase?: Prisma.XOR<Prisma.QuestionnairePhaseNullableScalarRelationFilter, Prisma.QuestionnairePhaseWhereInput> | null
+  documentationPhase?: Prisma.XOR<Prisma.DocumentationPhaseNullableScalarRelationFilter, Prisma.DocumentationPhaseWhereInput> | null
+  paymentPhase?: Prisma.XOR<Prisma.PaymentPhaseNullableScalarRelationFilter, Prisma.PaymentPhaseWhereInput> | null
   payments?: Prisma.ContractPaymentListRelationFilter
-  steps?: Prisma.DocumentationStepListRelationFilter
+  currentForContracts?: Prisma.ContractListRelationFilter
 }
 
 export type ContractPhaseOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   contractId?: Prisma.SortOrder
-  paymentPlanId?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   phaseCategory?: Prisma.SortOrder
   phaseType?: Prisma.SortOrder
   order?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  currentStepId?: Prisma.SortOrderInput | Prisma.SortOrder
-  totalAmount?: Prisma.SortOrderInput | Prisma.SortOrder
-  paidAmount?: Prisma.SortOrder
-  remainingAmount?: Prisma.SortOrderInput | Prisma.SortOrder
-  interestRate?: Prisma.SortOrderInput | Prisma.SortOrder
-  collectFunds?: Prisma.SortOrder
-  approvedDocumentsCount?: Prisma.SortOrder
-  requiredDocumentsCount?: Prisma.SortOrder
-  completedStepsCount?: Prisma.SortOrder
-  totalStepsCount?: Prisma.SortOrder
   dueDate?: Prisma.SortOrderInput | Prisma.SortOrder
   startDate?: Prisma.SortOrderInput | Prisma.SortOrder
   endDate?: Prisma.SortOrderInput | Prisma.SortOrder
   activatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   requiresPreviousPhaseCompletion?: Prisma.SortOrder
-  minimumCompletionPercentage?: Prisma.SortOrderInput | Prisma.SortOrder
-  completionCriterion?: Prisma.SortOrderInput | Prisma.SortOrder
-  paymentPlanSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
-  stepDefinitionsSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
-  requiredDocumentSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   contract?: Prisma.ContractOrderByWithRelationInput
-  paymentPlan?: Prisma.PaymentPlanOrderByWithRelationInput
-  currentStep?: Prisma.DocumentationStepOrderByWithRelationInput
-  installments?: Prisma.ContractInstallmentOrderByRelationAggregateInput
+  questionnairePhase?: Prisma.QuestionnairePhaseOrderByWithRelationInput
+  documentationPhase?: Prisma.DocumentationPhaseOrderByWithRelationInput
+  paymentPhase?: Prisma.PaymentPhaseOrderByWithRelationInput
   payments?: Prisma.ContractPaymentOrderByRelationAggregateInput
-  steps?: Prisma.DocumentationStepOrderByRelationAggregateInput
+  currentForContracts?: Prisma.ContractOrderByRelationAggregateInput
   _relevance?: Prisma.ContractPhaseOrderByRelevanceInput
 }
 
@@ -512,75 +344,43 @@ export type ContractPhaseWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.ContractPhaseWhereInput[]
   NOT?: Prisma.ContractPhaseWhereInput | Prisma.ContractPhaseWhereInput[]
   contractId?: Prisma.StringFilter<"ContractPhase"> | string
-  paymentPlanId?: Prisma.StringNullableFilter<"ContractPhase"> | string | null
   name?: Prisma.StringFilter<"ContractPhase"> | string
   description?: Prisma.StringNullableFilter<"ContractPhase"> | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFilter<"ContractPhase"> | $Enums.PhaseCategory
   phaseType?: Prisma.EnumPhaseTypeFilter<"ContractPhase"> | $Enums.PhaseType
   order?: Prisma.IntFilter<"ContractPhase"> | number
   status?: Prisma.EnumPhaseStatusFilter<"ContractPhase"> | $Enums.PhaseStatus
-  currentStepId?: Prisma.StringNullableFilter<"ContractPhase"> | string | null
-  totalAmount?: Prisma.FloatNullableFilter<"ContractPhase"> | number | null
-  paidAmount?: Prisma.FloatFilter<"ContractPhase"> | number
-  remainingAmount?: Prisma.FloatNullableFilter<"ContractPhase"> | number | null
-  interestRate?: Prisma.FloatNullableFilter<"ContractPhase"> | number | null
-  collectFunds?: Prisma.BoolFilter<"ContractPhase"> | boolean
-  approvedDocumentsCount?: Prisma.IntFilter<"ContractPhase"> | number
-  requiredDocumentsCount?: Prisma.IntFilter<"ContractPhase"> | number
-  completedStepsCount?: Prisma.IntFilter<"ContractPhase"> | number
-  totalStepsCount?: Prisma.IntFilter<"ContractPhase"> | number
   dueDate?: Prisma.DateTimeNullableFilter<"ContractPhase"> | Date | string | null
   startDate?: Prisma.DateTimeNullableFilter<"ContractPhase"> | Date | string | null
   endDate?: Prisma.DateTimeNullableFilter<"ContractPhase"> | Date | string | null
   activatedAt?: Prisma.DateTimeNullableFilter<"ContractPhase"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableFilter<"ContractPhase"> | Date | string | null
   requiresPreviousPhaseCompletion?: Prisma.BoolFilter<"ContractPhase"> | boolean
-  minimumCompletionPercentage?: Prisma.FloatNullableFilter<"ContractPhase"> | number | null
-  completionCriterion?: Prisma.EnumCompletionCriterionNullableFilter<"ContractPhase"> | $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.JsonNullableFilter<"ContractPhase">
-  stepDefinitionsSnapshot?: Prisma.JsonNullableFilter<"ContractPhase">
-  requiredDocumentSnapshot?: Prisma.JsonNullableFilter<"ContractPhase">
   createdAt?: Prisma.DateTimeFilter<"ContractPhase"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ContractPhase"> | Date | string
   contract?: Prisma.XOR<Prisma.ContractScalarRelationFilter, Prisma.ContractWhereInput>
-  paymentPlan?: Prisma.XOR<Prisma.PaymentPlanNullableScalarRelationFilter, Prisma.PaymentPlanWhereInput> | null
-  currentStep?: Prisma.XOR<Prisma.DocumentationStepNullableScalarRelationFilter, Prisma.DocumentationStepWhereInput> | null
-  installments?: Prisma.ContractInstallmentListRelationFilter
+  questionnairePhase?: Prisma.XOR<Prisma.QuestionnairePhaseNullableScalarRelationFilter, Prisma.QuestionnairePhaseWhereInput> | null
+  documentationPhase?: Prisma.XOR<Prisma.DocumentationPhaseNullableScalarRelationFilter, Prisma.DocumentationPhaseWhereInput> | null
+  paymentPhase?: Prisma.XOR<Prisma.PaymentPhaseNullableScalarRelationFilter, Prisma.PaymentPhaseWhereInput> | null
   payments?: Prisma.ContractPaymentListRelationFilter
-  steps?: Prisma.DocumentationStepListRelationFilter
+  currentForContracts?: Prisma.ContractListRelationFilter
 }, "id">
 
 export type ContractPhaseOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   contractId?: Prisma.SortOrder
-  paymentPlanId?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   phaseCategory?: Prisma.SortOrder
   phaseType?: Prisma.SortOrder
   order?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  currentStepId?: Prisma.SortOrderInput | Prisma.SortOrder
-  totalAmount?: Prisma.SortOrderInput | Prisma.SortOrder
-  paidAmount?: Prisma.SortOrder
-  remainingAmount?: Prisma.SortOrderInput | Prisma.SortOrder
-  interestRate?: Prisma.SortOrderInput | Prisma.SortOrder
-  collectFunds?: Prisma.SortOrder
-  approvedDocumentsCount?: Prisma.SortOrder
-  requiredDocumentsCount?: Prisma.SortOrder
-  completedStepsCount?: Prisma.SortOrder
-  totalStepsCount?: Prisma.SortOrder
   dueDate?: Prisma.SortOrderInput | Prisma.SortOrder
   startDate?: Prisma.SortOrderInput | Prisma.SortOrder
   endDate?: Prisma.SortOrderInput | Prisma.SortOrder
   activatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   requiresPreviousPhaseCompletion?: Prisma.SortOrder
-  minimumCompletionPercentage?: Prisma.SortOrderInput | Prisma.SortOrder
-  completionCriterion?: Prisma.SortOrderInput | Prisma.SortOrder
-  paymentPlanSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
-  stepDefinitionsSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
-  requiredDocumentSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.ContractPhaseCountOrderByAggregateInput
@@ -596,34 +396,18 @@ export type ContractPhaseScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ContractPhaseScalarWhereWithAggregatesInput | Prisma.ContractPhaseScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"ContractPhase"> | string
   contractId?: Prisma.StringWithAggregatesFilter<"ContractPhase"> | string
-  paymentPlanId?: Prisma.StringNullableWithAggregatesFilter<"ContractPhase"> | string | null
   name?: Prisma.StringWithAggregatesFilter<"ContractPhase"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"ContractPhase"> | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryWithAggregatesFilter<"ContractPhase"> | $Enums.PhaseCategory
   phaseType?: Prisma.EnumPhaseTypeWithAggregatesFilter<"ContractPhase"> | $Enums.PhaseType
   order?: Prisma.IntWithAggregatesFilter<"ContractPhase"> | number
   status?: Prisma.EnumPhaseStatusWithAggregatesFilter<"ContractPhase"> | $Enums.PhaseStatus
-  currentStepId?: Prisma.StringNullableWithAggregatesFilter<"ContractPhase"> | string | null
-  totalAmount?: Prisma.FloatNullableWithAggregatesFilter<"ContractPhase"> | number | null
-  paidAmount?: Prisma.FloatWithAggregatesFilter<"ContractPhase"> | number
-  remainingAmount?: Prisma.FloatNullableWithAggregatesFilter<"ContractPhase"> | number | null
-  interestRate?: Prisma.FloatNullableWithAggregatesFilter<"ContractPhase"> | number | null
-  collectFunds?: Prisma.BoolWithAggregatesFilter<"ContractPhase"> | boolean
-  approvedDocumentsCount?: Prisma.IntWithAggregatesFilter<"ContractPhase"> | number
-  requiredDocumentsCount?: Prisma.IntWithAggregatesFilter<"ContractPhase"> | number
-  completedStepsCount?: Prisma.IntWithAggregatesFilter<"ContractPhase"> | number
-  totalStepsCount?: Prisma.IntWithAggregatesFilter<"ContractPhase"> | number
   dueDate?: Prisma.DateTimeNullableWithAggregatesFilter<"ContractPhase"> | Date | string | null
   startDate?: Prisma.DateTimeNullableWithAggregatesFilter<"ContractPhase"> | Date | string | null
   endDate?: Prisma.DateTimeNullableWithAggregatesFilter<"ContractPhase"> | Date | string | null
   activatedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ContractPhase"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ContractPhase"> | Date | string | null
   requiresPreviousPhaseCompletion?: Prisma.BoolWithAggregatesFilter<"ContractPhase"> | boolean
-  minimumCompletionPercentage?: Prisma.FloatNullableWithAggregatesFilter<"ContractPhase"> | number | null
-  completionCriterion?: Prisma.EnumCompletionCriterionNullableWithAggregatesFilter<"ContractPhase"> | $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.JsonNullableWithAggregatesFilter<"ContractPhase">
-  stepDefinitionsSnapshot?: Prisma.JsonNullableWithAggregatesFilter<"ContractPhase">
-  requiredDocumentSnapshot?: Prisma.JsonNullableWithAggregatesFilter<"ContractPhase">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ContractPhase"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ContractPhase"> | Date | string
 }
@@ -636,72 +420,44 @@ export type ContractPhaseCreateInput = {
   phaseType: $Enums.PhaseType
   order: number
   status?: $Enums.PhaseStatus
-  totalAmount?: number | null
-  paidAmount?: number
-  remainingAmount?: number | null
-  interestRate?: number | null
-  collectFunds?: boolean
-  approvedDocumentsCount?: number
-  requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
   dueDate?: Date | string | null
   startDate?: Date | string | null
   endDate?: Date | string | null
   activatedAt?: Date | string | null
   completedAt?: Date | string | null
   requiresPreviousPhaseCompletion?: boolean
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   contract: Prisma.ContractCreateNestedOneWithoutPhasesInput
-  paymentPlan?: Prisma.PaymentPlanCreateNestedOneWithoutContractPhasesInput
-  currentStep?: Prisma.DocumentationStepCreateNestedOneWithoutCurrentForPhaseInput
-  installments?: Prisma.ContractInstallmentCreateNestedManyWithoutPhaseInput
+  questionnairePhase?: Prisma.QuestionnairePhaseCreateNestedOneWithoutPhaseInput
+  documentationPhase?: Prisma.DocumentationPhaseCreateNestedOneWithoutPhaseInput
+  paymentPhase?: Prisma.PaymentPhaseCreateNestedOneWithoutPhaseInput
   payments?: Prisma.ContractPaymentCreateNestedManyWithoutPhaseInput
-  steps?: Prisma.DocumentationStepCreateNestedManyWithoutPhaseInput
+  currentForContracts?: Prisma.ContractCreateNestedManyWithoutCurrentPhaseInput
 }
 
 export type ContractPhaseUncheckedCreateInput = {
   id?: string
   contractId: string
-  paymentPlanId?: string | null
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
   phaseType: $Enums.PhaseType
   order: number
   status?: $Enums.PhaseStatus
-  currentStepId?: string | null
-  totalAmount?: number | null
-  paidAmount?: number
-  remainingAmount?: number | null
-  interestRate?: number | null
-  collectFunds?: boolean
-  approvedDocumentsCount?: number
-  requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
   dueDate?: Date | string | null
   startDate?: Date | string | null
   endDate?: Date | string | null
   activatedAt?: Date | string | null
   completedAt?: Date | string | null
   requiresPreviousPhaseCompletion?: boolean
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  installments?: Prisma.ContractInstallmentUncheckedCreateNestedManyWithoutPhaseInput
+  questionnairePhase?: Prisma.QuestionnairePhaseUncheckedCreateNestedOneWithoutPhaseInput
+  documentationPhase?: Prisma.DocumentationPhaseUncheckedCreateNestedOneWithoutPhaseInput
+  paymentPhase?: Prisma.PaymentPhaseUncheckedCreateNestedOneWithoutPhaseInput
   payments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutPhaseInput
-  steps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutPhaseInput
+  currentForContracts?: Prisma.ContractUncheckedCreateNestedManyWithoutCurrentPhaseInput
 }
 
 export type ContractPhaseUpdateInput = {
@@ -712,105 +468,61 @@ export type ContractPhaseUpdateInput = {
   phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
-  totalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  remainingAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contract?: Prisma.ContractUpdateOneRequiredWithoutPhasesNestedInput
-  paymentPlan?: Prisma.PaymentPlanUpdateOneWithoutContractPhasesNestedInput
-  currentStep?: Prisma.DocumentationStepUpdateOneWithoutCurrentForPhaseNestedInput
-  installments?: Prisma.ContractInstallmentUpdateManyWithoutPhaseNestedInput
+  questionnairePhase?: Prisma.QuestionnairePhaseUpdateOneWithoutPhaseNestedInput
+  documentationPhase?: Prisma.DocumentationPhaseUpdateOneWithoutPhaseNestedInput
+  paymentPhase?: Prisma.PaymentPhaseUpdateOneWithoutPhaseNestedInput
   payments?: Prisma.ContractPaymentUpdateManyWithoutPhaseNestedInput
-  steps?: Prisma.DocumentationStepUpdateManyWithoutPhaseNestedInput
+  currentForContracts?: Prisma.ContractUpdateManyWithoutCurrentPhaseNestedInput
 }
 
 export type ContractPhaseUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   contractId?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
   phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
-  currentStepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  totalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  remainingAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  installments?: Prisma.ContractInstallmentUncheckedUpdateManyWithoutPhaseNestedInput
+  questionnairePhase?: Prisma.QuestionnairePhaseUncheckedUpdateOneWithoutPhaseNestedInput
+  documentationPhase?: Prisma.DocumentationPhaseUncheckedUpdateOneWithoutPhaseNestedInput
+  paymentPhase?: Prisma.PaymentPhaseUncheckedUpdateOneWithoutPhaseNestedInput
   payments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutPhaseNestedInput
-  steps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutPhaseNestedInput
+  currentForContracts?: Prisma.ContractUncheckedUpdateManyWithoutCurrentPhaseNestedInput
 }
 
 export type ContractPhaseCreateManyInput = {
   id?: string
   contractId: string
-  paymentPlanId?: string | null
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
   phaseType: $Enums.PhaseType
   order: number
   status?: $Enums.PhaseStatus
-  currentStepId?: string | null
-  totalAmount?: number | null
-  paidAmount?: number
-  remainingAmount?: number | null
-  interestRate?: number | null
-  collectFunds?: boolean
-  approvedDocumentsCount?: number
-  requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
   dueDate?: Date | string | null
   startDate?: Date | string | null
   endDate?: Date | string | null
   activatedAt?: Date | string | null
   completedAt?: Date | string | null
   requiresPreviousPhaseCompletion?: boolean
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -823,26 +535,12 @@ export type ContractPhaseUpdateManyMutationInput = {
   phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
-  totalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  remainingAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -850,36 +548,25 @@ export type ContractPhaseUpdateManyMutationInput = {
 export type ContractPhaseUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   contractId?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
   phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
-  currentStepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  totalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  remainingAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ContractPhaseNullableScalarRelationFilter = {
+  is?: Prisma.ContractPhaseWhereInput | null
+  isNot?: Prisma.ContractPhaseWhereInput | null
 }
 
 export type ContractPhaseListRelationFilter = {
@@ -901,79 +588,41 @@ export type ContractPhaseOrderByRelevanceInput = {
 export type ContractPhaseCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   contractId?: Prisma.SortOrder
-  paymentPlanId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   phaseCategory?: Prisma.SortOrder
   phaseType?: Prisma.SortOrder
   order?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  currentStepId?: Prisma.SortOrder
-  totalAmount?: Prisma.SortOrder
-  paidAmount?: Prisma.SortOrder
-  remainingAmount?: Prisma.SortOrder
-  interestRate?: Prisma.SortOrder
-  collectFunds?: Prisma.SortOrder
-  approvedDocumentsCount?: Prisma.SortOrder
-  requiredDocumentsCount?: Prisma.SortOrder
-  completedStepsCount?: Prisma.SortOrder
-  totalStepsCount?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   activatedAt?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
   requiresPreviousPhaseCompletion?: Prisma.SortOrder
-  minimumCompletionPercentage?: Prisma.SortOrder
-  completionCriterion?: Prisma.SortOrder
-  paymentPlanSnapshot?: Prisma.SortOrder
-  stepDefinitionsSnapshot?: Prisma.SortOrder
-  requiredDocumentSnapshot?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type ContractPhaseAvgOrderByAggregateInput = {
   order?: Prisma.SortOrder
-  totalAmount?: Prisma.SortOrder
-  paidAmount?: Prisma.SortOrder
-  remainingAmount?: Prisma.SortOrder
-  interestRate?: Prisma.SortOrder
-  approvedDocumentsCount?: Prisma.SortOrder
-  requiredDocumentsCount?: Prisma.SortOrder
-  completedStepsCount?: Prisma.SortOrder
-  totalStepsCount?: Prisma.SortOrder
-  minimumCompletionPercentage?: Prisma.SortOrder
 }
 
 export type ContractPhaseMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   contractId?: Prisma.SortOrder
-  paymentPlanId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   phaseCategory?: Prisma.SortOrder
   phaseType?: Prisma.SortOrder
   order?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  currentStepId?: Prisma.SortOrder
-  totalAmount?: Prisma.SortOrder
-  paidAmount?: Prisma.SortOrder
-  remainingAmount?: Prisma.SortOrder
-  interestRate?: Prisma.SortOrder
-  collectFunds?: Prisma.SortOrder
-  approvedDocumentsCount?: Prisma.SortOrder
-  requiredDocumentsCount?: Prisma.SortOrder
-  completedStepsCount?: Prisma.SortOrder
-  totalStepsCount?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   activatedAt?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
   requiresPreviousPhaseCompletion?: Prisma.SortOrder
-  minimumCompletionPercentage?: Prisma.SortOrder
-  completionCriterion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -981,46 +630,24 @@ export type ContractPhaseMaxOrderByAggregateInput = {
 export type ContractPhaseMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   contractId?: Prisma.SortOrder
-  paymentPlanId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   phaseCategory?: Prisma.SortOrder
   phaseType?: Prisma.SortOrder
   order?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  currentStepId?: Prisma.SortOrder
-  totalAmount?: Prisma.SortOrder
-  paidAmount?: Prisma.SortOrder
-  remainingAmount?: Prisma.SortOrder
-  interestRate?: Prisma.SortOrder
-  collectFunds?: Prisma.SortOrder
-  approvedDocumentsCount?: Prisma.SortOrder
-  requiredDocumentsCount?: Prisma.SortOrder
-  completedStepsCount?: Prisma.SortOrder
-  totalStepsCount?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   activatedAt?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
   requiresPreviousPhaseCompletion?: Prisma.SortOrder
-  minimumCompletionPercentage?: Prisma.SortOrder
-  completionCriterion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type ContractPhaseSumOrderByAggregateInput = {
   order?: Prisma.SortOrder
-  totalAmount?: Prisma.SortOrder
-  paidAmount?: Prisma.SortOrder
-  remainingAmount?: Prisma.SortOrder
-  interestRate?: Prisma.SortOrder
-  approvedDocumentsCount?: Prisma.SortOrder
-  requiredDocumentsCount?: Prisma.SortOrder
-  completedStepsCount?: Prisma.SortOrder
-  totalStepsCount?: Prisma.SortOrder
-  minimumCompletionPercentage?: Prisma.SortOrder
 }
 
 export type ContractPhaseScalarRelationFilter = {
@@ -1028,51 +655,10 @@ export type ContractPhaseScalarRelationFilter = {
   isNot?: Prisma.ContractPhaseWhereInput
 }
 
-export type ContractPhaseNullableScalarRelationFilter = {
-  is?: Prisma.ContractPhaseWhereInput | null
-  isNot?: Prisma.ContractPhaseWhereInput | null
-}
-
-export type ContractPhaseCreateNestedManyWithoutPaymentPlanInput = {
-  create?: Prisma.XOR<Prisma.ContractPhaseCreateWithoutPaymentPlanInput, Prisma.ContractPhaseUncheckedCreateWithoutPaymentPlanInput> | Prisma.ContractPhaseCreateWithoutPaymentPlanInput[] | Prisma.ContractPhaseUncheckedCreateWithoutPaymentPlanInput[]
-  connectOrCreate?: Prisma.ContractPhaseCreateOrConnectWithoutPaymentPlanInput | Prisma.ContractPhaseCreateOrConnectWithoutPaymentPlanInput[]
-  createMany?: Prisma.ContractPhaseCreateManyPaymentPlanInputEnvelope
-  connect?: Prisma.ContractPhaseWhereUniqueInput | Prisma.ContractPhaseWhereUniqueInput[]
-}
-
-export type ContractPhaseUncheckedCreateNestedManyWithoutPaymentPlanInput = {
-  create?: Prisma.XOR<Prisma.ContractPhaseCreateWithoutPaymentPlanInput, Prisma.ContractPhaseUncheckedCreateWithoutPaymentPlanInput> | Prisma.ContractPhaseCreateWithoutPaymentPlanInput[] | Prisma.ContractPhaseUncheckedCreateWithoutPaymentPlanInput[]
-  connectOrCreate?: Prisma.ContractPhaseCreateOrConnectWithoutPaymentPlanInput | Prisma.ContractPhaseCreateOrConnectWithoutPaymentPlanInput[]
-  createMany?: Prisma.ContractPhaseCreateManyPaymentPlanInputEnvelope
-  connect?: Prisma.ContractPhaseWhereUniqueInput | Prisma.ContractPhaseWhereUniqueInput[]
-}
-
-export type ContractPhaseUpdateManyWithoutPaymentPlanNestedInput = {
-  create?: Prisma.XOR<Prisma.ContractPhaseCreateWithoutPaymentPlanInput, Prisma.ContractPhaseUncheckedCreateWithoutPaymentPlanInput> | Prisma.ContractPhaseCreateWithoutPaymentPlanInput[] | Prisma.ContractPhaseUncheckedCreateWithoutPaymentPlanInput[]
-  connectOrCreate?: Prisma.ContractPhaseCreateOrConnectWithoutPaymentPlanInput | Prisma.ContractPhaseCreateOrConnectWithoutPaymentPlanInput[]
-  upsert?: Prisma.ContractPhaseUpsertWithWhereUniqueWithoutPaymentPlanInput | Prisma.ContractPhaseUpsertWithWhereUniqueWithoutPaymentPlanInput[]
-  createMany?: Prisma.ContractPhaseCreateManyPaymentPlanInputEnvelope
-  set?: Prisma.ContractPhaseWhereUniqueInput | Prisma.ContractPhaseWhereUniqueInput[]
-  disconnect?: Prisma.ContractPhaseWhereUniqueInput | Prisma.ContractPhaseWhereUniqueInput[]
-  delete?: Prisma.ContractPhaseWhereUniqueInput | Prisma.ContractPhaseWhereUniqueInput[]
-  connect?: Prisma.ContractPhaseWhereUniqueInput | Prisma.ContractPhaseWhereUniqueInput[]
-  update?: Prisma.ContractPhaseUpdateWithWhereUniqueWithoutPaymentPlanInput | Prisma.ContractPhaseUpdateWithWhereUniqueWithoutPaymentPlanInput[]
-  updateMany?: Prisma.ContractPhaseUpdateManyWithWhereWithoutPaymentPlanInput | Prisma.ContractPhaseUpdateManyWithWhereWithoutPaymentPlanInput[]
-  deleteMany?: Prisma.ContractPhaseScalarWhereInput | Prisma.ContractPhaseScalarWhereInput[]
-}
-
-export type ContractPhaseUncheckedUpdateManyWithoutPaymentPlanNestedInput = {
-  create?: Prisma.XOR<Prisma.ContractPhaseCreateWithoutPaymentPlanInput, Prisma.ContractPhaseUncheckedCreateWithoutPaymentPlanInput> | Prisma.ContractPhaseCreateWithoutPaymentPlanInput[] | Prisma.ContractPhaseUncheckedCreateWithoutPaymentPlanInput[]
-  connectOrCreate?: Prisma.ContractPhaseCreateOrConnectWithoutPaymentPlanInput | Prisma.ContractPhaseCreateOrConnectWithoutPaymentPlanInput[]
-  upsert?: Prisma.ContractPhaseUpsertWithWhereUniqueWithoutPaymentPlanInput | Prisma.ContractPhaseUpsertWithWhereUniqueWithoutPaymentPlanInput[]
-  createMany?: Prisma.ContractPhaseCreateManyPaymentPlanInputEnvelope
-  set?: Prisma.ContractPhaseWhereUniqueInput | Prisma.ContractPhaseWhereUniqueInput[]
-  disconnect?: Prisma.ContractPhaseWhereUniqueInput | Prisma.ContractPhaseWhereUniqueInput[]
-  delete?: Prisma.ContractPhaseWhereUniqueInput | Prisma.ContractPhaseWhereUniqueInput[]
-  connect?: Prisma.ContractPhaseWhereUniqueInput | Prisma.ContractPhaseWhereUniqueInput[]
-  update?: Prisma.ContractPhaseUpdateWithWhereUniqueWithoutPaymentPlanInput | Prisma.ContractPhaseUpdateWithWhereUniqueWithoutPaymentPlanInput[]
-  updateMany?: Prisma.ContractPhaseUpdateManyWithWhereWithoutPaymentPlanInput | Prisma.ContractPhaseUpdateManyWithWhereWithoutPaymentPlanInput[]
-  deleteMany?: Prisma.ContractPhaseScalarWhereInput | Prisma.ContractPhaseScalarWhereInput[]
+export type ContractPhaseCreateNestedOneWithoutCurrentForContractsInput = {
+  create?: Prisma.XOR<Prisma.ContractPhaseCreateWithoutCurrentForContractsInput, Prisma.ContractPhaseUncheckedCreateWithoutCurrentForContractsInput>
+  connectOrCreate?: Prisma.ContractPhaseCreateOrConnectWithoutCurrentForContractsInput
+  connect?: Prisma.ContractPhaseWhereUniqueInput
 }
 
 export type ContractPhaseCreateNestedManyWithoutContractInput = {
@@ -1087,6 +673,16 @@ export type ContractPhaseUncheckedCreateNestedManyWithoutContractInput = {
   connectOrCreate?: Prisma.ContractPhaseCreateOrConnectWithoutContractInput | Prisma.ContractPhaseCreateOrConnectWithoutContractInput[]
   createMany?: Prisma.ContractPhaseCreateManyContractInputEnvelope
   connect?: Prisma.ContractPhaseWhereUniqueInput | Prisma.ContractPhaseWhereUniqueInput[]
+}
+
+export type ContractPhaseUpdateOneWithoutCurrentForContractsNestedInput = {
+  create?: Prisma.XOR<Prisma.ContractPhaseCreateWithoutCurrentForContractsInput, Prisma.ContractPhaseUncheckedCreateWithoutCurrentForContractsInput>
+  connectOrCreate?: Prisma.ContractPhaseCreateOrConnectWithoutCurrentForContractsInput
+  upsert?: Prisma.ContractPhaseUpsertWithoutCurrentForContractsInput
+  disconnect?: Prisma.ContractPhaseWhereInput | boolean
+  delete?: Prisma.ContractPhaseWhereInput | boolean
+  connect?: Prisma.ContractPhaseWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ContractPhaseUpdateToOneWithWhereWithoutCurrentForContractsInput, Prisma.ContractPhaseUpdateWithoutCurrentForContractsInput>, Prisma.ContractPhaseUncheckedUpdateWithoutCurrentForContractsInput>
 }
 
 export type ContractPhaseUpdateManyWithoutContractNestedInput = {
@@ -1121,74 +717,46 @@ export type EnumPhaseStatusFieldUpdateOperationsInput = {
   set?: $Enums.PhaseStatus
 }
 
-export type ContractPhaseCreateNestedOneWithoutStepsInput = {
-  create?: Prisma.XOR<Prisma.ContractPhaseCreateWithoutStepsInput, Prisma.ContractPhaseUncheckedCreateWithoutStepsInput>
-  connectOrCreate?: Prisma.ContractPhaseCreateOrConnectWithoutStepsInput
+export type ContractPhaseCreateNestedOneWithoutQuestionnairePhaseInput = {
+  create?: Prisma.XOR<Prisma.ContractPhaseCreateWithoutQuestionnairePhaseInput, Prisma.ContractPhaseUncheckedCreateWithoutQuestionnairePhaseInput>
+  connectOrCreate?: Prisma.ContractPhaseCreateOrConnectWithoutQuestionnairePhaseInput
   connect?: Prisma.ContractPhaseWhereUniqueInput
 }
 
-export type ContractPhaseCreateNestedManyWithoutCurrentStepInput = {
-  create?: Prisma.XOR<Prisma.ContractPhaseCreateWithoutCurrentStepInput, Prisma.ContractPhaseUncheckedCreateWithoutCurrentStepInput> | Prisma.ContractPhaseCreateWithoutCurrentStepInput[] | Prisma.ContractPhaseUncheckedCreateWithoutCurrentStepInput[]
-  connectOrCreate?: Prisma.ContractPhaseCreateOrConnectWithoutCurrentStepInput | Prisma.ContractPhaseCreateOrConnectWithoutCurrentStepInput[]
-  createMany?: Prisma.ContractPhaseCreateManyCurrentStepInputEnvelope
-  connect?: Prisma.ContractPhaseWhereUniqueInput | Prisma.ContractPhaseWhereUniqueInput[]
-}
-
-export type ContractPhaseUncheckedCreateNestedManyWithoutCurrentStepInput = {
-  create?: Prisma.XOR<Prisma.ContractPhaseCreateWithoutCurrentStepInput, Prisma.ContractPhaseUncheckedCreateWithoutCurrentStepInput> | Prisma.ContractPhaseCreateWithoutCurrentStepInput[] | Prisma.ContractPhaseUncheckedCreateWithoutCurrentStepInput[]
-  connectOrCreate?: Prisma.ContractPhaseCreateOrConnectWithoutCurrentStepInput | Prisma.ContractPhaseCreateOrConnectWithoutCurrentStepInput[]
-  createMany?: Prisma.ContractPhaseCreateManyCurrentStepInputEnvelope
-  connect?: Prisma.ContractPhaseWhereUniqueInput | Prisma.ContractPhaseWhereUniqueInput[]
-}
-
-export type ContractPhaseUpdateOneRequiredWithoutStepsNestedInput = {
-  create?: Prisma.XOR<Prisma.ContractPhaseCreateWithoutStepsInput, Prisma.ContractPhaseUncheckedCreateWithoutStepsInput>
-  connectOrCreate?: Prisma.ContractPhaseCreateOrConnectWithoutStepsInput
-  upsert?: Prisma.ContractPhaseUpsertWithoutStepsInput
+export type ContractPhaseUpdateOneRequiredWithoutQuestionnairePhaseNestedInput = {
+  create?: Prisma.XOR<Prisma.ContractPhaseCreateWithoutQuestionnairePhaseInput, Prisma.ContractPhaseUncheckedCreateWithoutQuestionnairePhaseInput>
+  connectOrCreate?: Prisma.ContractPhaseCreateOrConnectWithoutQuestionnairePhaseInput
+  upsert?: Prisma.ContractPhaseUpsertWithoutQuestionnairePhaseInput
   connect?: Prisma.ContractPhaseWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.ContractPhaseUpdateToOneWithWhereWithoutStepsInput, Prisma.ContractPhaseUpdateWithoutStepsInput>, Prisma.ContractPhaseUncheckedUpdateWithoutStepsInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ContractPhaseUpdateToOneWithWhereWithoutQuestionnairePhaseInput, Prisma.ContractPhaseUpdateWithoutQuestionnairePhaseInput>, Prisma.ContractPhaseUncheckedUpdateWithoutQuestionnairePhaseInput>
 }
 
-export type ContractPhaseUpdateManyWithoutCurrentStepNestedInput = {
-  create?: Prisma.XOR<Prisma.ContractPhaseCreateWithoutCurrentStepInput, Prisma.ContractPhaseUncheckedCreateWithoutCurrentStepInput> | Prisma.ContractPhaseCreateWithoutCurrentStepInput[] | Prisma.ContractPhaseUncheckedCreateWithoutCurrentStepInput[]
-  connectOrCreate?: Prisma.ContractPhaseCreateOrConnectWithoutCurrentStepInput | Prisma.ContractPhaseCreateOrConnectWithoutCurrentStepInput[]
-  upsert?: Prisma.ContractPhaseUpsertWithWhereUniqueWithoutCurrentStepInput | Prisma.ContractPhaseUpsertWithWhereUniqueWithoutCurrentStepInput[]
-  createMany?: Prisma.ContractPhaseCreateManyCurrentStepInputEnvelope
-  set?: Prisma.ContractPhaseWhereUniqueInput | Prisma.ContractPhaseWhereUniqueInput[]
-  disconnect?: Prisma.ContractPhaseWhereUniqueInput | Prisma.ContractPhaseWhereUniqueInput[]
-  delete?: Prisma.ContractPhaseWhereUniqueInput | Prisma.ContractPhaseWhereUniqueInput[]
-  connect?: Prisma.ContractPhaseWhereUniqueInput | Prisma.ContractPhaseWhereUniqueInput[]
-  update?: Prisma.ContractPhaseUpdateWithWhereUniqueWithoutCurrentStepInput | Prisma.ContractPhaseUpdateWithWhereUniqueWithoutCurrentStepInput[]
-  updateMany?: Prisma.ContractPhaseUpdateManyWithWhereWithoutCurrentStepInput | Prisma.ContractPhaseUpdateManyWithWhereWithoutCurrentStepInput[]
-  deleteMany?: Prisma.ContractPhaseScalarWhereInput | Prisma.ContractPhaseScalarWhereInput[]
-}
-
-export type ContractPhaseUncheckedUpdateManyWithoutCurrentStepNestedInput = {
-  create?: Prisma.XOR<Prisma.ContractPhaseCreateWithoutCurrentStepInput, Prisma.ContractPhaseUncheckedCreateWithoutCurrentStepInput> | Prisma.ContractPhaseCreateWithoutCurrentStepInput[] | Prisma.ContractPhaseUncheckedCreateWithoutCurrentStepInput[]
-  connectOrCreate?: Prisma.ContractPhaseCreateOrConnectWithoutCurrentStepInput | Prisma.ContractPhaseCreateOrConnectWithoutCurrentStepInput[]
-  upsert?: Prisma.ContractPhaseUpsertWithWhereUniqueWithoutCurrentStepInput | Prisma.ContractPhaseUpsertWithWhereUniqueWithoutCurrentStepInput[]
-  createMany?: Prisma.ContractPhaseCreateManyCurrentStepInputEnvelope
-  set?: Prisma.ContractPhaseWhereUniqueInput | Prisma.ContractPhaseWhereUniqueInput[]
-  disconnect?: Prisma.ContractPhaseWhereUniqueInput | Prisma.ContractPhaseWhereUniqueInput[]
-  delete?: Prisma.ContractPhaseWhereUniqueInput | Prisma.ContractPhaseWhereUniqueInput[]
-  connect?: Prisma.ContractPhaseWhereUniqueInput | Prisma.ContractPhaseWhereUniqueInput[]
-  update?: Prisma.ContractPhaseUpdateWithWhereUniqueWithoutCurrentStepInput | Prisma.ContractPhaseUpdateWithWhereUniqueWithoutCurrentStepInput[]
-  updateMany?: Prisma.ContractPhaseUpdateManyWithWhereWithoutCurrentStepInput | Prisma.ContractPhaseUpdateManyWithWhereWithoutCurrentStepInput[]
-  deleteMany?: Prisma.ContractPhaseScalarWhereInput | Prisma.ContractPhaseScalarWhereInput[]
-}
-
-export type ContractPhaseCreateNestedOneWithoutInstallmentsInput = {
-  create?: Prisma.XOR<Prisma.ContractPhaseCreateWithoutInstallmentsInput, Prisma.ContractPhaseUncheckedCreateWithoutInstallmentsInput>
-  connectOrCreate?: Prisma.ContractPhaseCreateOrConnectWithoutInstallmentsInput
+export type ContractPhaseCreateNestedOneWithoutDocumentationPhaseInput = {
+  create?: Prisma.XOR<Prisma.ContractPhaseCreateWithoutDocumentationPhaseInput, Prisma.ContractPhaseUncheckedCreateWithoutDocumentationPhaseInput>
+  connectOrCreate?: Prisma.ContractPhaseCreateOrConnectWithoutDocumentationPhaseInput
   connect?: Prisma.ContractPhaseWhereUniqueInput
 }
 
-export type ContractPhaseUpdateOneRequiredWithoutInstallmentsNestedInput = {
-  create?: Prisma.XOR<Prisma.ContractPhaseCreateWithoutInstallmentsInput, Prisma.ContractPhaseUncheckedCreateWithoutInstallmentsInput>
-  connectOrCreate?: Prisma.ContractPhaseCreateOrConnectWithoutInstallmentsInput
-  upsert?: Prisma.ContractPhaseUpsertWithoutInstallmentsInput
+export type ContractPhaseUpdateOneRequiredWithoutDocumentationPhaseNestedInput = {
+  create?: Prisma.XOR<Prisma.ContractPhaseCreateWithoutDocumentationPhaseInput, Prisma.ContractPhaseUncheckedCreateWithoutDocumentationPhaseInput>
+  connectOrCreate?: Prisma.ContractPhaseCreateOrConnectWithoutDocumentationPhaseInput
+  upsert?: Prisma.ContractPhaseUpsertWithoutDocumentationPhaseInput
   connect?: Prisma.ContractPhaseWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.ContractPhaseUpdateToOneWithWhereWithoutInstallmentsInput, Prisma.ContractPhaseUpdateWithoutInstallmentsInput>, Prisma.ContractPhaseUncheckedUpdateWithoutInstallmentsInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ContractPhaseUpdateToOneWithWhereWithoutDocumentationPhaseInput, Prisma.ContractPhaseUpdateWithoutDocumentationPhaseInput>, Prisma.ContractPhaseUncheckedUpdateWithoutDocumentationPhaseInput>
+}
+
+export type ContractPhaseCreateNestedOneWithoutPaymentPhaseInput = {
+  create?: Prisma.XOR<Prisma.ContractPhaseCreateWithoutPaymentPhaseInput, Prisma.ContractPhaseUncheckedCreateWithoutPaymentPhaseInput>
+  connectOrCreate?: Prisma.ContractPhaseCreateOrConnectWithoutPaymentPhaseInput
+  connect?: Prisma.ContractPhaseWhereUniqueInput
+}
+
+export type ContractPhaseUpdateOneRequiredWithoutPaymentPhaseNestedInput = {
+  create?: Prisma.XOR<Prisma.ContractPhaseCreateWithoutPaymentPhaseInput, Prisma.ContractPhaseUncheckedCreateWithoutPaymentPhaseInput>
+  connectOrCreate?: Prisma.ContractPhaseCreateOrConnectWithoutPaymentPhaseInput
+  upsert?: Prisma.ContractPhaseUpsertWithoutPaymentPhaseInput
+  connect?: Prisma.ContractPhaseWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ContractPhaseUpdateToOneWithWhereWithoutPaymentPhaseInput, Prisma.ContractPhaseUpdateWithoutPaymentPhaseInput>, Prisma.ContractPhaseUncheckedUpdateWithoutPaymentPhaseInput>
 }
 
 export type ContractPhaseCreateNestedOneWithoutPaymentsInput = {
@@ -1207,7 +775,7 @@ export type ContractPhaseUpdateOneWithoutPaymentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ContractPhaseUpdateToOneWithWhereWithoutPaymentsInput, Prisma.ContractPhaseUpdateWithoutPaymentsInput>, Prisma.ContractPhaseUncheckedUpdateWithoutPaymentsInput>
 }
 
-export type ContractPhaseCreateWithoutPaymentPlanInput = {
+export type ContractPhaseCreateWithoutCurrentForContractsInput = {
   id?: string
   name: string
   description?: string | null
@@ -1215,36 +783,22 @@ export type ContractPhaseCreateWithoutPaymentPlanInput = {
   phaseType: $Enums.PhaseType
   order: number
   status?: $Enums.PhaseStatus
-  totalAmount?: number | null
-  paidAmount?: number
-  remainingAmount?: number | null
-  interestRate?: number | null
-  collectFunds?: boolean
-  approvedDocumentsCount?: number
-  requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
   dueDate?: Date | string | null
   startDate?: Date | string | null
   endDate?: Date | string | null
   activatedAt?: Date | string | null
   completedAt?: Date | string | null
   requiresPreviousPhaseCompletion?: boolean
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   contract: Prisma.ContractCreateNestedOneWithoutPhasesInput
-  currentStep?: Prisma.DocumentationStepCreateNestedOneWithoutCurrentForPhaseInput
-  installments?: Prisma.ContractInstallmentCreateNestedManyWithoutPhaseInput
+  questionnairePhase?: Prisma.QuestionnairePhaseCreateNestedOneWithoutPhaseInput
+  documentationPhase?: Prisma.DocumentationPhaseCreateNestedOneWithoutPhaseInput
+  paymentPhase?: Prisma.PaymentPhaseCreateNestedOneWithoutPhaseInput
   payments?: Prisma.ContractPaymentCreateNestedManyWithoutPhaseInput
-  steps?: Prisma.DocumentationStepCreateNestedManyWithoutPhaseInput
 }
 
-export type ContractPhaseUncheckedCreateWithoutPaymentPlanInput = {
+export type ContractPhaseUncheckedCreateWithoutCurrentForContractsInput = {
   id?: string
   contractId: string
   name: string
@@ -1253,96 +807,23 @@ export type ContractPhaseUncheckedCreateWithoutPaymentPlanInput = {
   phaseType: $Enums.PhaseType
   order: number
   status?: $Enums.PhaseStatus
-  currentStepId?: string | null
-  totalAmount?: number | null
-  paidAmount?: number
-  remainingAmount?: number | null
-  interestRate?: number | null
-  collectFunds?: boolean
-  approvedDocumentsCount?: number
-  requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
   dueDate?: Date | string | null
   startDate?: Date | string | null
   endDate?: Date | string | null
   activatedAt?: Date | string | null
   completedAt?: Date | string | null
   requiresPreviousPhaseCompletion?: boolean
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  installments?: Prisma.ContractInstallmentUncheckedCreateNestedManyWithoutPhaseInput
+  questionnairePhase?: Prisma.QuestionnairePhaseUncheckedCreateNestedOneWithoutPhaseInput
+  documentationPhase?: Prisma.DocumentationPhaseUncheckedCreateNestedOneWithoutPhaseInput
+  paymentPhase?: Prisma.PaymentPhaseUncheckedCreateNestedOneWithoutPhaseInput
   payments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutPhaseInput
-  steps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutPhaseInput
 }
 
-export type ContractPhaseCreateOrConnectWithoutPaymentPlanInput = {
+export type ContractPhaseCreateOrConnectWithoutCurrentForContractsInput = {
   where: Prisma.ContractPhaseWhereUniqueInput
-  create: Prisma.XOR<Prisma.ContractPhaseCreateWithoutPaymentPlanInput, Prisma.ContractPhaseUncheckedCreateWithoutPaymentPlanInput>
-}
-
-export type ContractPhaseCreateManyPaymentPlanInputEnvelope = {
-  data: Prisma.ContractPhaseCreateManyPaymentPlanInput | Prisma.ContractPhaseCreateManyPaymentPlanInput[]
-  skipDuplicates?: boolean
-}
-
-export type ContractPhaseUpsertWithWhereUniqueWithoutPaymentPlanInput = {
-  where: Prisma.ContractPhaseWhereUniqueInput
-  update: Prisma.XOR<Prisma.ContractPhaseUpdateWithoutPaymentPlanInput, Prisma.ContractPhaseUncheckedUpdateWithoutPaymentPlanInput>
-  create: Prisma.XOR<Prisma.ContractPhaseCreateWithoutPaymentPlanInput, Prisma.ContractPhaseUncheckedCreateWithoutPaymentPlanInput>
-}
-
-export type ContractPhaseUpdateWithWhereUniqueWithoutPaymentPlanInput = {
-  where: Prisma.ContractPhaseWhereUniqueInput
-  data: Prisma.XOR<Prisma.ContractPhaseUpdateWithoutPaymentPlanInput, Prisma.ContractPhaseUncheckedUpdateWithoutPaymentPlanInput>
-}
-
-export type ContractPhaseUpdateManyWithWhereWithoutPaymentPlanInput = {
-  where: Prisma.ContractPhaseScalarWhereInput
-  data: Prisma.XOR<Prisma.ContractPhaseUpdateManyMutationInput, Prisma.ContractPhaseUncheckedUpdateManyWithoutPaymentPlanInput>
-}
-
-export type ContractPhaseScalarWhereInput = {
-  AND?: Prisma.ContractPhaseScalarWhereInput | Prisma.ContractPhaseScalarWhereInput[]
-  OR?: Prisma.ContractPhaseScalarWhereInput[]
-  NOT?: Prisma.ContractPhaseScalarWhereInput | Prisma.ContractPhaseScalarWhereInput[]
-  id?: Prisma.StringFilter<"ContractPhase"> | string
-  contractId?: Prisma.StringFilter<"ContractPhase"> | string
-  paymentPlanId?: Prisma.StringNullableFilter<"ContractPhase"> | string | null
-  name?: Prisma.StringFilter<"ContractPhase"> | string
-  description?: Prisma.StringNullableFilter<"ContractPhase"> | string | null
-  phaseCategory?: Prisma.EnumPhaseCategoryFilter<"ContractPhase"> | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFilter<"ContractPhase"> | $Enums.PhaseType
-  order?: Prisma.IntFilter<"ContractPhase"> | number
-  status?: Prisma.EnumPhaseStatusFilter<"ContractPhase"> | $Enums.PhaseStatus
-  currentStepId?: Prisma.StringNullableFilter<"ContractPhase"> | string | null
-  totalAmount?: Prisma.FloatNullableFilter<"ContractPhase"> | number | null
-  paidAmount?: Prisma.FloatFilter<"ContractPhase"> | number
-  remainingAmount?: Prisma.FloatNullableFilter<"ContractPhase"> | number | null
-  interestRate?: Prisma.FloatNullableFilter<"ContractPhase"> | number | null
-  collectFunds?: Prisma.BoolFilter<"ContractPhase"> | boolean
-  approvedDocumentsCount?: Prisma.IntFilter<"ContractPhase"> | number
-  requiredDocumentsCount?: Prisma.IntFilter<"ContractPhase"> | number
-  completedStepsCount?: Prisma.IntFilter<"ContractPhase"> | number
-  totalStepsCount?: Prisma.IntFilter<"ContractPhase"> | number
-  dueDate?: Prisma.DateTimeNullableFilter<"ContractPhase"> | Date | string | null
-  startDate?: Prisma.DateTimeNullableFilter<"ContractPhase"> | Date | string | null
-  endDate?: Prisma.DateTimeNullableFilter<"ContractPhase"> | Date | string | null
-  activatedAt?: Prisma.DateTimeNullableFilter<"ContractPhase"> | Date | string | null
-  completedAt?: Prisma.DateTimeNullableFilter<"ContractPhase"> | Date | string | null
-  requiresPreviousPhaseCompletion?: Prisma.BoolFilter<"ContractPhase"> | boolean
-  minimumCompletionPercentage?: Prisma.FloatNullableFilter<"ContractPhase"> | number | null
-  completionCriterion?: Prisma.EnumCompletionCriterionNullableFilter<"ContractPhase"> | $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.JsonNullableFilter<"ContractPhase">
-  stepDefinitionsSnapshot?: Prisma.JsonNullableFilter<"ContractPhase">
-  requiredDocumentSnapshot?: Prisma.JsonNullableFilter<"ContractPhase">
-  createdAt?: Prisma.DateTimeFilter<"ContractPhase"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"ContractPhase"> | Date | string
+  create: Prisma.XOR<Prisma.ContractPhaseCreateWithoutCurrentForContractsInput, Prisma.ContractPhaseUncheckedCreateWithoutCurrentForContractsInput>
 }
 
 export type ContractPhaseCreateWithoutContractInput = {
@@ -1353,70 +834,42 @@ export type ContractPhaseCreateWithoutContractInput = {
   phaseType: $Enums.PhaseType
   order: number
   status?: $Enums.PhaseStatus
-  totalAmount?: number | null
-  paidAmount?: number
-  remainingAmount?: number | null
-  interestRate?: number | null
-  collectFunds?: boolean
-  approvedDocumentsCount?: number
-  requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
   dueDate?: Date | string | null
   startDate?: Date | string | null
   endDate?: Date | string | null
   activatedAt?: Date | string | null
   completedAt?: Date | string | null
   requiresPreviousPhaseCompletion?: boolean
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  paymentPlan?: Prisma.PaymentPlanCreateNestedOneWithoutContractPhasesInput
-  currentStep?: Prisma.DocumentationStepCreateNestedOneWithoutCurrentForPhaseInput
-  installments?: Prisma.ContractInstallmentCreateNestedManyWithoutPhaseInput
+  questionnairePhase?: Prisma.QuestionnairePhaseCreateNestedOneWithoutPhaseInput
+  documentationPhase?: Prisma.DocumentationPhaseCreateNestedOneWithoutPhaseInput
+  paymentPhase?: Prisma.PaymentPhaseCreateNestedOneWithoutPhaseInput
   payments?: Prisma.ContractPaymentCreateNestedManyWithoutPhaseInput
-  steps?: Prisma.DocumentationStepCreateNestedManyWithoutPhaseInput
+  currentForContracts?: Prisma.ContractCreateNestedManyWithoutCurrentPhaseInput
 }
 
 export type ContractPhaseUncheckedCreateWithoutContractInput = {
   id?: string
-  paymentPlanId?: string | null
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
   phaseType: $Enums.PhaseType
   order: number
   status?: $Enums.PhaseStatus
-  currentStepId?: string | null
-  totalAmount?: number | null
-  paidAmount?: number
-  remainingAmount?: number | null
-  interestRate?: number | null
-  collectFunds?: boolean
-  approvedDocumentsCount?: number
-  requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
   dueDate?: Date | string | null
   startDate?: Date | string | null
   endDate?: Date | string | null
   activatedAt?: Date | string | null
   completedAt?: Date | string | null
   requiresPreviousPhaseCompletion?: boolean
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  installments?: Prisma.ContractInstallmentUncheckedCreateNestedManyWithoutPhaseInput
+  questionnairePhase?: Prisma.QuestionnairePhaseUncheckedCreateNestedOneWithoutPhaseInput
+  documentationPhase?: Prisma.DocumentationPhaseUncheckedCreateNestedOneWithoutPhaseInput
+  paymentPhase?: Prisma.PaymentPhaseUncheckedCreateNestedOneWithoutPhaseInput
   payments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutPhaseInput
-  steps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutPhaseInput
+  currentForContracts?: Prisma.ContractUncheckedCreateNestedManyWithoutCurrentPhaseInput
 }
 
 export type ContractPhaseCreateOrConnectWithoutContractInput = {
@@ -1427,6 +880,63 @@ export type ContractPhaseCreateOrConnectWithoutContractInput = {
 export type ContractPhaseCreateManyContractInputEnvelope = {
   data: Prisma.ContractPhaseCreateManyContractInput | Prisma.ContractPhaseCreateManyContractInput[]
   skipDuplicates?: boolean
+}
+
+export type ContractPhaseUpsertWithoutCurrentForContractsInput = {
+  update: Prisma.XOR<Prisma.ContractPhaseUpdateWithoutCurrentForContractsInput, Prisma.ContractPhaseUncheckedUpdateWithoutCurrentForContractsInput>
+  create: Prisma.XOR<Prisma.ContractPhaseCreateWithoutCurrentForContractsInput, Prisma.ContractPhaseUncheckedCreateWithoutCurrentForContractsInput>
+  where?: Prisma.ContractPhaseWhereInput
+}
+
+export type ContractPhaseUpdateToOneWithWhereWithoutCurrentForContractsInput = {
+  where?: Prisma.ContractPhaseWhereInput
+  data: Prisma.XOR<Prisma.ContractPhaseUpdateWithoutCurrentForContractsInput, Prisma.ContractPhaseUncheckedUpdateWithoutCurrentForContractsInput>
+}
+
+export type ContractPhaseUpdateWithoutCurrentForContractsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
+  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contract?: Prisma.ContractUpdateOneRequiredWithoutPhasesNestedInput
+  questionnairePhase?: Prisma.QuestionnairePhaseUpdateOneWithoutPhaseNestedInput
+  documentationPhase?: Prisma.DocumentationPhaseUpdateOneWithoutPhaseNestedInput
+  paymentPhase?: Prisma.PaymentPhaseUpdateOneWithoutPhaseNestedInput
+  payments?: Prisma.ContractPaymentUpdateManyWithoutPhaseNestedInput
+}
+
+export type ContractPhaseUncheckedUpdateWithoutCurrentForContractsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
+  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  questionnairePhase?: Prisma.QuestionnairePhaseUncheckedUpdateOneWithoutPhaseNestedInput
+  documentationPhase?: Prisma.DocumentationPhaseUncheckedUpdateOneWithoutPhaseNestedInput
+  paymentPhase?: Prisma.PaymentPhaseUncheckedUpdateOneWithoutPhaseNestedInput
+  payments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutPhaseNestedInput
 }
 
 export type ContractPhaseUpsertWithWhereUniqueWithoutContractInput = {
@@ -1445,7 +955,29 @@ export type ContractPhaseUpdateManyWithWhereWithoutContractInput = {
   data: Prisma.XOR<Prisma.ContractPhaseUpdateManyMutationInput, Prisma.ContractPhaseUncheckedUpdateManyWithoutContractInput>
 }
 
-export type ContractPhaseCreateWithoutStepsInput = {
+export type ContractPhaseScalarWhereInput = {
+  AND?: Prisma.ContractPhaseScalarWhereInput | Prisma.ContractPhaseScalarWhereInput[]
+  OR?: Prisma.ContractPhaseScalarWhereInput[]
+  NOT?: Prisma.ContractPhaseScalarWhereInput | Prisma.ContractPhaseScalarWhereInput[]
+  id?: Prisma.StringFilter<"ContractPhase"> | string
+  contractId?: Prisma.StringFilter<"ContractPhase"> | string
+  name?: Prisma.StringFilter<"ContractPhase"> | string
+  description?: Prisma.StringNullableFilter<"ContractPhase"> | string | null
+  phaseCategory?: Prisma.EnumPhaseCategoryFilter<"ContractPhase"> | $Enums.PhaseCategory
+  phaseType?: Prisma.EnumPhaseTypeFilter<"ContractPhase"> | $Enums.PhaseType
+  order?: Prisma.IntFilter<"ContractPhase"> | number
+  status?: Prisma.EnumPhaseStatusFilter<"ContractPhase"> | $Enums.PhaseStatus
+  dueDate?: Prisma.DateTimeNullableFilter<"ContractPhase"> | Date | string | null
+  startDate?: Prisma.DateTimeNullableFilter<"ContractPhase"> | Date | string | null
+  endDate?: Prisma.DateTimeNullableFilter<"ContractPhase"> | Date | string | null
+  activatedAt?: Prisma.DateTimeNullableFilter<"ContractPhase"> | Date | string | null
+  completedAt?: Prisma.DateTimeNullableFilter<"ContractPhase"> | Date | string | null
+  requiresPreviousPhaseCompletion?: Prisma.BoolFilter<"ContractPhase"> | boolean
+  createdAt?: Prisma.DateTimeFilter<"ContractPhase"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ContractPhase"> | Date | string
+}
+
+export type ContractPhaseCreateWithoutQuestionnairePhaseInput = {
   id?: string
   name: string
   description?: string | null
@@ -1453,173 +985,61 @@ export type ContractPhaseCreateWithoutStepsInput = {
   phaseType: $Enums.PhaseType
   order: number
   status?: $Enums.PhaseStatus
-  totalAmount?: number | null
-  paidAmount?: number
-  remainingAmount?: number | null
-  interestRate?: number | null
-  collectFunds?: boolean
-  approvedDocumentsCount?: number
-  requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
   dueDate?: Date | string | null
   startDate?: Date | string | null
   endDate?: Date | string | null
   activatedAt?: Date | string | null
   completedAt?: Date | string | null
   requiresPreviousPhaseCompletion?: boolean
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   contract: Prisma.ContractCreateNestedOneWithoutPhasesInput
-  paymentPlan?: Prisma.PaymentPlanCreateNestedOneWithoutContractPhasesInput
-  currentStep?: Prisma.DocumentationStepCreateNestedOneWithoutCurrentForPhaseInput
-  installments?: Prisma.ContractInstallmentCreateNestedManyWithoutPhaseInput
+  documentationPhase?: Prisma.DocumentationPhaseCreateNestedOneWithoutPhaseInput
+  paymentPhase?: Prisma.PaymentPhaseCreateNestedOneWithoutPhaseInput
   payments?: Prisma.ContractPaymentCreateNestedManyWithoutPhaseInput
+  currentForContracts?: Prisma.ContractCreateNestedManyWithoutCurrentPhaseInput
 }
 
-export type ContractPhaseUncheckedCreateWithoutStepsInput = {
+export type ContractPhaseUncheckedCreateWithoutQuestionnairePhaseInput = {
   id?: string
   contractId: string
-  paymentPlanId?: string | null
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
   phaseType: $Enums.PhaseType
   order: number
   status?: $Enums.PhaseStatus
-  currentStepId?: string | null
-  totalAmount?: number | null
-  paidAmount?: number
-  remainingAmount?: number | null
-  interestRate?: number | null
-  collectFunds?: boolean
-  approvedDocumentsCount?: number
-  requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
   dueDate?: Date | string | null
   startDate?: Date | string | null
   endDate?: Date | string | null
   activatedAt?: Date | string | null
   completedAt?: Date | string | null
   requiresPreviousPhaseCompletion?: boolean
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  installments?: Prisma.ContractInstallmentUncheckedCreateNestedManyWithoutPhaseInput
+  documentationPhase?: Prisma.DocumentationPhaseUncheckedCreateNestedOneWithoutPhaseInput
+  paymentPhase?: Prisma.PaymentPhaseUncheckedCreateNestedOneWithoutPhaseInput
   payments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutPhaseInput
+  currentForContracts?: Prisma.ContractUncheckedCreateNestedManyWithoutCurrentPhaseInput
 }
 
-export type ContractPhaseCreateOrConnectWithoutStepsInput = {
+export type ContractPhaseCreateOrConnectWithoutQuestionnairePhaseInput = {
   where: Prisma.ContractPhaseWhereUniqueInput
-  create: Prisma.XOR<Prisma.ContractPhaseCreateWithoutStepsInput, Prisma.ContractPhaseUncheckedCreateWithoutStepsInput>
+  create: Prisma.XOR<Prisma.ContractPhaseCreateWithoutQuestionnairePhaseInput, Prisma.ContractPhaseUncheckedCreateWithoutQuestionnairePhaseInput>
 }
 
-export type ContractPhaseCreateWithoutCurrentStepInput = {
-  id?: string
-  name: string
-  description?: string | null
-  phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
-  order: number
-  status?: $Enums.PhaseStatus
-  totalAmount?: number | null
-  paidAmount?: number
-  remainingAmount?: number | null
-  interestRate?: number | null
-  collectFunds?: boolean
-  approvedDocumentsCount?: number
-  requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
-  dueDate?: Date | string | null
-  startDate?: Date | string | null
-  endDate?: Date | string | null
-  activatedAt?: Date | string | null
-  completedAt?: Date | string | null
-  requiresPreviousPhaseCompletion?: boolean
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  contract: Prisma.ContractCreateNestedOneWithoutPhasesInput
-  paymentPlan?: Prisma.PaymentPlanCreateNestedOneWithoutContractPhasesInput
-  installments?: Prisma.ContractInstallmentCreateNestedManyWithoutPhaseInput
-  payments?: Prisma.ContractPaymentCreateNestedManyWithoutPhaseInput
-  steps?: Prisma.DocumentationStepCreateNestedManyWithoutPhaseInput
-}
-
-export type ContractPhaseUncheckedCreateWithoutCurrentStepInput = {
-  id?: string
-  contractId: string
-  paymentPlanId?: string | null
-  name: string
-  description?: string | null
-  phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
-  order: number
-  status?: $Enums.PhaseStatus
-  totalAmount?: number | null
-  paidAmount?: number
-  remainingAmount?: number | null
-  interestRate?: number | null
-  collectFunds?: boolean
-  approvedDocumentsCount?: number
-  requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
-  dueDate?: Date | string | null
-  startDate?: Date | string | null
-  endDate?: Date | string | null
-  activatedAt?: Date | string | null
-  completedAt?: Date | string | null
-  requiresPreviousPhaseCompletion?: boolean
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  installments?: Prisma.ContractInstallmentUncheckedCreateNestedManyWithoutPhaseInput
-  payments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutPhaseInput
-  steps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutPhaseInput
-}
-
-export type ContractPhaseCreateOrConnectWithoutCurrentStepInput = {
-  where: Prisma.ContractPhaseWhereUniqueInput
-  create: Prisma.XOR<Prisma.ContractPhaseCreateWithoutCurrentStepInput, Prisma.ContractPhaseUncheckedCreateWithoutCurrentStepInput>
-}
-
-export type ContractPhaseCreateManyCurrentStepInputEnvelope = {
-  data: Prisma.ContractPhaseCreateManyCurrentStepInput | Prisma.ContractPhaseCreateManyCurrentStepInput[]
-  skipDuplicates?: boolean
-}
-
-export type ContractPhaseUpsertWithoutStepsInput = {
-  update: Prisma.XOR<Prisma.ContractPhaseUpdateWithoutStepsInput, Prisma.ContractPhaseUncheckedUpdateWithoutStepsInput>
-  create: Prisma.XOR<Prisma.ContractPhaseCreateWithoutStepsInput, Prisma.ContractPhaseUncheckedCreateWithoutStepsInput>
+export type ContractPhaseUpsertWithoutQuestionnairePhaseInput = {
+  update: Prisma.XOR<Prisma.ContractPhaseUpdateWithoutQuestionnairePhaseInput, Prisma.ContractPhaseUncheckedUpdateWithoutQuestionnairePhaseInput>
+  create: Prisma.XOR<Prisma.ContractPhaseCreateWithoutQuestionnairePhaseInput, Prisma.ContractPhaseUncheckedCreateWithoutQuestionnairePhaseInput>
   where?: Prisma.ContractPhaseWhereInput
 }
 
-export type ContractPhaseUpdateToOneWithWhereWithoutStepsInput = {
+export type ContractPhaseUpdateToOneWithWhereWithoutQuestionnairePhaseInput = {
   where?: Prisma.ContractPhaseWhereInput
-  data: Prisma.XOR<Prisma.ContractPhaseUpdateWithoutStepsInput, Prisma.ContractPhaseUncheckedUpdateWithoutStepsInput>
+  data: Prisma.XOR<Prisma.ContractPhaseUpdateWithoutQuestionnairePhaseInput, Prisma.ContractPhaseUncheckedUpdateWithoutQuestionnairePhaseInput>
 }
 
-export type ContractPhaseUpdateWithoutStepsInput = {
+export type ContractPhaseUpdateWithoutQuestionnairePhaseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1627,89 +1047,45 @@ export type ContractPhaseUpdateWithoutStepsInput = {
   phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
-  totalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  remainingAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contract?: Prisma.ContractUpdateOneRequiredWithoutPhasesNestedInput
-  paymentPlan?: Prisma.PaymentPlanUpdateOneWithoutContractPhasesNestedInput
-  currentStep?: Prisma.DocumentationStepUpdateOneWithoutCurrentForPhaseNestedInput
-  installments?: Prisma.ContractInstallmentUpdateManyWithoutPhaseNestedInput
+  documentationPhase?: Prisma.DocumentationPhaseUpdateOneWithoutPhaseNestedInput
+  paymentPhase?: Prisma.PaymentPhaseUpdateOneWithoutPhaseNestedInput
   payments?: Prisma.ContractPaymentUpdateManyWithoutPhaseNestedInput
+  currentForContracts?: Prisma.ContractUpdateManyWithoutCurrentPhaseNestedInput
 }
 
-export type ContractPhaseUncheckedUpdateWithoutStepsInput = {
+export type ContractPhaseUncheckedUpdateWithoutQuestionnairePhaseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   contractId?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
   phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
-  currentStepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  totalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  remainingAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  installments?: Prisma.ContractInstallmentUncheckedUpdateManyWithoutPhaseNestedInput
+  documentationPhase?: Prisma.DocumentationPhaseUncheckedUpdateOneWithoutPhaseNestedInput
+  paymentPhase?: Prisma.PaymentPhaseUncheckedUpdateOneWithoutPhaseNestedInput
   payments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutPhaseNestedInput
+  currentForContracts?: Prisma.ContractUncheckedUpdateManyWithoutCurrentPhaseNestedInput
 }
 
-export type ContractPhaseUpsertWithWhereUniqueWithoutCurrentStepInput = {
-  where: Prisma.ContractPhaseWhereUniqueInput
-  update: Prisma.XOR<Prisma.ContractPhaseUpdateWithoutCurrentStepInput, Prisma.ContractPhaseUncheckedUpdateWithoutCurrentStepInput>
-  create: Prisma.XOR<Prisma.ContractPhaseCreateWithoutCurrentStepInput, Prisma.ContractPhaseUncheckedCreateWithoutCurrentStepInput>
-}
-
-export type ContractPhaseUpdateWithWhereUniqueWithoutCurrentStepInput = {
-  where: Prisma.ContractPhaseWhereUniqueInput
-  data: Prisma.XOR<Prisma.ContractPhaseUpdateWithoutCurrentStepInput, Prisma.ContractPhaseUncheckedUpdateWithoutCurrentStepInput>
-}
-
-export type ContractPhaseUpdateManyWithWhereWithoutCurrentStepInput = {
-  where: Prisma.ContractPhaseScalarWhereInput
-  data: Prisma.XOR<Prisma.ContractPhaseUpdateManyMutationInput, Prisma.ContractPhaseUncheckedUpdateManyWithoutCurrentStepInput>
-}
-
-export type ContractPhaseCreateWithoutInstallmentsInput = {
+export type ContractPhaseCreateWithoutDocumentationPhaseInput = {
   id?: string
   name: string
   description?: string | null
@@ -1717,89 +1093,61 @@ export type ContractPhaseCreateWithoutInstallmentsInput = {
   phaseType: $Enums.PhaseType
   order: number
   status?: $Enums.PhaseStatus
-  totalAmount?: number | null
-  paidAmount?: number
-  remainingAmount?: number | null
-  interestRate?: number | null
-  collectFunds?: boolean
-  approvedDocumentsCount?: number
-  requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
   dueDate?: Date | string | null
   startDate?: Date | string | null
   endDate?: Date | string | null
   activatedAt?: Date | string | null
   completedAt?: Date | string | null
   requiresPreviousPhaseCompletion?: boolean
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   contract: Prisma.ContractCreateNestedOneWithoutPhasesInput
-  paymentPlan?: Prisma.PaymentPlanCreateNestedOneWithoutContractPhasesInput
-  currentStep?: Prisma.DocumentationStepCreateNestedOneWithoutCurrentForPhaseInput
+  questionnairePhase?: Prisma.QuestionnairePhaseCreateNestedOneWithoutPhaseInput
+  paymentPhase?: Prisma.PaymentPhaseCreateNestedOneWithoutPhaseInput
   payments?: Prisma.ContractPaymentCreateNestedManyWithoutPhaseInput
-  steps?: Prisma.DocumentationStepCreateNestedManyWithoutPhaseInput
+  currentForContracts?: Prisma.ContractCreateNestedManyWithoutCurrentPhaseInput
 }
 
-export type ContractPhaseUncheckedCreateWithoutInstallmentsInput = {
+export type ContractPhaseUncheckedCreateWithoutDocumentationPhaseInput = {
   id?: string
   contractId: string
-  paymentPlanId?: string | null
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
   phaseType: $Enums.PhaseType
   order: number
   status?: $Enums.PhaseStatus
-  currentStepId?: string | null
-  totalAmount?: number | null
-  paidAmount?: number
-  remainingAmount?: number | null
-  interestRate?: number | null
-  collectFunds?: boolean
-  approvedDocumentsCount?: number
-  requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
   dueDate?: Date | string | null
   startDate?: Date | string | null
   endDate?: Date | string | null
   activatedAt?: Date | string | null
   completedAt?: Date | string | null
   requiresPreviousPhaseCompletion?: boolean
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  questionnairePhase?: Prisma.QuestionnairePhaseUncheckedCreateNestedOneWithoutPhaseInput
+  paymentPhase?: Prisma.PaymentPhaseUncheckedCreateNestedOneWithoutPhaseInput
   payments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutPhaseInput
-  steps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutPhaseInput
+  currentForContracts?: Prisma.ContractUncheckedCreateNestedManyWithoutCurrentPhaseInput
 }
 
-export type ContractPhaseCreateOrConnectWithoutInstallmentsInput = {
+export type ContractPhaseCreateOrConnectWithoutDocumentationPhaseInput = {
   where: Prisma.ContractPhaseWhereUniqueInput
-  create: Prisma.XOR<Prisma.ContractPhaseCreateWithoutInstallmentsInput, Prisma.ContractPhaseUncheckedCreateWithoutInstallmentsInput>
+  create: Prisma.XOR<Prisma.ContractPhaseCreateWithoutDocumentationPhaseInput, Prisma.ContractPhaseUncheckedCreateWithoutDocumentationPhaseInput>
 }
 
-export type ContractPhaseUpsertWithoutInstallmentsInput = {
-  update: Prisma.XOR<Prisma.ContractPhaseUpdateWithoutInstallmentsInput, Prisma.ContractPhaseUncheckedUpdateWithoutInstallmentsInput>
-  create: Prisma.XOR<Prisma.ContractPhaseCreateWithoutInstallmentsInput, Prisma.ContractPhaseUncheckedCreateWithoutInstallmentsInput>
+export type ContractPhaseUpsertWithoutDocumentationPhaseInput = {
+  update: Prisma.XOR<Prisma.ContractPhaseUpdateWithoutDocumentationPhaseInput, Prisma.ContractPhaseUncheckedUpdateWithoutDocumentationPhaseInput>
+  create: Prisma.XOR<Prisma.ContractPhaseCreateWithoutDocumentationPhaseInput, Prisma.ContractPhaseUncheckedCreateWithoutDocumentationPhaseInput>
   where?: Prisma.ContractPhaseWhereInput
 }
 
-export type ContractPhaseUpdateToOneWithWhereWithoutInstallmentsInput = {
+export type ContractPhaseUpdateToOneWithWhereWithoutDocumentationPhaseInput = {
   where?: Prisma.ContractPhaseWhereInput
-  data: Prisma.XOR<Prisma.ContractPhaseUpdateWithoutInstallmentsInput, Prisma.ContractPhaseUncheckedUpdateWithoutInstallmentsInput>
+  data: Prisma.XOR<Prisma.ContractPhaseUpdateWithoutDocumentationPhaseInput, Prisma.ContractPhaseUncheckedUpdateWithoutDocumentationPhaseInput>
 }
 
-export type ContractPhaseUpdateWithoutInstallmentsInput = {
+export type ContractPhaseUpdateWithoutDocumentationPhaseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1807,70 +1155,150 @@ export type ContractPhaseUpdateWithoutInstallmentsInput = {
   phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
-  totalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  remainingAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contract?: Prisma.ContractUpdateOneRequiredWithoutPhasesNestedInput
-  paymentPlan?: Prisma.PaymentPlanUpdateOneWithoutContractPhasesNestedInput
-  currentStep?: Prisma.DocumentationStepUpdateOneWithoutCurrentForPhaseNestedInput
+  questionnairePhase?: Prisma.QuestionnairePhaseUpdateOneWithoutPhaseNestedInput
+  paymentPhase?: Prisma.PaymentPhaseUpdateOneWithoutPhaseNestedInput
   payments?: Prisma.ContractPaymentUpdateManyWithoutPhaseNestedInput
-  steps?: Prisma.DocumentationStepUpdateManyWithoutPhaseNestedInput
+  currentForContracts?: Prisma.ContractUpdateManyWithoutCurrentPhaseNestedInput
 }
 
-export type ContractPhaseUncheckedUpdateWithoutInstallmentsInput = {
+export type ContractPhaseUncheckedUpdateWithoutDocumentationPhaseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   contractId?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
   phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
-  currentStepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  totalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  remainingAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  questionnairePhase?: Prisma.QuestionnairePhaseUncheckedUpdateOneWithoutPhaseNestedInput
+  paymentPhase?: Prisma.PaymentPhaseUncheckedUpdateOneWithoutPhaseNestedInput
   payments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutPhaseNestedInput
-  steps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutPhaseNestedInput
+  currentForContracts?: Prisma.ContractUncheckedUpdateManyWithoutCurrentPhaseNestedInput
+}
+
+export type ContractPhaseCreateWithoutPaymentPhaseInput = {
+  id?: string
+  name: string
+  description?: string | null
+  phaseCategory: $Enums.PhaseCategory
+  phaseType: $Enums.PhaseType
+  order: number
+  status?: $Enums.PhaseStatus
+  dueDate?: Date | string | null
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  activatedAt?: Date | string | null
+  completedAt?: Date | string | null
+  requiresPreviousPhaseCompletion?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  contract: Prisma.ContractCreateNestedOneWithoutPhasesInput
+  questionnairePhase?: Prisma.QuestionnairePhaseCreateNestedOneWithoutPhaseInput
+  documentationPhase?: Prisma.DocumentationPhaseCreateNestedOneWithoutPhaseInput
+  payments?: Prisma.ContractPaymentCreateNestedManyWithoutPhaseInput
+  currentForContracts?: Prisma.ContractCreateNestedManyWithoutCurrentPhaseInput
+}
+
+export type ContractPhaseUncheckedCreateWithoutPaymentPhaseInput = {
+  id?: string
+  contractId: string
+  name: string
+  description?: string | null
+  phaseCategory: $Enums.PhaseCategory
+  phaseType: $Enums.PhaseType
+  order: number
+  status?: $Enums.PhaseStatus
+  dueDate?: Date | string | null
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  activatedAt?: Date | string | null
+  completedAt?: Date | string | null
+  requiresPreviousPhaseCompletion?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  questionnairePhase?: Prisma.QuestionnairePhaseUncheckedCreateNestedOneWithoutPhaseInput
+  documentationPhase?: Prisma.DocumentationPhaseUncheckedCreateNestedOneWithoutPhaseInput
+  payments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutPhaseInput
+  currentForContracts?: Prisma.ContractUncheckedCreateNestedManyWithoutCurrentPhaseInput
+}
+
+export type ContractPhaseCreateOrConnectWithoutPaymentPhaseInput = {
+  where: Prisma.ContractPhaseWhereUniqueInput
+  create: Prisma.XOR<Prisma.ContractPhaseCreateWithoutPaymentPhaseInput, Prisma.ContractPhaseUncheckedCreateWithoutPaymentPhaseInput>
+}
+
+export type ContractPhaseUpsertWithoutPaymentPhaseInput = {
+  update: Prisma.XOR<Prisma.ContractPhaseUpdateWithoutPaymentPhaseInput, Prisma.ContractPhaseUncheckedUpdateWithoutPaymentPhaseInput>
+  create: Prisma.XOR<Prisma.ContractPhaseCreateWithoutPaymentPhaseInput, Prisma.ContractPhaseUncheckedCreateWithoutPaymentPhaseInput>
+  where?: Prisma.ContractPhaseWhereInput
+}
+
+export type ContractPhaseUpdateToOneWithWhereWithoutPaymentPhaseInput = {
+  where?: Prisma.ContractPhaseWhereInput
+  data: Prisma.XOR<Prisma.ContractPhaseUpdateWithoutPaymentPhaseInput, Prisma.ContractPhaseUncheckedUpdateWithoutPaymentPhaseInput>
+}
+
+export type ContractPhaseUpdateWithoutPaymentPhaseInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
+  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contract?: Prisma.ContractUpdateOneRequiredWithoutPhasesNestedInput
+  questionnairePhase?: Prisma.QuestionnairePhaseUpdateOneWithoutPhaseNestedInput
+  documentationPhase?: Prisma.DocumentationPhaseUpdateOneWithoutPhaseNestedInput
+  payments?: Prisma.ContractPaymentUpdateManyWithoutPhaseNestedInput
+  currentForContracts?: Prisma.ContractUpdateManyWithoutCurrentPhaseNestedInput
+}
+
+export type ContractPhaseUncheckedUpdateWithoutPaymentPhaseInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
+  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  questionnairePhase?: Prisma.QuestionnairePhaseUncheckedUpdateOneWithoutPhaseNestedInput
+  documentationPhase?: Prisma.DocumentationPhaseUncheckedUpdateOneWithoutPhaseNestedInput
+  payments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutPhaseNestedInput
+  currentForContracts?: Prisma.ContractUncheckedUpdateManyWithoutCurrentPhaseNestedInput
 }
 
 export type ContractPhaseCreateWithoutPaymentsInput = {
@@ -1881,70 +1309,42 @@ export type ContractPhaseCreateWithoutPaymentsInput = {
   phaseType: $Enums.PhaseType
   order: number
   status?: $Enums.PhaseStatus
-  totalAmount?: number | null
-  paidAmount?: number
-  remainingAmount?: number | null
-  interestRate?: number | null
-  collectFunds?: boolean
-  approvedDocumentsCount?: number
-  requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
   dueDate?: Date | string | null
   startDate?: Date | string | null
   endDate?: Date | string | null
   activatedAt?: Date | string | null
   completedAt?: Date | string | null
   requiresPreviousPhaseCompletion?: boolean
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   contract: Prisma.ContractCreateNestedOneWithoutPhasesInput
-  paymentPlan?: Prisma.PaymentPlanCreateNestedOneWithoutContractPhasesInput
-  currentStep?: Prisma.DocumentationStepCreateNestedOneWithoutCurrentForPhaseInput
-  installments?: Prisma.ContractInstallmentCreateNestedManyWithoutPhaseInput
-  steps?: Prisma.DocumentationStepCreateNestedManyWithoutPhaseInput
+  questionnairePhase?: Prisma.QuestionnairePhaseCreateNestedOneWithoutPhaseInput
+  documentationPhase?: Prisma.DocumentationPhaseCreateNestedOneWithoutPhaseInput
+  paymentPhase?: Prisma.PaymentPhaseCreateNestedOneWithoutPhaseInput
+  currentForContracts?: Prisma.ContractCreateNestedManyWithoutCurrentPhaseInput
 }
 
 export type ContractPhaseUncheckedCreateWithoutPaymentsInput = {
   id?: string
   contractId: string
-  paymentPlanId?: string | null
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
   phaseType: $Enums.PhaseType
   order: number
   status?: $Enums.PhaseStatus
-  currentStepId?: string | null
-  totalAmount?: number | null
-  paidAmount?: number
-  remainingAmount?: number | null
-  interestRate?: number | null
-  collectFunds?: boolean
-  approvedDocumentsCount?: number
-  requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
   dueDate?: Date | string | null
   startDate?: Date | string | null
   endDate?: Date | string | null
   activatedAt?: Date | string | null
   completedAt?: Date | string | null
   requiresPreviousPhaseCompletion?: boolean
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  installments?: Prisma.ContractInstallmentUncheckedCreateNestedManyWithoutPhaseInput
-  steps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutPhaseInput
+  questionnairePhase?: Prisma.QuestionnairePhaseUncheckedCreateNestedOneWithoutPhaseInput
+  documentationPhase?: Prisma.DocumentationPhaseUncheckedCreateNestedOneWithoutPhaseInput
+  paymentPhase?: Prisma.PaymentPhaseUncheckedCreateNestedOneWithoutPhaseInput
+  currentForContracts?: Prisma.ContractUncheckedCreateNestedManyWithoutCurrentPhaseInput
 }
 
 export type ContractPhaseCreateOrConnectWithoutPaymentsInput = {
@@ -1971,244 +1371,58 @@ export type ContractPhaseUpdateWithoutPaymentsInput = {
   phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
-  totalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  remainingAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contract?: Prisma.ContractUpdateOneRequiredWithoutPhasesNestedInput
-  paymentPlan?: Prisma.PaymentPlanUpdateOneWithoutContractPhasesNestedInput
-  currentStep?: Prisma.DocumentationStepUpdateOneWithoutCurrentForPhaseNestedInput
-  installments?: Prisma.ContractInstallmentUpdateManyWithoutPhaseNestedInput
-  steps?: Prisma.DocumentationStepUpdateManyWithoutPhaseNestedInput
+  questionnairePhase?: Prisma.QuestionnairePhaseUpdateOneWithoutPhaseNestedInput
+  documentationPhase?: Prisma.DocumentationPhaseUpdateOneWithoutPhaseNestedInput
+  paymentPhase?: Prisma.PaymentPhaseUpdateOneWithoutPhaseNestedInput
+  currentForContracts?: Prisma.ContractUpdateManyWithoutCurrentPhaseNestedInput
 }
 
 export type ContractPhaseUncheckedUpdateWithoutPaymentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   contractId?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
   phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
-  currentStepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  totalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  remainingAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  installments?: Prisma.ContractInstallmentUncheckedUpdateManyWithoutPhaseNestedInput
-  steps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutPhaseNestedInput
-}
-
-export type ContractPhaseCreateManyPaymentPlanInput = {
-  id?: string
-  contractId: string
-  name: string
-  description?: string | null
-  phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
-  order: number
-  status?: $Enums.PhaseStatus
-  currentStepId?: string | null
-  totalAmount?: number | null
-  paidAmount?: number
-  remainingAmount?: number | null
-  interestRate?: number | null
-  collectFunds?: boolean
-  approvedDocumentsCount?: number
-  requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
-  dueDate?: Date | string | null
-  startDate?: Date | string | null
-  endDate?: Date | string | null
-  activatedAt?: Date | string | null
-  completedAt?: Date | string | null
-  requiresPreviousPhaseCompletion?: boolean
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Date | string
-  updatedAt?: Date | string
-}
-
-export type ContractPhaseUpdateWithoutPaymentPlanInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
-  order?: Prisma.IntFieldUpdateOperationsInput | number
-  status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
-  totalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  remainingAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  contract?: Prisma.ContractUpdateOneRequiredWithoutPhasesNestedInput
-  currentStep?: Prisma.DocumentationStepUpdateOneWithoutCurrentForPhaseNestedInput
-  installments?: Prisma.ContractInstallmentUpdateManyWithoutPhaseNestedInput
-  payments?: Prisma.ContractPaymentUpdateManyWithoutPhaseNestedInput
-  steps?: Prisma.DocumentationStepUpdateManyWithoutPhaseNestedInput
-}
-
-export type ContractPhaseUncheckedUpdateWithoutPaymentPlanInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  contractId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
-  order?: Prisma.IntFieldUpdateOperationsInput | number
-  status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
-  currentStepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  totalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  remainingAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  installments?: Prisma.ContractInstallmentUncheckedUpdateManyWithoutPhaseNestedInput
-  payments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutPhaseNestedInput
-  steps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutPhaseNestedInput
-}
-
-export type ContractPhaseUncheckedUpdateManyWithoutPaymentPlanInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  contractId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
-  order?: Prisma.IntFieldUpdateOperationsInput | number
-  status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
-  currentStepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  totalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  remainingAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  questionnairePhase?: Prisma.QuestionnairePhaseUncheckedUpdateOneWithoutPhaseNestedInput
+  documentationPhase?: Prisma.DocumentationPhaseUncheckedUpdateOneWithoutPhaseNestedInput
+  paymentPhase?: Prisma.PaymentPhaseUncheckedUpdateOneWithoutPhaseNestedInput
+  currentForContracts?: Prisma.ContractUncheckedUpdateManyWithoutCurrentPhaseNestedInput
 }
 
 export type ContractPhaseCreateManyContractInput = {
   id?: string
-  paymentPlanId?: string | null
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
   phaseType: $Enums.PhaseType
   order: number
   status?: $Enums.PhaseStatus
-  currentStepId?: string | null
-  totalAmount?: number | null
-  paidAmount?: number
-  remainingAmount?: number | null
-  interestRate?: number | null
-  collectFunds?: boolean
-  approvedDocumentsCount?: number
-  requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
   dueDate?: Date | string | null
   startDate?: Date | string | null
   endDate?: Date | string | null
   activatedAt?: Date | string | null
   completedAt?: Date | string | null
   requiresPreviousPhaseCompletion?: boolean
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -2221,244 +1435,58 @@ export type ContractPhaseUpdateWithoutContractInput = {
   phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
-  totalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  remainingAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  paymentPlan?: Prisma.PaymentPlanUpdateOneWithoutContractPhasesNestedInput
-  currentStep?: Prisma.DocumentationStepUpdateOneWithoutCurrentForPhaseNestedInput
-  installments?: Prisma.ContractInstallmentUpdateManyWithoutPhaseNestedInput
+  questionnairePhase?: Prisma.QuestionnairePhaseUpdateOneWithoutPhaseNestedInput
+  documentationPhase?: Prisma.DocumentationPhaseUpdateOneWithoutPhaseNestedInput
+  paymentPhase?: Prisma.PaymentPhaseUpdateOneWithoutPhaseNestedInput
   payments?: Prisma.ContractPaymentUpdateManyWithoutPhaseNestedInput
-  steps?: Prisma.DocumentationStepUpdateManyWithoutPhaseNestedInput
+  currentForContracts?: Prisma.ContractUpdateManyWithoutCurrentPhaseNestedInput
 }
 
 export type ContractPhaseUncheckedUpdateWithoutContractInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
   phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
-  currentStepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  totalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  remainingAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  installments?: Prisma.ContractInstallmentUncheckedUpdateManyWithoutPhaseNestedInput
+  questionnairePhase?: Prisma.QuestionnairePhaseUncheckedUpdateOneWithoutPhaseNestedInput
+  documentationPhase?: Prisma.DocumentationPhaseUncheckedUpdateOneWithoutPhaseNestedInput
+  paymentPhase?: Prisma.PaymentPhaseUncheckedUpdateOneWithoutPhaseNestedInput
   payments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutPhaseNestedInput
-  steps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutPhaseNestedInput
+  currentForContracts?: Prisma.ContractUncheckedUpdateManyWithoutCurrentPhaseNestedInput
 }
 
 export type ContractPhaseUncheckedUpdateManyWithoutContractInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
   phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
   order?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
-  currentStepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  totalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  remainingAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type ContractPhaseCreateManyCurrentStepInput = {
-  id?: string
-  contractId: string
-  paymentPlanId?: string | null
-  name: string
-  description?: string | null
-  phaseCategory: $Enums.PhaseCategory
-  phaseType: $Enums.PhaseType
-  order: number
-  status?: $Enums.PhaseStatus
-  totalAmount?: number | null
-  paidAmount?: number
-  remainingAmount?: number | null
-  interestRate?: number | null
-  collectFunds?: boolean
-  approvedDocumentsCount?: number
-  requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
-  dueDate?: Date | string | null
-  startDate?: Date | string | null
-  endDate?: Date | string | null
-  activatedAt?: Date | string | null
-  completedAt?: Date | string | null
-  requiresPreviousPhaseCompletion?: boolean
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Date | string
-  updatedAt?: Date | string
-}
-
-export type ContractPhaseUpdateWithoutCurrentStepInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
-  order?: Prisma.IntFieldUpdateOperationsInput | number
-  status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
-  totalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  remainingAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  contract?: Prisma.ContractUpdateOneRequiredWithoutPhasesNestedInput
-  paymentPlan?: Prisma.PaymentPlanUpdateOneWithoutContractPhasesNestedInput
-  installments?: Prisma.ContractInstallmentUpdateManyWithoutPhaseNestedInput
-  payments?: Prisma.ContractPaymentUpdateManyWithoutPhaseNestedInput
-  steps?: Prisma.DocumentationStepUpdateManyWithoutPhaseNestedInput
-}
-
-export type ContractPhaseUncheckedUpdateWithoutCurrentStepInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  contractId?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
-  order?: Prisma.IntFieldUpdateOperationsInput | number
-  status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
-  totalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  remainingAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  installments?: Prisma.ContractInstallmentUncheckedUpdateManyWithoutPhaseNestedInput
-  payments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutPhaseNestedInput
-  steps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutPhaseNestedInput
-}
-
-export type ContractPhaseUncheckedUpdateManyWithoutCurrentStepInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  contractId?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
-  order?: Prisma.IntFieldUpdateOperationsInput | number
-  status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
-  totalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
-  remainingAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -2469,15 +1497,13 @@ export type ContractPhaseUncheckedUpdateManyWithoutCurrentStepInput = {
  */
 
 export type ContractPhaseCountOutputType = {
-  installments: number
   payments: number
-  steps: number
+  currentForContracts: number
 }
 
 export type ContractPhaseCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  installments?: boolean | ContractPhaseCountOutputTypeCountInstallmentsArgs
   payments?: boolean | ContractPhaseCountOutputTypeCountPaymentsArgs
-  steps?: boolean | ContractPhaseCountOutputTypeCountStepsArgs
+  currentForContracts?: boolean | ContractPhaseCountOutputTypeCountCurrentForContractsArgs
 }
 
 /**
@@ -2493,13 +1519,6 @@ export type ContractPhaseCountOutputTypeDefaultArgs<ExtArgs extends runtime.Type
 /**
  * ContractPhaseCountOutputType without action
  */
-export type ContractPhaseCountOutputTypeCountInstallmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.ContractInstallmentWhereInput
-}
-
-/**
- * ContractPhaseCountOutputType without action
- */
 export type ContractPhaseCountOutputTypeCountPaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ContractPaymentWhereInput
 }
@@ -2507,50 +1526,34 @@ export type ContractPhaseCountOutputTypeCountPaymentsArgs<ExtArgs extends runtim
 /**
  * ContractPhaseCountOutputType without action
  */
-export type ContractPhaseCountOutputTypeCountStepsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.DocumentationStepWhereInput
+export type ContractPhaseCountOutputTypeCountCurrentForContractsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ContractWhereInput
 }
 
 
 export type ContractPhaseSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   contractId?: boolean
-  paymentPlanId?: boolean
   name?: boolean
   description?: boolean
   phaseCategory?: boolean
   phaseType?: boolean
   order?: boolean
   status?: boolean
-  currentStepId?: boolean
-  totalAmount?: boolean
-  paidAmount?: boolean
-  remainingAmount?: boolean
-  interestRate?: boolean
-  collectFunds?: boolean
-  approvedDocumentsCount?: boolean
-  requiredDocumentsCount?: boolean
-  completedStepsCount?: boolean
-  totalStepsCount?: boolean
   dueDate?: boolean
   startDate?: boolean
   endDate?: boolean
   activatedAt?: boolean
   completedAt?: boolean
   requiresPreviousPhaseCompletion?: boolean
-  minimumCompletionPercentage?: boolean
-  completionCriterion?: boolean
-  paymentPlanSnapshot?: boolean
-  stepDefinitionsSnapshot?: boolean
-  requiredDocumentSnapshot?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
-  paymentPlan?: boolean | Prisma.ContractPhase$paymentPlanArgs<ExtArgs>
-  currentStep?: boolean | Prisma.ContractPhase$currentStepArgs<ExtArgs>
-  installments?: boolean | Prisma.ContractPhase$installmentsArgs<ExtArgs>
+  questionnairePhase?: boolean | Prisma.ContractPhase$questionnairePhaseArgs<ExtArgs>
+  documentationPhase?: boolean | Prisma.ContractPhase$documentationPhaseArgs<ExtArgs>
+  paymentPhase?: boolean | Prisma.ContractPhase$paymentPhaseArgs<ExtArgs>
   payments?: boolean | Prisma.ContractPhase$paymentsArgs<ExtArgs>
-  steps?: boolean | Prisma.ContractPhase$stepsArgs<ExtArgs>
+  currentForContracts?: boolean | Prisma.ContractPhase$currentForContractsArgs<ExtArgs>
   _count?: boolean | Prisma.ContractPhaseCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["contractPhase"]>
 
@@ -2559,46 +1562,30 @@ export type ContractPhaseSelect<ExtArgs extends runtime.Types.Extensions.Interna
 export type ContractPhaseSelectScalar = {
   id?: boolean
   contractId?: boolean
-  paymentPlanId?: boolean
   name?: boolean
   description?: boolean
   phaseCategory?: boolean
   phaseType?: boolean
   order?: boolean
   status?: boolean
-  currentStepId?: boolean
-  totalAmount?: boolean
-  paidAmount?: boolean
-  remainingAmount?: boolean
-  interestRate?: boolean
-  collectFunds?: boolean
-  approvedDocumentsCount?: boolean
-  requiredDocumentsCount?: boolean
-  completedStepsCount?: boolean
-  totalStepsCount?: boolean
   dueDate?: boolean
   startDate?: boolean
   endDate?: boolean
   activatedAt?: boolean
   completedAt?: boolean
   requiresPreviousPhaseCompletion?: boolean
-  minimumCompletionPercentage?: boolean
-  completionCriterion?: boolean
-  paymentPlanSnapshot?: boolean
-  stepDefinitionsSnapshot?: boolean
-  requiredDocumentSnapshot?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ContractPhaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "contractId" | "paymentPlanId" | "name" | "description" | "phaseCategory" | "phaseType" | "order" | "status" | "currentStepId" | "totalAmount" | "paidAmount" | "remainingAmount" | "interestRate" | "collectFunds" | "approvedDocumentsCount" | "requiredDocumentsCount" | "completedStepsCount" | "totalStepsCount" | "dueDate" | "startDate" | "endDate" | "activatedAt" | "completedAt" | "requiresPreviousPhaseCompletion" | "minimumCompletionPercentage" | "completionCriterion" | "paymentPlanSnapshot" | "stepDefinitionsSnapshot" | "requiredDocumentSnapshot" | "createdAt" | "updatedAt", ExtArgs["result"]["contractPhase"]>
+export type ContractPhaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "contractId" | "name" | "description" | "phaseCategory" | "phaseType" | "order" | "status" | "dueDate" | "startDate" | "endDate" | "activatedAt" | "completedAt" | "requiresPreviousPhaseCompletion" | "createdAt" | "updatedAt", ExtArgs["result"]["contractPhase"]>
 export type ContractPhaseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
-  paymentPlan?: boolean | Prisma.ContractPhase$paymentPlanArgs<ExtArgs>
-  currentStep?: boolean | Prisma.ContractPhase$currentStepArgs<ExtArgs>
-  installments?: boolean | Prisma.ContractPhase$installmentsArgs<ExtArgs>
+  questionnairePhase?: boolean | Prisma.ContractPhase$questionnairePhaseArgs<ExtArgs>
+  documentationPhase?: boolean | Prisma.ContractPhase$documentationPhaseArgs<ExtArgs>
+  paymentPhase?: boolean | Prisma.ContractPhase$paymentPhaseArgs<ExtArgs>
   payments?: boolean | Prisma.ContractPhase$paymentsArgs<ExtArgs>
-  steps?: boolean | Prisma.ContractPhase$stepsArgs<ExtArgs>
+  currentForContracts?: boolean | Prisma.ContractPhase$currentForContractsArgs<ExtArgs>
   _count?: boolean | Prisma.ContractPhaseCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -2606,43 +1593,27 @@ export type $ContractPhasePayload<ExtArgs extends runtime.Types.Extensions.Inter
   name: "ContractPhase"
   objects: {
     contract: Prisma.$ContractPayload<ExtArgs>
-    paymentPlan: Prisma.$PaymentPlanPayload<ExtArgs> | null
-    currentStep: Prisma.$DocumentationStepPayload<ExtArgs> | null
-    installments: Prisma.$ContractInstallmentPayload<ExtArgs>[]
+    questionnairePhase: Prisma.$QuestionnairePhasePayload<ExtArgs> | null
+    documentationPhase: Prisma.$DocumentationPhasePayload<ExtArgs> | null
+    paymentPhase: Prisma.$PaymentPhasePayload<ExtArgs> | null
     payments: Prisma.$ContractPaymentPayload<ExtArgs>[]
-    steps: Prisma.$DocumentationStepPayload<ExtArgs>[]
+    currentForContracts: Prisma.$ContractPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     contractId: string
-    paymentPlanId: string | null
     name: string
     description: string | null
     phaseCategory: $Enums.PhaseCategory
     phaseType: $Enums.PhaseType
     order: number
     status: $Enums.PhaseStatus
-    currentStepId: string | null
-    totalAmount: number | null
-    paidAmount: number
-    remainingAmount: number | null
-    interestRate: number | null
-    collectFunds: boolean
-    approvedDocumentsCount: number
-    requiredDocumentsCount: number
-    completedStepsCount: number
-    totalStepsCount: number
     dueDate: Date | null
     startDate: Date | null
     endDate: Date | null
     activatedAt: Date | null
     completedAt: Date | null
     requiresPreviousPhaseCompletion: boolean
-    minimumCompletionPercentage: number | null
-    completionCriterion: $Enums.CompletionCriterion | null
-    paymentPlanSnapshot: runtime.JsonValue | null
-    stepDefinitionsSnapshot: runtime.JsonValue | null
-    requiredDocumentSnapshot: runtime.JsonValue | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["contractPhase"]>
@@ -2986,11 +1957,11 @@ readonly fields: ContractPhaseFieldRefs;
 export interface Prisma__ContractPhaseClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   contract<T extends Prisma.ContractDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContractDefaultArgs<ExtArgs>>): Prisma.Prisma__ContractClient<runtime.Types.Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  paymentPlan<T extends Prisma.ContractPhase$paymentPlanArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContractPhase$paymentPlanArgs<ExtArgs>>): Prisma.Prisma__PaymentPlanClient<runtime.Types.Result.GetResult<Prisma.$PaymentPlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  currentStep<T extends Prisma.ContractPhase$currentStepArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContractPhase$currentStepArgs<ExtArgs>>): Prisma.Prisma__DocumentationStepClient<runtime.Types.Result.GetResult<Prisma.$DocumentationStepPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  installments<T extends Prisma.ContractPhase$installmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContractPhase$installmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContractInstallmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  questionnairePhase<T extends Prisma.ContractPhase$questionnairePhaseArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContractPhase$questionnairePhaseArgs<ExtArgs>>): Prisma.Prisma__QuestionnairePhaseClient<runtime.Types.Result.GetResult<Prisma.$QuestionnairePhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  documentationPhase<T extends Prisma.ContractPhase$documentationPhaseArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContractPhase$documentationPhaseArgs<ExtArgs>>): Prisma.Prisma__DocumentationPhaseClient<runtime.Types.Result.GetResult<Prisma.$DocumentationPhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  paymentPhase<T extends Prisma.ContractPhase$paymentPhaseArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContractPhase$paymentPhaseArgs<ExtArgs>>): Prisma.Prisma__PaymentPhaseClient<runtime.Types.Result.GetResult<Prisma.$PaymentPhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   payments<T extends Prisma.ContractPhase$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContractPhase$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContractPaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  steps<T extends Prisma.ContractPhase$stepsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContractPhase$stepsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentationStepPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  currentForContracts<T extends Prisma.ContractPhase$currentForContractsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContractPhase$currentForContractsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3022,34 +1993,18 @@ export interface Prisma__ContractPhaseClient<T, Null = never, ExtArgs extends ru
 export interface ContractPhaseFieldRefs {
   readonly id: Prisma.FieldRef<"ContractPhase", 'String'>
   readonly contractId: Prisma.FieldRef<"ContractPhase", 'String'>
-  readonly paymentPlanId: Prisma.FieldRef<"ContractPhase", 'String'>
   readonly name: Prisma.FieldRef<"ContractPhase", 'String'>
   readonly description: Prisma.FieldRef<"ContractPhase", 'String'>
   readonly phaseCategory: Prisma.FieldRef<"ContractPhase", 'PhaseCategory'>
   readonly phaseType: Prisma.FieldRef<"ContractPhase", 'PhaseType'>
   readonly order: Prisma.FieldRef<"ContractPhase", 'Int'>
   readonly status: Prisma.FieldRef<"ContractPhase", 'PhaseStatus'>
-  readonly currentStepId: Prisma.FieldRef<"ContractPhase", 'String'>
-  readonly totalAmount: Prisma.FieldRef<"ContractPhase", 'Float'>
-  readonly paidAmount: Prisma.FieldRef<"ContractPhase", 'Float'>
-  readonly remainingAmount: Prisma.FieldRef<"ContractPhase", 'Float'>
-  readonly interestRate: Prisma.FieldRef<"ContractPhase", 'Float'>
-  readonly collectFunds: Prisma.FieldRef<"ContractPhase", 'Boolean'>
-  readonly approvedDocumentsCount: Prisma.FieldRef<"ContractPhase", 'Int'>
-  readonly requiredDocumentsCount: Prisma.FieldRef<"ContractPhase", 'Int'>
-  readonly completedStepsCount: Prisma.FieldRef<"ContractPhase", 'Int'>
-  readonly totalStepsCount: Prisma.FieldRef<"ContractPhase", 'Int'>
   readonly dueDate: Prisma.FieldRef<"ContractPhase", 'DateTime'>
   readonly startDate: Prisma.FieldRef<"ContractPhase", 'DateTime'>
   readonly endDate: Prisma.FieldRef<"ContractPhase", 'DateTime'>
   readonly activatedAt: Prisma.FieldRef<"ContractPhase", 'DateTime'>
   readonly completedAt: Prisma.FieldRef<"ContractPhase", 'DateTime'>
   readonly requiresPreviousPhaseCompletion: Prisma.FieldRef<"ContractPhase", 'Boolean'>
-  readonly minimumCompletionPercentage: Prisma.FieldRef<"ContractPhase", 'Float'>
-  readonly completionCriterion: Prisma.FieldRef<"ContractPhase", 'CompletionCriterion'>
-  readonly paymentPlanSnapshot: Prisma.FieldRef<"ContractPhase", 'Json'>
-  readonly stepDefinitionsSnapshot: Prisma.FieldRef<"ContractPhase", 'Json'>
-  readonly requiredDocumentSnapshot: Prisma.FieldRef<"ContractPhase", 'Json'>
   readonly createdAt: Prisma.FieldRef<"ContractPhase", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"ContractPhase", 'DateTime'>
 }
@@ -3395,65 +2350,60 @@ export type ContractPhaseDeleteManyArgs<ExtArgs extends runtime.Types.Extensions
 }
 
 /**
- * ContractPhase.paymentPlan
+ * ContractPhase.questionnairePhase
  */
-export type ContractPhase$paymentPlanArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type ContractPhase$questionnairePhaseArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the PaymentPlan
+   * Select specific fields to fetch from the QuestionnairePhase
    */
-  select?: Prisma.PaymentPlanSelect<ExtArgs> | null
+  select?: Prisma.QuestionnairePhaseSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the PaymentPlan
+   * Omit specific fields from the QuestionnairePhase
    */
-  omit?: Prisma.PaymentPlanOmit<ExtArgs> | null
+  omit?: Prisma.QuestionnairePhaseOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.PaymentPlanInclude<ExtArgs> | null
-  where?: Prisma.PaymentPlanWhereInput
+  include?: Prisma.QuestionnairePhaseInclude<ExtArgs> | null
+  where?: Prisma.QuestionnairePhaseWhereInput
 }
 
 /**
- * ContractPhase.currentStep
+ * ContractPhase.documentationPhase
  */
-export type ContractPhase$currentStepArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type ContractPhase$documentationPhaseArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the DocumentationStep
+   * Select specific fields to fetch from the DocumentationPhase
    */
-  select?: Prisma.DocumentationStepSelect<ExtArgs> | null
+  select?: Prisma.DocumentationPhaseSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the DocumentationStep
+   * Omit specific fields from the DocumentationPhase
    */
-  omit?: Prisma.DocumentationStepOmit<ExtArgs> | null
+  omit?: Prisma.DocumentationPhaseOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.DocumentationStepInclude<ExtArgs> | null
-  where?: Prisma.DocumentationStepWhereInput
+  include?: Prisma.DocumentationPhaseInclude<ExtArgs> | null
+  where?: Prisma.DocumentationPhaseWhereInput
 }
 
 /**
- * ContractPhase.installments
+ * ContractPhase.paymentPhase
  */
-export type ContractPhase$installmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type ContractPhase$paymentPhaseArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the ContractInstallment
+   * Select specific fields to fetch from the PaymentPhase
    */
-  select?: Prisma.ContractInstallmentSelect<ExtArgs> | null
+  select?: Prisma.PaymentPhaseSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the ContractInstallment
+   * Omit specific fields from the PaymentPhase
    */
-  omit?: Prisma.ContractInstallmentOmit<ExtArgs> | null
+  omit?: Prisma.PaymentPhaseOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ContractInstallmentInclude<ExtArgs> | null
-  where?: Prisma.ContractInstallmentWhereInput
-  orderBy?: Prisma.ContractInstallmentOrderByWithRelationInput | Prisma.ContractInstallmentOrderByWithRelationInput[]
-  cursor?: Prisma.ContractInstallmentWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.ContractInstallmentScalarFieldEnum | Prisma.ContractInstallmentScalarFieldEnum[]
+  include?: Prisma.PaymentPhaseInclude<ExtArgs> | null
+  where?: Prisma.PaymentPhaseWhereInput
 }
 
 /**
@@ -3481,27 +2431,27 @@ export type ContractPhase$paymentsArgs<ExtArgs extends runtime.Types.Extensions.
 }
 
 /**
- * ContractPhase.steps
+ * ContractPhase.currentForContracts
  */
-export type ContractPhase$stepsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type ContractPhase$currentForContractsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the DocumentationStep
+   * Select specific fields to fetch from the Contract
    */
-  select?: Prisma.DocumentationStepSelect<ExtArgs> | null
+  select?: Prisma.ContractSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the DocumentationStep
+   * Omit specific fields from the Contract
    */
-  omit?: Prisma.DocumentationStepOmit<ExtArgs> | null
+  omit?: Prisma.ContractOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.DocumentationStepInclude<ExtArgs> | null
-  where?: Prisma.DocumentationStepWhereInput
-  orderBy?: Prisma.DocumentationStepOrderByWithRelationInput | Prisma.DocumentationStepOrderByWithRelationInput[]
-  cursor?: Prisma.DocumentationStepWhereUniqueInput
+  include?: Prisma.ContractInclude<ExtArgs> | null
+  where?: Prisma.ContractWhereInput
+  orderBy?: Prisma.ContractOrderByWithRelationInput | Prisma.ContractOrderByWithRelationInput[]
+  cursor?: Prisma.ContractWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.DocumentationStepScalarFieldEnum | Prisma.DocumentationStepScalarFieldEnum[]
+  distinct?: Prisma.ContractScalarFieldEnum | Prisma.ContractScalarFieldEnum[]
 }
 
 /**

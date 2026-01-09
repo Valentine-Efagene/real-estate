@@ -187,6 +187,11 @@ export async function cleanupTestData() {
     await prisma.documentationStepDocument.deleteMany();
     await prisma.documentationStep.deleteMany();
     await prisma.contractDocument.deleteMany();
+    // Delete polymorphic phase extensions before base ContractPhase
+    await prisma.questionnaireField.deleteMany();
+    await prisma.questionnairePhase.deleteMany();
+    await prisma.documentationPhase.deleteMany();
+    await prisma.paymentPhase.deleteMany();
     await prisma.contractPhase.deleteMany();
     await prisma.paymentMethodChangeRequest.deleteMany();
     await prisma.contract.deleteMany();

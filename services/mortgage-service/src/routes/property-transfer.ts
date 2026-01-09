@@ -156,7 +156,7 @@ router.patch(
                     contractNumber: result.newContract.contractNumber,
                     status: result.newContract.status,
                 },
-                paymentsMigrated: result.paymentsMigrated,
+                refundedAmount: result.refundedAmount,
             });
         } catch (error) {
             next(error);

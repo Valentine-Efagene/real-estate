@@ -473,6 +473,23 @@ export type EnumStepTriggerWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumStepTriggerFilter<$PrismaModel>
 }
 
+export type EnumFieldTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.FieldType | Prisma.EnumFieldTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.FieldType[]
+  notIn?: $Enums.FieldType[]
+  not?: Prisma.NestedEnumFieldTypeFilter<$PrismaModel> | $Enums.FieldType
+}
+
+export type EnumFieldTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.FieldType | Prisma.EnumFieldTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.FieldType[]
+  notIn?: $Enums.FieldType[]
+  not?: Prisma.NestedEnumFieldTypeWithAggregatesFilter<$PrismaModel> | $Enums.FieldType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumFieldTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumFieldTypeFilter<$PrismaModel>
+}
+
 export type EnumContractStatusFilter<$PrismaModel = never> = {
   equals?: $Enums.ContractStatus | Prisma.EnumContractStatusFieldRefInput<$PrismaModel>
   in?: $Enums.ContractStatus[]
@@ -1330,6 +1347,23 @@ export type NestedEnumStepTriggerWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumStepTriggerFilter<$PrismaModel>
   _max?: Prisma.NestedEnumStepTriggerFilter<$PrismaModel>
+}
+
+export type NestedEnumFieldTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.FieldType | Prisma.EnumFieldTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.FieldType[]
+  notIn?: $Enums.FieldType[]
+  not?: Prisma.NestedEnumFieldTypeFilter<$PrismaModel> | $Enums.FieldType
+}
+
+export type NestedEnumFieldTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.FieldType | Prisma.EnumFieldTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.FieldType[]
+  notIn?: $Enums.FieldType[]
+  not?: Prisma.NestedEnumFieldTypeWithAggregatesFilter<$PrismaModel> | $Enums.FieldType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumFieldTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumFieldTypeFilter<$PrismaModel>
 }
 
 export type NestedEnumContractStatusFilter<$PrismaModel = never> = {

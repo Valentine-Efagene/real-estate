@@ -14,13 +14,15 @@ const RULES_VERSION = '1.0.0';
 // ============== Rule Definitions ==============
 
 interface RuleContext {
-    contract: {
+    questionnaire: {
         underwritingScore: number | null;
         monthlyIncome: number | null;
         monthlyExpenses: number | null;
         debtToIncomeRatio: number | null;
+        preApprovalAnswers: Record<string, unknown> | null;
+    };
+    contract: {
         totalAmount: number;
-        preApprovalAnswers: any | null;
     };
     property: {
         price: number;
@@ -49,7 +51,7 @@ const rules: Rule[] = [
         name: 'Minimum Eligibility Score',
         weight: 30,
         evaluate: (ctx) => {
-            const score = ctx.contract.underwritingScore ?? 0;
+            const score = ctx.questionnaire.underwritingScore ?? 0;
             if (score >= 70) return { passed: true, score: 100, message: 'Excellent eligibility score' };
             if (score >= 50) return { passed: true, score: 70, message: 'Acceptable eligibility score' };
             if (score >= 30) return { passed: false, score: 40, message: 'Below minimum eligibility score' };
@@ -61,7 +63,7 @@ const rules: Rule[] = [
         name: 'Debt-to-Income Ratio',
         weight: 25,
         evaluate: (ctx) => {
-            const dti = ctx.contract.debtToIncomeRatio;
+            const dti = ctx.questionnaire.debtToIncomeRatio;
             if (dti === null) return { passed: true, score: 50, message: 'DTI not calculated' };
             if (dti <= 0.3) return { passed: true, score: 100, message: 'Excellent DTI ratio' };
             if (dti <= 0.4) return { passed: true, score: 80, message: 'Good DTI ratio' };
@@ -74,8 +76,8 @@ const rules: Rule[] = [
         name: 'Income Coverage',
         weight: 25,
         evaluate: (ctx) => {
-            const income = ctx.contract.monthlyIncome ?? 0;
-            const expenses = ctx.contract.monthlyExpenses ?? 0;
+            const income = ctx.questionnaire.monthlyIncome ?? 0;
+            const expenses = ctx.questionnaire.monthlyExpenses ?? 0;
             const totalAmount = ctx.contract.totalAmount;
 
             // Estimate monthly payment (simple: amount / 120 months)
@@ -210,8 +212,32 @@ export class UnderwritingService {
     constructor(private prisma: PrismaClient) { }
 
     /**
+     * Helper to extract numeric field values from questionnaire fields
+     */
+    private extractFieldValue(fields: Array<{ name: string; answer: unknown }>, fieldName: string): number | null {
+        const field = fields.find(f => f.name === fieldName);
+        if (!field || field.answer === null || field.answer === undefined) return null;
+        const value = typeof field.answer === 'number' ? field.answer : Number(field.answer);
+        return isNaN(value) ? null : value;
+    }
+
+    /**
+     * Helper to convert questionnaire fields to a key-value object
+     */
+    private fieldsToAnswers(fields: Array<{ name: string; answer: unknown }>): Record<string, unknown> {
+        const answers: Record<string, unknown> = {};
+        for (const field of fields) {
+            answers[field.name] = field.answer;
+        }
+        return answers;
+    }
+
+    /**
      * Evaluate a contract's underwriting step.
      * Called when an UNDERWRITING step is being completed.
+     * 
+     * Underwriting data comes from QuestionnairePhase fields.
+     * Results are stored in the QuestionnairePhase.
      * 
      * @param contractId - The contract to evaluate
      * @param stepId - The UNDERWRITING step being completed
@@ -222,7 +248,7 @@ export class UnderwritingService {
         stepId: string,
         actorId?: string
     ): Promise<UnderwritingResponse> {
-        // Fetch contract with related data
+        // Fetch contract with related data including questionnaire phases
         const contract = await this.prisma.contract.findUnique({
             where: { id: contractId },
             include: {
@@ -234,6 +260,15 @@ export class UnderwritingService {
                         },
                     },
                 },
+                phases: {
+                    where: { phaseCategory: 'QUESTIONNAIRE' },
+                    include: {
+                        questionnairePhase: {
+                            include: { fields: true },
+                        },
+                    },
+                    orderBy: { order: 'desc' },
+                },
                 tenant: true,
             },
         });
@@ -244,6 +279,9 @@ export class UnderwritingService {
 
         const step = await this.prisma.documentationStep.findUnique({
             where: { id: stepId },
+            include: {
+                documentationPhase: true,
+            },
         });
 
         if (!step) {
@@ -254,18 +292,35 @@ export class UnderwritingService {
             throw new Error(`Step ${stepId} is not an UNDERWRITING step`);
         }
 
-        // Build rule context from contract data
+        // Find the most recent questionnaire phase with underwriting data
+        const questionnairePhase = contract.phases
+            .find((p: { questionnairePhase?: { fields?: unknown[] } | null }) =>
+                p.questionnairePhase?.fields && p.questionnairePhase.fields.length > 0
+            )
+            ?.questionnairePhase;
+
+        const fields = questionnairePhase?.fields ?? [];
+
+        // Extract financial data from questionnaire fields
+        const monthlyIncome = this.extractFieldValue(fields as Array<{ name: string; answer: unknown }>, 'monthly_income');
+        const monthlyExpenses = this.extractFieldValue(fields as Array<{ name: string; answer: unknown }>, 'monthly_expenses');
+        const existingDti = questionnairePhase?.debtToIncomeRatio ?? null;
+        const existingScore = questionnairePhase?.underwritingScore ?? null;
+
+        // Build rule context
         const propertyPrice = contract.propertyUnit?.variant?.price ?? contract.totalAmount;
         const propertyName = contract.propertyUnit?.variant?.property?.title ?? 'Unknown Property';
 
         const ctx: RuleContext = {
+            questionnaire: {
+                underwritingScore: existingScore,
+                monthlyIncome,
+                monthlyExpenses,
+                debtToIncomeRatio: existingDti,
+                preApprovalAnswers: this.fieldsToAnswers(fields as Array<{ name: string; answer: unknown }>),
+            },
             contract: {
-                underwritingScore: contract.underwritingScore,
-                monthlyIncome: contract.monthlyIncome,
-                monthlyExpenses: contract.monthlyExpenses,
-                debtToIncomeRatio: contract.debtToIncomeRatio,
                 totalAmount: contract.totalAmount,
-                preApprovalAnswers: contract.preApprovalAnswers,
             },
             property: {
                 price: propertyPrice,
@@ -284,40 +339,43 @@ export class UnderwritingService {
         const { decision, reasons, conditions } = determineDecision(score, allPassed, results);
 
         // Calculate DTI if not already set
-        let calculatedDti = contract.debtToIncomeRatio;
-        if (calculatedDti === null && contract.monthlyIncome && contract.monthlyIncome > 0) {
-            const monthlyPayment = contract.totalAmount / (contract.termMonths || 120);
-            calculatedDti = ((contract.monthlyExpenses ?? 0) + monthlyPayment) / contract.monthlyIncome;
+        let calculatedDti = existingDti;
+        if (calculatedDti === null && monthlyIncome && monthlyIncome > 0) {
+            // Estimate monthly payment (120 months default)
+            const monthlyPayment = contract.totalAmount / 120;
+            calculatedDti = ((monthlyExpenses ?? 0) + monthlyPayment) / monthlyIncome;
         }
 
-        // Update step and contract in transaction
+        // Update step and questionnaire phase in transaction
         const result = await this.prisma.$transaction(async (tx: any) => {
-            // Update the UNDERWRITING step with results
+            // Mark the UNDERWRITING step as completed
             await tx.documentationStep.update({
                 where: { id: stepId },
                 data: {
-                    underwritingScore: score,
-                    debtToIncomeRatio: calculatedDti,
-                    underwritingDecision: decision,
-                    underwritingNotes: JSON.stringify({
-                        reasons,
-                        conditions,
-                        ruleResults: results,
-                        rulesVersion: RULES_VERSION,
-                    }),
                     status: 'COMPLETED',
                     completedAt: new Date(),
                 },
             });
 
-            // Update contract with underwriting results
-            await tx.contract.update({
-                where: { id: contractId },
-                data: {
-                    underwritingScore: score,
-                    debtToIncomeRatio: calculatedDti,
-                },
-            });
+            // Store underwriting results in the QuestionnairePhase
+            if (questionnairePhase) {
+                await tx.questionnairePhase.update({
+                    where: { id: questionnairePhase.id },
+                    data: {
+                        underwritingScore: score,
+                        debtToIncomeRatio: calculatedDti,
+                        underwritingDecision: decision,
+                        underwritingNotes: JSON.stringify({
+                            stepId,
+                            reasons,
+                            conditions,
+                            ruleResults: results,
+                            rulesVersion: RULES_VERSION,
+                            evaluatedAt: new Date().toISOString(),
+                        }),
+                    },
+                });
+            }
 
             // Determine notification type
             const notificationType =
@@ -377,61 +435,83 @@ export class UnderwritingService {
 
     /**
      * Get underwriting results for a contract step
+     * 
+     * Note: Underwriting results are stored in QuestionnairePhase, but we look up
+     * by step ID since the step was the trigger for the evaluation.
      */
     async getByStepId(stepId: string): Promise<UnderwritingResponse | null> {
+        // First get the step to find the contract
         const step = await this.prisma.documentationStep.findUnique({
             where: { id: stepId },
             include: {
-                phase: {
-                    include: { contract: true },
+                documentationPhase: {
+                    include: { phase: true },
                 },
             },
         });
 
         if (!step || step.stepType !== 'UNDERWRITING') return null;
 
-        const notes = step.underwritingNotes ? JSON.parse(step.underwritingNotes) : {};
+        const contractId = step.documentationPhase.phase.contractId;
+
+        // Find the QuestionnairePhase with underwriting results
+        const questionnairePhase = await this.prisma.questionnairePhase.findFirst({
+            where: {
+                phase: { contractId },
+                underwritingScore: { not: null },
+            },
+            orderBy: { updatedAt: 'desc' },
+        });
+
+        if (!questionnairePhase) return null;
+
+        const notes = questionnairePhase.underwritingNotes
+            ? JSON.parse(questionnairePhase.underwritingNotes)
+            : {};
 
         return {
-            decisionId: step.id,
-            contractId: step.phase.contractId,
-            decision: (step.underwritingDecision as 'APPROVED' | 'DECLINED' | 'CONDITIONAL') || 'CONDITIONAL',
-            score: step.underwritingScore ?? 0,
+            decisionId: stepId,
+            contractId,
+            decision: (questionnairePhase.underwritingDecision as 'APPROVED' | 'DECLINED' | 'CONDITIONAL') || 'CONDITIONAL',
+            score: questionnairePhase.underwritingScore ?? 0,
             reasons: notes.reasons || [],
             conditions: notes.conditions || [],
             rulesVersion: notes.rulesVersion || RULES_VERSION,
             ruleResults: notes.ruleResults || [],
-            evaluatedAt: step.completedAt?.toISOString() || step.createdAt.toISOString(),
+            evaluatedAt: notes.evaluatedAt || questionnairePhase.updatedAt.toISOString(),
         };
     }
 
     /**
-     * Get all underwriting steps for a contract
+     * Get all underwriting evaluations for a contract
+     * 
+     * Returns underwriting results from QuestionnairePhases.
      */
     async getByContractId(contractId: string): Promise<UnderwritingResponse[]> {
-        const steps = await this.prisma.documentationStep.findMany({
+        // Find all QuestionnairePhases with underwriting results
+        const phases = await this.prisma.questionnairePhase.findMany({
             where: {
-                stepType: 'UNDERWRITING',
                 phase: { contractId },
+                underwritingScore: { not: null },
             },
             include: {
                 phase: true,
             },
-            orderBy: { createdAt: 'desc' },
+            orderBy: { updatedAt: 'desc' },
         });
 
-        return steps.map((step) => {
-            const notes = step.underwritingNotes ? JSON.parse(step.underwritingNotes) : {};
+        return phases.map((qp) => {
+            const notes = qp.underwritingNotes ? JSON.parse(qp.underwritingNotes) : {};
             return {
-                decisionId: step.id,
+                decisionId: notes.stepId || qp.id,
                 contractId,
-                decision: (step.underwritingDecision as 'APPROVED' | 'DECLINED' | 'CONDITIONAL') || 'CONDITIONAL',
-                score: step.underwritingScore ?? 0,
+                decision: (qp.underwritingDecision as 'APPROVED' | 'DECLINED' | 'CONDITIONAL') || 'CONDITIONAL',
+                score: qp.underwritingScore ?? 0,
                 reasons: notes.reasons || [],
                 conditions: notes.conditions || [],
                 rulesVersion: notes.rulesVersion || RULES_VERSION,
                 ruleResults: notes.ruleResults || [],
-                evaluatedAt: step.completedAt?.toISOString() || step.createdAt.toISOString(),
+                evaluatedAt: notes.evaluatedAt || qp.updatedAt.toISOString(),
             };
         });
     }

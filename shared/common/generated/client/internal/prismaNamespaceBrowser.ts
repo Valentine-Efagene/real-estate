@@ -84,9 +84,14 @@ export const ModelName = {
   PaymentMethodPhaseStep: 'PaymentMethodPhaseStep',
   StepEventAttachment: 'StepEventAttachment',
   PaymentMethodPhaseDocument: 'PaymentMethodPhaseDocument',
+  PaymentMethodPhaseField: 'PaymentMethodPhaseField',
   Contract: 'Contract',
   ContractRefund: 'ContractRefund',
   ContractPhase: 'ContractPhase',
+  QuestionnairePhase: 'QuestionnairePhase',
+  DocumentationPhase: 'DocumentationPhase',
+  PaymentPhase: 'PaymentPhase',
+  QuestionnaireField: 'QuestionnaireField',
   ContractEvent: 'ContractEvent',
   DocumentationStep: 'DocumentationStep',
   DocumentationStepDocument: 'DocumentationStepDocument',
@@ -603,6 +608,26 @@ export const PaymentMethodPhaseDocumentScalarFieldEnum = {
 export type PaymentMethodPhaseDocumentScalarFieldEnum = (typeof PaymentMethodPhaseDocumentScalarFieldEnum)[keyof typeof PaymentMethodPhaseDocumentScalarFieldEnum]
 
 
+export const PaymentMethodPhaseFieldScalarFieldEnum = {
+  id: 'id',
+  phaseId: 'phaseId',
+  name: 'name',
+  label: 'label',
+  description: 'description',
+  placeholder: 'placeholder',
+  fieldType: 'fieldType',
+  isRequired: 'isRequired',
+  order: 'order',
+  validation: 'validation',
+  displayCondition: 'displayCondition',
+  defaultValue: 'defaultValue',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PaymentMethodPhaseFieldScalarFieldEnum = (typeof PaymentMethodPhaseFieldScalarFieldEnum)[keyof typeof PaymentMethodPhaseFieldScalarFieldEnum]
+
+
 export const ContractScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -615,21 +640,7 @@ export const ContractScalarFieldEnum = {
   description: 'description',
   contractType: 'contractType',
   totalAmount: 'totalAmount',
-  downPayment: 'downPayment',
-  downPaymentPaid: 'downPaymentPaid',
-  principal: 'principal',
-  interestRate: 'interestRate',
-  termMonths: 'termMonths',
-  periodicPayment: 'periodicPayment',
-  totalPaidToDate: 'totalPaidToDate',
-  totalInterestPaid: 'totalInterestPaid',
-  monthlyIncome: 'monthlyIncome',
-  monthlyExpenses: 'monthlyExpenses',
-  preApprovalAnswers: 'preApprovalAnswers',
-  underwritingScore: 'underwritingScore',
-  debtToIncomeRatio: 'debtToIncomeRatio',
   status: 'status',
-  state: 'state',
   currentPhaseId: 'currentPhaseId',
   nextPaymentDueDate: 'nextPaymentDueDate',
   lastReminderSentAt: 'lastReminderSentAt',
@@ -677,39 +688,100 @@ export type ContractRefundScalarFieldEnum = (typeof ContractRefundScalarFieldEnu
 export const ContractPhaseScalarFieldEnum = {
   id: 'id',
   contractId: 'contractId',
-  paymentPlanId: 'paymentPlanId',
   name: 'name',
   description: 'description',
   phaseCategory: 'phaseCategory',
   phaseType: 'phaseType',
   order: 'order',
   status: 'status',
-  currentStepId: 'currentStepId',
-  totalAmount: 'totalAmount',
-  paidAmount: 'paidAmount',
-  remainingAmount: 'remainingAmount',
-  interestRate: 'interestRate',
-  collectFunds: 'collectFunds',
-  approvedDocumentsCount: 'approvedDocumentsCount',
-  requiredDocumentsCount: 'requiredDocumentsCount',
-  completedStepsCount: 'completedStepsCount',
-  totalStepsCount: 'totalStepsCount',
   dueDate: 'dueDate',
   startDate: 'startDate',
   endDate: 'endDate',
   activatedAt: 'activatedAt',
   completedAt: 'completedAt',
   requiresPreviousPhaseCompletion: 'requiresPreviousPhaseCompletion',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ContractPhaseScalarFieldEnum = (typeof ContractPhaseScalarFieldEnum)[keyof typeof ContractPhaseScalarFieldEnum]
+
+
+export const QuestionnairePhaseScalarFieldEnum = {
+  id: 'id',
+  phaseId: 'phaseId',
+  completedFieldsCount: 'completedFieldsCount',
+  totalFieldsCount: 'totalFieldsCount',
+  underwritingScore: 'underwritingScore',
+  debtToIncomeRatio: 'debtToIncomeRatio',
+  underwritingDecision: 'underwritingDecision',
+  underwritingNotes: 'underwritingNotes',
+  fieldsSnapshot: 'fieldsSnapshot',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type QuestionnairePhaseScalarFieldEnum = (typeof QuestionnairePhaseScalarFieldEnum)[keyof typeof QuestionnairePhaseScalarFieldEnum]
+
+
+export const DocumentationPhaseScalarFieldEnum = {
+  id: 'id',
+  phaseId: 'phaseId',
+  currentStepId: 'currentStepId',
+  approvedDocumentsCount: 'approvedDocumentsCount',
+  requiredDocumentsCount: 'requiredDocumentsCount',
+  completedStepsCount: 'completedStepsCount',
+  totalStepsCount: 'totalStepsCount',
   minimumCompletionPercentage: 'minimumCompletionPercentage',
   completionCriterion: 'completionCriterion',
-  paymentPlanSnapshot: 'paymentPlanSnapshot',
   stepDefinitionsSnapshot: 'stepDefinitionsSnapshot',
   requiredDocumentSnapshot: 'requiredDocumentSnapshot',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type ContractPhaseScalarFieldEnum = (typeof ContractPhaseScalarFieldEnum)[keyof typeof ContractPhaseScalarFieldEnum]
+export type DocumentationPhaseScalarFieldEnum = (typeof DocumentationPhaseScalarFieldEnum)[keyof typeof DocumentationPhaseScalarFieldEnum]
+
+
+export const PaymentPhaseScalarFieldEnum = {
+  id: 'id',
+  phaseId: 'phaseId',
+  paymentPlanId: 'paymentPlanId',
+  totalAmount: 'totalAmount',
+  paidAmount: 'paidAmount',
+  interestRate: 'interestRate',
+  collectFunds: 'collectFunds',
+  minimumCompletionPercentage: 'minimumCompletionPercentage',
+  paymentPlanSnapshot: 'paymentPlanSnapshot',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PaymentPhaseScalarFieldEnum = (typeof PaymentPhaseScalarFieldEnum)[keyof typeof PaymentPhaseScalarFieldEnum]
+
+
+export const QuestionnaireFieldScalarFieldEnum = {
+  id: 'id',
+  questionnairePhaseId: 'questionnairePhaseId',
+  name: 'name',
+  label: 'label',
+  description: 'description',
+  placeholder: 'placeholder',
+  fieldType: 'fieldType',
+  isRequired: 'isRequired',
+  order: 'order',
+  validation: 'validation',
+  displayCondition: 'displayCondition',
+  defaultValue: 'defaultValue',
+  answer: 'answer',
+  isValid: 'isValid',
+  validationErrors: 'validationErrors',
+  submittedAt: 'submittedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type QuestionnaireFieldScalarFieldEnum = (typeof QuestionnaireFieldScalarFieldEnum)[keyof typeof QuestionnaireFieldScalarFieldEnum]
 
 
 export const ContractEventScalarFieldEnum = {
@@ -731,7 +803,7 @@ export type ContractEventScalarFieldEnum = (typeof ContractEventScalarFieldEnum)
 
 export const DocumentationStepScalarFieldEnum = {
   id: 'id',
-  phaseId: 'phaseId',
+  documentationPhaseId: 'documentationPhaseId',
   name: 'name',
   description: 'description',
   stepType: 'stepType',
@@ -741,11 +813,6 @@ export const DocumentationStepScalarFieldEnum = {
   submissionCount: 'submissionCount',
   lastSubmittedAt: 'lastSubmittedAt',
   metadata: 'metadata',
-  preApprovalAnswers: 'preApprovalAnswers',
-  underwritingScore: 'underwritingScore',
-  debtToIncomeRatio: 'debtToIncomeRatio',
-  underwritingDecision: 'underwritingDecision',
-  underwritingNotes: 'underwritingNotes',
   assigneeId: 'assigneeId',
   dueDate: 'dueDate',
   completedAt: 'completedAt',
@@ -782,7 +849,7 @@ export type DocumentationStepApprovalScalarFieldEnum = (typeof DocumentationStep
 
 export const ContractInstallmentScalarFieldEnum = {
   id: 'id',
-  phaseId: 'phaseId',
+  paymentPhaseId: 'paymentPhaseId',
   installmentNumber: 'installmentNumber',
   amount: 'amount',
   principalAmount: 'principalAmount',
@@ -1118,7 +1185,9 @@ export const PropertyTransferRequestScalarFieldEnum = {
   sourceTotalAmount: 'sourceTotalAmount',
   targetTotalAmount: 'targetTotalAmount',
   priceAdjustment: 'priceAdjustment',
-  paymentsMigrated: 'paymentsMigrated',
+  refundedAmount: 'refundedAmount',
+  refundTransactionId: 'refundTransactionId',
+  refundedAt: 'refundedAt',
   targetContractId: 'targetContractId',
   createdAt: 'createdAt',
   reviewedAt: 'reviewedAt',
@@ -1547,6 +1616,18 @@ export const PaymentMethodPhaseDocumentOrderByRelevanceFieldEnum = {
 export type PaymentMethodPhaseDocumentOrderByRelevanceFieldEnum = (typeof PaymentMethodPhaseDocumentOrderByRelevanceFieldEnum)[keyof typeof PaymentMethodPhaseDocumentOrderByRelevanceFieldEnum]
 
 
+export const PaymentMethodPhaseFieldOrderByRelevanceFieldEnum = {
+  id: 'id',
+  phaseId: 'phaseId',
+  name: 'name',
+  label: 'label',
+  description: 'description',
+  placeholder: 'placeholder'
+} as const
+
+export type PaymentMethodPhaseFieldOrderByRelevanceFieldEnum = (typeof PaymentMethodPhaseFieldOrderByRelevanceFieldEnum)[keyof typeof PaymentMethodPhaseFieldOrderByRelevanceFieldEnum]
+
+
 export const ContractOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -1589,13 +1670,51 @@ export type ContractRefundOrderByRelevanceFieldEnum = (typeof ContractRefundOrde
 export const ContractPhaseOrderByRelevanceFieldEnum = {
   id: 'id',
   contractId: 'contractId',
-  paymentPlanId: 'paymentPlanId',
   name: 'name',
-  description: 'description',
-  currentStepId: 'currentStepId'
+  description: 'description'
 } as const
 
 export type ContractPhaseOrderByRelevanceFieldEnum = (typeof ContractPhaseOrderByRelevanceFieldEnum)[keyof typeof ContractPhaseOrderByRelevanceFieldEnum]
+
+
+export const QuestionnairePhaseOrderByRelevanceFieldEnum = {
+  id: 'id',
+  phaseId: 'phaseId',
+  underwritingDecision: 'underwritingDecision',
+  underwritingNotes: 'underwritingNotes'
+} as const
+
+export type QuestionnairePhaseOrderByRelevanceFieldEnum = (typeof QuestionnairePhaseOrderByRelevanceFieldEnum)[keyof typeof QuestionnairePhaseOrderByRelevanceFieldEnum]
+
+
+export const DocumentationPhaseOrderByRelevanceFieldEnum = {
+  id: 'id',
+  phaseId: 'phaseId',
+  currentStepId: 'currentStepId'
+} as const
+
+export type DocumentationPhaseOrderByRelevanceFieldEnum = (typeof DocumentationPhaseOrderByRelevanceFieldEnum)[keyof typeof DocumentationPhaseOrderByRelevanceFieldEnum]
+
+
+export const PaymentPhaseOrderByRelevanceFieldEnum = {
+  id: 'id',
+  phaseId: 'phaseId',
+  paymentPlanId: 'paymentPlanId'
+} as const
+
+export type PaymentPhaseOrderByRelevanceFieldEnum = (typeof PaymentPhaseOrderByRelevanceFieldEnum)[keyof typeof PaymentPhaseOrderByRelevanceFieldEnum]
+
+
+export const QuestionnaireFieldOrderByRelevanceFieldEnum = {
+  id: 'id',
+  questionnairePhaseId: 'questionnairePhaseId',
+  name: 'name',
+  label: 'label',
+  description: 'description',
+  placeholder: 'placeholder'
+} as const
+
+export type QuestionnaireFieldOrderByRelevanceFieldEnum = (typeof QuestionnaireFieldOrderByRelevanceFieldEnum)[keyof typeof QuestionnaireFieldOrderByRelevanceFieldEnum]
 
 
 export const ContractEventOrderByRelevanceFieldEnum = {
@@ -1612,12 +1731,10 @@ export type ContractEventOrderByRelevanceFieldEnum = (typeof ContractEventOrderB
 
 export const DocumentationStepOrderByRelevanceFieldEnum = {
   id: 'id',
-  phaseId: 'phaseId',
+  documentationPhaseId: 'documentationPhaseId',
   name: 'name',
   description: 'description',
   actionReason: 'actionReason',
-  underwritingDecision: 'underwritingDecision',
-  underwritingNotes: 'underwritingNotes',
   assigneeId: 'assigneeId'
 } as const
 
@@ -1645,7 +1762,7 @@ export type DocumentationStepApprovalOrderByRelevanceFieldEnum = (typeof Documen
 
 export const ContractInstallmentOrderByRelevanceFieldEnum = {
   id: 'id',
-  phaseId: 'phaseId'
+  paymentPhaseId: 'paymentPhaseId'
 } as const
 
 export type ContractInstallmentOrderByRelevanceFieldEnum = (typeof ContractInstallmentOrderByRelevanceFieldEnum)[keyof typeof ContractInstallmentOrderByRelevanceFieldEnum]
@@ -1849,6 +1966,7 @@ export const PropertyTransferRequestOrderByRelevanceFieldEnum = {
   reason: 'reason',
   reviewNotes: 'reviewNotes',
   priceAdjustmentHandling: 'priceAdjustmentHandling',
+  refundTransactionId: 'refundTransactionId',
   targetContractId: 'targetContractId'
 } as const
 

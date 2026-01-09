@@ -290,7 +290,7 @@ export type PaymentPlanWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"PaymentPlan"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantNullableScalarRelationFilter, Prisma.TenantWhereInput> | null
   methodPhases?: Prisma.PropertyPaymentMethodPhaseListRelationFilter
-  contractPhases?: Prisma.ContractPhaseListRelationFilter
+  paymentPhases?: Prisma.PaymentPhaseListRelationFilter
 }
 
 export type PaymentPlanOrderByWithRelationInput = {
@@ -309,7 +309,7 @@ export type PaymentPlanOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   tenant?: Prisma.TenantOrderByWithRelationInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseOrderByRelationAggregateInput
-  contractPhases?: Prisma.ContractPhaseOrderByRelationAggregateInput
+  paymentPhases?: Prisma.PaymentPhaseOrderByRelationAggregateInput
   _relevance?: Prisma.PaymentPlanOrderByRelevanceInput
 }
 
@@ -333,7 +333,7 @@ export type PaymentPlanWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"PaymentPlan"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantNullableScalarRelationFilter, Prisma.TenantWhereInput> | null
   methodPhases?: Prisma.PropertyPaymentMethodPhaseListRelationFilter
-  contractPhases?: Prisma.ContractPhaseListRelationFilter
+  paymentPhases?: Prisma.PaymentPhaseListRelationFilter
 }, "id" | "tenantId_name">
 
 export type PaymentPlanOrderByWithAggregationInput = {
@@ -391,7 +391,7 @@ export type PaymentPlanCreateInput = {
   updatedAt?: Date | string
   tenant?: Prisma.TenantCreateNestedOneWithoutPaymentPlansInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutPaymentPlanInput
-  contractPhases?: Prisma.ContractPhaseCreateNestedManyWithoutPaymentPlanInput
+  paymentPhases?: Prisma.PaymentPhaseCreateNestedManyWithoutPaymentPlanInput
 }
 
 export type PaymentPlanUncheckedCreateInput = {
@@ -409,7 +409,7 @@ export type PaymentPlanUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutPaymentPlanInput
-  contractPhases?: Prisma.ContractPhaseUncheckedCreateNestedManyWithoutPaymentPlanInput
+  paymentPhases?: Prisma.PaymentPhaseUncheckedCreateNestedManyWithoutPaymentPlanInput
 }
 
 export type PaymentPlanUpdateInput = {
@@ -427,7 +427,7 @@ export type PaymentPlanUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneWithoutPaymentPlansNestedInput
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutPaymentPlanNestedInput
-  contractPhases?: Prisma.ContractPhaseUpdateManyWithoutPaymentPlanNestedInput
+  paymentPhases?: Prisma.PaymentPhaseUpdateManyWithoutPaymentPlanNestedInput
 }
 
 export type PaymentPlanUncheckedUpdateInput = {
@@ -445,7 +445,7 @@ export type PaymentPlanUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutPaymentPlanNestedInput
-  contractPhases?: Prisma.ContractPhaseUncheckedUpdateManyWithoutPaymentPlanNestedInput
+  paymentPhases?: Prisma.PaymentPhaseUncheckedUpdateManyWithoutPaymentPlanNestedInput
 }
 
 export type PaymentPlanCreateManyInput = {
@@ -643,20 +643,20 @@ export type PaymentPlanUpdateOneWithoutMethodPhasesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.PaymentPlanUpdateToOneWithWhereWithoutMethodPhasesInput, Prisma.PaymentPlanUpdateWithoutMethodPhasesInput>, Prisma.PaymentPlanUncheckedUpdateWithoutMethodPhasesInput>
 }
 
-export type PaymentPlanCreateNestedOneWithoutContractPhasesInput = {
-  create?: Prisma.XOR<Prisma.PaymentPlanCreateWithoutContractPhasesInput, Prisma.PaymentPlanUncheckedCreateWithoutContractPhasesInput>
-  connectOrCreate?: Prisma.PaymentPlanCreateOrConnectWithoutContractPhasesInput
+export type PaymentPlanCreateNestedOneWithoutPaymentPhasesInput = {
+  create?: Prisma.XOR<Prisma.PaymentPlanCreateWithoutPaymentPhasesInput, Prisma.PaymentPlanUncheckedCreateWithoutPaymentPhasesInput>
+  connectOrCreate?: Prisma.PaymentPlanCreateOrConnectWithoutPaymentPhasesInput
   connect?: Prisma.PaymentPlanWhereUniqueInput
 }
 
-export type PaymentPlanUpdateOneWithoutContractPhasesNestedInput = {
-  create?: Prisma.XOR<Prisma.PaymentPlanCreateWithoutContractPhasesInput, Prisma.PaymentPlanUncheckedCreateWithoutContractPhasesInput>
-  connectOrCreate?: Prisma.PaymentPlanCreateOrConnectWithoutContractPhasesInput
-  upsert?: Prisma.PaymentPlanUpsertWithoutContractPhasesInput
+export type PaymentPlanUpdateOneWithoutPaymentPhasesNestedInput = {
+  create?: Prisma.XOR<Prisma.PaymentPlanCreateWithoutPaymentPhasesInput, Prisma.PaymentPlanUncheckedCreateWithoutPaymentPhasesInput>
+  connectOrCreate?: Prisma.PaymentPlanCreateOrConnectWithoutPaymentPhasesInput
+  upsert?: Prisma.PaymentPlanUpsertWithoutPaymentPhasesInput
   disconnect?: Prisma.PaymentPlanWhereInput | boolean
   delete?: Prisma.PaymentPlanWhereInput | boolean
   connect?: Prisma.PaymentPlanWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.PaymentPlanUpdateToOneWithWhereWithoutContractPhasesInput, Prisma.PaymentPlanUpdateWithoutContractPhasesInput>, Prisma.PaymentPlanUncheckedUpdateWithoutContractPhasesInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PaymentPlanUpdateToOneWithWhereWithoutPaymentPhasesInput, Prisma.PaymentPlanUpdateWithoutPaymentPhasesInput>, Prisma.PaymentPlanUncheckedUpdateWithoutPaymentPhasesInput>
 }
 
 export type PaymentPlanCreateWithoutTenantInput = {
@@ -673,7 +673,7 @@ export type PaymentPlanCreateWithoutTenantInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   methodPhases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutPaymentPlanInput
-  contractPhases?: Prisma.ContractPhaseCreateNestedManyWithoutPaymentPlanInput
+  paymentPhases?: Prisma.PaymentPhaseCreateNestedManyWithoutPaymentPlanInput
 }
 
 export type PaymentPlanUncheckedCreateWithoutTenantInput = {
@@ -690,7 +690,7 @@ export type PaymentPlanUncheckedCreateWithoutTenantInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutPaymentPlanInput
-  contractPhases?: Prisma.ContractPhaseUncheckedCreateNestedManyWithoutPaymentPlanInput
+  paymentPhases?: Prisma.PaymentPhaseUncheckedCreateNestedManyWithoutPaymentPlanInput
 }
 
 export type PaymentPlanCreateOrConnectWithoutTenantInput = {
@@ -752,7 +752,7 @@ export type PaymentPlanCreateWithoutMethodPhasesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant?: Prisma.TenantCreateNestedOneWithoutPaymentPlansInput
-  contractPhases?: Prisma.ContractPhaseCreateNestedManyWithoutPaymentPlanInput
+  paymentPhases?: Prisma.PaymentPhaseCreateNestedManyWithoutPaymentPlanInput
 }
 
 export type PaymentPlanUncheckedCreateWithoutMethodPhasesInput = {
@@ -769,7 +769,7 @@ export type PaymentPlanUncheckedCreateWithoutMethodPhasesInput = {
   collectFunds?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  contractPhases?: Prisma.ContractPhaseUncheckedCreateNestedManyWithoutPaymentPlanInput
+  paymentPhases?: Prisma.PaymentPhaseUncheckedCreateNestedManyWithoutPaymentPlanInput
 }
 
 export type PaymentPlanCreateOrConnectWithoutMethodPhasesInput = {
@@ -802,7 +802,7 @@ export type PaymentPlanUpdateWithoutMethodPhasesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneWithoutPaymentPlansNestedInput
-  contractPhases?: Prisma.ContractPhaseUpdateManyWithoutPaymentPlanNestedInput
+  paymentPhases?: Prisma.PaymentPhaseUpdateManyWithoutPaymentPlanNestedInput
 }
 
 export type PaymentPlanUncheckedUpdateWithoutMethodPhasesInput = {
@@ -819,10 +819,10 @@ export type PaymentPlanUncheckedUpdateWithoutMethodPhasesInput = {
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  contractPhases?: Prisma.ContractPhaseUncheckedUpdateManyWithoutPaymentPlanNestedInput
+  paymentPhases?: Prisma.PaymentPhaseUncheckedUpdateManyWithoutPaymentPlanNestedInput
 }
 
-export type PaymentPlanCreateWithoutContractPhasesInput = {
+export type PaymentPlanCreateWithoutPaymentPhasesInput = {
   id?: string
   name: string
   description?: string | null
@@ -839,7 +839,7 @@ export type PaymentPlanCreateWithoutContractPhasesInput = {
   methodPhases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutPaymentPlanInput
 }
 
-export type PaymentPlanUncheckedCreateWithoutContractPhasesInput = {
+export type PaymentPlanUncheckedCreateWithoutPaymentPhasesInput = {
   id?: string
   tenantId?: string | null
   name: string
@@ -856,23 +856,23 @@ export type PaymentPlanUncheckedCreateWithoutContractPhasesInput = {
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutPaymentPlanInput
 }
 
-export type PaymentPlanCreateOrConnectWithoutContractPhasesInput = {
+export type PaymentPlanCreateOrConnectWithoutPaymentPhasesInput = {
   where: Prisma.PaymentPlanWhereUniqueInput
-  create: Prisma.XOR<Prisma.PaymentPlanCreateWithoutContractPhasesInput, Prisma.PaymentPlanUncheckedCreateWithoutContractPhasesInput>
+  create: Prisma.XOR<Prisma.PaymentPlanCreateWithoutPaymentPhasesInput, Prisma.PaymentPlanUncheckedCreateWithoutPaymentPhasesInput>
 }
 
-export type PaymentPlanUpsertWithoutContractPhasesInput = {
-  update: Prisma.XOR<Prisma.PaymentPlanUpdateWithoutContractPhasesInput, Prisma.PaymentPlanUncheckedUpdateWithoutContractPhasesInput>
-  create: Prisma.XOR<Prisma.PaymentPlanCreateWithoutContractPhasesInput, Prisma.PaymentPlanUncheckedCreateWithoutContractPhasesInput>
+export type PaymentPlanUpsertWithoutPaymentPhasesInput = {
+  update: Prisma.XOR<Prisma.PaymentPlanUpdateWithoutPaymentPhasesInput, Prisma.PaymentPlanUncheckedUpdateWithoutPaymentPhasesInput>
+  create: Prisma.XOR<Prisma.PaymentPlanCreateWithoutPaymentPhasesInput, Prisma.PaymentPlanUncheckedCreateWithoutPaymentPhasesInput>
   where?: Prisma.PaymentPlanWhereInput
 }
 
-export type PaymentPlanUpdateToOneWithWhereWithoutContractPhasesInput = {
+export type PaymentPlanUpdateToOneWithWhereWithoutPaymentPhasesInput = {
   where?: Prisma.PaymentPlanWhereInput
-  data: Prisma.XOR<Prisma.PaymentPlanUpdateWithoutContractPhasesInput, Prisma.PaymentPlanUncheckedUpdateWithoutContractPhasesInput>
+  data: Prisma.XOR<Prisma.PaymentPlanUpdateWithoutPaymentPhasesInput, Prisma.PaymentPlanUncheckedUpdateWithoutPaymentPhasesInput>
 }
 
-export type PaymentPlanUpdateWithoutContractPhasesInput = {
+export type PaymentPlanUpdateWithoutPaymentPhasesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -889,7 +889,7 @@ export type PaymentPlanUpdateWithoutContractPhasesInput = {
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutPaymentPlanNestedInput
 }
 
-export type PaymentPlanUncheckedUpdateWithoutContractPhasesInput = {
+export type PaymentPlanUncheckedUpdateWithoutPaymentPhasesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -935,7 +935,7 @@ export type PaymentPlanUpdateWithoutTenantInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutPaymentPlanNestedInput
-  contractPhases?: Prisma.ContractPhaseUpdateManyWithoutPaymentPlanNestedInput
+  paymentPhases?: Prisma.PaymentPhaseUpdateManyWithoutPaymentPlanNestedInput
 }
 
 export type PaymentPlanUncheckedUpdateWithoutTenantInput = {
@@ -952,7 +952,7 @@ export type PaymentPlanUncheckedUpdateWithoutTenantInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   methodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutPaymentPlanNestedInput
-  contractPhases?: Prisma.ContractPhaseUncheckedUpdateManyWithoutPaymentPlanNestedInput
+  paymentPhases?: Prisma.PaymentPhaseUncheckedUpdateManyWithoutPaymentPlanNestedInput
 }
 
 export type PaymentPlanUncheckedUpdateManyWithoutTenantInput = {
@@ -977,12 +977,12 @@ export type PaymentPlanUncheckedUpdateManyWithoutTenantInput = {
 
 export type PaymentPlanCountOutputType = {
   methodPhases: number
-  contractPhases: number
+  paymentPhases: number
 }
 
 export type PaymentPlanCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   methodPhases?: boolean | PaymentPlanCountOutputTypeCountMethodPhasesArgs
-  contractPhases?: boolean | PaymentPlanCountOutputTypeCountContractPhasesArgs
+  paymentPhases?: boolean | PaymentPlanCountOutputTypeCountPaymentPhasesArgs
 }
 
 /**
@@ -1005,8 +1005,8 @@ export type PaymentPlanCountOutputTypeCountMethodPhasesArgs<ExtArgs extends runt
 /**
  * PaymentPlanCountOutputType without action
  */
-export type PaymentPlanCountOutputTypeCountContractPhasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.ContractPhaseWhereInput
+export type PaymentPlanCountOutputTypeCountPaymentPhasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PaymentPhaseWhereInput
 }
 
 
@@ -1026,7 +1026,7 @@ export type PaymentPlanSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   updatedAt?: boolean
   tenant?: boolean | Prisma.PaymentPlan$tenantArgs<ExtArgs>
   methodPhases?: boolean | Prisma.PaymentPlan$methodPhasesArgs<ExtArgs>
-  contractPhases?: boolean | Prisma.PaymentPlan$contractPhasesArgs<ExtArgs>
+  paymentPhases?: boolean | Prisma.PaymentPlan$paymentPhasesArgs<ExtArgs>
   _count?: boolean | Prisma.PaymentPlanCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["paymentPlan"]>
 
@@ -1052,7 +1052,7 @@ export type PaymentPlanOmit<ExtArgs extends runtime.Types.Extensions.InternalArg
 export type PaymentPlanInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.PaymentPlan$tenantArgs<ExtArgs>
   methodPhases?: boolean | Prisma.PaymentPlan$methodPhasesArgs<ExtArgs>
-  contractPhases?: boolean | Prisma.PaymentPlan$contractPhasesArgs<ExtArgs>
+  paymentPhases?: boolean | Prisma.PaymentPlan$paymentPhasesArgs<ExtArgs>
   _count?: boolean | Prisma.PaymentPlanCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -1061,7 +1061,7 @@ export type $PaymentPlanPayload<ExtArgs extends runtime.Types.Extensions.Interna
   objects: {
     tenant: Prisma.$TenantPayload<ExtArgs> | null
     methodPhases: Prisma.$PropertyPaymentMethodPhasePayload<ExtArgs>[]
-    contractPhases: Prisma.$ContractPhasePayload<ExtArgs>[]
+    paymentPhases: Prisma.$PaymentPhasePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1419,7 +1419,7 @@ export interface Prisma__PaymentPlanClient<T, Null = never, ExtArgs extends runt
   readonly [Symbol.toStringTag]: "PrismaPromise"
   tenant<T extends Prisma.PaymentPlan$tenantArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PaymentPlan$tenantArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   methodPhases<T extends Prisma.PaymentPlan$methodPhasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PaymentPlan$methodPhasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyPaymentMethodPhasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  contractPhases<T extends Prisma.PaymentPlan$contractPhasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PaymentPlan$contractPhasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContractPhasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  paymentPhases<T extends Prisma.PaymentPlan$paymentPhasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PaymentPlan$paymentPhasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPhasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1848,27 +1848,27 @@ export type PaymentPlan$methodPhasesArgs<ExtArgs extends runtime.Types.Extension
 }
 
 /**
- * PaymentPlan.contractPhases
+ * PaymentPlan.paymentPhases
  */
-export type PaymentPlan$contractPhasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type PaymentPlan$paymentPhasesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the ContractPhase
+   * Select specific fields to fetch from the PaymentPhase
    */
-  select?: Prisma.ContractPhaseSelect<ExtArgs> | null
+  select?: Prisma.PaymentPhaseSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the ContractPhase
+   * Omit specific fields from the PaymentPhase
    */
-  omit?: Prisma.ContractPhaseOmit<ExtArgs> | null
+  omit?: Prisma.PaymentPhaseOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ContractPhaseInclude<ExtArgs> | null
-  where?: Prisma.ContractPhaseWhereInput
-  orderBy?: Prisma.ContractPhaseOrderByWithRelationInput | Prisma.ContractPhaseOrderByWithRelationInput[]
-  cursor?: Prisma.ContractPhaseWhereUniqueInput
+  include?: Prisma.PaymentPhaseInclude<ExtArgs> | null
+  where?: Prisma.PaymentPhaseWhereInput
+  orderBy?: Prisma.PaymentPhaseOrderByWithRelationInput | Prisma.PaymentPhaseOrderByWithRelationInput[]
+  cursor?: Prisma.PaymentPhaseWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.ContractPhaseScalarFieldEnum | Prisma.ContractPhaseScalarFieldEnum[]
+  distinct?: Prisma.PaymentPhaseScalarFieldEnum | Prisma.PaymentPhaseScalarFieldEnum[]
 }
 
 /**

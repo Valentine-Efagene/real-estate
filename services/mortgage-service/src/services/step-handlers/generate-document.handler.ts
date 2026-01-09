@@ -74,9 +74,11 @@ export async function handleGenerateDocumentStep(
             id: true,
             stepType: true,
             metadata: true,
-            phase: {
+            documentationPhase: {
                 select: {
-                    contractId: true,
+                    phase: {
+                        select: { contractId: true },
+                    },
                 },
             },
         },

@@ -102,8 +102,20 @@ export class PaymentMethodChangeService {
             throw new AppError(404, 'New payment method not found');
         }
 
+        // Calculate total paid to date from PaymentPhases
+        // Need to fetch PaymentPhase data for the contract's payment phases
+        const paymentPhasesData = await this.db.paymentPhase.findMany({
+            where: {
+                phase: {
+                    contractId: data.contractId,
+                    phaseCategory: 'PAYMENT',
+                },
+            },
+        });
+        const totalPaidToDate = paymentPhasesData.reduce((sum, pp) => sum + pp.paidAmount, 0);
+
         // Calculate financial impact
-        const currentOutstanding = contract.totalAmount - contract.totalPaidToDate;
+        const currentOutstanding = contract.totalAmount - totalPaidToDate;
 
         // Get payment plan from the new method's payment phases
         // Prefer MORTGAGE phase for term calculation, as it's the main installment payment
@@ -466,13 +478,17 @@ export class PaymentMethodChangeService {
             throw new AppError(400, `Cannot execute request in ${request.status} status. Must be APPROVED first.`);
         }
 
-        // Get full contract with phases
+        // Get full contract with phases and payment data
         const contract = await this.db.contract.findUnique({
             where: { id: request.contractId },
             include: {
                 phases: {
                     orderBy: { order: 'asc' },
-                    include: { installments: true },
+                    include: {
+                        paymentPhase: {
+                            include: { installments: true },
+                        },
+                    },
                 },
             },
         });
@@ -501,24 +517,36 @@ export class PaymentMethodChangeService {
 
         // Find current in-progress/pending payment phases to supersede
         const currentPaymentPhases = contract.phases.filter(
-            p => p.phaseCategory === 'PAYMENT' && ['PENDING', 'IN_PROGRESS', 'ACTIVE'].includes(p.status)
+            (p: { phaseCategory: string; status: string }) =>
+                p.phaseCategory === 'PAYMENT' && ['PENDING', 'IN_PROGRESS', 'ACTIVE'].includes(p.status)
         );
 
         // Snapshot current state for audit
-        const previousPhaseData = currentPaymentPhases.map(p => ({
+        const previousPhaseData = currentPaymentPhases.map((p: {
+            id: string;
+            name: string;
+            status: string;
+            paymentPhase?: { totalAmount: number; paidAmount: number } | null;
+        }) => ({
             id: p.id,
             name: p.name,
             status: p.status,
-            totalAmount: p.totalAmount,
-            paidAmount: p.paidAmount,
-            remainingAmount: p.remainingAmount,
+            totalAmount: p.paymentPhase?.totalAmount ?? 0,
+            paidAmount: p.paymentPhase?.paidAmount ?? 0,
+            remainingAmount: (p.paymentPhase?.totalAmount ?? 0) - (p.paymentPhase?.paidAmount ?? 0),
         }));
 
+        // Calculate total paid to date from payment phases
+        const totalPaidToDate = contract.phases
+            .filter((p: { phaseCategory: string }) => p.phaseCategory === 'PAYMENT')
+            .reduce((sum: number, p: { paymentPhase?: { paidAmount: number } | null }) =>
+                sum + (p.paymentPhase?.paidAmount ?? 0), 0);
+
         // Calculate remaining balance
-        const remainingBalance = request.currentOutstanding ?? (contract.totalAmount - contract.totalPaidToDate);
+        const remainingBalance = request.currentOutstanding ?? (contract.totalAmount - totalPaidToDate);
 
         // Find max order from existing phases
-        const maxOrder = Math.max(...contract.phases.map(p => p.order));
+        const maxOrder = Math.max(...contract.phases.map((p: { order: number }) => p.order));
 
         // Execute in transaction
         const result = await this.db.$transaction(async (tx) => {
@@ -550,25 +578,35 @@ export class PaymentMethodChangeService {
                     phaseAmount = remainingBalance * (template.percentOfPrice / 100);
                 }
 
+                // Create the base ContractPhase
                 const newPhase = await tx.contractPhase.create({
                     data: {
                         contractId: contract.id,
-                        paymentPlanId: template.paymentPlanId,
                         name: `${template.name} (Changed)`,
                         description: template.description,
                         phaseCategory: template.phaseCategory,
                         phaseType: template.phaseType,
                         order: currentOrder++,
                         status: 'PENDING',
-                        totalAmount: phaseAmount,
-                        remainingAmount: phaseAmount,
-                        interestRate: template.interestRate,
-                        collectFunds: template.collectFunds ?? true,
-                        paymentPlanSnapshot: template.paymentPlan
-                            ? (JSON.stringify(template.paymentPlan) as unknown as Prisma.InputJsonValue)
-                            : Prisma.DbNull,
                     },
                 });
+
+                // Create PaymentPhase extension for PAYMENT phases
+                if (template.phaseCategory === 'PAYMENT') {
+                    await tx.paymentPhase.create({
+                        data: {
+                            phaseId: newPhase.id,
+                            paymentPlanId: template.paymentPlanId,
+                            totalAmount: phaseAmount,
+                            paidAmount: 0,
+                            interestRate: template.interestRate ?? undefined,
+                            collectFunds: template.collectFunds ?? true,
+                            paymentPlanSnapshot: template.paymentPlan
+                                ? (JSON.stringify(template.paymentPlan) as unknown as Prisma.InputJsonValue)
+                                : Prisma.DbNull,
+                        },
+                    });
+                }
 
                 newPhases.push(newPhase);
             }
@@ -637,8 +675,10 @@ export class PaymentMethodChangeService {
 
         // Activate the first new phase if there are no other active phases
         if (result.newPhases.length > 0) {
+            const currentPhaseIds = currentPaymentPhases.map((p: { id: string }) => p.id);
             const hasActivePhase = contract.phases.some(
-                p => !currentPaymentPhases.includes(p) && (p.status === 'IN_PROGRESS' || p.status === 'ACTIVE')
+                (p: { id: string; status: string }) =>
+                    !currentPhaseIds.includes(p.id) && (p.status === 'IN_PROGRESS' || p.status === 'ACTIVE')
             );
 
             if (!hasActivePhase) {

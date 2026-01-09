@@ -30,14 +30,14 @@ export type PropertyTransferRequestAvgAggregateOutputType = {
   sourceTotalAmount: number | null
   targetTotalAmount: number | null
   priceAdjustment: number | null
-  paymentsMigrated: number | null
+  refundedAmount: number | null
 }
 
 export type PropertyTransferRequestSumAggregateOutputType = {
   sourceTotalAmount: number | null
   targetTotalAmount: number | null
   priceAdjustment: number | null
-  paymentsMigrated: number | null
+  refundedAmount: number | null
 }
 
 export type PropertyTransferRequestMinAggregateOutputType = {
@@ -54,7 +54,9 @@ export type PropertyTransferRequestMinAggregateOutputType = {
   sourceTotalAmount: number | null
   targetTotalAmount: number | null
   priceAdjustment: number | null
-  paymentsMigrated: number | null
+  refundedAmount: number | null
+  refundTransactionId: string | null
+  refundedAt: Date | null
   targetContractId: string | null
   createdAt: Date | null
   reviewedAt: Date | null
@@ -76,7 +78,9 @@ export type PropertyTransferRequestMaxAggregateOutputType = {
   sourceTotalAmount: number | null
   targetTotalAmount: number | null
   priceAdjustment: number | null
-  paymentsMigrated: number | null
+  refundedAmount: number | null
+  refundTransactionId: string | null
+  refundedAt: Date | null
   targetContractId: string | null
   createdAt: Date | null
   reviewedAt: Date | null
@@ -98,7 +102,9 @@ export type PropertyTransferRequestCountAggregateOutputType = {
   sourceTotalAmount: number
   targetTotalAmount: number
   priceAdjustment: number
-  paymentsMigrated: number
+  refundedAmount: number
+  refundTransactionId: number
+  refundedAt: number
   targetContractId: number
   createdAt: number
   reviewedAt: number
@@ -112,14 +118,14 @@ export type PropertyTransferRequestAvgAggregateInputType = {
   sourceTotalAmount?: true
   targetTotalAmount?: true
   priceAdjustment?: true
-  paymentsMigrated?: true
+  refundedAmount?: true
 }
 
 export type PropertyTransferRequestSumAggregateInputType = {
   sourceTotalAmount?: true
   targetTotalAmount?: true
   priceAdjustment?: true
-  paymentsMigrated?: true
+  refundedAmount?: true
 }
 
 export type PropertyTransferRequestMinAggregateInputType = {
@@ -136,7 +142,9 @@ export type PropertyTransferRequestMinAggregateInputType = {
   sourceTotalAmount?: true
   targetTotalAmount?: true
   priceAdjustment?: true
-  paymentsMigrated?: true
+  refundedAmount?: true
+  refundTransactionId?: true
+  refundedAt?: true
   targetContractId?: true
   createdAt?: true
   reviewedAt?: true
@@ -158,7 +166,9 @@ export type PropertyTransferRequestMaxAggregateInputType = {
   sourceTotalAmount?: true
   targetTotalAmount?: true
   priceAdjustment?: true
-  paymentsMigrated?: true
+  refundedAmount?: true
+  refundTransactionId?: true
+  refundedAt?: true
   targetContractId?: true
   createdAt?: true
   reviewedAt?: true
@@ -180,7 +190,9 @@ export type PropertyTransferRequestCountAggregateInputType = {
   sourceTotalAmount?: true
   targetTotalAmount?: true
   priceAdjustment?: true
-  paymentsMigrated?: true
+  refundedAmount?: true
+  refundTransactionId?: true
+  refundedAt?: true
   targetContractId?: true
   createdAt?: true
   reviewedAt?: true
@@ -289,7 +301,9 @@ export type PropertyTransferRequestGroupByOutputType = {
   sourceTotalAmount: number | null
   targetTotalAmount: number | null
   priceAdjustment: number | null
-  paymentsMigrated: number | null
+  refundedAmount: number | null
+  refundTransactionId: string | null
+  refundedAt: Date | null
   targetContractId: string | null
   createdAt: Date
   reviewedAt: Date | null
@@ -334,7 +348,9 @@ export type PropertyTransferRequestWhereInput = {
   sourceTotalAmount?: Prisma.FloatNullableFilter<"PropertyTransferRequest"> | number | null
   targetTotalAmount?: Prisma.FloatNullableFilter<"PropertyTransferRequest"> | number | null
   priceAdjustment?: Prisma.FloatNullableFilter<"PropertyTransferRequest"> | number | null
-  paymentsMigrated?: Prisma.IntNullableFilter<"PropertyTransferRequest"> | number | null
+  refundedAmount?: Prisma.FloatNullableFilter<"PropertyTransferRequest"> | number | null
+  refundTransactionId?: Prisma.StringNullableFilter<"PropertyTransferRequest"> | string | null
+  refundedAt?: Prisma.DateTimeNullableFilter<"PropertyTransferRequest"> | Date | string | null
   targetContractId?: Prisma.StringNullableFilter<"PropertyTransferRequest"> | string | null
   createdAt?: Prisma.DateTimeFilter<"PropertyTransferRequest"> | Date | string
   reviewedAt?: Prisma.DateTimeNullableFilter<"PropertyTransferRequest"> | Date | string | null
@@ -362,7 +378,9 @@ export type PropertyTransferRequestOrderByWithRelationInput = {
   sourceTotalAmount?: Prisma.SortOrderInput | Prisma.SortOrder
   targetTotalAmount?: Prisma.SortOrderInput | Prisma.SortOrder
   priceAdjustment?: Prisma.SortOrderInput | Prisma.SortOrder
-  paymentsMigrated?: Prisma.SortOrderInput | Prisma.SortOrder
+  refundedAmount?: Prisma.SortOrderInput | Prisma.SortOrder
+  refundTransactionId?: Prisma.SortOrderInput | Prisma.SortOrder
+  refundedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   targetContractId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   reviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -394,7 +412,9 @@ export type PropertyTransferRequestWhereUniqueInput = Prisma.AtLeast<{
   sourceTotalAmount?: Prisma.FloatNullableFilter<"PropertyTransferRequest"> | number | null
   targetTotalAmount?: Prisma.FloatNullableFilter<"PropertyTransferRequest"> | number | null
   priceAdjustment?: Prisma.FloatNullableFilter<"PropertyTransferRequest"> | number | null
-  paymentsMigrated?: Prisma.IntNullableFilter<"PropertyTransferRequest"> | number | null
+  refundedAmount?: Prisma.FloatNullableFilter<"PropertyTransferRequest"> | number | null
+  refundTransactionId?: Prisma.StringNullableFilter<"PropertyTransferRequest"> | string | null
+  refundedAt?: Prisma.DateTimeNullableFilter<"PropertyTransferRequest"> | Date | string | null
   targetContractId?: Prisma.StringNullableFilter<"PropertyTransferRequest"> | string | null
   createdAt?: Prisma.DateTimeFilter<"PropertyTransferRequest"> | Date | string
   reviewedAt?: Prisma.DateTimeNullableFilter<"PropertyTransferRequest"> | Date | string | null
@@ -422,7 +442,9 @@ export type PropertyTransferRequestOrderByWithAggregationInput = {
   sourceTotalAmount?: Prisma.SortOrderInput | Prisma.SortOrder
   targetTotalAmount?: Prisma.SortOrderInput | Prisma.SortOrder
   priceAdjustment?: Prisma.SortOrderInput | Prisma.SortOrder
-  paymentsMigrated?: Prisma.SortOrderInput | Prisma.SortOrder
+  refundedAmount?: Prisma.SortOrderInput | Prisma.SortOrder
+  refundTransactionId?: Prisma.SortOrderInput | Prisma.SortOrder
+  refundedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   targetContractId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   reviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -452,7 +474,9 @@ export type PropertyTransferRequestScalarWhereWithAggregatesInput = {
   sourceTotalAmount?: Prisma.FloatNullableWithAggregatesFilter<"PropertyTransferRequest"> | number | null
   targetTotalAmount?: Prisma.FloatNullableWithAggregatesFilter<"PropertyTransferRequest"> | number | null
   priceAdjustment?: Prisma.FloatNullableWithAggregatesFilter<"PropertyTransferRequest"> | number | null
-  paymentsMigrated?: Prisma.IntNullableWithAggregatesFilter<"PropertyTransferRequest"> | number | null
+  refundedAmount?: Prisma.FloatNullableWithAggregatesFilter<"PropertyTransferRequest"> | number | null
+  refundTransactionId?: Prisma.StringNullableWithAggregatesFilter<"PropertyTransferRequest"> | string | null
+  refundedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"PropertyTransferRequest"> | Date | string | null
   targetContractId?: Prisma.StringNullableWithAggregatesFilter<"PropertyTransferRequest"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"PropertyTransferRequest"> | Date | string
   reviewedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"PropertyTransferRequest"> | Date | string | null
@@ -469,7 +493,9 @@ export type PropertyTransferRequestCreateInput = {
   sourceTotalAmount?: number | null
   targetTotalAmount?: number | null
   priceAdjustment?: number | null
-  paymentsMigrated?: number | null
+  refundedAmount?: number | null
+  refundTransactionId?: string | null
+  refundedAt?: Date | string | null
   createdAt?: Date | string
   reviewedAt?: Date | string | null
   completedAt?: Date | string | null
@@ -496,7 +522,9 @@ export type PropertyTransferRequestUncheckedCreateInput = {
   sourceTotalAmount?: number | null
   targetTotalAmount?: number | null
   priceAdjustment?: number | null
-  paymentsMigrated?: number | null
+  refundedAmount?: number | null
+  refundTransactionId?: string | null
+  refundedAt?: Date | string | null
   targetContractId?: string | null
   createdAt?: Date | string
   reviewedAt?: Date | string | null
@@ -513,7 +541,9 @@ export type PropertyTransferRequestUpdateInput = {
   sourceTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   targetTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   priceAdjustment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paymentsMigrated?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  refundedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  refundTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -540,7 +570,9 @@ export type PropertyTransferRequestUncheckedUpdateInput = {
   sourceTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   targetTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   priceAdjustment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paymentsMigrated?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  refundedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  refundTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   targetContractId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -562,7 +594,9 @@ export type PropertyTransferRequestCreateManyInput = {
   sourceTotalAmount?: number | null
   targetTotalAmount?: number | null
   priceAdjustment?: number | null
-  paymentsMigrated?: number | null
+  refundedAmount?: number | null
+  refundTransactionId?: string | null
+  refundedAt?: Date | string | null
   targetContractId?: string | null
   createdAt?: Date | string
   reviewedAt?: Date | string | null
@@ -579,7 +613,9 @@ export type PropertyTransferRequestUpdateManyMutationInput = {
   sourceTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   targetTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   priceAdjustment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paymentsMigrated?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  refundedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  refundTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -600,7 +636,9 @@ export type PropertyTransferRequestUncheckedUpdateManyInput = {
   sourceTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   targetTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   priceAdjustment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paymentsMigrated?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  refundedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  refundTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   targetContractId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -638,7 +676,9 @@ export type PropertyTransferRequestCountOrderByAggregateInput = {
   sourceTotalAmount?: Prisma.SortOrder
   targetTotalAmount?: Prisma.SortOrder
   priceAdjustment?: Prisma.SortOrder
-  paymentsMigrated?: Prisma.SortOrder
+  refundedAmount?: Prisma.SortOrder
+  refundTransactionId?: Prisma.SortOrder
+  refundedAt?: Prisma.SortOrder
   targetContractId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   reviewedAt?: Prisma.SortOrder
@@ -650,7 +690,7 @@ export type PropertyTransferRequestAvgOrderByAggregateInput = {
   sourceTotalAmount?: Prisma.SortOrder
   targetTotalAmount?: Prisma.SortOrder
   priceAdjustment?: Prisma.SortOrder
-  paymentsMigrated?: Prisma.SortOrder
+  refundedAmount?: Prisma.SortOrder
 }
 
 export type PropertyTransferRequestMaxOrderByAggregateInput = {
@@ -667,7 +707,9 @@ export type PropertyTransferRequestMaxOrderByAggregateInput = {
   sourceTotalAmount?: Prisma.SortOrder
   targetTotalAmount?: Prisma.SortOrder
   priceAdjustment?: Prisma.SortOrder
-  paymentsMigrated?: Prisma.SortOrder
+  refundedAmount?: Prisma.SortOrder
+  refundTransactionId?: Prisma.SortOrder
+  refundedAt?: Prisma.SortOrder
   targetContractId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   reviewedAt?: Prisma.SortOrder
@@ -689,7 +731,9 @@ export type PropertyTransferRequestMinOrderByAggregateInput = {
   sourceTotalAmount?: Prisma.SortOrder
   targetTotalAmount?: Prisma.SortOrder
   priceAdjustment?: Prisma.SortOrder
-  paymentsMigrated?: Prisma.SortOrder
+  refundedAmount?: Prisma.SortOrder
+  refundTransactionId?: Prisma.SortOrder
+  refundedAt?: Prisma.SortOrder
   targetContractId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   reviewedAt?: Prisma.SortOrder
@@ -701,7 +745,7 @@ export type PropertyTransferRequestSumOrderByAggregateInput = {
   sourceTotalAmount?: Prisma.SortOrder
   targetTotalAmount?: Prisma.SortOrder
   priceAdjustment?: Prisma.SortOrder
-  paymentsMigrated?: Prisma.SortOrder
+  refundedAmount?: Prisma.SortOrder
 }
 
 export type PropertyTransferRequestCreateNestedManyWithoutRequestedByInput = {
@@ -969,7 +1013,9 @@ export type PropertyTransferRequestCreateWithoutRequestedByInput = {
   sourceTotalAmount?: number | null
   targetTotalAmount?: number | null
   priceAdjustment?: number | null
-  paymentsMigrated?: number | null
+  refundedAmount?: number | null
+  refundTransactionId?: string | null
+  refundedAt?: Date | string | null
   createdAt?: Date | string
   reviewedAt?: Date | string | null
   completedAt?: Date | string | null
@@ -994,7 +1040,9 @@ export type PropertyTransferRequestUncheckedCreateWithoutRequestedByInput = {
   sourceTotalAmount?: number | null
   targetTotalAmount?: number | null
   priceAdjustment?: number | null
-  paymentsMigrated?: number | null
+  refundedAmount?: number | null
+  refundTransactionId?: string | null
+  refundedAt?: Date | string | null
   targetContractId?: string | null
   createdAt?: Date | string
   reviewedAt?: Date | string | null
@@ -1021,7 +1069,9 @@ export type PropertyTransferRequestCreateWithoutReviewedByInput = {
   sourceTotalAmount?: number | null
   targetTotalAmount?: number | null
   priceAdjustment?: number | null
-  paymentsMigrated?: number | null
+  refundedAmount?: number | null
+  refundTransactionId?: string | null
+  refundedAt?: Date | string | null
   createdAt?: Date | string
   reviewedAt?: Date | string | null
   completedAt?: Date | string | null
@@ -1046,7 +1096,9 @@ export type PropertyTransferRequestUncheckedCreateWithoutReviewedByInput = {
   sourceTotalAmount?: number | null
   targetTotalAmount?: number | null
   priceAdjustment?: number | null
-  paymentsMigrated?: number | null
+  refundedAmount?: number | null
+  refundTransactionId?: string | null
+  refundedAt?: Date | string | null
   targetContractId?: string | null
   createdAt?: Date | string
   reviewedAt?: Date | string | null
@@ -1097,7 +1149,9 @@ export type PropertyTransferRequestScalarWhereInput = {
   sourceTotalAmount?: Prisma.FloatNullableFilter<"PropertyTransferRequest"> | number | null
   targetTotalAmount?: Prisma.FloatNullableFilter<"PropertyTransferRequest"> | number | null
   priceAdjustment?: Prisma.FloatNullableFilter<"PropertyTransferRequest"> | number | null
-  paymentsMigrated?: Prisma.IntNullableFilter<"PropertyTransferRequest"> | number | null
+  refundedAmount?: Prisma.FloatNullableFilter<"PropertyTransferRequest"> | number | null
+  refundTransactionId?: Prisma.StringNullableFilter<"PropertyTransferRequest"> | string | null
+  refundedAt?: Prisma.DateTimeNullableFilter<"PropertyTransferRequest"> | Date | string | null
   targetContractId?: Prisma.StringNullableFilter<"PropertyTransferRequest"> | string | null
   createdAt?: Prisma.DateTimeFilter<"PropertyTransferRequest"> | Date | string
   reviewedAt?: Prisma.DateTimeNullableFilter<"PropertyTransferRequest"> | Date | string | null
@@ -1130,7 +1184,9 @@ export type PropertyTransferRequestCreateWithoutTenantInput = {
   sourceTotalAmount?: number | null
   targetTotalAmount?: number | null
   priceAdjustment?: number | null
-  paymentsMigrated?: number | null
+  refundedAmount?: number | null
+  refundTransactionId?: string | null
+  refundedAt?: Date | string | null
   createdAt?: Date | string
   reviewedAt?: Date | string | null
   completedAt?: Date | string | null
@@ -1155,7 +1211,9 @@ export type PropertyTransferRequestUncheckedCreateWithoutTenantInput = {
   sourceTotalAmount?: number | null
   targetTotalAmount?: number | null
   priceAdjustment?: number | null
-  paymentsMigrated?: number | null
+  refundedAmount?: number | null
+  refundTransactionId?: string | null
+  refundedAt?: Date | string | null
   targetContractId?: string | null
   createdAt?: Date | string
   reviewedAt?: Date | string | null
@@ -1198,7 +1256,9 @@ export type PropertyTransferRequestCreateWithoutTargetPropertyUnitInput = {
   sourceTotalAmount?: number | null
   targetTotalAmount?: number | null
   priceAdjustment?: number | null
-  paymentsMigrated?: number | null
+  refundedAmount?: number | null
+  refundTransactionId?: string | null
+  refundedAt?: Date | string | null
   createdAt?: Date | string
   reviewedAt?: Date | string | null
   completedAt?: Date | string | null
@@ -1223,7 +1283,9 @@ export type PropertyTransferRequestUncheckedCreateWithoutTargetPropertyUnitInput
   sourceTotalAmount?: number | null
   targetTotalAmount?: number | null
   priceAdjustment?: number | null
-  paymentsMigrated?: number | null
+  refundedAmount?: number | null
+  refundTransactionId?: string | null
+  refundedAt?: Date | string | null
   targetContractId?: string | null
   createdAt?: Date | string
   reviewedAt?: Date | string | null
@@ -1266,7 +1328,9 @@ export type PropertyTransferRequestCreateWithoutSourceContractInput = {
   sourceTotalAmount?: number | null
   targetTotalAmount?: number | null
   priceAdjustment?: number | null
-  paymentsMigrated?: number | null
+  refundedAmount?: number | null
+  refundTransactionId?: string | null
+  refundedAt?: Date | string | null
   createdAt?: Date | string
   reviewedAt?: Date | string | null
   completedAt?: Date | string | null
@@ -1291,7 +1355,9 @@ export type PropertyTransferRequestUncheckedCreateWithoutSourceContractInput = {
   sourceTotalAmount?: number | null
   targetTotalAmount?: number | null
   priceAdjustment?: number | null
-  paymentsMigrated?: number | null
+  refundedAmount?: number | null
+  refundTransactionId?: string | null
+  refundedAt?: Date | string | null
   targetContractId?: string | null
   createdAt?: Date | string
   reviewedAt?: Date | string | null
@@ -1318,7 +1384,9 @@ export type PropertyTransferRequestCreateWithoutTargetContractInput = {
   sourceTotalAmount?: number | null
   targetTotalAmount?: number | null
   priceAdjustment?: number | null
-  paymentsMigrated?: number | null
+  refundedAmount?: number | null
+  refundTransactionId?: string | null
+  refundedAt?: Date | string | null
   createdAt?: Date | string
   reviewedAt?: Date | string | null
   completedAt?: Date | string | null
@@ -1344,7 +1412,9 @@ export type PropertyTransferRequestUncheckedCreateWithoutTargetContractInput = {
   sourceTotalAmount?: number | null
   targetTotalAmount?: number | null
   priceAdjustment?: number | null
-  paymentsMigrated?: number | null
+  refundedAmount?: number | null
+  refundTransactionId?: string | null
+  refundedAt?: Date | string | null
   createdAt?: Date | string
   reviewedAt?: Date | string | null
   completedAt?: Date | string | null
@@ -1406,7 +1476,9 @@ export type PropertyTransferRequestCreateManyRequestedByInput = {
   sourceTotalAmount?: number | null
   targetTotalAmount?: number | null
   priceAdjustment?: number | null
-  paymentsMigrated?: number | null
+  refundedAmount?: number | null
+  refundTransactionId?: string | null
+  refundedAt?: Date | string | null
   targetContractId?: string | null
   createdAt?: Date | string
   reviewedAt?: Date | string | null
@@ -1427,7 +1499,9 @@ export type PropertyTransferRequestCreateManyReviewedByInput = {
   sourceTotalAmount?: number | null
   targetTotalAmount?: number | null
   priceAdjustment?: number | null
-  paymentsMigrated?: number | null
+  refundedAmount?: number | null
+  refundTransactionId?: string | null
+  refundedAt?: Date | string | null
   targetContractId?: string | null
   createdAt?: Date | string
   reviewedAt?: Date | string | null
@@ -1444,7 +1518,9 @@ export type PropertyTransferRequestUpdateWithoutRequestedByInput = {
   sourceTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   targetTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   priceAdjustment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paymentsMigrated?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  refundedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  refundTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1469,7 +1545,9 @@ export type PropertyTransferRequestUncheckedUpdateWithoutRequestedByInput = {
   sourceTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   targetTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   priceAdjustment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paymentsMigrated?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  refundedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  refundTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   targetContractId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1490,7 +1568,9 @@ export type PropertyTransferRequestUncheckedUpdateManyWithoutRequestedByInput = 
   sourceTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   targetTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   priceAdjustment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paymentsMigrated?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  refundedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  refundTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   targetContractId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1507,7 +1587,9 @@ export type PropertyTransferRequestUpdateWithoutReviewedByInput = {
   sourceTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   targetTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   priceAdjustment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paymentsMigrated?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  refundedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  refundTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1532,7 +1614,9 @@ export type PropertyTransferRequestUncheckedUpdateWithoutReviewedByInput = {
   sourceTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   targetTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   priceAdjustment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paymentsMigrated?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  refundedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  refundTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   targetContractId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1553,7 +1637,9 @@ export type PropertyTransferRequestUncheckedUpdateManyWithoutReviewedByInput = {
   sourceTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   targetTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   priceAdjustment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paymentsMigrated?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  refundedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  refundTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   targetContractId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1574,7 +1660,9 @@ export type PropertyTransferRequestCreateManyTenantInput = {
   sourceTotalAmount?: number | null
   targetTotalAmount?: number | null
   priceAdjustment?: number | null
-  paymentsMigrated?: number | null
+  refundedAmount?: number | null
+  refundTransactionId?: string | null
+  refundedAt?: Date | string | null
   targetContractId?: string | null
   createdAt?: Date | string
   reviewedAt?: Date | string | null
@@ -1591,7 +1679,9 @@ export type PropertyTransferRequestUpdateWithoutTenantInput = {
   sourceTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   targetTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   priceAdjustment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paymentsMigrated?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  refundedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  refundTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1616,7 +1706,9 @@ export type PropertyTransferRequestUncheckedUpdateWithoutTenantInput = {
   sourceTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   targetTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   priceAdjustment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paymentsMigrated?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  refundedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  refundTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   targetContractId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1637,7 +1729,9 @@ export type PropertyTransferRequestUncheckedUpdateManyWithoutTenantInput = {
   sourceTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   targetTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   priceAdjustment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paymentsMigrated?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  refundedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  refundTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   targetContractId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1658,7 +1752,9 @@ export type PropertyTransferRequestCreateManyTargetPropertyUnitInput = {
   sourceTotalAmount?: number | null
   targetTotalAmount?: number | null
   priceAdjustment?: number | null
-  paymentsMigrated?: number | null
+  refundedAmount?: number | null
+  refundTransactionId?: string | null
+  refundedAt?: Date | string | null
   targetContractId?: string | null
   createdAt?: Date | string
   reviewedAt?: Date | string | null
@@ -1675,7 +1771,9 @@ export type PropertyTransferRequestUpdateWithoutTargetPropertyUnitInput = {
   sourceTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   targetTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   priceAdjustment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paymentsMigrated?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  refundedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  refundTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1700,7 +1798,9 @@ export type PropertyTransferRequestUncheckedUpdateWithoutTargetPropertyUnitInput
   sourceTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   targetTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   priceAdjustment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paymentsMigrated?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  refundedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  refundTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   targetContractId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1721,7 +1821,9 @@ export type PropertyTransferRequestUncheckedUpdateManyWithoutTargetPropertyUnitI
   sourceTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   targetTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   priceAdjustment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paymentsMigrated?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  refundedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  refundTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   targetContractId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1742,7 +1844,9 @@ export type PropertyTransferRequestCreateManySourceContractInput = {
   sourceTotalAmount?: number | null
   targetTotalAmount?: number | null
   priceAdjustment?: number | null
-  paymentsMigrated?: number | null
+  refundedAmount?: number | null
+  refundTransactionId?: string | null
+  refundedAt?: Date | string | null
   targetContractId?: string | null
   createdAt?: Date | string
   reviewedAt?: Date | string | null
@@ -1764,7 +1868,9 @@ export type PropertyTransferRequestCreateManyTargetContractInput = {
   sourceTotalAmount?: number | null
   targetTotalAmount?: number | null
   priceAdjustment?: number | null
-  paymentsMigrated?: number | null
+  refundedAmount?: number | null
+  refundTransactionId?: string | null
+  refundedAt?: Date | string | null
   createdAt?: Date | string
   reviewedAt?: Date | string | null
   completedAt?: Date | string | null
@@ -1780,7 +1886,9 @@ export type PropertyTransferRequestUpdateWithoutSourceContractInput = {
   sourceTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   targetTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   priceAdjustment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paymentsMigrated?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  refundedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  refundTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1805,7 +1913,9 @@ export type PropertyTransferRequestUncheckedUpdateWithoutSourceContractInput = {
   sourceTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   targetTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   priceAdjustment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paymentsMigrated?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  refundedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  refundTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   targetContractId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1826,7 +1936,9 @@ export type PropertyTransferRequestUncheckedUpdateManyWithoutSourceContractInput
   sourceTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   targetTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   priceAdjustment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paymentsMigrated?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  refundedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  refundTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   targetContractId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1843,7 +1955,9 @@ export type PropertyTransferRequestUpdateWithoutTargetContractInput = {
   sourceTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   targetTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   priceAdjustment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paymentsMigrated?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  refundedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  refundTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1869,7 +1983,9 @@ export type PropertyTransferRequestUncheckedUpdateWithoutTargetContractInput = {
   sourceTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   targetTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   priceAdjustment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paymentsMigrated?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  refundedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  refundTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1890,7 +2006,9 @@ export type PropertyTransferRequestUncheckedUpdateManyWithoutTargetContractInput
   sourceTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   targetTotalAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   priceAdjustment?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  paymentsMigrated?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  refundedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  refundTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1913,7 +2031,9 @@ export type PropertyTransferRequestSelect<ExtArgs extends runtime.Types.Extensio
   sourceTotalAmount?: boolean
   targetTotalAmount?: boolean
   priceAdjustment?: boolean
-  paymentsMigrated?: boolean
+  refundedAmount?: boolean
+  refundTransactionId?: boolean
+  refundedAt?: boolean
   targetContractId?: boolean
   createdAt?: boolean
   reviewedAt?: boolean
@@ -1943,7 +2063,9 @@ export type PropertyTransferRequestSelectScalar = {
   sourceTotalAmount?: boolean
   targetTotalAmount?: boolean
   priceAdjustment?: boolean
-  paymentsMigrated?: boolean
+  refundedAmount?: boolean
+  refundTransactionId?: boolean
+  refundedAt?: boolean
   targetContractId?: boolean
   createdAt?: boolean
   reviewedAt?: boolean
@@ -1951,7 +2073,7 @@ export type PropertyTransferRequestSelectScalar = {
   updatedAt?: boolean
 }
 
-export type PropertyTransferRequestOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "sourceContractId" | "targetPropertyUnitId" | "requestedById" | "reviewedById" | "status" | "reason" | "reviewNotes" | "priceAdjustmentHandling" | "sourceTotalAmount" | "targetTotalAmount" | "priceAdjustment" | "paymentsMigrated" | "targetContractId" | "createdAt" | "reviewedAt" | "completedAt" | "updatedAt", ExtArgs["result"]["propertyTransferRequest"]>
+export type PropertyTransferRequestOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "sourceContractId" | "targetPropertyUnitId" | "requestedById" | "reviewedById" | "status" | "reason" | "reviewNotes" | "priceAdjustmentHandling" | "sourceTotalAmount" | "targetTotalAmount" | "priceAdjustment" | "refundedAmount" | "refundTransactionId" | "refundedAt" | "targetContractId" | "createdAt" | "reviewedAt" | "completedAt" | "updatedAt", ExtArgs["result"]["propertyTransferRequest"]>
 export type PropertyTransferRequestInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   sourceContract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
@@ -1985,7 +2107,9 @@ export type $PropertyTransferRequestPayload<ExtArgs extends runtime.Types.Extens
     sourceTotalAmount: number | null
     targetTotalAmount: number | null
     priceAdjustment: number | null
-    paymentsMigrated: number | null
+    refundedAmount: number | null
+    refundTransactionId: string | null
+    refundedAt: Date | null
     targetContractId: string | null
     createdAt: Date
     reviewedAt: Date | null
@@ -2379,7 +2503,9 @@ export interface PropertyTransferRequestFieldRefs {
   readonly sourceTotalAmount: Prisma.FieldRef<"PropertyTransferRequest", 'Float'>
   readonly targetTotalAmount: Prisma.FieldRef<"PropertyTransferRequest", 'Float'>
   readonly priceAdjustment: Prisma.FieldRef<"PropertyTransferRequest", 'Float'>
-  readonly paymentsMigrated: Prisma.FieldRef<"PropertyTransferRequest", 'Int'>
+  readonly refundedAmount: Prisma.FieldRef<"PropertyTransferRequest", 'Float'>
+  readonly refundTransactionId: Prisma.FieldRef<"PropertyTransferRequest", 'String'>
+  readonly refundedAt: Prisma.FieldRef<"PropertyTransferRequest", 'DateTime'>
   readonly targetContractId: Prisma.FieldRef<"PropertyTransferRequest", 'String'>
   readonly createdAt: Prisma.FieldRef<"PropertyTransferRequest", 'DateTime'>
   readonly reviewedAt: Prisma.FieldRef<"PropertyTransferRequest", 'DateTime'>

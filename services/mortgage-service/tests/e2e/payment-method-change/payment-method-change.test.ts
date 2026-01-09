@@ -343,11 +343,7 @@ describe('Payment Method Change Flow', () => {
                     title: 'Payment Method Change Test Contract - Unit 22A',
                     contractType: 'MORTGAGE',
                     totalAmount: propertyPrice,
-                    downPayment: propertyPrice * 0.1, // ₦5M
-                    downPaymentPaid: propertyPrice * 0.1, // Fully paid
-                    totalPaidToDate: propertyPrice * 0.1, // Downpayment paid
                     status: 'ACTIVE', // Contract is active
-                    state: 'ACTIVE',
                     startDate: new Date(),
                     signedAt: new Date(),
                 },
@@ -355,22 +351,28 @@ describe('Payment Method Change Flow', () => {
             contractId = contract.id;
 
             // Create downpayment phase (COMPLETED)
-            await prisma.contractPhase.create({
+            const downpaymentPhase = await prisma.contractPhase.create({
                 data: {
                     id: faker.string.uuid(),
                     contractId,
-                    paymentPlanId: downpaymentPlanId,
                     name: '10% Downpayment',
                     phaseCategory: 'PAYMENT',
                     phaseType: 'DOWNPAYMENT',
                     order: 1,
                     status: 'COMPLETED',
-                    totalAmount: propertyPrice * 0.1,
-                    paidAmount: propertyPrice * 0.1,
-                    remainingAmount: 0,
-                    collectFunds: true,
                     activatedAt: new Date(),
                     completedAt: new Date(),
+                },
+            });
+
+            // Create PaymentPhase extension for downpayment
+            await prisma.paymentPhase.create({
+                data: {
+                    phaseId: downpaymentPhase.id,
+                    paymentPlanId: downpaymentPlanId,
+                    totalAmount: propertyPrice * 0.1,
+                    paidAmount: propertyPrice * 0.1,
+                    collectFunds: true,
                 },
             });
 
@@ -379,21 +381,27 @@ describe('Payment Method Change Flow', () => {
                 data: {
                     id: faker.string.uuid(),
                     contractId,
-                    paymentPlanId: originalMortgagePlanId,
                     name: '90% Mortgage (20 Years)',
                     phaseCategory: 'PAYMENT',
                     phaseType: 'MORTGAGE',
                     order: 2,
                     status: 'ACTIVE',
-                    totalAmount: propertyPrice * 0.9, // ₦45M
-                    paidAmount: 0,
-                    remainingAmount: propertyPrice * 0.9,
-                    interestRate: originalInterestRate,
-                    collectFunds: true,
                     activatedAt: new Date(),
                 },
             });
             mortgagePhaseId = mortgagePhase.id;
+
+            // Create PaymentPhase extension for mortgage
+            await prisma.paymentPhase.create({
+                data: {
+                    phaseId: mortgagePhase.id,
+                    paymentPlanId: originalMortgagePlanId,
+                    totalAmount: propertyPrice * 0.9, // ₦45M
+                    paidAmount: 0,
+                    interestRate: originalInterestRate,
+                    collectFunds: true,
+                },
+            });
 
             // Verify contract was created correctly
             const contractCheck = await prisma.contract.findUnique({
@@ -775,11 +783,7 @@ describe('Payment Method Change - Alternative Flows', () => {
                 title: 'Alt Flow Test Contract',
                 contractType: 'PURCHASE',
                 totalAmount: 10_000_000,
-                downPayment: 1_000_000,
-                downPaymentPaid: 1_000_000,
-                totalPaidToDate: 1_000_000,
                 status: 'ACTIVE',
-                state: 'ACTIVE',
                 startDate: new Date(),
                 signedAt: new Date(),
             },
@@ -787,21 +791,27 @@ describe('Payment Method Change - Alternative Flows', () => {
         contractId = contract.id;
 
         // Create a payment phase in ACTIVE state
-        await prisma.contractPhase.create({
+        const paymentPhaseRecord = await prisma.contractPhase.create({
             data: {
                 id: faker.string.uuid(),
                 contractId,
-                paymentPlanId: origPlan.id,
                 name: 'Payment Phase',
                 phaseCategory: 'PAYMENT',
                 phaseType: 'MORTGAGE',
                 order: 1,
                 status: 'ACTIVE',
+                activatedAt: new Date(),
+            },
+        });
+
+        // Create PaymentPhase extension
+        await prisma.paymentPhase.create({
+            data: {
+                phaseId: paymentPhaseRecord.id,
+                paymentPlanId: origPlan.id,
                 totalAmount: 9_000_000,
                 paidAmount: 0,
-                remainingAmount: 9_000_000,
                 collectFunds: true,
-                activatedAt: new Date(),
             },
         });
     });

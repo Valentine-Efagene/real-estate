@@ -417,9 +417,14 @@ export const ModelName = {
   PaymentMethodPhaseStep: 'PaymentMethodPhaseStep',
   StepEventAttachment: 'StepEventAttachment',
   PaymentMethodPhaseDocument: 'PaymentMethodPhaseDocument',
+  PaymentMethodPhaseField: 'PaymentMethodPhaseField',
   Contract: 'Contract',
   ContractRefund: 'ContractRefund',
   ContractPhase: 'ContractPhase',
+  QuestionnairePhase: 'QuestionnairePhase',
+  DocumentationPhase: 'DocumentationPhase',
+  PaymentPhase: 'PaymentPhase',
+  QuestionnaireField: 'QuestionnaireField',
   ContractEvent: 'ContractEvent',
   DocumentationStep: 'DocumentationStep',
   DocumentationStepDocument: 'DocumentationStepDocument',
@@ -455,7 +460,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "contract" | "contractRefund" | "contractPhase" | "contractEvent" | "documentationStep" | "documentationStepDocument" | "documentationStepApproval" | "contractInstallment" | "contractPayment" | "contractDocument" | "documentTemplate" | "offerLetter" | "contractTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "workflowEvent" | "eventHandlerExecution" | "domainEvent" | "propertyTransferRequest" | "approvalRequest"
+    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "paymentMethodPhaseField" | "contract" | "contractRefund" | "contractPhase" | "questionnairePhase" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "contractEvent" | "documentationStep" | "documentationStepDocument" | "documentationStepApproval" | "contractInstallment" | "contractPayment" | "contractDocument" | "documentTemplate" | "offerLetter" | "contractTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "workflowEvent" | "eventHandlerExecution" | "domainEvent" | "propertyTransferRequest" | "approvalRequest"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2637,6 +2642,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    PaymentMethodPhaseField: {
+      payload: Prisma.$PaymentMethodPhaseFieldPayload<ExtArgs>
+      fields: Prisma.PaymentMethodPhaseFieldFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PaymentMethodPhaseFieldFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseFieldPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PaymentMethodPhaseFieldFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseFieldPayload>
+        }
+        findFirst: {
+          args: Prisma.PaymentMethodPhaseFieldFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseFieldPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PaymentMethodPhaseFieldFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseFieldPayload>
+        }
+        findMany: {
+          args: Prisma.PaymentMethodPhaseFieldFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseFieldPayload>[]
+        }
+        create: {
+          args: Prisma.PaymentMethodPhaseFieldCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseFieldPayload>
+        }
+        createMany: {
+          args: Prisma.PaymentMethodPhaseFieldCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.PaymentMethodPhaseFieldDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseFieldPayload>
+        }
+        update: {
+          args: Prisma.PaymentMethodPhaseFieldUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseFieldPayload>
+        }
+        deleteMany: {
+          args: Prisma.PaymentMethodPhaseFieldDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PaymentMethodPhaseFieldUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.PaymentMethodPhaseFieldUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentMethodPhaseFieldPayload>
+        }
+        aggregate: {
+          args: Prisma.PaymentMethodPhaseFieldAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePaymentMethodPhaseField>
+        }
+        groupBy: {
+          args: Prisma.PaymentMethodPhaseFieldGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaymentMethodPhaseFieldGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PaymentMethodPhaseFieldCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaymentMethodPhaseFieldCountAggregateOutputType> | number
+        }
+      }
+    }
     Contract: {
       payload: Prisma.$ContractPayload<ExtArgs>
       fields: Prisma.ContractFieldRefs
@@ -2832,6 +2903,270 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.ContractPhaseCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.ContractPhaseCountAggregateOutputType> | number
+        }
+      }
+    }
+    QuestionnairePhase: {
+      payload: Prisma.$QuestionnairePhasePayload<ExtArgs>
+      fields: Prisma.QuestionnairePhaseFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.QuestionnairePhaseFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePhasePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.QuestionnairePhaseFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePhasePayload>
+        }
+        findFirst: {
+          args: Prisma.QuestionnairePhaseFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePhasePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.QuestionnairePhaseFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePhasePayload>
+        }
+        findMany: {
+          args: Prisma.QuestionnairePhaseFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePhasePayload>[]
+        }
+        create: {
+          args: Prisma.QuestionnairePhaseCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePhasePayload>
+        }
+        createMany: {
+          args: Prisma.QuestionnairePhaseCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.QuestionnairePhaseDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePhasePayload>
+        }
+        update: {
+          args: Prisma.QuestionnairePhaseUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePhasePayload>
+        }
+        deleteMany: {
+          args: Prisma.QuestionnairePhaseDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.QuestionnairePhaseUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.QuestionnairePhaseUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePhasePayload>
+        }
+        aggregate: {
+          args: Prisma.QuestionnairePhaseAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateQuestionnairePhase>
+        }
+        groupBy: {
+          args: Prisma.QuestionnairePhaseGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.QuestionnairePhaseGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.QuestionnairePhaseCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.QuestionnairePhaseCountAggregateOutputType> | number
+        }
+      }
+    }
+    DocumentationPhase: {
+      payload: Prisma.$DocumentationPhasePayload<ExtArgs>
+      fields: Prisma.DocumentationPhaseFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DocumentationPhaseFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPhasePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DocumentationPhaseFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPhasePayload>
+        }
+        findFirst: {
+          args: Prisma.DocumentationPhaseFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPhasePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DocumentationPhaseFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPhasePayload>
+        }
+        findMany: {
+          args: Prisma.DocumentationPhaseFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPhasePayload>[]
+        }
+        create: {
+          args: Prisma.DocumentationPhaseCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPhasePayload>
+        }
+        createMany: {
+          args: Prisma.DocumentationPhaseCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.DocumentationPhaseDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPhasePayload>
+        }
+        update: {
+          args: Prisma.DocumentationPhaseUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPhasePayload>
+        }
+        deleteMany: {
+          args: Prisma.DocumentationPhaseDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DocumentationPhaseUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.DocumentationPhaseUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPhasePayload>
+        }
+        aggregate: {
+          args: Prisma.DocumentationPhaseAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDocumentationPhase>
+        }
+        groupBy: {
+          args: Prisma.DocumentationPhaseGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentationPhaseGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DocumentationPhaseCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentationPhaseCountAggregateOutputType> | number
+        }
+      }
+    }
+    PaymentPhase: {
+      payload: Prisma.$PaymentPhasePayload<ExtArgs>
+      fields: Prisma.PaymentPhaseFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PaymentPhaseFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPhasePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PaymentPhaseFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPhasePayload>
+        }
+        findFirst: {
+          args: Prisma.PaymentPhaseFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPhasePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PaymentPhaseFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPhasePayload>
+        }
+        findMany: {
+          args: Prisma.PaymentPhaseFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPhasePayload>[]
+        }
+        create: {
+          args: Prisma.PaymentPhaseCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPhasePayload>
+        }
+        createMany: {
+          args: Prisma.PaymentPhaseCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.PaymentPhaseDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPhasePayload>
+        }
+        update: {
+          args: Prisma.PaymentPhaseUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPhasePayload>
+        }
+        deleteMany: {
+          args: Prisma.PaymentPhaseDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PaymentPhaseUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.PaymentPhaseUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPhasePayload>
+        }
+        aggregate: {
+          args: Prisma.PaymentPhaseAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePaymentPhase>
+        }
+        groupBy: {
+          args: Prisma.PaymentPhaseGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaymentPhaseGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PaymentPhaseCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaymentPhaseCountAggregateOutputType> | number
+        }
+      }
+    }
+    QuestionnaireField: {
+      payload: Prisma.$QuestionnaireFieldPayload<ExtArgs>
+      fields: Prisma.QuestionnaireFieldFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.QuestionnaireFieldFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnaireFieldPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.QuestionnaireFieldFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnaireFieldPayload>
+        }
+        findFirst: {
+          args: Prisma.QuestionnaireFieldFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnaireFieldPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.QuestionnaireFieldFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnaireFieldPayload>
+        }
+        findMany: {
+          args: Prisma.QuestionnaireFieldFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnaireFieldPayload>[]
+        }
+        create: {
+          args: Prisma.QuestionnaireFieldCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnaireFieldPayload>
+        }
+        createMany: {
+          args: Prisma.QuestionnaireFieldCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.QuestionnaireFieldDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnaireFieldPayload>
+        }
+        update: {
+          args: Prisma.QuestionnaireFieldUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnaireFieldPayload>
+        }
+        deleteMany: {
+          args: Prisma.QuestionnaireFieldDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.QuestionnaireFieldUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.QuestionnaireFieldUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnaireFieldPayload>
+        }
+        aggregate: {
+          args: Prisma.QuestionnaireFieldAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateQuestionnaireField>
+        }
+        groupBy: {
+          args: Prisma.QuestionnaireFieldGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.QuestionnaireFieldGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.QuestionnaireFieldCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.QuestionnaireFieldCountAggregateOutputType> | number
         }
       }
     }
@@ -4672,6 +5007,26 @@ export const PaymentMethodPhaseDocumentScalarFieldEnum = {
 export type PaymentMethodPhaseDocumentScalarFieldEnum = (typeof PaymentMethodPhaseDocumentScalarFieldEnum)[keyof typeof PaymentMethodPhaseDocumentScalarFieldEnum]
 
 
+export const PaymentMethodPhaseFieldScalarFieldEnum = {
+  id: 'id',
+  phaseId: 'phaseId',
+  name: 'name',
+  label: 'label',
+  description: 'description',
+  placeholder: 'placeholder',
+  fieldType: 'fieldType',
+  isRequired: 'isRequired',
+  order: 'order',
+  validation: 'validation',
+  displayCondition: 'displayCondition',
+  defaultValue: 'defaultValue',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PaymentMethodPhaseFieldScalarFieldEnum = (typeof PaymentMethodPhaseFieldScalarFieldEnum)[keyof typeof PaymentMethodPhaseFieldScalarFieldEnum]
+
+
 export const ContractScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -4684,21 +5039,7 @@ export const ContractScalarFieldEnum = {
   description: 'description',
   contractType: 'contractType',
   totalAmount: 'totalAmount',
-  downPayment: 'downPayment',
-  downPaymentPaid: 'downPaymentPaid',
-  principal: 'principal',
-  interestRate: 'interestRate',
-  termMonths: 'termMonths',
-  periodicPayment: 'periodicPayment',
-  totalPaidToDate: 'totalPaidToDate',
-  totalInterestPaid: 'totalInterestPaid',
-  monthlyIncome: 'monthlyIncome',
-  monthlyExpenses: 'monthlyExpenses',
-  preApprovalAnswers: 'preApprovalAnswers',
-  underwritingScore: 'underwritingScore',
-  debtToIncomeRatio: 'debtToIncomeRatio',
   status: 'status',
-  state: 'state',
   currentPhaseId: 'currentPhaseId',
   nextPaymentDueDate: 'nextPaymentDueDate',
   lastReminderSentAt: 'lastReminderSentAt',
@@ -4746,39 +5087,100 @@ export type ContractRefundScalarFieldEnum = (typeof ContractRefundScalarFieldEnu
 export const ContractPhaseScalarFieldEnum = {
   id: 'id',
   contractId: 'contractId',
-  paymentPlanId: 'paymentPlanId',
   name: 'name',
   description: 'description',
   phaseCategory: 'phaseCategory',
   phaseType: 'phaseType',
   order: 'order',
   status: 'status',
-  currentStepId: 'currentStepId',
-  totalAmount: 'totalAmount',
-  paidAmount: 'paidAmount',
-  remainingAmount: 'remainingAmount',
-  interestRate: 'interestRate',
-  collectFunds: 'collectFunds',
-  approvedDocumentsCount: 'approvedDocumentsCount',
-  requiredDocumentsCount: 'requiredDocumentsCount',
-  completedStepsCount: 'completedStepsCount',
-  totalStepsCount: 'totalStepsCount',
   dueDate: 'dueDate',
   startDate: 'startDate',
   endDate: 'endDate',
   activatedAt: 'activatedAt',
   completedAt: 'completedAt',
   requiresPreviousPhaseCompletion: 'requiresPreviousPhaseCompletion',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ContractPhaseScalarFieldEnum = (typeof ContractPhaseScalarFieldEnum)[keyof typeof ContractPhaseScalarFieldEnum]
+
+
+export const QuestionnairePhaseScalarFieldEnum = {
+  id: 'id',
+  phaseId: 'phaseId',
+  completedFieldsCount: 'completedFieldsCount',
+  totalFieldsCount: 'totalFieldsCount',
+  underwritingScore: 'underwritingScore',
+  debtToIncomeRatio: 'debtToIncomeRatio',
+  underwritingDecision: 'underwritingDecision',
+  underwritingNotes: 'underwritingNotes',
+  fieldsSnapshot: 'fieldsSnapshot',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type QuestionnairePhaseScalarFieldEnum = (typeof QuestionnairePhaseScalarFieldEnum)[keyof typeof QuestionnairePhaseScalarFieldEnum]
+
+
+export const DocumentationPhaseScalarFieldEnum = {
+  id: 'id',
+  phaseId: 'phaseId',
+  currentStepId: 'currentStepId',
+  approvedDocumentsCount: 'approvedDocumentsCount',
+  requiredDocumentsCount: 'requiredDocumentsCount',
+  completedStepsCount: 'completedStepsCount',
+  totalStepsCount: 'totalStepsCount',
   minimumCompletionPercentage: 'minimumCompletionPercentage',
   completionCriterion: 'completionCriterion',
-  paymentPlanSnapshot: 'paymentPlanSnapshot',
   stepDefinitionsSnapshot: 'stepDefinitionsSnapshot',
   requiredDocumentSnapshot: 'requiredDocumentSnapshot',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type ContractPhaseScalarFieldEnum = (typeof ContractPhaseScalarFieldEnum)[keyof typeof ContractPhaseScalarFieldEnum]
+export type DocumentationPhaseScalarFieldEnum = (typeof DocumentationPhaseScalarFieldEnum)[keyof typeof DocumentationPhaseScalarFieldEnum]
+
+
+export const PaymentPhaseScalarFieldEnum = {
+  id: 'id',
+  phaseId: 'phaseId',
+  paymentPlanId: 'paymentPlanId',
+  totalAmount: 'totalAmount',
+  paidAmount: 'paidAmount',
+  interestRate: 'interestRate',
+  collectFunds: 'collectFunds',
+  minimumCompletionPercentage: 'minimumCompletionPercentage',
+  paymentPlanSnapshot: 'paymentPlanSnapshot',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PaymentPhaseScalarFieldEnum = (typeof PaymentPhaseScalarFieldEnum)[keyof typeof PaymentPhaseScalarFieldEnum]
+
+
+export const QuestionnaireFieldScalarFieldEnum = {
+  id: 'id',
+  questionnairePhaseId: 'questionnairePhaseId',
+  name: 'name',
+  label: 'label',
+  description: 'description',
+  placeholder: 'placeholder',
+  fieldType: 'fieldType',
+  isRequired: 'isRequired',
+  order: 'order',
+  validation: 'validation',
+  displayCondition: 'displayCondition',
+  defaultValue: 'defaultValue',
+  answer: 'answer',
+  isValid: 'isValid',
+  validationErrors: 'validationErrors',
+  submittedAt: 'submittedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type QuestionnaireFieldScalarFieldEnum = (typeof QuestionnaireFieldScalarFieldEnum)[keyof typeof QuestionnaireFieldScalarFieldEnum]
 
 
 export const ContractEventScalarFieldEnum = {
@@ -4800,7 +5202,7 @@ export type ContractEventScalarFieldEnum = (typeof ContractEventScalarFieldEnum)
 
 export const DocumentationStepScalarFieldEnum = {
   id: 'id',
-  phaseId: 'phaseId',
+  documentationPhaseId: 'documentationPhaseId',
   name: 'name',
   description: 'description',
   stepType: 'stepType',
@@ -4810,11 +5212,6 @@ export const DocumentationStepScalarFieldEnum = {
   submissionCount: 'submissionCount',
   lastSubmittedAt: 'lastSubmittedAt',
   metadata: 'metadata',
-  preApprovalAnswers: 'preApprovalAnswers',
-  underwritingScore: 'underwritingScore',
-  debtToIncomeRatio: 'debtToIncomeRatio',
-  underwritingDecision: 'underwritingDecision',
-  underwritingNotes: 'underwritingNotes',
   assigneeId: 'assigneeId',
   dueDate: 'dueDate',
   completedAt: 'completedAt',
@@ -4851,7 +5248,7 @@ export type DocumentationStepApprovalScalarFieldEnum = (typeof DocumentationStep
 
 export const ContractInstallmentScalarFieldEnum = {
   id: 'id',
-  phaseId: 'phaseId',
+  paymentPhaseId: 'paymentPhaseId',
   installmentNumber: 'installmentNumber',
   amount: 'amount',
   principalAmount: 'principalAmount',
@@ -5187,7 +5584,9 @@ export const PropertyTransferRequestScalarFieldEnum = {
   sourceTotalAmount: 'sourceTotalAmount',
   targetTotalAmount: 'targetTotalAmount',
   priceAdjustment: 'priceAdjustment',
-  paymentsMigrated: 'paymentsMigrated',
+  refundedAmount: 'refundedAmount',
+  refundTransactionId: 'refundTransactionId',
+  refundedAt: 'refundedAt',
   targetContractId: 'targetContractId',
   createdAt: 'createdAt',
   reviewedAt: 'reviewedAt',
@@ -5616,6 +6015,18 @@ export const PaymentMethodPhaseDocumentOrderByRelevanceFieldEnum = {
 export type PaymentMethodPhaseDocumentOrderByRelevanceFieldEnum = (typeof PaymentMethodPhaseDocumentOrderByRelevanceFieldEnum)[keyof typeof PaymentMethodPhaseDocumentOrderByRelevanceFieldEnum]
 
 
+export const PaymentMethodPhaseFieldOrderByRelevanceFieldEnum = {
+  id: 'id',
+  phaseId: 'phaseId',
+  name: 'name',
+  label: 'label',
+  description: 'description',
+  placeholder: 'placeholder'
+} as const
+
+export type PaymentMethodPhaseFieldOrderByRelevanceFieldEnum = (typeof PaymentMethodPhaseFieldOrderByRelevanceFieldEnum)[keyof typeof PaymentMethodPhaseFieldOrderByRelevanceFieldEnum]
+
+
 export const ContractOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -5658,13 +6069,51 @@ export type ContractRefundOrderByRelevanceFieldEnum = (typeof ContractRefundOrde
 export const ContractPhaseOrderByRelevanceFieldEnum = {
   id: 'id',
   contractId: 'contractId',
-  paymentPlanId: 'paymentPlanId',
   name: 'name',
-  description: 'description',
-  currentStepId: 'currentStepId'
+  description: 'description'
 } as const
 
 export type ContractPhaseOrderByRelevanceFieldEnum = (typeof ContractPhaseOrderByRelevanceFieldEnum)[keyof typeof ContractPhaseOrderByRelevanceFieldEnum]
+
+
+export const QuestionnairePhaseOrderByRelevanceFieldEnum = {
+  id: 'id',
+  phaseId: 'phaseId',
+  underwritingDecision: 'underwritingDecision',
+  underwritingNotes: 'underwritingNotes'
+} as const
+
+export type QuestionnairePhaseOrderByRelevanceFieldEnum = (typeof QuestionnairePhaseOrderByRelevanceFieldEnum)[keyof typeof QuestionnairePhaseOrderByRelevanceFieldEnum]
+
+
+export const DocumentationPhaseOrderByRelevanceFieldEnum = {
+  id: 'id',
+  phaseId: 'phaseId',
+  currentStepId: 'currentStepId'
+} as const
+
+export type DocumentationPhaseOrderByRelevanceFieldEnum = (typeof DocumentationPhaseOrderByRelevanceFieldEnum)[keyof typeof DocumentationPhaseOrderByRelevanceFieldEnum]
+
+
+export const PaymentPhaseOrderByRelevanceFieldEnum = {
+  id: 'id',
+  phaseId: 'phaseId',
+  paymentPlanId: 'paymentPlanId'
+} as const
+
+export type PaymentPhaseOrderByRelevanceFieldEnum = (typeof PaymentPhaseOrderByRelevanceFieldEnum)[keyof typeof PaymentPhaseOrderByRelevanceFieldEnum]
+
+
+export const QuestionnaireFieldOrderByRelevanceFieldEnum = {
+  id: 'id',
+  questionnairePhaseId: 'questionnairePhaseId',
+  name: 'name',
+  label: 'label',
+  description: 'description',
+  placeholder: 'placeholder'
+} as const
+
+export type QuestionnaireFieldOrderByRelevanceFieldEnum = (typeof QuestionnaireFieldOrderByRelevanceFieldEnum)[keyof typeof QuestionnaireFieldOrderByRelevanceFieldEnum]
 
 
 export const ContractEventOrderByRelevanceFieldEnum = {
@@ -5681,12 +6130,10 @@ export type ContractEventOrderByRelevanceFieldEnum = (typeof ContractEventOrderB
 
 export const DocumentationStepOrderByRelevanceFieldEnum = {
   id: 'id',
-  phaseId: 'phaseId',
+  documentationPhaseId: 'documentationPhaseId',
   name: 'name',
   description: 'description',
   actionReason: 'actionReason',
-  underwritingDecision: 'underwritingDecision',
-  underwritingNotes: 'underwritingNotes',
   assigneeId: 'assigneeId'
 } as const
 
@@ -5714,7 +6161,7 @@ export type DocumentationStepApprovalOrderByRelevanceFieldEnum = (typeof Documen
 
 export const ContractInstallmentOrderByRelevanceFieldEnum = {
   id: 'id',
-  phaseId: 'phaseId'
+  paymentPhaseId: 'paymentPhaseId'
 } as const
 
 export type ContractInstallmentOrderByRelevanceFieldEnum = (typeof ContractInstallmentOrderByRelevanceFieldEnum)[keyof typeof ContractInstallmentOrderByRelevanceFieldEnum]
@@ -5918,6 +6365,7 @@ export const PropertyTransferRequestOrderByRelevanceFieldEnum = {
   reason: 'reason',
   reviewNotes: 'reviewNotes',
   priceAdjustmentHandling: 'priceAdjustmentHandling',
+  refundTransactionId: 'refundTransactionId',
   targetContractId: 'targetContractId'
 } as const
 
@@ -6034,6 +6482,13 @@ export type EnumStepTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
  * Reference to a field of type 'StepTrigger'
  */
 export type EnumStepTriggerFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StepTrigger'>
+    
+
+
+/**
+ * Reference to a field of type 'FieldType'
+ */
+export type EnumFieldTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FieldType'>
     
 
 
@@ -6346,9 +6801,14 @@ export type GlobalOmitConfig = {
   paymentMethodPhaseStep?: Prisma.PaymentMethodPhaseStepOmit
   stepEventAttachment?: Prisma.StepEventAttachmentOmit
   paymentMethodPhaseDocument?: Prisma.PaymentMethodPhaseDocumentOmit
+  paymentMethodPhaseField?: Prisma.PaymentMethodPhaseFieldOmit
   contract?: Prisma.ContractOmit
   contractRefund?: Prisma.ContractRefundOmit
   contractPhase?: Prisma.ContractPhaseOmit
+  questionnairePhase?: Prisma.QuestionnairePhaseOmit
+  documentationPhase?: Prisma.DocumentationPhaseOmit
+  paymentPhase?: Prisma.PaymentPhaseOmit
+  questionnaireField?: Prisma.QuestionnaireFieldOmit
   contractEvent?: Prisma.ContractEventOmit
   documentationStep?: Prisma.DocumentationStepOmit
   documentationStepDocument?: Prisma.DocumentationStepDocumentOmit

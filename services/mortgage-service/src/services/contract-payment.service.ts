@@ -44,19 +44,25 @@ class ContractPaymentService {
 
         // Validate phase if provided
         let phase = null;
+        let paymentPhase = null;
         if (data.phaseId) {
             phase = await prisma.contractPhase.findUnique({
                 where: { id: data.phaseId },
+                include: {
+                    paymentPhase: true,
+                },
             });
 
             if (!phase || phase.contractId !== data.contractId) {
                 throw new AppError(400, 'Invalid phase for this contract');
             }
 
-            // Check if this phase collects funds
+            paymentPhase = phase.paymentPhase;
+
+            // Check if this phase collects funds (only payment phases have collectFunds)
             // If collectFunds = false, we don't create payment records via this endpoint
             // (they would come from external bank webhooks / reconciliation)
-            if (phase.collectFunds === false) {
+            if (paymentPhase && paymentPhase.collectFunds === false) {
                 throw new AppError(400, 'This phase does not collect funds directly. Payments are tracked via external bank reconciliation.');
             }
         }
@@ -66,7 +72,13 @@ class ContractPaymentService {
         if (data.installmentId) {
             installment = await prisma.contractInstallment.findUnique({
                 where: { id: data.installmentId },
-                include: { phase: true },
+                include: {
+                    paymentPhase: {
+                        include: {
+                            phase: true,
+                        },
+                    },
+                },
             });
 
             if (!installment) {
@@ -74,13 +86,13 @@ class ContractPaymentService {
             }
 
             // Check if the installment's phase collects funds
-            if (installment.phase && installment.phase.collectFunds === false) {
+            if (installment.paymentPhase && installment.paymentPhase.collectFunds === false) {
                 throw new AppError(400, 'This phase does not collect funds directly. Payments are tracked via external bank reconciliation.');
             }
 
             // Auto-set phase from installment
-            if (!data.phaseId) {
-                data.phaseId = installment.phaseId;
+            if (!data.phaseId && installment.paymentPhase?.phase) {
+                data.phaseId = installment.paymentPhase.phase.id;
             }
         }
 
@@ -254,26 +266,39 @@ class ContractPaymentService {
                 }
             }
 
-            // Update phase totals
+            // Update phase totals (via PaymentPhase extension)
             if (payment.phaseId) {
                 const phase = await tx.contractPhase.findUnique({
                     where: { id: payment.phaseId },
+                    include: {
+                        paymentPhase: true,
+                    },
                 });
 
-                if (phase) {
-                    const newPaidAmount = phase.paidAmount + payment.amount;
-                    const newRemainingAmount = (phase.totalAmount ?? 0) - newPaidAmount;
+                if (phase && phase.paymentPhase) {
+                    const paymentPhase = phase.paymentPhase;
+                    const newPaidAmount = paymentPhase.paidAmount + payment.amount;
+                    const newRemainingAmount = (paymentPhase.totalAmount ?? 0) - newPaidAmount;
                     const isFullyPaid = newRemainingAmount <= 0;
 
-                    await tx.contractPhase.update({
-                        where: { id: payment.phaseId },
+                    // Update PaymentPhase extension
+                    await tx.paymentPhase.update({
+                        where: { id: paymentPhase.id },
                         data: {
                             paidAmount: newPaidAmount,
-                            remainingAmount: Math.max(0, newRemainingAmount),
-                            status: isFullyPaid ? 'COMPLETED' : phase.status,
-                            completedAt: isFullyPaid ? new Date() : phase.completedAt,
                         },
                     });
+
+                    // Update ContractPhase status
+                    if (isFullyPaid) {
+                        await tx.contractPhase.update({
+                            where: { id: payment.phaseId },
+                            data: {
+                                status: 'COMPLETED',
+                                completedAt: new Date(),
+                            },
+                        });
+                    }
 
                     // If phase is completed, auto-activate next phase
                     if (isFullyPaid) {
@@ -338,25 +363,10 @@ class ContractPaymentService {
                 }
             }
 
-            // Update contract totals
-            const contract = await tx.contract.findUnique({
-                where: { id: payment.contractId },
-            });
-
-            if (contract) {
-                await tx.contract.update({
-                    where: { id: payment.contractId },
-                    data: {
-                        totalPaidToDate: contract.totalPaidToDate + payment.amount,
-                        totalInterestPaid: contract.totalInterestPaid + payment.interestAmount,
-                    },
-                });
-            }
-
-            // Find next unpaid installment for this contract
+            // Find next unpaid installment for this contract (via PaymentPhase)
             const nextInstallment = await tx.contractInstallment.findFirst({
                 where: {
-                    phase: { contractId: payment.contractId },
+                    paymentPhase: { phase: { contractId: payment.contractId } },
                     status: { in: ['PENDING', 'PARTIALLY_PAID'] },
                 },
                 orderBy: { dueDate: 'asc' },
@@ -425,11 +435,18 @@ class ContractPaymentService {
                 // Find next installment for next payment date
                 const nextInstallment = await prisma.contractInstallment.findFirst({
                     where: {
-                        phase: { contractId: payment.contractId },
+                        paymentPhase: { phase: { contractId: payment.contractId } },
                         status: { in: ['PENDING', 'PARTIALLY_PAID'] },
                     },
                     orderBy: { dueDate: 'asc' },
                 });
+
+                // Calculate remaining balance from all payment phases
+                const allPaymentPhases = await prisma.paymentPhase.findMany({
+                    where: { phase: { contractId: payment.contractId } },
+                });
+                const totalPaid = allPaymentPhases.reduce((sum, pp) => sum + pp.paidAmount, 0);
+                const remainingBalance = Math.max(0, contract.totalAmount - totalPaid);
 
                 await sendPaymentReceivedNotification({
                     email: contract.buyer.email,
@@ -439,7 +456,7 @@ class ContractPaymentService {
                     paymentAmount: payment.amount,
                     paymentDate: new Date(),
                     paymentReference: payment.reference || `PAY-${paymentId.substring(0, 8)}`,
-                    remainingBalance: Math.max(0, contract.totalAmount - contract.totalPaidToDate - payment.amount),
+                    remainingBalance,
                     nextPaymentDate: nextInstallment?.dueDate,
                     nextPaymentAmount: nextInstallment?.amount,
                     dashboardUrl: `${DASHBOARD_URL}/contracts/${payment.contractId}`,
@@ -497,7 +514,7 @@ class ContractPaymentService {
             if (contract?.buyer?.email) {
                 const nextInstallment = await prisma.contractInstallment.findFirst({
                     where: {
-                        phase: { contractId: contract.id },
+                        paymentPhase: { phase: { contractId: contract.id } },
                         status: { in: ['PENDING', 'PARTIALLY_PAID'] },
                     },
                     orderBy: { dueDate: 'asc' },
@@ -558,36 +575,23 @@ class ContractPaymentService {
                 }
             }
 
-            // Reverse phase totals
+            // Reverse phase totals (via PaymentPhase extension)
             if (payment.phaseId) {
                 const phase = await tx.contractPhase.findUnique({
                     where: { id: payment.phaseId },
+                    include: {
+                        paymentPhase: true,
+                    },
                 });
 
-                if (phase) {
-                    await tx.contractPhase.update({
-                        where: { id: payment.phaseId },
+                if (phase && phase.paymentPhase) {
+                    await tx.paymentPhase.update({
+                        where: { id: phase.paymentPhase.id },
                         data: {
-                            paidAmount: Math.max(0, phase.paidAmount - payment.amount),
-                            remainingAmount: (phase.remainingAmount ?? 0) + payment.amount,
+                            paidAmount: Math.max(0, phase.paymentPhase.paidAmount - payment.amount),
                         },
                     });
                 }
-            }
-
-            // Reverse contract totals
-            const contract = await tx.contract.findUnique({
-                where: { id: payment.contractId },
-            });
-
-            if (contract) {
-                await tx.contract.update({
-                    where: { id: payment.contractId },
-                    data: {
-                        totalPaidToDate: Math.max(0, contract.totalPaidToDate - payment.amount),
-                        totalInterestPaid: Math.max(0, contract.totalInterestPaid - payment.interestAmount),
-                    },
-                });
             }
 
             await tx.domainEvent.create({
@@ -625,15 +629,19 @@ class ContractPaymentService {
             throw new AppError(404, 'Contract not found');
         }
 
-        // Find all pending installments for this contract
+        // Find all pending installments for this contract (via PaymentPhase)
         const pendingInstallments = await prisma.contractInstallment.findMany({
             where: {
-                phase: { contractId },
+                paymentPhase: { phase: { contractId } },
                 status: { in: ['PENDING', 'PARTIALLY_PAID'] },
             },
             orderBy: { dueDate: 'asc' },
             include: {
-                phase: true,
+                paymentPhase: {
+                    include: {
+                        phase: true,
+                    },
+                },
             },
         });
 
@@ -650,12 +658,13 @@ class ContractPaymentService {
 
                 const amountOwed = installment.amount - installment.paidAmount;
                 const paymentAmount = Math.min(remainingAmount, amountOwed);
+                const phaseId = installment.paymentPhase?.phase?.id;
 
                 // Create payment for this installment
                 await tx.contractPayment.create({
                     data: {
                         contractId,
-                        phaseId: installment.phaseId,
+                        phaseId: phaseId,
                         installmentId: installment.id,
                         payerId: userId,
                         amount: paymentAmount,
@@ -681,28 +690,21 @@ class ContractPaymentService {
                     },
                 });
 
-                // Update phase
-                await tx.contractPhase.update({
-                    where: { id: installment.phaseId },
-                    data: {
-                        paidAmount: { increment: paymentAmount },
-                        remainingAmount: { decrement: paymentAmount },
-                    },
-                });
+                // Update PaymentPhase paidAmount
+                if (installment.paymentPhaseId) {
+                    await tx.paymentPhase.update({
+                        where: { id: installment.paymentPhaseId },
+                        data: {
+                            paidAmount: { increment: paymentAmount },
+                        },
+                    });
+                }
 
                 remainingAmount -= paymentAmount;
                 if (isPaid) {
                     paidInstallments.push(installment.id);
                 }
             }
-
-            // Update contract totals
-            await tx.contract.update({
-                where: { id: contractId },
-                data: {
-                    totalPaidToDate: { increment: amount - remainingAmount },
-                },
-            });
 
             // Write domain event
             await tx.domainEvent.create({

@@ -375,7 +375,7 @@ describe('Property Transfer with Progress Preservation', () => {
             // Update contract status to ACTIVE
             await prisma.contract.update({
                 where: { id: contractAId },
-                data: { status: 'ACTIVE', state: 'ACTIVE' },
+                data: { status: 'ACTIVE' },
             });
         });
 
@@ -403,21 +403,21 @@ describe('Property Transfer with Progress Preservation', () => {
                 });
             }
 
-            // Update contract totals
+            // Update payment phase totals
             const totalPaid = INSTALMENT_AMOUNT * 6;
-            await prisma.contract.update({
-                where: { id: contractAId },
-                data: {
-                    totalPaidToDate: totalPaid,
-                    downPaymentPaid: totalPaid,
-                },
+
+            // Find the PaymentPhase extension and update it
+            const phase = await prisma.contractPhase.findUnique({
+                where: { id: downpaymentPhase.id },
+                include: { paymentPhase: true },
             });
 
-            // Update phase paid amount
-            await prisma.contractPhase.update({
-                where: { id: downpaymentPhase.id },
-                data: { paidAmount: totalPaid },
-            });
+            if (phase?.paymentPhase) {
+                await prisma.paymentPhase.update({
+                    where: { id: phase.paymentPhase.id },
+                    data: { paidAmount: totalPaid },
+                });
+            }
         });
 
         it('Verify Chidi has 6 payments recorded', async () => {
@@ -511,7 +511,8 @@ describe('Property Transfer with Progress Preservation', () => {
             expect(response.body.message).toBe('Transfer approved successfully');
             expect(response.body.request.status).toBe('COMPLETED');
             expect(response.body.newContract).toBeDefined();
-            expect(response.body.paymentsMigrated).toBe(6);
+            // New business rule: refundedAmount instead of paymentsMigrated
+            expect(response.body.refundedAmount).toBeCloseTo(INSTALMENT_AMOUNT * 6, 2);
 
             contractBId = response.body.newContract.id;
         });
@@ -541,26 +542,49 @@ describe('Property Transfer with Progress Preservation', () => {
             expect(response.body.transferredFromId).toBe(contractAId);
         });
 
-        it('Contract B has 6 migrated payments', async () => {
+        it('Contract B has no payments (fresh start)', async () => {
+            // With new business rule, payments are refunded to wallet
+            // New contract starts without any payment records
             const payments = await prisma.contractPayment.findMany({
                 where: { contractId: contractBId },
-                orderBy: { createdAt: 'asc' },
             });
 
-            expect(payments).toHaveLength(6);
-            expect(payments.every(p => p.status === 'COMPLETED')).toBe(true);
-
-            // Verify payments reference the migration via reference field
-            expect(payments[0].reference).toContain('-MIGRATED');
+            expect(payments).toHaveLength(0);
         });
 
-        it('Contract B preserves total paid amount', async () => {
+        it('Transfer request shows refund amount', async () => {
+            const transferRequest = await prisma.propertyTransferRequest.findUnique({
+                where: { id: transferRequestId },
+            });
+
+            expect(transferRequest).not.toBeNull();
+            expect(transferRequest!.refundedAmount).toBeCloseTo(INSTALMENT_AMOUNT * 6, 2);
+            expect(transferRequest!.refundedAt).not.toBeNull();
+        });
+
+        it('Contract B starts fresh with zero payments (refund to wallet)', async () => {
+            // With the new business rule, payments are refunded to wallet
+            // The new contract starts fresh with zero paid amount
             const contract = await prisma.contract.findUnique({
                 where: { id: contractBId },
+                include: {
+                    phases: {
+                        include: {
+                            paymentPhase: true,
+                        },
+                        orderBy: { order: 'asc' },
+                    },
+                },
             });
 
             expect(contract).not.toBeNull();
-            expect(contract!.totalPaidToDate).toBeCloseTo(INSTALMENT_AMOUNT * 6, 2);
+
+            // All payment phases should start at zero
+            for (const phase of contract!.phases) {
+                if (phase.paymentPhase) {
+                    expect(phase.paymentPhase.paidAmount).toBe(0);
+                }
+            }
         });
 
         it('Target unit B3 is now RESERVED', async () => {
@@ -581,7 +605,8 @@ describe('Property Transfer with Progress Preservation', () => {
             expect(response.status).toBe(200);
             expect(response.body.status).toBe('COMPLETED');
             expect(response.body.targetContractId).toBe(contractBId);
-            expect(response.body.paymentsMigrated).toBe(6);
+            // New business rule: refundedAmount instead of paymentsMigrated
+            expect(response.body.refundedAmount).toBeCloseTo(INSTALMENT_AMOUNT * 6, 2);
             expect(response.body.completedAt).not.toBeNull();
         });
     });
@@ -602,7 +627,7 @@ describe('Property Transfer with Progress Preservation', () => {
             expect(response.body.phases[2].name).toBe('Mortgage');
         });
 
-        it('KYC phase status is preserved as COMPLETED', async () => {
+        it('KYC phase starts fresh (new contract rule)', async () => {
             const contract = await prisma.contract.findUnique({
                 where: { id: contractBId },
                 include: { phases: { orderBy: { order: 'asc' } } },
@@ -610,20 +635,27 @@ describe('Property Transfer with Progress Preservation', () => {
 
             expect(contract).not.toBeNull();
             const kycPhase = contract!.phases[0];
-            expect(kycPhase.status).toBe('COMPLETED');
+            // With new business rule, new contract starts fresh - phases are PENDING
+            expect(kycPhase.status).toBe('PENDING');
         });
 
-        it('Downpayment phase shows partial completion', async () => {
+        it('Downpayment phase starts fresh (zero paid)', async () => {
             const contract = await prisma.contract.findUnique({
                 where: { id: contractBId },
-                include: { phases: { orderBy: { order: 'asc' } } },
+                include: {
+                    phases: {
+                        include: { paymentPhase: true },
+                        orderBy: { order: 'asc' },
+                    },
+                },
             });
 
             expect(contract).not.toBeNull();
-            const downpaymentPhase = contract!.phases[1];
+            const downpaymentPhase = contract!.phases.find(p => p.name === 'Downpayment');
+            expect(downpaymentPhase).toBeDefined();
 
-            // Paid amount should be preserved
-            expect(downpaymentPhase.paidAmount).toBeCloseTo(INSTALMENT_AMOUNT * 6, 2);
+            // With new business rule, new contract starts fresh
+            expect(downpaymentPhase!.paymentPhase?.paidAmount).toBe(0);
         });
     });
 });

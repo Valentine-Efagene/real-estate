@@ -35,19 +35,33 @@ class ContractPhaseService {
                         },
                     },
                 },
-                paymentPlan: true,
-                currentStep: true,
-                steps: {
-                    orderBy: { order: 'asc' },
+                // Include polymorphic extensions
+                questionnairePhase: {
                     include: {
-                        approvals: {
-                            orderBy: { decidedAt: 'desc' },
-                        },
-                        requiredDocuments: true,
+                        fields: true,
                     },
                 },
-                installments: {
-                    orderBy: { installmentNumber: 'asc' },
+                documentationPhase: {
+                    include: {
+                        currentStep: true,
+                        steps: {
+                            orderBy: { order: 'asc' },
+                            include: {
+                                approvals: {
+                                    orderBy: { decidedAt: 'desc' },
+                                },
+                                requiredDocuments: true,
+                            },
+                        },
+                    },
+                },
+                paymentPhase: {
+                    include: {
+                        paymentPlan: true,
+                        installments: {
+                            orderBy: { installmentNumber: 'asc' },
+                        },
+                    },
                 },
                 payments: {
                     orderBy: { createdAt: 'desc' },
@@ -82,16 +96,16 @@ class ContractPhaseService {
     }
 
     /**
-     * Update the currentStepId pointer on the phase
+     * Update the currentStepId pointer on the DocumentationPhase
      */
     private async updateCurrentStepPointer(
         tx: any,
-        phaseId: string,
+        documentationPhaseId: string,
         steps: any[]
     ): Promise<void> {
         const nextStep = this.getNextActionableStep(steps);
-        await tx.contractPhase.update({
-            where: { id: phaseId },
+        await tx.documentationPhase.update({
+            where: { id: documentationPhaseId },
             data: { currentStepId: nextStep?.id ?? null },
         });
     }
@@ -101,12 +115,21 @@ class ContractPhaseService {
             where: { contractId },
             orderBy: { order: 'asc' },
             include: {
-                paymentPlan: true,
-                steps: {
-                    orderBy: { order: 'asc' },
+                questionnairePhase: true,
+                documentationPhase: {
+                    include: {
+                        steps: {
+                            orderBy: { order: 'asc' },
+                        },
+                    },
                 },
-                installments: {
-                    orderBy: { installmentNumber: 'asc' },
+                paymentPhase: {
+                    include: {
+                        paymentPlan: true,
+                        installments: {
+                            orderBy: { installmentNumber: 'asc' },
+                        },
+                    },
                 },
             },
         });
@@ -141,27 +164,35 @@ class ContractPhaseService {
 
         const startDate = data.startDate ? new Date(data.startDate) : new Date();
 
-        // Determine the first step to set as current
-        const firstStep = this.getNextActionableStep(phase.steps);
+        // Determine the first step to set as current (only for DOCUMENTATION phases)
+        const steps = phase.documentationPhase?.steps || [];
+        const firstStep = this.getNextActionableStep(steps);
 
         const updated = await prisma.$transaction(async (tx) => {
-            // Update phase status and set current step pointer
+            // Update phase status
             const result = await tx.contractPhase.update({
                 where: { id: phaseId },
                 data: {
                     status: phase.phaseCategory === 'DOCUMENTATION' ? 'IN_PROGRESS' : 'ACTIVE',
                     activatedAt: new Date(),
                     startDate,
-                    currentStepId: firstStep?.id ?? null,
                 },
             });
 
-            // If there's a first step, mark it as IN_PROGRESS
-            if (firstStep && firstStep.status === 'PENDING') {
-                await tx.documentationStep.update({
-                    where: { id: firstStep.id },
-                    data: { status: 'IN_PROGRESS' },
+            // Update DocumentationPhase currentStepId if this is a documentation phase
+            if (phase.documentationPhase && firstStep) {
+                await tx.documentationPhase.update({
+                    where: { id: phase.documentationPhase.id },
+                    data: { currentStepId: firstStep.id },
                 });
+
+                // Mark first step as IN_PROGRESS
+                if (firstStep.status === 'PENDING') {
+                    await tx.documentationStep.update({
+                        where: { id: firstStep.id },
+                        data: { status: 'IN_PROGRESS' },
+                    });
+                }
             }
 
             // Update contract's current phase
@@ -204,13 +235,15 @@ class ContractPhaseService {
     async processAutoExecutableSteps(phaseId: string, userId: string): Promise<void> {
         const phase = await this.findById(phaseId);
 
-        if (phase.phaseCategory !== 'DOCUMENTATION') {
+        if (phase.phaseCategory !== 'DOCUMENTATION' || !phase.documentationPhase) {
             return; // Only documentation phases have steps
         }
 
+        const steps = phase.documentationPhase.steps || [];
+
         // Find the next actionable step - either PENDING or IN_PROGRESS (for auto-executable types)
         // We check IN_PROGRESS because activate() marks the first step as IN_PROGRESS
-        const nextStep = phase.steps.find(
+        const nextStep = steps.find(
             (s: any) => s.status === 'PENDING' || (s.status === 'IN_PROGRESS' && s.stepType === 'GENERATE_DOCUMENT')
         );
         if (!nextStep) {
@@ -218,7 +251,7 @@ class ContractPhaseService {
         }
 
         // Check if previous steps are completed
-        const previousSteps = phase.steps.filter((s: any) => s.order < nextStep.order);
+        const previousSteps = steps.filter((s: any) => s.order < nextStep.order);
         const allPreviousCompleted = previousSteps.every((s: any) => s.status === 'COMPLETED');
 
         if (!allPreviousCompleted) {
@@ -259,22 +292,24 @@ class ContractPhaseService {
     async generateInstallments(phaseId: string, data: GenerateInstallmentsInput, userId: string): Promise<any> {
         const phase = await this.findById(phaseId);
 
-        if (phase.phaseCategory !== 'PAYMENT') {
+        if (phase.phaseCategory !== 'PAYMENT' || !phase.paymentPhase) {
             throw new AppError(400, 'Can only generate installments for PAYMENT phases');
         }
 
-        if (!phase.paymentPlanId) {
+        const paymentPhase = phase.paymentPhase;
+
+        if (!paymentPhase.paymentPlanId) {
             throw new AppError(400, 'Phase has no payment plan configured');
         }
 
-        if (phase.installments.length > 0) {
+        if (paymentPhase.installments.length > 0) {
             throw new AppError(400, 'Installments already generated for this phase');
         }
 
-        const paymentPlan = await paymentPlanService.findById(phase.paymentPlanId);
+        const paymentPlan = await paymentPlanService.findById(paymentPhase.paymentPlanId);
         const startDate = new Date(data.startDate);
-        const interestRate = data.interestRate ?? phase.interestRate ?? 0;
-        const totalAmount = phase.totalAmount ?? 0;
+        const interestRate = data.interestRate ?? paymentPhase.interestRate ?? 0;
+        const totalAmount = paymentPhase.totalAmount ?? 0;
         const numberOfInstallments = paymentPlan.numberOfInstallments;
         const intervalDays = paymentPlanService.getIntervalDays(paymentPlan);
 
@@ -293,7 +328,7 @@ class ContractPhaseService {
             for (const installment of installments) {
                 await tx.contractInstallment.create({
                     data: {
-                        phaseId,
+                        paymentPhaseId: paymentPhase.id,
                         installmentNumber: installment.installmentNumber,
                         amount: installment.amount,
                         principalAmount: installment.principalAmount,
@@ -425,14 +460,17 @@ class ContractPhaseService {
     async completeStep(phaseId: string, data: CompleteStepInput, userId: string): Promise<any> {
         const phase = await this.findById(phaseId);
 
-        if (phase.phaseCategory !== 'DOCUMENTATION') {
+        if (phase.phaseCategory !== 'DOCUMENTATION' || !phase.documentationPhase) {
             throw new AppError(400, 'Can only complete steps for DOCUMENTATION phases');
         }
 
+        const steps = phase.documentationPhase.steps || [];
+        const documentationPhaseId = phase.documentationPhase.id;
+
         // Find step by ID or by name
         let step = data.stepId
-            ? phase.steps.find((s: any) => s.id === data.stepId)
-            : phase.steps.find((s: any) => s.name === (data as any).stepName);
+            ? steps.find((s: any) => s.id === data.stepId)
+            : steps.find((s: any) => s.name === (data as any).stepName);
 
         if (!step) {
             throw new AppError(404, 'Step not found in this phase');
@@ -478,7 +516,7 @@ class ContractPhaseService {
             // Check if all steps are completed
             const remainingSteps = await tx.documentationStep.findMany({
                 where: {
-                    phaseId,
+                    documentationPhaseId,
                     status: { notIn: ['COMPLETED', 'SKIPPED'] },
                     id: { not: stepId },
                 },
@@ -492,9 +530,16 @@ class ContractPhaseService {
                     data: {
                         status: 'COMPLETED',
                         completedAt: new Date(),
-                        currentStepId: null,
                     },
                 });
+
+                // Clear the currentStepId on DocumentationPhase
+                if (phase.documentationPhase) {
+                    await tx.documentationPhase.update({
+                        where: { id: phase.documentationPhase.id },
+                        data: { currentStepId: null },
+                    });
+                }
 
                 // Write phase completed event
                 await tx.domainEvent.create({
@@ -555,10 +600,14 @@ class ContractPhaseService {
             } else {
                 // Advance currentStepId to the next actionable step
                 const nextStep = remainingSteps[0];
-                await tx.contractPhase.update({
-                    where: { id: phaseId },
-                    data: { currentStepId: nextStep.id },
-                });
+
+                // Update currentStepId on DocumentationPhase
+                if (phase.documentationPhase) {
+                    await tx.documentationPhase.update({
+                        where: { id: phase.documentationPhase.id },
+                        data: { currentStepId: nextStep.id },
+                    });
+                }
 
                 // Mark the next step as IN_PROGRESS if it's PENDING
                 if (nextStep.status === 'PENDING') {
@@ -652,7 +701,12 @@ class ContractPhaseService {
     ): Promise<any> {
         const phase = await this.findById(phaseId);
 
-        const step = phase.steps.find((s: any) => s.id === stepId);
+        if (!phase.documentationPhase) {
+            throw new AppError(400, 'Can only reject steps for DOCUMENTATION phases');
+        }
+
+        const steps = phase.documentationPhase.steps || [];
+        const step = steps.find((s: any) => s.id === stepId);
         if (!step) {
             throw new AppError(404, 'Step not found in this phase');
         }
@@ -681,9 +735,9 @@ class ContractPhaseService {
                 },
             });
 
-            // Set currentStepId to this step (user needs to fix it)
-            await tx.contractPhase.update({
-                where: { id: phaseId },
+            // Set currentStepId on DocumentationPhase (user needs to fix it)
+            await tx.documentationPhase.update({
+                where: { id: phase.documentationPhase.id },
                 data: { currentStepId: stepId },
             });
 
@@ -740,7 +794,12 @@ class ContractPhaseService {
     ): Promise<any> {
         const phase = await this.findById(phaseId);
 
-        const step = phase.steps.find((s: any) => s.id === stepId);
+        if (!phase.documentationPhase) {
+            throw new AppError(400, 'Can only request changes for DOCUMENTATION phases');
+        }
+
+        const steps = phase.documentationPhase.steps || [];
+        const step = steps.find((s: any) => s.id === stepId);
         if (!step) {
             throw new AppError(404, 'Step not found in this phase');
         }
@@ -769,9 +828,9 @@ class ContractPhaseService {
                 },
             });
 
-            // Set currentStepId to this step (user needs to address it)
-            await tx.contractPhase.update({
-                where: { id: phaseId },
+            // Set currentStepId on DocumentationPhase (user needs to address it)
+            await tx.documentationPhase.update({
+                where: { id: phase.documentationPhase.id },
                 data: { currentStepId: stepId },
             });
 
@@ -905,8 +964,9 @@ class ContractPhaseService {
         }
 
         // For PAYMENT phases, check if all installments are paid
-        if (phase.phaseCategory === 'PAYMENT') {
-            const unpaidInstallments = phase.installments.filter(
+        if (phase.phaseCategory === 'PAYMENT' && phase.paymentPhase) {
+            const installments = phase.paymentPhase.installments || [];
+            const unpaidInstallments = installments.filter(
                 (i: any) => i.status !== 'PAID' && i.status !== 'WAIVED'
             );
             if (unpaidInstallments.length > 0) {
@@ -915,8 +975,9 @@ class ContractPhaseService {
         }
 
         // For DOCUMENTATION phases, check if all steps are completed
-        if (phase.phaseCategory === 'DOCUMENTATION') {
-            const incompleteSteps = phase.steps.filter(
+        if (phase.phaseCategory === 'DOCUMENTATION' && phase.documentationPhase) {
+            const steps = phase.documentationPhase.steps || [];
+            const incompleteSteps = steps.filter(
                 (s: any) => s.status !== 'COMPLETED' && s.status !== 'SKIPPED'
             );
             if (incompleteSteps.length > 0) {
@@ -930,10 +991,18 @@ class ContractPhaseService {
                 data: {
                     status: 'COMPLETED',
                     completedAt: new Date(),
-                    paidAmount: phase.totalAmount ?? 0,
-                    remainingAmount: 0,
                 },
             });
+
+            // Update PaymentPhase paidAmount if this is a payment phase
+            if (phase.paymentPhase) {
+                await tx.paymentPhase.update({
+                    where: { id: phase.paymentPhase.id },
+                    data: {
+                        paidAmount: phase.paymentPhase.totalAmount ?? 0,
+                    },
+                });
+            }
 
             // Check if all phases are completed
             const incompletePhasesCount = await tx.contractPhase.count({
@@ -950,7 +1019,6 @@ class ContractPhaseService {
                     where: { id: phase.contractId },
                     data: {
                         status: 'COMPLETED',
-                        state: 'COMPLETED',
                     },
                 });
 

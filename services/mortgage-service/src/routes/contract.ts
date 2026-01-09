@@ -169,7 +169,22 @@ router.delete('/:id', async (req: Request, res: Response, next: NextFunction) =>
 router.get('/:id/phases', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const phases = await contractPhaseService.getPhasesByContract(req.params.id);
-        res.json(phases);
+        // Flatten payment phase fields for backwards compatibility
+        const flattenedPhases = phases.map((phase: any) => ({
+            ...phase,
+            // Flatten PaymentPhase fields to top level
+            totalAmount: phase.paymentPhase?.totalAmount ?? 0,
+            paidAmount: phase.paymentPhase?.paidAmount ?? 0,
+            interestRate: phase.paymentPhase?.interestRate ?? null,
+            collectFunds: phase.paymentPhase?.collectFunds ?? false,
+            installments: phase.paymentPhase?.installments ?? [],
+            // Flatten DocumentationPhase fields
+            currentStepId: phase.documentationPhase?.currentStepId ?? null,
+            steps: phase.documentationPhase?.steps ?? [],
+            // Flatten QuestionnairePhase fields
+            fields: phase.questionnairePhase?.fields ?? [],
+        }));
+        res.json(flattenedPhases);
     } catch (error) {
         next(error);
     }
@@ -179,7 +194,19 @@ router.get('/:id/phases', async (req: Request, res: Response, next: NextFunction
 router.get('/:id/phases/:phaseId', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const phase = await contractPhaseService.findById(req.params.phaseId);
-        res.json(phase);
+        // Flatten polymorphic fields for backwards compatibility
+        const flattenedPhase = {
+            ...phase,
+            totalAmount: (phase as any).paymentPhase?.totalAmount ?? 0,
+            paidAmount: (phase as any).paymentPhase?.paidAmount ?? 0,
+            interestRate: (phase as any).paymentPhase?.interestRate ?? null,
+            collectFunds: (phase as any).paymentPhase?.collectFunds ?? false,
+            installments: (phase as any).paymentPhase?.installments ?? [],
+            currentStepId: (phase as any).documentationPhase?.currentStepId ?? null,
+            steps: (phase as any).documentationPhase?.steps ?? [],
+            fields: (phase as any).questionnairePhase?.fields ?? [],
+        };
+        res.json(flattenedPhase);
     } catch (error) {
         next(error);
     }
@@ -208,9 +235,11 @@ router.post('/:id/phases/:phaseId/installments', async (req: Request, res: Respo
         const { userId } = getAuthContext(req);
         const phase = await contractPhaseService.generateInstallments(req.params.phaseId, data, userId);
         // Transform installments to include amountDue for backwards compatibility
+        // Installments are now on paymentPhase extension
+        const installments = phase.paymentPhase?.installments ?? [];
         const responsePhase = {
             ...phase,
-            installments: phase.installments.map((inst: any) => ({
+            installments: installments.map((inst: any) => ({
                 ...inst,
                 amountDue: inst.amount,
             })),

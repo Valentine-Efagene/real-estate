@@ -48,7 +48,7 @@ export type ContractInstallmentSumAggregateOutputType = {
 
 export type ContractInstallmentMinAggregateOutputType = {
   id: string | null
-  phaseId: string | null
+  paymentPhaseId: string | null
   installmentNumber: number | null
   amount: number | null
   principalAmount: number | null
@@ -67,7 +67,7 @@ export type ContractInstallmentMinAggregateOutputType = {
 
 export type ContractInstallmentMaxAggregateOutputType = {
   id: string | null
-  phaseId: string | null
+  paymentPhaseId: string | null
   installmentNumber: number | null
   amount: number | null
   principalAmount: number | null
@@ -86,7 +86,7 @@ export type ContractInstallmentMaxAggregateOutputType = {
 
 export type ContractInstallmentCountAggregateOutputType = {
   id: number
-  phaseId: number
+  paymentPhaseId: number
   installmentNumber: number
   amount: number
   principalAmount: number
@@ -127,7 +127,7 @@ export type ContractInstallmentSumAggregateInputType = {
 
 export type ContractInstallmentMinAggregateInputType = {
   id?: true
-  phaseId?: true
+  paymentPhaseId?: true
   installmentNumber?: true
   amount?: true
   principalAmount?: true
@@ -146,7 +146,7 @@ export type ContractInstallmentMinAggregateInputType = {
 
 export type ContractInstallmentMaxAggregateInputType = {
   id?: true
-  phaseId?: true
+  paymentPhaseId?: true
   installmentNumber?: true
   amount?: true
   principalAmount?: true
@@ -165,7 +165,7 @@ export type ContractInstallmentMaxAggregateInputType = {
 
 export type ContractInstallmentCountAggregateInputType = {
   id?: true
-  phaseId?: true
+  paymentPhaseId?: true
   installmentNumber?: true
   amount?: true
   principalAmount?: true
@@ -271,7 +271,7 @@ export type ContractInstallmentGroupByArgs<ExtArgs extends runtime.Types.Extensi
 
 export type ContractInstallmentGroupByOutputType = {
   id: string
-  phaseId: string
+  paymentPhaseId: string
   installmentNumber: number
   amount: number
   principalAmount: number
@@ -313,7 +313,7 @@ export type ContractInstallmentWhereInput = {
   OR?: Prisma.ContractInstallmentWhereInput[]
   NOT?: Prisma.ContractInstallmentWhereInput | Prisma.ContractInstallmentWhereInput[]
   id?: Prisma.StringFilter<"ContractInstallment"> | string
-  phaseId?: Prisma.StringFilter<"ContractInstallment"> | string
+  paymentPhaseId?: Prisma.StringFilter<"ContractInstallment"> | string
   installmentNumber?: Prisma.IntFilter<"ContractInstallment"> | number
   amount?: Prisma.FloatFilter<"ContractInstallment"> | number
   principalAmount?: Prisma.FloatFilter<"ContractInstallment"> | number
@@ -328,13 +328,13 @@ export type ContractInstallmentWhereInput = {
   gracePeriodEndDate?: Prisma.DateTimeNullableFilter<"ContractInstallment"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"ContractInstallment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ContractInstallment"> | Date | string
-  phase?: Prisma.XOR<Prisma.ContractPhaseScalarRelationFilter, Prisma.ContractPhaseWhereInput>
+  paymentPhase?: Prisma.XOR<Prisma.PaymentPhaseScalarRelationFilter, Prisma.PaymentPhaseWhereInput>
   payments?: Prisma.ContractPaymentListRelationFilter
 }
 
 export type ContractInstallmentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  phaseId?: Prisma.SortOrder
+  paymentPhaseId?: Prisma.SortOrder
   installmentNumber?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   principalAmount?: Prisma.SortOrder
@@ -349,7 +349,7 @@ export type ContractInstallmentOrderByWithRelationInput = {
   gracePeriodEndDate?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  phase?: Prisma.ContractPhaseOrderByWithRelationInput
+  paymentPhase?: Prisma.PaymentPhaseOrderByWithRelationInput
   payments?: Prisma.ContractPaymentOrderByRelationAggregateInput
   _relevance?: Prisma.ContractInstallmentOrderByRelevanceInput
 }
@@ -359,7 +359,7 @@ export type ContractInstallmentWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.ContractInstallmentWhereInput | Prisma.ContractInstallmentWhereInput[]
   OR?: Prisma.ContractInstallmentWhereInput[]
   NOT?: Prisma.ContractInstallmentWhereInput | Prisma.ContractInstallmentWhereInput[]
-  phaseId?: Prisma.StringFilter<"ContractInstallment"> | string
+  paymentPhaseId?: Prisma.StringFilter<"ContractInstallment"> | string
   installmentNumber?: Prisma.IntFilter<"ContractInstallment"> | number
   amount?: Prisma.FloatFilter<"ContractInstallment"> | number
   principalAmount?: Prisma.FloatFilter<"ContractInstallment"> | number
@@ -374,13 +374,13 @@ export type ContractInstallmentWhereUniqueInput = Prisma.AtLeast<{
   gracePeriodEndDate?: Prisma.DateTimeNullableFilter<"ContractInstallment"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"ContractInstallment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ContractInstallment"> | Date | string
-  phase?: Prisma.XOR<Prisma.ContractPhaseScalarRelationFilter, Prisma.ContractPhaseWhereInput>
+  paymentPhase?: Prisma.XOR<Prisma.PaymentPhaseScalarRelationFilter, Prisma.PaymentPhaseWhereInput>
   payments?: Prisma.ContractPaymentListRelationFilter
 }, "id">
 
 export type ContractInstallmentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  phaseId?: Prisma.SortOrder
+  paymentPhaseId?: Prisma.SortOrder
   installmentNumber?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   principalAmount?: Prisma.SortOrder
@@ -407,7 +407,7 @@ export type ContractInstallmentScalarWhereWithAggregatesInput = {
   OR?: Prisma.ContractInstallmentScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ContractInstallmentScalarWhereWithAggregatesInput | Prisma.ContractInstallmentScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"ContractInstallment"> | string
-  phaseId?: Prisma.StringWithAggregatesFilter<"ContractInstallment"> | string
+  paymentPhaseId?: Prisma.StringWithAggregatesFilter<"ContractInstallment"> | string
   installmentNumber?: Prisma.IntWithAggregatesFilter<"ContractInstallment"> | number
   amount?: Prisma.FloatWithAggregatesFilter<"ContractInstallment"> | number
   principalAmount?: Prisma.FloatWithAggregatesFilter<"ContractInstallment"> | number
@@ -440,13 +440,13 @@ export type ContractInstallmentCreateInput = {
   gracePeriodEndDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  phase: Prisma.ContractPhaseCreateNestedOneWithoutInstallmentsInput
+  paymentPhase: Prisma.PaymentPhaseCreateNestedOneWithoutInstallmentsInput
   payments?: Prisma.ContractPaymentCreateNestedManyWithoutInstallmentInput
 }
 
 export type ContractInstallmentUncheckedCreateInput = {
   id?: string
-  phaseId: string
+  paymentPhaseId: string
   installmentNumber: number
   amount: number
   principalAmount?: number
@@ -480,13 +480,13 @@ export type ContractInstallmentUpdateInput = {
   gracePeriodEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  phase?: Prisma.ContractPhaseUpdateOneRequiredWithoutInstallmentsNestedInput
+  paymentPhase?: Prisma.PaymentPhaseUpdateOneRequiredWithoutInstallmentsNestedInput
   payments?: Prisma.ContractPaymentUpdateManyWithoutInstallmentNestedInput
 }
 
 export type ContractInstallmentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  phaseId?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentPhaseId?: Prisma.StringFieldUpdateOperationsInput | string
   installmentNumber?: Prisma.IntFieldUpdateOperationsInput | number
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   principalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -506,7 +506,7 @@ export type ContractInstallmentUncheckedUpdateInput = {
 
 export type ContractInstallmentCreateManyInput = {
   id?: string
-  phaseId: string
+  paymentPhaseId: string
   installmentNumber: number
   amount: number
   principalAmount?: number
@@ -543,7 +543,7 @@ export type ContractInstallmentUpdateManyMutationInput = {
 
 export type ContractInstallmentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  phaseId?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentPhaseId?: Prisma.StringFieldUpdateOperationsInput | string
   installmentNumber?: Prisma.IntFieldUpdateOperationsInput | number
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   principalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -578,7 +578,7 @@ export type ContractInstallmentOrderByRelevanceInput = {
 
 export type ContractInstallmentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  phaseId?: Prisma.SortOrder
+  paymentPhaseId?: Prisma.SortOrder
   installmentNumber?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   principalAmount?: Prisma.SortOrder
@@ -607,7 +607,7 @@ export type ContractInstallmentAvgOrderByAggregateInput = {
 
 export type ContractInstallmentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  phaseId?: Prisma.SortOrder
+  paymentPhaseId?: Prisma.SortOrder
   installmentNumber?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   principalAmount?: Prisma.SortOrder
@@ -626,7 +626,7 @@ export type ContractInstallmentMaxOrderByAggregateInput = {
 
 export type ContractInstallmentMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  phaseId?: Prisma.SortOrder
+  paymentPhaseId?: Prisma.SortOrder
   installmentNumber?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   principalAmount?: Prisma.SortOrder
@@ -658,45 +658,45 @@ export type ContractInstallmentNullableScalarRelationFilter = {
   isNot?: Prisma.ContractInstallmentWhereInput | null
 }
 
-export type ContractInstallmentCreateNestedManyWithoutPhaseInput = {
-  create?: Prisma.XOR<Prisma.ContractInstallmentCreateWithoutPhaseInput, Prisma.ContractInstallmentUncheckedCreateWithoutPhaseInput> | Prisma.ContractInstallmentCreateWithoutPhaseInput[] | Prisma.ContractInstallmentUncheckedCreateWithoutPhaseInput[]
-  connectOrCreate?: Prisma.ContractInstallmentCreateOrConnectWithoutPhaseInput | Prisma.ContractInstallmentCreateOrConnectWithoutPhaseInput[]
-  createMany?: Prisma.ContractInstallmentCreateManyPhaseInputEnvelope
+export type ContractInstallmentCreateNestedManyWithoutPaymentPhaseInput = {
+  create?: Prisma.XOR<Prisma.ContractInstallmentCreateWithoutPaymentPhaseInput, Prisma.ContractInstallmentUncheckedCreateWithoutPaymentPhaseInput> | Prisma.ContractInstallmentCreateWithoutPaymentPhaseInput[] | Prisma.ContractInstallmentUncheckedCreateWithoutPaymentPhaseInput[]
+  connectOrCreate?: Prisma.ContractInstallmentCreateOrConnectWithoutPaymentPhaseInput | Prisma.ContractInstallmentCreateOrConnectWithoutPaymentPhaseInput[]
+  createMany?: Prisma.ContractInstallmentCreateManyPaymentPhaseInputEnvelope
   connect?: Prisma.ContractInstallmentWhereUniqueInput | Prisma.ContractInstallmentWhereUniqueInput[]
 }
 
-export type ContractInstallmentUncheckedCreateNestedManyWithoutPhaseInput = {
-  create?: Prisma.XOR<Prisma.ContractInstallmentCreateWithoutPhaseInput, Prisma.ContractInstallmentUncheckedCreateWithoutPhaseInput> | Prisma.ContractInstallmentCreateWithoutPhaseInput[] | Prisma.ContractInstallmentUncheckedCreateWithoutPhaseInput[]
-  connectOrCreate?: Prisma.ContractInstallmentCreateOrConnectWithoutPhaseInput | Prisma.ContractInstallmentCreateOrConnectWithoutPhaseInput[]
-  createMany?: Prisma.ContractInstallmentCreateManyPhaseInputEnvelope
+export type ContractInstallmentUncheckedCreateNestedManyWithoutPaymentPhaseInput = {
+  create?: Prisma.XOR<Prisma.ContractInstallmentCreateWithoutPaymentPhaseInput, Prisma.ContractInstallmentUncheckedCreateWithoutPaymentPhaseInput> | Prisma.ContractInstallmentCreateWithoutPaymentPhaseInput[] | Prisma.ContractInstallmentUncheckedCreateWithoutPaymentPhaseInput[]
+  connectOrCreate?: Prisma.ContractInstallmentCreateOrConnectWithoutPaymentPhaseInput | Prisma.ContractInstallmentCreateOrConnectWithoutPaymentPhaseInput[]
+  createMany?: Prisma.ContractInstallmentCreateManyPaymentPhaseInputEnvelope
   connect?: Prisma.ContractInstallmentWhereUniqueInput | Prisma.ContractInstallmentWhereUniqueInput[]
 }
 
-export type ContractInstallmentUpdateManyWithoutPhaseNestedInput = {
-  create?: Prisma.XOR<Prisma.ContractInstallmentCreateWithoutPhaseInput, Prisma.ContractInstallmentUncheckedCreateWithoutPhaseInput> | Prisma.ContractInstallmentCreateWithoutPhaseInput[] | Prisma.ContractInstallmentUncheckedCreateWithoutPhaseInput[]
-  connectOrCreate?: Prisma.ContractInstallmentCreateOrConnectWithoutPhaseInput | Prisma.ContractInstallmentCreateOrConnectWithoutPhaseInput[]
-  upsert?: Prisma.ContractInstallmentUpsertWithWhereUniqueWithoutPhaseInput | Prisma.ContractInstallmentUpsertWithWhereUniqueWithoutPhaseInput[]
-  createMany?: Prisma.ContractInstallmentCreateManyPhaseInputEnvelope
+export type ContractInstallmentUpdateManyWithoutPaymentPhaseNestedInput = {
+  create?: Prisma.XOR<Prisma.ContractInstallmentCreateWithoutPaymentPhaseInput, Prisma.ContractInstallmentUncheckedCreateWithoutPaymentPhaseInput> | Prisma.ContractInstallmentCreateWithoutPaymentPhaseInput[] | Prisma.ContractInstallmentUncheckedCreateWithoutPaymentPhaseInput[]
+  connectOrCreate?: Prisma.ContractInstallmentCreateOrConnectWithoutPaymentPhaseInput | Prisma.ContractInstallmentCreateOrConnectWithoutPaymentPhaseInput[]
+  upsert?: Prisma.ContractInstallmentUpsertWithWhereUniqueWithoutPaymentPhaseInput | Prisma.ContractInstallmentUpsertWithWhereUniqueWithoutPaymentPhaseInput[]
+  createMany?: Prisma.ContractInstallmentCreateManyPaymentPhaseInputEnvelope
   set?: Prisma.ContractInstallmentWhereUniqueInput | Prisma.ContractInstallmentWhereUniqueInput[]
   disconnect?: Prisma.ContractInstallmentWhereUniqueInput | Prisma.ContractInstallmentWhereUniqueInput[]
   delete?: Prisma.ContractInstallmentWhereUniqueInput | Prisma.ContractInstallmentWhereUniqueInput[]
   connect?: Prisma.ContractInstallmentWhereUniqueInput | Prisma.ContractInstallmentWhereUniqueInput[]
-  update?: Prisma.ContractInstallmentUpdateWithWhereUniqueWithoutPhaseInput | Prisma.ContractInstallmentUpdateWithWhereUniqueWithoutPhaseInput[]
-  updateMany?: Prisma.ContractInstallmentUpdateManyWithWhereWithoutPhaseInput | Prisma.ContractInstallmentUpdateManyWithWhereWithoutPhaseInput[]
+  update?: Prisma.ContractInstallmentUpdateWithWhereUniqueWithoutPaymentPhaseInput | Prisma.ContractInstallmentUpdateWithWhereUniqueWithoutPaymentPhaseInput[]
+  updateMany?: Prisma.ContractInstallmentUpdateManyWithWhereWithoutPaymentPhaseInput | Prisma.ContractInstallmentUpdateManyWithWhereWithoutPaymentPhaseInput[]
   deleteMany?: Prisma.ContractInstallmentScalarWhereInput | Prisma.ContractInstallmentScalarWhereInput[]
 }
 
-export type ContractInstallmentUncheckedUpdateManyWithoutPhaseNestedInput = {
-  create?: Prisma.XOR<Prisma.ContractInstallmentCreateWithoutPhaseInput, Prisma.ContractInstallmentUncheckedCreateWithoutPhaseInput> | Prisma.ContractInstallmentCreateWithoutPhaseInput[] | Prisma.ContractInstallmentUncheckedCreateWithoutPhaseInput[]
-  connectOrCreate?: Prisma.ContractInstallmentCreateOrConnectWithoutPhaseInput | Prisma.ContractInstallmentCreateOrConnectWithoutPhaseInput[]
-  upsert?: Prisma.ContractInstallmentUpsertWithWhereUniqueWithoutPhaseInput | Prisma.ContractInstallmentUpsertWithWhereUniqueWithoutPhaseInput[]
-  createMany?: Prisma.ContractInstallmentCreateManyPhaseInputEnvelope
+export type ContractInstallmentUncheckedUpdateManyWithoutPaymentPhaseNestedInput = {
+  create?: Prisma.XOR<Prisma.ContractInstallmentCreateWithoutPaymentPhaseInput, Prisma.ContractInstallmentUncheckedCreateWithoutPaymentPhaseInput> | Prisma.ContractInstallmentCreateWithoutPaymentPhaseInput[] | Prisma.ContractInstallmentUncheckedCreateWithoutPaymentPhaseInput[]
+  connectOrCreate?: Prisma.ContractInstallmentCreateOrConnectWithoutPaymentPhaseInput | Prisma.ContractInstallmentCreateOrConnectWithoutPaymentPhaseInput[]
+  upsert?: Prisma.ContractInstallmentUpsertWithWhereUniqueWithoutPaymentPhaseInput | Prisma.ContractInstallmentUpsertWithWhereUniqueWithoutPaymentPhaseInput[]
+  createMany?: Prisma.ContractInstallmentCreateManyPaymentPhaseInputEnvelope
   set?: Prisma.ContractInstallmentWhereUniqueInput | Prisma.ContractInstallmentWhereUniqueInput[]
   disconnect?: Prisma.ContractInstallmentWhereUniqueInput | Prisma.ContractInstallmentWhereUniqueInput[]
   delete?: Prisma.ContractInstallmentWhereUniqueInput | Prisma.ContractInstallmentWhereUniqueInput[]
   connect?: Prisma.ContractInstallmentWhereUniqueInput | Prisma.ContractInstallmentWhereUniqueInput[]
-  update?: Prisma.ContractInstallmentUpdateWithWhereUniqueWithoutPhaseInput | Prisma.ContractInstallmentUpdateWithWhereUniqueWithoutPhaseInput[]
-  updateMany?: Prisma.ContractInstallmentUpdateManyWithWhereWithoutPhaseInput | Prisma.ContractInstallmentUpdateManyWithWhereWithoutPhaseInput[]
+  update?: Prisma.ContractInstallmentUpdateWithWhereUniqueWithoutPaymentPhaseInput | Prisma.ContractInstallmentUpdateWithWhereUniqueWithoutPaymentPhaseInput[]
+  updateMany?: Prisma.ContractInstallmentUpdateManyWithWhereWithoutPaymentPhaseInput | Prisma.ContractInstallmentUpdateManyWithWhereWithoutPaymentPhaseInput[]
   deleteMany?: Prisma.ContractInstallmentScalarWhereInput | Prisma.ContractInstallmentScalarWhereInput[]
 }
 
@@ -720,7 +720,7 @@ export type ContractInstallmentUpdateOneWithoutPaymentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ContractInstallmentUpdateToOneWithWhereWithoutPaymentsInput, Prisma.ContractInstallmentUpdateWithoutPaymentsInput>, Prisma.ContractInstallmentUncheckedUpdateWithoutPaymentsInput>
 }
 
-export type ContractInstallmentCreateWithoutPhaseInput = {
+export type ContractInstallmentCreateWithoutPaymentPhaseInput = {
   id?: string
   installmentNumber: number
   amount: number
@@ -739,7 +739,7 @@ export type ContractInstallmentCreateWithoutPhaseInput = {
   payments?: Prisma.ContractPaymentCreateNestedManyWithoutInstallmentInput
 }
 
-export type ContractInstallmentUncheckedCreateWithoutPhaseInput = {
+export type ContractInstallmentUncheckedCreateWithoutPaymentPhaseInput = {
   id?: string
   installmentNumber: number
   amount: number
@@ -758,30 +758,30 @@ export type ContractInstallmentUncheckedCreateWithoutPhaseInput = {
   payments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutInstallmentInput
 }
 
-export type ContractInstallmentCreateOrConnectWithoutPhaseInput = {
+export type ContractInstallmentCreateOrConnectWithoutPaymentPhaseInput = {
   where: Prisma.ContractInstallmentWhereUniqueInput
-  create: Prisma.XOR<Prisma.ContractInstallmentCreateWithoutPhaseInput, Prisma.ContractInstallmentUncheckedCreateWithoutPhaseInput>
+  create: Prisma.XOR<Prisma.ContractInstallmentCreateWithoutPaymentPhaseInput, Prisma.ContractInstallmentUncheckedCreateWithoutPaymentPhaseInput>
 }
 
-export type ContractInstallmentCreateManyPhaseInputEnvelope = {
-  data: Prisma.ContractInstallmentCreateManyPhaseInput | Prisma.ContractInstallmentCreateManyPhaseInput[]
+export type ContractInstallmentCreateManyPaymentPhaseInputEnvelope = {
+  data: Prisma.ContractInstallmentCreateManyPaymentPhaseInput | Prisma.ContractInstallmentCreateManyPaymentPhaseInput[]
   skipDuplicates?: boolean
 }
 
-export type ContractInstallmentUpsertWithWhereUniqueWithoutPhaseInput = {
+export type ContractInstallmentUpsertWithWhereUniqueWithoutPaymentPhaseInput = {
   where: Prisma.ContractInstallmentWhereUniqueInput
-  update: Prisma.XOR<Prisma.ContractInstallmentUpdateWithoutPhaseInput, Prisma.ContractInstallmentUncheckedUpdateWithoutPhaseInput>
-  create: Prisma.XOR<Prisma.ContractInstallmentCreateWithoutPhaseInput, Prisma.ContractInstallmentUncheckedCreateWithoutPhaseInput>
+  update: Prisma.XOR<Prisma.ContractInstallmentUpdateWithoutPaymentPhaseInput, Prisma.ContractInstallmentUncheckedUpdateWithoutPaymentPhaseInput>
+  create: Prisma.XOR<Prisma.ContractInstallmentCreateWithoutPaymentPhaseInput, Prisma.ContractInstallmentUncheckedCreateWithoutPaymentPhaseInput>
 }
 
-export type ContractInstallmentUpdateWithWhereUniqueWithoutPhaseInput = {
+export type ContractInstallmentUpdateWithWhereUniqueWithoutPaymentPhaseInput = {
   where: Prisma.ContractInstallmentWhereUniqueInput
-  data: Prisma.XOR<Prisma.ContractInstallmentUpdateWithoutPhaseInput, Prisma.ContractInstallmentUncheckedUpdateWithoutPhaseInput>
+  data: Prisma.XOR<Prisma.ContractInstallmentUpdateWithoutPaymentPhaseInput, Prisma.ContractInstallmentUncheckedUpdateWithoutPaymentPhaseInput>
 }
 
-export type ContractInstallmentUpdateManyWithWhereWithoutPhaseInput = {
+export type ContractInstallmentUpdateManyWithWhereWithoutPaymentPhaseInput = {
   where: Prisma.ContractInstallmentScalarWhereInput
-  data: Prisma.XOR<Prisma.ContractInstallmentUpdateManyMutationInput, Prisma.ContractInstallmentUncheckedUpdateManyWithoutPhaseInput>
+  data: Prisma.XOR<Prisma.ContractInstallmentUpdateManyMutationInput, Prisma.ContractInstallmentUncheckedUpdateManyWithoutPaymentPhaseInput>
 }
 
 export type ContractInstallmentScalarWhereInput = {
@@ -789,7 +789,7 @@ export type ContractInstallmentScalarWhereInput = {
   OR?: Prisma.ContractInstallmentScalarWhereInput[]
   NOT?: Prisma.ContractInstallmentScalarWhereInput | Prisma.ContractInstallmentScalarWhereInput[]
   id?: Prisma.StringFilter<"ContractInstallment"> | string
-  phaseId?: Prisma.StringFilter<"ContractInstallment"> | string
+  paymentPhaseId?: Prisma.StringFilter<"ContractInstallment"> | string
   installmentNumber?: Prisma.IntFilter<"ContractInstallment"> | number
   amount?: Prisma.FloatFilter<"ContractInstallment"> | number
   principalAmount?: Prisma.FloatFilter<"ContractInstallment"> | number
@@ -822,12 +822,12 @@ export type ContractInstallmentCreateWithoutPaymentsInput = {
   gracePeriodEndDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  phase: Prisma.ContractPhaseCreateNestedOneWithoutInstallmentsInput
+  paymentPhase: Prisma.PaymentPhaseCreateNestedOneWithoutInstallmentsInput
 }
 
 export type ContractInstallmentUncheckedCreateWithoutPaymentsInput = {
   id?: string
-  phaseId: string
+  paymentPhaseId: string
   installmentNumber: number
   amount: number
   principalAmount?: number
@@ -876,12 +876,12 @@ export type ContractInstallmentUpdateWithoutPaymentsInput = {
   gracePeriodEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  phase?: Prisma.ContractPhaseUpdateOneRequiredWithoutInstallmentsNestedInput
+  paymentPhase?: Prisma.PaymentPhaseUpdateOneRequiredWithoutInstallmentsNestedInput
 }
 
 export type ContractInstallmentUncheckedUpdateWithoutPaymentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  phaseId?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentPhaseId?: Prisma.StringFieldUpdateOperationsInput | string
   installmentNumber?: Prisma.IntFieldUpdateOperationsInput | number
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   principalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -898,7 +898,7 @@ export type ContractInstallmentUncheckedUpdateWithoutPaymentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type ContractInstallmentCreateManyPhaseInput = {
+export type ContractInstallmentCreateManyPaymentPhaseInput = {
   id?: string
   installmentNumber: number
   amount: number
@@ -916,7 +916,7 @@ export type ContractInstallmentCreateManyPhaseInput = {
   updatedAt?: Date | string
 }
 
-export type ContractInstallmentUpdateWithoutPhaseInput = {
+export type ContractInstallmentUpdateWithoutPaymentPhaseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   installmentNumber?: Prisma.IntFieldUpdateOperationsInput | number
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -935,7 +935,7 @@ export type ContractInstallmentUpdateWithoutPhaseInput = {
   payments?: Prisma.ContractPaymentUpdateManyWithoutInstallmentNestedInput
 }
 
-export type ContractInstallmentUncheckedUpdateWithoutPhaseInput = {
+export type ContractInstallmentUncheckedUpdateWithoutPaymentPhaseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   installmentNumber?: Prisma.IntFieldUpdateOperationsInput | number
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -954,7 +954,7 @@ export type ContractInstallmentUncheckedUpdateWithoutPhaseInput = {
   payments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutInstallmentNestedInput
 }
 
-export type ContractInstallmentUncheckedUpdateManyWithoutPhaseInput = {
+export type ContractInstallmentUncheckedUpdateManyWithoutPaymentPhaseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   installmentNumber?: Prisma.IntFieldUpdateOperationsInput | number
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -1005,7 +1005,7 @@ export type ContractInstallmentCountOutputTypeCountPaymentsArgs<ExtArgs extends 
 
 export type ContractInstallmentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  phaseId?: boolean
+  paymentPhaseId?: boolean
   installmentNumber?: boolean
   amount?: boolean
   principalAmount?: boolean
@@ -1020,7 +1020,7 @@ export type ContractInstallmentSelect<ExtArgs extends runtime.Types.Extensions.I
   gracePeriodEndDate?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  phase?: boolean | Prisma.ContractPhaseDefaultArgs<ExtArgs>
+  paymentPhase?: boolean | Prisma.PaymentPhaseDefaultArgs<ExtArgs>
   payments?: boolean | Prisma.ContractInstallment$paymentsArgs<ExtArgs>
   _count?: boolean | Prisma.ContractInstallmentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["contractInstallment"]>
@@ -1029,7 +1029,7 @@ export type ContractInstallmentSelect<ExtArgs extends runtime.Types.Extensions.I
 
 export type ContractInstallmentSelectScalar = {
   id?: boolean
-  phaseId?: boolean
+  paymentPhaseId?: boolean
   installmentNumber?: boolean
   amount?: boolean
   principalAmount?: boolean
@@ -1046,9 +1046,9 @@ export type ContractInstallmentSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ContractInstallmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "phaseId" | "installmentNumber" | "amount" | "principalAmount" | "interestAmount" | "dueDate" | "status" | "paidAmount" | "paidDate" | "lateFee" | "lateFeeWaived" | "gracePeriodDays" | "gracePeriodEndDate" | "createdAt" | "updatedAt", ExtArgs["result"]["contractInstallment"]>
+export type ContractInstallmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "paymentPhaseId" | "installmentNumber" | "amount" | "principalAmount" | "interestAmount" | "dueDate" | "status" | "paidAmount" | "paidDate" | "lateFee" | "lateFeeWaived" | "gracePeriodDays" | "gracePeriodEndDate" | "createdAt" | "updatedAt", ExtArgs["result"]["contractInstallment"]>
 export type ContractInstallmentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  phase?: boolean | Prisma.ContractPhaseDefaultArgs<ExtArgs>
+  paymentPhase?: boolean | Prisma.PaymentPhaseDefaultArgs<ExtArgs>
   payments?: boolean | Prisma.ContractInstallment$paymentsArgs<ExtArgs>
   _count?: boolean | Prisma.ContractInstallmentCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -1056,12 +1056,12 @@ export type ContractInstallmentInclude<ExtArgs extends runtime.Types.Extensions.
 export type $ContractInstallmentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "ContractInstallment"
   objects: {
-    phase: Prisma.$ContractPhasePayload<ExtArgs>
+    paymentPhase: Prisma.$PaymentPhasePayload<ExtArgs>
     payments: Prisma.$ContractPaymentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    phaseId: string
+    paymentPhaseId: string
     installmentNumber: number
     amount: number
     principalAmount: number
@@ -1416,7 +1416,7 @@ readonly fields: ContractInstallmentFieldRefs;
  */
 export interface Prisma__ContractInstallmentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  phase<T extends Prisma.ContractPhaseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContractPhaseDefaultArgs<ExtArgs>>): Prisma.Prisma__ContractPhaseClient<runtime.Types.Result.GetResult<Prisma.$ContractPhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  paymentPhase<T extends Prisma.PaymentPhaseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PaymentPhaseDefaultArgs<ExtArgs>>): Prisma.Prisma__PaymentPhaseClient<runtime.Types.Result.GetResult<Prisma.$PaymentPhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   payments<T extends Prisma.ContractInstallment$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContractInstallment$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContractPaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1448,7 +1448,7 @@ export interface Prisma__ContractInstallmentClient<T, Null = never, ExtArgs exte
  */
 export interface ContractInstallmentFieldRefs {
   readonly id: Prisma.FieldRef<"ContractInstallment", 'String'>
-  readonly phaseId: Prisma.FieldRef<"ContractInstallment", 'String'>
+  readonly paymentPhaseId: Prisma.FieldRef<"ContractInstallment", 'String'>
   readonly installmentNumber: Prisma.FieldRef<"ContractInstallment", 'Int'>
   readonly amount: Prisma.FieldRef<"ContractInstallment", 'Float'>
   readonly principalAmount: Prisma.FieldRef<"ContractInstallment", 'Float'>

@@ -51,29 +51,24 @@ function calculatePeriodicPayment(
 /**
  * Extract mortgage payment info from contract phases
  * The mortgage phase has a payment plan with term and interest rate
+ * Now reads from PaymentPhase extension table
  */
 function getMortgagePaymentInfo(contract: any): { termMonths: number; monthlyPayment: number } {
-    // First check if contract has periodicPayment set
-    if (contract.periodicPayment && contract.termMonths) {
-        return {
-            termMonths: contract.termMonths,
-            monthlyPayment: contract.periodicPayment,
-        };
-    }
-
     // Find the mortgage phase (phaseType = 'MORTGAGE')
     const mortgagePhase = contract.phases?.find(
         (phase: any) => phase.phaseType === 'MORTGAGE'
     );
 
-    if (!mortgagePhase?.paymentPlan) {
+    // PaymentPhase extension contains the payment plan reference
+    const paymentPhase = mortgagePhase?.paymentPhase;
+    if (!paymentPhase?.paymentPlan) {
         return { termMonths: 0, monthlyPayment: 0 };
     }
 
-    const paymentPlan = mortgagePhase.paymentPlan;
+    const paymentPlan = paymentPhase.paymentPlan;
     const termMonths = paymentPlan.numberOfInstallments || 0;
-    const interestRate = paymentPlan.interestRate || 0;
-    const principal = mortgagePhase.totalAmount;
+    const interestRate = paymentPhase.interestRate || 0;
+    const principal = paymentPhase.totalAmount;
 
     if (termMonths > 0 && principal > 0) {
         const monthlyPayment = calculatePeriodicPayment(principal, interestRate, termMonths);
@@ -254,15 +249,6 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
 
         const unitPrice = propertyUnit.priceOverride ?? propertyUnit.variant.price;
         const totalAmount = data.totalAmount ?? unitPrice;
-        const downPayment = data.downPayment ?? 0;
-        const principal = totalAmount - downPayment;
-        const interestRate = data.interestRate ?? 0;
-        const termMonths = data.termMonths;
-
-        let periodicPayment: number | null = null;
-        if (termMonths && principal > 0) {
-            periodicPayment = calculatePeriodicPayment(principal, interestRate, termMonths);
-        }
 
         const contract = await prisma.$transaction(async (tx: any) => {
             await tx.propertyUnit.update({
@@ -294,13 +280,7 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
                     description: data.description,
                     contractType: data.contractType,
                     totalAmount,
-                    downPayment,
-                    principal,
-                    interestRate,
-                    termMonths,
-                    periodicPayment,
                     status: 'DRAFT',
-                    state: 'DRAFT',
                     startDate: data.startDate ? new Date(data.startDate) : null,
                 },
             });
@@ -309,53 +289,67 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
                 let phaseAmount: number | null = null;
                 if (phaseTemplate.percentOfPrice) {
                     phaseAmount = (totalAmount * phaseTemplate.percentOfPrice) / 100;
-                } else if (phaseTemplate.phaseCategory === 'DOCUMENTATION') {
-                    phaseAmount = 0; // Documentation phases have no monetary amount
+                } else if (phaseTemplate.phaseCategory === 'DOCUMENTATION' || phaseTemplate.phaseCategory === 'QUESTIONNAIRE') {
+                    phaseAmount = 0; // Non-payment phases have no monetary amount
                 }
 
                 // Get step definitions and required documents from child tables
                 const steps = parseStepDefinitions(phaseTemplate);
                 const requiredDocs = phaseTemplate.requiredDocuments || [];
 
+                // Create base ContractPhase (shared fields only)
                 const phase = await tx.contractPhase.create({
                     data: {
                         contractId: created.id,
-                        paymentPlanId: phaseTemplate.paymentPlanId,
                         name: phaseTemplate.name,
                         description: phaseTemplate.description,
                         phaseCategory: phaseTemplate.phaseCategory,
                         phaseType: phaseTemplate.phaseType,
                         order: phaseTemplate.order,
                         status: 'PENDING' as PhaseStatus,
-                        totalAmount: phaseAmount,
-                        remainingAmount: phaseAmount,
-                        interestRate: phaseTemplate.interestRate,
-                        // Determine collectFunds: phase override > paymentPlan setting > default true
-                        collectFunds: phaseTemplate.collectFunds ?? phaseTemplate.paymentPlan?.collectFunds ?? true,
                         requiresPreviousPhaseCompletion: phaseTemplate.requiresPreviousPhaseCompletion,
-                        minimumCompletionPercentage: phaseTemplate.minimumCompletionPercentage,
-                        // Store snapshots for audit
-                        stepDefinitionsSnapshot: phaseTemplate.stepDefinitionsSnapshot,
-                        requiredDocumentSnapshot: phaseTemplate.requiredDocumentSnapshot,
-                        // Initialize progress counters
-                        totalStepsCount: steps.length,
-                        completedStepsCount: 0,
-                        requiredDocumentsCount: requiredDocs.filter((d: any) => d.isRequired).length,
-                        approvedDocumentsCount: 0,
                     },
                 });
 
-                if (phaseTemplate.phaseCategory === 'DOCUMENTATION') {
+                // Create appropriate extension record based on phaseCategory
+                if (phaseTemplate.phaseCategory === 'QUESTIONNAIRE') {
+                    // Create QuestionnairePhase extension
+                    const questionnairePhase = await tx.questionnairePhase.create({
+                        data: {
+                            phaseId: phase.id,
+                            totalFieldsCount: 0, // Will be populated when fields are defined
+                            completedFieldsCount: 0,
+                            fieldsSnapshot: phaseTemplate.stepDefinitionsSnapshot,
+                        },
+                    });
+
+                    // TODO: Create QuestionnaireField records if template has field definitions
+                } else if (phaseTemplate.phaseCategory === 'DOCUMENTATION') {
+                    // Create DocumentationPhase extension
+                    const documentationPhase = await tx.documentationPhase.create({
+                        data: {
+                            phaseId: phase.id,
+                            totalStepsCount: steps.length,
+                            completedStepsCount: 0,
+                            requiredDocumentsCount: requiredDocs.filter((d: any) => d.isRequired).length,
+                            approvedDocumentsCount: 0,
+                            minimumCompletionPercentage: phaseTemplate.minimumCompletionPercentage,
+                            stepDefinitionsSnapshot: phaseTemplate.stepDefinitionsSnapshot,
+                            requiredDocumentSnapshot: phaseTemplate.requiredDocumentSnapshot,
+                        },
+                    });
+
+                    // Create DocumentationStep records
                     for (const step of steps) {
                         const createdStep = await tx.documentationStep.create({
                             data: {
-                                phaseId: phase.id,
+                                documentationPhaseId: documentationPhase.id,
                                 name: step.name,
                                 description: step.description,
                                 stepType: step.stepType as StepType,
                                 order: step.order,
                                 status: 'PENDING' as StepStatus,
-                                metadata: step.metadata ?? null, // Copy metadata from template (for GENERATE_DOCUMENT steps)
+                                metadata: step.metadata ?? null,
                             },
                         });
 
@@ -372,6 +366,20 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
                             }
                         }
                     }
+                } else if (phaseTemplate.phaseCategory === 'PAYMENT') {
+                    // Create PaymentPhase extension
+                    await tx.paymentPhase.create({
+                        data: {
+                            phaseId: phase.id,
+                            paymentPlanId: phaseTemplate.paymentPlanId,
+                            totalAmount: phaseAmount ?? 0,
+                            paidAmount: 0,
+                            interestRate: phaseTemplate.interestRate ?? 0,
+                            collectFunds: phaseTemplate.collectFunds ?? phaseTemplate.paymentPlan?.collectFunds ?? true,
+                            minimumCompletionPercentage: phaseTemplate.minimumCompletionPercentage,
+                            paymentPlanSnapshot: phaseTemplate.paymentPlan ? JSON.parse(JSON.stringify(phaseTemplate.paymentPlan)) : null,
+                        },
+                    });
                 }
             }
 
@@ -428,8 +436,8 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
                 contractNumber: fullContract.contractNumber,
                 propertyName: propertyUnit.variant?.property?.title || 'Your Property',
                 totalAmount: formatCurrency(totalAmount),
-                termMonths: mortgageInfo.termMonths || termMonths || 0,
-                monthlyPayment: formatCurrency(mortgageInfo.monthlyPayment || periodicPayment || 0),
+                termMonths: mortgageInfo.termMonths,
+                monthlyPayment: formatCurrency(mortgageInfo.monthlyPayment),
                 dashboardUrl: `${DASHBOARD_URL}/contracts/${contract.id}`,
             }, contract.id);
         } catch (error) {
@@ -512,12 +520,33 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
                 phases: {
                     orderBy: { order: 'asc' },
                     include: {
-                        paymentPlan: true,
-                        steps: {
-                            orderBy: { order: 'asc' },
+                        // Include polymorphic extensions
+                        questionnairePhase: {
+                            include: {
+                                fields: true,
+                            },
                         },
-                        installments: {
-                            orderBy: { installmentNumber: 'asc' },
+                        documentationPhase: {
+                            include: {
+                                steps: {
+                                    orderBy: { order: 'asc' },
+                                    include: {
+                                        requiredDocuments: true,
+                                        approvals: {
+                                            orderBy: { decidedAt: 'desc' },
+                                            take: 1,
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                        paymentPhase: {
+                            include: {
+                                paymentPlan: true,
+                                installments: {
+                                    orderBy: { installmentNumber: 'asc' },
+                                },
+                            },
                         },
                     },
                 },
@@ -570,19 +599,18 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
     async function transition(id: string, data: TransitionContractInput, userId: string) {
         const contract = await findById(id);
 
-        const fromState = contract.state;
-        const toState = getNextState(fromState, data.trigger);
+        const fromStatus = contract.status;
+        const toStatus = getNextState(fromStatus, data.trigger);
 
-        if (!toState) {
-            throw new AppError(400, `Invalid transition: ${data.trigger} from state ${fromState}`);
+        if (!toStatus) {
+            throw new AppError(400, `Invalid transition: ${data.trigger} from status ${fromStatus}`);
         }
 
         const updated = await prisma.$transaction(async (tx: any) => {
             const result = await tx.contract.update({
                 where: { id },
                 data: {
-                    state: toState,
-                    status: mapStateToStatus(toState),
+                    status: toStatus,
                 },
             });
 
@@ -595,8 +623,8 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
                     queueName: 'contract-steps',
                     payload: JSON.stringify({
                         contractId: id,
-                        fromState,
-                        toState,
+                        fromStatus,
+                        toStatus,
                         trigger: data.trigger,
                     }),
                     actorId: userId,
@@ -626,7 +654,6 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
                 data: {
                     signedAt: new Date(),
                     status: 'ACTIVE',
-                    state: 'ACTIVE',
                 },
             });
 
@@ -653,8 +680,11 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
 
         // Send contract activated notification
         try {
-            // Find next payment due date from first installment
-            const firstInstallment = activatedContract.phases?.[0]?.installments?.[0];
+            // Find next payment due date from first payment phase's installments
+            const firstPaymentPhase = activatedContract.phases?.find(
+                (p: any) => p.phaseCategory === 'PAYMENT' && p.paymentPhase?.installments?.length > 0
+            );
+            const firstInstallment = firstPaymentPhase?.paymentPhase?.installments?.[0];
             const nextPaymentDate = firstInstallment?.dueDate
                 ? formatDate(firstInstallment.dueDate)
                 : 'To be scheduled';
@@ -691,7 +721,6 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
                 where: { id },
                 data: {
                     status: 'CANCELLED',
-                    state: 'CANCELLED',
                     terminatedAt: new Date(),
                 },
             });
@@ -733,13 +762,41 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
             await tx.contractPayment.deleteMany({ where: { contractId: id } });
             await tx.contractDocument.deleteMany({ where: { contractId: id } });
 
-            const phases = await tx.contractPhase.findMany({ where: { contractId: id } });
+            const phases = await tx.contractPhase.findMany({
+                where: { contractId: id },
+                include: {
+                    documentationPhase: true,
+                    paymentPhase: true,
+                    questionnairePhase: true,
+                },
+            });
+
             for (const phase of phases) {
-                await tx.documentationStepApproval.deleteMany({
-                    where: { step: { phaseId: phase.id } },
-                });
-                await tx.documentationStep.deleteMany({ where: { phaseId: phase.id } });
-                await tx.contractInstallment.deleteMany({ where: { phaseId: phase.id } });
+                // Delete DocumentationPhase extension and children
+                if (phase.documentationPhase) {
+                    const docPhaseId = phase.documentationPhase.id;
+                    const steps = await tx.documentationStep.findMany({ where: { documentationPhaseId: docPhaseId } });
+                    for (const step of steps) {
+                        await tx.documentationStepApproval.deleteMany({ where: { stepId: step.id } });
+                        await tx.documentationStepDocument.deleteMany({ where: { stepId: step.id } });
+                    }
+                    await tx.documentationStep.deleteMany({ where: { documentationPhaseId: docPhaseId } });
+                    await tx.documentationPhase.delete({ where: { id: docPhaseId } });
+                }
+
+                // Delete PaymentPhase extension and children
+                if (phase.paymentPhase) {
+                    const payPhaseId = phase.paymentPhase.id;
+                    await tx.contractInstallment.deleteMany({ where: { paymentPhaseId: payPhaseId } });
+                    await tx.paymentPhase.delete({ where: { id: payPhaseId } });
+                }
+
+                // Delete QuestionnairePhase extension and children
+                if (phase.questionnairePhase) {
+                    const questPhaseId = phase.questionnairePhase.id;
+                    await tx.questionnaireField.deleteMany({ where: { questionnairePhaseId: questPhaseId } });
+                    await tx.questionnairePhase.delete({ where: { id: questPhaseId } });
+                }
             }
 
             await tx.contractPhase.deleteMany({ where: { contractId: id } });
@@ -802,16 +859,22 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
                 phases: {
                     orderBy: { order: 'asc' },
                     include: {
-                        steps: {
-                            orderBy: { order: 'asc' },
+                        documentationPhase: {
                             include: {
-                                requiredDocuments: true,
-                                approvals: {
-                                    orderBy: { decidedAt: 'desc' },
-                                    take: 1,
+                                steps: {
+                                    orderBy: { order: 'asc' },
+                                    include: {
+                                        requiredDocuments: true,
+                                        approvals: {
+                                            orderBy: { decidedAt: 'desc' },
+                                            take: 1,
+                                        },
+                                    },
                                 },
                             },
                         },
+                        paymentPhase: true,
+                        questionnairePhase: true,
                     },
                 },
                 documents: {
@@ -851,18 +914,22 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
             };
         }
 
-        // Find current step - use currentStepId if set, otherwise find next actionable
+        // Find current step - only for DOCUMENTATION phases
+        // Steps are now in documentationPhase extension
         let currentStep: any = null;
-        if (currentPhase.currentStepId) {
-            currentStep = currentPhase.steps.find((s: any) => s.id === currentPhase.currentStepId);
+        const steps = currentPhase.documentationPhase?.steps || [];
+        const currentStepId = currentPhase.documentationPhase?.currentStepId;
+
+        if (currentStepId) {
+            currentStep = steps.find((s: any) => s.id === currentStepId);
         }
-        if (!currentStep) {
+        if (!currentStep && steps.length > 0) {
             // Fallback: find next actionable step
-            currentStep = currentPhase.steps.find(
+            currentStep = steps.find(
                 (s: any) => s.status === 'NEEDS_RESUBMISSION' || s.status === 'ACTION_REQUIRED'
             );
             if (!currentStep) {
-                currentStep = currentPhase.steps.find(
+                currentStep = steps.find(
                     (s: any) => s.status === 'PENDING' || s.status === 'IN_PROGRESS' || s.status === 'AWAITING_REVIEW'
                 );
             }

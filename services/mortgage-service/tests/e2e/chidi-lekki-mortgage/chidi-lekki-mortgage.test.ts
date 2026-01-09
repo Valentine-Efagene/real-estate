@@ -513,9 +513,15 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         it('GENERATE_DOCUMENT step auto-executes and generates provisional offer', async () => {
             // After approval step completes, the GENERATE_DOCUMENT step should auto-execute
             // Check that the provisional offer was generated
+            // DocumentationStep is now linked via DocumentationPhase
+            const phase = await prisma.contractPhase.findUnique({
+                where: { id: documentationPhaseId },
+                include: { documentationPhase: true },
+            });
+
             const step = await prisma.documentationStep.findFirst({
                 where: {
-                    phaseId: documentationPhaseId,
+                    documentationPhaseId: phase?.documentationPhase?.id,
                     name: 'Generate Provisional Offer',
                 },
             });
@@ -560,9 +566,9 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
             const phase = await prisma.contractPhase.findUnique({
                 where: { id: downpaymentPhaseId },
-                include: { installments: true },
+                include: { paymentPhase: { include: { installments: true } } },
             });
-            const installment = phase!.installments[0];
+            const installment = phase!.paymentPhase!.installments[0];
 
             // Record payment
             const paymentResponse = await api
@@ -608,9 +614,15 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         it('GENERATE_DOCUMENT step auto-executes and generates final offer', async () => {
             // After downpayment phase completes, Final Documentation phase activates
             // The GENERATE_DOCUMENT step should auto-execute
+            // DocumentationStep is now linked via DocumentationPhase
+            const phase = await prisma.contractPhase.findUnique({
+                where: { id: finalDocumentationPhaseId },
+                include: { documentationPhase: true },
+            });
+
             const step = await prisma.documentationStep.findFirst({
                 where: {
-                    phaseId: finalDocumentationPhaseId,
+                    documentationPhaseId: phase?.documentationPhase?.id,
                     name: 'Generate Final Offer',
                 },
             });
