@@ -1606,7 +1606,7 @@ model DocumentationStep {
   @@index([documentationPhaseId])
   @@index([status])
   @@index([order])
-  @@map("contract_phase_steps")
+  @@map("documentation_steps")
 }
 
 // Required documents for a step (normalized from CSV)
@@ -1621,7 +1621,7 @@ model DocumentationStepDocument {
   createdAt DateTime @default(now())
 
   @@index([stepId, documentType])
-  @@map("contract_phase_step_documents")
+  @@map("documentation_step_documents")
 }
 
 // Approvals for documentation steps
@@ -1639,7 +1639,7 @@ model DocumentationStepApproval {
   createdAt DateTime @default(now())
 
   @@index([stepId])
-  @@map("contract_phase_step_approvals")
+  @@map("documentation_step_approvals")
 }
 
 // Installments within a PAYMENT phase
@@ -2320,8 +2320,16 @@ model DomainEvent {
 // =============================================================================
 // Property Transfer Request
 // =============================================================================
-// Allows a buyer to request transferring their contract to a different property
-// while preserving payments, completed workflow steps, and progress.
+// Allows a buyer to request transferring their contract to a different property.
+// 
+// TRANSFER PAYMENT FLOW:
+// 1. All payments from source contract are refunded to buyer's wallet (single credit transaction)
+// 2. Source contract marked TRANSFERRED, unit released
+// 3. New contract created for target unit with zero payments
+// 4. Buyer can optionally apply wallet balance as equity during new mortgage application
+//
+// This ensures clean accounting: each contract has isolated payment history,
+// wallet serves as intermediary, and buyer retains full credit.
 // =============================================================================
 
 model PropertyTransferRequest {
@@ -2357,7 +2365,11 @@ model PropertyTransferRequest {
   sourceTotalAmount Float? // Original contract total
   targetTotalAmount Float? // New contract total (based on target property)
   priceAdjustment   Float? // Difference (positive = buyer owes more)
-  paymentsMigrated  Int? // Number of payments migrated
+
+  // Wallet refund tracking (payments refunded to wallet, NOT carried over)
+  refundedAmount      Float? // Total amount refunded to wallet
+  refundTransactionId String? // Reference to wallet Transaction record
+  refundedAt          DateTime?
 
   // Result - new contract created after approval
   targetContractId String?
