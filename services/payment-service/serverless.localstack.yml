@@ -31,6 +31,8 @@ provider:
     DB_NAME: ${ssm:/qshelter/${self:provider.stage}/DB_NAME}
     # BudPay integration
     BUDPAY_SECRET_KEY: ${ssm:/qshelter/${self:provider.stage}/BUDPAY_SECRET_KEY, ''}
+    # SNS Topic for payment events
+    PAYMENTS_TOPIC_ARN: arn:aws:sns:us-east-1:000000000000:qshelter-${self:provider.stage}-payments
 
   iam:
     role:
@@ -49,9 +51,16 @@ provider:
             - arn:aws:secretsmanager:${self:provider.region}:*:secret:qshelter/${self:provider.stage}/*
         - Effect: Allow
           Action:
-            - events:PutEvents
+            - sns:Publish
           Resource:
-            - arn:aws:events:${self:provider.region}:*:event-bus/*
+            - arn:aws:sns:${self:provider.region}:*:qshelter-${self:provider.stage}-*
+        - Effect: Allow
+          Action:
+            - sqs:ReceiveMessage
+            - sqs:DeleteMessage
+            - sqs:GetQueueAttributes
+          Resource:
+            - arn:aws:sqs:${self:provider.region}:*:qshelter-${self:provider.stage}-payments
 
 package:
   individually: true
@@ -96,6 +105,16 @@ functions:
           path: /webhooks/budpay/mock
           method: POST
           cors: true
+
+  # SQS consumer for payment events
+  sqsConsumer:
+    handler: dist/lambda.sqsHandler
+    timeout: 30
+    events:
+      - sqs:
+          arn: arn:aws:sqs:us-east-1:000000000000:qshelter-${self:provider.stage}-payments
+          batchSize: 10
+          functionResponseType: ReportBatchItemFailures
 
 plugins:
   - serverless-localstack

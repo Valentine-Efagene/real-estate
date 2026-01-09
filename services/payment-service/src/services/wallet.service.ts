@@ -1,5 +1,5 @@
 import { prisma } from '../lib/prisma';
-import { AppError } from '@valentine-efagene/qshelter-common';
+import { AppError, PaymentEventPublisher } from '@valentine-efagene/qshelter-common';
 import { v4 as uuidv4 } from 'uuid';
 
 // =============================================================================
@@ -9,7 +9,10 @@ import { v4 as uuidv4 } from 'uuid';
 // - Credit/debit operations
 // - Virtual account funding (via BudPay webhook)
 // - Transaction history
+// - Publishing events for downstream processing
 // =============================================================================
+
+const paymentPublisher = new PaymentEventPublisher('payment-service');
 
 export interface CreditWalletInput {
     walletId: string;
@@ -17,6 +20,7 @@ export interface CreditWalletInput {
     reference: string;
     description?: string;
     gatewayResponse?: Record<string, any>;
+    source?: 'virtual_account' | 'manual' | 'refund';
 }
 
 export interface DebitWalletInput {
@@ -125,7 +129,7 @@ class WalletService {
      * - Refund credited back
      */
     async credit(input: CreditWalletInput) {
-        const { walletId, amount, reference, description, gatewayResponse } = input;
+        const { walletId, amount, reference, description, gatewayResponse, source = 'manual' } = input;
 
         if (amount <= 0) {
             throw new AppError(400, 'Credit amount must be positive');
@@ -142,6 +146,18 @@ class WalletService {
             const existingWallet = await prisma.wallet.findUnique({ where: { id: walletId } });
             return { wallet: existingWallet!, transaction: existingTx };
         }
+
+        // Get user ID for the wallet
+        const walletWithUser = await prisma.wallet.findUnique({
+            where: { id: walletId },
+            include: { user: { select: { id: true } } },
+        });
+
+        if (!walletWithUser) {
+            throw new AppError(404, 'Wallet not found');
+        }
+
+        const userId = walletWithUser.user?.id;
 
         const result = await prisma.$transaction(async (tx) => {
             // Update wallet balance
@@ -178,6 +194,7 @@ class WalletService {
                         amount,
                         newBalance: wallet.balance,
                         reference,
+                        source,
                         gatewayResponse,
                     }),
                 },
@@ -185,6 +202,28 @@ class WalletService {
 
             return { wallet, transaction };
         });
+
+        // Publish WALLET_CREDITED event to SNS for async processing
+        if (userId) {
+            try {
+                await paymentPublisher.publishWalletCredited({
+                    walletId,
+                    userId,
+                    transactionId: result.transaction.id,
+                    amount,
+                    currency: result.wallet.currency,
+                    newBalance: result.wallet.balance,
+                    reference,
+                    source,
+                });
+            } catch (error) {
+                // Log but don't fail the credit operation if publishing fails
+                console.error('[Wallet] Failed to publish WALLET_CREDITED event', {
+                    walletId,
+                    error: error instanceof Error ? error.message : error,
+                });
+            }
+        }
 
         return result;
     }
@@ -314,6 +353,7 @@ class WalletService {
             reference: data.reference,
             description: `Virtual account credit from ${data.account.bank_name}`,
             gatewayResponse: data as any,
+            source: 'virtual_account',
         });
 
         console.log('[BudPay Webhook] Wallet credited successfully', {
