@@ -1,0 +1,3690 @@
+{
+    "info": {
+        "_postman_id": "qshelter-api-v1",
+        "name": "QShelter API",
+        "description": "Complete API collection for QShelter Real Estate Platform.\n\n## Services\n- **User Service**: Authentication, users, roles, tenants, API keys\n- **Property Service**: Properties, amenities, media\n- **Mortgage Service**: Payment plans, payment methods, contracts, phases, payments\n- **Documents Service**: Document upload and management\n\n## Authentication\nAll requests require the following headers:\n- `x-tenant-id`: Your tenant ID\n- `x-user-id`: The authenticated user ID\n\n## Base URLs\nSet the service URL variables to your environment:\n- LocalStack Mortgage: `http://localhost:4566/restapis/{apiId}/localstack/_user_request_`\n- LocalStack User: `http://localhost:4566/restapis/{apiId}/localstack/_user_request_`\n- LocalStack Property: `http://localhost:4566/restapis/{apiId}/localstack/_user_request_`",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "auth": {
+        "type": "noauth"
+    },
+    "variable": [
+        {
+            "key": "mortgageServiceUrl",
+            "value": "http://localhost:4566/restapis/g8b5hpkucu/localstack/_user_request_",
+            "type": "string"
+        },
+        {
+            "key": "userServiceUrl",
+            "value": "http://localhost:3002",
+            "type": "string"
+        },
+        {
+            "key": "propertyServiceUrl",
+            "value": "http://localhost:3003",
+            "type": "string"
+        },
+        {
+            "key": "tenantId",
+            "value": "tenant-001",
+            "type": "string"
+        },
+        {
+            "key": "userId",
+            "value": "user-001",
+            "type": "string"
+        },
+        {
+            "key": "adminUserId",
+            "value": "admin-001",
+            "type": "string"
+        }
+    ],
+    "item": [
+        {
+            "name": "Payment Plans",
+            "description": "Payment plans define the installment structure for phases (frequency, number of installments, interest calculation).",
+            "item": [
+                {
+                    "name": "Create Payment Plan",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Monthly12\",\n  \"description\": \"12 monthly installments\",\n  \"paymentFrequency\": \"MONTHLY\",\n  \"numberOfInstallments\": 12,\n  \"gracePeriodDays\": 5,\n  \"interestRate\": 0,\n  \"collectFunds\": true\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-plans",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-plans"
+                            ]
+                        },
+                        "description": "Create a new payment plan template.\n\n**Payment Frequency Options:**\n- `MONTHLY`\n- `BIWEEKLY`\n- `WEEKLY`\n- `ONE_TIME`\n- `CUSTOM`"
+                    }
+                },
+                {
+                    "name": "Get All Payment Plans",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-plans?isActive=true",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-plans"
+                            ],
+                            "query": [
+                                {
+                                    "key": "isActive",
+                                    "value": "true",
+                                    "description": "Filter by active status"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Payment Plan by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-plans/{{paymentPlanId}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-plans",
+                                "{{paymentPlanId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Update Payment Plan",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"gracePeriodDays\": 7,\n  \"isActive\": true\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-plans/{{paymentPlanId}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-plans",
+                                "{{paymentPlanId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Clone Payment Plan",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Monthly12 - Copy\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-plans/{{paymentPlanId}}/clone",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-plans",
+                                "{{paymentPlanId}}",
+                                "clone"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Payment Plan",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-plans/{{paymentPlanId}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-plans",
+                                "{{paymentPlanId}}"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Payment Methods",
+            "description": "Payment methods are templates that define the entire contract workflow including phases, steps, and document requirements.",
+            "item": [
+                {
+                    "name": "Create Payment Method",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"10/90 Mortgage\",\n  \"description\": \"10% downpayment, 90% mortgage\",\n  \"isActive\": true,\n  \"allowEarlyPayoff\": true,\n  \"autoActivatePhases\": true,\n  \"phases\": [\n    {\n      \"name\": \"KYC & Documentation\",\n      \"phaseCategory\": \"DOCUMENTATION\",\n      \"phaseType\": \"KYC\",\n      \"order\": 1,\n      \"stepDefinitions\": [\n        {\"name\": \"Upload ID\", \"stepType\": \"UPLOAD\", \"order\": 1, \"requiredDocumentTypes\": [\"ID_CARD\"]},\n        {\"name\": \"Upload Proof of Income\", \"stepType\": \"UPLOAD\", \"order\": 2, \"requiredDocumentTypes\": [\"PAYSLIP\"]},\n        {\"name\": \"Admin Review\", \"stepType\": \"REVIEW\", \"order\": 3}\n      ]\n    },\n    {\n      \"name\": \"Downpayment\",\n      \"phaseCategory\": \"PAYMENT\",\n      \"phaseType\": \"DOWNPAYMENT\",\n      \"order\": 2,\n      \"percentOfPrice\": 10,\n      \"paymentPlanId\": \"{{downpaymentPlanId}}\",\n      \"collectFunds\": true\n    },\n    {\n      \"name\": \"Mortgage\",\n      \"phaseCategory\": \"PAYMENT\",\n      \"phaseType\": \"MORTGAGE\",\n      \"order\": 3,\n      \"percentOfPrice\": 90,\n      \"interestRate\": 9.5,\n      \"paymentPlanId\": \"{{mortgagePlanId}}\",\n      \"collectFunds\": false\n    }\n  ]\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-methods",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-methods"
+                            ]
+                        },
+                        "description": "Create a complete payment method template with phases.\n\n**Phase Categories:**\n- `DOCUMENTATION` - For KYC, document uploads, reviews\n- `PAYMENT` - For collecting payments\n\n**Phase Types:**\n- `KYC` - Know Your Customer\n- `VERIFICATION` - Document verification\n- `DOWNPAYMENT` - Initial payment\n- `MORTGAGE` - Long-term financing\n- `BALLOON` - Balloon payment\n- `CUSTOM`\n\n**Step Types:**\n- `UPLOAD` - User uploads document\n- `REVIEW` - Admin reviews documents\n- `SIGNATURE` - Requires signature\n- `APPROVAL` - Requires approval\n- `GENERATE_DOCUMENT` - Auto-generate offer letter"
+                    }
+                },
+                {
+                    "name": "Get All Payment Methods",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-methods?isActive=true",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-methods"
+                            ],
+                            "query": [
+                                {
+                                    "key": "isActive",
+                                    "value": "true"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Payment Method by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-methods/{{paymentMethodId}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-methods",
+                                "{{paymentMethodId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Update Payment Method",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"10/90 Mortgage - Updated\",\n  \"allowEarlyPayoff\": false\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-methods/{{paymentMethodId}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-methods",
+                                "{{paymentMethodId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Clone Payment Method",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"10/90 Mortgage - Clone\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-methods/{{paymentMethodId}}/clone",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-methods",
+                                "{{paymentMethodId}}",
+                                "clone"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Add Phase to Payment Method",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Additional Verification\",\n  \"phaseCategory\": \"DOCUMENTATION\",\n  \"phaseType\": \"VERIFICATION\",\n  \"order\": 2,\n  \"stepDefinitions\": [\n    {\"name\": \"Verify Address\", \"stepType\": \"UPLOAD\", \"order\": 1, \"requiredDocumentTypes\": [\"UTILITY_BILL\"]}\n  ]\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-methods/{{paymentMethodId}}/phases",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-methods",
+                                "{{paymentMethodId}}",
+                                "phases"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Update Phase",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Updated Phase Name\",\n  \"percentOfPrice\": 15\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-methods/{{paymentMethodId}}/phases/{{phaseTemplateId}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-methods",
+                                "{{paymentMethodId}}",
+                                "phases",
+                                "{{phaseTemplateId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Phase",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-methods/{{paymentMethodId}}/phases/{{phaseTemplateId}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-methods",
+                                "{{paymentMethodId}}",
+                                "phases",
+                                "{{phaseTemplateId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Reorder Phases",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"phaseOrders\": [\n    {\"phaseId\": \"phase-1\", \"order\": 1},\n    {\"phaseId\": \"phase-2\", \"order\": 2},\n    {\"phaseId\": \"phase-3\", \"order\": 3}\n  ]\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-methods/{{paymentMethodId}}/phases/reorder",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-methods",
+                                "{{paymentMethodId}}",
+                                "phases",
+                                "reorder"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Add Step to Phase",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Upload Bank Statement\",\n  \"stepType\": \"UPLOAD\",\n  \"order\": 4,\n  \"requiredDocumentTypes\": [\"BANK_STATEMENT\"]\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-methods/{{paymentMethodId}}/phases/{{phaseTemplateId}}/steps",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-methods",
+                                "{{paymentMethodId}}",
+                                "phases",
+                                "{{phaseTemplateId}}",
+                                "steps"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Update Step",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Updated Step Name\",\n  \"requiredDocumentTypes\": [\"ID_CARD\", \"PASSPORT\"]\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-methods/{{paymentMethodId}}/phases/{{phaseTemplateId}}/steps/{{stepTemplateId}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-methods",
+                                "{{paymentMethodId}}",
+                                "phases",
+                                "{{phaseTemplateId}}",
+                                "steps",
+                                "{{stepTemplateId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Step",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-methods/{{paymentMethodId}}/phases/{{phaseTemplateId}}/steps/{{stepTemplateId}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-methods",
+                                "{{paymentMethodId}}",
+                                "phases",
+                                "{{phaseTemplateId}}",
+                                "steps",
+                                "{{stepTemplateId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Link to Property",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"propertyId\": \"{{propertyId}}\",\n  \"isDefault\": true,\n  \"isActive\": true\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-methods/{{paymentMethodId}}/properties",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-methods",
+                                "{{paymentMethodId}}",
+                                "properties"
+                            ]
+                        },
+                        "description": "Link a payment method to a property. This makes the payment method available for contracts on that property."
+                    }
+                },
+                {
+                    "name": "Unlink from Property",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-methods/{{paymentMethodId}}/properties/{{propertyId}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-methods",
+                                "{{paymentMethodId}}",
+                                "properties",
+                                "{{propertyId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Methods for Property",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-methods/property/{{propertyId}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-methods",
+                                "property",
+                                "{{propertyId}}"
+                            ]
+                        },
+                        "description": "Get all payment methods available for a specific property."
+                    }
+                },
+                {
+                    "name": "Delete Payment Method",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-methods/{{paymentMethodId}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-methods",
+                                "{{paymentMethodId}}"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Contracts",
+            "description": "Contracts are instantiated from payment methods and track the buyer's journey through phases.",
+            "item": [
+                {
+                    "name": "Create Contract",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"propertyUnitId\": \"{{propertyUnitId}}\",\n  \"paymentMethodId\": \"{{paymentMethodId}}\",\n  \"title\": \"Purchase Agreement - Unit A1\",\n  \"description\": \"Contract for Lekki Gardens Unit A1\",\n  \"contractType\": \"MORTGAGE\",\n  \"totalAmount\": 10000000\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/contracts",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "contracts"
+                            ]
+                        },
+                        "description": "Create a new contract from a payment method. This instantiates all phases and steps from the payment method template."
+                    }
+                },
+                {
+                    "name": "Get All Contracts",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/contracts?status=ACTIVE",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "contracts"
+                            ],
+                            "query": [
+                                {
+                                    "key": "status",
+                                    "value": "ACTIVE",
+                                    "description": "Filter by status: DRAFT, PENDING, ACTIVE, COMPLETED, CANCELLED, TERMINATED"
+                                },
+                                {
+                                    "key": "buyerId",
+                                    "value": "",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "propertyUnitId",
+                                    "value": "",
+                                    "disabled": true
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Contract by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "contracts",
+                                "{{contractId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Contract by Number",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/contracts/number/{{contractNumber}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "contracts",
+                                "number",
+                                "{{contractNumber}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Current Action",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/current-action",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "contracts",
+                                "{{contractId}}",
+                                "current-action"
+                            ]
+                        },
+                        "description": "Get the current action required for this contract. This is the canonical endpoint for the app to know what to show the user."
+                    }
+                },
+                {
+                    "name": "Update Contract",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"title\": \"Updated Contract Title\",\n  \"description\": \"Updated description\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "contracts",
+                                "{{contractId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Transition Contract",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"trigger\": \"SUBMIT\",\n  \"note\": \"Submitting contract for review\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/transition",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "contracts",
+                                "{{contractId}}",
+                                "transition"
+                            ]
+                        },
+                        "description": "Trigger a state transition on the contract.\n\n**Common triggers:**\n- `SUBMIT` - Submit draft for review\n- `APPROVE` - Approve contract\n- `ACTIVATE` - Activate contract"
+                    }
+                },
+                {
+                    "name": "Sign Contract",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/sign",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "contracts",
+                                "{{contractId}}",
+                                "sign"
+                            ]
+                        },
+                        "description": "Sign the contract. This activates the contract if all requirements are met."
+                    }
+                },
+                {
+                    "name": "Cancel Contract",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"reason\": \"Buyer requested cancellation\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/cancel",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "contracts",
+                                "{{contractId}}",
+                                "cancel"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Contract (Draft Only)",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "contracts",
+                                "{{contractId}}"
+                            ]
+                        },
+                        "description": "Delete a contract. Only works for DRAFT contracts."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Contract Phases",
+            "description": "Phases are the stages of a contract (KYC, Downpayment, Mortgage, etc.)",
+            "item": [
+                {
+                    "name": "Get Phases for Contract",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/phases",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "contracts",
+                                "{{contractId}}",
+                                "phases"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Phase by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/phases/{{phaseId}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "contracts",
+                                "{{contractId}}",
+                                "phases",
+                                "{{phaseId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Activate Phase",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"startDate\": \"2024-01-15T00:00:00.000Z\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/phases/{{phaseId}}/activate",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "contracts",
+                                "{{contractId}}",
+                                "phases",
+                                "{{phaseId}}",
+                                "activate"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Generate Installments",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"startDate\": \"2024-02-01T00:00:00.000Z\",\n  \"interestRate\": 9.5\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/phases/{{phaseId}}/installments",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "contracts",
+                                "{{contractId}}",
+                                "phases",
+                                "{{phaseId}}",
+                                "installments"
+                            ]
+                        },
+                        "description": "Generate installment schedule for a payment phase."
+                    }
+                },
+                {
+                    "name": "Complete Step",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"stepId\": \"{{stepId}}\",\n  \"decision\": \"APPROVED\",\n  \"comment\": \"Documents verified\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/phases/{{phaseId}}/steps/complete",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "contracts",
+                                "{{contractId}}",
+                                "phases",
+                                "{{phaseId}}",
+                                "steps",
+                                "complete"
+                            ]
+                        },
+                        "description": "Complete a step in a documentation phase.\n\n**Decision options:**\n- `APPROVED` - Step approved\n- `REJECTED` - Step rejected\n- `REQUEST_CHANGES` - Request changes from user"
+                    }
+                },
+                {
+                    "name": "Reject Step",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"reason\": \"Document is not legible\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/phases/{{phaseId}}/steps/{{stepId}}/reject",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "contracts",
+                                "{{contractId}}",
+                                "phases",
+                                "{{phaseId}}",
+                                "steps",
+                                "{{stepId}}",
+                                "reject"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Request Changes on Step",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"reason\": \"Please upload a clearer copy of your ID\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/phases/{{phaseId}}/steps/{{stepId}}/request-changes",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "contracts",
+                                "{{contractId}}",
+                                "phases",
+                                "{{phaseId}}",
+                                "steps",
+                                "{{stepId}}",
+                                "request-changes"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Upload Document",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"stepId\": \"{{stepId}}\",\n  \"name\": \"National ID Card\",\n  \"documentType\": \"ID_CARD\",\n  \"url\": \"https://s3.amazonaws.com/bucket/documents/id-card.pdf\",\n  \"fileName\": \"id-card.pdf\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/phases/{{phaseId}}/documents",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "contracts",
+                                "{{contractId}}",
+                                "phases",
+                                "{{phaseId}}",
+                                "documents"
+                            ]
+                        },
+                        "description": "Upload a document for a phase. The URL should be a pre-signed S3 URL where the document was uploaded."
+                    }
+                },
+                {
+                    "name": "Review Document",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"status\": \"APPROVED\",\n  \"comment\": \"Document verified successfully\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/documents/{{documentId}}/review",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "contracts",
+                                "{{contractId}}",
+                                "documents",
+                                "{{documentId}}",
+                                "review"
+                            ]
+                        },
+                        "description": "Review a document.\n\n**Status options:**\n- `APPROVED`\n- `REJECTED`"
+                    }
+                },
+                {
+                    "name": "Complete Phase",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/phases/{{phaseId}}/complete",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "contracts",
+                                "{{contractId}}",
+                                "phases",
+                                "{{phaseId}}",
+                                "complete"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Skip Phase (Admin)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"reason\": \"Phase not required for this contract\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/phases/{{phaseId}}/skip",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "contracts",
+                                "{{contractId}}",
+                                "phases",
+                                "{{phaseId}}",
+                                "skip"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Contract Payments",
+            "description": "Payment operations for contracts.",
+            "item": [
+                {
+                    "name": "Create Payment",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"phaseId\": \"{{phaseId}}\",\n  \"installmentId\": \"{{installmentId}}\",\n  \"amount\": 83333.33,\n  \"paymentMethod\": \"BANK_TRANSFER\",\n  \"reference\": \"TXN-12345\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/payments",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "contracts",
+                                "{{contractId}}",
+                                "payments"
+                            ]
+                        },
+                        "description": "Create a new payment record.\n\n**Payment Methods:**\n- `BANK_TRANSFER`\n- `CREDIT_CARD`\n- `WALLET`\n- `CASH`\n- `CHECK`"
+                    }
+                },
+                {
+                    "name": "Get Payments for Contract",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/payments",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "contracts",
+                                "{{contractId}}",
+                                "payments"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Payment by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/payments/{{paymentId}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "contracts",
+                                "{{contractId}}",
+                                "payments",
+                                "{{paymentId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Process Payment (Webhook)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"reference\": \"TXN-12345\",\n  \"status\": \"COMPLETED\",\n  \"gatewayResponse\": {\n    \"transactionId\": \"GTW-67890\",\n    \"timestamp\": \"2024-01-15T10:30:00Z\"\n  }\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/contracts/payments/process",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "contracts",
+                                "payments",
+                                "process"
+                            ]
+                        },
+                        "description": "Process a payment callback from the payment gateway.\n\n**Status options:**\n- `COMPLETED`\n- `FAILED`"
+                    }
+                },
+                {
+                    "name": "Refund Payment",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"reason\": \"Duplicate payment\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/payments/{{paymentId}}/refund",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "contracts",
+                                "{{contractId}}",
+                                "payments",
+                                "{{paymentId}}",
+                                "refund"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Pay Ahead",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"amount\": 500000\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/pay-ahead",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "contracts",
+                                "{{contractId}}",
+                                "pay-ahead"
+                            ]
+                        },
+                        "description": "Make an advance payment to be applied to future installments."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Property Transfer",
+            "description": "Transfer a contract to a different property.",
+            "item": [
+                {
+                    "name": "Create Transfer Request",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"targetPropertyUnitId\": \"{{targetPropertyUnitId}}\",\n  \"reason\": \"Prefer location closer to workplace\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/transfer-requests",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "contracts",
+                                "{{contractId}}",
+                                "transfer-requests"
+                            ]
+                        },
+                        "description": "Request to transfer a contract to a different property unit."
+                    }
+                },
+                {
+                    "name": "Get Transfer Requests for Contract",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/transfer-requests",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "contracts",
+                                "{{contractId}}",
+                                "transfer-requests"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get All Pending Transfer Requests (Admin)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/transfer-requests",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "transfer-requests"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Transfer Request by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/transfer-requests/{{transferRequestId}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "transfer-requests",
+                                "{{transferRequestId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Approve Transfer Request (Admin)",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"reviewNotes\": \"Approved - price difference handled\",\n  \"priceAdjustmentHandling\": \"ADD_TO_MORTGAGE\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/transfer-requests/{{transferRequestId}}/approve",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "transfer-requests",
+                                "{{transferRequestId}}",
+                                "approve"
+                            ]
+                        },
+                        "description": "Approve a transfer request.\n\n**Price Adjustment Handling Options:**\n- `ADD_TO_MORTGAGE` - Add difference to mortgage\n- `REQUIRE_PAYMENT` - Require immediate payment\n- `CREDIT_BUYER` - Credit buyer for difference"
+                    }
+                },
+                {
+                    "name": "Reject Transfer Request (Admin)",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"reason\": \"Target property not available\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/transfer-requests/{{transferRequestId}}/reject",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "transfer-requests",
+                                "{{transferRequestId}}",
+                                "reject"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Payment Method Change",
+            "description": "Request to change the payment method of an existing contract.",
+            "item": [
+                {
+                    "name": "Create Change Request",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"toPaymentMethodId\": \"{{newPaymentMethodId}}\",\n  \"reason\": \"Want to switch to longer term\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/payment-method-change-requests",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "contracts",
+                                "{{contractId}}",
+                                "payment-method-change-requests"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Change Requests for Contract",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/payment-method-change-requests",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "contracts",
+                                "{{contractId}}",
+                                "payment-method-change-requests"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Change Request by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/payment-method-change-requests/{{changeRequestId}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "contracts",
+                                "{{contractId}}",
+                                "payment-method-change-requests",
+                                "{{changeRequestId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Submit Documents",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/payment-method-change-requests/{{changeRequestId}}/submit-documents",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "contracts",
+                                "{{contractId}}",
+                                "payment-method-change-requests",
+                                "{{changeRequestId}}",
+                                "submit-documents"
+                            ]
+                        },
+                        "description": "Mark documents as submitted, moving the request to the review queue."
+                    }
+                },
+                {
+                    "name": "Cancel Change Request",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/payment-method-change-requests/{{changeRequestId}}/cancel",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "contracts",
+                                "{{contractId}}",
+                                "payment-method-change-requests",
+                                "{{changeRequestId}}",
+                                "cancel"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Pending Requests (Admin)",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-method-change-requests",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-method-change-requests"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Start Review (Admin)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-method-change-requests/{{changeRequestId}}/start-review",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-method-change-requests",
+                                "{{changeRequestId}}",
+                                "start-review"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Approve (Admin)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"reviewNotes\": \"All documents verified\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-method-change-requests/{{changeRequestId}}/approve",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-method-change-requests",
+                                "{{changeRequestId}}",
+                                "approve"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Reject (Admin)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"rejectionReason\": \"Insufficient documentation\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-method-change-requests/{{changeRequestId}}/reject",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-method-change-requests",
+                                "{{changeRequestId}}",
+                                "reject"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Execute (Admin)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-method-change-requests/{{changeRequestId}}/execute",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-method-change-requests",
+                                "{{changeRequestId}}",
+                                "execute"
+                            ]
+                        },
+                        "description": "Execute an approved change request. This performs the actual contract modification."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "User Service",
+            "description": "User management, authentication, roles, and tenants.",
+            "item": [
+                {
+                    "name": "Authentication",
+                    "description": "Login, signup, and token management.",
+                    "item": [
+                        {
+                            "name": "Sign Up",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"email\": \"newuser@example.com\",\n  \"password\": \"SecurePass123!\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/auth/signup",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "auth",
+                                        "signup"
+                                    ]
+                                },
+                                "description": "Register a new user account."
+                            }
+                        },
+                        {
+                            "name": "Login",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"Password123!\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/auth/login",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "auth",
+                                        "login"
+                                    ]
+                                },
+                                "description": "Login with email and password. Returns access and refresh tokens."
+                            }
+                        },
+                        {
+                            "name": "Refresh Token",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/auth/refresh",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "auth",
+                                        "refresh"
+                                    ]
+                                },
+                                "description": "Exchange a refresh token for a new access token."
+                            }
+                        },
+                        {
+                            "name": "Verify Email",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/auth/verify-email?token={{verificationToken}}",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "auth",
+                                        "verify-email"
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "token",
+                                            "value": "{{verificationToken}}"
+                                        }
+                                    ]
+                                },
+                                "description": "Verify email address using token from email."
+                            }
+                        },
+                        {
+                            "name": "Request Password Reset",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"email\": \"user@example.com\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/auth/request-password-reset",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "auth",
+                                        "request-password-reset"
+                                    ]
+                                },
+                                "description": "Request a password reset email."
+                            }
+                        },
+                        {
+                            "name": "Reset Password",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"token\": \"{{resetToken}}\",\n  \"newPassword\": \"NewSecurePass123!\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/auth/reset-password",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "auth",
+                                        "reset-password"
+                                    ]
+                                },
+                                "description": "Reset password using token from email."
+                            }
+                        },
+                        {
+                            "name": "Google Token Login",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"token\": \"{{googleIdToken}}\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/auth/google-token-login",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "auth",
+                                        "google-token-login"
+                                    ]
+                                },
+                                "description": "Login using a Google ID token (from mobile/web client)."
+                            }
+                        },
+                        {
+                            "name": "Get Current User",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{userId}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/auth/me",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "auth",
+                                        "me"
+                                    ]
+                                },
+                                "description": "Get the currently authenticated user's profile."
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Users",
+                    "description": "User CRUD operations and management.",
+                    "item": [
+                        {
+                            "name": "List Users",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/users?page=1&limit=20",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "users"
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "page",
+                                            "value": "1"
+                                        },
+                                        {
+                                            "key": "limit",
+                                            "value": "20"
+                                        }
+                                    ]
+                                },
+                                "description": "List all users with pagination and filtering."
+                            }
+                        },
+                        {
+                            "name": "Get User by ID",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/users/{{userId}}",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "users",
+                                        "{{userId}}"
+                                    ]
+                                },
+                                "description": "Get a single user by ID."
+                            }
+                        },
+                        {
+                            "name": "Update User",
+                            "request": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Smith\",\n  \"phone\": \"+1234567890\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/users/{{userId}}",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "users",
+                                        "{{userId}}"
+                                    ]
+                                },
+                                "description": "Update user information."
+                            }
+                        },
+                        {
+                            "name": "Update Profile",
+                            "request": {
+                                "method": "PATCH",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{userId}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"phone\": \"+1234567890\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/users/profile",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "users",
+                                        "profile"
+                                    ]
+                                },
+                                "description": "Update the authenticated user's profile."
+                            }
+                        },
+                        {
+                            "name": "Update Avatar",
+                            "request": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"avatarUrl\": \"https://example.com/avatar.jpg\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/users/{{userId}}/avatar",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "users",
+                                        "{{userId}}",
+                                        "avatar"
+                                    ]
+                                },
+                                "description": "Update user's avatar URL."
+                            }
+                        },
+                        {
+                            "name": "Suspend User",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"reason\": \"Violation of terms of service\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/users/{{userId}}/suspend",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "users",
+                                        "{{userId}}",
+                                        "suspend"
+                                    ]
+                                },
+                                "description": "Suspend a user account."
+                            }
+                        },
+                        {
+                            "name": "Reinstate User",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/users/{{userId}}/reinstate",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "users",
+                                        "{{userId}}",
+                                        "reinstate"
+                                    ]
+                                },
+                                "description": "Reinstate a suspended user account."
+                            }
+                        },
+                        {
+                            "name": "Assign Roles to User",
+                            "request": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"roleIds\": [\"{{roleId}}\"]\n}"
+                                },
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/users/{{userId}}/roles",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "users",
+                                        "{{userId}}",
+                                        "roles"
+                                    ]
+                                },
+                                "description": "Assign roles to a user."
+                            }
+                        },
+                        {
+                            "name": "Delete User",
+                            "request": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/users/{{userId}}",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "users",
+                                        "{{userId}}"
+                                    ]
+                                },
+                                "description": "Delete a user."
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Roles",
+                    "description": "Role management.",
+                    "item": [
+                        {
+                            "name": "List Roles",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/roles",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "roles"
+                                    ]
+                                },
+                                "description": "List all roles."
+                            }
+                        },
+                        {
+                            "name": "Create Role",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"name\": \"Property Manager\",\n  \"description\": \"Can manage properties and view contracts\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/roles",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "roles"
+                                    ]
+                                },
+                                "description": "Create a new role."
+                            }
+                        },
+                        {
+                            "name": "Get Role by ID",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/roles/{{roleId}}",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "roles",
+                                        "{{roleId}}"
+                                    ]
+                                },
+                                "description": "Get a role by ID."
+                            }
+                        },
+                        {
+                            "name": "Update Role",
+                            "request": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"name\": \"Senior Property Manager\",\n  \"description\": \"Can manage properties and approve contracts\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/roles/{{roleId}}",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "roles",
+                                        "{{roleId}}"
+                                    ]
+                                },
+                                "description": "Update a role."
+                            }
+                        },
+                        {
+                            "name": "Delete Role",
+                            "request": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/roles/{{roleId}}",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "roles",
+                                        "{{roleId}}"
+                                    ]
+                                },
+                                "description": "Delete a role."
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Tenants",
+                    "description": "Tenant (organization) management.",
+                    "item": [
+                        {
+                            "name": "List Tenants",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/tenants",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "tenants"
+                                    ]
+                                },
+                                "description": "List all tenants."
+                            }
+                        },
+                        {
+                            "name": "Create Tenant",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"name\": \"Acme Real Estate\",\n  \"subdomain\": \"acme\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/tenants",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "tenants"
+                                    ]
+                                },
+                                "description": "Create a new tenant."
+                            }
+                        },
+                        {
+                            "name": "Get Tenant by ID",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/tenants/{{tenantId}}",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "tenants",
+                                        "{{tenantId}}"
+                                    ]
+                                },
+                                "description": "Get a tenant by ID."
+                            }
+                        },
+                        {
+                            "name": "Get Tenant by Subdomain",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/tenants/subdomain/acme",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "tenants",
+                                        "subdomain",
+                                        "acme"
+                                    ]
+                                },
+                                "description": "Get a tenant by subdomain."
+                            }
+                        },
+                        {
+                            "name": "Update Tenant",
+                            "request": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"name\": \"Acme Real Estate Corp\",\n  \"isActive\": true\n}"
+                                },
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/tenants/{{tenantId}}",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "tenants",
+                                        "{{tenantId}}"
+                                    ]
+                                },
+                                "description": "Update a tenant."
+                            }
+                        },
+                        {
+                            "name": "Delete Tenant",
+                            "request": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/tenants/{{tenantId}}",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "tenants",
+                                        "{{tenantId}}"
+                                    ]
+                                },
+                                "description": "Delete a tenant."
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "API Keys",
+                    "description": "API key management for partner integrations.",
+                    "item": [
+                        {
+                            "name": "Create API Key",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"name\": \"CRM Integration\",\n  \"description\": \"Used by Salesforce to sync property data\",\n  \"provider\": \"salesforce\",\n  \"scopes\": [\"property:read\", \"mortgage:read\"],\n  \"expiresAt\": \"2027-12-31T23:59:59.000Z\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/api-keys",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "api-keys"
+                                    ]
+                                },
+                                "description": "Create a new API key for partner integration. Returns the credential (shown only once)."
+                            }
+                        },
+                        {
+                            "name": "List API Keys",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/api-keys?includeRevoked=false",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "api-keys"
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "includeRevoked",
+                                            "value": "false"
+                                        }
+                                    ]
+                                },
+                                "description": "List all API keys for the tenant."
+                            }
+                        },
+                        {
+                            "name": "Get API Key by ID",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/api-keys/{{apiKeyId}}",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "api-keys",
+                                        "{{apiKeyId}}"
+                                    ]
+                                },
+                                "description": "Get a single API key by ID."
+                            }
+                        },
+                        {
+                            "name": "Enable/Disable API Key",
+                            "request": {
+                                "method": "PATCH",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"enabled\": false\n}"
+                                },
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/api-keys/{{apiKeyId}}/enabled",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "api-keys",
+                                        "{{apiKeyId}}",
+                                        "enabled"
+                                    ]
+                                },
+                                "description": "Enable or disable an API key temporarily."
+                            }
+                        },
+                        {
+                            "name": "Revoke API Key",
+                            "request": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/api-keys/{{apiKeyId}}",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "api-keys",
+                                        "{{apiKeyId}}"
+                                    ]
+                                },
+                                "description": "Permanently revoke an API key."
+                            }
+                        },
+                        {
+                            "name": "Exchange Token (Public)",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"credential\": \"{{apiKeyCredential}}\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/api-keys/token",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "api-keys",
+                                        "token"
+                                    ]
+                                },
+                                "description": "Exchange an API key credential for a short-lived JWT token. This is the public endpoint for partners."
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Social Profiles",
+                    "description": "Social login profile management.",
+                    "item": [
+                        {
+                            "name": "Get User Social Profiles",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{userId}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/socials/user/{{userId}}",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "socials",
+                                        "user",
+                                        "{{userId}}"
+                                    ]
+                                },
+                                "description": "Get all social profiles linked to a user."
+                            }
+                        },
+                        {
+                            "name": "Create Social Profile",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"provider\": \"google\",\n  \"socialId\": \"123456789\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/socials",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "socials"
+                                    ]
+                                },
+                                "description": "Link a social profile to a user."
+                            }
+                        },
+                        {
+                            "name": "Delete Social Profile",
+                            "request": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{userId}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/socials/{{socialId}}",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "socials",
+                                        "{{socialId}}"
+                                    ]
+                                },
+                                "description": "Unlink a social profile from a user."
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Property Service",
+            "description": "Property listings, amenities, and media management.",
+            "item": [
+                {
+                    "name": "Properties",
+                    "description": "Property CRUD operations.",
+                    "item": [
+                        {
+                            "name": "Create Property",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"title\": \"Luxury 3-Bedroom Apartment in Lekki\",\n  \"description\": \"Beautiful modern apartment with ocean views\",\n  \"price\": 85000000,\n  \"category\": \"SALE\",\n  \"propertyType\": \"APARTMENT\",\n  \"country\": \"Nigeria\",\n  \"currency\": \"NGN\",\n  \"city\": \"Lagos\",\n  \"district\": \"Lekki Phase 1\",\n  \"streetAddress\": \"123 Admiralty Way\",\n  \"nBedrooms\": \"3\",\n  \"nBathrooms\": \"3\",\n  \"nParkingSpots\": \"2\",\n  \"area\": 250\n}"
+                                },
+                                "url": {
+                                    "raw": "{{propertyServiceUrl}}/properties",
+                                    "host": [
+                                        "{{propertyServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "properties"
+                                    ]
+                                },
+                                "description": "Create a new property listing."
+                            }
+                        },
+                        {
+                            "name": "List Properties",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{userId}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{propertyServiceUrl}}/properties",
+                                    "host": [
+                                        "{{propertyServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "properties"
+                                    ]
+                                },
+                                "description": "List all properties."
+                            }
+                        },
+                        {
+                            "name": "Get Property by ID",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{userId}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{propertyServiceUrl}}/properties/{{propertyId}}",
+                                    "host": [
+                                        "{{propertyServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "properties",
+                                        "{{propertyId}}"
+                                    ]
+                                },
+                                "description": "Get a property by ID."
+                            }
+                        },
+                        {
+                            "name": "Update Property",
+                            "request": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"title\": \"Luxury 3-Bedroom Apartment in Lekki Phase 1\",\n  \"price\": 90000000\n}"
+                                },
+                                "url": {
+                                    "raw": "{{propertyServiceUrl}}/properties/{{propertyId}}",
+                                    "host": [
+                                        "{{propertyServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "properties",
+                                        "{{propertyId}}"
+                                    ]
+                                },
+                                "description": "Update a property."
+                            }
+                        },
+                        {
+                            "name": "Delete Property",
+                            "request": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{propertyServiceUrl}}/properties/{{propertyId}}",
+                                    "host": [
+                                        "{{propertyServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "properties",
+                                        "{{propertyId}}"
+                                    ]
+                                },
+                                "description": "Delete a property."
+                            }
+                        },
+                        {
+                            "name": "Get Property Media",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{userId}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{propertyServiceUrl}}/property-media/{{propertyId}}",
+                                    "host": [
+                                        "{{propertyServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "property-media",
+                                        "{{propertyId}}"
+                                    ]
+                                },
+                                "description": "Get all media (images, videos) for a property."
+                            }
+                        },
+                        {
+                            "name": "Get Property Documents",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{userId}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{propertyServiceUrl}}/property-document/{{propertyId}}",
+                                    "host": [
+                                        "{{propertyServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "property-document",
+                                        "{{propertyId}}"
+                                    ]
+                                },
+                                "description": "Get all documents for a property."
+                            }
+                        },
+                        {
+                            "name": "DB Ping",
+                            "request": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{propertyServiceUrl}}/db/ping",
+                                    "host": [
+                                        "{{propertyServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "db",
+                                        "ping"
+                                    ]
+                                },
+                                "description": "Check database connectivity."
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Amenities",
+                    "description": "Property amenity management.",
+                    "item": [
+                        {
+                            "name": "Create Amenity",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"name\": \"Swimming Pool\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{propertyServiceUrl}}/amenities",
+                                    "host": [
+                                        "{{propertyServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "amenities"
+                                    ]
+                                },
+                                "description": "Create a new amenity."
+                            }
+                        },
+                        {
+                            "name": "List Amenities",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{userId}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{propertyServiceUrl}}/amenities",
+                                    "host": [
+                                        "{{propertyServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "amenities"
+                                    ]
+                                },
+                                "description": "List all amenities."
+                            }
+                        },
+                        {
+                            "name": "Get Amenity by ID",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{userId}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{propertyServiceUrl}}/amenities/{{amenityId}}",
+                                    "host": [
+                                        "{{propertyServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "amenities",
+                                        "{{amenityId}}"
+                                    ]
+                                },
+                                "description": "Get an amenity by ID."
+                            }
+                        },
+                        {
+                            "name": "Update Amenity",
+                            "request": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"name\": \"Olympic Swimming Pool\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{propertyServiceUrl}}/amenities/{{amenityId}}",
+                                    "host": [
+                                        "{{propertyServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "amenities",
+                                        "{{amenityId}}"
+                                    ]
+                                },
+                                "description": "Update an amenity."
+                            }
+                        },
+                        {
+                            "name": "Delete Amenity",
+                            "request": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{propertyServiceUrl}}/amenities/{{amenityId}}",
+                                    "host": [
+                                        "{{propertyServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "amenities",
+                                        "{{amenityId}}"
+                                    ]
+                                },
+                                "description": "Delete an amenity."
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

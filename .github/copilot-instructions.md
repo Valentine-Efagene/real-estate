@@ -37,6 +37,7 @@
 - **When adding a new model with `tenantId` to the schema**, add its name (camelCase) to the `TENANT_SCOPED_MODELS` array in `tenant.ts`.
 - If the model has nullable `tenantId` (e.g., global templates), also add it to `OPTIONAL_TENANT_MODELS`.
 - The User model has optional `tenantId` and is NOT tenant-scoped (users can exist across tenants or without a tenant).
+- In addition to the auto-generated swagger docs, make sure the postman documentation is also always up to date.
 
 ## Deployment Status Tracking
 
