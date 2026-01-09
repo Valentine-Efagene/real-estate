@@ -84,12 +84,12 @@ describe('Property Transfer with Progress Preservation', () => {
         });
         jinxId = jinx.id;
 
-        // Create Chidi (Buyer)
+        // Create Chidi (Buyer) - using real email for notification testing
         const chidi = await prisma.user.create({
             data: {
                 id: faker.string.uuid(),
                 tenantId,
-                email: 'chidi-transfer@example.com',
+                email: 'efagenevalentine@gmail.com',
                 firstName: 'Chidi',
                 lastName: 'Eze',
             },
