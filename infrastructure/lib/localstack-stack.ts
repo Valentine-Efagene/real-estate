@@ -19,7 +19,7 @@ import * as path from 'path';
  * It skips resources that LocalStack doesn't support well (VPC, RDS, ElastiCache).
  * 
  * Usage:
- *   cdklocal deploy --context stage=test
+ *   cdklocal deploy --context stage=localstack
  * 
  * Prerequisites:
  *   - LocalStack running (docker-compose up -d)
@@ -33,8 +33,8 @@ export class LocalStackStack extends cdk.Stack {
         // Load environment variables from local-dev/.env
         dotenv.config({ path: path.resolve(__dirname, '../../local-dev/.env') });
 
-        // Stage is always 'test' for LocalStack
-        const stage = this.node.tryGetContext('stage') || 'test';
+        // Stage is 'localstack' for LocalStack
+        const stage = this.node.tryGetContext('stage') || 'localstack';
         const prefix = `qshelter-${stage}`;
 
         // === S3 Buckets ===

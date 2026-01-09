@@ -1,5 +1,5 @@
 import { config } from 'dotenv';
-config({ path: '.env.local' });
+config(); // Load .env file
 
 import { PrismaMariaDb } from '@prisma/adapter-mariadb';
 import { ConfigService, PrismaClient } from '@valentine-efagene/qshelter-common';
@@ -7,9 +7,9 @@ import { ConfigService, PrismaClient } from '@valentine-efagene/qshelter-common'
 const stage = process.env.NODE_ENV || process.env.STAGE || 'dev';
 
 async function createAdapter() {
-    // For local development and LocalStack (test stage), use env vars directly
-    // This avoids the need for VPC-related SSM parameters that LocalStack doesn't use
-    if (stage === 'local' || stage === 'test') {
+    // For local development (local) and LocalStack (localstack), use env vars directly
+    // This avoids the need for VPC-related SSM parameters
+    if (stage === 'local' || stage === 'localstack') {
         return new PrismaMariaDb({
             host: process.env.DB_HOST || '127.0.0.1',
             port: parseInt(process.env.DB_PORT || '3307'),

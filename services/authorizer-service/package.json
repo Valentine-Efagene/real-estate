@@ -10,7 +10,7 @@
         "deploy:staging": "npm run build && npx sls deploy --stage staging",
         "deploy:prod": "npm run build && npx sls deploy --stage prod",
         "deploy": "npm run deploy:dev",
-        "deploy:test": "npm run build && npx sls deploy --stage test",
+        "deploy:localstack": "npm run build && npx sls deploy --stage localstack --config serverless.localstack.yml",
         "start": "node dist/index.js"
     },
     "dependencies": {

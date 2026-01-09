@@ -1,18 +1,18 @@
 import { config } from 'dotenv';
 // Load environment variables FIRST, before checking NODE_ENV
-// Use .env.test for test environment
-const envFile = process.env.NODE_ENV === 'test' ? '.env.test' : '.env';
+// Use .env.localstack for localstack, .env for local development
+const envFile = process.env.NODE_ENV === 'localstack' ? '.env.localstack' : '.env';
 config({ path: envFile });
 
 import { PrismaMariaDb } from '@prisma/adapter-mariadb';
 import { ConfigService, PrismaClient } from '@valentine-efagene/qshelter-common';
 
-// Load environment variables from .env.test for local development
+// Load environment variables from .env for local development
 const stage = process.env.NODE_ENV || 'dev';
 
 async function createAdapter() {
-    // For local/test development, use env vars directly
-    if (stage === 'local' || stage === 'test') {
+    // For local development (local) and LocalStack (localstack), use env vars directly
+    if (stage === 'local' || stage === 'localstack') {
         return new PrismaMariaDb({
             host: process.env.DB_HOST || '127.0.0.1',
             port: parseInt(process.env.DB_PORT || '3307'),
@@ -24,7 +24,7 @@ async function createAdapter() {
         });
     }
 
-    // For test stage (LocalStack) and AWS stages, use ConfigService to get DB credentials from SSM
+    // For AWS stages (dev, staging, prod), use ConfigService to get DB credentials from SSM
     const configService = ConfigService.getInstance();
     const dbCredentials = await configService.getDatabaseCredentials(stage);
 

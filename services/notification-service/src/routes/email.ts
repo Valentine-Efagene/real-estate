@@ -18,6 +18,8 @@ import {
     AdminInviteAdminSchema,
     TestTempSchema,
     TemplateTypeValue,
+    ContractCreatedSchema,
+    TemplateType,
 } from '../validators/email.validator';
 
 const router = Router();
@@ -233,6 +235,49 @@ router.post('/admin/invite-admin', asyncHandler(async (req: Request, res: Respon
     const response = await emailService.sendTemplateEmail({
         templateName,
         ...parsed.data
+    });
+    res.json(createResponse(response.status, 'Email sent', response.headers));
+}));
+
+// Contract created email (mortgage)
+router.post('/contract-created', asyncHandler(async (req: Request, res: Response) => {
+    const parsed = ContractCreatedSchema.safeParse(req.body);
+    if (!parsed.success) {
+        res.status(400).json(createResponse(400, 'Validation error', parsed.error.issues));
+        return;
+    }
+
+    const templateName: TemplateTypeValue = 'contractCreated';
+    const response = await emailService.sendTemplateEmail({
+        templateName,
+        ...parsed.data
+    });
+    res.json(createResponse(response.status, 'Email sent', response.headers));
+}));
+
+// Generic template endpoint - test any template with any data
+router.post('/send-template', asyncHandler(async (req: Request, res: Response) => {
+    const { templateName, ...payload } = req.body;
+
+    // Validate template name
+    const templateParse = TemplateType.safeParse(templateName);
+    if (!templateParse.success) {
+        res.status(400).json(createResponse(400, 'Invalid template name', {
+            validTemplates: TemplateType.options
+        }));
+        return;
+    }
+
+    if (!payload.to_email) {
+        res.status(400).json(createResponse(400, 'to_email is required', null));
+        return;
+    }
+
+    console.log('[Email Route] Sending template email', { templateName, to: payload.to_email });
+
+    const response = await emailService.sendTemplateEmail({
+        templateName: templateParse.data,
+        ...payload
     });
     res.json(createResponse(response.status, 'Email sent', response.headers));
 }));

@@ -129,10 +129,10 @@ Access Adminer at http://localhost:8080 with:
 
 ## Environment Files
 
-The tests use `.env.test` for configuration. Key variables:
+The tests use `.env.localstack` for configuration. Key variables:
 
 ```bash
-NODE_ENV=test
+NODE_ENV=localstack
 DB_HOST=127.0.0.1
 DB_PORT=3307
 DB_USER=root
