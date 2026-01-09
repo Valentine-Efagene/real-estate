@@ -20,16 +20,26 @@ datasource db {
 // =============================================================================
 
 enum PhaseCategory {
-  DOCUMENTATION
-  PAYMENT
+  QUESTIONNAIRE // Configurable form fields with validation
+  DOCUMENTATION // Document upload and approval workflow
+  PAYMENT // Installment-based payment collection
 }
 
 enum PhaseType {
+  // QUESTIONNAIRE phases
+  PRE_APPROVAL // Eligibility questionnaire (income, employment, etc.)
+  UNDERWRITING // System evaluation of eligibility
+
+  // DOCUMENTATION phases
   KYC
   VERIFICATION
+
+  // PAYMENT phases
   DOWNPAYMENT
   MORTGAGE
   BALLOON
+
+  // Generic
   CUSTOM
 }
 
@@ -898,9 +908,9 @@ model PaymentPlan {
   updatedAt DateTime @updatedAt
 
   // Used by property payment method phases (templates)
-  methodPhases   PropertyPaymentMethodPhase[]
-  // Used by instantiated contract phases
-  contractPhases ContractPhase[]
+  methodPhases  PropertyPaymentMethodPhase[]
+  // Used by instantiated payment phases
+  paymentPhases PaymentPhase[]
 
   @@unique([tenantId, name]) // Unique per tenant, or globally if tenantId is null
   @@index([tenantId])
@@ -1005,8 +1015,10 @@ model PropertyPaymentMethodPhase {
   updatedAt DateTime @updatedAt
 
   // Normalized child tables (for DOCUMENTATION phases)
-  steps             PaymentMethodPhaseStep[]
-  requiredDocuments PaymentMethodPhaseDocument[]
+  steps               PaymentMethodPhaseStep[]
+  requiredDocuments   PaymentMethodPhaseDocument[]
+  // Normalized child tables (for QUESTIONNAIRE phases)
+  questionnaireFields PaymentMethodPhaseField[]
 
   @@index([paymentMethodId])
   @@index([paymentPlanId])
@@ -1084,11 +1096,70 @@ model PaymentMethodPhaseDocument {
 }
 
 // =============================================================================
+// QUESTIONNAIRE FIELD TYPES - For QUESTIONNAIRE phases
+// =============================================================================
+
+enum FieldType {
+  TEXT // Short text input
+  TEXTAREA // Long text input
+  NUMBER // Numeric input (with optional min/max)
+  CURRENCY // Currency input (validated as money)
+  EMAIL // Email validation
+  PHONE // Phone number validation
+  DATE // Date picker
+  SELECT // Dropdown/single select
+  MULTI_SELECT // Multiple selection
+  CHECKBOX // Boolean yes/no
+  RADIO // Radio button group
+  FILE // File upload (single)
+}
+
+// Questionnaire field template within a QUESTIONNAIRE phase
+model PaymentMethodPhaseField {
+  id      String                     @id @default(cuid())
+  phaseId String
+  phase   PropertyPaymentMethodPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+
+  // Field identification
+  name        String // Internal field name (e.g., "monthly_income")
+  label       String // Display label (e.g., "Monthly Income")
+  description String? @db.Text // Help text for the field
+  placeholder String? // Placeholder text
+
+  // Field configuration
+  fieldType  FieldType
+  isRequired Boolean   @default(true)
+  order      Int
+
+  // Validation rules (JSON schema-like)
+  // Examples:
+  // NUMBER: { "min": 0, "max": 1000000 }
+  // TEXT: { "minLength": 2, "maxLength": 100, "pattern": "^[A-Za-z]+$" }
+  // SELECT: { "options": [{"value": "employed", "label": "Employed"}, ...] }
+  // DATE: { "minDate": "now", "maxDate": "+30d" }
+  validation Json?
+
+  // For conditional display (e.g., show if another field has a certain value)
+  // { "field": "employment_status", "operator": "equals", "value": "employed" }
+  displayCondition Json?
+
+  // Default value (JSON to support any type)
+  defaultValue Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([phaseId, name])
+  @@index([phaseId])
+  @@map("payment_method_phase_fields")
+}
+
+// =============================================================================
 // CONTRACT DOMAIN - Unified agreement model (replaces Mortgage, PurchasePlan, etc.)
 // =============================================================================
 // Contract is the canonical agreement. "Mortgage" is just a product configuration
 // that creates a Contract with specific phases (documentation, downpayment, long-term payment).
-// Phases can be DOCUMENTATION (FSM for approvals) or PAYMENT (PaymentPlan-driven installments).
+// Phases can be QUESTIONNAIRE, DOCUMENTATION, or PAYMENT.
 // =============================================================================
 
 model Contract {
@@ -1111,28 +1182,13 @@ model Contract {
   description    String? @db.Text
   contractType   String // Admin-defined: MORTGAGE, INSTALLMENT, RENT_TO_OWN, CASH, LEASE, etc.
 
-  // Financial summary (computed from phases)
-  totalAmount       Float // Total contract value (from unit price or negotiated)
-  downPayment       Float  @default(0)
-  downPaymentPaid   Float  @default(0)
-  principal         Float? // Financed amount (if applicable)
-  interestRate      Float? // Overall interest rate (if applicable)
-  termMonths        Int? // Total term (if applicable)
-  periodicPayment   Float? // Computed periodic payment (if applicable)
-  totalPaidToDate   Float  @default(0)
-  totalInterestPaid Float  @default(0)
+  // Contract value (negotiated from unit price)
+  totalAmount Float
 
-  // Pre-approval and underwriting data (moved from prequalification)
-  monthlyIncome      Float? // Buyer's monthly income
-  monthlyExpenses    Float? // Buyer's monthly expenses
-  preApprovalAnswers Json? // Questionnaire answers from PRE_APPROVAL step
-  underwritingScore  Float? // Aggregate score from underwriting evaluation
-  debtToIncomeRatio  Float? // Calculated DTI ratio
-
-  // FSM state (DB-enforced enums)
+  // FSM state (DB-enforced enum)
   status         ContractStatus @default(DRAFT)
-  state          ContractStatus @default(DRAFT) // FSM state for workflow
   currentPhaseId String?
+  currentPhase   ContractPhase? @relation("CurrentPhase", fields: [currentPhaseId], references: [id])
 
   // Timing
   nextPaymentDueDate DateTime?
@@ -1176,7 +1232,7 @@ model Contract {
   @@index([sellerId])
   @@index([paymentMethodId])
   @@index([status])
-  @@index([state])
+  @@index([currentPhaseId])
   @@map("contracts")
 }
 
@@ -1237,12 +1293,21 @@ model ContractRefund {
 
 // Phase within a contract - can be DOCUMENTATION or PAYMENT type
 // Admin names phases freely (e.g., "KYC Documents", "Downpayment", "Monthly Mortgage")
+// =============================================================================
+// CONTRACT PHASE - Base model with polymorphic extensions
+// =============================================================================
+// ContractPhase is the base table with shared fields only.
+// Each phase has exactly ONE extension table based on phaseCategory:
+// - QUESTIONNAIRE → QuestionnairePhase
+// - DOCUMENTATION → DocumentationPhase
+// - PAYMENT → PaymentPhase
+// This eliminates nullable field pollution and makes the schema self-documenting.
+// =============================================================================
+
 model ContractPhase {
-  id            String       @id @default(cuid())
-  contractId    String
-  contract      Contract     @relation(fields: [contractId], references: [id], onDelete: Cascade)
-  paymentPlanId String? // Only for PAYMENT phases
-  paymentPlan   PaymentPlan? @relation(fields: [paymentPlanId], references: [id])
+  id         String   @id @default(cuid())
+  contractId String
+  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
 
   // Admin-defined naming
   name        String
@@ -1256,64 +1321,202 @@ model ContractPhase {
   // FSM state for this phase (DB-enforced enum)
   status PhaseStatus @default(PENDING)
 
-  // =========================================================================
-  // WORKFLOW TRACKING - Current step pointer for UX and orchestration
-  // =========================================================================
-  // Canonical pointer to the step currently requiring attention.
-  // Updated by service when: phase activates (→ first step), step completes (→ next),
-  // step rejected (→ same step with NEEDS_RESUBMISSION), or phase completes (→ null).
-  currentStepId String?
-  currentStep   DocumentationStep? @relation("CurrentStep", fields: [currentStepId], references: [id])
-
-  // Financial details (for PAYMENT phases)
-  totalAmount     Float?
-  paidAmount      Float  @default(0)
-  remainingAmount Float?
-  interestRate    Float?
-
-  // Fund collection behavior (snapshotted from template at contract creation)
-  // true = we collect funds via wallet/gateway (e.g., downpayment)
-  // false = external payment, we only track/reconcile (e.g., bank mortgage)
-  collectFunds Boolean @default(true)
-
-  // Progress counters (for efficient activation checks)
-  approvedDocumentsCount Int @default(0)
-  requiredDocumentsCount Int @default(0)
-  completedStepsCount    Int @default(0)
-  totalStepsCount        Int @default(0)
-
-  // Timing
+  // Timing (shared across all phase types)
   dueDate     DateTime?
   startDate   DateTime?
   endDate     DateTime?
   activatedAt DateTime?
   completedAt DateTime?
 
-  // Activation rules
-  requiresPreviousPhaseCompletion Boolean              @default(true)
-  minimumCompletionPercentage     Float?
-  completionCriterion             CompletionCriterion?
+  // Activation rules (shared)
+  requiresPreviousPhaseCompletion Boolean @default(true)
 
-  // Snapshots for audit (effective config at contract creation)
-  paymentPlanSnapshot      Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Polymorphic extensions (exactly one will be populated based on phaseCategory)
+  questionnairePhase QuestionnairePhase?
+  documentationPhase DocumentationPhase?
+  paymentPhase       PaymentPhase?
+
+  // Payments can be linked to any phase type (for tracking)
+  payments ContractPayment[]
+
+  // Back-relation for contracts where this is the current phase
+  currentForContracts Contract[] @relation("CurrentPhase")
+
+  @@index([contractId])
+  @@index([phaseCategory])
+  @@index([status])
+  @@index([order])
+  @@map("contract_phases")
+}
+
+// =============================================================================
+// QUESTIONNAIRE PHASE DATA - Extension for QUESTIONNAIRE phases
+// =============================================================================
+// Collects form data from users (eligibility, pre-approval, underwriting inputs)
+// =============================================================================
+
+model QuestionnairePhase {
+  id      String        @id @default(cuid())
+  phaseId String        @unique
+  phase   ContractPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+
+  // Progress tracking
+  completedFieldsCount Int @default(0)
+  totalFieldsCount     Int @default(0)
+
+  // Computed results (for UNDERWRITING phases)
+  underwritingScore    Float?
+  debtToIncomeRatio    Float?
+  underwritingDecision String? // APPROVED, CONDITIONAL, DECLINED
+  underwritingNotes    String? @db.Text
+
+  // Snapshot of field definitions at creation
+  fieldsSnapshot Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Child records
+  fields QuestionnaireField[]
+
+  @@index([phaseId])
+  @@map("questionnaire_phases")
+}
+
+// =============================================================================
+// DOCUMENTATION PHASE DATA - Extension for DOCUMENTATION phases
+// =============================================================================
+// Manages document upload/approval workflow with FSM steps
+// =============================================================================
+
+model DocumentationPhase {
+  id      String        @id @default(cuid())
+  phaseId String        @unique
+  phase   ContractPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+
+  // Current step pointer for UX and orchestration
+  currentStepId String?
+  currentStep   DocumentationStep? @relation("CurrentStep", fields: [currentStepId], references: [id])
+
+  // Progress counters
+  approvedDocumentsCount Int @default(0)
+  requiredDocumentsCount Int @default(0)
+  completedStepsCount    Int @default(0)
+  totalStepsCount        Int @default(0)
+
+  // Completion criteria
+  minimumCompletionPercentage Float?
+  completionCriterion         CompletionCriterion?
+
+  // Snapshots for audit
   stepDefinitionsSnapshot  Json?
   requiredDocumentSnapshot Json?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // Relations
-  installments ContractInstallment[]
-  payments     ContractPayment[]
-  steps        DocumentationStep[] // For DOCUMENTATION phases (FSM steps)
+  // Child records
+  steps DocumentationStep[]
 
-  @@index([contractId])
-  @@index([paymentPlanId])
-  @@index([phaseCategory])
-  @@index([status])
-  @@index([order])
+  @@index([phaseId])
   @@index([currentStepId])
-  @@map("contract_phases")
+  @@map("documentation_phases")
+}
+
+// =============================================================================
+// PAYMENT PHASE DATA - Extension for PAYMENT phases
+// =============================================================================
+// Manages installment-based payment collection
+// =============================================================================
+
+model PaymentPhase {
+  id      String        @id @default(cuid())
+  phaseId String        @unique
+  phase   ContractPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+
+  // Payment plan reference
+  paymentPlanId String?
+  paymentPlan   PaymentPlan? @relation(fields: [paymentPlanId], references: [id])
+
+  // Financial details
+  totalAmount  Float
+  paidAmount   Float @default(0)
+  interestRate Float @default(0)
+
+  // Fund collection behavior
+  // true = we collect funds via wallet/gateway (e.g., downpayment)
+  // false = external payment, we only track/reconcile (e.g., bank mortgage)
+  collectFunds Boolean @default(true)
+
+  // Completion criteria
+  minimumCompletionPercentage Float?
+
+  // Snapshot for audit
+  paymentPlanSnapshot Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Child records
+  installments ContractInstallment[]
+
+  @@index([phaseId])
+  @@index([paymentPlanId])
+  @@map("payment_phases")
+}
+
+// =============================================================================
+// QUESTIONNAIRE FIELDS - Instantiated fields within QUESTIONNAIRE phases
+// =============================================================================
+// When a contract is created from a payment method template, questionnaire field
+// templates are copied to QuestionnaireField records. Users submit answers here.
+// =============================================================================
+
+model QuestionnaireField {
+  id                   String             @id @default(cuid())
+  questionnairePhaseId String
+  questionnairePhase   QuestionnairePhase @relation(fields: [questionnairePhaseId], references: [id], onDelete: Cascade)
+
+  // Field identification (copied from template)
+  name        String // Internal field name (e.g., "monthly_income")
+  label       String // Display label (e.g., "Monthly Income")
+  description String? @db.Text
+  placeholder String?
+
+  // Field configuration (copied from template)
+  fieldType  FieldType
+  isRequired Boolean   @default(true)
+  order      Int
+
+  // Validation rules (copied from template)
+  validation       Json?
+  displayCondition Json?
+  defaultValue     Json?
+
+  // User's submitted answer (JSON to support any type)
+  // TEXT: "John Doe"
+  // NUMBER/CURRENCY: 500000
+  // SELECT: "employed"
+  // MULTI_SELECT: ["option1", "option2"]
+  // CHECKBOX: true
+  // DATE: "2024-01-15"
+  answer Json?
+
+  // Validation status
+  isValid          Boolean @default(false)
+  validationErrors Json? // Array of error messages if invalid
+
+  // Timestamps
+  submittedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([questionnairePhaseId, name])
+  @@index([questionnairePhaseId])
+  @@map("questionnaire_fields")
 }
 
 // =============================================================================
@@ -1356,9 +1559,9 @@ model ContractEvent {
 
 // Steps within a DOCUMENTATION phase (FSM for document collection/approval)
 model DocumentationStep {
-  id      String        @id @default(cuid())
-  phaseId String
-  phase   ContractPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+  id                   String             @id @default(cuid())
+  documentationPhaseId String
+  documentationPhase   DocumentationPhase @relation(fields: [documentationPhaseId], references: [id], onDelete: Cascade)
 
   name        String
   description String?  @db.Text
@@ -1383,15 +1586,6 @@ model DocumentationStep {
   // Configuration metadata (for GENERATE_DOCUMENT steps, etc.)
   metadata Json?
 
-  // For PRE_APPROVAL steps: store questionnaire answers
-  preApprovalAnswers Json?
-
-  // For UNDERWRITING steps: store evaluation results
-  underwritingScore    Float?
-  debtToIncomeRatio    Float?
-  underwritingDecision String? // APPROVED, CONDITIONAL, DECLINED
-  underwritingNotes    String? @db.Text
-
   // Assignment
   assigneeId String?
   assignee   User?   @relation("DocumentationStepAssignee", fields: [assigneeId], references: [id])
@@ -1407,9 +1601,9 @@ model DocumentationStep {
   updatedAt DateTime @updatedAt
 
   approvals       DocumentationStepApproval[]
-  currentForPhase ContractPhase[]             @relation("CurrentStep")
+  currentForPhase DocumentationPhase[]        @relation("CurrentStep")
 
-  @@index([phaseId])
+  @@index([documentationPhaseId])
   @@index([status])
   @@index([order])
   @@map("contract_phase_steps")
@@ -1450,9 +1644,9 @@ model DocumentationStepApproval {
 
 // Installments within a PAYMENT phase
 model ContractInstallment {
-  id      String        @id @default(cuid())
-  phaseId String
-  phase   ContractPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+  id             String       @id @default(cuid())
+  paymentPhaseId String
+  paymentPhase   PaymentPhase @relation(fields: [paymentPhaseId], references: [id], onDelete: Cascade)
 
   installmentNumber Int
 
@@ -1476,7 +1670,7 @@ model ContractInstallment {
 
   payments ContractPayment[]
 
-  @@index([phaseId])
+  @@index([paymentPhaseId])
   @@index([dueDate])
   @@index([status])
   @@map("contract_installments")

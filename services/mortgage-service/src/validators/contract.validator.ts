@@ -15,12 +15,7 @@ export const CreateContractSchema = z
         contractType: z.string().min(1).max(50).openapi({ example: 'MORTGAGE' }),
         totalAmount: z.number().positive().optional().openapi({ example: 500000 }), // If not provided, uses unit price
         downPayment: z.number().min(0).optional().openapi({ example: 50000 }),
-        interestRate: z.number().min(0).max(100).optional().openapi({ example: 5.5 }),
-        termMonths: z.number().int().positive().optional().openapi({ example: 360 }),
         startDate: z.string().datetime().optional(),
-        // Pre-approval data (for underwriting)
-        monthlyIncome: z.number().positive().optional().openapi({ example: 500000 }),
-        monthlyExpenses: z.number().min(0).optional().openapi({ example: 150000 }),
     })
     .openapi('CreateContract');
 
@@ -68,9 +63,6 @@ export const ContractResponseSchema = z
         downPayment: z.number(),
         downPaymentPaid: z.number(),
         principal: z.number().nullable(),
-        interestRate: z.number().nullable(),
-        termMonths: z.number().nullable(),
-        periodicPayment: z.number().nullable(),
         totalPaidToDate: z.number(),
         totalInterestPaid: z.number(),
         status: z.string(),

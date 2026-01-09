@@ -49,6 +49,41 @@ function calculatePeriodicPayment(
 }
 
 /**
+ * Extract mortgage payment info from contract phases
+ * The mortgage phase has a payment plan with term and interest rate
+ */
+function getMortgagePaymentInfo(contract: any): { termMonths: number; monthlyPayment: number } {
+    // First check if contract has periodicPayment set
+    if (contract.periodicPayment && contract.termMonths) {
+        return {
+            termMonths: contract.termMonths,
+            monthlyPayment: contract.periodicPayment,
+        };
+    }
+
+    // Find the mortgage phase (phaseType = 'MORTGAGE')
+    const mortgagePhase = contract.phases?.find(
+        (phase: any) => phase.phaseType === 'MORTGAGE'
+    );
+
+    if (!mortgagePhase?.paymentPlan) {
+        return { termMonths: 0, monthlyPayment: 0 };
+    }
+
+    const paymentPlan = mortgagePhase.paymentPlan;
+    const termMonths = paymentPlan.numberOfInstallments || 0;
+    const interestRate = paymentPlan.interestRate || 0;
+    const principal = mortgagePhase.totalAmount;
+
+    if (termMonths > 0 && principal > 0) {
+        const monthlyPayment = calculatePeriodicPayment(principal, interestRate, termMonths);
+        return { termMonths, monthlyPayment };
+    }
+
+    return { termMonths: 0, monthlyPayment: 0 };
+}
+
+/**
  * Parse step definitions from phase template
  * Now reads from the child table `steps` instead of JSON string
  */
@@ -384,14 +419,17 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
 
         // Send contract created notification
         try {
+            // Get mortgage payment info from phases
+            const mortgageInfo = getMortgagePaymentInfo(fullContract);
+
             await sendContractCreatedNotification({
                 email: buyer.email,
                 userName: buyer.firstName || 'Valued Customer',
                 contractNumber: fullContract.contractNumber,
                 propertyName: propertyUnit.variant?.property?.title || 'Your Property',
                 totalAmount: formatCurrency(totalAmount),
-                termMonths: termMonths || 0,
-                monthlyPayment: formatCurrency(periodicPayment || 0),
+                termMonths: mortgageInfo.termMonths || termMonths || 0,
+                monthlyPayment: formatCurrency(mortgageInfo.monthlyPayment || periodicPayment || 0),
                 dashboardUrl: `${DASHBOARD_URL}/contracts/${contract.id}`,
             }, contract.id);
         } catch (error) {
@@ -621,6 +659,9 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
                 ? formatDate(firstInstallment.dueDate)
                 : 'To be scheduled';
 
+            // Get mortgage payment info from phases
+            const mortgageInfo = getMortgagePaymentInfo(activatedContract);
+
             await sendContractActivatedNotification({
                 email: contract.buyer?.email || '',
                 userName: contract.buyer?.firstName || 'Valued Customer',
@@ -628,7 +669,7 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
                 propertyName: contract.propertyUnit?.variant?.property?.title || 'Your Property',
                 startDate: formatDate(new Date()),
                 nextPaymentDate,
-                monthlyPayment: formatCurrency(contract.periodicPayment || 0),
+                monthlyPayment: formatCurrency(mortgageInfo.monthlyPayment || 0),
                 dashboardUrl: `${DASHBOARD_URL}/contracts/${id}`,
             }, id);
         } catch (error) {
