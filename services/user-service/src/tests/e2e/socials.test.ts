@@ -13,7 +13,7 @@ describe('Social E2E Tests', () => {
     beforeEach(async () => {
         await cleanDatabase();
         await setupTests();
-        
+
         // Create a test user
         testUser = await prisma.user.create({
             data: {

@@ -3,26 +3,21 @@ import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
 
 extendZodWithOpenApi(z);
 
-// Property schemas - aligned with Prisma schema
+// Property schemas - aligned with Prisma schema (without price/bedrooms which moved to PropertyVariant)
 export const createPropertySchema = z
     .object({
-        title: z.string().min(1).openapi({ example: 'Luxury 3-Bedroom Apartment' }),
-        description: z.string().min(10).optional().openapi({ example: 'Beautiful modern apartment in downtown' }),
-        price: z.number().positive().openapi({ example: 250000 }),
+        title: z.string().min(1).openapi({ example: 'Luxury Apartment Complex' }),
+        description: z.string().min(10).optional().openapi({ example: 'Beautiful modern apartment complex in downtown' }),
         category: z.enum(['SALE', 'RENT', 'LEASE']).openapi({ example: 'SALE' }),
-        propertyType: z.string().openapi({ example: 'APARTMENT' }), // APARTMENT, HOUSE, LAND, COMMERCIAL
+        propertyType: z.string().openapi({ example: 'APARTMENT' }), // APARTMENT, HOUSE, LAND, COMMERCIAL, ESTATE, TOWNHOUSE
         country: z.string().min(1).openapi({ example: 'USA' }),
         currency: z.string().min(1).openapi({ example: 'USD' }),
         city: z.string().min(1).openapi({ example: 'New York' }),
         district: z.string().optional().openapi({ example: 'Manhattan' }),
         zipCode: z.string().optional().openapi({ example: '10001' }),
         streetAddress: z.string().optional().openapi({ example: '123 Main St' }),
-        nBedrooms: z.string().openapi({ example: '3' }),
-        nBathrooms: z.string().openapi({ example: '2' }),
-        nParkingSpots: z.string().openapi({ example: '1' }),
         longitude: z.number().optional().openapi({ example: -73.935242 }),
         latitude: z.number().optional().openapi({ example: 40.730610 }),
-        area: z.number().positive().optional().openapi({ example: 1500 }),
     })
     .openapi('CreatePropertyRequest');
 

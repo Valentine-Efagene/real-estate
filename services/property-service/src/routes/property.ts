@@ -59,8 +59,8 @@ propertyRouter.put('/properties/:id', async (req, res, next) => {
     try {
         const { id } = req.params;
         const data = updatePropertySchema.parse(req.body);
-        // TODO: Extract userId from auth context/JWT
-        const userId = (req as any).userId || 'temp-user-id';
+        // Extract userId from tenant context (set by tenant middleware)
+        const userId = req.tenantContext?.userId || 'temp-user-id';
         const property = await propertyService.updateProperty(id, data, userId);
         res.json(successResponse(property));
     } catch (error) {
@@ -71,8 +71,8 @@ propertyRouter.put('/properties/:id', async (req, res, next) => {
 propertyRouter.delete('/properties/:id', async (req, res, next) => {
     try {
         const { id } = req.params;
-        // TODO: Extract userId from auth context/JWT
-        const userId = (req as any).userId || 'temp-user-id';
+        // Extract userId from tenant context (set by tenant middleware)
+        const userId = req.tenantContext?.userId || 'temp-user-id';
         const result = await propertyService.deleteProperty(id, userId);
         res.json(successResponse(result));
     } catch (error) {
