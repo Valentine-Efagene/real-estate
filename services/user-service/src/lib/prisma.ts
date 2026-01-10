@@ -7,12 +7,12 @@ config({ path: envFile });
 import { PrismaMariaDb } from '@prisma/adapter-mariadb';
 import { ConfigService, PrismaClient } from '@valentine-efagene/qshelter-common';
 
-// Load environment variables from .env for local development
-const stage = process.env.NODE_ENV || 'dev';
-
 async function createAdapter() {
-    // For local development (local) and LocalStack (localstack), use env vars directly
-    if (stage === 'local' || stage === 'localstack') {
+    // Get stage at RUNTIME, not build time
+    const stage = process.env.NODE_ENV || process.env.STAGE || 'dev';
+    
+    // For local development (local), LocalStack (localstack), and test (test), use env vars directly
+    if (stage === 'local' || stage === 'localstack' || stage === 'test') {
         return new PrismaMariaDb({
             host: process.env.DB_HOST || '127.0.0.1',
             port: parseInt(process.env.DB_PORT || '3307'),

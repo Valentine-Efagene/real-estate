@@ -1,19 +1,19 @@
 # Deployment Status
 
-Last Updated: January 6, 2025
+Last Updated: January 10, 2025
 
 ## Lambda Functions
 
 | Service               | Package Size | Status     | Health Check  | Swagger Docs    |
 | --------------------- | ------------ | ---------- | ------------- | --------------- |
 | Authorizer            | 102 KB       | ✅ Working | N/A           | N/A             |
-| User Service          | 5.8 MB       | ✅ Healthy | `GET /health` | `GET /api-docs` |
-| Property Service      | 6.1 MB       | ✅ Healthy | `GET /health` | `GET /api-docs` |
+| User Service          | 6.1 MB       | ✅ Healthy | `GET /health` | `GET /api-docs` |
+| Property Service      | 6.4 MB       | ✅ Healthy | `GET /health` | `GET /api-docs` |
 | Mortgage Service      | 6.2 MB       | ✅ Healthy | `GET /health` | `GET /api-docs` |
 | Documents Service     | 6.4 MB       | ✅ Healthy | `GET /health` | `GET /api-docs` |
 | Notifications Service | 7.3 MB       | ✅ Healthy | `GET /health` | `GET /api-docs` |
 
-## LocalStack Deployment (test stage)
+## LocalStack Deployment (localstack stage)
 
 All services have `serverless.localstack.yml` configs that use **REST API v1** for LocalStack compatibility.
 
@@ -22,38 +22,38 @@ All services have `serverless.localstack.yml` configs that use **REST API v1** f
 ```bash
 # Deploy a service to LocalStack using REST API v1
 cd services/<service-name>
-pnpm exec serverless deploy --config serverless.localstack.yml --stage test
+npx sls deploy --config serverless.localstack.yml --stage localstack
 ```
 
 ### Current LocalStack API IDs
 
-| Service               | API ID       | REST API Base URL                                                    |
-| --------------------- | ------------ | -------------------------------------------------------------------- |
-| User Service          | `tkexzzvh2t` | `http://tkexzzvh2t.execute-api.localhost.localstack.cloud:4566/test` |
-| Property Service      | `rctqapw3rb` | `http://rctqapw3rb.execute-api.localhost.localstack.cloud:4566/test` |
-| Mortgage Service      | `vf7kbi2plw` | `http://vf7kbi2plw.execute-api.localhost.localstack.cloud:4566/test` |
-| Documents Service     | `la2ji49vbp` | `http://la2ji49vbp.execute-api.localhost.localstack.cloud:4566/test` |
-| Notifications Service | `q0cty9xmsv` | `http://q0cty9xmsv.execute-api.localhost.localstack.cloud:4566/test` |
+| Service               | API ID       | REST API Base URL                                                              |
+| --------------------- | ------------ | ------------------------------------------------------------------------------ |
+| User Service          | `54d9r9y23n` | `http://localhost:4566/restapis/54d9r9y23n/localstack/_user_request_`          |
+| Property Service      | `hsmpsiqobm` | `http://localhost:4566/restapis/hsmpsiqobm/localstack/_user_request_`          |
+| Mortgage Service      | `g8b5hpkucu` | `http://localhost:4566/restapis/g8b5hpkucu/localstack/_user_request_`          |
+| Documents Service     | `ujsndxfzfd` | `http://localhost:4566/restapis/ujsndxfzfd/localstack/_user_request_`          |
+| Notifications Service | `imelipwbj1` | `http://localhost:4566/restapis/imelipwbj1/localstack/_user_request_`          |
 
 ### Health Check URLs
 
-| Service               | Health URL                                                                | Status     |
-| --------------------- | ------------------------------------------------------------------------- | ---------- |
-| User Service          | http://tkexzzvh2t.execute-api.localhost.localstack.cloud:4566/test/health | ✅ Healthy |
-| Property Service      | http://rctqapw3rb.execute-api.localhost.localstack.cloud:4566/test/health | ✅ Healthy |
-| Mortgage Service      | http://vf7kbi2plw.execute-api.localhost.localstack.cloud:4566/test/health | ✅ Healthy |
-| Documents Service     | http://la2ji49vbp.execute-api.localhost.localstack.cloud:4566/test/health | ✅ Healthy |
-| Notifications Service | http://q0cty9xmsv.execute-api.localhost.localstack.cloud:4566/test/health | ✅ Healthy |
+| Service               | Health URL                                                                        | Status     |
+| --------------------- | --------------------------------------------------------------------------------- | ---------- |
+| User Service          | http://localhost:4566/restapis/54d9r9y23n/localstack/_user_request_/health        | ✅ Healthy |
+| Property Service      | http://localhost:4566/restapis/hsmpsiqobm/localstack/_user_request_/health        | ✅ Healthy |
+| Mortgage Service      | http://localhost:4566/restapis/g8b5hpkucu/localstack/_user_request_/health        | ✅ Healthy |
+| Documents Service     | http://localhost:4566/restapis/ujsndxfzfd/localstack/_user_request_/health        | ✅ Healthy |
+| Notifications Service | http://localhost:4566/restapis/imelipwbj1/localstack/_user_request_/health        | ✅ Healthy |
 
 > **Note**: API IDs change on each deployment. Get current IDs with:
 >
 > ```bash
-> aws --endpoint-url=http://localhost:4566 apigateway get-rest-apis --query 'items[*].[name,id]' --output table
+> awslocal apigateway get-rest-apis --query 'items[*].[name,id]' --output table
 > ```
 
 ## Environment
 
-- **Stage**: test (LocalStack)
+- **Stage**: localstack (LocalStack)
 - **Region**: us-east-1
 - **LocalStack Endpoint**: http://localhost:4566
 
@@ -61,17 +61,17 @@ pnpm exec serverless deploy --config serverless.localstack.yml --stage test
 
 ```bash
 # Test all services via REST API
-curl -s http://tkexzzvh2t.execute-api.localhost.localstack.cloud:4566/test/health  # user-service
-curl -s http://rctqapw3rb.execute-api.localhost.localstack.cloud:4566/test/health  # property-service
-curl -s http://vf7kbi2plw.execute-api.localhost.localstack.cloud:4566/test/health  # mortgage-service
-curl -s http://la2ji49vbp.execute-api.localhost.localstack.cloud:4566/test/health  # documents-service
-curl -s http://q0cty9xmsv.execute-api.localhost.localstack.cloud:4566/test/health  # notifications
+curl -s http://localhost:4566/restapis/54d9r9y23n/localstack/_user_request_/health  # user-service
+curl -s http://localhost:4566/restapis/hsmpsiqobm/localstack/_user_request_/health  # property-service
+curl -s http://localhost:4566/restapis/g8b5hpkucu/localstack/_user_request_/health  # mortgage-service
+curl -s http://localhost:4566/restapis/ujsndxfzfd/localstack/_user_request_/health  # documents-service
+curl -s http://localhost:4566/restapis/imelipwbj1/localstack/_user_request_/health  # notifications
 
 # List all deployed REST APIs
-aws --endpoint-url=http://localhost:4566 apigateway get-rest-apis --query 'items[*].[name,id]' --output table
+awslocal apigateway get-rest-apis --query 'items[*].[name,id]' --output table
 
 # List all deployed Lambda functions
-aws --endpoint-url=http://localhost:4566 lambda list-functions --query 'Functions[].FunctionName' --output table
+awslocal lambda list-functions --query 'Functions[].FunctionName' --output table
 ```
 
 ## E2E Tests Against Deployed APIs
@@ -84,18 +84,26 @@ Tests can run in two modes:
 ```bash
 # Run e2e tests against local Express app (fast, in-process)
 cd services/mortgage-service
-pnpm test:e2e
+npm run test:e2e
 
 # Run e2e tests against deployed LocalStack APIs
-pnpm test:e2e:deployed
+npm run test:e2e:deployed
 
 # Or set API_BASE_URL manually
-API_BASE_URL=http://vf7kbi2plw.execute-api.localhost.localstack.cloud:4566/test pnpm test:e2e
+API_BASE_URL=http://localhost:4566/restapis/g8b5hpkucu/localstack/_user_request_ npm run test:e2e
 
 # From local-dev folder
 cd local-dev
-pnpm test:e2e:deployed
+npm run test:e2e:deployed
 ```
+
+## E2E Test Coverage
+
+| Service          | Tests | Status     | Notes                                      |
+| ---------------- | ----- | ---------- | ------------------------------------------ |
+| User Service     | 78    | ✅ Passing | Auth, Users, Roles, Tenants, Socials       |
+| Property Service | 21    | ✅ Passing | Properties, Health                         |
+| Mortgage Service | 83    | ✅ Passing | Contracts, Payments, Templates, Workflows  |
 
 ## Deployment Notes
 

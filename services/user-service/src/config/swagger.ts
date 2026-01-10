@@ -1,4 +1,5 @@
 import { OpenAPIRegistry, OpenApiGeneratorV3 } from '@asteasolutions/zod-to-openapi';
+import { OpenAPIObject } from 'openapi3-ts/oas30';
 import { z } from 'zod';
 import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
 import { loginSchema, signupSchema, refreshTokenSchema, authResponseSchema } from '../validators/auth.validator';
@@ -182,7 +183,7 @@ registry.registerComponent('securitySchemes', 'bearerAuth', {
 });
 
 // Generate OpenAPI document
-export function generateOpenAPIDocument() {
+export function generateOpenAPIDocument(): OpenAPIObject {
     const generator = new OpenApiGeneratorV3(registry.definitions);
 
     return generator.generateDocument({
