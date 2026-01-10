@@ -1,5 +1,4 @@
 import request from 'supertest';
-import { faker } from '@faker-js/faker';
 import { app } from '../../app';
 import { setupTests, cleanDatabase, prisma } from './setup';
 
@@ -61,7 +60,7 @@ describe('Tenant E2E Tests', () => {
             const response = await request(app)
                 .post('/tenants')
                 .send({ name: 'Second Tenant', subdomain })
-                .expect(400);
+                .expect(409); // Conflict for duplicate
 
             expect(response.body.success).toBe(false);
         });

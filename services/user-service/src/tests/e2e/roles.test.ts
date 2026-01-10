@@ -79,7 +79,7 @@ describe('Role E2E Tests', () => {
             const response = await request(app)
                 .post('/roles')
                 .send({ name: 'admin' })
-                .expect(400);
+                .expect(409); // Conflict for duplicate
 
             expect(response.body.success).toBe(false);
         });

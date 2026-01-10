@@ -115,14 +115,15 @@ class UserService {
 
         const where: any = {};
 
+        // MySQL doesn't support mode: 'insensitive' - use contains only (MySQL is case-insensitive by default for string comparisons)
         if (firstName) {
-            where.firstName = { contains: firstName, mode: 'insensitive' };
+            where.firstName = { contains: firstName };
         }
         if (lastName) {
-            where.lastName = { contains: lastName, mode: 'insensitive' };
+            where.lastName = { contains: lastName };
         }
         if (email) {
-            where.email = { contains: email, mode: 'insensitive' };
+            where.email = { contains: email };
         }
 
         const skip = (page - 1) * limit;
