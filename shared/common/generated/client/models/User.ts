@@ -279,6 +279,7 @@ export type UserWhereInput = {
   emailVerificationToken?: Prisma.StringNullableFilter<"User"> | string | null
   lastLoginAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   tenant?: Prisma.XOR<Prisma.TenantNullableScalarRelationFilter, Prisma.TenantWhereInput> | null
+  tenantMemberships?: Prisma.TenantMembershipListRelationFilter
   userRoles?: Prisma.UserRoleListRelationFilter
   wallet?: Prisma.XOR<Prisma.WalletNullableScalarRelationFilter, Prisma.WalletWhereInput> | null
   refreshTokens?: Prisma.RefreshTokenListRelationFilter
@@ -329,6 +330,7 @@ export type UserOrderByWithRelationInput = {
   emailVerificationToken?: Prisma.SortOrderInput | Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
   tenant?: Prisma.TenantOrderByWithRelationInput
+  tenantMemberships?: Prisma.TenantMembershipOrderByRelationAggregateInput
   userRoles?: Prisma.UserRoleOrderByRelationAggregateInput
   wallet?: Prisma.WalletOrderByWithRelationInput
   refreshTokens?: Prisma.RefreshTokenOrderByRelationAggregateInput
@@ -383,6 +385,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   emailVerificationToken?: Prisma.StringNullableFilter<"User"> | string | null
   lastLoginAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   tenant?: Prisma.XOR<Prisma.TenantNullableScalarRelationFilter, Prisma.TenantWhereInput> | null
+  tenantMemberships?: Prisma.TenantMembershipListRelationFilter
   userRoles?: Prisma.UserRoleListRelationFilter
   wallet?: Prisma.XOR<Prisma.WalletNullableScalarRelationFilter, Prisma.WalletWhereInput> | null
   refreshTokens?: Prisma.RefreshTokenListRelationFilter
@@ -477,6 +480,7 @@ export type UserCreateInput = {
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
   tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  tenantMemberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
@@ -526,6 +530,7 @@ export type UserUncheckedCreateInput = {
   emailVerifiedAt?: Date | string | null
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
@@ -573,6 +578,7 @@ export type UserUpdateInput = {
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  tenantMemberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
@@ -622,6 +628,7 @@ export type UserUncheckedUpdateInput = {
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
@@ -828,6 +835,20 @@ export type UserUpdateOneRequiredWithoutUserRolesNestedInput = {
   upsert?: Prisma.UserUpsertWithoutUserRolesInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUserRolesInput, Prisma.UserUpdateWithoutUserRolesInput>, Prisma.UserUncheckedUpdateWithoutUserRolesInput>
+}
+
+export type UserCreateNestedOneWithoutTenantMembershipsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTenantMembershipsInput, Prisma.UserUncheckedCreateWithoutTenantMembershipsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTenantMembershipsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutTenantMembershipsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTenantMembershipsInput, Prisma.UserUncheckedCreateWithoutTenantMembershipsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTenantMembershipsInput
+  upsert?: Prisma.UserUpsertWithoutTenantMembershipsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTenantMembershipsInput, Prisma.UserUpdateWithoutTenantMembershipsInput>, Prisma.UserUncheckedUpdateWithoutTenantMembershipsInput>
 }
 
 export type UserCreateNestedManyWithoutTenantInput = {
@@ -1329,6 +1350,7 @@ export type UserCreateWithoutUserRolesInput = {
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
   tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  tenantMemberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
   wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   passwordResets?: Prisma.PasswordResetCreateNestedManyWithoutUserInput
@@ -1377,6 +1399,7 @@ export type UserUncheckedCreateWithoutUserRolesInput = {
   emailVerifiedAt?: Date | string | null
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
   suspensions?: Prisma.UserSuspensionUncheckedCreateNestedManyWithoutUserInput
@@ -1439,6 +1462,7 @@ export type UserUpdateWithoutUserRolesInput = {
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  tenantMemberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   passwordResets?: Prisma.PasswordResetUpdateManyWithoutUserNestedInput
@@ -1487,6 +1511,215 @@ export type UserUncheckedUpdateWithoutUserRolesInput = {
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+  suspensions?: Prisma.UserSuspensionUncheckedUpdateManyWithoutUserNestedInput
+  emailPreferences?: Prisma.EmailPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  deviceEndpoints?: Prisma.DeviceEndpointUncheckedUpdateManyWithoutUserNestedInput
+  socials?: Prisma.SocialUncheckedUpdateManyWithoutUserNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutUserNestedInput
+  contracts?: Prisma.ContractUncheckedUpdateManyWithoutBuyerNestedInput
+  soldContracts?: Prisma.ContractUncheckedUpdateManyWithoutSellerNestedInput
+  contractPayments?: Prisma.ContractPaymentUncheckedUpdateManyWithoutPayerNestedInput
+  assignedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  stepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
+  uploadedDocs?: Prisma.ContractDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
+  initiatedTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutInitiatorNestedInput
+  reviewedTerminations?: Prisma.ContractTerminationUncheckedUpdateManyWithoutReviewerNestedInput
+  offerLettersGenerated?: Prisma.OfferLetterUncheckedUpdateManyWithoutGeneratedByNestedInput
+  offerLettersSent?: Prisma.OfferLetterUncheckedUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  approvalRequestsSubmitted?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  approvalRequestsAssigned?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvalRequestsReviewed?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  requestedRefunds?: Prisma.ContractRefundUncheckedUpdateManyWithoutRequestedByNestedInput
+  approvedRefunds?: Prisma.ContractRefundUncheckedUpdateManyWithoutApprovedByNestedInput
+  processedRefunds?: Prisma.ContractRefundUncheckedUpdateManyWithoutProcessedByNestedInput
+}
+
+export type UserCreateWithoutTenantMembershipsInput = {
+  id?: string
+  email: string
+  password?: string | null
+  phone?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  isActive?: boolean
+  isEmailVerified?: boolean
+  googleId?: string | null
+  avatar?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  emailVerifiedAt?: Date | string | null
+  emailVerificationToken?: string | null
+  lastLoginAt?: Date | string | null
+  tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  passwordResets?: Prisma.PasswordResetCreateNestedManyWithoutUserInput
+  suspensions?: Prisma.UserSuspensionCreateNestedManyWithoutUserInput
+  emailPreferences?: Prisma.EmailPreferenceCreateNestedManyWithoutUserInput
+  deviceEndpoints?: Prisma.DeviceEndpointCreateNestedManyWithoutUserInput
+  socials?: Prisma.SocialCreateNestedManyWithoutUserInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutUserInput
+  contracts?: Prisma.ContractCreateNestedManyWithoutBuyerInput
+  soldContracts?: Prisma.ContractCreateNestedManyWithoutSellerInput
+  contractPayments?: Prisma.ContractPaymentCreateNestedManyWithoutPayerInput
+  assignedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutAssigneeInput
+  stepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutApproverInput
+  uploadedDocs?: Prisma.ContractDocumentCreateNestedManyWithoutUploadedByInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutReviewerInput
+  initiatedTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutInitiatorInput
+  reviewedTerminations?: Prisma.ContractTerminationCreateNestedManyWithoutReviewerInput
+  offerLettersGenerated?: Prisma.OfferLetterCreateNestedManyWithoutGeneratedByInput
+  offerLettersSent?: Prisma.OfferLetterCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestCreateNestedManyWithoutReviewedByInput
+  approvalRequestsSubmitted?: Prisma.ApprovalRequestCreateNestedManyWithoutRequestedByInput
+  approvalRequestsAssigned?: Prisma.ApprovalRequestCreateNestedManyWithoutAssigneeInput
+  approvalRequestsReviewed?: Prisma.ApprovalRequestCreateNestedManyWithoutReviewedByInput
+  requestedRefunds?: Prisma.ContractRefundCreateNestedManyWithoutRequestedByInput
+  approvedRefunds?: Prisma.ContractRefundCreateNestedManyWithoutApprovedByInput
+  processedRefunds?: Prisma.ContractRefundCreateNestedManyWithoutProcessedByInput
+}
+
+export type UserUncheckedCreateWithoutTenantMembershipsInput = {
+  id?: string
+  email: string
+  password?: string | null
+  phone?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  isActive?: boolean
+  isEmailVerified?: boolean
+  googleId?: string | null
+  avatar?: string | null
+  tenantId?: string | null
+  walletId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  emailVerifiedAt?: Date | string | null
+  emailVerificationToken?: string | null
+  lastLoginAt?: Date | string | null
+  userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
+  suspensions?: Prisma.UserSuspensionUncheckedCreateNestedManyWithoutUserInput
+  emailPreferences?: Prisma.EmailPreferenceUncheckedCreateNestedManyWithoutUserInput
+  deviceEndpoints?: Prisma.DeviceEndpointUncheckedCreateNestedManyWithoutUserInput
+  socials?: Prisma.SocialUncheckedCreateNestedManyWithoutUserInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutUserInput
+  contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutBuyerInput
+  soldContracts?: Prisma.ContractUncheckedCreateNestedManyWithoutSellerInput
+  contractPayments?: Prisma.ContractPaymentUncheckedCreateNestedManyWithoutPayerInput
+  assignedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput
+  stepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutApproverInput
+  uploadedDocs?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
+  initiatedTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutInitiatorInput
+  reviewedTerminations?: Prisma.ContractTerminationUncheckedCreateNestedManyWithoutReviewerInput
+  offerLettersGenerated?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutGeneratedByInput
+  offerLettersSent?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  approvalRequestsSubmitted?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  approvalRequestsAssigned?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutAssigneeInput
+  approvalRequestsReviewed?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  requestedRefunds?: Prisma.ContractRefundUncheckedCreateNestedManyWithoutRequestedByInput
+  approvedRefunds?: Prisma.ContractRefundUncheckedCreateNestedManyWithoutApprovedByInput
+  processedRefunds?: Prisma.ContractRefundUncheckedCreateNestedManyWithoutProcessedByInput
+}
+
+export type UserCreateOrConnectWithoutTenantMembershipsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutTenantMembershipsInput, Prisma.UserUncheckedCreateWithoutTenantMembershipsInput>
+}
+
+export type UserUpsertWithoutTenantMembershipsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutTenantMembershipsInput, Prisma.UserUncheckedUpdateWithoutTenantMembershipsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutTenantMembershipsInput, Prisma.UserUncheckedCreateWithoutTenantMembershipsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutTenantMembershipsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutTenantMembershipsInput, Prisma.UserUncheckedUpdateWithoutTenantMembershipsInput>
+}
+
+export type UserUpdateWithoutTenantMembershipsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  passwordResets?: Prisma.PasswordResetUpdateManyWithoutUserNestedInput
+  suspensions?: Prisma.UserSuspensionUpdateManyWithoutUserNestedInput
+  emailPreferences?: Prisma.EmailPreferenceUpdateManyWithoutUserNestedInput
+  deviceEndpoints?: Prisma.DeviceEndpointUpdateManyWithoutUserNestedInput
+  socials?: Prisma.SocialUpdateManyWithoutUserNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutUserNestedInput
+  contracts?: Prisma.ContractUpdateManyWithoutBuyerNestedInput
+  soldContracts?: Prisma.ContractUpdateManyWithoutSellerNestedInput
+  contractPayments?: Prisma.ContractPaymentUpdateManyWithoutPayerNestedInput
+  assignedSteps?: Prisma.DocumentationStepUpdateManyWithoutAssigneeNestedInput
+  stepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutApproverNestedInput
+  uploadedDocs?: Prisma.ContractDocumentUpdateManyWithoutUploadedByNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutReviewerNestedInput
+  initiatedTerminations?: Prisma.ContractTerminationUpdateManyWithoutInitiatorNestedInput
+  reviewedTerminations?: Prisma.ContractTerminationUpdateManyWithoutReviewerNestedInput
+  offerLettersGenerated?: Prisma.OfferLetterUpdateManyWithoutGeneratedByNestedInput
+  offerLettersSent?: Prisma.OfferLetterUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUpdateManyWithoutReviewedByNestedInput
+  approvalRequestsSubmitted?: Prisma.ApprovalRequestUpdateManyWithoutRequestedByNestedInput
+  approvalRequestsAssigned?: Prisma.ApprovalRequestUpdateManyWithoutAssigneeNestedInput
+  approvalRequestsReviewed?: Prisma.ApprovalRequestUpdateManyWithoutReviewedByNestedInput
+  requestedRefunds?: Prisma.ContractRefundUpdateManyWithoutRequestedByNestedInput
+  approvedRefunds?: Prisma.ContractRefundUpdateManyWithoutApprovedByNestedInput
+  processedRefunds?: Prisma.ContractRefundUpdateManyWithoutProcessedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutTenantMembershipsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tenantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  walletId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
   suspensions?: Prisma.UserSuspensionUncheckedUpdateManyWithoutUserNestedInput
@@ -1532,6 +1765,7 @@ export type UserCreateWithoutTenantInput = {
   emailVerifiedAt?: Date | string | null
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
@@ -1580,6 +1814,7 @@ export type UserUncheckedCreateWithoutTenantInput = {
   emailVerifiedAt?: Date | string | null
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
@@ -1676,6 +1911,7 @@ export type UserCreateWithoutRefreshTokensInput = {
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
   tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  tenantMemberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
   passwordResets?: Prisma.PasswordResetCreateNestedManyWithoutUserInput
@@ -1724,6 +1960,7 @@ export type UserUncheckedCreateWithoutRefreshTokensInput = {
   emailVerifiedAt?: Date | string | null
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
   suspensions?: Prisma.UserSuspensionUncheckedCreateNestedManyWithoutUserInput
@@ -1786,6 +2023,7 @@ export type UserUpdateWithoutRefreshTokensInput = {
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  tenantMemberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
   passwordResets?: Prisma.PasswordResetUpdateManyWithoutUserNestedInput
@@ -1834,6 +2072,7 @@ export type UserUncheckedUpdateWithoutRefreshTokensInput = {
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
   suspensions?: Prisma.UserSuspensionUncheckedUpdateManyWithoutUserNestedInput
@@ -1880,6 +2119,7 @@ export type UserCreateWithoutPasswordResetsInput = {
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
   tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  tenantMemberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
@@ -1928,6 +2168,7 @@ export type UserUncheckedCreateWithoutPasswordResetsInput = {
   emailVerifiedAt?: Date | string | null
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   suspensions?: Prisma.UserSuspensionUncheckedCreateNestedManyWithoutUserInput
@@ -1990,6 +2231,7 @@ export type UserUpdateWithoutPasswordResetsInput = {
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  tenantMemberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
@@ -2038,6 +2280,7 @@ export type UserUncheckedUpdateWithoutPasswordResetsInput = {
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   suspensions?: Prisma.UserSuspensionUncheckedUpdateManyWithoutUserNestedInput
@@ -2084,6 +2327,7 @@ export type UserCreateWithoutSuspensionsInput = {
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
   tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  tenantMemberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
@@ -2132,6 +2376,7 @@ export type UserUncheckedCreateWithoutSuspensionsInput = {
   emailVerifiedAt?: Date | string | null
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
@@ -2194,6 +2439,7 @@ export type UserUpdateWithoutSuspensionsInput = {
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  tenantMemberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
@@ -2242,6 +2488,7 @@ export type UserUncheckedUpdateWithoutSuspensionsInput = {
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
@@ -2288,6 +2535,7 @@ export type UserCreateWithoutEmailPreferencesInput = {
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
   tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  tenantMemberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
@@ -2336,6 +2584,7 @@ export type UserUncheckedCreateWithoutEmailPreferencesInput = {
   emailVerifiedAt?: Date | string | null
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
@@ -2398,6 +2647,7 @@ export type UserUpdateWithoutEmailPreferencesInput = {
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  tenantMemberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
@@ -2446,6 +2696,7 @@ export type UserUncheckedUpdateWithoutEmailPreferencesInput = {
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
@@ -2492,6 +2743,7 @@ export type UserCreateWithoutDeviceEndpointsInput = {
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
   tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  tenantMemberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
@@ -2540,6 +2792,7 @@ export type UserUncheckedCreateWithoutDeviceEndpointsInput = {
   emailVerifiedAt?: Date | string | null
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
@@ -2602,6 +2855,7 @@ export type UserUpdateWithoutDeviceEndpointsInput = {
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  tenantMemberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
@@ -2650,6 +2904,7 @@ export type UserUncheckedUpdateWithoutDeviceEndpointsInput = {
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
@@ -2696,6 +2951,7 @@ export type UserCreateWithoutSocialsInput = {
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
   tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  tenantMemberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
@@ -2744,6 +3000,7 @@ export type UserUncheckedCreateWithoutSocialsInput = {
   emailVerifiedAt?: Date | string | null
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
@@ -2806,6 +3063,7 @@ export type UserUpdateWithoutSocialsInput = {
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  tenantMemberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
@@ -2854,6 +3112,7 @@ export type UserUncheckedUpdateWithoutSocialsInput = {
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
@@ -2900,6 +3159,7 @@ export type UserCreateWithoutWalletInput = {
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
   tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  tenantMemberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   passwordResets?: Prisma.PasswordResetCreateNestedManyWithoutUserInput
@@ -2947,6 +3207,7 @@ export type UserUncheckedCreateWithoutWalletInput = {
   emailVerifiedAt?: Date | string | null
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
@@ -3010,6 +3271,7 @@ export type UserUpdateWithoutWalletInput = {
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  tenantMemberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   passwordResets?: Prisma.PasswordResetUpdateManyWithoutUserNestedInput
@@ -3057,6 +3319,7 @@ export type UserUncheckedUpdateWithoutWalletInput = {
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
@@ -3104,6 +3367,7 @@ export type UserCreateWithoutPropertiesInput = {
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
   tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  tenantMemberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
@@ -3152,6 +3416,7 @@ export type UserUncheckedCreateWithoutPropertiesInput = {
   emailVerifiedAt?: Date | string | null
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
@@ -3214,6 +3479,7 @@ export type UserUpdateWithoutPropertiesInput = {
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  tenantMemberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
@@ -3262,6 +3528,7 @@ export type UserUncheckedUpdateWithoutPropertiesInput = {
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
@@ -3308,6 +3575,7 @@ export type UserCreateWithoutContractsInput = {
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
   tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  tenantMemberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
@@ -3356,6 +3624,7 @@ export type UserUncheckedCreateWithoutContractsInput = {
   emailVerifiedAt?: Date | string | null
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
@@ -3407,6 +3676,7 @@ export type UserCreateWithoutSoldContractsInput = {
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
   tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  tenantMemberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
@@ -3455,6 +3725,7 @@ export type UserUncheckedCreateWithoutSoldContractsInput = {
   emailVerifiedAt?: Date | string | null
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
@@ -3517,6 +3788,7 @@ export type UserUpdateWithoutContractsInput = {
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  tenantMemberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
@@ -3565,6 +3837,7 @@ export type UserUncheckedUpdateWithoutContractsInput = {
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
@@ -3622,6 +3895,7 @@ export type UserUpdateWithoutSoldContractsInput = {
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  tenantMemberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
@@ -3670,6 +3944,7 @@ export type UserUncheckedUpdateWithoutSoldContractsInput = {
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
@@ -3716,6 +3991,7 @@ export type UserCreateWithoutRequestedRefundsInput = {
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
   tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  tenantMemberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
@@ -3764,6 +4040,7 @@ export type UserUncheckedCreateWithoutRequestedRefundsInput = {
   emailVerifiedAt?: Date | string | null
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
@@ -3815,6 +4092,7 @@ export type UserCreateWithoutApprovedRefundsInput = {
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
   tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  tenantMemberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
@@ -3863,6 +4141,7 @@ export type UserUncheckedCreateWithoutApprovedRefundsInput = {
   emailVerifiedAt?: Date | string | null
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
@@ -3914,6 +4193,7 @@ export type UserCreateWithoutProcessedRefundsInput = {
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
   tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  tenantMemberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
@@ -3962,6 +4242,7 @@ export type UserUncheckedCreateWithoutProcessedRefundsInput = {
   emailVerifiedAt?: Date | string | null
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
@@ -4024,6 +4305,7 @@ export type UserUpdateWithoutRequestedRefundsInput = {
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  tenantMemberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
@@ -4072,6 +4354,7 @@ export type UserUncheckedUpdateWithoutRequestedRefundsInput = {
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
@@ -4129,6 +4412,7 @@ export type UserUpdateWithoutApprovedRefundsInput = {
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  tenantMemberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
@@ -4177,6 +4461,7 @@ export type UserUncheckedUpdateWithoutApprovedRefundsInput = {
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
@@ -4234,6 +4519,7 @@ export type UserUpdateWithoutProcessedRefundsInput = {
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  tenantMemberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
@@ -4282,6 +4568,7 @@ export type UserUncheckedUpdateWithoutProcessedRefundsInput = {
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
@@ -4328,6 +4615,7 @@ export type UserCreateWithoutAssignedStepsInput = {
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
   tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  tenantMemberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
@@ -4376,6 +4664,7 @@ export type UserUncheckedCreateWithoutAssignedStepsInput = {
   emailVerifiedAt?: Date | string | null
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
@@ -4438,6 +4727,7 @@ export type UserUpdateWithoutAssignedStepsInput = {
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  tenantMemberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
@@ -4486,6 +4776,7 @@ export type UserUncheckedUpdateWithoutAssignedStepsInput = {
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
@@ -4532,6 +4823,7 @@ export type UserCreateWithoutStepApprovalsInput = {
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
   tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  tenantMemberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
@@ -4580,6 +4872,7 @@ export type UserUncheckedCreateWithoutStepApprovalsInput = {
   emailVerifiedAt?: Date | string | null
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
@@ -4642,6 +4935,7 @@ export type UserUpdateWithoutStepApprovalsInput = {
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  tenantMemberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
@@ -4690,6 +4984,7 @@ export type UserUncheckedUpdateWithoutStepApprovalsInput = {
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
@@ -4736,6 +5031,7 @@ export type UserCreateWithoutContractPaymentsInput = {
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
   tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  tenantMemberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
@@ -4784,6 +5080,7 @@ export type UserUncheckedCreateWithoutContractPaymentsInput = {
   emailVerifiedAt?: Date | string | null
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
@@ -4846,6 +5143,7 @@ export type UserUpdateWithoutContractPaymentsInput = {
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  tenantMemberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
@@ -4894,6 +5192,7 @@ export type UserUncheckedUpdateWithoutContractPaymentsInput = {
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
@@ -4940,6 +5239,7 @@ export type UserCreateWithoutUploadedDocsInput = {
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
   tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  tenantMemberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
@@ -4988,6 +5288,7 @@ export type UserUncheckedCreateWithoutUploadedDocsInput = {
   emailVerifiedAt?: Date | string | null
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
@@ -5050,6 +5351,7 @@ export type UserUpdateWithoutUploadedDocsInput = {
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  tenantMemberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
@@ -5098,6 +5400,7 @@ export type UserUncheckedUpdateWithoutUploadedDocsInput = {
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
@@ -5144,6 +5447,7 @@ export type UserCreateWithoutOfferLettersGeneratedInput = {
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
   tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  tenantMemberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
@@ -5192,6 +5496,7 @@ export type UserUncheckedCreateWithoutOfferLettersGeneratedInput = {
   emailVerifiedAt?: Date | string | null
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
@@ -5243,6 +5548,7 @@ export type UserCreateWithoutOfferLettersSentInput = {
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
   tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  tenantMemberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
@@ -5291,6 +5597,7 @@ export type UserUncheckedCreateWithoutOfferLettersSentInput = {
   emailVerifiedAt?: Date | string | null
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
@@ -5353,6 +5660,7 @@ export type UserUpdateWithoutOfferLettersGeneratedInput = {
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  tenantMemberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
@@ -5401,6 +5709,7 @@ export type UserUncheckedUpdateWithoutOfferLettersGeneratedInput = {
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
@@ -5458,6 +5767,7 @@ export type UserUpdateWithoutOfferLettersSentInput = {
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  tenantMemberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
@@ -5506,6 +5816,7 @@ export type UserUncheckedUpdateWithoutOfferLettersSentInput = {
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
@@ -5552,6 +5863,7 @@ export type UserCreateWithoutInitiatedTerminationsInput = {
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
   tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  tenantMemberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
@@ -5600,6 +5912,7 @@ export type UserUncheckedCreateWithoutInitiatedTerminationsInput = {
   emailVerifiedAt?: Date | string | null
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
@@ -5651,6 +5964,7 @@ export type UserCreateWithoutReviewedTerminationsInput = {
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
   tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  tenantMemberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
@@ -5699,6 +6013,7 @@ export type UserUncheckedCreateWithoutReviewedTerminationsInput = {
   emailVerifiedAt?: Date | string | null
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
@@ -5761,6 +6076,7 @@ export type UserUpdateWithoutInitiatedTerminationsInput = {
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  tenantMemberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
@@ -5809,6 +6125,7 @@ export type UserUncheckedUpdateWithoutInitiatedTerminationsInput = {
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
@@ -5866,6 +6183,7 @@ export type UserUpdateWithoutReviewedTerminationsInput = {
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  tenantMemberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
@@ -5914,6 +6232,7 @@ export type UserUncheckedUpdateWithoutReviewedTerminationsInput = {
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
@@ -5960,6 +6279,7 @@ export type UserCreateWithoutPaymentMethodChangeRequestsInput = {
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
   tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  tenantMemberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
@@ -6008,6 +6328,7 @@ export type UserUncheckedCreateWithoutPaymentMethodChangeRequestsInput = {
   emailVerifiedAt?: Date | string | null
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
@@ -6059,6 +6380,7 @@ export type UserCreateWithoutReviewedChangeRequestsInput = {
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
   tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  tenantMemberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
@@ -6107,6 +6429,7 @@ export type UserUncheckedCreateWithoutReviewedChangeRequestsInput = {
   emailVerifiedAt?: Date | string | null
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
@@ -6169,6 +6492,7 @@ export type UserUpdateWithoutPaymentMethodChangeRequestsInput = {
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  tenantMemberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
@@ -6217,6 +6541,7 @@ export type UserUncheckedUpdateWithoutPaymentMethodChangeRequestsInput = {
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
@@ -6274,6 +6599,7 @@ export type UserUpdateWithoutReviewedChangeRequestsInput = {
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  tenantMemberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
@@ -6322,6 +6648,7 @@ export type UserUncheckedUpdateWithoutReviewedChangeRequestsInput = {
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
@@ -6368,6 +6695,7 @@ export type UserCreateWithoutTransferRequestsSubmittedInput = {
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
   tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  tenantMemberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
@@ -6416,6 +6744,7 @@ export type UserUncheckedCreateWithoutTransferRequestsSubmittedInput = {
   emailVerifiedAt?: Date | string | null
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
@@ -6467,6 +6796,7 @@ export type UserCreateWithoutTransferRequestsReviewedInput = {
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
   tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  tenantMemberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
@@ -6515,6 +6845,7 @@ export type UserUncheckedCreateWithoutTransferRequestsReviewedInput = {
   emailVerifiedAt?: Date | string | null
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
@@ -6577,6 +6908,7 @@ export type UserUpdateWithoutTransferRequestsSubmittedInput = {
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  tenantMemberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
@@ -6625,6 +6957,7 @@ export type UserUncheckedUpdateWithoutTransferRequestsSubmittedInput = {
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
@@ -6682,6 +7015,7 @@ export type UserUpdateWithoutTransferRequestsReviewedInput = {
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  tenantMemberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
@@ -6730,6 +7064,7 @@ export type UserUncheckedUpdateWithoutTransferRequestsReviewedInput = {
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
@@ -6776,6 +7111,7 @@ export type UserCreateWithoutApprovalRequestsSubmittedInput = {
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
   tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  tenantMemberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
@@ -6824,6 +7160,7 @@ export type UserUncheckedCreateWithoutApprovalRequestsSubmittedInput = {
   emailVerifiedAt?: Date | string | null
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
@@ -6875,6 +7212,7 @@ export type UserCreateWithoutApprovalRequestsAssignedInput = {
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
   tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  tenantMemberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
@@ -6923,6 +7261,7 @@ export type UserUncheckedCreateWithoutApprovalRequestsAssignedInput = {
   emailVerifiedAt?: Date | string | null
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
@@ -6974,6 +7313,7 @@ export type UserCreateWithoutApprovalRequestsReviewedInput = {
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
   tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  tenantMemberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
   wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
@@ -7022,6 +7362,7 @@ export type UserUncheckedCreateWithoutApprovalRequestsReviewedInput = {
   emailVerifiedAt?: Date | string | null
   emailVerificationToken?: string | null
   lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
   userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
@@ -7084,6 +7425,7 @@ export type UserUpdateWithoutApprovalRequestsSubmittedInput = {
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  tenantMemberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
@@ -7132,6 +7474,7 @@ export type UserUncheckedUpdateWithoutApprovalRequestsSubmittedInput = {
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
@@ -7189,6 +7532,7 @@ export type UserUpdateWithoutApprovalRequestsAssignedInput = {
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  tenantMemberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
@@ -7237,6 +7581,7 @@ export type UserUncheckedUpdateWithoutApprovalRequestsAssignedInput = {
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
@@ -7294,6 +7639,7 @@ export type UserUpdateWithoutApprovalRequestsReviewedInput = {
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  tenantMemberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
@@ -7342,6 +7688,7 @@ export type UserUncheckedUpdateWithoutApprovalRequestsReviewedInput = {
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
@@ -7406,6 +7753,7 @@ export type UserUpdateWithoutTenantInput = {
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
   wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
@@ -7454,6 +7802,7 @@ export type UserUncheckedUpdateWithoutTenantInput = {
   emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
   userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
@@ -7509,6 +7858,7 @@ export type UserUncheckedUpdateManyWithoutTenantInput = {
  */
 
 export type UserCountOutputType = {
+  tenantMemberships: number
   userRoles: number
   refreshTokens: number
   passwordResets: number
@@ -7540,6 +7890,7 @@ export type UserCountOutputType = {
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tenantMemberships?: boolean | UserCountOutputTypeCountTenantMembershipsArgs
   userRoles?: boolean | UserCountOutputTypeCountUserRolesArgs
   refreshTokens?: boolean | UserCountOutputTypeCountRefreshTokensArgs
   passwordResets?: boolean | UserCountOutputTypeCountPasswordResetsArgs
@@ -7578,6 +7929,13 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
    * Select specific fields to fetch from the UserCountOutputType
    */
   select?: Prisma.UserCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountTenantMembershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TenantMembershipWhereInput
 }
 
 /**
@@ -7796,6 +8154,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   emailVerificationToken?: boolean
   lastLoginAt?: boolean
   tenant?: boolean | Prisma.User$tenantArgs<ExtArgs>
+  tenantMemberships?: boolean | Prisma.User$tenantMembershipsArgs<ExtArgs>
   userRoles?: boolean | Prisma.User$userRolesArgs<ExtArgs>
   wallet?: boolean | Prisma.User$walletArgs<ExtArgs>
   refreshTokens?: boolean | Prisma.User$refreshTokensArgs<ExtArgs>
@@ -7853,6 +8212,7 @@ export type UserSelectScalar = {
 export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "phone" | "firstName" | "lastName" | "isActive" | "isEmailVerified" | "googleId" | "avatar" | "tenantId" | "walletId" | "createdAt" | "updatedAt" | "emailVerifiedAt" | "emailVerificationToken" | "lastLoginAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.User$tenantArgs<ExtArgs>
+  tenantMemberships?: boolean | Prisma.User$tenantMembershipsArgs<ExtArgs>
   userRoles?: boolean | Prisma.User$userRolesArgs<ExtArgs>
   wallet?: boolean | Prisma.User$walletArgs<ExtArgs>
   refreshTokens?: boolean | Prisma.User$refreshTokensArgs<ExtArgs>
@@ -7889,6 +8249,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name: "User"
   objects: {
     tenant: Prisma.$TenantPayload<ExtArgs> | null
+    tenantMemberships: Prisma.$TenantMembershipPayload<ExtArgs>[]
     userRoles: Prisma.$UserRolePayload<ExtArgs>[]
     wallet: Prisma.$WalletPayload<ExtArgs> | null
     refreshTokens: Prisma.$RefreshTokenPayload<ExtArgs>[]
@@ -8278,6 +8639,7 @@ readonly fields: UserFieldRefs;
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   tenant<T extends Prisma.User$tenantArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$tenantArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  tenantMemberships<T extends Prisma.User$tenantMembershipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$tenantMembershipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TenantMembershipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   userRoles<T extends Prisma.User$userRolesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$userRolesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserRolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   wallet<T extends Prisma.User$walletArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$walletArgs<ExtArgs>>): Prisma.Prisma__WalletClient<runtime.Types.Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   refreshTokens<T extends Prisma.User$refreshTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$refreshTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -8712,6 +9074,30 @@ export type User$tenantArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    */
   include?: Prisma.TenantInclude<ExtArgs> | null
   where?: Prisma.TenantWhereInput
+}
+
+/**
+ * User.tenantMemberships
+ */
+export type User$tenantMembershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TenantMembership
+   */
+  select?: Prisma.TenantMembershipSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TenantMembership
+   */
+  omit?: Prisma.TenantMembershipOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TenantMembershipInclude<ExtArgs> | null
+  where?: Prisma.TenantMembershipWhereInput
+  orderBy?: Prisma.TenantMembershipOrderByWithRelationInput | Prisma.TenantMembershipOrderByWithRelationInput[]
+  cursor?: Prisma.TenantMembershipWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TenantMembershipScalarFieldEnum | Prisma.TenantMembershipScalarFieldEnum[]
 }
 
 /**

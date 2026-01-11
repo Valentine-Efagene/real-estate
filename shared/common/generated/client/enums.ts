@@ -342,6 +342,14 @@ export const ExecutionStatus = {
 export type ExecutionStatus = (typeof ExecutionStatus)[keyof typeof ExecutionStatus]
 
 
+export const PermissionEffect = {
+  ALLOW: 'ALLOW',
+  DENY: 'DENY'
+} as const
+
+export type PermissionEffect = (typeof PermissionEffect)[keyof typeof PermissionEffect]
+
+
 export const FieldType = {
   TEXT: 'TEXT',
   TEXTAREA: 'TEXTAREA',

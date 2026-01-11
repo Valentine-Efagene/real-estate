@@ -56,6 +56,7 @@ export const ModelName = {
   Permission: 'Permission',
   RolePermission: 'RolePermission',
   UserRole: 'UserRole',
+  TenantMembership: 'TenantMembership',
   Tenant: 'Tenant',
   ApiKey: 'ApiKey',
   RefreshToken: 'RefreshToken',
@@ -157,6 +158,9 @@ export const RoleScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
+  tenantId: 'tenantId',
+  isSystem: 'isSystem',
+  isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -168,8 +172,11 @@ export const PermissionScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
-  resource: 'resource',
-  action: 'action',
+  path: 'path',
+  methods: 'methods',
+  effect: 'effect',
+  tenantId: 'tenantId',
+  isSystem: 'isSystem',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -193,6 +200,20 @@ export const UserRoleScalarFieldEnum = {
 } as const
 
 export type UserRoleScalarFieldEnum = (typeof UserRoleScalarFieldEnum)[keyof typeof UserRoleScalarFieldEnum]
+
+
+export const TenantMembershipScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  tenantId: 'tenantId',
+  roleId: 'roleId',
+  isActive: 'isActive',
+  isDefault: 'isDefault',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TenantMembershipScalarFieldEnum = (typeof TenantMembershipScalarFieldEnum)[keyof typeof TenantMembershipScalarFieldEnum]
 
 
 export const TenantScalarFieldEnum = {
@@ -1276,18 +1297,36 @@ export type UserOrderByRelevanceFieldEnum = (typeof UserOrderByRelevanceFieldEnu
 export const RoleOrderByRelevanceFieldEnum = {
   id: 'id',
   name: 'name',
-  description: 'description'
+  description: 'description',
+  tenantId: 'tenantId'
 } as const
 
 export type RoleOrderByRelevanceFieldEnum = (typeof RoleOrderByRelevanceFieldEnum)[keyof typeof RoleOrderByRelevanceFieldEnum]
+
+
+export const JsonNullValueFilter = {
+  DbNull: 'DbNull',
+  JsonNull: 'JsonNull',
+  AnyNull: 'AnyNull'
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+export const QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+} as const
+
+export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 
 export const PermissionOrderByRelevanceFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
-  resource: 'resource',
-  action: 'action'
+  path: 'path',
+  tenantId: 'tenantId'
 } as const
 
 export type PermissionOrderByRelevanceFieldEnum = (typeof PermissionOrderByRelevanceFieldEnum)[keyof typeof PermissionOrderByRelevanceFieldEnum]
@@ -1309,6 +1348,16 @@ export const UserRoleOrderByRelevanceFieldEnum = {
 export type UserRoleOrderByRelevanceFieldEnum = (typeof UserRoleOrderByRelevanceFieldEnum)[keyof typeof UserRoleOrderByRelevanceFieldEnum]
 
 
+export const TenantMembershipOrderByRelevanceFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  tenantId: 'tenantId',
+  roleId: 'roleId'
+} as const
+
+export type TenantMembershipOrderByRelevanceFieldEnum = (typeof TenantMembershipOrderByRelevanceFieldEnum)[keyof typeof TenantMembershipOrderByRelevanceFieldEnum]
+
+
 export const TenantOrderByRelevanceFieldEnum = {
   id: 'id',
   name: 'name',
@@ -1316,23 +1365,6 @@ export const TenantOrderByRelevanceFieldEnum = {
 } as const
 
 export type TenantOrderByRelevanceFieldEnum = (typeof TenantOrderByRelevanceFieldEnum)[keyof typeof TenantOrderByRelevanceFieldEnum]
-
-
-export const JsonNullValueFilter = {
-  DbNull: 'DbNull',
-  JsonNull: 'JsonNull',
-  AnyNull: 'AnyNull'
-} as const
-
-export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
-
-
-export const QueryMode = {
-  default: 'default',
-  insensitive: 'insensitive'
-} as const
-
-export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 
 export const ApiKeyOrderByRelevanceFieldEnum = {

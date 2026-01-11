@@ -292,29 +292,39 @@ enum ExecutionStatus {
   SKIPPED
 }
 
+/// Permission effect (Allow/Deny)
+enum PermissionEffect {
+  ALLOW
+  DENY
+}
+
 // =============================================================================
 // USER & AUTH DOMAIN
 // =============================================================================
 
 model User {
-  id                     String            @id @default(cuid())
-  email                  String            @unique
+  id                     String             @id @default(cuid())
+  email                  String             @unique
   password               String?
-  phone                  String?           @unique
+  phone                  String?            @unique
   firstName              String?
   lastName               String?
-  isActive               Boolean           @default(true)
-  isEmailVerified        Boolean           @default(false)
+  isActive               Boolean            @default(true)
+  isEmailVerified        Boolean            @default(false)
   googleId               String?
   avatar                 String?
+  // Legacy: Optional direct tenant association (for backward compatibility)
+  // New: Use tenantMemberships for multi-tenant federation
   tenantId               String?
-  tenant                 Tenant?           @relation(fields: [tenantId], references: [id], onDelete: SetNull)
-  // Support multiple roles via explicit join table `UserRole`
+  tenant                 Tenant?            @relation(fields: [tenantId], references: [id], onDelete: SetNull)
+  // Federated: User can belong to multiple tenants with different roles
+  tenantMemberships      TenantMembership[]
+  // Legacy: Support multiple roles via explicit join table `UserRole`
   userRoles              UserRole[]
-  walletId               String?           @unique
-  wallet                 Wallet?           @relation(fields: [walletId], references: [id])
-  createdAt              DateTime          @default(now())
-  updatedAt              DateTime          @updatedAt
+  walletId               String?            @unique
+  wallet                 Wallet?            @relation(fields: [walletId], references: [id])
+  createdAt              DateTime           @default(now())
+  updatedAt              DateTime           @updatedAt
   emailVerifiedAt        DateTime?
   emailVerificationToken String?
   lastLoginAt            DateTime?
@@ -368,29 +378,51 @@ model User {
 }
 
 model Role {
-  id          String           @id @default(cuid())
-  name        String           @unique
+  id          String             @id @default(cuid())
+  name        String
   description String?
+  // Tenant-scoping: NULL = global template, set = tenant-specific role
+  tenantId    String?
+  tenant      Tenant?            @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  // System roles cannot be deleted (admin, user, etc.)
+  isSystem    Boolean            @default(false)
+  isActive    Boolean            @default(true)
+  // Legacy: UserRole for backward compatibility
   userRoles   UserRole[]
+  // New: TenantMembership for federated users
+  memberships TenantMembership[]
   permissions RolePermission[]
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
 
+  @@unique([name, tenantId]) // Unique name per tenant (null tenantId = global)
+  @@index([tenantId])
   @@map("roles")
 }
 
+/// Permission defines a path pattern + HTTP methods + effect
+/// Supports path-based authorization matching the authorizer's policy structure
 model Permission {
   id          String           @id @default(cuid())
-  name        String           @unique
+  name        String // Descriptive name: "Read Users", "Manage Properties"
   description String?
-  resource    String
-  action      String
+  // Path pattern: /users, /users/:id, /properties/*, etc.
+  path        String
+  // HTTP methods: ["GET"], ["GET", "POST"], ["*"] - stored as JSON
+  methods     Json             @default("[]")
+  // Allow or Deny this path/methods
+  effect      PermissionEffect @default(ALLOW)
+  // Tenant-scoping: NULL = global template, set = tenant-specific
+  tenantId    String?
+  tenant      Tenant?          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  // System permissions cannot be deleted
+  isSystem    Boolean          @default(false)
   roles       RolePermission[]
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
 
-  @@unique([resource, action])
-  @@index([resource])
+  @@unique([path, tenantId]) // Unique path per tenant
+  @@index([tenantId])
   @@map("permissions")
 }
 
@@ -405,6 +437,8 @@ model RolePermission {
   @@map("role_permissions")
 }
 
+/// Legacy: Direct user-role assignment (global, not tenant-scoped)
+/// @deprecated Use TenantMembership for tenant-scoped role assignments
 model UserRole {
   userId    String
   roleId    String
@@ -414,6 +448,30 @@ model UserRole {
 
   @@id([userId, roleId])
   @@map("user_roles")
+}
+
+/// Tenant Membership: Links users to tenants with specific roles
+/// Enables federated users across multiple tenants with different roles per tenant
+model TenantMembership {
+  id        String   @id @default(cuid())
+  userId    String
+  tenantId  String
+  roleId    String
+  // Whether this membership is active
+  isActive  Boolean  @default(true)
+  // Whether this is the user's default tenant (for login without specifying tenant)
+  isDefault Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  role   Role   @relation(fields: [roleId], references: [id], onDelete: Restrict)
+
+  @@unique([userId, tenantId]) // User can only have one membership per tenant
+  @@index([tenantId])
+  @@index([userId])
+  @@map("tenant_memberships")
 }
 
 model Tenant {
@@ -430,6 +488,12 @@ model Tenant {
   paymentPlans   PaymentPlan[]
   paymentMethods PropertyPaymentMethod[]
   contracts      Contract[]
+
+  // RBAC: Tenant-scoped roles and permissions
+  roles       Role[]
+  permissions Permission[]
+  // Federated user memberships
+  memberships TenantMembership[]
 
   // Payment method changes
   paymentMethodChangeRequests PaymentMethodChangeRequest[]

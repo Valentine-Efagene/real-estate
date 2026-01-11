@@ -15,42 +15,44 @@ const policyPublisher = new PolicyEventPublisher('user-service', {
 export interface CreatePermissionInput {
     name: string;
     description?: string;
-    resource: string;
-    action: string;
+    path: string;           // Path pattern: /users, /users/:id, /properties/*
+    methods: string[];      // HTTP methods: ['GET', 'POST'], ['*']
+    effect?: 'ALLOW' | 'DENY';
+    tenantId?: string | null;
 }
 
 export interface UpdatePermissionInput {
     name?: string;
     description?: string;
-    resource?: string;
-    action?: string;
+    path?: string;
+    methods?: string[];
+    effect?: 'ALLOW' | 'DENY';
 }
 
 class PermissionService {
+    /**
+     * Create a new permission (global or tenant-specific)
+     */
     async create(data: CreatePermissionInput) {
-        // Check for unique name
-        const existingByName = await prisma.permission.findUnique({ where: { name: data.name } });
-        if (existingByName) {
-            throw new ConflictError('Permission name already exists');
-        }
-
-        // Check for unique resource+action combo
-        const existingByResourceAction = await prisma.permission.findFirst({
+        // Check for unique path in same tenant scope
+        const existingByPath = await prisma.permission.findFirst({
             where: {
-                resource: data.resource,
-                action: data.action,
+                path: data.path,
+                tenantId: data.tenantId ?? null,
             },
         });
-        if (existingByResourceAction) {
-            throw new ConflictError(`Permission for ${data.resource}:${data.action} already exists`);
+        if (existingByPath) {
+            throw new ConflictError(`Permission for path ${data.path} already exists in this scope`);
         }
 
         const permission = await prisma.permission.create({
             data: {
                 name: data.name,
                 description: data.description,
-                resource: data.resource,
-                action: data.action,
+                path: data.path,
+                methods: data.methods,
+                effect: data.effect ?? 'ALLOW',
+                tenantId: data.tenantId ?? null,
             },
         });
 
@@ -60,8 +62,10 @@ class PermissionService {
                 id: permission.id,
                 name: permission.name,
                 description: permission.description,
-                resource: permission.resource,
-                action: permission.action,
+                path: permission.path,
+                methods: permission.methods as string[],
+                effect: permission.effect as 'ALLOW' | 'DENY',
+                tenantId: permission.tenantId,
             });
             console.log(`[PermissionService] Published PERMISSION_CREATED event for ${permission.name}`);
         } catch (error) {
@@ -71,12 +75,31 @@ class PermissionService {
         return permission;
     }
 
-    async findAll() {
+    /**
+     * Find all permissions (global + tenant-specific for given tenant)
+     */
+    async findAll(tenantId?: string) {
+        const where = tenantId
+            ? {
+                OR: [
+                    { tenantId: null },
+                    { tenantId },
+                ],
+            }
+            : { tenantId: null };
+
         return prisma.permission.findMany({
-            orderBy: [{ resource: 'asc' }, { action: 'asc' }],
+            where,
+            orderBy: [
+                { tenantId: 'asc' },
+                { path: 'asc' },
+            ],
         });
     }
 
+    /**
+     * Find permission by ID
+     */
     async findById(id: string) {
         const permission = await prisma.permission.findUnique({
             where: { id },
@@ -89,43 +112,47 @@ class PermissionService {
         return permission;
     }
 
-    async findByResourceAction(resource: string, action: string) {
+    /**
+     * Find permission by path and tenant
+     */
+    async findByPath(path: string, tenantId?: string | null) {
         const permission = await prisma.permission.findFirst({
-            where: { resource, action },
+            where: {
+                path,
+                tenantId: tenantId ?? null,
+            },
         });
 
         if (!permission) {
-            throw new NotFoundError(`Permission for ${resource}:${action} not found`);
+            throw new NotFoundError(`Permission for path ${path} not found`);
         }
 
         return permission;
     }
 
+    /**
+     * Update a permission
+     */
     async update(id: string, data: UpdatePermissionInput) {
         const permission = await prisma.permission.findUnique({ where: { id } });
         if (!permission) {
             throw new NotFoundError('Permission not found');
         }
 
-        // Check unique constraints if updating relevant fields
-        if (data.name && data.name !== permission.name) {
-            const existingByName = await prisma.permission.findUnique({ where: { name: data.name } });
-            if (existingByName) {
-                throw new ConflictError('Permission name already exists');
-            }
+        if (permission.isSystem) {
+            throw new ConflictError('System permissions cannot be modified');
         }
 
-        if (data.resource || data.action) {
-            const newResource = data.resource || permission.resource;
-            const newAction = data.action || permission.action;
-
-            if (newResource !== permission.resource || newAction !== permission.action) {
-                const existing = await prisma.permission.findFirst({
-                    where: { resource: newResource, action: newAction },
-                });
-                if (existing && existing.id !== id) {
-                    throw new ConflictError(`Permission for ${newResource}:${newAction} already exists`);
-                }
+        if (data.path && data.path !== permission.path) {
+            const existing = await prisma.permission.findFirst({
+                where: {
+                    path: data.path,
+                    tenantId: permission.tenantId,
+                    NOT: { id },
+                },
+            });
+            if (existing) {
+                throw new ConflictError(`Permission for path ${data.path} already exists in this scope`);
             }
         }
 
@@ -140,8 +167,10 @@ class PermissionService {
                 id: updatedPermission.id,
                 name: updatedPermission.name,
                 description: updatedPermission.description,
-                resource: updatedPermission.resource,
-                action: updatedPermission.action,
+                path: updatedPermission.path,
+                methods: updatedPermission.methods as string[],
+                effect: updatedPermission.effect as 'ALLOW' | 'DENY',
+                tenantId: updatedPermission.tenantId,
             });
             console.log(`[PermissionService] Published PERMISSION_UPDATED event for ${updatedPermission.name}`);
         } catch (error) {
@@ -151,10 +180,17 @@ class PermissionService {
         return updatedPermission;
     }
 
+    /**
+     * Delete a permission
+     */
     async delete(id: string) {
         const permission = await prisma.permission.findUnique({ where: { id } });
         if (!permission) {
             throw new NotFoundError('Permission not found');
+        }
+
+        if (permission.isSystem) {
+            throw new ConflictError('System permissions cannot be deleted');
         }
 
         await prisma.permission.delete({ where: { id } });
@@ -166,88 +202,73 @@ class PermissionService {
         } catch (error) {
             console.error(`[PermissionService] Failed to publish PERMISSION_DELETED event:`, error);
         }
+
+        return { id, name: permission.name };
     }
 
     /**
-     * Assign permissions to a role
+     * Get roles that have this permission
      */
-    async assignToRole(roleId: string, permissionIds: string[]) {
-        const role = await prisma.role.findUnique({ where: { id: roleId } });
-        if (!role) {
-            throw new NotFoundError('Role not found');
-        }
-
-        // Verify all permissions exist
-        const permissions = await prisma.permission.findMany({
-            where: { id: { in: permissionIds } },
-        });
-
-        if (permissions.length !== permissionIds.length) {
-            throw new NotFoundError('One or more permissions not found');
-        }
-
-        // Delete existing role-permission associations
-        await prisma.rolePermission.deleteMany({
-            where: { roleId },
-        });
-
-        // Create new associations
-        if (permissionIds.length > 0) {
-            await prisma.rolePermission.createMany({
-                data: permissionIds.map((permissionId) => ({
-                    roleId,
-                    permissionId,
-                })),
-            });
-        }
-
-        // Fetch the full role with permissions for the event
-        const updatedRole = await prisma.role.findUnique({
-            where: { id: roleId },
+    async getRoles(permissionId: string) {
+        const permission = await prisma.permission.findUnique({
+            where: { id: permissionId },
             include: {
-                permissions: {
-                    include: { permission: true },
+                roles: {
+                    include: {
+                        role: true,
+                    },
                 },
             },
         });
 
-        // Publish role permission assigned event
-        try {
-            await policyPublisher.publishRolePermissionAssigned({
-                roleId: role.id,
-                roleName: role.name,
-                permissions: updatedRole!.permissions.map((rp) => ({
-                    id: rp.permission.id,
-                    resource: rp.permission.resource,
-                    action: rp.permission.action,
-                })),
-            });
-            console.log(`[PermissionService] Published ROLE_PERMISSION_ASSIGNED event for role ${role.name}`);
-        } catch (error) {
-            console.error(`[PermissionService] Failed to publish ROLE_PERMISSION_ASSIGNED event:`, error);
+        if (!permission) {
+            throw new NotFoundError('Permission not found');
         }
 
-        return updatedRole;
+        return permission.roles.map(rp => rp.role);
     }
 
     /**
-     * Get permissions for a role
+     * Bulk create permissions from path definitions
      */
-    async getForRole(roleId: string) {
-        const role = await prisma.role.findUnique({
-            where: { id: roleId },
-            include: {
-                permissions: {
-                    include: { permission: true },
-                },
-            },
-        });
+    async bulkCreate(permissions: CreatePermissionInput[]) {
+        const results = [];
 
-        if (!role) {
-            throw new NotFoundError('Role not found');
+        for (const perm of permissions) {
+            try {
+                const created = await this.create(perm);
+                results.push({ success: true, permission: created });
+            } catch (error) {
+                results.push({
+                    success: false,
+                    error: error instanceof Error ? error.message : 'Unknown error',
+                    input: perm,
+                });
+            }
         }
 
-        return role.permissions.map((rp) => rp.permission);
+        return results;
+    }
+
+    /**
+     * Create standard CRUD permissions for a resource path
+     */
+    async createCrudPermissions(resourcePath: string, resourceName: string, tenantId?: string) {
+        const crudOps = [
+            { name: `List ${resourceName}`, path: resourcePath, methods: ['GET'] },
+            { name: `Create ${resourceName}`, path: resourcePath, methods: ['POST'] },
+            { name: `Get ${resourceName}`, path: `${resourcePath}/:id`, methods: ['GET'] },
+            { name: `Update ${resourceName}`, path: `${resourcePath}/:id`, methods: ['PUT', 'PATCH'] },
+            { name: `Delete ${resourceName}`, path: `${resourcePath}/:id`, methods: ['DELETE'] },
+        ];
+
+        return this.bulkCreate(
+            crudOps.map(op => ({
+                ...op,
+                tenantId,
+                effect: 'ALLOW' as const,
+            }))
+        );
     }
 }
 

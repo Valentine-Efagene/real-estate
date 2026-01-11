@@ -389,6 +389,7 @@ export const ModelName = {
   Permission: 'Permission',
   RolePermission: 'RolePermission',
   UserRole: 'UserRole',
+  TenantMembership: 'TenantMembership',
   Tenant: 'Tenant',
   ApiKey: 'ApiKey',
   RefreshToken: 'RefreshToken',
@@ -460,7 +461,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "paymentMethodPhaseField" | "contract" | "contractRefund" | "contractPhase" | "questionnairePhase" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "contractEvent" | "documentationStep" | "documentationStepDocument" | "documentationStepApproval" | "contractInstallment" | "contractPayment" | "contractDocument" | "documentTemplate" | "offerLetter" | "contractTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "workflowEvent" | "eventHandlerExecution" | "domainEvent" | "propertyTransferRequest" | "approvalRequest"
+    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenantMembership" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "paymentMethodPhaseField" | "contract" | "contractRefund" | "contractPhase" | "questionnairePhase" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "contractEvent" | "documentationStep" | "documentationStepDocument" | "documentationStepApproval" | "contractInstallment" | "contractPayment" | "contractDocument" | "documentTemplate" | "offerLetter" | "contractTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "workflowEvent" | "eventHandlerExecution" | "domainEvent" | "propertyTransferRequest" | "approvalRequest"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -791,6 +792,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.UserRoleCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.UserRoleCountAggregateOutputType> | number
+        }
+      }
+    }
+    TenantMembership: {
+      payload: Prisma.$TenantMembershipPayload<ExtArgs>
+      fields: Prisma.TenantMembershipFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TenantMembershipFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantMembershipPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TenantMembershipFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantMembershipPayload>
+        }
+        findFirst: {
+          args: Prisma.TenantMembershipFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantMembershipPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TenantMembershipFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantMembershipPayload>
+        }
+        findMany: {
+          args: Prisma.TenantMembershipFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantMembershipPayload>[]
+        }
+        create: {
+          args: Prisma.TenantMembershipCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantMembershipPayload>
+        }
+        createMany: {
+          args: Prisma.TenantMembershipCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.TenantMembershipDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantMembershipPayload>
+        }
+        update: {
+          args: Prisma.TenantMembershipUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantMembershipPayload>
+        }
+        deleteMany: {
+          args: Prisma.TenantMembershipDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TenantMembershipUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.TenantMembershipUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantMembershipPayload>
+        }
+        aggregate: {
+          args: Prisma.TenantMembershipAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTenantMembership>
+        }
+        groupBy: {
+          args: Prisma.TenantMembershipGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TenantMembershipGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TenantMembershipCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TenantMembershipCountAggregateOutputType> | number
         }
       }
     }
@@ -4556,6 +4623,9 @@ export const RoleScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
+  tenantId: 'tenantId',
+  isSystem: 'isSystem',
+  isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -4567,8 +4637,11 @@ export const PermissionScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
-  resource: 'resource',
-  action: 'action',
+  path: 'path',
+  methods: 'methods',
+  effect: 'effect',
+  tenantId: 'tenantId',
+  isSystem: 'isSystem',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -4592,6 +4665,20 @@ export const UserRoleScalarFieldEnum = {
 } as const
 
 export type UserRoleScalarFieldEnum = (typeof UserRoleScalarFieldEnum)[keyof typeof UserRoleScalarFieldEnum]
+
+
+export const TenantMembershipScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  tenantId: 'tenantId',
+  roleId: 'roleId',
+  isActive: 'isActive',
+  isDefault: 'isDefault',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TenantMembershipScalarFieldEnum = (typeof TenantMembershipScalarFieldEnum)[keyof typeof TenantMembershipScalarFieldEnum]
 
 
 export const TenantScalarFieldEnum = {
@@ -5675,18 +5762,36 @@ export type UserOrderByRelevanceFieldEnum = (typeof UserOrderByRelevanceFieldEnu
 export const RoleOrderByRelevanceFieldEnum = {
   id: 'id',
   name: 'name',
-  description: 'description'
+  description: 'description',
+  tenantId: 'tenantId'
 } as const
 
 export type RoleOrderByRelevanceFieldEnum = (typeof RoleOrderByRelevanceFieldEnum)[keyof typeof RoleOrderByRelevanceFieldEnum]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+export const QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+} as const
+
+export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 
 export const PermissionOrderByRelevanceFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
-  resource: 'resource',
-  action: 'action'
+  path: 'path',
+  tenantId: 'tenantId'
 } as const
 
 export type PermissionOrderByRelevanceFieldEnum = (typeof PermissionOrderByRelevanceFieldEnum)[keyof typeof PermissionOrderByRelevanceFieldEnum]
@@ -5708,6 +5813,16 @@ export const UserRoleOrderByRelevanceFieldEnum = {
 export type UserRoleOrderByRelevanceFieldEnum = (typeof UserRoleOrderByRelevanceFieldEnum)[keyof typeof UserRoleOrderByRelevanceFieldEnum]
 
 
+export const TenantMembershipOrderByRelevanceFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  tenantId: 'tenantId',
+  roleId: 'roleId'
+} as const
+
+export type TenantMembershipOrderByRelevanceFieldEnum = (typeof TenantMembershipOrderByRelevanceFieldEnum)[keyof typeof TenantMembershipOrderByRelevanceFieldEnum]
+
+
 export const TenantOrderByRelevanceFieldEnum = {
   id: 'id',
   name: 'name',
@@ -5715,23 +5830,6 @@ export const TenantOrderByRelevanceFieldEnum = {
 } as const
 
 export type TenantOrderByRelevanceFieldEnum = (typeof TenantOrderByRelevanceFieldEnum)[keyof typeof TenantOrderByRelevanceFieldEnum]
-
-
-export const JsonNullValueFilter = {
-  DbNull: DbNull,
-  JsonNull: JsonNull,
-  AnyNull: AnyNull
-} as const
-
-export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
-
-
-export const QueryMode = {
-  default: 'default',
-  insensitive: 'insensitive'
-} as const
-
-export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 
 export const ApiKeyOrderByRelevanceFieldEnum = {
@@ -6430,6 +6528,13 @@ export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
 
 
 /**
+ * Reference to a field of type 'PermissionEffect'
+ */
+export type EnumPermissionEffectFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PermissionEffect'>
+    
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -6773,6 +6878,7 @@ export type GlobalOmitConfig = {
   permission?: Prisma.PermissionOmit
   rolePermission?: Prisma.RolePermissionOmit
   userRole?: Prisma.UserRoleOmit
+  tenantMembership?: Prisma.TenantMembershipOmit
   tenant?: Prisma.TenantOmit
   apiKey?: Prisma.ApiKeyOmit
   refreshToken?: Prisma.RefreshTokenOmit

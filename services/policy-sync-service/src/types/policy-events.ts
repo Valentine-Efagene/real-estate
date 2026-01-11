@@ -20,6 +20,11 @@ export enum PolicyEventType {
     ROLE_PERMISSION_ASSIGNED = 'POLICY.ROLE_PERMISSION_ASSIGNED',
     ROLE_PERMISSION_REVOKED = 'POLICY.ROLE_PERMISSION_REVOKED',
 
+    // Tenant membership events
+    TENANT_MEMBERSHIP_CREATED = 'POLICY.TENANT_MEMBERSHIP_CREATED',
+    TENANT_MEMBERSHIP_UPDATED = 'POLICY.TENANT_MEMBERSHIP_UPDATED',
+    TENANT_MEMBERSHIP_DELETED = 'POLICY.TENANT_MEMBERSHIP_DELETED',
+
     // Bulk sync events
     FULL_SYNC_REQUESTED = 'POLICY.FULL_SYNC_REQUESTED',
 }
@@ -28,23 +33,37 @@ export interface RoleData {
     id: string;
     name: string;
     description?: string | null;
+    tenantId?: string | null;
+    isSystem?: boolean;
+    isActive?: boolean;
 }
 
+/**
+ * Permission with path-based authorization
+ * Matches the authorizer's expected policy structure
+ */
 export interface PermissionData {
     id: string;
     name: string;
     description?: string | null;
-    resource: string;
-    action: string;
+    path: string;           // Path pattern: /users, /users/:id, /properties/*
+    methods: string[];      // HTTP methods: ['GET', 'POST'], ['*']
+    effect: 'ALLOW' | 'DENY';
+    tenantId?: string | null;
 }
 
+/**
+ * Role with full permission details for policy sync
+ */
 export interface RolePermissionData {
     roleId: string;
     roleName: string;
+    tenantId?: string | null;
     permissions: Array<{
         id: string;
-        resource: string;
-        action: string;
+        path: string;
+        methods: string[];
+        effect: 'ALLOW' | 'DENY';
     }>;
 }
 

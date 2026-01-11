@@ -14,7 +14,8 @@ import type * as Prisma from "../internal/prismaNamespace.js"
 
 /**
  * Model UserRole
- * 
+ * Legacy: Direct user-role assignment (global, not tenant-scoped)
+ * @deprecated Use TenantMembership for tenant-scoped role assignments
  */
 export type UserRoleModel = runtime.Types.Result.DefaultSelection<Prisma.$UserRolePayload>
 

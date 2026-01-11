@@ -12,16 +12,18 @@ import { PrismaClient, Prisma } from "../../generated/client/client";
  * These models either:
  * - Don't have a tenantId field (system tables)
  * - Have optional tenantId but are designed to work across tenants (User)
+ * - Are cross-tenant lookup/join tables (TenantMembership)
  */
 const GLOBAL_MODELS = [
-    // User can exist across tenants or without a tenant
+    // User can exist across tenants or without a tenant (federated)
     "user",
+    // TenantMembership is the user-tenant join table (queries by userId or tenantId)
+    "tenantMembership",
     // System/infrastructure tables without tenantId
     "tenant",
-    "role",
-    "permission",
-    "rolePermission",
+    // Legacy role assignment (global, not tenant-scoped)
     "userRole",
+    "rolePermission",
     "refreshToken",
     "passwordReset",
     "wallet",
@@ -35,7 +37,13 @@ type GlobalModel = (typeof GLOBAL_MODELS)[number];
  * These can be global templates (tenantId = null) or tenant-specific.
  * Queries will return both global AND tenant-specific records.
  */
-const OPTIONAL_TENANT_MODELS = ["paymentPlan"] as const;
+const OPTIONAL_TENANT_MODELS = [
+    "paymentPlan",
+    // Role can be global template (tenantId = null) or tenant-specific
+    "role",
+    // Permission can be global template or tenant-specific
+    "permission",
+] as const;
 
 type OptionalTenantModel = (typeof OPTIONAL_TENANT_MODELS)[number];
 

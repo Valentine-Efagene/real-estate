@@ -20,32 +20,67 @@ export enum PolicyEventType {
     ROLE_PERMISSION_ASSIGNED = 'POLICY.ROLE_PERMISSION_ASSIGNED',
     ROLE_PERMISSION_REVOKED = 'POLICY.ROLE_PERMISSION_REVOKED',
 
+    // Tenant membership events (for federated users)
+    TENANT_MEMBERSHIP_CREATED = 'POLICY.TENANT_MEMBERSHIP_CREATED',
+    TENANT_MEMBERSHIP_UPDATED = 'POLICY.TENANT_MEMBERSHIP_UPDATED',
+    TENANT_MEMBERSHIP_DELETED = 'POLICY.TENANT_MEMBERSHIP_DELETED',
+
     // Bulk sync events
     FULL_SYNC_REQUESTED = 'POLICY.FULL_SYNC_REQUESTED',
 }
 
+/**
+ * Role data with tenant scoping
+ */
 export interface RoleData {
     id: string;
     name: string;
     description?: string | null;
+    tenantId?: string | null;
+    isSystem?: boolean;
+    isActive?: boolean;
 }
 
+/**
+ * Permission with path-based authorization
+ * Matches the authorizer's expected policy structure
+ */
 export interface PermissionData {
     id: string;
     name: string;
     description?: string | null;
-    resource: string;
-    action: string;
+    path: string;           // Path pattern: /users, /users/:id, /properties/*
+    methods: string[];      // HTTP methods: ['GET', 'POST'], ['*']
+    effect: 'ALLOW' | 'DENY';
+    tenantId?: string | null;
 }
 
+/**
+ * Role with full permission details for policy sync
+ */
 export interface RolePermissionData {
     roleId: string;
     roleName: string;
+    tenantId?: string | null;
     permissions: Array<{
         id: string;
-        resource: string;
-        action: string;
+        path: string;
+        methods: string[];
+        effect: 'ALLOW' | 'DENY';
     }>;
+}
+
+/**
+ * Tenant membership data for federated users
+ */
+export interface TenantMembershipData {
+    id: string;
+    userId: string;
+    tenantId: string;
+    roleId: string;
+    roleName: string;
+    isActive: boolean;
+    isDefault: boolean;
 }
 
 export interface PolicyEventMeta {
@@ -102,6 +137,18 @@ export interface FullSyncRequestedEvent extends PolicyEvent<{ requestedBy: strin
     eventType: PolicyEventType.FULL_SYNC_REQUESTED;
 }
 
+export interface TenantMembershipCreatedEvent extends PolicyEvent<TenantMembershipData> {
+    eventType: PolicyEventType.TENANT_MEMBERSHIP_CREATED;
+}
+
+export interface TenantMembershipUpdatedEvent extends PolicyEvent<TenantMembershipData> {
+    eventType: PolicyEventType.TENANT_MEMBERSHIP_UPDATED;
+}
+
+export interface TenantMembershipDeletedEvent extends PolicyEvent<{ membershipId: string; userId: string; tenantId: string }> {
+    eventType: PolicyEventType.TENANT_MEMBERSHIP_DELETED;
+}
+
 export type AnyPolicyEvent =
     | RoleCreatedEvent
     | RoleUpdatedEvent
@@ -111,4 +158,7 @@ export type AnyPolicyEvent =
     | PermissionDeletedEvent
     | RolePermissionAssignedEvent
     | RolePermissionRevokedEvent
-    | FullSyncRequestedEvent;
+    | FullSyncRequestedEvent
+    | TenantMembershipCreatedEvent
+    | TenantMembershipUpdatedEvent
+    | TenantMembershipDeletedEvent;

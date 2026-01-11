@@ -172,6 +172,13 @@ export type JsonFilterBase<$PrismaModel = never> = {
   not?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel> | Prisma.JsonNullValueFilter
 }
 
+export type EnumPermissionEffectFilter<$PrismaModel = never> = {
+  equals?: $Enums.PermissionEffect | Prisma.EnumPermissionEffectFieldRefInput<$PrismaModel>
+  in?: $Enums.PermissionEffect[]
+  notIn?: $Enums.PermissionEffect[]
+  not?: Prisma.NestedEnumPermissionEffectFilter<$PrismaModel> | $Enums.PermissionEffect
+}
+
 export type JsonWithAggregatesFilter<$PrismaModel = never> =
 | Prisma.PatchUndefined<
     Prisma.Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
@@ -197,6 +204,16 @@ export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedJsonFilter<$PrismaModel>
   _max?: Prisma.NestedJsonFilter<$PrismaModel>
+}
+
+export type EnumPermissionEffectWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PermissionEffect | Prisma.EnumPermissionEffectFieldRefInput<$PrismaModel>
+  in?: $Enums.PermissionEffect[]
+  notIn?: $Enums.PermissionEffect[]
+  not?: Prisma.NestedEnumPermissionEffectWithAggregatesFilter<$PrismaModel> | $Enums.PermissionEffect
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPermissionEffectFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPermissionEffectFilter<$PrismaModel>
 }
 
 export type FloatFilter<$PrismaModel = never> = {
@@ -1100,6 +1117,13 @@ export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedDateTimeNullableFilter<$PrismaModel>
 }
 
+export type NestedEnumPermissionEffectFilter<$PrismaModel = never> = {
+  equals?: $Enums.PermissionEffect | Prisma.EnumPermissionEffectFieldRefInput<$PrismaModel>
+  in?: $Enums.PermissionEffect[]
+  notIn?: $Enums.PermissionEffect[]
+  not?: Prisma.NestedEnumPermissionEffectFilter<$PrismaModel> | $Enums.PermissionEffect
+}
+
 export type NestedJsonFilter<$PrismaModel = never> =
 | Prisma.PatchUndefined<
     Prisma.Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
@@ -1122,6 +1146,16 @@ export type NestedJsonFilterBase<$PrismaModel = never> = {
   gt?: runtime.InputJsonValue
   gte?: runtime.InputJsonValue
   not?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel> | Prisma.JsonNullValueFilter
+}
+
+export type NestedEnumPermissionEffectWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PermissionEffect | Prisma.EnumPermissionEffectFieldRefInput<$PrismaModel>
+  in?: $Enums.PermissionEffect[]
+  notIn?: $Enums.PermissionEffect[]
+  not?: Prisma.NestedEnumPermissionEffectWithAggregatesFilter<$PrismaModel> | $Enums.PermissionEffect
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPermissionEffectFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPermissionEffectFilter<$PrismaModel>
 }
 
 export type NestedFloatFilter<$PrismaModel = never> = {

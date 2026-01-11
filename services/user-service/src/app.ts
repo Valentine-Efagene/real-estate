@@ -5,6 +5,7 @@ import { userRouter } from './routes/users';
 import { roleRouter } from './routes/roles';
 import { permissionRouter } from './routes/permissions';
 import { tenantRouter } from './routes/tenants';
+import { tenantMembershipRouter } from './routes/tenant-memberships';
 import { socialRouter } from './routes/socials';
 import { apiKeyRouter } from './routes/api-keys';
 import { errorHandler } from './middleware/error-handler';
@@ -34,5 +35,8 @@ app.use('/permissions', permissionRouter);
 app.use('/tenants', tenantRouter);
 app.use('/socials', socialRouter);
 app.use('/api-keys', apiKeyRouter);
+
+// Tenant membership routes (handles both /tenants/:id/members and /users/:id/tenants)
+app.use(tenantMembershipRouter);
 
 app.use(errorHandler);

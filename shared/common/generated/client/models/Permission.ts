@@ -14,7 +14,8 @@ import type * as Prisma from "../internal/prismaNamespace.js"
 
 /**
  * Model Permission
- * 
+ * Permission defines a path pattern + HTTP methods + effect
+ * Supports path-based authorization matching the authorizer's policy structure
  */
 export type PermissionModel = runtime.Types.Result.DefaultSelection<Prisma.$PermissionPayload>
 
@@ -28,8 +29,10 @@ export type PermissionMinAggregateOutputType = {
   id: string | null
   name: string | null
   description: string | null
-  resource: string | null
-  action: string | null
+  path: string | null
+  effect: $Enums.PermissionEffect | null
+  tenantId: string | null
+  isSystem: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -38,8 +41,10 @@ export type PermissionMaxAggregateOutputType = {
   id: string | null
   name: string | null
   description: string | null
-  resource: string | null
-  action: string | null
+  path: string | null
+  effect: $Enums.PermissionEffect | null
+  tenantId: string | null
+  isSystem: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -48,8 +53,11 @@ export type PermissionCountAggregateOutputType = {
   id: number
   name: number
   description: number
-  resource: number
-  action: number
+  path: number
+  methods: number
+  effect: number
+  tenantId: number
+  isSystem: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -60,8 +68,10 @@ export type PermissionMinAggregateInputType = {
   id?: true
   name?: true
   description?: true
-  resource?: true
-  action?: true
+  path?: true
+  effect?: true
+  tenantId?: true
+  isSystem?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -70,8 +80,10 @@ export type PermissionMaxAggregateInputType = {
   id?: true
   name?: true
   description?: true
-  resource?: true
-  action?: true
+  path?: true
+  effect?: true
+  tenantId?: true
+  isSystem?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -80,8 +92,11 @@ export type PermissionCountAggregateInputType = {
   id?: true
   name?: true
   description?: true
-  resource?: true
-  action?: true
+  path?: true
+  methods?: true
+  effect?: true
+  tenantId?: true
+  isSystem?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -163,8 +178,11 @@ export type PermissionGroupByOutputType = {
   id: string
   name: string
   description: string | null
-  resource: string
-  action: string
+  path: string
+  methods: runtime.JsonValue
+  effect: $Enums.PermissionEffect
+  tenantId: string | null
+  isSystem: boolean
   createdAt: Date
   updatedAt: Date
   _count: PermissionCountAggregateOutputType | null
@@ -194,10 +212,14 @@ export type PermissionWhereInput = {
   id?: Prisma.StringFilter<"Permission"> | string
   name?: Prisma.StringFilter<"Permission"> | string
   description?: Prisma.StringNullableFilter<"Permission"> | string | null
-  resource?: Prisma.StringFilter<"Permission"> | string
-  action?: Prisma.StringFilter<"Permission"> | string
+  path?: Prisma.StringFilter<"Permission"> | string
+  methods?: Prisma.JsonFilter<"Permission">
+  effect?: Prisma.EnumPermissionEffectFilter<"Permission"> | $Enums.PermissionEffect
+  tenantId?: Prisma.StringNullableFilter<"Permission"> | string | null
+  isSystem?: Prisma.BoolFilter<"Permission"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Permission"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Permission"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantNullableScalarRelationFilter, Prisma.TenantWhereInput> | null
   roles?: Prisma.RolePermissionListRelationFilter
 }
 
@@ -205,35 +227,46 @@ export type PermissionOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
-  resource?: Prisma.SortOrder
-  action?: Prisma.SortOrder
+  path?: Prisma.SortOrder
+  methods?: Prisma.SortOrder
+  effect?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrderInput | Prisma.SortOrder
+  isSystem?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  tenant?: Prisma.TenantOrderByWithRelationInput
   roles?: Prisma.RolePermissionOrderByRelationAggregateInput
   _relevance?: Prisma.PermissionOrderByRelevanceInput
 }
 
 export type PermissionWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  name?: string
-  resource_action?: Prisma.PermissionResourceActionCompoundUniqueInput
+  path_tenantId?: Prisma.PermissionPathTenantIdCompoundUniqueInput
   AND?: Prisma.PermissionWhereInput | Prisma.PermissionWhereInput[]
   OR?: Prisma.PermissionWhereInput[]
   NOT?: Prisma.PermissionWhereInput | Prisma.PermissionWhereInput[]
+  name?: Prisma.StringFilter<"Permission"> | string
   description?: Prisma.StringNullableFilter<"Permission"> | string | null
-  resource?: Prisma.StringFilter<"Permission"> | string
-  action?: Prisma.StringFilter<"Permission"> | string
+  path?: Prisma.StringFilter<"Permission"> | string
+  methods?: Prisma.JsonFilter<"Permission">
+  effect?: Prisma.EnumPermissionEffectFilter<"Permission"> | $Enums.PermissionEffect
+  tenantId?: Prisma.StringNullableFilter<"Permission"> | string | null
+  isSystem?: Prisma.BoolFilter<"Permission"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Permission"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Permission"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantNullableScalarRelationFilter, Prisma.TenantWhereInput> | null
   roles?: Prisma.RolePermissionListRelationFilter
-}, "id" | "name" | "resource_action">
+}, "id" | "path_tenantId">
 
 export type PermissionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
-  resource?: Prisma.SortOrder
-  action?: Prisma.SortOrder
+  path?: Prisma.SortOrder
+  methods?: Prisma.SortOrder
+  effect?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrderInput | Prisma.SortOrder
+  isSystem?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.PermissionCountOrderByAggregateInput
@@ -248,8 +281,11 @@ export type PermissionScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Permission"> | string
   name?: Prisma.StringWithAggregatesFilter<"Permission"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"Permission"> | string | null
-  resource?: Prisma.StringWithAggregatesFilter<"Permission"> | string
-  action?: Prisma.StringWithAggregatesFilter<"Permission"> | string
+  path?: Prisma.StringWithAggregatesFilter<"Permission"> | string
+  methods?: Prisma.JsonWithAggregatesFilter<"Permission">
+  effect?: Prisma.EnumPermissionEffectWithAggregatesFilter<"Permission"> | $Enums.PermissionEffect
+  tenantId?: Prisma.StringNullableWithAggregatesFilter<"Permission"> | string | null
+  isSystem?: Prisma.BoolWithAggregatesFilter<"Permission"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Permission"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Permission"> | Date | string
 }
@@ -258,10 +294,13 @@ export type PermissionCreateInput = {
   id?: string
   name: string
   description?: string | null
-  resource: string
-  action: string
+  path: string
+  methods?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  effect?: $Enums.PermissionEffect
+  isSystem?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenant?: Prisma.TenantCreateNestedOneWithoutPermissionsInput
   roles?: Prisma.RolePermissionCreateNestedManyWithoutPermissionInput
 }
 
@@ -269,8 +308,11 @@ export type PermissionUncheckedCreateInput = {
   id?: string
   name: string
   description?: string | null
-  resource: string
-  action: string
+  path: string
+  methods?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  effect?: $Enums.PermissionEffect
+  tenantId?: string | null
+  isSystem?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   roles?: Prisma.RolePermissionUncheckedCreateNestedManyWithoutPermissionInput
@@ -280,10 +322,13 @@ export type PermissionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resource?: Prisma.StringFieldUpdateOperationsInput | string
-  action?: Prisma.StringFieldUpdateOperationsInput | string
+  path?: Prisma.StringFieldUpdateOperationsInput | string
+  methods?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  effect?: Prisma.EnumPermissionEffectFieldUpdateOperationsInput | $Enums.PermissionEffect
+  isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneWithoutPermissionsNestedInput
   roles?: Prisma.RolePermissionUpdateManyWithoutPermissionNestedInput
 }
 
@@ -291,8 +336,11 @@ export type PermissionUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resource?: Prisma.StringFieldUpdateOperationsInput | string
-  action?: Prisma.StringFieldUpdateOperationsInput | string
+  path?: Prisma.StringFieldUpdateOperationsInput | string
+  methods?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  effect?: Prisma.EnumPermissionEffectFieldUpdateOperationsInput | $Enums.PermissionEffect
+  tenantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   roles?: Prisma.RolePermissionUncheckedUpdateManyWithoutPermissionNestedInput
@@ -302,8 +350,11 @@ export type PermissionCreateManyInput = {
   id?: string
   name: string
   description?: string | null
-  resource: string
-  action: string
+  path: string
+  methods?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  effect?: $Enums.PermissionEffect
+  tenantId?: string | null
+  isSystem?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -312,8 +363,10 @@ export type PermissionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resource?: Prisma.StringFieldUpdateOperationsInput | string
-  action?: Prisma.StringFieldUpdateOperationsInput | string
+  path?: Prisma.StringFieldUpdateOperationsInput | string
+  methods?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  effect?: Prisma.EnumPermissionEffectFieldUpdateOperationsInput | $Enums.PermissionEffect
+  isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -322,8 +375,11 @@ export type PermissionUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resource?: Prisma.StringFieldUpdateOperationsInput | string
-  action?: Prisma.StringFieldUpdateOperationsInput | string
+  path?: Prisma.StringFieldUpdateOperationsInput | string
+  methods?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  effect?: Prisma.EnumPermissionEffectFieldUpdateOperationsInput | $Enums.PermissionEffect
+  tenantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -334,17 +390,20 @@ export type PermissionOrderByRelevanceInput = {
   search: string
 }
 
-export type PermissionResourceActionCompoundUniqueInput = {
-  resource: string
-  action: string
+export type PermissionPathTenantIdCompoundUniqueInput = {
+  path: string
+  tenantId: string
 }
 
 export type PermissionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  resource?: Prisma.SortOrder
-  action?: Prisma.SortOrder
+  path?: Prisma.SortOrder
+  methods?: Prisma.SortOrder
+  effect?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
+  isSystem?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -353,8 +412,10 @@ export type PermissionMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  resource?: Prisma.SortOrder
-  action?: Prisma.SortOrder
+  path?: Prisma.SortOrder
+  effect?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
+  isSystem?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -363,8 +424,10 @@ export type PermissionMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  resource?: Prisma.SortOrder
-  action?: Prisma.SortOrder
+  path?: Prisma.SortOrder
+  effect?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
+  isSystem?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -372,6 +435,20 @@ export type PermissionMinOrderByAggregateInput = {
 export type PermissionScalarRelationFilter = {
   is?: Prisma.PermissionWhereInput
   isNot?: Prisma.PermissionWhereInput
+}
+
+export type PermissionListRelationFilter = {
+  every?: Prisma.PermissionWhereInput
+  some?: Prisma.PermissionWhereInput
+  none?: Prisma.PermissionWhereInput
+}
+
+export type PermissionOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
+export type EnumPermissionEffectFieldUpdateOperationsInput = {
+  set?: $Enums.PermissionEffect
 }
 
 export type PermissionCreateNestedOneWithoutRolesInput = {
@@ -388,22 +465,70 @@ export type PermissionUpdateOneRequiredWithoutRolesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.PermissionUpdateToOneWithWhereWithoutRolesInput, Prisma.PermissionUpdateWithoutRolesInput>, Prisma.PermissionUncheckedUpdateWithoutRolesInput>
 }
 
+export type PermissionCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.PermissionCreateWithoutTenantInput, Prisma.PermissionUncheckedCreateWithoutTenantInput> | Prisma.PermissionCreateWithoutTenantInput[] | Prisma.PermissionUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PermissionCreateOrConnectWithoutTenantInput | Prisma.PermissionCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.PermissionCreateManyTenantInputEnvelope
+  connect?: Prisma.PermissionWhereUniqueInput | Prisma.PermissionWhereUniqueInput[]
+}
+
+export type PermissionUncheckedCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.PermissionCreateWithoutTenantInput, Prisma.PermissionUncheckedCreateWithoutTenantInput> | Prisma.PermissionCreateWithoutTenantInput[] | Prisma.PermissionUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PermissionCreateOrConnectWithoutTenantInput | Prisma.PermissionCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.PermissionCreateManyTenantInputEnvelope
+  connect?: Prisma.PermissionWhereUniqueInput | Prisma.PermissionWhereUniqueInput[]
+}
+
+export type PermissionUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.PermissionCreateWithoutTenantInput, Prisma.PermissionUncheckedCreateWithoutTenantInput> | Prisma.PermissionCreateWithoutTenantInput[] | Prisma.PermissionUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PermissionCreateOrConnectWithoutTenantInput | Prisma.PermissionCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.PermissionUpsertWithWhereUniqueWithoutTenantInput | Prisma.PermissionUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.PermissionCreateManyTenantInputEnvelope
+  set?: Prisma.PermissionWhereUniqueInput | Prisma.PermissionWhereUniqueInput[]
+  disconnect?: Prisma.PermissionWhereUniqueInput | Prisma.PermissionWhereUniqueInput[]
+  delete?: Prisma.PermissionWhereUniqueInput | Prisma.PermissionWhereUniqueInput[]
+  connect?: Prisma.PermissionWhereUniqueInput | Prisma.PermissionWhereUniqueInput[]
+  update?: Prisma.PermissionUpdateWithWhereUniqueWithoutTenantInput | Prisma.PermissionUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.PermissionUpdateManyWithWhereWithoutTenantInput | Prisma.PermissionUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.PermissionScalarWhereInput | Prisma.PermissionScalarWhereInput[]
+}
+
+export type PermissionUncheckedUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.PermissionCreateWithoutTenantInput, Prisma.PermissionUncheckedCreateWithoutTenantInput> | Prisma.PermissionCreateWithoutTenantInput[] | Prisma.PermissionUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PermissionCreateOrConnectWithoutTenantInput | Prisma.PermissionCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.PermissionUpsertWithWhereUniqueWithoutTenantInput | Prisma.PermissionUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.PermissionCreateManyTenantInputEnvelope
+  set?: Prisma.PermissionWhereUniqueInput | Prisma.PermissionWhereUniqueInput[]
+  disconnect?: Prisma.PermissionWhereUniqueInput | Prisma.PermissionWhereUniqueInput[]
+  delete?: Prisma.PermissionWhereUniqueInput | Prisma.PermissionWhereUniqueInput[]
+  connect?: Prisma.PermissionWhereUniqueInput | Prisma.PermissionWhereUniqueInput[]
+  update?: Prisma.PermissionUpdateWithWhereUniqueWithoutTenantInput | Prisma.PermissionUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.PermissionUpdateManyWithWhereWithoutTenantInput | Prisma.PermissionUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.PermissionScalarWhereInput | Prisma.PermissionScalarWhereInput[]
+}
+
 export type PermissionCreateWithoutRolesInput = {
   id?: string
   name: string
   description?: string | null
-  resource: string
-  action: string
+  path: string
+  methods?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  effect?: $Enums.PermissionEffect
+  isSystem?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenant?: Prisma.TenantCreateNestedOneWithoutPermissionsInput
 }
 
 export type PermissionUncheckedCreateWithoutRolesInput = {
   id?: string
   name: string
   description?: string | null
-  resource: string
-  action: string
+  path: string
+  methods?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  effect?: $Enums.PermissionEffect
+  tenantId?: string | null
+  isSystem?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -428,18 +553,142 @@ export type PermissionUpdateWithoutRolesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resource?: Prisma.StringFieldUpdateOperationsInput | string
-  action?: Prisma.StringFieldUpdateOperationsInput | string
+  path?: Prisma.StringFieldUpdateOperationsInput | string
+  methods?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  effect?: Prisma.EnumPermissionEffectFieldUpdateOperationsInput | $Enums.PermissionEffect
+  isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneWithoutPermissionsNestedInput
 }
 
 export type PermissionUncheckedUpdateWithoutRolesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  resource?: Prisma.StringFieldUpdateOperationsInput | string
-  action?: Prisma.StringFieldUpdateOperationsInput | string
+  path?: Prisma.StringFieldUpdateOperationsInput | string
+  methods?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  effect?: Prisma.EnumPermissionEffectFieldUpdateOperationsInput | $Enums.PermissionEffect
+  tenantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PermissionCreateWithoutTenantInput = {
+  id?: string
+  name: string
+  description?: string | null
+  path: string
+  methods?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  effect?: $Enums.PermissionEffect
+  isSystem?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  roles?: Prisma.RolePermissionCreateNestedManyWithoutPermissionInput
+}
+
+export type PermissionUncheckedCreateWithoutTenantInput = {
+  id?: string
+  name: string
+  description?: string | null
+  path: string
+  methods?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  effect?: $Enums.PermissionEffect
+  isSystem?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  roles?: Prisma.RolePermissionUncheckedCreateNestedManyWithoutPermissionInput
+}
+
+export type PermissionCreateOrConnectWithoutTenantInput = {
+  where: Prisma.PermissionWhereUniqueInput
+  create: Prisma.XOR<Prisma.PermissionCreateWithoutTenantInput, Prisma.PermissionUncheckedCreateWithoutTenantInput>
+}
+
+export type PermissionCreateManyTenantInputEnvelope = {
+  data: Prisma.PermissionCreateManyTenantInput | Prisma.PermissionCreateManyTenantInput[]
+  skipDuplicates?: boolean
+}
+
+export type PermissionUpsertWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.PermissionWhereUniqueInput
+  update: Prisma.XOR<Prisma.PermissionUpdateWithoutTenantInput, Prisma.PermissionUncheckedUpdateWithoutTenantInput>
+  create: Prisma.XOR<Prisma.PermissionCreateWithoutTenantInput, Prisma.PermissionUncheckedCreateWithoutTenantInput>
+}
+
+export type PermissionUpdateWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.PermissionWhereUniqueInput
+  data: Prisma.XOR<Prisma.PermissionUpdateWithoutTenantInput, Prisma.PermissionUncheckedUpdateWithoutTenantInput>
+}
+
+export type PermissionUpdateManyWithWhereWithoutTenantInput = {
+  where: Prisma.PermissionScalarWhereInput
+  data: Prisma.XOR<Prisma.PermissionUpdateManyMutationInput, Prisma.PermissionUncheckedUpdateManyWithoutTenantInput>
+}
+
+export type PermissionScalarWhereInput = {
+  AND?: Prisma.PermissionScalarWhereInput | Prisma.PermissionScalarWhereInput[]
+  OR?: Prisma.PermissionScalarWhereInput[]
+  NOT?: Prisma.PermissionScalarWhereInput | Prisma.PermissionScalarWhereInput[]
+  id?: Prisma.StringFilter<"Permission"> | string
+  name?: Prisma.StringFilter<"Permission"> | string
+  description?: Prisma.StringNullableFilter<"Permission"> | string | null
+  path?: Prisma.StringFilter<"Permission"> | string
+  methods?: Prisma.JsonFilter<"Permission">
+  effect?: Prisma.EnumPermissionEffectFilter<"Permission"> | $Enums.PermissionEffect
+  tenantId?: Prisma.StringNullableFilter<"Permission"> | string | null
+  isSystem?: Prisma.BoolFilter<"Permission"> | boolean
+  createdAt?: Prisma.DateTimeFilter<"Permission"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Permission"> | Date | string
+}
+
+export type PermissionCreateManyTenantInput = {
+  id?: string
+  name: string
+  description?: string | null
+  path: string
+  methods?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  effect?: $Enums.PermissionEffect
+  isSystem?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PermissionUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  path?: Prisma.StringFieldUpdateOperationsInput | string
+  methods?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  effect?: Prisma.EnumPermissionEffectFieldUpdateOperationsInput | $Enums.PermissionEffect
+  isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  roles?: Prisma.RolePermissionUpdateManyWithoutPermissionNestedInput
+}
+
+export type PermissionUncheckedUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  path?: Prisma.StringFieldUpdateOperationsInput | string
+  methods?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  effect?: Prisma.EnumPermissionEffectFieldUpdateOperationsInput | $Enums.PermissionEffect
+  isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  roles?: Prisma.RolePermissionUncheckedUpdateManyWithoutPermissionNestedInput
+}
+
+export type PermissionUncheckedUpdateManyWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  path?: Prisma.StringFieldUpdateOperationsInput | string
+  methods?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  effect?: Prisma.EnumPermissionEffectFieldUpdateOperationsInput | $Enums.PermissionEffect
+  isSystem?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -479,10 +728,14 @@ export type PermissionSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   id?: boolean
   name?: boolean
   description?: boolean
-  resource?: boolean
-  action?: boolean
+  path?: boolean
+  methods?: boolean
+  effect?: boolean
+  tenantId?: boolean
+  isSystem?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  tenant?: boolean | Prisma.Permission$tenantArgs<ExtArgs>
   roles?: boolean | Prisma.Permission$rolesArgs<ExtArgs>
   _count?: boolean | Prisma.PermissionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["permission"]>
@@ -493,14 +746,18 @@ export type PermissionSelectScalar = {
   id?: boolean
   name?: boolean
   description?: boolean
-  resource?: boolean
-  action?: boolean
+  path?: boolean
+  methods?: boolean
+  effect?: boolean
+  tenantId?: boolean
+  isSystem?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type PermissionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "resource" | "action" | "createdAt" | "updatedAt", ExtArgs["result"]["permission"]>
+export type PermissionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "path" | "methods" | "effect" | "tenantId" | "isSystem" | "createdAt" | "updatedAt", ExtArgs["result"]["permission"]>
 export type PermissionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tenant?: boolean | Prisma.Permission$tenantArgs<ExtArgs>
   roles?: boolean | Prisma.Permission$rolesArgs<ExtArgs>
   _count?: boolean | Prisma.PermissionCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -508,14 +765,18 @@ export type PermissionInclude<ExtArgs extends runtime.Types.Extensions.InternalA
 export type $PermissionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Permission"
   objects: {
+    tenant: Prisma.$TenantPayload<ExtArgs> | null
     roles: Prisma.$RolePermissionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
     description: string | null
-    resource: string
-    action: string
+    path: string
+    methods: runtime.JsonValue
+    effect: $Enums.PermissionEffect
+    tenantId: string | null
+    isSystem: boolean
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["permission"]>
@@ -858,6 +1119,7 @@ readonly fields: PermissionFieldRefs;
  */
 export interface Prisma__PermissionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  tenant<T extends Prisma.Permission$tenantArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Permission$tenantArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   roles<T extends Prisma.Permission$rolesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Permission$rolesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RolePermissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -891,8 +1153,11 @@ export interface PermissionFieldRefs {
   readonly id: Prisma.FieldRef<"Permission", 'String'>
   readonly name: Prisma.FieldRef<"Permission", 'String'>
   readonly description: Prisma.FieldRef<"Permission", 'String'>
-  readonly resource: Prisma.FieldRef<"Permission", 'String'>
-  readonly action: Prisma.FieldRef<"Permission", 'String'>
+  readonly path: Prisma.FieldRef<"Permission", 'String'>
+  readonly methods: Prisma.FieldRef<"Permission", 'Json'>
+  readonly effect: Prisma.FieldRef<"Permission", 'PermissionEffect'>
+  readonly tenantId: Prisma.FieldRef<"Permission", 'String'>
+  readonly isSystem: Prisma.FieldRef<"Permission", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Permission", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Permission", 'DateTime'>
 }
@@ -1235,6 +1500,25 @@ export type PermissionDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * Limit how many Permissions to delete.
    */
   limit?: number
+}
+
+/**
+ * Permission.tenant
+ */
+export type Permission$tenantArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Tenant
+   */
+  select?: Prisma.TenantSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Tenant
+   */
+  omit?: Prisma.TenantOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TenantInclude<ExtArgs> | null
+  where?: Prisma.TenantWhereInput
 }
 
 /**

@@ -51,7 +51,8 @@ export type User = Prisma.UserModel
 export type Role = Prisma.RoleModel
 /**
  * Model Permission
- * 
+ * Permission defines a path pattern + HTTP methods + effect
+ * Supports path-based authorization matching the authorizer's policy structure
  */
 export type Permission = Prisma.PermissionModel
 /**
@@ -61,9 +62,16 @@ export type Permission = Prisma.PermissionModel
 export type RolePermission = Prisma.RolePermissionModel
 /**
  * Model UserRole
- * 
+ * Legacy: Direct user-role assignment (global, not tenant-scoped)
+ * @deprecated Use TenantMembership for tenant-scoped role assignments
  */
 export type UserRole = Prisma.UserRoleModel
+/**
+ * Model TenantMembership
+ * Tenant Membership: Links users to tenants with specific roles
+ * Enables federated users across multiple tenants with different roles per tenant
+ */
+export type TenantMembership = Prisma.TenantMembershipModel
 /**
  * Model Tenant
  * 

@@ -6,6 +6,7 @@ import {
     RoleData,
     PermissionData,
     RolePermissionData,
+    TenantMembershipData,
 } from './policy-event';
 
 /**
@@ -159,6 +160,42 @@ export class PolicyEventPublisher {
      */
     async publishRolePermissionRevoked(data: RolePermissionData, meta?: Partial<PolicyEventMeta>): Promise<string> {
         return this.publish(PolicyEventType.ROLE_PERMISSION_REVOKED, data, meta);
+    }
+
+    /**
+     * Publish tenant membership created event
+     */
+    async publishTenantMembershipCreated(data: TenantMembershipData, meta?: Partial<PolicyEventMeta>): Promise<string> {
+        return this.publish(PolicyEventType.TENANT_MEMBERSHIP_CREATED, data, {
+            ...meta,
+            tenantId: data.tenantId,
+        });
+    }
+
+    /**
+     * Publish tenant membership updated event
+     */
+    async publishTenantMembershipUpdated(data: TenantMembershipData, meta?: Partial<PolicyEventMeta>): Promise<string> {
+        return this.publish(PolicyEventType.TENANT_MEMBERSHIP_UPDATED, data, {
+            ...meta,
+            tenantId: data.tenantId,
+        });
+    }
+
+    /**
+     * Publish tenant membership deleted event
+     */
+    async publishTenantMembershipDeleted(
+        membershipId: string,
+        userId: string,
+        tenantId: string,
+        meta?: Partial<PolicyEventMeta>
+    ): Promise<string> {
+        return this.publish(
+            PolicyEventType.TENANT_MEMBERSHIP_DELETED,
+            { membershipId, userId, tenantId },
+            { ...meta, tenantId }
+        );
     }
 
     /**
