@@ -3,6 +3,7 @@ import swaggerUi from 'swagger-ui-express';
 import { authRouter } from './routes/auth';
 import { userRouter } from './routes/users';
 import { roleRouter } from './routes/roles';
+import { permissionRouter } from './routes/permissions';
 import { tenantRouter } from './routes/tenants';
 import { socialRouter } from './routes/socials';
 import { apiKeyRouter } from './routes/api-keys';
@@ -29,6 +30,7 @@ app.get('/openapi.json', (req, res) => {
 app.use('/auth', authRouter);
 app.use('/users', userRouter);
 app.use('/roles', roleRouter);
+app.use('/permissions', permissionRouter);
 app.use('/tenants', tenantRouter);
 app.use('/socials', socialRouter);
 app.use('/api-keys', apiKeyRouter);

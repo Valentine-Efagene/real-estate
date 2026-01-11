@@ -1,6 +1,5 @@
 import { config } from 'dotenv';
 // Load environment variables FIRST, before checking NODE_ENV
-// Use .env.localstack for localstack, .env for local development
 const envFile = process.env.NODE_ENV === 'localstack' ? '.env.localstack' : '.env';
 config({ path: envFile });
 

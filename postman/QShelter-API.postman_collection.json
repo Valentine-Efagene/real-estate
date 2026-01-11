@@ -25,6 +25,11 @@
             "type": "string"
         },
         {
+            "key": "policySyncServiceUrl",
+            "value": "http://localhost:4566/restapis/lcgu6wtwdp/localstack/_user_request_",
+            "type": "string"
+        },
+        {
             "key": "tenantId",
             "value": "tenant-001",
             "type": "string"
@@ -3295,6 +3300,84 @@
                             }
                         }
                     ]
+                }
+            ]
+        },
+        {
+            "name": "Policy Sync Service",
+            "description": "Policy sync service for managing role policies in DynamoDB. This service syncs roles and permissions from RDS to DynamoDB for fast authorizer lookups.",
+            "item": [
+                {
+                    "name": "Health Check",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{policySyncServiceUrl}}/health",
+                            "host": [
+                                "{{policySyncServiceUrl}}"
+                            ],
+                            "path": [
+                                "health"
+                            ]
+                        },
+                        "description": "Check if the policy sync service is healthy."
+                    }
+                },
+                {
+                    "name": "Full Sync",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{policySyncServiceUrl}}/sync/full",
+                            "host": [
+                                "{{policySyncServiceUrl}}"
+                            ],
+                            "path": [
+                                "sync",
+                                "full"
+                            ]
+                        },
+                        "description": "Trigger a full sync of all roles from RDS to DynamoDB. This will scan all roles in RDS and update DynamoDB accordingly."
+                    }
+                },
+                {
+                    "name": "Sync Single Role",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{policySyncServiceUrl}}/sync/role/{{roleId}}",
+                            "host": [
+                                "{{policySyncServiceUrl}}"
+                            ],
+                            "path": [
+                                "sync",
+                                "role",
+                                "{{roleId}}"
+                            ]
+                        },
+                        "description": "Sync a single role from RDS to DynamoDB by role ID."
+                    }
+                },
+                {
+                    "name": "Get Policy",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{policySyncServiceUrl}}/policies/{{roleName}}",
+                            "host": [
+                                "{{policySyncServiceUrl}}"
+                            ],
+                            "path": [
+                                "policies",
+                                "{{roleName}}"
+                            ]
+                        },
+                        "description": "Get a role policy from DynamoDB by role name. Returns the scopes (permissions) for the role."
+                    }
                 }
             ]
         },

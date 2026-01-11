@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { successResponse } from '@valentine-efagene/qshelter-common';
 import { roleService } from '../services/role.service';
+import { permissionService } from '../services/permission.service';
 import { z } from 'zod';
 
 export const roleRouter = Router();
@@ -55,6 +56,30 @@ roleRouter.delete('/:id', async (req, res, next) => {
     try {
         await roleService.delete(req.params.id);
         res.status(204).send();
+    } catch (error) {
+        next(error);
+    }
+});
+
+// Get permissions for a role
+roleRouter.get('/:id/permissions', async (req, res, next) => {
+    try {
+        const result = await permissionService.getForRole(req.params.id);
+        res.json(successResponse(result));
+    } catch (error) {
+        next(error);
+    }
+});
+
+// Assign permissions to a role
+roleRouter.put('/:id/permissions', async (req, res, next) => {
+    try {
+        const { permissionIds } = z.object({
+            permissionIds: z.array(z.string()),
+        }).parse(req.body);
+
+        const result = await permissionService.assignToRole(req.params.id, permissionIds);
+        res.json(successResponse(result));
     } catch (error) {
         next(error);
     }

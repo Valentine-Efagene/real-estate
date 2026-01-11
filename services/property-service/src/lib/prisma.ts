@@ -7,7 +7,7 @@ import { ConfigService, PrismaClient } from '@valentine-efagene/qshelter-common'
 async function createAdapter() {
     // Get stage at RUNTIME, not build time
     const stage = process.env.NODE_ENV || process.env.STAGE || 'dev';
-    
+
     // For local development (local), LocalStack (localstack), and test (test), use env vars directly
     if (stage === 'local' || stage === 'localstack' || stage === 'test') {
         return new PrismaMariaDb({

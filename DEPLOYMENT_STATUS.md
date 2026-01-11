@@ -1,6 +1,6 @@
 # Deployment Status
 
-Last Updated: January 10, 2025
+Last Updated: January 11, 2025
 
 ## Lambda Functions
 
@@ -12,6 +12,7 @@ Last Updated: January 10, 2025
 | Mortgage Service      | 6.2 MB       | ✅ Healthy | `GET /health` | `GET /api-docs` |
 | Documents Service     | 6.4 MB       | ✅ Healthy | `GET /health` | `GET /api-docs` |
 | Notifications Service | 7.3 MB       | ✅ Healthy | `GET /health` | `GET /api-docs` |
+| Policy Sync Service   | 7.0 MB       | ✅ Healthy | `GET /health` | N/A             |
 
 ## LocalStack Deployment (localstack stage)
 
@@ -27,23 +28,25 @@ npx sls deploy --config serverless.localstack.yml --stage localstack
 
 ### Current LocalStack API IDs
 
-| Service               | API ID       | REST API Base URL                                                              |
-| --------------------- | ------------ | ------------------------------------------------------------------------------ |
-| User Service          | `54d9r9y23n` | `http://localhost:4566/restapis/54d9r9y23n/localstack/_user_request_`          |
-| Property Service      | `hsmpsiqobm` | `http://localhost:4566/restapis/hsmpsiqobm/localstack/_user_request_`          |
-| Mortgage Service      | `g8b5hpkucu` | `http://localhost:4566/restapis/g8b5hpkucu/localstack/_user_request_`          |
-| Documents Service     | `ujsndxfzfd` | `http://localhost:4566/restapis/ujsndxfzfd/localstack/_user_request_`          |
-| Notifications Service | `imelipwbj1` | `http://localhost:4566/restapis/imelipwbj1/localstack/_user_request_`          |
+| Service               | API ID       | REST API Base URL                                                     |
+| --------------------- | ------------ | --------------------------------------------------------------------- |
+| User Service          | `54d9r9y23n` | `http://localhost:4566/restapis/54d9r9y23n/localstack/_user_request_` |
+| Property Service      | `hsmpsiqobm` | `http://localhost:4566/restapis/hsmpsiqobm/localstack/_user_request_` |
+| Mortgage Service      | `g8b5hpkucu` | `http://localhost:4566/restapis/g8b5hpkucu/localstack/_user_request_` |
+| Documents Service     | `ujsndxfzfd` | `http://localhost:4566/restapis/ujsndxfzfd/localstack/_user_request_` |
+| Notifications Service | `imelipwbj1` | `http://localhost:4566/restapis/imelipwbj1/localstack/_user_request_` |
+| Policy Sync Service   | `lcgu6wtwdp` | `http://localhost:4566/restapis/lcgu6wtwdp/localstack/_user_request_` |
 
 ### Health Check URLs
 
-| Service               | Health URL                                                                        | Status     |
-| --------------------- | --------------------------------------------------------------------------------- | ---------- |
-| User Service          | http://localhost:4566/restapis/54d9r9y23n/localstack/_user_request_/health        | ✅ Healthy |
-| Property Service      | http://localhost:4566/restapis/hsmpsiqobm/localstack/_user_request_/health        | ✅ Healthy |
-| Mortgage Service      | http://localhost:4566/restapis/g8b5hpkucu/localstack/_user_request_/health        | ✅ Healthy |
-| Documents Service     | http://localhost:4566/restapis/ujsndxfzfd/localstack/_user_request_/health        | ✅ Healthy |
-| Notifications Service | http://localhost:4566/restapis/imelipwbj1/localstack/_user_request_/health        | ✅ Healthy |
+| Service               | Health URL                                                                 | Status     |
+| --------------------- | -------------------------------------------------------------------------- | ---------- |
+| User Service          | http://localhost:4566/restapis/54d9r9y23n/localstack/_user_request_/health | ✅ Healthy |
+| Property Service      | http://localhost:4566/restapis/hsmpsiqobm/localstack/_user_request_/health | ✅ Healthy |
+| Mortgage Service      | http://localhost:4566/restapis/g8b5hpkucu/localstack/_user_request_/health | ✅ Healthy |
+| Documents Service     | http://localhost:4566/restapis/ujsndxfzfd/localstack/_user_request_/health | ✅ Healthy |
+| Notifications Service | http://localhost:4566/restapis/imelipwbj1/localstack/_user_request_/health | ✅ Healthy |
+| Policy Sync Service   | http://localhost:4566/restapis/lcgu6wtwdp/localstack/_user_request_/health | ✅ Healthy |
 
 > **Note**: API IDs change on each deployment. Get current IDs with:
 >
@@ -66,6 +69,7 @@ curl -s http://localhost:4566/restapis/hsmpsiqobm/localstack/_user_request_/heal
 curl -s http://localhost:4566/restapis/g8b5hpkucu/localstack/_user_request_/health  # mortgage-service
 curl -s http://localhost:4566/restapis/ujsndxfzfd/localstack/_user_request_/health  # documents-service
 curl -s http://localhost:4566/restapis/imelipwbj1/localstack/_user_request_/health  # notifications
+curl -s http://localhost:4566/restapis/lcgu6wtwdp/localstack/_user_request_/health  # policy-sync
 
 # List all deployed REST APIs
 awslocal apigateway get-rest-apis --query 'items[*].[name,id]' --output table
@@ -99,11 +103,11 @@ npm run test:e2e:deployed
 
 ## E2E Test Coverage
 
-| Service          | Tests | Status     | Notes                                      |
-| ---------------- | ----- | ---------- | ------------------------------------------ |
-| User Service     | 78    | ✅ Passing | Auth, Users, Roles, Tenants, Socials       |
-| Property Service | 21    | ✅ Passing | Properties, Health                         |
-| Mortgage Service | 83    | ✅ Passing | Contracts, Payments, Templates, Workflows  |
+| Service          | Tests | Status     | Notes                                     |
+| ---------------- | ----- | ---------- | ----------------------------------------- |
+| User Service     | 78    | ✅ Passing | Auth, Users, Roles, Tenants, Socials      |
+| Property Service | 21    | ✅ Passing | Properties, Health                        |
+| Mortgage Service | 83    | ✅ Passing | Contracts, Payments, Templates, Workflows |
 
 ## Deployment Notes
 

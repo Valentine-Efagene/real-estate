@@ -1,0 +1,181 @@
+service: qshelter-policy-sync
+
+frameworkVersion: '4'
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+  stage: ${opt:stage, 'dev'}
+  memorySize: 512
+  timeout: 30
+
+  # HTTP API Gateway (v2) for production
+  httpApi:
+    cors: true
+
+  environment:
+    NODE_ENV: ${self:provider.stage}
+    STAGE: ${self:provider.stage}
+    AWS_REGION_NAME: ${self:provider.region}
+    # Database credentials from SSM
+    DB_HOST: ${ssm:/qshelter/${self:provider.stage}/DB_HOST~true}
+    DB_PORT: ${ssm:/qshelter/${self:provider.stage}/DB_PORT~true}
+    DB_USER: ${ssm:/qshelter/${self:provider.stage}/DB_USER~true}
+    DB_PASSWORD: ${ssm:/qshelter/${self:provider.stage}/DB_PASSWORD~true}
+    DB_NAME: ${ssm:/qshelter/${self:provider.stage}/DB_NAME~true}
+    # DynamoDB table name from SSM
+    ROLE_POLICIES_TABLE_NAME: ${ssm:/qshelter/${self:provider.stage}/role-policies-table-name}
+    # SNS/SQS config
+    POLICY_SYNC_TOPIC_ARN: !Ref PolicySyncTopic
+    POLICY_SYNC_QUEUE_URL: !Ref PolicySyncQueue
+
+  iam:
+    role:
+      statements:
+        # SSM Parameter Store access
+        - Effect: Allow
+          Action:
+            - ssm:GetParameter
+            - ssm:GetParameters
+            - ssm:GetParametersByPath
+          Resource:
+            - arn:aws:ssm:${self:provider.region}:*:parameter/qshelter/${self:provider.stage}/*
+        # Secrets Manager access
+        - Effect: Allow
+          Action:
+            - secretsmanager:GetSecretValue
+          Resource:
+            - arn:aws:secretsmanager:${self:provider.region}:*:secret:qshelter/${self:provider.stage}/*
+        # DynamoDB access for role-policies table
+        - Effect: Allow
+          Action:
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:BatchWriteItem
+          Resource:
+            - arn:aws:dynamodb:${self:provider.region}:*:table/qshelter-${self:provider.stage}-role-policies
+            - arn:aws:dynamodb:${self:provider.region}:*:table/qshelter-${self:provider.stage}-role-policies/index/*
+        # SQS access
+        - Effect: Allow
+          Action:
+            - sqs:ReceiveMessage
+            - sqs:DeleteMessage
+            - sqs:GetQueueAttributes
+          Resource:
+            - arn:aws:sqs:${self:provider.region}:*:qshelter-${self:provider.stage}-policy-sync
+        # SNS publish (for services to publish events)
+        - Effect: Allow
+          Action:
+            - sns:Publish
+          Resource:
+            - !Ref PolicySyncTopic
+
+package:
+  individually: true
+  patterns:
+    - '!**'
+    - 'dist/**/*.mjs'
+    # Prisma generated client
+    - 'node_modules/.prisma/**'
+    # Prisma packages needed at runtime
+    - 'node_modules/@prisma/client/**'
+    - 'node_modules/@prisma/adapter-mariadb/**'
+    - 'node_modules/@prisma/client-runtime-utils/**'
+    - 'node_modules/@prisma/driver-adapter-utils/**'
+    - 'node_modules/@prisma/debug/**'
+    # Exclude unused DB adapters
+    - '!node_modules/@prisma/client/runtime/*cockroachdb*'
+    - '!node_modules/@prisma/client/runtime/*sqlserver*'
+    - '!node_modules/@prisma/client/runtime/*postgresql*'
+    - '!node_modules/@prisma/client/runtime/*sqlite*'
+    # MariaDB driver
+    - 'node_modules/mariadb/**'
+
+functions:
+  # HTTP API handler for admin endpoints
+  api:
+    handler: dist/lambda.handler
+    events:
+      - httpApi:
+          path: /{proxy+}
+          method: ANY
+      - httpApi:
+          path: /health
+          method: GET
+
+  # SQS consumer for policy sync events
+  sqsConsumer:
+    handler: dist/lambda.sqsHandler
+    timeout: 30
+    events:
+      - sqs:
+          arn: !GetAtt PolicySyncQueue.Arn
+          batchSize: 10
+          functionResponseType: ReportBatchItemFailures
+
+resources:
+  Resources:
+    # SNS Topic for policy sync events
+    PolicySyncTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: qshelter-${self:provider.stage}-policy-sync
+
+    # SQS Queue for policy sync events
+    PolicySyncQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: qshelter-${self:provider.stage}-policy-sync
+        VisibilityTimeout: 60
+        MessageRetentionPeriod: 1209600 # 14 days
+        RedrivePolicy:
+          deadLetterTargetArn: !GetAtt PolicySyncDeadLetterQueue.Arn
+          maxReceiveCount: 3
+
+    # Dead letter queue for failed messages
+    PolicySyncDeadLetterQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: qshelter-${self:provider.stage}-policy-sync-dlq
+        MessageRetentionPeriod: 1209600 # 14 days
+
+    # SNS -> SQS subscription
+    PolicySyncQueueSubscription:
+      Type: AWS::SNS::Subscription
+      Properties:
+        TopicArn: !Ref PolicySyncTopic
+        Protocol: sqs
+        Endpoint: !GetAtt PolicySyncQueue.Arn
+        RawMessageDelivery: false
+
+    # Allow SNS to send to SQS
+    PolicySyncQueuePolicy:
+      Type: AWS::SQS::QueuePolicy
+      Properties:
+        Queues:
+          - !Ref PolicySyncQueue
+        PolicyDocument:
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service: sns.amazonaws.com
+              Action: sqs:SendMessage
+              Resource: !GetAtt PolicySyncQueue.Arn
+              Condition:
+                ArnEquals:
+                  aws:SourceArn: !Ref PolicySyncTopic
+
+  Outputs:
+    PolicySyncTopicArn:
+      Value: !Ref PolicySyncTopic
+      Export:
+        Name: qshelter-${self:provider.stage}-policy-sync-topic-arn
+    PolicySyncQueueUrl:
+      Value: !Ref PolicySyncQueue
+      Export:
+        Name: qshelter-${self:provider.stage}-policy-sync-queue-url

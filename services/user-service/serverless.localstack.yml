@@ -24,6 +24,7 @@ provider:
     STAGE: ${self:provider.stage}
     LOCALSTACK_ENDPOINT: http://host.docker.internal:4566
     NOTIFICATIONS_TOPIC_ARN: ${ssm:/qshelter/${self:provider.stage}/notifications-topic-arn, ''}
+    POLICY_SYNC_TOPIC_ARN: arn:aws:sns:${self:provider.region}:000000000000:qshelter-${self:provider.stage}-policy-sync
     FRONTEND_BASE_URL: ${env:FRONTEND_BASE_URL, 'https://mreif.com.ng'}
     # Database credentials from SSM
     DB_HOST: ${ssm:/qshelter/${self:provider.stage}/DB_HOST}
@@ -47,7 +48,9 @@ provider:
         - Effect: Allow
           Action:
             - sns:Publish
-          Resource: arn:aws:sns:${self:provider.region}:*:qshelter-${self:provider.stage}-notifications
+          Resource: 
+            - arn:aws:sns:${self:provider.region}:*:qshelter-${self:provider.stage}-notifications
+            - arn:aws:sns:${self:provider.region}:*:qshelter-${self:provider.stage}-policy-sync
 
 package:
   individually: true
