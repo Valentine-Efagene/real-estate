@@ -38,8 +38,6 @@ export interface RolePolicyItem {
     SK: string; // Always "POLICY"
     roleName: string;
     policy?: RolePolicy;
-    /** Legacy scopes for backward compatibility */
-    scopes?: string[];
     isActive: boolean;
     tenantId?: string;
     GSI1PK?: string; // TENANT#tenantId
@@ -84,7 +82,6 @@ export interface AuthorizerContext extends APIGatewayAuthorizerResultContext {
     userId: string;
     email: string;
     roles: string; // JSON stringified array
-    scopes: string; // JSON stringified array of resolved scopes
     tenantId: string;
     principalType: string;
     /** The full policy document for path-based authorization */

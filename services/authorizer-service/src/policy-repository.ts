@@ -4,8 +4,7 @@ import { unmarshall } from '@aws-sdk/util-dynamodb';
 import { RolePolicyItem, RolePolicy, PolicyStatement } from './types';
 
 interface CacheEntry {
-    scopes: string[];
-    policy?: RolePolicy;
+    policy: RolePolicy;
     expiresAt: number;
 }
 
@@ -66,17 +65,13 @@ export class PolicyRepository {
             for (const item of response.Items || []) {
                 const unmarshalled = unmarshall(item);
                 if (unmarshalled.isActive !== false) {
-                    const pk = unmarshalled.PK || '';
                     const roleName = unmarshalled.roleName;
                     const tenantId = unmarshalled.tenantId;
+                    const policy = unmarshalled.policy as RolePolicy | undefined;
 
-                    if (roleName) {
+                    if (roleName && policy) {
                         const cacheKey = this.buildCacheKey(roleName, tenantId);
-                        const scopes = this.extractScopesFromItem(unmarshalled);
-                        const policy = unmarshalled.policy as RolePolicy | undefined;
-
                         this.cache.set(cacheKey, {
-                            scopes,
                             policy,
                             expiresAt: now + CACHE_TTL_MS,
                         });
@@ -152,9 +147,8 @@ export class PolicyRepository {
 
             if (response.Items && response.Items.length > 0) {
                 const item = response.Items[0] as RolePolicyItem;
-                if (item.isActive) {
+                if (item.isActive && item.policy) {
                     return {
-                        scopes: this.extractScopesFromItem(item),
                         policy: item.policy,
                         expiresAt: Date.now() + CACHE_TTL_MS,
                     };
@@ -171,112 +165,20 @@ export class PolicyRepository {
     /**
      * Resolve roles to combined policy for tenant context
      */
-    async resolvePolicies(roles: string[], tenantId?: string): Promise<{ scopes: string[]; policy: RolePolicy }> {
-        const allScopes: Set<string> = new Set();
+    async resolvePolicies(roles: string[], tenantId?: string): Promise<RolePolicy> {
         const allStatements: PolicyStatement[] = [];
 
         for (const role of roles) {
             const entry = await this.getRolePolicy(role, tenantId);
-            if (entry) {
-                entry.scopes.forEach(s => allScopes.add(s));
-                if (entry.policy?.statements) {
-                    allStatements.push(...entry.policy.statements);
-                }
+            if (entry?.policy?.statements) {
+                allStatements.push(...entry.policy.statements);
             }
         }
 
         return {
-            scopes: Array.from(allScopes),
-            policy: {
-                version: '2',
-                statements: allStatements,
-            },
+            version: '2',
+            statements: allStatements,
         };
-    }
-
-    /**
-     * Extract scopes from a role policy item
-     * Supports both new scope-based and legacy path-based policies
-     */
-    private extractScopesFromItem(item: Record<string, any>): string[] {
-        // If the item already has scopes array, use it directly
-        if (item.scopes && Array.isArray(item.scopes)) {
-            return item.scopes;
-        }
-
-        // Convert legacy path-based policy to scopes
-        const scopes: Set<string> = new Set();
-        const policy = item.policy;
-
-        if (!policy?.statements) {
-            return [];
-        }
-
-        for (const statement of policy.statements) {
-            if (statement.effect !== 'Allow') continue;
-
-            for (const resource of statement.resources || []) {
-                const path = resource.path || '';
-                const methods = resource.methods || [];
-
-                const resourceName = this.extractResourceName(path);
-
-                for (const method of methods) {
-                    const action = this.methodToAction(method);
-
-                    if (resourceName === '*' || action === '*') {
-                        scopes.add('*');
-                    } else if (resourceName && action) {
-                        scopes.add(`${resourceName}:${action}`);
-                    }
-                }
-            }
-        }
-
-        return Array.from(scopes);
-    }
-
-    /**
-     * Extract resource name from path pattern
-     */
-    private extractResourceName(path: string): string {
-        if (path === '/*' || path === '*') {
-            return '*';
-        }
-
-        const segments = path.replace(/^\//, '').split('/');
-        const firstSegment = segments[0] || '';
-
-        const singularMap: Record<string, string> = {
-            'contracts': 'contract',
-            'users': 'user',
-            'properties': 'property',
-            'payments': 'payment',
-            'tenants': 'tenant',
-            'documents': 'document',
-            'phases': 'phase',
-            'installments': 'installment',
-        };
-
-        return singularMap[firstSegment] || firstSegment.replace(/s$/, '');
-    }
-
-    /**
-     * Convert HTTP method to action
-     */
-    private methodToAction(method: string): string {
-        const upper = method.toUpperCase();
-
-        const methodMap: Record<string, string> = {
-            'GET': 'read',
-            'POST': 'create',
-            'PUT': 'update',
-            'PATCH': 'update',
-            'DELETE': 'delete',
-            '*': '*',
-        };
-
-        return methodMap[upper] || 'read';
     }
 
     /**

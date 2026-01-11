@@ -14,12 +14,11 @@ import { AuthorizerContext, JwtPayload, RolePolicy } from './types';
  * Flow:
  * 1. Extract and verify JWT from Authorization header
  * 2. Resolve roles to policies using in-memory cache (DynamoDB-backed)
- * 3. Return IAM policy with scopes and policy in context for downstream services
+ * 3. Return IAM policy with policy in context for downstream services
  * 
  * Tenant-scoped authorization:
  * - Roles are looked up with tenant context (falls back to global roles)
  * - Policies use path patterns for fine-grained resource control
- * - Services can use either scope-based or path-based enforcement
  */
 export class AuthorizerService {
     private jwtService: JwtService;
@@ -51,8 +50,8 @@ export class AuthorizerService {
                 principalType: payload.principalType,
             });
 
-            // 3. Resolve roles to scopes and policy (tenant-scoped with fallback)
-            const { scopes, policy } = await this.policyRepository.resolvePolicies(
+            // 3. Resolve roles to policy (tenant-scoped with fallback)
+            const policy = await this.policyRepository.resolvePolicies(
                 payload.roles,
                 payload.tenantId
             );
@@ -60,12 +59,11 @@ export class AuthorizerService {
             console.log('[Authorizer] Policy resolved:', {
                 userId: payload.sub,
                 tenantId: payload.tenantId,
-                scopeCount: scopes.length,
                 statementCount: policy.statements?.length || 0,
             });
 
-            // 4. Generate Allow policy with scopes and policy in context
-            return this.generatePolicy(payload.sub, 'Allow', event.methodArn, payload, scopes, policy);
+            // 4. Generate Allow policy with policy in context
+            return this.generatePolicy(payload.sub, 'Allow', event.methodArn, payload, policy);
 
         } catch (error) {
             console.error('[Authorizer] Authorization error:', error);
@@ -83,7 +81,6 @@ export class AuthorizerService {
         effect: 'Allow' | 'Deny',
         resource: string,
         jwtPayload?: JwtPayload,
-        scopes?: string[],
         policy?: RolePolicy
     ): APIGatewayAuthorizerResult {
         const policyDocument: PolicyDocument = {
@@ -103,7 +100,6 @@ export class AuthorizerService {
                 userId: jwtPayload.sub,
                 email: jwtPayload.email || '',
                 roles: JSON.stringify(jwtPayload.roles),
-                scopes: JSON.stringify(scopes || []),
                 tenantId: jwtPayload.tenantId || '',
                 principalType: jwtPayload.principalType || 'user',
                 policy: policy ? JSON.stringify(policy) : undefined,
