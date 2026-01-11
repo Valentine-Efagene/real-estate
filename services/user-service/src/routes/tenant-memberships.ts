@@ -27,8 +27,8 @@ tenantMembershipRouter.post('/tenants/:tenantId/members', async (req, res, next)
     try {
         const { tenantId } = req.params;
         const data = z.object({
-            userId: z.string().uuid(),
-            roleId: z.string().uuid(),
+            userId: z.string(),
+            roleId: z.string(),
             isDefault: z.boolean().optional(),
         }).parse(req.body);
 
@@ -64,7 +64,7 @@ tenantMembershipRouter.put('/tenants/:tenantId/members/:userId', async (req, res
     try {
         const { tenantId, userId } = req.params;
         const data = z.object({
-            roleId: z.string().uuid().optional(),
+            roleId: z.string().optional(),
             isActive: z.boolean().optional(),
             isDefault: z.boolean().optional(),
         }).parse(req.body);

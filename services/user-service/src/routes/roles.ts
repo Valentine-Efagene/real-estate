@@ -20,7 +20,7 @@ roleRouter.post('/', async (req, res, next) => {
         const data = z.object({
             name: z.string(),
             description: z.string().optional(),
-            tenantId: z.string().uuid().optional().nullable(),
+            tenantId: z.string().optional().nullable(),
             isSystem: z.boolean().optional(),
         }).parse(req.body);
 
@@ -78,7 +78,7 @@ roleRouter.get('/:id/permissions', async (req, res, next) => {
 roleRouter.put('/:id/permissions', async (req, res, next) => {
     try {
         const { permissionIds } = z.object({
-            permissionIds: z.array(z.string().uuid()),
+            permissionIds: z.array(z.string()),
         }).parse(req.body);
 
         const result = await roleService.assignPermissions(req.params.id, permissionIds);

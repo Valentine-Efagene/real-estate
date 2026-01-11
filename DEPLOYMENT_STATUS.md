@@ -1,6 +1,17 @@
 # Deployment Status
 
-Last Updated: January 11, 2025
+Last Updated: January 11, 2026
+
+## Recent Changes
+
+### RBAC Redesign (January 11, 2026)
+
+- ✅ Implemented federated users with tenant-scoped roles
+- ✅ Migrated to path-based permissions (`path` + `methods[]` + `effect`)
+- ✅ Added TenantMembership model for many-to-many User ↔ Tenant relationship
+- ✅ Updated DynamoDB policy format to version "2" with path-based statements
+- ✅ New tenant membership API endpoints for federated user management
+- See [docs/RBAC_REDESIGN.md](docs/RBAC_REDESIGN.md) for full details
 
 ## Lambda Functions
 

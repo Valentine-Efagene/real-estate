@@ -1,6 +1,39 @@
 # RBAC Redesign: Federated Users with Tenant-Scoped Policies
 
-## Current State
+## Implementation Status
+
+✅ **COMPLETED** - January 11, 2026
+
+### What Was Implemented
+
+1. ✅ Prisma schema updated with path-based permissions, tenant-scoped roles, and TenantMembership model
+2. ✅ User-service updated with new role, permission, and tenant-membership services
+3. ✅ Policy-sync-service updated to handle path-based policy format
+4. ✅ Common library updated with new event types and publisher methods
+5. ✅ DynamoDB syncing working with tenant-scoped keys: `TENANT#tenantId#ROLE#roleName`
+6. ✅ All services deployed and tested on LocalStack
+
+### New API Endpoints
+
+- `POST /permissions` - Create path-based permission (`{path, methods[], effect}`)
+- `POST /permissions/crud` - Bulk create CRUD permissions for a resource
+- `POST /permissions/bulk` - Bulk create multiple permissions
+- `GET /roles?tenantId=xxx` - List roles (global + tenant-specific)
+- `POST /roles` - Create role with optional `tenantId` for tenant scoping
+- `PUT /roles/:id/permissions` - Assign permissions to role
+- `POST /tenants/:tenantId/members` - Add user to tenant with role
+- `GET /tenants/:tenantId/members` - List tenant members
+- `PUT /tenants/:tenantId/members/:userId` - Update member's role
+- `DELETE /tenants/:tenantId/members/:userId` - Remove member from tenant
+- `GET /users/:userId/tenants` - List user's tenant memberships
+- `GET /users/:userId/default-tenant` - Get user's default tenant with full permissions
+- `PUT /users/:userId/default-tenant/:tenantId` - Set user's default tenant
+
+---
+
+## Original Design Document
+
+### Current State
 
 The current system has:
 

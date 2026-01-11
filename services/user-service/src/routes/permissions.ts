@@ -28,7 +28,7 @@ permissionRouter.post('/', async (req, res, next) => {
             path: z.string().startsWith('/'),
             methods: z.array(httpMethodSchema),
             effect: effectSchema.optional(),
-            tenantId: z.string().uuid().optional().nullable(),
+            tenantId: z.string().optional().nullable(),
         }).parse(req.body);
 
         const result = await permissionService.create(data);
@@ -48,7 +48,7 @@ permissionRouter.post('/bulk', async (req, res, next) => {
                 path: z.string().startsWith('/'),
                 methods: z.array(httpMethodSchema),
                 effect: effectSchema.optional(),
-                tenantId: z.string().uuid().optional().nullable(),
+                tenantId: z.string().optional().nullable(),
             })),
         }).parse(req.body);
 

@@ -252,14 +252,12 @@ class PermissionService {
 
     /**
      * Create standard CRUD permissions for a resource path
+     * Creates two permissions: one for collection (list, create) and one for individual items (get, update, delete)
      */
     async createCrudPermissions(resourcePath: string, resourceName: string, tenantId?: string) {
         const crudOps = [
-            { name: `List ${resourceName}`, path: resourcePath, methods: ['GET'] },
-            { name: `Create ${resourceName}`, path: resourcePath, methods: ['POST'] },
-            { name: `Get ${resourceName}`, path: `${resourcePath}/:id`, methods: ['GET'] },
-            { name: `Update ${resourceName}`, path: `${resourcePath}/:id`, methods: ['PUT', 'PATCH'] },
-            { name: `Delete ${resourceName}`, path: `${resourcePath}/:id`, methods: ['DELETE'] },
+            { name: `Manage ${resourceName} Collection`, path: resourcePath, methods: ['GET', 'POST'] },
+            { name: `Manage ${resourceName} Item`, path: `${resourcePath}/:id`, methods: ['GET', 'PUT', 'PATCH', 'DELETE'] },
         ];
 
         return this.bulkCreate(
