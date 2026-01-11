@@ -2,7 +2,7 @@
 
 ## Implementation Status
 
-✅ **COMPLETED** - January 11, 2026
+✅ **FULLY COMPLETED** - January 11, 2026
 
 ### What Was Implemented
 
@@ -11,7 +11,26 @@
 3. ✅ Policy-sync-service updated to handle path-based policy format
 4. ✅ Common library updated with new event types and publisher methods
 5. ✅ DynamoDB syncing working with tenant-scoped keys: `TENANT#tenantId#ROLE#roleName`
-6. ✅ All services deployed and tested on LocalStack
+6. ✅ **Authorizer-service** updated for tenant-scoped path matching with fallback to global roles
+7. ✅ **User-service login** updated to use TenantMembership for federated JWT claims
+8. ✅ **Postman collection** updated with tenant membership and policy-sync endpoints
+9. ✅ All services deployed and tested on LocalStack
+
+### Authorizer Changes
+
+The authorizer now:
+
+- Resolves roles with tenant context (`resolvePolicies(roles, tenantId)`)
+- Falls back to global roles if tenant-specific role not found
+- Includes the full policy in the authorization context for path-based evaluation
+- Caches both tenant-scoped and global policies separately
+
+### JWT Claims
+
+Login now includes:
+
+- `tenantId`: The user's default tenant (from TenantMembership)
+- `roles[]`: Role(s) from the default tenant membership (not legacy userRoles)
 
 ### New API Endpoints
 

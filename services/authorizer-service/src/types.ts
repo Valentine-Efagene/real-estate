@@ -1,8 +1,7 @@
 import { APIGatewayAuthorizerResultContext } from 'aws-lambda';
 
 /**
- * @deprecated Use path-based PolicyResource for backward compatibility only
- * New implementations should use scope-based authorization
+ * Resource within a policy statement
  */
 export interface PolicyResource {
     path: string;
@@ -10,7 +9,7 @@ export interface PolicyResource {
 }
 
 /**
- * @deprecated Use scope-based authorization instead
+ * Policy statement with effect and resources
  */
 export interface PolicyStatement {
     effect: 'Allow' | 'Deny';
@@ -18,7 +17,8 @@ export interface PolicyStatement {
 }
 
 /**
- * @deprecated Use scope-based authorization instead
+ * Role policy document stored in DynamoDB
+ * Version 2 uses path-based authorization
  */
 export interface RolePolicy {
     version: string;
@@ -27,20 +27,37 @@ export interface RolePolicy {
 
 /**
  * Role policy item stored in DynamoDB
- * Supports both legacy path-based and new scope-based authorization
+ * Supports both global and tenant-scoped roles
+ * 
+ * Key formats:
+ * - Global: PK = "ROLE#roleName"
+ * - Tenant-scoped: PK = "TENANT#tenantId#ROLE#roleName"
  */
 export interface RolePolicyItem {
-    PK: string; // ROLE#roleName
-    SK: string; // POLICY
+    PK: string;
+    SK: string; // Always "POLICY"
     roleName: string;
     policy?: RolePolicy;
-    /** New: direct scopes array for scope-based auth */
+    /** Legacy scopes for backward compatibility */
     scopes?: string[];
     isActive: boolean;
     tenantId?: string;
     GSI1PK?: string; // TENANT#tenantId
     GSI1SK?: string; // ROLE#roleName
     updatedAt: string;
+}
+
+/**
+ * Result of policy evaluation
+ */
+export interface PolicyEvaluationResult {
+    allowed: boolean;
+    matchedPolicy?: {
+        roleName: string;
+        path: string;
+        methods: string[];
+        effect: 'Allow' | 'Deny';
+    };
 }
 
 export interface JwtPayload {
@@ -52,7 +69,7 @@ export interface JwtPayload {
     tenantId: string;
     /** Type of principal */
     principalType?: 'user' | 'apiKey';
-    /** Role IDs/names */
+    /** Role names for the current tenant context */
     roles: string[];
     /** Issued at timestamp */
     iat: number;
@@ -61,8 +78,7 @@ export interface JwtPayload {
 }
 
 /**
- * Authorizer context that will be passed to downstream Lambda functions
- * Must extend APIGatewayAuthorizerResultContext which requires string index signature
+ * Authorizer context passed to downstream Lambda functions
  */
 export interface AuthorizerContext extends APIGatewayAuthorizerResultContext {
     userId: string;
@@ -71,4 +87,6 @@ export interface AuthorizerContext extends APIGatewayAuthorizerResultContext {
     scopes: string; // JSON stringified array of resolved scopes
     tenantId: string;
     principalType: string;
+    /** The full policy document for path-based authorization */
+    policy?: string; // JSON stringified RolePolicy
 }

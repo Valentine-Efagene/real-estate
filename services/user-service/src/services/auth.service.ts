@@ -84,6 +84,17 @@ class AuthService {
                         role: true,
                     },
                 },
+                // Include tenant memberships for federated authentication
+                tenantMemberships: {
+                    where: { isActive: true },
+                    include: {
+                        role: true,
+                    },
+                    orderBy: [
+                        { isDefault: 'desc' }, // Default tenant first
+                        { createdAt: 'asc' },
+                    ],
+                },
             },
         });
 
@@ -109,8 +120,23 @@ class AuthService {
             data: { lastLoginAt: new Date() },
         });
 
-        const roleNames = user.userRoles?.map((ur) => ur.role.name) || [];
-        return this.generateTokens(user.id, user.email, roleNames, user.tenantId);
+        // Get roles from tenant memberships (federated model)
+        // Fall back to legacy userRoles if no memberships exist
+        const defaultMembership = user.tenantMemberships?.[0];
+        let roleNames: string[];
+        let tenantId: string | null = null;
+
+        if (defaultMembership) {
+            // Federated: Use tenant membership role
+            roleNames = [defaultMembership.role.name];
+            tenantId = defaultMembership.tenantId;
+        } else {
+            // Legacy: Use user-level roles and tenantId
+            roleNames = user.userRoles?.map((ur) => ur.role.name) || [];
+            tenantId = user.tenantId;
+        }
+
+        return this.generateTokens(user.id, user.email, roleNames, tenantId);
     }
 
     async verifyEmail(token: string) {

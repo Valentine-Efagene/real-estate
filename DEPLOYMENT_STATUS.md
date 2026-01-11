@@ -4,20 +4,23 @@ Last Updated: January 11, 2026
 
 ## Recent Changes
 
-### RBAC Redesign (January 11, 2026)
+### RBAC Redesign Implementation Complete (January 11, 2026)
 
 - ✅ Implemented federated users with tenant-scoped roles
 - ✅ Migrated to path-based permissions (`path` + `methods[]` + `effect`)
 - ✅ Added TenantMembership model for many-to-many User ↔ Tenant relationship
 - ✅ Updated DynamoDB policy format to version "2" with path-based statements
 - ✅ New tenant membership API endpoints for federated user management
+- ✅ **Updated authorizer-service** for tenant-scoped path matching with fallback to global roles
+- ✅ **Updated user-service login** to use TenantMembership for federated JWT claims
+- ✅ **Updated Postman collection** with tenant membership and policy-sync endpoints
 - See [docs/RBAC_REDESIGN.md](docs/RBAC_REDESIGN.md) for full details
 
 ## Lambda Functions
 
 | Service               | Package Size | Status     | Health Check  | Swagger Docs    |
 | --------------------- | ------------ | ---------- | ------------- | --------------- |
-| Authorizer            | 102 KB       | ✅ Working | N/A           | N/A             |
+| Authorizer            | 105 KB       | ✅ Working | N/A           | N/A             |
 | User Service          | 6.1 MB       | ✅ Healthy | `GET /health` | `GET /api-docs` |
 | Property Service      | 6.4 MB       | ✅ Healthy | `GET /health` | `GET /api-docs` |
 | Mortgage Service      | 6.2 MB       | ✅ Healthy | `GET /health` | `GET /api-docs` |

@@ -43,6 +43,36 @@
             "key": "adminUserId",
             "value": "admin-001",
             "type": "string"
+        },
+        {
+            "key": "targetUserId",
+            "value": "user-002",
+            "type": "string",
+            "description": "User ID for tenant membership operations"
+        },
+        {
+            "key": "targetTenantId",
+            "value": "tenant-002",
+            "type": "string",
+            "description": "Target tenant ID for switching tenants"
+        },
+        {
+            "key": "roleId",
+            "value": "role-001",
+            "type": "string",
+            "description": "Role ID for tenant membership operations"
+        },
+        {
+            "key": "newRoleId",
+            "value": "role-002",
+            "type": "string",
+            "description": "New role ID for updating member roles"
+        },
+        {
+            "key": "roleName",
+            "value": "ADMIN",
+            "type": "string",
+            "description": "Role name for policy lookup"
         }
     ],
     "item": [
@@ -3300,6 +3330,256 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "Tenant Memberships",
+                    "description": "Manage user memberships in tenants. Users can belong to multiple tenants with different roles.",
+                    "item": [
+                        {
+                            "name": "Get User's Tenants",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{userId}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/users/{{userId}}/tenants",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "users",
+                                        "{{userId}}",
+                                        "tenants"
+                                    ]
+                                },
+                                "description": "Get all tenants a user belongs to, with their role in each tenant."
+                            }
+                        },
+                        {
+                            "name": "Get User's Default Tenant",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{userId}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/users/{{userId}}/default-tenant",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "users",
+                                        "{{userId}}",
+                                        "default-tenant"
+                                    ]
+                                },
+                                "description": "Get the user's default tenant (used for login context)."
+                            }
+                        },
+                        {
+                            "name": "Set Default Tenant",
+                            "request": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{userId}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/users/{{userId}}/default-tenant/{{targetTenantId}}",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "users",
+                                        "{{userId}}",
+                                        "default-tenant",
+                                        "{{targetTenantId}}"
+                                    ]
+                                },
+                                "description": "Set the user's default tenant. The user must be a member of this tenant."
+                            }
+                        },
+                        {
+                            "name": "Get Tenant Members",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/tenants/{{tenantId}}/members",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "tenants",
+                                        "{{tenantId}}",
+                                        "members"
+                                    ]
+                                },
+                                "description": "Get all members of a tenant."
+                            }
+                        },
+                        {
+                            "name": "Add Member to Tenant",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"userId\": \"{{targetUserId}}\",\n  \"roleId\": \"{{roleId}}\",\n  \"isDefault\": true\n}"
+                                },
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/tenants/{{tenantId}}/members",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "tenants",
+                                        "{{tenantId}}",
+                                        "members"
+                                    ]
+                                },
+                                "description": "Add a user to a tenant with a specific role. The user can belong to multiple tenants."
+                            }
+                        },
+                        {
+                            "name": "Get Member Details",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/tenants/{{tenantId}}/members/{{targetUserId}}",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "tenants",
+                                        "{{tenantId}}",
+                                        "members",
+                                        "{{targetUserId}}"
+                                    ]
+                                },
+                                "description": "Get a specific user's membership details in a tenant."
+                            }
+                        },
+                        {
+                            "name": "Update Member Role",
+                            "request": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"roleId\": \"{{newRoleId}}\",\n  \"isActive\": true\n}"
+                                },
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/tenants/{{tenantId}}/members/{{targetUserId}}",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "tenants",
+                                        "{{tenantId}}",
+                                        "members",
+                                        "{{targetUserId}}"
+                                    ]
+                                },
+                                "description": "Update a user's role or status in a tenant."
+                            }
+                        },
+                        {
+                            "name": "Remove Member from Tenant",
+                            "request": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/tenants/{{tenantId}}/members/{{targetUserId}}",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "tenants",
+                                        "{{tenantId}}",
+                                        "members",
+                                        "{{targetUserId}}"
+                                    ]
+                                },
+                                "description": "Remove a user from a tenant."
+                            }
+                        }
+                    ]
                 }
             ]
         },
@@ -3376,7 +3656,46 @@
                                 "{{roleName}}"
                             ]
                         },
-                        "description": "Get a role policy from DynamoDB by role name. Returns the scopes (permissions) for the role."
+                        "description": "Get a global role policy from DynamoDB by role name. Returns the scopes (permissions) for the role."
+                    }
+                },
+                {
+                    "name": "Get Tenant-Scoped Policy",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{policySyncServiceUrl}}/tenants/{{tenantId}}/policies/{{roleName}}",
+                            "host": [
+                                "{{policySyncServiceUrl}}"
+                            ],
+                            "path": [
+                                "tenants",
+                                "{{tenantId}}",
+                                "policies",
+                                "{{roleName}}"
+                            ]
+                        },
+                        "description": "Get a tenant-scoped role policy from DynamoDB. If not found, returns 404 (check global policy instead)."
+                    }
+                },
+                {
+                    "name": "Sync Tenant Policies",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{policySyncServiceUrl}}/sync/tenant/{{tenantId}}",
+                            "host": [
+                                "{{policySyncServiceUrl}}"
+                            ],
+                            "path": [
+                                "sync",
+                                "tenant",
+                                "{{tenantId}}"
+                            ]
+                        },
+                        "description": "Sync all role policies for a specific tenant from RDS to DynamoDB."
                     }
                 }
             ]

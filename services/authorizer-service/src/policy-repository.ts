@@ -1,10 +1,11 @@
 import { DynamoDBClient, ScanCommand, GetItemCommand } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, QueryCommand } from '@aws-sdk/lib-dynamodb';
 import { unmarshall } from '@aws-sdk/util-dynamodb';
-import { RolePolicyItem } from './types';
+import { RolePolicyItem, RolePolicy, PolicyStatement } from './types';
 
 interface CacheEntry {
     scopes: string[];
+    policy?: RolePolicy;
     expiresAt: number;
 }
 
@@ -26,6 +27,22 @@ export class PolicyRepository {
     }
 
     /**
+     * Build cache key for a role with optional tenant scoping
+     */
+    private buildCacheKey(roleName: string, tenantId?: string): string {
+        return tenantId ? `${tenantId}#${roleName}` : roleName;
+    }
+
+    /**
+     * Build DynamoDB PK for a role
+     */
+    private buildPK(roleName: string, tenantId?: string): string {
+        return tenantId
+            ? `TENANT#${tenantId}#ROLE#${roleName}`
+            : `ROLE#${roleName}`;
+    }
+
+    /**
      * Warm the cache by loading all active roles on cold start
      */
     async warmCache(): Promise<void> {
@@ -34,19 +51,7 @@ export class PolicyRepository {
         }
 
         try {
-            const command = new QueryCommand({
-                TableName: this.tableName,
-                KeyConditionExpression: 'begins_with(PK, :prefix)',
-                FilterExpression: 'SK = :sk AND isActive = :active',
-                ExpressionAttributeValues: {
-                    ':prefix': 'ROLE#',
-                    ':sk': 'POLICY',
-                    ':active': true,
-                },
-            });
-
-            // QueryCommand with begins_with on PK won't work directly
-            // Use Scan instead for warming
+            // Scan all policy items
             const scanCommand = new ScanCommand({
                 TableName: this.tableName,
                 FilterExpression: 'SK = :sk',
@@ -61,11 +66,18 @@ export class PolicyRepository {
             for (const item of response.Items || []) {
                 const unmarshalled = unmarshall(item);
                 if (unmarshalled.isActive !== false) {
-                    const roleName = unmarshalled.roleName || unmarshalled.PK?.replace('ROLE#', '');
+                    const pk = unmarshalled.PK || '';
+                    const roleName = unmarshalled.roleName;
+                    const tenantId = unmarshalled.tenantId;
+
                     if (roleName) {
+                        const cacheKey = this.buildCacheKey(roleName, tenantId);
                         const scopes = this.extractScopesFromItem(unmarshalled);
-                        this.cache.set(roleName, {
+                        const policy = unmarshalled.policy as RolePolicy | undefined;
+
+                        this.cache.set(cacheKey, {
                             scopes,
+                            policy,
                             expiresAt: now + CACHE_TTL_MS,
                         });
                     }
@@ -73,55 +85,65 @@ export class PolicyRepository {
             }
 
             this.cacheWarmed = true;
-            console.log(`[PolicyRepository] Cache warmed with ${this.cache.size} roles`);
+            console.log(`[PolicyRepository] Cache warmed with ${this.cache.size} role policies`);
         } catch (error) {
             console.error('[PolicyRepository] Failed to warm cache:', error);
-            // Don't throw - allow fallback to per-request fetching
         }
     }
 
     /**
-     * Resolve roles to scopes using cache
+     * Get role policy for tenant-scoped authorization
+     * Falls back to global role if tenant-specific role not found
      */
-    async resolveScopes(roles: string[]): Promise<string[]> {
-        if (!roles || roles.length === 0) {
-            return [];
-        }
-
-        const allScopes: string[] = [];
+    async getRolePolicy(roleName: string, tenantId?: string): Promise<CacheEntry | null> {
         const now = Date.now();
 
-        for (const role of roles) {
-            const cached = this.cache.get(role);
+        // First try tenant-scoped role
+        if (tenantId) {
+            const tenantCacheKey = this.buildCacheKey(roleName, tenantId);
+            const tenantCached = this.cache.get(tenantCacheKey);
 
-            if (cached && cached.expiresAt > now) {
-                // Cache hit
-                allScopes.push(...cached.scopes);
-            } else {
-                // Cache miss - fetch from DynamoDB
-                const scopes = await this.fetchRoleScopes(role);
-                this.cache.set(role, {
-                    scopes,
-                    expiresAt: now + CACHE_TTL_MS,
-                });
-                allScopes.push(...scopes);
+            if (tenantCached && tenantCached.expiresAt > now) {
+                return tenantCached;
+            }
+
+            // Try fetching tenant-scoped role
+            const tenantPolicy = await this.fetchRolePolicy(roleName, tenantId);
+            if (tenantPolicy) {
+                this.cache.set(tenantCacheKey, tenantPolicy);
+                return tenantPolicy;
             }
         }
 
-        // Deduplicate scopes
-        return [...new Set(allScopes)];
+        // Fall back to global role
+        const globalCacheKey = this.buildCacheKey(roleName);
+        const globalCached = this.cache.get(globalCacheKey);
+
+        if (globalCached && globalCached.expiresAt > now) {
+            return globalCached;
+        }
+
+        const globalPolicy = await this.fetchRolePolicy(roleName);
+        if (globalPolicy) {
+            this.cache.set(globalCacheKey, globalPolicy);
+            return globalPolicy;
+        }
+
+        return null;
     }
 
     /**
-     * Fetch scopes for a single role from DynamoDB
+     * Fetch role policy from DynamoDB
      */
-    private async fetchRoleScopes(role: string): Promise<string[]> {
+    private async fetchRolePolicy(roleName: string, tenantId?: string): Promise<CacheEntry | null> {
         try {
+            const pk = this.buildPK(roleName, tenantId);
+
             const command = new QueryCommand({
                 TableName: this.tableName,
                 KeyConditionExpression: 'PK = :pk AND SK = :sk',
                 ExpressionAttributeValues: {
-                    ':pk': `ROLE#${role}`,
+                    ':pk': pk,
                     ':sk': 'POLICY',
                 },
             });
@@ -131,15 +153,45 @@ export class PolicyRepository {
             if (response.Items && response.Items.length > 0) {
                 const item = response.Items[0] as RolePolicyItem;
                 if (item.isActive) {
-                    return this.extractScopesFromItem(item);
+                    return {
+                        scopes: this.extractScopesFromItem(item),
+                        policy: item.policy,
+                        expiresAt: Date.now() + CACHE_TTL_MS,
+                    };
                 }
             }
 
-            return [];
+            return null;
         } catch (error) {
-            console.error(`[PolicyRepository] Error fetching role ${role}:`, error);
-            return [];
+            console.error(`[PolicyRepository] Error fetching role ${roleName}:`, error);
+            return null;
         }
+    }
+
+    /**
+     * Resolve roles to combined policy for tenant context
+     */
+    async resolvePolicies(roles: string[], tenantId?: string): Promise<{ scopes: string[]; policy: RolePolicy }> {
+        const allScopes: Set<string> = new Set();
+        const allStatements: PolicyStatement[] = [];
+
+        for (const role of roles) {
+            const entry = await this.getRolePolicy(role, tenantId);
+            if (entry) {
+                entry.scopes.forEach(s => allScopes.add(s));
+                if (entry.policy?.statements) {
+                    allStatements.push(...entry.policy.statements);
+                }
+            }
+        }
+
+        return {
+            scopes: Array.from(allScopes),
+            policy: {
+                version: '2',
+                statements: allStatements,
+            },
+        };
     }
 
     /**
