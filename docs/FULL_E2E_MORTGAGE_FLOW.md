@@ -2,7 +2,8 @@
 
 > **Purpose**: Complete API-driven flow from tenant bootstrap through mortgage completion.  
 > **Use Case**: Guide Postman Flows design and E2E testing.  
-> **Last Updated**: 2025-01-XX
+> **Last Updated**: 2026-01-12  
+> **Test Location**: [`services/mortgage-service/tests/e2e/full-mortgage-flow/`](../services/mortgage-service/tests/e2e/full-mortgage-flow/)
 
 ## Summary
 
