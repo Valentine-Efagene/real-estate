@@ -78,6 +78,12 @@
             "value": "ADMIN",
             "type": "string",
             "description": "Role name for policy lookup"
+        },
+        {
+            "key": "bootstrapSecret",
+            "value": "local-bootstrap-secret",
+            "type": "string",
+            "description": "Bootstrap secret for admin endpoints (use 'local-bootstrap-secret' for local dev)"
         }
     ],
     "item": [
@@ -4156,6 +4162,69 @@
                             ]
                         },
                         "description": "Sync all role policies for a specific tenant from RDS to DynamoDB."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Admin Bootstrap",
+            "description": "Admin endpoints for tenant bootstrapping. Protected by bootstrap secret.",
+            "item": [
+                {
+                    "name": "Bootstrap Tenant",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-bootstrap-secret",
+                                "value": "{{bootstrapSecret}}",
+                                "description": "Bootstrap secret from SSM or environment"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"tenant\": {\n    \"name\": \"Acme Real Estate\",\n    \"subdomain\": \"acme\"\n  },\n  \"admin\": {\n    \"email\": \"admin@acme.com\",\n    \"firstName\": \"Admin\",\n    \"lastName\": \"User\"\n  }\n}"
+                        },
+                        "url": {
+                            "raw": "{{userServiceUrl}}/admin/bootstrap-tenant",
+                            "host": [
+                                "{{userServiceUrl}}"
+                            ],
+                            "path": [
+                                "admin",
+                                "bootstrap-tenant"
+                            ]
+                        },
+                        "description": "Bootstrap a new tenant with default roles (admin, user, mortgage_ops, finance, legal), permissions, and first admin user. Idempotent - safe to call multiple times with same subdomain."
+                    }
+                },
+                {
+                    "name": "Check Bootstrap Status",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-bootstrap-secret",
+                                "value": "{{bootstrapSecret}}",
+                                "description": "Bootstrap secret from SSM or environment"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{userServiceUrl}}/admin/bootstrap-status/acme",
+                            "host": [
+                                "{{userServiceUrl}}"
+                            ],
+                            "path": [
+                                "admin",
+                                "bootstrap-status",
+                                "acme"
+                            ]
+                        },
+                        "description": "Check if a tenant has been bootstrapped. Returns tenant info, roles, and admins."
                     }
                 }
             ]

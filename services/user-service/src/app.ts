@@ -8,6 +8,7 @@ import { tenantRouter } from './routes/tenants';
 import { tenantMembershipRouter } from './routes/tenant-memberships';
 import { socialRouter } from './routes/socials';
 import { apiKeyRouter } from './routes/api-keys';
+import { adminRouter } from './routes/admin';
 import { errorHandler } from './middleware/error-handler';
 import { requestLogger } from './middleware/request-logger';
 import { generateOpenAPIDocument } from './config/swagger';
@@ -35,6 +36,7 @@ app.use('/permissions', permissionRouter);
 app.use('/tenants', tenantRouter);
 app.use('/socials', socialRouter);
 app.use('/api-keys', apiKeyRouter);
+app.use('/admin', adminRouter);
 
 // Tenant membership routes (handles both /tenants/:id/members and /users/:id/tenants)
 app.use(tenantMembershipRouter);
