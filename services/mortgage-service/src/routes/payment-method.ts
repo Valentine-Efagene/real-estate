@@ -16,9 +16,11 @@ import {
     UpdatePhaseEventAttachmentSchema,
     AddStepEventAttachmentSchema,
     UpdateStepEventAttachmentSchema,
+    BulkDocumentRulesSchema,
 } from '../validators/payment-method.validator';
 import { z } from 'zod';
 import { getAuthContext } from '@valentine-efagene/qshelter-common';
+import { prisma } from '../lib/prisma';
 
 const router = Router();
 
@@ -401,6 +403,125 @@ router.delete('/step-event-attachments/:attachmentId', async (req: Request, res:
     try {
         const result = await paymentMethodService.deleteStepEventAttachment(req.params.attachmentId);
         res.json(result);
+    } catch (error) {
+        next(error);
+    }
+});
+
+// ============================================================
+// Document Requirement Rules (Bulk Operations)
+// ============================================================
+
+// Create document requirement rules for a payment method
+router.post('/:id/document-rules', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { tenantId } = getAuthContext(req);
+        const paymentMethodId = req.params.id;
+        const data = BulkDocumentRulesSchema.parse(req.body);
+
+        // Verify payment method exists and belongs to tenant
+        const paymentMethod = await prisma.propertyPaymentMethod.findFirst({
+            where: { id: paymentMethodId, tenantId },
+        });
+
+        if (!paymentMethod) {
+            res.status(404).json({ error: 'Payment method not found' });
+            return;
+        }
+
+        // Create rules in a transaction
+        const createdRules = await prisma.$transaction(async (tx) => {
+            const rules = [];
+            for (const rule of data.rules) {
+                const created = await tx.documentRequirementRule.create({
+                    data: {
+                        tenantId,
+                        paymentMethodId,
+                        context: rule.context as any,
+                        phaseType: rule.phaseType,
+                        documentType: rule.documentType,
+                        isRequired: rule.isRequired,
+                        description: rule.description,
+                        maxSizeBytes: rule.maxSizeBytes,
+                        allowedMimeTypes: rule.allowedMimeTypes?.join(','),
+                        expiryDays: rule.expiryDays,
+                        requiresManualReview: rule.requiresManualReview,
+                    },
+                });
+                rules.push(created);
+            }
+            return rules;
+        });
+
+        res.status(201).json({ success: true, data: createdRules });
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            res.status(400).json({ error: 'Validation failed', details: error.issues });
+            return;
+        }
+        next(error);
+    }
+});
+
+// Get document requirement rules for a payment method
+router.get('/:id/document-rules', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { tenantId } = getAuthContext(req);
+        const paymentMethodId = req.params.id;
+        const phaseType = req.query.phaseType as string | undefined;
+
+        // Verify payment method exists and belongs to tenant
+        const paymentMethod = await prisma.propertyPaymentMethod.findFirst({
+            where: { id: paymentMethodId, tenantId },
+        });
+
+        if (!paymentMethod) {
+            res.status(404).json({ error: 'Payment method not found' });
+            return;
+        }
+
+        const rules = await prisma.documentRequirementRule.findMany({
+            where: {
+                paymentMethodId,
+                tenantId,
+                ...(phaseType ? { phaseType } : {}),
+            },
+            orderBy: [{ phaseType: 'asc' }, { documentType: 'asc' }],
+        });
+
+        // Transform allowedMimeTypes back to array
+        const transformedRules = rules.map((rule) => ({
+            ...rule,
+            allowedMimeTypes: rule.allowedMimeTypes ? rule.allowedMimeTypes.split(',') : [],
+        }));
+
+        res.json({ success: true, data: transformedRules });
+    } catch (error) {
+        next(error);
+    }
+});
+
+// Delete a document requirement rule
+router.delete('/:id/document-rules/:ruleId', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { tenantId } = getAuthContext(req);
+        const { ruleId } = req.params;
+
+        // Verify rule exists and belongs to tenant
+        const rule = await prisma.documentRequirementRule.findFirst({
+            where: { id: ruleId, tenantId },
+        });
+
+        if (!rule) {
+            res.status(404).json({ error: 'Document rule not found' });
+            return;
+        }
+
+        await prisma.documentRequirementRule.delete({
+            where: { id: ruleId },
+        });
+
+        res.json({ success: true });
     } catch (error) {
         next(error);
     }

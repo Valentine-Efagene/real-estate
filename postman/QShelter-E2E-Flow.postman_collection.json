@@ -1,0 +1,1708 @@
+{
+    "info": {
+        "_postman_id": "qshelter-e2e-flow-v1",
+        "name": "QShelter E2E Mortgage Flow",
+        "description": "Complete end-to-end flow from tenant bootstrap through mortgage activation.\n\n## Purpose\nThis collection demonstrates the full mortgage application lifecycle using only REST APIs.\n\n## Flow Summary\n1. **Bootstrap**: Initialize tenant, roles, permissions, admin\n2. **Registration**: Customer signup\n3. **Property Setup**: Create property, variant, unit\n4. **Configuration**: Payment plans, methods, document rules\n5. **Application**: Create and submit application\n6. **KYC**: Document upload, review, provisional offer\n7. **Downpayment**: One-time 10% payment\n8. **Verification**: Final offer letter signing\n9. **Mortgage**: Generate installments, activate\n\n## Prerequisites\n- All services running (user-service, property-service, mortgage-service)\n- LocalStack or AWS configured\n- Bootstrap secret configured",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "auth": {
+        "type": "noauth"
+    },
+    "variable": [
+        {
+            "key": "userServiceUrl",
+            "value": "http://localhost:3002",
+            "type": "string"
+        },
+        {
+            "key": "propertyServiceUrl",
+            "value": "http://localhost:3003",
+            "type": "string"
+        },
+        {
+            "key": "mortgageServiceUrl",
+            "value": "http://localhost:3001",
+            "type": "string"
+        },
+        {
+            "key": "notificationServiceUrl",
+            "value": "http://localhost:3004",
+            "type": "string"
+        },
+        {
+            "key": "paymentServiceUrl",
+            "value": "http://localhost:3005",
+            "type": "string"
+        },
+        {
+            "key": "bootstrapSecret",
+            "value": "local-bootstrap-secret",
+            "type": "string"
+        },
+        {
+            "key": "tenantId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "adaezeId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "adaezeAccessToken",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "chidiId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "chidiAccessToken",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "propertyId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "variantId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "unitId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "downpaymentPlanId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "mortgagePlanId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "paymentMethodId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "applicationId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "kycPhaseId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "downpaymentPhaseId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "verificationPhaseId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "mortgagePhaseId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "docId1",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "docId2",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "docId3",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "downpaymentInstallmentId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "paymentReference",
+            "value": "",
+            "type": "string"
+        }
+    ],
+    "item": [
+        {
+            "name": "1. Bootstrap",
+            "description": "Initialize the tenant with roles, permissions, and first admin user.",
+            "item": [
+                {
+                    "name": "1.1 Bootstrap Tenant",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "const response = pm.response.json();",
+                                    "if (response.success && response.data) {",
+                                    "    pm.collectionVariables.set('tenantId', response.data.tenant.id);",
+                                    "    pm.collectionVariables.set('adaezeId', response.data.admin.id);",
+                                    "    pm.test('Tenant created successfully', () => {",
+                                    "        pm.expect(response.data.tenant.id).to.be.a('string');",
+                                    "    });",
+                                    "    pm.test('Admin user created', () => {",
+                                    "        pm.expect(response.data.admin.email).to.equal('adaeze@qshelter.com');",
+                                    "    });",
+                                    "    pm.test('All roles created', () => {",
+                                    "        pm.expect(response.data.roles.length).to.be.greaterThan(0);",
+                                    "    });",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-bootstrap-secret",
+                                "value": "{{bootstrapSecret}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"tenant\": {\n    \"name\": \"QShelter Real Estate\",\n    \"subdomain\": \"qshelter\"\n  },\n  \"admin\": {\n    \"email\": \"adaeze@qshelter.com\",\n    \"password\": \"SecureAdmin123!\",\n    \"firstName\": \"Adaeze\",\n    \"lastName\": \"Okonkwo\"\n  }\n}"
+                        },
+                        "url": {
+                            "raw": "{{userServiceUrl}}/admin/bootstrap-tenant",
+                            "host": [
+                                "{{userServiceUrl}}"
+                            ],
+                            "path": [
+                                "admin",
+                                "bootstrap-tenant"
+                            ]
+                        },
+                        "description": "Idempotent bootstrap endpoint that creates:\n- Tenant\n- Default roles (admin, user, mortgage_ops, finance, legal)\n- Permissions for each role\n- First admin user"
+                    }
+                },
+                {
+                    "name": "1.2 Admin Login",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "const response = pm.response.json();",
+                                    "if (response.success && response.data) {",
+                                    "    pm.collectionVariables.set('adaezeAccessToken', response.data.accessToken);",
+                                    "    pm.test('Login successful', () => {",
+                                    "        pm.expect(response.data.accessToken).to.be.a('string');",
+                                    "    });",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"adaeze@qshelter.com\",\n  \"password\": \"SecureAdmin123!\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{userServiceUrl}}/auth/login",
+                            "host": [
+                                "{{userServiceUrl}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "login"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "2. Customer Registration",
+            "description": "Register the customer (Chidi) who will be purchasing the property.",
+            "item": [
+                {
+                    "name": "2.1 Customer Signup",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "const response = pm.response.json();",
+                                    "if (response.success && response.data) {",
+                                    "    pm.collectionVariables.set('chidiId', response.data.user.id);",
+                                    "    pm.collectionVariables.set('chidiAccessToken', response.data.accessToken);",
+                                    "    pm.test('Customer signup successful', () => {",
+                                    "        pm.expect(response.data.user.email).to.equal('chidi@gmail.com');",
+                                    "    });",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"chidi@gmail.com\",\n  \"password\": \"CustomerPass123!\",\n  \"firstName\": \"Chidi\",\n  \"lastName\": \"Nnamdi\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{userServiceUrl}}/auth/signup",
+                            "host": [
+                                "{{userServiceUrl}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "signup"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "3. Property Setup",
+            "description": "Create the property, variant, and unit that Chidi will purchase.",
+            "item": [
+                {
+                    "name": "3.1 Create Property",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "const response = pm.response.json();",
+                                    "if (response.success && response.data) {",
+                                    "    pm.collectionVariables.set('propertyId', response.data.id);",
+                                    "    pm.test('Property created', () => {",
+                                    "        pm.expect(response.data.title).to.equal('Lekki Gardens Estate');",
+                                    "    });",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{adaezeAccessToken}}"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"title\": \"Lekki Gardens Estate\",\n  \"description\": \"Premium residential estate in Lekki Phase 1\",\n  \"category\": \"SALE\",\n  \"propertyType\": \"APARTMENT\",\n  \"country\": \"Nigeria\",\n  \"currency\": \"NGN\",\n  \"city\": \"Lagos\",\n  \"district\": \"Lekki\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{propertyServiceUrl}}/property/properties",
+                            "host": [
+                                "{{propertyServiceUrl}}"
+                            ],
+                            "path": [
+                                "property",
+                                "properties"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "3.2 Create Variant",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "const response = pm.response.json();",
+                                    "if (response.success && response.data) {",
+                                    "    pm.collectionVariables.set('variantId', response.data.id);",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{adaezeAccessToken}}"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"3-Bedroom Flat\",\n  \"nBedrooms\": 3,\n  \"nBathrooms\": 3,\n  \"nParkingSpots\": 1,\n  \"area\": 150,\n  \"price\": 85000000,\n  \"totalUnits\": 20,\n  \"availableUnits\": 15\n}"
+                        },
+                        "url": {
+                            "raw": "{{propertyServiceUrl}}/property/properties/{{propertyId}}/variants",
+                            "host": [
+                                "{{propertyServiceUrl}}"
+                            ],
+                            "path": [
+                                "property",
+                                "properties",
+                                "{{propertyId}}",
+                                "variants"
+                            ]
+                        },
+                        "description": "Create a property variant with specs and pricing"
+                    }
+                },
+                {
+                    "name": "3.3 Create Unit",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "const response = pm.response.json();",
+                                    "if (response.success && response.data) {",
+                                    "    pm.collectionVariables.set('unitId', response.data.id);",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{adaezeAccessToken}}"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"unitNumber\": \"14B\",\n  \"floorNumber\": 14,\n  \"blockName\": \"Block B\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{propertyServiceUrl}}/properties/{{propertyId}}/variants/{{variantId}}/units",
+                            "host": [
+                                "{{propertyServiceUrl}}"
+                            ],
+                            "path": [
+                                "properties",
+                                "{{propertyId}}",
+                                "variants",
+                                "{{variantId}}",
+                                "units"
+                            ]
+                        },
+                        "description": "⚠️ This endpoint needs to be implemented in property-service"
+                    }
+                },
+                {
+                    "name": "3.4 Publish Property (⚠️ TODO)",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{adaezeAccessToken}}"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{propertyServiceUrl}}/properties/{{propertyId}}/publish",
+                            "host": [
+                                "{{propertyServiceUrl}}"
+                            ],
+                            "path": [
+                                "properties",
+                                "{{propertyId}}",
+                                "publish"
+                            ]
+                        },
+                        "description": "⚠️ This endpoint needs to be implemented in property-service"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "4. Payment Configuration",
+            "description": "Configure payment plans and payment method with phases.",
+            "item": [
+                {
+                    "name": "4.1 Create Downpayment Plan",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "const response = pm.response.json();",
+                                    "if (response.success && response.data) {",
+                                    "    pm.collectionVariables.set('downpaymentPlanId', response.data.id);",
+                                    "    pm.test('Downpayment plan created', () => {",
+                                    "        pm.expect(response.data.frequency).to.equal('ONE_TIME');",
+                                    "    });",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{adaezeAccessToken}}"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-idempotency-key",
+                                "value": "create-downpayment-plan-{{$timestamp}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"10% One-Off Downpayment\",\n  \"description\": \"Single upfront payment for property reservation\",\n  \"frequency\": \"ONE_TIME\",\n  \"interestRate\": 0,\n  \"gracePeriodDays\": 30\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-plans",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-plans"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "4.2 Create Mortgage Plan",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "const response = pm.response.json();",
+                                    "if (response.success && response.data) {",
+                                    "    pm.collectionVariables.set('mortgagePlanId', response.data.id);",
+                                    "    pm.test('Mortgage plan created', () => {",
+                                    "        pm.expect(response.data.allowFlexibleTerm).to.be.true;",
+                                    "    });",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{adaezeAccessToken}}"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-idempotency-key",
+                                "value": "create-mortgage-plan-{{$timestamp}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Flexible Mortgage at 9.5%\",\n  \"description\": \"Monthly payments at 9.5% annual interest, term selected by applicant\",\n  \"frequency\": \"MONTHLY\",\n  \"allowFlexibleTerm\": true,\n  \"minTermMonths\": 60,\n  \"maxTermMonths\": 360,\n  \"termStepMonths\": 12,\n  \"maxAgeAtMaturity\": 65,\n  \"interestRate\": 9.5,\n  \"gracePeriodDays\": 15\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-plans",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-plans"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "4.3 Create Payment Method (4 Phases)",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "const response = pm.response.json();",
+                                    "if (response.success && response.data) {",
+                                    "    pm.collectionVariables.set('paymentMethodId', response.data.id);",
+                                    "    pm.test('Payment method has 4 phases', () => {",
+                                    "        pm.expect(response.data.phases.length).to.equal(4);",
+                                    "    });",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{adaezeAccessToken}}"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-idempotency-key",
+                                "value": "create-payment-method-{{$timestamp}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"10/90 Lekki Mortgage\",\n  \"description\": \"Underwriting → Downpayment → Final Documentation → Mortgage\",\n  \"requiresManualApproval\": true,\n  \"phases\": [\n    {\n      \"name\": \"Underwriting & Documentation\",\n      \"phaseCategory\": \"DOCUMENTATION\",\n      \"phaseType\": \"KYC\",\n      \"order\": 1,\n      \"requiredDocumentTypes\": [\"ID_CARD\", \"BANK_STATEMENT\", \"EMPLOYMENT_LETTER\"],\n      \"stepDefinitions\": [\n        { \"name\": \"Upload Valid ID\", \"stepType\": \"UPLOAD\", \"order\": 1 },\n        { \"name\": \"Upload Bank Statements\", \"stepType\": \"UPLOAD\", \"order\": 2 },\n        { \"name\": \"Upload Employment Letter\", \"stepType\": \"UPLOAD\", \"order\": 3 },\n        { \"name\": \"Admin Reviews Documents\", \"stepType\": \"APPROVAL\", \"order\": 4 },\n        {\n          \"name\": \"Generate Provisional Offer\",\n          \"stepType\": \"GENERATE_DOCUMENT\",\n          \"order\": 5,\n          \"metadata\": {\n            \"documentType\": \"PROVISIONAL_OFFER\",\n            \"autoSend\": true,\n            \"expiresInDays\": 30\n          }\n        },\n        { \"name\": \"Customer Signs Provisional Offer\", \"stepType\": \"SIGNATURE\", \"order\": 6 }\n      ]\n    },\n    {\n      \"name\": \"10% Downpayment\",\n      \"phaseCategory\": \"PAYMENT\",\n      \"phaseType\": \"DOWNPAYMENT\",\n      \"order\": 2,\n      \"percentOfPrice\": 10,\n      \"paymentPlanId\": \"{{downpaymentPlanId}}\"\n    },\n    {\n      \"name\": \"Final Documentation\",\n      \"phaseCategory\": \"DOCUMENTATION\",\n      \"phaseType\": \"VERIFICATION\",\n      \"order\": 3,\n      \"stepDefinitions\": [\n        {\n          \"name\": \"Admin Uploads Final Offer\",\n          \"stepType\": \"UPLOAD\",\n          \"order\": 1,\n          \"metadata\": {\n            \"documentType\": \"FINAL_OFFER\",\n            \"uploadedBy\": \"ADMIN\"\n          }\n        },\n        { \"name\": \"Customer Signs Final Offer\", \"stepType\": \"SIGNATURE\", \"order\": 2 }\n      ]\n    },\n    {\n      \"name\": \"20-Year Mortgage\",\n      \"phaseCategory\": \"PAYMENT\",\n      \"phaseType\": \"MORTGAGE\",\n      \"order\": 4,\n      \"percentOfPrice\": 90,\n      \"interestRate\": 9.5,\n      \"paymentPlanId\": \"{{mortgagePlanId}}\"\n    }\n  ]\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-methods",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-methods"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "4.4 Link Payment Method to Property",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{adaezeAccessToken}}"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-idempotency-key",
+                                "value": "link-payment-method-{{$timestamp}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"propertyId\": \"{{propertyId}}\",\n  \"isDefault\": true\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-methods/{{paymentMethodId}}/properties",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-methods",
+                                "{{paymentMethodId}}",
+                                "properties"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "5. Application Creation",
+            "description": "Customer creates and submits their mortgage application.",
+            "item": [
+                {
+                    "name": "5.1 Create Application",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "const response = pm.response.json();",
+                                    "if (response.success && response.data) {",
+                                    "    pm.collectionVariables.set('applicationId', response.data.id);",
+                                    "    const phases = response.data.phases;",
+                                    "    pm.collectionVariables.set('kycPhaseId', phases.find(p => p.phaseType === 'KYC').id);",
+                                    "    pm.collectionVariables.set('downpaymentPhaseId', phases.find(p => p.phaseType === 'DOWNPAYMENT').id);",
+                                    "    pm.collectionVariables.set('verificationPhaseId', phases.find(p => p.phaseType === 'VERIFICATION').id);",
+                                    "    pm.collectionVariables.set('mortgagePhaseId', phases.find(p => p.phaseType === 'MORTGAGE').id);",
+                                    "    pm.test('Application created with 4 phases', () => {",
+                                    "        pm.expect(response.data.phases.length).to.equal(4);",
+                                    "    });",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{chidiAccessToken}}"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-idempotency-key",
+                                "value": "create-application-{{$timestamp}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"propertyUnitId\": \"{{unitId}}\",\n  \"paymentMethodId\": \"{{paymentMethodId}}\",\n  \"title\": \"Purchase Agreement - Lekki Gardens Unit 14B\",\n  \"applicationType\": \"MORTGAGE\",\n  \"totalAmount\": 85000000,\n  \"monthlyIncome\": 2500000,\n  \"monthlyExpenses\": 800000,\n  \"applicantAge\": 40,\n  \"selectedMortgageTermMonths\": 240\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "5.2 Submit Application",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{chidiAccessToken}}"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-idempotency-key",
+                                "value": "submit-application-{{$timestamp}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"action\": \"SUBMIT\",\n  \"note\": \"Submitting for processing\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/transition",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "{{applicationId}}",
+                                "transition"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "5.3 Activate KYC Phase",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{chidiAccessToken}}"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-idempotency-key",
+                                "value": "activate-kyc-{{$timestamp}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{kycPhaseId}}/activate",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "{{applicationId}}",
+                                "phases",
+                                "{{kycPhaseId}}",
+                                "activate"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "6. KYC Process",
+            "description": "Document upload, review, and provisional offer signing.",
+            "item": [
+                {
+                    "name": "6.1 Upload ID Card",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{chidiAccessToken}}"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-idempotency-key",
+                                "value": "upload-id-{{$timestamp}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"documentType\": \"ID_CARD\",\n  \"url\": \"https://s3.amazonaws.com/qshelter/chidi/id.pdf\",\n  \"fileName\": \"id.pdf\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{kycPhaseId}}/documents",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "{{applicationId}}",
+                                "phases",
+                                "{{kycPhaseId}}",
+                                "documents"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "6.2 Upload Bank Statement",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{chidiAccessToken}}"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-idempotency-key",
+                                "value": "upload-bank-{{$timestamp}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"documentType\": \"BANK_STATEMENT\",\n  \"url\": \"https://s3.amazonaws.com/qshelter/chidi/bank.pdf\",\n  \"fileName\": \"bank.pdf\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{kycPhaseId}}/documents",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "{{applicationId}}",
+                                "phases",
+                                "{{kycPhaseId}}",
+                                "documents"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "6.3 Upload Employment Letter",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{chidiAccessToken}}"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-idempotency-key",
+                                "value": "upload-employment-{{$timestamp}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"documentType\": \"EMPLOYMENT_LETTER\",\n  \"url\": \"https://s3.amazonaws.com/qshelter/chidi/employment.pdf\",\n  \"fileName\": \"employment.pdf\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{kycPhaseId}}/documents",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "{{applicationId}}",
+                                "phases",
+                                "{{kycPhaseId}}",
+                                "documents"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "6.4 Complete Upload Steps",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{chidiAccessToken}}"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-idempotency-key",
+                                "value": "complete-upload-1-{{$timestamp}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{ \"stepName\": \"Upload Valid ID\" }"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{kycPhaseId}}/steps/complete",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "{{applicationId}}",
+                                "phases",
+                                "{{kycPhaseId}}",
+                                "steps",
+                                "complete"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "6.5 Complete Bank Statement Step",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{chidiAccessToken}}"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-idempotency-key",
+                                "value": "complete-upload-2-{{$timestamp}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{ \"stepName\": \"Upload Bank Statements\" }"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{kycPhaseId}}/steps/complete",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "{{applicationId}}",
+                                "phases",
+                                "{{kycPhaseId}}",
+                                "steps",
+                                "complete"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "6.6 Complete Employment Letter Step",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{chidiAccessToken}}"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-idempotency-key",
+                                "value": "complete-upload-3-{{$timestamp}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{ \"stepName\": \"Upload Employment Letter\" }"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{kycPhaseId}}/steps/complete",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "{{applicationId}}",
+                                "phases",
+                                "{{kycPhaseId}}",
+                                "steps",
+                                "complete"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "6.7 Get Documents for Review",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "const response = pm.response.json();",
+                                    "if (response.success && response.data) {",
+                                    "    const docs = response.data;",
+                                    "    if (docs.length >= 3) {",
+                                    "        pm.collectionVariables.set('docId1', docs[0].id);",
+                                    "        pm.collectionVariables.set('docId2', docs[1].id);",
+                                    "        pm.collectionVariables.set('docId3', docs[2].id);",
+                                    "    }",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{adaezeAccessToken}}"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{kycPhaseId}}/documents",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "{{applicationId}}",
+                                "phases",
+                                "{{kycPhaseId}}",
+                                "documents"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "6.8 Admin Approves Doc 1",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{adaezeAccessToken}}"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-idempotency-key",
+                                "value": "approve-doc-1-{{$timestamp}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"status\": \"APPROVED\",\n  \"note\": \"ID verified successfully\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/documents/{{docId1}}/review",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "{{applicationId}}",
+                                "documents",
+                                "{{docId1}}",
+                                "review"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "6.9 Admin Approves Doc 2",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{adaezeAccessToken}}"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-idempotency-key",
+                                "value": "approve-doc-2-{{$timestamp}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"status\": \"APPROVED\",\n  \"note\": \"Bank statement verified\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/documents/{{docId2}}/review",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "{{applicationId}}",
+                                "documents",
+                                "{{docId2}}",
+                                "review"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "6.10 Admin Approves Doc 3",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{adaezeAccessToken}}"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-idempotency-key",
+                                "value": "approve-doc-3-{{$timestamp}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"status\": \"APPROVED\",\n  \"note\": \"Employment letter verified\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/documents/{{docId3}}/review",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "{{applicationId}}",
+                                "documents",
+                                "{{docId3}}",
+                                "review"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "6.11 Admin Completes Review Step",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{adaezeAccessToken}}"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-idempotency-key",
+                                "value": "complete-review-{{$timestamp}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"stepName\": \"Admin Reviews Documents\",\n  \"note\": \"All documents verified and approved\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{kycPhaseId}}/steps/complete",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "{{applicationId}}",
+                                "phases",
+                                "{{kycPhaseId}}",
+                                "steps",
+                                "complete"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "6.12 Customer Signs Provisional Offer",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{chidiAccessToken}}"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-idempotency-key",
+                                "value": "sign-provisional-{{$timestamp}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{ \"stepName\": \"Customer Signs Provisional Offer\" }"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{kycPhaseId}}/steps/complete",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "{{applicationId}}",
+                                "phases",
+                                "{{kycPhaseId}}",
+                                "steps",
+                                "complete"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "7. Downpayment",
+            "description": "One-time 10% downpayment (₦8.5M).",
+            "item": [
+                {
+                    "name": "7.1 Generate Installment",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "const response = pm.response.json();",
+                                    "if (response.success && response.data && response.data.installments) {",
+                                    "    pm.collectionVariables.set('downpaymentInstallmentId', response.data.installments[0].id);",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{chidiAccessToken}}"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-idempotency-key",
+                                "value": "generate-downpayment-{{$timestamp}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"startDate\": \"{{$isoTimestamp}}\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{downpaymentPhaseId}}/installments",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "{{applicationId}}",
+                                "phases",
+                                "{{downpaymentPhaseId}}",
+                                "installments"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "7.2 Record Payment",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "const response = pm.response.json();",
+                                    "if (response.success && response.data) {",
+                                    "    pm.collectionVariables.set('paymentReference', response.data.reference);",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{chidiAccessToken}}"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-idempotency-key",
+                                "value": "pay-downpayment-{{$timestamp}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"phaseId\": \"{{downpaymentPhaseId}}\",\n  \"installmentId\": \"{{downpaymentInstallmentId}}\",\n  \"amount\": 8500000,\n  \"paymentMethod\": \"BANK_TRANSFER\",\n  \"externalReference\": \"TRF-CHIDI-DOWNPAYMENT-001\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/payments",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "{{applicationId}}",
+                                "payments"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "7.3 Process Payment Confirmation",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{chidiAccessToken}}"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-idempotency-key",
+                                "value": "process-downpayment-{{$timestamp}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"reference\": \"{{paymentReference}}\",\n  \"status\": \"COMPLETED\",\n  \"gatewayTransactionId\": \"GW-TRX-123456\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/payments/process",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "payments",
+                                "process"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "8. Final Documentation",
+            "description": "Admin uploads final offer, customer signs.",
+            "item": [
+                {
+                    "name": "8.1 Admin Uploads Final Offer",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{adaezeAccessToken}}"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-idempotency-key",
+                                "value": "upload-final-offer-{{$timestamp}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"documentType\": \"FINAL_OFFER\",\n  \"url\": \"https://s3.amazonaws.com/qshelter/applications/chidi-final-offer.pdf\",\n  \"fileName\": \"chidi-final-offer.pdf\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{verificationPhaseId}}/documents",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "{{applicationId}}",
+                                "phases",
+                                "{{verificationPhaseId}}",
+                                "documents"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "8.2 Admin Completes Upload Step",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{adaezeAccessToken}}"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-idempotency-key",
+                                "value": "complete-final-upload-{{$timestamp}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{ \"stepName\": \"Admin Uploads Final Offer\" }"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{verificationPhaseId}}/steps/complete",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "{{applicationId}}",
+                                "phases",
+                                "{{verificationPhaseId}}",
+                                "steps",
+                                "complete"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "8.3 Customer Signs Final Offer",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{chidiAccessToken}}"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-idempotency-key",
+                                "value": "sign-final-offer-{{$timestamp}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{ \"stepName\": \"Customer Signs Final Offer\" }"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{verificationPhaseId}}/steps/complete",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "{{applicationId}}",
+                                "phases",
+                                "{{verificationPhaseId}}",
+                                "steps",
+                                "complete"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "9. Mortgage Activation",
+            "description": "Generate installments and activate the mortgage.",
+            "item": [
+                {
+                    "name": "9.1 Generate Mortgage Installments",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{chidiAccessToken}}"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-idempotency-key",
+                                "value": "generate-mortgage-{{$timestamp}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"startDate\": \"{{$isoTimestamp}}\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{mortgagePhaseId}}/installments",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "{{applicationId}}",
+                                "phases",
+                                "{{mortgagePhaseId}}",
+                                "installments"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "9.2 Sign and Activate Application",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{chidiAccessToken}}"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-idempotency-key",
+                                "value": "sign-application-{{$timestamp}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/sign",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "{{applicationId}}",
+                                "sign"
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

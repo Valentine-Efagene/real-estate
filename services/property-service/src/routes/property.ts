@@ -102,3 +102,33 @@ propertyRouter.get('/property-document/:propertyId', async (req, res, next) => {
     }
 });
 
+// Publish property
+propertyRouter.patch('/properties/:id/publish', async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const tenantId = req.tenantContext?.tenantId;
+        if (!tenantId) {
+            return res.status(400).json({ success: false, error: 'Tenant context required' });
+        }
+        const property = await propertyService.publishProperty(id, tenantId);
+        res.json(successResponse(property));
+    } catch (error) {
+        next(error);
+    }
+});
+
+// Unpublish property
+propertyRouter.patch('/properties/:id/unpublish', async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const tenantId = req.tenantContext?.tenantId;
+        if (!tenantId) {
+            return res.status(400).json({ success: false, error: 'Tenant context required' });
+        }
+        const property = await propertyService.unpublishProperty(id, tenantId);
+        res.json(successResponse(property));
+    } catch (error) {
+        next(error);
+    }
+});
+

@@ -7,6 +7,8 @@ import {
 } from '@valentine-efagene/qshelter-common';
 import { propertyRouter } from './routes/property';
 import { amenityRouter } from './routes/amenity';
+import { variantRouter } from './routes/variant';
+import { unitRouter } from './routes/unit';
 import { generateOpenAPIDocument } from './config/swagger';
 import { prisma } from './lib/prisma';
 
@@ -32,5 +34,7 @@ app.get('/openapi.json', (req, res) => {
 // Match existing API Gateway paths (serverless.yml uses /property/*)
 app.use('/property', propertyRouter);
 app.use('/property', amenityRouter);
+app.use('/property', variantRouter);
+app.use('/property', unitRouter);
 
 app.use(errorHandler);

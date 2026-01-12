@@ -101,6 +101,55 @@ class PropertyService {
         });
         return documents;
     }
+
+    async publishProperty(id: string, tenantId: string) {
+        const property = await prisma.property.findFirst({
+            where: { id, tenantId },
+        });
+
+        if (!property) {
+            throw new AppError(404, 'Property not found');
+        }
+
+        if (property.isPublished) {
+            return property; // Idempotent - already published
+        }
+
+        const updated = await prisma.property.update({
+            where: { id },
+            data: {
+                isPublished: true,
+                status: 'PUBLISHED',
+                publishedAt: new Date(),
+            },
+        });
+
+        return updated;
+    }
+
+    async unpublishProperty(id: string, tenantId: string) {
+        const property = await prisma.property.findFirst({
+            where: { id, tenantId },
+        });
+
+        if (!property) {
+            throw new AppError(404, 'Property not found');
+        }
+
+        if (!property.isPublished) {
+            return property; // Idempotent - already unpublished
+        }
+
+        const updated = await prisma.property.update({
+            where: { id },
+            data: {
+                isPublished: false,
+                status: 'DRAFT',
+            },
+        });
+
+        return updated;
+    }
 }
 
 export const propertyService = new PropertyService();

@@ -180,6 +180,26 @@ export const ClonePaymentMethodSchema = z.object({
 }).openapi('ClonePaymentMethod');
 
 // ============================================================
+// Bulk Document Requirement Rules Schema
+// ============================================================
+
+export const DocumentRequirementRuleSchema = z.object({
+    context: z.enum(['PREQUALIFICATION', 'APPLICATION_PHASE', 'PAYMENT_METHOD_CHANGE']).default('APPLICATION_PHASE'),
+    phaseType: z.string().optional().openapi({ example: 'KYC' }),
+    documentType: z.string().min(1).openapi({ example: 'ID_CARD' }),
+    isRequired: z.boolean().default(true),
+    description: z.string().optional().openapi({ example: 'Valid government-issued ID' }),
+    maxSizeBytes: z.number().int().positive().optional().openapi({ example: 5242880 }),
+    allowedMimeTypes: z.array(z.string()).optional().openapi({ example: ['application/pdf', 'image/jpeg'] }),
+    expiryDays: z.number().int().positive().optional().openapi({ example: 90 }),
+    requiresManualReview: z.boolean().default(false),
+}).openapi('DocumentRequirementRule');
+
+export const BulkDocumentRulesSchema = z.object({
+    rules: z.array(DocumentRequirementRuleSchema).min(1),
+}).openapi('BulkDocumentRules');
+
+// ============================================================
 // Event Attachment Schemas
 // ============================================================
 
@@ -238,3 +258,5 @@ export type AddPhaseEventAttachmentInput = z.infer<typeof AddPhaseEventAttachmen
 export type UpdatePhaseEventAttachmentInput = z.infer<typeof UpdatePhaseEventAttachmentSchema>;
 export type AddStepEventAttachmentInput = z.infer<typeof AddStepEventAttachmentSchema>;
 export type UpdateStepEventAttachmentInput = z.infer<typeof UpdateStepEventAttachmentSchema>;
+export type DocumentRequirementRuleInput = z.infer<typeof DocumentRequirementRuleSchema>;
+export type BulkDocumentRulesInput = z.infer<typeof BulkDocumentRulesSchema>;
