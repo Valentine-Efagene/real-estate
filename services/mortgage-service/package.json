@@ -17,7 +17,7 @@
     "deploy:localstack": "npm run build && npx sls deploy --stage localstack --config serverless.localstack.yml && ../../local-dev/scripts/fix-apigw-stage.sh",
     "test:e2e:localstack": "API_BASE_URL=http://$(aws --endpoint-url=http://localhost:4566 apigateway get-rest-apis --query \"items[?name=='qshelter-mortgage-service-localstack'].id\" --output text).execute-api.localhost.localstack.cloud:4566/localstack npm run test:e2e",
     "test:e2e:localstack:all": "npm run test:e2e:localstack",
-    "test:e2e:localstack:full": "npm run test:e2e:localstack -- full-mortgage-flow",
+    "test:e2e:localstack:full": "./scripts/run-full-e2e-localstack.sh",
     "test:e2e:localstack:chidi": "npm run test:e2e:localstack -- chidi-lekki-mortgage",
     "test:e2e:localstack:payment-change": "npm run test:e2e:localstack -- payment-method-change",
     "test:e2e:localstack:property-transfer": "npm run test:e2e:localstack -- property-transfer",

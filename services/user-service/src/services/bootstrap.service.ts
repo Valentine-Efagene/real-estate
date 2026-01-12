@@ -177,6 +177,7 @@ class BootstrapService {
                         lastName: adminInput.lastName,
                         isActive: true,
                         isEmailVerified: true, // Auto-verified for bootstrap
+                        emailVerifiedAt: new Date(), // Set verification timestamp
                         tenantId: tenant!.id,
                         walletId: wallet.id,
                     },

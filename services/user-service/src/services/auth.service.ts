@@ -12,6 +12,7 @@ import {
     VerifyEmailPayload,
     PasswordResetPayload,
     AccountVerifiedPayload,
+    ConfigService,
 } from '@valentine-efagene/qshelter-common';
 import { LoginInput, SignupInput, AuthResponse } from '../validators/auth.validator';
 
@@ -43,6 +44,9 @@ class AuthService {
         const hashedPassword = await bcrypt.hash(data.password, 10);
         const emailVerificationToken = randomBytes(32).toString('hex');
 
+        // Auto-verify in localstack environment for E2E testing
+        const isLocalstack = process.env.NODE_ENV === 'localstack';
+
         const user = await prisma.user.create({
             data: {
                 email: data.email,
@@ -50,26 +54,32 @@ class AuthService {
                 firstName: data.firstName,
                 lastName: data.lastName,
                 avatar: data.avatar,
-                emailVerificationToken,
+                emailVerificationToken: isLocalstack ? null : emailVerificationToken,
+                emailVerifiedAt: isLocalstack ? new Date() : null,
             },
         });
 
-        // Publish verify email event to SNS
-        const verificationLink = `${process.env.FRONTEND_BASE_URL}/auth/verify-email?token=${emailVerificationToken}`;
-        try {
-            await eventPublisher.publishEmail<VerifyEmailPayload>(
-                NotificationType.VERIFY_EMAIL,
-                {
-                    to_email: user.email,
-                    homeBuyerName: `${user.firstName} ${user.lastName}`.trim() || 'User',
-                    verificationLink,
-                },
-                { userId: user.id }
-            );
-            console.log(`[AuthService] Verification email event published for ${user.email}`);
-        } catch (error) {
-            // Log but don't fail signup if email event fails
-            console.error(`[AuthService] Failed to publish verification email event:`, error);
+        // Skip email verification in localstack
+        if (!isLocalstack) {
+            // Publish verify email event to SNS
+            const verificationLink = `${process.env.FRONTEND_BASE_URL}/auth/verify-email?token=${emailVerificationToken}`;
+            try {
+                await eventPublisher.publishEmail<VerifyEmailPayload>(
+                    NotificationType.VERIFY_EMAIL,
+                    {
+                        to_email: user.email,
+                        homeBuyerName: `${user.firstName} ${user.lastName}`.trim() || 'User',
+                        verificationLink,
+                    },
+                    { userId: user.id }
+                );
+                console.log(`[AuthService] Verification email event published for ${user.email}`);
+            } catch (error) {
+                // Log but don't fail signup if email event fails
+                console.error(`[AuthService] Failed to publish verification email event:`, error);
+            }
+        } else {
+            console.log(`[AuthService] Auto-verified user in localstack: ${user.email}`);
         }
 
         return this.generateTokens(user.id, user.email, [], null);
@@ -259,7 +269,11 @@ class AuthService {
     }
 
     async refreshToken(token: string): Promise<AuthResponse> {
-        const secret = process.env.JWT_REFRESH_SECRET!;
+        // Get JWT refresh secret from ConfigService (Secrets Manager)
+        const configService = ConfigService.getInstance();
+        const stage = process.env.NODE_ENV || process.env.STAGE || 'dev';
+        const refreshSecretResult = await configService.getJwtRefreshSecret(stage);
+        const secret = refreshSecretResult.secret;
 
         try {
             const payload = jwt.verify(token, secret) as JWTPayload;
@@ -516,8 +530,17 @@ class AuthService {
     }
 
     private async generateTokens(userId: string, email: string, roles: string[], tenantId?: string | null): Promise<AuthResponse> {
-        const accessSecret = process.env.JWT_ACCESS_SECRET!;
-        const refreshSecret = process.env.JWT_REFRESH_SECRET!;
+        // Get JWT secrets from ConfigService (Secrets Manager)
+        const configService = ConfigService.getInstance();
+        const stage = process.env.NODE_ENV || process.env.STAGE || 'dev';
+        
+        const [accessSecretResult, refreshSecretResult] = await Promise.all([
+            configService.getJwtAccessSecret(stage),
+            configService.getJwtRefreshSecret(stage),
+        ]);
+        
+        const accessSecret = accessSecretResult.secret;
+        const refreshSecret = refreshSecretResult.secret;
         const accessExpiry = process.env.JWT_ACCESS_EXPIRY || '15m';
         const refreshExpiry = process.env.JWT_REFRESH_EXPIRY || '7d';
 

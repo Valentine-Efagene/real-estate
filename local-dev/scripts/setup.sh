@@ -55,7 +55,7 @@ log_success "MySQL is ready"
 
 # Wait for LocalStack
 echo "  - Waiting for LocalStack..."
-until curl -s http://localhost:4566/_localstack/health | grep -q '"dynamodb": "running"' 2>/dev/null; do
+until curl -s http://localhost:4566/_localstack/health | grep -qE '"dynamodb": "(available|running)"' 2>/dev/null; do
   sleep 2
 done
 log_success "LocalStack is ready"
@@ -127,11 +127,11 @@ deploy_service() {
     
     pnpm run build 2>/dev/null || npm run build
     
-    # Check if serverless.localstack.yml exists, otherwise use serverless.yml with --stage test
+    # Check if serverless.localstack.yml exists, otherwise use serverless.yml with --stage localstack
     if [ -f "serverless.localstack.yml" ]; then
-      npx sls deploy --stage test --config serverless.localstack.yml 2>&1 || log_warning "$service_name deployment had warnings"
+      npx sls deploy --stage localstack --config serverless.localstack.yml 2>&1 || log_warning "$service_name deployment had warnings"
     else
-      npx sls deploy --stage test 2>&1 || log_warning "$service_name deployment had warnings"
+      npx sls deploy --stage localstack 2>&1 || log_warning "$service_name deployment had warnings"
     fi
     log_success "$service_name deployed"
   else

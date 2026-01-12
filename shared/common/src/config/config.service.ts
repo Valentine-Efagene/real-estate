@@ -153,17 +153,33 @@ export class ConfigService {
     }
 
     /**
-     * Get JWT secrets from Secrets Manager
+     * Get JWT access secret from Secrets Manager
+     * Used for signing and verifying access tokens
      */
-    async getJwtSecret(stage: string = process.env.NODE_ENV || 'dev'): Promise<JwtSecrets> {
-        return this.getSecret<JwtSecrets>(`qshelter/${stage}/jwt-secret`);
+    async getJwtAccessSecret(stage: string = process.env.NODE_ENV || 'dev'): Promise<JwtSecrets> {
+        return this.getSecret<JwtSecrets>(`qshelter/${stage}/jwt-access-secret`);
     }
 
     /**
-     * Get refresh token secret from Secrets Manager
+     * Get JWT refresh token secret from Secrets Manager
+     * Used for signing and verifying refresh tokens
+     */
+    async getJwtRefreshSecret(stage: string = process.env.NODE_ENV || 'dev'): Promise<JwtSecrets> {
+        return this.getSecret<JwtSecrets>(`qshelter/${stage}/jwt-refresh-secret`);
+    }
+
+    /**
+     * @deprecated Use getJwtAccessSecret instead
+     */
+    async getJwtSecret(stage: string = process.env.NODE_ENV || 'dev'): Promise<JwtSecrets> {
+        return this.getJwtAccessSecret(stage);
+    }
+
+    /**
+     * @deprecated Use getJwtRefreshSecret instead
      */
     async getRefreshTokenSecret(stage: string = process.env.NODE_ENV || 'dev'): Promise<JwtSecrets> {
-        return this.getSecret<JwtSecrets>(`qshelter/${stage}/refresh-token-secret`);
+        return this.getJwtRefreshSecret(stage);
     }
 
     /**

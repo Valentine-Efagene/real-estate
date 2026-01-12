@@ -26,7 +26,7 @@ export class AuthorizerService {
     private cacheWarmed: boolean = false;
 
     constructor() {
-        this.jwtService = new JwtService();
+        this.jwtService = JwtService.getInstance();
         this.policyRepository = new PolicyRepository();
     }
 
@@ -41,7 +41,7 @@ export class AuthorizerService {
             // 2. Extract and verify JWT
             const authHeader = event.headers?.Authorization || event.headers?.authorization || '';
             const token = this.jwtService.extractToken(authHeader);
-            const payload = this.jwtService.verify(token);
+            const payload = await this.jwtService.verify(token);
 
             console.log('[Authorizer] JWT verified:', {
                 userId: payload.sub,

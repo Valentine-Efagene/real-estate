@@ -1,5 +1,5 @@
 /**
- * Full End-to-End Mortgage Flow Test
+ * Full End-to-End Mortgage Flow Test (LocalStack)
  *
  * This test implements the complete business scenario defined in SCENARIO.md
  * All operations are performed via REST APIs - nothing is seeded manually.
@@ -9,7 +9,12 @@
  * - user-service, property-service, mortgage-service all deployed
  *
  * Run with:
- *   npm run test:e2e:localstack -- full-mortgage-flow
+ *   npm run test:e2e:localstack:full
+ *   # or directly:
+ *   ./scripts/run-full-e2e-localstack.sh
+ *
+ * The script fetches API Gateway URLs from LocalStack and sets environment variables.
+ * DO NOT run this test directly - always use the script to ensure proper URLs.
  *
  * Actors:
  * - Adaeze (Admin): Loan operations manager at QShelter
@@ -22,20 +27,33 @@ import supertest from 'supertest';
 import { prisma, cleanupTestData } from '../../setup.js';
 import { randomUUID } from 'crypto';
 
-// Service URLs - configurable via environment
-const USER_SERVICE_URL =
-    process.env.USER_SERVICE_URL || 'http://localhost:3002';
-const PROPERTY_SERVICE_URL =
-    process.env.PROPERTY_SERVICE_URL || 'http://localhost:3003';
-const MORTGAGE_SERVICE_URL =
-    process.env.MORTGAGE_SERVICE_URL || process.env.API_BASE_URL;
+// Service URLs - MUST be set via environment (no localhost fallbacks)
+const USER_SERVICE_URL = process.env.USER_SERVICE_URL;
+const PROPERTY_SERVICE_URL = process.env.PROPERTY_SERVICE_URL;
+const MORTGAGE_SERVICE_URL = process.env.MORTGAGE_SERVICE_URL || process.env.API_BASE_URL;
 
-// Create API clients for each service
-const userApi = supertest(USER_SERVICE_URL);
-const propertyApi = supertest(PROPERTY_SERVICE_URL);
-const mortgageApi = MORTGAGE_SERVICE_URL
-    ? supertest(MORTGAGE_SERVICE_URL)
-    : supertest('http://localhost:3001');
+// Validate required environment variables
+function validateEnvVars() {
+    const missing: string[] = [];
+    if (!USER_SERVICE_URL) missing.push('USER_SERVICE_URL');
+    if (!PROPERTY_SERVICE_URL) missing.push('PROPERTY_SERVICE_URL');
+    if (!MORTGAGE_SERVICE_URL) missing.push('MORTGAGE_SERVICE_URL or API_BASE_URL');
+
+    if (missing.length > 0) {
+        throw new Error(
+            `Missing required environment variables: ${missing.join(', ')}\n` +
+            `Run this test using: ./scripts/run-full-e2e.sh`
+        );
+    }
+}
+
+// Validate on module load
+validateEnvVars();
+
+// Create API clients for each service (URLs are guaranteed to be set after validation)
+const userApi = supertest(USER_SERVICE_URL!);
+const propertyApi = supertest(PROPERTY_SERVICE_URL!);
+const mortgageApi = supertest(MORTGAGE_SERVICE_URL!);
 
 // Bootstrap secret for tenant creation
 const BOOTSTRAP_SECRET =
@@ -53,9 +71,13 @@ function adminHeaders(
     accessToken: string,
     tenantId: string
 ): Record<string, string> {
+    // Extract userId from JWT token
+    const tokenPayload = JSON.parse(Buffer.from(accessToken.split('.')[1], 'base64').toString());
     return {
         Authorization: `Bearer ${accessToken}`,
         'x-tenant-id': tenantId,
+        'x-authorizer-tenant-id': tenantId,
+        'x-authorizer-user-id': tokenPayload.sub,
         'Content-Type': 'application/json',
     };
 }
@@ -64,9 +86,13 @@ function customerHeaders(
     accessToken: string,
     tenantId: string
 ): Record<string, string> {
+    // Extract userId from JWT token
+    const tokenPayload = JSON.parse(Buffer.from(accessToken.split('.')[1], 'base64').toString());
     return {
         Authorization: `Bearer ${accessToken}`,
         'x-tenant-id': tenantId,
+        'x-authorizer-tenant-id': tenantId,
+        'x-authorizer-user-id': tokenPayload.sub,
         'Content-Type': 'application/json',
     };
 }
@@ -143,15 +169,15 @@ describe('Full E2E Mortgage Flow', () => {
                 });
 
             expect(response.status).toBe(201);
-            expect(response.body.success).toBe(true);
-            expect(response.body.data.tenant).toBeDefined();
-            expect(response.body.data.admin).toBeDefined();
+            // Bootstrap endpoint returns data directly, not wrapped in { success, data }
+            expect(response.body.tenant).toBeDefined();
+            expect(response.body.admin).toBeDefined();
 
-            tenantId = response.body.data.tenant.id;
-            adaezeId = response.body.data.admin.id;
+            tenantId = response.body.tenant.id;
+            adaezeId = response.body.admin.id;
 
             // Verify roles were created
-            expect(response.body.data.roles.length).toBeGreaterThanOrEqual(5);
+            expect(response.body.roles.length).toBeGreaterThanOrEqual(5);
         });
 
         it('Step 1.2: Admin logs in', async () => {
@@ -164,6 +190,7 @@ describe('Full E2E Mortgage Flow', () => {
                 });
 
             expect(response.status).toBe(200);
+            // Auth endpoints use { success, data } wrapper
             expect(response.body.success).toBe(true);
             expect(response.body.data.accessToken).toBeDefined();
 
@@ -189,10 +216,13 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.status).toBe(201);
             expect(response.body.success).toBe(true);
             expect(response.body.data.accessToken).toBeDefined();
-            expect(response.body.data.user).toBeDefined();
 
-            chidiId = response.body.data.user.id;
             chidiAccessToken = response.body.data.accessToken;
+            
+            // Extract user ID from JWT token (payload.sub)
+            const tokenPayload = JSON.parse(Buffer.from(chidiAccessToken.split('.')[1], 'base64').toString());
+            chidiId = tokenPayload.sub;
+            expect(chidiId).toBeDefined();
         });
     });
 
