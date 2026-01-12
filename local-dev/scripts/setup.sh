@@ -92,9 +92,9 @@ log_success "Role policies seeded"
 log_step "Step 3/7: Running Database Migrations"
 
 cd "$REPO_ROOT/shared/common"
-log_info "Running Prisma migrations..."
-npx prisma migrate deploy
-log_success "Database migrations complete"
+log_info "Running Prisma db push (for local dev)..."
+npx prisma db push --accept-data-loss
+log_success "Database schema applied"
 
 # =============================================================================
 # STEP 4: Build Shared Libraries

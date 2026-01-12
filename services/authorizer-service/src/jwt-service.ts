@@ -7,7 +7,7 @@ export class JwtService {
     private secretPromise: Promise<string> | null = null;
     private static instance: JwtService | null = null;
 
-    private constructor() {}
+    private constructor() { }
 
     /**
      * Get singleton instance of JwtService

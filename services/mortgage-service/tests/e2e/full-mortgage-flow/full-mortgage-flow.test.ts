@@ -218,7 +218,7 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.body.data.accessToken).toBeDefined();
 
             chidiAccessToken = response.body.data.accessToken;
-            
+
             // Extract user ID from JWT token (payload.sub)
             const tokenPayload = JSON.parse(Buffer.from(chidiAccessToken.split('.')[1], 'base64').toString());
             chidiId = tokenPayload.sub;

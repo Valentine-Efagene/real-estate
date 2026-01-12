@@ -533,12 +533,12 @@ class AuthService {
         // Get JWT secrets from ConfigService (Secrets Manager)
         const configService = ConfigService.getInstance();
         const stage = process.env.NODE_ENV || process.env.STAGE || 'dev';
-        
+
         const [accessSecretResult, refreshSecretResult] = await Promise.all([
             configService.getJwtAccessSecret(stage),
             configService.getJwtRefreshSecret(stage),
         ]);
-        
+
         const accessSecret = accessSecretResult.secret;
         const refreshSecret = refreshSecretResult.secret;
         const accessExpiry = process.env.JWT_ACCESS_EXPIRY || '15m';
