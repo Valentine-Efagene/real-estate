@@ -362,6 +362,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
         it('Adaeze configures phase event to notify when downpayment completes', async () => {
             // First, create an event channel and type for downpayment notifications
+            // Note: In production, channels and types would be seeded as part of tenant onboarding
             const channel = await prisma.eventChannel.create({
                 data: {
                     tenantId,
@@ -381,7 +382,9 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                 },
             });
 
-            // Create handler to notify admin to upload final offer
+            // Create handler via notification-service API
+            // Note: In a real test, this would call the notification service
+            // For now we use prisma since we're testing in a single service context
             const handler = await prisma.eventHandler.create({
                 data: {
                     tenantId,
@@ -397,27 +400,42 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                 },
             });
 
-            // Get the downpayment phase template from payment method
-            const paymentMethod = await prisma.propertyPaymentMethod.findUnique({
-                where: { id: paymentMethodId },
-                include: { phases: true },
-            });
-            const downpaymentPhaseTemplate = paymentMethod!.phases.find(
-                (p) => p.phaseType === 'DOWNPAYMENT'
-            );
+            // Get the payment method to find the downpayment phase ID
+            const getMethodResponse = await api
+                .get(`/payment-methods/${paymentMethodId}`)
+                .set(authHeaders(adaezeId, tenantId));
 
-            // Attach handler to phase ON_COMPLETE trigger
-            const attachment = await prisma.phaseEventAttachment.create({
-                data: {
-                    phaseId: downpaymentPhaseTemplate!.id,
+            expect(getMethodResponse.status).toBe(200);
+            const paymentMethod = getMethodResponse.body;
+            const downpaymentPhaseTemplate = paymentMethod.phases.find(
+                (p: any) => p.phaseType === 'DOWNPAYMENT'
+            );
+            expect(downpaymentPhaseTemplate).toBeDefined();
+
+            // Attach handler to phase ON_COMPLETE trigger via REST API
+            const attachResponse = await api
+                .post(`/payment-methods/${paymentMethodId}/phases/${downpaymentPhaseTemplate.id}/event-attachments`)
+                .set(authHeaders(adaezeId, tenantId))
+                .send({
                     trigger: 'ON_COMPLETE',
                     handlerId: handler.id,
                     priority: 100,
                     enabled: true,
-                },
-            });
+                });
 
-            expect(attachment.id).toBeDefined();
+            expect(attachResponse.status).toBe(201);
+            expect(attachResponse.body.id).toBeDefined();
+            expect(attachResponse.body.trigger).toBe('ON_COMPLETE');
+            expect(attachResponse.body.handlerId).toBe(handler.id);
+
+            // Verify we can retrieve the attachments via API
+            const getAttachmentsResponse = await api
+                .get(`/payment-methods/${paymentMethodId}/phases/${downpaymentPhaseTemplate.id}/event-attachments`)
+                .set(authHeaders(adaezeId, tenantId));
+
+            expect(getAttachmentsResponse.status).toBe(200);
+            expect(getAttachmentsResponse.body.length).toBe(1);
+            expect(getAttachmentsResponse.body[0].handler.name).toBe('Notify Admin: Upload Final Offer');
         });
     });
 

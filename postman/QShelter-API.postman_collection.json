@@ -30,6 +30,11 @@
             "type": "string"
         },
         {
+            "key": "notificationServiceUrl",
+            "value": "http://localhost:3004",
+            "type": "string"
+        },
+        {
             "key": "tenantId",
             "value": "tenant-001",
             "type": "string"
@@ -76,6 +81,197 @@
         }
     ],
     "item": [
+        {
+            "name": "Event Handlers",
+            "description": "Event handlers define actions to trigger when workflow events occur (e.g., send email when phase completes). Handlers are attached to phase or step templates.",
+            "item": [
+                {
+                    "name": "Create Event Handler",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"eventTypeId\": \"{{eventTypeId}}\",\n  \"name\": \"Notify Admin: Upload Final Offer\",\n  \"description\": \"Sends email to admin when downpayment phase completes\",\n  \"handlerType\": \"SEND_EMAIL\",\n  \"config\": {\n    \"template\": \"admin_upload_final_offer\",\n    \"recipients\": [\"admin@example.com\"],\n    \"subject\": \"Action Required: Upload Final Offer Letter\"\n  },\n  \"priority\": 100,\n  \"enabled\": true\n}"
+                        },
+                        "url": {
+                            "raw": "{{notificationServiceUrl}}/event-handlers",
+                            "host": [
+                                "{{notificationServiceUrl}}"
+                            ],
+                            "path": [
+                                "event-handlers"
+                            ]
+                        },
+                        "description": "Create an event handler.\n\n**Handler Types:**\n- `SEND_EMAIL` - Send email notification\n- `SEND_SMS` - Send SMS\n- `SEND_PUSH` - Send push notification\n- `CALL_WEBHOOK` - Call external API\n- `ADVANCE_WORKFLOW` - Advance workflow step\n- `RUN_AUTOMATION` - Execute internal logic"
+                    }
+                },
+                {
+                    "name": "Get All Event Handlers",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{notificationServiceUrl}}/event-handlers?eventTypeId={{eventTypeId}}&enabled=true",
+                            "host": [
+                                "{{notificationServiceUrl}}"
+                            ],
+                            "path": [
+                                "event-handlers"
+                            ],
+                            "query": [
+                                {
+                                    "key": "eventTypeId",
+                                    "value": "{{eventTypeId}}",
+                                    "description": "Filter by event type"
+                                },
+                                {
+                                    "key": "enabled",
+                                    "value": "true",
+                                    "description": "Filter by enabled status"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Event Handler by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{notificationServiceUrl}}/event-handlers/{{eventHandlerId}}",
+                            "host": [
+                                "{{notificationServiceUrl}}"
+                            ],
+                            "path": [
+                                "event-handlers",
+                                "{{eventHandlerId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Update Event Handler",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Updated Handler Name\",\n  \"enabled\": false\n}"
+                        },
+                        "url": {
+                            "raw": "{{notificationServiceUrl}}/event-handlers/{{eventHandlerId}}",
+                            "host": [
+                                "{{notificationServiceUrl}}"
+                            ],
+                            "path": [
+                                "event-handlers",
+                                "{{eventHandlerId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Toggle Event Handler",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{notificationServiceUrl}}/event-handlers/{{eventHandlerId}}/toggle",
+                            "host": [
+                                "{{notificationServiceUrl}}"
+                            ],
+                            "path": [
+                                "event-handlers",
+                                "{{eventHandlerId}}",
+                                "toggle"
+                            ]
+                        },
+                        "description": "Toggle the enabled/disabled status of an event handler."
+                    }
+                },
+                {
+                    "name": "Delete Event Handler",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{notificationServiceUrl}}/event-handlers/{{eventHandlerId}}",
+                            "host": [
+                                "{{notificationServiceUrl}}"
+                            ],
+                            "path": [
+                                "event-handlers",
+                                "{{eventHandlerId}}"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
         {
             "name": "Payment Plans",
             "description": "Payment plans define the installment structure for phases (frequency, number of installments, interest calculation).",
@@ -787,6 +983,270 @@
                             "path": [
                                 "payment-methods",
                                 "{{paymentMethodId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Add Phase Event Attachment",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"trigger\": \"ON_COMPLETE\",\n  \"handlerId\": \"{{eventHandlerId}}\",\n  \"priority\": 100,\n  \"enabled\": true\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-methods/{{paymentMethodId}}/phases/{{phaseTemplateId}}/event-attachments",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-methods",
+                                "{{paymentMethodId}}",
+                                "phases",
+                                "{{phaseTemplateId}}",
+                                "event-attachments"
+                            ]
+                        },
+                        "description": "Attach an event handler to a phase template.\n\n**Phase Triggers:**\n- `ON_ACTIVATE` - Phase becomes current\n- `ON_COMPLETE` - Phase completed\n- `ON_CANCEL` - Phase cancelled\n- `ON_PAYMENT_RECEIVED` - Payment received (PAYMENT phases)\n- `ON_ALL_PAYMENTS_RECEIVED` - All payments complete"
+                    }
+                },
+                {
+                    "name": "Get Phase Event Attachments",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-methods/{{paymentMethodId}}/phases/{{phaseTemplateId}}/event-attachments",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-methods",
+                                "{{paymentMethodId}}",
+                                "phases",
+                                "{{phaseTemplateId}}",
+                                "event-attachments"
+                            ]
+                        },
+                        "description": "Get all event attachments for a phase template."
+                    }
+                },
+                {
+                    "name": "Update Phase Event Attachment",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"enabled\": false,\n  \"priority\": 50\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-methods/phase-event-attachments/{{phaseEventAttachmentId}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-methods",
+                                "phase-event-attachments",
+                                "{{phaseEventAttachmentId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Phase Event Attachment",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-methods/phase-event-attachments/{{phaseEventAttachmentId}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-methods",
+                                "phase-event-attachments",
+                                "{{phaseEventAttachmentId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Add Step Event Attachment",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"trigger\": \"ON_COMPLETE\",\n  \"handlerId\": \"{{eventHandlerId}}\",\n  \"priority\": 100,\n  \"enabled\": true\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-methods/{{paymentMethodId}}/phases/{{phaseTemplateId}}/steps/{{stepTemplateId}}/event-attachments",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-methods",
+                                "{{paymentMethodId}}",
+                                "phases",
+                                "{{phaseTemplateId}}",
+                                "steps",
+                                "{{stepTemplateId}}",
+                                "event-attachments"
+                            ]
+                        },
+                        "description": "Attach an event handler to a step template.\n\n**Step Triggers:**\n- `ON_COMPLETE` - Step completed\n- `ON_REJECT` - Step rejected\n- `ON_SUBMIT` - Step submitted for review\n- `ON_RESUBMIT` - Step resubmitted after rejection\n- `ON_START` - Step started"
+                    }
+                },
+                {
+                    "name": "Get Step Event Attachments",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-methods/{{paymentMethodId}}/phases/{{phaseTemplateId}}/steps/{{stepTemplateId}}/event-attachments",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-methods",
+                                "{{paymentMethodId}}",
+                                "phases",
+                                "{{phaseTemplateId}}",
+                                "steps",
+                                "{{stepTemplateId}}",
+                                "event-attachments"
+                            ]
+                        },
+                        "description": "Get all event attachments for a step template."
+                    }
+                },
+                {
+                    "name": "Update Step Event Attachment",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"enabled\": false,\n  \"priority\": 50\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-methods/step-event-attachments/{{stepEventAttachmentId}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-methods",
+                                "step-event-attachments",
+                                "{{stepEventAttachmentId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Step Event Attachment",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-methods/step-event-attachments/{{stepEventAttachmentId}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-methods",
+                                "step-event-attachments",
+                                "{{stepEventAttachmentId}}"
                             ]
                         }
                     }

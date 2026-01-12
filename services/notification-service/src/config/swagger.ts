@@ -28,6 +28,12 @@ import {
 } from '../validators/push.validator';
 import { SendSlackMessageSchema } from '../validators/slack.validator';
 import { SendWhatsAppMessageSchema } from '../validators/whatsapp.validator';
+import {
+    CreateEventHandlerSchema,
+    UpdateEventHandlerSchema,
+    EventHandlerResponseSchema,
+    EventHandlerListResponseSchema,
+} from '../validators/event-handler.validator';
 
 const registry = new OpenAPIRegistry();
 
@@ -271,6 +277,99 @@ registry.registerPath({
     summary: 'Send WhatsApp message',
     request: { body: { content: { 'application/json': { schema: SendWhatsAppMessageSchema } } } },
     responses: { 200: { description: 'Message sent successfully' } },
+});
+
+// Event Handler endpoints
+registry.register('CreateEventHandler', CreateEventHandlerSchema);
+registry.register('UpdateEventHandler', UpdateEventHandlerSchema);
+registry.register('EventHandlerResponse', EventHandlerResponseSchema);
+registry.register('EventHandlerListResponse', EventHandlerListResponseSchema);
+
+registry.registerPath({
+    method: 'post',
+    path: '/event-handlers',
+    tags: ['Event Handlers'],
+    summary: 'Create a new event handler',
+    request: { body: { content: { 'application/json': { schema: CreateEventHandlerSchema } } } },
+    responses: {
+        201: { description: 'Event handler created successfully' },
+        400: { description: 'Validation error' },
+        404: { description: 'Event type not found' },
+    },
+});
+
+registry.registerPath({
+    method: 'get',
+    path: '/event-handlers',
+    tags: ['Event Handlers'],
+    summary: 'List all event handlers',
+    request: {
+        query: z.object({
+            eventTypeId: z.string().optional(),
+            enabled: z.string().optional(),
+        }),
+    },
+    responses: {
+        200: { description: 'Event handlers retrieved successfully' },
+    },
+});
+
+registry.registerPath({
+    method: 'get',
+    path: '/event-handlers/{id}',
+    tags: ['Event Handlers'],
+    summary: 'Get an event handler by ID',
+    request: {
+        params: z.object({ id: z.string() }),
+    },
+    responses: {
+        200: { description: 'Event handler retrieved successfully' },
+        404: { description: 'Event handler not found' },
+    },
+});
+
+registry.registerPath({
+    method: 'patch',
+    path: '/event-handlers/{id}',
+    tags: ['Event Handlers'],
+    summary: 'Update an event handler',
+    request: {
+        params: z.object({ id: z.string() }),
+        body: { content: { 'application/json': { schema: UpdateEventHandlerSchema } } },
+    },
+    responses: {
+        200: { description: 'Event handler updated successfully' },
+        400: { description: 'Validation error' },
+        404: { description: 'Event handler not found' },
+    },
+});
+
+registry.registerPath({
+    method: 'delete',
+    path: '/event-handlers/{id}',
+    tags: ['Event Handlers'],
+    summary: 'Delete an event handler',
+    request: {
+        params: z.object({ id: z.string() }),
+    },
+    responses: {
+        200: { description: 'Event handler deleted successfully' },
+        404: { description: 'Event handler not found' },
+    },
+});
+
+registry.registerPath({
+    method: 'post',
+    path: '/event-handlers/{id}/toggle',
+    tags: ['Event Handlers'],
+    summary: 'Toggle event handler enabled status',
+    request: {
+        params: z.object({ id: z.string() }),
+    },
+    responses: {
+        200: { description: 'Event handler toggled successfully' },
+        404: { description: 'Event handler not found' },
+    },
 });
 
 export function generateOpenAPIDocument(baseUrl?: string): OpenAPIObject {

@@ -179,6 +179,50 @@ export const ClonePaymentMethodSchema = z.object({
     description: z.string().optional(),
 }).openapi('ClonePaymentMethod');
 
+// ============================================================
+// Event Attachment Schemas
+// ============================================================
+
+// Phase trigger enum (matches Prisma PhaseTrigger)
+export const PhaseTriggerEnum = z.enum([
+    'ON_ACTIVATE',
+    'ON_COMPLETE',
+    'ON_CANCEL',
+    'ON_PAYMENT_RECEIVED',
+    'ON_ALL_PAYMENTS_RECEIVED',
+]).openapi('PhaseTrigger');
+
+// Step trigger enum (matches Prisma StepTrigger)
+export const StepTriggerEnum = z.enum([
+    'ON_COMPLETE',
+    'ON_REJECT',
+    'ON_SUBMIT',
+    'ON_RESUBMIT',
+    'ON_START',
+]).openapi('StepTrigger');
+
+// Add phase event attachment
+export const AddPhaseEventAttachmentSchema = z.object({
+    trigger: PhaseTriggerEnum.openapi({ example: 'ON_COMPLETE' }),
+    handlerId: z.string().cuid().openapi({ description: 'ID of the event handler to attach' }),
+    priority: z.number().int().min(0).max(1000).default(100).openapi({ example: 100 }),
+    enabled: z.boolean().default(true),
+}).openapi('AddPhaseEventAttachment');
+
+// Update phase event attachment
+export const UpdatePhaseEventAttachmentSchema = AddPhaseEventAttachmentSchema.partial().openapi('UpdatePhaseEventAttachment');
+
+// Add step event attachment
+export const AddStepEventAttachmentSchema = z.object({
+    trigger: StepTriggerEnum.openapi({ example: 'ON_COMPLETE' }),
+    handlerId: z.string().cuid().openapi({ description: 'ID of the event handler to attach' }),
+    priority: z.number().int().min(0).max(1000).default(100).openapi({ example: 100 }),
+    enabled: z.boolean().default(true),
+}).openapi('AddStepEventAttachment');
+
+// Update step event attachment
+export const UpdateStepEventAttachmentSchema = AddStepEventAttachmentSchema.partial().openapi('UpdateStepEventAttachment');
+
 // Type exports
 export type CreatePaymentMethodInput = z.infer<typeof CreatePaymentMethodSchema>;
 export type UpdatePaymentMethodInput = z.infer<typeof UpdatePaymentMethodSchema>;
@@ -190,3 +234,7 @@ export type ReorderStepsInput = z.infer<typeof ReorderStepsSchema>;
 export type AddDocumentRequirementInput = z.infer<typeof AddDocumentRequirementSchema>;
 export type UpdateDocumentRequirementInput = z.infer<typeof UpdateDocumentRequirementSchema>;
 export type ClonePaymentMethodInput = z.infer<typeof ClonePaymentMethodSchema>;
+export type AddPhaseEventAttachmentInput = z.infer<typeof AddPhaseEventAttachmentSchema>;
+export type UpdatePhaseEventAttachmentInput = z.infer<typeof UpdatePhaseEventAttachmentSchema>;
+export type AddStepEventAttachmentInput = z.infer<typeof AddStepEventAttachmentSchema>;
+export type UpdateStepEventAttachmentInput = z.infer<typeof UpdateStepEventAttachmentSchema>;

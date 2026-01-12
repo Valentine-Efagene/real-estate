@@ -1,5 +1,5 @@
 import { prisma as defaultPrisma } from '../lib/prisma';
-import { AppError, PrismaClient, PhaseType, StepType, StepTrigger } from '@valentine-efagene/qshelter-common';
+import { AppError, PrismaClient, PhaseType, StepType, StepTrigger, PhaseTrigger } from '@valentine-efagene/qshelter-common';
 import type {
     CreatePaymentMethodInput,
     UpdatePaymentMethodInput,
@@ -10,6 +10,10 @@ import type {
     AddDocumentRequirementInput,
     UpdateDocumentRequirementInput,
     ClonePaymentMethodInput,
+    AddPhaseEventAttachmentInput,
+    UpdatePhaseEventAttachmentInput,
+    AddStepEventAttachmentInput,
+    UpdateStepEventAttachmentInput,
 } from '../validators/payment-method.validator';
 
 type AnyPrismaClient = PrismaClient;
@@ -39,6 +43,16 @@ export interface PaymentMethodService {
     linkToProperty(methodId: string, data: LinkToPropertyInput): Promise<any>;
     unlinkFromProperty(methodId: string, propertyId: string): Promise<{ success: boolean }>;
     getMethodsForProperty(propertyId: string): Promise<any[]>;
+    // Phase event attachments
+    addPhaseEventAttachment(phaseId: string, data: AddPhaseEventAttachmentInput): Promise<any>;
+    getPhaseEventAttachments(phaseId: string): Promise<any[]>;
+    updatePhaseEventAttachment(attachmentId: string, data: UpdatePhaseEventAttachmentInput): Promise<any>;
+    deletePhaseEventAttachment(attachmentId: string): Promise<{ success: boolean }>;
+    // Step event attachments
+    addStepEventAttachment(stepId: string, data: AddStepEventAttachmentInput): Promise<any>;
+    getStepEventAttachments(stepId: string): Promise<any[]>;
+    updateStepEventAttachment(attachmentId: string, data: UpdateStepEventAttachmentInput): Promise<any>;
+    deleteStepEventAttachment(attachmentId: string): Promise<{ success: boolean }>;
 }
 
 /**
@@ -784,6 +798,220 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
         return links;
     }
 
+    // ============================================================
+    // Phase Event Attachments
+    // ============================================================
+
+    async function addPhaseEventAttachment(phaseId: string, data: AddPhaseEventAttachmentInput) {
+        // Verify phase exists
+        const phase = await prisma.propertyPaymentMethodPhase.findUnique({
+            where: { id: phaseId },
+        });
+
+        if (!phase) {
+            throw new AppError(404, 'Phase not found');
+        }
+
+        // Verify handler exists
+        const handler = await prisma.eventHandler.findUnique({
+            where: { id: data.handlerId },
+        });
+
+        if (!handler) {
+            throw new AppError(404, 'Event handler not found');
+        }
+
+        const attachment = await prisma.phaseEventAttachment.create({
+            data: {
+                phaseId,
+                handlerId: data.handlerId,
+                trigger: data.trigger as PhaseTrigger,
+                priority: data.priority ?? 100,
+                enabled: data.enabled ?? true,
+            },
+            include: {
+                handler: true,
+            },
+        });
+
+        return attachment;
+    }
+
+    async function getPhaseEventAttachments(phaseId: string) {
+        const attachments = await prisma.phaseEventAttachment.findMany({
+            where: { phaseId },
+            include: {
+                handler: {
+                    include: {
+                        eventType: true,
+                    },
+                },
+            },
+            orderBy: { priority: 'asc' },
+        });
+
+        return attachments;
+    }
+
+    async function updatePhaseEventAttachment(attachmentId: string, data: UpdatePhaseEventAttachmentInput) {
+        const attachment = await prisma.phaseEventAttachment.findUnique({
+            where: { id: attachmentId },
+        });
+
+        if (!attachment) {
+            throw new AppError(404, 'Phase event attachment not found');
+        }
+
+        // If changing handler, verify it exists
+        if (data.handlerId) {
+            const handler = await prisma.eventHandler.findUnique({
+                where: { id: data.handlerId },
+            });
+
+            if (!handler) {
+                throw new AppError(404, 'Event handler not found');
+            }
+        }
+
+        const updated = await prisma.phaseEventAttachment.update({
+            where: { id: attachmentId },
+            data: {
+                ...(data.trigger && { trigger: data.trigger as PhaseTrigger }),
+                ...(data.handlerId && { handlerId: data.handlerId }),
+                ...(data.priority !== undefined && { priority: data.priority }),
+                ...(data.enabled !== undefined && { enabled: data.enabled }),
+            },
+            include: {
+                handler: true,
+            },
+        });
+
+        return updated;
+    }
+
+    async function deletePhaseEventAttachment(attachmentId: string) {
+        const attachment = await prisma.phaseEventAttachment.findUnique({
+            where: { id: attachmentId },
+        });
+
+        if (!attachment) {
+            throw new AppError(404, 'Phase event attachment not found');
+        }
+
+        await prisma.phaseEventAttachment.delete({
+            where: { id: attachmentId },
+        });
+
+        return { success: true };
+    }
+
+    // ============================================================
+    // Step Event Attachments
+    // ============================================================
+
+    async function addStepEventAttachment(stepId: string, data: AddStepEventAttachmentInput) {
+        // Verify step exists
+        const step = await prisma.paymentMethodPhaseStep.findUnique({
+            where: { id: stepId },
+        });
+
+        if (!step) {
+            throw new AppError(404, 'Step not found');
+        }
+
+        // Verify handler exists
+        const handler = await prisma.eventHandler.findUnique({
+            where: { id: data.handlerId },
+        });
+
+        if (!handler) {
+            throw new AppError(404, 'Event handler not found');
+        }
+
+        const attachment = await prisma.stepEventAttachment.create({
+            data: {
+                stepId,
+                handlerId: data.handlerId,
+                trigger: data.trigger as StepTrigger,
+                priority: data.priority ?? 100,
+                enabled: data.enabled ?? true,
+            },
+            include: {
+                handler: true,
+            },
+        });
+
+        return attachment;
+    }
+
+    async function getStepEventAttachments(stepId: string) {
+        const attachments = await prisma.stepEventAttachment.findMany({
+            where: { stepId },
+            include: {
+                handler: {
+                    include: {
+                        eventType: true,
+                    },
+                },
+            },
+            orderBy: { priority: 'asc' },
+        });
+
+        return attachments;
+    }
+
+    async function updateStepEventAttachment(attachmentId: string, data: UpdateStepEventAttachmentInput) {
+        const attachment = await prisma.stepEventAttachment.findUnique({
+            where: { id: attachmentId },
+        });
+
+        if (!attachment) {
+            throw new AppError(404, 'Step event attachment not found');
+        }
+
+        // If changing handler, verify it exists
+        if (data.handlerId) {
+            const handler = await prisma.eventHandler.findUnique({
+                where: { id: data.handlerId },
+            });
+
+            if (!handler) {
+                throw new AppError(404, 'Event handler not found');
+            }
+        }
+
+        const updated = await prisma.stepEventAttachment.update({
+            where: { id: attachmentId },
+            data: {
+                ...(data.trigger && { trigger: data.trigger as StepTrigger }),
+                ...(data.handlerId && { handlerId: data.handlerId }),
+                ...(data.priority !== undefined && { priority: data.priority }),
+                ...(data.enabled !== undefined && { enabled: data.enabled }),
+            },
+            include: {
+                handler: true,
+            },
+        });
+
+        return updated;
+    }
+
+    async function deleteStepEventAttachment(attachmentId: string) {
+        const attachment = await prisma.stepEventAttachment.findUnique({
+            where: { id: attachmentId },
+        });
+
+        if (!attachment) {
+            throw new AppError(404, 'Step event attachment not found');
+        }
+
+        await prisma.stepEventAttachment.delete({
+            where: { id: attachmentId },
+        });
+
+        return { success: true };
+    }
+
     return {
         create,
         findAll,
@@ -808,6 +1036,16 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
         linkToProperty,
         unlinkFromProperty,
         getMethodsForProperty,
+        // Phase event attachments
+        addPhaseEventAttachment,
+        getPhaseEventAttachments,
+        updatePhaseEventAttachment,
+        deletePhaseEventAttachment,
+        // Step event attachments
+        addStepEventAttachment,
+        getStepEventAttachments,
+        updateStepEventAttachment,
+        deleteStepEventAttachment,
     };
 }
 

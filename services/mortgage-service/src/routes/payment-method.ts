@@ -12,6 +12,10 @@ import {
     AddDocumentRequirementSchema,
     UpdateDocumentRequirementSchema,
     ClonePaymentMethodSchema,
+    AddPhaseEventAttachmentSchema,
+    UpdatePhaseEventAttachmentSchema,
+    AddStepEventAttachmentSchema,
+    UpdateStepEventAttachmentSchema,
 } from '../validators/payment-method.validator';
 import { z } from 'zod';
 import { getAuthContext } from '@valentine-efagene/qshelter-common';
@@ -289,6 +293,114 @@ router.get('/property/:propertyId', async (req: Request, res: Response, next: Ne
     try {
         const methods = await paymentMethodService.getMethodsForProperty(req.params.propertyId);
         res.json(methods);
+    } catch (error) {
+        next(error);
+    }
+});
+
+// ============================================================
+// Phase Event Attachment CRUD
+// ============================================================
+
+// Add event attachment to phase
+router.post('/:id/phases/:phaseId/event-attachments', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const data = AddPhaseEventAttachmentSchema.parse(req.body);
+        const attachment = await paymentMethodService.addPhaseEventAttachment(req.params.phaseId, data);
+        res.status(201).json(attachment);
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            res.status(400).json({ error: 'Validation failed', details: error.issues });
+            return;
+        }
+        next(error);
+    }
+});
+
+// Get event attachments for a phase
+router.get('/:id/phases/:phaseId/event-attachments', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const attachments = await paymentMethodService.getPhaseEventAttachments(req.params.phaseId);
+        res.json(attachments);
+    } catch (error) {
+        next(error);
+    }
+});
+
+// Update phase event attachment
+router.patch('/phase-event-attachments/:attachmentId', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const data = UpdatePhaseEventAttachmentSchema.parse(req.body);
+        const attachment = await paymentMethodService.updatePhaseEventAttachment(req.params.attachmentId, data);
+        res.json(attachment);
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            res.status(400).json({ error: 'Validation failed', details: error.issues });
+            return;
+        }
+        next(error);
+    }
+});
+
+// Delete phase event attachment
+router.delete('/phase-event-attachments/:attachmentId', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const result = await paymentMethodService.deletePhaseEventAttachment(req.params.attachmentId);
+        res.json(result);
+    } catch (error) {
+        next(error);
+    }
+});
+
+// ============================================================
+// Step Event Attachment CRUD
+// ============================================================
+
+// Add event attachment to step
+router.post('/:id/phases/:phaseId/steps/:stepId/event-attachments', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const data = AddStepEventAttachmentSchema.parse(req.body);
+        const attachment = await paymentMethodService.addStepEventAttachment(req.params.stepId, data);
+        res.status(201).json(attachment);
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            res.status(400).json({ error: 'Validation failed', details: error.issues });
+            return;
+        }
+        next(error);
+    }
+});
+
+// Get event attachments for a step
+router.get('/:id/phases/:phaseId/steps/:stepId/event-attachments', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const attachments = await paymentMethodService.getStepEventAttachments(req.params.stepId);
+        res.json(attachments);
+    } catch (error) {
+        next(error);
+    }
+});
+
+// Update step event attachment
+router.patch('/step-event-attachments/:attachmentId', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const data = UpdateStepEventAttachmentSchema.parse(req.body);
+        const attachment = await paymentMethodService.updateStepEventAttachment(req.params.attachmentId, data);
+        res.json(attachment);
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            res.status(400).json({ error: 'Validation failed', details: error.issues });
+            return;
+        }
+        next(error);
+    }
+});
+
+// Delete step event attachment
+router.delete('/step-event-attachments/:attachmentId', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const result = await paymentMethodService.deleteStepEventAttachment(req.params.attachmentId);
+        res.json(result);
     } catch (error) {
         next(error);
     }
