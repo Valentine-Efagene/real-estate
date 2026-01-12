@@ -32,7 +32,7 @@
    **Phase 3: Final Documentation** (DOCUMENTATION)
    - Step 1: Admin Uploads Final Offer Letter _(UPLOAD, admin-only)_
    - Step 2: Customer Signs Final Offer _(SIGNATURE)_
-   - Phase Event: ON_COMPLETE → Share with Sterling Bank _(optional, configurable)_
+   - Phase Event: ON*COMPLETE → Share with Sterling Bank *(optional, configurable)\_
 
    **Phase 4: Mortgage** (PAYMENT)
    - 90% of property price = ₦76,500,000

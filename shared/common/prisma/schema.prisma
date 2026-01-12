@@ -968,9 +968,19 @@ model PaymentPlan {
   // Structure configuration
   paymentFrequency       PaymentFrequency
   customFrequencyDays    Int?
-  numberOfInstallments   Int // 1 for one-time, 360 for 30yr monthly, etc
+  numberOfInstallments   Int? // Fixed number (1 for one-time, 360 for 30yr monthly) - NULL if flexible
   calculateInterestDaily Boolean          @default(false)
   gracePeriodDays        Int              @default(0)
+
+  // Flexible term configuration (for user-selectable duration like mortgages)
+  // If these are set, numberOfInstallments is ignored and user selects within range
+  allowFlexibleTerm Boolean @default(false) // true = user can select term within range
+  minTermMonths     Int? // e.g., 60 (5 years minimum)
+  maxTermMonths     Int? // e.g., 360 (30 years maximum)
+  termStepMonths    Int? // e.g., 12 (increments of 1 year) - NULL = any month allowed
+
+  // Age-based constraints (for mortgage eligibility)
+  maxAgeAtMaturity Int? // e.g., 65 - user's age + term cannot exceed this
 
   // Fund collection behavior
   // true = we collect funds via wallet/gateway (e.g., downpayment)
@@ -1549,6 +1559,11 @@ model PaymentPhase {
   totalAmount  Float
   paidAmount   Float @default(0)
   interestRate Float @default(0)
+
+  // User-selected term (for flexible-term plans like mortgages)
+  // These are set when user selects their preferred term at application time
+  selectedTermMonths   Int? // User's chosen term (e.g., 240 for 20 years)
+  numberOfInstallments Int? // Calculated from selectedTermMonths and frequency
 
   // Fund collection behavior
   // true = we collect funds via wallet/gateway (e.g., downpayment)
