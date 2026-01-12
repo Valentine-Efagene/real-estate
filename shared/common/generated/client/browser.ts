@@ -176,6 +176,12 @@ export type PropertyPaymentMethodLink = Prisma.PropertyPaymentMethodLinkModel
  */
 export type PropertyPaymentMethodPhase = Prisma.PropertyPaymentMethodPhaseModel
 /**
+ * Model PhaseEventAttachment
+ * Phase Event Attachment - Links event handlers to phase template triggers
+ * When a phase transitions (complete, payment received, etc.), attached handlers fire
+ */
+export type PhaseEventAttachment = Prisma.PhaseEventAttachmentModel
+/**
  * Model PaymentMethodPhaseStep
  * 
  */

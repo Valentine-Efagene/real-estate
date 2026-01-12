@@ -30,9 +30,9 @@
    - One-time payment
 
    **Phase 3: Final Documentation** (DOCUMENTATION)
-   - Step 1: Generate Final Offer Letter _(GENERATE_DOCUMENT)_
-   - Step 2: Customer Signature on Final Offer
-   - Step 3: Share with Sterling Bank _(optional, configurable)_
+   - Step 1: Admin Uploads Final Offer Letter _(UPLOAD, admin-only)_
+   - Step 2: Customer Signs Final Offer _(SIGNATURE)_
+   - Phase Event: ON_COMPLETE → Share with Sterling Bank _(optional, configurable)_
 
    **Phase 4: Mortgage** (PAYMENT)
    - 90% of property price = ₦76,500,000

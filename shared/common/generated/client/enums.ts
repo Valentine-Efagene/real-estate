@@ -122,6 +122,17 @@ export const StepTrigger = {
 export type StepTrigger = (typeof StepTrigger)[keyof typeof StepTrigger]
 
 
+export const PhaseTrigger = {
+  ON_ACTIVATE: 'ON_ACTIVATE',
+  ON_COMPLETE: 'ON_COMPLETE',
+  ON_CANCEL: 'ON_CANCEL',
+  ON_PAYMENT_RECEIVED: 'ON_PAYMENT_RECEIVED',
+  ON_ALL_PAYMENTS_RECEIVED: 'ON_ALL_PAYMENTS_RECEIVED'
+} as const
+
+export type PhaseTrigger = (typeof PhaseTrigger)[keyof typeof PhaseTrigger]
+
+
 export const InstallmentStatus = {
   PENDING: 'PENDING',
   PAID: 'PAID',

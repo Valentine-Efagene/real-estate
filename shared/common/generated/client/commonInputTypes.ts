@@ -456,6 +456,23 @@ export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
   _max?: Prisma.NestedJsonNullableFilter<$PrismaModel>
 }
 
+export type EnumPhaseTriggerFilter<$PrismaModel = never> = {
+  equals?: $Enums.PhaseTrigger | Prisma.EnumPhaseTriggerFieldRefInput<$PrismaModel>
+  in?: $Enums.PhaseTrigger[]
+  notIn?: $Enums.PhaseTrigger[]
+  not?: Prisma.NestedEnumPhaseTriggerFilter<$PrismaModel> | $Enums.PhaseTrigger
+}
+
+export type EnumPhaseTriggerWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PhaseTrigger | Prisma.EnumPhaseTriggerFieldRefInput<$PrismaModel>
+  in?: $Enums.PhaseTrigger[]
+  notIn?: $Enums.PhaseTrigger[]
+  not?: Prisma.NestedEnumPhaseTriggerWithAggregatesFilter<$PrismaModel> | $Enums.PhaseTrigger
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPhaseTriggerFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPhaseTriggerFilter<$PrismaModel>
+}
+
 export type EnumStepTypeFilter<$PrismaModel = never> = {
   equals?: $Enums.StepType | Prisma.EnumStepTypeFieldRefInput<$PrismaModel>
   in?: $Enums.StepType[]
@@ -1347,6 +1364,23 @@ export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
   gt?: runtime.InputJsonValue
   gte?: runtime.InputJsonValue
   not?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel> | Prisma.JsonNullValueFilter
+}
+
+export type NestedEnumPhaseTriggerFilter<$PrismaModel = never> = {
+  equals?: $Enums.PhaseTrigger | Prisma.EnumPhaseTriggerFieldRefInput<$PrismaModel>
+  in?: $Enums.PhaseTrigger[]
+  notIn?: $Enums.PhaseTrigger[]
+  not?: Prisma.NestedEnumPhaseTriggerFilter<$PrismaModel> | $Enums.PhaseTrigger
+}
+
+export type NestedEnumPhaseTriggerWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PhaseTrigger | Prisma.EnumPhaseTriggerFieldRefInput<$PrismaModel>
+  in?: $Enums.PhaseTrigger[]
+  notIn?: $Enums.PhaseTrigger[]
+  not?: Prisma.NestedEnumPhaseTriggerWithAggregatesFilter<$PrismaModel> | $Enums.PhaseTrigger
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPhaseTriggerFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPhaseTriggerFilter<$PrismaModel>
 }
 
 export type NestedEnumStepTypeFilter<$PrismaModel = never> = {

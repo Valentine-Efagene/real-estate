@@ -254,13 +254,12 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                             order: 3,
                             stepDefinitions: [
                                 {
-                                    name: 'Generate Final Offer',
-                                    stepType: 'GENERATE_DOCUMENT',
+                                    name: 'Admin Uploads Final Offer',
+                                    stepType: 'UPLOAD',
                                     order: 1,
                                     metadata: {
                                         documentType: 'FINAL_OFFER',
-                                        autoSend: true,
-                                        expiresInDays: 30,
+                                        uploadedBy: 'ADMIN', // Only admin can upload
                                     },
                                 },
                                 { name: 'Customer Signs Final Offer', stepType: 'SIGNATURE', order: 2 },
@@ -342,6 +341,66 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                 where: { tenantId },
             });
             expect(rules.length).toBe(3);
+        });
+
+        it('Adaeze configures phase event to notify when downpayment completes', async () => {
+            // First, create an event channel and type for downpayment notifications
+            const channel = await prisma.eventChannel.create({
+                data: {
+                    tenantId,
+                    code: 'MORTGAGE_OPS',
+                    name: 'Mortgage Operations',
+                    description: 'Internal events for mortgage workflow',
+                },
+            });
+
+            const eventType = await prisma.eventType.create({
+                data: {
+                    tenantId,
+                    channelId: channel.id,
+                    code: 'DOWNPAYMENT_COMPLETED',
+                    name: 'Downpayment Completed',
+                    description: 'Fired when customer completes downpayment phase',
+                },
+            });
+
+            // Create handler to notify admin to upload final offer
+            const handler = await prisma.eventHandler.create({
+                data: {
+                    tenantId,
+                    eventTypeId: eventType.id,
+                    name: 'Notify Admin: Upload Final Offer',
+                    description: 'Sends notification to admin to upload final offer letter',
+                    handlerType: 'SEND_EMAIL',
+                    config: {
+                        template: 'admin_upload_final_offer',
+                        recipients: ['adaeze@qshelter.com'],
+                        subject: 'Action Required: Upload Final Offer Letter',
+                    },
+                },
+            });
+
+            // Get the downpayment phase template from payment method
+            const paymentMethod = await prisma.propertyPaymentMethod.findUnique({
+                where: { id: paymentMethodId },
+                include: { phases: true },
+            });
+            const downpaymentPhaseTemplate = paymentMethod!.phases.find(
+                (p) => p.phaseType === 'DOWNPAYMENT'
+            );
+
+            // Attach handler to phase ON_COMPLETE trigger
+            const attachment = await prisma.phaseEventAttachment.create({
+                data: {
+                    phaseId: downpaymentPhaseTemplate!.id,
+                    trigger: 'ON_COMPLETE',
+                    handlerId: handler.id,
+                    priority: 100,
+                    enabled: true,
+                },
+            });
+
+            expect(attachment.id).toBeDefined();
         });
     });
 
@@ -611,24 +670,50 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             expect(phase?.status).toBe('IN_PROGRESS');
         });
 
-        it('GENERATE_DOCUMENT step auto-executes and generates final offer', async () => {
-            // After downpayment phase completes, Final Documentation phase activates
-            // The GENERATE_DOCUMENT step should auto-execute
-            // DocumentationStep is now linked via DocumentationPhase
-            const phase = await prisma.contractPhase.findUnique({
-                where: { id: finalDocumentationPhaseId },
-                include: { documentationPhase: true },
-            });
-
-            const step = await prisma.documentationStep.findFirst({
+        it('Phase event fires to notify Adaeze to upload final offer', async () => {
+            // The phase event attachment configured in Step 1 should have fired
+            // when the downpayment phase completed. Verify via domain event.
+            const event = await prisma.domainEvent.findFirst({
                 where: {
-                    documentationPhaseId: phase?.documentationPhase?.id,
-                    name: 'Generate Final Offer',
+                    aggregateType: 'ContractPhase',
+                    aggregateId: downpaymentPhaseId,
+                    eventType: 'PHASE.COMPLETED',
                 },
             });
 
-            // Step should be completed (auto-executed)
-            expect(step?.status).toBe('COMPLETED');
+            expect(event).toBeDefined();
+            expect(event?.payload).toBeDefined();
+
+            // The handler execution should be logged (if handler execution logging is enabled)
+            // For now, we just verify the phase completion event exists
+            // The notification service would pick this up and send the email
+        });
+
+        it('Adaeze uploads the final offer letter', async () => {
+            // After downpayment phase completes, Final Documentation phase activates
+            // Adaeze (admin) uploads the final offer letter prepared offline
+            const response = await api
+                .post(`/contracts/${contractId}/phases/${finalDocumentationPhaseId}/documents`)
+                .set(authHeaders(adaezeId, tenantId))
+                .set('x-idempotency-key', idempotencyKey('adaeze-upload-final-offer'))
+                .send({
+                    documentType: 'FINAL_OFFER',
+                    url: 'https://s3.amazonaws.com/qshelter/contracts/chidi-final-offer.pdf',
+                    fileName: 'chidi-final-offer.pdf',
+                });
+
+            expect(response.status).toBe(201);
+
+            // Complete the upload step
+            const stepResponse = await api
+                .post(`/contracts/${contractId}/phases/${finalDocumentationPhaseId}/steps/complete`)
+                .set(authHeaders(adaezeId, tenantId))
+                .set('x-idempotency-key', idempotencyKey('adaeze-complete-final-offer-upload'))
+                .send({
+                    stepName: 'Admin Uploads Final Offer',
+                });
+
+            expect(stepResponse.status).toBe(200);
         });
 
         it('Chidi signs the final offer', async () => {

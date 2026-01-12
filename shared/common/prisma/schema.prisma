@@ -113,6 +113,15 @@ enum StepTrigger {
   ON_START // When step transitions to IN_PROGRESS
 }
 
+/// When a phase event attachment should trigger
+enum PhaseTrigger {
+  ON_ACTIVATE // When phase is activated (becomes current)
+  ON_COMPLETE // When phase is completed (all steps/payments done)
+  ON_CANCEL // When phase is cancelled
+  ON_PAYMENT_RECEIVED // When any payment is received (for PAYMENT phases)
+  ON_ALL_PAYMENTS_RECEIVED // When all payments in phase are complete
+}
+
 enum InstallmentStatus {
   PENDING
   PAID
@@ -1083,11 +1092,42 @@ model PropertyPaymentMethodPhase {
   requiredDocuments   PaymentMethodPhaseDocument[]
   // Normalized child tables (for QUESTIONNAIRE phases)
   questionnaireFields PaymentMethodPhaseField[]
+  // Event attachments - handlers that fire on phase transitions
+  eventAttachments    PhaseEventAttachment[]
 
   @@index([paymentMethodId])
   @@index([paymentPlanId])
   @@index([phaseCategory])
   @@map("property_payment_method_phases")
+}
+
+/// Phase Event Attachment - Links event handlers to phase template triggers
+/// When a phase transitions (complete, payment received, etc.), attached handlers fire
+model PhaseEventAttachment {
+  id      String                     @id @default(cuid())
+  phaseId String
+  phase   PropertyPaymentMethodPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+
+  /// When this handler should fire
+  trigger PhaseTrigger
+
+  /// The event handler to execute
+  handlerId String
+  handler   EventHandler @relation(fields: [handlerId], references: [id], onDelete: Cascade)
+
+  /// Order of execution (lower = first)
+  priority Int @default(100)
+
+  /// Whether this attachment is active
+  enabled Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([phaseId, handlerId, trigger])
+  @@index([phaseId])
+  @@index([handlerId])
+  @@map("phase_event_attachments")
 }
 
 // Step template within a DOCUMENTATION phase
@@ -2238,6 +2278,9 @@ model EventHandler {
 
   /// Step attachments - steps that have attached this handler
   stepAttachments StepEventAttachment[]
+
+  /// Phase attachments - phases that have attached this handler
+  phaseAttachments PhaseEventAttachment[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
