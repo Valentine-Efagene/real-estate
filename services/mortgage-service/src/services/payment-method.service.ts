@@ -210,12 +210,12 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
     async function deleteMethod(id: string) {
         await findById(id);
 
-        const contractCount = await prisma.contract.count({
+        const applicationCount = await prisma.application.count({
             where: { paymentMethodId: id },
         });
 
-        if (contractCount > 0) {
-            throw new AppError(400, `Cannot delete payment method: used by ${contractCount} contract(s)`);
+        if (applicationCount > 0) {
+            throw new AppError(400, `Cannot delete payment method: used by ${applicationCount} application(s)`);
         }
 
         await prisma.$transaction(async (tx: any) => {

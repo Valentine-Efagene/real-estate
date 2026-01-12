@@ -5,15 +5,15 @@ import { prisma } from '../../lib/prisma';
  */
 export async function cleanDatabase() {
     // Delete in order to respect foreign key constraints
-    // Using the new Contract-based schema
+    // Using the new application-based schema
     await prisma.$transaction([
-        prisma.contractPayment.deleteMany(),
-        prisma.contractDocument.deleteMany(),
+        prisma.applicationPayment.deleteMany(),
+        prisma.applicationDocument.deleteMany(),
         prisma.documentationStepApproval.deleteMany(),
         prisma.documentationStep.deleteMany(),
-        prisma.contractInstallment.deleteMany(),
-        prisma.contractPhase.deleteMany(),
-        prisma.contract.deleteMany(),
+        prisma.paymentInstallment.deleteMany(),
+        prisma.applicationPhase.deleteMany(),
+        prisma.application.deleteMany(),
         prisma.propertyPaymentMethod.deleteMany(),
         prisma.paymentPlan.deleteMany(),
     ]);

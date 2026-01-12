@@ -156,7 +156,7 @@ serverless deploy --stage production --region us-east-1
 
 ### 10. Documentation
 
-- [ ] Document API endpoints and contracts
+- [ ] Document API endpoints and applications
 - [ ] Create runbooks for common operations
 - [ ] Document deployment procedures
 - [ ] Create incident response playbook

@@ -1,45 +1,45 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import { contractService } from '../services/contract.service';
-import { contractPhaseService } from '../services/contract-phase.service';
-import { contractPaymentService } from '../services/contract-payment.service';
-import { ContractStatus } from '@valentine-efagene/qshelter-common';
+import { applicationService } from '../services/application.service';
+import { applicationPhaseService } from '../services/application-phase.service';
+import { applicationPaymentService } from '../services/application-payment.service';
+import { ApplicationStatus } from '@valentine-efagene/qshelter-common';
 import {
-    CreateContractSchema,
-    UpdateContractSchema,
-    TransitionContractSchema,
-} from '../validators/contract.validator';
+    CreateApplicationSchema,
+    UpdateApplicationSchema,
+    TransitionApplicationSchema,
+} from '../validators/application.validator';
 import {
     ActivatePhaseSchema,
     CompleteStepSchema,
     UploadDocumentSchema,
     GenerateInstallmentsSchema,
     ApproveDocumentSchema,
-} from '../validators/contract-phase.validator';
+} from '../validators/application-phase.validator';
 import {
     CreatePaymentSchema,
     ProcessPaymentSchema,
     RefundPaymentSchema,
-} from '../validators/contract-payment.validator';
+} from '../validators/application-payment.validator';
 import { z } from 'zod';
 import { getAuthContext } from '@valentine-efagene/qshelter-common';
 
 const router = Router();
 
 // ============================================================================
-// CONTRACT ROUTES
+// APPLICATION ROUTES
 // ============================================================================
 
-// Create contract from payment method
+// Create application from payment method
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { tenantId, userId } = getAuthContext(req);
-        const data = CreateContractSchema.parse(req.body);
+        const data = CreateApplicationSchema.parse(req.body);
         // Use userId from header as buyerId if not provided in body
-        const contractData = { ...data, tenantId, buyerId: data.buyerId || userId };
-        const contract = await contractService.create(contractData);
-        res.status(201).json(contract);
+        const applicationData = { ...data, tenantId, buyerId: data.buyerId || userId };
+        const application = await applicationService.create(applicationData);
+        res.status(201).json(application);
     } catch (error: any) {
-        console.error('Contract create error:', error.message);
+        console.error('Application create error:', error.message);
         if (error instanceof z.ZodError) {
             console.error('Zod validation error:', JSON.stringify(error.issues, null, 2));
             res.status(400).json({ error: 'Validation failed', details: error.issues });
@@ -49,59 +49,59 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
     }
 });
 
-// Get all contracts
+// Get all applications
 router.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { buyerId, propertyUnitId, status } = req.query;
-        const contracts = await contractService.findAll({
+        const applications = await applicationService.findAll({
             buyerId: buyerId as string,
             propertyUnitId: propertyUnitId as string,
-            status: status as ContractStatus | undefined,
+            status: status as ApplicationStatus | undefined,
         });
-        res.json(contracts);
+        res.json(applications);
     } catch (error) {
         next(error);
     }
 });
 
-// Get contract by ID
+// Get application by ID
 router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const contract = await contractService.findById(req.params.id);
-        res.json(contract);
+        const application = await applicationService.findById(req.params.id);
+        res.json(application);
     } catch (error) {
         next(error);
     }
 });
 
-// Get current action required for a contract
+// Get current action required for an application
 // This is the canonical endpoint for the app to know what to show the user
 router.get('/:id/current-action', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const result = await contractService.getCurrentAction(req.params.id);
+        const result = await applicationService.getCurrentAction(req.params.id);
         res.json(result);
     } catch (error) {
         next(error);
     }
 });
 
-// Get contract by contract number
-router.get('/number/:contractNumber', async (req: Request, res: Response, next: NextFunction) => {
+// Get application by application number
+router.get('/number/:applicationNumber', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const contract = await contractService.findByContractNumber(req.params.contractNumber);
-        res.json(contract);
+        const application = await applicationService.findByApplicationNumber(req.params.applicationNumber);
+        res.json(application);
     } catch (error) {
         next(error);
     }
 });
 
-// Update contract
+// Update application
 router.patch('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const data = UpdateContractSchema.parse(req.body);
+        const data = UpdateApplicationSchema.parse(req.body);
         const { userId } = getAuthContext(req);
-        const contract = await contractService.update(req.params.id, data, userId);
-        res.json(contract);
+        const application = await applicationService.update(req.params.id, data, userId);
+        res.json(application);
     } catch (error) {
         if (error instanceof z.ZodError) {
             res.status(400).json({ error: 'Validation failed', details: error.issues });
@@ -111,13 +111,13 @@ router.patch('/:id', async (req: Request, res: Response, next: NextFunction) => 
     }
 });
 
-// Transition contract state
+// Transition application state
 router.post('/:id/transition', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const data = TransitionContractSchema.parse(req.body);
+        const data = TransitionApplicationSchema.parse(req.body);
         const { userId } = getAuthContext(req);
-        const contract = await contractService.transition(req.params.id, data, userId);
-        res.json(contract);
+        const application = await applicationService.transition(req.params.id, data, userId);
+        res.json(application);
     } catch (error) {
         if (error instanceof z.ZodError) {
             res.status(400).json({ error: 'Validation failed', details: error.issues });
@@ -127,34 +127,34 @@ router.post('/:id/transition', async (req: Request, res: Response, next: NextFun
     }
 });
 
-// Sign contract
+// Sign application
 router.post('/:id/sign', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { userId } = getAuthContext(req);
-        const contract = await contractService.sign(req.params.id, userId);
-        res.json(contract);
+        const application = await applicationService.sign(req.params.id, userId);
+        res.json(application);
     } catch (error) {
         next(error);
     }
 });
 
-// Cancel contract
+// Cancel application
 router.post('/:id/cancel', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { userId } = getAuthContext(req);
         const { reason } = req.body;
-        const contract = await contractService.cancel(req.params.id, userId, reason);
-        res.json(contract);
+        const application = await applicationService.cancel(req.params.id, userId, reason);
+        res.json(application);
     } catch (error) {
         next(error);
     }
 });
 
-// Delete contract (draft only)
+// Delete application (draft only)
 router.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { userId } = getAuthContext(req);
-        const result = await contractService.delete(req.params.id, userId);
+        const result = await applicationService.delete(req.params.id, userId);
         res.json(result);
     } catch (error) {
         next(error);
@@ -165,10 +165,10 @@ router.delete('/:id', async (req: Request, res: Response, next: NextFunction) =>
 // PHASE ROUTES
 // ============================================================================
 
-// Get phases for a contract
+// Get phases for an application
 router.get('/:id/phases', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const phases = await contractPhaseService.getPhasesByContract(req.params.id);
+        const phases = await applicationPhaseService.getPhasesByApplication(req.params.id);
         // Flatten payment phase fields for backwards compatibility
         const flattenedPhases = phases.map((phase: any) => ({
             ...phase,
@@ -193,7 +193,7 @@ router.get('/:id/phases', async (req: Request, res: Response, next: NextFunction
 // Get phase by ID
 router.get('/:id/phases/:phaseId', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const phase = await contractPhaseService.findById(req.params.phaseId);
+        const phase = await applicationPhaseService.findById(req.params.phaseId);
         // Flatten polymorphic fields for backwards compatibility
         const flattenedPhase = {
             ...phase,
@@ -217,7 +217,7 @@ router.post('/:id/phases/:phaseId/activate', async (req: Request, res: Response,
     try {
         const data = ActivatePhaseSchema.parse(req.body);
         const { userId } = getAuthContext(req);
-        const phase = await contractPhaseService.activate(req.params.phaseId, data, userId);
+        const phase = await applicationPhaseService.activate(req.params.phaseId, data, userId);
         res.json(phase);
     } catch (error) {
         if (error instanceof z.ZodError) {
@@ -233,7 +233,7 @@ router.post('/:id/phases/:phaseId/installments', async (req: Request, res: Respo
     try {
         const data = GenerateInstallmentsSchema.parse(req.body);
         const { userId } = getAuthContext(req);
-        const phase = await contractPhaseService.generateInstallments(req.params.phaseId, data, userId);
+        const phase = await applicationPhaseService.generateInstallments(req.params.phaseId, data, userId);
         // Transform installments to include amountDue for backwards compatibility
         // Installments are now on paymentPhase extension
         const installments = phase.paymentPhase?.installments ?? [];
@@ -259,7 +259,7 @@ router.post('/:id/phases/:phaseId/steps/complete', async (req: Request, res: Res
     try {
         const data = CompleteStepSchema.parse(req.body);
         const { userId } = getAuthContext(req);
-        const phase = await contractPhaseService.completeStep(req.params.phaseId, data, userId);
+        const phase = await applicationPhaseService.completeStep(req.params.phaseId, data, userId);
         res.json(phase);
     } catch (error) {
         if (error instanceof z.ZodError) {
@@ -279,7 +279,7 @@ router.post('/:id/phases/:phaseId/steps/:stepId/reject', async (req: Request, re
             return;
         }
         const { userId } = getAuthContext(req);
-        const phase = await contractPhaseService.rejectStep(req.params.phaseId, req.params.stepId, reason, userId);
+        const phase = await applicationPhaseService.rejectStep(req.params.phaseId, req.params.stepId, reason, userId);
         res.json(phase);
     } catch (error) {
         next(error);
@@ -295,7 +295,7 @@ router.post('/:id/phases/:phaseId/steps/:stepId/request-changes', async (req: Re
             return;
         }
         const { userId } = getAuthContext(req);
-        const phase = await contractPhaseService.requestStepChanges(req.params.phaseId, req.params.stepId, reason, userId);
+        const phase = await applicationPhaseService.requestStepChanges(req.params.phaseId, req.params.stepId, reason, userId);
         res.json(phase);
     } catch (error) {
         next(error);
@@ -307,7 +307,7 @@ router.post('/:id/phases/:phaseId/documents', async (req: Request, res: Response
     try {
         const data = UploadDocumentSchema.parse(req.body);
         const { userId } = getAuthContext(req);
-        const document = await contractPhaseService.uploadDocument(req.params.phaseId, data, userId);
+        const document = await applicationPhaseService.uploadDocument(req.params.phaseId, data, userId);
         res.status(201).json(document);
     } catch (error) {
         if (error instanceof z.ZodError) {
@@ -323,7 +323,7 @@ router.post('/:id/documents/:documentId/review', async (req: Request, res: Respo
     try {
         const data = ApproveDocumentSchema.parse(req.body);
         const { userId } = getAuthContext(req);
-        const document = await contractPhaseService.approveDocument(req.params.documentId, data, userId);
+        const document = await applicationPhaseService.approveDocument(req.params.documentId, data, userId);
         res.json(document);
     } catch (error) {
         if (error instanceof z.ZodError) {
@@ -338,7 +338,7 @@ router.post('/:id/documents/:documentId/review', async (req: Request, res: Respo
 router.post('/:id/phases/:phaseId/complete', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { userId } = getAuthContext(req);
-        const phase = await contractPhaseService.complete(req.params.phaseId, userId);
+        const phase = await applicationPhaseService.complete(req.params.phaseId, userId);
         res.json(phase);
     } catch (error) {
         next(error);
@@ -350,7 +350,7 @@ router.post('/:id/phases/:phaseId/skip', async (req: Request, res: Response, nex
     try {
         const { userId } = getAuthContext(req);
         const { reason } = req.body;
-        const phase = await contractPhaseService.skip(req.params.phaseId, userId, reason);
+        const phase = await applicationPhaseService.skip(req.params.phaseId, userId, reason);
         res.json(phase);
     } catch (error) {
         next(error);
@@ -366,10 +366,10 @@ router.post('/:id/payments', async (req: Request, res: Response, next: NextFunct
     try {
         const data = CreatePaymentSchema.parse({
             ...req.body,
-            contractId: req.params.id,
+            applicationId: req.params.id,
         });
         const { userId } = getAuthContext(req);
-        const payment = await contractPaymentService.create(data, userId);
+        const payment = await applicationPaymentService.create(data, userId);
         res.status(201).json(payment);
     } catch (error) {
         if (error instanceof z.ZodError) {
@@ -380,10 +380,10 @@ router.post('/:id/payments', async (req: Request, res: Response, next: NextFunct
     }
 });
 
-// Get payments for contract
+// Get payments for application
 router.get('/:id/payments', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const payments = await contractPaymentService.findByContract(req.params.id);
+        const payments = await applicationPaymentService.findByApplication(req.params.id);
         res.json(payments);
     } catch (error) {
         next(error);
@@ -393,7 +393,7 @@ router.get('/:id/payments', async (req: Request, res: Response, next: NextFuncti
 // Get payment by ID
 router.get('/:id/payments/:paymentId', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const payment = await contractPaymentService.findById(req.params.paymentId);
+        const payment = await applicationPaymentService.findById(req.params.paymentId);
         res.json(payment);
     } catch (error) {
         next(error);
@@ -404,7 +404,7 @@ router.get('/:id/payments/:paymentId', async (req: Request, res: Response, next:
 router.post('/payments/process', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = ProcessPaymentSchema.parse(req.body);
-        const payment = await contractPaymentService.process(data);
+        const payment = await applicationPaymentService.process(data);
         res.json(payment);
     } catch (error) {
         if (error instanceof z.ZodError) {
@@ -420,7 +420,7 @@ router.post('/:id/payments/:paymentId/refund', async (req: Request, res: Respons
     try {
         const data = RefundPaymentSchema.parse(req.body);
         const { userId } = getAuthContext(req);
-        const payment = await contractPaymentService.refund(req.params.paymentId, data, userId);
+        const payment = await applicationPaymentService.refund(req.params.paymentId, data, userId);
         res.json(payment);
     } catch (error) {
         if (error instanceof z.ZodError) {
@@ -440,7 +440,7 @@ router.post('/:id/pay-ahead', async (req: Request, res: Response, next: NextFunc
             return;
         }
         const { userId } = getAuthContext(req);
-        const result = await contractPaymentService.payAhead(req.params.id, amount, userId);
+        const result = await applicationPaymentService.payAhead(req.params.id, amount, userId);
         res.json(result);
     } catch (error) {
         next(error);

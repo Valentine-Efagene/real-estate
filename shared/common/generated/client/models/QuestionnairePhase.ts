@@ -272,7 +272,7 @@ export type QuestionnairePhaseWhereInput = {
   fieldsSnapshot?: Prisma.JsonNullableFilter<"QuestionnairePhase">
   createdAt?: Prisma.DateTimeFilter<"QuestionnairePhase"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"QuestionnairePhase"> | Date | string
-  phase?: Prisma.XOR<Prisma.ContractPhaseScalarRelationFilter, Prisma.ContractPhaseWhereInput>
+  phase?: Prisma.XOR<Prisma.ApplicationPhaseScalarRelationFilter, Prisma.ApplicationPhaseWhereInput>
   fields?: Prisma.QuestionnaireFieldListRelationFilter
 }
 
@@ -288,7 +288,7 @@ export type QuestionnairePhaseOrderByWithRelationInput = {
   fieldsSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  phase?: Prisma.ContractPhaseOrderByWithRelationInput
+  phase?: Prisma.ApplicationPhaseOrderByWithRelationInput
   fields?: Prisma.QuestionnaireFieldOrderByRelationAggregateInput
   _relevance?: Prisma.QuestionnairePhaseOrderByRelevanceInput
 }
@@ -308,7 +308,7 @@ export type QuestionnairePhaseWhereUniqueInput = Prisma.AtLeast<{
   fieldsSnapshot?: Prisma.JsonNullableFilter<"QuestionnairePhase">
   createdAt?: Prisma.DateTimeFilter<"QuestionnairePhase"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"QuestionnairePhase"> | Date | string
-  phase?: Prisma.XOR<Prisma.ContractPhaseScalarRelationFilter, Prisma.ContractPhaseWhereInput>
+  phase?: Prisma.XOR<Prisma.ApplicationPhaseScalarRelationFilter, Prisma.ApplicationPhaseWhereInput>
   fields?: Prisma.QuestionnaireFieldListRelationFilter
 }, "id" | "phaseId">
 
@@ -359,7 +359,7 @@ export type QuestionnairePhaseCreateInput = {
   fieldsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  phase: Prisma.ContractPhaseCreateNestedOneWithoutQuestionnairePhaseInput
+  phase: Prisma.ApplicationPhaseCreateNestedOneWithoutQuestionnairePhaseInput
   fields?: Prisma.QuestionnaireFieldCreateNestedManyWithoutQuestionnairePhaseInput
 }
 
@@ -389,7 +389,7 @@ export type QuestionnairePhaseUpdateInput = {
   fieldsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  phase?: Prisma.ContractPhaseUpdateOneRequiredWithoutQuestionnairePhaseNestedInput
+  phase?: Prisma.ApplicationPhaseUpdateOneRequiredWithoutQuestionnairePhaseNestedInput
   fields?: Prisma.QuestionnaireFieldUpdateManyWithoutQuestionnairePhaseNestedInput
 }
 
@@ -648,7 +648,7 @@ export type QuestionnairePhaseCreateWithoutFieldsInput = {
   fieldsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  phase: Prisma.ContractPhaseCreateNestedOneWithoutQuestionnairePhaseInput
+  phase: Prisma.ApplicationPhaseCreateNestedOneWithoutQuestionnairePhaseInput
 }
 
 export type QuestionnairePhaseUncheckedCreateWithoutFieldsInput = {
@@ -692,7 +692,7 @@ export type QuestionnairePhaseUpdateWithoutFieldsInput = {
   fieldsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  phase?: Prisma.ContractPhaseUpdateOneRequiredWithoutQuestionnairePhaseNestedInput
+  phase?: Prisma.ApplicationPhaseUpdateOneRequiredWithoutQuestionnairePhaseNestedInput
 }
 
 export type QuestionnairePhaseUncheckedUpdateWithoutFieldsInput = {
@@ -752,7 +752,7 @@ export type QuestionnairePhaseSelect<ExtArgs extends runtime.Types.Extensions.In
   fieldsSnapshot?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  phase?: boolean | Prisma.ContractPhaseDefaultArgs<ExtArgs>
+  phase?: boolean | Prisma.ApplicationPhaseDefaultArgs<ExtArgs>
   fields?: boolean | Prisma.QuestionnairePhase$fieldsArgs<ExtArgs>
   _count?: boolean | Prisma.QuestionnairePhaseCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["questionnairePhase"]>
@@ -775,7 +775,7 @@ export type QuestionnairePhaseSelectScalar = {
 
 export type QuestionnairePhaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "phaseId" | "completedFieldsCount" | "totalFieldsCount" | "underwritingScore" | "debtToIncomeRatio" | "underwritingDecision" | "underwritingNotes" | "fieldsSnapshot" | "createdAt" | "updatedAt", ExtArgs["result"]["questionnairePhase"]>
 export type QuestionnairePhaseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  phase?: boolean | Prisma.ContractPhaseDefaultArgs<ExtArgs>
+  phase?: boolean | Prisma.ApplicationPhaseDefaultArgs<ExtArgs>
   fields?: boolean | Prisma.QuestionnairePhase$fieldsArgs<ExtArgs>
   _count?: boolean | Prisma.QuestionnairePhaseCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -783,7 +783,7 @@ export type QuestionnairePhaseInclude<ExtArgs extends runtime.Types.Extensions.I
 export type $QuestionnairePhasePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "QuestionnairePhase"
   objects: {
-    phase: Prisma.$ContractPhasePayload<ExtArgs>
+    phase: Prisma.$ApplicationPhasePayload<ExtArgs>
     fields: Prisma.$QuestionnaireFieldPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1138,7 +1138,7 @@ readonly fields: QuestionnairePhaseFieldRefs;
  */
 export interface Prisma__QuestionnairePhaseClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  phase<T extends Prisma.ContractPhaseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContractPhaseDefaultArgs<ExtArgs>>): Prisma.Prisma__ContractPhaseClient<runtime.Types.Result.GetResult<Prisma.$ContractPhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  phase<T extends Prisma.ApplicationPhaseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApplicationPhaseDefaultArgs<ExtArgs>>): Prisma.Prisma__ApplicationPhaseClient<runtime.Types.Result.GetResult<Prisma.$ApplicationPhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   fields<T extends Prisma.QuestionnairePhase$fieldsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QuestionnairePhase$fieldsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QuestionnaireFieldPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.

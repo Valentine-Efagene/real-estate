@@ -68,8 +68,8 @@ export interface WalletCreditedPayload {
 export interface AllocateToInstallmentsPayload {
     userId: string;
     walletId: string;
-    /** Optional: limit to specific contract */
-    contractId?: string;
+    /** Optional: limit to specific application */
+    applicationId?: string;
     /** Optional: limit to specific amount */
     maxAmount?: number;
 }

@@ -420,23 +420,23 @@ export const ModelName = {
   StepEventAttachment: 'StepEventAttachment',
   PaymentMethodPhaseDocument: 'PaymentMethodPhaseDocument',
   PaymentMethodPhaseField: 'PaymentMethodPhaseField',
-  Contract: 'Contract',
-  ContractRefund: 'ContractRefund',
-  ContractPhase: 'ContractPhase',
+  Application: 'Application',
+  ApplicationRefund: 'ApplicationRefund',
+  ApplicationPhase: 'ApplicationPhase',
   QuestionnairePhase: 'QuestionnairePhase',
   DocumentationPhase: 'DocumentationPhase',
   PaymentPhase: 'PaymentPhase',
   QuestionnaireField: 'QuestionnaireField',
-  ContractEvent: 'ContractEvent',
+  ApplicationEvent: 'ApplicationEvent',
   DocumentationStep: 'DocumentationStep',
   DocumentationStepDocument: 'DocumentationStepDocument',
   DocumentationStepApproval: 'DocumentationStepApproval',
-  ContractInstallment: 'ContractInstallment',
-  ContractPayment: 'ContractPayment',
-  ContractDocument: 'ContractDocument',
+  PaymentInstallment: 'PaymentInstallment',
+  ApplicationPayment: 'ApplicationPayment',
+  ApplicationDocument: 'ApplicationDocument',
   DocumentTemplate: 'DocumentTemplate',
   OfferLetter: 'OfferLetter',
-  ContractTermination: 'ContractTermination',
+  ApplicationTermination: 'ApplicationTermination',
   PaymentMethodChangeRequest: 'PaymentMethodChangeRequest',
   DocumentRequirementRule: 'DocumentRequirementRule',
   EventChannel: 'EventChannel',
@@ -462,7 +462,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenantMembership" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "phaseEventAttachment" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "paymentMethodPhaseField" | "contract" | "contractRefund" | "contractPhase" | "questionnairePhase" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "contractEvent" | "documentationStep" | "documentationStepDocument" | "documentationStepApproval" | "contractInstallment" | "contractPayment" | "contractDocument" | "documentTemplate" | "offerLetter" | "contractTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "workflowEvent" | "eventHandlerExecution" | "domainEvent" | "propertyTransferRequest" | "approvalRequest"
+    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenantMembership" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "phaseEventAttachment" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "paymentMethodPhaseField" | "application" | "applicationRefund" | "applicationPhase" | "questionnairePhase" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "applicationEvent" | "documentationStep" | "documentationStepDocument" | "documentationStepApproval" | "paymentInstallment" | "applicationPayment" | "applicationDocument" | "documentTemplate" | "offerLetter" | "applicationTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "workflowEvent" | "eventHandlerExecution" | "domainEvent" | "propertyTransferRequest" | "approvalRequest"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2842,201 +2842,201 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    Contract: {
-      payload: Prisma.$ContractPayload<ExtArgs>
-      fields: Prisma.ContractFieldRefs
+    Application: {
+      payload: Prisma.$ApplicationPayload<ExtArgs>
+      fields: Prisma.ApplicationFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.ContractFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPayload> | null
+          args: Prisma.ApplicationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.ContractFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPayload>
+          args: Prisma.ApplicationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationPayload>
         }
         findFirst: {
-          args: Prisma.ContractFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPayload> | null
+          args: Prisma.ApplicationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.ContractFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPayload>
+          args: Prisma.ApplicationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationPayload>
         }
         findMany: {
-          args: Prisma.ContractFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPayload>[]
+          args: Prisma.ApplicationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationPayload>[]
         }
         create: {
-          args: Prisma.ContractCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPayload>
+          args: Prisma.ApplicationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationPayload>
         }
         createMany: {
-          args: Prisma.ContractCreateManyArgs<ExtArgs>
+          args: Prisma.ApplicationCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         delete: {
-          args: Prisma.ContractDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPayload>
+          args: Prisma.ApplicationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationPayload>
         }
         update: {
-          args: Prisma.ContractUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPayload>
+          args: Prisma.ApplicationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationPayload>
         }
         deleteMany: {
-          args: Prisma.ContractDeleteManyArgs<ExtArgs>
+          args: Prisma.ApplicationDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.ContractUpdateManyArgs<ExtArgs>
+          args: Prisma.ApplicationUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         upsert: {
-          args: Prisma.ContractUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPayload>
+          args: Prisma.ApplicationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationPayload>
         }
         aggregate: {
-          args: Prisma.ContractAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateContract>
+          args: Prisma.ApplicationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateApplication>
         }
         groupBy: {
-          args: Prisma.ContractGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ContractGroupByOutputType>[]
+          args: Prisma.ApplicationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApplicationGroupByOutputType>[]
         }
         count: {
-          args: Prisma.ContractCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ContractCountAggregateOutputType> | number
+          args: Prisma.ApplicationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApplicationCountAggregateOutputType> | number
         }
       }
     }
-    ContractRefund: {
-      payload: Prisma.$ContractRefundPayload<ExtArgs>
-      fields: Prisma.ContractRefundFieldRefs
+    ApplicationRefund: {
+      payload: Prisma.$ApplicationRefundPayload<ExtArgs>
+      fields: Prisma.ApplicationRefundFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.ContractRefundFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractRefundPayload> | null
+          args: Prisma.ApplicationRefundFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationRefundPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.ContractRefundFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractRefundPayload>
+          args: Prisma.ApplicationRefundFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationRefundPayload>
         }
         findFirst: {
-          args: Prisma.ContractRefundFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractRefundPayload> | null
+          args: Prisma.ApplicationRefundFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationRefundPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.ContractRefundFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractRefundPayload>
+          args: Prisma.ApplicationRefundFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationRefundPayload>
         }
         findMany: {
-          args: Prisma.ContractRefundFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractRefundPayload>[]
+          args: Prisma.ApplicationRefundFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationRefundPayload>[]
         }
         create: {
-          args: Prisma.ContractRefundCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractRefundPayload>
+          args: Prisma.ApplicationRefundCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationRefundPayload>
         }
         createMany: {
-          args: Prisma.ContractRefundCreateManyArgs<ExtArgs>
+          args: Prisma.ApplicationRefundCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         delete: {
-          args: Prisma.ContractRefundDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractRefundPayload>
+          args: Prisma.ApplicationRefundDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationRefundPayload>
         }
         update: {
-          args: Prisma.ContractRefundUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractRefundPayload>
+          args: Prisma.ApplicationRefundUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationRefundPayload>
         }
         deleteMany: {
-          args: Prisma.ContractRefundDeleteManyArgs<ExtArgs>
+          args: Prisma.ApplicationRefundDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.ContractRefundUpdateManyArgs<ExtArgs>
+          args: Prisma.ApplicationRefundUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         upsert: {
-          args: Prisma.ContractRefundUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractRefundPayload>
+          args: Prisma.ApplicationRefundUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationRefundPayload>
         }
         aggregate: {
-          args: Prisma.ContractRefundAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateContractRefund>
+          args: Prisma.ApplicationRefundAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateApplicationRefund>
         }
         groupBy: {
-          args: Prisma.ContractRefundGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ContractRefundGroupByOutputType>[]
+          args: Prisma.ApplicationRefundGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApplicationRefundGroupByOutputType>[]
         }
         count: {
-          args: Prisma.ContractRefundCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ContractRefundCountAggregateOutputType> | number
+          args: Prisma.ApplicationRefundCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApplicationRefundCountAggregateOutputType> | number
         }
       }
     }
-    ContractPhase: {
-      payload: Prisma.$ContractPhasePayload<ExtArgs>
-      fields: Prisma.ContractPhaseFieldRefs
+    ApplicationPhase: {
+      payload: Prisma.$ApplicationPhasePayload<ExtArgs>
+      fields: Prisma.ApplicationPhaseFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.ContractPhaseFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhasePayload> | null
+          args: Prisma.ApplicationPhaseFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationPhasePayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.ContractPhaseFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhasePayload>
+          args: Prisma.ApplicationPhaseFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationPhasePayload>
         }
         findFirst: {
-          args: Prisma.ContractPhaseFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhasePayload> | null
+          args: Prisma.ApplicationPhaseFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationPhasePayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.ContractPhaseFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhasePayload>
+          args: Prisma.ApplicationPhaseFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationPhasePayload>
         }
         findMany: {
-          args: Prisma.ContractPhaseFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhasePayload>[]
+          args: Prisma.ApplicationPhaseFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationPhasePayload>[]
         }
         create: {
-          args: Prisma.ContractPhaseCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhasePayload>
+          args: Prisma.ApplicationPhaseCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationPhasePayload>
         }
         createMany: {
-          args: Prisma.ContractPhaseCreateManyArgs<ExtArgs>
+          args: Prisma.ApplicationPhaseCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         delete: {
-          args: Prisma.ContractPhaseDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhasePayload>
+          args: Prisma.ApplicationPhaseDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationPhasePayload>
         }
         update: {
-          args: Prisma.ContractPhaseUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhasePayload>
+          args: Prisma.ApplicationPhaseUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationPhasePayload>
         }
         deleteMany: {
-          args: Prisma.ContractPhaseDeleteManyArgs<ExtArgs>
+          args: Prisma.ApplicationPhaseDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.ContractPhaseUpdateManyArgs<ExtArgs>
+          args: Prisma.ApplicationPhaseUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         upsert: {
-          args: Prisma.ContractPhaseUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPhasePayload>
+          args: Prisma.ApplicationPhaseUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationPhasePayload>
         }
         aggregate: {
-          args: Prisma.ContractPhaseAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateContractPhase>
+          args: Prisma.ApplicationPhaseAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateApplicationPhase>
         }
         groupBy: {
-          args: Prisma.ContractPhaseGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ContractPhaseGroupByOutputType>[]
+          args: Prisma.ApplicationPhaseGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApplicationPhaseGroupByOutputType>[]
         }
         count: {
-          args: Prisma.ContractPhaseCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ContractPhaseCountAggregateOutputType> | number
+          args: Prisma.ApplicationPhaseCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApplicationPhaseCountAggregateOutputType> | number
         }
       }
     }
@@ -3304,69 +3304,69 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    ContractEvent: {
-      payload: Prisma.$ContractEventPayload<ExtArgs>
-      fields: Prisma.ContractEventFieldRefs
+    ApplicationEvent: {
+      payload: Prisma.$ApplicationEventPayload<ExtArgs>
+      fields: Prisma.ApplicationEventFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.ContractEventFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractEventPayload> | null
+          args: Prisma.ApplicationEventFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationEventPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.ContractEventFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractEventPayload>
+          args: Prisma.ApplicationEventFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationEventPayload>
         }
         findFirst: {
-          args: Prisma.ContractEventFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractEventPayload> | null
+          args: Prisma.ApplicationEventFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationEventPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.ContractEventFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractEventPayload>
+          args: Prisma.ApplicationEventFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationEventPayload>
         }
         findMany: {
-          args: Prisma.ContractEventFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractEventPayload>[]
+          args: Prisma.ApplicationEventFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationEventPayload>[]
         }
         create: {
-          args: Prisma.ContractEventCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractEventPayload>
+          args: Prisma.ApplicationEventCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationEventPayload>
         }
         createMany: {
-          args: Prisma.ContractEventCreateManyArgs<ExtArgs>
+          args: Prisma.ApplicationEventCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         delete: {
-          args: Prisma.ContractEventDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractEventPayload>
+          args: Prisma.ApplicationEventDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationEventPayload>
         }
         update: {
-          args: Prisma.ContractEventUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractEventPayload>
+          args: Prisma.ApplicationEventUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationEventPayload>
         }
         deleteMany: {
-          args: Prisma.ContractEventDeleteManyArgs<ExtArgs>
+          args: Prisma.ApplicationEventDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.ContractEventUpdateManyArgs<ExtArgs>
+          args: Prisma.ApplicationEventUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         upsert: {
-          args: Prisma.ContractEventUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractEventPayload>
+          args: Prisma.ApplicationEventUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationEventPayload>
         }
         aggregate: {
-          args: Prisma.ContractEventAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateContractEvent>
+          args: Prisma.ApplicationEventAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateApplicationEvent>
         }
         groupBy: {
-          args: Prisma.ContractEventGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ContractEventGroupByOutputType>[]
+          args: Prisma.ApplicationEventGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApplicationEventGroupByOutputType>[]
         }
         count: {
-          args: Prisma.ContractEventCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ContractEventCountAggregateOutputType> | number
+          args: Prisma.ApplicationEventCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApplicationEventCountAggregateOutputType> | number
         }
       }
     }
@@ -3568,201 +3568,201 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    ContractInstallment: {
-      payload: Prisma.$ContractInstallmentPayload<ExtArgs>
-      fields: Prisma.ContractInstallmentFieldRefs
+    PaymentInstallment: {
+      payload: Prisma.$PaymentInstallmentPayload<ExtArgs>
+      fields: Prisma.PaymentInstallmentFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.ContractInstallmentFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractInstallmentPayload> | null
+          args: Prisma.PaymentInstallmentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentInstallmentPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.ContractInstallmentFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractInstallmentPayload>
+          args: Prisma.PaymentInstallmentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentInstallmentPayload>
         }
         findFirst: {
-          args: Prisma.ContractInstallmentFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractInstallmentPayload> | null
+          args: Prisma.PaymentInstallmentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentInstallmentPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.ContractInstallmentFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractInstallmentPayload>
+          args: Prisma.PaymentInstallmentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentInstallmentPayload>
         }
         findMany: {
-          args: Prisma.ContractInstallmentFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractInstallmentPayload>[]
+          args: Prisma.PaymentInstallmentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentInstallmentPayload>[]
         }
         create: {
-          args: Prisma.ContractInstallmentCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractInstallmentPayload>
+          args: Prisma.PaymentInstallmentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentInstallmentPayload>
         }
         createMany: {
-          args: Prisma.ContractInstallmentCreateManyArgs<ExtArgs>
+          args: Prisma.PaymentInstallmentCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         delete: {
-          args: Prisma.ContractInstallmentDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractInstallmentPayload>
+          args: Prisma.PaymentInstallmentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentInstallmentPayload>
         }
         update: {
-          args: Prisma.ContractInstallmentUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractInstallmentPayload>
+          args: Prisma.PaymentInstallmentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentInstallmentPayload>
         }
         deleteMany: {
-          args: Prisma.ContractInstallmentDeleteManyArgs<ExtArgs>
+          args: Prisma.PaymentInstallmentDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.ContractInstallmentUpdateManyArgs<ExtArgs>
+          args: Prisma.PaymentInstallmentUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         upsert: {
-          args: Prisma.ContractInstallmentUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractInstallmentPayload>
+          args: Prisma.PaymentInstallmentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentInstallmentPayload>
         }
         aggregate: {
-          args: Prisma.ContractInstallmentAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateContractInstallment>
+          args: Prisma.PaymentInstallmentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePaymentInstallment>
         }
         groupBy: {
-          args: Prisma.ContractInstallmentGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ContractInstallmentGroupByOutputType>[]
+          args: Prisma.PaymentInstallmentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaymentInstallmentGroupByOutputType>[]
         }
         count: {
-          args: Prisma.ContractInstallmentCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ContractInstallmentCountAggregateOutputType> | number
+          args: Prisma.PaymentInstallmentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaymentInstallmentCountAggregateOutputType> | number
         }
       }
     }
-    ContractPayment: {
-      payload: Prisma.$ContractPaymentPayload<ExtArgs>
-      fields: Prisma.ContractPaymentFieldRefs
+    ApplicationPayment: {
+      payload: Prisma.$ApplicationPaymentPayload<ExtArgs>
+      fields: Prisma.ApplicationPaymentFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.ContractPaymentFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPaymentPayload> | null
+          args: Prisma.ApplicationPaymentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationPaymentPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.ContractPaymentFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPaymentPayload>
+          args: Prisma.ApplicationPaymentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationPaymentPayload>
         }
         findFirst: {
-          args: Prisma.ContractPaymentFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPaymentPayload> | null
+          args: Prisma.ApplicationPaymentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationPaymentPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.ContractPaymentFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPaymentPayload>
+          args: Prisma.ApplicationPaymentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationPaymentPayload>
         }
         findMany: {
-          args: Prisma.ContractPaymentFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPaymentPayload>[]
+          args: Prisma.ApplicationPaymentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationPaymentPayload>[]
         }
         create: {
-          args: Prisma.ContractPaymentCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPaymentPayload>
+          args: Prisma.ApplicationPaymentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationPaymentPayload>
         }
         createMany: {
-          args: Prisma.ContractPaymentCreateManyArgs<ExtArgs>
+          args: Prisma.ApplicationPaymentCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         delete: {
-          args: Prisma.ContractPaymentDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPaymentPayload>
+          args: Prisma.ApplicationPaymentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationPaymentPayload>
         }
         update: {
-          args: Prisma.ContractPaymentUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPaymentPayload>
+          args: Prisma.ApplicationPaymentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationPaymentPayload>
         }
         deleteMany: {
-          args: Prisma.ContractPaymentDeleteManyArgs<ExtArgs>
+          args: Prisma.ApplicationPaymentDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.ContractPaymentUpdateManyArgs<ExtArgs>
+          args: Prisma.ApplicationPaymentUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         upsert: {
-          args: Prisma.ContractPaymentUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPaymentPayload>
+          args: Prisma.ApplicationPaymentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationPaymentPayload>
         }
         aggregate: {
-          args: Prisma.ContractPaymentAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateContractPayment>
+          args: Prisma.ApplicationPaymentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateApplicationPayment>
         }
         groupBy: {
-          args: Prisma.ContractPaymentGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ContractPaymentGroupByOutputType>[]
+          args: Prisma.ApplicationPaymentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApplicationPaymentGroupByOutputType>[]
         }
         count: {
-          args: Prisma.ContractPaymentCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ContractPaymentCountAggregateOutputType> | number
+          args: Prisma.ApplicationPaymentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApplicationPaymentCountAggregateOutputType> | number
         }
       }
     }
-    ContractDocument: {
-      payload: Prisma.$ContractDocumentPayload<ExtArgs>
-      fields: Prisma.ContractDocumentFieldRefs
+    ApplicationDocument: {
+      payload: Prisma.$ApplicationDocumentPayload<ExtArgs>
+      fields: Prisma.ApplicationDocumentFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.ContractDocumentFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractDocumentPayload> | null
+          args: Prisma.ApplicationDocumentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationDocumentPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.ContractDocumentFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractDocumentPayload>
+          args: Prisma.ApplicationDocumentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationDocumentPayload>
         }
         findFirst: {
-          args: Prisma.ContractDocumentFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractDocumentPayload> | null
+          args: Prisma.ApplicationDocumentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationDocumentPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.ContractDocumentFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractDocumentPayload>
+          args: Prisma.ApplicationDocumentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationDocumentPayload>
         }
         findMany: {
-          args: Prisma.ContractDocumentFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractDocumentPayload>[]
+          args: Prisma.ApplicationDocumentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationDocumentPayload>[]
         }
         create: {
-          args: Prisma.ContractDocumentCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractDocumentPayload>
+          args: Prisma.ApplicationDocumentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationDocumentPayload>
         }
         createMany: {
-          args: Prisma.ContractDocumentCreateManyArgs<ExtArgs>
+          args: Prisma.ApplicationDocumentCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         delete: {
-          args: Prisma.ContractDocumentDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractDocumentPayload>
+          args: Prisma.ApplicationDocumentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationDocumentPayload>
         }
         update: {
-          args: Prisma.ContractDocumentUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractDocumentPayload>
+          args: Prisma.ApplicationDocumentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationDocumentPayload>
         }
         deleteMany: {
-          args: Prisma.ContractDocumentDeleteManyArgs<ExtArgs>
+          args: Prisma.ApplicationDocumentDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.ContractDocumentUpdateManyArgs<ExtArgs>
+          args: Prisma.ApplicationDocumentUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         upsert: {
-          args: Prisma.ContractDocumentUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractDocumentPayload>
+          args: Prisma.ApplicationDocumentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationDocumentPayload>
         }
         aggregate: {
-          args: Prisma.ContractDocumentAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateContractDocument>
+          args: Prisma.ApplicationDocumentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateApplicationDocument>
         }
         groupBy: {
-          args: Prisma.ContractDocumentGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ContractDocumentGroupByOutputType>[]
+          args: Prisma.ApplicationDocumentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApplicationDocumentGroupByOutputType>[]
         }
         count: {
-          args: Prisma.ContractDocumentCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ContractDocumentCountAggregateOutputType> | number
+          args: Prisma.ApplicationDocumentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApplicationDocumentCountAggregateOutputType> | number
         }
       }
     }
@@ -3898,69 +3898,69 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    ContractTermination: {
-      payload: Prisma.$ContractTerminationPayload<ExtArgs>
-      fields: Prisma.ContractTerminationFieldRefs
+    ApplicationTermination: {
+      payload: Prisma.$ApplicationTerminationPayload<ExtArgs>
+      fields: Prisma.ApplicationTerminationFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.ContractTerminationFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractTerminationPayload> | null
+          args: Prisma.ApplicationTerminationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationTerminationPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.ContractTerminationFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractTerminationPayload>
+          args: Prisma.ApplicationTerminationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationTerminationPayload>
         }
         findFirst: {
-          args: Prisma.ContractTerminationFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractTerminationPayload> | null
+          args: Prisma.ApplicationTerminationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationTerminationPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.ContractTerminationFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractTerminationPayload>
+          args: Prisma.ApplicationTerminationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationTerminationPayload>
         }
         findMany: {
-          args: Prisma.ContractTerminationFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractTerminationPayload>[]
+          args: Prisma.ApplicationTerminationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationTerminationPayload>[]
         }
         create: {
-          args: Prisma.ContractTerminationCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractTerminationPayload>
+          args: Prisma.ApplicationTerminationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationTerminationPayload>
         }
         createMany: {
-          args: Prisma.ContractTerminationCreateManyArgs<ExtArgs>
+          args: Prisma.ApplicationTerminationCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         delete: {
-          args: Prisma.ContractTerminationDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractTerminationPayload>
+          args: Prisma.ApplicationTerminationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationTerminationPayload>
         }
         update: {
-          args: Prisma.ContractTerminationUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractTerminationPayload>
+          args: Prisma.ApplicationTerminationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationTerminationPayload>
         }
         deleteMany: {
-          args: Prisma.ContractTerminationDeleteManyArgs<ExtArgs>
+          args: Prisma.ApplicationTerminationDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.ContractTerminationUpdateManyArgs<ExtArgs>
+          args: Prisma.ApplicationTerminationUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         upsert: {
-          args: Prisma.ContractTerminationUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractTerminationPayload>
+          args: Prisma.ApplicationTerminationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationTerminationPayload>
         }
         aggregate: {
-          args: Prisma.ContractTerminationAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateContractTermination>
+          args: Prisma.ApplicationTerminationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateApplicationTermination>
         }
         groupBy: {
-          args: Prisma.ContractTerminationGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ContractTerminationGroupByOutputType>[]
+          args: Prisma.ApplicationTerminationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApplicationTerminationGroupByOutputType>[]
         }
         count: {
-          args: Prisma.ContractTerminationCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ContractTerminationCountAggregateOutputType> | number
+          args: Prisma.ApplicationTerminationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApplicationTerminationCountAggregateOutputType> | number
         }
       }
     }
@@ -5200,17 +5200,17 @@ export const PaymentMethodPhaseFieldScalarFieldEnum = {
 export type PaymentMethodPhaseFieldScalarFieldEnum = (typeof PaymentMethodPhaseFieldScalarFieldEnum)[keyof typeof PaymentMethodPhaseFieldScalarFieldEnum]
 
 
-export const ContractScalarFieldEnum = {
+export const ApplicationScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   propertyUnitId: 'propertyUnitId',
   buyerId: 'buyerId',
   sellerId: 'sellerId',
   paymentMethodId: 'paymentMethodId',
-  contractNumber: 'contractNumber',
+  applicationNumber: 'applicationNumber',
   title: 'title',
   description: 'description',
-  contractType: 'contractType',
+  applicationType: 'applicationType',
   totalAmount: 'totalAmount',
   status: 'status',
   currentPhaseId: 'currentPhaseId',
@@ -5225,13 +5225,13 @@ export const ContractScalarFieldEnum = {
   transferredFromId: 'transferredFromId'
 } as const
 
-export type ContractScalarFieldEnum = (typeof ContractScalarFieldEnum)[keyof typeof ContractScalarFieldEnum]
+export type ApplicationScalarFieldEnum = (typeof ApplicationScalarFieldEnum)[keyof typeof ApplicationScalarFieldEnum]
 
 
-export const ContractRefundScalarFieldEnum = {
+export const ApplicationRefundScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
-  contractId: 'contractId',
+  applicationId: 'applicationId',
   amount: 'amount',
   reason: 'reason',
   status: 'status',
@@ -5254,12 +5254,12 @@ export const ContractRefundScalarFieldEnum = {
   updatedAt: 'updatedAt'
 } as const
 
-export type ContractRefundScalarFieldEnum = (typeof ContractRefundScalarFieldEnum)[keyof typeof ContractRefundScalarFieldEnum]
+export type ApplicationRefundScalarFieldEnum = (typeof ApplicationRefundScalarFieldEnum)[keyof typeof ApplicationRefundScalarFieldEnum]
 
 
-export const ContractPhaseScalarFieldEnum = {
+export const ApplicationPhaseScalarFieldEnum = {
   id: 'id',
-  contractId: 'contractId',
+  applicationId: 'applicationId',
   name: 'name',
   description: 'description',
   phaseCategory: 'phaseCategory',
@@ -5276,7 +5276,7 @@ export const ContractPhaseScalarFieldEnum = {
   updatedAt: 'updatedAt'
 } as const
 
-export type ContractPhaseScalarFieldEnum = (typeof ContractPhaseScalarFieldEnum)[keyof typeof ContractPhaseScalarFieldEnum]
+export type ApplicationPhaseScalarFieldEnum = (typeof ApplicationPhaseScalarFieldEnum)[keyof typeof ApplicationPhaseScalarFieldEnum]
 
 
 export const QuestionnairePhaseScalarFieldEnum = {
@@ -5358,9 +5358,9 @@ export const QuestionnaireFieldScalarFieldEnum = {
 export type QuestionnaireFieldScalarFieldEnum = (typeof QuestionnaireFieldScalarFieldEnum)[keyof typeof QuestionnaireFieldScalarFieldEnum]
 
 
-export const ContractEventScalarFieldEnum = {
+export const ApplicationEventScalarFieldEnum = {
   id: 'id',
-  contractId: 'contractId',
+  applicationId: 'applicationId',
   eventType: 'eventType',
   eventGroup: 'eventGroup',
   fromState: 'fromState',
@@ -5372,7 +5372,7 @@ export const ContractEventScalarFieldEnum = {
   occurredAt: 'occurredAt'
 } as const
 
-export type ContractEventScalarFieldEnum = (typeof ContractEventScalarFieldEnum)[keyof typeof ContractEventScalarFieldEnum]
+export type ApplicationEventScalarFieldEnum = (typeof ApplicationEventScalarFieldEnum)[keyof typeof ApplicationEventScalarFieldEnum]
 
 
 export const DocumentationStepScalarFieldEnum = {
@@ -5421,7 +5421,7 @@ export const DocumentationStepApprovalScalarFieldEnum = {
 export type DocumentationStepApprovalScalarFieldEnum = (typeof DocumentationStepApprovalScalarFieldEnum)[keyof typeof DocumentationStepApprovalScalarFieldEnum]
 
 
-export const ContractInstallmentScalarFieldEnum = {
+export const PaymentInstallmentScalarFieldEnum = {
   id: 'id',
   paymentPhaseId: 'paymentPhaseId',
   installmentNumber: 'installmentNumber',
@@ -5440,12 +5440,12 @@ export const ContractInstallmentScalarFieldEnum = {
   updatedAt: 'updatedAt'
 } as const
 
-export type ContractInstallmentScalarFieldEnum = (typeof ContractInstallmentScalarFieldEnum)[keyof typeof ContractInstallmentScalarFieldEnum]
+export type PaymentInstallmentScalarFieldEnum = (typeof PaymentInstallmentScalarFieldEnum)[keyof typeof PaymentInstallmentScalarFieldEnum]
 
 
-export const ContractPaymentScalarFieldEnum = {
+export const ApplicationPaymentScalarFieldEnum = {
   id: 'id',
-  contractId: 'contractId',
+  applicationId: 'applicationId',
   phaseId: 'phaseId',
   installmentId: 'installmentId',
   payerId: 'payerId',
@@ -5462,12 +5462,12 @@ export const ContractPaymentScalarFieldEnum = {
   updatedAt: 'updatedAt'
 } as const
 
-export type ContractPaymentScalarFieldEnum = (typeof ContractPaymentScalarFieldEnum)[keyof typeof ContractPaymentScalarFieldEnum]
+export type ApplicationPaymentScalarFieldEnum = (typeof ApplicationPaymentScalarFieldEnum)[keyof typeof ApplicationPaymentScalarFieldEnum]
 
 
-export const ContractDocumentScalarFieldEnum = {
+export const ApplicationDocumentScalarFieldEnum = {
   id: 'id',
-  contractId: 'contractId',
+  applicationId: 'applicationId',
   phaseId: 'phaseId',
   stepId: 'stepId',
   name: 'name',
@@ -5479,7 +5479,7 @@ export const ContractDocumentScalarFieldEnum = {
   updatedAt: 'updatedAt'
 } as const
 
-export type ContractDocumentScalarFieldEnum = (typeof ContractDocumentScalarFieldEnum)[keyof typeof ContractDocumentScalarFieldEnum]
+export type ApplicationDocumentScalarFieldEnum = (typeof ApplicationDocumentScalarFieldEnum)[keyof typeof ApplicationDocumentScalarFieldEnum]
 
 
 export const DocumentTemplateScalarFieldEnum = {
@@ -5504,7 +5504,7 @@ export type DocumentTemplateScalarFieldEnum = (typeof DocumentTemplateScalarFiel
 export const OfferLetterScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
-  contractId: 'contractId',
+  applicationId: 'applicationId',
   templateId: 'templateId',
   letterNumber: 'letterNumber',
   type: 'type',
@@ -5531,9 +5531,9 @@ export const OfferLetterScalarFieldEnum = {
 export type OfferLetterScalarFieldEnum = (typeof OfferLetterScalarFieldEnum)[keyof typeof OfferLetterScalarFieldEnum]
 
 
-export const ContractTerminationScalarFieldEnum = {
+export const ApplicationTerminationScalarFieldEnum = {
   id: 'id',
-  contractId: 'contractId',
+  applicationId: 'applicationId',
   tenantId: 'tenantId',
   requestNumber: 'requestNumber',
   initiatedBy: 'initiatedBy',
@@ -5548,8 +5548,8 @@ export const ContractTerminationScalarFieldEnum = {
   reviewedAt: 'reviewedAt',
   reviewNotes: 'reviewNotes',
   rejectionReason: 'rejectionReason',
-  contractSnapshot: 'contractSnapshot',
-  totalContractAmount: 'totalContractAmount',
+  applicationSnapshot: 'applicationSnapshot',
+  totalApplicationAmount: 'totalApplicationAmount',
   totalPaidToDate: 'totalPaidToDate',
   outstandingBalance: 'outstandingBalance',
   refundableAmount: 'refundableAmount',
@@ -5578,13 +5578,13 @@ export const ContractTerminationScalarFieldEnum = {
   updatedAt: 'updatedAt'
 } as const
 
-export type ContractTerminationScalarFieldEnum = (typeof ContractTerminationScalarFieldEnum)[keyof typeof ContractTerminationScalarFieldEnum]
+export type ApplicationTerminationScalarFieldEnum = (typeof ApplicationTerminationScalarFieldEnum)[keyof typeof ApplicationTerminationScalarFieldEnum]
 
 
 export const PaymentMethodChangeRequestScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
-  contractId: 'contractId',
+  applicationId: 'applicationId',
   fromPaymentMethodId: 'fromPaymentMethodId',
   toPaymentMethodId: 'toPaymentMethodId',
   requestorId: 'requestorId',
@@ -5748,7 +5748,7 @@ export type DomainEventScalarFieldEnum = (typeof DomainEventScalarFieldEnum)[key
 export const PropertyTransferRequestScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
-  sourceContractId: 'sourceContractId',
+  sourceApplicationId: 'sourceApplicationId',
   targetPropertyUnitId: 'targetPropertyUnitId',
   requestedById: 'requestedById',
   reviewedById: 'reviewedById',
@@ -5762,7 +5762,7 @@ export const PropertyTransferRequestScalarFieldEnum = {
   refundedAmount: 'refundedAmount',
   refundTransactionId: 'refundTransactionId',
   refundedAt: 'refundedAt',
-  targetContractId: 'targetContractId',
+  targetApplicationId: 'targetApplicationId',
   createdAt: 'createdAt',
   reviewedAt: 'reviewedAt',
   completedAt: 'completedAt',
@@ -6222,28 +6222,28 @@ export const PaymentMethodPhaseFieldOrderByRelevanceFieldEnum = {
 export type PaymentMethodPhaseFieldOrderByRelevanceFieldEnum = (typeof PaymentMethodPhaseFieldOrderByRelevanceFieldEnum)[keyof typeof PaymentMethodPhaseFieldOrderByRelevanceFieldEnum]
 
 
-export const ContractOrderByRelevanceFieldEnum = {
+export const ApplicationOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   propertyUnitId: 'propertyUnitId',
   buyerId: 'buyerId',
   sellerId: 'sellerId',
   paymentMethodId: 'paymentMethodId',
-  contractNumber: 'contractNumber',
+  applicationNumber: 'applicationNumber',
   title: 'title',
   description: 'description',
-  contractType: 'contractType',
+  applicationType: 'applicationType',
   currentPhaseId: 'currentPhaseId',
   transferredFromId: 'transferredFromId'
 } as const
 
-export type ContractOrderByRelevanceFieldEnum = (typeof ContractOrderByRelevanceFieldEnum)[keyof typeof ContractOrderByRelevanceFieldEnum]
+export type ApplicationOrderByRelevanceFieldEnum = (typeof ApplicationOrderByRelevanceFieldEnum)[keyof typeof ApplicationOrderByRelevanceFieldEnum]
 
 
-export const ContractRefundOrderByRelevanceFieldEnum = {
+export const ApplicationRefundOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
-  contractId: 'contractId',
+  applicationId: 'applicationId',
   reason: 'reason',
   requestedById: 'requestedById',
   approvedById: 'approvedById',
@@ -6258,17 +6258,17 @@ export const ContractRefundOrderByRelevanceFieldEnum = {
   processingNotes: 'processingNotes'
 } as const
 
-export type ContractRefundOrderByRelevanceFieldEnum = (typeof ContractRefundOrderByRelevanceFieldEnum)[keyof typeof ContractRefundOrderByRelevanceFieldEnum]
+export type ApplicationRefundOrderByRelevanceFieldEnum = (typeof ApplicationRefundOrderByRelevanceFieldEnum)[keyof typeof ApplicationRefundOrderByRelevanceFieldEnum]
 
 
-export const ContractPhaseOrderByRelevanceFieldEnum = {
+export const ApplicationPhaseOrderByRelevanceFieldEnum = {
   id: 'id',
-  contractId: 'contractId',
+  applicationId: 'applicationId',
   name: 'name',
   description: 'description'
 } as const
 
-export type ContractPhaseOrderByRelevanceFieldEnum = (typeof ContractPhaseOrderByRelevanceFieldEnum)[keyof typeof ContractPhaseOrderByRelevanceFieldEnum]
+export type ApplicationPhaseOrderByRelevanceFieldEnum = (typeof ApplicationPhaseOrderByRelevanceFieldEnum)[keyof typeof ApplicationPhaseOrderByRelevanceFieldEnum]
 
 
 export const QuestionnairePhaseOrderByRelevanceFieldEnum = {
@@ -6311,16 +6311,16 @@ export const QuestionnaireFieldOrderByRelevanceFieldEnum = {
 export type QuestionnaireFieldOrderByRelevanceFieldEnum = (typeof QuestionnaireFieldOrderByRelevanceFieldEnum)[keyof typeof QuestionnaireFieldOrderByRelevanceFieldEnum]
 
 
-export const ContractEventOrderByRelevanceFieldEnum = {
+export const ApplicationEventOrderByRelevanceFieldEnum = {
   id: 'id',
-  contractId: 'contractId',
+  applicationId: 'applicationId',
   fromState: 'fromState',
   toState: 'toState',
   trigger: 'trigger',
   actorId: 'actorId'
 } as const
 
-export type ContractEventOrderByRelevanceFieldEnum = (typeof ContractEventOrderByRelevanceFieldEnum)[keyof typeof ContractEventOrderByRelevanceFieldEnum]
+export type ApplicationEventOrderByRelevanceFieldEnum = (typeof ApplicationEventOrderByRelevanceFieldEnum)[keyof typeof ApplicationEventOrderByRelevanceFieldEnum]
 
 
 export const DocumentationStepOrderByRelevanceFieldEnum = {
@@ -6354,17 +6354,17 @@ export const DocumentationStepApprovalOrderByRelevanceFieldEnum = {
 export type DocumentationStepApprovalOrderByRelevanceFieldEnum = (typeof DocumentationStepApprovalOrderByRelevanceFieldEnum)[keyof typeof DocumentationStepApprovalOrderByRelevanceFieldEnum]
 
 
-export const ContractInstallmentOrderByRelevanceFieldEnum = {
+export const PaymentInstallmentOrderByRelevanceFieldEnum = {
   id: 'id',
   paymentPhaseId: 'paymentPhaseId'
 } as const
 
-export type ContractInstallmentOrderByRelevanceFieldEnum = (typeof ContractInstallmentOrderByRelevanceFieldEnum)[keyof typeof ContractInstallmentOrderByRelevanceFieldEnum]
+export type PaymentInstallmentOrderByRelevanceFieldEnum = (typeof PaymentInstallmentOrderByRelevanceFieldEnum)[keyof typeof PaymentInstallmentOrderByRelevanceFieldEnum]
 
 
-export const ContractPaymentOrderByRelevanceFieldEnum = {
+export const ApplicationPaymentOrderByRelevanceFieldEnum = {
   id: 'id',
-  contractId: 'contractId',
+  applicationId: 'applicationId',
   phaseId: 'phaseId',
   installmentId: 'installmentId',
   payerId: 'payerId',
@@ -6373,12 +6373,12 @@ export const ContractPaymentOrderByRelevanceFieldEnum = {
   gatewayResponse: 'gatewayResponse'
 } as const
 
-export type ContractPaymentOrderByRelevanceFieldEnum = (typeof ContractPaymentOrderByRelevanceFieldEnum)[keyof typeof ContractPaymentOrderByRelevanceFieldEnum]
+export type ApplicationPaymentOrderByRelevanceFieldEnum = (typeof ApplicationPaymentOrderByRelevanceFieldEnum)[keyof typeof ApplicationPaymentOrderByRelevanceFieldEnum]
 
 
-export const ContractDocumentOrderByRelevanceFieldEnum = {
+export const ApplicationDocumentOrderByRelevanceFieldEnum = {
   id: 'id',
-  contractId: 'contractId',
+  applicationId: 'applicationId',
   phaseId: 'phaseId',
   stepId: 'stepId',
   name: 'name',
@@ -6387,7 +6387,7 @@ export const ContractDocumentOrderByRelevanceFieldEnum = {
   uploadedById: 'uploadedById'
 } as const
 
-export type ContractDocumentOrderByRelevanceFieldEnum = (typeof ContractDocumentOrderByRelevanceFieldEnum)[keyof typeof ContractDocumentOrderByRelevanceFieldEnum]
+export type ApplicationDocumentOrderByRelevanceFieldEnum = (typeof ApplicationDocumentOrderByRelevanceFieldEnum)[keyof typeof ApplicationDocumentOrderByRelevanceFieldEnum]
 
 
 export const DocumentTemplateOrderByRelevanceFieldEnum = {
@@ -6406,7 +6406,7 @@ export type DocumentTemplateOrderByRelevanceFieldEnum = (typeof DocumentTemplate
 export const OfferLetterOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
-  contractId: 'contractId',
+  applicationId: 'applicationId',
   templateId: 'templateId',
   letterNumber: 'letterNumber',
   htmlContent: 'htmlContent',
@@ -6421,9 +6421,9 @@ export const OfferLetterOrderByRelevanceFieldEnum = {
 export type OfferLetterOrderByRelevanceFieldEnum = (typeof OfferLetterOrderByRelevanceFieldEnum)[keyof typeof OfferLetterOrderByRelevanceFieldEnum]
 
 
-export const ContractTerminationOrderByRelevanceFieldEnum = {
+export const ApplicationTerminationOrderByRelevanceFieldEnum = {
   id: 'id',
-  contractId: 'contractId',
+  applicationId: 'applicationId',
   tenantId: 'tenantId',
   requestNumber: 'requestNumber',
   initiatorId: 'initiatorId',
@@ -6439,13 +6439,13 @@ export const ContractTerminationOrderByRelevanceFieldEnum = {
   idempotencyKey: 'idempotencyKey'
 } as const
 
-export type ContractTerminationOrderByRelevanceFieldEnum = (typeof ContractTerminationOrderByRelevanceFieldEnum)[keyof typeof ContractTerminationOrderByRelevanceFieldEnum]
+export type ApplicationTerminationOrderByRelevanceFieldEnum = (typeof ApplicationTerminationOrderByRelevanceFieldEnum)[keyof typeof ApplicationTerminationOrderByRelevanceFieldEnum]
 
 
 export const PaymentMethodChangeRequestOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
-  contractId: 'contractId',
+  applicationId: 'applicationId',
   fromPaymentMethodId: 'fromPaymentMethodId',
   toPaymentMethodId: 'toPaymentMethodId',
   requestorId: 'requestorId',
@@ -6553,7 +6553,7 @@ export type DomainEventOrderByRelevanceFieldEnum = (typeof DomainEventOrderByRel
 export const PropertyTransferRequestOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
-  sourceContractId: 'sourceContractId',
+  sourceApplicationId: 'sourceApplicationId',
   targetPropertyUnitId: 'targetPropertyUnitId',
   requestedById: 'requestedById',
   reviewedById: 'reviewedById',
@@ -6561,7 +6561,7 @@ export const PropertyTransferRequestOrderByRelevanceFieldEnum = {
   reviewNotes: 'reviewNotes',
   priceAdjustmentHandling: 'priceAdjustmentHandling',
   refundTransactionId: 'refundTransactionId',
-  targetContractId: 'targetContractId'
+  targetApplicationId: 'targetApplicationId'
 } as const
 
 export type PropertyTransferRequestOrderByRelevanceFieldEnum = (typeof PropertyTransferRequestOrderByRelevanceFieldEnum)[keyof typeof PropertyTransferRequestOrderByRelevanceFieldEnum]
@@ -6702,9 +6702,9 @@ export type EnumFieldTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
 
 
 /**
- * Reference to a field of type 'ContractStatus'
+ * Reference to a field of type 'ApplicationStatus'
  */
-export type EnumContractStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ContractStatus'>
+export type EnumApplicationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ApplicationStatus'>
     
 
 
@@ -6723,16 +6723,16 @@ export type EnumPhaseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pris
 
 
 /**
- * Reference to a field of type 'ContractEventType'
+ * Reference to a field of type 'ApplicationEventType'
  */
-export type EnumContractEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ContractEventType'>
+export type EnumApplicationEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ApplicationEventType'>
     
 
 
 /**
- * Reference to a field of type 'ContractEventGroup'
+ * Reference to a field of type 'ApplicationEventGroup'
  */
-export type EnumContractEventGroupFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ContractEventGroup'>
+export type EnumApplicationEventGroupFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ApplicationEventGroup'>
     
 
 
@@ -7013,23 +7013,23 @@ export type GlobalOmitConfig = {
   stepEventAttachment?: Prisma.StepEventAttachmentOmit
   paymentMethodPhaseDocument?: Prisma.PaymentMethodPhaseDocumentOmit
   paymentMethodPhaseField?: Prisma.PaymentMethodPhaseFieldOmit
-  contract?: Prisma.ContractOmit
-  contractRefund?: Prisma.ContractRefundOmit
-  contractPhase?: Prisma.ContractPhaseOmit
+  application?: Prisma.ApplicationOmit
+  applicationRefund?: Prisma.ApplicationRefundOmit
+  applicationPhase?: Prisma.ApplicationPhaseOmit
   questionnairePhase?: Prisma.QuestionnairePhaseOmit
   documentationPhase?: Prisma.DocumentationPhaseOmit
   paymentPhase?: Prisma.PaymentPhaseOmit
   questionnaireField?: Prisma.QuestionnaireFieldOmit
-  contractEvent?: Prisma.ContractEventOmit
+  applicationEvent?: Prisma.ApplicationEventOmit
   documentationStep?: Prisma.DocumentationStepOmit
   documentationStepDocument?: Prisma.DocumentationStepDocumentOmit
   documentationStepApproval?: Prisma.DocumentationStepApprovalOmit
-  contractInstallment?: Prisma.ContractInstallmentOmit
-  contractPayment?: Prisma.ContractPaymentOmit
-  contractDocument?: Prisma.ContractDocumentOmit
+  paymentInstallment?: Prisma.PaymentInstallmentOmit
+  applicationPayment?: Prisma.ApplicationPaymentOmit
+  applicationDocument?: Prisma.ApplicationDocumentOmit
   documentTemplate?: Prisma.DocumentTemplateOmit
   offerLetter?: Prisma.OfferLetterOmit
-  contractTermination?: Prisma.ContractTerminationOmit
+  applicationTermination?: Prisma.ApplicationTerminationOmit
   paymentMethodChangeRequest?: Prisma.PaymentMethodChangeRequestOmit
   documentRequirementRule?: Prisma.DocumentRequirementRuleOmit
   eventChannel?: Prisma.EventChannelOmit

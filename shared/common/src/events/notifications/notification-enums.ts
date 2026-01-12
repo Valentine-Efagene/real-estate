@@ -28,12 +28,12 @@ export enum NotificationType {
     PREQUALIFICATION_APPROVED = 'prequalificationApproved',
     PREQUALIFICATION_REJECTED = 'prequalificationRejected',
 
-    // Contract
-    CONTRACT_CREATED = 'contractCreated',
-    CONTRACT_ACTIVATED = 'contractActivated',
-    CONTRACT_TERMINATION_REQUESTED = 'contractTerminationRequested',
-    CONTRACT_TERMINATION_APPROVED = 'contractTerminationApproved',
-    CONTRACT_TERMINATED = 'contractTerminated',
+    // Application
+    APPLICATION_CREATED = 'applicationCreated',
+    APPLICATION_ACTIVATED = 'applicationActivated',
+    APPLICATION_TERMINATION_REQUESTED = 'applicationTerminationRequested',
+    APPLICATION_TERMINATION_APPROVED = 'applicationTerminationApproved',
+    APPLICATION_TERMINATED = 'applicationTerminated',
 
     // Offer Letters
     OFFER_LETTER_SENT = 'offerLetterSent',

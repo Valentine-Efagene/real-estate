@@ -12,14 +12,14 @@ import { v4 as uuidv4 } from 'uuid';
 // =============================================================================
 // Property Transfer Service
 // =============================================================================
-// Handles transferring a contract to a different property.
+// Handles transferring a application to a different property.
 // BUSINESS RULE: All payments are refunded to the buyer's wallet.
-// The new contract starts fresh with zero payments.
-// The buyer can optionally apply wallet balance as equity on the new contract.
+// The new application starts fresh with zero payments.
+// The buyer can optionally apply wallet balance as equity on the new application.
 // =============================================================================
 
 export interface CreateTransferRequestInput {
-    sourceContractId: string;
+    sourceApplicationId: string;
     targetPropertyUnitId: string;
     reason?: string;
     requestedById: string;
@@ -46,11 +46,11 @@ class PropertyTransferService {
      * Create a new property transfer request
      */
     async createRequest(input: CreateTransferRequestInput) {
-        const { sourceContractId, targetPropertyUnitId, reason, requestedById, tenantId } = input;
+        const { sourceApplicationId, targetPropertyUnitId, reason, requestedById, tenantId } = input;
 
-        // Validate source contract exists and is active
-        const sourceContract = await prisma.contract.findFirst({
-            where: { id: sourceContractId, tenantId },
+        // Validate source application exists and is active
+        const sourceApplication = await prisma.application.findFirst({
+            where: { id: sourceApplicationId, tenantId },
             include: {
                 propertyUnit: {
                     include: {
@@ -83,29 +83,29 @@ class PropertyTransferService {
             },
         });
 
-        if (!sourceContract) {
-            throw new AppError(404, 'Source contract not found');
+        if (!sourceApplication) {
+            throw new AppError(404, 'Source application not found');
         }
 
-        if (sourceContract.status !== 'ACTIVE' && sourceContract.status !== 'PENDING') {
-            throw new AppError(400, `Cannot transfer contract with status ${sourceContract.status}`);
+        if (sourceApplication.status !== 'ACTIVE' && sourceApplication.status !== 'PENDING') {
+            throw new AppError(400, `Cannot transfer application with status ${sourceApplication.status}`);
         }
 
         // Validate buyer is the requestor
-        if (sourceContract.buyerId !== requestedById) {
-            throw new AppError(403, 'Only the contract buyer can request a transfer');
+        if (sourceApplication.buyerId !== requestedById) {
+            throw new AppError(403, 'Only the application buyer can request a transfer');
         }
 
         // Check no pending transfer request exists
         const existingRequest = await prisma.propertyTransferRequest.findFirst({
             where: {
-                sourceContractId,
+                sourceApplicationId,
                 status: { in: ['PENDING', 'APPROVED', 'IN_PROGRESS'] },
             },
         });
 
         if (existingRequest) {
-            throw new AppError(400, 'A transfer request is already pending for this contract');
+            throw new AppError(400, 'A transfer request is already pending for this application');
         }
 
         // Validate target property unit exists and is available
@@ -129,12 +129,12 @@ class PropertyTransferService {
         }
 
         // Cannot transfer to the same unit
-        if (targetPropertyUnitId === sourceContract.propertyUnitId) {
+        if (targetPropertyUnitId === sourceApplication.propertyUnitId) {
             throw new AppError(400, 'Cannot transfer to the same property unit');
         }
 
         // Calculate price adjustment
-        const sourcePrice = sourceContract.totalAmount;
+        const sourcePrice = sourceApplication.totalAmount;
         const targetPrice = targetUnit.priceOverride ?? targetUnit.variant.price;
         const priceAdjustment = targetPrice - sourcePrice;
 
@@ -142,7 +142,7 @@ class PropertyTransferService {
         const request = await prisma.propertyTransferRequest.create({
             data: {
                 tenantId,
-                sourceContractId,
+                sourceApplicationId,
                 targetPropertyUnitId,
                 requestedById,
                 reason,
@@ -152,10 +152,10 @@ class PropertyTransferService {
                 priceAdjustment,
             },
             include: {
-                sourceContract: {
+                sourceApplication: {
                     select: {
                         id: true,
-                        contractNumber: true,
+                        applicationNumber: true,
                         title: true,
                         totalAmount: true,
                     },
@@ -182,12 +182,12 @@ class PropertyTransferService {
             type: ApprovalRequestType.PROPERTY_TRANSFER,
             entityType: 'PropertyTransferRequest',
             entityId: request.id,
-            title: `Property Transfer: ${request.sourceContract.contractNumber} → Unit ${targetUnit.variant?.property.title}`,
-            description: reason || `Transfer request for contract ${request.sourceContract.contractNumber} from unit ${sourceContract.propertyUnit.unitNumber} to unit ${targetUnit.unitNumber}`,
+            title: `Property Transfer: ${request.sourceApplication.applicationNumber} → Unit ${targetUnit.variant?.property.title}`,
+            description: reason || `Transfer request for application ${request.sourceApplication.applicationNumber} from unit ${sourceApplication.propertyUnit.unitNumber} to unit ${targetUnit.unitNumber}`,
             priority: priceAdjustment > 0 ? ApprovalRequestPriority.HIGH : ApprovalRequestPriority.NORMAL,
             requestedById,
             payload: {
-                sourceContractId,
+                sourceApplicationId,
                 targetPropertyUnitId,
                 priceAdjustment,
                 sourceTotalAmount: sourcePrice,
@@ -205,7 +205,7 @@ class PropertyTransferService {
         const request = await prisma.propertyTransferRequest.findFirst({
             where: { id: requestId, tenantId },
             include: {
-                sourceContract: {
+                sourceApplication: {
                     include: {
                         propertyUnit: {
                             include: {
@@ -248,8 +248,8 @@ class PropertyTransferService {
                         },
                     },
                 },
-                targetContract: {
-                    select: { id: true, contractNumber: true, status: true },
+                targetApplication: {
+                    select: { id: true, applicationNumber: true, status: true },
                 },
                 requestedBy: {
                     select: { id: true, firstName: true, lastName: true, email: true },
@@ -268,11 +268,11 @@ class PropertyTransferService {
     }
 
     /**
-     * List transfer requests for a contract
+     * List transfer requests for a application
      */
-    async listByContract(contractId: string, tenantId: string) {
+    async listByapplication(applicationId: string, tenantId: string) {
         return prisma.propertyTransferRequest.findMany({
-            where: { sourceContractId: contractId, tenantId },
+            where: { sourceApplicationId: applicationId, tenantId },
             include: {
                 targetPropertyUnit: {
                     include: {
@@ -301,10 +301,10 @@ class PropertyTransferService {
         return prisma.propertyTransferRequest.findMany({
             where: { tenantId, status: 'PENDING' },
             include: {
-                sourceContract: {
+                sourceApplication: {
                     select: {
                         id: true,
-                        contractNumber: true,
+                        applicationNumber: true,
                         title: true,
                         totalAmount: true,
                     },
@@ -329,8 +329,8 @@ class PropertyTransferService {
     /**
      * Approve a transfer request and execute the transfer
      * 
-     * BUSINESS RULE: All payments on the source contract are refunded to the buyer's wallet.
-     * The new contract starts fresh with zero payments. The buyer can later apply wallet 
+     * BUSINESS RULE: All payments on the source application are refunded to the buyer's wallet.
+     * The new application starts fresh with zero payments. The buyer can later apply wallet 
      * balance as equity via a separate operation.
      */
     async approve(input: ApproveTransferInput): Promise<any> {
@@ -340,7 +340,7 @@ class PropertyTransferService {
         const request = await prisma.propertyTransferRequest.findFirst({
             where: { id: requestId, tenantId },
             include: {
-                sourceContract: {
+                sourceApplication: {
                     include: {
                         buyer: {
                             select: { id: true, walletId: true },
@@ -405,12 +405,12 @@ class PropertyTransferService {
             throw new AppError(400, 'Target property unit is no longer available');
         }
 
-        const sourceContract = request.sourceContract;
-        const buyer = sourceContract.buyer;
+        const sourceApplication = request.sourceApplication;
+        const buyer = sourceApplication.buyer;
 
         // Calculate total paid amount across all payment phases
         let totalPaidAmount = 0;
-        for (const phase of sourceContract.phases) {
+        for (const phase of sourceApplication.phases) {
             if (phase.paymentPhase) {
                 totalPaidAmount += phase.paymentPhase.paidAmount;
             }
@@ -452,9 +452,9 @@ class PropertyTransferService {
                             walletId: buyer.walletId,
                             amount: totalPaidAmount,
                             reference: `TRANSFER-REFUND-${requestId}`,
-                            description: `Refund for property transfer from contract ${sourceContract.contractNumber}`,
+                            description: `Refund for property transfer from application ${sourceApplication.applicationNumber}`,
                             source: 'transfer_refund',
-                            sourceContractId: sourceContract.id,
+                            sourceApplicationId: sourceApplication.id,
                             targetPropertyUnitId: request.targetPropertyUnitId,
                             transactionId: refundTransactionId,
                         }),
@@ -463,36 +463,36 @@ class PropertyTransferService {
                 });
             }
 
-            // 4. Create fresh new contract for target property
-            const newContractNumber = `${sourceContract.contractNumber}-T`;
+            // 4. Create fresh new application for target property
+            const newApplicationNumber = `${sourceApplication.applicationNumber}-T`;
 
-            const newContract = await tx.contract.create({
+            const newApplication = await tx.application.create({
                 data: {
                     tenantId,
                     propertyUnitId: request.targetPropertyUnitId,
-                    buyerId: sourceContract.buyerId,
-                    sellerId: sourceContract.sellerId,
-                    paymentMethodId: sourceContract.paymentMethodId,
-                    contractNumber: newContractNumber,
-                    title: `${sourceContract.title} (Transferred)`,
-                    description: sourceContract.description,
-                    contractType: sourceContract.contractType,
+                    buyerId: sourceApplication.buyerId,
+                    sellerId: sourceApplication.sellerId,
+                    paymentMethodId: sourceApplication.paymentMethodId,
+                    applicationNumber: newApplicationNumber,
+                    title: `${sourceApplication.title} (Transferred)`,
+                    description: sourceApplication.description,
+                    applicationType: sourceApplication.applicationType,
                     totalAmount: targetPrice,
                     status: 'ACTIVE',
-                    transferredFromId: sourceContract.id,
+                    transferredFromId: sourceApplication.id,
                     startDate: new Date(),
                 },
             });
 
             // 5. Create fresh phases from payment method template
-            const paymentMethodPhases = sourceContract.paymentMethod?.phases || [];
+            const paymentMethodPhases = sourceApplication.paymentMethod?.phases || [];
             let currentPhaseId: string | null = null;
 
             for (const templatePhase of paymentMethodPhases) {
-                // Create base ContractPhase
-                const newPhase = await tx.contractPhase.create({
+                // Create base ApplicationPhase
+                const newPhase = await tx.applicationPhase.create({
                     data: {
-                        contractId: newContract.id,
+                        applicationId: newApplication.id,
                         name: templatePhase.name,
                         description: templatePhase.description,
                         phaseCategory: templatePhase.phaseCategory,
@@ -570,19 +570,19 @@ class PropertyTransferService {
                 }
             }
 
-            // Update contract with current phase
+            // Update application with current phase
             if (currentPhaseId) {
-                await tx.contract.update({
-                    where: { id: newContract.id },
+                await tx.application.update({
+                    where: { id: newApplication.id },
                     data: { currentPhaseId },
                 });
             }
 
             // 6. Reference documents (don't duplicate files, create new records pointing to same URLs)
-            for (const doc of sourceContract.documents) {
-                await tx.contractDocument.create({
+            for (const doc of sourceApplication.documents) {
+                await tx.applicationDocument.create({
                     data: {
-                        contractId: newContract.id,
+                        applicationId: newApplication.id,
                         phaseId: null, // Documents not linked to new phases
                         stepId: null,
                         uploadedById: doc.uploadedById,
@@ -594,9 +594,9 @@ class PropertyTransferService {
                 });
             }
 
-            // 7. Mark source contract as TRANSFERRED
-            await tx.contract.update({
-                where: { id: sourceContract.id },
+            // 7. Mark source application as TRANSFERRED
+            await tx.application.update({
+                where: { id: sourceApplication.id },
                 data: {
                     status: 'TRANSFERRED',
                 },
@@ -608,7 +608,7 @@ class PropertyTransferService {
                 data: {
                     status: 'RESERVED',
                     reservedAt: new Date(),
-                    reservedById: sourceContract.buyerId,
+                    reservedById: sourceApplication.buyerId,
                 },
             });
 
@@ -617,7 +617,7 @@ class PropertyTransferService {
                 where: { id: requestId },
                 data: {
                     status: 'COMPLETED',
-                    targetContractId: newContract.id,
+                    targetApplicationId: newApplication.id,
                     refundedAmount: totalPaidAmount > 0 ? totalPaidAmount : null,
                     refundTransactionId,
                     refundedAt: totalPaidAmount > 0 ? new Date() : null,
@@ -625,13 +625,13 @@ class PropertyTransferService {
                 },
             });
 
-            return { request: completedRequest, newContract, refundedAmount: totalPaidAmount };
+            return { request: completedRequest, newApplication, refundedAmount: totalPaidAmount };
         });
 
         return {
             message: 'Transfer approved successfully',
             request: result.request,
-            newContract: result.newContract,
+            newApplication: result.newApplication,
             refundedAmount: result.refundedAmount,
         };
     }

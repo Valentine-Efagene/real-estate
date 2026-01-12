@@ -9,7 +9,7 @@ const router = Router();
 
 /**
  * POST /underwriting/evaluate
- * Trigger automated underwriting for a contract's UNDERWRITING step
+ * Trigger automated underwriting for a application's UNDERWRITING step
  */
 router.post('/evaluate', async (req: Request, res: Response): Promise<any> => {
     try {
@@ -25,7 +25,7 @@ router.post('/evaluate', async (req: Request, res: Response): Promise<any> => {
 
         const actorId = (req as any).user?.id;
         const result = await service.evaluateForStep(
-            parsed.data.contractId,
+            parsed.data.applicationId,
             parsed.data.stepId,
             actorId
         );
@@ -66,16 +66,16 @@ router.get('/step/:stepId', async (req: Request, res: Response): Promise<any> =>
 });
 
 /**
- * GET /underwriting/contract/:contractId
- * Get all underwriting results for a contract
+ * GET /underwriting/application/:applicationId
+ * Get all underwriting results for a application
  */
-router.get('/contract/:contractId', async (req: Request, res: Response): Promise<any> => {
+router.get('/application/:applicationId', async (req: Request, res: Response): Promise<any> => {
     try {
-        const { contractId } = req.params;
+        const { applicationId } = req.params;
 
         const service = new UnderwritingService(prisma);
 
-        const results = await service.getByContractId(contractId);
+        const results = await service.getByApplicationId(applicationId);
 
         return res.status(200).json(results);
     } catch (error: any) {

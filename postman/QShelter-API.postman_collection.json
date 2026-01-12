@@ -2,7 +2,7 @@
     "info": {
         "_postman_id": "qshelter-api-v1",
         "name": "QShelter API",
-        "description": "Complete API collection for QShelter Real Estate Platform.\n\n## Services\n- **User Service**: Authentication, users, roles, tenants, API keys\n- **Property Service**: Properties, amenities, media\n- **Mortgage Service**: Payment plans, payment methods, contracts, phases, payments\n- **Documents Service**: Document upload and management\n\n## Authentication\nAll requests require the following headers:\n- `x-tenant-id`: Your tenant ID\n- `x-user-id`: The authenticated user ID\n\n## Base URLs\nSet the service URL variables to your environment:\n- LocalStack Mortgage: `http://localhost:4566/restapis/{apiId}/localstack/_user_request_`\n- LocalStack User: `http://localhost:4566/restapis/{apiId}/localstack/_user_request_`\n- LocalStack Property: `http://localhost:4566/restapis/{apiId}/localstack/_user_request_`",
+        "description": "Complete API collection for QShelter Real Estate Platform.\n\n## Services\n- **User Service**: Authentication, users, roles, tenants, API keys\n- **Property Service**: Properties, amenities, media\n- **Mortgage Service**: Payment plans, payment methods, applications, phases, payments\n- **Documents Service**: Document upload and management\n\n## Authentication\nAll requests require the following headers:\n- `x-tenant-id`: Your tenant ID\n- `x-user-id`: The authenticated user ID\n\n## Base URLs\nSet the service URL variables to your environment:\n- LocalStack Mortgage: `http://localhost:4566/restapis/{apiId}/localstack/_user_request_`\n- LocalStack User: `http://localhost:4566/restapis/{apiId}/localstack/_user_request_`\n- LocalStack Property: `http://localhost:4566/restapis/{apiId}/localstack/_user_request_`",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
     "auth": {
@@ -467,7 +467,7 @@
         },
         {
             "name": "Payment Methods",
-            "description": "Payment methods are templates that define the entire contract workflow including phases, steps, and document requirements.",
+            "description": "Payment methods are templates that define the entire application workflow including phases, steps, and document requirements.",
             "item": [
                 {
                     "name": "Create Payment Method",
@@ -902,7 +902,7 @@
                                 "properties"
                             ]
                         },
-                        "description": "Link a payment method to a property. This makes the payment method available for contracts on that property."
+                        "description": "Link a payment method to a property. This makes the payment method available for applications on that property."
                     }
                 },
                 {
@@ -1254,11 +1254,11 @@
             ]
         },
         {
-            "name": "Contracts",
-            "description": "Contracts are instantiated from payment methods and track the buyer's journey through phases.",
+            "name": "Applications",
+            "description": "Applications are instantiated from payment methods and track the buyer's journey through phases.",
             "item": [
                 {
-                    "name": "Create Contract",
+                    "name": "Create Application",
                     "request": {
                         "method": "POST",
                         "header": [
@@ -1277,22 +1277,22 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"propertyUnitId\": \"{{propertyUnitId}}\",\n  \"paymentMethodId\": \"{{paymentMethodId}}\",\n  \"title\": \"Purchase Agreement - Unit A1\",\n  \"description\": \"Contract for Lekki Gardens Unit A1\",\n  \"contractType\": \"MORTGAGE\",\n  \"totalAmount\": 10000000\n}"
+                            "raw": "{\n  \"propertyUnitId\": \"{{propertyUnitId}}\",\n  \"paymentMethodId\": \"{{paymentMethodId}}\",\n  \"title\": \"Purchase Agreement - Unit A1\",\n  \"description\": \"Application for Lekki Gardens Unit A1\",\n  \"applicationType\": \"MORTGAGE\",\n  \"totalAmount\": 10000000\n}"
                         },
                         "url": {
-                            "raw": "{{mortgageServiceUrl}}/contracts",
+                            "raw": "{{mortgageServiceUrl}}/applications",
                             "host": [
                                 "{{mortgageServiceUrl}}"
                             ],
                             "path": [
-                                "contracts"
+                                "applications"
                             ]
                         },
-                        "description": "Create a new contract from a payment method. This instantiates all phases and steps from the payment method template."
+                        "description": "Create a new application from a payment method. This instantiates all phases and steps from the payment method template."
                     }
                 },
                 {
-                    "name": "Get All Contracts",
+                    "name": "Get All Applications",
                     "request": {
                         "method": "GET",
                         "header": [
@@ -1306,12 +1306,12 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{mortgageServiceUrl}}/contracts?status=ACTIVE",
+                            "raw": "{{mortgageServiceUrl}}/applications?status=ACTIVE",
                             "host": [
                                 "{{mortgageServiceUrl}}"
                             ],
                             "path": [
-                                "contracts"
+                                "applications"
                             ],
                             "query": [
                                 {
@@ -1334,7 +1334,7 @@
                     }
                 },
                 {
-                    "name": "Get Contract by ID",
+                    "name": "Get Application by ID",
                     "request": {
                         "method": "GET",
                         "header": [
@@ -1348,19 +1348,19 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}",
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}",
                             "host": [
                                 "{{mortgageServiceUrl}}"
                             ],
                             "path": [
-                                "contracts",
-                                "{{contractId}}"
+                                "applications",
+                                "{{applicationId}}"
                             ]
                         }
                     }
                 },
                 {
-                    "name": "Get Contract by Number",
+                    "name": "Get Application by Number",
                     "request": {
                         "method": "GET",
                         "header": [
@@ -1374,14 +1374,14 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{mortgageServiceUrl}}/contracts/number/{{contractNumber}}",
+                            "raw": "{{mortgageServiceUrl}}/applications/number/{{applicationNumber}}",
                             "host": [
                                 "{{mortgageServiceUrl}}"
                             ],
                             "path": [
-                                "contracts",
+                                "applications",
                                 "number",
-                                "{{contractNumber}}"
+                                "{{applicationNumber}}"
                             ]
                         }
                     }
@@ -1401,21 +1401,21 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/current-action",
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/current-action",
                             "host": [
                                 "{{mortgageServiceUrl}}"
                             ],
                             "path": [
-                                "contracts",
-                                "{{contractId}}",
+                                "applications",
+                                "{{applicationId}}",
                                 "current-action"
                             ]
                         },
-                        "description": "Get the current action required for this contract. This is the canonical endpoint for the app to know what to show the user."
+                        "description": "Get the current action required for this application. This is the canonical endpoint for the app to know what to show the user."
                     }
                 },
                 {
-                    "name": "Update Contract",
+                    "name": "Update Application",
                     "request": {
                         "method": "PATCH",
                         "header": [
@@ -1434,22 +1434,22 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"title\": \"Updated Contract Title\",\n  \"description\": \"Updated description\"\n}"
+                            "raw": "{\n  \"title\": \"Updated Application Title\",\n  \"description\": \"Updated description\"\n}"
                         },
                         "url": {
-                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}",
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}",
                             "host": [
                                 "{{mortgageServiceUrl}}"
                             ],
                             "path": [
-                                "contracts",
-                                "{{contractId}}"
+                                "applications",
+                                "{{applicationId}}"
                             ]
                         }
                     }
                 },
                 {
-                    "name": "Transition Contract",
+                    "name": "Transition Application",
                     "request": {
                         "method": "POST",
                         "header": [
@@ -1468,24 +1468,24 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"trigger\": \"SUBMIT\",\n  \"note\": \"Submitting contract for review\"\n}"
+                            "raw": "{\n  \"trigger\": \"SUBMIT\",\n  \"note\": \"Submitting application for review\"\n}"
                         },
                         "url": {
-                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/transition",
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/transition",
                             "host": [
                                 "{{mortgageServiceUrl}}"
                             ],
                             "path": [
-                                "contracts",
-                                "{{contractId}}",
+                                "applications",
+                                "{{applicationId}}",
                                 "transition"
                             ]
                         },
-                        "description": "Trigger a state transition on the contract.\n\n**Common triggers:**\n- `SUBMIT` - Submit draft for review\n- `APPROVE` - Approve contract\n- `ACTIVATE` - Activate contract"
+                        "description": "Trigger a state transition on the application.\n\n**Common triggers:**\n- `SUBMIT` - Submit draft for review\n- `APPROVE` - Approve application\n- `ACTIVATE` - Activate application"
                     }
                 },
                 {
-                    "name": "Sign Contract",
+                    "name": "Sign Application",
                     "request": {
                         "method": "POST",
                         "header": [
@@ -1499,21 +1499,21 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/sign",
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/sign",
                             "host": [
                                 "{{mortgageServiceUrl}}"
                             ],
                             "path": [
-                                "contracts",
-                                "{{contractId}}",
+                                "applications",
+                                "{{applicationId}}",
                                 "sign"
                             ]
                         },
-                        "description": "Sign the contract. This activates the contract if all requirements are met."
+                        "description": "Sign the application. This activates the application if all requirements are met."
                     }
                 },
                 {
-                    "name": "Cancel Contract",
+                    "name": "Cancel Application",
                     "request": {
                         "method": "POST",
                         "header": [
@@ -1535,20 +1535,20 @@
                             "raw": "{\n  \"reason\": \"Buyer requested cancellation\"\n}"
                         },
                         "url": {
-                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/cancel",
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/cancel",
                             "host": [
                                 "{{mortgageServiceUrl}}"
                             ],
                             "path": [
-                                "contracts",
-                                "{{contractId}}",
+                                "applications",
+                                "{{applicationId}}",
                                 "cancel"
                             ]
                         }
                     }
                 },
                 {
-                    "name": "Delete Contract (Draft Only)",
+                    "name": "Delete Application (Draft Only)",
                     "request": {
                         "method": "DELETE",
                         "header": [
@@ -1562,26 +1562,26 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}",
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}",
                             "host": [
                                 "{{mortgageServiceUrl}}"
                             ],
                             "path": [
-                                "contracts",
-                                "{{contractId}}"
+                                "applications",
+                                "{{applicationId}}"
                             ]
                         },
-                        "description": "Delete a contract. Only works for DRAFT contracts."
+                        "description": "Delete a application. Only works for DRAFT applications."
                     }
                 }
             ]
         },
         {
-            "name": "Contract Phases",
-            "description": "Phases are the stages of a contract (KYC, Downpayment, Mortgage, etc.)",
+            "name": "Application Phases",
+            "description": "Phases are the stages of a application (KYC, Downpayment, Mortgage, etc.)",
             "item": [
                 {
-                    "name": "Get Phases for Contract",
+                    "name": "Get Phases for Application",
                     "request": {
                         "method": "GET",
                         "header": [
@@ -1595,13 +1595,13 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/phases",
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases",
                             "host": [
                                 "{{mortgageServiceUrl}}"
                             ],
                             "path": [
-                                "contracts",
-                                "{{contractId}}",
+                                "applications",
+                                "{{applicationId}}",
                                 "phases"
                             ]
                         }
@@ -1622,13 +1622,13 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/phases/{{phaseId}}",
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{phaseId}}",
                             "host": [
                                 "{{mortgageServiceUrl}}"
                             ],
                             "path": [
-                                "contracts",
-                                "{{contractId}}",
+                                "applications",
+                                "{{applicationId}}",
                                 "phases",
                                 "{{phaseId}}"
                             ]
@@ -1658,13 +1658,13 @@
                             "raw": "{\n  \"startDate\": \"2024-01-15T00:00:00.000Z\"\n}"
                         },
                         "url": {
-                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/phases/{{phaseId}}/activate",
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{phaseId}}/activate",
                             "host": [
                                 "{{mortgageServiceUrl}}"
                             ],
                             "path": [
-                                "contracts",
-                                "{{contractId}}",
+                                "applications",
+                                "{{applicationId}}",
                                 "phases",
                                 "{{phaseId}}",
                                 "activate"
@@ -1695,13 +1695,13 @@
                             "raw": "{\n  \"startDate\": \"2024-02-01T00:00:00.000Z\",\n  \"interestRate\": 9.5\n}"
                         },
                         "url": {
-                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/phases/{{phaseId}}/installments",
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{phaseId}}/installments",
                             "host": [
                                 "{{mortgageServiceUrl}}"
                             ],
                             "path": [
-                                "contracts",
-                                "{{contractId}}",
+                                "applications",
+                                "{{applicationId}}",
                                 "phases",
                                 "{{phaseId}}",
                                 "installments"
@@ -1733,13 +1733,13 @@
                             "raw": "{\n  \"stepId\": \"{{stepId}}\",\n  \"decision\": \"APPROVED\",\n  \"comment\": \"Documents verified\"\n}"
                         },
                         "url": {
-                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/phases/{{phaseId}}/steps/complete",
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{phaseId}}/steps/complete",
                             "host": [
                                 "{{mortgageServiceUrl}}"
                             ],
                             "path": [
-                                "contracts",
-                                "{{contractId}}",
+                                "applications",
+                                "{{applicationId}}",
                                 "phases",
                                 "{{phaseId}}",
                                 "steps",
@@ -1772,13 +1772,13 @@
                             "raw": "{\n  \"reason\": \"Document is not legible\"\n}"
                         },
                         "url": {
-                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/phases/{{phaseId}}/steps/{{stepId}}/reject",
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{phaseId}}/steps/{{stepId}}/reject",
                             "host": [
                                 "{{mortgageServiceUrl}}"
                             ],
                             "path": [
-                                "contracts",
-                                "{{contractId}}",
+                                "applications",
+                                "{{applicationId}}",
                                 "phases",
                                 "{{phaseId}}",
                                 "steps",
@@ -1811,13 +1811,13 @@
                             "raw": "{\n  \"reason\": \"Please upload a clearer copy of your ID\"\n}"
                         },
                         "url": {
-                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/phases/{{phaseId}}/steps/{{stepId}}/request-changes",
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{phaseId}}/steps/{{stepId}}/request-changes",
                             "host": [
                                 "{{mortgageServiceUrl}}"
                             ],
                             "path": [
-                                "contracts",
-                                "{{contractId}}",
+                                "applications",
+                                "{{applicationId}}",
                                 "phases",
                                 "{{phaseId}}",
                                 "steps",
@@ -1850,13 +1850,13 @@
                             "raw": "{\n  \"stepId\": \"{{stepId}}\",\n  \"name\": \"National ID Card\",\n  \"documentType\": \"ID_CARD\",\n  \"url\": \"https://s3.amazonaws.com/bucket/documents/id-card.pdf\",\n  \"fileName\": \"id-card.pdf\"\n}"
                         },
                         "url": {
-                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/phases/{{phaseId}}/documents",
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{phaseId}}/documents",
                             "host": [
                                 "{{mortgageServiceUrl}}"
                             ],
                             "path": [
-                                "contracts",
-                                "{{contractId}}",
+                                "applications",
+                                "{{applicationId}}",
                                 "phases",
                                 "{{phaseId}}",
                                 "documents"
@@ -1888,13 +1888,13 @@
                             "raw": "{\n  \"status\": \"APPROVED\",\n  \"comment\": \"Document verified successfully\"\n}"
                         },
                         "url": {
-                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/documents/{{documentId}}/review",
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/documents/{{documentId}}/review",
                             "host": [
                                 "{{mortgageServiceUrl}}"
                             ],
                             "path": [
-                                "contracts",
-                                "{{contractId}}",
+                                "applications",
+                                "{{applicationId}}",
                                 "documents",
                                 "{{documentId}}",
                                 "review"
@@ -1918,13 +1918,13 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/phases/{{phaseId}}/complete",
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{phaseId}}/complete",
                             "host": [
                                 "{{mortgageServiceUrl}}"
                             ],
                             "path": [
-                                "contracts",
-                                "{{contractId}}",
+                                "applications",
+                                "{{applicationId}}",
                                 "phases",
                                 "{{phaseId}}",
                                 "complete"
@@ -1952,16 +1952,16 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"reason\": \"Phase not required for this contract\"\n}"
+                            "raw": "{\n  \"reason\": \"Phase not required for this application\"\n}"
                         },
                         "url": {
-                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/phases/{{phaseId}}/skip",
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{phaseId}}/skip",
                             "host": [
                                 "{{mortgageServiceUrl}}"
                             ],
                             "path": [
-                                "contracts",
-                                "{{contractId}}",
+                                "applications",
+                                "{{applicationId}}",
                                 "phases",
                                 "{{phaseId}}",
                                 "skip"
@@ -1972,8 +1972,8 @@
             ]
         },
         {
-            "name": "Contract Payments",
-            "description": "Payment operations for contracts.",
+            "name": "Application Payments",
+            "description": "Payment operations for applications.",
             "item": [
                 {
                     "name": "Create Payment",
@@ -1998,13 +1998,13 @@
                             "raw": "{\n  \"phaseId\": \"{{phaseId}}\",\n  \"installmentId\": \"{{installmentId}}\",\n  \"amount\": 83333.33,\n  \"paymentMethod\": \"BANK_TRANSFER\",\n  \"reference\": \"TXN-12345\"\n}"
                         },
                         "url": {
-                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/payments",
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/payments",
                             "host": [
                                 "{{mortgageServiceUrl}}"
                             ],
                             "path": [
-                                "contracts",
-                                "{{contractId}}",
+                                "applications",
+                                "{{applicationId}}",
                                 "payments"
                             ]
                         },
@@ -2012,7 +2012,7 @@
                     }
                 },
                 {
-                    "name": "Get Payments for Contract",
+                    "name": "Get Payments for Application",
                     "request": {
                         "method": "GET",
                         "header": [
@@ -2026,13 +2026,13 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/payments",
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/payments",
                             "host": [
                                 "{{mortgageServiceUrl}}"
                             ],
                             "path": [
-                                "contracts",
-                                "{{contractId}}",
+                                "applications",
+                                "{{applicationId}}",
                                 "payments"
                             ]
                         }
@@ -2053,13 +2053,13 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/payments/{{paymentId}}",
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/payments/{{paymentId}}",
                             "host": [
                                 "{{mortgageServiceUrl}}"
                             ],
                             "path": [
-                                "contracts",
-                                "{{contractId}}",
+                                "applications",
+                                "{{applicationId}}",
                                 "payments",
                                 "{{paymentId}}"
                             ]
@@ -2089,12 +2089,12 @@
                             "raw": "{\n  \"reference\": \"TXN-12345\",\n  \"status\": \"COMPLETED\",\n  \"gatewayResponse\": {\n    \"transactionId\": \"GTW-67890\",\n    \"timestamp\": \"2024-01-15T10:30:00Z\"\n  }\n}"
                         },
                         "url": {
-                            "raw": "{{mortgageServiceUrl}}/contracts/payments/process",
+                            "raw": "{{mortgageServiceUrl}}/applications/payments/process",
                             "host": [
                                 "{{mortgageServiceUrl}}"
                             ],
                             "path": [
-                                "contracts",
+                                "applications",
                                 "payments",
                                 "process"
                             ]
@@ -2125,13 +2125,13 @@
                             "raw": "{\n  \"reason\": \"Duplicate payment\"\n}"
                         },
                         "url": {
-                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/payments/{{paymentId}}/refund",
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/payments/{{paymentId}}/refund",
                             "host": [
                                 "{{mortgageServiceUrl}}"
                             ],
                             "path": [
-                                "contracts",
-                                "{{contractId}}",
+                                "applications",
+                                "{{applicationId}}",
                                 "payments",
                                 "{{paymentId}}",
                                 "refund"
@@ -2162,13 +2162,13 @@
                             "raw": "{\n  \"amount\": 500000\n}"
                         },
                         "url": {
-                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/pay-ahead",
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/pay-ahead",
                             "host": [
                                 "{{mortgageServiceUrl}}"
                             ],
                             "path": [
-                                "contracts",
-                                "{{contractId}}",
+                                "applications",
+                                "{{applicationId}}",
                                 "pay-ahead"
                             ]
                         },
@@ -2179,7 +2179,7 @@
         },
         {
             "name": "Property Transfer",
-            "description": "Transfer a contract to a different property.",
+            "description": "Transfer a application to a different property.",
             "item": [
                 {
                     "name": "Create Transfer Request",
@@ -2204,21 +2204,21 @@
                             "raw": "{\n  \"targetPropertyUnitId\": \"{{targetPropertyUnitId}}\",\n  \"reason\": \"Prefer location closer to workplace\"\n}"
                         },
                         "url": {
-                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/transfer-requests",
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/transfer-requests",
                             "host": [
                                 "{{mortgageServiceUrl}}"
                             ],
                             "path": [
-                                "contracts",
-                                "{{contractId}}",
+                                "applications",
+                                "{{applicationId}}",
                                 "transfer-requests"
                             ]
                         },
-                        "description": "Request to transfer a contract to a different property unit."
+                        "description": "Request to transfer a application to a different property unit."
                     }
                 },
                 {
-                    "name": "Get Transfer Requests for Contract",
+                    "name": "Get Transfer Requests for Application",
                     "request": {
                         "method": "GET",
                         "header": [
@@ -2232,13 +2232,13 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/transfer-requests",
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/transfer-requests",
                             "host": [
                                 "{{mortgageServiceUrl}}"
                             ],
                             "path": [
-                                "contracts",
-                                "{{contractId}}",
+                                "applications",
+                                "{{applicationId}}",
                                 "transfer-requests"
                             ]
                         }
@@ -2370,7 +2370,7 @@
         },
         {
             "name": "Payment Method Change",
-            "description": "Request to change the payment method of an existing contract.",
+            "description": "Request to change the payment method of an existing application.",
             "item": [
                 {
                     "name": "Create Change Request",
@@ -2395,20 +2395,20 @@
                             "raw": "{\n  \"toPaymentMethodId\": \"{{newPaymentMethodId}}\",\n  \"reason\": \"Want to switch to longer term\"\n}"
                         },
                         "url": {
-                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/payment-method-change-requests",
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/payment-method-change-requests",
                             "host": [
                                 "{{mortgageServiceUrl}}"
                             ],
                             "path": [
-                                "contracts",
-                                "{{contractId}}",
+                                "applications",
+                                "{{applicationId}}",
                                 "payment-method-change-requests"
                             ]
                         }
                     }
                 },
                 {
-                    "name": "Get Change Requests for Contract",
+                    "name": "Get Change Requests for Application",
                     "request": {
                         "method": "GET",
                         "header": [
@@ -2422,13 +2422,13 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/payment-method-change-requests",
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/payment-method-change-requests",
                             "host": [
                                 "{{mortgageServiceUrl}}"
                             ],
                             "path": [
-                                "contracts",
-                                "{{contractId}}",
+                                "applications",
+                                "{{applicationId}}",
                                 "payment-method-change-requests"
                             ]
                         }
@@ -2449,13 +2449,13 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/payment-method-change-requests/{{changeRequestId}}",
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/payment-method-change-requests/{{changeRequestId}}",
                             "host": [
                                 "{{mortgageServiceUrl}}"
                             ],
                             "path": [
-                                "contracts",
-                                "{{contractId}}",
+                                "applications",
+                                "{{applicationId}}",
                                 "payment-method-change-requests",
                                 "{{changeRequestId}}"
                             ]
@@ -2477,13 +2477,13 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/payment-method-change-requests/{{changeRequestId}}/submit-documents",
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/payment-method-change-requests/{{changeRequestId}}/submit-documents",
                             "host": [
                                 "{{mortgageServiceUrl}}"
                             ],
                             "path": [
-                                "contracts",
-                                "{{contractId}}",
+                                "applications",
+                                "{{applicationId}}",
                                 "payment-method-change-requests",
                                 "{{changeRequestId}}",
                                 "submit-documents"
@@ -2507,13 +2507,13 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{mortgageServiceUrl}}/contracts/{{contractId}}/payment-method-change-requests/{{changeRequestId}}/cancel",
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/payment-method-change-requests/{{changeRequestId}}/cancel",
                             "host": [
                                 "{{mortgageServiceUrl}}"
                             ],
                             "path": [
-                                "contracts",
-                                "{{contractId}}",
+                                "applications",
+                                "{{applicationId}}",
                                 "payment-method-change-requests",
                                 "{{changeRequestId}}",
                                 "cancel"
@@ -2668,7 +2668,7 @@
                                 "execute"
                             ]
                         },
-                        "description": "Execute an approved change request. This performs the actual contract modification."
+                        "description": "Execute an approved change request. This performs the actual application modification."
                     }
                 }
             ]
@@ -3248,7 +3248,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n  \"name\": \"Property Manager\",\n  \"description\": \"Can manage properties and view contracts\"\n}"
+                                    "raw": "{\n  \"name\": \"Property Manager\",\n  \"description\": \"Can manage properties and view applications\"\n}"
                                 },
                                 "url": {
                                     "raw": "{{userServiceUrl}}/roles",
@@ -3309,7 +3309,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n  \"name\": \"Senior Property Manager\",\n  \"description\": \"Can manage properties and approve contracts\"\n}"
+                                    "raw": "{\n  \"name\": \"Senior Property Manager\",\n  \"description\": \"Can manage properties and approve applications\"\n}"
                                 },
                                 "url": {
                                     "raw": "{{userServiceUrl}}/roles/{{roleId}}",

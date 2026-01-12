@@ -4,7 +4,7 @@
 // biome-ignore-all lint: generated file
 // @ts-nocheck 
 /*
- * This file exports the `ContractTermination` model and its related types.
+ * This file exports the `ApplicationTermination` model and its related types.
  *
  * 🟢 You can import this file directly.
  */
@@ -13,21 +13,21 @@ import type * as $Enums from "../enums.js"
 import type * as Prisma from "../internal/prismaNamespace.js"
 
 /**
- * Model ContractTermination
+ * Model ApplicationTermination
  * 
  */
-export type ContractTerminationModel = runtime.Types.Result.DefaultSelection<Prisma.$ContractTerminationPayload>
+export type ApplicationTerminationModel = runtime.Types.Result.DefaultSelection<Prisma.$ApplicationTerminationPayload>
 
-export type AggregateContractTermination = {
-  _count: ContractTerminationCountAggregateOutputType | null
-  _avg: ContractTerminationAvgAggregateOutputType | null
-  _sum: ContractTerminationSumAggregateOutputType | null
-  _min: ContractTerminationMinAggregateOutputType | null
-  _max: ContractTerminationMaxAggregateOutputType | null
+export type AggregateApplicationTermination = {
+  _count: ApplicationTerminationCountAggregateOutputType | null
+  _avg: ApplicationTerminationAvgAggregateOutputType | null
+  _sum: ApplicationTerminationSumAggregateOutputType | null
+  _min: ApplicationTerminationMinAggregateOutputType | null
+  _max: ApplicationTerminationMaxAggregateOutputType | null
 }
 
-export type ContractTerminationAvgAggregateOutputType = {
-  totalContractAmount: number | null
+export type ApplicationTerminationAvgAggregateOutputType = {
+  totalApplicationAmount: number | null
   totalPaidToDate: number | null
   outstandingBalance: number | null
   refundableAmount: number | null
@@ -37,8 +37,8 @@ export type ContractTerminationAvgAggregateOutputType = {
   netRefundAmount: number | null
 }
 
-export type ContractTerminationSumAggregateOutputType = {
-  totalContractAmount: number | null
+export type ApplicationTerminationSumAggregateOutputType = {
+  totalApplicationAmount: number | null
   totalPaidToDate: number | null
   outstandingBalance: number | null
   refundableAmount: number | null
@@ -48,9 +48,9 @@ export type ContractTerminationSumAggregateOutputType = {
   netRefundAmount: number | null
 }
 
-export type ContractTerminationMinAggregateOutputType = {
+export type ApplicationTerminationMinAggregateOutputType = {
   id: string | null
-  contractId: string | null
+  applicationId: string | null
   tenantId: string | null
   requestNumber: string | null
   initiatedBy: $Enums.TerminationInitiator | null
@@ -64,7 +64,7 @@ export type ContractTerminationMinAggregateOutputType = {
   reviewedAt: Date | null
   reviewNotes: string | null
   rejectionReason: string | null
-  totalContractAmount: number | null
+  totalApplicationAmount: number | null
   totalPaidToDate: number | null
   outstandingBalance: number | null
   refundableAmount: number | null
@@ -91,9 +91,9 @@ export type ContractTerminationMinAggregateOutputType = {
   updatedAt: Date | null
 }
 
-export type ContractTerminationMaxAggregateOutputType = {
+export type ApplicationTerminationMaxAggregateOutputType = {
   id: string | null
-  contractId: string | null
+  applicationId: string | null
   tenantId: string | null
   requestNumber: string | null
   initiatedBy: $Enums.TerminationInitiator | null
@@ -107,7 +107,7 @@ export type ContractTerminationMaxAggregateOutputType = {
   reviewedAt: Date | null
   reviewNotes: string | null
   rejectionReason: string | null
-  totalContractAmount: number | null
+  totalApplicationAmount: number | null
   totalPaidToDate: number | null
   outstandingBalance: number | null
   refundableAmount: number | null
@@ -134,9 +134,9 @@ export type ContractTerminationMaxAggregateOutputType = {
   updatedAt: Date | null
 }
 
-export type ContractTerminationCountAggregateOutputType = {
+export type ApplicationTerminationCountAggregateOutputType = {
   id: number
-  contractId: number
+  applicationId: number
   tenantId: number
   requestNumber: number
   initiatedBy: number
@@ -151,8 +151,8 @@ export type ContractTerminationCountAggregateOutputType = {
   reviewedAt: number
   reviewNotes: number
   rejectionReason: number
-  contractSnapshot: number
-  totalContractAmount: number
+  applicationSnapshot: number
+  totalApplicationAmount: number
   totalPaidToDate: number
   outstandingBalance: number
   refundableAmount: number
@@ -183,8 +183,8 @@ export type ContractTerminationCountAggregateOutputType = {
 }
 
 
-export type ContractTerminationAvgAggregateInputType = {
-  totalContractAmount?: true
+export type ApplicationTerminationAvgAggregateInputType = {
+  totalApplicationAmount?: true
   totalPaidToDate?: true
   outstandingBalance?: true
   refundableAmount?: true
@@ -194,8 +194,8 @@ export type ContractTerminationAvgAggregateInputType = {
   netRefundAmount?: true
 }
 
-export type ContractTerminationSumAggregateInputType = {
-  totalContractAmount?: true
+export type ApplicationTerminationSumAggregateInputType = {
+  totalApplicationAmount?: true
   totalPaidToDate?: true
   outstandingBalance?: true
   refundableAmount?: true
@@ -205,9 +205,9 @@ export type ContractTerminationSumAggregateInputType = {
   netRefundAmount?: true
 }
 
-export type ContractTerminationMinAggregateInputType = {
+export type ApplicationTerminationMinAggregateInputType = {
   id?: true
-  contractId?: true
+  applicationId?: true
   tenantId?: true
   requestNumber?: true
   initiatedBy?: true
@@ -221,7 +221,7 @@ export type ContractTerminationMinAggregateInputType = {
   reviewedAt?: true
   reviewNotes?: true
   rejectionReason?: true
-  totalContractAmount?: true
+  totalApplicationAmount?: true
   totalPaidToDate?: true
   outstandingBalance?: true
   refundableAmount?: true
@@ -248,9 +248,9 @@ export type ContractTerminationMinAggregateInputType = {
   updatedAt?: true
 }
 
-export type ContractTerminationMaxAggregateInputType = {
+export type ApplicationTerminationMaxAggregateInputType = {
   id?: true
-  contractId?: true
+  applicationId?: true
   tenantId?: true
   requestNumber?: true
   initiatedBy?: true
@@ -264,7 +264,7 @@ export type ContractTerminationMaxAggregateInputType = {
   reviewedAt?: true
   reviewNotes?: true
   rejectionReason?: true
-  totalContractAmount?: true
+  totalApplicationAmount?: true
   totalPaidToDate?: true
   outstandingBalance?: true
   refundableAmount?: true
@@ -291,9 +291,9 @@ export type ContractTerminationMaxAggregateInputType = {
   updatedAt?: true
 }
 
-export type ContractTerminationCountAggregateInputType = {
+export type ApplicationTerminationCountAggregateInputType = {
   id?: true
-  contractId?: true
+  applicationId?: true
   tenantId?: true
   requestNumber?: true
   initiatedBy?: true
@@ -308,8 +308,8 @@ export type ContractTerminationCountAggregateInputType = {
   reviewedAt?: true
   reviewNotes?: true
   rejectionReason?: true
-  contractSnapshot?: true
-  totalContractAmount?: true
+  applicationSnapshot?: true
+  totalApplicationAmount?: true
   totalPaidToDate?: true
   outstandingBalance?: true
   refundableAmount?: true
@@ -339,95 +339,95 @@ export type ContractTerminationCountAggregateInputType = {
   _all?: true
 }
 
-export type ContractTerminationAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type ApplicationTerminationAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Filter which ContractTermination to aggregate.
+   * Filter which ApplicationTermination to aggregate.
    */
-  where?: Prisma.ContractTerminationWhereInput
+  where?: Prisma.ApplicationTerminationWhereInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
    * 
-   * Determine the order of ContractTerminations to fetch.
+   * Determine the order of ApplicationTerminations to fetch.
    */
-  orderBy?: Prisma.ContractTerminationOrderByWithRelationInput | Prisma.ContractTerminationOrderByWithRelationInput[]
+  orderBy?: Prisma.ApplicationTerminationOrderByWithRelationInput | Prisma.ApplicationTerminationOrderByWithRelationInput[]
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
    * 
    * Sets the start position
    */
-  cursor?: Prisma.ContractTerminationWhereUniqueInput
+  cursor?: Prisma.ApplicationTerminationWhereUniqueInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Take `±n` ContractTerminations from the position of the cursor.
+   * Take `±n` ApplicationTerminations from the position of the cursor.
    */
   take?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Skip the first `n` ContractTerminations.
+   * Skip the first `n` ApplicationTerminations.
    */
   skip?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Count returned ContractTerminations
+   * Count returned ApplicationTerminations
   **/
-  _count?: true | ContractTerminationCountAggregateInputType
+  _count?: true | ApplicationTerminationCountAggregateInputType
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
    * Select which fields to average
   **/
-  _avg?: ContractTerminationAvgAggregateInputType
+  _avg?: ApplicationTerminationAvgAggregateInputType
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
    * Select which fields to sum
   **/
-  _sum?: ContractTerminationSumAggregateInputType
+  _sum?: ApplicationTerminationSumAggregateInputType
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
    * Select which fields to find the minimum value
   **/
-  _min?: ContractTerminationMinAggregateInputType
+  _min?: ApplicationTerminationMinAggregateInputType
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
    * Select which fields to find the maximum value
   **/
-  _max?: ContractTerminationMaxAggregateInputType
+  _max?: ApplicationTerminationMaxAggregateInputType
 }
 
-export type GetContractTerminationAggregateType<T extends ContractTerminationAggregateArgs> = {
-      [P in keyof T & keyof AggregateContractTermination]: P extends '_count' | 'count'
+export type GetApplicationTerminationAggregateType<T extends ApplicationTerminationAggregateArgs> = {
+      [P in keyof T & keyof AggregateApplicationTermination]: P extends '_count' | 'count'
     ? T[P] extends true
       ? number
-      : Prisma.GetScalarType<T[P], AggregateContractTermination[P]>
-    : Prisma.GetScalarType<T[P], AggregateContractTermination[P]>
+      : Prisma.GetScalarType<T[P], AggregateApplicationTermination[P]>
+    : Prisma.GetScalarType<T[P], AggregateApplicationTermination[P]>
 }
 
 
 
 
-export type ContractTerminationGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.ContractTerminationWhereInput
-  orderBy?: Prisma.ContractTerminationOrderByWithAggregationInput | Prisma.ContractTerminationOrderByWithAggregationInput[]
-  by: Prisma.ContractTerminationScalarFieldEnum[] | Prisma.ContractTerminationScalarFieldEnum
-  having?: Prisma.ContractTerminationScalarWhereWithAggregatesInput
+export type ApplicationTerminationGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ApplicationTerminationWhereInput
+  orderBy?: Prisma.ApplicationTerminationOrderByWithAggregationInput | Prisma.ApplicationTerminationOrderByWithAggregationInput[]
+  by: Prisma.ApplicationTerminationScalarFieldEnum[] | Prisma.ApplicationTerminationScalarFieldEnum
+  having?: Prisma.ApplicationTerminationScalarWhereWithAggregatesInput
   take?: number
   skip?: number
-  _count?: ContractTerminationCountAggregateInputType | true
-  _avg?: ContractTerminationAvgAggregateInputType
-  _sum?: ContractTerminationSumAggregateInputType
-  _min?: ContractTerminationMinAggregateInputType
-  _max?: ContractTerminationMaxAggregateInputType
+  _count?: ApplicationTerminationCountAggregateInputType | true
+  _avg?: ApplicationTerminationAvgAggregateInputType
+  _sum?: ApplicationTerminationSumAggregateInputType
+  _min?: ApplicationTerminationMinAggregateInputType
+  _max?: ApplicationTerminationMaxAggregateInputType
 }
 
-export type ContractTerminationGroupByOutputType = {
+export type ApplicationTerminationGroupByOutputType = {
   id: string
-  contractId: string
+  applicationId: string
   tenantId: string
   requestNumber: string
   initiatedBy: $Enums.TerminationInitiator
@@ -442,8 +442,8 @@ export type ContractTerminationGroupByOutputType = {
   reviewedAt: Date | null
   reviewNotes: string | null
   rejectionReason: string | null
-  contractSnapshot: runtime.JsonValue
-  totalContractAmount: number
+  applicationSnapshot: runtime.JsonValue
+  totalApplicationAmount: number
   totalPaidToDate: number
   outstandingBalance: number
   refundableAmount: number
@@ -470,85 +470,85 @@ export type ContractTerminationGroupByOutputType = {
   metadata: runtime.JsonValue | null
   createdAt: Date
   updatedAt: Date
-  _count: ContractTerminationCountAggregateOutputType | null
-  _avg: ContractTerminationAvgAggregateOutputType | null
-  _sum: ContractTerminationSumAggregateOutputType | null
-  _min: ContractTerminationMinAggregateOutputType | null
-  _max: ContractTerminationMaxAggregateOutputType | null
+  _count: ApplicationTerminationCountAggregateOutputType | null
+  _avg: ApplicationTerminationAvgAggregateOutputType | null
+  _sum: ApplicationTerminationSumAggregateOutputType | null
+  _min: ApplicationTerminationMinAggregateOutputType | null
+  _max: ApplicationTerminationMaxAggregateOutputType | null
 }
 
-type GetContractTerminationGroupByPayload<T extends ContractTerminationGroupByArgs> = Prisma.PrismaPromise<
+type GetApplicationTerminationGroupByPayload<T extends ApplicationTerminationGroupByArgs> = Prisma.PrismaPromise<
   Array<
-    Prisma.PickEnumerable<ContractTerminationGroupByOutputType, T['by']> &
+    Prisma.PickEnumerable<ApplicationTerminationGroupByOutputType, T['by']> &
       {
-        [P in ((keyof T) & (keyof ContractTerminationGroupByOutputType))]: P extends '_count'
+        [P in ((keyof T) & (keyof ApplicationTerminationGroupByOutputType))]: P extends '_count'
           ? T[P] extends boolean
             ? number
-            : Prisma.GetScalarType<T[P], ContractTerminationGroupByOutputType[P]>
-          : Prisma.GetScalarType<T[P], ContractTerminationGroupByOutputType[P]>
+            : Prisma.GetScalarType<T[P], ApplicationTerminationGroupByOutputType[P]>
+          : Prisma.GetScalarType<T[P], ApplicationTerminationGroupByOutputType[P]>
       }
     >
   >
 
 
 
-export type ContractTerminationWhereInput = {
-  AND?: Prisma.ContractTerminationWhereInput | Prisma.ContractTerminationWhereInput[]
-  OR?: Prisma.ContractTerminationWhereInput[]
-  NOT?: Prisma.ContractTerminationWhereInput | Prisma.ContractTerminationWhereInput[]
-  id?: Prisma.StringFilter<"ContractTermination"> | string
-  contractId?: Prisma.StringFilter<"ContractTermination"> | string
-  tenantId?: Prisma.StringFilter<"ContractTermination"> | string
-  requestNumber?: Prisma.StringFilter<"ContractTermination"> | string
-  initiatedBy?: Prisma.EnumTerminationInitiatorFilter<"ContractTermination"> | $Enums.TerminationInitiator
-  initiatorId?: Prisma.StringNullableFilter<"ContractTermination"> | string | null
-  type?: Prisma.EnumTerminationTypeFilter<"ContractTermination"> | $Enums.TerminationType
-  reason?: Prisma.StringNullableFilter<"ContractTermination"> | string | null
-  supportingDocs?: Prisma.JsonNullableFilter<"ContractTermination">
-  status?: Prisma.EnumTerminationStatusFilter<"ContractTermination"> | $Enums.TerminationStatus
-  requiresApproval?: Prisma.BoolFilter<"ContractTermination"> | boolean
-  autoApproveEligible?: Prisma.BoolFilter<"ContractTermination"> | boolean
-  reviewedBy?: Prisma.StringNullableFilter<"ContractTermination"> | string | null
-  reviewedAt?: Prisma.DateTimeNullableFilter<"ContractTermination"> | Date | string | null
-  reviewNotes?: Prisma.StringNullableFilter<"ContractTermination"> | string | null
-  rejectionReason?: Prisma.StringNullableFilter<"ContractTermination"> | string | null
-  contractSnapshot?: Prisma.JsonFilter<"ContractTermination">
-  totalContractAmount?: Prisma.FloatFilter<"ContractTermination"> | number
-  totalPaidToDate?: Prisma.FloatFilter<"ContractTermination"> | number
-  outstandingBalance?: Prisma.FloatFilter<"ContractTermination"> | number
-  refundableAmount?: Prisma.FloatFilter<"ContractTermination"> | number
-  penaltyAmount?: Prisma.FloatFilter<"ContractTermination"> | number
-  forfeitedAmount?: Prisma.FloatFilter<"ContractTermination"> | number
-  adminFeeAmount?: Prisma.FloatFilter<"ContractTermination"> | number
-  netRefundAmount?: Prisma.FloatFilter<"ContractTermination"> | number
-  settlementNotes?: Prisma.StringNullableFilter<"ContractTermination"> | string | null
-  refundStatus?: Prisma.EnumRefundStatusFilter<"ContractTermination"> | $Enums.RefundStatus
-  refundReference?: Prisma.StringNullableFilter<"ContractTermination"> | string | null
-  refundMethod?: Prisma.StringNullableFilter<"ContractTermination"> | string | null
-  refundAccountDetails?: Prisma.JsonNullableFilter<"ContractTermination">
-  refundInitiatedAt?: Prisma.DateTimeNullableFilter<"ContractTermination"> | Date | string | null
-  refundCompletedAt?: Prisma.DateTimeNullableFilter<"ContractTermination"> | Date | string | null
-  refundFailureReason?: Prisma.StringNullableFilter<"ContractTermination"> | string | null
-  unitReleasedAt?: Prisma.DateTimeNullableFilter<"ContractTermination"> | Date | string | null
-  unitReservedForId?: Prisma.StringNullableFilter<"ContractTermination"> | string | null
-  requestedAt?: Prisma.DateTimeFilter<"ContractTermination"> | Date | string
-  approvedAt?: Prisma.DateTimeNullableFilter<"ContractTermination"> | Date | string | null
-  executedAt?: Prisma.DateTimeNullableFilter<"ContractTermination"> | Date | string | null
-  completedAt?: Prisma.DateTimeNullableFilter<"ContractTermination"> | Date | string | null
-  cancelledAt?: Prisma.DateTimeNullableFilter<"ContractTermination"> | Date | string | null
-  idempotencyKey?: Prisma.StringNullableFilter<"ContractTermination"> | string | null
-  metadata?: Prisma.JsonNullableFilter<"ContractTermination">
-  createdAt?: Prisma.DateTimeFilter<"ContractTermination"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"ContractTermination"> | Date | string
-  contract?: Prisma.XOR<Prisma.ContractScalarRelationFilter, Prisma.ContractWhereInput>
+export type ApplicationTerminationWhereInput = {
+  AND?: Prisma.ApplicationTerminationWhereInput | Prisma.ApplicationTerminationWhereInput[]
+  OR?: Prisma.ApplicationTerminationWhereInput[]
+  NOT?: Prisma.ApplicationTerminationWhereInput | Prisma.ApplicationTerminationWhereInput[]
+  id?: Prisma.StringFilter<"ApplicationTermination"> | string
+  applicationId?: Prisma.StringFilter<"ApplicationTermination"> | string
+  tenantId?: Prisma.StringFilter<"ApplicationTermination"> | string
+  requestNumber?: Prisma.StringFilter<"ApplicationTermination"> | string
+  initiatedBy?: Prisma.EnumTerminationInitiatorFilter<"ApplicationTermination"> | $Enums.TerminationInitiator
+  initiatorId?: Prisma.StringNullableFilter<"ApplicationTermination"> | string | null
+  type?: Prisma.EnumTerminationTypeFilter<"ApplicationTermination"> | $Enums.TerminationType
+  reason?: Prisma.StringNullableFilter<"ApplicationTermination"> | string | null
+  supportingDocs?: Prisma.JsonNullableFilter<"ApplicationTermination">
+  status?: Prisma.EnumTerminationStatusFilter<"ApplicationTermination"> | $Enums.TerminationStatus
+  requiresApproval?: Prisma.BoolFilter<"ApplicationTermination"> | boolean
+  autoApproveEligible?: Prisma.BoolFilter<"ApplicationTermination"> | boolean
+  reviewedBy?: Prisma.StringNullableFilter<"ApplicationTermination"> | string | null
+  reviewedAt?: Prisma.DateTimeNullableFilter<"ApplicationTermination"> | Date | string | null
+  reviewNotes?: Prisma.StringNullableFilter<"ApplicationTermination"> | string | null
+  rejectionReason?: Prisma.StringNullableFilter<"ApplicationTermination"> | string | null
+  applicationSnapshot?: Prisma.JsonFilter<"ApplicationTermination">
+  totalApplicationAmount?: Prisma.FloatFilter<"ApplicationTermination"> | number
+  totalPaidToDate?: Prisma.FloatFilter<"ApplicationTermination"> | number
+  outstandingBalance?: Prisma.FloatFilter<"ApplicationTermination"> | number
+  refundableAmount?: Prisma.FloatFilter<"ApplicationTermination"> | number
+  penaltyAmount?: Prisma.FloatFilter<"ApplicationTermination"> | number
+  forfeitedAmount?: Prisma.FloatFilter<"ApplicationTermination"> | number
+  adminFeeAmount?: Prisma.FloatFilter<"ApplicationTermination"> | number
+  netRefundAmount?: Prisma.FloatFilter<"ApplicationTermination"> | number
+  settlementNotes?: Prisma.StringNullableFilter<"ApplicationTermination"> | string | null
+  refundStatus?: Prisma.EnumRefundStatusFilter<"ApplicationTermination"> | $Enums.RefundStatus
+  refundReference?: Prisma.StringNullableFilter<"ApplicationTermination"> | string | null
+  refundMethod?: Prisma.StringNullableFilter<"ApplicationTermination"> | string | null
+  refundAccountDetails?: Prisma.JsonNullableFilter<"ApplicationTermination">
+  refundInitiatedAt?: Prisma.DateTimeNullableFilter<"ApplicationTermination"> | Date | string | null
+  refundCompletedAt?: Prisma.DateTimeNullableFilter<"ApplicationTermination"> | Date | string | null
+  refundFailureReason?: Prisma.StringNullableFilter<"ApplicationTermination"> | string | null
+  unitReleasedAt?: Prisma.DateTimeNullableFilter<"ApplicationTermination"> | Date | string | null
+  unitReservedForId?: Prisma.StringNullableFilter<"ApplicationTermination"> | string | null
+  requestedAt?: Prisma.DateTimeFilter<"ApplicationTermination"> | Date | string
+  approvedAt?: Prisma.DateTimeNullableFilter<"ApplicationTermination"> | Date | string | null
+  executedAt?: Prisma.DateTimeNullableFilter<"ApplicationTermination"> | Date | string | null
+  completedAt?: Prisma.DateTimeNullableFilter<"ApplicationTermination"> | Date | string | null
+  cancelledAt?: Prisma.DateTimeNullableFilter<"ApplicationTermination"> | Date | string | null
+  idempotencyKey?: Prisma.StringNullableFilter<"ApplicationTermination"> | string | null
+  metadata?: Prisma.JsonNullableFilter<"ApplicationTermination">
+  createdAt?: Prisma.DateTimeFilter<"ApplicationTermination"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ApplicationTermination"> | Date | string
+  application?: Prisma.XOR<Prisma.ApplicationScalarRelationFilter, Prisma.ApplicationWhereInput>
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   initiator?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   reviewer?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }
 
-export type ContractTerminationOrderByWithRelationInput = {
+export type ApplicationTerminationOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  contractId?: Prisma.SortOrder
+  applicationId?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   requestNumber?: Prisma.SortOrder
   initiatedBy?: Prisma.SortOrder
@@ -563,8 +563,8 @@ export type ContractTerminationOrderByWithRelationInput = {
   reviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewNotes?: Prisma.SortOrderInput | Prisma.SortOrder
   rejectionReason?: Prisma.SortOrderInput | Prisma.SortOrder
-  contractSnapshot?: Prisma.SortOrder
-  totalContractAmount?: Prisma.SortOrder
+  applicationSnapshot?: Prisma.SortOrder
+  totalApplicationAmount?: Prisma.SortOrder
   totalPaidToDate?: Prisma.SortOrder
   outstandingBalance?: Prisma.SortOrder
   refundableAmount?: Prisma.SortOrder
@@ -591,70 +591,70 @@ export type ContractTerminationOrderByWithRelationInput = {
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  contract?: Prisma.ContractOrderByWithRelationInput
+  application?: Prisma.ApplicationOrderByWithRelationInput
   tenant?: Prisma.TenantOrderByWithRelationInput
   initiator?: Prisma.UserOrderByWithRelationInput
   reviewer?: Prisma.UserOrderByWithRelationInput
-  _relevance?: Prisma.ContractTerminationOrderByRelevanceInput
+  _relevance?: Prisma.ApplicationTerminationOrderByRelevanceInput
 }
 
-export type ContractTerminationWhereUniqueInput = Prisma.AtLeast<{
+export type ApplicationTerminationWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   requestNumber?: string
   idempotencyKey?: string
-  AND?: Prisma.ContractTerminationWhereInput | Prisma.ContractTerminationWhereInput[]
-  OR?: Prisma.ContractTerminationWhereInput[]
-  NOT?: Prisma.ContractTerminationWhereInput | Prisma.ContractTerminationWhereInput[]
-  contractId?: Prisma.StringFilter<"ContractTermination"> | string
-  tenantId?: Prisma.StringFilter<"ContractTermination"> | string
-  initiatedBy?: Prisma.EnumTerminationInitiatorFilter<"ContractTermination"> | $Enums.TerminationInitiator
-  initiatorId?: Prisma.StringNullableFilter<"ContractTermination"> | string | null
-  type?: Prisma.EnumTerminationTypeFilter<"ContractTermination"> | $Enums.TerminationType
-  reason?: Prisma.StringNullableFilter<"ContractTermination"> | string | null
-  supportingDocs?: Prisma.JsonNullableFilter<"ContractTermination">
-  status?: Prisma.EnumTerminationStatusFilter<"ContractTermination"> | $Enums.TerminationStatus
-  requiresApproval?: Prisma.BoolFilter<"ContractTermination"> | boolean
-  autoApproveEligible?: Prisma.BoolFilter<"ContractTermination"> | boolean
-  reviewedBy?: Prisma.StringNullableFilter<"ContractTermination"> | string | null
-  reviewedAt?: Prisma.DateTimeNullableFilter<"ContractTermination"> | Date | string | null
-  reviewNotes?: Prisma.StringNullableFilter<"ContractTermination"> | string | null
-  rejectionReason?: Prisma.StringNullableFilter<"ContractTermination"> | string | null
-  contractSnapshot?: Prisma.JsonFilter<"ContractTermination">
-  totalContractAmount?: Prisma.FloatFilter<"ContractTermination"> | number
-  totalPaidToDate?: Prisma.FloatFilter<"ContractTermination"> | number
-  outstandingBalance?: Prisma.FloatFilter<"ContractTermination"> | number
-  refundableAmount?: Prisma.FloatFilter<"ContractTermination"> | number
-  penaltyAmount?: Prisma.FloatFilter<"ContractTermination"> | number
-  forfeitedAmount?: Prisma.FloatFilter<"ContractTermination"> | number
-  adminFeeAmount?: Prisma.FloatFilter<"ContractTermination"> | number
-  netRefundAmount?: Prisma.FloatFilter<"ContractTermination"> | number
-  settlementNotes?: Prisma.StringNullableFilter<"ContractTermination"> | string | null
-  refundStatus?: Prisma.EnumRefundStatusFilter<"ContractTermination"> | $Enums.RefundStatus
-  refundReference?: Prisma.StringNullableFilter<"ContractTermination"> | string | null
-  refundMethod?: Prisma.StringNullableFilter<"ContractTermination"> | string | null
-  refundAccountDetails?: Prisma.JsonNullableFilter<"ContractTermination">
-  refundInitiatedAt?: Prisma.DateTimeNullableFilter<"ContractTermination"> | Date | string | null
-  refundCompletedAt?: Prisma.DateTimeNullableFilter<"ContractTermination"> | Date | string | null
-  refundFailureReason?: Prisma.StringNullableFilter<"ContractTermination"> | string | null
-  unitReleasedAt?: Prisma.DateTimeNullableFilter<"ContractTermination"> | Date | string | null
-  unitReservedForId?: Prisma.StringNullableFilter<"ContractTermination"> | string | null
-  requestedAt?: Prisma.DateTimeFilter<"ContractTermination"> | Date | string
-  approvedAt?: Prisma.DateTimeNullableFilter<"ContractTermination"> | Date | string | null
-  executedAt?: Prisma.DateTimeNullableFilter<"ContractTermination"> | Date | string | null
-  completedAt?: Prisma.DateTimeNullableFilter<"ContractTermination"> | Date | string | null
-  cancelledAt?: Prisma.DateTimeNullableFilter<"ContractTermination"> | Date | string | null
-  metadata?: Prisma.JsonNullableFilter<"ContractTermination">
-  createdAt?: Prisma.DateTimeFilter<"ContractTermination"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"ContractTermination"> | Date | string
-  contract?: Prisma.XOR<Prisma.ContractScalarRelationFilter, Prisma.ContractWhereInput>
+  AND?: Prisma.ApplicationTerminationWhereInput | Prisma.ApplicationTerminationWhereInput[]
+  OR?: Prisma.ApplicationTerminationWhereInput[]
+  NOT?: Prisma.ApplicationTerminationWhereInput | Prisma.ApplicationTerminationWhereInput[]
+  applicationId?: Prisma.StringFilter<"ApplicationTermination"> | string
+  tenantId?: Prisma.StringFilter<"ApplicationTermination"> | string
+  initiatedBy?: Prisma.EnumTerminationInitiatorFilter<"ApplicationTermination"> | $Enums.TerminationInitiator
+  initiatorId?: Prisma.StringNullableFilter<"ApplicationTermination"> | string | null
+  type?: Prisma.EnumTerminationTypeFilter<"ApplicationTermination"> | $Enums.TerminationType
+  reason?: Prisma.StringNullableFilter<"ApplicationTermination"> | string | null
+  supportingDocs?: Prisma.JsonNullableFilter<"ApplicationTermination">
+  status?: Prisma.EnumTerminationStatusFilter<"ApplicationTermination"> | $Enums.TerminationStatus
+  requiresApproval?: Prisma.BoolFilter<"ApplicationTermination"> | boolean
+  autoApproveEligible?: Prisma.BoolFilter<"ApplicationTermination"> | boolean
+  reviewedBy?: Prisma.StringNullableFilter<"ApplicationTermination"> | string | null
+  reviewedAt?: Prisma.DateTimeNullableFilter<"ApplicationTermination"> | Date | string | null
+  reviewNotes?: Prisma.StringNullableFilter<"ApplicationTermination"> | string | null
+  rejectionReason?: Prisma.StringNullableFilter<"ApplicationTermination"> | string | null
+  applicationSnapshot?: Prisma.JsonFilter<"ApplicationTermination">
+  totalApplicationAmount?: Prisma.FloatFilter<"ApplicationTermination"> | number
+  totalPaidToDate?: Prisma.FloatFilter<"ApplicationTermination"> | number
+  outstandingBalance?: Prisma.FloatFilter<"ApplicationTermination"> | number
+  refundableAmount?: Prisma.FloatFilter<"ApplicationTermination"> | number
+  penaltyAmount?: Prisma.FloatFilter<"ApplicationTermination"> | number
+  forfeitedAmount?: Prisma.FloatFilter<"ApplicationTermination"> | number
+  adminFeeAmount?: Prisma.FloatFilter<"ApplicationTermination"> | number
+  netRefundAmount?: Prisma.FloatFilter<"ApplicationTermination"> | number
+  settlementNotes?: Prisma.StringNullableFilter<"ApplicationTermination"> | string | null
+  refundStatus?: Prisma.EnumRefundStatusFilter<"ApplicationTermination"> | $Enums.RefundStatus
+  refundReference?: Prisma.StringNullableFilter<"ApplicationTermination"> | string | null
+  refundMethod?: Prisma.StringNullableFilter<"ApplicationTermination"> | string | null
+  refundAccountDetails?: Prisma.JsonNullableFilter<"ApplicationTermination">
+  refundInitiatedAt?: Prisma.DateTimeNullableFilter<"ApplicationTermination"> | Date | string | null
+  refundCompletedAt?: Prisma.DateTimeNullableFilter<"ApplicationTermination"> | Date | string | null
+  refundFailureReason?: Prisma.StringNullableFilter<"ApplicationTermination"> | string | null
+  unitReleasedAt?: Prisma.DateTimeNullableFilter<"ApplicationTermination"> | Date | string | null
+  unitReservedForId?: Prisma.StringNullableFilter<"ApplicationTermination"> | string | null
+  requestedAt?: Prisma.DateTimeFilter<"ApplicationTermination"> | Date | string
+  approvedAt?: Prisma.DateTimeNullableFilter<"ApplicationTermination"> | Date | string | null
+  executedAt?: Prisma.DateTimeNullableFilter<"ApplicationTermination"> | Date | string | null
+  completedAt?: Prisma.DateTimeNullableFilter<"ApplicationTermination"> | Date | string | null
+  cancelledAt?: Prisma.DateTimeNullableFilter<"ApplicationTermination"> | Date | string | null
+  metadata?: Prisma.JsonNullableFilter<"ApplicationTermination">
+  createdAt?: Prisma.DateTimeFilter<"ApplicationTermination"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ApplicationTermination"> | Date | string
+  application?: Prisma.XOR<Prisma.ApplicationScalarRelationFilter, Prisma.ApplicationWhereInput>
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   initiator?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   reviewer?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }, "id" | "requestNumber" | "idempotencyKey">
 
-export type ContractTerminationOrderByWithAggregationInput = {
+export type ApplicationTerminationOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  contractId?: Prisma.SortOrder
+  applicationId?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   requestNumber?: Prisma.SortOrder
   initiatedBy?: Prisma.SortOrder
@@ -669,8 +669,8 @@ export type ContractTerminationOrderByWithAggregationInput = {
   reviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewNotes?: Prisma.SortOrderInput | Prisma.SortOrder
   rejectionReason?: Prisma.SortOrderInput | Prisma.SortOrder
-  contractSnapshot?: Prisma.SortOrder
-  totalContractAmount?: Prisma.SortOrder
+  applicationSnapshot?: Prisma.SortOrder
+  totalApplicationAmount?: Prisma.SortOrder
   totalPaidToDate?: Prisma.SortOrder
   outstandingBalance?: Prisma.SortOrder
   refundableAmount?: Prisma.SortOrder
@@ -697,64 +697,64 @@ export type ContractTerminationOrderByWithAggregationInput = {
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  _count?: Prisma.ContractTerminationCountOrderByAggregateInput
-  _avg?: Prisma.ContractTerminationAvgOrderByAggregateInput
-  _max?: Prisma.ContractTerminationMaxOrderByAggregateInput
-  _min?: Prisma.ContractTerminationMinOrderByAggregateInput
-  _sum?: Prisma.ContractTerminationSumOrderByAggregateInput
+  _count?: Prisma.ApplicationTerminationCountOrderByAggregateInput
+  _avg?: Prisma.ApplicationTerminationAvgOrderByAggregateInput
+  _max?: Prisma.ApplicationTerminationMaxOrderByAggregateInput
+  _min?: Prisma.ApplicationTerminationMinOrderByAggregateInput
+  _sum?: Prisma.ApplicationTerminationSumOrderByAggregateInput
 }
 
-export type ContractTerminationScalarWhereWithAggregatesInput = {
-  AND?: Prisma.ContractTerminationScalarWhereWithAggregatesInput | Prisma.ContractTerminationScalarWhereWithAggregatesInput[]
-  OR?: Prisma.ContractTerminationScalarWhereWithAggregatesInput[]
-  NOT?: Prisma.ContractTerminationScalarWhereWithAggregatesInput | Prisma.ContractTerminationScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"ContractTermination"> | string
-  contractId?: Prisma.StringWithAggregatesFilter<"ContractTermination"> | string
-  tenantId?: Prisma.StringWithAggregatesFilter<"ContractTermination"> | string
-  requestNumber?: Prisma.StringWithAggregatesFilter<"ContractTermination"> | string
-  initiatedBy?: Prisma.EnumTerminationInitiatorWithAggregatesFilter<"ContractTermination"> | $Enums.TerminationInitiator
-  initiatorId?: Prisma.StringNullableWithAggregatesFilter<"ContractTermination"> | string | null
-  type?: Prisma.EnumTerminationTypeWithAggregatesFilter<"ContractTermination"> | $Enums.TerminationType
-  reason?: Prisma.StringNullableWithAggregatesFilter<"ContractTermination"> | string | null
-  supportingDocs?: Prisma.JsonNullableWithAggregatesFilter<"ContractTermination">
-  status?: Prisma.EnumTerminationStatusWithAggregatesFilter<"ContractTermination"> | $Enums.TerminationStatus
-  requiresApproval?: Prisma.BoolWithAggregatesFilter<"ContractTermination"> | boolean
-  autoApproveEligible?: Prisma.BoolWithAggregatesFilter<"ContractTermination"> | boolean
-  reviewedBy?: Prisma.StringNullableWithAggregatesFilter<"ContractTermination"> | string | null
-  reviewedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ContractTermination"> | Date | string | null
-  reviewNotes?: Prisma.StringNullableWithAggregatesFilter<"ContractTermination"> | string | null
-  rejectionReason?: Prisma.StringNullableWithAggregatesFilter<"ContractTermination"> | string | null
-  contractSnapshot?: Prisma.JsonWithAggregatesFilter<"ContractTermination">
-  totalContractAmount?: Prisma.FloatWithAggregatesFilter<"ContractTermination"> | number
-  totalPaidToDate?: Prisma.FloatWithAggregatesFilter<"ContractTermination"> | number
-  outstandingBalance?: Prisma.FloatWithAggregatesFilter<"ContractTermination"> | number
-  refundableAmount?: Prisma.FloatWithAggregatesFilter<"ContractTermination"> | number
-  penaltyAmount?: Prisma.FloatWithAggregatesFilter<"ContractTermination"> | number
-  forfeitedAmount?: Prisma.FloatWithAggregatesFilter<"ContractTermination"> | number
-  adminFeeAmount?: Prisma.FloatWithAggregatesFilter<"ContractTermination"> | number
-  netRefundAmount?: Prisma.FloatWithAggregatesFilter<"ContractTermination"> | number
-  settlementNotes?: Prisma.StringNullableWithAggregatesFilter<"ContractTermination"> | string | null
-  refundStatus?: Prisma.EnumRefundStatusWithAggregatesFilter<"ContractTermination"> | $Enums.RefundStatus
-  refundReference?: Prisma.StringNullableWithAggregatesFilter<"ContractTermination"> | string | null
-  refundMethod?: Prisma.StringNullableWithAggregatesFilter<"ContractTermination"> | string | null
-  refundAccountDetails?: Prisma.JsonNullableWithAggregatesFilter<"ContractTermination">
-  refundInitiatedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ContractTermination"> | Date | string | null
-  refundCompletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ContractTermination"> | Date | string | null
-  refundFailureReason?: Prisma.StringNullableWithAggregatesFilter<"ContractTermination"> | string | null
-  unitReleasedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ContractTermination"> | Date | string | null
-  unitReservedForId?: Prisma.StringNullableWithAggregatesFilter<"ContractTermination"> | string | null
-  requestedAt?: Prisma.DateTimeWithAggregatesFilter<"ContractTermination"> | Date | string
-  approvedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ContractTermination"> | Date | string | null
-  executedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ContractTermination"> | Date | string | null
-  completedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ContractTermination"> | Date | string | null
-  cancelledAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ContractTermination"> | Date | string | null
-  idempotencyKey?: Prisma.StringNullableWithAggregatesFilter<"ContractTermination"> | string | null
-  metadata?: Prisma.JsonNullableWithAggregatesFilter<"ContractTermination">
-  createdAt?: Prisma.DateTimeWithAggregatesFilter<"ContractTermination"> | Date | string
-  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ContractTermination"> | Date | string
+export type ApplicationTerminationScalarWhereWithAggregatesInput = {
+  AND?: Prisma.ApplicationTerminationScalarWhereWithAggregatesInput | Prisma.ApplicationTerminationScalarWhereWithAggregatesInput[]
+  OR?: Prisma.ApplicationTerminationScalarWhereWithAggregatesInput[]
+  NOT?: Prisma.ApplicationTerminationScalarWhereWithAggregatesInput | Prisma.ApplicationTerminationScalarWhereWithAggregatesInput[]
+  id?: Prisma.StringWithAggregatesFilter<"ApplicationTermination"> | string
+  applicationId?: Prisma.StringWithAggregatesFilter<"ApplicationTermination"> | string
+  tenantId?: Prisma.StringWithAggregatesFilter<"ApplicationTermination"> | string
+  requestNumber?: Prisma.StringWithAggregatesFilter<"ApplicationTermination"> | string
+  initiatedBy?: Prisma.EnumTerminationInitiatorWithAggregatesFilter<"ApplicationTermination"> | $Enums.TerminationInitiator
+  initiatorId?: Prisma.StringNullableWithAggregatesFilter<"ApplicationTermination"> | string | null
+  type?: Prisma.EnumTerminationTypeWithAggregatesFilter<"ApplicationTermination"> | $Enums.TerminationType
+  reason?: Prisma.StringNullableWithAggregatesFilter<"ApplicationTermination"> | string | null
+  supportingDocs?: Prisma.JsonNullableWithAggregatesFilter<"ApplicationTermination">
+  status?: Prisma.EnumTerminationStatusWithAggregatesFilter<"ApplicationTermination"> | $Enums.TerminationStatus
+  requiresApproval?: Prisma.BoolWithAggregatesFilter<"ApplicationTermination"> | boolean
+  autoApproveEligible?: Prisma.BoolWithAggregatesFilter<"ApplicationTermination"> | boolean
+  reviewedBy?: Prisma.StringNullableWithAggregatesFilter<"ApplicationTermination"> | string | null
+  reviewedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ApplicationTermination"> | Date | string | null
+  reviewNotes?: Prisma.StringNullableWithAggregatesFilter<"ApplicationTermination"> | string | null
+  rejectionReason?: Prisma.StringNullableWithAggregatesFilter<"ApplicationTermination"> | string | null
+  applicationSnapshot?: Prisma.JsonWithAggregatesFilter<"ApplicationTermination">
+  totalApplicationAmount?: Prisma.FloatWithAggregatesFilter<"ApplicationTermination"> | number
+  totalPaidToDate?: Prisma.FloatWithAggregatesFilter<"ApplicationTermination"> | number
+  outstandingBalance?: Prisma.FloatWithAggregatesFilter<"ApplicationTermination"> | number
+  refundableAmount?: Prisma.FloatWithAggregatesFilter<"ApplicationTermination"> | number
+  penaltyAmount?: Prisma.FloatWithAggregatesFilter<"ApplicationTermination"> | number
+  forfeitedAmount?: Prisma.FloatWithAggregatesFilter<"ApplicationTermination"> | number
+  adminFeeAmount?: Prisma.FloatWithAggregatesFilter<"ApplicationTermination"> | number
+  netRefundAmount?: Prisma.FloatWithAggregatesFilter<"ApplicationTermination"> | number
+  settlementNotes?: Prisma.StringNullableWithAggregatesFilter<"ApplicationTermination"> | string | null
+  refundStatus?: Prisma.EnumRefundStatusWithAggregatesFilter<"ApplicationTermination"> | $Enums.RefundStatus
+  refundReference?: Prisma.StringNullableWithAggregatesFilter<"ApplicationTermination"> | string | null
+  refundMethod?: Prisma.StringNullableWithAggregatesFilter<"ApplicationTermination"> | string | null
+  refundAccountDetails?: Prisma.JsonNullableWithAggregatesFilter<"ApplicationTermination">
+  refundInitiatedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ApplicationTermination"> | Date | string | null
+  refundCompletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ApplicationTermination"> | Date | string | null
+  refundFailureReason?: Prisma.StringNullableWithAggregatesFilter<"ApplicationTermination"> | string | null
+  unitReleasedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ApplicationTermination"> | Date | string | null
+  unitReservedForId?: Prisma.StringNullableWithAggregatesFilter<"ApplicationTermination"> | string | null
+  requestedAt?: Prisma.DateTimeWithAggregatesFilter<"ApplicationTermination"> | Date | string
+  approvedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ApplicationTermination"> | Date | string | null
+  executedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ApplicationTermination"> | Date | string | null
+  completedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ApplicationTermination"> | Date | string | null
+  cancelledAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ApplicationTermination"> | Date | string | null
+  idempotencyKey?: Prisma.StringNullableWithAggregatesFilter<"ApplicationTermination"> | string | null
+  metadata?: Prisma.JsonNullableWithAggregatesFilter<"ApplicationTermination">
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"ApplicationTermination"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ApplicationTermination"> | Date | string
 }
 
-export type ContractTerminationCreateInput = {
+export type ApplicationTerminationCreateInput = {
   id?: string
   requestNumber: string
   initiatedBy: $Enums.TerminationInitiator
@@ -767,8 +767,8 @@ export type ContractTerminationCreateInput = {
   reviewedAt?: Date | string | null
   reviewNotes?: string | null
   rejectionReason?: string | null
-  contractSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  totalContractAmount: number
+  applicationSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  totalApplicationAmount: number
   totalPaidToDate: number
   outstandingBalance: number
   refundableAmount?: number
@@ -795,15 +795,15 @@ export type ContractTerminationCreateInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  contract: Prisma.ContractCreateNestedOneWithoutTerminationsInput
+  application: Prisma.ApplicationCreateNestedOneWithoutTerminationsInput
   tenant: Prisma.TenantCreateNestedOneWithoutContractTerminationsInput
   initiator?: Prisma.UserCreateNestedOneWithoutInitiatedTerminationsInput
   reviewer?: Prisma.UserCreateNestedOneWithoutReviewedTerminationsInput
 }
 
-export type ContractTerminationUncheckedCreateInput = {
+export type ApplicationTerminationUncheckedCreateInput = {
   id?: string
-  contractId: string
+  applicationId: string
   tenantId: string
   requestNumber: string
   initiatedBy: $Enums.TerminationInitiator
@@ -818,8 +818,8 @@ export type ContractTerminationUncheckedCreateInput = {
   reviewedAt?: Date | string | null
   reviewNotes?: string | null
   rejectionReason?: string | null
-  contractSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  totalContractAmount: number
+  applicationSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  totalApplicationAmount: number
   totalPaidToDate: number
   outstandingBalance: number
   refundableAmount?: number
@@ -848,7 +848,7 @@ export type ContractTerminationUncheckedCreateInput = {
   updatedAt?: Date | string
 }
 
-export type ContractTerminationUpdateInput = {
+export type ApplicationTerminationUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   requestNumber?: Prisma.StringFieldUpdateOperationsInput | string
   initiatedBy?: Prisma.EnumTerminationInitiatorFieldUpdateOperationsInput | $Enums.TerminationInitiator
@@ -861,8 +861,8 @@ export type ContractTerminationUpdateInput = {
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contractSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  totalContractAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  applicationSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  totalApplicationAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   outstandingBalance?: Prisma.FloatFieldUpdateOperationsInput | number
   refundableAmount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -889,15 +889,15 @@ export type ContractTerminationUpdateInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  contract?: Prisma.ContractUpdateOneRequiredWithoutTerminationsNestedInput
+  application?: Prisma.ApplicationUpdateOneRequiredWithoutTerminationsNestedInput
   tenant?: Prisma.TenantUpdateOneRequiredWithoutContractTerminationsNestedInput
   initiator?: Prisma.UserUpdateOneWithoutInitiatedTerminationsNestedInput
   reviewer?: Prisma.UserUpdateOneWithoutReviewedTerminationsNestedInput
 }
 
-export type ContractTerminationUncheckedUpdateInput = {
+export type ApplicationTerminationUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   requestNumber?: Prisma.StringFieldUpdateOperationsInput | string
   initiatedBy?: Prisma.EnumTerminationInitiatorFieldUpdateOperationsInput | $Enums.TerminationInitiator
@@ -912,8 +912,8 @@ export type ContractTerminationUncheckedUpdateInput = {
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contractSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  totalContractAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  applicationSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  totalApplicationAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   outstandingBalance?: Prisma.FloatFieldUpdateOperationsInput | number
   refundableAmount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -942,9 +942,9 @@ export type ContractTerminationUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type ContractTerminationCreateManyInput = {
+export type ApplicationTerminationCreateManyInput = {
   id?: string
-  contractId: string
+  applicationId: string
   tenantId: string
   requestNumber: string
   initiatedBy: $Enums.TerminationInitiator
@@ -959,8 +959,8 @@ export type ContractTerminationCreateManyInput = {
   reviewedAt?: Date | string | null
   reviewNotes?: string | null
   rejectionReason?: string | null
-  contractSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  totalContractAmount: number
+  applicationSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  totalApplicationAmount: number
   totalPaidToDate: number
   outstandingBalance: number
   refundableAmount?: number
@@ -989,7 +989,7 @@ export type ContractTerminationCreateManyInput = {
   updatedAt?: Date | string
 }
 
-export type ContractTerminationUpdateManyMutationInput = {
+export type ApplicationTerminationUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   requestNumber?: Prisma.StringFieldUpdateOperationsInput | string
   initiatedBy?: Prisma.EnumTerminationInitiatorFieldUpdateOperationsInput | $Enums.TerminationInitiator
@@ -1002,8 +1002,8 @@ export type ContractTerminationUpdateManyMutationInput = {
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contractSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  totalContractAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  applicationSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  totalApplicationAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   outstandingBalance?: Prisma.FloatFieldUpdateOperationsInput | number
   refundableAmount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -1032,9 +1032,9 @@ export type ContractTerminationUpdateManyMutationInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type ContractTerminationUncheckedUpdateManyInput = {
+export type ApplicationTerminationUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   requestNumber?: Prisma.StringFieldUpdateOperationsInput | string
   initiatedBy?: Prisma.EnumTerminationInitiatorFieldUpdateOperationsInput | $Enums.TerminationInitiator
@@ -1049,8 +1049,8 @@ export type ContractTerminationUncheckedUpdateManyInput = {
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contractSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  totalContractAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  applicationSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  totalApplicationAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   outstandingBalance?: Prisma.FloatFieldUpdateOperationsInput | number
   refundableAmount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -1079,25 +1079,25 @@ export type ContractTerminationUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type ContractTerminationListRelationFilter = {
-  every?: Prisma.ContractTerminationWhereInput
-  some?: Prisma.ContractTerminationWhereInput
-  none?: Prisma.ContractTerminationWhereInput
+export type ApplicationTerminationListRelationFilter = {
+  every?: Prisma.ApplicationTerminationWhereInput
+  some?: Prisma.ApplicationTerminationWhereInput
+  none?: Prisma.ApplicationTerminationWhereInput
 }
 
-export type ContractTerminationOrderByRelationAggregateInput = {
+export type ApplicationTerminationOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type ContractTerminationOrderByRelevanceInput = {
-  fields: Prisma.ContractTerminationOrderByRelevanceFieldEnum | Prisma.ContractTerminationOrderByRelevanceFieldEnum[]
+export type ApplicationTerminationOrderByRelevanceInput = {
+  fields: Prisma.ApplicationTerminationOrderByRelevanceFieldEnum | Prisma.ApplicationTerminationOrderByRelevanceFieldEnum[]
   sort: Prisma.SortOrder
   search: string
 }
 
-export type ContractTerminationCountOrderByAggregateInput = {
+export type ApplicationTerminationCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  contractId?: Prisma.SortOrder
+  applicationId?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   requestNumber?: Prisma.SortOrder
   initiatedBy?: Prisma.SortOrder
@@ -1112,8 +1112,8 @@ export type ContractTerminationCountOrderByAggregateInput = {
   reviewedAt?: Prisma.SortOrder
   reviewNotes?: Prisma.SortOrder
   rejectionReason?: Prisma.SortOrder
-  contractSnapshot?: Prisma.SortOrder
-  totalContractAmount?: Prisma.SortOrder
+  applicationSnapshot?: Prisma.SortOrder
+  totalApplicationAmount?: Prisma.SortOrder
   totalPaidToDate?: Prisma.SortOrder
   outstandingBalance?: Prisma.SortOrder
   refundableAmount?: Prisma.SortOrder
@@ -1142,8 +1142,8 @@ export type ContractTerminationCountOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
-export type ContractTerminationAvgOrderByAggregateInput = {
-  totalContractAmount?: Prisma.SortOrder
+export type ApplicationTerminationAvgOrderByAggregateInput = {
+  totalApplicationAmount?: Prisma.SortOrder
   totalPaidToDate?: Prisma.SortOrder
   outstandingBalance?: Prisma.SortOrder
   refundableAmount?: Prisma.SortOrder
@@ -1153,9 +1153,9 @@ export type ContractTerminationAvgOrderByAggregateInput = {
   netRefundAmount?: Prisma.SortOrder
 }
 
-export type ContractTerminationMaxOrderByAggregateInput = {
+export type ApplicationTerminationMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  contractId?: Prisma.SortOrder
+  applicationId?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   requestNumber?: Prisma.SortOrder
   initiatedBy?: Prisma.SortOrder
@@ -1169,7 +1169,7 @@ export type ContractTerminationMaxOrderByAggregateInput = {
   reviewedAt?: Prisma.SortOrder
   reviewNotes?: Prisma.SortOrder
   rejectionReason?: Prisma.SortOrder
-  totalContractAmount?: Prisma.SortOrder
+  totalApplicationAmount?: Prisma.SortOrder
   totalPaidToDate?: Prisma.SortOrder
   outstandingBalance?: Prisma.SortOrder
   refundableAmount?: Prisma.SortOrder
@@ -1196,9 +1196,9 @@ export type ContractTerminationMaxOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
-export type ContractTerminationMinOrderByAggregateInput = {
+export type ApplicationTerminationMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  contractId?: Prisma.SortOrder
+  applicationId?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   requestNumber?: Prisma.SortOrder
   initiatedBy?: Prisma.SortOrder
@@ -1212,7 +1212,7 @@ export type ContractTerminationMinOrderByAggregateInput = {
   reviewedAt?: Prisma.SortOrder
   reviewNotes?: Prisma.SortOrder
   rejectionReason?: Prisma.SortOrder
-  totalContractAmount?: Prisma.SortOrder
+  totalApplicationAmount?: Prisma.SortOrder
   totalPaidToDate?: Prisma.SortOrder
   outstandingBalance?: Prisma.SortOrder
   refundableAmount?: Prisma.SortOrder
@@ -1239,8 +1239,8 @@ export type ContractTerminationMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
-export type ContractTerminationSumOrderByAggregateInput = {
-  totalContractAmount?: Prisma.SortOrder
+export type ApplicationTerminationSumOrderByAggregateInput = {
+  totalApplicationAmount?: Prisma.SortOrder
   totalPaidToDate?: Prisma.SortOrder
   outstandingBalance?: Prisma.SortOrder
   refundableAmount?: Prisma.SortOrder
@@ -1250,172 +1250,172 @@ export type ContractTerminationSumOrderByAggregateInput = {
   netRefundAmount?: Prisma.SortOrder
 }
 
-export type ContractTerminationCreateNestedManyWithoutInitiatorInput = {
-  create?: Prisma.XOR<Prisma.ContractTerminationCreateWithoutInitiatorInput, Prisma.ContractTerminationUncheckedCreateWithoutInitiatorInput> | Prisma.ContractTerminationCreateWithoutInitiatorInput[] | Prisma.ContractTerminationUncheckedCreateWithoutInitiatorInput[]
-  connectOrCreate?: Prisma.ContractTerminationCreateOrConnectWithoutInitiatorInput | Prisma.ContractTerminationCreateOrConnectWithoutInitiatorInput[]
-  createMany?: Prisma.ContractTerminationCreateManyInitiatorInputEnvelope
-  connect?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
+export type ApplicationTerminationCreateNestedManyWithoutInitiatorInput = {
+  create?: Prisma.XOR<Prisma.ApplicationTerminationCreateWithoutInitiatorInput, Prisma.ApplicationTerminationUncheckedCreateWithoutInitiatorInput> | Prisma.ApplicationTerminationCreateWithoutInitiatorInput[] | Prisma.ApplicationTerminationUncheckedCreateWithoutInitiatorInput[]
+  connectOrCreate?: Prisma.ApplicationTerminationCreateOrConnectWithoutInitiatorInput | Prisma.ApplicationTerminationCreateOrConnectWithoutInitiatorInput[]
+  createMany?: Prisma.ApplicationTerminationCreateManyInitiatorInputEnvelope
+  connect?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
 }
 
-export type ContractTerminationCreateNestedManyWithoutReviewerInput = {
-  create?: Prisma.XOR<Prisma.ContractTerminationCreateWithoutReviewerInput, Prisma.ContractTerminationUncheckedCreateWithoutReviewerInput> | Prisma.ContractTerminationCreateWithoutReviewerInput[] | Prisma.ContractTerminationUncheckedCreateWithoutReviewerInput[]
-  connectOrCreate?: Prisma.ContractTerminationCreateOrConnectWithoutReviewerInput | Prisma.ContractTerminationCreateOrConnectWithoutReviewerInput[]
-  createMany?: Prisma.ContractTerminationCreateManyReviewerInputEnvelope
-  connect?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
+export type ApplicationTerminationCreateNestedManyWithoutReviewerInput = {
+  create?: Prisma.XOR<Prisma.ApplicationTerminationCreateWithoutReviewerInput, Prisma.ApplicationTerminationUncheckedCreateWithoutReviewerInput> | Prisma.ApplicationTerminationCreateWithoutReviewerInput[] | Prisma.ApplicationTerminationUncheckedCreateWithoutReviewerInput[]
+  connectOrCreate?: Prisma.ApplicationTerminationCreateOrConnectWithoutReviewerInput | Prisma.ApplicationTerminationCreateOrConnectWithoutReviewerInput[]
+  createMany?: Prisma.ApplicationTerminationCreateManyReviewerInputEnvelope
+  connect?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
 }
 
-export type ContractTerminationUncheckedCreateNestedManyWithoutInitiatorInput = {
-  create?: Prisma.XOR<Prisma.ContractTerminationCreateWithoutInitiatorInput, Prisma.ContractTerminationUncheckedCreateWithoutInitiatorInput> | Prisma.ContractTerminationCreateWithoutInitiatorInput[] | Prisma.ContractTerminationUncheckedCreateWithoutInitiatorInput[]
-  connectOrCreate?: Prisma.ContractTerminationCreateOrConnectWithoutInitiatorInput | Prisma.ContractTerminationCreateOrConnectWithoutInitiatorInput[]
-  createMany?: Prisma.ContractTerminationCreateManyInitiatorInputEnvelope
-  connect?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
+export type ApplicationTerminationUncheckedCreateNestedManyWithoutInitiatorInput = {
+  create?: Prisma.XOR<Prisma.ApplicationTerminationCreateWithoutInitiatorInput, Prisma.ApplicationTerminationUncheckedCreateWithoutInitiatorInput> | Prisma.ApplicationTerminationCreateWithoutInitiatorInput[] | Prisma.ApplicationTerminationUncheckedCreateWithoutInitiatorInput[]
+  connectOrCreate?: Prisma.ApplicationTerminationCreateOrConnectWithoutInitiatorInput | Prisma.ApplicationTerminationCreateOrConnectWithoutInitiatorInput[]
+  createMany?: Prisma.ApplicationTerminationCreateManyInitiatorInputEnvelope
+  connect?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
 }
 
-export type ContractTerminationUncheckedCreateNestedManyWithoutReviewerInput = {
-  create?: Prisma.XOR<Prisma.ContractTerminationCreateWithoutReviewerInput, Prisma.ContractTerminationUncheckedCreateWithoutReviewerInput> | Prisma.ContractTerminationCreateWithoutReviewerInput[] | Prisma.ContractTerminationUncheckedCreateWithoutReviewerInput[]
-  connectOrCreate?: Prisma.ContractTerminationCreateOrConnectWithoutReviewerInput | Prisma.ContractTerminationCreateOrConnectWithoutReviewerInput[]
-  createMany?: Prisma.ContractTerminationCreateManyReviewerInputEnvelope
-  connect?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
+export type ApplicationTerminationUncheckedCreateNestedManyWithoutReviewerInput = {
+  create?: Prisma.XOR<Prisma.ApplicationTerminationCreateWithoutReviewerInput, Prisma.ApplicationTerminationUncheckedCreateWithoutReviewerInput> | Prisma.ApplicationTerminationCreateWithoutReviewerInput[] | Prisma.ApplicationTerminationUncheckedCreateWithoutReviewerInput[]
+  connectOrCreate?: Prisma.ApplicationTerminationCreateOrConnectWithoutReviewerInput | Prisma.ApplicationTerminationCreateOrConnectWithoutReviewerInput[]
+  createMany?: Prisma.ApplicationTerminationCreateManyReviewerInputEnvelope
+  connect?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
 }
 
-export type ContractTerminationUpdateManyWithoutInitiatorNestedInput = {
-  create?: Prisma.XOR<Prisma.ContractTerminationCreateWithoutInitiatorInput, Prisma.ContractTerminationUncheckedCreateWithoutInitiatorInput> | Prisma.ContractTerminationCreateWithoutInitiatorInput[] | Prisma.ContractTerminationUncheckedCreateWithoutInitiatorInput[]
-  connectOrCreate?: Prisma.ContractTerminationCreateOrConnectWithoutInitiatorInput | Prisma.ContractTerminationCreateOrConnectWithoutInitiatorInput[]
-  upsert?: Prisma.ContractTerminationUpsertWithWhereUniqueWithoutInitiatorInput | Prisma.ContractTerminationUpsertWithWhereUniqueWithoutInitiatorInput[]
-  createMany?: Prisma.ContractTerminationCreateManyInitiatorInputEnvelope
-  set?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
-  disconnect?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
-  delete?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
-  connect?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
-  update?: Prisma.ContractTerminationUpdateWithWhereUniqueWithoutInitiatorInput | Prisma.ContractTerminationUpdateWithWhereUniqueWithoutInitiatorInput[]
-  updateMany?: Prisma.ContractTerminationUpdateManyWithWhereWithoutInitiatorInput | Prisma.ContractTerminationUpdateManyWithWhereWithoutInitiatorInput[]
-  deleteMany?: Prisma.ContractTerminationScalarWhereInput | Prisma.ContractTerminationScalarWhereInput[]
+export type ApplicationTerminationUpdateManyWithoutInitiatorNestedInput = {
+  create?: Prisma.XOR<Prisma.ApplicationTerminationCreateWithoutInitiatorInput, Prisma.ApplicationTerminationUncheckedCreateWithoutInitiatorInput> | Prisma.ApplicationTerminationCreateWithoutInitiatorInput[] | Prisma.ApplicationTerminationUncheckedCreateWithoutInitiatorInput[]
+  connectOrCreate?: Prisma.ApplicationTerminationCreateOrConnectWithoutInitiatorInput | Prisma.ApplicationTerminationCreateOrConnectWithoutInitiatorInput[]
+  upsert?: Prisma.ApplicationTerminationUpsertWithWhereUniqueWithoutInitiatorInput | Prisma.ApplicationTerminationUpsertWithWhereUniqueWithoutInitiatorInput[]
+  createMany?: Prisma.ApplicationTerminationCreateManyInitiatorInputEnvelope
+  set?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
+  disconnect?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
+  delete?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
+  connect?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
+  update?: Prisma.ApplicationTerminationUpdateWithWhereUniqueWithoutInitiatorInput | Prisma.ApplicationTerminationUpdateWithWhereUniqueWithoutInitiatorInput[]
+  updateMany?: Prisma.ApplicationTerminationUpdateManyWithWhereWithoutInitiatorInput | Prisma.ApplicationTerminationUpdateManyWithWhereWithoutInitiatorInput[]
+  deleteMany?: Prisma.ApplicationTerminationScalarWhereInput | Prisma.ApplicationTerminationScalarWhereInput[]
 }
 
-export type ContractTerminationUpdateManyWithoutReviewerNestedInput = {
-  create?: Prisma.XOR<Prisma.ContractTerminationCreateWithoutReviewerInput, Prisma.ContractTerminationUncheckedCreateWithoutReviewerInput> | Prisma.ContractTerminationCreateWithoutReviewerInput[] | Prisma.ContractTerminationUncheckedCreateWithoutReviewerInput[]
-  connectOrCreate?: Prisma.ContractTerminationCreateOrConnectWithoutReviewerInput | Prisma.ContractTerminationCreateOrConnectWithoutReviewerInput[]
-  upsert?: Prisma.ContractTerminationUpsertWithWhereUniqueWithoutReviewerInput | Prisma.ContractTerminationUpsertWithWhereUniqueWithoutReviewerInput[]
-  createMany?: Prisma.ContractTerminationCreateManyReviewerInputEnvelope
-  set?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
-  disconnect?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
-  delete?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
-  connect?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
-  update?: Prisma.ContractTerminationUpdateWithWhereUniqueWithoutReviewerInput | Prisma.ContractTerminationUpdateWithWhereUniqueWithoutReviewerInput[]
-  updateMany?: Prisma.ContractTerminationUpdateManyWithWhereWithoutReviewerInput | Prisma.ContractTerminationUpdateManyWithWhereWithoutReviewerInput[]
-  deleteMany?: Prisma.ContractTerminationScalarWhereInput | Prisma.ContractTerminationScalarWhereInput[]
+export type ApplicationTerminationUpdateManyWithoutReviewerNestedInput = {
+  create?: Prisma.XOR<Prisma.ApplicationTerminationCreateWithoutReviewerInput, Prisma.ApplicationTerminationUncheckedCreateWithoutReviewerInput> | Prisma.ApplicationTerminationCreateWithoutReviewerInput[] | Prisma.ApplicationTerminationUncheckedCreateWithoutReviewerInput[]
+  connectOrCreate?: Prisma.ApplicationTerminationCreateOrConnectWithoutReviewerInput | Prisma.ApplicationTerminationCreateOrConnectWithoutReviewerInput[]
+  upsert?: Prisma.ApplicationTerminationUpsertWithWhereUniqueWithoutReviewerInput | Prisma.ApplicationTerminationUpsertWithWhereUniqueWithoutReviewerInput[]
+  createMany?: Prisma.ApplicationTerminationCreateManyReviewerInputEnvelope
+  set?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
+  disconnect?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
+  delete?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
+  connect?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
+  update?: Prisma.ApplicationTerminationUpdateWithWhereUniqueWithoutReviewerInput | Prisma.ApplicationTerminationUpdateWithWhereUniqueWithoutReviewerInput[]
+  updateMany?: Prisma.ApplicationTerminationUpdateManyWithWhereWithoutReviewerInput | Prisma.ApplicationTerminationUpdateManyWithWhereWithoutReviewerInput[]
+  deleteMany?: Prisma.ApplicationTerminationScalarWhereInput | Prisma.ApplicationTerminationScalarWhereInput[]
 }
 
-export type ContractTerminationUncheckedUpdateManyWithoutInitiatorNestedInput = {
-  create?: Prisma.XOR<Prisma.ContractTerminationCreateWithoutInitiatorInput, Prisma.ContractTerminationUncheckedCreateWithoutInitiatorInput> | Prisma.ContractTerminationCreateWithoutInitiatorInput[] | Prisma.ContractTerminationUncheckedCreateWithoutInitiatorInput[]
-  connectOrCreate?: Prisma.ContractTerminationCreateOrConnectWithoutInitiatorInput | Prisma.ContractTerminationCreateOrConnectWithoutInitiatorInput[]
-  upsert?: Prisma.ContractTerminationUpsertWithWhereUniqueWithoutInitiatorInput | Prisma.ContractTerminationUpsertWithWhereUniqueWithoutInitiatorInput[]
-  createMany?: Prisma.ContractTerminationCreateManyInitiatorInputEnvelope
-  set?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
-  disconnect?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
-  delete?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
-  connect?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
-  update?: Prisma.ContractTerminationUpdateWithWhereUniqueWithoutInitiatorInput | Prisma.ContractTerminationUpdateWithWhereUniqueWithoutInitiatorInput[]
-  updateMany?: Prisma.ContractTerminationUpdateManyWithWhereWithoutInitiatorInput | Prisma.ContractTerminationUpdateManyWithWhereWithoutInitiatorInput[]
-  deleteMany?: Prisma.ContractTerminationScalarWhereInput | Prisma.ContractTerminationScalarWhereInput[]
+export type ApplicationTerminationUncheckedUpdateManyWithoutInitiatorNestedInput = {
+  create?: Prisma.XOR<Prisma.ApplicationTerminationCreateWithoutInitiatorInput, Prisma.ApplicationTerminationUncheckedCreateWithoutInitiatorInput> | Prisma.ApplicationTerminationCreateWithoutInitiatorInput[] | Prisma.ApplicationTerminationUncheckedCreateWithoutInitiatorInput[]
+  connectOrCreate?: Prisma.ApplicationTerminationCreateOrConnectWithoutInitiatorInput | Prisma.ApplicationTerminationCreateOrConnectWithoutInitiatorInput[]
+  upsert?: Prisma.ApplicationTerminationUpsertWithWhereUniqueWithoutInitiatorInput | Prisma.ApplicationTerminationUpsertWithWhereUniqueWithoutInitiatorInput[]
+  createMany?: Prisma.ApplicationTerminationCreateManyInitiatorInputEnvelope
+  set?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
+  disconnect?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
+  delete?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
+  connect?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
+  update?: Prisma.ApplicationTerminationUpdateWithWhereUniqueWithoutInitiatorInput | Prisma.ApplicationTerminationUpdateWithWhereUniqueWithoutInitiatorInput[]
+  updateMany?: Prisma.ApplicationTerminationUpdateManyWithWhereWithoutInitiatorInput | Prisma.ApplicationTerminationUpdateManyWithWhereWithoutInitiatorInput[]
+  deleteMany?: Prisma.ApplicationTerminationScalarWhereInput | Prisma.ApplicationTerminationScalarWhereInput[]
 }
 
-export type ContractTerminationUncheckedUpdateManyWithoutReviewerNestedInput = {
-  create?: Prisma.XOR<Prisma.ContractTerminationCreateWithoutReviewerInput, Prisma.ContractTerminationUncheckedCreateWithoutReviewerInput> | Prisma.ContractTerminationCreateWithoutReviewerInput[] | Prisma.ContractTerminationUncheckedCreateWithoutReviewerInput[]
-  connectOrCreate?: Prisma.ContractTerminationCreateOrConnectWithoutReviewerInput | Prisma.ContractTerminationCreateOrConnectWithoutReviewerInput[]
-  upsert?: Prisma.ContractTerminationUpsertWithWhereUniqueWithoutReviewerInput | Prisma.ContractTerminationUpsertWithWhereUniqueWithoutReviewerInput[]
-  createMany?: Prisma.ContractTerminationCreateManyReviewerInputEnvelope
-  set?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
-  disconnect?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
-  delete?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
-  connect?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
-  update?: Prisma.ContractTerminationUpdateWithWhereUniqueWithoutReviewerInput | Prisma.ContractTerminationUpdateWithWhereUniqueWithoutReviewerInput[]
-  updateMany?: Prisma.ContractTerminationUpdateManyWithWhereWithoutReviewerInput | Prisma.ContractTerminationUpdateManyWithWhereWithoutReviewerInput[]
-  deleteMany?: Prisma.ContractTerminationScalarWhereInput | Prisma.ContractTerminationScalarWhereInput[]
+export type ApplicationTerminationUncheckedUpdateManyWithoutReviewerNestedInput = {
+  create?: Prisma.XOR<Prisma.ApplicationTerminationCreateWithoutReviewerInput, Prisma.ApplicationTerminationUncheckedCreateWithoutReviewerInput> | Prisma.ApplicationTerminationCreateWithoutReviewerInput[] | Prisma.ApplicationTerminationUncheckedCreateWithoutReviewerInput[]
+  connectOrCreate?: Prisma.ApplicationTerminationCreateOrConnectWithoutReviewerInput | Prisma.ApplicationTerminationCreateOrConnectWithoutReviewerInput[]
+  upsert?: Prisma.ApplicationTerminationUpsertWithWhereUniqueWithoutReviewerInput | Prisma.ApplicationTerminationUpsertWithWhereUniqueWithoutReviewerInput[]
+  createMany?: Prisma.ApplicationTerminationCreateManyReviewerInputEnvelope
+  set?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
+  disconnect?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
+  delete?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
+  connect?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
+  update?: Prisma.ApplicationTerminationUpdateWithWhereUniqueWithoutReviewerInput | Prisma.ApplicationTerminationUpdateWithWhereUniqueWithoutReviewerInput[]
+  updateMany?: Prisma.ApplicationTerminationUpdateManyWithWhereWithoutReviewerInput | Prisma.ApplicationTerminationUpdateManyWithWhereWithoutReviewerInput[]
+  deleteMany?: Prisma.ApplicationTerminationScalarWhereInput | Prisma.ApplicationTerminationScalarWhereInput[]
 }
 
-export type ContractTerminationCreateNestedManyWithoutTenantInput = {
-  create?: Prisma.XOR<Prisma.ContractTerminationCreateWithoutTenantInput, Prisma.ContractTerminationUncheckedCreateWithoutTenantInput> | Prisma.ContractTerminationCreateWithoutTenantInput[] | Prisma.ContractTerminationUncheckedCreateWithoutTenantInput[]
-  connectOrCreate?: Prisma.ContractTerminationCreateOrConnectWithoutTenantInput | Prisma.ContractTerminationCreateOrConnectWithoutTenantInput[]
-  createMany?: Prisma.ContractTerminationCreateManyTenantInputEnvelope
-  connect?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
+export type ApplicationTerminationCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.ApplicationTerminationCreateWithoutTenantInput, Prisma.ApplicationTerminationUncheckedCreateWithoutTenantInput> | Prisma.ApplicationTerminationCreateWithoutTenantInput[] | Prisma.ApplicationTerminationUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.ApplicationTerminationCreateOrConnectWithoutTenantInput | Prisma.ApplicationTerminationCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.ApplicationTerminationCreateManyTenantInputEnvelope
+  connect?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
 }
 
-export type ContractTerminationUncheckedCreateNestedManyWithoutTenantInput = {
-  create?: Prisma.XOR<Prisma.ContractTerminationCreateWithoutTenantInput, Prisma.ContractTerminationUncheckedCreateWithoutTenantInput> | Prisma.ContractTerminationCreateWithoutTenantInput[] | Prisma.ContractTerminationUncheckedCreateWithoutTenantInput[]
-  connectOrCreate?: Prisma.ContractTerminationCreateOrConnectWithoutTenantInput | Prisma.ContractTerminationCreateOrConnectWithoutTenantInput[]
-  createMany?: Prisma.ContractTerminationCreateManyTenantInputEnvelope
-  connect?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
+export type ApplicationTerminationUncheckedCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.ApplicationTerminationCreateWithoutTenantInput, Prisma.ApplicationTerminationUncheckedCreateWithoutTenantInput> | Prisma.ApplicationTerminationCreateWithoutTenantInput[] | Prisma.ApplicationTerminationUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.ApplicationTerminationCreateOrConnectWithoutTenantInput | Prisma.ApplicationTerminationCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.ApplicationTerminationCreateManyTenantInputEnvelope
+  connect?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
 }
 
-export type ContractTerminationUpdateManyWithoutTenantNestedInput = {
-  create?: Prisma.XOR<Prisma.ContractTerminationCreateWithoutTenantInput, Prisma.ContractTerminationUncheckedCreateWithoutTenantInput> | Prisma.ContractTerminationCreateWithoutTenantInput[] | Prisma.ContractTerminationUncheckedCreateWithoutTenantInput[]
-  connectOrCreate?: Prisma.ContractTerminationCreateOrConnectWithoutTenantInput | Prisma.ContractTerminationCreateOrConnectWithoutTenantInput[]
-  upsert?: Prisma.ContractTerminationUpsertWithWhereUniqueWithoutTenantInput | Prisma.ContractTerminationUpsertWithWhereUniqueWithoutTenantInput[]
-  createMany?: Prisma.ContractTerminationCreateManyTenantInputEnvelope
-  set?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
-  disconnect?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
-  delete?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
-  connect?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
-  update?: Prisma.ContractTerminationUpdateWithWhereUniqueWithoutTenantInput | Prisma.ContractTerminationUpdateWithWhereUniqueWithoutTenantInput[]
-  updateMany?: Prisma.ContractTerminationUpdateManyWithWhereWithoutTenantInput | Prisma.ContractTerminationUpdateManyWithWhereWithoutTenantInput[]
-  deleteMany?: Prisma.ContractTerminationScalarWhereInput | Prisma.ContractTerminationScalarWhereInput[]
+export type ApplicationTerminationUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.ApplicationTerminationCreateWithoutTenantInput, Prisma.ApplicationTerminationUncheckedCreateWithoutTenantInput> | Prisma.ApplicationTerminationCreateWithoutTenantInput[] | Prisma.ApplicationTerminationUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.ApplicationTerminationCreateOrConnectWithoutTenantInput | Prisma.ApplicationTerminationCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.ApplicationTerminationUpsertWithWhereUniqueWithoutTenantInput | Prisma.ApplicationTerminationUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.ApplicationTerminationCreateManyTenantInputEnvelope
+  set?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
+  disconnect?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
+  delete?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
+  connect?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
+  update?: Prisma.ApplicationTerminationUpdateWithWhereUniqueWithoutTenantInput | Prisma.ApplicationTerminationUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.ApplicationTerminationUpdateManyWithWhereWithoutTenantInput | Prisma.ApplicationTerminationUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.ApplicationTerminationScalarWhereInput | Prisma.ApplicationTerminationScalarWhereInput[]
 }
 
-export type ContractTerminationUncheckedUpdateManyWithoutTenantNestedInput = {
-  create?: Prisma.XOR<Prisma.ContractTerminationCreateWithoutTenantInput, Prisma.ContractTerminationUncheckedCreateWithoutTenantInput> | Prisma.ContractTerminationCreateWithoutTenantInput[] | Prisma.ContractTerminationUncheckedCreateWithoutTenantInput[]
-  connectOrCreate?: Prisma.ContractTerminationCreateOrConnectWithoutTenantInput | Prisma.ContractTerminationCreateOrConnectWithoutTenantInput[]
-  upsert?: Prisma.ContractTerminationUpsertWithWhereUniqueWithoutTenantInput | Prisma.ContractTerminationUpsertWithWhereUniqueWithoutTenantInput[]
-  createMany?: Prisma.ContractTerminationCreateManyTenantInputEnvelope
-  set?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
-  disconnect?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
-  delete?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
-  connect?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
-  update?: Prisma.ContractTerminationUpdateWithWhereUniqueWithoutTenantInput | Prisma.ContractTerminationUpdateWithWhereUniqueWithoutTenantInput[]
-  updateMany?: Prisma.ContractTerminationUpdateManyWithWhereWithoutTenantInput | Prisma.ContractTerminationUpdateManyWithWhereWithoutTenantInput[]
-  deleteMany?: Prisma.ContractTerminationScalarWhereInput | Prisma.ContractTerminationScalarWhereInput[]
+export type ApplicationTerminationUncheckedUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.ApplicationTerminationCreateWithoutTenantInput, Prisma.ApplicationTerminationUncheckedCreateWithoutTenantInput> | Prisma.ApplicationTerminationCreateWithoutTenantInput[] | Prisma.ApplicationTerminationUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.ApplicationTerminationCreateOrConnectWithoutTenantInput | Prisma.ApplicationTerminationCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.ApplicationTerminationUpsertWithWhereUniqueWithoutTenantInput | Prisma.ApplicationTerminationUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.ApplicationTerminationCreateManyTenantInputEnvelope
+  set?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
+  disconnect?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
+  delete?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
+  connect?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
+  update?: Prisma.ApplicationTerminationUpdateWithWhereUniqueWithoutTenantInput | Prisma.ApplicationTerminationUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.ApplicationTerminationUpdateManyWithWhereWithoutTenantInput | Prisma.ApplicationTerminationUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.ApplicationTerminationScalarWhereInput | Prisma.ApplicationTerminationScalarWhereInput[]
 }
 
-export type ContractTerminationCreateNestedManyWithoutContractInput = {
-  create?: Prisma.XOR<Prisma.ContractTerminationCreateWithoutContractInput, Prisma.ContractTerminationUncheckedCreateWithoutContractInput> | Prisma.ContractTerminationCreateWithoutContractInput[] | Prisma.ContractTerminationUncheckedCreateWithoutContractInput[]
-  connectOrCreate?: Prisma.ContractTerminationCreateOrConnectWithoutContractInput | Prisma.ContractTerminationCreateOrConnectWithoutContractInput[]
-  createMany?: Prisma.ContractTerminationCreateManyContractInputEnvelope
-  connect?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
+export type ApplicationTerminationCreateNestedManyWithoutApplicationInput = {
+  create?: Prisma.XOR<Prisma.ApplicationTerminationCreateWithoutApplicationInput, Prisma.ApplicationTerminationUncheckedCreateWithoutApplicationInput> | Prisma.ApplicationTerminationCreateWithoutApplicationInput[] | Prisma.ApplicationTerminationUncheckedCreateWithoutApplicationInput[]
+  connectOrCreate?: Prisma.ApplicationTerminationCreateOrConnectWithoutApplicationInput | Prisma.ApplicationTerminationCreateOrConnectWithoutApplicationInput[]
+  createMany?: Prisma.ApplicationTerminationCreateManyApplicationInputEnvelope
+  connect?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
 }
 
-export type ContractTerminationUncheckedCreateNestedManyWithoutContractInput = {
-  create?: Prisma.XOR<Prisma.ContractTerminationCreateWithoutContractInput, Prisma.ContractTerminationUncheckedCreateWithoutContractInput> | Prisma.ContractTerminationCreateWithoutContractInput[] | Prisma.ContractTerminationUncheckedCreateWithoutContractInput[]
-  connectOrCreate?: Prisma.ContractTerminationCreateOrConnectWithoutContractInput | Prisma.ContractTerminationCreateOrConnectWithoutContractInput[]
-  createMany?: Prisma.ContractTerminationCreateManyContractInputEnvelope
-  connect?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
+export type ApplicationTerminationUncheckedCreateNestedManyWithoutApplicationInput = {
+  create?: Prisma.XOR<Prisma.ApplicationTerminationCreateWithoutApplicationInput, Prisma.ApplicationTerminationUncheckedCreateWithoutApplicationInput> | Prisma.ApplicationTerminationCreateWithoutApplicationInput[] | Prisma.ApplicationTerminationUncheckedCreateWithoutApplicationInput[]
+  connectOrCreate?: Prisma.ApplicationTerminationCreateOrConnectWithoutApplicationInput | Prisma.ApplicationTerminationCreateOrConnectWithoutApplicationInput[]
+  createMany?: Prisma.ApplicationTerminationCreateManyApplicationInputEnvelope
+  connect?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
 }
 
-export type ContractTerminationUpdateManyWithoutContractNestedInput = {
-  create?: Prisma.XOR<Prisma.ContractTerminationCreateWithoutContractInput, Prisma.ContractTerminationUncheckedCreateWithoutContractInput> | Prisma.ContractTerminationCreateWithoutContractInput[] | Prisma.ContractTerminationUncheckedCreateWithoutContractInput[]
-  connectOrCreate?: Prisma.ContractTerminationCreateOrConnectWithoutContractInput | Prisma.ContractTerminationCreateOrConnectWithoutContractInput[]
-  upsert?: Prisma.ContractTerminationUpsertWithWhereUniqueWithoutContractInput | Prisma.ContractTerminationUpsertWithWhereUniqueWithoutContractInput[]
-  createMany?: Prisma.ContractTerminationCreateManyContractInputEnvelope
-  set?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
-  disconnect?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
-  delete?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
-  connect?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
-  update?: Prisma.ContractTerminationUpdateWithWhereUniqueWithoutContractInput | Prisma.ContractTerminationUpdateWithWhereUniqueWithoutContractInput[]
-  updateMany?: Prisma.ContractTerminationUpdateManyWithWhereWithoutContractInput | Prisma.ContractTerminationUpdateManyWithWhereWithoutContractInput[]
-  deleteMany?: Prisma.ContractTerminationScalarWhereInput | Prisma.ContractTerminationScalarWhereInput[]
+export type ApplicationTerminationUpdateManyWithoutApplicationNestedInput = {
+  create?: Prisma.XOR<Prisma.ApplicationTerminationCreateWithoutApplicationInput, Prisma.ApplicationTerminationUncheckedCreateWithoutApplicationInput> | Prisma.ApplicationTerminationCreateWithoutApplicationInput[] | Prisma.ApplicationTerminationUncheckedCreateWithoutApplicationInput[]
+  connectOrCreate?: Prisma.ApplicationTerminationCreateOrConnectWithoutApplicationInput | Prisma.ApplicationTerminationCreateOrConnectWithoutApplicationInput[]
+  upsert?: Prisma.ApplicationTerminationUpsertWithWhereUniqueWithoutApplicationInput | Prisma.ApplicationTerminationUpsertWithWhereUniqueWithoutApplicationInput[]
+  createMany?: Prisma.ApplicationTerminationCreateManyApplicationInputEnvelope
+  set?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
+  disconnect?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
+  delete?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
+  connect?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
+  update?: Prisma.ApplicationTerminationUpdateWithWhereUniqueWithoutApplicationInput | Prisma.ApplicationTerminationUpdateWithWhereUniqueWithoutApplicationInput[]
+  updateMany?: Prisma.ApplicationTerminationUpdateManyWithWhereWithoutApplicationInput | Prisma.ApplicationTerminationUpdateManyWithWhereWithoutApplicationInput[]
+  deleteMany?: Prisma.ApplicationTerminationScalarWhereInput | Prisma.ApplicationTerminationScalarWhereInput[]
 }
 
-export type ContractTerminationUncheckedUpdateManyWithoutContractNestedInput = {
-  create?: Prisma.XOR<Prisma.ContractTerminationCreateWithoutContractInput, Prisma.ContractTerminationUncheckedCreateWithoutContractInput> | Prisma.ContractTerminationCreateWithoutContractInput[] | Prisma.ContractTerminationUncheckedCreateWithoutContractInput[]
-  connectOrCreate?: Prisma.ContractTerminationCreateOrConnectWithoutContractInput | Prisma.ContractTerminationCreateOrConnectWithoutContractInput[]
-  upsert?: Prisma.ContractTerminationUpsertWithWhereUniqueWithoutContractInput | Prisma.ContractTerminationUpsertWithWhereUniqueWithoutContractInput[]
-  createMany?: Prisma.ContractTerminationCreateManyContractInputEnvelope
-  set?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
-  disconnect?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
-  delete?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
-  connect?: Prisma.ContractTerminationWhereUniqueInput | Prisma.ContractTerminationWhereUniqueInput[]
-  update?: Prisma.ContractTerminationUpdateWithWhereUniqueWithoutContractInput | Prisma.ContractTerminationUpdateWithWhereUniqueWithoutContractInput[]
-  updateMany?: Prisma.ContractTerminationUpdateManyWithWhereWithoutContractInput | Prisma.ContractTerminationUpdateManyWithWhereWithoutContractInput[]
-  deleteMany?: Prisma.ContractTerminationScalarWhereInput | Prisma.ContractTerminationScalarWhereInput[]
+export type ApplicationTerminationUncheckedUpdateManyWithoutApplicationNestedInput = {
+  create?: Prisma.XOR<Prisma.ApplicationTerminationCreateWithoutApplicationInput, Prisma.ApplicationTerminationUncheckedCreateWithoutApplicationInput> | Prisma.ApplicationTerminationCreateWithoutApplicationInput[] | Prisma.ApplicationTerminationUncheckedCreateWithoutApplicationInput[]
+  connectOrCreate?: Prisma.ApplicationTerminationCreateOrConnectWithoutApplicationInput | Prisma.ApplicationTerminationCreateOrConnectWithoutApplicationInput[]
+  upsert?: Prisma.ApplicationTerminationUpsertWithWhereUniqueWithoutApplicationInput | Prisma.ApplicationTerminationUpsertWithWhereUniqueWithoutApplicationInput[]
+  createMany?: Prisma.ApplicationTerminationCreateManyApplicationInputEnvelope
+  set?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
+  disconnect?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
+  delete?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
+  connect?: Prisma.ApplicationTerminationWhereUniqueInput | Prisma.ApplicationTerminationWhereUniqueInput[]
+  update?: Prisma.ApplicationTerminationUpdateWithWhereUniqueWithoutApplicationInput | Prisma.ApplicationTerminationUpdateWithWhereUniqueWithoutApplicationInput[]
+  updateMany?: Prisma.ApplicationTerminationUpdateManyWithWhereWithoutApplicationInput | Prisma.ApplicationTerminationUpdateManyWithWhereWithoutApplicationInput[]
+  deleteMany?: Prisma.ApplicationTerminationScalarWhereInput | Prisma.ApplicationTerminationScalarWhereInput[]
 }
 
 export type EnumTerminationInitiatorFieldUpdateOperationsInput = {
@@ -1430,7 +1430,7 @@ export type EnumTerminationStatusFieldUpdateOperationsInput = {
   set?: $Enums.TerminationStatus
 }
 
-export type ContractTerminationCreateWithoutInitiatorInput = {
+export type ApplicationTerminationCreateWithoutInitiatorInput = {
   id?: string
   requestNumber: string
   initiatedBy: $Enums.TerminationInitiator
@@ -1443,8 +1443,8 @@ export type ContractTerminationCreateWithoutInitiatorInput = {
   reviewedAt?: Date | string | null
   reviewNotes?: string | null
   rejectionReason?: string | null
-  contractSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  totalContractAmount: number
+  applicationSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  totalApplicationAmount: number
   totalPaidToDate: number
   outstandingBalance: number
   refundableAmount?: number
@@ -1471,14 +1471,14 @@ export type ContractTerminationCreateWithoutInitiatorInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  contract: Prisma.ContractCreateNestedOneWithoutTerminationsInput
+  application: Prisma.ApplicationCreateNestedOneWithoutTerminationsInput
   tenant: Prisma.TenantCreateNestedOneWithoutContractTerminationsInput
   reviewer?: Prisma.UserCreateNestedOneWithoutReviewedTerminationsInput
 }
 
-export type ContractTerminationUncheckedCreateWithoutInitiatorInput = {
+export type ApplicationTerminationUncheckedCreateWithoutInitiatorInput = {
   id?: string
-  contractId: string
+  applicationId: string
   tenantId: string
   requestNumber: string
   initiatedBy: $Enums.TerminationInitiator
@@ -1492,8 +1492,8 @@ export type ContractTerminationUncheckedCreateWithoutInitiatorInput = {
   reviewedAt?: Date | string | null
   reviewNotes?: string | null
   rejectionReason?: string | null
-  contractSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  totalContractAmount: number
+  applicationSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  totalApplicationAmount: number
   totalPaidToDate: number
   outstandingBalance: number
   refundableAmount?: number
@@ -1522,17 +1522,17 @@ export type ContractTerminationUncheckedCreateWithoutInitiatorInput = {
   updatedAt?: Date | string
 }
 
-export type ContractTerminationCreateOrConnectWithoutInitiatorInput = {
-  where: Prisma.ContractTerminationWhereUniqueInput
-  create: Prisma.XOR<Prisma.ContractTerminationCreateWithoutInitiatorInput, Prisma.ContractTerminationUncheckedCreateWithoutInitiatorInput>
+export type ApplicationTerminationCreateOrConnectWithoutInitiatorInput = {
+  where: Prisma.ApplicationTerminationWhereUniqueInput
+  create: Prisma.XOR<Prisma.ApplicationTerminationCreateWithoutInitiatorInput, Prisma.ApplicationTerminationUncheckedCreateWithoutInitiatorInput>
 }
 
-export type ContractTerminationCreateManyInitiatorInputEnvelope = {
-  data: Prisma.ContractTerminationCreateManyInitiatorInput | Prisma.ContractTerminationCreateManyInitiatorInput[]
+export type ApplicationTerminationCreateManyInitiatorInputEnvelope = {
+  data: Prisma.ApplicationTerminationCreateManyInitiatorInput | Prisma.ApplicationTerminationCreateManyInitiatorInput[]
   skipDuplicates?: boolean
 }
 
-export type ContractTerminationCreateWithoutReviewerInput = {
+export type ApplicationTerminationCreateWithoutReviewerInput = {
   id?: string
   requestNumber: string
   initiatedBy: $Enums.TerminationInitiator
@@ -1545,8 +1545,8 @@ export type ContractTerminationCreateWithoutReviewerInput = {
   reviewedAt?: Date | string | null
   reviewNotes?: string | null
   rejectionReason?: string | null
-  contractSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  totalContractAmount: number
+  applicationSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  totalApplicationAmount: number
   totalPaidToDate: number
   outstandingBalance: number
   refundableAmount?: number
@@ -1573,14 +1573,14 @@ export type ContractTerminationCreateWithoutReviewerInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  contract: Prisma.ContractCreateNestedOneWithoutTerminationsInput
+  application: Prisma.ApplicationCreateNestedOneWithoutTerminationsInput
   tenant: Prisma.TenantCreateNestedOneWithoutContractTerminationsInput
   initiator?: Prisma.UserCreateNestedOneWithoutInitiatedTerminationsInput
 }
 
-export type ContractTerminationUncheckedCreateWithoutReviewerInput = {
+export type ApplicationTerminationUncheckedCreateWithoutReviewerInput = {
   id?: string
-  contractId: string
+  applicationId: string
   tenantId: string
   requestNumber: string
   initiatedBy: $Enums.TerminationInitiator
@@ -1594,8 +1594,8 @@ export type ContractTerminationUncheckedCreateWithoutReviewerInput = {
   reviewedAt?: Date | string | null
   reviewNotes?: string | null
   rejectionReason?: string | null
-  contractSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  totalContractAmount: number
+  applicationSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  totalApplicationAmount: number
   totalPaidToDate: number
   outstandingBalance: number
   refundableAmount?: number
@@ -1624,99 +1624,99 @@ export type ContractTerminationUncheckedCreateWithoutReviewerInput = {
   updatedAt?: Date | string
 }
 
-export type ContractTerminationCreateOrConnectWithoutReviewerInput = {
-  where: Prisma.ContractTerminationWhereUniqueInput
-  create: Prisma.XOR<Prisma.ContractTerminationCreateWithoutReviewerInput, Prisma.ContractTerminationUncheckedCreateWithoutReviewerInput>
+export type ApplicationTerminationCreateOrConnectWithoutReviewerInput = {
+  where: Prisma.ApplicationTerminationWhereUniqueInput
+  create: Prisma.XOR<Prisma.ApplicationTerminationCreateWithoutReviewerInput, Prisma.ApplicationTerminationUncheckedCreateWithoutReviewerInput>
 }
 
-export type ContractTerminationCreateManyReviewerInputEnvelope = {
-  data: Prisma.ContractTerminationCreateManyReviewerInput | Prisma.ContractTerminationCreateManyReviewerInput[]
+export type ApplicationTerminationCreateManyReviewerInputEnvelope = {
+  data: Prisma.ApplicationTerminationCreateManyReviewerInput | Prisma.ApplicationTerminationCreateManyReviewerInput[]
   skipDuplicates?: boolean
 }
 
-export type ContractTerminationUpsertWithWhereUniqueWithoutInitiatorInput = {
-  where: Prisma.ContractTerminationWhereUniqueInput
-  update: Prisma.XOR<Prisma.ContractTerminationUpdateWithoutInitiatorInput, Prisma.ContractTerminationUncheckedUpdateWithoutInitiatorInput>
-  create: Prisma.XOR<Prisma.ContractTerminationCreateWithoutInitiatorInput, Prisma.ContractTerminationUncheckedCreateWithoutInitiatorInput>
+export type ApplicationTerminationUpsertWithWhereUniqueWithoutInitiatorInput = {
+  where: Prisma.ApplicationTerminationWhereUniqueInput
+  update: Prisma.XOR<Prisma.ApplicationTerminationUpdateWithoutInitiatorInput, Prisma.ApplicationTerminationUncheckedUpdateWithoutInitiatorInput>
+  create: Prisma.XOR<Prisma.ApplicationTerminationCreateWithoutInitiatorInput, Prisma.ApplicationTerminationUncheckedCreateWithoutInitiatorInput>
 }
 
-export type ContractTerminationUpdateWithWhereUniqueWithoutInitiatorInput = {
-  where: Prisma.ContractTerminationWhereUniqueInput
-  data: Prisma.XOR<Prisma.ContractTerminationUpdateWithoutInitiatorInput, Prisma.ContractTerminationUncheckedUpdateWithoutInitiatorInput>
+export type ApplicationTerminationUpdateWithWhereUniqueWithoutInitiatorInput = {
+  where: Prisma.ApplicationTerminationWhereUniqueInput
+  data: Prisma.XOR<Prisma.ApplicationTerminationUpdateWithoutInitiatorInput, Prisma.ApplicationTerminationUncheckedUpdateWithoutInitiatorInput>
 }
 
-export type ContractTerminationUpdateManyWithWhereWithoutInitiatorInput = {
-  where: Prisma.ContractTerminationScalarWhereInput
-  data: Prisma.XOR<Prisma.ContractTerminationUpdateManyMutationInput, Prisma.ContractTerminationUncheckedUpdateManyWithoutInitiatorInput>
+export type ApplicationTerminationUpdateManyWithWhereWithoutInitiatorInput = {
+  where: Prisma.ApplicationTerminationScalarWhereInput
+  data: Prisma.XOR<Prisma.ApplicationTerminationUpdateManyMutationInput, Prisma.ApplicationTerminationUncheckedUpdateManyWithoutInitiatorInput>
 }
 
-export type ContractTerminationScalarWhereInput = {
-  AND?: Prisma.ContractTerminationScalarWhereInput | Prisma.ContractTerminationScalarWhereInput[]
-  OR?: Prisma.ContractTerminationScalarWhereInput[]
-  NOT?: Prisma.ContractTerminationScalarWhereInput | Prisma.ContractTerminationScalarWhereInput[]
-  id?: Prisma.StringFilter<"ContractTermination"> | string
-  contractId?: Prisma.StringFilter<"ContractTermination"> | string
-  tenantId?: Prisma.StringFilter<"ContractTermination"> | string
-  requestNumber?: Prisma.StringFilter<"ContractTermination"> | string
-  initiatedBy?: Prisma.EnumTerminationInitiatorFilter<"ContractTermination"> | $Enums.TerminationInitiator
-  initiatorId?: Prisma.StringNullableFilter<"ContractTermination"> | string | null
-  type?: Prisma.EnumTerminationTypeFilter<"ContractTermination"> | $Enums.TerminationType
-  reason?: Prisma.StringNullableFilter<"ContractTermination"> | string | null
-  supportingDocs?: Prisma.JsonNullableFilter<"ContractTermination">
-  status?: Prisma.EnumTerminationStatusFilter<"ContractTermination"> | $Enums.TerminationStatus
-  requiresApproval?: Prisma.BoolFilter<"ContractTermination"> | boolean
-  autoApproveEligible?: Prisma.BoolFilter<"ContractTermination"> | boolean
-  reviewedBy?: Prisma.StringNullableFilter<"ContractTermination"> | string | null
-  reviewedAt?: Prisma.DateTimeNullableFilter<"ContractTermination"> | Date | string | null
-  reviewNotes?: Prisma.StringNullableFilter<"ContractTermination"> | string | null
-  rejectionReason?: Prisma.StringNullableFilter<"ContractTermination"> | string | null
-  contractSnapshot?: Prisma.JsonFilter<"ContractTermination">
-  totalContractAmount?: Prisma.FloatFilter<"ContractTermination"> | number
-  totalPaidToDate?: Prisma.FloatFilter<"ContractTermination"> | number
-  outstandingBalance?: Prisma.FloatFilter<"ContractTermination"> | number
-  refundableAmount?: Prisma.FloatFilter<"ContractTermination"> | number
-  penaltyAmount?: Prisma.FloatFilter<"ContractTermination"> | number
-  forfeitedAmount?: Prisma.FloatFilter<"ContractTermination"> | number
-  adminFeeAmount?: Prisma.FloatFilter<"ContractTermination"> | number
-  netRefundAmount?: Prisma.FloatFilter<"ContractTermination"> | number
-  settlementNotes?: Prisma.StringNullableFilter<"ContractTermination"> | string | null
-  refundStatus?: Prisma.EnumRefundStatusFilter<"ContractTermination"> | $Enums.RefundStatus
-  refundReference?: Prisma.StringNullableFilter<"ContractTermination"> | string | null
-  refundMethod?: Prisma.StringNullableFilter<"ContractTermination"> | string | null
-  refundAccountDetails?: Prisma.JsonNullableFilter<"ContractTermination">
-  refundInitiatedAt?: Prisma.DateTimeNullableFilter<"ContractTermination"> | Date | string | null
-  refundCompletedAt?: Prisma.DateTimeNullableFilter<"ContractTermination"> | Date | string | null
-  refundFailureReason?: Prisma.StringNullableFilter<"ContractTermination"> | string | null
-  unitReleasedAt?: Prisma.DateTimeNullableFilter<"ContractTermination"> | Date | string | null
-  unitReservedForId?: Prisma.StringNullableFilter<"ContractTermination"> | string | null
-  requestedAt?: Prisma.DateTimeFilter<"ContractTermination"> | Date | string
-  approvedAt?: Prisma.DateTimeNullableFilter<"ContractTermination"> | Date | string | null
-  executedAt?: Prisma.DateTimeNullableFilter<"ContractTermination"> | Date | string | null
-  completedAt?: Prisma.DateTimeNullableFilter<"ContractTermination"> | Date | string | null
-  cancelledAt?: Prisma.DateTimeNullableFilter<"ContractTermination"> | Date | string | null
-  idempotencyKey?: Prisma.StringNullableFilter<"ContractTermination"> | string | null
-  metadata?: Prisma.JsonNullableFilter<"ContractTermination">
-  createdAt?: Prisma.DateTimeFilter<"ContractTermination"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"ContractTermination"> | Date | string
+export type ApplicationTerminationScalarWhereInput = {
+  AND?: Prisma.ApplicationTerminationScalarWhereInput | Prisma.ApplicationTerminationScalarWhereInput[]
+  OR?: Prisma.ApplicationTerminationScalarWhereInput[]
+  NOT?: Prisma.ApplicationTerminationScalarWhereInput | Prisma.ApplicationTerminationScalarWhereInput[]
+  id?: Prisma.StringFilter<"ApplicationTermination"> | string
+  applicationId?: Prisma.StringFilter<"ApplicationTermination"> | string
+  tenantId?: Prisma.StringFilter<"ApplicationTermination"> | string
+  requestNumber?: Prisma.StringFilter<"ApplicationTermination"> | string
+  initiatedBy?: Prisma.EnumTerminationInitiatorFilter<"ApplicationTermination"> | $Enums.TerminationInitiator
+  initiatorId?: Prisma.StringNullableFilter<"ApplicationTermination"> | string | null
+  type?: Prisma.EnumTerminationTypeFilter<"ApplicationTermination"> | $Enums.TerminationType
+  reason?: Prisma.StringNullableFilter<"ApplicationTermination"> | string | null
+  supportingDocs?: Prisma.JsonNullableFilter<"ApplicationTermination">
+  status?: Prisma.EnumTerminationStatusFilter<"ApplicationTermination"> | $Enums.TerminationStatus
+  requiresApproval?: Prisma.BoolFilter<"ApplicationTermination"> | boolean
+  autoApproveEligible?: Prisma.BoolFilter<"ApplicationTermination"> | boolean
+  reviewedBy?: Prisma.StringNullableFilter<"ApplicationTermination"> | string | null
+  reviewedAt?: Prisma.DateTimeNullableFilter<"ApplicationTermination"> | Date | string | null
+  reviewNotes?: Prisma.StringNullableFilter<"ApplicationTermination"> | string | null
+  rejectionReason?: Prisma.StringNullableFilter<"ApplicationTermination"> | string | null
+  applicationSnapshot?: Prisma.JsonFilter<"ApplicationTermination">
+  totalApplicationAmount?: Prisma.FloatFilter<"ApplicationTermination"> | number
+  totalPaidToDate?: Prisma.FloatFilter<"ApplicationTermination"> | number
+  outstandingBalance?: Prisma.FloatFilter<"ApplicationTermination"> | number
+  refundableAmount?: Prisma.FloatFilter<"ApplicationTermination"> | number
+  penaltyAmount?: Prisma.FloatFilter<"ApplicationTermination"> | number
+  forfeitedAmount?: Prisma.FloatFilter<"ApplicationTermination"> | number
+  adminFeeAmount?: Prisma.FloatFilter<"ApplicationTermination"> | number
+  netRefundAmount?: Prisma.FloatFilter<"ApplicationTermination"> | number
+  settlementNotes?: Prisma.StringNullableFilter<"ApplicationTermination"> | string | null
+  refundStatus?: Prisma.EnumRefundStatusFilter<"ApplicationTermination"> | $Enums.RefundStatus
+  refundReference?: Prisma.StringNullableFilter<"ApplicationTermination"> | string | null
+  refundMethod?: Prisma.StringNullableFilter<"ApplicationTermination"> | string | null
+  refundAccountDetails?: Prisma.JsonNullableFilter<"ApplicationTermination">
+  refundInitiatedAt?: Prisma.DateTimeNullableFilter<"ApplicationTermination"> | Date | string | null
+  refundCompletedAt?: Prisma.DateTimeNullableFilter<"ApplicationTermination"> | Date | string | null
+  refundFailureReason?: Prisma.StringNullableFilter<"ApplicationTermination"> | string | null
+  unitReleasedAt?: Prisma.DateTimeNullableFilter<"ApplicationTermination"> | Date | string | null
+  unitReservedForId?: Prisma.StringNullableFilter<"ApplicationTermination"> | string | null
+  requestedAt?: Prisma.DateTimeFilter<"ApplicationTermination"> | Date | string
+  approvedAt?: Prisma.DateTimeNullableFilter<"ApplicationTermination"> | Date | string | null
+  executedAt?: Prisma.DateTimeNullableFilter<"ApplicationTermination"> | Date | string | null
+  completedAt?: Prisma.DateTimeNullableFilter<"ApplicationTermination"> | Date | string | null
+  cancelledAt?: Prisma.DateTimeNullableFilter<"ApplicationTermination"> | Date | string | null
+  idempotencyKey?: Prisma.StringNullableFilter<"ApplicationTermination"> | string | null
+  metadata?: Prisma.JsonNullableFilter<"ApplicationTermination">
+  createdAt?: Prisma.DateTimeFilter<"ApplicationTermination"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ApplicationTermination"> | Date | string
 }
 
-export type ContractTerminationUpsertWithWhereUniqueWithoutReviewerInput = {
-  where: Prisma.ContractTerminationWhereUniqueInput
-  update: Prisma.XOR<Prisma.ContractTerminationUpdateWithoutReviewerInput, Prisma.ContractTerminationUncheckedUpdateWithoutReviewerInput>
-  create: Prisma.XOR<Prisma.ContractTerminationCreateWithoutReviewerInput, Prisma.ContractTerminationUncheckedCreateWithoutReviewerInput>
+export type ApplicationTerminationUpsertWithWhereUniqueWithoutReviewerInput = {
+  where: Prisma.ApplicationTerminationWhereUniqueInput
+  update: Prisma.XOR<Prisma.ApplicationTerminationUpdateWithoutReviewerInput, Prisma.ApplicationTerminationUncheckedUpdateWithoutReviewerInput>
+  create: Prisma.XOR<Prisma.ApplicationTerminationCreateWithoutReviewerInput, Prisma.ApplicationTerminationUncheckedCreateWithoutReviewerInput>
 }
 
-export type ContractTerminationUpdateWithWhereUniqueWithoutReviewerInput = {
-  where: Prisma.ContractTerminationWhereUniqueInput
-  data: Prisma.XOR<Prisma.ContractTerminationUpdateWithoutReviewerInput, Prisma.ContractTerminationUncheckedUpdateWithoutReviewerInput>
+export type ApplicationTerminationUpdateWithWhereUniqueWithoutReviewerInput = {
+  where: Prisma.ApplicationTerminationWhereUniqueInput
+  data: Prisma.XOR<Prisma.ApplicationTerminationUpdateWithoutReviewerInput, Prisma.ApplicationTerminationUncheckedUpdateWithoutReviewerInput>
 }
 
-export type ContractTerminationUpdateManyWithWhereWithoutReviewerInput = {
-  where: Prisma.ContractTerminationScalarWhereInput
-  data: Prisma.XOR<Prisma.ContractTerminationUpdateManyMutationInput, Prisma.ContractTerminationUncheckedUpdateManyWithoutReviewerInput>
+export type ApplicationTerminationUpdateManyWithWhereWithoutReviewerInput = {
+  where: Prisma.ApplicationTerminationScalarWhereInput
+  data: Prisma.XOR<Prisma.ApplicationTerminationUpdateManyMutationInput, Prisma.ApplicationTerminationUncheckedUpdateManyWithoutReviewerInput>
 }
 
-export type ContractTerminationCreateWithoutTenantInput = {
+export type ApplicationTerminationCreateWithoutTenantInput = {
   id?: string
   requestNumber: string
   initiatedBy: $Enums.TerminationInitiator
@@ -1729,8 +1729,8 @@ export type ContractTerminationCreateWithoutTenantInput = {
   reviewedAt?: Date | string | null
   reviewNotes?: string | null
   rejectionReason?: string | null
-  contractSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  totalContractAmount: number
+  applicationSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  totalApplicationAmount: number
   totalPaidToDate: number
   outstandingBalance: number
   refundableAmount?: number
@@ -1757,14 +1757,14 @@ export type ContractTerminationCreateWithoutTenantInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  contract: Prisma.ContractCreateNestedOneWithoutTerminationsInput
+  application: Prisma.ApplicationCreateNestedOneWithoutTerminationsInput
   initiator?: Prisma.UserCreateNestedOneWithoutInitiatedTerminationsInput
   reviewer?: Prisma.UserCreateNestedOneWithoutReviewedTerminationsInput
 }
 
-export type ContractTerminationUncheckedCreateWithoutTenantInput = {
+export type ApplicationTerminationUncheckedCreateWithoutTenantInput = {
   id?: string
-  contractId: string
+  applicationId: string
   requestNumber: string
   initiatedBy: $Enums.TerminationInitiator
   initiatorId?: string | null
@@ -1778,8 +1778,8 @@ export type ContractTerminationUncheckedCreateWithoutTenantInput = {
   reviewedAt?: Date | string | null
   reviewNotes?: string | null
   rejectionReason?: string | null
-  contractSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  totalContractAmount: number
+  applicationSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  totalApplicationAmount: number
   totalPaidToDate: number
   outstandingBalance: number
   refundableAmount?: number
@@ -1808,33 +1808,33 @@ export type ContractTerminationUncheckedCreateWithoutTenantInput = {
   updatedAt?: Date | string
 }
 
-export type ContractTerminationCreateOrConnectWithoutTenantInput = {
-  where: Prisma.ContractTerminationWhereUniqueInput
-  create: Prisma.XOR<Prisma.ContractTerminationCreateWithoutTenantInput, Prisma.ContractTerminationUncheckedCreateWithoutTenantInput>
+export type ApplicationTerminationCreateOrConnectWithoutTenantInput = {
+  where: Prisma.ApplicationTerminationWhereUniqueInput
+  create: Prisma.XOR<Prisma.ApplicationTerminationCreateWithoutTenantInput, Prisma.ApplicationTerminationUncheckedCreateWithoutTenantInput>
 }
 
-export type ContractTerminationCreateManyTenantInputEnvelope = {
-  data: Prisma.ContractTerminationCreateManyTenantInput | Prisma.ContractTerminationCreateManyTenantInput[]
+export type ApplicationTerminationCreateManyTenantInputEnvelope = {
+  data: Prisma.ApplicationTerminationCreateManyTenantInput | Prisma.ApplicationTerminationCreateManyTenantInput[]
   skipDuplicates?: boolean
 }
 
-export type ContractTerminationUpsertWithWhereUniqueWithoutTenantInput = {
-  where: Prisma.ContractTerminationWhereUniqueInput
-  update: Prisma.XOR<Prisma.ContractTerminationUpdateWithoutTenantInput, Prisma.ContractTerminationUncheckedUpdateWithoutTenantInput>
-  create: Prisma.XOR<Prisma.ContractTerminationCreateWithoutTenantInput, Prisma.ContractTerminationUncheckedCreateWithoutTenantInput>
+export type ApplicationTerminationUpsertWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.ApplicationTerminationWhereUniqueInput
+  update: Prisma.XOR<Prisma.ApplicationTerminationUpdateWithoutTenantInput, Prisma.ApplicationTerminationUncheckedUpdateWithoutTenantInput>
+  create: Prisma.XOR<Prisma.ApplicationTerminationCreateWithoutTenantInput, Prisma.ApplicationTerminationUncheckedCreateWithoutTenantInput>
 }
 
-export type ContractTerminationUpdateWithWhereUniqueWithoutTenantInput = {
-  where: Prisma.ContractTerminationWhereUniqueInput
-  data: Prisma.XOR<Prisma.ContractTerminationUpdateWithoutTenantInput, Prisma.ContractTerminationUncheckedUpdateWithoutTenantInput>
+export type ApplicationTerminationUpdateWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.ApplicationTerminationWhereUniqueInput
+  data: Prisma.XOR<Prisma.ApplicationTerminationUpdateWithoutTenantInput, Prisma.ApplicationTerminationUncheckedUpdateWithoutTenantInput>
 }
 
-export type ContractTerminationUpdateManyWithWhereWithoutTenantInput = {
-  where: Prisma.ContractTerminationScalarWhereInput
-  data: Prisma.XOR<Prisma.ContractTerminationUpdateManyMutationInput, Prisma.ContractTerminationUncheckedUpdateManyWithoutTenantInput>
+export type ApplicationTerminationUpdateManyWithWhereWithoutTenantInput = {
+  where: Prisma.ApplicationTerminationScalarWhereInput
+  data: Prisma.XOR<Prisma.ApplicationTerminationUpdateManyMutationInput, Prisma.ApplicationTerminationUncheckedUpdateManyWithoutTenantInput>
 }
 
-export type ContractTerminationCreateWithoutContractInput = {
+export type ApplicationTerminationCreateWithoutApplicationInput = {
   id?: string
   requestNumber: string
   initiatedBy: $Enums.TerminationInitiator
@@ -1847,8 +1847,8 @@ export type ContractTerminationCreateWithoutContractInput = {
   reviewedAt?: Date | string | null
   reviewNotes?: string | null
   rejectionReason?: string | null
-  contractSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  totalContractAmount: number
+  applicationSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  totalApplicationAmount: number
   totalPaidToDate: number
   outstandingBalance: number
   refundableAmount?: number
@@ -1880,7 +1880,7 @@ export type ContractTerminationCreateWithoutContractInput = {
   reviewer?: Prisma.UserCreateNestedOneWithoutReviewedTerminationsInput
 }
 
-export type ContractTerminationUncheckedCreateWithoutContractInput = {
+export type ApplicationTerminationUncheckedCreateWithoutApplicationInput = {
   id?: string
   tenantId: string
   requestNumber: string
@@ -1896,8 +1896,8 @@ export type ContractTerminationUncheckedCreateWithoutContractInput = {
   reviewedAt?: Date | string | null
   reviewNotes?: string | null
   rejectionReason?: string | null
-  contractSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  totalContractAmount: number
+  applicationSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  totalApplicationAmount: number
   totalPaidToDate: number
   outstandingBalance: number
   refundableAmount?: number
@@ -1926,35 +1926,35 @@ export type ContractTerminationUncheckedCreateWithoutContractInput = {
   updatedAt?: Date | string
 }
 
-export type ContractTerminationCreateOrConnectWithoutContractInput = {
-  where: Prisma.ContractTerminationWhereUniqueInput
-  create: Prisma.XOR<Prisma.ContractTerminationCreateWithoutContractInput, Prisma.ContractTerminationUncheckedCreateWithoutContractInput>
+export type ApplicationTerminationCreateOrConnectWithoutApplicationInput = {
+  where: Prisma.ApplicationTerminationWhereUniqueInput
+  create: Prisma.XOR<Prisma.ApplicationTerminationCreateWithoutApplicationInput, Prisma.ApplicationTerminationUncheckedCreateWithoutApplicationInput>
 }
 
-export type ContractTerminationCreateManyContractInputEnvelope = {
-  data: Prisma.ContractTerminationCreateManyContractInput | Prisma.ContractTerminationCreateManyContractInput[]
+export type ApplicationTerminationCreateManyApplicationInputEnvelope = {
+  data: Prisma.ApplicationTerminationCreateManyApplicationInput | Prisma.ApplicationTerminationCreateManyApplicationInput[]
   skipDuplicates?: boolean
 }
 
-export type ContractTerminationUpsertWithWhereUniqueWithoutContractInput = {
-  where: Prisma.ContractTerminationWhereUniqueInput
-  update: Prisma.XOR<Prisma.ContractTerminationUpdateWithoutContractInput, Prisma.ContractTerminationUncheckedUpdateWithoutContractInput>
-  create: Prisma.XOR<Prisma.ContractTerminationCreateWithoutContractInput, Prisma.ContractTerminationUncheckedCreateWithoutContractInput>
+export type ApplicationTerminationUpsertWithWhereUniqueWithoutApplicationInput = {
+  where: Prisma.ApplicationTerminationWhereUniqueInput
+  update: Prisma.XOR<Prisma.ApplicationTerminationUpdateWithoutApplicationInput, Prisma.ApplicationTerminationUncheckedUpdateWithoutApplicationInput>
+  create: Prisma.XOR<Prisma.ApplicationTerminationCreateWithoutApplicationInput, Prisma.ApplicationTerminationUncheckedCreateWithoutApplicationInput>
 }
 
-export type ContractTerminationUpdateWithWhereUniqueWithoutContractInput = {
-  where: Prisma.ContractTerminationWhereUniqueInput
-  data: Prisma.XOR<Prisma.ContractTerminationUpdateWithoutContractInput, Prisma.ContractTerminationUncheckedUpdateWithoutContractInput>
+export type ApplicationTerminationUpdateWithWhereUniqueWithoutApplicationInput = {
+  where: Prisma.ApplicationTerminationWhereUniqueInput
+  data: Prisma.XOR<Prisma.ApplicationTerminationUpdateWithoutApplicationInput, Prisma.ApplicationTerminationUncheckedUpdateWithoutApplicationInput>
 }
 
-export type ContractTerminationUpdateManyWithWhereWithoutContractInput = {
-  where: Prisma.ContractTerminationScalarWhereInput
-  data: Prisma.XOR<Prisma.ContractTerminationUpdateManyMutationInput, Prisma.ContractTerminationUncheckedUpdateManyWithoutContractInput>
+export type ApplicationTerminationUpdateManyWithWhereWithoutApplicationInput = {
+  where: Prisma.ApplicationTerminationScalarWhereInput
+  data: Prisma.XOR<Prisma.ApplicationTerminationUpdateManyMutationInput, Prisma.ApplicationTerminationUncheckedUpdateManyWithoutApplicationInput>
 }
 
-export type ContractTerminationCreateManyInitiatorInput = {
+export type ApplicationTerminationCreateManyInitiatorInput = {
   id?: string
-  contractId: string
+  applicationId: string
   tenantId: string
   requestNumber: string
   initiatedBy: $Enums.TerminationInitiator
@@ -1968,8 +1968,8 @@ export type ContractTerminationCreateManyInitiatorInput = {
   reviewedAt?: Date | string | null
   reviewNotes?: string | null
   rejectionReason?: string | null
-  contractSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  totalContractAmount: number
+  applicationSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  totalApplicationAmount: number
   totalPaidToDate: number
   outstandingBalance: number
   refundableAmount?: number
@@ -1998,9 +1998,9 @@ export type ContractTerminationCreateManyInitiatorInput = {
   updatedAt?: Date | string
 }
 
-export type ContractTerminationCreateManyReviewerInput = {
+export type ApplicationTerminationCreateManyReviewerInput = {
   id?: string
-  contractId: string
+  applicationId: string
   tenantId: string
   requestNumber: string
   initiatedBy: $Enums.TerminationInitiator
@@ -2014,8 +2014,8 @@ export type ContractTerminationCreateManyReviewerInput = {
   reviewedAt?: Date | string | null
   reviewNotes?: string | null
   rejectionReason?: string | null
-  contractSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  totalContractAmount: number
+  applicationSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  totalApplicationAmount: number
   totalPaidToDate: number
   outstandingBalance: number
   refundableAmount?: number
@@ -2044,7 +2044,7 @@ export type ContractTerminationCreateManyReviewerInput = {
   updatedAt?: Date | string
 }
 
-export type ContractTerminationUpdateWithoutInitiatorInput = {
+export type ApplicationTerminationUpdateWithoutInitiatorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   requestNumber?: Prisma.StringFieldUpdateOperationsInput | string
   initiatedBy?: Prisma.EnumTerminationInitiatorFieldUpdateOperationsInput | $Enums.TerminationInitiator
@@ -2057,8 +2057,8 @@ export type ContractTerminationUpdateWithoutInitiatorInput = {
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contractSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  totalContractAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  applicationSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  totalApplicationAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   outstandingBalance?: Prisma.FloatFieldUpdateOperationsInput | number
   refundableAmount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -2085,14 +2085,14 @@ export type ContractTerminationUpdateWithoutInitiatorInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  contract?: Prisma.ContractUpdateOneRequiredWithoutTerminationsNestedInput
+  application?: Prisma.ApplicationUpdateOneRequiredWithoutTerminationsNestedInput
   tenant?: Prisma.TenantUpdateOneRequiredWithoutContractTerminationsNestedInput
   reviewer?: Prisma.UserUpdateOneWithoutReviewedTerminationsNestedInput
 }
 
-export type ContractTerminationUncheckedUpdateWithoutInitiatorInput = {
+export type ApplicationTerminationUncheckedUpdateWithoutInitiatorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   requestNumber?: Prisma.StringFieldUpdateOperationsInput | string
   initiatedBy?: Prisma.EnumTerminationInitiatorFieldUpdateOperationsInput | $Enums.TerminationInitiator
@@ -2106,8 +2106,8 @@ export type ContractTerminationUncheckedUpdateWithoutInitiatorInput = {
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contractSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  totalContractAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  applicationSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  totalApplicationAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   outstandingBalance?: Prisma.FloatFieldUpdateOperationsInput | number
   refundableAmount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -2136,9 +2136,9 @@ export type ContractTerminationUncheckedUpdateWithoutInitiatorInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type ContractTerminationUncheckedUpdateManyWithoutInitiatorInput = {
+export type ApplicationTerminationUncheckedUpdateManyWithoutInitiatorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   requestNumber?: Prisma.StringFieldUpdateOperationsInput | string
   initiatedBy?: Prisma.EnumTerminationInitiatorFieldUpdateOperationsInput | $Enums.TerminationInitiator
@@ -2152,8 +2152,8 @@ export type ContractTerminationUncheckedUpdateManyWithoutInitiatorInput = {
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contractSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  totalContractAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  applicationSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  totalApplicationAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   outstandingBalance?: Prisma.FloatFieldUpdateOperationsInput | number
   refundableAmount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -2182,7 +2182,7 @@ export type ContractTerminationUncheckedUpdateManyWithoutInitiatorInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type ContractTerminationUpdateWithoutReviewerInput = {
+export type ApplicationTerminationUpdateWithoutReviewerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   requestNumber?: Prisma.StringFieldUpdateOperationsInput | string
   initiatedBy?: Prisma.EnumTerminationInitiatorFieldUpdateOperationsInput | $Enums.TerminationInitiator
@@ -2195,8 +2195,8 @@ export type ContractTerminationUpdateWithoutReviewerInput = {
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contractSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  totalContractAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  applicationSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  totalApplicationAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   outstandingBalance?: Prisma.FloatFieldUpdateOperationsInput | number
   refundableAmount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -2223,14 +2223,14 @@ export type ContractTerminationUpdateWithoutReviewerInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  contract?: Prisma.ContractUpdateOneRequiredWithoutTerminationsNestedInput
+  application?: Prisma.ApplicationUpdateOneRequiredWithoutTerminationsNestedInput
   tenant?: Prisma.TenantUpdateOneRequiredWithoutContractTerminationsNestedInput
   initiator?: Prisma.UserUpdateOneWithoutInitiatedTerminationsNestedInput
 }
 
-export type ContractTerminationUncheckedUpdateWithoutReviewerInput = {
+export type ApplicationTerminationUncheckedUpdateWithoutReviewerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   requestNumber?: Prisma.StringFieldUpdateOperationsInput | string
   initiatedBy?: Prisma.EnumTerminationInitiatorFieldUpdateOperationsInput | $Enums.TerminationInitiator
@@ -2244,8 +2244,8 @@ export type ContractTerminationUncheckedUpdateWithoutReviewerInput = {
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contractSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  totalContractAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  applicationSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  totalApplicationAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   outstandingBalance?: Prisma.FloatFieldUpdateOperationsInput | number
   refundableAmount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -2274,9 +2274,9 @@ export type ContractTerminationUncheckedUpdateWithoutReviewerInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type ContractTerminationUncheckedUpdateManyWithoutReviewerInput = {
+export type ApplicationTerminationUncheckedUpdateManyWithoutReviewerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   requestNumber?: Prisma.StringFieldUpdateOperationsInput | string
   initiatedBy?: Prisma.EnumTerminationInitiatorFieldUpdateOperationsInput | $Enums.TerminationInitiator
@@ -2290,8 +2290,8 @@ export type ContractTerminationUncheckedUpdateManyWithoutReviewerInput = {
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contractSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  totalContractAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  applicationSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  totalApplicationAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   outstandingBalance?: Prisma.FloatFieldUpdateOperationsInput | number
   refundableAmount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -2320,9 +2320,9 @@ export type ContractTerminationUncheckedUpdateManyWithoutReviewerInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type ContractTerminationCreateManyTenantInput = {
+export type ApplicationTerminationCreateManyTenantInput = {
   id?: string
-  contractId: string
+  applicationId: string
   requestNumber: string
   initiatedBy: $Enums.TerminationInitiator
   initiatorId?: string | null
@@ -2336,8 +2336,8 @@ export type ContractTerminationCreateManyTenantInput = {
   reviewedAt?: Date | string | null
   reviewNotes?: string | null
   rejectionReason?: string | null
-  contractSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  totalContractAmount: number
+  applicationSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  totalApplicationAmount: number
   totalPaidToDate: number
   outstandingBalance: number
   refundableAmount?: number
@@ -2366,7 +2366,7 @@ export type ContractTerminationCreateManyTenantInput = {
   updatedAt?: Date | string
 }
 
-export type ContractTerminationUpdateWithoutTenantInput = {
+export type ApplicationTerminationUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   requestNumber?: Prisma.StringFieldUpdateOperationsInput | string
   initiatedBy?: Prisma.EnumTerminationInitiatorFieldUpdateOperationsInput | $Enums.TerminationInitiator
@@ -2379,8 +2379,8 @@ export type ContractTerminationUpdateWithoutTenantInput = {
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contractSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  totalContractAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  applicationSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  totalApplicationAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   outstandingBalance?: Prisma.FloatFieldUpdateOperationsInput | number
   refundableAmount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -2407,14 +2407,14 @@ export type ContractTerminationUpdateWithoutTenantInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  contract?: Prisma.ContractUpdateOneRequiredWithoutTerminationsNestedInput
+  application?: Prisma.ApplicationUpdateOneRequiredWithoutTerminationsNestedInput
   initiator?: Prisma.UserUpdateOneWithoutInitiatedTerminationsNestedInput
   reviewer?: Prisma.UserUpdateOneWithoutReviewedTerminationsNestedInput
 }
 
-export type ContractTerminationUncheckedUpdateWithoutTenantInput = {
+export type ApplicationTerminationUncheckedUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   requestNumber?: Prisma.StringFieldUpdateOperationsInput | string
   initiatedBy?: Prisma.EnumTerminationInitiatorFieldUpdateOperationsInput | $Enums.TerminationInitiator
   initiatorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2428,8 +2428,8 @@ export type ContractTerminationUncheckedUpdateWithoutTenantInput = {
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contractSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  totalContractAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  applicationSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  totalApplicationAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   outstandingBalance?: Prisma.FloatFieldUpdateOperationsInput | number
   refundableAmount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -2458,9 +2458,9 @@ export type ContractTerminationUncheckedUpdateWithoutTenantInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type ContractTerminationUncheckedUpdateManyWithoutTenantInput = {
+export type ApplicationTerminationUncheckedUpdateManyWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   requestNumber?: Prisma.StringFieldUpdateOperationsInput | string
   initiatedBy?: Prisma.EnumTerminationInitiatorFieldUpdateOperationsInput | $Enums.TerminationInitiator
   initiatorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2474,8 +2474,8 @@ export type ContractTerminationUncheckedUpdateManyWithoutTenantInput = {
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contractSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  totalContractAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  applicationSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  totalApplicationAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   outstandingBalance?: Prisma.FloatFieldUpdateOperationsInput | number
   refundableAmount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -2504,7 +2504,7 @@ export type ContractTerminationUncheckedUpdateManyWithoutTenantInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type ContractTerminationCreateManyContractInput = {
+export type ApplicationTerminationCreateManyApplicationInput = {
   id?: string
   tenantId: string
   requestNumber: string
@@ -2520,8 +2520,8 @@ export type ContractTerminationCreateManyContractInput = {
   reviewedAt?: Date | string | null
   reviewNotes?: string | null
   rejectionReason?: string | null
-  contractSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  totalContractAmount: number
+  applicationSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  totalApplicationAmount: number
   totalPaidToDate: number
   outstandingBalance: number
   refundableAmount?: number
@@ -2550,7 +2550,7 @@ export type ContractTerminationCreateManyContractInput = {
   updatedAt?: Date | string
 }
 
-export type ContractTerminationUpdateWithoutContractInput = {
+export type ApplicationTerminationUpdateWithoutApplicationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   requestNumber?: Prisma.StringFieldUpdateOperationsInput | string
   initiatedBy?: Prisma.EnumTerminationInitiatorFieldUpdateOperationsInput | $Enums.TerminationInitiator
@@ -2563,8 +2563,8 @@ export type ContractTerminationUpdateWithoutContractInput = {
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contractSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  totalContractAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  applicationSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  totalApplicationAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   outstandingBalance?: Prisma.FloatFieldUpdateOperationsInput | number
   refundableAmount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -2596,7 +2596,7 @@ export type ContractTerminationUpdateWithoutContractInput = {
   reviewer?: Prisma.UserUpdateOneWithoutReviewedTerminationsNestedInput
 }
 
-export type ContractTerminationUncheckedUpdateWithoutContractInput = {
+export type ApplicationTerminationUncheckedUpdateWithoutApplicationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   requestNumber?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2612,8 +2612,8 @@ export type ContractTerminationUncheckedUpdateWithoutContractInput = {
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contractSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  totalContractAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  applicationSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  totalApplicationAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   outstandingBalance?: Prisma.FloatFieldUpdateOperationsInput | number
   refundableAmount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -2642,7 +2642,7 @@ export type ContractTerminationUncheckedUpdateWithoutContractInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type ContractTerminationUncheckedUpdateManyWithoutContractInput = {
+export type ApplicationTerminationUncheckedUpdateManyWithoutApplicationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   requestNumber?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2658,8 +2658,8 @@ export type ContractTerminationUncheckedUpdateManyWithoutContractInput = {
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contractSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  totalContractAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  applicationSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  totalApplicationAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   totalPaidToDate?: Prisma.FloatFieldUpdateOperationsInput | number
   outstandingBalance?: Prisma.FloatFieldUpdateOperationsInput | number
   refundableAmount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -2690,9 +2690,9 @@ export type ContractTerminationUncheckedUpdateManyWithoutContractInput = {
 
 
 
-export type ContractTerminationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+export type ApplicationTerminationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  contractId?: boolean
+  applicationId?: boolean
   tenantId?: boolean
   requestNumber?: boolean
   initiatedBy?: boolean
@@ -2707,8 +2707,8 @@ export type ContractTerminationSelect<ExtArgs extends runtime.Types.Extensions.I
   reviewedAt?: boolean
   reviewNotes?: boolean
   rejectionReason?: boolean
-  contractSnapshot?: boolean
-  totalContractAmount?: boolean
+  applicationSnapshot?: boolean
+  totalApplicationAmount?: boolean
   totalPaidToDate?: boolean
   outstandingBalance?: boolean
   refundableAmount?: boolean
@@ -2735,17 +2735,17 @@ export type ContractTerminationSelect<ExtArgs extends runtime.Types.Extensions.I
   metadata?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
+  application?: boolean | Prisma.ApplicationDefaultArgs<ExtArgs>
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
-  initiator?: boolean | Prisma.ContractTermination$initiatorArgs<ExtArgs>
-  reviewer?: boolean | Prisma.ContractTermination$reviewerArgs<ExtArgs>
-}, ExtArgs["result"]["contractTermination"]>
+  initiator?: boolean | Prisma.ApplicationTermination$initiatorArgs<ExtArgs>
+  reviewer?: boolean | Prisma.ApplicationTermination$reviewerArgs<ExtArgs>
+}, ExtArgs["result"]["applicationTermination"]>
 
 
 
-export type ContractTerminationSelectScalar = {
+export type ApplicationTerminationSelectScalar = {
   id?: boolean
-  contractId?: boolean
+  applicationId?: boolean
   tenantId?: boolean
   requestNumber?: boolean
   initiatedBy?: boolean
@@ -2760,8 +2760,8 @@ export type ContractTerminationSelectScalar = {
   reviewedAt?: boolean
   reviewNotes?: boolean
   rejectionReason?: boolean
-  contractSnapshot?: boolean
-  totalContractAmount?: boolean
+  applicationSnapshot?: boolean
+  totalApplicationAmount?: boolean
   totalPaidToDate?: boolean
   outstandingBalance?: boolean
   refundableAmount?: boolean
@@ -2790,25 +2790,25 @@ export type ContractTerminationSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ContractTerminationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "contractId" | "tenantId" | "requestNumber" | "initiatedBy" | "initiatorId" | "type" | "reason" | "supportingDocs" | "status" | "requiresApproval" | "autoApproveEligible" | "reviewedBy" | "reviewedAt" | "reviewNotes" | "rejectionReason" | "contractSnapshot" | "totalContractAmount" | "totalPaidToDate" | "outstandingBalance" | "refundableAmount" | "penaltyAmount" | "forfeitedAmount" | "adminFeeAmount" | "netRefundAmount" | "settlementNotes" | "refundStatus" | "refundReference" | "refundMethod" | "refundAccountDetails" | "refundInitiatedAt" | "refundCompletedAt" | "refundFailureReason" | "unitReleasedAt" | "unitReservedForId" | "requestedAt" | "approvedAt" | "executedAt" | "completedAt" | "cancelledAt" | "idempotencyKey" | "metadata" | "createdAt" | "updatedAt", ExtArgs["result"]["contractTermination"]>
-export type ContractTerminationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
+export type ApplicationTerminationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "applicationId" | "tenantId" | "requestNumber" | "initiatedBy" | "initiatorId" | "type" | "reason" | "supportingDocs" | "status" | "requiresApproval" | "autoApproveEligible" | "reviewedBy" | "reviewedAt" | "reviewNotes" | "rejectionReason" | "applicationSnapshot" | "totalApplicationAmount" | "totalPaidToDate" | "outstandingBalance" | "refundableAmount" | "penaltyAmount" | "forfeitedAmount" | "adminFeeAmount" | "netRefundAmount" | "settlementNotes" | "refundStatus" | "refundReference" | "refundMethod" | "refundAccountDetails" | "refundInitiatedAt" | "refundCompletedAt" | "refundFailureReason" | "unitReleasedAt" | "unitReservedForId" | "requestedAt" | "approvedAt" | "executedAt" | "completedAt" | "cancelledAt" | "idempotencyKey" | "metadata" | "createdAt" | "updatedAt", ExtArgs["result"]["applicationTermination"]>
+export type ApplicationTerminationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  application?: boolean | Prisma.ApplicationDefaultArgs<ExtArgs>
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
-  initiator?: boolean | Prisma.ContractTermination$initiatorArgs<ExtArgs>
-  reviewer?: boolean | Prisma.ContractTermination$reviewerArgs<ExtArgs>
+  initiator?: boolean | Prisma.ApplicationTermination$initiatorArgs<ExtArgs>
+  reviewer?: boolean | Prisma.ApplicationTermination$reviewerArgs<ExtArgs>
 }
 
-export type $ContractTerminationPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  name: "ContractTermination"
+export type $ApplicationTerminationPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  name: "ApplicationTermination"
   objects: {
-    contract: Prisma.$ContractPayload<ExtArgs>
+    application: Prisma.$ApplicationPayload<ExtArgs>
     tenant: Prisma.$TenantPayload<ExtArgs>
     initiator: Prisma.$UserPayload<ExtArgs> | null
     reviewer: Prisma.$UserPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    contractId: string
+    applicationId: string
     tenantId: string
     requestNumber: string
     initiatedBy: $Enums.TerminationInitiator
@@ -2823,8 +2823,8 @@ export type $ContractTerminationPayload<ExtArgs extends runtime.Types.Extensions
     reviewedAt: Date | null
     reviewNotes: string | null
     rejectionReason: string | null
-    contractSnapshot: runtime.JsonValue
-    totalContractAmount: number
+    applicationSnapshot: runtime.JsonValue
+    totalApplicationAmount: number
     totalPaidToDate: number
     outstandingBalance: number
     refundableAmount: number
@@ -2851,143 +2851,143 @@ export type $ContractTerminationPayload<ExtArgs extends runtime.Types.Extensions
     metadata: runtime.JsonValue | null
     createdAt: Date
     updatedAt: Date
-  }, ExtArgs["result"]["contractTermination"]>
+  }, ExtArgs["result"]["applicationTermination"]>
   composites: {}
 }
 
-export type ContractTerminationGetPayload<S extends boolean | null | undefined | ContractTerminationDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$ContractTerminationPayload, S>
+export type ApplicationTerminationGetPayload<S extends boolean | null | undefined | ApplicationTerminationDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$ApplicationTerminationPayload, S>
 
-export type ContractTerminationCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<ContractTerminationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-    select?: ContractTerminationCountAggregateInputType | true
+export type ApplicationTerminationCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
+  Omit<ApplicationTerminationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    select?: ApplicationTerminationCountAggregateInputType | true
   }
 
-export interface ContractTerminationDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-  [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ContractTermination'], meta: { name: 'ContractTermination' } }
+export interface ApplicationTerminationDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+  [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ApplicationTermination'], meta: { name: 'ApplicationTermination' } }
   /**
-   * Find zero or one ContractTermination that matches the filter.
-   * @param {ContractTerminationFindUniqueArgs} args - Arguments to find a ContractTermination
+   * Find zero or one ApplicationTermination that matches the filter.
+   * @param {ApplicationTerminationFindUniqueArgs} args - Arguments to find a ApplicationTermination
    * @example
-   * // Get one ContractTermination
-   * const contractTermination = await prisma.contractTermination.findUnique({
+   * // Get one ApplicationTermination
+   * const applicationTermination = await prisma.applicationTermination.findUnique({
    *   where: {
    *     // ... provide filter here
    *   }
    * })
    */
-  findUnique<T extends ContractTerminationFindUniqueArgs>(args: Prisma.SelectSubset<T, ContractTerminationFindUniqueArgs<ExtArgs>>): Prisma.Prisma__ContractTerminationClient<runtime.Types.Result.GetResult<Prisma.$ContractTerminationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  findUnique<T extends ApplicationTerminationFindUniqueArgs>(args: Prisma.SelectSubset<T, ApplicationTerminationFindUniqueArgs<ExtArgs>>): Prisma.Prisma__ApplicationTerminationClient<runtime.Types.Result.GetResult<Prisma.$ApplicationTerminationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
   /**
-   * Find one ContractTermination that matches the filter or throw an error with `error.code='P2025'`
+   * Find one ApplicationTermination that matches the filter or throw an error with `error.code='P2025'`
    * if no matches were found.
-   * @param {ContractTerminationFindUniqueOrThrowArgs} args - Arguments to find a ContractTermination
+   * @param {ApplicationTerminationFindUniqueOrThrowArgs} args - Arguments to find a ApplicationTermination
    * @example
-   * // Get one ContractTermination
-   * const contractTermination = await prisma.contractTermination.findUniqueOrThrow({
+   * // Get one ApplicationTermination
+   * const applicationTermination = await prisma.applicationTermination.findUniqueOrThrow({
    *   where: {
    *     // ... provide filter here
    *   }
    * })
    */
-  findUniqueOrThrow<T extends ContractTerminationFindUniqueOrThrowArgs>(args: Prisma.SelectSubset<T, ContractTerminationFindUniqueOrThrowArgs<ExtArgs>>): Prisma.Prisma__ContractTerminationClient<runtime.Types.Result.GetResult<Prisma.$ContractTerminationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  findUniqueOrThrow<T extends ApplicationTerminationFindUniqueOrThrowArgs>(args: Prisma.SelectSubset<T, ApplicationTerminationFindUniqueOrThrowArgs<ExtArgs>>): Prisma.Prisma__ApplicationTerminationClient<runtime.Types.Result.GetResult<Prisma.$ApplicationTerminationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
   /**
-   * Find the first ContractTermination that matches the filter.
+   * Find the first ApplicationTermination that matches the filter.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {ContractTerminationFindFirstArgs} args - Arguments to find a ContractTermination
+   * @param {ApplicationTerminationFindFirstArgs} args - Arguments to find a ApplicationTermination
    * @example
-   * // Get one ContractTermination
-   * const contractTermination = await prisma.contractTermination.findFirst({
+   * // Get one ApplicationTermination
+   * const applicationTermination = await prisma.applicationTermination.findFirst({
    *   where: {
    *     // ... provide filter here
    *   }
    * })
    */
-  findFirst<T extends ContractTerminationFindFirstArgs>(args?: Prisma.SelectSubset<T, ContractTerminationFindFirstArgs<ExtArgs>>): Prisma.Prisma__ContractTerminationClient<runtime.Types.Result.GetResult<Prisma.$ContractTerminationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  findFirst<T extends ApplicationTerminationFindFirstArgs>(args?: Prisma.SelectSubset<T, ApplicationTerminationFindFirstArgs<ExtArgs>>): Prisma.Prisma__ApplicationTerminationClient<runtime.Types.Result.GetResult<Prisma.$ApplicationTerminationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
   /**
-   * Find the first ContractTermination that matches the filter or
+   * Find the first ApplicationTermination that matches the filter or
    * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {ContractTerminationFindFirstOrThrowArgs} args - Arguments to find a ContractTermination
+   * @param {ApplicationTerminationFindFirstOrThrowArgs} args - Arguments to find a ApplicationTermination
    * @example
-   * // Get one ContractTermination
-   * const contractTermination = await prisma.contractTermination.findFirstOrThrow({
+   * // Get one ApplicationTermination
+   * const applicationTermination = await prisma.applicationTermination.findFirstOrThrow({
    *   where: {
    *     // ... provide filter here
    *   }
    * })
    */
-  findFirstOrThrow<T extends ContractTerminationFindFirstOrThrowArgs>(args?: Prisma.SelectSubset<T, ContractTerminationFindFirstOrThrowArgs<ExtArgs>>): Prisma.Prisma__ContractTerminationClient<runtime.Types.Result.GetResult<Prisma.$ContractTerminationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  findFirstOrThrow<T extends ApplicationTerminationFindFirstOrThrowArgs>(args?: Prisma.SelectSubset<T, ApplicationTerminationFindFirstOrThrowArgs<ExtArgs>>): Prisma.Prisma__ApplicationTerminationClient<runtime.Types.Result.GetResult<Prisma.$ApplicationTerminationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
   /**
-   * Find zero or more ContractTerminations that matches the filter.
+   * Find zero or more ApplicationTerminations that matches the filter.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {ContractTerminationFindManyArgs} args - Arguments to filter and select certain fields only.
+   * @param {ApplicationTerminationFindManyArgs} args - Arguments to filter and select certain fields only.
    * @example
-   * // Get all ContractTerminations
-   * const contractTerminations = await prisma.contractTermination.findMany()
+   * // Get all ApplicationTerminations
+   * const applicationTerminations = await prisma.applicationTermination.findMany()
    * 
-   * // Get first 10 ContractTerminations
-   * const contractTerminations = await prisma.contractTermination.findMany({ take: 10 })
+   * // Get first 10 ApplicationTerminations
+   * const applicationTerminations = await prisma.applicationTermination.findMany({ take: 10 })
    * 
    * // Only select the `id`
-   * const contractTerminationWithIdOnly = await prisma.contractTermination.findMany({ select: { id: true } })
+   * const applicationTerminationWithIdOnly = await prisma.applicationTermination.findMany({ select: { id: true } })
    * 
    */
-  findMany<T extends ContractTerminationFindManyArgs>(args?: Prisma.SelectSubset<T, ContractTerminationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContractTerminationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+  findMany<T extends ApplicationTerminationFindManyArgs>(args?: Prisma.SelectSubset<T, ApplicationTerminationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApplicationTerminationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
   /**
-   * Create a ContractTermination.
-   * @param {ContractTerminationCreateArgs} args - Arguments to create a ContractTermination.
+   * Create a ApplicationTermination.
+   * @param {ApplicationTerminationCreateArgs} args - Arguments to create a ApplicationTermination.
    * @example
-   * // Create one ContractTermination
-   * const ContractTermination = await prisma.contractTermination.create({
+   * // Create one ApplicationTermination
+   * const ApplicationTermination = await prisma.applicationTermination.create({
    *   data: {
-   *     // ... data to create a ContractTermination
+   *     // ... data to create a ApplicationTermination
    *   }
    * })
    * 
    */
-  create<T extends ContractTerminationCreateArgs>(args: Prisma.SelectSubset<T, ContractTerminationCreateArgs<ExtArgs>>): Prisma.Prisma__ContractTerminationClient<runtime.Types.Result.GetResult<Prisma.$ContractTerminationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  create<T extends ApplicationTerminationCreateArgs>(args: Prisma.SelectSubset<T, ApplicationTerminationCreateArgs<ExtArgs>>): Prisma.Prisma__ApplicationTerminationClient<runtime.Types.Result.GetResult<Prisma.$ApplicationTerminationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
   /**
-   * Create many ContractTerminations.
-   * @param {ContractTerminationCreateManyArgs} args - Arguments to create many ContractTerminations.
+   * Create many ApplicationTerminations.
+   * @param {ApplicationTerminationCreateManyArgs} args - Arguments to create many ApplicationTerminations.
    * @example
-   * // Create many ContractTerminations
-   * const contractTermination = await prisma.contractTermination.createMany({
+   * // Create many ApplicationTerminations
+   * const applicationTermination = await prisma.applicationTermination.createMany({
    *   data: [
    *     // ... provide data here
    *   ]
    * })
    *     
    */
-  createMany<T extends ContractTerminationCreateManyArgs>(args?: Prisma.SelectSubset<T, ContractTerminationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+  createMany<T extends ApplicationTerminationCreateManyArgs>(args?: Prisma.SelectSubset<T, ApplicationTerminationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
-   * Delete a ContractTermination.
-   * @param {ContractTerminationDeleteArgs} args - Arguments to delete one ContractTermination.
+   * Delete a ApplicationTermination.
+   * @param {ApplicationTerminationDeleteArgs} args - Arguments to delete one ApplicationTermination.
    * @example
-   * // Delete one ContractTermination
-   * const ContractTermination = await prisma.contractTermination.delete({
+   * // Delete one ApplicationTermination
+   * const ApplicationTermination = await prisma.applicationTermination.delete({
    *   where: {
-   *     // ... filter to delete one ContractTermination
+   *     // ... filter to delete one ApplicationTermination
    *   }
    * })
    * 
    */
-  delete<T extends ContractTerminationDeleteArgs>(args: Prisma.SelectSubset<T, ContractTerminationDeleteArgs<ExtArgs>>): Prisma.Prisma__ContractTerminationClient<runtime.Types.Result.GetResult<Prisma.$ContractTerminationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  delete<T extends ApplicationTerminationDeleteArgs>(args: Prisma.SelectSubset<T, ApplicationTerminationDeleteArgs<ExtArgs>>): Prisma.Prisma__ApplicationTerminationClient<runtime.Types.Result.GetResult<Prisma.$ApplicationTerminationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
   /**
-   * Update one ContractTermination.
-   * @param {ContractTerminationUpdateArgs} args - Arguments to update one ContractTermination.
+   * Update one ApplicationTermination.
+   * @param {ApplicationTerminationUpdateArgs} args - Arguments to update one ApplicationTermination.
    * @example
-   * // Update one ContractTermination
-   * const contractTermination = await prisma.contractTermination.update({
+   * // Update one ApplicationTermination
+   * const applicationTermination = await prisma.applicationTermination.update({
    *   where: {
    *     // ... provide filter here
    *   },
@@ -2997,30 +2997,30 @@ export interface ContractTerminationDelegate<ExtArgs extends runtime.Types.Exten
    * })
    * 
    */
-  update<T extends ContractTerminationUpdateArgs>(args: Prisma.SelectSubset<T, ContractTerminationUpdateArgs<ExtArgs>>): Prisma.Prisma__ContractTerminationClient<runtime.Types.Result.GetResult<Prisma.$ContractTerminationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  update<T extends ApplicationTerminationUpdateArgs>(args: Prisma.SelectSubset<T, ApplicationTerminationUpdateArgs<ExtArgs>>): Prisma.Prisma__ApplicationTerminationClient<runtime.Types.Result.GetResult<Prisma.$ApplicationTerminationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
   /**
-   * Delete zero or more ContractTerminations.
-   * @param {ContractTerminationDeleteManyArgs} args - Arguments to filter ContractTerminations to delete.
+   * Delete zero or more ApplicationTerminations.
+   * @param {ApplicationTerminationDeleteManyArgs} args - Arguments to filter ApplicationTerminations to delete.
    * @example
-   * // Delete a few ContractTerminations
-   * const { count } = await prisma.contractTermination.deleteMany({
+   * // Delete a few ApplicationTerminations
+   * const { count } = await prisma.applicationTermination.deleteMany({
    *   where: {
    *     // ... provide filter here
    *   }
    * })
    * 
    */
-  deleteMany<T extends ContractTerminationDeleteManyArgs>(args?: Prisma.SelectSubset<T, ContractTerminationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+  deleteMany<T extends ApplicationTerminationDeleteManyArgs>(args?: Prisma.SelectSubset<T, ApplicationTerminationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
-   * Update zero or more ContractTerminations.
+   * Update zero or more ApplicationTerminations.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {ContractTerminationUpdateManyArgs} args - Arguments to update one or more rows.
+   * @param {ApplicationTerminationUpdateManyArgs} args - Arguments to update one or more rows.
    * @example
-   * // Update many ContractTerminations
-   * const contractTermination = await prisma.contractTermination.updateMany({
+   * // Update many ApplicationTerminations
+   * const applicationTermination = await prisma.applicationTermination.updateMany({
    *   where: {
    *     // ... provide filter here
    *   },
@@ -3030,56 +3030,56 @@ export interface ContractTerminationDelegate<ExtArgs extends runtime.Types.Exten
    * })
    * 
    */
-  updateMany<T extends ContractTerminationUpdateManyArgs>(args: Prisma.SelectSubset<T, ContractTerminationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+  updateMany<T extends ApplicationTerminationUpdateManyArgs>(args: Prisma.SelectSubset<T, ApplicationTerminationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
-   * Create or update one ContractTermination.
-   * @param {ContractTerminationUpsertArgs} args - Arguments to update or create a ContractTermination.
+   * Create or update one ApplicationTermination.
+   * @param {ApplicationTerminationUpsertArgs} args - Arguments to update or create a ApplicationTermination.
    * @example
-   * // Update or create a ContractTermination
-   * const contractTermination = await prisma.contractTermination.upsert({
+   * // Update or create a ApplicationTermination
+   * const applicationTermination = await prisma.applicationTermination.upsert({
    *   create: {
-   *     // ... data to create a ContractTermination
+   *     // ... data to create a ApplicationTermination
    *   },
    *   update: {
    *     // ... in case it already exists, update
    *   },
    *   where: {
-   *     // ... the filter for the ContractTermination we want to update
+   *     // ... the filter for the ApplicationTermination we want to update
    *   }
    * })
    */
-  upsert<T extends ContractTerminationUpsertArgs>(args: Prisma.SelectSubset<T, ContractTerminationUpsertArgs<ExtArgs>>): Prisma.Prisma__ContractTerminationClient<runtime.Types.Result.GetResult<Prisma.$ContractTerminationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  upsert<T extends ApplicationTerminationUpsertArgs>(args: Prisma.SelectSubset<T, ApplicationTerminationUpsertArgs<ExtArgs>>): Prisma.Prisma__ApplicationTerminationClient<runtime.Types.Result.GetResult<Prisma.$ApplicationTerminationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
   /**
-   * Count the number of ContractTerminations.
+   * Count the number of ApplicationTerminations.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {ContractTerminationCountArgs} args - Arguments to filter ContractTerminations to count.
+   * @param {ApplicationTerminationCountArgs} args - Arguments to filter ApplicationTerminations to count.
    * @example
-   * // Count the number of ContractTerminations
-   * const count = await prisma.contractTermination.count({
+   * // Count the number of ApplicationTerminations
+   * const count = await prisma.applicationTermination.count({
    *   where: {
-   *     // ... the filter for the ContractTerminations we want to count
+   *     // ... the filter for the ApplicationTerminations we want to count
    *   }
    * })
   **/
-  count<T extends ContractTerminationCountArgs>(
-    args?: Prisma.Subset<T, ContractTerminationCountArgs>,
+  count<T extends ApplicationTerminationCountArgs>(
+    args?: Prisma.Subset<T, ApplicationTerminationCountArgs>,
   ): Prisma.PrismaPromise<
     T extends runtime.Types.Utils.Record<'select', any>
       ? T['select'] extends true
         ? number
-        : Prisma.GetScalarType<T['select'], ContractTerminationCountAggregateOutputType>
+        : Prisma.GetScalarType<T['select'], ApplicationTerminationCountAggregateOutputType>
       : number
   >
 
   /**
-   * Allows you to perform aggregations operations on a ContractTermination.
+   * Allows you to perform aggregations operations on a ApplicationTermination.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {ContractTerminationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+   * @param {ApplicationTerminationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
    * @example
    * // Ordered by age ascending
    * // Where email contains prisma.io
@@ -3099,13 +3099,13 @@ export interface ContractTerminationDelegate<ExtArgs extends runtime.Types.Exten
    *   take: 10,
    * })
   **/
-  aggregate<T extends ContractTerminationAggregateArgs>(args: Prisma.Subset<T, ContractTerminationAggregateArgs>): Prisma.PrismaPromise<GetContractTerminationAggregateType<T>>
+  aggregate<T extends ApplicationTerminationAggregateArgs>(args: Prisma.Subset<T, ApplicationTerminationAggregateArgs>): Prisma.PrismaPromise<GetApplicationTerminationAggregateType<T>>
 
   /**
-   * Group by ContractTermination.
+   * Group by ApplicationTermination.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {ContractTerminationGroupByArgs} args - Group by arguments.
+   * @param {ApplicationTerminationGroupByArgs} args - Group by arguments.
    * @example
    * // Group by city, order by createdAt, get count
    * const result = await prisma.user.groupBy({
@@ -3120,14 +3120,14 @@ export interface ContractTerminationDelegate<ExtArgs extends runtime.Types.Exten
    * 
   **/
   groupBy<
-    T extends ContractTerminationGroupByArgs,
+    T extends ApplicationTerminationGroupByArgs,
     HasSelectOrTake extends Prisma.Or<
       Prisma.Extends<'skip', Prisma.Keys<T>>,
       Prisma.Extends<'take', Prisma.Keys<T>>
     >,
     OrderByArg extends Prisma.True extends HasSelectOrTake
-      ? { orderBy: ContractTerminationGroupByArgs['orderBy'] }
-      : { orderBy?: ContractTerminationGroupByArgs['orderBy'] },
+      ? { orderBy: ApplicationTerminationGroupByArgs['orderBy'] }
+      : { orderBy?: ApplicationTerminationGroupByArgs['orderBy'] },
     OrderFields extends Prisma.ExcludeUnderscoreKeys<Prisma.Keys<Prisma.MaybeTupleToUnion<T['orderBy']>>>,
     ByFields extends Prisma.MaybeTupleToUnion<T['by']>,
     ByValid extends Prisma.Has<ByFields, OrderFields>,
@@ -3176,25 +3176,25 @@ export interface ContractTerminationDelegate<ExtArgs extends runtime.Types.Exten
           ? never
           : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
       }[OrderFields]
-  >(args: Prisma.SubsetIntersection<T, ContractTerminationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetContractTerminationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  >(args: Prisma.SubsetIntersection<T, ApplicationTerminationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetApplicationTerminationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
 /**
- * Fields of the ContractTermination model
+ * Fields of the ApplicationTermination model
  */
-readonly fields: ContractTerminationFieldRefs;
+readonly fields: ApplicationTerminationFieldRefs;
 }
 
 /**
- * The delegate class that acts as a "Promise-like" for ContractTermination.
+ * The delegate class that acts as a "Promise-like" for ApplicationTermination.
  * Why is this prefixed with `Prisma__`?
  * Because we want to prevent naming conflicts as mentioned in
  * https://github.com/prisma/prisma-client-js/issues/707
  */
-export interface Prisma__ContractTerminationClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+export interface Prisma__ApplicationTerminationClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  contract<T extends Prisma.ContractDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContractDefaultArgs<ExtArgs>>): Prisma.Prisma__ContractClient<runtime.Types.Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  application<T extends Prisma.ApplicationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApplicationDefaultArgs<ExtArgs>>): Prisma.Prisma__ApplicationClient<runtime.Types.Result.GetResult<Prisma.$ApplicationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  initiator<T extends Prisma.ContractTermination$initiatorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContractTermination$initiatorArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  reviewer<T extends Prisma.ContractTermination$reviewerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContractTermination$reviewerArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  initiator<T extends Prisma.ApplicationTermination$initiatorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApplicationTermination$initiatorArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  reviewer<T extends Prisma.ApplicationTermination$reviewerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApplicationTermination$reviewerArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3221,399 +3221,399 @@ export interface Prisma__ContractTerminationClient<T, Null = never, ExtArgs exte
 
 
 /**
- * Fields of the ContractTermination model
+ * Fields of the ApplicationTermination model
  */
-export interface ContractTerminationFieldRefs {
-  readonly id: Prisma.FieldRef<"ContractTermination", 'String'>
-  readonly contractId: Prisma.FieldRef<"ContractTermination", 'String'>
-  readonly tenantId: Prisma.FieldRef<"ContractTermination", 'String'>
-  readonly requestNumber: Prisma.FieldRef<"ContractTermination", 'String'>
-  readonly initiatedBy: Prisma.FieldRef<"ContractTermination", 'TerminationInitiator'>
-  readonly initiatorId: Prisma.FieldRef<"ContractTermination", 'String'>
-  readonly type: Prisma.FieldRef<"ContractTermination", 'TerminationType'>
-  readonly reason: Prisma.FieldRef<"ContractTermination", 'String'>
-  readonly supportingDocs: Prisma.FieldRef<"ContractTermination", 'Json'>
-  readonly status: Prisma.FieldRef<"ContractTermination", 'TerminationStatus'>
-  readonly requiresApproval: Prisma.FieldRef<"ContractTermination", 'Boolean'>
-  readonly autoApproveEligible: Prisma.FieldRef<"ContractTermination", 'Boolean'>
-  readonly reviewedBy: Prisma.FieldRef<"ContractTermination", 'String'>
-  readonly reviewedAt: Prisma.FieldRef<"ContractTermination", 'DateTime'>
-  readonly reviewNotes: Prisma.FieldRef<"ContractTermination", 'String'>
-  readonly rejectionReason: Prisma.FieldRef<"ContractTermination", 'String'>
-  readonly contractSnapshot: Prisma.FieldRef<"ContractTermination", 'Json'>
-  readonly totalContractAmount: Prisma.FieldRef<"ContractTermination", 'Float'>
-  readonly totalPaidToDate: Prisma.FieldRef<"ContractTermination", 'Float'>
-  readonly outstandingBalance: Prisma.FieldRef<"ContractTermination", 'Float'>
-  readonly refundableAmount: Prisma.FieldRef<"ContractTermination", 'Float'>
-  readonly penaltyAmount: Prisma.FieldRef<"ContractTermination", 'Float'>
-  readonly forfeitedAmount: Prisma.FieldRef<"ContractTermination", 'Float'>
-  readonly adminFeeAmount: Prisma.FieldRef<"ContractTermination", 'Float'>
-  readonly netRefundAmount: Prisma.FieldRef<"ContractTermination", 'Float'>
-  readonly settlementNotes: Prisma.FieldRef<"ContractTermination", 'String'>
-  readonly refundStatus: Prisma.FieldRef<"ContractTermination", 'RefundStatus'>
-  readonly refundReference: Prisma.FieldRef<"ContractTermination", 'String'>
-  readonly refundMethod: Prisma.FieldRef<"ContractTermination", 'String'>
-  readonly refundAccountDetails: Prisma.FieldRef<"ContractTermination", 'Json'>
-  readonly refundInitiatedAt: Prisma.FieldRef<"ContractTermination", 'DateTime'>
-  readonly refundCompletedAt: Prisma.FieldRef<"ContractTermination", 'DateTime'>
-  readonly refundFailureReason: Prisma.FieldRef<"ContractTermination", 'String'>
-  readonly unitReleasedAt: Prisma.FieldRef<"ContractTermination", 'DateTime'>
-  readonly unitReservedForId: Prisma.FieldRef<"ContractTermination", 'String'>
-  readonly requestedAt: Prisma.FieldRef<"ContractTermination", 'DateTime'>
-  readonly approvedAt: Prisma.FieldRef<"ContractTermination", 'DateTime'>
-  readonly executedAt: Prisma.FieldRef<"ContractTermination", 'DateTime'>
-  readonly completedAt: Prisma.FieldRef<"ContractTermination", 'DateTime'>
-  readonly cancelledAt: Prisma.FieldRef<"ContractTermination", 'DateTime'>
-  readonly idempotencyKey: Prisma.FieldRef<"ContractTermination", 'String'>
-  readonly metadata: Prisma.FieldRef<"ContractTermination", 'Json'>
-  readonly createdAt: Prisma.FieldRef<"ContractTermination", 'DateTime'>
-  readonly updatedAt: Prisma.FieldRef<"ContractTermination", 'DateTime'>
+export interface ApplicationTerminationFieldRefs {
+  readonly id: Prisma.FieldRef<"ApplicationTermination", 'String'>
+  readonly applicationId: Prisma.FieldRef<"ApplicationTermination", 'String'>
+  readonly tenantId: Prisma.FieldRef<"ApplicationTermination", 'String'>
+  readonly requestNumber: Prisma.FieldRef<"ApplicationTermination", 'String'>
+  readonly initiatedBy: Prisma.FieldRef<"ApplicationTermination", 'TerminationInitiator'>
+  readonly initiatorId: Prisma.FieldRef<"ApplicationTermination", 'String'>
+  readonly type: Prisma.FieldRef<"ApplicationTermination", 'TerminationType'>
+  readonly reason: Prisma.FieldRef<"ApplicationTermination", 'String'>
+  readonly supportingDocs: Prisma.FieldRef<"ApplicationTermination", 'Json'>
+  readonly status: Prisma.FieldRef<"ApplicationTermination", 'TerminationStatus'>
+  readonly requiresApproval: Prisma.FieldRef<"ApplicationTermination", 'Boolean'>
+  readonly autoApproveEligible: Prisma.FieldRef<"ApplicationTermination", 'Boolean'>
+  readonly reviewedBy: Prisma.FieldRef<"ApplicationTermination", 'String'>
+  readonly reviewedAt: Prisma.FieldRef<"ApplicationTermination", 'DateTime'>
+  readonly reviewNotes: Prisma.FieldRef<"ApplicationTermination", 'String'>
+  readonly rejectionReason: Prisma.FieldRef<"ApplicationTermination", 'String'>
+  readonly applicationSnapshot: Prisma.FieldRef<"ApplicationTermination", 'Json'>
+  readonly totalApplicationAmount: Prisma.FieldRef<"ApplicationTermination", 'Float'>
+  readonly totalPaidToDate: Prisma.FieldRef<"ApplicationTermination", 'Float'>
+  readonly outstandingBalance: Prisma.FieldRef<"ApplicationTermination", 'Float'>
+  readonly refundableAmount: Prisma.FieldRef<"ApplicationTermination", 'Float'>
+  readonly penaltyAmount: Prisma.FieldRef<"ApplicationTermination", 'Float'>
+  readonly forfeitedAmount: Prisma.FieldRef<"ApplicationTermination", 'Float'>
+  readonly adminFeeAmount: Prisma.FieldRef<"ApplicationTermination", 'Float'>
+  readonly netRefundAmount: Prisma.FieldRef<"ApplicationTermination", 'Float'>
+  readonly settlementNotes: Prisma.FieldRef<"ApplicationTermination", 'String'>
+  readonly refundStatus: Prisma.FieldRef<"ApplicationTermination", 'RefundStatus'>
+  readonly refundReference: Prisma.FieldRef<"ApplicationTermination", 'String'>
+  readonly refundMethod: Prisma.FieldRef<"ApplicationTermination", 'String'>
+  readonly refundAccountDetails: Prisma.FieldRef<"ApplicationTermination", 'Json'>
+  readonly refundInitiatedAt: Prisma.FieldRef<"ApplicationTermination", 'DateTime'>
+  readonly refundCompletedAt: Prisma.FieldRef<"ApplicationTermination", 'DateTime'>
+  readonly refundFailureReason: Prisma.FieldRef<"ApplicationTermination", 'String'>
+  readonly unitReleasedAt: Prisma.FieldRef<"ApplicationTermination", 'DateTime'>
+  readonly unitReservedForId: Prisma.FieldRef<"ApplicationTermination", 'String'>
+  readonly requestedAt: Prisma.FieldRef<"ApplicationTermination", 'DateTime'>
+  readonly approvedAt: Prisma.FieldRef<"ApplicationTermination", 'DateTime'>
+  readonly executedAt: Prisma.FieldRef<"ApplicationTermination", 'DateTime'>
+  readonly completedAt: Prisma.FieldRef<"ApplicationTermination", 'DateTime'>
+  readonly cancelledAt: Prisma.FieldRef<"ApplicationTermination", 'DateTime'>
+  readonly idempotencyKey: Prisma.FieldRef<"ApplicationTermination", 'String'>
+  readonly metadata: Prisma.FieldRef<"ApplicationTermination", 'Json'>
+  readonly createdAt: Prisma.FieldRef<"ApplicationTermination", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"ApplicationTermination", 'DateTime'>
 }
     
 
 // Custom InputTypes
 /**
- * ContractTermination findUnique
+ * ApplicationTermination findUnique
  */
-export type ContractTerminationFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type ApplicationTerminationFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the ContractTermination
+   * Select specific fields to fetch from the ApplicationTermination
    */
-  select?: Prisma.ContractTerminationSelect<ExtArgs> | null
+  select?: Prisma.ApplicationTerminationSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the ContractTermination
+   * Omit specific fields from the ApplicationTermination
    */
-  omit?: Prisma.ContractTerminationOmit<ExtArgs> | null
+  omit?: Prisma.ApplicationTerminationOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ContractTerminationInclude<ExtArgs> | null
+  include?: Prisma.ApplicationTerminationInclude<ExtArgs> | null
   /**
-   * Filter, which ContractTermination to fetch.
+   * Filter, which ApplicationTermination to fetch.
    */
-  where: Prisma.ContractTerminationWhereUniqueInput
+  where: Prisma.ApplicationTerminationWhereUniqueInput
 }
 
 /**
- * ContractTermination findUniqueOrThrow
+ * ApplicationTermination findUniqueOrThrow
  */
-export type ContractTerminationFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type ApplicationTerminationFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the ContractTermination
+   * Select specific fields to fetch from the ApplicationTermination
    */
-  select?: Prisma.ContractTerminationSelect<ExtArgs> | null
+  select?: Prisma.ApplicationTerminationSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the ContractTermination
+   * Omit specific fields from the ApplicationTermination
    */
-  omit?: Prisma.ContractTerminationOmit<ExtArgs> | null
+  omit?: Prisma.ApplicationTerminationOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ContractTerminationInclude<ExtArgs> | null
+  include?: Prisma.ApplicationTerminationInclude<ExtArgs> | null
   /**
-   * Filter, which ContractTermination to fetch.
+   * Filter, which ApplicationTermination to fetch.
    */
-  where: Prisma.ContractTerminationWhereUniqueInput
+  where: Prisma.ApplicationTerminationWhereUniqueInput
 }
 
 /**
- * ContractTermination findFirst
+ * ApplicationTermination findFirst
  */
-export type ContractTerminationFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type ApplicationTerminationFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the ContractTermination
+   * Select specific fields to fetch from the ApplicationTermination
    */
-  select?: Prisma.ContractTerminationSelect<ExtArgs> | null
+  select?: Prisma.ApplicationTerminationSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the ContractTermination
+   * Omit specific fields from the ApplicationTermination
    */
-  omit?: Prisma.ContractTerminationOmit<ExtArgs> | null
+  omit?: Prisma.ApplicationTerminationOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ContractTerminationInclude<ExtArgs> | null
+  include?: Prisma.ApplicationTerminationInclude<ExtArgs> | null
   /**
-   * Filter, which ContractTermination to fetch.
+   * Filter, which ApplicationTermination to fetch.
    */
-  where?: Prisma.ContractTerminationWhereInput
+  where?: Prisma.ApplicationTerminationWhereInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
    * 
-   * Determine the order of ContractTerminations to fetch.
+   * Determine the order of ApplicationTerminations to fetch.
    */
-  orderBy?: Prisma.ContractTerminationOrderByWithRelationInput | Prisma.ContractTerminationOrderByWithRelationInput[]
+  orderBy?: Prisma.ApplicationTerminationOrderByWithRelationInput | Prisma.ApplicationTerminationOrderByWithRelationInput[]
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
    * 
-   * Sets the position for searching for ContractTerminations.
+   * Sets the position for searching for ApplicationTerminations.
    */
-  cursor?: Prisma.ContractTerminationWhereUniqueInput
+  cursor?: Prisma.ApplicationTerminationWhereUniqueInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Take `±n` ContractTerminations from the position of the cursor.
+   * Take `±n` ApplicationTerminations from the position of the cursor.
    */
   take?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Skip the first `n` ContractTerminations.
+   * Skip the first `n` ApplicationTerminations.
    */
   skip?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
    * 
-   * Filter by unique combinations of ContractTerminations.
+   * Filter by unique combinations of ApplicationTerminations.
    */
-  distinct?: Prisma.ContractTerminationScalarFieldEnum | Prisma.ContractTerminationScalarFieldEnum[]
+  distinct?: Prisma.ApplicationTerminationScalarFieldEnum | Prisma.ApplicationTerminationScalarFieldEnum[]
 }
 
 /**
- * ContractTermination findFirstOrThrow
+ * ApplicationTermination findFirstOrThrow
  */
-export type ContractTerminationFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type ApplicationTerminationFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the ContractTermination
+   * Select specific fields to fetch from the ApplicationTermination
    */
-  select?: Prisma.ContractTerminationSelect<ExtArgs> | null
+  select?: Prisma.ApplicationTerminationSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the ContractTermination
+   * Omit specific fields from the ApplicationTermination
    */
-  omit?: Prisma.ContractTerminationOmit<ExtArgs> | null
+  omit?: Prisma.ApplicationTerminationOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ContractTerminationInclude<ExtArgs> | null
+  include?: Prisma.ApplicationTerminationInclude<ExtArgs> | null
   /**
-   * Filter, which ContractTermination to fetch.
+   * Filter, which ApplicationTermination to fetch.
    */
-  where?: Prisma.ContractTerminationWhereInput
+  where?: Prisma.ApplicationTerminationWhereInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
    * 
-   * Determine the order of ContractTerminations to fetch.
+   * Determine the order of ApplicationTerminations to fetch.
    */
-  orderBy?: Prisma.ContractTerminationOrderByWithRelationInput | Prisma.ContractTerminationOrderByWithRelationInput[]
+  orderBy?: Prisma.ApplicationTerminationOrderByWithRelationInput | Prisma.ApplicationTerminationOrderByWithRelationInput[]
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
    * 
-   * Sets the position for searching for ContractTerminations.
+   * Sets the position for searching for ApplicationTerminations.
    */
-  cursor?: Prisma.ContractTerminationWhereUniqueInput
+  cursor?: Prisma.ApplicationTerminationWhereUniqueInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Take `±n` ContractTerminations from the position of the cursor.
+   * Take `±n` ApplicationTerminations from the position of the cursor.
    */
   take?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Skip the first `n` ContractTerminations.
+   * Skip the first `n` ApplicationTerminations.
    */
   skip?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
    * 
-   * Filter by unique combinations of ContractTerminations.
+   * Filter by unique combinations of ApplicationTerminations.
    */
-  distinct?: Prisma.ContractTerminationScalarFieldEnum | Prisma.ContractTerminationScalarFieldEnum[]
+  distinct?: Prisma.ApplicationTerminationScalarFieldEnum | Prisma.ApplicationTerminationScalarFieldEnum[]
 }
 
 /**
- * ContractTermination findMany
+ * ApplicationTermination findMany
  */
-export type ContractTerminationFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type ApplicationTerminationFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the ContractTermination
+   * Select specific fields to fetch from the ApplicationTermination
    */
-  select?: Prisma.ContractTerminationSelect<ExtArgs> | null
+  select?: Prisma.ApplicationTerminationSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the ContractTermination
+   * Omit specific fields from the ApplicationTermination
    */
-  omit?: Prisma.ContractTerminationOmit<ExtArgs> | null
+  omit?: Prisma.ApplicationTerminationOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ContractTerminationInclude<ExtArgs> | null
+  include?: Prisma.ApplicationTerminationInclude<ExtArgs> | null
   /**
-   * Filter, which ContractTerminations to fetch.
+   * Filter, which ApplicationTerminations to fetch.
    */
-  where?: Prisma.ContractTerminationWhereInput
+  where?: Prisma.ApplicationTerminationWhereInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
    * 
-   * Determine the order of ContractTerminations to fetch.
+   * Determine the order of ApplicationTerminations to fetch.
    */
-  orderBy?: Prisma.ContractTerminationOrderByWithRelationInput | Prisma.ContractTerminationOrderByWithRelationInput[]
+  orderBy?: Prisma.ApplicationTerminationOrderByWithRelationInput | Prisma.ApplicationTerminationOrderByWithRelationInput[]
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
    * 
-   * Sets the position for listing ContractTerminations.
+   * Sets the position for listing ApplicationTerminations.
    */
-  cursor?: Prisma.ContractTerminationWhereUniqueInput
+  cursor?: Prisma.ApplicationTerminationWhereUniqueInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Take `±n` ContractTerminations from the position of the cursor.
+   * Take `±n` ApplicationTerminations from the position of the cursor.
    */
   take?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Skip the first `n` ContractTerminations.
+   * Skip the first `n` ApplicationTerminations.
    */
   skip?: number
-  distinct?: Prisma.ContractTerminationScalarFieldEnum | Prisma.ContractTerminationScalarFieldEnum[]
+  distinct?: Prisma.ApplicationTerminationScalarFieldEnum | Prisma.ApplicationTerminationScalarFieldEnum[]
 }
 
 /**
- * ContractTermination create
+ * ApplicationTermination create
  */
-export type ContractTerminationCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type ApplicationTerminationCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the ContractTermination
+   * Select specific fields to fetch from the ApplicationTermination
    */
-  select?: Prisma.ContractTerminationSelect<ExtArgs> | null
+  select?: Prisma.ApplicationTerminationSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the ContractTermination
+   * Omit specific fields from the ApplicationTermination
    */
-  omit?: Prisma.ContractTerminationOmit<ExtArgs> | null
+  omit?: Prisma.ApplicationTerminationOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ContractTerminationInclude<ExtArgs> | null
+  include?: Prisma.ApplicationTerminationInclude<ExtArgs> | null
   /**
-   * The data needed to create a ContractTermination.
+   * The data needed to create a ApplicationTermination.
    */
-  data: Prisma.XOR<Prisma.ContractTerminationCreateInput, Prisma.ContractTerminationUncheckedCreateInput>
+  data: Prisma.XOR<Prisma.ApplicationTerminationCreateInput, Prisma.ApplicationTerminationUncheckedCreateInput>
 }
 
 /**
- * ContractTermination createMany
+ * ApplicationTermination createMany
  */
-export type ContractTerminationCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type ApplicationTerminationCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * The data used to create many ContractTerminations.
+   * The data used to create many ApplicationTerminations.
    */
-  data: Prisma.ContractTerminationCreateManyInput | Prisma.ContractTerminationCreateManyInput[]
+  data: Prisma.ApplicationTerminationCreateManyInput | Prisma.ApplicationTerminationCreateManyInput[]
   skipDuplicates?: boolean
 }
 
 /**
- * ContractTermination update
+ * ApplicationTermination update
  */
-export type ContractTerminationUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type ApplicationTerminationUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the ContractTermination
+   * Select specific fields to fetch from the ApplicationTermination
    */
-  select?: Prisma.ContractTerminationSelect<ExtArgs> | null
+  select?: Prisma.ApplicationTerminationSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the ContractTermination
+   * Omit specific fields from the ApplicationTermination
    */
-  omit?: Prisma.ContractTerminationOmit<ExtArgs> | null
+  omit?: Prisma.ApplicationTerminationOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ContractTerminationInclude<ExtArgs> | null
+  include?: Prisma.ApplicationTerminationInclude<ExtArgs> | null
   /**
-   * The data needed to update a ContractTermination.
+   * The data needed to update a ApplicationTermination.
    */
-  data: Prisma.XOR<Prisma.ContractTerminationUpdateInput, Prisma.ContractTerminationUncheckedUpdateInput>
+  data: Prisma.XOR<Prisma.ApplicationTerminationUpdateInput, Prisma.ApplicationTerminationUncheckedUpdateInput>
   /**
-   * Choose, which ContractTermination to update.
+   * Choose, which ApplicationTermination to update.
    */
-  where: Prisma.ContractTerminationWhereUniqueInput
+  where: Prisma.ApplicationTerminationWhereUniqueInput
 }
 
 /**
- * ContractTermination updateMany
+ * ApplicationTermination updateMany
  */
-export type ContractTerminationUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type ApplicationTerminationUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * The data used to update ContractTerminations.
+   * The data used to update ApplicationTerminations.
    */
-  data: Prisma.XOR<Prisma.ContractTerminationUpdateManyMutationInput, Prisma.ContractTerminationUncheckedUpdateManyInput>
+  data: Prisma.XOR<Prisma.ApplicationTerminationUpdateManyMutationInput, Prisma.ApplicationTerminationUncheckedUpdateManyInput>
   /**
-   * Filter which ContractTerminations to update
+   * Filter which ApplicationTerminations to update
    */
-  where?: Prisma.ContractTerminationWhereInput
+  where?: Prisma.ApplicationTerminationWhereInput
   /**
-   * Limit how many ContractTerminations to update.
+   * Limit how many ApplicationTerminations to update.
    */
   limit?: number
 }
 
 /**
- * ContractTermination upsert
+ * ApplicationTermination upsert
  */
-export type ContractTerminationUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type ApplicationTerminationUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the ContractTermination
+   * Select specific fields to fetch from the ApplicationTermination
    */
-  select?: Prisma.ContractTerminationSelect<ExtArgs> | null
+  select?: Prisma.ApplicationTerminationSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the ContractTermination
+   * Omit specific fields from the ApplicationTermination
    */
-  omit?: Prisma.ContractTerminationOmit<ExtArgs> | null
+  omit?: Prisma.ApplicationTerminationOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ContractTerminationInclude<ExtArgs> | null
+  include?: Prisma.ApplicationTerminationInclude<ExtArgs> | null
   /**
-   * The filter to search for the ContractTermination to update in case it exists.
+   * The filter to search for the ApplicationTermination to update in case it exists.
    */
-  where: Prisma.ContractTerminationWhereUniqueInput
+  where: Prisma.ApplicationTerminationWhereUniqueInput
   /**
-   * In case the ContractTermination found by the `where` argument doesn't exist, create a new ContractTermination with this data.
+   * In case the ApplicationTermination found by the `where` argument doesn't exist, create a new ApplicationTermination with this data.
    */
-  create: Prisma.XOR<Prisma.ContractTerminationCreateInput, Prisma.ContractTerminationUncheckedCreateInput>
+  create: Prisma.XOR<Prisma.ApplicationTerminationCreateInput, Prisma.ApplicationTerminationUncheckedCreateInput>
   /**
-   * In case the ContractTermination was found with the provided `where` argument, update it with this data.
+   * In case the ApplicationTermination was found with the provided `where` argument, update it with this data.
    */
-  update: Prisma.XOR<Prisma.ContractTerminationUpdateInput, Prisma.ContractTerminationUncheckedUpdateInput>
+  update: Prisma.XOR<Prisma.ApplicationTerminationUpdateInput, Prisma.ApplicationTerminationUncheckedUpdateInput>
 }
 
 /**
- * ContractTermination delete
+ * ApplicationTermination delete
  */
-export type ContractTerminationDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type ApplicationTerminationDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the ContractTermination
+   * Select specific fields to fetch from the ApplicationTermination
    */
-  select?: Prisma.ContractTerminationSelect<ExtArgs> | null
+  select?: Prisma.ApplicationTerminationSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the ContractTermination
+   * Omit specific fields from the ApplicationTermination
    */
-  omit?: Prisma.ContractTerminationOmit<ExtArgs> | null
+  omit?: Prisma.ApplicationTerminationOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ContractTerminationInclude<ExtArgs> | null
+  include?: Prisma.ApplicationTerminationInclude<ExtArgs> | null
   /**
-   * Filter which ContractTermination to delete.
+   * Filter which ApplicationTermination to delete.
    */
-  where: Prisma.ContractTerminationWhereUniqueInput
+  where: Prisma.ApplicationTerminationWhereUniqueInput
 }
 
 /**
- * ContractTermination deleteMany
+ * ApplicationTermination deleteMany
  */
-export type ContractTerminationDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type ApplicationTerminationDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Filter which ContractTerminations to delete
+   * Filter which ApplicationTerminations to delete
    */
-  where?: Prisma.ContractTerminationWhereInput
+  where?: Prisma.ApplicationTerminationWhereInput
   /**
-   * Limit how many ContractTerminations to delete.
+   * Limit how many ApplicationTerminations to delete.
    */
   limit?: number
 }
 
 /**
- * ContractTermination.initiator
+ * ApplicationTermination.initiator
  */
-export type ContractTermination$initiatorArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type ApplicationTermination$initiatorArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the User
    */
@@ -3630,9 +3630,9 @@ export type ContractTermination$initiatorArgs<ExtArgs extends runtime.Types.Exte
 }
 
 /**
- * ContractTermination.reviewer
+ * ApplicationTermination.reviewer
  */
-export type ContractTermination$reviewerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type ApplicationTermination$reviewerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the User
    */
@@ -3649,19 +3649,19 @@ export type ContractTermination$reviewerArgs<ExtArgs extends runtime.Types.Exten
 }
 
 /**
- * ContractTermination without action
+ * ApplicationTermination without action
  */
-export type ContractTerminationDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type ApplicationTerminationDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the ContractTermination
+   * Select specific fields to fetch from the ApplicationTermination
    */
-  select?: Prisma.ContractTerminationSelect<ExtArgs> | null
+  select?: Prisma.ApplicationTerminationSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the ContractTermination
+   * Omit specific fields from the ApplicationTermination
    */
-  omit?: Prisma.ContractTerminationOmit<ExtArgs> | null
+  omit?: Prisma.ApplicationTerminationOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ContractTerminationInclude<ExtArgs> | null
+  include?: Prisma.ApplicationTerminationInclude<ExtArgs> | null
 }

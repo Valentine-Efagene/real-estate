@@ -125,12 +125,12 @@ export async function sendPrequalificationRejectedNotification(
     );
 }
 
-// ============== Contract Notifications ==============
+// ============== application Notifications ==============
 
-export interface ContractCreatedPayload {
+export interface ApplicationCreatedPayload {
     email: string;
     userName: string;
-    contractNumber: string;
+    applicationNumber: string;
     propertyName: string;
     totalAmount: string;
     termMonths: number;
@@ -138,17 +138,17 @@ export interface ContractCreatedPayload {
     dashboardUrl: string;
 }
 
-export async function sendContractCreatedNotification(
-    payload: ContractCreatedPayload,
+export async function sendApplicationCreatedNotification(
+    payload: ApplicationCreatedPayload,
     correlationId?: string,
 ): Promise<void> {
     const publisher = getPublisher();
     await publisher.publishEmail(
-        NotificationType.CONTRACT_CREATED,
+        NotificationType.APPLICATION_CREATED,
         {
             to_email: payload.email,
             homeBuyerName: payload.userName,
-            contractNumber: payload.contractNumber,
+            applicationNumber: payload.applicationNumber,
             propertyName: payload.propertyName,
             totalAmount: payload.totalAmount,
             termMonths: payload.termMonths,
@@ -159,10 +159,10 @@ export async function sendContractCreatedNotification(
     );
 }
 
-export interface ContractActivatedPayload {
+export interface ApplicationActivatedPayload {
     email: string;
     userName: string;
-    contractNumber: string;
+    applicationNumber: string;
     propertyName: string;
     startDate: string;
     nextPaymentDate: string;
@@ -170,17 +170,17 @@ export interface ContractActivatedPayload {
     dashboardUrl: string;
 }
 
-export async function sendContractActivatedNotification(
-    payload: ContractActivatedPayload,
+export async function sendApplicationActivatedNotification(
+    payload: ApplicationActivatedPayload,
     correlationId?: string,
 ): Promise<void> {
     const publisher = getPublisher();
     await publisher.publishEmail(
-        NotificationType.CONTRACT_ACTIVATED,
+        NotificationType.APPLICATION_ACTIVATED,
         {
             to_email: payload.email,
             homeBuyerName: payload.userName,
-            contractNumber: payload.contractNumber,
+            applicationNumber: payload.applicationNumber,
             propertyName: payload.propertyName,
             startDate: payload.startDate,
             nextPaymentDate: payload.nextPaymentDate,
@@ -191,11 +191,11 @@ export async function sendContractActivatedNotification(
     );
 }
 
-export interface ContractTerminationRequestedPayload {
+export interface ApplicationTerminationRequestedPayload {
     email: string;
     userName: string;
-    contractId: string;
-    contractNumber: string;
+    applicationId: string;
+    applicationNumber: string;
     requestNumber: string;
     terminationType: string;
     reason: string;
@@ -203,17 +203,17 @@ export interface ContractTerminationRequestedPayload {
     statusUrl: string;
 }
 
-export async function sendContractTerminationRequestedNotification(
-    payload: ContractTerminationRequestedPayload,
+export async function sendApplicationTerminationRequestedNotification(
+    payload: ApplicationTerminationRequestedPayload,
     correlationId?: string,
 ): Promise<void> {
     const publisher = getPublisher();
     await publisher.publishEmail(
-        NotificationType.CONTRACT_TERMINATION_REQUESTED,
+        NotificationType.APPLICATION_TERMINATION_REQUESTED,
         {
             to_email: payload.email,
             homeBuyerName: payload.userName,
-            contractNumber: payload.contractNumber,
+            applicationNumber: payload.applicationNumber,
             requestNumber: payload.requestNumber,
             terminationType: payload.terminationType,
             reason: payload.reason,
@@ -224,27 +224,27 @@ export async function sendContractTerminationRequestedNotification(
     );
 }
 
-export interface ContractTerminationApprovedPayload {
+export interface ApplicationTerminationApprovedPayload {
     email: string;
     userName: string;
-    contractId: string;
-    contractNumber: string;
+    applicationId: string;
+    applicationNumber: string;
     refundAmount: number;
     processingTime: string;
     statusUrl: string;
 }
 
-export async function sendContractTerminationApprovedNotification(
-    payload: ContractTerminationApprovedPayload,
+export async function sendApplicationTerminationApprovedNotification(
+    payload: ApplicationTerminationApprovedPayload,
     correlationId?: string,
 ): Promise<void> {
     const publisher = getPublisher();
     await publisher.publishEmail(
-        NotificationType.CONTRACT_TERMINATION_APPROVED,
+        NotificationType.APPLICATION_TERMINATION_APPROVED,
         {
             to_email: payload.email,
             homeBuyerName: payload.userName,
-            contractNumber: payload.contractNumber,
+            applicationNumber: payload.applicationNumber,
             refundAmount: formatCurrency(payload.refundAmount),
             processingTime: payload.processingTime,
             dashboardLink: payload.statusUrl,
@@ -253,28 +253,28 @@ export async function sendContractTerminationApprovedNotification(
     );
 }
 
-export interface ContractTerminatedPayload {
+export interface ApplicationTerminatedPayload {
     email: string;
     userName: string;
-    contractId: string;
-    contractNumber: string;
+    applicationId: string;
+    applicationNumber: string;
     terminationDate: Date;
     refundAmount: number;
     refundStatus: string;
     supportUrl: string;
 }
 
-export async function sendContractTerminatedNotification(
-    payload: ContractTerminatedPayload,
+export async function sendApplicationTerminatedNotification(
+    payload: ApplicationTerminatedPayload,
     correlationId?: string,
 ): Promise<void> {
     const publisher = getPublisher();
     await publisher.publishEmail(
-        NotificationType.CONTRACT_TERMINATED,
+        NotificationType.APPLICATION_TERMINATED,
         {
             to_email: payload.email,
             homeBuyerName: payload.userName,
-            contractNumber: payload.contractNumber,
+            applicationNumber: payload.applicationNumber,
             terminationDate: formatDate(payload.terminationDate),
             refundAmount: formatCurrency(payload.refundAmount),
             refundStatus: payload.refundStatus,
@@ -289,8 +289,8 @@ export async function sendContractTerminatedNotification(
 export interface PaymentReceivedPayload {
     email: string;
     userName: string;
-    contractId: string;
-    contractNumber: string;
+    applicationId: string;
+    applicationNumber: string;
     paymentAmount: number;
     paymentDate: Date;
     paymentReference: string;
@@ -310,7 +310,7 @@ export async function sendPaymentReceivedNotification(
         {
             to_email: payload.email,
             homeBuyerName: payload.userName,
-            contractNumber: payload.contractNumber,
+            applicationNumber: payload.applicationNumber,
             paymentAmount: formatCurrency(payload.paymentAmount),
             paymentDate: formatDate(payload.paymentDate),
             paymentReference: payload.paymentReference,
@@ -326,7 +326,7 @@ export async function sendPaymentReceivedNotification(
 export interface PaymentFailedPayload {
     email: string;
     userName: string;
-    contractId: string;
+    applicationId: string;
     paymentAmount: number;
     amountDue: number;
     dueDate: Date;
@@ -357,7 +357,7 @@ export async function sendPaymentFailedNotification(
 export interface PaymentReminderPayload {
     email: string;
     userName: string;
-    contractNumber: string;
+    applicationNumber: string;
     propertyName: string;
     amount: number;
     dueDate: Date;
@@ -375,7 +375,7 @@ export async function sendPaymentReminderNotification(
         {
             to_email: payload.email,
             homeBuyerName: payload.userName,
-            contractNumber: payload.contractNumber,
+            applicationNumber: payload.applicationNumber,
             propertyName: payload.propertyName,
             amount: formatCurrency(payload.amount),
             dueDate: formatDate(payload.dueDate),
@@ -393,7 +393,7 @@ export interface OfferLetterNotificationPayload {
     userName: string;
     letterNumber: string;
     letterType: string; // "Provisional Offer Letter" or "Final Offer Letter"
-    contractNumber: string;
+    applicationNumber: string;
     propertyName: string;
     expiryDate: string;
     viewUrl: string;
@@ -412,7 +412,7 @@ export async function sendOfferLetterNotification(
             homeBuyerName: payload.userName,
             letterNumber: payload.letterNumber,
             letterType: payload.letterType,
-            contractNumber: payload.contractNumber,
+            applicationNumber: payload.applicationNumber,
             propertyName: payload.propertyName,
             expiryDate: payload.expiryDate,
             viewLink: payload.viewUrl,
@@ -427,7 +427,7 @@ export interface OfferLetterSignedPayload {
     userName: string;
     letterNumber: string;
     letterType: string;
-    contractNumber: string;
+    applicationNumber: string;
     propertyName: string;
     signedDate: string;
     downloadUrl: string;
@@ -445,7 +445,7 @@ export async function sendOfferLetterSignedNotification(
             homeBuyerName: payload.userName,
             letterNumber: payload.letterNumber,
             letterType: payload.letterType,
-            contractNumber: payload.contractNumber,
+            applicationNumber: payload.applicationNumber,
             propertyName: payload.propertyName,
             signedDate: payload.signedDate,
             downloadLink: payload.downloadUrl,
@@ -461,7 +461,7 @@ export interface DocumentApprovedPayload {
     userName: string;
     documentName: string;
     stepName: string;
-    contractNumber: string;
+    applicationNumber: string;
     propertyName?: string;
     approvedDate: string;
     dashboardUrl: string;
@@ -479,7 +479,7 @@ export async function sendDocumentApprovedNotification(
             homeBuyerName: payload.userName,
             documentName: payload.documentName,
             stepName: payload.stepName,
-            contractNumber: payload.contractNumber,
+            applicationNumber: payload.applicationNumber,
             propertyName: payload.propertyName,
             approvedDate: payload.approvedDate,
             dashboardLink: payload.dashboardUrl,
@@ -493,7 +493,7 @@ export interface DocumentRejectedPayload {
     userName: string;
     documentName: string;
     stepName: string;
-    contractNumber: string;
+    applicationNumber: string;
     propertyName?: string;
     reason: string;
     dashboardUrl: string;
@@ -511,7 +511,7 @@ export async function sendDocumentRejectedNotification(
             homeBuyerName: payload.userName,
             documentName: payload.documentName,
             stepName: payload.stepName,
-            contractNumber: payload.contractNumber,
+            applicationNumber: payload.applicationNumber,
             propertyName: payload.propertyName,
             reason: payload.reason,
             dashboardLink: payload.dashboardUrl,

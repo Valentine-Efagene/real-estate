@@ -59,10 +59,10 @@ export const GenerateInstallmentsSchema = z
     .openapi('GenerateInstallments');
 
 // Phase response
-export const ContractPhaseResponseSchema = z
+export const ApplicationPhaseResponseSchema = z
     .object({
         id: z.string(),
-        contractId: z.string(),
+        applicationId: z.string(),
         paymentPlanId: z.string().nullable(),
         name: z.string(),
         description: z.string().nullable(),
@@ -84,7 +84,7 @@ export const ContractPhaseResponseSchema = z
         installments: z.array(z.any()).optional(),
         steps: z.array(z.any()).optional(),
     })
-    .openapi('ContractPhaseResponse');
+    .openapi('ApplicationPhaseResponse');
 
 export type ActivatePhaseInput = z.infer<typeof ActivatePhaseSchema>;
 export type CompleteStepInput = z.infer<typeof CompleteStepSchema>;

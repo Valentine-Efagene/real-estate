@@ -10,14 +10,14 @@ import { createOfferLetterService } from '../offer-letter.service';
  * 
  * Example metadata:
  * {
- *   "documentType": "PROVISIONAL_OFFER" | "FINAL_OFFER" | "CONTRACT_SUMMARY",
+ *   "documentType": "PROVISIONAL_OFFER" | "FINAL_OFFER" | "application_SUMMARY",
  *   "templateCode": "PROVISIONAL_OFFER", // optional, defaults to documentType
  *   "autoSend": true, // whether to automatically send the document
  *   "expiresInDays": 30
  * }
  */
 export interface GenerateDocumentMetadata {
-    documentType: 'PROVISIONAL_OFFER' | 'FINAL_OFFER' | 'CONTRACT_SUMMARY';
+    documentType: 'PROVISIONAL_OFFER' | 'FINAL_OFFER' | 'application_SUMMARY';
     templateCode?: string;
     autoSend?: boolean;
     expiresInDays?: number;
@@ -37,7 +37,7 @@ export function validateGenerateDocumentMetadata(metadata: unknown): GenerateDoc
         throw new AppError(400, 'GENERATE_DOCUMENT step requires documentType in metadata');
     }
 
-    const validDocumentTypes = ['PROVISIONAL_OFFER', 'FINAL_OFFER', 'CONTRACT_SUMMARY'];
+    const validDocumentTypes = ['PROVISIONAL_OFFER', 'FINAL_OFFER', 'application_SUMMARY'];
     if (!validDocumentTypes.includes(meta.documentType as string)) {
         throw new AppError(400, `Invalid documentType. Must be one of: ${validDocumentTypes.join(', ')}`);
     }
@@ -59,7 +59,7 @@ export function validateGenerateDocumentMetadata(metadata: unknown): GenerateDoc
 export async function handleGenerateDocumentStep(
     stepId: string,
     phaseId: string,
-    contractId: string,
+    applicationId: string,
     userId: string
 ): Promise<{
     success: boolean;
@@ -77,7 +77,7 @@ export async function handleGenerateDocumentStep(
             documentationPhase: {
                 select: {
                     phase: {
-                        select: { contractId: true },
+                        select: { applicationId: true },
                     },
                 },
             },
@@ -108,7 +108,7 @@ export async function handleGenerateDocumentStep(
 
                 const offerLetter = await offerLetterService.generate(
                     {
-                        contractId,
+                        applicationId,
                         type: offerLetterType,
                         expiresInDays: metadata.expiresInDays ?? 30,
                     },
@@ -131,10 +131,10 @@ export async function handleGenerateDocumentStep(
                 break;
             }
 
-            case 'CONTRACT_SUMMARY': {
-                // TODO: Implement contract summary generation
+            case 'application_SUMMARY': {
+                // TODO: Implement application summary generation
                 // For now, we'll log and continue - this allows the step to be marked complete
-                console.info('[GenerateDocumentHandler] CONTRACT_SUMMARY generation not yet implemented');
+                console.info('[GenerateDocumentHandler] application_SUMMARY generation not yet implemented');
                 break;
             }
 

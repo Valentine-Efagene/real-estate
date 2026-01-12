@@ -13,7 +13,7 @@ import { v4 as uuidv4 } from 'uuid';
 const paymentPublisher = new PaymentEventPublisher('payment-service');
 
 interface AllocationOptions {
-    contractId?: string;
+    applicationId?: string;
     maxAmount?: number;
 }
 
@@ -56,43 +56,43 @@ class AllocationService {
             ? Math.min(wallet.balance, options.maxAmount)
             : wallet.balance;
 
-        // Find user's contracts
-        const contracts = await prisma.contract.findMany({
+        // Find user's applications
+        const applications = await prisma.application.findMany({
             where: {
                 buyerId: userId,
-                status: 'ACTIVE', // Only active contracts (arrears tracked at installment level)
-                ...(options?.contractId ? { id: options.contractId } : {}),
+                status: 'ACTIVE', // Only active applications (arrears tracked at installment level)
+                ...(options?.applicationId ? { id: options.applicationId } : {}),
             },
             select: { id: true },
         });
 
-        if (contracts.length === 0) {
-            console.log('[Allocation] No active contracts for user', { userId });
+        if (applications.length === 0) {
+            console.log('[Allocation] No active applications for user', { userId });
             return { totalAllocated: 0, installmentsPaid: [], remainingBalance: wallet.balance };
         }
 
-        const contractIds = contracts.map((c) => c.id);
+        const applicationIds = applications.map((c) => c.id);
 
-        // Find phases for these contracts
-        const phases = await prisma.contractPhase.findMany({
+        // Find phases for these applications
+        const phases = await prisma.applicationPhase.findMany({
             where: {
-                contractId: { in: contractIds },
+                applicationId: { in: applicationIds },
                 status: { in: ['ACTIVE', 'PENDING'] },
             },
             select: { id: true },
         });
 
         if (phases.length === 0) {
-            console.log('[Allocation] No active phases for contracts', { userId, contractIds });
+            console.log('[Allocation] No active phases for applications', { userId, applicationIds });
             return { totalAllocated: 0, installmentsPaid: [], remainingBalance: wallet.balance };
         }
 
         const phaseIds = phases.map((p) => p.id);
 
         // Find pending/overdue installments ordered by priority
-        const installments = await prisma.contractInstallment.findMany({
+        const installments = await prisma.paymentInstallment.findMany({
             where: {
-                phaseId: { in: phaseIds },
+                paymentPhaseId: { in: phaseIds },
                 status: { in: ['PENDING', 'OVERDUE', 'PARTIALLY_PAID'] },
             },
             orderBy: [
@@ -184,18 +184,21 @@ class AllocationService {
         const { installmentId, amount, walletId, userId, reference } = input;
 
         // Verify installment exists
-        const installment = await prisma.contractInstallment.findUnique({
+        const installment = await prisma.paymentInstallment.findUnique({
             where: { id: installmentId },
-            include: { phase: { include: { contract: true } } },
+            include: { paymentPhase: { include: { phase: true } } },
         });
 
         if (!installment) {
             throw new AppError(404, 'Installment not found');
         }
 
-        if (!installment.phase) {
+        if (!installment.paymentPhase) {
             throw new AppError(400, 'Installment is not associated with a phase');
         }
+
+        const paymentPhase = installment.paymentPhase;
+        const applicationPhase = paymentPhase.phase;
 
         // Debit wallet
         const { wallet, transaction } = await walletService.debit({
@@ -211,7 +214,7 @@ class AllocationService {
             const isPaid = newPaidAmount >= installment.amount;
 
             // Update installment
-            await tx.contractInstallment.update({
+            await tx.paymentInstallment.update({
                 where: { id: installmentId },
                 data: {
                     paidAmount: newPaidAmount,
@@ -221,26 +224,33 @@ class AllocationService {
             });
 
             // Update phase totals
-            const phase = installment.phase!;
-            const newPhasePaidAmount = phase.paidAmount + amount;
-            const newRemainingAmount = (phase.totalAmount ?? 0) - newPhasePaidAmount;
+            const newPhasePaidAmount = paymentPhase.paidAmount + amount;
+            const newRemainingAmount = (paymentPhase.totalAmount ?? 0) - newPhasePaidAmount;
             const isPhaseComplete = newRemainingAmount <= 0;
 
-            await tx.contractPhase.update({
-                where: { id: phase.id },
+            await tx.paymentPhase.update({
+                where: { id: paymentPhase.id },
                 data: {
                     paidAmount: newPhasePaidAmount,
-                    remainingAmount: Math.max(0, newRemainingAmount),
-                    status: isPhaseComplete ? 'COMPLETED' : phase.status,
-                    completedAt: isPhaseComplete ? new Date() : phase.completedAt,
                 },
             });
 
+            // Update parent ApplicationPhase status if complete
+            if (isPhaseComplete) {
+                await tx.applicationPhase.update({
+                    where: { id: paymentPhase.phaseId },
+                    data: {
+                        status: 'COMPLETED',
+                        completedAt: new Date(),
+                    },
+                });
+            }
+
             // Create payment record
-            await tx.contractPayment.create({
+            await tx.applicationPayment.create({
                 data: {
-                    contractId: phase.contractId,
-                    phaseId: phase.id,
+                    applicationId: applicationPhase.applicationId,
+                    phaseId: applicationPhase.id,
                     installmentId,
                     payerId: userId,
                     amount,
@@ -256,13 +266,13 @@ class AllocationService {
                 data: {
                     id: uuidv4(),
                     eventType: 'PAYMENT.COMPLETED',
-                    aggregateType: 'ContractPayment',
+                    aggregateType: 'ApplicationPayment',
                     aggregateId: installmentId,
                     queueName: 'payments',
                     payload: JSON.stringify({
                         installmentId,
-                        phaseId: phase.id,
-                        contractId: phase.contractId,
+                        phaseId: applicationPhase.id,
+                        applicationId: applicationPhase.applicationId,
                         amount,
                         reference,
                         walletId,

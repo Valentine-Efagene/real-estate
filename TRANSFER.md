@@ -2,11 +2,11 @@
 
 ## Overview
 
-The platform supports mid-contract property transfers with payment and phase progress preservation. Buyers can transfer to a different property, and the system recalculates everything at the new price while preserving how much they've paid.
+The platform supports mid-application property transfers with payment and phase progress preservation. Buyers can transfer to a different property, and the system recalculates everything at the new price while preserving how much they've paid.
 
 ## What Gets Preserved
 
-✅ **Payment History** - All installment payments migrated to new contract with original dates and references  
+✅ **Payment History** - All installment payments migrated to new application with original dates and references  
 ✅ **Phase Progress** - Phase completion percentages preserved (e.g., 50% of downpayment paid stays 50%)  
 ✅ **Payment Schedule** - Buyer continues from where they left off, installments recalculated at new price  
 ✅ **Account Standing** - Payment history remains continuous with no impact on buyer's record
@@ -18,7 +18,7 @@ The platform supports mid-contract property transfers with payment and phase pro
 ### 1. Initiate Transfer Request
 
 - System validates:
-  - Source contract is ACTIVE
+  - Source application is ACTIVE
   - Target property is AVAILABLE
   - Not transferring to same unit
 - Creates transfer request with status `PENDING`
@@ -33,7 +33,7 @@ Status:  PENDING
 
 ### 2. Admin Review & Approval
 
-- Admin views recalculated contract preview
+- Admin views recalculated application preview
 - Reviews payment coverage: ₦2.5M ÷ ₦541,666.67 = 4.61 installments → 4 complete + ₦333K credit
 - Approves or rejects with notes
 
@@ -43,7 +43,7 @@ Status:  PENDING
 
 **What happens (all in one atomic transaction):**
 
-1. **Create New Contract**
+1. **Create New Application**
 
    - Property: Target unit (4-bedroom duplex)
    - Total Amount: ₦65,000,000
@@ -53,7 +53,7 @@ Status:  PENDING
 
 2. **Migrate All Payments**
 
-   - Copies all 6 previous payments to new contract
+   - Copies all 6 previous payments to new application
    - Each payment keeps its original:
      - Amount (₦416,666.67)
      - Date paid
@@ -63,16 +63,16 @@ Status:  PENDING
 
 3. **Recalculate All Phases (Fresh Calculation)**
 
-   **Treat as brand new contract - recalculate everything:**
+   **Treat as brand new application - recalculate everything:**
 
-   **Old Contract (₦50M):**
+   **Old Application (₦50M):**
 
    - Downpayment (10%): ₦5,000,000
    - Balance (90%): ₦45,000,000
    - Installments: 12 × ₦416,666.67 = ₦5,000,000
    - Paid: ₦2,500,000 (6 installments)
 
-   **New Contract (₦65M) - Fresh Calculation:**
+   **New Application (₦65M) - Fresh Calculation:**
 
    - Downpayment (10%): ₦6,500,000
 
@@ -80,18 +80,18 @@ Status:  PENDING
 
 **Single transaction performs:**
 
-1. **Create New Contract** at target price (₦65M) with same payment plan (10/90)
+1. **Create New Application** at target price (₦65M) with same payment plan (10/90)
 
 2. **Migrate Payments** - Copy all previous payments tagged as `MIGRATED`
 
 3. **Recalculate Everything Fresh**
 
    ```
-   Old Contract (₦50M):
+   Old Application (₦50M):
    - Downpayment: ₦5M (12 × ₦416,666.67)
    - Paid: ₦2.5M (6 installments)
 
-   New Contract (₦65M):
+   New Application (₦65M):
    - Downpayment: ₦6.5M (12 × ₦541,666.67)
    - Balance: ₦58.5M
 
@@ -110,9 +110,9 @@ Status:  PENDING
 
 5. **Update Properties** - Old unit → AVAILABLE, New unit → RESERVED
 
-6. **Archive Old Contract** - Status → TRANSFERRED, linked to new contract
+6. **Archive Old Application** - Status → TRANSFERRED, linked to new application
 
-7. **Log Events** - ContractEvent and DomainEvent created for audit trails #6-12
+7. **Log Events** - ApplicationEvent and DomainEvent created for audit trails #6-12
 
 - Completes downpayment phase
 - Proceeds to balance payment (₦58.5M - handled with bank/mortgage)
@@ -149,17 +149,17 @@ System recalculates everything at new price:
 
 **1. RECALCULATE_FRESH**
 
-- Entire contract recalculated at ₦35,000,000
+- Entire application recalculated at ₦35,000,000
 - Downpayment: 10% of ₦35M = ₦3,500,000 (was ₦5M)
 
 ### 4. Result
 
-New contract active with:
+New application active with:
 
 - Total: ₦65M
 - Progress: 4/12 installments PAID + ₦333K credit
 - Next payment: ₦208K to complete installment #5
-- Old contract archived as TRANSFERRED
+- Old application archived as TRANSFERRED
 
 **Current Behavior:**
 
@@ -173,10 +173,10 @@ New contract active with:
 
 ### Transfer Request Submission
 
-✅ Source contract must be ACTIVE (not draft, terminated, or already transferred)  
+✅ Source application must be ACTIVE (not draft, terminated, or already transferred)  
 ✅ Target property must be AVAILABLE (not sold or reserved by someone else)  
 ✅ Buyer cannot transfer to the same unit  
-✅ Only one pending transfer request per contract at a time
+✅ Only one pending transfer request per application at a time
 
 ### Transfer Approval
 
@@ -213,7 +213,7 @@ Example: Paid ₦4M, new downpayment ₦3.5M → Overpayment: ₦500K
 
 **Current Implementation:**
 
-- System automatically creates `ContractRefund` record with status `PENDING`
+- System automatically creates `ApplicationRefund` record with status `PENDING`
 - System automatically creates `ApprovalRequest` linked to the refund
 - Refund appears in unified approval request dashboard
 - Priority: HIGH if amount > ₦1M, otherwise NORMAL
@@ -225,8 +225,8 @@ Example: Paid ₦4M, new downpayment ₦3.5M → Overpayment: ₦500K
 
 1. Admin views refund in `/api/approval-requests?type=REFUND_APPROVAL&status=PENDING`
 2. Payload includes: refund details, transfer context, buyer info, amounts
-3. Admin approves → `ContractRefund.status`: PENDING → APPROVED
-4. Admin rejects → `ContractRefund.status`: PENDING → REJECTED
+3. Admin approves → `ApplicationRefund.status`: PENDING → APPROVED
+4. Admin rejects → `ApplicationRefund.status`: PENDING → REJECTED
 
 **Note:** Refund processing (APPROVED → PROCESSING → COMPLETED) requires manual finance team intervention.
 
@@ -247,37 +247,37 @@ Validation Rules
 
 **Request Submission:**
 
-- Source contract must be ACTIVE
+- Source application must be ACTIVE
 - Target property must be AVAILABLE
 - Cannot transfer to same unit
-- One pending transfer per contract
+- One pending transfer per application
 
 **Transfer Execution:**
 
-- Old contract locked (no new payments)
+- Old application locked (no new payments)
 - All steps atomic (succeed together or fail together)
 - Properties update atomically
 - Complete audit trail created
 
 **Post-Transfer:**
 
-- Old contract cannot receive payments
-- Old contract cannot be reactivated
-- Can initiate new transfer from new contractAudit Trail
+- Old application cannot receive payments
+- Old application cannot be reactivated
+- Can initiate new transfer from new applicationAudit Trail
 
 **Events Logged:**
 
 - `TRANSFER_REQUESTED` - Request submission
 - `TRANSFER_APPROVED` - Admin approval
-- `CONTRACT_TRANSFERRED` - Old contract archived
-- `CONTRACT_CREATED` - New contract activated
+- `CONTRACT_TRANSFERRED` - Old application archived
+- `CONTRACT_CREATED` - New application activated
 - `PAYMENT_MIGRATED` - Each payment copied
 
 **Data Preserved:**
 
-- Original contract with all history
+- Original application with all history
 - Transfer request with reason and approval notes
-- Old/new contract ID mapping
+- Old/new application ID mapping
 - Complete payment migration log
 - Property status changes
 
@@ -287,8 +287,8 @@ Validation Rules
 
 ✅ **Atomic Execution** - All steps succeed/fail together  
 ✅ **Data Integrity** - Referential integrity maintained  
-✅ **Event Logging** - Both ContractEvent (audit) and DomainEvent (messaging) created  
-✅ **Performance** - Completes in <2 seconds for typical contracts
+✅ **Event Logging** - Both ApplicationEvent (audit) and DomainEvent (messaging) created  
+✅ **Performance** - Completes in <2 seconds for typical applications
 
 ---
 

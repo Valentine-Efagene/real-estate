@@ -71,11 +71,11 @@ await publisher.publishEmail(
   {
     to_email: buyer.email,
     homeBuyerName: buyer.name,
-    contractNumber: contract.contractNumber,
+    applicationNumber: application.applicationNumber,
     propertyName: property.title,
-    totalAmount: formatCurrency(contract.totalAmount),
-    termMonths: contract.termMonths,
-    monthlyPayment: formatCurrency(contract.periodicPayment),
+    totalAmount: formatCurrency(application.totalAmount),
+    termMonths: application.termMonths,
+    monthlyPayment: formatCurrency(application.periodicPayment),
     dashboardLink: dashboardUrl,
   },
   { correlationId }
@@ -86,21 +86,21 @@ await publisher.publishEmail(
 
 ```typescript
 // services/mortgage-service/src/lib/unified-notifications.ts
-import { emitContractCreated } from "./unified-notifications";
+import { emitApplicationCreated } from "./unified-notifications";
 
-await emitContractCreated(
+await emitApplicationCreated(
   prisma,
-  contract.tenantId,
+  application.tenantId,
   {
-    contractId: contract.id,
-    contractNumber: contract.contractNumber,
-    buyerId: contract.buyerId,
+    applicationId: application.id,
+    applicationNumber: application.applicationNumber,
+    buyerId: application.buyerId,
     buyerEmail: buyer.email,
     buyerName: buyer.name,
     propertyName: property.title,
-    totalAmount: contract.totalAmount,
-    termMonths: contract.termMonths,
-    monthlyPayment: contract.periodicPayment,
+    totalAmount: application.totalAmount,
+    termMonths: application.termMonths,
+    monthlyPayment: application.periodicPayment,
     dashboardUrl,
   },
   userId, // actorId
@@ -108,29 +108,29 @@ await emitContractCreated(
 );
 ```
 
-### 3. Update Contract Services
+### 3. Update Application Services
 
 Replace direct EventPublisher calls with unified event helpers.
 
-#### Example: Contract Creation
+#### Example: Application Creation
 
 **Before:**
 
 ```typescript
-// services/mortgage-service/src/services/contract.service.ts
-import { sendContractCreatedNotification } from "../lib/notifications";
+// services/mortgage-service/src/services/application.service.ts
+import { sendApplicationCreatedNotification } from "../lib/notifications";
 
-// After creating contract
-await sendContractCreatedNotification(
+// After creating application
+await sendApplicationCreatedNotification(
   {
     email: buyer.email,
     userName: buyer.name,
-    contractNumber: contract.contractNumber,
+    applicationNumber: application.applicationNumber,
     propertyName: property.title,
-    totalAmount: formatCurrency(contract.totalAmount),
-    termMonths: contract.termMonths,
-    monthlyPayment: formatCurrency(contract.periodicPayment),
-    dashboardUrl: `${config.appUrl}/contracts/${contract.id}`,
+    totalAmount: formatCurrency(application.totalAmount),
+    termMonths: application.termMonths,
+    monthlyPayment: formatCurrency(application.periodicPayment),
+    dashboardUrl: `${config.appUrl}/applications/${application.id}`,
   },
   correlationId
 );
@@ -139,24 +139,24 @@ await sendContractCreatedNotification(
 **After:**
 
 ```typescript
-// services/mortgage-service/src/services/contract.service.ts
-import { emitContractCreated } from "../lib/unified-notifications";
+// services/mortgage-service/src/services/application.service.ts
+import { emitApplicationCreated } from "../lib/unified-notifications";
 
-// After creating contract
-await emitContractCreated(
+// After creating application
+await emitApplicationCreated(
   this.prisma,
-  contract.tenantId,
+  application.tenantId,
   {
-    contractId: contract.id,
-    contractNumber: contract.contractNumber,
-    buyerId: contract.buyerId,
+    applicationId: application.id,
+    applicationNumber: application.applicationNumber,
+    buyerId: application.buyerId,
     buyerEmail: buyer.email,
     buyerName: buyer.name,
     propertyName: property.title,
-    totalAmount: contract.totalAmount,
-    termMonths: contract.termMonths,
-    monthlyPayment: contract.periodicPayment,
-    dashboardUrl: `${config.appUrl}/contracts/${contract.id}`,
+    totalAmount: application.totalAmount,
+    termMonths: application.termMonths,
+    monthlyPayment: application.periodicPayment,
+    dashboardUrl: `${config.appUrl}/applications/${application.id}`,
   },
   userId,
   correlationId
@@ -173,13 +173,13 @@ POST /api/event-handlers
 {
   "tenantId": "tenant_123",
   "eventTypeCode": "CONTRACT_CREATED",
-  "name": "Send Contract Created Email",
+  "name": "Send Application Created Email",
   "handlerType": "SEND_EMAIL",
   "config": {
     "notificationType": "CONTRACT_CREATED",
     "recipientPath": "$.buyerEmail",
     "templateData": {
-      "contractNumber": "$.contractNumber",
+      "applicationNumber": "$.applicationNumber",
       "propertyName": "$.propertyName",
       "totalAmount": "$.totalAmount"
     }
@@ -189,22 +189,22 @@ POST /api/event-handlers
 }
 ```
 
-### 5. Deprecate ContractEvent
+### 5. Deprecate ApplicationEvent
 
-Once migration is complete, deprecate the ContractEvent model:
+Once migration is complete, deprecate the ApplicationEvent model:
 
-1. Stop writing to ContractEvent table
+1. Stop writing to ApplicationEvent table
 2. All events now go to WorkflowEvent
-3. ContractEvent can be archived/dropped after data migration
+3. ApplicationEvent can be archived/dropped after data migration
 
 ## Benefits
 
 ### 1. Full Audit Trail
 
 ```sql
--- Query all events for a contract
+-- Query all events for a application
 SELECT * FROM workflow_events
-WHERE JSON_EXTRACT(payload, '$.contractId') = 'ctr_123'
+WHERE JSON_EXTRACT(payload, '$.applicationId') = 'ctr_123'
 ORDER BY created_at DESC;
 ```
 
@@ -263,11 +263,11 @@ tsx shared/common/scripts/seed-events.ts --tenant-id test_tenant --with-examples
 ### 2. Emit Test Event
 
 ```typescript
-import { emitContractCreated } from "../lib/unified-notifications";
+import { emitApplicationCreated } from "../lib/unified-notifications";
 
-await emitContractCreated(prisma, tenantId, {
-  contractId: "test_123",
-  contractNumber: "CNT-TEST-001",
+await emitApplicationCreated(prisma, tenantId, {
+  applicationId: "test_123",
+  applicationNumber: "CNT-TEST-001",
   buyerId: "buyer_123",
   buyerEmail: "test@example.com",
   buyerName: "Test Buyer",
@@ -283,7 +283,7 @@ await emitContractCreated(prisma, tenantId, {
 
 ```sql
 SELECT * FROM workflow_events
-WHERE JSON_EXTRACT(payload, '$.contractId') = 'test_123';
+WHERE JSON_EXTRACT(payload, '$.applicationId') = 'test_123';
 ```
 
 ### 4. Check Handler Executions
@@ -308,9 +308,9 @@ If issues arise during migration:
 const USE_UNIFIED_EVENTS = process.env.USE_UNIFIED_EVENTS === "true";
 
 if (USE_UNIFIED_EVENTS) {
-  await emitContractCreated(prisma, tenantId, payload);
+  await emitApplicationCreated(prisma, tenantId, payload);
 } else {
-  await sendContractCreatedNotification(legacyPayload);
+  await sendApplicationCreatedNotification(legacyPayload);
 }
 ```
 
@@ -342,9 +342,9 @@ ORDER BY created_at DESC;
 ## Timeline
 
 1. **Week 1:** Seed event types for all tenants
-2. **Week 2:** Migrate contract creation events
+2. **Week 2:** Migrate application creation events
 3. **Week 3:** Migrate payment events
 4. **Week 4:** Migrate document events
 5. **Week 5:** Migrate workflow events
 6. **Week 6:** Deprecate legacy EventPublisher
-7. **Week 7:** Deprecate ContractEvent model
+7. **Week 7:** Deprecate ApplicationEvent model

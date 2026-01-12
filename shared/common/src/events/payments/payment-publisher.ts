@@ -124,7 +124,7 @@ export class PaymentEventPublisher {
     async publishAllocateToInstallments(payload: {
         userId: string;
         walletId: string;
-        contractId?: string;
+        applicationId?: string;
         maxAmount?: number;
     }, meta?: Partial<PaymentEventMeta>): Promise<string> {
         return this.publish(PaymentEventType.ALLOCATE_TO_INSTALLMENTS, payload, {

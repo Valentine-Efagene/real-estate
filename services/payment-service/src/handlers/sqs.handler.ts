@@ -60,18 +60,18 @@ async function handleWalletCredited(event: PaymentEvent<WalletCreditedPayload>):
  * Manually triggered allocation of funds
  */
 async function handleAllocateToInstallments(event: PaymentEvent<AllocateToInstallmentsPayload>): Promise<void> {
-    const { userId, walletId, contractId, maxAmount } = event.payload;
+    const { userId, walletId, applicationId, maxAmount } = event.payload;
 
     console.log('[SQS Handler] Processing allocate to installments command', {
         userId,
         walletId,
-        contractId,
+        applicationId,
         maxAmount,
         correlationId: event.meta.correlationId,
     });
 
     await allocationService.autoAllocateToPendingInstallments(userId, walletId, {
-        contractId,
+        applicationId,
         maxAmount,
     });
 }

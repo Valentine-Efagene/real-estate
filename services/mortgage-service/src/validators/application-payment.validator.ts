@@ -15,7 +15,7 @@ export const PaymentMethod = z.enum([
 // Create payment
 export const CreatePaymentSchema = z
     .object({
-        contractId: z.string(),
+        applicationId: z.string(),
         phaseId: z.string().optional(),
         installmentId: z.string().optional(),
         amount: z.number().positive(),
@@ -41,10 +41,10 @@ export const RefundPaymentSchema = z
     .openapi('RefundPayment');
 
 // Payment response
-export const ContractPaymentResponseSchema = z
+export const ApplicationPaymentResponseSchema = z
     .object({
         id: z.string(),
-        contractId: z.string(),
+        applicationId: z.string(),
         phaseId: z.string().nullable(),
         installmentId: z.string().nullable(),
         payerId: z.string().nullable(),
@@ -59,7 +59,7 @@ export const ContractPaymentResponseSchema = z
         createdAt: z.date(),
         updatedAt: z.date(),
     })
-    .openapi('ContractPaymentResponse');
+    .openapi('ApplicationPaymentResponse');
 
 export type CreatePaymentInput = z.infer<typeof CreatePaymentSchema>;
 export type ProcessPaymentInput = z.infer<typeof ProcessPaymentSchema>;

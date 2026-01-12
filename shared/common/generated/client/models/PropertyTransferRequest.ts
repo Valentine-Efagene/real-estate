@@ -43,7 +43,7 @@ export type PropertyTransferRequestSumAggregateOutputType = {
 export type PropertyTransferRequestMinAggregateOutputType = {
   id: string | null
   tenantId: string | null
-  sourceContractId: string | null
+  sourceApplicationId: string | null
   targetPropertyUnitId: string | null
   requestedById: string | null
   reviewedById: string | null
@@ -57,7 +57,7 @@ export type PropertyTransferRequestMinAggregateOutputType = {
   refundedAmount: number | null
   refundTransactionId: string | null
   refundedAt: Date | null
-  targetContractId: string | null
+  targetApplicationId: string | null
   createdAt: Date | null
   reviewedAt: Date | null
   completedAt: Date | null
@@ -67,7 +67,7 @@ export type PropertyTransferRequestMinAggregateOutputType = {
 export type PropertyTransferRequestMaxAggregateOutputType = {
   id: string | null
   tenantId: string | null
-  sourceContractId: string | null
+  sourceApplicationId: string | null
   targetPropertyUnitId: string | null
   requestedById: string | null
   reviewedById: string | null
@@ -81,7 +81,7 @@ export type PropertyTransferRequestMaxAggregateOutputType = {
   refundedAmount: number | null
   refundTransactionId: string | null
   refundedAt: Date | null
-  targetContractId: string | null
+  targetApplicationId: string | null
   createdAt: Date | null
   reviewedAt: Date | null
   completedAt: Date | null
@@ -91,7 +91,7 @@ export type PropertyTransferRequestMaxAggregateOutputType = {
 export type PropertyTransferRequestCountAggregateOutputType = {
   id: number
   tenantId: number
-  sourceContractId: number
+  sourceApplicationId: number
   targetPropertyUnitId: number
   requestedById: number
   reviewedById: number
@@ -105,7 +105,7 @@ export type PropertyTransferRequestCountAggregateOutputType = {
   refundedAmount: number
   refundTransactionId: number
   refundedAt: number
-  targetContractId: number
+  targetApplicationId: number
   createdAt: number
   reviewedAt: number
   completedAt: number
@@ -131,7 +131,7 @@ export type PropertyTransferRequestSumAggregateInputType = {
 export type PropertyTransferRequestMinAggregateInputType = {
   id?: true
   tenantId?: true
-  sourceContractId?: true
+  sourceApplicationId?: true
   targetPropertyUnitId?: true
   requestedById?: true
   reviewedById?: true
@@ -145,7 +145,7 @@ export type PropertyTransferRequestMinAggregateInputType = {
   refundedAmount?: true
   refundTransactionId?: true
   refundedAt?: true
-  targetContractId?: true
+  targetApplicationId?: true
   createdAt?: true
   reviewedAt?: true
   completedAt?: true
@@ -155,7 +155,7 @@ export type PropertyTransferRequestMinAggregateInputType = {
 export type PropertyTransferRequestMaxAggregateInputType = {
   id?: true
   tenantId?: true
-  sourceContractId?: true
+  sourceApplicationId?: true
   targetPropertyUnitId?: true
   requestedById?: true
   reviewedById?: true
@@ -169,7 +169,7 @@ export type PropertyTransferRequestMaxAggregateInputType = {
   refundedAmount?: true
   refundTransactionId?: true
   refundedAt?: true
-  targetContractId?: true
+  targetApplicationId?: true
   createdAt?: true
   reviewedAt?: true
   completedAt?: true
@@ -179,7 +179,7 @@ export type PropertyTransferRequestMaxAggregateInputType = {
 export type PropertyTransferRequestCountAggregateInputType = {
   id?: true
   tenantId?: true
-  sourceContractId?: true
+  sourceApplicationId?: true
   targetPropertyUnitId?: true
   requestedById?: true
   reviewedById?: true
@@ -193,7 +193,7 @@ export type PropertyTransferRequestCountAggregateInputType = {
   refundedAmount?: true
   refundTransactionId?: true
   refundedAt?: true
-  targetContractId?: true
+  targetApplicationId?: true
   createdAt?: true
   reviewedAt?: true
   completedAt?: true
@@ -290,7 +290,7 @@ export type PropertyTransferRequestGroupByArgs<ExtArgs extends runtime.Types.Ext
 export type PropertyTransferRequestGroupByOutputType = {
   id: string
   tenantId: string
-  sourceContractId: string
+  sourceApplicationId: string
   targetPropertyUnitId: string
   requestedById: string
   reviewedById: string | null
@@ -304,7 +304,7 @@ export type PropertyTransferRequestGroupByOutputType = {
   refundedAmount: number | null
   refundTransactionId: string | null
   refundedAt: Date | null
-  targetContractId: string | null
+  targetApplicationId: string | null
   createdAt: Date
   reviewedAt: Date | null
   completedAt: Date | null
@@ -337,7 +337,7 @@ export type PropertyTransferRequestWhereInput = {
   NOT?: Prisma.PropertyTransferRequestWhereInput | Prisma.PropertyTransferRequestWhereInput[]
   id?: Prisma.StringFilter<"PropertyTransferRequest"> | string
   tenantId?: Prisma.StringFilter<"PropertyTransferRequest"> | string
-  sourceContractId?: Prisma.StringFilter<"PropertyTransferRequest"> | string
+  sourceApplicationId?: Prisma.StringFilter<"PropertyTransferRequest"> | string
   targetPropertyUnitId?: Prisma.StringFilter<"PropertyTransferRequest"> | string
   requestedById?: Prisma.StringFilter<"PropertyTransferRequest"> | string
   reviewedById?: Prisma.StringNullableFilter<"PropertyTransferRequest"> | string | null
@@ -351,23 +351,23 @@ export type PropertyTransferRequestWhereInput = {
   refundedAmount?: Prisma.FloatNullableFilter<"PropertyTransferRequest"> | number | null
   refundTransactionId?: Prisma.StringNullableFilter<"PropertyTransferRequest"> | string | null
   refundedAt?: Prisma.DateTimeNullableFilter<"PropertyTransferRequest"> | Date | string | null
-  targetContractId?: Prisma.StringNullableFilter<"PropertyTransferRequest"> | string | null
+  targetApplicationId?: Prisma.StringNullableFilter<"PropertyTransferRequest"> | string | null
   createdAt?: Prisma.DateTimeFilter<"PropertyTransferRequest"> | Date | string
   reviewedAt?: Prisma.DateTimeNullableFilter<"PropertyTransferRequest"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableFilter<"PropertyTransferRequest"> | Date | string | null
   updatedAt?: Prisma.DateTimeFilter<"PropertyTransferRequest"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
-  sourceContract?: Prisma.XOR<Prisma.ContractScalarRelationFilter, Prisma.ContractWhereInput>
+  sourceApplication?: Prisma.XOR<Prisma.ApplicationScalarRelationFilter, Prisma.ApplicationWhereInput>
   targetPropertyUnit?: Prisma.XOR<Prisma.PropertyUnitScalarRelationFilter, Prisma.PropertyUnitWhereInput>
   requestedBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   reviewedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
-  targetContract?: Prisma.XOR<Prisma.ContractNullableScalarRelationFilter, Prisma.ContractWhereInput> | null
+  targetApplication?: Prisma.XOR<Prisma.ApplicationNullableScalarRelationFilter, Prisma.ApplicationWhereInput> | null
 }
 
 export type PropertyTransferRequestOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
-  sourceContractId?: Prisma.SortOrder
+  sourceApplicationId?: Prisma.SortOrder
   targetPropertyUnitId?: Prisma.SortOrder
   requestedById?: Prisma.SortOrder
   reviewedById?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -381,17 +381,17 @@ export type PropertyTransferRequestOrderByWithRelationInput = {
   refundedAmount?: Prisma.SortOrderInput | Prisma.SortOrder
   refundTransactionId?: Prisma.SortOrderInput | Prisma.SortOrder
   refundedAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  targetContractId?: Prisma.SortOrderInput | Prisma.SortOrder
+  targetApplicationId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   reviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   tenant?: Prisma.TenantOrderByWithRelationInput
-  sourceContract?: Prisma.ContractOrderByWithRelationInput
+  sourceApplication?: Prisma.ApplicationOrderByWithRelationInput
   targetPropertyUnit?: Prisma.PropertyUnitOrderByWithRelationInput
   requestedBy?: Prisma.UserOrderByWithRelationInput
   reviewedBy?: Prisma.UserOrderByWithRelationInput
-  targetContract?: Prisma.ContractOrderByWithRelationInput
+  targetApplication?: Prisma.ApplicationOrderByWithRelationInput
   _relevance?: Prisma.PropertyTransferRequestOrderByRelevanceInput
 }
 
@@ -401,7 +401,7 @@ export type PropertyTransferRequestWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.PropertyTransferRequestWhereInput[]
   NOT?: Prisma.PropertyTransferRequestWhereInput | Prisma.PropertyTransferRequestWhereInput[]
   tenantId?: Prisma.StringFilter<"PropertyTransferRequest"> | string
-  sourceContractId?: Prisma.StringFilter<"PropertyTransferRequest"> | string
+  sourceApplicationId?: Prisma.StringFilter<"PropertyTransferRequest"> | string
   targetPropertyUnitId?: Prisma.StringFilter<"PropertyTransferRequest"> | string
   requestedById?: Prisma.StringFilter<"PropertyTransferRequest"> | string
   reviewedById?: Prisma.StringNullableFilter<"PropertyTransferRequest"> | string | null
@@ -415,23 +415,23 @@ export type PropertyTransferRequestWhereUniqueInput = Prisma.AtLeast<{
   refundedAmount?: Prisma.FloatNullableFilter<"PropertyTransferRequest"> | number | null
   refundTransactionId?: Prisma.StringNullableFilter<"PropertyTransferRequest"> | string | null
   refundedAt?: Prisma.DateTimeNullableFilter<"PropertyTransferRequest"> | Date | string | null
-  targetContractId?: Prisma.StringNullableFilter<"PropertyTransferRequest"> | string | null
+  targetApplicationId?: Prisma.StringNullableFilter<"PropertyTransferRequest"> | string | null
   createdAt?: Prisma.DateTimeFilter<"PropertyTransferRequest"> | Date | string
   reviewedAt?: Prisma.DateTimeNullableFilter<"PropertyTransferRequest"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableFilter<"PropertyTransferRequest"> | Date | string | null
   updatedAt?: Prisma.DateTimeFilter<"PropertyTransferRequest"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
-  sourceContract?: Prisma.XOR<Prisma.ContractScalarRelationFilter, Prisma.ContractWhereInput>
+  sourceApplication?: Prisma.XOR<Prisma.ApplicationScalarRelationFilter, Prisma.ApplicationWhereInput>
   targetPropertyUnit?: Prisma.XOR<Prisma.PropertyUnitScalarRelationFilter, Prisma.PropertyUnitWhereInput>
   requestedBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   reviewedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
-  targetContract?: Prisma.XOR<Prisma.ContractNullableScalarRelationFilter, Prisma.ContractWhereInput> | null
+  targetApplication?: Prisma.XOR<Prisma.ApplicationNullableScalarRelationFilter, Prisma.ApplicationWhereInput> | null
 }, "id">
 
 export type PropertyTransferRequestOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
-  sourceContractId?: Prisma.SortOrder
+  sourceApplicationId?: Prisma.SortOrder
   targetPropertyUnitId?: Prisma.SortOrder
   requestedById?: Prisma.SortOrder
   reviewedById?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -445,7 +445,7 @@ export type PropertyTransferRequestOrderByWithAggregationInput = {
   refundedAmount?: Prisma.SortOrderInput | Prisma.SortOrder
   refundTransactionId?: Prisma.SortOrderInput | Prisma.SortOrder
   refundedAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  targetContractId?: Prisma.SortOrderInput | Prisma.SortOrder
+  targetApplicationId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   reviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -463,7 +463,7 @@ export type PropertyTransferRequestScalarWhereWithAggregatesInput = {
   NOT?: Prisma.PropertyTransferRequestScalarWhereWithAggregatesInput | Prisma.PropertyTransferRequestScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"PropertyTransferRequest"> | string
   tenantId?: Prisma.StringWithAggregatesFilter<"PropertyTransferRequest"> | string
-  sourceContractId?: Prisma.StringWithAggregatesFilter<"PropertyTransferRequest"> | string
+  sourceApplicationId?: Prisma.StringWithAggregatesFilter<"PropertyTransferRequest"> | string
   targetPropertyUnitId?: Prisma.StringWithAggregatesFilter<"PropertyTransferRequest"> | string
   requestedById?: Prisma.StringWithAggregatesFilter<"PropertyTransferRequest"> | string
   reviewedById?: Prisma.StringNullableWithAggregatesFilter<"PropertyTransferRequest"> | string | null
@@ -477,7 +477,7 @@ export type PropertyTransferRequestScalarWhereWithAggregatesInput = {
   refundedAmount?: Prisma.FloatNullableWithAggregatesFilter<"PropertyTransferRequest"> | number | null
   refundTransactionId?: Prisma.StringNullableWithAggregatesFilter<"PropertyTransferRequest"> | string | null
   refundedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"PropertyTransferRequest"> | Date | string | null
-  targetContractId?: Prisma.StringNullableWithAggregatesFilter<"PropertyTransferRequest"> | string | null
+  targetApplicationId?: Prisma.StringNullableWithAggregatesFilter<"PropertyTransferRequest"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"PropertyTransferRequest"> | Date | string
   reviewedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"PropertyTransferRequest"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"PropertyTransferRequest"> | Date | string | null
@@ -501,17 +501,17 @@ export type PropertyTransferRequestCreateInput = {
   completedAt?: Date | string | null
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutPropertyTransferRequestsInput
-  sourceContract: Prisma.ContractCreateNestedOneWithoutOutgoingTransferRequestsInput
+  sourceApplication: Prisma.ApplicationCreateNestedOneWithoutOutgoingTransferRequestsInput
   targetPropertyUnit: Prisma.PropertyUnitCreateNestedOneWithoutTransferRequestsInput
   requestedBy: Prisma.UserCreateNestedOneWithoutTransferRequestsSubmittedInput
   reviewedBy?: Prisma.UserCreateNestedOneWithoutTransferRequestsReviewedInput
-  targetContract?: Prisma.ContractCreateNestedOneWithoutIncomingTransferRequestsInput
+  targetApplication?: Prisma.ApplicationCreateNestedOneWithoutIncomingTransferRequestsInput
 }
 
 export type PropertyTransferRequestUncheckedCreateInput = {
   id?: string
   tenantId: string
-  sourceContractId: string
+  sourceApplicationId: string
   targetPropertyUnitId: string
   requestedById: string
   reviewedById?: string | null
@@ -525,7 +525,7 @@ export type PropertyTransferRequestUncheckedCreateInput = {
   refundedAmount?: number | null
   refundTransactionId?: string | null
   refundedAt?: Date | string | null
-  targetContractId?: string | null
+  targetApplicationId?: string | null
   createdAt?: Date | string
   reviewedAt?: Date | string | null
   completedAt?: Date | string | null
@@ -549,17 +549,17 @@ export type PropertyTransferRequestUpdateInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutPropertyTransferRequestsNestedInput
-  sourceContract?: Prisma.ContractUpdateOneRequiredWithoutOutgoingTransferRequestsNestedInput
+  sourceApplication?: Prisma.ApplicationUpdateOneRequiredWithoutOutgoingTransferRequestsNestedInput
   targetPropertyUnit?: Prisma.PropertyUnitUpdateOneRequiredWithoutTransferRequestsNestedInput
   requestedBy?: Prisma.UserUpdateOneRequiredWithoutTransferRequestsSubmittedNestedInput
   reviewedBy?: Prisma.UserUpdateOneWithoutTransferRequestsReviewedNestedInput
-  targetContract?: Prisma.ContractUpdateOneWithoutIncomingTransferRequestsNestedInput
+  targetApplication?: Prisma.ApplicationUpdateOneWithoutIncomingTransferRequestsNestedInput
 }
 
 export type PropertyTransferRequestUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  sourceContractId?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceApplicationId?: Prisma.StringFieldUpdateOperationsInput | string
   targetPropertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
   requestedById?: Prisma.StringFieldUpdateOperationsInput | string
   reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -573,7 +573,7 @@ export type PropertyTransferRequestUncheckedUpdateInput = {
   refundedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   refundTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  targetContractId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  targetApplicationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -583,7 +583,7 @@ export type PropertyTransferRequestUncheckedUpdateInput = {
 export type PropertyTransferRequestCreateManyInput = {
   id?: string
   tenantId: string
-  sourceContractId: string
+  sourceApplicationId: string
   targetPropertyUnitId: string
   requestedById: string
   reviewedById?: string | null
@@ -597,7 +597,7 @@ export type PropertyTransferRequestCreateManyInput = {
   refundedAmount?: number | null
   refundTransactionId?: string | null
   refundedAt?: Date | string | null
-  targetContractId?: string | null
+  targetApplicationId?: string | null
   createdAt?: Date | string
   reviewedAt?: Date | string | null
   completedAt?: Date | string | null
@@ -625,7 +625,7 @@ export type PropertyTransferRequestUpdateManyMutationInput = {
 export type PropertyTransferRequestUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  sourceContractId?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceApplicationId?: Prisma.StringFieldUpdateOperationsInput | string
   targetPropertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
   requestedById?: Prisma.StringFieldUpdateOperationsInput | string
   reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -639,7 +639,7 @@ export type PropertyTransferRequestUncheckedUpdateManyInput = {
   refundedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   refundTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  targetContractId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  targetApplicationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -665,7 +665,7 @@ export type PropertyTransferRequestOrderByRelevanceInput = {
 export type PropertyTransferRequestCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
-  sourceContractId?: Prisma.SortOrder
+  sourceApplicationId?: Prisma.SortOrder
   targetPropertyUnitId?: Prisma.SortOrder
   requestedById?: Prisma.SortOrder
   reviewedById?: Prisma.SortOrder
@@ -679,7 +679,7 @@ export type PropertyTransferRequestCountOrderByAggregateInput = {
   refundedAmount?: Prisma.SortOrder
   refundTransactionId?: Prisma.SortOrder
   refundedAt?: Prisma.SortOrder
-  targetContractId?: Prisma.SortOrder
+  targetApplicationId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   reviewedAt?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
@@ -696,7 +696,7 @@ export type PropertyTransferRequestAvgOrderByAggregateInput = {
 export type PropertyTransferRequestMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
-  sourceContractId?: Prisma.SortOrder
+  sourceApplicationId?: Prisma.SortOrder
   targetPropertyUnitId?: Prisma.SortOrder
   requestedById?: Prisma.SortOrder
   reviewedById?: Prisma.SortOrder
@@ -710,7 +710,7 @@ export type PropertyTransferRequestMaxOrderByAggregateInput = {
   refundedAmount?: Prisma.SortOrder
   refundTransactionId?: Prisma.SortOrder
   refundedAt?: Prisma.SortOrder
-  targetContractId?: Prisma.SortOrder
+  targetApplicationId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   reviewedAt?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
@@ -720,7 +720,7 @@ export type PropertyTransferRequestMaxOrderByAggregateInput = {
 export type PropertyTransferRequestMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
-  sourceContractId?: Prisma.SortOrder
+  sourceApplicationId?: Prisma.SortOrder
   targetPropertyUnitId?: Prisma.SortOrder
   requestedById?: Prisma.SortOrder
   reviewedById?: Prisma.SortOrder
@@ -734,7 +734,7 @@ export type PropertyTransferRequestMinOrderByAggregateInput = {
   refundedAmount?: Prisma.SortOrder
   refundTransactionId?: Prisma.SortOrder
   refundedAt?: Prisma.SortOrder
-  targetContractId?: Prisma.SortOrder
+  targetApplicationId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   reviewedAt?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
@@ -916,87 +916,87 @@ export type PropertyTransferRequestUncheckedUpdateManyWithoutTargetPropertyUnitN
   deleteMany?: Prisma.PropertyTransferRequestScalarWhereInput | Prisma.PropertyTransferRequestScalarWhereInput[]
 }
 
-export type PropertyTransferRequestCreateNestedManyWithoutSourceContractInput = {
-  create?: Prisma.XOR<Prisma.PropertyTransferRequestCreateWithoutSourceContractInput, Prisma.PropertyTransferRequestUncheckedCreateWithoutSourceContractInput> | Prisma.PropertyTransferRequestCreateWithoutSourceContractInput[] | Prisma.PropertyTransferRequestUncheckedCreateWithoutSourceContractInput[]
-  connectOrCreate?: Prisma.PropertyTransferRequestCreateOrConnectWithoutSourceContractInput | Prisma.PropertyTransferRequestCreateOrConnectWithoutSourceContractInput[]
-  createMany?: Prisma.PropertyTransferRequestCreateManySourceContractInputEnvelope
+export type PropertyTransferRequestCreateNestedManyWithoutSourceApplicationInput = {
+  create?: Prisma.XOR<Prisma.PropertyTransferRequestCreateWithoutSourceApplicationInput, Prisma.PropertyTransferRequestUncheckedCreateWithoutSourceApplicationInput> | Prisma.PropertyTransferRequestCreateWithoutSourceApplicationInput[] | Prisma.PropertyTransferRequestUncheckedCreateWithoutSourceApplicationInput[]
+  connectOrCreate?: Prisma.PropertyTransferRequestCreateOrConnectWithoutSourceApplicationInput | Prisma.PropertyTransferRequestCreateOrConnectWithoutSourceApplicationInput[]
+  createMany?: Prisma.PropertyTransferRequestCreateManySourceApplicationInputEnvelope
   connect?: Prisma.PropertyTransferRequestWhereUniqueInput | Prisma.PropertyTransferRequestWhereUniqueInput[]
 }
 
-export type PropertyTransferRequestCreateNestedManyWithoutTargetContractInput = {
-  create?: Prisma.XOR<Prisma.PropertyTransferRequestCreateWithoutTargetContractInput, Prisma.PropertyTransferRequestUncheckedCreateWithoutTargetContractInput> | Prisma.PropertyTransferRequestCreateWithoutTargetContractInput[] | Prisma.PropertyTransferRequestUncheckedCreateWithoutTargetContractInput[]
-  connectOrCreate?: Prisma.PropertyTransferRequestCreateOrConnectWithoutTargetContractInput | Prisma.PropertyTransferRequestCreateOrConnectWithoutTargetContractInput[]
-  createMany?: Prisma.PropertyTransferRequestCreateManyTargetContractInputEnvelope
+export type PropertyTransferRequestCreateNestedManyWithoutTargetApplicationInput = {
+  create?: Prisma.XOR<Prisma.PropertyTransferRequestCreateWithoutTargetApplicationInput, Prisma.PropertyTransferRequestUncheckedCreateWithoutTargetApplicationInput> | Prisma.PropertyTransferRequestCreateWithoutTargetApplicationInput[] | Prisma.PropertyTransferRequestUncheckedCreateWithoutTargetApplicationInput[]
+  connectOrCreate?: Prisma.PropertyTransferRequestCreateOrConnectWithoutTargetApplicationInput | Prisma.PropertyTransferRequestCreateOrConnectWithoutTargetApplicationInput[]
+  createMany?: Prisma.PropertyTransferRequestCreateManyTargetApplicationInputEnvelope
   connect?: Prisma.PropertyTransferRequestWhereUniqueInput | Prisma.PropertyTransferRequestWhereUniqueInput[]
 }
 
-export type PropertyTransferRequestUncheckedCreateNestedManyWithoutSourceContractInput = {
-  create?: Prisma.XOR<Prisma.PropertyTransferRequestCreateWithoutSourceContractInput, Prisma.PropertyTransferRequestUncheckedCreateWithoutSourceContractInput> | Prisma.PropertyTransferRequestCreateWithoutSourceContractInput[] | Prisma.PropertyTransferRequestUncheckedCreateWithoutSourceContractInput[]
-  connectOrCreate?: Prisma.PropertyTransferRequestCreateOrConnectWithoutSourceContractInput | Prisma.PropertyTransferRequestCreateOrConnectWithoutSourceContractInput[]
-  createMany?: Prisma.PropertyTransferRequestCreateManySourceContractInputEnvelope
+export type PropertyTransferRequestUncheckedCreateNestedManyWithoutSourceApplicationInput = {
+  create?: Prisma.XOR<Prisma.PropertyTransferRequestCreateWithoutSourceApplicationInput, Prisma.PropertyTransferRequestUncheckedCreateWithoutSourceApplicationInput> | Prisma.PropertyTransferRequestCreateWithoutSourceApplicationInput[] | Prisma.PropertyTransferRequestUncheckedCreateWithoutSourceApplicationInput[]
+  connectOrCreate?: Prisma.PropertyTransferRequestCreateOrConnectWithoutSourceApplicationInput | Prisma.PropertyTransferRequestCreateOrConnectWithoutSourceApplicationInput[]
+  createMany?: Prisma.PropertyTransferRequestCreateManySourceApplicationInputEnvelope
   connect?: Prisma.PropertyTransferRequestWhereUniqueInput | Prisma.PropertyTransferRequestWhereUniqueInput[]
 }
 
-export type PropertyTransferRequestUncheckedCreateNestedManyWithoutTargetContractInput = {
-  create?: Prisma.XOR<Prisma.PropertyTransferRequestCreateWithoutTargetContractInput, Prisma.PropertyTransferRequestUncheckedCreateWithoutTargetContractInput> | Prisma.PropertyTransferRequestCreateWithoutTargetContractInput[] | Prisma.PropertyTransferRequestUncheckedCreateWithoutTargetContractInput[]
-  connectOrCreate?: Prisma.PropertyTransferRequestCreateOrConnectWithoutTargetContractInput | Prisma.PropertyTransferRequestCreateOrConnectWithoutTargetContractInput[]
-  createMany?: Prisma.PropertyTransferRequestCreateManyTargetContractInputEnvelope
+export type PropertyTransferRequestUncheckedCreateNestedManyWithoutTargetApplicationInput = {
+  create?: Prisma.XOR<Prisma.PropertyTransferRequestCreateWithoutTargetApplicationInput, Prisma.PropertyTransferRequestUncheckedCreateWithoutTargetApplicationInput> | Prisma.PropertyTransferRequestCreateWithoutTargetApplicationInput[] | Prisma.PropertyTransferRequestUncheckedCreateWithoutTargetApplicationInput[]
+  connectOrCreate?: Prisma.PropertyTransferRequestCreateOrConnectWithoutTargetApplicationInput | Prisma.PropertyTransferRequestCreateOrConnectWithoutTargetApplicationInput[]
+  createMany?: Prisma.PropertyTransferRequestCreateManyTargetApplicationInputEnvelope
   connect?: Prisma.PropertyTransferRequestWhereUniqueInput | Prisma.PropertyTransferRequestWhereUniqueInput[]
 }
 
-export type PropertyTransferRequestUpdateManyWithoutSourceContractNestedInput = {
-  create?: Prisma.XOR<Prisma.PropertyTransferRequestCreateWithoutSourceContractInput, Prisma.PropertyTransferRequestUncheckedCreateWithoutSourceContractInput> | Prisma.PropertyTransferRequestCreateWithoutSourceContractInput[] | Prisma.PropertyTransferRequestUncheckedCreateWithoutSourceContractInput[]
-  connectOrCreate?: Prisma.PropertyTransferRequestCreateOrConnectWithoutSourceContractInput | Prisma.PropertyTransferRequestCreateOrConnectWithoutSourceContractInput[]
-  upsert?: Prisma.PropertyTransferRequestUpsertWithWhereUniqueWithoutSourceContractInput | Prisma.PropertyTransferRequestUpsertWithWhereUniqueWithoutSourceContractInput[]
-  createMany?: Prisma.PropertyTransferRequestCreateManySourceContractInputEnvelope
+export type PropertyTransferRequestUpdateManyWithoutSourceApplicationNestedInput = {
+  create?: Prisma.XOR<Prisma.PropertyTransferRequestCreateWithoutSourceApplicationInput, Prisma.PropertyTransferRequestUncheckedCreateWithoutSourceApplicationInput> | Prisma.PropertyTransferRequestCreateWithoutSourceApplicationInput[] | Prisma.PropertyTransferRequestUncheckedCreateWithoutSourceApplicationInput[]
+  connectOrCreate?: Prisma.PropertyTransferRequestCreateOrConnectWithoutSourceApplicationInput | Prisma.PropertyTransferRequestCreateOrConnectWithoutSourceApplicationInput[]
+  upsert?: Prisma.PropertyTransferRequestUpsertWithWhereUniqueWithoutSourceApplicationInput | Prisma.PropertyTransferRequestUpsertWithWhereUniqueWithoutSourceApplicationInput[]
+  createMany?: Prisma.PropertyTransferRequestCreateManySourceApplicationInputEnvelope
   set?: Prisma.PropertyTransferRequestWhereUniqueInput | Prisma.PropertyTransferRequestWhereUniqueInput[]
   disconnect?: Prisma.PropertyTransferRequestWhereUniqueInput | Prisma.PropertyTransferRequestWhereUniqueInput[]
   delete?: Prisma.PropertyTransferRequestWhereUniqueInput | Prisma.PropertyTransferRequestWhereUniqueInput[]
   connect?: Prisma.PropertyTransferRequestWhereUniqueInput | Prisma.PropertyTransferRequestWhereUniqueInput[]
-  update?: Prisma.PropertyTransferRequestUpdateWithWhereUniqueWithoutSourceContractInput | Prisma.PropertyTransferRequestUpdateWithWhereUniqueWithoutSourceContractInput[]
-  updateMany?: Prisma.PropertyTransferRequestUpdateManyWithWhereWithoutSourceContractInput | Prisma.PropertyTransferRequestUpdateManyWithWhereWithoutSourceContractInput[]
+  update?: Prisma.PropertyTransferRequestUpdateWithWhereUniqueWithoutSourceApplicationInput | Prisma.PropertyTransferRequestUpdateWithWhereUniqueWithoutSourceApplicationInput[]
+  updateMany?: Prisma.PropertyTransferRequestUpdateManyWithWhereWithoutSourceApplicationInput | Prisma.PropertyTransferRequestUpdateManyWithWhereWithoutSourceApplicationInput[]
   deleteMany?: Prisma.PropertyTransferRequestScalarWhereInput | Prisma.PropertyTransferRequestScalarWhereInput[]
 }
 
-export type PropertyTransferRequestUpdateManyWithoutTargetContractNestedInput = {
-  create?: Prisma.XOR<Prisma.PropertyTransferRequestCreateWithoutTargetContractInput, Prisma.PropertyTransferRequestUncheckedCreateWithoutTargetContractInput> | Prisma.PropertyTransferRequestCreateWithoutTargetContractInput[] | Prisma.PropertyTransferRequestUncheckedCreateWithoutTargetContractInput[]
-  connectOrCreate?: Prisma.PropertyTransferRequestCreateOrConnectWithoutTargetContractInput | Prisma.PropertyTransferRequestCreateOrConnectWithoutTargetContractInput[]
-  upsert?: Prisma.PropertyTransferRequestUpsertWithWhereUniqueWithoutTargetContractInput | Prisma.PropertyTransferRequestUpsertWithWhereUniqueWithoutTargetContractInput[]
-  createMany?: Prisma.PropertyTransferRequestCreateManyTargetContractInputEnvelope
+export type PropertyTransferRequestUpdateManyWithoutTargetApplicationNestedInput = {
+  create?: Prisma.XOR<Prisma.PropertyTransferRequestCreateWithoutTargetApplicationInput, Prisma.PropertyTransferRequestUncheckedCreateWithoutTargetApplicationInput> | Prisma.PropertyTransferRequestCreateWithoutTargetApplicationInput[] | Prisma.PropertyTransferRequestUncheckedCreateWithoutTargetApplicationInput[]
+  connectOrCreate?: Prisma.PropertyTransferRequestCreateOrConnectWithoutTargetApplicationInput | Prisma.PropertyTransferRequestCreateOrConnectWithoutTargetApplicationInput[]
+  upsert?: Prisma.PropertyTransferRequestUpsertWithWhereUniqueWithoutTargetApplicationInput | Prisma.PropertyTransferRequestUpsertWithWhereUniqueWithoutTargetApplicationInput[]
+  createMany?: Prisma.PropertyTransferRequestCreateManyTargetApplicationInputEnvelope
   set?: Prisma.PropertyTransferRequestWhereUniqueInput | Prisma.PropertyTransferRequestWhereUniqueInput[]
   disconnect?: Prisma.PropertyTransferRequestWhereUniqueInput | Prisma.PropertyTransferRequestWhereUniqueInput[]
   delete?: Prisma.PropertyTransferRequestWhereUniqueInput | Prisma.PropertyTransferRequestWhereUniqueInput[]
   connect?: Prisma.PropertyTransferRequestWhereUniqueInput | Prisma.PropertyTransferRequestWhereUniqueInput[]
-  update?: Prisma.PropertyTransferRequestUpdateWithWhereUniqueWithoutTargetContractInput | Prisma.PropertyTransferRequestUpdateWithWhereUniqueWithoutTargetContractInput[]
-  updateMany?: Prisma.PropertyTransferRequestUpdateManyWithWhereWithoutTargetContractInput | Prisma.PropertyTransferRequestUpdateManyWithWhereWithoutTargetContractInput[]
+  update?: Prisma.PropertyTransferRequestUpdateWithWhereUniqueWithoutTargetApplicationInput | Prisma.PropertyTransferRequestUpdateWithWhereUniqueWithoutTargetApplicationInput[]
+  updateMany?: Prisma.PropertyTransferRequestUpdateManyWithWhereWithoutTargetApplicationInput | Prisma.PropertyTransferRequestUpdateManyWithWhereWithoutTargetApplicationInput[]
   deleteMany?: Prisma.PropertyTransferRequestScalarWhereInput | Prisma.PropertyTransferRequestScalarWhereInput[]
 }
 
-export type PropertyTransferRequestUncheckedUpdateManyWithoutSourceContractNestedInput = {
-  create?: Prisma.XOR<Prisma.PropertyTransferRequestCreateWithoutSourceContractInput, Prisma.PropertyTransferRequestUncheckedCreateWithoutSourceContractInput> | Prisma.PropertyTransferRequestCreateWithoutSourceContractInput[] | Prisma.PropertyTransferRequestUncheckedCreateWithoutSourceContractInput[]
-  connectOrCreate?: Prisma.PropertyTransferRequestCreateOrConnectWithoutSourceContractInput | Prisma.PropertyTransferRequestCreateOrConnectWithoutSourceContractInput[]
-  upsert?: Prisma.PropertyTransferRequestUpsertWithWhereUniqueWithoutSourceContractInput | Prisma.PropertyTransferRequestUpsertWithWhereUniqueWithoutSourceContractInput[]
-  createMany?: Prisma.PropertyTransferRequestCreateManySourceContractInputEnvelope
+export type PropertyTransferRequestUncheckedUpdateManyWithoutSourceApplicationNestedInput = {
+  create?: Prisma.XOR<Prisma.PropertyTransferRequestCreateWithoutSourceApplicationInput, Prisma.PropertyTransferRequestUncheckedCreateWithoutSourceApplicationInput> | Prisma.PropertyTransferRequestCreateWithoutSourceApplicationInput[] | Prisma.PropertyTransferRequestUncheckedCreateWithoutSourceApplicationInput[]
+  connectOrCreate?: Prisma.PropertyTransferRequestCreateOrConnectWithoutSourceApplicationInput | Prisma.PropertyTransferRequestCreateOrConnectWithoutSourceApplicationInput[]
+  upsert?: Prisma.PropertyTransferRequestUpsertWithWhereUniqueWithoutSourceApplicationInput | Prisma.PropertyTransferRequestUpsertWithWhereUniqueWithoutSourceApplicationInput[]
+  createMany?: Prisma.PropertyTransferRequestCreateManySourceApplicationInputEnvelope
   set?: Prisma.PropertyTransferRequestWhereUniqueInput | Prisma.PropertyTransferRequestWhereUniqueInput[]
   disconnect?: Prisma.PropertyTransferRequestWhereUniqueInput | Prisma.PropertyTransferRequestWhereUniqueInput[]
   delete?: Prisma.PropertyTransferRequestWhereUniqueInput | Prisma.PropertyTransferRequestWhereUniqueInput[]
   connect?: Prisma.PropertyTransferRequestWhereUniqueInput | Prisma.PropertyTransferRequestWhereUniqueInput[]
-  update?: Prisma.PropertyTransferRequestUpdateWithWhereUniqueWithoutSourceContractInput | Prisma.PropertyTransferRequestUpdateWithWhereUniqueWithoutSourceContractInput[]
-  updateMany?: Prisma.PropertyTransferRequestUpdateManyWithWhereWithoutSourceContractInput | Prisma.PropertyTransferRequestUpdateManyWithWhereWithoutSourceContractInput[]
+  update?: Prisma.PropertyTransferRequestUpdateWithWhereUniqueWithoutSourceApplicationInput | Prisma.PropertyTransferRequestUpdateWithWhereUniqueWithoutSourceApplicationInput[]
+  updateMany?: Prisma.PropertyTransferRequestUpdateManyWithWhereWithoutSourceApplicationInput | Prisma.PropertyTransferRequestUpdateManyWithWhereWithoutSourceApplicationInput[]
   deleteMany?: Prisma.PropertyTransferRequestScalarWhereInput | Prisma.PropertyTransferRequestScalarWhereInput[]
 }
 
-export type PropertyTransferRequestUncheckedUpdateManyWithoutTargetContractNestedInput = {
-  create?: Prisma.XOR<Prisma.PropertyTransferRequestCreateWithoutTargetContractInput, Prisma.PropertyTransferRequestUncheckedCreateWithoutTargetContractInput> | Prisma.PropertyTransferRequestCreateWithoutTargetContractInput[] | Prisma.PropertyTransferRequestUncheckedCreateWithoutTargetContractInput[]
-  connectOrCreate?: Prisma.PropertyTransferRequestCreateOrConnectWithoutTargetContractInput | Prisma.PropertyTransferRequestCreateOrConnectWithoutTargetContractInput[]
-  upsert?: Prisma.PropertyTransferRequestUpsertWithWhereUniqueWithoutTargetContractInput | Prisma.PropertyTransferRequestUpsertWithWhereUniqueWithoutTargetContractInput[]
-  createMany?: Prisma.PropertyTransferRequestCreateManyTargetContractInputEnvelope
+export type PropertyTransferRequestUncheckedUpdateManyWithoutTargetApplicationNestedInput = {
+  create?: Prisma.XOR<Prisma.PropertyTransferRequestCreateWithoutTargetApplicationInput, Prisma.PropertyTransferRequestUncheckedCreateWithoutTargetApplicationInput> | Prisma.PropertyTransferRequestCreateWithoutTargetApplicationInput[] | Prisma.PropertyTransferRequestUncheckedCreateWithoutTargetApplicationInput[]
+  connectOrCreate?: Prisma.PropertyTransferRequestCreateOrConnectWithoutTargetApplicationInput | Prisma.PropertyTransferRequestCreateOrConnectWithoutTargetApplicationInput[]
+  upsert?: Prisma.PropertyTransferRequestUpsertWithWhereUniqueWithoutTargetApplicationInput | Prisma.PropertyTransferRequestUpsertWithWhereUniqueWithoutTargetApplicationInput[]
+  createMany?: Prisma.PropertyTransferRequestCreateManyTargetApplicationInputEnvelope
   set?: Prisma.PropertyTransferRequestWhereUniqueInput | Prisma.PropertyTransferRequestWhereUniqueInput[]
   disconnect?: Prisma.PropertyTransferRequestWhereUniqueInput | Prisma.PropertyTransferRequestWhereUniqueInput[]
   delete?: Prisma.PropertyTransferRequestWhereUniqueInput | Prisma.PropertyTransferRequestWhereUniqueInput[]
   connect?: Prisma.PropertyTransferRequestWhereUniqueInput | Prisma.PropertyTransferRequestWhereUniqueInput[]
-  update?: Prisma.PropertyTransferRequestUpdateWithWhereUniqueWithoutTargetContractInput | Prisma.PropertyTransferRequestUpdateWithWhereUniqueWithoutTargetContractInput[]
-  updateMany?: Prisma.PropertyTransferRequestUpdateManyWithWhereWithoutTargetContractInput | Prisma.PropertyTransferRequestUpdateManyWithWhereWithoutTargetContractInput[]
+  update?: Prisma.PropertyTransferRequestUpdateWithWhereUniqueWithoutTargetApplicationInput | Prisma.PropertyTransferRequestUpdateWithWhereUniqueWithoutTargetApplicationInput[]
+  updateMany?: Prisma.PropertyTransferRequestUpdateManyWithWhereWithoutTargetApplicationInput | Prisma.PropertyTransferRequestUpdateManyWithWhereWithoutTargetApplicationInput[]
   deleteMany?: Prisma.PropertyTransferRequestScalarWhereInput | Prisma.PropertyTransferRequestScalarWhereInput[]
 }
 
@@ -1021,16 +1021,16 @@ export type PropertyTransferRequestCreateWithoutRequestedByInput = {
   completedAt?: Date | string | null
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutPropertyTransferRequestsInput
-  sourceContract: Prisma.ContractCreateNestedOneWithoutOutgoingTransferRequestsInput
+  sourceApplication: Prisma.ApplicationCreateNestedOneWithoutOutgoingTransferRequestsInput
   targetPropertyUnit: Prisma.PropertyUnitCreateNestedOneWithoutTransferRequestsInput
   reviewedBy?: Prisma.UserCreateNestedOneWithoutTransferRequestsReviewedInput
-  targetContract?: Prisma.ContractCreateNestedOneWithoutIncomingTransferRequestsInput
+  targetApplication?: Prisma.ApplicationCreateNestedOneWithoutIncomingTransferRequestsInput
 }
 
 export type PropertyTransferRequestUncheckedCreateWithoutRequestedByInput = {
   id?: string
   tenantId: string
-  sourceContractId: string
+  sourceApplicationId: string
   targetPropertyUnitId: string
   reviewedById?: string | null
   status?: $Enums.TransferRequestStatus
@@ -1043,7 +1043,7 @@ export type PropertyTransferRequestUncheckedCreateWithoutRequestedByInput = {
   refundedAmount?: number | null
   refundTransactionId?: string | null
   refundedAt?: Date | string | null
-  targetContractId?: string | null
+  targetApplicationId?: string | null
   createdAt?: Date | string
   reviewedAt?: Date | string | null
   completedAt?: Date | string | null
@@ -1077,16 +1077,16 @@ export type PropertyTransferRequestCreateWithoutReviewedByInput = {
   completedAt?: Date | string | null
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutPropertyTransferRequestsInput
-  sourceContract: Prisma.ContractCreateNestedOneWithoutOutgoingTransferRequestsInput
+  sourceApplication: Prisma.ApplicationCreateNestedOneWithoutOutgoingTransferRequestsInput
   targetPropertyUnit: Prisma.PropertyUnitCreateNestedOneWithoutTransferRequestsInput
   requestedBy: Prisma.UserCreateNestedOneWithoutTransferRequestsSubmittedInput
-  targetContract?: Prisma.ContractCreateNestedOneWithoutIncomingTransferRequestsInput
+  targetApplication?: Prisma.ApplicationCreateNestedOneWithoutIncomingTransferRequestsInput
 }
 
 export type PropertyTransferRequestUncheckedCreateWithoutReviewedByInput = {
   id?: string
   tenantId: string
-  sourceContractId: string
+  sourceApplicationId: string
   targetPropertyUnitId: string
   requestedById: string
   status?: $Enums.TransferRequestStatus
@@ -1099,7 +1099,7 @@ export type PropertyTransferRequestUncheckedCreateWithoutReviewedByInput = {
   refundedAmount?: number | null
   refundTransactionId?: string | null
   refundedAt?: Date | string | null
-  targetContractId?: string | null
+  targetApplicationId?: string | null
   createdAt?: Date | string
   reviewedAt?: Date | string | null
   completedAt?: Date | string | null
@@ -1138,7 +1138,7 @@ export type PropertyTransferRequestScalarWhereInput = {
   NOT?: Prisma.PropertyTransferRequestScalarWhereInput | Prisma.PropertyTransferRequestScalarWhereInput[]
   id?: Prisma.StringFilter<"PropertyTransferRequest"> | string
   tenantId?: Prisma.StringFilter<"PropertyTransferRequest"> | string
-  sourceContractId?: Prisma.StringFilter<"PropertyTransferRequest"> | string
+  sourceApplicationId?: Prisma.StringFilter<"PropertyTransferRequest"> | string
   targetPropertyUnitId?: Prisma.StringFilter<"PropertyTransferRequest"> | string
   requestedById?: Prisma.StringFilter<"PropertyTransferRequest"> | string
   reviewedById?: Prisma.StringNullableFilter<"PropertyTransferRequest"> | string | null
@@ -1152,7 +1152,7 @@ export type PropertyTransferRequestScalarWhereInput = {
   refundedAmount?: Prisma.FloatNullableFilter<"PropertyTransferRequest"> | number | null
   refundTransactionId?: Prisma.StringNullableFilter<"PropertyTransferRequest"> | string | null
   refundedAt?: Prisma.DateTimeNullableFilter<"PropertyTransferRequest"> | Date | string | null
-  targetContractId?: Prisma.StringNullableFilter<"PropertyTransferRequest"> | string | null
+  targetApplicationId?: Prisma.StringNullableFilter<"PropertyTransferRequest"> | string | null
   createdAt?: Prisma.DateTimeFilter<"PropertyTransferRequest"> | Date | string
   reviewedAt?: Prisma.DateTimeNullableFilter<"PropertyTransferRequest"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableFilter<"PropertyTransferRequest"> | Date | string | null
@@ -1191,16 +1191,16 @@ export type PropertyTransferRequestCreateWithoutTenantInput = {
   reviewedAt?: Date | string | null
   completedAt?: Date | string | null
   updatedAt?: Date | string
-  sourceContract: Prisma.ContractCreateNestedOneWithoutOutgoingTransferRequestsInput
+  sourceApplication: Prisma.ApplicationCreateNestedOneWithoutOutgoingTransferRequestsInput
   targetPropertyUnit: Prisma.PropertyUnitCreateNestedOneWithoutTransferRequestsInput
   requestedBy: Prisma.UserCreateNestedOneWithoutTransferRequestsSubmittedInput
   reviewedBy?: Prisma.UserCreateNestedOneWithoutTransferRequestsReviewedInput
-  targetContract?: Prisma.ContractCreateNestedOneWithoutIncomingTransferRequestsInput
+  targetApplication?: Prisma.ApplicationCreateNestedOneWithoutIncomingTransferRequestsInput
 }
 
 export type PropertyTransferRequestUncheckedCreateWithoutTenantInput = {
   id?: string
-  sourceContractId: string
+  sourceApplicationId: string
   targetPropertyUnitId: string
   requestedById: string
   reviewedById?: string | null
@@ -1214,7 +1214,7 @@ export type PropertyTransferRequestUncheckedCreateWithoutTenantInput = {
   refundedAmount?: number | null
   refundTransactionId?: string | null
   refundedAt?: Date | string | null
-  targetContractId?: string | null
+  targetApplicationId?: string | null
   createdAt?: Date | string
   reviewedAt?: Date | string | null
   completedAt?: Date | string | null
@@ -1264,16 +1264,16 @@ export type PropertyTransferRequestCreateWithoutTargetPropertyUnitInput = {
   completedAt?: Date | string | null
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutPropertyTransferRequestsInput
-  sourceContract: Prisma.ContractCreateNestedOneWithoutOutgoingTransferRequestsInput
+  sourceApplication: Prisma.ApplicationCreateNestedOneWithoutOutgoingTransferRequestsInput
   requestedBy: Prisma.UserCreateNestedOneWithoutTransferRequestsSubmittedInput
   reviewedBy?: Prisma.UserCreateNestedOneWithoutTransferRequestsReviewedInput
-  targetContract?: Prisma.ContractCreateNestedOneWithoutIncomingTransferRequestsInput
+  targetApplication?: Prisma.ApplicationCreateNestedOneWithoutIncomingTransferRequestsInput
 }
 
 export type PropertyTransferRequestUncheckedCreateWithoutTargetPropertyUnitInput = {
   id?: string
   tenantId: string
-  sourceContractId: string
+  sourceApplicationId: string
   requestedById: string
   reviewedById?: string | null
   status?: $Enums.TransferRequestStatus
@@ -1286,7 +1286,7 @@ export type PropertyTransferRequestUncheckedCreateWithoutTargetPropertyUnitInput
   refundedAmount?: number | null
   refundTransactionId?: string | null
   refundedAt?: Date | string | null
-  targetContractId?: string | null
+  targetApplicationId?: string | null
   createdAt?: Date | string
   reviewedAt?: Date | string | null
   completedAt?: Date | string | null
@@ -1319,7 +1319,7 @@ export type PropertyTransferRequestUpdateManyWithWhereWithoutTargetPropertyUnitI
   data: Prisma.XOR<Prisma.PropertyTransferRequestUpdateManyMutationInput, Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTargetPropertyUnitInput>
 }
 
-export type PropertyTransferRequestCreateWithoutSourceContractInput = {
+export type PropertyTransferRequestCreateWithoutSourceApplicationInput = {
   id?: string
   status?: $Enums.TransferRequestStatus
   reason?: string | null
@@ -1339,10 +1339,10 @@ export type PropertyTransferRequestCreateWithoutSourceContractInput = {
   targetPropertyUnit: Prisma.PropertyUnitCreateNestedOneWithoutTransferRequestsInput
   requestedBy: Prisma.UserCreateNestedOneWithoutTransferRequestsSubmittedInput
   reviewedBy?: Prisma.UserCreateNestedOneWithoutTransferRequestsReviewedInput
-  targetContract?: Prisma.ContractCreateNestedOneWithoutIncomingTransferRequestsInput
+  targetApplication?: Prisma.ApplicationCreateNestedOneWithoutIncomingTransferRequestsInput
 }
 
-export type PropertyTransferRequestUncheckedCreateWithoutSourceContractInput = {
+export type PropertyTransferRequestUncheckedCreateWithoutSourceApplicationInput = {
   id?: string
   tenantId: string
   targetPropertyUnitId: string
@@ -1358,24 +1358,24 @@ export type PropertyTransferRequestUncheckedCreateWithoutSourceContractInput = {
   refundedAmount?: number | null
   refundTransactionId?: string | null
   refundedAt?: Date | string | null
-  targetContractId?: string | null
+  targetApplicationId?: string | null
   createdAt?: Date | string
   reviewedAt?: Date | string | null
   completedAt?: Date | string | null
   updatedAt?: Date | string
 }
 
-export type PropertyTransferRequestCreateOrConnectWithoutSourceContractInput = {
+export type PropertyTransferRequestCreateOrConnectWithoutSourceApplicationInput = {
   where: Prisma.PropertyTransferRequestWhereUniqueInput
-  create: Prisma.XOR<Prisma.PropertyTransferRequestCreateWithoutSourceContractInput, Prisma.PropertyTransferRequestUncheckedCreateWithoutSourceContractInput>
+  create: Prisma.XOR<Prisma.PropertyTransferRequestCreateWithoutSourceApplicationInput, Prisma.PropertyTransferRequestUncheckedCreateWithoutSourceApplicationInput>
 }
 
-export type PropertyTransferRequestCreateManySourceContractInputEnvelope = {
-  data: Prisma.PropertyTransferRequestCreateManySourceContractInput | Prisma.PropertyTransferRequestCreateManySourceContractInput[]
+export type PropertyTransferRequestCreateManySourceApplicationInputEnvelope = {
+  data: Prisma.PropertyTransferRequestCreateManySourceApplicationInput | Prisma.PropertyTransferRequestCreateManySourceApplicationInput[]
   skipDuplicates?: boolean
 }
 
-export type PropertyTransferRequestCreateWithoutTargetContractInput = {
+export type PropertyTransferRequestCreateWithoutTargetApplicationInput = {
   id?: string
   status?: $Enums.TransferRequestStatus
   reason?: string | null
@@ -1392,16 +1392,16 @@ export type PropertyTransferRequestCreateWithoutTargetContractInput = {
   completedAt?: Date | string | null
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutPropertyTransferRequestsInput
-  sourceContract: Prisma.ContractCreateNestedOneWithoutOutgoingTransferRequestsInput
+  sourceApplication: Prisma.ApplicationCreateNestedOneWithoutOutgoingTransferRequestsInput
   targetPropertyUnit: Prisma.PropertyUnitCreateNestedOneWithoutTransferRequestsInput
   requestedBy: Prisma.UserCreateNestedOneWithoutTransferRequestsSubmittedInput
   reviewedBy?: Prisma.UserCreateNestedOneWithoutTransferRequestsReviewedInput
 }
 
-export type PropertyTransferRequestUncheckedCreateWithoutTargetContractInput = {
+export type PropertyTransferRequestUncheckedCreateWithoutTargetApplicationInput = {
   id?: string
   tenantId: string
-  sourceContractId: string
+  sourceApplicationId: string
   targetPropertyUnitId: string
   requestedById: string
   reviewedById?: string | null
@@ -1421,52 +1421,52 @@ export type PropertyTransferRequestUncheckedCreateWithoutTargetContractInput = {
   updatedAt?: Date | string
 }
 
-export type PropertyTransferRequestCreateOrConnectWithoutTargetContractInput = {
+export type PropertyTransferRequestCreateOrConnectWithoutTargetApplicationInput = {
   where: Prisma.PropertyTransferRequestWhereUniqueInput
-  create: Prisma.XOR<Prisma.PropertyTransferRequestCreateWithoutTargetContractInput, Prisma.PropertyTransferRequestUncheckedCreateWithoutTargetContractInput>
+  create: Prisma.XOR<Prisma.PropertyTransferRequestCreateWithoutTargetApplicationInput, Prisma.PropertyTransferRequestUncheckedCreateWithoutTargetApplicationInput>
 }
 
-export type PropertyTransferRequestCreateManyTargetContractInputEnvelope = {
-  data: Prisma.PropertyTransferRequestCreateManyTargetContractInput | Prisma.PropertyTransferRequestCreateManyTargetContractInput[]
+export type PropertyTransferRequestCreateManyTargetApplicationInputEnvelope = {
+  data: Prisma.PropertyTransferRequestCreateManyTargetApplicationInput | Prisma.PropertyTransferRequestCreateManyTargetApplicationInput[]
   skipDuplicates?: boolean
 }
 
-export type PropertyTransferRequestUpsertWithWhereUniqueWithoutSourceContractInput = {
+export type PropertyTransferRequestUpsertWithWhereUniqueWithoutSourceApplicationInput = {
   where: Prisma.PropertyTransferRequestWhereUniqueInput
-  update: Prisma.XOR<Prisma.PropertyTransferRequestUpdateWithoutSourceContractInput, Prisma.PropertyTransferRequestUncheckedUpdateWithoutSourceContractInput>
-  create: Prisma.XOR<Prisma.PropertyTransferRequestCreateWithoutSourceContractInput, Prisma.PropertyTransferRequestUncheckedCreateWithoutSourceContractInput>
+  update: Prisma.XOR<Prisma.PropertyTransferRequestUpdateWithoutSourceApplicationInput, Prisma.PropertyTransferRequestUncheckedUpdateWithoutSourceApplicationInput>
+  create: Prisma.XOR<Prisma.PropertyTransferRequestCreateWithoutSourceApplicationInput, Prisma.PropertyTransferRequestUncheckedCreateWithoutSourceApplicationInput>
 }
 
-export type PropertyTransferRequestUpdateWithWhereUniqueWithoutSourceContractInput = {
+export type PropertyTransferRequestUpdateWithWhereUniqueWithoutSourceApplicationInput = {
   where: Prisma.PropertyTransferRequestWhereUniqueInput
-  data: Prisma.XOR<Prisma.PropertyTransferRequestUpdateWithoutSourceContractInput, Prisma.PropertyTransferRequestUncheckedUpdateWithoutSourceContractInput>
+  data: Prisma.XOR<Prisma.PropertyTransferRequestUpdateWithoutSourceApplicationInput, Prisma.PropertyTransferRequestUncheckedUpdateWithoutSourceApplicationInput>
 }
 
-export type PropertyTransferRequestUpdateManyWithWhereWithoutSourceContractInput = {
+export type PropertyTransferRequestUpdateManyWithWhereWithoutSourceApplicationInput = {
   where: Prisma.PropertyTransferRequestScalarWhereInput
-  data: Prisma.XOR<Prisma.PropertyTransferRequestUpdateManyMutationInput, Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutSourceContractInput>
+  data: Prisma.XOR<Prisma.PropertyTransferRequestUpdateManyMutationInput, Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutSourceApplicationInput>
 }
 
-export type PropertyTransferRequestUpsertWithWhereUniqueWithoutTargetContractInput = {
+export type PropertyTransferRequestUpsertWithWhereUniqueWithoutTargetApplicationInput = {
   where: Prisma.PropertyTransferRequestWhereUniqueInput
-  update: Prisma.XOR<Prisma.PropertyTransferRequestUpdateWithoutTargetContractInput, Prisma.PropertyTransferRequestUncheckedUpdateWithoutTargetContractInput>
-  create: Prisma.XOR<Prisma.PropertyTransferRequestCreateWithoutTargetContractInput, Prisma.PropertyTransferRequestUncheckedCreateWithoutTargetContractInput>
+  update: Prisma.XOR<Prisma.PropertyTransferRequestUpdateWithoutTargetApplicationInput, Prisma.PropertyTransferRequestUncheckedUpdateWithoutTargetApplicationInput>
+  create: Prisma.XOR<Prisma.PropertyTransferRequestCreateWithoutTargetApplicationInput, Prisma.PropertyTransferRequestUncheckedCreateWithoutTargetApplicationInput>
 }
 
-export type PropertyTransferRequestUpdateWithWhereUniqueWithoutTargetContractInput = {
+export type PropertyTransferRequestUpdateWithWhereUniqueWithoutTargetApplicationInput = {
   where: Prisma.PropertyTransferRequestWhereUniqueInput
-  data: Prisma.XOR<Prisma.PropertyTransferRequestUpdateWithoutTargetContractInput, Prisma.PropertyTransferRequestUncheckedUpdateWithoutTargetContractInput>
+  data: Prisma.XOR<Prisma.PropertyTransferRequestUpdateWithoutTargetApplicationInput, Prisma.PropertyTransferRequestUncheckedUpdateWithoutTargetApplicationInput>
 }
 
-export type PropertyTransferRequestUpdateManyWithWhereWithoutTargetContractInput = {
+export type PropertyTransferRequestUpdateManyWithWhereWithoutTargetApplicationInput = {
   where: Prisma.PropertyTransferRequestScalarWhereInput
-  data: Prisma.XOR<Prisma.PropertyTransferRequestUpdateManyMutationInput, Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTargetContractInput>
+  data: Prisma.XOR<Prisma.PropertyTransferRequestUpdateManyMutationInput, Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTargetApplicationInput>
 }
 
 export type PropertyTransferRequestCreateManyRequestedByInput = {
   id?: string
   tenantId: string
-  sourceContractId: string
+  sourceApplicationId: string
   targetPropertyUnitId: string
   reviewedById?: string | null
   status?: $Enums.TransferRequestStatus
@@ -1479,7 +1479,7 @@ export type PropertyTransferRequestCreateManyRequestedByInput = {
   refundedAmount?: number | null
   refundTransactionId?: string | null
   refundedAt?: Date | string | null
-  targetContractId?: string | null
+  targetApplicationId?: string | null
   createdAt?: Date | string
   reviewedAt?: Date | string | null
   completedAt?: Date | string | null
@@ -1489,7 +1489,7 @@ export type PropertyTransferRequestCreateManyRequestedByInput = {
 export type PropertyTransferRequestCreateManyReviewedByInput = {
   id?: string
   tenantId: string
-  sourceContractId: string
+  sourceApplicationId: string
   targetPropertyUnitId: string
   requestedById: string
   status?: $Enums.TransferRequestStatus
@@ -1502,7 +1502,7 @@ export type PropertyTransferRequestCreateManyReviewedByInput = {
   refundedAmount?: number | null
   refundTransactionId?: string | null
   refundedAt?: Date | string | null
-  targetContractId?: string | null
+  targetApplicationId?: string | null
   createdAt?: Date | string
   reviewedAt?: Date | string | null
   completedAt?: Date | string | null
@@ -1526,16 +1526,16 @@ export type PropertyTransferRequestUpdateWithoutRequestedByInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutPropertyTransferRequestsNestedInput
-  sourceContract?: Prisma.ContractUpdateOneRequiredWithoutOutgoingTransferRequestsNestedInput
+  sourceApplication?: Prisma.ApplicationUpdateOneRequiredWithoutOutgoingTransferRequestsNestedInput
   targetPropertyUnit?: Prisma.PropertyUnitUpdateOneRequiredWithoutTransferRequestsNestedInput
   reviewedBy?: Prisma.UserUpdateOneWithoutTransferRequestsReviewedNestedInput
-  targetContract?: Prisma.ContractUpdateOneWithoutIncomingTransferRequestsNestedInput
+  targetApplication?: Prisma.ApplicationUpdateOneWithoutIncomingTransferRequestsNestedInput
 }
 
 export type PropertyTransferRequestUncheckedUpdateWithoutRequestedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  sourceContractId?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceApplicationId?: Prisma.StringFieldUpdateOperationsInput | string
   targetPropertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
   reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTransferRequestStatusFieldUpdateOperationsInput | $Enums.TransferRequestStatus
@@ -1548,7 +1548,7 @@ export type PropertyTransferRequestUncheckedUpdateWithoutRequestedByInput = {
   refundedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   refundTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  targetContractId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  targetApplicationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1558,7 +1558,7 @@ export type PropertyTransferRequestUncheckedUpdateWithoutRequestedByInput = {
 export type PropertyTransferRequestUncheckedUpdateManyWithoutRequestedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  sourceContractId?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceApplicationId?: Prisma.StringFieldUpdateOperationsInput | string
   targetPropertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
   reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTransferRequestStatusFieldUpdateOperationsInput | $Enums.TransferRequestStatus
@@ -1571,7 +1571,7 @@ export type PropertyTransferRequestUncheckedUpdateManyWithoutRequestedByInput = 
   refundedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   refundTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  targetContractId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  targetApplicationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1595,16 +1595,16 @@ export type PropertyTransferRequestUpdateWithoutReviewedByInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutPropertyTransferRequestsNestedInput
-  sourceContract?: Prisma.ContractUpdateOneRequiredWithoutOutgoingTransferRequestsNestedInput
+  sourceApplication?: Prisma.ApplicationUpdateOneRequiredWithoutOutgoingTransferRequestsNestedInput
   targetPropertyUnit?: Prisma.PropertyUnitUpdateOneRequiredWithoutTransferRequestsNestedInput
   requestedBy?: Prisma.UserUpdateOneRequiredWithoutTransferRequestsSubmittedNestedInput
-  targetContract?: Prisma.ContractUpdateOneWithoutIncomingTransferRequestsNestedInput
+  targetApplication?: Prisma.ApplicationUpdateOneWithoutIncomingTransferRequestsNestedInput
 }
 
 export type PropertyTransferRequestUncheckedUpdateWithoutReviewedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  sourceContractId?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceApplicationId?: Prisma.StringFieldUpdateOperationsInput | string
   targetPropertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
   requestedById?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransferRequestStatusFieldUpdateOperationsInput | $Enums.TransferRequestStatus
@@ -1617,7 +1617,7 @@ export type PropertyTransferRequestUncheckedUpdateWithoutReviewedByInput = {
   refundedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   refundTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  targetContractId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  targetApplicationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1627,7 +1627,7 @@ export type PropertyTransferRequestUncheckedUpdateWithoutReviewedByInput = {
 export type PropertyTransferRequestUncheckedUpdateManyWithoutReviewedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  sourceContractId?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceApplicationId?: Prisma.StringFieldUpdateOperationsInput | string
   targetPropertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
   requestedById?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransferRequestStatusFieldUpdateOperationsInput | $Enums.TransferRequestStatus
@@ -1640,7 +1640,7 @@ export type PropertyTransferRequestUncheckedUpdateManyWithoutReviewedByInput = {
   refundedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   refundTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  targetContractId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  targetApplicationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1649,7 +1649,7 @@ export type PropertyTransferRequestUncheckedUpdateManyWithoutReviewedByInput = {
 
 export type PropertyTransferRequestCreateManyTenantInput = {
   id?: string
-  sourceContractId: string
+  sourceApplicationId: string
   targetPropertyUnitId: string
   requestedById: string
   reviewedById?: string | null
@@ -1663,7 +1663,7 @@ export type PropertyTransferRequestCreateManyTenantInput = {
   refundedAmount?: number | null
   refundTransactionId?: string | null
   refundedAt?: Date | string | null
-  targetContractId?: string | null
+  targetApplicationId?: string | null
   createdAt?: Date | string
   reviewedAt?: Date | string | null
   completedAt?: Date | string | null
@@ -1686,16 +1686,16 @@ export type PropertyTransferRequestUpdateWithoutTenantInput = {
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  sourceContract?: Prisma.ContractUpdateOneRequiredWithoutOutgoingTransferRequestsNestedInput
+  sourceApplication?: Prisma.ApplicationUpdateOneRequiredWithoutOutgoingTransferRequestsNestedInput
   targetPropertyUnit?: Prisma.PropertyUnitUpdateOneRequiredWithoutTransferRequestsNestedInput
   requestedBy?: Prisma.UserUpdateOneRequiredWithoutTransferRequestsSubmittedNestedInput
   reviewedBy?: Prisma.UserUpdateOneWithoutTransferRequestsReviewedNestedInput
-  targetContract?: Prisma.ContractUpdateOneWithoutIncomingTransferRequestsNestedInput
+  targetApplication?: Prisma.ApplicationUpdateOneWithoutIncomingTransferRequestsNestedInput
 }
 
 export type PropertyTransferRequestUncheckedUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  sourceContractId?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceApplicationId?: Prisma.StringFieldUpdateOperationsInput | string
   targetPropertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
   requestedById?: Prisma.StringFieldUpdateOperationsInput | string
   reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1709,7 +1709,7 @@ export type PropertyTransferRequestUncheckedUpdateWithoutTenantInput = {
   refundedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   refundTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  targetContractId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  targetApplicationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1718,7 +1718,7 @@ export type PropertyTransferRequestUncheckedUpdateWithoutTenantInput = {
 
 export type PropertyTransferRequestUncheckedUpdateManyWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  sourceContractId?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceApplicationId?: Prisma.StringFieldUpdateOperationsInput | string
   targetPropertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
   requestedById?: Prisma.StringFieldUpdateOperationsInput | string
   reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1732,7 +1732,7 @@ export type PropertyTransferRequestUncheckedUpdateManyWithoutTenantInput = {
   refundedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   refundTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  targetContractId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  targetApplicationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1742,7 +1742,7 @@ export type PropertyTransferRequestUncheckedUpdateManyWithoutTenantInput = {
 export type PropertyTransferRequestCreateManyTargetPropertyUnitInput = {
   id?: string
   tenantId: string
-  sourceContractId: string
+  sourceApplicationId: string
   requestedById: string
   reviewedById?: string | null
   status?: $Enums.TransferRequestStatus
@@ -1755,7 +1755,7 @@ export type PropertyTransferRequestCreateManyTargetPropertyUnitInput = {
   refundedAmount?: number | null
   refundTransactionId?: string | null
   refundedAt?: Date | string | null
-  targetContractId?: string | null
+  targetApplicationId?: string | null
   createdAt?: Date | string
   reviewedAt?: Date | string | null
   completedAt?: Date | string | null
@@ -1779,16 +1779,16 @@ export type PropertyTransferRequestUpdateWithoutTargetPropertyUnitInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutPropertyTransferRequestsNestedInput
-  sourceContract?: Prisma.ContractUpdateOneRequiredWithoutOutgoingTransferRequestsNestedInput
+  sourceApplication?: Prisma.ApplicationUpdateOneRequiredWithoutOutgoingTransferRequestsNestedInput
   requestedBy?: Prisma.UserUpdateOneRequiredWithoutTransferRequestsSubmittedNestedInput
   reviewedBy?: Prisma.UserUpdateOneWithoutTransferRequestsReviewedNestedInput
-  targetContract?: Prisma.ContractUpdateOneWithoutIncomingTransferRequestsNestedInput
+  targetApplication?: Prisma.ApplicationUpdateOneWithoutIncomingTransferRequestsNestedInput
 }
 
 export type PropertyTransferRequestUncheckedUpdateWithoutTargetPropertyUnitInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  sourceContractId?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceApplicationId?: Prisma.StringFieldUpdateOperationsInput | string
   requestedById?: Prisma.StringFieldUpdateOperationsInput | string
   reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTransferRequestStatusFieldUpdateOperationsInput | $Enums.TransferRequestStatus
@@ -1801,7 +1801,7 @@ export type PropertyTransferRequestUncheckedUpdateWithoutTargetPropertyUnitInput
   refundedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   refundTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  targetContractId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  targetApplicationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1811,7 +1811,7 @@ export type PropertyTransferRequestUncheckedUpdateWithoutTargetPropertyUnitInput
 export type PropertyTransferRequestUncheckedUpdateManyWithoutTargetPropertyUnitInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  sourceContractId?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceApplicationId?: Prisma.StringFieldUpdateOperationsInput | string
   requestedById?: Prisma.StringFieldUpdateOperationsInput | string
   reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumTransferRequestStatusFieldUpdateOperationsInput | $Enums.TransferRequestStatus
@@ -1824,14 +1824,14 @@ export type PropertyTransferRequestUncheckedUpdateManyWithoutTargetPropertyUnitI
   refundedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   refundTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  targetContractId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  targetApplicationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type PropertyTransferRequestCreateManySourceContractInput = {
+export type PropertyTransferRequestCreateManySourceApplicationInput = {
   id?: string
   tenantId: string
   targetPropertyUnitId: string
@@ -1847,17 +1847,17 @@ export type PropertyTransferRequestCreateManySourceContractInput = {
   refundedAmount?: number | null
   refundTransactionId?: string | null
   refundedAt?: Date | string | null
-  targetContractId?: string | null
+  targetApplicationId?: string | null
   createdAt?: Date | string
   reviewedAt?: Date | string | null
   completedAt?: Date | string | null
   updatedAt?: Date | string
 }
 
-export type PropertyTransferRequestCreateManyTargetContractInput = {
+export type PropertyTransferRequestCreateManyTargetApplicationInput = {
   id?: string
   tenantId: string
-  sourceContractId: string
+  sourceApplicationId: string
   targetPropertyUnitId: string
   requestedById: string
   reviewedById?: string | null
@@ -1877,7 +1877,7 @@ export type PropertyTransferRequestCreateManyTargetContractInput = {
   updatedAt?: Date | string
 }
 
-export type PropertyTransferRequestUpdateWithoutSourceContractInput = {
+export type PropertyTransferRequestUpdateWithoutSourceApplicationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransferRequestStatusFieldUpdateOperationsInput | $Enums.TransferRequestStatus
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1897,10 +1897,10 @@ export type PropertyTransferRequestUpdateWithoutSourceContractInput = {
   targetPropertyUnit?: Prisma.PropertyUnitUpdateOneRequiredWithoutTransferRequestsNestedInput
   requestedBy?: Prisma.UserUpdateOneRequiredWithoutTransferRequestsSubmittedNestedInput
   reviewedBy?: Prisma.UserUpdateOneWithoutTransferRequestsReviewedNestedInput
-  targetContract?: Prisma.ContractUpdateOneWithoutIncomingTransferRequestsNestedInput
+  targetApplication?: Prisma.ApplicationUpdateOneWithoutIncomingTransferRequestsNestedInput
 }
 
-export type PropertyTransferRequestUncheckedUpdateWithoutSourceContractInput = {
+export type PropertyTransferRequestUncheckedUpdateWithoutSourceApplicationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   targetPropertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1916,14 +1916,14 @@ export type PropertyTransferRequestUncheckedUpdateWithoutSourceContractInput = {
   refundedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   refundTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  targetContractId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  targetApplicationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type PropertyTransferRequestUncheckedUpdateManyWithoutSourceContractInput = {
+export type PropertyTransferRequestUncheckedUpdateManyWithoutSourceApplicationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   targetPropertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1939,14 +1939,14 @@ export type PropertyTransferRequestUncheckedUpdateManyWithoutSourceContractInput
   refundedAmount?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   refundTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   refundedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  targetContractId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  targetApplicationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type PropertyTransferRequestUpdateWithoutTargetContractInput = {
+export type PropertyTransferRequestUpdateWithoutTargetApplicationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransferRequestStatusFieldUpdateOperationsInput | $Enums.TransferRequestStatus
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1963,16 +1963,16 @@ export type PropertyTransferRequestUpdateWithoutTargetContractInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutPropertyTransferRequestsNestedInput
-  sourceContract?: Prisma.ContractUpdateOneRequiredWithoutOutgoingTransferRequestsNestedInput
+  sourceApplication?: Prisma.ApplicationUpdateOneRequiredWithoutOutgoingTransferRequestsNestedInput
   targetPropertyUnit?: Prisma.PropertyUnitUpdateOneRequiredWithoutTransferRequestsNestedInput
   requestedBy?: Prisma.UserUpdateOneRequiredWithoutTransferRequestsSubmittedNestedInput
   reviewedBy?: Prisma.UserUpdateOneWithoutTransferRequestsReviewedNestedInput
 }
 
-export type PropertyTransferRequestUncheckedUpdateWithoutTargetContractInput = {
+export type PropertyTransferRequestUncheckedUpdateWithoutTargetApplicationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  sourceContractId?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceApplicationId?: Prisma.StringFieldUpdateOperationsInput | string
   targetPropertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
   requestedById?: Prisma.StringFieldUpdateOperationsInput | string
   reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1992,10 +1992,10 @@ export type PropertyTransferRequestUncheckedUpdateWithoutTargetContractInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type PropertyTransferRequestUncheckedUpdateManyWithoutTargetContractInput = {
+export type PropertyTransferRequestUncheckedUpdateManyWithoutTargetApplicationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  sourceContractId?: Prisma.StringFieldUpdateOperationsInput | string
+  sourceApplicationId?: Prisma.StringFieldUpdateOperationsInput | string
   targetPropertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
   requestedById?: Prisma.StringFieldUpdateOperationsInput | string
   reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2020,7 +2020,7 @@ export type PropertyTransferRequestUncheckedUpdateManyWithoutTargetContractInput
 export type PropertyTransferRequestSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   tenantId?: boolean
-  sourceContractId?: boolean
+  sourceApplicationId?: boolean
   targetPropertyUnitId?: boolean
   requestedById?: boolean
   reviewedById?: boolean
@@ -2034,17 +2034,17 @@ export type PropertyTransferRequestSelect<ExtArgs extends runtime.Types.Extensio
   refundedAmount?: boolean
   refundTransactionId?: boolean
   refundedAt?: boolean
-  targetContractId?: boolean
+  targetApplicationId?: boolean
   createdAt?: boolean
   reviewedAt?: boolean
   completedAt?: boolean
   updatedAt?: boolean
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
-  sourceContract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
+  sourceApplication?: boolean | Prisma.ApplicationDefaultArgs<ExtArgs>
   targetPropertyUnit?: boolean | Prisma.PropertyUnitDefaultArgs<ExtArgs>
   requestedBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   reviewedBy?: boolean | Prisma.PropertyTransferRequest$reviewedByArgs<ExtArgs>
-  targetContract?: boolean | Prisma.PropertyTransferRequest$targetContractArgs<ExtArgs>
+  targetApplication?: boolean | Prisma.PropertyTransferRequest$targetApplicationArgs<ExtArgs>
 }, ExtArgs["result"]["propertyTransferRequest"]>
 
 
@@ -2052,7 +2052,7 @@ export type PropertyTransferRequestSelect<ExtArgs extends runtime.Types.Extensio
 export type PropertyTransferRequestSelectScalar = {
   id?: boolean
   tenantId?: boolean
-  sourceContractId?: boolean
+  sourceApplicationId?: boolean
   targetPropertyUnitId?: boolean
   requestedById?: boolean
   reviewedById?: boolean
@@ -2066,37 +2066,37 @@ export type PropertyTransferRequestSelectScalar = {
   refundedAmount?: boolean
   refundTransactionId?: boolean
   refundedAt?: boolean
-  targetContractId?: boolean
+  targetApplicationId?: boolean
   createdAt?: boolean
   reviewedAt?: boolean
   completedAt?: boolean
   updatedAt?: boolean
 }
 
-export type PropertyTransferRequestOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "sourceContractId" | "targetPropertyUnitId" | "requestedById" | "reviewedById" | "status" | "reason" | "reviewNotes" | "priceAdjustmentHandling" | "sourceTotalAmount" | "targetTotalAmount" | "priceAdjustment" | "refundedAmount" | "refundTransactionId" | "refundedAt" | "targetContractId" | "createdAt" | "reviewedAt" | "completedAt" | "updatedAt", ExtArgs["result"]["propertyTransferRequest"]>
+export type PropertyTransferRequestOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "sourceApplicationId" | "targetPropertyUnitId" | "requestedById" | "reviewedById" | "status" | "reason" | "reviewNotes" | "priceAdjustmentHandling" | "sourceTotalAmount" | "targetTotalAmount" | "priceAdjustment" | "refundedAmount" | "refundTransactionId" | "refundedAt" | "targetApplicationId" | "createdAt" | "reviewedAt" | "completedAt" | "updatedAt", ExtArgs["result"]["propertyTransferRequest"]>
 export type PropertyTransferRequestInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
-  sourceContract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
+  sourceApplication?: boolean | Prisma.ApplicationDefaultArgs<ExtArgs>
   targetPropertyUnit?: boolean | Prisma.PropertyUnitDefaultArgs<ExtArgs>
   requestedBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   reviewedBy?: boolean | Prisma.PropertyTransferRequest$reviewedByArgs<ExtArgs>
-  targetContract?: boolean | Prisma.PropertyTransferRequest$targetContractArgs<ExtArgs>
+  targetApplication?: boolean | Prisma.PropertyTransferRequest$targetApplicationArgs<ExtArgs>
 }
 
 export type $PropertyTransferRequestPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "PropertyTransferRequest"
   objects: {
     tenant: Prisma.$TenantPayload<ExtArgs>
-    sourceContract: Prisma.$ContractPayload<ExtArgs>
+    sourceApplication: Prisma.$ApplicationPayload<ExtArgs>
     targetPropertyUnit: Prisma.$PropertyUnitPayload<ExtArgs>
     requestedBy: Prisma.$UserPayload<ExtArgs>
     reviewedBy: Prisma.$UserPayload<ExtArgs> | null
-    targetContract: Prisma.$ContractPayload<ExtArgs> | null
+    targetApplication: Prisma.$ApplicationPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     tenantId: string
-    sourceContractId: string
+    sourceApplicationId: string
     targetPropertyUnitId: string
     requestedById: string
     reviewedById: string | null
@@ -2110,7 +2110,7 @@ export type $PropertyTransferRequestPayload<ExtArgs extends runtime.Types.Extens
     refundedAmount: number | null
     refundTransactionId: string | null
     refundedAt: Date | null
-    targetContractId: string | null
+    targetApplicationId: string | null
     createdAt: Date
     reviewedAt: Date | null
     completedAt: Date | null
@@ -2456,11 +2456,11 @@ readonly fields: PropertyTransferRequestFieldRefs;
 export interface Prisma__PropertyTransferRequestClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  sourceContract<T extends Prisma.ContractDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContractDefaultArgs<ExtArgs>>): Prisma.Prisma__ContractClient<runtime.Types.Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  sourceApplication<T extends Prisma.ApplicationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApplicationDefaultArgs<ExtArgs>>): Prisma.Prisma__ApplicationClient<runtime.Types.Result.GetResult<Prisma.$ApplicationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   targetPropertyUnit<T extends Prisma.PropertyUnitDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyUnitDefaultArgs<ExtArgs>>): Prisma.Prisma__PropertyUnitClient<runtime.Types.Result.GetResult<Prisma.$PropertyUnitPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   requestedBy<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   reviewedBy<T extends Prisma.PropertyTransferRequest$reviewedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyTransferRequest$reviewedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  targetContract<T extends Prisma.PropertyTransferRequest$targetContractArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyTransferRequest$targetContractArgs<ExtArgs>>): Prisma.Prisma__ContractClient<runtime.Types.Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  targetApplication<T extends Prisma.PropertyTransferRequest$targetApplicationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyTransferRequest$targetApplicationArgs<ExtArgs>>): Prisma.Prisma__ApplicationClient<runtime.Types.Result.GetResult<Prisma.$ApplicationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2492,7 +2492,7 @@ export interface Prisma__PropertyTransferRequestClient<T, Null = never, ExtArgs 
 export interface PropertyTransferRequestFieldRefs {
   readonly id: Prisma.FieldRef<"PropertyTransferRequest", 'String'>
   readonly tenantId: Prisma.FieldRef<"PropertyTransferRequest", 'String'>
-  readonly sourceContractId: Prisma.FieldRef<"PropertyTransferRequest", 'String'>
+  readonly sourceApplicationId: Prisma.FieldRef<"PropertyTransferRequest", 'String'>
   readonly targetPropertyUnitId: Prisma.FieldRef<"PropertyTransferRequest", 'String'>
   readonly requestedById: Prisma.FieldRef<"PropertyTransferRequest", 'String'>
   readonly reviewedById: Prisma.FieldRef<"PropertyTransferRequest", 'String'>
@@ -2506,7 +2506,7 @@ export interface PropertyTransferRequestFieldRefs {
   readonly refundedAmount: Prisma.FieldRef<"PropertyTransferRequest", 'Float'>
   readonly refundTransactionId: Prisma.FieldRef<"PropertyTransferRequest", 'String'>
   readonly refundedAt: Prisma.FieldRef<"PropertyTransferRequest", 'DateTime'>
-  readonly targetContractId: Prisma.FieldRef<"PropertyTransferRequest", 'String'>
+  readonly targetApplicationId: Prisma.FieldRef<"PropertyTransferRequest", 'String'>
   readonly createdAt: Prisma.FieldRef<"PropertyTransferRequest", 'DateTime'>
   readonly reviewedAt: Prisma.FieldRef<"PropertyTransferRequest", 'DateTime'>
   readonly completedAt: Prisma.FieldRef<"PropertyTransferRequest", 'DateTime'>
@@ -2873,22 +2873,22 @@ export type PropertyTransferRequest$reviewedByArgs<ExtArgs extends runtime.Types
 }
 
 /**
- * PropertyTransferRequest.targetContract
+ * PropertyTransferRequest.targetApplication
  */
-export type PropertyTransferRequest$targetContractArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type PropertyTransferRequest$targetApplicationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Contract
+   * Select specific fields to fetch from the Application
    */
-  select?: Prisma.ContractSelect<ExtArgs> | null
+  select?: Prisma.ApplicationSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Contract
+   * Omit specific fields from the Application
    */
-  omit?: Prisma.ContractOmit<ExtArgs> | null
+  omit?: Prisma.ApplicationOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ContractInclude<ExtArgs> | null
-  where?: Prisma.ContractWhereInput
+  include?: Prisma.ApplicationInclude<ExtArgs> | null
+  where?: Prisma.ApplicationWhereInput
 }
 
 /**

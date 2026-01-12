@@ -177,7 +177,7 @@ curl http://localhost:4566/restapis/<api-id>/test/_user_request_/health
 | ------------------------- | --------------------------------------------------- |
 | **User Service**          | Authentication, user management, profiles, roles    |
 | **Property Service**      | Property listings, search, media management         |
-| **Mortgage Service**      | Mortgage contracts, payment plans, prequalification |
+| **Mortgage Service**      | Mortgage applications, payment plans, prequalification |
 | **Notifications Service** | Email, SMS, push notifications, Slack webhooks      |
 | **Authorizer Service**    | Lambda authorizer for API Gateway (no Swagger UI)   |
 

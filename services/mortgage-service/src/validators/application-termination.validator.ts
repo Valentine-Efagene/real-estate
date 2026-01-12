@@ -53,7 +53,7 @@ export const TerminationInitiatorEnum = z.enum([
 // =============================================================================
 
 /**
- * Request contract termination (buyer/seller initiated)
+ * Request application termination (buyer/seller initiated)
  */
 export const RequestTerminationSchema = z
     .object({
@@ -159,7 +159,7 @@ export const CompleteRefundSchema = z
 export const CancelTerminationSchema = z
     .object({
         reason: z.string().min(5).max(500).optional().openapi({
-            example: 'Buyer has decided to continue with the contract.',
+            example: 'Buyer has decided to continue with the application.',
         }),
     })
     .openapi('CancelTermination');
@@ -171,7 +171,7 @@ export const CancelTerminationSchema = z
 export const TerminationResponseSchema = z
     .object({
         id: z.string(),
-        contractId: z.string(),
+        applicationId: z.string(),
         requestNumber: z.string(),
         initiatedBy: TerminationInitiatorEnum,
         type: TerminationTypeEnum,
@@ -180,7 +180,7 @@ export const TerminationResponseSchema = z
         requiresApproval: z.boolean(),
         autoApproveEligible: z.boolean(),
         // Financial
-        totalContractAmount: z.number(),
+        totalApplicationAmount: z.number(),
         totalPaidToDate: z.number(),
         outstandingBalance: z.number(),
         refundableAmount: z.number(),

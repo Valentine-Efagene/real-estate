@@ -18,7 +18,7 @@ import {
     AdminInviteAdminSchema,
     TestTempSchema,
     TemplateTypeValue,
-    ContractCreatedSchema,
+    ApplicationCreatedSchema,
     TemplateType,
 } from '../validators/email.validator';
 
@@ -239,15 +239,15 @@ router.post('/admin/invite-admin', asyncHandler(async (req: Request, res: Respon
     res.json(createResponse(response.status, 'Email sent', response.headers));
 }));
 
-// Contract created email (mortgage)
-router.post('/contract-created', asyncHandler(async (req: Request, res: Response) => {
-    const parsed = ContractCreatedSchema.safeParse(req.body);
+// Application created email (mortgage)
+router.post('/application-created', asyncHandler(async (req: Request, res: Response) => {
+    const parsed = ApplicationCreatedSchema.safeParse(req.body);
     if (!parsed.success) {
         res.status(400).json(createResponse(400, 'Validation error', parsed.error.issues));
         return;
     }
 
-    const templateName: TemplateTypeValue = 'contractCreated';
+    const templateName: TemplateTypeValue = 'applicationCreated';
     const response = await emailService.sendTemplateEmail({
         templateName,
         ...parsed.data

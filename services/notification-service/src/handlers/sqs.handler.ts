@@ -57,12 +57,12 @@ function getTemplateType(notificationType: NotificationType): TemplateTypeValue 
         [NotificationType.PREQUALIFICATION_SUBMITTED]: 'prequalificationSubmitted',
         [NotificationType.PREQUALIFICATION_APPROVED]: 'prequalificationApproved',
         [NotificationType.PREQUALIFICATION_REJECTED]: 'prequalificationRejected',
-        // Mortgage - Contract
-        [NotificationType.CONTRACT_CREATED]: 'contractCreated',
-        [NotificationType.CONTRACT_ACTIVATED]: 'contractActivated',
-        [NotificationType.CONTRACT_TERMINATION_REQUESTED]: 'contractTerminationRequested',
-        [NotificationType.CONTRACT_TERMINATION_APPROVED]: 'contractTerminationApproved',
-        [NotificationType.CONTRACT_TERMINATED]: 'contractTerminated',
+        // Mortgage - Application
+        [NotificationType.APPLICATION_CREATED]: 'applicationCreated',
+        [NotificationType.APPLICATION_ACTIVATED]: 'applicationActivated',
+        [NotificationType.APPLICATION_TERMINATION_REQUESTED]: 'applicationTerminationRequested',
+        [NotificationType.APPLICATION_TERMINATION_APPROVED]: 'applicationTerminationApproved',
+        [NotificationType.APPLICATION_TERMINATED]: 'applicationTerminated',
         // Mortgage - Payments
         [NotificationType.PAYMENT_RECEIVED]: 'paymentReceived',
         [NotificationType.PAYMENT_FAILED]: 'paymentFailed',

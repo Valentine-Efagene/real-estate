@@ -1,4 +1,4 @@
-# Event Models: DomainEvent vs ContractEvent
+# Event Models: DomainEvent vs ApplicationEvent
 
 ## Clear Boundaries and Definitions
 
@@ -27,20 +27,20 @@
 **Example Events**:
 
 ```typescript
-// Notify other services that a contract was created
+// Notify other services that a application was created
 {
   eventType: 'CONTRACT.CREATED',
-  aggregateType: 'Contract',
-  aggregateId: contractId,
+  aggregateType: 'Application',
+  aggregateId: applicationId,
   queueName: 'notifications',
-  payload: JSON.stringify({ contractNumber, buyerId }),
+  payload: JSON.stringify({ applicationNumber, buyerId }),
   status: 'PENDING'
 }
 
 // Trigger payment processing
 {
   eventType: 'PAYMENT.INITIATED',
-  aggregateType: 'ContractPayment',
+  aggregateType: 'ApplicationPayment',
   aggregateId: paymentId,
   queueName: 'payment-processor',
   payload: JSON.stringify({ amount, method }),
@@ -50,14 +50,14 @@
 
 ---
 
-### ContractEvent (Audit Trail)
+### ApplicationEvent (Audit Trail)
 
-**Purpose**: Immutable audit log for contract lifecycle and compliance
+**Purpose**: Immutable audit log for application lifecycle and compliance
 
 **Use Cases**:
 
 - Regulatory compliance and audit trails
-- Historical tracking of contract state changes
+- Historical tracking of application state changes
 - Debugging and forensics ("what happened when")
 - Business intelligence and analytics
 - Legal record-keeping
@@ -66,7 +66,7 @@
 
 - No processing mechanism (write-once, never modified)
 - No queue routing (not meant to trigger actions)
-- Uses enum types for type safety: `ContractEventType.CONTRACT_CREATED`
+- Uses enum types for type safety: `ApplicationEventType.CONTRACT_CREATED`
 - Structured data field (JSON) for event-specific details
 - State transition tracking (fromState, toState, trigger)
 - Actor attribution (actorId, actorType)
@@ -76,12 +76,12 @@
 **Example Events**:
 
 ```typescript
-// Audit record of contract creation
+// Audit record of application creation
 {
-  eventType: ContractEventType.CONTRACT_CREATED,
-  eventGroup: ContractEventGroup.STATE_CHANGE,
-  contractId,
-  data: { contractNumber, buyerId, totalAmount },
+  eventType: ApplicationEventType.CONTRACT_CREATED,
+  eventGroup: ApplicationEventGroup.STATE_CHANGE,
+  applicationId,
+  data: { applicationNumber, buyerId, totalAmount },
   actorId: buyerId,
   actorType: EventActorType.USER,
   occurredAt: now()
@@ -89,9 +89,9 @@
 
 // State transition record
 {
-  eventType: ContractEventType.CONTRACT_STATE_CHANGED,
-  eventGroup: ContractEventGroup.STATE_CHANGE,
-  contractId,
+  eventType: ApplicationEventType.CONTRACT_STATE_CHANGED,
+  eventGroup: ApplicationEventGroup.STATE_CHANGE,
+  applicationId,
   fromState: 'DRAFT',
   toState: 'ACTIVE',
   trigger: 'INITIAL_PAYMENT',
@@ -104,7 +104,7 @@
 
 ## Decision Matrix: Which Event Model to Use?
 
-| Question                                   | DomainEvent | ContractEvent |
+| Question                                   | DomainEvent | ApplicationEvent |
 | ------------------------------------------ | ----------- | ------------- |
 | Need to trigger action in another service? | ✅ Yes      | ❌ No         |
 | Need retry logic if processing fails?      | ✅ Yes      | ❌ No         |
@@ -112,7 +112,7 @@
 | Need audit trail for compliance?           | ❌ No       | ✅ Yes        |
 | Need to track who did what when?           | ❌ No       | ✅ Yes        |
 | Need permanent historical record?          | ❌ No       | ✅ Yes        |
-| Need to query "all events for contract X"? | ⚠️ Maybe    | ✅ Yes        |
+| Need to query "all events for application X"? | ⚠️ Maybe    | ✅ Yes        |
 | Event should be processed and deleted?     | ✅ Yes      | ❌ No         |
 
 ---
@@ -126,15 +126,15 @@ Many actions require BOTH event types:
 ```typescript
 await prisma.$transaction(async (tx) => {
   // Create the business entity
-  const contract = await tx.contract.create({ data });
+  const application = await tx.application.create({ data });
 
   // Audit trail (permanent record)
-  await tx.contractEvent.create({
+  await tx.applicationEvent.create({
     data: {
-      contractId: contract.id,
-      eventType: ContractEventType.CONTRACT_CREATED,
-      eventGroup: ContractEventGroup.STATE_CHANGE,
-      data: { contractNumber: contract.contractNumber, buyerId },
+      applicationId: application.id,
+      eventType: ApplicationEventType.CONTRACT_CREATED,
+      eventGroup: ApplicationEventGroup.STATE_CHANGE,
+      data: { applicationNumber: application.applicationNumber, buyerId },
       actorId: userId,
       actorType: EventActorType.USER,
     },
@@ -145,32 +145,32 @@ await prisma.$transaction(async (tx) => {
     data: {
       id: uuidv4(),
       eventType: "CONTRACT.CREATED",
-      aggregateType: "Contract",
-      aggregateId: contract.id,
+      aggregateType: "Application",
+      aggregateId: application.id,
       queueName: "notifications",
       payload: JSON.stringify({
-        contractId: contract.id,
-        contractNumber: contract.contractNumber,
+        applicationId: application.id,
+        applicationNumber: application.applicationNumber,
         buyerId,
       }),
     },
   });
 
-  return contract;
+  return application;
 });
 ```
 
-### Pattern 2: ContractEvent Only (Audit without actions)
+### Pattern 2: ApplicationEvent Only (Audit without actions)
 
 Some events are purely for historical tracking:
 
 ```typescript
 // Recording a view/access event
-await tx.contractEvent.create({
+await tx.applicationEvent.create({
   data: {
-    contractId,
-    eventType: ContractEventType.CONTRACT_VIEWED,
-    eventGroup: ContractEventGroup.NOTIFICATION,
+    applicationId,
+    eventType: ApplicationEventType.CONTRACT_VIEWED,
+    eventGroup: ApplicationEventGroup.NOTIFICATION,
     actorId: userId,
     actorType: EventActorType.USER,
   },
@@ -179,7 +179,7 @@ await tx.contractEvent.create({
 
 ### Pattern 3: DomainEvent Only (External systems)
 
-Events from external systems that don't relate to contracts:
+Events from external systems that don't relate to applications:
 
 ```typescript
 // Property price change notification
@@ -205,7 +205,7 @@ await tx.domainEvent.create({
   - Flexible, allows any service to define events
   - Used for routing and queue filtering
 
-- **ContractEvent.eventType**: Enum with underscore notation
+- **ApplicationEvent.eventType**: Enum with underscore notation
   - Format: `ENTITY_ACTION` (e.g., `CONTRACT_CREATED`, `PAYMENT_COMPLETED`)
   - Type-safe, database-enforced values
   - Prevents typos and provides IDE autocomplete
@@ -214,7 +214,7 @@ await tx.domainEvent.create({
 
 ## Migration Guidelines
 
-When adding a new contract-related action:
+When adding a new application-related action:
 
 1. **Ask**: Does this need to trigger something in another service?
 
@@ -223,8 +223,8 @@ When adding a new contract-related action:
 
 2. **Ask**: Does this need to be in the audit trail?
 
-   - **Yes** → Create ContractEvent
-   - **No** → Skip ContractEvent
+   - **Yes** → Create ApplicationEvent
+   - **No** → Skip ApplicationEvent
 
 3. **Most actions need BOTH** for complete functionality
 
@@ -234,9 +234,9 @@ When adding a new contract-related action:
 
 ## Event Type Registry
 
-### ContractEvent Types (Enum - for audit)
+### ApplicationEvent Types (Enum - for audit)
 
-Defined in `schema.prisma` as `ContractEventType`:
+Defined in `schema.prisma` as `ApplicationEventType`:
 
 - `CONTRACT_CREATED`
 - `CONTRACT_STATE_CHANGED`
@@ -278,7 +278,7 @@ Format: `ENTITY.ACTION` (examples, not exhaustive):
 ## Summary
 
 - **DomainEvent** = Message bus (actions, integration, temporary)
-- **ContractEvent** = Audit log (compliance, history, permanent)
-- Most contract actions create **BOTH**
-- Use enums for ContractEvent (type safety)
+- **ApplicationEvent** = Audit log (compliance, history, permanent)
+- Most application actions create **BOTH**
+- Use enums for ApplicationEvent (type safety)
 - Use strings for DomainEvent (flexibility)

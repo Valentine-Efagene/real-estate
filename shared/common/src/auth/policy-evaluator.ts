@@ -2,21 +2,21 @@
  * Policy evaluation utilities for scope-based authorization
  * 
  * Scopes follow a resource:action pattern with wildcard support:
- * - "contract:read" - specific action on specific resource
- * - "contract:*" - all actions on contracts
+ * - "application:read" - specific action on specific resource
+ * - "application:*" - all actions on contracts
  * - "*" - superuser access
  * 
  * @example
  * ```typescript
  * import { hasScope, requireScope } from '@valentine-efagene/qshelter-common';
  * 
- * const scopes = ['contract:read', 'payment:*'];
+ * const scopes = ['application:read', 'payment:*'];
  * 
- * hasScope(scopes, 'contract:read');  // true
+ * hasScope(scopes, 'application:read');  // true
  * hasScope(scopes, 'payment:create'); // true (wildcard match)
  * hasScope(scopes, 'user:read');      // false
  * 
- * requireScope(scopes, 'contract:read'); // passes
+ * requireScope(scopes, 'application:read'); // passes
  * requireScope(scopes, 'user:read');     // throws 403 error
  * ```
  */
@@ -43,9 +43,9 @@ export function hasScope(scopes: string[], required: string): boolean {
         // Exact match
         if (s === required) return true;
 
-        // Wildcard match: "contract:*" matches "contract:read"
+        // Wildcard match: "application:*" matches "application:read"
         if (s.endsWith(':*')) {
-            const prefix = s.slice(0, -1); // "contract:"
+            const prefix = s.slice(0, -1); // "application:"
             return required.startsWith(prefix);
         }
 

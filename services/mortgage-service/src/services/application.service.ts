@@ -1,15 +1,15 @@
 import { prisma as defaultPrisma } from '../lib/prisma';
-import { AppError, PrismaClient, StepType, ContractStatus, PhaseStatus, StepStatus } from '@valentine-efagene/qshelter-common';
+import { AppError, PrismaClient, StepType, ApplicationStatus, PhaseStatus, StepStatus } from '@valentine-efagene/qshelter-common';
 import { v4 as uuidv4 } from 'uuid';
 import type {
-    CreateContractInput,
-    UpdateContractInput,
-    TransitionContractInput,
-} from '../validators/contract.validator';
+    CreateApplicationInput,
+    UpdateApplicationInput,
+    TransitionApplicationInput,
+} from '../validators/application.validator';
 import { createPaymentMethodService } from './payment-method.service';
 import {
-    sendContractCreatedNotification,
-    sendContractActivatedNotification,
+    sendApplicationCreatedNotification,
+    sendApplicationActivatedNotification,
     formatCurrency,
     formatDate,
 } from '../lib/notifications';
@@ -20,9 +20,9 @@ type AnyPrismaClient = PrismaClient;
 const DASHBOARD_URL = process.env.DASHBOARD_URL || 'https://app.contribuild.com';
 
 /**
- * Generate a unique contract number
+ * Generate a unique application number
  */
-function generateContractNumber(): string {
+function generateApplicationNumber(): string {
     const timestamp = Date.now().toString(36).toUpperCase();
     const random = Math.random().toString(36).substring(2, 6).toUpperCase();
     return `CTR-${timestamp}-${random}`;
@@ -49,13 +49,13 @@ function calculatePeriodicPayment(
 }
 
 /**
- * Extract mortgage payment info from contract phases
+ * Extract mortgage payment info from application phases
  * The mortgage phase has a payment plan with term and interest rate
  * Now reads from PaymentPhase extension table
  */
-function getMortgagePaymentInfo(contract: any): { termMonths: number; monthlyPayment: number } {
+function getMortgagePaymentInfo(application: any): { termMonths: number; monthlyPayment: number } {
     // Find the mortgage phase (phaseType = 'MORTGAGE')
-    const mortgagePhase = contract.phases?.find(
+    const mortgagePhase = application.phases?.find(
         (phase: any) => phase.phaseType === 'MORTGAGE'
     );
 
@@ -150,23 +150,23 @@ function parseStepDefinitions(phaseTemplate: {
 }
 
 /**
- * Simple state machine for contract states
+ * Simple state machine for application states
  */
-function getNextState(currentState: ContractStatus, trigger: string): ContractStatus | null {
-    const transitions: Record<ContractStatus, Record<string, ContractStatus>> = {
+function getNextState(currentState: ApplicationStatus, trigger: string): ApplicationStatus | null {
+    const transitions: Record<ApplicationStatus, Record<string, ApplicationStatus>> = {
         DRAFT: {
-            SUBMIT: 'PENDING' as ContractStatus,
-            CANCEL: 'CANCELLED' as ContractStatus,
+            SUBMIT: 'PENDING' as ApplicationStatus,
+            CANCEL: 'CANCELLED' as ApplicationStatus,
         },
         PENDING: {
-            APPROVE: 'ACTIVE' as ContractStatus,
-            REJECT: 'CANCELLED' as ContractStatus,
-            CANCEL: 'CANCELLED' as ContractStatus,
+            APPROVE: 'ACTIVE' as ApplicationStatus,
+            REJECT: 'CANCELLED' as ApplicationStatus,
+            CANCEL: 'CANCELLED' as ApplicationStatus,
         },
         ACTIVE: {
-            COMPLETE: 'COMPLETED' as ContractStatus,
-            TERMINATE: 'TERMINATED' as ContractStatus,
-            TRANSFER: 'TRANSFERRED' as ContractStatus,
+            COMPLETE: 'COMPLETED' as ApplicationStatus,
+            TERMINATE: 'TERMINATED' as ApplicationStatus,
+            TRANSFER: 'TRANSFERRED' as ApplicationStatus,
         },
         COMPLETED: {},
         CANCELLED: {},
@@ -177,25 +177,25 @@ function getNextState(currentState: ContractStatus, trigger: string): ContractSt
     return transitions[currentState]?.[trigger] ?? null;
 }
 
-function mapStateToStatus(state: ContractStatus): ContractStatus {
+function mapStateToStatus(state: ApplicationStatus): ApplicationStatus {
     // State and status are now the same type
     return state;
 }
 
 /**
- * Contract service interface
+ * Application service interface
  */
-export interface ContractService {
-    create(data: CreateContractInput): Promise<any>;
+export interface ApplicationService {
+    create(data: CreateApplicationInput): Promise<any>;
     findAll(filters?: {
         buyerId?: string;
         propertyUnitId?: string;
-        status?: ContractStatus;
+        status?: ApplicationStatus;
     }): Promise<any[]>;
     findById(id: string): Promise<any>;
-    findByContractNumber(contractNumber: string): Promise<any>;
-    update(id: string, data: UpdateContractInput, userId: string): Promise<any>;
-    transition(id: string, data: TransitionContractInput, userId: string): Promise<any>;
+    findByApplicationNumber(applicationNumber: string): Promise<any>;
+    update(id: string, data: UpdateApplicationInput, userId: string): Promise<any>;
+    transition(id: string, data: TransitionApplicationInput, userId: string): Promise<any>;
     sign(id: string, userId: string): Promise<any>;
     cancel(id: string, userId: string, reason?: string): Promise<any>;
     delete(id: string, userId: string): Promise<{ success: boolean }>;
@@ -203,13 +203,13 @@ export interface ContractService {
 }
 
 /**
- * Create a contract service with the given Prisma client
+ * Create a application service with the given Prisma client
  * Use this for tenant-scoped operations
  */
-export function createContractService(prisma: AnyPrismaClient = defaultPrisma): ContractService {
+export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma): ApplicationService {
     const paymentMethodService = createPaymentMethodService(prisma);
 
-    async function create(data: CreateContractInput): Promise<any> {
+    async function create(data: CreateApplicationInput): Promise<any> {
         const method = await paymentMethodService.findById(data.paymentMethodId);
 
         if (!method.isActive) {
@@ -250,7 +250,7 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
         const unitPrice = propertyUnit.priceOverride ?? propertyUnit.variant.price;
         const totalAmount = data.totalAmount ?? unitPrice;
 
-        const contract = await prisma.$transaction(async (tx: any) => {
+        const application = await prisma.$transaction(async (tx: any) => {
             await tx.propertyUnit.update({
                 where: { id: data.propertyUnitId },
                 data: {
@@ -268,17 +268,17 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
                 },
             });
 
-            const created = await tx.contract.create({
+            const created = await tx.application.create({
                 data: {
                     tenantId: (data as any).tenantId,
                     propertyUnitId: data.propertyUnitId,
                     buyerId: data.buyerId,
                     sellerId: data.sellerId ?? propertyUnit.variant.property.userId,
                     paymentMethodId: data.paymentMethodId,
-                    contractNumber: generateContractNumber(),
+                    applicationNumber: generateApplicationNumber(),
                     title: data.title,
                     description: data.description,
-                    contractType: data.contractType,
+                    applicationType: data.applicationType,
                     totalAmount,
                     status: 'DRAFT',
                     startDate: data.startDate ? new Date(data.startDate) : null,
@@ -297,10 +297,10 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
                 const steps = parseStepDefinitions(phaseTemplate);
                 const requiredDocs = phaseTemplate.requiredDocuments || [];
 
-                // Create base ContractPhase (shared fields only)
-                const phase = await tx.contractPhase.create({
+                // Create base ApplicationPhase (shared fields only)
+                const phase = await tx.applicationPhase.create({
                     data: {
-                        contractId: created.id,
+                        applicationId: created.id,
                         name: phaseTemplate.name,
                         description: phaseTemplate.description,
                         phaseCategory: phaseTemplate.phaseCategory,
@@ -384,17 +384,17 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
             }
 
             // Audit trail (permanent record)
-            await tx.contractEvent.create({
+            await tx.applicationEvent.create({
                 data: {
-                    contractId: created.id,
-                    eventType: 'CONTRACT_CREATED',
+                    applicationId: created.id,
+                    eventType: 'APPLICATION_CREATED',
                     eventGroup: 'STATE_CHANGE',
                     data: {
-                        contractNumber: created.contractNumber,
+                        applicationNumber: created.applicationNumber,
                         buyerId: data.buyerId,
                         propertyUnitId: data.propertyUnitId,
                         totalAmount,
-                        contractType: data.contractType,
+                        applicationType: data.applicationType,
                     },
                     actorId: data.buyerId,
                     actorType: 'USER',
@@ -405,13 +405,13 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
-                    eventType: 'CONTRACT.CREATED',
-                    aggregateType: 'Contract',
+                    eventType: 'APPLICATION.CREATED',
+                    aggregateType: 'Application',
                     aggregateId: created.id,
                     queueName: 'notifications',
                     payload: JSON.stringify({
-                        contractId: created.id,
-                        contractNumber: created.contractNumber,
+                        applicationId: created.id,
+                        applicationNumber: created.applicationNumber,
                         buyerId: data.buyerId,
                         propertyUnitId: data.propertyUnitId,
                         totalAmount,
@@ -423,36 +423,36 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
             return created;
         });
 
-        const fullContract = await findById(contract.id);
+        const fullApplication = await findById(application.id);
 
-        // Send contract created notification
+        // Send application created notification
         try {
             // Get mortgage payment info from phases
-            const mortgageInfo = getMortgagePaymentInfo(fullContract);
+            const mortgageInfo = getMortgagePaymentInfo(fullApplication);
 
-            await sendContractCreatedNotification({
+            await sendApplicationCreatedNotification({
                 email: buyer.email,
                 userName: buyer.firstName || 'Valued Customer',
-                contractNumber: fullContract.contractNumber,
+                applicationNumber: fullApplication.applicationNumber,
                 propertyName: propertyUnit.variant?.property?.title || 'Your Property',
                 totalAmount: formatCurrency(totalAmount),
                 termMonths: mortgageInfo.termMonths,
                 monthlyPayment: formatCurrency(mortgageInfo.monthlyPayment),
-                dashboardUrl: `${DASHBOARD_URL}/contracts/${contract.id}`,
-            }, contract.id);
+                dashboardUrl: `${DASHBOARD_URL}/applications/${application.id}`,
+            }, application.id);
         } catch (error) {
-            console.error('[Contract] Failed to send created notification', { id: contract.id, error });
+            console.error('[Application] Failed to send created notification', { id: application.id, error });
         }
 
-        return fullContract;
+        return fullApplication;
     }
 
     async function findAll(filters?: {
         buyerId?: string;
         propertyUnitId?: string;
-        status?: ContractStatus;
+        status?: ApplicationStatus;
     }) {
-        const contracts = await prisma.contract.findMany({
+        const applications = await prisma.application.findMany({
             where: filters,
             orderBy: { createdAt: 'desc' },
             include: {
@@ -479,11 +479,11 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
                 },
             },
         });
-        return contracts;
+        return applications;
     }
 
     async function findById(id: string): Promise<any> {
-        const contract = await prisma.contract.findUnique({
+        const application = await prisma.application.findUnique({
             where: { id },
             include: {
                 propertyUnit: {
@@ -557,16 +557,16 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
             },
         });
 
-        if (!contract) {
-            throw new AppError(404, 'Contract not found');
+        if (!application) {
+            throw new AppError(404, 'application not found');
         }
 
-        return contract;
+        return application;
     }
 
-    async function findByContractNumber(contractNumber: string) {
-        const contract = await prisma.contract.findUnique({
-            where: { contractNumber },
+    async function findByApplicationNumber(applicationNumber: string) {
+        const application = await prisma.application.findUnique({
+            where: { applicationNumber },
             include: {
                 phases: {
                     orderBy: { order: 'asc' },
@@ -574,21 +574,21 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
             },
         });
 
-        if (!contract) {
-            throw new AppError(404, 'Contract not found');
+        if (!application) {
+            throw new AppError(404, 'application not found');
         }
 
-        return contract;
+        return application;
     }
 
-    async function update(id: string, data: UpdateContractInput, userId: string) {
-        const contract = await findById(id);
+    async function update(id: string, data: UpdateApplicationInput, userId: string) {
+        const application = await findById(id);
 
-        if (contract.buyerId !== userId && contract.sellerId !== userId) {
-            throw new AppError(403, 'Unauthorized to update this contract');
+        if (application.buyerId !== userId && application.sellerId !== userId) {
+            throw new AppError(403, 'Unauthorized to update this application');
         }
 
-        const updated = await prisma.contract.update({
+        const updated = await prisma.application.update({
             where: { id },
             data,
         });
@@ -596,10 +596,10 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
         return findById(updated.id);
     }
 
-    async function transition(id: string, data: TransitionContractInput, userId: string) {
-        const contract = await findById(id);
+    async function transition(id: string, data: TransitionApplicationInput, userId: string) {
+        const application = await findById(id);
 
-        const fromStatus = contract.status;
+        const fromStatus = application.status;
         const toStatus = getNextState(fromStatus, data.trigger);
 
         if (!toStatus) {
@@ -607,7 +607,7 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
         }
 
         const updated = await prisma.$transaction(async (tx: any) => {
-            const result = await tx.contract.update({
+            const result = await tx.application.update({
                 where: { id },
                 data: {
                     status: toStatus,
@@ -617,12 +617,12 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
-                    eventType: 'CONTRACT.STATE_CHANGED',
-                    aggregateType: 'Contract',
+                    eventType: 'APPLICATION.STATE_CHANGED',
+                    aggregateType: 'Application',
                     aggregateId: id,
-                    queueName: 'contract-steps',
+                    queueName: 'application-steps',
                     payload: JSON.stringify({
-                        contractId: id,
+                        applicationId: id,
                         fromStatus,
                         toStatus,
                         trigger: data.trigger,
@@ -638,18 +638,18 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
     }
 
     async function sign(id: string, userId: string) {
-        const contract = await findById(id);
+        const application = await findById(id);
 
-        if (contract.signedAt) {
-            throw new AppError(400, 'Contract already signed');
+        if (application.signedAt) {
+            throw new AppError(400, 'Application already signed');
         }
 
-        if (contract.buyerId !== userId) {
-            throw new AppError(403, 'Only the buyer can sign the contract');
+        if (application.buyerId !== userId) {
+            throw new AppError(403, 'Only the buyer can sign the application');
         }
 
         const updated = await prisma.$transaction(async (tx: any) => {
-            const result = await tx.contract.update({
+            const result = await tx.application.update({
                 where: { id },
                 data: {
                     signedAt: new Date(),
@@ -657,17 +657,17 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
                 },
             });
 
-            // Write CONTRACT.SIGNED domain event
+            // Write APPLICATION.SIGNED domain event
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
-                    eventType: 'CONTRACT.SIGNED',
-                    aggregateType: 'Contract',
+                    eventType: 'APPLICATION.SIGNED',
+                    aggregateType: 'Application',
                     aggregateId: id,
                     queueName: 'notifications',
                     payload: JSON.stringify({
-                        contractId: id,
-                        buyerId: contract.buyerId,
+                        applicationId: id,
+                        buyerId: application.buyerId,
                     }),
                     actorId: userId,
                 },
@@ -676,12 +676,12 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
             return result;
         });
 
-        const activatedContract = await findById(updated.id);
+        const activatedApplication = await findById(updated.id);
 
-        // Send contract activated notification
+        // Send application activated notification
         try {
             // Find next payment due date from first payment phase's installments
-            const firstPaymentPhase = activatedContract.phases?.find(
+            const firstPaymentPhase = activatedApplication.phases?.find(
                 (p: any) => p.phaseCategory === 'PAYMENT' && p.paymentPhase?.installments?.length > 0
             );
             const firstInstallment = firstPaymentPhase?.paymentPhase?.installments?.[0];
@@ -690,34 +690,34 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
                 : 'To be scheduled';
 
             // Get mortgage payment info from phases
-            const mortgageInfo = getMortgagePaymentInfo(activatedContract);
+            const mortgageInfo = getMortgagePaymentInfo(activatedApplication);
 
-            await sendContractActivatedNotification({
-                email: contract.buyer?.email || '',
-                userName: contract.buyer?.firstName || 'Valued Customer',
-                contractNumber: contract.contractNumber,
-                propertyName: contract.propertyUnit?.variant?.property?.title || 'Your Property',
+            await sendApplicationActivatedNotification({
+                email: application.buyer?.email || '',
+                userName: application.buyer?.firstName || 'Valued Customer',
+                applicationNumber: application.applicationNumber,
+                propertyName: application.propertyUnit?.variant?.property?.title || 'Your Property',
                 startDate: formatDate(new Date()),
                 nextPaymentDate,
                 monthlyPayment: formatCurrency(mortgageInfo.monthlyPayment || 0),
-                dashboardUrl: `${DASHBOARD_URL}/contracts/${id}`,
+                dashboardUrl: `${DASHBOARD_URL}/applications/${id}`,
             }, id);
         } catch (error) {
-            console.error('[Contract] Failed to send activated notification', { id, error });
+            console.error('[Application] Failed to send activated notification', { id, error });
         }
 
-        return activatedContract;
+        return activatedApplication;
     }
 
     async function cancel(id: string, userId: string, reason?: string) {
-        const contract = await findById(id);
+        const application = await findById(id);
 
-        if (contract.status === 'COMPLETED' || contract.status === 'CANCELLED') {
-            throw new AppError(400, `Cannot cancel contract in ${contract.status} status`);
+        if (application.status === 'COMPLETED' || application.status === 'CANCELLED') {
+            throw new AppError(400, `Cannot cancel application in ${application.status} status`);
         }
 
         const updated = await prisma.$transaction(async (tx: any) => {
-            const result = await tx.contract.update({
+            const result = await tx.application.update({
                 where: { id },
                 data: {
                     status: 'CANCELLED',
@@ -728,13 +728,13 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
-                    eventType: 'CONTRACT.CANCELLED',
-                    aggregateType: 'Contract',
+                    eventType: 'APPLICATION.CANCELLED',
+                    aggregateType: 'Application',
                     aggregateId: id,
                     queueName: 'notifications',
                     payload: JSON.stringify({
-                        contractId: id,
-                        buyerId: contract.buyerId,
+                        applicationId: id,
+                        buyerId: application.buyerId,
                         reason,
                     }),
                     actorId: userId,
@@ -747,23 +747,23 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
         return findById(updated.id);
     }
 
-    async function deleteContract(id: string, userId: string) {
-        const contract = await findById(id);
+    async function deleteApplication(id: string, userId: string) {
+        const application = await findById(id);
 
-        if (contract.status !== 'DRAFT') {
-            throw new AppError(400, 'Only draft contracts can be deleted');
+        if (application.status !== 'DRAFT') {
+            throw new AppError(400, 'Only draft applications can be deleted');
         }
 
-        if (contract.buyerId !== userId) {
-            throw new AppError(403, 'Only the buyer can delete the contract');
+        if (application.buyerId !== userId) {
+            throw new AppError(403, 'Only the buyer can delete the application');
         }
 
         await prisma.$transaction(async (tx: any) => {
-            await tx.contractPayment.deleteMany({ where: { contractId: id } });
-            await tx.contractDocument.deleteMany({ where: { contractId: id } });
+            await tx.applicationPayment.deleteMany({ where: { applicationId: id } });
+            await tx.applicationDocument.deleteMany({ where: { applicationId: id } });
 
-            const phases = await tx.contractPhase.findMany({
-                where: { contractId: id },
+            const phases = await tx.applicationPhase.findMany({
+                where: { applicationId: id },
                 include: {
                     documentationPhase: true,
                     paymentPhase: true,
@@ -787,7 +787,7 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
                 // Delete PaymentPhase extension and children
                 if (phase.paymentPhase) {
                     const payPhaseId = phase.paymentPhase.id;
-                    await tx.contractInstallment.deleteMany({ where: { paymentPhaseId: payPhaseId } });
+                    await tx.paymentInstallment.deleteMany({ where: { paymentPhaseId: payPhaseId } });
                     await tx.paymentPhase.delete({ where: { id: payPhaseId } });
                 }
 
@@ -799,22 +799,22 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
                 }
             }
 
-            await tx.contractPhase.deleteMany({ where: { contractId: id } });
-            await tx.contractEvent.deleteMany({ where: { contractId: id } });
-            await tx.contract.delete({ where: { id } });
+            await tx.applicationPhase.deleteMany({ where: { applicationId: id } });
+            await tx.applicationEvent.deleteMany({ where: { applicationId: id } });
+            await tx.application.delete({ where: { id } });
         });
 
         return { success: true };
     }
 
     /**
-     * Get the current action required for a contract
+     * Get the current action required for a application
      * Returns the current phase, current step, required action, and relevant documents
      * This is the canonical endpoint for the app to know what to show the user
      */
     async function getCurrentAction(id: string): Promise<{
-        contractId: string;
-        contractStatus: ContractStatus;
+        applicationId: string;
+        applicationStatus: ApplicationStatus;
         currentPhase: {
             id: string;
             name: string;
@@ -853,7 +853,7 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
         actionMessage: string;
     }> {
         // Use any to avoid Prisma type issues with new relations
-        const contract: any = await prisma.contract.findUnique({
+        const application: any = await prisma.application.findUnique({
             where: { id },
             include: {
                 phases: {
@@ -883,23 +883,23 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
             },
         });
 
-        if (!contract) {
-            throw new AppError(404, 'Contract not found');
+        if (!application) {
+            throw new AppError(404, 'application not found');
         }
 
         // Find current phase (IN_PROGRESS or ACTIVE)
-        const currentPhase = contract.phases.find(
+        const currentPhase = application.phases.find(
             (p: any) => p.status === 'IN_PROGRESS' || p.status === 'ACTIVE' || p.status === 'AWAITING_APPROVAL'
         );
 
-        // If no active phase, check contract status
+        // If no active phase, check application status
         if (!currentPhase) {
             return {
-                contractId: contract.id,
-                contractStatus: contract.status,
+                applicationId: application.id,
+                applicationStatus: application.status,
                 currentPhase: null,
                 currentStep: null,
-                uploadedDocuments: contract.documents.map((d: any) => ({
+                uploadedDocuments: application.documents.map((d: any) => ({
                     id: d.id,
                     name: d.name,
                     type: d.type,
@@ -907,9 +907,9 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
                     stepId: d.stepId,
                     createdAt: d.createdAt,
                 })),
-                actionRequired: contract.status === 'COMPLETED' ? 'COMPLETE' : 'NONE',
-                actionMessage: contract.status === 'COMPLETED'
-                    ? 'Contract completed successfully'
+                actionRequired: application.status === 'COMPLETED' ? 'COMPLETE' : 'NONE',
+                actionMessage: application.status === 'COMPLETED'
+                    ? 'Application completed successfully'
                     : 'No action required at this time',
             };
         }
@@ -978,13 +978,13 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
         }
 
         // Get documents for this phase
-        const phaseDocuments = contract.documents.filter(
+        const phaseDocuments = application.documents.filter(
             (d: any) => d.phaseId === currentPhase.id
         );
 
         return {
-            contractId: contract.id,
-            contractStatus: contract.status,
+            applicationId: application.id,
+            applicationStatus: application.status,
             currentPhase: {
                 id: currentPhase.id,
                 name: currentPhase.name,
@@ -1032,15 +1032,15 @@ export function createContractService(prisma: AnyPrismaClient = defaultPrisma): 
         create,
         findAll,
         findById,
-        findByContractNumber,
+        findByApplicationNumber,
         update,
         transition,
         sign,
         cancel,
-        delete: deleteContract,
+        delete: deleteApplication,
         getCurrentAction,
     };
 }
 
 // Default instance for backward compatibility
-export const contractService: ContractService = createContractService();
+export const applicationService: ApplicationService = createApplicationService();

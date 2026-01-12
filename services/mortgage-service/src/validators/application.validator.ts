@@ -3,8 +3,8 @@ import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
 
 extendZodWithOpenApi(z);
 
-// Create contract from payment method
-export const CreateContractSchema = z
+// Create application from payment method
+export const CreateApplicationSchema = z
     .object({
         propertyUnitId: z.string(),
         buyerId: z.string().optional(), // Will use x-user-id header if not provided
@@ -12,23 +12,23 @@ export const CreateContractSchema = z
         paymentMethodId: z.string(),
         title: z.string().min(1).max(200).openapi({ example: 'Purchase Agreement - Unit A1' }),
         description: z.string().optional(),
-        contractType: z.string().min(1).max(50).openapi({ example: 'MORTGAGE' }),
+        applicationType: z.string().min(1).max(50).openapi({ example: 'MORTGAGE' }),
         totalAmount: z.number().positive().optional().openapi({ example: 500000 }), // If not provided, uses unit price
         downPayment: z.number().min(0).optional().openapi({ example: 50000 }),
         startDate: z.string().datetime().optional(),
     })
-    .openapi('CreateContract');
+    .openapi('CreateApplication');
 
-export const UpdateContractSchema = z
+export const UpdateApplicationSchema = z
     .object({
         title: z.string().min(1).max(200).optional(),
         description: z.string().optional(),
         status: z.enum(['DRAFT', 'PENDING', 'ACTIVE', 'COMPLETED', 'CANCELLED', 'TERMINATED']).optional(),
     })
-    .openapi('UpdateContract');
+    .openapi('UpdateApplication');
 
-// Transition contract state
-export const TransitionContractSchema = z
+// Transition application state
+export const TransitionApplicationSchema = z
     .object({
         trigger: z.string().min(1).optional().openapi({ example: 'SUBMIT' }),
         action: z.string().min(1).optional().openapi({ example: 'SUBMIT' }),
@@ -39,26 +39,26 @@ export const TransitionContractSchema = z
         ...data,
         trigger: data.trigger || data.action!, // Normalize action to trigger
     }))
-    .openapi('TransitionContract');
+    .openapi('TransitionApplication');
 
-// Sign contract
-export const SignContractSchema = z
+// Sign application
+export const SignApplicationSchema = z
     .object({
         signedAt: z.string().datetime().optional(),
     })
-    .openapi('SignContract');
+    .openapi('SignApplication');
 
-export const ContractResponseSchema = z
+export const ApplicationResponseSchema = z
     .object({
         id: z.string(),
         propertyUnitId: z.string(),
         buyerId: z.string(),
         sellerId: z.string().nullable(),
         paymentMethodId: z.string().nullable(),
-        contractNumber: z.string(),
+        applicationNumber: z.string(),
         title: z.string(),
         description: z.string().nullable(),
-        contractType: z.string(),
+        applicationType: z.string(),
         totalAmount: z.number(),
         downPayment: z.number(),
         downPaymentPaid: z.number(),
@@ -72,9 +72,9 @@ export const ContractResponseSchema = z
         updatedAt: z.date(),
         phases: z.array(z.any()).optional(),
     })
-    .openapi('ContractResponse');
+    .openapi('ApplicationResponse');
 
-export type CreateContractInput = z.infer<typeof CreateContractSchema>;
-export type UpdateContractInput = z.infer<typeof UpdateContractSchema>;
-export type TransitionContractInput = z.infer<typeof TransitionContractSchema>;
-export type SignContractInput = z.infer<typeof SignContractSchema>;
+export type CreateApplicationInput = z.infer<typeof CreateApplicationSchema>;
+export type UpdateApplicationInput = z.infer<typeof UpdateApplicationSchema>;
+export type TransitionApplicationInput = z.infer<typeof TransitionApplicationSchema>;
+export type SignApplicationInput = z.infer<typeof SignApplicationSchema>;

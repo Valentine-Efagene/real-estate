@@ -288,7 +288,7 @@ export type DocumentationPhaseWhereInput = {
   requiredDocumentSnapshot?: Prisma.JsonNullableFilter<"DocumentationPhase">
   createdAt?: Prisma.DateTimeFilter<"DocumentationPhase"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"DocumentationPhase"> | Date | string
-  phase?: Prisma.XOR<Prisma.ContractPhaseScalarRelationFilter, Prisma.ContractPhaseWhereInput>
+  phase?: Prisma.XOR<Prisma.ApplicationPhaseScalarRelationFilter, Prisma.ApplicationPhaseWhereInput>
   currentStep?: Prisma.XOR<Prisma.DocumentationStepNullableScalarRelationFilter, Prisma.DocumentationStepWhereInput> | null
   steps?: Prisma.DocumentationStepListRelationFilter
 }
@@ -307,7 +307,7 @@ export type DocumentationPhaseOrderByWithRelationInput = {
   requiredDocumentSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  phase?: Prisma.ContractPhaseOrderByWithRelationInput
+  phase?: Prisma.ApplicationPhaseOrderByWithRelationInput
   currentStep?: Prisma.DocumentationStepOrderByWithRelationInput
   steps?: Prisma.DocumentationStepOrderByRelationAggregateInput
   _relevance?: Prisma.DocumentationPhaseOrderByRelevanceInput
@@ -330,7 +330,7 @@ export type DocumentationPhaseWhereUniqueInput = Prisma.AtLeast<{
   requiredDocumentSnapshot?: Prisma.JsonNullableFilter<"DocumentationPhase">
   createdAt?: Prisma.DateTimeFilter<"DocumentationPhase"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"DocumentationPhase"> | Date | string
-  phase?: Prisma.XOR<Prisma.ContractPhaseScalarRelationFilter, Prisma.ContractPhaseWhereInput>
+  phase?: Prisma.XOR<Prisma.ApplicationPhaseScalarRelationFilter, Prisma.ApplicationPhaseWhereInput>
   currentStep?: Prisma.XOR<Prisma.DocumentationStepNullableScalarRelationFilter, Prisma.DocumentationStepWhereInput> | null
   steps?: Prisma.DocumentationStepListRelationFilter
 }, "id" | "phaseId">
@@ -387,7 +387,7 @@ export type DocumentationPhaseCreateInput = {
   requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  phase: Prisma.ContractPhaseCreateNestedOneWithoutDocumentationPhaseInput
+  phase: Prisma.ApplicationPhaseCreateNestedOneWithoutDocumentationPhaseInput
   currentStep?: Prisma.DocumentationStepCreateNestedOneWithoutCurrentForPhaseInput
   steps?: Prisma.DocumentationStepCreateNestedManyWithoutDocumentationPhaseInput
 }
@@ -421,7 +421,7 @@ export type DocumentationPhaseUpdateInput = {
   requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  phase?: Prisma.ContractPhaseUpdateOneRequiredWithoutDocumentationPhaseNestedInput
+  phase?: Prisma.ApplicationPhaseUpdateOneRequiredWithoutDocumentationPhaseNestedInput
   currentStep?: Prisma.DocumentationStepUpdateOneWithoutCurrentForPhaseNestedInput
   steps?: Prisma.DocumentationStepUpdateManyWithoutDocumentationPhaseNestedInput
 }
@@ -755,7 +755,7 @@ export type DocumentationPhaseCreateWithoutStepsInput = {
   requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  phase: Prisma.ContractPhaseCreateNestedOneWithoutDocumentationPhaseInput
+  phase: Prisma.ApplicationPhaseCreateNestedOneWithoutDocumentationPhaseInput
   currentStep?: Prisma.DocumentationStepCreateNestedOneWithoutCurrentForPhaseInput
 }
 
@@ -792,7 +792,7 @@ export type DocumentationPhaseCreateWithoutCurrentStepInput = {
   requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  phase: Prisma.ContractPhaseCreateNestedOneWithoutDocumentationPhaseInput
+  phase: Prisma.ApplicationPhaseCreateNestedOneWithoutDocumentationPhaseInput
   steps?: Prisma.DocumentationStepCreateNestedManyWithoutDocumentationPhaseInput
 }
 
@@ -845,7 +845,7 @@ export type DocumentationPhaseUpdateWithoutStepsInput = {
   requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  phase?: Prisma.ContractPhaseUpdateOneRequiredWithoutDocumentationPhaseNestedInput
+  phase?: Prisma.ApplicationPhaseUpdateOneRequiredWithoutDocumentationPhaseNestedInput
   currentStep?: Prisma.DocumentationStepUpdateOneWithoutCurrentForPhaseNestedInput
 }
 
@@ -927,7 +927,7 @@ export type DocumentationPhaseUpdateWithoutCurrentStepInput = {
   requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  phase?: Prisma.ContractPhaseUpdateOneRequiredWithoutDocumentationPhaseNestedInput
+  phase?: Prisma.ApplicationPhaseUpdateOneRequiredWithoutDocumentationPhaseNestedInput
   steps?: Prisma.DocumentationStepUpdateManyWithoutDocumentationPhaseNestedInput
 }
 
@@ -1007,7 +1007,7 @@ export type DocumentationPhaseSelect<ExtArgs extends runtime.Types.Extensions.In
   requiredDocumentSnapshot?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  phase?: boolean | Prisma.ContractPhaseDefaultArgs<ExtArgs>
+  phase?: boolean | Prisma.ApplicationPhaseDefaultArgs<ExtArgs>
   currentStep?: boolean | Prisma.DocumentationPhase$currentStepArgs<ExtArgs>
   steps?: boolean | Prisma.DocumentationPhase$stepsArgs<ExtArgs>
   _count?: boolean | Prisma.DocumentationPhaseCountOutputTypeDefaultArgs<ExtArgs>
@@ -1033,7 +1033,7 @@ export type DocumentationPhaseSelectScalar = {
 
 export type DocumentationPhaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "phaseId" | "currentStepId" | "approvedDocumentsCount" | "requiredDocumentsCount" | "completedStepsCount" | "totalStepsCount" | "minimumCompletionPercentage" | "completionCriterion" | "stepDefinitionsSnapshot" | "requiredDocumentSnapshot" | "createdAt" | "updatedAt", ExtArgs["result"]["documentationPhase"]>
 export type DocumentationPhaseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  phase?: boolean | Prisma.ContractPhaseDefaultArgs<ExtArgs>
+  phase?: boolean | Prisma.ApplicationPhaseDefaultArgs<ExtArgs>
   currentStep?: boolean | Prisma.DocumentationPhase$currentStepArgs<ExtArgs>
   steps?: boolean | Prisma.DocumentationPhase$stepsArgs<ExtArgs>
   _count?: boolean | Prisma.DocumentationPhaseCountOutputTypeDefaultArgs<ExtArgs>
@@ -1042,7 +1042,7 @@ export type DocumentationPhaseInclude<ExtArgs extends runtime.Types.Extensions.I
 export type $DocumentationPhasePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "DocumentationPhase"
   objects: {
-    phase: Prisma.$ContractPhasePayload<ExtArgs>
+    phase: Prisma.$ApplicationPhasePayload<ExtArgs>
     currentStep: Prisma.$DocumentationStepPayload<ExtArgs> | null
     steps: Prisma.$DocumentationStepPayload<ExtArgs>[]
   }
@@ -1400,7 +1400,7 @@ readonly fields: DocumentationPhaseFieldRefs;
  */
 export interface Prisma__DocumentationPhaseClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  phase<T extends Prisma.ContractPhaseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContractPhaseDefaultArgs<ExtArgs>>): Prisma.Prisma__ContractPhaseClient<runtime.Types.Result.GetResult<Prisma.$ContractPhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  phase<T extends Prisma.ApplicationPhaseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApplicationPhaseDefaultArgs<ExtArgs>>): Prisma.Prisma__ApplicationPhaseClient<runtime.Types.Result.GetResult<Prisma.$ApplicationPhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   currentStep<T extends Prisma.DocumentationPhase$currentStepArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentationPhase$currentStepArgs<ExtArgs>>): Prisma.Prisma__DocumentationStepClient<runtime.Types.Result.GetResult<Prisma.$DocumentationStepPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   steps<T extends Prisma.DocumentationPhase$stepsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentationPhase$stepsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentationStepPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**

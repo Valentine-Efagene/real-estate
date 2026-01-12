@@ -1,12 +1,12 @@
-import { PrismaClient, Prisma, PaymentMethodChangeRequestModel, ContractPhaseModel } from '@valentine-efagene/qshelter-common';
+import { PrismaClient, Prisma, PaymentMethodChangeRequestModel, ApplicationPhaseModel } from '@valentine-efagene/qshelter-common';
 import { AppError } from '@valentine-efagene/qshelter-common';
 import { v4 as uuidv4 } from 'uuid';
 import { prisma } from '../lib/prisma';
-import { contractPhaseService } from './contract-phase.service';
+import { applicationPhaseService } from './application-phase.service';
 
 // Extended types for methods that return data with relations
 type PaymentMethodChangeRequestWithRelations = PaymentMethodChangeRequestModel & {
-    contract?: unknown;
+    application?: unknown;
     fromPaymentMethod?: unknown;
     toPaymentMethod?: unknown;
     requestor?: unknown;
@@ -15,13 +15,13 @@ type PaymentMethodChangeRequestWithRelations = PaymentMethodChangeRequestModel &
 
 type ExecuteResult = {
     request: PaymentMethodChangeRequestModel;
-    newPhases: ContractPhaseModel[];
+    newPhases: ApplicationPhaseModel[];
 };
 
 /**
  * Service for managing payment method change requests.
  * 
- * Handles the workflow when a customer wants to switch payment methods mid-contract:
+ * Handles the workflow when a customer wants to switch payment methods mid-application:
  * 1. Create request with financial impact preview
  * 2. Review and approve/reject
  * 3. Execute the change (supersede old phase, create new phase)
@@ -34,15 +34,15 @@ export class PaymentMethodChangeService {
      * Calculates the financial impact preview for the requested change.
      */
     async createRequest(data: {
-        contractId: string;
+        applicationId: string;
         toPaymentMethodId: string;
         reason?: string;
         requestorId: string;
         tenantId: string;
     }): Promise<PaymentMethodChangeRequestWithRelations> {
-        // Get the contract with current payment method
-        const contract = await this.db.contract.findUnique({
-            where: { id: data.contractId },
+        // Get the application with current payment method
+        const application = await this.db.application.findUnique({
+            where: { id: data.applicationId },
             include: {
                 paymentMethod: true,
                 phases: {
@@ -55,27 +55,27 @@ export class PaymentMethodChangeService {
             },
         });
 
-        if (!contract) {
-            throw new AppError(404, 'Contract not found');
+        if (!application) {
+            throw new AppError(404, 'application not found');
         }
 
-        if (contract.tenantId !== data.tenantId) {
-            throw new AppError(403, 'Contract belongs to a different tenant');
+        if (application.tenantId !== data.tenantId) {
+            throw new AppError(403, 'application belongs to a different tenant');
         }
 
-        if (!contract.paymentMethodId) {
-            throw new AppError(400, 'Contract does not have a payment method');
+        if (!application.paymentMethodId) {
+            throw new AppError(400, 'application does not have a payment method');
         }
 
-        // Check if contract is in a valid state for changes
-        if (!['ACTIVE', 'PENDING_ACTIVATION'].includes(contract.status)) {
-            throw new AppError(400, `Cannot change payment method for contract in ${contract.status} status`);
+        // Check if application is in a valid state for changes
+        if (!['ACTIVE', 'PENDING_ACTIVATION'].includes(application.status)) {
+            throw new AppError(400, `Cannot change payment method for application in ${application.status} status`);
         }
 
         // Check for existing pending requests
         const existingRequest = await this.db.paymentMethodChangeRequest.findFirst({
             where: {
-                contractId: data.contractId,
+                applicationId: data.applicationId,
                 status: { in: ['PENDING_DOCUMENTS', 'DOCUMENTS_SUBMITTED', 'UNDER_REVIEW', 'APPROVED'] },
             },
         });
@@ -103,11 +103,11 @@ export class PaymentMethodChangeService {
         }
 
         // Calculate total paid to date from PaymentPhases
-        // Need to fetch PaymentPhase data for the contract's payment phases
+        // Need to fetch PaymentPhase data for the application's payment phases
         const paymentPhasesData = await this.db.paymentPhase.findMany({
             where: {
                 phase: {
-                    contractId: data.contractId,
+                    applicationId: data.applicationId,
                     phaseCategory: 'PAYMENT',
                 },
             },
@@ -115,7 +115,7 @@ export class PaymentMethodChangeService {
         const totalPaidToDate = paymentPhasesData.reduce((sum, pp) => sum + pp.paidAmount, 0);
 
         // Calculate financial impact
-        const currentOutstanding = contract.totalAmount - totalPaidToDate;
+        const currentOutstanding = application.totalAmount - totalPaidToDate;
 
         // Get payment plan from the new method's payment phases
         // Prefer MORTGAGE phase for term calculation, as it's the main installment payment
@@ -159,8 +159,8 @@ export class PaymentMethodChangeService {
         const request = await this.db.paymentMethodChangeRequest.create({
             data: {
                 tenantId: data.tenantId,
-                contractId: data.contractId,
-                fromPaymentMethodId: contract.paymentMethodId,
+                applicationId: data.applicationId,
+                fromPaymentMethodId: application.paymentMethodId,
                 toPaymentMethodId: data.toPaymentMethodId,
                 requestorId: data.requestorId,
                 reason: data.reason,
@@ -171,7 +171,7 @@ export class PaymentMethodChangeService {
                 status: 'PENDING_DOCUMENTS', // May need documents depending on config
             },
             include: {
-                contract: true,
+                application: true,
                 fromPaymentMethod: true,
                 toPaymentMethod: true,
                 requestor: {
@@ -190,8 +190,8 @@ export class PaymentMethodChangeService {
                 queueName: 'notifications',
                 payload: JSON.stringify({
                     requestId: request.id,
-                    contractId: data.contractId,
-                    fromMethodId: contract.paymentMethodId,
+                    applicationId: data.applicationId,
+                    fromMethodId: application.paymentMethodId,
                     toMethodId: data.toPaymentMethodId,
                     requestorId: data.requestorId,
                     reason: data.reason,
@@ -209,7 +209,7 @@ export class PaymentMethodChangeService {
         const request = await this.db.paymentMethodChangeRequest.findUnique({
             where: { id: requestId },
             include: {
-                contract: true,
+                application: true,
                 fromPaymentMethod: {
                     include: {
                         phases: { include: { paymentPlan: true } },
@@ -241,11 +241,11 @@ export class PaymentMethodChangeService {
     }
 
     /**
-     * List payment method change requests for a contract.
+     * List payment method change requests for a application.
      */
-    async listByContract(contractId: string, tenantId: string): Promise<PaymentMethodChangeRequestWithRelations[]> {
+    async listByapplication(applicationId: string, tenantId: string): Promise<PaymentMethodChangeRequestWithRelations[]> {
         return this.db.paymentMethodChangeRequest.findMany({
-            where: { contractId, tenantId },
+            where: { applicationId, tenantId },
             include: {
                 fromPaymentMethod: true,
                 toPaymentMethod: true,
@@ -267,7 +267,7 @@ export class PaymentMethodChangeService {
                 status: { in: ['DOCUMENTS_SUBMITTED', 'UNDER_REVIEW'] },
             },
             include: {
-                contract: {
+                application: {
                     include: { buyer: { select: { id: true, email: true, firstName: true, lastName: true } } },
                 },
                 fromPaymentMethod: {
@@ -330,19 +330,19 @@ export class PaymentMethodChangeService {
             throw new AppError(400, `Cannot approve request in ${request.status} status`);
         }
 
-        // Validate contract is still in valid state
-        const contract = await this.db.contract.findUnique({
-            where: { id: request.contractId },
+        // Validate application is still in valid state
+        const application = await this.db.application.findUnique({
+            where: { id: request.applicationId },
         });
 
-        if (!contract || !['ACTIVE', 'PENDING_ACTIVATION'].includes(contract.status)) {
-            throw new AppError(400, 'Contract is no longer in a valid state for payment method change');
+        if (!application || !['ACTIVE', 'PENDING_ACTIVATION'].includes(application.status)) {
+            throw new AppError(400, 'application is no longer in a valid state for payment method change');
         }
 
         // Check for pending payments
-        const pendingPayments = await this.db.contractPayment.findFirst({
+        const pendingPayments = await this.db.applicationPayment.findFirst({
             where: {
-                contractId: request.contractId,
+                applicationId: request.applicationId,
                 status: { in: ['INITIATED', 'PENDING'] },
             },
         });
@@ -371,7 +371,7 @@ export class PaymentMethodChangeService {
                 queueName: 'notifications',
                 payload: JSON.stringify({
                     requestId,
-                    contractId: request.contractId,
+                    applicationId: request.applicationId,
                     reviewerId,
                     reviewNotes,
                 }),
@@ -416,7 +416,7 @@ export class PaymentMethodChangeService {
                 queueName: 'notifications',
                 payload: JSON.stringify({
                     requestId,
-                    contractId: request.contractId,
+                    applicationId: request.applicationId,
                     reviewerId,
                     rejectionReason,
                 }),
@@ -452,10 +452,10 @@ export class PaymentMethodChangeService {
                 eventType: 'PAYMENT_METHOD_CHANGE.CANCELLED',
                 aggregateType: 'PaymentMethodChangeRequest',
                 aggregateId: requestId,
-                queueName: 'contract-events',
+                queueName: 'application-events',
                 payload: JSON.stringify({
                     requestId,
-                    contractId: request.contractId,
+                    applicationId: request.applicationId,
                     requestorId,
                 }),
             },
@@ -466,10 +466,10 @@ export class PaymentMethodChangeService {
 
     /**
      * Execute an approved payment method change.
-     * This performs the actual contract modification:
+     * This performs the actual application modification:
      * 1. Supersedes the current in-progress payment phase
      * 2. Creates new payment phase(s) based on new payment method
-     * 3. Updates contract's payment method reference
+     * 3. Updates application's payment method reference
      */
     async execute(requestId: string, executorId: string, tenantId: string): Promise<ExecuteResult> {
         const request = await this.findById(requestId, tenantId);
@@ -478,9 +478,9 @@ export class PaymentMethodChangeService {
             throw new AppError(400, `Cannot execute request in ${request.status} status. Must be APPROVED first.`);
         }
 
-        // Get full contract with phases and payment data
-        const contract = await this.db.contract.findUnique({
-            where: { id: request.contractId },
+        // Get full application with phases and payment data
+        const application = await this.db.application.findUnique({
+            where: { id: request.applicationId },
             include: {
                 phases: {
                     orderBy: { order: 'asc' },
@@ -493,8 +493,8 @@ export class PaymentMethodChangeService {
             },
         });
 
-        if (!contract) {
-            throw new AppError(404, 'Contract not found');
+        if (!application) {
+            throw new AppError(404, 'application not found');
         }
 
         // Get the new payment method with phase templates
@@ -516,7 +516,7 @@ export class PaymentMethodChangeService {
         }
 
         // Find current in-progress/pending payment phases to supersede
-        const currentPaymentPhases = contract.phases.filter(
+        const currentPaymentPhases = application.phases.filter(
             (p: { phaseCategory: string; status: string }) =>
                 p.phaseCategory === 'PAYMENT' && ['PENDING', 'IN_PROGRESS', 'ACTIVE'].includes(p.status)
         );
@@ -537,22 +537,22 @@ export class PaymentMethodChangeService {
         }));
 
         // Calculate total paid to date from payment phases
-        const totalPaidToDate = contract.phases
+        const totalPaidToDate = application.phases
             .filter((p: { phaseCategory: string }) => p.phaseCategory === 'PAYMENT')
             .reduce((sum: number, p: { paymentPhase?: { paidAmount: number } | null }) =>
                 sum + (p.paymentPhase?.paidAmount ?? 0), 0);
 
         // Calculate remaining balance
-        const remainingBalance = request.currentOutstanding ?? (contract.totalAmount - totalPaidToDate);
+        const remainingBalance = request.currentOutstanding ?? (application.totalAmount - totalPaidToDate);
 
         // Find max order from existing phases
-        const maxOrder = Math.max(...contract.phases.map((p: { order: number }) => p.order));
+        const maxOrder = Math.max(...application.phases.map((p: { order: number }) => p.order));
 
         // Execute in transaction
         const result = await this.db.$transaction(async (tx) => {
             // 1. Supersede current payment phases
             for (const phase of currentPaymentPhases) {
-                await tx.contractPhase.update({
+                await tx.applicationPhase.update({
                     where: { id: phase.id },
                     data: {
                         status: 'SUPERSEDED',
@@ -578,10 +578,10 @@ export class PaymentMethodChangeService {
                     phaseAmount = remainingBalance * (template.percentOfPrice / 100);
                 }
 
-                // Create the base ContractPhase
-                const newPhase = await tx.contractPhase.create({
+                // Create the base ApplicationPhase
+                const newPhase = await tx.applicationPhase.create({
                     data: {
-                        contractId: contract.id,
+                        applicationId: application.id,
                         name: `${template.name} (Changed)`,
                         description: template.description,
                         phaseCategory: template.phaseCategory,
@@ -611,9 +611,9 @@ export class PaymentMethodChangeService {
                 newPhases.push(newPhase);
             }
 
-            // 3. Update contract's payment method reference
-            await tx.contract.update({
-                where: { id: contract.id },
+            // 3. Update application's payment method reference
+            await tx.application.update({
+                where: { id: application.id },
                 data: {
                     paymentMethodId: request.toPaymentMethodId,
                 },
@@ -644,7 +644,7 @@ export class PaymentMethodChangeService {
                     queueName: 'notifications',
                     payload: JSON.stringify({
                         requestId,
-                        contractId: contract.id,
+                        applicationId: application.id,
                         executorId,
                         supersededPhases: previousPhaseData.map(p => p.id),
                         newPhases: newPhases.map(p => p.id),
@@ -652,16 +652,16 @@ export class PaymentMethodChangeService {
                 },
             });
 
-            // 6. Write contract amended event
+            // 6. Write application amended event
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
-                    eventType: 'CONTRACT.AMENDED',
-                    aggregateType: 'Contract',
-                    aggregateId: contract.id,
-                    queueName: 'contract-events',
+                    eventType: 'application.AMENDED',
+                    aggregateType: 'application',
+                    aggregateId: application.id,
+                    queueName: 'application-events',
                     payload: JSON.stringify({
-                        contractId: contract.id,
+                        applicationId: application.id,
                         amendmentType: 'PAYMENT_METHOD_CHANGE',
                         changeRequestId: requestId,
                         previousPaymentMethodId: request.fromPaymentMethodId,
@@ -676,14 +676,14 @@ export class PaymentMethodChangeService {
         // Activate the first new phase if there are no other active phases
         if (result.newPhases.length > 0) {
             const currentPhaseIds = currentPaymentPhases.map((p: { id: string }) => p.id);
-            const hasActivePhase = contract.phases.some(
+            const hasActivePhase = application.phases.some(
                 (p: { id: string; status: string }) =>
                     !currentPhaseIds.includes(p.id) && (p.status === 'IN_PROGRESS' || p.status === 'ACTIVE')
             );
 
             if (!hasActivePhase) {
                 // Activate the first new phase
-                await contractPhaseService.activate(
+                await applicationPhaseService.activate(
                     result.newPhases[0].id,
                     {},
                     executorId

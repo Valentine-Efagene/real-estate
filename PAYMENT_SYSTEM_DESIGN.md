@@ -202,7 +202,7 @@ Individual payment transaction.
 - INITIATED → PENDING → PROCESSING → COMPLETED
 - FAILED, CANCELLED, REFUNDED
 
-#### 5. **Contract** (NEW - Separated from Payment)
+#### 5. **Application** (NEW - Separated from Payment)
 
 Legal agreement separate from payment mechanics.
 
@@ -213,15 +213,15 @@ Legal agreement separate from payment mechanics.
 - Legal compliance
 - Links to PaymentPlan (1-to-1)
 
-**Contract Types:**
+**Application Types:**
 
 - MORTGAGE, SALE_AGREEMENT
 - LEASE_AGREEMENT, RENT_TO_OWN
 - INSTALLMENT_SALE, OPTION_TO_PURCHASE
 
-#### 6. **ContractDocument**
+#### 6. **ApplicationDocument**
 
-Documents attached to contracts.
+Documents attached to applications.
 
 **Document Types:**
 
@@ -243,7 +243,7 @@ Documents attached to contracts.
 ### New Design Advantages:
 
 1. ✅ **Generic & Flexible** - handles ANY payment scenario
-2. ✅ **Separated Concerns** - Payment vs Contract/Documentation
+2. ✅ **Separated Concerns** - Payment vs Application/Documentation
 3. ✅ **Installment Downpayments** - downpayment can be paid in installments
 4. ✅ **Multiple Schedules** - one plan, many schedules
 5. ✅ **No Downpayment Required** - simple installment plans
@@ -317,11 +317,11 @@ const paymentPlan = {
 ### Relationships
 
 ```
-Property (1) ----< (N) PaymentPlan (1) ---- (1) Contract
+Property (1) ----< (N) PaymentPlan (1) ---- (1) Application
                           |
                           | (1-to-N)
                           ↓
-                    PaymentSchedule (1) ----< (N) ContractDocument
+                    PaymentSchedule (1) ----< (N) ApplicationDocument
                           |
                           | (1-to-N)
                           ↓
@@ -338,8 +338,8 @@ Property (1) ----< (N) PaymentPlan (1) ---- (1) Contract
 - `payment_schedule` - Collections of installments
 - `payment_installment` - Individual payments due
 - `payment` - Payment transactions
-- `contract` - Legal agreements
-- `contract_document` - Contract documents
+- `application` - Legal agreements
+- `application_document` - Application documents
 
 ## Next Steps
 

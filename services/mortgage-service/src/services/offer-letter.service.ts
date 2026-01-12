@@ -38,13 +38,13 @@ function generateLetterNumber(type: OfferLetterType): string {
 }
 
 /**
- * Build merge data from contract and related entities
+ * Build merge data from application and related entities
  */
-function buildMergeData(contract: any, customData?: Record<string, any>): Record<string, any> {
-    const buyer = contract.buyer;
-    const property = contract.propertyUnit?.variant?.property;
-    const unit = contract.propertyUnit;
-    const variant = contract.propertyUnit?.variant;
+function buildMergeData(application: any, customData?: Record<string, any>): Record<string, any> {
+    const buyer = application.buyer;
+    const property = application.propertyUnit?.variant?.property;
+    const unit = application.propertyUnit;
+    const variant = application.propertyUnit?.variant;
 
     return {
         // Buyer info
@@ -63,28 +63,28 @@ function buildMergeData(contract: any, customData?: Record<string, any>): Record
         variantName: variant?.name || '',
 
         // Financial info
-        totalAmount: formatCurrency(contract.totalAmount || 0),
-        totalAmountRaw: contract.totalAmount || 0,
-        downPayment: formatCurrency(contract.downPayment || 0),
-        downPaymentRaw: contract.downPayment || 0,
-        principal: formatCurrency(contract.principal || 0),
-        principalRaw: contract.principal || 0,
-        interestRate: contract.interestRate || 0,
-        termMonths: contract.termMonths || 0,
-        periodicPayment: formatCurrency(contract.periodicPayment || 0),
-        periodicPaymentRaw: contract.periodicPayment || 0,
+        totalAmount: formatCurrency(application.totalAmount || 0),
+        totalAmountRaw: application.totalAmount || 0,
+        downPayment: formatCurrency(application.downPayment || 0),
+        downPaymentRaw: application.downPayment || 0,
+        principal: formatCurrency(application.principal || 0),
+        principalRaw: application.principal || 0,
+        interestRate: application.interestRate || 0,
+        termMonths: application.termMonths || 0,
+        periodicPayment: formatCurrency(application.periodicPayment || 0),
+        periodicPaymentRaw: application.periodicPayment || 0,
 
-        // Contract info
-        contractNumber: contract.contractNumber,
-        contractType: contract.contractType || 'MORTGAGE',
-        contractDate: formatDate(contract.createdAt),
+        // application info
+        applicationNumber: application.applicationNumber,
+        applicationType: application.applicationType || 'MORTGAGE',
+        applicationDate: formatDate(application.createdAt),
 
         // Dates
         currentDate: formatDate(new Date()),
         year: new Date().getFullYear(),
 
         // Dashboard
-        dashboardUrl: `${DASHBOARD_URL}/contracts/${contract.id}`,
+        dashboardUrl: `${DASHBOARD_URL}/applications/${application.id}`,
 
         // Custom overrides
         ...customData,
@@ -98,7 +98,7 @@ export interface OfferLetterService {
     generate(data: GenerateOfferLetterInput, userId: string): Promise<any>;
     findById(id: string): Promise<any>;
     findAll(filters: ListOfferLettersInput): Promise<any[]>;
-    findByContract(contractId: string): Promise<any[]>;
+    findByapplication(applicationId: string): Promise<any[]>;
     send(id: string, data: SendOfferLetterInput, userId: string): Promise<any>;
     markViewed(id: string): Promise<any>;
     sign(id: string, data: SignOfferLetterInput, signerIp: string): Promise<any>;
@@ -116,9 +116,9 @@ export function createOfferLetterService(prisma: AnyPrismaClient = defaultPrisma
      * Calls the documents-service to render the template
      */
     async function generate(data: GenerateOfferLetterInput, userId: string): Promise<any> {
-        // Get the contract with all related data
-        const contract = await prisma.contract.findUnique({
-            where: { id: data.contractId },
+        // Get the application with all related data
+        const application = await prisma.application.findUnique({
+            where: { id: data.applicationId },
             include: {
                 propertyUnit: {
                     include: {
@@ -149,16 +149,16 @@ export function createOfferLetterService(prisma: AnyPrismaClient = defaultPrisma
             },
         });
 
-        if (!contract) {
-            throw new AppError(404, 'Contract not found');
+        if (!application) {
+            throw new AppError(404, 'application not found');
         }
 
-        const tenantId = (contract as any).tenantId;
+        const tenantId = (application as any).tenantId;
 
         // Check for existing non-cancelled offer letter of this type
         const existing = await prisma.offerLetter.findFirst({
             where: {
-                contractId: data.contractId,
+                applicationId: data.applicationId,
                 type: data.type,
                 status: {
                     notIn: ['CANCELLED', 'EXPIRED'],
@@ -167,11 +167,11 @@ export function createOfferLetterService(prisma: AnyPrismaClient = defaultPrisma
         });
 
         if (existing) {
-            throw new AppError(400, `An active ${data.type.toLowerCase()} offer letter already exists for this contract`);
+            throw new AppError(400, `An active ${data.type.toLowerCase()} offer letter already exists for this application`);
         }
 
         // Build merge data
-        const mergeData = buildMergeData(contract, data.customMergeData);
+        const mergeData = buildMergeData(application, data.customMergeData);
 
         // Call documents-service to generate the HTML from template
         let generatedDoc;
@@ -195,7 +195,7 @@ export function createOfferLetterService(prisma: AnyPrismaClient = defaultPrisma
             const created = await tx.offerLetter.create({
                 data: {
                     tenantId,
-                    contractId: data.contractId,
+                    applicationId: data.applicationId,
                     templateId: data.templateId || null,
                     letterNumber: generateLetterNumber(data.type),
                     type: data.type,
@@ -217,9 +217,9 @@ export function createOfferLetterService(prisma: AnyPrismaClient = defaultPrisma
                     queueName: 'notifications',
                     payload: JSON.stringify({
                         offerLetterId: created.id,
-                        contractId: data.contractId,
+                        applicationId: data.applicationId,
                         type: data.type,
-                        buyerId: contract.buyerId,
+                        buyerId: application.buyerId,
                     }),
                     actorId: userId,
                 },
@@ -238,7 +238,7 @@ export function createOfferLetterService(prisma: AnyPrismaClient = defaultPrisma
         const offerLetter = await prisma.offerLetter.findUnique({
             where: { id },
             include: {
-                contract: {
+                application: {
                     include: {
                         buyer: {
                             select: {
@@ -299,10 +299,10 @@ export function createOfferLetterService(prisma: AnyPrismaClient = defaultPrisma
             where: filters,
             orderBy: { createdAt: 'desc' },
             include: {
-                contract: {
+                application: {
                     select: {
                         id: true,
-                        contractNumber: true,
+                        applicationNumber: true,
                         buyer: {
                             select: {
                                 id: true,
@@ -325,11 +325,11 @@ export function createOfferLetterService(prisma: AnyPrismaClient = defaultPrisma
     }
 
     /**
-     * Find offer letters by contract
+     * Find offer letters by application
      */
-    async function findByContract(contractId: string): Promise<any[]> {
+    async function findByapplication(applicationId: string): Promise<any[]> {
         return prisma.offerLetter.findMany({
-            where: { contractId },
+            where: { applicationId },
             orderBy: { createdAt: 'desc' },
             include: {
                 template: {
@@ -358,8 +358,8 @@ export function createOfferLetterService(prisma: AnyPrismaClient = defaultPrisma
             throw new AppError(400, 'Offer letter has expired');
         }
 
-        const contract = offerLetter.contract;
-        const buyer = contract.buyer;
+        const application = offerLetter.application;
+        const buyer = application.buyer;
 
         const updated = await prisma.$transaction(async (tx: any) => {
             const result = await tx.offerLetter.update({
@@ -381,7 +381,7 @@ export function createOfferLetterService(prisma: AnyPrismaClient = defaultPrisma
                     queueName: 'notifications',
                     payload: JSON.stringify({
                         offerLetterId: id,
-                        contractId: contract.id,
+                        applicationId: application.id,
                         type: offerLetter.type,
                         buyerId: buyer.id,
                         buyerEmail: buyer.email,
@@ -400,8 +400,8 @@ export function createOfferLetterService(prisma: AnyPrismaClient = defaultPrisma
                 userName: buyer.firstName || 'Valued Customer',
                 letterNumber: offerLetter.letterNumber,
                 letterType: offerLetter.type === 'PROVISIONAL' ? 'Provisional Offer Letter' : 'Final Offer Letter',
-                contractNumber: contract.contractNumber,
-                propertyName: contract.propertyUnit?.variant?.property?.title || 'Your Property',
+                applicationNumber: application.applicationNumber,
+                propertyName: application.propertyUnit?.variant?.property?.title || 'Your Property',
                 expiryDate: formatDate(offerLetter.expiresAt),
                 viewUrl: `${DASHBOARD_URL}/offer-letters/${id}`,
                 customMessage: data.message,
@@ -448,8 +448,8 @@ export function createOfferLetterService(prisma: AnyPrismaClient = defaultPrisma
             throw new AppError(400, 'Offer letter has expired');
         }
 
-        const contract = offerLetter.contract;
-        const buyer = contract.buyer;
+        const application = offerLetter.application;
+        const buyer = application.buyer;
 
         const updated = await prisma.$transaction(async (tx: any) => {
             const result = await tx.offerLetter.update({
@@ -477,7 +477,7 @@ export function createOfferLetterService(prisma: AnyPrismaClient = defaultPrisma
                     queueName: 'notifications',
                     payload: JSON.stringify({
                         offerLetterId: id,
-                        contractId: contract.id,
+                        applicationId: application.id,
                         type: offerLetter.type,
                         buyerId: buyer.id,
                         signedAt: new Date().toISOString(),
@@ -540,7 +540,7 @@ export function createOfferLetterService(prisma: AnyPrismaClient = defaultPrisma
                     queueName: 'audit',
                     payload: JSON.stringify({
                         offerLetterId: id,
-                        contractId: offerLetter.contractId,
+                        applicationId: offerLetter.applicationId,
                         reason: data.reason,
                     }),
                     actorId: userId,
@@ -582,7 +582,7 @@ export function createOfferLetterService(prisma: AnyPrismaClient = defaultPrisma
         generate,
         findById,
         findAll,
-        findByContract,
+        findByapplication,
         send,
         markViewed,
         sign,

@@ -51,14 +51,14 @@ enum PaymentFrequency {
   CUSTOM
 }
 
-enum ContractStatus {
+enum ApplicationStatus {
   DRAFT
   PENDING
   ACTIVE
   COMPLETED
   CANCELLED
   TERMINATED
-  TRANSFERRED // Contract was transferred to a different property
+  TRANSFERRED // Application was transferred to a different property
 }
 
 enum TransferRequestStatus {
@@ -213,9 +213,9 @@ enum OfferLetterStatus {
   CANCELLED
 }
 
-enum ContractEventType {
-  CONTRACT_CREATED
-  CONTRACT_STATE_CHANGED
+enum ApplicationEventType {
+  APPLICATION_CREATED
+  APPLICATION_STATE_CHANGED
   PHASE_ACTIVATED
   PHASE_COMPLETED
   STEP_COMPLETED
@@ -227,14 +227,14 @@ enum ContractEventType {
   PAYMENT_COMPLETED
   PAYMENT_FAILED
   INSTALLMENTS_GENERATED
-  CONTRACT_SIGNED
-  CONTRACT_TERMINATED
-  CONTRACT_TRANSFERRED
+  APPLICATION_SIGNED
+  APPLICATION_TERMINATED
+  APPLICATION_TRANSFERRED
   UNDERWRITING_COMPLETED
   OFFER_LETTER_GENERATED
 }
 
-enum ContractEventGroup {
+enum ApplicationEventGroup {
   STATE_CHANGE
   PAYMENT
   DOCUMENT
@@ -346,22 +346,22 @@ model User {
 
   // Relations to other domains
   properties       Property[]
-  contracts        Contract[]        @relation("ContractBuyer")
-  soldContracts    Contract[]        @relation("ContractSeller")
-  contractPayments ContractPayment[] @relation("ContractPayer")
+  applications        Application[]        @relation("ApplicationBuyer")
+  soldApplications    Application[]        @relation("ApplicationSeller")
+  applicationPayments ApplicationPayment[] @relation("ApplicationPayer")
 
   // Documentation step assignments and approvals
   assignedSteps DocumentationStep[]         @relation("DocumentationStepAssignee")
   stepApprovals DocumentationStepApproval[] @relation("DocumentationStepApprover")
-  uploadedDocs  ContractDocument[]          @relation("DocumentUploader")
+  uploadedDocs  ApplicationDocument[]          @relation("DocumentUploader")
 
   // Payment method changes
   paymentMethodChangeRequests PaymentMethodChangeRequest[] @relation("ChangeRequestor")
   reviewedChangeRequests      PaymentMethodChangeRequest[] @relation("ChangeReviewer")
 
   // Contract terminations
-  initiatedTerminations ContractTermination[] @relation("TerminationInitiator")
-  reviewedTerminations  ContractTermination[] @relation("TerminationReviewer")
+  initiatedTerminations ApplicationTermination[] @relation("TerminationInitiator")
+  reviewedTerminations  ApplicationTermination[] @relation("TerminationReviewer")
 
   // Offer letters
   offerLettersGenerated OfferLetter[] @relation("OfferLetterGenerator")
@@ -377,9 +377,9 @@ model User {
   approvalRequestsReviewed  ApprovalRequest[] @relation("ApprovalReviewer")
 
   // Contract refunds
-  requestedRefunds ContractRefund[] @relation("RefundRequester")
-  approvedRefunds  ContractRefund[] @relation("RefundApprover")
-  processedRefunds ContractRefund[] @relation("RefundProcessor")
+  requestedRefunds ApplicationRefund[] @relation("RefundRequester")
+  approvedRefunds  ApplicationRefund[] @relation("RefundApprover")
+  processedRefunds ApplicationRefund[] @relation("RefundProcessor")
 
   @@index([email])
   @@index([tenantId])
@@ -496,7 +496,7 @@ model Tenant {
   properties     Property[]
   paymentPlans   PaymentPlan[]
   paymentMethods PropertyPaymentMethod[]
-  contracts      Contract[]
+  applications      Application[]
 
   // RBAC: Tenant-scoped roles and permissions
   roles       Role[]
@@ -509,7 +509,7 @@ model Tenant {
   documentRequirementRules    DocumentRequirementRule[]
 
   // Contract terminations
-  contractTerminations ContractTermination[]
+  contractTerminations ApplicationTermination[]
 
   // Offer letters and templates
   documentTemplates DocumentTemplate[]
@@ -531,7 +531,7 @@ model Tenant {
   approvalRequests ApprovalRequest[]
 
   // Contract refunds
-  contractRefunds ContractRefund[]
+  contractRefunds ApplicationRefund[]
 
   @@index([subdomain])
   @@map("tenants")
@@ -929,7 +929,7 @@ model PropertyUnit {
   updatedAt DateTime @updatedAt
 
   // Relations
-  contracts Contract[]
+  applications Application[]
 
   // Transfer requests targeting this unit
   transferRequests PropertyTransferRequest[]
@@ -1027,7 +1027,7 @@ model PropertyPaymentMethod {
   // Phases that make up this method (templates)
   phases     PropertyPaymentMethodPhase[]
   // Contracts using this method
-  contracts  Contract[]
+  applications  Application[]
 
   // Payment method change tracking
   changeRequestsFrom PaymentMethodChangeRequest[] @relation("ChangeFromMethod")
@@ -1271,12 +1271,12 @@ model PaymentMethodPhaseField {
 // =============================================================================
 // CONTRACT DOMAIN - Unified agreement model (replaces Mortgage, PurchasePlan, etc.)
 // =============================================================================
-// Contract is the canonical agreement. "Mortgage" is just a product configuration
-// that creates a Contract with specific phases (documentation, downpayment, long-term payment).
+// Application is the canonical agreement. "Mortgage" is just a product configuration
+// that creates an Application with specific phases (documentation, downpayment, long-term payment).
 // Phases can be QUESTIONNAIRE, DOCUMENTATION, or PAYMENT.
 // =============================================================================
 
-model Contract {
+model Application {
   id              String                 @id @default(cuid())
   tenantId        String
   tenant          Tenant                 @relation(fields: [tenantId], references: [id], onDelete: Cascade)
@@ -1284,25 +1284,25 @@ model Contract {
   propertyUnitId  String
   propertyUnit    PropertyUnit           @relation(fields: [propertyUnitId], references: [id], onDelete: Cascade)
   buyerId         String
-  buyer           User                   @relation("ContractBuyer", fields: [buyerId], references: [id], onDelete: Cascade)
+  buyer           User                   @relation("ApplicationBuyer", fields: [buyerId], references: [id], onDelete: Cascade)
   sellerId        String?
-  seller          User?                  @relation("ContractSeller", fields: [sellerId], references: [id])
+  seller          User?                  @relation("ApplicationSeller", fields: [sellerId], references: [id])
   paymentMethodId String? // PropertyPaymentMethod used to create this contract
   paymentMethod   PropertyPaymentMethod? @relation(fields: [paymentMethodId], references: [id])
 
   // Contract identification
-  contractNumber String  @unique
+  applicationNumber String  @unique
   title          String
   description    String? @db.Text
-  contractType   String // Admin-defined: MORTGAGE, INSTALLMENT, RENT_TO_OWN, CASH, LEASE, etc.
+  applicationType   String // Admin-defined: MORTGAGE, INSTALLMENT, RENT_TO_OWN, CASH, LEASE, etc.
 
   // Contract value (negotiated from unit price)
   totalAmount Float
 
   // FSM state (DB-enforced enum)
-  status         ContractStatus @default(DRAFT)
+  status         ApplicationStatus @default(DRAFT)
   currentPhaseId String?
-  currentPhase   ContractPhase? @relation("CurrentPhase", fields: [currentPhaseId], references: [id])
+  currentPhase   ApplicationPhase? @relation("CurrentPhase", fields: [currentPhaseId], references: [id])
 
   // Timing
   nextPaymentDueDate DateTime?
@@ -1315,10 +1315,10 @@ model Contract {
   updatedAt          DateTime  @updatedAt
 
   // Relations
-  phases       ContractPhase[]
-  documents    ContractDocument[]
-  payments     ContractPayment[]
-  terminations ContractTermination[]
+  phases       ApplicationPhase[]
+  documents    ApplicationDocument[]
+  payments     ApplicationPayment[]
+  terminations ApplicationTermination[]
   offerLetters OfferLetter[]
 
   // Payment method change requests for this contract
@@ -1326,19 +1326,19 @@ model Contract {
 
   // Transfer tracking - when a contract is transferred to a different property
   transferredFromId String?   @unique // Source contract if this was created via transfer
-  transferredFrom   Contract? @relation("ContractTransfer", fields: [transferredFromId], references: [id])
-  transferredTo     Contract? @relation("ContractTransfer")
+  transferredFrom   Application? @relation("ApplicationTransfer", fields: [transferredFromId], references: [id])
+  transferredTo     Application? @relation("ApplicationTransfer")
 
   // Transfer requests where this contract is the source
-  outgoingTransferRequests PropertyTransferRequest[] @relation("SourceContract")
+  outgoingTransferRequests PropertyTransferRequest[] @relation("SourceApplication")
   // Transfer requests where this contract is the target (created after approval)
-  incomingTransferRequests PropertyTransferRequest[] @relation("TargetContract")
+  incomingTransferRequests PropertyTransferRequest[] @relation("TargetApplication")
 
   // Audit trail
-  events ContractEvent[]
+  events ApplicationEvent[]
 
   // Refund requests
-  refunds ContractRefund[]
+  refunds ApplicationRefund[]
 
   @@index([tenantId])
   @@index([propertyUnitId])
@@ -1347,19 +1347,19 @@ model Contract {
   @@index([paymentMethodId])
   @@index([status])
   @@index([currentPhaseId])
-  @@map("contracts")
+  @@map("applications")
 }
 
 // =============================================================================
 // CONTRACT REFUNDS - Track refund requests for overpayments or cancellations
 // =============================================================================
-model ContractRefund {
+model ApplicationRefund {
   id       String @id @default(cuid())
   tenantId String
   tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
-  contractId String
-  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
 
   amount Float
   reason String       @db.Text
@@ -1398,11 +1398,11 @@ model ContractRefund {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([contractId])
+  @@index([applicationId])
   @@index([status])
   @@index([tenantId])
   @@index([requestedById])
-  @@map("contract_refunds")
+  @@map("application_refunds")
 }
 
 // Phase within a contract - can be DOCUMENTATION or PAYMENT type
@@ -1410,7 +1410,7 @@ model ContractRefund {
 // =============================================================================
 // CONTRACT PHASE - Base model with polymorphic extensions
 // =============================================================================
-// ContractPhase is the base table with shared fields only.
+// ApplicationPhase is the base table with shared fields only.
 // Each phase has exactly ONE extension table based on phaseCategory:
 // - QUESTIONNAIRE → QuestionnairePhase
 // - DOCUMENTATION → DocumentationPhase
@@ -1418,10 +1418,10 @@ model ContractRefund {
 // This eliminates nullable field pollution and makes the schema self-documenting.
 // =============================================================================
 
-model ContractPhase {
+model ApplicationPhase {
   id         String   @id @default(cuid())
-  contractId String
-  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
 
   // Admin-defined naming
   name        String
@@ -1454,16 +1454,16 @@ model ContractPhase {
   paymentPhase       PaymentPhase?
 
   // Payments can be linked to any phase type (for tracking)
-  payments ContractPayment[]
+  payments ApplicationPayment[]
 
-  // Back-relation for contracts where this is the current phase
-  currentForContracts Contract[] @relation("CurrentPhase")
+  // Back-relation for applications where this is the current phase
+  currentForApplications Application[] @relation("CurrentPhase")
 
-  @@index([contractId])
+  @@index([applicationId])
   @@index([phaseCategory])
   @@index([status])
   @@index([order])
-  @@map("contract_phases")
+  @@map("application_phases")
 }
 
 // =============================================================================
@@ -1475,7 +1475,7 @@ model ContractPhase {
 model QuestionnairePhase {
   id      String        @id @default(cuid())
   phaseId String        @unique
-  phase   ContractPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+  phase   ApplicationPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
 
   // Progress tracking
   completedFieldsCount Int @default(0)
@@ -1509,7 +1509,7 @@ model QuestionnairePhase {
 model DocumentationPhase {
   id      String        @id @default(cuid())
   phaseId String        @unique
-  phase   ContractPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+  phase   ApplicationPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
 
   // Current step pointer for UX and orchestration
   currentStepId String?
@@ -1549,7 +1549,7 @@ model DocumentationPhase {
 model PaymentPhase {
   id      String        @id @default(cuid())
   phaseId String        @unique
-  phase   ContractPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+  phase   ApplicationPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
 
   // Payment plan reference
   paymentPlanId String?
@@ -1580,7 +1580,7 @@ model PaymentPhase {
   updatedAt DateTime @updatedAt
 
   // Child records
-  installments ContractInstallment[]
+  installments PaymentInstallment[]
 
   @@index([phaseId])
   @@index([paymentPlanId])
@@ -1643,18 +1643,18 @@ model QuestionnaireField {
 // =============================================================================
 // Tracks all significant events in a contract's lifecycle for audit, compliance,
 // and debugging. Unlike DomainEvent (which is for inter-service communication),
-// ContractEvent is purely for historical tracking and state machine transitions.
+// ApplicationEvent is purely for historical tracking and state machine transitions.
 // =============================================================================
-model ContractEvent {
+model ApplicationEvent {
   id         String   @id @default(cuid())
-  contractId String
-  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
 
   // Event classification
-  eventType  ContractEventType
-  eventGroup ContractEventGroup?
+  eventType  ApplicationEventType
+  eventGroup ApplicationEventGroup?
 
-  // For state transitions (optional - only populated for CONTRACT_STATE_CHANGED events)
+  // For state transitions (optional - only populated for APPLICATION_STATE_CHANGED events)
   fromState String?
   toState   String?
   trigger   String?
@@ -1669,11 +1669,11 @@ model ContractEvent {
   // Timing
   occurredAt DateTime @default(now())
 
-  @@index([contractId])
+  @@index([applicationId])
   @@index([eventType])
   @@index([eventGroup])
   @@index([occurredAt])
-  @@map("contract_events")
+  @@map("application_events")
 }
 
 // Steps within a DOCUMENTATION phase (FSM for document collection/approval)
@@ -1762,7 +1762,7 @@ model DocumentationStepApproval {
 }
 
 // Installments within a PAYMENT phase
-model ContractInstallment {
+model PaymentInstallment {
   id             String       @id @default(cuid())
   paymentPhaseId String
   paymentPhase   PaymentPhase @relation(fields: [paymentPhaseId], references: [id], onDelete: Cascade)
@@ -1787,25 +1787,25 @@ model ContractInstallment {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  payments ContractPayment[]
+  payments ApplicationPayment[]
 
   @@index([paymentPhaseId])
   @@index([dueDate])
   @@index([status])
-  @@map("contract_installments")
+  @@map("payment_installments")
 }
 
 // Unified payment record for contracts
-model ContractPayment {
+model ApplicationPayment {
   id            String               @id @default(cuid())
-  contractId    String
-  contract      Contract             @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  applicationId    String
+  application Application             @relation(fields: [applicationId], references: [id], onDelete: Cascade)
   phaseId       String?
-  phase         ContractPhase?       @relation(fields: [phaseId], references: [id])
+  phase         ApplicationPhase?       @relation(fields: [phaseId], references: [id])
   installmentId String?
-  installment   ContractInstallment? @relation(fields: [installmentId], references: [id])
+  installment   PaymentInstallment? @relation(fields: [installmentId], references: [id])
   payerId       String?
-  payer         User?                @relation("ContractPayer", fields: [payerId], references: [id])
+  payer         User?                @relation("ApplicationPayer", fields: [payerId], references: [id])
 
   amount          Float
   principalAmount Float @default(0)
@@ -1822,20 +1822,20 @@ model ContractPayment {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
-  @@index([contractId])
+  @@index([applicationId])
   @@index([phaseId])
   @@index([installmentId])
   @@index([payerId])
   @@index([status])
   @@index([reference])
-  @@map("contract_payments")
+  @@map("application_payments")
 }
 
 // Contract documents (owned by contract, linked to phases/steps as needed)
-model ContractDocument {
+model ApplicationDocument {
   id         String   @id @default(cuid())
-  contractId String
-  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
   phaseId    String? // Optional link to specific phase
   stepId     String? // Optional link to specific step
 
@@ -1850,12 +1850,12 @@ model ContractDocument {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([contractId])
+  @@index([applicationId])
   @@index([phaseId])
   @@index([stepId])
   @@index([type])
   @@index([status])
-  @@map("contract_documents")
+  @@map("application_documents")
 }
 
 // =============================================================================
@@ -1897,8 +1897,8 @@ model OfferLetter {
   id         String   @id @default(cuid())
   tenantId   String
   tenant     Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  contractId String
-  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
 
   // Template used (optional - documents-service may handle default selection)
   templateId String?
@@ -1940,7 +1940,7 @@ model OfferLetter {
   updatedAt DateTime @updatedAt
 
   @@index([tenantId])
-  @@index([contractId])
+  @@index([applicationId])
   @@index([type])
   @@index([status])
   @@map("offer_letters")
@@ -1958,10 +1958,10 @@ model OfferLetter {
 // 5. Contract marked terminated, unit released
 // =============================================================================
 
-model ContractTermination {
+model ApplicationTermination {
   id         String   @id @default(cuid())
-  contractId String
-  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
   tenantId   String
   tenant     Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
@@ -1989,8 +1989,8 @@ model ContractTermination {
   rejectionReason String?   @db.Text
 
   // Financial snapshot at time of request
-  contractSnapshot    Json // Full contract state snapshot
-  totalContractAmount Float
+  applicationSnapshot    Json // Full contract state snapshot
+  totalApplicationAmount Float
   totalPaidToDate     Float
   outstandingBalance  Float
 
@@ -2029,13 +2029,13 @@ model ContractTermination {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([contractId])
+  @@index([applicationId])
   @@index([tenantId])
   @@index([status])
   @@index([type])
   @@index([initiatorId])
   @@index([requestedAt])
-  @@map("contract_terminations")
+  @@map("application_terminations")
 }
 
 // =============================================================================
@@ -2060,8 +2060,8 @@ model PaymentMethodChangeRequest {
   id         String   @id @default(cuid())
   tenantId   String
   tenant     Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  contractId String
-  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
 
   // The change being requested
   fromPaymentMethodId String
@@ -2102,7 +2102,7 @@ model PaymentMethodChangeRequest {
   updatedAt DateTime @updatedAt
 
   @@index([tenantId])
-  @@index([contractId])
+  @@index([applicationId])
   @@index([status])
   @@index([requestorId])
   @@map("payment_method_change_requests")
@@ -2119,7 +2119,7 @@ model PaymentMethodChangeRequest {
 // =============================================================================
 
 enum DocumentRequirementContext {
-  CONTRACT_PHASE // During a contract phase
+  APPLICATION_PHASE // During a contract phase
   PAYMENT_METHOD_CHANGE // When changing payment method mid-contract
 }
 
@@ -2133,7 +2133,7 @@ model DocumentRequirementRule {
 
   // Scoping (which situations this rule applies to)
   // For PREQUALIFICATION: paymentMethodId
-  // For CONTRACT_PHASE: phaseType
+  // For APPLICATION_PHASE: phaseType
   // For PAYMENT_METHOD_CHANGE: fromMethodId + toMethodId
   paymentMethodId     String?
   paymentMethod       PropertyPaymentMethod? @relation("RulePaymentMethod", fields: [paymentMethodId], references: [id])
@@ -2460,8 +2460,8 @@ model PropertyTransferRequest {
   tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
   // Source contract being transferred
-  sourceContractId String
-  sourceContract   Contract @relation("SourceContract", fields: [sourceContractId], references: [id], onDelete: Cascade)
+  sourceApplicationId String
+  sourceApplication   Application @relation("SourceApplication", fields: [sourceApplicationId], references: [id], onDelete: Cascade)
 
   // Target property unit
   targetPropertyUnitId String
@@ -2494,8 +2494,8 @@ model PropertyTransferRequest {
   refundedAt          DateTime?
 
   // Result - new contract created after approval
-  targetContractId String?
-  targetContract   Contract? @relation("TargetContract", fields: [targetContractId], references: [id])
+  targetApplicationId String?
+  targetApplication   Application? @relation("TargetApplication", fields: [targetApplicationId], references: [id])
 
   // Timestamps
   createdAt   DateTime  @default(now())
@@ -2504,7 +2504,7 @@ model PropertyTransferRequest {
   updatedAt   DateTime  @updatedAt
 
   @@index([tenantId])
-  @@index([sourceContractId])
+  @@index([sourceApplicationId])
   @@index([targetPropertyUnitId])
   @@index([requestedById])
   @@index([status])
@@ -2520,7 +2520,7 @@ enum ApprovalRequestType {
   PROPERTY_UPDATE // Property/unit listing update requiring approval
   USER_WORKFLOW // User workflow step approval
   CREDIT_CHECK // Credit check result review
-  CONTRACT_TERMINATION // Contract termination approval
+  APPLICATION_TERMINATION // Contract termination approval
   REFUND_APPROVAL // Refund request approval
 }
 

@@ -15,7 +15,7 @@ This folder contains the Postman collection and environment for testing the QShe
 | -------------------- | ----------------------------------------------- | ------------ |
 | **User Service**     | Authentication, users, roles, tenants, API keys | 3002         |
 | **Property Service** | Properties, amenities, media                    | 3003         |
-| **Mortgage Service** | Payment plans, methods, contracts, payments     | LocalStack   |
+| **Mortgage Service** | Payment plans, methods, applications, payments     | LocalStack   |
 
 ## Quick Start
 
@@ -59,16 +59,16 @@ All requests require these headers (automatically set via environment variables)
 - **Payment Plans** - Define installment structures (frequency, count, grace period)
 - **Payment Methods** - Complete workflow templates with phases and steps
 
-#### Contracts (Buyer/Admin)
+#### Applications (Buyer/Admin)
 
-- **Contracts** - Instantiated from payment methods
-- **Contract Phases** - Track progress through KYC, Downpayment, Mortgage phases
-- **Contract Payments** - Payment records and processing
+- **Applications** - Instantiated from payment methods
+- **Application Phases** - Track progress through KYC, Downpayment, Mortgage phases
+- **Application Payments** - Payment records and processing
 
 #### Operations
 
-- **Property Transfer** - Request to move contract to different property
-- **Payment Method Change** - Request to change contract payment terms
+- **Property Transfer** - Request to move application to different property
+- **Payment Method Change** - Request to change application payment terms
 
 ## Scenario Flows
 
@@ -84,48 +84,48 @@ End-to-end flow simulating a mortgage application:
 | 2    | Payment Plans     | Create Payment Plan       | Create "Monthly240" plan for mortgage       |
 | 3    | Payment Methods   | Create Payment Method     | Create 10/90 method with phases             |
 | 4    | Payment Methods   | Link to Property          | Link payment method to property             |
-| 5    | Contracts         | Create Contract           | Buyer creates contract for property         |
-| 6    | Contract Phases   | Get Phases for Contract   | Get all phases (KYC, Downpayment, Mortgage) |
-| 7    | Contracts         | Transition Contract       | Submit contract (trigger: SUBMIT)           |
-| 8    | Contract Phases   | Activate Phase            | Activate KYC phase                          |
-| 9    | Contract Phases   | Upload Document           | Upload ID document                          |
-| 10   | Contract Phases   | Complete Step             | Mark upload step complete                   |
-| 11   | Contract Phases   | Review Document           | Admin approves document                     |
-| 12   | Contract Phases   | Generate Installments     | Generate downpayment schedule               |
-| 13   | Contract Payments | Create Payment            | Make first payment                          |
-| 14   | Contract Payments | Process Payment (Webhook) | Process payment callback                    |
-| 15   | Contract Phases   | Generate Installments     | Generate mortgage schedule                  |
-| 16   | Contracts         | Sign Contract             | Sign the contract                           |
-| 17   | Contracts         | Get Contract by ID        | Verify status is ACTIVE                     |
+| 5    | Applications         | Create Application           | Buyer creates application for property         |
+| 6    | Application Phases   | Get Phases for Application   | Get all phases (KYC, Downpayment, Mortgage) |
+| 7    | Applications         | Transition Application       | Submit application (trigger: SUBMIT)           |
+| 8    | Application Phases   | Activate Phase            | Activate KYC phase                          |
+| 9    | Application Phases   | Upload Document           | Upload ID document                          |
+| 10   | Application Phases   | Complete Step             | Mark upload step complete                   |
+| 11   | Application Phases   | Review Document           | Admin approves document                     |
+| 12   | Application Phases   | Generate Installments     | Generate downpayment schedule               |
+| 13   | Application Payments | Create Payment            | Make first payment                          |
+| 14   | Application Payments | Process Payment (Webhook) | Process payment callback                    |
+| 15   | Application Phases   | Generate Installments     | Generate mortgage schedule                  |
+| 16   | Applications         | Sign Application             | Sign the application                           |
+| 17   | Applications         | Get Application by ID        | Verify status is ACTIVE                     |
 
 ### Flow 2: Property Transfer
 
-Transfer an existing contract to a different property:
+Transfer an existing application to a different property:
 
 | Step | Folder            | Request                           | Description                    |
 | ---- | ----------------- | --------------------------------- | ------------------------------ |
-| 1    | Contracts         | Get Contract by ID                | Get existing contract          |
+| 1    | Applications         | Get Application by ID                | Get existing application          |
 | 2    | Property Transfer | Create Transfer Request           | Buyer requests transfer        |
 | 3    | Property Transfer | Get All Pending Transfer Requests | Admin views pending requests   |
 | 4    | Property Transfer | Get Transfer Request by ID        | Admin reviews details          |
 | 5    | Property Transfer | Approve Transfer Request (Admin)  | Admin approves transfer        |
-| 6    | Contracts         | Get Contract by ID                | Verify original is TRANSFERRED |
-| 7    | Contracts         | Get Contract by ID                | Verify new contract created    |
+| 6    | Applications         | Get Application by ID                | Verify original is TRANSFERRED |
+| 7    | Applications         | Get Application by ID                | Verify new application created    |
 
 ### Flow 3: Payment Method Change
 
-Change contract payment terms (e.g., 10/90 to 20/80):
+Change application payment terms (e.g., 10/90 to 20/80):
 
 | Step | Folder                | Request                 | Description                  |
 | ---- | --------------------- | ----------------------- | ---------------------------- |
-| 1    | Contracts             | Get Contract by ID      | Get existing contract        |
+| 1    | Applications             | Get Application by ID      | Get existing application        |
 | 2    | Payment Method Change | Create Change Request   | Buyer requests change        |
 | 3    | Payment Method Change | Submit Documents        | Buyer submits required docs  |
 | 4    | Payment Method Change | Get Pending Requests    | Admin views pending requests |
 | 5    | Payment Method Change | Start Review (Admin)    | Admin starts review          |
 | 6    | Payment Method Change | Approve (Admin)         | Admin approves change        |
 | 7    | Payment Method Change | Execute (Admin)         | Admin executes change        |
-| 8    | Contract Phases       | Get Phases for Contract | Verify new phases created    |
+| 8    | Application Phases       | Get Phases for Application | Verify new phases created    |
 
 ### Flow 4: Admin Setup
 
@@ -149,7 +149,7 @@ Initial setup of payment plans and methods:
 | `tenantId`    | Tenant identifier   | `tenant-001`                                                          |
 | `userId`      | Buyer user ID       | `buyer-001`                                                           |
 | `adminUserId` | Admin user ID       | `admin-001`                                                           |
-| `contractId`  | Current contract ID | (auto-populated)                                                      |
+| `applicationId`  | Current application ID | (auto-populated)                                                      |
 | `phaseId`     | Current phase ID    | (auto-populated)                                                      |
 
 > **Note**: The `baseUrl` uses LocalStack's API Gateway format. If the API ID differs after redeployment, run `awslocal apigateway get-rest-apis` to get the correct API ID and stage.
@@ -162,7 +162,7 @@ Initial setup of payment plans and methods:
 
 3. **Auto-populate Variables**: Many requests save response data to variables for use in subsequent requests
 
-4. **Check Current Action**: Use `GET /contracts/:id/current-action` to see what the user should do next
+4. **Check Current Action**: Use `GET /applications/:id/current-action` to see what the user should do next
 
 5. **Phase Categories**:
 

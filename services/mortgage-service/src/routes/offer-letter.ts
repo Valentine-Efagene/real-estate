@@ -18,7 +18,7 @@ const router = Router();
 // ============================================================================
 
 /**
- * Generate an offer letter for a contract
+ * Generate an offer letter for a application
  * POST /offer-letters
  */
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {
@@ -73,12 +73,12 @@ router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
 });
 
 /**
- * Get offer letters for a contract
- * GET /offer-letters/contract/:contractId
+ * Get offer letters for a application
+ * GET /offer-letters/application/:applicationId
  */
-router.get('/contract/:contractId', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/application/:applicationId', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const offerLetters = await offerLetterService.findByContract(req.params.contractId);
+        const offerLetters = await offerLetterService.findByapplication(req.params.applicationId);
         res.json(offerLetters);
     } catch (error) {
         next(error);

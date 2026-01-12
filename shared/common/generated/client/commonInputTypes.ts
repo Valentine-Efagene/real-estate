@@ -524,21 +524,21 @@ export type EnumFieldTypeWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumFieldTypeFilter<$PrismaModel>
 }
 
-export type EnumContractStatusFilter<$PrismaModel = never> = {
-  equals?: $Enums.ContractStatus | Prisma.EnumContractStatusFieldRefInput<$PrismaModel>
-  in?: $Enums.ContractStatus[]
-  notIn?: $Enums.ContractStatus[]
-  not?: Prisma.NestedEnumContractStatusFilter<$PrismaModel> | $Enums.ContractStatus
+export type EnumApplicationStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ApplicationStatus | Prisma.EnumApplicationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ApplicationStatus[]
+  notIn?: $Enums.ApplicationStatus[]
+  not?: Prisma.NestedEnumApplicationStatusFilter<$PrismaModel> | $Enums.ApplicationStatus
 }
 
-export type EnumContractStatusWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.ContractStatus | Prisma.EnumContractStatusFieldRefInput<$PrismaModel>
-  in?: $Enums.ContractStatus[]
-  notIn?: $Enums.ContractStatus[]
-  not?: Prisma.NestedEnumContractStatusWithAggregatesFilter<$PrismaModel> | $Enums.ContractStatus
+export type EnumApplicationStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ApplicationStatus | Prisma.EnumApplicationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ApplicationStatus[]
+  notIn?: $Enums.ApplicationStatus[]
+  not?: Prisma.NestedEnumApplicationStatusWithAggregatesFilter<$PrismaModel> | $Enums.ApplicationStatus
   _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumContractStatusFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumContractStatusFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumApplicationStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumApplicationStatusFilter<$PrismaModel>
 }
 
 export type EnumRefundStatusFilter<$PrismaModel = never> = {
@@ -575,18 +575,18 @@ export type EnumPhaseStatusWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumPhaseStatusFilter<$PrismaModel>
 }
 
-export type EnumContractEventTypeFilter<$PrismaModel = never> = {
-  equals?: $Enums.ContractEventType | Prisma.EnumContractEventTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.ContractEventType[]
-  notIn?: $Enums.ContractEventType[]
-  not?: Prisma.NestedEnumContractEventTypeFilter<$PrismaModel> | $Enums.ContractEventType
+export type EnumApplicationEventTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.ApplicationEventType | Prisma.EnumApplicationEventTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.ApplicationEventType[]
+  notIn?: $Enums.ApplicationEventType[]
+  not?: Prisma.NestedEnumApplicationEventTypeFilter<$PrismaModel> | $Enums.ApplicationEventType
 }
 
-export type EnumContractEventGroupNullableFilter<$PrismaModel = never> = {
-  equals?: $Enums.ContractEventGroup | Prisma.EnumContractEventGroupFieldRefInput<$PrismaModel> | null
-  in?: $Enums.ContractEventGroup[] | null
-  notIn?: $Enums.ContractEventGroup[] | null
-  not?: Prisma.NestedEnumContractEventGroupNullableFilter<$PrismaModel> | $Enums.ContractEventGroup | null
+export type EnumApplicationEventGroupNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.ApplicationEventGroup | Prisma.EnumApplicationEventGroupFieldRefInput<$PrismaModel> | null
+  in?: $Enums.ApplicationEventGroup[] | null
+  notIn?: $Enums.ApplicationEventGroup[] | null
+  not?: Prisma.NestedEnumApplicationEventGroupNullableFilter<$PrismaModel> | $Enums.ApplicationEventGroup | null
 }
 
 export type EnumEventActorTypeNullableFilter<$PrismaModel = never> = {
@@ -596,24 +596,24 @@ export type EnumEventActorTypeNullableFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumEventActorTypeNullableFilter<$PrismaModel> | $Enums.EventActorType | null
 }
 
-export type EnumContractEventTypeWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.ContractEventType | Prisma.EnumContractEventTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.ContractEventType[]
-  notIn?: $Enums.ContractEventType[]
-  not?: Prisma.NestedEnumContractEventTypeWithAggregatesFilter<$PrismaModel> | $Enums.ContractEventType
+export type EnumApplicationEventTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ApplicationEventType | Prisma.EnumApplicationEventTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.ApplicationEventType[]
+  notIn?: $Enums.ApplicationEventType[]
+  not?: Prisma.NestedEnumApplicationEventTypeWithAggregatesFilter<$PrismaModel> | $Enums.ApplicationEventType
   _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumContractEventTypeFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumContractEventTypeFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumApplicationEventTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumApplicationEventTypeFilter<$PrismaModel>
 }
 
-export type EnumContractEventGroupNullableWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.ContractEventGroup | Prisma.EnumContractEventGroupFieldRefInput<$PrismaModel> | null
-  in?: $Enums.ContractEventGroup[] | null
-  notIn?: $Enums.ContractEventGroup[] | null
-  not?: Prisma.NestedEnumContractEventGroupNullableWithAggregatesFilter<$PrismaModel> | $Enums.ContractEventGroup | null
+export type EnumApplicationEventGroupNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ApplicationEventGroup | Prisma.EnumApplicationEventGroupFieldRefInput<$PrismaModel> | null
+  in?: $Enums.ApplicationEventGroup[] | null
+  notIn?: $Enums.ApplicationEventGroup[] | null
+  not?: Prisma.NestedEnumApplicationEventGroupNullableWithAggregatesFilter<$PrismaModel> | $Enums.ApplicationEventGroup | null
   _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumContractEventGroupNullableFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumContractEventGroupNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumApplicationEventGroupNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumApplicationEventGroupNullableFilter<$PrismaModel>
 }
 
 export type EnumEventActorTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -1434,21 +1434,21 @@ export type NestedEnumFieldTypeWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumFieldTypeFilter<$PrismaModel>
 }
 
-export type NestedEnumContractStatusFilter<$PrismaModel = never> = {
-  equals?: $Enums.ContractStatus | Prisma.EnumContractStatusFieldRefInput<$PrismaModel>
-  in?: $Enums.ContractStatus[]
-  notIn?: $Enums.ContractStatus[]
-  not?: Prisma.NestedEnumContractStatusFilter<$PrismaModel> | $Enums.ContractStatus
+export type NestedEnumApplicationStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ApplicationStatus | Prisma.EnumApplicationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ApplicationStatus[]
+  notIn?: $Enums.ApplicationStatus[]
+  not?: Prisma.NestedEnumApplicationStatusFilter<$PrismaModel> | $Enums.ApplicationStatus
 }
 
-export type NestedEnumContractStatusWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.ContractStatus | Prisma.EnumContractStatusFieldRefInput<$PrismaModel>
-  in?: $Enums.ContractStatus[]
-  notIn?: $Enums.ContractStatus[]
-  not?: Prisma.NestedEnumContractStatusWithAggregatesFilter<$PrismaModel> | $Enums.ContractStatus
+export type NestedEnumApplicationStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ApplicationStatus | Prisma.EnumApplicationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ApplicationStatus[]
+  notIn?: $Enums.ApplicationStatus[]
+  not?: Prisma.NestedEnumApplicationStatusWithAggregatesFilter<$PrismaModel> | $Enums.ApplicationStatus
   _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumContractStatusFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumContractStatusFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumApplicationStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumApplicationStatusFilter<$PrismaModel>
 }
 
 export type NestedEnumRefundStatusFilter<$PrismaModel = never> = {
@@ -1485,18 +1485,18 @@ export type NestedEnumPhaseStatusWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumPhaseStatusFilter<$PrismaModel>
 }
 
-export type NestedEnumContractEventTypeFilter<$PrismaModel = never> = {
-  equals?: $Enums.ContractEventType | Prisma.EnumContractEventTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.ContractEventType[]
-  notIn?: $Enums.ContractEventType[]
-  not?: Prisma.NestedEnumContractEventTypeFilter<$PrismaModel> | $Enums.ContractEventType
+export type NestedEnumApplicationEventTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.ApplicationEventType | Prisma.EnumApplicationEventTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.ApplicationEventType[]
+  notIn?: $Enums.ApplicationEventType[]
+  not?: Prisma.NestedEnumApplicationEventTypeFilter<$PrismaModel> | $Enums.ApplicationEventType
 }
 
-export type NestedEnumContractEventGroupNullableFilter<$PrismaModel = never> = {
-  equals?: $Enums.ContractEventGroup | Prisma.EnumContractEventGroupFieldRefInput<$PrismaModel> | null
-  in?: $Enums.ContractEventGroup[] | null
-  notIn?: $Enums.ContractEventGroup[] | null
-  not?: Prisma.NestedEnumContractEventGroupNullableFilter<$PrismaModel> | $Enums.ContractEventGroup | null
+export type NestedEnumApplicationEventGroupNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.ApplicationEventGroup | Prisma.EnumApplicationEventGroupFieldRefInput<$PrismaModel> | null
+  in?: $Enums.ApplicationEventGroup[] | null
+  notIn?: $Enums.ApplicationEventGroup[] | null
+  not?: Prisma.NestedEnumApplicationEventGroupNullableFilter<$PrismaModel> | $Enums.ApplicationEventGroup | null
 }
 
 export type NestedEnumEventActorTypeNullableFilter<$PrismaModel = never> = {
@@ -1506,24 +1506,24 @@ export type NestedEnumEventActorTypeNullableFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumEventActorTypeNullableFilter<$PrismaModel> | $Enums.EventActorType | null
 }
 
-export type NestedEnumContractEventTypeWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.ContractEventType | Prisma.EnumContractEventTypeFieldRefInput<$PrismaModel>
-  in?: $Enums.ContractEventType[]
-  notIn?: $Enums.ContractEventType[]
-  not?: Prisma.NestedEnumContractEventTypeWithAggregatesFilter<$PrismaModel> | $Enums.ContractEventType
+export type NestedEnumApplicationEventTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ApplicationEventType | Prisma.EnumApplicationEventTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.ApplicationEventType[]
+  notIn?: $Enums.ApplicationEventType[]
+  not?: Prisma.NestedEnumApplicationEventTypeWithAggregatesFilter<$PrismaModel> | $Enums.ApplicationEventType
   _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumContractEventTypeFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumContractEventTypeFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumApplicationEventTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumApplicationEventTypeFilter<$PrismaModel>
 }
 
-export type NestedEnumContractEventGroupNullableWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.ContractEventGroup | Prisma.EnumContractEventGroupFieldRefInput<$PrismaModel> | null
-  in?: $Enums.ContractEventGroup[] | null
-  notIn?: $Enums.ContractEventGroup[] | null
-  not?: Prisma.NestedEnumContractEventGroupNullableWithAggregatesFilter<$PrismaModel> | $Enums.ContractEventGroup | null
+export type NestedEnumApplicationEventGroupNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ApplicationEventGroup | Prisma.EnumApplicationEventGroupFieldRefInput<$PrismaModel> | null
+  in?: $Enums.ApplicationEventGroup[] | null
+  notIn?: $Enums.ApplicationEventGroup[] | null
+  not?: Prisma.NestedEnumApplicationEventGroupNullableWithAggregatesFilter<$PrismaModel> | $Enums.ApplicationEventGroup | null
   _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumContractEventGroupNullableFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumContractEventGroupNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumApplicationEventGroupNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumApplicationEventGroupNullableFilter<$PrismaModel>
 }
 
 export type NestedEnumEventActorTypeNullableWithAggregatesFilter<$PrismaModel = never> = {

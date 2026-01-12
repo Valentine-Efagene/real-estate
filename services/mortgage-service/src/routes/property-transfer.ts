@@ -24,24 +24,24 @@ const rejectSchema = z.object({
 });
 
 // =============================================================================
-// Customer Routes (nested under /contracts/:contractId)
+// Customer Routes (nested under /applications/:applicationId)
 // =============================================================================
 
 /**
- * POST /contracts/:contractId/transfer-requests
+ * POST /applications/:applicationId/transfer-requests
  * Create a new property transfer request
  */
 router.post(
-    '/contracts/:contractId/transfer-requests',
+    '/applications/:applicationId/transfer-requests',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { tenantId, userId } = getAuthContext(req);
-            const { contractId } = req.params;
+            const { applicationId } = req.params;
 
             const body = createRequestSchema.parse(req.body);
 
             const request = await propertyTransferService.createRequest({
-                sourceContractId: contractId,
+                sourceApplicationId: applicationId,
                 targetPropertyUnitId: body.targetPropertyUnitId,
                 reason: body.reason,
                 requestedById: userId,
@@ -56,20 +56,20 @@ router.post(
 );
 
 /**
- * GET /contracts/:contractId/transfer-requests
- * List transfer requests for a contract
+ * GET /applications/:applicationId/transfer-requests
+ * List transfer requests for a application
  */
 router.get(
-    '/contracts/:contractId/transfer-requests',
+    '/applications/:applicationId/transfer-requests',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { tenantId } = getAuthContext(req);
             if (!tenantId) {
                 throw new AppError(400, 'Missing tenant context');
             }
-            const { contractId } = req.params;
+            const { applicationId } = req.params;
 
-            const requests = await propertyTransferService.listByContract(contractId, tenantId);
+            const requests = await propertyTransferService.listByapplication(applicationId, tenantId);
 
             res.json(requests);
         } catch (error) {
@@ -151,10 +151,10 @@ router.patch(
             res.json({
                 message: 'Transfer approved successfully',
                 request: result.request,
-                newContract: {
-                    id: result.newContract.id,
-                    contractNumber: result.newContract.contractNumber,
-                    status: result.newContract.status,
+                newApplication: {
+                    id: result.newApplication.id,
+                    applicationNumber: result.newApplication.applicationNumber,
+                    status: result.newApplication.status,
                 },
                 refundedAmount: result.refundedAmount,
             });

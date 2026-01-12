@@ -17,7 +17,7 @@ Document upload (presigned S3), PDF assembly, e-sign integration, and signed art
 **Document Types:**
 
 - **Provisional Offer Letter** — Conditional approval after prequalification
-- **Final Offer Letter** — Binding agreement when contract is activated
+- **Final Offer Letter** — Binding agreement when application is activated
 
 **Flow:**
 
@@ -27,7 +27,7 @@ Document upload (presigned S3), PDF assembly, e-sign integration, and signed art
 4. Send document to customer for review/signature (email notification)
 5. Customer signs (simple acceptance or e-sign vendor)
 6. Update document status to `SIGNED`, store signed artifact
-7. Trigger next workflow step (e.g., activate contract)
+7. Trigger next workflow step (e.g., activate application)
 
 ### 4. Document Templates
 
@@ -69,7 +69,7 @@ Order, track, and attach title/insurance results to loan files.
 
 Payment posting, escrow, amortization schedules, statements, and remittance.
 
-- [x] Payment method change flow (E2E tests, SUPERSEDED enum migration, contract-phase and payment-method-change service fixes) — 2026-01-05
+- [x] Payment method change flow (E2E tests, SUPERSEDED enum migration, application-phase and payment-method-change service fixes) — 2026-01-05
 
 ### 11. Payments & PCI Compliance
 
@@ -93,7 +93,7 @@ Distributed tracing, structured logs, metrics, DLQ alerts, and dashboards.
 
 ### 14. Schema & Event Governance
 
-Message schema registry, versioning, contract tests, and CI validation.
+Message schema registry, versioning, application tests, and CI validation.
 
 ### 15. Compliance & QC Automation
 

@@ -4,7 +4,7 @@ Last Updated: 2026-01-07
 
 ## Summary
 
-Buyer (Chidi) has an active contract with a 10/90 payment method where the 10% downpayment is paid in 12 monthly instalments. After receiving a provisional offer and paying through month 6, Chidi requests to transfer to a different property while preserving all payments, completed workflow steps, and remaining progress.
+Buyer (Chidi) has an active application with a 10/90 payment method where the 10% downpayment is paid in 12 monthly instalments. After receiving a provisional offer and paying through month 6, Chidi requests to transfer to a different property while preserving all payments, completed workflow steps, and remaining progress.
 
 ## Actors
 
@@ -21,7 +21,7 @@ Buyer (Chidi) has an active contract with a 10/90 payment method where the 10% d
 3. Two properties exist:
    - **Property X** (Lekki Gardens Unit A1) — ₦10,000,000
    - **Property Y** (Victoria Island Unit B3) — ₦11,000,000
-4. Chidi has **Contract A** for Property X with:
+4. Chidi has **Application A** for Property X with:
    - Pre-approval questionnaire completed ✓
    - KYC documents uploaded and approved ✓
    - Provisional offer letter issued ✓
@@ -34,7 +34,7 @@ Buyer (Chidi) has an active contract with a 10/90 payment method where the 10% d
 Chidi submits a transfer request via API:
 
 ```json
-POST /contracts/{contractAId}/transfer-requests
+POST /applications/{applicationAId}/transfer-requests
 {
   "targetPropertyUnitId": "property-y-unit-b3",
   "reason": "Prefer location closer to workplace"
@@ -55,7 +55,7 @@ GET /transfer-requests/{requestId}
 
 Response includes:
 
-- Source contract summary (payments made, steps completed)
+- Source application summary (payments made, steps completed)
 - Target property details (availability, price difference)
 - Computed adjustment amount (if any)
 
@@ -73,10 +73,10 @@ PATCH /transfer-requests/{requestId}/approve
 
 Upon approval, the system atomically:
 
-1. **Creates Contract B** for Property Y:
+1. **Creates Application B** for Property Y:
 
    - Copies buyer info, payment method config
-   - Sets `transferredFromId = contractA.id`
+   - Sets `transferredFromId = applicationA.id`
    - Calculates new amounts based on Property Y price
 
 2. **Migrates Completed Workflow Steps**:
@@ -87,23 +87,23 @@ Upon approval, the system atomically:
 
 3. **Migrates Payment Records**:
 
-   - Creates payment entries in Contract B referencing original transaction IDs
+   - Creates payment entries in Application B referencing original transaction IDs
    - Marks as `MIGRATED` for audit trail
    - Recalculates remaining schedule
 
-4. **Updates Contract A**:
+4. **Updates Application A**:
 
    - Status → `TRANSFERRED`
-   - Links to Contract B
+   - Links to Application B
    - Becomes read-only
 
 5. **Issues New Offer Letter**:
 
-   - Generates provisional offer for Contract B
+   - Generates provisional offer for Application B
    - Reflects new property and adjusted amounts
 
 6. **Emits Events**:
-   - `contract.transferred`
+   - `application.transferred`
    - `payments.migrated`
    - `offer_letter.generated`
    - `notification.sent`
@@ -129,7 +129,7 @@ PATCH /transfer-requests/{requestId}/reject
 
 - Status → `REJECTED`
 - Notification sent to Chidi
-- Contract A remains active
+- Application A remains active
 
 ### 4a. Price Difference Requires Adjustment Payment
 
@@ -143,18 +143,18 @@ If Property Y costs more and threshold exceeded:
 
 - Transfer fails with status `FAILED`
 - Reason: "Target unit no longer available"
-- Contract A remains active
+- Application A remains active
 
 ## API Endpoints
 
 | Method | Endpoint                           | Description                           |
 | ------ | ---------------------------------- | ------------------------------------- |
-| POST   | `/contracts/:id/transfer-requests` | Create transfer request               |
+| POST   | `/applications/:id/transfer-requests` | Create transfer request               |
 | GET    | `/transfer-requests`               | List transfer requests (admin)        |
 | GET    | `/transfer-requests/:id`           | Get transfer request details          |
 | PATCH  | `/transfer-requests/:id/approve`   | Approve transfer                      |
 | PATCH  | `/transfer-requests/:id/reject`    | Reject transfer                       |
-| GET    | `/contracts/:id`                   | Get contract (includes transfer info) |
+| GET    | `/applications/:id`                   | Get application (includes transfer info) |
 
 ## Data Model Changes
 
@@ -164,7 +164,7 @@ If Property Y costs more and threshold exceeded:
 model PropertyTransferRequest {
   id                  String   @id @default(cuid())
   tenantId            String
-  sourceContractId    String
+  sourceApplicationId    String
   targetPropertyUnitId String
   requestedById       String   // Buyer who requested
   reviewedById        String?  // Admin who approved/rejected
@@ -175,7 +175,7 @@ model PropertyTransferRequest {
   priceAdjustment     Float?   // Computed price difference
 
   // Result
-  targetContractId    String?  // New contract created after approval
+  targetApplicationId    String?  // New application created after approval
 
   createdAt           DateTime @default(now())
   reviewedAt          DateTime?
@@ -192,17 +192,17 @@ enum TransferRequestStatus {
 }
 ```
 
-### Contract Additions
+### Application Additions
 
 ```prisma
-model Contract {
+model Application {
   // ... existing fields ...
 
   // Transfer tracking
-  transferredFromId   String?  // Source contract if this was created via transfer
-  transferredToId     String?  // Target contract if this was transferred
+  transferredFromId   String?  // Source application if this was created via transfer
+  transferredToId     String?  // Target application if this was transferred
 
-  status ContractStatus // Add TRANSFERRED to enum
+  status ApplicationStatus // Add TRANSFERRED to enum
 }
 ```
 
@@ -216,16 +216,16 @@ model Contract {
 
 2. **After Approval**
 
-   - New Contract B exists with `propertyUnitId = propertyY`
-   - Contract B has 6 payment records matching Contract A transaction IDs
-   - Contract A status = `TRANSFERRED`
-   - Contract A `transferredToId = contractB.id`
-   - Contract B `transferredFromId = contractA.id`
+   - New Application B exists with `propertyUnitId = propertyY`
+   - Application B has 6 payment records matching Application A transaction IDs
+   - Application A status = `TRANSFERRED`
+   - Application A `transferredToId = applicationB.id`
+   - Application B `transferredFromId = applicationA.id`
 
 3. **Workflow Continuity**
 
-   - Contract B phase 1 (documentation) status = `COMPLETED`
-   - Contract B phase 2 (downpayment) shows 6 of 12 paid
+   - Application B phase 1 (documentation) status = `COMPLETED`
+   - Application B phase 2 (downpayment) shows 6 of 12 paid
    - Next scheduled payment = instalment 7
 
 4. **Notifications**

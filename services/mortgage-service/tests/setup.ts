@@ -151,7 +151,7 @@ export const testData = {
                 stepDefinitions: [
                     { name: 'Upload ID', stepType: 'UPLOAD' as const, order: 1 },
                     { name: 'Verify Address', stepType: 'REVIEW' as const, order: 2 },
-                    { name: 'Sign Contract', stepType: 'SIGNATURE' as const, order: 3 },
+                    { name: 'Sign Application', stepType: 'SIGNATURE' as const, order: 3 },
                 ],
             },
             {
@@ -179,22 +179,22 @@ export async function cleanupTestData() {
     // Delete in correct order to respect foreign keys
     await prisma.approvalRequest.deleteMany();
     await prisma.propertyTransferRequest.deleteMany();
-    await prisma.contractTermination.deleteMany();
-    await prisma.contractEvent.deleteMany();
-    await prisma.contractPayment.deleteMany();
-    await prisma.contractInstallment.deleteMany();
+    await prisma.applicationTermination.deleteMany();
+    await prisma.applicationEvent.deleteMany();
+    await prisma.applicationPayment.deleteMany();
+    await prisma.paymentInstallment.deleteMany();
     await prisma.documentationStepApproval.deleteMany();
     await prisma.documentationStepDocument.deleteMany();
     await prisma.documentationStep.deleteMany();
-    await prisma.contractDocument.deleteMany();
-    // Delete polymorphic phase extensions before base ContractPhase
+    await prisma.applicationDocument.deleteMany();
+    // Delete polymorphic phase extensions before base ApplicationPhase
     await prisma.questionnaireField.deleteMany();
     await prisma.questionnairePhase.deleteMany();
     await prisma.documentationPhase.deleteMany();
     await prisma.paymentPhase.deleteMany();
-    await prisma.contractPhase.deleteMany();
+    await prisma.applicationPhase.deleteMany();
     await prisma.paymentMethodChangeRequest.deleteMany();
-    await prisma.contract.deleteMany();
+    await prisma.application.deleteMany();
     await prisma.propertyUnit.deleteMany();
     await prisma.propertyVariantAmenity.deleteMany();
     await prisma.propertyVariantMedia.deleteMany();

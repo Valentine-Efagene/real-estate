@@ -7,7 +7,7 @@ import type {
     UploadDocumentInput,
     ApproveDocumentInput,
     GenerateInstallmentsInput,
-} from '../validators/contract-phase.validator';
+} from '../validators/application-phase.validator';
 import { handleGenerateDocumentStep } from './step-handlers';
 import { paymentPlanService } from './payment-plan.service';
 import {
@@ -16,12 +16,12 @@ import {
     formatDate,
 } from '../lib/notifications';
 
-class ContractPhaseService {
+class ApplicationPhaseService {
     async findById(phaseId: string): Promise<any> {
-        const phase = await prisma.contractPhase.findUnique({
+        const phase = await prisma.applicationPhase.findUnique({
             where: { id: phaseId },
             include: {
-                contract: {
+                application: {
                     include: {
                         buyer: true,
                         propertyUnit: {
@@ -110,9 +110,9 @@ class ContractPhaseService {
         });
     }
 
-    async getPhasesByContract(contractId: string): Promise<any[]> {
-        const phases = await prisma.contractPhase.findMany({
-            where: { contractId },
+    async getPhasesByApplication(applicationId: string): Promise<any[]> {
+        const phases = await prisma.applicationPhase.findMany({
+            where: { applicationId },
             orderBy: { order: 'asc' },
             include: {
                 questionnairePhase: true,
@@ -148,9 +148,9 @@ class ContractPhaseService {
 
         // Check if previous phase is completed (if required)
         if (phase.requiresPreviousPhaseCompletion && phase.order > 0) {
-            const previousPhase = await prisma.contractPhase.findFirst({
+            const previousPhase = await prisma.applicationPhase.findFirst({
                 where: {
-                    contractId: phase.contractId,
+                    applicationId: phase.applicationId,
                     order: phase.order - 1,
                 },
             });
@@ -170,7 +170,7 @@ class ContractPhaseService {
 
         const updated = await prisma.$transaction(async (tx) => {
             // Update phase status
-            const result = await tx.contractPhase.update({
+            const result = await tx.applicationPhase.update({
                 where: { id: phaseId },
                 data: {
                     status: phase.phaseCategory === 'DOCUMENTATION' ? 'IN_PROGRESS' : 'ACTIVE',
@@ -195,9 +195,9 @@ class ContractPhaseService {
                 }
             }
 
-            // Update contract's current phase
-            await tx.contract.update({
-                where: { id: phase.contractId },
+            // Update application's current phase
+            await tx.application.update({
+                where: { id: phase.applicationId },
                 data: { currentPhaseId: phaseId },
             });
 
@@ -206,12 +206,12 @@ class ContractPhaseService {
                 data: {
                     id: uuidv4(),
                     eventType: 'PHASE.ACTIVATED',
-                    aggregateType: 'ContractPhase',
+                    aggregateType: 'ApplicationPhase',
                     aggregateId: phaseId,
-                    queueName: 'contract-steps',
+                    queueName: 'application-steps',
                     payload: JSON.stringify({
                         phaseId,
-                        contractId: phase.contractId,
+                        applicationId: phase.applicationId,
                         phaseCategory: phase.phaseCategory,
                         phaseType: phase.phaseType,
                     }),
@@ -260,7 +260,7 @@ class ContractPhaseService {
 
         // If this is a GENERATE_DOCUMENT step, execute it automatically
         if (nextStep.stepType === 'GENERATE_DOCUMENT') {
-            console.info('[ContractPhaseService] Auto-executing GENERATE_DOCUMENT step', {
+            console.info('[ApplicationPhaseService] Auto-executing GENERATE_DOCUMENT step', {
                 stepId: nextStep.id,
                 stepName: nextStep.name,
                 phaseId,
@@ -270,14 +270,14 @@ class ContractPhaseService {
                 await handleGenerateDocumentStep(
                     nextStep.id,
                     phaseId,
-                    phase.contractId,
+                    phase.applicationId,
                     userId
                 );
 
                 // Recursively check for more auto-executable steps
                 await this.processAutoExecutableSteps(phaseId, userId);
             } catch (error: any) {
-                console.error('[ContractPhaseService] GENERATE_DOCUMENT step failed', {
+                console.error('[ApplicationPhaseService] GENERATE_DOCUMENT step failed', {
                     stepId: nextStep.id,
                     error: error.message,
                 });
@@ -340,7 +340,7 @@ class ContractPhaseService {
         await prisma.$transaction(async (tx) => {
             // Create installments
             for (const installment of installments) {
-                await tx.contractInstallment.create({
+                await tx.paymentInstallment.create({
                     data: {
                         paymentPhaseId: paymentPhase.id,
                         installmentNumber: installment.installmentNumber,
@@ -354,10 +354,10 @@ class ContractPhaseService {
                 });
             }
 
-            // Update contract's next payment due date
+            // Update application's next payment due date
             if (installments.length > 0) {
-                await tx.contract.update({
-                    where: { id: phase.contractId },
+                await tx.application.update({
+                    where: { id: phase.applicationId },
                     data: { nextPaymentDueDate: installments[0].dueDate },
                 });
             }
@@ -367,12 +367,12 @@ class ContractPhaseService {
                 data: {
                     id: uuidv4(),
                     eventType: 'INSTALLMENTS.GENERATED',
-                    aggregateType: 'ContractPhase',
+                    aggregateType: 'ApplicationPhase',
                     aggregateId: phaseId,
-                    queueName: 'contract-steps',
+                    queueName: 'application-steps',
                     payload: JSON.stringify({
                         phaseId,
-                        contractId: phase.contractId,
+                        applicationId: phase.applicationId,
                         installmentCount: installments.length,
                         totalAmount,
                     }),
@@ -496,7 +496,7 @@ class ContractPhaseService {
         if (step.stepType === 'APPROVAL') {
             // APPROVAL steps can only be completed by the seller (property owner/admin)
             // The buyer cannot complete their own approval
-            if (phase.contract.buyerId === userId) {
+            if (phase.application.buyerId === userId) {
                 throw new AppError(403, 'This step requires admin approval');
             }
         }
@@ -539,7 +539,7 @@ class ContractPhaseService {
 
             if (remainingSteps.length === 0) {
                 // All steps completed - complete the phase and clear currentStepId
-                await tx.contractPhase.update({
+                await tx.applicationPhase.update({
                     where: { id: phaseId },
                     data: {
                         status: 'COMPLETED',
@@ -560,12 +560,12 @@ class ContractPhaseService {
                     data: {
                         id: uuidv4(),
                         eventType: 'PHASE.COMPLETED',
-                        aggregateType: 'ContractPhase',
+                        aggregateType: 'ApplicationPhase',
                         aggregateId: phaseId,
-                        queueName: 'contract-steps',
+                        queueName: 'application-steps',
                         payload: JSON.stringify({
                             phaseId,
-                            contractId: phase.contractId,
+                            applicationId: phase.applicationId,
                             phaseType: phase.phaseType,
                         }),
                         actorId: userId,
@@ -573,24 +573,24 @@ class ContractPhaseService {
                 });
 
                 // Auto-activate next phase
-                const nextPhase = await tx.contractPhase.findFirst({
+                const nextPhase = await tx.applicationPhase.findFirst({
                     where: {
-                        contractId: phase.contractId,
+                        applicationId: phase.applicationId,
                         order: phase.order + 1,
                     },
                 });
 
                 if (nextPhase) {
-                    await tx.contractPhase.update({
+                    await tx.applicationPhase.update({
                         where: { id: nextPhase.id },
                         data: {
                             status: 'IN_PROGRESS',
                         },
                     });
 
-                    // Update contract's current phase
-                    await tx.contract.update({
-                        where: { id: phase.contractId },
+                    // Update application's current phase
+                    await tx.application.update({
+                        where: { id: phase.applicationId },
                         data: { currentPhaseId: nextPhase.id },
                     });
 
@@ -599,12 +599,12 @@ class ContractPhaseService {
                         data: {
                             id: uuidv4(),
                             eventType: 'PHASE.ACTIVATED',
-                            aggregateType: 'ContractPhase',
+                            aggregateType: 'ApplicationPhase',
                             aggregateId: nextPhase.id,
-                            queueName: 'contract-steps',
+                            queueName: 'application-steps',
                             payload: JSON.stringify({
                                 phaseId: nextPhase.id,
-                                contractId: phase.contractId,
+                                applicationId: phase.applicationId,
                                 phaseType: nextPhase.phaseType,
                             }),
                             actorId: userId,
@@ -643,7 +643,7 @@ class ContractPhaseService {
                     payload: JSON.stringify({
                         stepId: stepId,
                         phaseId,
-                        contractId: phase.contractId,
+                        applicationId: phase.applicationId,
                         decision: data.decision,
                     }),
                     actorId: userId,
@@ -663,9 +663,9 @@ class ContractPhaseService {
     async uploadDocument(phaseId: string, data: UploadDocumentInput, userId: string) {
         const phase = await this.findById(phaseId);
 
-        const document = await prisma.contractDocument.create({
+        const document = await prisma.applicationDocument.create({
             data: {
-                contractId: phase.contractId,
+                applicationId: phase.applicationId,
                 phaseId,
                 stepId: data.stepId,
                 name: data.name,
@@ -766,7 +766,7 @@ class ContractPhaseService {
                     payload: JSON.stringify({
                         stepId,
                         phaseId,
-                        contractId: phase.contractId,
+                        applicationId: phase.applicationId,
                         reason,
                     }),
                     actorId: userId,
@@ -775,8 +775,8 @@ class ContractPhaseService {
         });
 
         // Send rejection notification to the buyer
-        const buyer = phase.contract?.buyer;
-        const propertyName = phase.contract?.propertyUnit?.variant?.property?.title;
+        const buyer = phase.application?.buyer;
+        const propertyName = phase.application?.propertyUnit?.variant?.property?.title;
         if (buyer?.email) {
             const dashboardUrl = process.env.DASHBOARD_URL || 'https://app.qshelter.com';
             await sendDocumentRejectedNotification({
@@ -784,12 +784,12 @@ class ContractPhaseService {
                 userName: buyer.firstName || buyer.email,
                 documentName: step.name,
                 stepName: step.name,
-                contractNumber: phase.contract?.contractNumber || '',
+                applicationNumber: phase.application?.applicationNumber || '',
                 propertyName,
                 reason: reason,
-                dashboardUrl: `${dashboardUrl}/contracts/${phase.contractId}`,
+                dashboardUrl: `${dashboardUrl}/applications/${phase.applicationId}`,
             }).catch((err) => {
-                console.error('[ContractPhaseService] Failed to send step rejected notification', err);
+                console.error('[ApplicationPhaseService] Failed to send step rejected notification', err);
             });
         }
 
@@ -859,7 +859,7 @@ class ContractPhaseService {
                     payload: JSON.stringify({
                         stepId,
                         phaseId,
-                        contractId: phase.contractId,
+                        applicationId: phase.applicationId,
                         reason,
                     }),
                     actorId: userId,
@@ -875,10 +875,10 @@ class ContractPhaseService {
      */
     async approveDocument(documentId: string, data: ApproveDocumentInput, userId: string) {
         // Get document with full context for notifications
-        const document = await prisma.contractDocument.findUnique({
+        const document = await prisma.applicationDocument.findUnique({
             where: { id: documentId },
             include: {
-                contract: {
+                application: {
                     include: {
                         buyer: true,
                         propertyUnit: {
@@ -911,7 +911,7 @@ class ContractPhaseService {
             }
         }
 
-        const updated = await prisma.contractDocument.update({
+        const updated = await prisma.applicationDocument.update({
             where: { id: documentId },
             data: {
                 status: data.status,
@@ -930,8 +930,8 @@ class ContractPhaseService {
         }
 
         // Send notification to the buyer
-        const buyer = document.contract?.buyer;
-        const propertyName = document.contract?.propertyUnit?.variant?.property?.title;
+        const buyer = document.application?.buyer;
+        const propertyName = document.application?.propertyUnit?.variant?.property?.title;
         if (buyer?.email) {
             const dashboardUrl = process.env.DASHBOARD_URL || 'https://app.qshelter.com';
 
@@ -941,12 +941,12 @@ class ContractPhaseService {
                     userName: buyer.firstName || buyer.email,
                     documentName: document.name,
                     stepName,
-                    contractNumber: document.contract?.contractNumber || '',
+                    applicationNumber: document.application?.applicationNumber || '',
                     propertyName,
                     approvedDate: formatDate(new Date()),
-                    dashboardUrl: `${dashboardUrl}/contracts/${document.contractId}`,
+                    dashboardUrl: `${dashboardUrl}/applications/${document.applicationId}`,
                 }).catch((err) => {
-                    console.error('[ContractPhaseService] Failed to send document approved notification', err);
+                    console.error('[ApplicationPhaseService] Failed to send document approved notification', err);
                 });
             } else if (data.status === 'REJECTED') {
                 await sendDocumentRejectedNotification({
@@ -954,12 +954,12 @@ class ContractPhaseService {
                     userName: buyer.firstName || buyer.email,
                     documentName: document.name,
                     stepName,
-                    contractNumber: document.contract?.contractNumber || '',
+                    applicationNumber: document.application?.applicationNumber || '',
                     propertyName,
                     reason: data.comment || 'Please resubmit with the correct document.',
-                    dashboardUrl: `${dashboardUrl}/contracts/${document.contractId}`,
+                    dashboardUrl: `${dashboardUrl}/applications/${document.applicationId}`,
                 }).catch((err) => {
-                    console.error('[ContractPhaseService] Failed to send document rejected notification', err);
+                    console.error('[ApplicationPhaseService] Failed to send document rejected notification', err);
                 });
             }
         }
@@ -1000,7 +1000,7 @@ class ContractPhaseService {
         }
 
         const updated = await prisma.$transaction(async (tx) => {
-            const result = await tx.contractPhase.update({
+            const result = await tx.applicationPhase.update({
                 where: { id: phaseId },
                 data: {
                     status: 'COMPLETED',
@@ -1019,18 +1019,18 @@ class ContractPhaseService {
             }
 
             // Check if all phases are completed
-            const incompletePhasesCount = await tx.contractPhase.count({
+            const incompletePhasesCount = await tx.applicationPhase.count({
                 where: {
-                    contractId: phase.contractId,
+                    applicationId: phase.applicationId,
                     status: { notIn: ['COMPLETED', 'SKIPPED'] },
                     id: { not: phaseId },
                 },
             });
 
             if (incompletePhasesCount === 0) {
-                // All phases completed - complete the contract
-                await tx.contract.update({
-                    where: { id: phase.contractId },
+                // All phases completed - complete the application
+                await tx.application.update({
+                    where: { id: phase.applicationId },
                     data: {
                         status: 'COMPLETED',
                     },
@@ -1039,11 +1039,11 @@ class ContractPhaseService {
                 await tx.domainEvent.create({
                     data: {
                         id: uuidv4(),
-                        eventType: 'CONTRACT.COMPLETED',
-                        aggregateType: 'Contract',
-                        aggregateId: phase.contractId,
+                        eventType: 'APPLICATION.COMPLETED',
+                        aggregateType: 'Application',
+                        aggregateId: phase.applicationId,
                         queueName: 'notifications',
-                        payload: JSON.stringify({ contractId: phase.contractId }),
+                        payload: JSON.stringify({ applicationId: phase.applicationId }),
                         actorId: userId,
                     },
                 });
@@ -1053,12 +1053,12 @@ class ContractPhaseService {
                 data: {
                     id: uuidv4(),
                     eventType: 'PHASE.COMPLETED',
-                    aggregateType: 'ContractPhase',
+                    aggregateType: 'ApplicationPhase',
                     aggregateId: phaseId,
-                    queueName: 'contract-steps',
+                    queueName: 'application-steps',
                     payload: JSON.stringify({
                         phaseId,
-                        contractId: phase.contractId,
+                        applicationId: phase.applicationId,
                         phaseType: phase.phaseType,
                     }),
                     actorId: userId,
@@ -1082,7 +1082,7 @@ class ContractPhaseService {
         }
 
         const updated = await prisma.$transaction(async (tx) => {
-            const result = await tx.contractPhase.update({
+            const result = await tx.applicationPhase.update({
                 where: { id: phaseId },
                 data: {
                     status: 'SKIPPED',
@@ -1094,12 +1094,12 @@ class ContractPhaseService {
                 data: {
                     id: uuidv4(),
                     eventType: 'PHASE.SKIPPED',
-                    aggregateType: 'ContractPhase',
+                    aggregateType: 'ApplicationPhase',
                     aggregateId: phaseId,
-                    queueName: 'contract-steps',
+                    queueName: 'application-steps',
                     payload: JSON.stringify({
                         phaseId,
-                        contractId: phase.contractId,
+                        applicationId: phase.applicationId,
                         reason,
                     }),
                     actorId: userId,
@@ -1113,4 +1113,4 @@ class ContractPhaseService {
     }
 }
 
-export const contractPhaseService = new ContractPhaseService();
+export const applicationPhaseService = new ApplicationPhaseService();

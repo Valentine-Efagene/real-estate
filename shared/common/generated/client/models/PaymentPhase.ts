@@ -296,9 +296,9 @@ export type PaymentPhaseWhereInput = {
   paymentPlanSnapshot?: Prisma.JsonNullableFilter<"PaymentPhase">
   createdAt?: Prisma.DateTimeFilter<"PaymentPhase"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PaymentPhase"> | Date | string
-  phase?: Prisma.XOR<Prisma.ContractPhaseScalarRelationFilter, Prisma.ContractPhaseWhereInput>
+  phase?: Prisma.XOR<Prisma.ApplicationPhaseScalarRelationFilter, Prisma.ApplicationPhaseWhereInput>
   paymentPlan?: Prisma.XOR<Prisma.PaymentPlanNullableScalarRelationFilter, Prisma.PaymentPlanWhereInput> | null
-  installments?: Prisma.ContractInstallmentListRelationFilter
+  installments?: Prisma.PaymentInstallmentListRelationFilter
 }
 
 export type PaymentPhaseOrderByWithRelationInput = {
@@ -315,9 +315,9 @@ export type PaymentPhaseOrderByWithRelationInput = {
   paymentPlanSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  phase?: Prisma.ContractPhaseOrderByWithRelationInput
+  phase?: Prisma.ApplicationPhaseOrderByWithRelationInput
   paymentPlan?: Prisma.PaymentPlanOrderByWithRelationInput
-  installments?: Prisma.ContractInstallmentOrderByRelationAggregateInput
+  installments?: Prisma.PaymentInstallmentOrderByRelationAggregateInput
   _relevance?: Prisma.PaymentPhaseOrderByRelevanceInput
 }
 
@@ -338,9 +338,9 @@ export type PaymentPhaseWhereUniqueInput = Prisma.AtLeast<{
   paymentPlanSnapshot?: Prisma.JsonNullableFilter<"PaymentPhase">
   createdAt?: Prisma.DateTimeFilter<"PaymentPhase"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PaymentPhase"> | Date | string
-  phase?: Prisma.XOR<Prisma.ContractPhaseScalarRelationFilter, Prisma.ContractPhaseWhereInput>
+  phase?: Prisma.XOR<Prisma.ApplicationPhaseScalarRelationFilter, Prisma.ApplicationPhaseWhereInput>
   paymentPlan?: Prisma.XOR<Prisma.PaymentPlanNullableScalarRelationFilter, Prisma.PaymentPlanWhereInput> | null
-  installments?: Prisma.ContractInstallmentListRelationFilter
+  installments?: Prisma.PaymentInstallmentListRelationFilter
 }, "id" | "phaseId">
 
 export type PaymentPhaseOrderByWithAggregationInput = {
@@ -395,9 +395,9 @@ export type PaymentPhaseCreateInput = {
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  phase: Prisma.ContractPhaseCreateNestedOneWithoutPaymentPhaseInput
+  phase: Prisma.ApplicationPhaseCreateNestedOneWithoutPaymentPhaseInput
   paymentPlan?: Prisma.PaymentPlanCreateNestedOneWithoutPaymentPhasesInput
-  installments?: Prisma.ContractInstallmentCreateNestedManyWithoutPaymentPhaseInput
+  installments?: Prisma.PaymentInstallmentCreateNestedManyWithoutPaymentPhaseInput
 }
 
 export type PaymentPhaseUncheckedCreateInput = {
@@ -414,7 +414,7 @@ export type PaymentPhaseUncheckedCreateInput = {
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  installments?: Prisma.ContractInstallmentUncheckedCreateNestedManyWithoutPaymentPhaseInput
+  installments?: Prisma.PaymentInstallmentUncheckedCreateNestedManyWithoutPaymentPhaseInput
 }
 
 export type PaymentPhaseUpdateInput = {
@@ -429,9 +429,9 @@ export type PaymentPhaseUpdateInput = {
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  phase?: Prisma.ContractPhaseUpdateOneRequiredWithoutPaymentPhaseNestedInput
+  phase?: Prisma.ApplicationPhaseUpdateOneRequiredWithoutPaymentPhaseNestedInput
   paymentPlan?: Prisma.PaymentPlanUpdateOneWithoutPaymentPhasesNestedInput
-  installments?: Prisma.ContractInstallmentUpdateManyWithoutPaymentPhaseNestedInput
+  installments?: Prisma.PaymentInstallmentUpdateManyWithoutPaymentPhaseNestedInput
 }
 
 export type PaymentPhaseUncheckedUpdateInput = {
@@ -448,7 +448,7 @@ export type PaymentPhaseUncheckedUpdateInput = {
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  installments?: Prisma.ContractInstallmentUncheckedUpdateManyWithoutPaymentPhaseNestedInput
+  installments?: Prisma.PaymentInstallmentUncheckedUpdateManyWithoutPaymentPhaseNestedInput
 }
 
 export type PaymentPhaseCreateManyInput = {
@@ -687,8 +687,8 @@ export type PaymentPhaseCreateWithoutPaymentPlanInput = {
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  phase: Prisma.ContractPhaseCreateNestedOneWithoutPaymentPhaseInput
-  installments?: Prisma.ContractInstallmentCreateNestedManyWithoutPaymentPhaseInput
+  phase: Prisma.ApplicationPhaseCreateNestedOneWithoutPaymentPhaseInput
+  installments?: Prisma.PaymentInstallmentCreateNestedManyWithoutPaymentPhaseInput
 }
 
 export type PaymentPhaseUncheckedCreateWithoutPaymentPlanInput = {
@@ -704,7 +704,7 @@ export type PaymentPhaseUncheckedCreateWithoutPaymentPlanInput = {
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  installments?: Prisma.ContractInstallmentUncheckedCreateNestedManyWithoutPaymentPhaseInput
+  installments?: Prisma.PaymentInstallmentUncheckedCreateNestedManyWithoutPaymentPhaseInput
 }
 
 export type PaymentPhaseCreateOrConnectWithoutPaymentPlanInput = {
@@ -765,7 +765,7 @@ export type PaymentPhaseCreateWithoutPhaseInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   paymentPlan?: Prisma.PaymentPlanCreateNestedOneWithoutPaymentPhasesInput
-  installments?: Prisma.ContractInstallmentCreateNestedManyWithoutPaymentPhaseInput
+  installments?: Prisma.PaymentInstallmentCreateNestedManyWithoutPaymentPhaseInput
 }
 
 export type PaymentPhaseUncheckedCreateWithoutPhaseInput = {
@@ -781,7 +781,7 @@ export type PaymentPhaseUncheckedCreateWithoutPhaseInput = {
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  installments?: Prisma.ContractInstallmentUncheckedCreateNestedManyWithoutPaymentPhaseInput
+  installments?: Prisma.PaymentInstallmentUncheckedCreateNestedManyWithoutPaymentPhaseInput
 }
 
 export type PaymentPhaseCreateOrConnectWithoutPhaseInput = {
@@ -813,7 +813,7 @@ export type PaymentPhaseUpdateWithoutPhaseInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   paymentPlan?: Prisma.PaymentPlanUpdateOneWithoutPaymentPhasesNestedInput
-  installments?: Prisma.ContractInstallmentUpdateManyWithoutPaymentPhaseNestedInput
+  installments?: Prisma.PaymentInstallmentUpdateManyWithoutPaymentPhaseNestedInput
 }
 
 export type PaymentPhaseUncheckedUpdateWithoutPhaseInput = {
@@ -829,7 +829,7 @@ export type PaymentPhaseUncheckedUpdateWithoutPhaseInput = {
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  installments?: Prisma.ContractInstallmentUncheckedUpdateManyWithoutPaymentPhaseNestedInput
+  installments?: Prisma.PaymentInstallmentUncheckedUpdateManyWithoutPaymentPhaseNestedInput
 }
 
 export type PaymentPhaseCreateWithoutInstallmentsInput = {
@@ -844,7 +844,7 @@ export type PaymentPhaseCreateWithoutInstallmentsInput = {
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  phase: Prisma.ContractPhaseCreateNestedOneWithoutPaymentPhaseInput
+  phase: Prisma.ApplicationPhaseCreateNestedOneWithoutPaymentPhaseInput
   paymentPlan?: Prisma.PaymentPlanCreateNestedOneWithoutPaymentPhasesInput
 }
 
@@ -892,7 +892,7 @@ export type PaymentPhaseUpdateWithoutInstallmentsInput = {
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  phase?: Prisma.ContractPhaseUpdateOneRequiredWithoutPaymentPhaseNestedInput
+  phase?: Prisma.ApplicationPhaseUpdateOneRequiredWithoutPaymentPhaseNestedInput
   paymentPlan?: Prisma.PaymentPlanUpdateOneWithoutPaymentPhasesNestedInput
 }
 
@@ -939,8 +939,8 @@ export type PaymentPhaseUpdateWithoutPaymentPlanInput = {
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  phase?: Prisma.ContractPhaseUpdateOneRequiredWithoutPaymentPhaseNestedInput
-  installments?: Prisma.ContractInstallmentUpdateManyWithoutPaymentPhaseNestedInput
+  phase?: Prisma.ApplicationPhaseUpdateOneRequiredWithoutPaymentPhaseNestedInput
+  installments?: Prisma.PaymentInstallmentUpdateManyWithoutPaymentPhaseNestedInput
 }
 
 export type PaymentPhaseUncheckedUpdateWithoutPaymentPlanInput = {
@@ -956,7 +956,7 @@ export type PaymentPhaseUncheckedUpdateWithoutPaymentPlanInput = {
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  installments?: Prisma.ContractInstallmentUncheckedUpdateManyWithoutPaymentPhaseNestedInput
+  installments?: Prisma.PaymentInstallmentUncheckedUpdateManyWithoutPaymentPhaseNestedInput
 }
 
 export type PaymentPhaseUncheckedUpdateManyWithoutPaymentPlanInput = {
@@ -1001,7 +1001,7 @@ export type PaymentPhaseCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types
  * PaymentPhaseCountOutputType without action
  */
 export type PaymentPhaseCountOutputTypeCountInstallmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.ContractInstallmentWhereInput
+  where?: Prisma.PaymentInstallmentWhereInput
 }
 
 
@@ -1019,7 +1019,7 @@ export type PaymentPhaseSelect<ExtArgs extends runtime.Types.Extensions.Internal
   paymentPlanSnapshot?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  phase?: boolean | Prisma.ContractPhaseDefaultArgs<ExtArgs>
+  phase?: boolean | Prisma.ApplicationPhaseDefaultArgs<ExtArgs>
   paymentPlan?: boolean | Prisma.PaymentPhase$paymentPlanArgs<ExtArgs>
   installments?: boolean | Prisma.PaymentPhase$installmentsArgs<ExtArgs>
   _count?: boolean | Prisma.PaymentPhaseCountOutputTypeDefaultArgs<ExtArgs>
@@ -1045,7 +1045,7 @@ export type PaymentPhaseSelectScalar = {
 
 export type PaymentPhaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "phaseId" | "paymentPlanId" | "totalAmount" | "paidAmount" | "interestRate" | "selectedTermMonths" | "numberOfInstallments" | "collectFunds" | "minimumCompletionPercentage" | "paymentPlanSnapshot" | "createdAt" | "updatedAt", ExtArgs["result"]["paymentPhase"]>
 export type PaymentPhaseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  phase?: boolean | Prisma.ContractPhaseDefaultArgs<ExtArgs>
+  phase?: boolean | Prisma.ApplicationPhaseDefaultArgs<ExtArgs>
   paymentPlan?: boolean | Prisma.PaymentPhase$paymentPlanArgs<ExtArgs>
   installments?: boolean | Prisma.PaymentPhase$installmentsArgs<ExtArgs>
   _count?: boolean | Prisma.PaymentPhaseCountOutputTypeDefaultArgs<ExtArgs>
@@ -1054,9 +1054,9 @@ export type PaymentPhaseInclude<ExtArgs extends runtime.Types.Extensions.Interna
 export type $PaymentPhasePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "PaymentPhase"
   objects: {
-    phase: Prisma.$ContractPhasePayload<ExtArgs>
+    phase: Prisma.$ApplicationPhasePayload<ExtArgs>
     paymentPlan: Prisma.$PaymentPlanPayload<ExtArgs> | null
-    installments: Prisma.$ContractInstallmentPayload<ExtArgs>[]
+    installments: Prisma.$PaymentInstallmentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1412,9 +1412,9 @@ readonly fields: PaymentPhaseFieldRefs;
  */
 export interface Prisma__PaymentPhaseClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  phase<T extends Prisma.ContractPhaseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContractPhaseDefaultArgs<ExtArgs>>): Prisma.Prisma__ContractPhaseClient<runtime.Types.Result.GetResult<Prisma.$ContractPhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  phase<T extends Prisma.ApplicationPhaseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApplicationPhaseDefaultArgs<ExtArgs>>): Prisma.Prisma__ApplicationPhaseClient<runtime.Types.Result.GetResult<Prisma.$ApplicationPhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   paymentPlan<T extends Prisma.PaymentPhase$paymentPlanArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PaymentPhase$paymentPlanArgs<ExtArgs>>): Prisma.Prisma__PaymentPlanClient<runtime.Types.Result.GetResult<Prisma.$PaymentPlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  installments<T extends Prisma.PaymentPhase$installmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PaymentPhase$installmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContractInstallmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  installments<T extends Prisma.PaymentPhase$installmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PaymentPhase$installmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentInstallmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1823,23 +1823,23 @@ export type PaymentPhase$paymentPlanArgs<ExtArgs extends runtime.Types.Extension
  */
 export type PaymentPhase$installmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the ContractInstallment
+   * Select specific fields to fetch from the PaymentInstallment
    */
-  select?: Prisma.ContractInstallmentSelect<ExtArgs> | null
+  select?: Prisma.PaymentInstallmentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the ContractInstallment
+   * Omit specific fields from the PaymentInstallment
    */
-  omit?: Prisma.ContractInstallmentOmit<ExtArgs> | null
+  omit?: Prisma.PaymentInstallmentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ContractInstallmentInclude<ExtArgs> | null
-  where?: Prisma.ContractInstallmentWhereInput
-  orderBy?: Prisma.ContractInstallmentOrderByWithRelationInput | Prisma.ContractInstallmentOrderByWithRelationInput[]
-  cursor?: Prisma.ContractInstallmentWhereUniqueInput
+  include?: Prisma.PaymentInstallmentInclude<ExtArgs> | null
+  where?: Prisma.PaymentInstallmentWhereInput
+  orderBy?: Prisma.PaymentInstallmentOrderByWithRelationInput | Prisma.PaymentInstallmentOrderByWithRelationInput[]
+  cursor?: Prisma.PaymentInstallmentWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.ContractInstallmentScalarFieldEnum | Prisma.ContractInstallmentScalarFieldEnum[]
+  distinct?: Prisma.PaymentInstallmentScalarFieldEnum | Prisma.PaymentInstallmentScalarFieldEnum[]
 }
 
 /**

@@ -41,8 +41,8 @@ describe("Chidi's Lekki Mortgage Flow", () => {
     let mortgagePlanId: string;
     let paymentMethodId: string;
 
-    // Chidi's contract
-    let contractId: string;
+    // Chidi's application
+    let applicationId: string;
     let documentationPhaseId: string;
     let downpaymentPhaseId: string;
     let finalDocumentationPhaseId: string;
@@ -319,7 +319,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                 data: [
                     {
                         tenantId,
-                        context: 'CONTRACT_PHASE',
+                        context: 'APPLICATION_PHASE',
                         paymentMethodId,
                         phaseType: 'KYC',
                         documentType: 'ID_CARD',
@@ -330,7 +330,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                     },
                     {
                         tenantId,
-                        context: 'CONTRACT_PHASE',
+                        context: 'APPLICATION_PHASE',
                         paymentMethodId,
                         phaseType: 'KYC',
                         documentType: 'BANK_STATEMENT',
@@ -342,7 +342,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                     },
                     {
                         tenantId,
-                        context: 'CONTRACT_PHASE',
+                        context: 'APPLICATION_PHASE',
                         paymentMethodId,
                         phaseType: 'KYC',
                         documentType: 'EMPLOYMENT_LETTER',
@@ -440,23 +440,23 @@ describe("Chidi's Lekki Mortgage Flow", () => {
     });
 
     // =========================================================================
-    // Step 2: Chidi creates a contract for Unit 14B
-    // Note: Prequalification has been merged into the contract documentation phase.
+    // Step 2: Chidi creates a application for Unit 14B
+    // Note: Prequalification has been merged into the application documentation phase.
     // Underwriting now happens as a step within the KYC phase.
     // =========================================================================
-    describe("Step 2: Chidi creates and activates a contract", () => {
-        it('Chidi creates a contract for Unit 14B with his preferred mortgage term', async () => {
+    describe("Step 2: Chidi creates and activates a application", () => {
+        it('Chidi creates a application for Unit 14B with his preferred mortgage term', async () => {
             // Chidi is 40 years old, so with maxAgeAtMaturity: 65, he can select up to 25 years
             // Chidi chooses 20 years (240 months)
             const response = await api
-                .post('/contracts')
+                .post('/applications')
                 .set(authHeaders(chidiId, tenantId))
-                .set('x-idempotency-key', idempotencyKey('chidi-create-contract'))
+                .set('x-idempotency-key', idempotencyKey('chidi-create-application'))
                 .send({
                     propertyUnitId: unit14BId,
                     paymentMethodId,
                     title: 'Purchase Agreement - Lekki Gardens Unit 14B',
-                    contractType: 'MORTGAGE',
+                    applicationType: 'MORTGAGE',
                     totalAmount: propertyPrice,
                     monthlyIncome: 2_500_000, // ₦2.5M/month
                     monthlyExpenses: 800_000,  // ₦800k/month
@@ -467,11 +467,11 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
             expect(response.status).toBe(201);
             expect(response.body.id).toBeDefined();
-            expect(response.body.contractNumber).toBeDefined();
+            expect(response.body.applicationNumber).toBeDefined();
             expect(response.body.status).toBe('DRAFT');
             expect(response.body.phases.length).toBe(4);
 
-            contractId = response.body.id;
+            applicationId = response.body.id;
 
             // Extract phase IDs (4 phases per SCENARIO.md)
             const phases = response.body.phases;
@@ -480,20 +480,20 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             finalDocumentationPhaseId = phases.find((p: any) => p.phaseType === 'VERIFICATION').id;
             mortgagePhaseId = phases.find((p: any) => p.phaseType === 'MORTGAGE').id;
 
-            // Verify CONTRACT.CREATED event
+            // Verify APPLICATION.CREATED event
             const event = await prisma.domainEvent.findFirst({
                 where: {
-                    aggregateType: 'Contract',
-                    aggregateId: contractId,
-                    eventType: 'CONTRACT.CREATED',
+                    aggregateType: 'Application',
+                    aggregateId: applicationId,
+                    eventType: 'APPLICATION.CREATED',
                 },
             });
             expect(event).toBeDefined();
         });
 
-        it('Contract has correct phase amounts (₦8.5M downpayment, ₦76.5M mortgage)', async () => {
+        it('Application has correct phase amounts (₦8.5M downpayment, ₦76.5M mortgage)', async () => {
             const response = await api
-                .get(`/contracts/${contractId}/phases`)
+                .get(`/applications/${applicationId}/phases`)
                 .set(authHeaders(chidiId, tenantId));
 
             expect(response.status).toBe(200);
@@ -512,7 +512,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         });
 
         it('Mortgage phase has Chidi\'s selected term (20 years / 240 months)', async () => {
-            const phase = await prisma.contractPhase.findUnique({
+            const phase = await prisma.applicationPhase.findUnique({
                 where: { id: mortgagePhaseId },
                 include: { paymentPhase: true },
             });
@@ -530,11 +530,11 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             expect(unit?.reservedById).toBe(chidiId);
         });
 
-        it('Chidi submits the contract for processing', async () => {
+        it('Chidi submits the application for processing', async () => {
             const response = await api
-                .post(`/contracts/${contractId}/transition`)
+                .post(`/applications/${applicationId}/transition`)
                 .set(authHeaders(chidiId, tenantId))
-                .set('x-idempotency-key', idempotencyKey('chidi-submit-contract'))
+                .set('x-idempotency-key', idempotencyKey('chidi-submit-application'))
                 .send({
                     action: 'SUBMIT',
                     note: 'Submitting for processing',
@@ -546,7 +546,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
         it('Documentation phase is activated', async () => {
             const response = await api
-                .post(`/contracts/${contractId}/phases/${documentationPhaseId}/activate`)
+                .post(`/applications/${applicationId}/phases/${documentationPhaseId}/activate`)
                 .set(authHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-activate-kyc-phase'));
 
@@ -554,7 +554,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             expect(response.body.status).toBe('IN_PROGRESS');
         });
 
-        it('Chidi uploads KYC documents for the contract', async () => {
+        it('Chidi uploads KYC documents for the application', async () => {
             const documents = [
                 { documentType: 'ID_CARD', url: 'https://s3.amazonaws.com/qshelter/chidi/id.pdf', fileName: 'id.pdf' },
                 { documentType: 'BANK_STATEMENT', url: 'https://s3.amazonaws.com/qshelter/chidi/bank.pdf', fileName: 'bank.pdf' },
@@ -563,9 +563,9 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
             for (const doc of documents) {
                 const response = await api
-                    .post(`/contracts/${contractId}/phases/${documentationPhaseId}/documents`)
+                    .post(`/applications/${applicationId}/phases/${documentationPhaseId}/documents`)
                     .set(authHeaders(chidiId, tenantId))
-                    .set('x-idempotency-key', idempotencyKey(`chidi-contract-doc-${doc.documentType}`))
+                    .set('x-idempotency-key', idempotencyKey(`chidi-application-doc-${doc.documentType}`))
                     .send(doc);
 
                 expect(response.status).toBe(201);
@@ -577,7 +577,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
             for (const stepName of uploadSteps) {
                 const response = await api
-                    .post(`/contracts/${contractId}/phases/${documentationPhaseId}/steps/complete`)
+                    .post(`/applications/${applicationId}/phases/${documentationPhaseId}/steps/complete`)
                     .set(authHeaders(chidiId, tenantId))
                     .set('x-idempotency-key', idempotencyKey(`chidi-complete-${stepName.replace(/\s+/g, '-').toLowerCase()}`))
                     .send({ stepName });
@@ -588,14 +588,14 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
         it('Adaeze reviews and approves Chidi\'s documents', async () => {
             // Adaeze approves each document
-            const docs = await prisma.contractDocument.findMany({
+            const docs = await prisma.applicationDocument.findMany({
                 where: { phaseId: documentationPhaseId },
             });
 
             for (let i = 0; i < docs.length; i++) {
                 const doc = docs[i];
                 const response = await api
-                    .post(`/contracts/${contractId}/documents/${doc.id}/review`)
+                    .post(`/applications/${applicationId}/documents/${doc.id}/review`)
                     .set(authHeaders(adaezeId, tenantId))
                     .set('x-idempotency-key', idempotencyKey(`adaeze-approve-doc-${i}`))
                     .send({
@@ -608,7 +608,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
             // Adaeze completes approval step
             const response = await api
-                .post(`/contracts/${contractId}/phases/${documentationPhaseId}/steps/complete`)
+                .post(`/applications/${applicationId}/phases/${documentationPhaseId}/steps/complete`)
                 .set(authHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('adaeze-complete-review'))
                 .send({
@@ -623,7 +623,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             // After approval step completes, the GENERATE_DOCUMENT step should auto-execute
             // Check that the provisional offer was generated
             // DocumentationStep is now linked via DocumentationPhase
-            const phase = await prisma.contractPhase.findUnique({
+            const phase = await prisma.applicationPhase.findUnique({
                 where: { id: documentationPhaseId },
                 include: { documentationPhase: true },
             });
@@ -641,7 +641,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
         it('Chidi signs the provisional offer', async () => {
             const response = await api
-                .post(`/contracts/${contractId}/phases/${documentationPhaseId}/steps/complete`)
+                .post(`/applications/${applicationId}/phases/${documentationPhaseId}/steps/complete`)
                 .set(authHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-signs-provisional'))
                 .send({
@@ -651,14 +651,14 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             expect(response.status).toBe(200);
 
             // Verify phase is completed after signature
-            const phase = await prisma.contractPhase.findUnique({
+            const phase = await prisma.applicationPhase.findUnique({
                 where: { id: documentationPhaseId },
             });
             expect(phase?.status).toBe('COMPLETED');
         });
 
         it('Downpayment phase auto-activates', async () => {
-            const phase = await prisma.contractPhase.findUnique({
+            const phase = await prisma.applicationPhase.findUnique({
                 where: { id: downpaymentPhaseId },
             });
 
@@ -668,12 +668,12 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         it('Chidi pays the ₦8.5M downpayment', async () => {
             // Generate installment
             await api
-                .post(`/contracts/${contractId}/phases/${downpaymentPhaseId}/installments`)
+                .post(`/applications/${applicationId}/phases/${downpaymentPhaseId}/installments`)
                 .set(authHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-generate-downpayment'))
                 .send({ startDate: new Date().toISOString() });
 
-            const phase = await prisma.contractPhase.findUnique({
+            const phase = await prisma.applicationPhase.findUnique({
                 where: { id: downpaymentPhaseId },
                 include: { paymentPhase: { include: { installments: true } } },
             });
@@ -681,7 +681,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
             // Record payment
             const paymentResponse = await api
-                .post(`/contracts/${contractId}/payments`)
+                .post(`/applications/${applicationId}/payments`)
                 .set(authHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-downpayment'))
                 .send({
@@ -695,12 +695,12 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             expect(paymentResponse.status).toBe(201);
 
             // Process payment confirmation
-            const payment = await prisma.contractPayment.findFirst({
-                where: { phase: { contractId }, status: 'PENDING' },
+            const payment = await prisma.applicationPayment.findFirst({
+                where: { phase: { applicationId }, status: 'PENDING' },
             });
 
             const processResponse = await api
-                .post('/contracts/payments/process')
+                .post('/applications/payments/process')
                 .set(authHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('process-chidi-downpayment'))
                 .send({
@@ -713,7 +713,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         });
 
         it('Final Documentation phase auto-activates after downpayment', async () => {
-            const phase = await prisma.contractPhase.findUnique({
+            const phase = await prisma.applicationPhase.findUnique({
                 where: { id: finalDocumentationPhaseId },
             });
 
@@ -725,7 +725,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             // when the downpayment phase completed. Verify via domain event.
             const event = await prisma.domainEvent.findFirst({
                 where: {
-                    aggregateType: 'ContractPhase',
+                    aggregateType: 'ApplicationPhase',
                     aggregateId: downpaymentPhaseId,
                     eventType: 'PHASE.COMPLETED',
                 },
@@ -743,12 +743,12 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             // After downpayment phase completes, Final Documentation phase activates
             // Adaeze (admin) uploads the final offer letter prepared offline
             const response = await api
-                .post(`/contracts/${contractId}/phases/${finalDocumentationPhaseId}/documents`)
+                .post(`/applications/${applicationId}/phases/${finalDocumentationPhaseId}/documents`)
                 .set(authHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('adaeze-upload-final-offer'))
                 .send({
                     documentType: 'FINAL_OFFER',
-                    url: 'https://s3.amazonaws.com/qshelter/contracts/chidi-final-offer.pdf',
+                    url: 'https://s3.amazonaws.com/qshelter/applications/chidi-final-offer.pdf',
                     fileName: 'chidi-final-offer.pdf',
                 });
 
@@ -756,7 +756,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
             // Complete the upload step
             const stepResponse = await api
-                .post(`/contracts/${contractId}/phases/${finalDocumentationPhaseId}/steps/complete`)
+                .post(`/applications/${applicationId}/phases/${finalDocumentationPhaseId}/steps/complete`)
                 .set(authHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('adaeze-complete-final-offer-upload'))
                 .send({
@@ -768,7 +768,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
         it('Chidi signs the final offer', async () => {
             const response = await api
-                .post(`/contracts/${contractId}/phases/${finalDocumentationPhaseId}/steps/complete`)
+                .post(`/applications/${applicationId}/phases/${finalDocumentationPhaseId}/steps/complete`)
                 .set(authHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-signs-final-offer'))
                 .send({
@@ -778,14 +778,14 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             expect(response.status).toBe(200);
 
             // Verify phase is completed after signature
-            const phase = await prisma.contractPhase.findUnique({
+            const phase = await prisma.applicationPhase.findUnique({
                 where: { id: finalDocumentationPhaseId },
             });
             expect(phase?.status).toBe('COMPLETED');
         });
 
         it('Mortgage phase auto-activates after final documentation', async () => {
-            const phase = await prisma.contractPhase.findUnique({
+            const phase = await prisma.applicationPhase.findUnique({
                 where: { id: mortgagePhaseId },
             });
 
@@ -794,7 +794,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
         it('System generates mortgage installments based on Chidi\'s selected term (240 months)', async () => {
             const response = await api
-                .post(`/contracts/${contractId}/phases/${mortgagePhaseId}/installments`)
+                .post(`/applications/${applicationId}/phases/${mortgagePhaseId}/installments`)
                 .set(authHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-generate-mortgage-installments'))
                 .send({ startDate: new Date().toISOString() });
@@ -804,22 +804,22 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             expect(response.body.installments.length).toBe(chidiSelectedTermMonths);
         });
 
-        it('Chidi signs and activates the contract', async () => {
+        it('Chidi signs and activates the application', async () => {
             const response = await api
-                .post(`/contracts/${contractId}/sign`)
+                .post(`/applications/${applicationId}/sign`)
                 .set(authHeaders(chidiId, tenantId))
-                .set('x-idempotency-key', idempotencyKey('chidi-signs-contract'));
+                .set('x-idempotency-key', idempotencyKey('chidi-signs-application'));
 
             expect(response.status).toBe(200);
             expect(response.body.status).toBe('ACTIVE');
             expect(response.body.signedAt).toBeDefined();
 
-            // Verify CONTRACT.SIGNED event
+            // Verify APPLICATION.SIGNED event
             const event = await prisma.domainEvent.findFirst({
                 where: {
-                    aggregateType: 'Contract',
-                    aggregateId: contractId,
-                    eventType: 'CONTRACT.SIGNED',
+                    aggregateType: 'Application',
+                    aggregateId: applicationId,
+                    eventType: 'APPLICATION.SIGNED',
                 },
             });
             expect(event).toBeDefined();
@@ -831,12 +831,12 @@ describe("Chidi's Lekki Mortgage Flow", () => {
     // =========================================================================
     describe('Steps 10-13: Notifications, partner sharing, and audit', () => {
         it('Congratulations notification event is created for Chidi', async () => {
-            // The system should queue a contractCongratulations notification
+            // The system should queue a applicationCongratulations notification
             // We verify by checking for notification events in the queue
             const notificationEvents = await prisma.domainEvent.findMany({
                 where: {
                     queueName: 'notifications',
-                    aggregateId: contractId,
+                    aggregateId: applicationId,
                 },
             });
 
@@ -844,8 +844,8 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         });
 
         it('Complete event trail exists for audit', async () => {
-            const payments = await prisma.contractPayment.findMany({
-                where: { contractId },
+            const payments = await prisma.applicationPayment.findMany({
+                where: { applicationId },
                 select: { id: true },
             });
             const paymentIds = payments.map((p) => p.id);
@@ -853,7 +853,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             const events = await prisma.domainEvent.findMany({
                 where: {
                     OR: [
-                        { aggregateId: contractId },
+                        { aggregateId: applicationId },
                         { aggregateId: documentationPhaseId },
                         { aggregateId: downpaymentPhaseId },
                         { aggregateId: finalDocumentationPhaseId },
@@ -866,11 +866,11 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
             const eventTypes = events.map((e) => e.eventType);
 
-            expect(eventTypes).toContain('CONTRACT.CREATED');
+            expect(eventTypes).toContain('APPLICATION.CREATED');
             expect(eventTypes).toContain('PHASE.ACTIVATED');
             expect(eventTypes).toContain('PHASE.COMPLETED');
             expect(eventTypes).toContain('PAYMENT.COMPLETED');
-            expect(eventTypes).toContain('CONTRACT.SIGNED');
+            expect(eventTypes).toContain('APPLICATION.SIGNED');
 
             // Verify all events have proper structure
             for (const event of events) {

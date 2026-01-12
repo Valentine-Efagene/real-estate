@@ -9,8 +9,8 @@ import {
   CreatePaymentMethodSchema,
 } from '../validators/payment-method.validator';
 import {
-  CreateContractSchema,
-} from '../validators/contract.validator';
+  CreateApplicationSchema,
+} from '../validators/application.validator';
 
 extendZodWithOpenApi(z);
 
@@ -217,25 +217,25 @@ registry.registerPath({
   },
 });
 
-// ============ Contracts ============
+// ============ applications ============
 registry.registerPath({
   method: 'post',
-  path: '/contracts',
-  tags: ['Contracts'],
-  summary: 'Create a new contract',
+  path: '/applications',
+  tags: ['applications'],
+  summary: 'Create a new application',
   security: [{ bearerAuth: [] }],
   request: {
     body: {
       content: {
         'application/json': {
-          schema: CreateContractSchema,
+          schema: CreateApplicationSchema,
         },
       },
     },
   },
   responses: {
     201: {
-      description: 'Contract created successfully',
+      description: 'application created successfully',
       content: {
         'application/json': {
           schema: z.object({
@@ -250,13 +250,13 @@ registry.registerPath({
 
 registry.registerPath({
   method: 'get',
-  path: '/contracts',
-  tags: ['Contracts'],
-  summary: 'List all contracts',
+  path: '/applications',
+  tags: ['applications'],
+  summary: 'List all applications',
   security: [{ bearerAuth: [] }],
   responses: {
     200: {
-      description: 'List of contracts',
+      description: 'List of applications',
       content: {
         'application/json': {
           schema: z.object({
@@ -271,9 +271,9 @@ registry.registerPath({
 
 registry.registerPath({
   method: 'get',
-  path: '/contracts/{id}',
-  tags: ['Contracts'],
-  summary: 'Get a contract by ID',
+  path: '/applications/{id}',
+  tags: ['applications'],
+  summary: 'Get an application by ID',
   security: [{ bearerAuth: [] }],
   request: {
     params: z.object({
@@ -282,7 +282,7 @@ registry.registerPath({
   },
   responses: {
     200: {
-      description: 'Contract details',
+      description: 'application details',
       content: {
         'application/json': {
           schema: z.object({
@@ -293,7 +293,7 @@ registry.registerPath({
       },
     },
     404: {
-      description: 'Contract not found',
+      description: 'application not found',
       content: {
         'application/json': {
           schema: z.object({
@@ -453,15 +453,15 @@ registry.registerPath({
   },
 });
 
-// ============ Contract Terminations ============
+// ============ application Terminations ============
 registry.registerPath({
   method: 'post',
-  path: '/contracts/{contractId}/terminate',
-  tags: ['Contract Terminations'],
+  path: '/applications/{applicationId}/terminate',
+  tags: ['application Terminations'],
   summary: 'Request termination (buyer/seller initiated)',
   security: [{ bearerAuth: [] }],
   request: {
-    params: z.object({ contractId: z.string() }),
+    params: z.object({ applicationId: z.string() }),
   },
   responses: {
     201: { description: 'Termination request created' },
@@ -470,12 +470,12 @@ registry.registerPath({
 
 registry.registerPath({
   method: 'post',
-  path: '/contracts/{contractId}/admin-terminate',
-  tags: ['Contract Terminations'],
+  path: '/applications/{applicationId}/admin-terminate',
+  tags: ['application Terminations'],
   summary: 'Admin-initiated termination',
   security: [{ bearerAuth: [] }],
   request: {
-    params: z.object({ contractId: z.string() }),
+    params: z.object({ applicationId: z.string() }),
   },
   responses: {
     201: { description: 'Admin termination initiated' },
@@ -484,12 +484,12 @@ registry.registerPath({
 
 registry.registerPath({
   method: 'get',
-  path: '/contracts/{contractId}/terminations',
-  tags: ['Contract Terminations'],
-  summary: 'Get terminations for a contract',
+  path: '/applications/{applicationId}/terminations',
+  tags: ['application Terminations'],
+  summary: 'Get terminations for an application',
   security: [{ bearerAuth: [] }],
   request: {
-    params: z.object({ contractId: z.string() }),
+    params: z.object({ applicationId: z.string() }),
   },
   responses: {
     200: { description: 'List of terminations' },
@@ -499,7 +499,7 @@ registry.registerPath({
 registry.registerPath({
   method: 'get',
   path: '/terminations/pending',
-  tags: ['Contract Terminations'],
+  tags: ['application Terminations'],
   summary: 'Get pending terminations for review (admin)',
   security: [{ bearerAuth: [] }],
   responses: {
@@ -510,7 +510,7 @@ registry.registerPath({
 registry.registerPath({
   method: 'get',
   path: '/terminations/{terminationId}',
-  tags: ['Contract Terminations'],
+  tags: ['application Terminations'],
   summary: 'Get termination details',
   security: [{ bearerAuth: [] }],
   request: {
@@ -524,7 +524,7 @@ registry.registerPath({
 registry.registerPath({
   method: 'post',
   path: '/terminations/{terminationId}/review',
-  tags: ['Contract Terminations'],
+  tags: ['application Terminations'],
   summary: 'Review termination request (approve/reject)',
   security: [{ bearerAuth: [] }],
   request: {
@@ -538,7 +538,7 @@ registry.registerPath({
 registry.registerPath({
   method: 'post',
   path: '/terminations/{terminationId}/refund',
-  tags: ['Contract Terminations'],
+  tags: ['application Terminations'],
   summary: 'Initiate refund processing',
   security: [{ bearerAuth: [] }],
   request: {
@@ -552,7 +552,7 @@ registry.registerPath({
 registry.registerPath({
   method: 'post',
   path: '/terminations/{terminationId}/refund/complete',
-  tags: ['Contract Terminations'],
+  tags: ['application Terminations'],
   summary: 'Complete refund (after gateway confirmation)',
   security: [{ bearerAuth: [] }],
   request: {
@@ -566,7 +566,7 @@ registry.registerPath({
 registry.registerPath({
   method: 'post',
   path: '/terminations/{terminationId}/cancel',
-  tags: ['Contract Terminations'],
+  tags: ['application Terminations'],
   summary: 'Cancel termination request',
   security: [{ bearerAuth: [] }],
   request: {
@@ -577,98 +577,98 @@ registry.registerPath({
   },
 });
 
-// ============ Contract Additional Routes ============
+// ============ application Additional Routes ============
 registry.registerPath({
   method: 'get',
-  path: '/contracts/number/{contractNumber}',
-  tags: ['Contracts'],
-  summary: 'Get contract by contract number',
+  path: '/applications/number/{applicationNumber}',
+  tags: ['applications'],
+  summary: 'Get application by application number',
   security: [{ bearerAuth: [] }],
   request: {
-    params: z.object({ contractNumber: z.string() }),
+    params: z.object({ applicationNumber: z.string() }),
   },
   responses: {
-    200: { description: 'Contract details' },
-    404: { description: 'Contract not found' },
+    200: { description: 'application details' },
+    404: { description: 'application not found' },
   },
 });
 
 registry.registerPath({
   method: 'patch',
-  path: '/contracts/{id}',
-  tags: ['Contracts'],
-  summary: 'Update a contract',
+  path: '/applications/{id}',
+  tags: ['applications'],
+  summary: 'Update an application',
   security: [{ bearerAuth: [] }],
   request: {
     params: z.object({ id: z.string() }),
   },
   responses: {
-    200: { description: 'Contract updated' },
+    200: { description: 'application updated' },
   },
 });
 
 registry.registerPath({
   method: 'post',
-  path: '/contracts/{id}/transition',
-  tags: ['Contracts'],
-  summary: 'Transition contract state',
+  path: '/applications/{id}/transition',
+  tags: ['applications'],
+  summary: 'Transition application state',
   security: [{ bearerAuth: [] }],
   request: {
     params: z.object({ id: z.string() }),
   },
   responses: {
-    200: { description: 'Contract transitioned' },
+    200: { description: 'application transitioned' },
   },
 });
 
 registry.registerPath({
   method: 'post',
-  path: '/contracts/{id}/sign',
-  tags: ['Contracts'],
-  summary: 'Sign contract',
+  path: '/applications/{id}/sign',
+  tags: ['applications'],
+  summary: 'Sign application',
   security: [{ bearerAuth: [] }],
   request: {
     params: z.object({ id: z.string() }),
   },
   responses: {
-    200: { description: 'Contract signed' },
+    200: { description: 'application signed' },
   },
 });
 
 registry.registerPath({
   method: 'post',
-  path: '/contracts/{id}/cancel',
-  tags: ['Contracts'],
-  summary: 'Cancel contract',
+  path: '/applications/{id}/cancel',
+  tags: ['applications'],
+  summary: 'Cancel application',
   security: [{ bearerAuth: [] }],
   request: {
     params: z.object({ id: z.string() }),
   },
   responses: {
-    200: { description: 'Contract cancelled' },
+    200: { description: 'application cancelled' },
   },
 });
 
 registry.registerPath({
   method: 'delete',
-  path: '/contracts/{id}',
-  tags: ['Contracts'],
-  summary: 'Delete contract (draft only)',
+  path: '/applications/{id}',
+  tags: ['applications'],
+  summary: 'Delete application (draft only)',
   security: [{ bearerAuth: [] }],
   request: {
     params: z.object({ id: z.string() }),
   },
   responses: {
-    200: { description: 'Contract deleted' },
+    200: { description: 'application deleted' },
   },
 });
 
-// ============ Contract Phases ============
+// ============ application Phases ============
 registry.registerPath({
   method: 'get',
-  path: '/contracts/{id}/phases',
-  tags: ['Contract Phases'],
-  summary: 'Get phases for a contract',
+  path: '/applications/{id}/phases',
+  tags: ['application Phases'],
+  summary: 'Get phases for an application',
   security: [{ bearerAuth: [] }],
   request: {
     params: z.object({ id: z.string() }),
@@ -680,8 +680,8 @@ registry.registerPath({
 
 registry.registerPath({
   method: 'get',
-  path: '/contracts/{id}/phases/{phaseId}',
-  tags: ['Contract Phases'],
+  path: '/applications/{id}/phases/{phaseId}',
+  tags: ['application Phases'],
   summary: 'Get phase by ID',
   security: [{ bearerAuth: [] }],
   request: {
@@ -694,8 +694,8 @@ registry.registerPath({
 
 registry.registerPath({
   method: 'post',
-  path: '/contracts/{id}/phases/{phaseId}/activate',
-  tags: ['Contract Phases'],
+  path: '/applications/{id}/phases/{phaseId}/activate',
+  tags: ['application Phases'],
   summary: 'Activate phase',
   security: [{ bearerAuth: [] }],
   request: {
@@ -708,8 +708,8 @@ registry.registerPath({
 
 registry.registerPath({
   method: 'post',
-  path: '/contracts/{id}/phases/{phaseId}/installments',
-  tags: ['Contract Phases'],
+  path: '/applications/{id}/phases/{phaseId}/installments',
+  tags: ['application Phases'],
   summary: 'Generate installments for phase',
   security: [{ bearerAuth: [] }],
   request: {
@@ -722,8 +722,8 @@ registry.registerPath({
 
 registry.registerPath({
   method: 'post',
-  path: '/contracts/{id}/phases/{phaseId}/steps/complete',
-  tags: ['Contract Phases'],
+  path: '/applications/{id}/phases/{phaseId}/steps/complete',
+  tags: ['application Phases'],
   summary: 'Complete a step in a documentation phase',
   security: [{ bearerAuth: [] }],
   request: {
@@ -736,8 +736,8 @@ registry.registerPath({
 
 registry.registerPath({
   method: 'post',
-  path: '/contracts/{id}/phases/{phaseId}/documents',
-  tags: ['Contract Phases'],
+  path: '/applications/{id}/phases/{phaseId}/documents',
+  tags: ['application Phases'],
   summary: 'Upload document for phase',
   security: [{ bearerAuth: [] }],
   request: {
@@ -750,8 +750,8 @@ registry.registerPath({
 
 registry.registerPath({
   method: 'post',
-  path: '/contracts/{id}/documents/{documentId}/review',
-  tags: ['Contract Phases'],
+  path: '/applications/{id}/documents/{documentId}/review',
+  tags: ['application Phases'],
   summary: 'Review/approve a document',
   security: [{ bearerAuth: [] }],
   request: {
@@ -764,8 +764,8 @@ registry.registerPath({
 
 registry.registerPath({
   method: 'post',
-  path: '/contracts/{id}/phases/{phaseId}/complete',
-  tags: ['Contract Phases'],
+  path: '/applications/{id}/phases/{phaseId}/complete',
+  tags: ['application Phases'],
   summary: 'Complete phase',
   security: [{ bearerAuth: [] }],
   request: {
@@ -778,8 +778,8 @@ registry.registerPath({
 
 registry.registerPath({
   method: 'post',
-  path: '/contracts/{id}/phases/{phaseId}/skip',
-  tags: ['Contract Phases'],
+  path: '/applications/{id}/phases/{phaseId}/skip',
+  tags: ['application Phases'],
   summary: 'Skip phase (admin)',
   security: [{ bearerAuth: [] }],
   request: {
@@ -790,11 +790,11 @@ registry.registerPath({
   },
 });
 
-// ============ Contract Payments ============
+// ============ application Payments ============
 registry.registerPath({
   method: 'post',
-  path: '/contracts/{id}/payments',
-  tags: ['Contract Payments'],
+  path: '/applications/{id}/payments',
+  tags: ['application Payments'],
   summary: 'Create payment',
   security: [{ bearerAuth: [] }],
   request: {
@@ -807,9 +807,9 @@ registry.registerPath({
 
 registry.registerPath({
   method: 'get',
-  path: '/contracts/{id}/payments',
-  tags: ['Contract Payments'],
-  summary: 'Get payments for contract',
+  path: '/applications/{id}/payments',
+  tags: ['application Payments'],
+  summary: 'Get payments for application',
   security: [{ bearerAuth: [] }],
   request: {
     params: z.object({ id: z.string() }),
@@ -821,8 +821,8 @@ registry.registerPath({
 
 registry.registerPath({
   method: 'get',
-  path: '/contracts/{id}/payments/{paymentId}',
-  tags: ['Contract Payments'],
+  path: '/applications/{id}/payments/{paymentId}',
+  tags: ['application Payments'],
   summary: 'Get payment by ID',
   security: [{ bearerAuth: [] }],
   request: {
@@ -835,8 +835,8 @@ registry.registerPath({
 
 registry.registerPath({
   method: 'post',
-  path: '/contracts/payments/process',
-  tags: ['Contract Payments'],
+  path: '/applications/payments/process',
+  tags: ['application Payments'],
   summary: 'Process payment (webhook callback)',
   responses: {
     200: { description: 'Payment processed' },
@@ -845,8 +845,8 @@ registry.registerPath({
 
 registry.registerPath({
   method: 'post',
-  path: '/contracts/{id}/payments/{paymentId}/refund',
-  tags: ['Contract Payments'],
+  path: '/applications/{id}/payments/{paymentId}/refund',
+  tags: ['application Payments'],
   summary: 'Refund payment',
   security: [{ bearerAuth: [] }],
   request: {
@@ -859,8 +859,8 @@ registry.registerPath({
 
 registry.registerPath({
   method: 'post',
-  path: '/contracts/{id}/pay-ahead',
-  tags: ['Contract Payments'],
+  path: '/applications/{id}/pay-ahead',
+  tags: ['application Payments'],
   summary: 'Pay ahead (apply excess to future installments)',
   security: [{ bearerAuth: [] }],
   request: {
@@ -879,7 +879,7 @@ export function generateOpenAPIDocument(baseUrl?: string): any {
     info: {
       version: '2.0.0',
       title: 'QShelter Mortgage Service API',
-      description: 'Mortgage and contract management service for QShelter platform. Handles prequalifications, contracts, payment plans, phases, payments, and terminations.',
+      description: 'Mortgage and application management service for QShelter platform. Handles prequalifications, applications, payment plans, phases, payments, and terminations.',
     },
     servers: [
       {
@@ -890,10 +890,10 @@ export function generateOpenAPIDocument(baseUrl?: string): any {
     tags: [
       { name: 'Payment Plans', description: 'Payment plan templates (e.g., Outright, Installment 6mo)' },
       { name: 'Payment Methods', description: 'Property-specific payment method configurations' },
-      { name: 'Contracts', description: 'Buyer contracts for property units' },
-      { name: 'Contract Phases', description: 'Contract lifecycle phases (documentation, payment, etc.)' },
-      { name: 'Contract Payments', description: 'Payment processing for contracts' },
-      { name: 'Contract Terminations', description: 'Contract termination workflow' },
+      { name: 'Applications', description: 'Buyer applications for property units' },
+      { name: 'application Phases', description: 'application lifecycle phases (documentation, payment, etc.)' },
+      { name: 'Application Payments', description: 'Payment processing for applications' },
+      { name: 'application Terminations', description: 'application termination workflow' },
       { name: 'Prequalifications', description: 'Buyer prequalification for properties' },
       { name: 'Health', description: 'Health check endpoints' },
     ],

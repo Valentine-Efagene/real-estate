@@ -121,7 +121,7 @@ npm run test:e2e:deployed
 | ---------------- | ----- | ---------- | ----------------------------------------- |
 | User Service     | 78    | ✅ Passing | Auth, Users, Roles, Tenants, Socials      |
 | Property Service | 21    | ✅ Passing | Properties, Health                        |
-| Mortgage Service | 83    | ✅ Passing | Contracts, Payments, Templates, Workflows |
+| Mortgage Service | 83    | ✅ Passing | Applications, Payments, Templates, Workflows |
 
 ## Deployment Notes
 

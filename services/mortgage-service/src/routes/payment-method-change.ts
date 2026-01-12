@@ -23,24 +23,24 @@ const rejectSchema = z.object({
 });
 
 // =============================================================================
-// Customer Routes (nested under /contracts/:contractId)
+// Customer Routes (nested under /applications/:applicationId)
 // =============================================================================
 
 /**
- * POST /contracts/:contractId/payment-method-change-requests
+ * POST /applications/:applicationId/payment-method-change-requests
  * Create a new payment method change request
  */
 router.post(
-    '/contracts/:contractId/payment-method-change-requests',
+    '/applications/:applicationId/payment-method-change-requests',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { tenantId, userId } = getAuthContext(req);
-            const { contractId } = req.params;
+            const { applicationId } = req.params;
 
             const body = createRequestSchema.parse(req.body);
 
             const request = await paymentMethodChangeService.createRequest({
-                contractId,
+                applicationId,
                 toPaymentMethodId: body.toPaymentMethodId,
                 reason: body.reason,
                 requestorId: userId,
@@ -55,20 +55,20 @@ router.post(
 );
 
 /**
- * GET /contracts/:contractId/payment-method-change-requests
- * List change requests for a contract
+ * GET /applications/:applicationId/payment-method-change-requests
+ * List change requests for a application
  */
 router.get(
-    '/contracts/:contractId/payment-method-change-requests',
+    '/applications/:applicationId/payment-method-change-requests',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { tenantId } = getAuthContext(req);
             if (!tenantId) {
                 throw new AppError(400, 'Missing tenant context');
             }
-            const { contractId } = req.params;
+            const { applicationId } = req.params;
 
-            const requests = await paymentMethodChangeService.listByContract(contractId, tenantId);
+            const requests = await paymentMethodChangeService.listByapplication(applicationId, tenantId);
 
             res.json(requests);
         } catch (error) {
@@ -78,11 +78,11 @@ router.get(
 );
 
 /**
- * GET /contracts/:contractId/payment-method-change-requests/:requestId
+ * GET /applications/:applicationId/payment-method-change-requests/:requestId
  * Get a specific change request
  */
 router.get(
-    '/contracts/:contractId/payment-method-change-requests/:requestId',
+    '/applications/:applicationId/payment-method-change-requests/:requestId',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { tenantId } = getAuthContext(req);
@@ -101,11 +101,11 @@ router.get(
 );
 
 /**
- * POST /contracts/:contractId/payment-method-change-requests/:requestId/submit-documents
+ * POST /applications/:applicationId/payment-method-change-requests/:requestId/submit-documents
  * Mark documents as submitted (moves to review queue)
  */
 router.post(
-    '/contracts/:contractId/payment-method-change-requests/:requestId/submit-documents',
+    '/applications/:applicationId/payment-method-change-requests/:requestId/submit-documents',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { tenantId } = getAuthContext(req);
@@ -124,11 +124,11 @@ router.post(
 );
 
 /**
- * POST /contracts/:contractId/payment-method-change-requests/:requestId/cancel
+ * POST /applications/:applicationId/payment-method-change-requests/:requestId/cancel
  * Cancel a pending request (requestor only)
  */
 router.post(
-    '/contracts/:contractId/payment-method-change-requests/:requestId/cancel',
+    '/applications/:applicationId/payment-method-change-requests/:requestId/cancel',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { tenantId, userId } = getAuthContext(req);
@@ -258,7 +258,7 @@ router.post(
 /**
  * POST /payment-method-change-requests/:requestId/execute
  * Execute an approved change request (admin)
- * This performs the actual contract modification.
+ * This performs the actual application modification.
  */
 router.post(
     '/payment-method-change-requests/:requestId/execute',

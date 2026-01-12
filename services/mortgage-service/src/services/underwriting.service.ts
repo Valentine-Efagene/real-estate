@@ -21,7 +21,7 @@ interface RuleContext {
         debtToIncomeRatio: number | null;
         preApprovalAnswers: Record<string, unknown> | null;
     };
-    contract: {
+    application: {
         totalAmount: number;
     };
     property: {
@@ -78,7 +78,7 @@ const rules: Rule[] = [
         evaluate: (ctx) => {
             const income = ctx.questionnaire.monthlyIncome ?? 0;
             const expenses = ctx.questionnaire.monthlyExpenses ?? 0;
-            const totalAmount = ctx.contract.totalAmount;
+            const totalAmount = ctx.application.totalAmount;
 
             // Estimate monthly payment (simple: amount / 120 months)
             const estimatedMonthlyPayment = totalAmount / 120;
@@ -99,7 +99,7 @@ const rules: Rule[] = [
         name: 'Loan-to-Value Ratio',
         weight: 20,
         evaluate: (ctx) => {
-            const requestedAmount = ctx.contract.totalAmount;
+            const requestedAmount = ctx.application.totalAmount;
             const propertyPrice = ctx.property.price;
 
             if (propertyPrice <= 0) return { passed: true, score: 50, message: 'Property price not set' };
@@ -233,24 +233,24 @@ export class UnderwritingService {
     }
 
     /**
-     * Evaluate a contract's underwriting step.
+     * Evaluate a application's underwriting step.
      * Called when an UNDERWRITING step is being completed.
      * 
      * Underwriting data comes from QuestionnairePhase fields.
      * Results are stored in the QuestionnairePhase.
      * 
-     * @param contractId - The contract to evaluate
+     * @param applicationId - The application to evaluate
      * @param stepId - The UNDERWRITING step being completed
      * @param actorId - The user triggering the evaluation
      */
     async evaluateForStep(
-        contractId: string,
+        applicationId: string,
         stepId: string,
         actorId?: string
     ): Promise<UnderwritingResponse> {
-        // Fetch contract with related data including questionnaire phases
-        const contract = await this.prisma.contract.findUnique({
-            where: { id: contractId },
+        // Fetch application with related data including questionnaire phases
+        const application = await this.prisma.application.findUnique({
+            where: { id: applicationId },
             include: {
                 buyer: true,
                 propertyUnit: {
@@ -273,8 +273,8 @@ export class UnderwritingService {
             },
         });
 
-        if (!contract) {
-            throw new Error(`Contract ${contractId} not found`);
+        if (!application) {
+            throw new Error(`application ${applicationId} not found`);
         }
 
         const step = await this.prisma.documentationStep.findUnique({
@@ -293,7 +293,7 @@ export class UnderwritingService {
         }
 
         // Find the most recent questionnaire phase with underwriting data
-        const questionnairePhase = contract.phases
+        const questionnairePhase = application.phases
             .find((p: { questionnairePhase?: { fields?: unknown[] } | null }) =>
                 p.questionnairePhase?.fields && p.questionnairePhase.fields.length > 0
             )
@@ -308,8 +308,8 @@ export class UnderwritingService {
         const existingScore = questionnairePhase?.underwritingScore ?? null;
 
         // Build rule context
-        const propertyPrice = contract.propertyUnit?.variant?.price ?? contract.totalAmount;
-        const propertyName = contract.propertyUnit?.variant?.property?.title ?? 'Unknown Property';
+        const propertyPrice = application.propertyUnit?.variant?.price ?? application.totalAmount;
+        const propertyName = application.propertyUnit?.variant?.property?.title ?? 'Unknown Property';
 
         const ctx: RuleContext = {
             questionnaire: {
@@ -319,18 +319,18 @@ export class UnderwritingService {
                 debtToIncomeRatio: existingDti,
                 preApprovalAnswers: this.fieldsToAnswers(fields as Array<{ name: string; answer: unknown }>),
             },
-            contract: {
-                totalAmount: contract.totalAmount,
+            application: {
+                totalAmount: application.totalAmount,
             },
             property: {
                 price: propertyPrice,
                 name: propertyName,
             },
             user: {
-                id: contract.buyer.id,
-                email: contract.buyer.email,
-                firstName: contract.buyer.firstName,
-                lastName: contract.buyer.lastName,
+                id: application.buyer.id,
+                email: application.buyer.email,
+                firstName: application.buyer.firstName,
+                lastName: application.buyer.lastName,
             },
         };
 
@@ -342,7 +342,7 @@ export class UnderwritingService {
         let calculatedDti = existingDti;
         if (calculatedDti === null && monthlyIncome && monthlyIncome > 0) {
             // Estimate monthly payment (120 months default)
-            const monthlyPayment = contract.totalAmount / 120;
+            const monthlyPayment = application.totalAmount / 120;
             calculatedDti = ((monthlyExpenses ?? 0) + monthlyPayment) / monthlyIncome;
         }
 
@@ -388,11 +388,11 @@ export class UnderwritingService {
             // Enqueue domain event for notification
             const outboxId = await enqueueOutboxInTx(tx, {
                 eventType: notificationType,
-                aggregateType: 'Contract',
-                aggregateId: contractId,
+                aggregateType: 'application',
+                aggregateId: applicationId,
                 queueName: 'qshelter-notifications',
                 payload: {
-                    contractId,
+                    applicationId,
                     stepId,
                     decision,
                     score,
@@ -422,7 +422,7 @@ export class UnderwritingService {
 
         return {
             decisionId: stepId, // Use step ID as decision ID
-            contractId,
+            applicationId,
             decision,
             score,
             reasons,
@@ -434,13 +434,13 @@ export class UnderwritingService {
     }
 
     /**
-     * Get underwriting results for a contract step
+     * Get underwriting results for a application step
      * 
      * Note: Underwriting results are stored in QuestionnairePhase, but we look up
      * by step ID since the step was the trigger for the evaluation.
      */
     async getByStepId(stepId: string): Promise<UnderwritingResponse | null> {
-        // First get the step to find the contract
+        // First get the step to find the application
         const step = await this.prisma.documentationStep.findUnique({
             where: { id: stepId },
             include: {
@@ -452,12 +452,12 @@ export class UnderwritingService {
 
         if (!step || step.stepType !== 'UNDERWRITING') return null;
 
-        const contractId = step.documentationPhase.phase.contractId;
+        const applicationId = step.documentationPhase.phase.applicationId;
 
         // Find the QuestionnairePhase with underwriting results
         const questionnairePhase = await this.prisma.questionnairePhase.findFirst({
             where: {
-                phase: { contractId },
+                phase: { applicationId },
                 underwritingScore: { not: null },
             },
             orderBy: { updatedAt: 'desc' },
@@ -471,7 +471,7 @@ export class UnderwritingService {
 
         return {
             decisionId: stepId,
-            contractId,
+            applicationId,
             decision: (questionnairePhase.underwritingDecision as 'APPROVED' | 'DECLINED' | 'CONDITIONAL') || 'CONDITIONAL',
             score: questionnairePhase.underwritingScore ?? 0,
             reasons: notes.reasons || [],
@@ -483,15 +483,15 @@ export class UnderwritingService {
     }
 
     /**
-     * Get all underwriting evaluations for a contract
+     * Get all underwriting evaluations for a application
      * 
      * Returns underwriting results from QuestionnairePhases.
      */
-    async getByContractId(contractId: string): Promise<UnderwritingResponse[]> {
+    async getByApplicationId(applicationId: string): Promise<UnderwritingResponse[]> {
         // Find all QuestionnairePhases with underwriting results
         const phases = await this.prisma.questionnairePhase.findMany({
             where: {
-                phase: { contractId },
+                phase: { applicationId },
                 underwritingScore: { not: null },
             },
             include: {
@@ -504,7 +504,7 @@ export class UnderwritingService {
             const notes = qp.underwritingNotes ? JSON.parse(qp.underwritingNotes) : {};
             return {
                 decisionId: notes.stepId || qp.id,
-                contractId,
+                applicationId,
                 decision: (qp.underwritingDecision as 'APPROVED' | 'DECLINED' | 'CONDITIONAL') || 'CONDITIONAL',
                 score: qp.underwritingScore ?? 0,
                 reasons: notes.reasons || [],

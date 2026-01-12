@@ -7,21 +7,21 @@ import {
     ProcessRefundSchema,
     CompleteRefundSchema,
     CancelTerminationSchema,
-} from '../validators/contract-termination.validator';
-import { createContractTerminationService } from '../services/contract-termination.service';
+} from '../validators/application-termination.validator';
+import { createApplicationTerminationService } from '../services/application-termination.service';
 import { z } from 'zod';
 
 const terminationRouter = Router();
 
 /**
  * Request termination (buyer/seller initiated)
- * POST /contracts/:contractId/terminate
+ * POST /applications/:applicationId/terminate
  */
 terminationRouter.post(
-    '/contracts/:contractId/terminate',
+    '/applications/:applicationId/terminate',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { contractId } = req.params;
+            const { applicationId } = req.params;
             const { userId } = getAuthContext(req);
 
             if (!userId) {
@@ -37,10 +37,10 @@ terminationRouter.post(
             }
 
             const idempotencyKey = req.headers['idempotency-key'] as string | undefined;
-            const terminationService = createContractTerminationService();
+            const terminationService = createApplicationTerminationService();
 
             const termination = await terminationService.requestTermination(
-                contractId,
+                applicationId,
                 userId,
                 validationResult.data,
                 { idempotencyKey }
@@ -51,7 +51,7 @@ terminationRouter.post(
                 data: termination,
                 message:
                     termination.status === 'COMPLETED'
-                        ? 'Contract terminated successfully'
+                        ? 'Application terminated successfully'
                         : 'Termination request submitted for review',
             });
         } catch (error) {
@@ -62,13 +62,13 @@ terminationRouter.post(
 
 /**
  * Admin-initiated termination
- * POST /contracts/:contractId/admin-terminate
+ * POST /applications/:applicationId/admin-terminate
  */
 terminationRouter.post(
-    '/contracts/:contractId/admin-terminate',
+    '/applications/:applicationId/admin-terminate',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { contractId } = req.params;
+            const { applicationId } = req.params;
             const { userId } = getAuthContext(req);
 
             if (!userId) {
@@ -84,10 +84,10 @@ terminationRouter.post(
             }
 
             const idempotencyKey = req.headers['idempotency-key'] as string | undefined;
-            const terminationService = createContractTerminationService();
+            const terminationService = createApplicationTerminationService();
 
             const termination = await terminationService.adminTerminate(
-                contractId,
+                applicationId,
                 userId,
                 validationResult.data,
                 { idempotencyKey }
@@ -97,7 +97,7 @@ terminationRouter.post(
                 success: true,
                 data: termination,
                 message: validationResult.data.bypassApproval
-                    ? 'Contract termination initiated'
+                    ? 'Application termination initiated'
                     : 'Termination submitted for review',
             });
         } catch (error) {
@@ -121,7 +121,7 @@ terminationRouter.get(
                 return res.status(400).json({ error: 'Tenant context required' });
             }
 
-            const terminationService = createContractTerminationService();
+            const terminationService = createApplicationTerminationService();
             const terminations = await terminationService.findPendingReview(tenantId);
 
             res.json({
@@ -143,7 +143,7 @@ terminationRouter.get(
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { terminationId } = req.params;
-            const terminationService = createContractTerminationService();
+            const terminationService = createApplicationTerminationService();
 
             const termination = await terminationService.findById(terminationId);
 
@@ -158,17 +158,17 @@ terminationRouter.get(
 );
 
 /**
- * Get terminations for a contract
- * GET /contracts/:contractId/terminations
+ * Get terminations for an application
+ * GET /applications/:applicationId/terminations
  */
 terminationRouter.get(
-    '/contracts/:contractId/terminations',
+    '/applications/:applicationId/terminations',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { contractId } = req.params;
-            const terminationService = createContractTerminationService();
+            const { applicationId } = req.params;
+            const terminationService = createApplicationTerminationService();
 
-            const terminations = await terminationService.findByContract(contractId);
+            const terminations = await terminationService.findByApplication(applicationId);
 
             res.json({
                 success: true,
@@ -203,7 +203,7 @@ terminationRouter.post(
                 });
             }
 
-            const terminationService = createContractTerminationService();
+            const terminationService = createApplicationTerminationService();
 
             const termination = await terminationService.reviewTermination(
                 terminationId,
@@ -248,7 +248,7 @@ terminationRouter.post(
                 });
             }
 
-            const terminationService = createContractTerminationService();
+            const terminationService = createApplicationTerminationService();
 
             const termination = await terminationService.processRefund(
                 terminationId,
@@ -290,7 +290,7 @@ terminationRouter.post(
                 });
             }
 
-            const terminationService = createContractTerminationService();
+            const terminationService = createApplicationTerminationService();
 
             const termination = await terminationService.completeRefund(
                 terminationId,
@@ -301,7 +301,7 @@ terminationRouter.post(
             res.json({
                 success: true,
                 data: termination,
-                message: 'Refund completed and contract terminated',
+                message: 'Refund completed and application terminated',
             });
         } catch (error) {
             next(error);
@@ -336,7 +336,7 @@ terminationRouter.post(
                 data = validationResult.data;
             }
 
-            const terminationService = createContractTerminationService();
+            const terminationService = createApplicationTerminationService();
 
             const termination = await terminationService.cancelTermination(terminationId, userId, data);
 

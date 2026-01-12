@@ -403,7 +403,7 @@ export class ApprovalRequestService {
             }
             case ApprovalRequestType.REFUND_APPROVAL: {
                 // Approve the refund
-                await db.contractRefund.update({
+                await db.applicationRefund.update({
                     where: { id: entityId },
                     data: {
                         status: 'APPROVED',
@@ -414,15 +414,15 @@ export class ApprovalRequestService {
                 });
 
                 // Create audit event
-                const refund = await db.contractRefund.findUnique({
+                const refund = await db.applicationRefund.findUnique({
                     where: { id: entityId },
-                    select: { contractId: true, amount: true },
+                    select: { applicationId: true, amount: true },
                 });
 
                 if (refund) {
-                    await db.contractEvent.create({
+                    await db.applicationEvent.create({
                         data: {
-                            contractId: refund.contractId,
+                            applicationId: refund.applicationId,
                             eventType: 'PAYMENT_COMPLETED',
                             eventGroup: 'PAYMENT',
                             data: {
@@ -442,8 +442,8 @@ export class ApprovalRequestService {
             // case ApprovalRequestType.PROPERTY_UPDATE:
             //   await propertyUpdateService.approve({ ... });
             //   break;
-            // case ApprovalRequestType.CONTRACT_TERMINATION:
-            //   await contractTerminationService.approve({ ... });
+            // case ApprovalRequestType.application_TERMINATION:
+            //   await applicationTerminationService.approve({ ... });
             //   break;
             default:
                 // Log or throw for unknown types
@@ -467,7 +467,7 @@ export class ApprovalRequestService {
         switch (type) {
             case ApprovalRequestType.REFUND_APPROVAL: {
                 // Reject the refund
-                await db.contractRefund.update({
+                await db.applicationRefund.update({
                     where: { id: entityId },
                     data: {
                         status: 'REJECTED',

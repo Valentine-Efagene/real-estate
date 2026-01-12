@@ -26,12 +26,12 @@ export const templatePathMap: Readonly<Record<TemplateTypeValue, string>> = Obje
     'prequalificationSubmitted': 'content/prequalificationSubmitted.hbs',
     'prequalificationApproved': 'content/prequalificationApproved.hbs',
     'prequalificationRejected': 'content/prequalificationRejected.hbs',
-    // Mortgage - Contract
-    'contractCreated': 'content/contractCreated.hbs',
-    'contractActivated': 'content/contractActivated.hbs',
-    'contractTerminationRequested': 'content/contractTerminationRequested.hbs',
-    'contractTerminationApproved': 'content/contractTerminationApproved.hbs',
-    'contractTerminated': 'content/contractTerminated.hbs',
+    // Mortgage - Application
+    'applicationCreated': 'content/applicationCreated.hbs',
+    'applicationActivated': 'content/applicationActivated.hbs',
+    'applicationTerminationRequested': 'content/applicationTerminationRequested.hbs',
+    'applicationTerminationApproved': 'content/applicationTerminationApproved.hbs',
+    'applicationTerminated': 'content/applicationTerminated.hbs',
     // Mortgage - Payments
     'paymentReceived': 'content/paymentReceived.hbs',
     'paymentFailed': 'content/paymentFailed.hbs',
@@ -39,7 +39,7 @@ export const templatePathMap: Readonly<Record<TemplateTypeValue, string>> = Obje
     // Mortgage - Offer Letters
     'provisionalOfferLetter': 'content/provisionalOfferLetter.hbs',
     'finalOfferLetter': 'content/finalOfferLetter.hbs',
-    'contractCongratulations': 'content/contractCongratulations.hbs',
+    'applicationCongratulations': 'content/applicationCongratulations.hbs',
     // Documents
     'documentApproved': 'content/documentApproved.hbs',
     'documentRejected': 'content/documentRejected.hbs',
@@ -66,20 +66,20 @@ export const templateTitle: Readonly<Record<TemplateTypeValue, string>> = Object
     'prequalificationSubmitted': 'Prequalification Application Received',
     'prequalificationApproved': 'Congratulations! Your Prequalification is Approved',
     'prequalificationRejected': 'Prequalification Application Update',
-    // Mortgage - Contract
-    'contractCreated': 'Your Mortgage Contract Has Been Created',
-    'contractActivated': 'Your Mortgage Contract is Now Active',
-    'contractTerminationRequested': 'Contract Termination Request Received',
-    'contractTerminationApproved': 'Contract Termination Approved',
-    'contractTerminated': 'Contract Terminated',
+    // Mortgage - Application
+    'applicationCreated': 'Your Mortgage Application Has Been Created',
+    'applicationActivated': 'Your Mortgage Application is Now Active',
+    'applicationTerminationRequested': 'Application Termination Request Received',
+    'applicationTerminationApproved': 'Application Termination Approved',
+    'applicationTerminated': 'Application Terminated',
     // Mortgage - Payments
     'paymentReceived': 'Payment Received Successfully',
     'paymentFailed': 'Payment Failed - Action Required',
     'paymentReminder': 'Payment Reminder',
     // Mortgage - Offer Letters
     'provisionalOfferLetter': 'Your Provisional Offer Letter is Ready',
-    'finalOfferLetter': 'Final Offer Letter - Contract Finalization',
-    'contractCongratulations': 'Congratulations! Your Property Purchase is Complete',
+    'finalOfferLetter': 'Final Offer Letter - Application Finalization',
+    'applicationCongratulations': 'Congratulations! Your Property Purchase is Complete',
     // Documents
     'documentApproved': 'Your Document Has Been Approved',
     'documentRejected': 'Document Requires Resubmission',

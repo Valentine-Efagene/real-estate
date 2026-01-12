@@ -23,12 +23,12 @@ export const TemplateType = z.enum([
     'prequalificationSubmitted',
     'prequalificationApproved',
     'prequalificationRejected',
-    // Mortgage - Contract
-    'contractCreated',
-    'contractActivated',
-    'contractTerminationRequested',
-    'contractTerminationApproved',
-    'contractTerminated',
+    // Mortgage - Application
+    'applicationCreated',
+    'applicationActivated',
+    'applicationTerminationRequested',
+    'applicationTerminationApproved',
+    'applicationTerminated',
     // Mortgage - Payments
     'paymentReceived',
     'paymentFailed',
@@ -36,7 +36,7 @@ export const TemplateType = z.enum([
     // Mortgage - Offer Letters
     'provisionalOfferLetter',
     'finalOfferLetter',
-    'contractCongratulations',
+    'applicationCongratulations',
     // Documents
     'documentApproved',
     'documentRejected',
@@ -156,52 +156,52 @@ export const PrequalificationRejectedSchema = BaseEmailSchema.extend({
     reason: z.string().optional(),
 }).openapi('PrequalificationRejected');
 
-// ============== Mortgage - Contract Schemas ==============
+// ============== Mortgage - Application Schemas ==============
 
-export const ContractCreatedSchema = BaseEmailSchema.extend({
+export const ApplicationCreatedSchema = BaseEmailSchema.extend({
     homeBuyerName: z.string().min(1),
-    contractNumber: z.string().min(1),
+    applicationNumber: z.string().min(1),
     propertyName: z.string().min(1),
     totalAmount: z.string().min(1),
     termMonths: z.number().positive(),
     monthlyPayment: z.string().min(1),
     dashboardLink: z.url(),
-}).openapi('ContractCreated');
+}).openapi('ApplicationCreated');
 
-export const ContractActivatedSchema = BaseEmailSchema.extend({
+export const ApplicationActivatedSchema = BaseEmailSchema.extend({
     homeBuyerName: z.string().min(1),
-    contractNumber: z.string().min(1),
+    applicationNumber: z.string().min(1),
     propertyName: z.string().min(1),
     startDate: z.string().min(1),
     nextPaymentDate: z.string().min(1),
     monthlyPayment: z.string().min(1),
     dashboardLink: z.url(),
-}).openapi('ContractActivated');
+}).openapi('ApplicationActivated');
 
-export const ContractTerminationRequestedSchema = BaseEmailSchema.extend({
+export const ApplicationTerminationRequestedSchema = BaseEmailSchema.extend({
     homeBuyerName: z.string().min(1),
-    contractNumber: z.string().min(1),
+    applicationNumber: z.string().min(1),
     propertyName: z.string().min(1),
     terminationType: z.string().min(1),
     requestDate: z.string().min(1),
     reason: z.string().optional(),
     dashboardLink: z.url(),
-}).openapi('ContractTerminationRequested');
+}).openapi('ApplicationTerminationRequested');
 
-export const ContractTerminationApprovedSchema = BaseEmailSchema.extend({
+export const ApplicationTerminationApprovedSchema = BaseEmailSchema.extend({
     homeBuyerName: z.string().min(1),
-    contractNumber: z.string().min(1),
+    applicationNumber: z.string().min(1),
     propertyName: z.string().min(1),
     terminationDate: z.string().min(1),
     totalPaid: z.string().optional(),
     refundAmount: z.string().optional(),
     deductions: z.string().optional(),
     dashboardLink: z.url(),
-}).openapi('ContractTerminationApproved');
+}).openapi('ApplicationTerminationApproved');
 
-export const ContractTerminatedSchema = BaseEmailSchema.extend({
+export const ApplicationTerminatedSchema = BaseEmailSchema.extend({
     homeBuyerName: z.string().min(1),
-    contractNumber: z.string().min(1),
+    applicationNumber: z.string().min(1),
     propertyName: z.string().min(1),
     startDate: z.string().min(1),
     terminationDate: z.string().min(1),
@@ -209,7 +209,7 @@ export const ContractTerminatedSchema = BaseEmailSchema.extend({
     totalAmountPaid: z.string().min(1),
     refundStatus: z.string().optional(),
     dashboardLink: z.url(),
-}).openapi('ContractTerminated');
+}).openapi('ApplicationTerminated');
 
 // ============== Mortgage - Payment Schemas ==============
 
@@ -217,7 +217,7 @@ export const PaymentReceivedSchema = BaseEmailSchema.extend({
     homeBuyerName: z.string().min(1),
     paymentReference: z.string().min(1),
     amount: z.string().min(1),
-    contractNumber: z.string().min(1),
+    applicationNumber: z.string().min(1),
     paymentDate: z.string().min(1),
     paymentMethod: z.string().min(1),
     totalPaid: z.string().min(1),
@@ -230,7 +230,7 @@ export const PaymentFailedSchema = BaseEmailSchema.extend({
     homeBuyerName: z.string().min(1),
     paymentReference: z.string().min(1),
     amount: z.string().min(1),
-    contractNumber: z.string().min(1),
+    applicationNumber: z.string().min(1),
     attemptDate: z.string().min(1),
     failureReason: z.string().optional(),
     dashboardLink: z.url(),
@@ -238,7 +238,7 @@ export const PaymentFailedSchema = BaseEmailSchema.extend({
 
 export const PaymentReminderSchema = BaseEmailSchema.extend({
     homeBuyerName: z.string().min(1),
-    contractNumber: z.string().min(1),
+    applicationNumber: z.string().min(1),
     propertyName: z.string().min(1),
     amount: z.string().min(1),
     dueDate: z.string().min(1),
@@ -270,11 +270,11 @@ export type AdminInviteAdminInput = z.infer<typeof AdminInviteAdminSchema>;
 export type PrequalificationSubmittedInput = z.infer<typeof PrequalificationSubmittedSchema>;
 export type PrequalificationApprovedInput = z.infer<typeof PrequalificationApprovedSchema>;
 export type PrequalificationRejectedInput = z.infer<typeof PrequalificationRejectedSchema>;
-export type ContractCreatedInput = z.infer<typeof ContractCreatedSchema>;
-export type ContractActivatedInput = z.infer<typeof ContractActivatedSchema>;
-export type ContractTerminationRequestedInput = z.infer<typeof ContractTerminationRequestedSchema>;
-export type ContractTerminationApprovedInput = z.infer<typeof ContractTerminationApprovedSchema>;
-export type ContractTerminatedInput = z.infer<typeof ContractTerminatedSchema>;
+export type ApplicationCreatedInput = z.infer<typeof ApplicationCreatedSchema>;
+export type ApplicationActivatedInput = z.infer<typeof ApplicationActivatedSchema>;
+export type ApplicationTerminationRequestedInput = z.infer<typeof ApplicationTerminationRequestedSchema>;
+export type ApplicationTerminationApprovedInput = z.infer<typeof ApplicationTerminationApprovedSchema>;
+export type ApplicationTerminatedInput = z.infer<typeof ApplicationTerminatedSchema>;
 export type PaymentReceivedInput = z.infer<typeof PaymentReceivedSchema>;
 export type PaymentFailedInput = z.infer<typeof PaymentFailedSchema>;
 export type PaymentReminderInput = z.infer<typeof PaymentReminderSchema>;

@@ -6,7 +6,7 @@ extendZodWithOpenApi(z);
 // Generate offer letter
 export const GenerateOfferLetterSchema = z
     .object({
-        contractId: z.string(),
+        applicationId: z.string(),
         type: z.enum(['PROVISIONAL', 'FINAL']),
         templateId: z.string().optional(), // Use default template if not provided
         expiresInDays: z.number().int().positive().default(30),
@@ -61,7 +61,7 @@ export type CancelOfferLetterInput = z.infer<typeof CancelOfferLetterSchema>;
 // List offer letters query params
 export const ListOfferLettersSchema = z
     .object({
-        contractId: z.string().optional(),
+        applicationId: z.string().optional(),
         type: z.enum(['PROVISIONAL', 'FINAL']).optional(),
         status: z.enum(['DRAFT', 'GENERATED', 'SENT', 'VIEWED', 'SIGNED', 'EXPIRED', 'CANCELLED']).optional(),
     })

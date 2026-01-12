@@ -6,7 +6,7 @@ import { authHeaders } from '@valentine-efagene/qshelter-common';
 /**
  * E2E Test: Property Transfer with Progress Preservation
  * 
- * Scenario: Chidi has an active 10/90 mortgage contract where the 10% downpayment
+ * Scenario: Chidi has an active 10/90 mortgage application where the 10% downpayment
  * is paid in 12 monthly instalments. After receiving a provisional offer and paying
  * 6 instalments, Chidi requests to transfer to a different property while preserving
  * all payments, completed workflow steps, and progress.
@@ -41,15 +41,15 @@ describe('Property Transfer with Progress Preservation', () => {
     let mortgagePlanId: string;
     let paymentMethodId: string;
 
-    // Chidi's contract
-    let contractAId: string;
-    let contractANumber: string;
+    // Chidi's application
+    let applicationAId: string;
+    let applicationANumber: string;
 
     // Transfer request
     let transferRequestId: string;
 
-    // New contract after transfer
-    let contractBId: string;
+    // New application after transfer
+    let applicationBId: string;
 
     // Test constants
     const PROPERTY_X_PRICE = 10_000_000; // ₦10M
@@ -318,30 +318,30 @@ describe('Property Transfer with Progress Preservation', () => {
     // ================================================================
     // STEP 1: Chidi applies for a mortgage on Property X
     // ================================================================
-    describe('Step 1: Chidi Creates Contract', () => {
-        it('Chidi creates a contract for Property X Unit A1', async () => {
+    describe('Step 1: Chidi Creates Application', () => {
+        it('Chidi creates a application for Property X Unit A1', async () => {
             const response = await api
-                .post('/contracts')
+                .post('/applications')
                 .set(authHeaders(chidiId, tenantId))
-                .set('x-idempotency-key', idempotencyKey('create-contract'))
+                .set('x-idempotency-key', idempotencyKey('create-application'))
                 .send({
                     propertyUnitId: unitXId,
                     paymentMethodId: paymentMethodId,
                     title: 'Lekki Gardens A1 Purchase',
-                    contractType: 'MORTGAGE',
+                    applicationType: 'MORTGAGE',
                 });
 
             expect(response.status).toBe(201);
             expect(response.body.propertyUnitId).toBe(unitXId);
             expect(response.body.totalAmount).toBe(PROPERTY_X_PRICE);
 
-            contractAId = response.body.id;
-            contractANumber = response.body.contractNumber;
+            applicationAId = response.body.id;
+            applicationANumber = response.body.applicationNumber;
         });
 
-        it('Contract A has correct phase structure', async () => {
+        it('Application A has correct phase structure', async () => {
             const response = await api
-                .get(`/contracts/${contractAId}`)
+                .get(`/applications/${applicationAId}`)
                 .set(authHeaders(chidiId, tenantId));
 
             expect(response.status).toBe(200);
@@ -358,46 +358,46 @@ describe('Property Transfer with Progress Preservation', () => {
     describe('Step 2: Simulate Progress', () => {
         it('Mark KYC phase as completed', async () => {
             // Get the KYC phase
-            const contract = await prisma.contract.findUnique({
-                where: { id: contractAId },
+            const application = await prisma.application.findUnique({
+                where: { id: applicationAId },
                 include: { phases: { orderBy: { order: 'asc' } } },
             });
 
-            expect(contract).not.toBeNull();
-            const kycPhase = contract!.phases[0];
+            expect(application).not.toBeNull();
+            const kycPhase = application!.phases[0];
 
             // Update phase status directly (simulating completed workflow)
-            await prisma.contractPhase.update({
+            await prisma.applicationPhase.update({
                 where: { id: kycPhase.id },
                 data: { status: 'COMPLETED' },
             });
 
-            // Update contract status to ACTIVE
-            await prisma.contract.update({
-                where: { id: contractAId },
+            // Update application status to ACTIVE
+            await prisma.application.update({
+                where: { id: applicationAId },
                 data: { status: 'ACTIVE' },
             });
         });
 
         it('Record 6 downpayment instalments', async () => {
-            const contract = await prisma.contract.findUnique({
-                where: { id: contractAId },
+            const application = await prisma.application.findUnique({
+                where: { id: applicationAId },
                 include: { phases: { orderBy: { order: 'asc' } } },
             });
 
-            const downpaymentPhase = contract!.phases[1];
+            const downpaymentPhase = application!.phases[1];
 
             // Create 6 payment records
             for (let i = 1; i <= 6; i++) {
-                await prisma.contractPayment.create({
+                await prisma.applicationPayment.create({
                     data: {
-                        contractId: contractAId,
+                        applicationId: applicationAId,
                         phaseId: downpaymentPhase.id,
                         payerId: chidiId,
                         amount: INSTALMENT_AMOUNT,
                         paymentMethod: 'BANK_TRANSFER',
                         status: 'COMPLETED',
-                        reference: `PAY-${contractANumber}-${i}`,
+                        reference: `PAY-${applicationANumber}-${i}`,
                         processedAt: new Date(Date.now() - (6 - i) * 30 * 24 * 60 * 60 * 1000), // Staggered dates
                     },
                 });
@@ -407,7 +407,7 @@ describe('Property Transfer with Progress Preservation', () => {
             const totalPaid = INSTALMENT_AMOUNT * 6;
 
             // Find the PaymentPhase extension and update it
-            const phase = await prisma.contractPhase.findUnique({
+            const phase = await prisma.applicationPhase.findUnique({
                 where: { id: downpaymentPhase.id },
                 include: { paymentPhase: true },
             });
@@ -421,8 +421,8 @@ describe('Property Transfer with Progress Preservation', () => {
         });
 
         it('Verify Chidi has 6 payments recorded', async () => {
-            const payments = await prisma.contractPayment.findMany({
-                where: { contractId: contractAId },
+            const payments = await prisma.applicationPayment.findMany({
+                where: { applicationId: applicationAId },
                 orderBy: { createdAt: 'asc' },
             });
 
@@ -440,7 +440,7 @@ describe('Property Transfer with Progress Preservation', () => {
     describe('Step 3: Chidi Requests Transfer', () => {
         it('Chidi submits a transfer request to Property Y Unit B3', async () => {
             const response = await api
-                .post(`/contracts/${contractAId}/transfer-requests`)
+                .post(`/applications/${applicationAId}/transfer-requests`)
                 .set(authHeaders(chidiId, tenantId))
                 .send({
                     targetPropertyUnitId: unitYId,
@@ -449,7 +449,7 @@ describe('Property Transfer with Progress Preservation', () => {
 
             expect(response.status).toBe(201);
             expect(response.body.status).toBe('PENDING');
-            expect(response.body.sourceContractId).toBe(contractAId);
+            expect(response.body.sourceApplicationId).toBe(applicationAId);
             expect(response.body.targetPropertyUnitId).toBe(unitYId);
             expect(response.body.priceAdjustment).toBe(PROPERTY_Y_PRICE - PROPERTY_X_PRICE);
 
@@ -469,7 +469,7 @@ describe('Property Transfer with Progress Preservation', () => {
 
         it('Cannot create duplicate transfer request', async () => {
             const response = await api
-                .post(`/contracts/${contractAId}/transfer-requests`)
+                .post(`/applications/${applicationAId}/transfer-requests`)
                 .set(authHeaders(chidiId, tenantId))
                 .send({
                     targetPropertyUnitId: unitYId,
@@ -510,11 +510,11 @@ describe('Property Transfer with Progress Preservation', () => {
             expect(response.status).toBe(200);
             expect(response.body.message).toBe('Transfer approved successfully');
             expect(response.body.request.status).toBe('COMPLETED');
-            expect(response.body.newContract).toBeDefined();
+            expect(response.body.newApplication).toBeDefined();
             // New business rule: refundedAmount instead of paymentsMigrated
             expect(response.body.refundedAmount).toBeCloseTo(INSTALMENT_AMOUNT * 6, 2);
 
-            contractBId = response.body.newContract.id;
+            applicationBId = response.body.newApplication.id;
         });
     });
 
@@ -522,31 +522,31 @@ describe('Property Transfer with Progress Preservation', () => {
     // STEP 5: Verify transfer results
     // ================================================================
     describe('Step 5: Verify Transfer Results', () => {
-        it('Contract A is marked as TRANSFERRED', async () => {
+        it('Application A is marked as TRANSFERRED', async () => {
             const response = await api
-                .get(`/contracts/${contractAId}`)
+                .get(`/applications/${applicationAId}`)
                 .set(authHeaders(chidiId, tenantId));
 
             expect(response.status).toBe(200);
             expect(response.body.status).toBe('TRANSFERRED');
         });
 
-        it('Contract B exists with correct property', async () => {
+        it('Application B exists with correct property', async () => {
             const response = await api
-                .get(`/contracts/${contractBId}`)
+                .get(`/applications/${applicationBId}`)
                 .set(authHeaders(chidiId, tenantId));
 
             expect(response.status).toBe(200);
             expect(response.body.propertyUnitId).toBe(unitYId);
             expect(response.body.totalAmount).toBe(PROPERTY_Y_PRICE);
-            expect(response.body.transferredFromId).toBe(contractAId);
+            expect(response.body.transferredFromId).toBe(applicationAId);
         });
 
-        it('Contract B has no payments (fresh start)', async () => {
+        it('Application B has no payments (fresh start)', async () => {
             // With new business rule, payments are refunded to wallet
-            // New contract starts without any payment records
-            const payments = await prisma.contractPayment.findMany({
-                where: { contractId: contractBId },
+            // New application starts without any payment records
+            const payments = await prisma.applicationPayment.findMany({
+                where: { applicationId: applicationBId },
             });
 
             expect(payments).toHaveLength(0);
@@ -562,11 +562,11 @@ describe('Property Transfer with Progress Preservation', () => {
             expect(transferRequest!.refundedAt).not.toBeNull();
         });
 
-        it('Contract B starts fresh with zero payments (refund to wallet)', async () => {
+        it('Application B starts fresh with zero payments (refund to wallet)', async () => {
             // With the new business rule, payments are refunded to wallet
-            // The new contract starts fresh with zero paid amount
-            const contract = await prisma.contract.findUnique({
-                where: { id: contractBId },
+            // The new application starts fresh with zero paid amount
+            const application = await prisma.application.findUnique({
+                where: { id: applicationBId },
                 include: {
                     phases: {
                         include: {
@@ -577,10 +577,10 @@ describe('Property Transfer with Progress Preservation', () => {
                 },
             });
 
-            expect(contract).not.toBeNull();
+            expect(application).not.toBeNull();
 
             // All payment phases should start at zero
-            for (const phase of contract!.phases) {
+            for (const phase of application!.phases) {
                 if (phase.paymentPhase) {
                     expect(phase.paymentPhase.paidAmount).toBe(0);
                 }
@@ -604,7 +604,7 @@ describe('Property Transfer with Progress Preservation', () => {
 
             expect(response.status).toBe(200);
             expect(response.body.status).toBe('COMPLETED');
-            expect(response.body.targetContractId).toBe(contractBId);
+            expect(response.body.targetApplicationId).toBe(applicationBId);
             // New business rule: refundedAmount instead of paymentsMigrated
             expect(response.body.refundedAmount).toBeCloseTo(INSTALMENT_AMOUNT * 6, 2);
             expect(response.body.completedAt).not.toBeNull();
@@ -612,12 +612,12 @@ describe('Property Transfer with Progress Preservation', () => {
     });
 
     // ================================================================
-    // STEP 6: Chidi can continue with the new contract
+    // STEP 6: Chidi can continue with the new application
     // ================================================================
-    describe('Step 6: Chidi Continues on Contract B', () => {
-        it('Contract B has the same phase structure', async () => {
+    describe('Step 6: Chidi Continues on Application B', () => {
+        it('Application B has the same phase structure', async () => {
             const response = await api
-                .get(`/contracts/${contractBId}`)
+                .get(`/applications/${applicationBId}`)
                 .set(authHeaders(chidiId, tenantId));
 
             expect(response.status).toBe(200);
@@ -627,21 +627,21 @@ describe('Property Transfer with Progress Preservation', () => {
             expect(response.body.phases[2].name).toBe('Mortgage');
         });
 
-        it('KYC phase starts fresh (new contract rule)', async () => {
-            const contract = await prisma.contract.findUnique({
-                where: { id: contractBId },
+        it('KYC phase starts fresh (new application rule)', async () => {
+            const application = await prisma.application.findUnique({
+                where: { id: applicationBId },
                 include: { phases: { orderBy: { order: 'asc' } } },
             });
 
-            expect(contract).not.toBeNull();
-            const kycPhase = contract!.phases[0];
-            // With new business rule, new contract starts fresh - phases are PENDING
+            expect(application).not.toBeNull();
+            const kycPhase = application!.phases[0];
+            // With new business rule, new application starts fresh - phases are PENDING
             expect(kycPhase.status).toBe('PENDING');
         });
 
         it('Downpayment phase starts fresh (zero paid)', async () => {
-            const contract = await prisma.contract.findUnique({
-                where: { id: contractBId },
+            const application = await prisma.application.findUnique({
+                where: { id: applicationBId },
                 include: {
                     phases: {
                         include: { paymentPhase: true },
@@ -650,11 +650,11 @@ describe('Property Transfer with Progress Preservation', () => {
                 },
             });
 
-            expect(contract).not.toBeNull();
-            const downpaymentPhase = contract!.phases.find(p => p.name === 'Downpayment');
+            expect(application).not.toBeNull();
+            const downpaymentPhase = application!.phases.find(p => p.name === 'Downpayment');
             expect(downpaymentPhase).toBeDefined();
 
-            // With new business rule, new contract starts fresh
+            // With new business rule, new application starts fresh
             expect(downpaymentPhase!.paymentPhase?.paidAmount).toBe(0);
         });
     });

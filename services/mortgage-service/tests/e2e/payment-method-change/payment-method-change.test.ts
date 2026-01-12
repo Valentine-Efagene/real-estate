@@ -9,7 +9,7 @@ import { authHeaders } from '@valentine-efagene/qshelter-common';
  * E2E Test: Payment Method Change Flow
  * 
  * Tests the complete flow of a customer requesting to change their payment method
- * mid-contract, including approval and execution.
+ * mid-application, including approval and execution.
  * 
  * Scenario: docs/PAYMENT_METHOD_CHANGE_SCENARIO.md
  * 
@@ -46,8 +46,8 @@ describe('Payment Method Change Flow', () => {
     let alternativeMortgagePlanId: string;
     let alternativePaymentMethodId: string;
 
-    // Contract state
-    let contractId: string;
+    // Application state
+    let applicationId: string;
     let mortgagePhaseId: string;
 
     // Change request
@@ -326,35 +326,35 @@ describe('Payment Method Change Flow', () => {
     });
 
     // =========================================================================
-    // Step 2: Create an Active Contract (Database Setup for Testing)
+    // Step 2: Create an Active Application (Database Setup for Testing)
     // =========================================================================
-    describe('Step 2: Create an active contract ready for payment method change', () => {
-        it('creates a contract in ACTIVE state with mortgage phase active', async () => {
-            // Create the contract directly in the database in the appropriate state
-            // This simulates a contract that has gone through the full lifecycle
-            const contract = await prisma.contract.create({
+    describe('Step 2: Create an active application ready for payment method change', () => {
+        it('creates a application in ACTIVE state with mortgage phase active', async () => {
+            // Create the application directly in the database in the appropriate state
+            // This simulates a application that has gone through the full lifecycle
+            const application = await prisma.application.create({
                 data: {
                     id: faker.string.uuid(),
                     tenantId,
                     propertyUnitId: unit22AId,
                     buyerId: chidiId,
                     paymentMethodId: originalPaymentMethodId,
-                    contractNumber: `PMC-${Date.now()}`,
-                    title: 'Payment Method Change Test Contract - Unit 22A',
-                    contractType: 'MORTGAGE',
+                    applicationNumber: `PMC-${Date.now()}`,
+                    title: 'Payment Method Change Test Application - Unit 22A',
+                    applicationType: 'MORTGAGE',
                     totalAmount: propertyPrice,
-                    status: 'ACTIVE', // Contract is active
+                    status: 'ACTIVE', // Application is active
                     startDate: new Date(),
                     signedAt: new Date(),
                 },
             });
-            contractId = contract.id;
+            applicationId = application.id;
 
             // Create downpayment phase (COMPLETED)
-            const downpaymentPhase = await prisma.contractPhase.create({
+            const downpaymentPhase = await prisma.applicationPhase.create({
                 data: {
                     id: faker.string.uuid(),
-                    contractId,
+                    applicationId,
                     name: '10% Downpayment',
                     phaseCategory: 'PAYMENT',
                     phaseType: 'DOWNPAYMENT',
@@ -377,10 +377,10 @@ describe('Payment Method Change Flow', () => {
             });
 
             // Create mortgage phase (ACTIVE)
-            const mortgagePhase = await prisma.contractPhase.create({
+            const mortgagePhase = await prisma.applicationPhase.create({
                 data: {
                     id: faker.string.uuid(),
-                    contractId,
+                    applicationId,
                     name: '90% Mortgage (20 Years)',
                     phaseCategory: 'PAYMENT',
                     phaseType: 'MORTGAGE',
@@ -403,15 +403,15 @@ describe('Payment Method Change Flow', () => {
                 },
             });
 
-            // Verify contract was created correctly
-            const contractCheck = await prisma.contract.findUnique({
-                where: { id: contractId },
+            // Verify application was created correctly
+            const applicationCheck = await prisma.application.findUnique({
+                where: { id: applicationId },
                 include: { phases: true },
             });
 
-            expect(contractCheck).toBeDefined();
-            expect(contractCheck?.status).toBe('ACTIVE');
-            expect(contractCheck?.phases.length).toBe(2);
+            expect(applicationCheck).toBeDefined();
+            expect(applicationCheck?.status).toBe('ACTIVE');
+            expect(applicationCheck?.phases.length).toBe(2);
         });
     });
 
@@ -421,7 +421,7 @@ describe('Payment Method Change Flow', () => {
     describe('Step 3: Chidi requests payment method change', () => {
         it('Chidi creates a payment method change request', async () => {
             const response = await api
-                .post(`/contracts/${contractId}/payment-method-change-requests`)
+                .post(`/applications/${applicationId}/payment-method-change-requests`)
                 .set(authHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('create-change-request'))
                 .send({
@@ -440,7 +440,7 @@ describe('Payment Method Change Flow', () => {
 
         it('Request has financial impact preview calculated', async () => {
             const response = await api
-                .get(`/contracts/${contractId}/payment-method-change-requests/${changeRequestId}`)
+                .get(`/applications/${applicationId}/payment-method-change-requests/${changeRequestId}`)
                 .set(authHeaders(chidiId, tenantId));
 
             expect(response.status).toBe(200);
@@ -468,7 +468,7 @@ describe('Payment Method Change Flow', () => {
     describe('Step 4: Chidi submits documents for the request', () => {
         it('Chidi submits documents for the change request', async () => {
             const response = await api
-                .post(`/contracts/${contractId}/payment-method-change-requests/${changeRequestId}/submit-documents`)
+                .post(`/applications/${applicationId}/payment-method-change-requests/${changeRequestId}/submit-documents`)
                 .set(authHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('submit-change-documents'));
 
@@ -527,7 +527,7 @@ describe('Payment Method Change Flow', () => {
         });
 
         it('Original mortgage phase is NOT yet affected (approval ≠ execution)', async () => {
-            const phase = await prisma.contractPhase.findUnique({
+            const phase = await prisma.applicationPhase.findUnique({
                 where: { id: mortgagePhaseId },
             });
 
@@ -558,7 +558,7 @@ describe('Payment Method Change Flow', () => {
         });
 
         it('Original mortgage phase is now SUPERSEDED', async () => {
-            const phase = await prisma.contractPhase.findUnique({
+            const phase = await prisma.applicationPhase.findUnique({
                 where: { id: mortgagePhaseId },
             });
 
@@ -568,7 +568,7 @@ describe('Payment Method Change Flow', () => {
 
         it('New mortgage phase is created with 15-year terms', async () => {
             const phasesResponse = await api
-                .get(`/contracts/${contractId}/phases`)
+                .get(`/applications/${applicationId}/phases`)
                 .set(authHeaders(chidiId, tenantId));
 
             expect(phasesResponse.status).toBe(200);
@@ -583,13 +583,13 @@ describe('Payment Method Change Flow', () => {
             expect(newMortgagePhase.interestRate).toBe(newInterestRate);
         });
 
-        it('Contract payment method is updated to new method', async () => {
-            const contract = await prisma.contract.findUnique({
-                where: { id: contractId },
+        it('Application payment method is updated to new method', async () => {
+            const application = await prisma.application.findUnique({
+                where: { id: applicationId },
             });
 
-            expect(contract).toBeDefined();
-            expect(contract?.paymentMethodId).toBe(alternativePaymentMethodId);
+            expect(application).toBeDefined();
+            expect(application?.paymentMethodId).toBe(alternativePaymentMethodId);
         });
 
         it('Domain events for execution and amendment are created', async () => {
@@ -605,9 +605,9 @@ describe('Payment Method Change Flow', () => {
 
             const amendedEvent = await prisma.domainEvent.findFirst({
                 where: {
-                    aggregateType: 'Contract',
-                    aggregateId: contractId,
-                    eventType: 'CONTRACT.AMENDED',
+                    aggregateType: 'Application',
+                    aggregateId: applicationId,
+                    eventType: 'APPLICATION.AMENDED',
                 },
             });
 
@@ -621,7 +621,7 @@ describe('Payment Method Change Flow', () => {
     describe('Step 7: Verify final state and audit trail', () => {
         it('Change request has complete audit data', async () => {
             const response = await api
-                .get(`/contracts/${contractId}/payment-method-change-requests/${changeRequestId}`)
+                .get(`/applications/${applicationId}/payment-method-change-requests/${changeRequestId}`)
                 .set(authHeaders(chidiId, tenantId));
 
             expect(response.status).toBe(200);
@@ -640,9 +640,9 @@ describe('Payment Method Change Flow', () => {
                             aggregateId: changeRequestId,
                         },
                         {
-                            aggregateType: 'Contract',
-                            aggregateId: contractId,
-                            eventType: 'CONTRACT.AMENDED',
+                            aggregateType: 'Application',
+                            aggregateId: applicationId,
+                            eventType: 'APPLICATION.AMENDED',
                         },
                     ],
                 },
@@ -663,7 +663,7 @@ describe('Payment Method Change - Alternative Flows', () => {
     let tenantId: string;
     let adminId: string;
     let customerId: string;
-    let contractId: string;
+    let applicationId: string;
     let originalPaymentMethodId: string;
     let alternativePaymentMethodId: string;
     let propertyId: string;
@@ -771,30 +771,30 @@ describe('Payment Method Change - Alternative Flows', () => {
             .set(authHeaders(adminId, tenantId))
             .send({ propertyId: property.id });
 
-        // Create contract directly in database in ACTIVE state
-        const contract = await prisma.contract.create({
+        // Create application directly in database in ACTIVE state
+        const application = await prisma.application.create({
             data: {
                 id: faker.string.uuid(),
                 tenantId,
                 propertyUnitId: unit.id,
                 buyerId: customerId,
                 paymentMethodId: originalPaymentMethodId,
-                contractNumber: `ALT-${Date.now()}`,
-                title: 'Alt Flow Test Contract',
-                contractType: 'PURCHASE',
+                applicationNumber: `ALT-${Date.now()}`,
+                title: 'Alt Flow Test Application',
+                applicationType: 'PURCHASE',
                 totalAmount: 10_000_000,
                 status: 'ACTIVE',
                 startDate: new Date(),
                 signedAt: new Date(),
             },
         });
-        contractId = contract.id;
+        applicationId = application.id;
 
         // Create a payment phase in ACTIVE state
-        const paymentPhaseRecord = await prisma.contractPhase.create({
+        const paymentPhaseRecord = await prisma.applicationPhase.create({
             data: {
                 id: faker.string.uuid(),
-                contractId,
+                applicationId,
                 name: 'Payment Phase',
                 phaseCategory: 'PAYMENT',
                 phaseType: 'MORTGAGE',
@@ -830,7 +830,7 @@ describe('Payment Method Change - Alternative Flows', () => {
 
         it('Customer creates a change request', async () => {
             const response = await api
-                .post(`/contracts/${contractId}/payment-method-change-requests`)
+                .post(`/applications/${applicationId}/payment-method-change-requests`)
                 .set(authHeaders(customerId, tenantId))
                 .send({
                     toPaymentMethodId: alternativePaymentMethodId,
@@ -843,7 +843,7 @@ describe('Payment Method Change - Alternative Flows', () => {
 
         it('Customer submits documents', async () => {
             const response = await api
-                .post(`/contracts/${contractId}/payment-method-change-requests/${rejectRequestId}/submit-documents`)
+                .post(`/applications/${applicationId}/payment-method-change-requests/${rejectRequestId}/submit-documents`)
                 .set(authHeaders(customerId, tenantId));
 
             expect(response.status).toBe(200);
@@ -878,9 +878,9 @@ describe('Payment Method Change - Alternative Flows', () => {
             expect(event).toBeDefined();
         });
 
-        it('Contract payment method remains unchanged', async () => {
-            const contract = await prisma.contract.findUnique({ where: { id: contractId } });
-            expect(contract?.paymentMethodId).toBe(originalPaymentMethodId);
+        it('Application payment method remains unchanged', async () => {
+            const application = await prisma.application.findUnique({ where: { id: applicationId } });
+            expect(application?.paymentMethodId).toBe(originalPaymentMethodId);
         });
     });
 
@@ -889,7 +889,7 @@ describe('Payment Method Change - Alternative Flows', () => {
 
         it('Customer creates another change request', async () => {
             const response = await api
-                .post(`/contracts/${contractId}/payment-method-change-requests`)
+                .post(`/applications/${applicationId}/payment-method-change-requests`)
                 .set(authHeaders(customerId, tenantId))
                 .send({
                     toPaymentMethodId: alternativePaymentMethodId,
@@ -902,7 +902,7 @@ describe('Payment Method Change - Alternative Flows', () => {
 
         it('Customer cancels the request', async () => {
             const response = await api
-                .post(`/contracts/${contractId}/payment-method-change-requests/${cancelRequestId}/cancel`)
+                .post(`/applications/${applicationId}/payment-method-change-requests/${cancelRequestId}/cancel`)
                 .set(authHeaders(customerId, tenantId));
 
             expect(response.status).toBe(200);

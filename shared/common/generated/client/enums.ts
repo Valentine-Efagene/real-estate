@@ -43,7 +43,7 @@ export const PaymentFrequency = {
 export type PaymentFrequency = (typeof PaymentFrequency)[keyof typeof PaymentFrequency]
 
 
-export const ContractStatus = {
+export const ApplicationStatus = {
   DRAFT: 'DRAFT',
   PENDING: 'PENDING',
   ACTIVE: 'ACTIVE',
@@ -53,7 +53,7 @@ export const ContractStatus = {
   TRANSFERRED: 'TRANSFERRED'
 } as const
 
-export type ContractStatus = (typeof ContractStatus)[keyof typeof ContractStatus]
+export type ApplicationStatus = (typeof ApplicationStatus)[keyof typeof ApplicationStatus]
 
 
 export const TransferRequestStatus = {
@@ -250,9 +250,9 @@ export const OfferLetterStatus = {
 export type OfferLetterStatus = (typeof OfferLetterStatus)[keyof typeof OfferLetterStatus]
 
 
-export const ContractEventType = {
-  CONTRACT_CREATED: 'CONTRACT_CREATED',
-  CONTRACT_STATE_CHANGED: 'CONTRACT_STATE_CHANGED',
+export const ApplicationEventType = {
+  APPLICATION_CREATED: 'APPLICATION_CREATED',
+  APPLICATION_STATE_CHANGED: 'APPLICATION_STATE_CHANGED',
   PHASE_ACTIVATED: 'PHASE_ACTIVATED',
   PHASE_COMPLETED: 'PHASE_COMPLETED',
   STEP_COMPLETED: 'STEP_COMPLETED',
@@ -264,17 +264,17 @@ export const ContractEventType = {
   PAYMENT_COMPLETED: 'PAYMENT_COMPLETED',
   PAYMENT_FAILED: 'PAYMENT_FAILED',
   INSTALLMENTS_GENERATED: 'INSTALLMENTS_GENERATED',
-  CONTRACT_SIGNED: 'CONTRACT_SIGNED',
-  CONTRACT_TERMINATED: 'CONTRACT_TERMINATED',
-  CONTRACT_TRANSFERRED: 'CONTRACT_TRANSFERRED',
+  APPLICATION_SIGNED: 'APPLICATION_SIGNED',
+  APPLICATION_TERMINATED: 'APPLICATION_TERMINATED',
+  APPLICATION_TRANSFERRED: 'APPLICATION_TRANSFERRED',
   UNDERWRITING_COMPLETED: 'UNDERWRITING_COMPLETED',
   OFFER_LETTER_GENERATED: 'OFFER_LETTER_GENERATED'
 } as const
 
-export type ContractEventType = (typeof ContractEventType)[keyof typeof ContractEventType]
+export type ApplicationEventType = (typeof ApplicationEventType)[keyof typeof ApplicationEventType]
 
 
-export const ContractEventGroup = {
+export const ApplicationEventGroup = {
   STATE_CHANGE: 'STATE_CHANGE',
   PAYMENT: 'PAYMENT',
   DOCUMENT: 'DOCUMENT',
@@ -282,7 +282,7 @@ export const ContractEventGroup = {
   WORKFLOW: 'WORKFLOW'
 } as const
 
-export type ContractEventGroup = (typeof ContractEventGroup)[keyof typeof ContractEventGroup]
+export type ApplicationEventGroup = (typeof ApplicationEventGroup)[keyof typeof ApplicationEventGroup]
 
 
 export const EventActorType = {
@@ -393,7 +393,7 @@ export type PaymentMethodChangeStatus = (typeof PaymentMethodChangeStatus)[keyof
 
 
 export const DocumentRequirementContext = {
-  CONTRACT_PHASE: 'CONTRACT_PHASE',
+  APPLICATION_PHASE: 'APPLICATION_PHASE',
   PAYMENT_METHOD_CHANGE: 'PAYMENT_METHOD_CHANGE'
 } as const
 
@@ -405,7 +405,7 @@ export const ApprovalRequestType = {
   PROPERTY_UPDATE: 'PROPERTY_UPDATE',
   USER_WORKFLOW: 'USER_WORKFLOW',
   CREDIT_CHECK: 'CREDIT_CHECK',
-  CONTRACT_TERMINATION: 'CONTRACT_TERMINATION',
+  APPLICATION_TERMINATION: 'APPLICATION_TERMINATION',
   REFUND_APPROVAL: 'REFUND_APPROVAL'
 } as const
 

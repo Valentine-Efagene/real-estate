@@ -45,7 +45,7 @@ export type PaymentMethodChangeRequestSumAggregateOutputType = {
 export type PaymentMethodChangeRequestMinAggregateOutputType = {
   id: string | null
   tenantId: string | null
-  contractId: string | null
+  applicationId: string | null
   fromPaymentMethodId: string | null
   toPaymentMethodId: string | null
   requestorId: string | null
@@ -69,7 +69,7 @@ export type PaymentMethodChangeRequestMinAggregateOutputType = {
 export type PaymentMethodChangeRequestMaxAggregateOutputType = {
   id: string | null
   tenantId: string | null
-  contractId: string | null
+  applicationId: string | null
   fromPaymentMethodId: string | null
   toPaymentMethodId: string | null
   requestorId: string | null
@@ -93,7 +93,7 @@ export type PaymentMethodChangeRequestMaxAggregateOutputType = {
 export type PaymentMethodChangeRequestCountAggregateOutputType = {
   id: number
   tenantId: number
-  contractId: number
+  applicationId: number
   fromPaymentMethodId: number
   toPaymentMethodId: number
   requestorId: number
@@ -138,7 +138,7 @@ export type PaymentMethodChangeRequestSumAggregateInputType = {
 export type PaymentMethodChangeRequestMinAggregateInputType = {
   id?: true
   tenantId?: true
-  contractId?: true
+  applicationId?: true
   fromPaymentMethodId?: true
   toPaymentMethodId?: true
   requestorId?: true
@@ -162,7 +162,7 @@ export type PaymentMethodChangeRequestMinAggregateInputType = {
 export type PaymentMethodChangeRequestMaxAggregateInputType = {
   id?: true
   tenantId?: true
-  contractId?: true
+  applicationId?: true
   fromPaymentMethodId?: true
   toPaymentMethodId?: true
   requestorId?: true
@@ -186,7 +186,7 @@ export type PaymentMethodChangeRequestMaxAggregateInputType = {
 export type PaymentMethodChangeRequestCountAggregateInputType = {
   id?: true
   tenantId?: true
-  contractId?: true
+  applicationId?: true
   fromPaymentMethodId?: true
   toPaymentMethodId?: true
   requestorId?: true
@@ -300,7 +300,7 @@ export type PaymentMethodChangeRequestGroupByArgs<ExtArgs extends runtime.Types.
 export type PaymentMethodChangeRequestGroupByOutputType = {
   id: string
   tenantId: string
-  contractId: string
+  applicationId: string
   fromPaymentMethodId: string
   toPaymentMethodId: string
   requestorId: string
@@ -350,7 +350,7 @@ export type PaymentMethodChangeRequestWhereInput = {
   NOT?: Prisma.PaymentMethodChangeRequestWhereInput | Prisma.PaymentMethodChangeRequestWhereInput[]
   id?: Prisma.StringFilter<"PaymentMethodChangeRequest"> | string
   tenantId?: Prisma.StringFilter<"PaymentMethodChangeRequest"> | string
-  contractId?: Prisma.StringFilter<"PaymentMethodChangeRequest"> | string
+  applicationId?: Prisma.StringFilter<"PaymentMethodChangeRequest"> | string
   fromPaymentMethodId?: Prisma.StringFilter<"PaymentMethodChangeRequest"> | string
   toPaymentMethodId?: Prisma.StringFilter<"PaymentMethodChangeRequest"> | string
   requestorId?: Prisma.StringFilter<"PaymentMethodChangeRequest"> | string
@@ -373,7 +373,7 @@ export type PaymentMethodChangeRequestWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"PaymentMethodChangeRequest"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PaymentMethodChangeRequest"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
-  contract?: Prisma.XOR<Prisma.ContractScalarRelationFilter, Prisma.ContractWhereInput>
+  application?: Prisma.XOR<Prisma.ApplicationScalarRelationFilter, Prisma.ApplicationWhereInput>
   fromPaymentMethod?: Prisma.XOR<Prisma.PropertyPaymentMethodScalarRelationFilter, Prisma.PropertyPaymentMethodWhereInput>
   toPaymentMethod?: Prisma.XOR<Prisma.PropertyPaymentMethodScalarRelationFilter, Prisma.PropertyPaymentMethodWhereInput>
   requestor?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -383,7 +383,7 @@ export type PaymentMethodChangeRequestWhereInput = {
 export type PaymentMethodChangeRequestOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
-  contractId?: Prisma.SortOrder
+  applicationId?: Prisma.SortOrder
   fromPaymentMethodId?: Prisma.SortOrder
   toPaymentMethodId?: Prisma.SortOrder
   requestorId?: Prisma.SortOrder
@@ -406,7 +406,7 @@ export type PaymentMethodChangeRequestOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   tenant?: Prisma.TenantOrderByWithRelationInput
-  contract?: Prisma.ContractOrderByWithRelationInput
+  application?: Prisma.ApplicationOrderByWithRelationInput
   fromPaymentMethod?: Prisma.PropertyPaymentMethodOrderByWithRelationInput
   toPaymentMethod?: Prisma.PropertyPaymentMethodOrderByWithRelationInput
   requestor?: Prisma.UserOrderByWithRelationInput
@@ -420,7 +420,7 @@ export type PaymentMethodChangeRequestWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.PaymentMethodChangeRequestWhereInput[]
   NOT?: Prisma.PaymentMethodChangeRequestWhereInput | Prisma.PaymentMethodChangeRequestWhereInput[]
   tenantId?: Prisma.StringFilter<"PaymentMethodChangeRequest"> | string
-  contractId?: Prisma.StringFilter<"PaymentMethodChangeRequest"> | string
+  applicationId?: Prisma.StringFilter<"PaymentMethodChangeRequest"> | string
   fromPaymentMethodId?: Prisma.StringFilter<"PaymentMethodChangeRequest"> | string
   toPaymentMethodId?: Prisma.StringFilter<"PaymentMethodChangeRequest"> | string
   requestorId?: Prisma.StringFilter<"PaymentMethodChangeRequest"> | string
@@ -443,7 +443,7 @@ export type PaymentMethodChangeRequestWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"PaymentMethodChangeRequest"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PaymentMethodChangeRequest"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
-  contract?: Prisma.XOR<Prisma.ContractScalarRelationFilter, Prisma.ContractWhereInput>
+  application?: Prisma.XOR<Prisma.ApplicationScalarRelationFilter, Prisma.ApplicationWhereInput>
   fromPaymentMethod?: Prisma.XOR<Prisma.PropertyPaymentMethodScalarRelationFilter, Prisma.PropertyPaymentMethodWhereInput>
   toPaymentMethod?: Prisma.XOR<Prisma.PropertyPaymentMethodScalarRelationFilter, Prisma.PropertyPaymentMethodWhereInput>
   requestor?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -453,7 +453,7 @@ export type PaymentMethodChangeRequestWhereUniqueInput = Prisma.AtLeast<{
 export type PaymentMethodChangeRequestOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
-  contractId?: Prisma.SortOrder
+  applicationId?: Prisma.SortOrder
   fromPaymentMethodId?: Prisma.SortOrder
   toPaymentMethodId?: Prisma.SortOrder
   requestorId?: Prisma.SortOrder
@@ -488,7 +488,7 @@ export type PaymentMethodChangeRequestScalarWhereWithAggregatesInput = {
   NOT?: Prisma.PaymentMethodChangeRequestScalarWhereWithAggregatesInput | Prisma.PaymentMethodChangeRequestScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"PaymentMethodChangeRequest"> | string
   tenantId?: Prisma.StringWithAggregatesFilter<"PaymentMethodChangeRequest"> | string
-  contractId?: Prisma.StringWithAggregatesFilter<"PaymentMethodChangeRequest"> | string
+  applicationId?: Prisma.StringWithAggregatesFilter<"PaymentMethodChangeRequest"> | string
   fromPaymentMethodId?: Prisma.StringWithAggregatesFilter<"PaymentMethodChangeRequest"> | string
   toPaymentMethodId?: Prisma.StringWithAggregatesFilter<"PaymentMethodChangeRequest"> | string
   requestorId?: Prisma.StringWithAggregatesFilter<"PaymentMethodChangeRequest"> | string
@@ -532,7 +532,7 @@ export type PaymentMethodChangeRequestCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutPaymentMethodChangeRequestsInput
-  contract: Prisma.ContractCreateNestedOneWithoutPaymentMethodChangeRequestsInput
+  application: Prisma.ApplicationCreateNestedOneWithoutPaymentMethodChangeRequestsInput
   fromPaymentMethod: Prisma.PropertyPaymentMethodCreateNestedOneWithoutChangeRequestsFromInput
   toPaymentMethod: Prisma.PropertyPaymentMethodCreateNestedOneWithoutChangeRequestsToInput
   requestor: Prisma.UserCreateNestedOneWithoutPaymentMethodChangeRequestsInput
@@ -542,7 +542,7 @@ export type PaymentMethodChangeRequestCreateInput = {
 export type PaymentMethodChangeRequestUncheckedCreateInput = {
   id?: string
   tenantId: string
-  contractId: string
+  applicationId: string
   fromPaymentMethodId: string
   toPaymentMethodId: string
   requestorId: string
@@ -586,7 +586,7 @@ export type PaymentMethodChangeRequestUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutPaymentMethodChangeRequestsNestedInput
-  contract?: Prisma.ContractUpdateOneRequiredWithoutPaymentMethodChangeRequestsNestedInput
+  application?: Prisma.ApplicationUpdateOneRequiredWithoutPaymentMethodChangeRequestsNestedInput
   fromPaymentMethod?: Prisma.PropertyPaymentMethodUpdateOneRequiredWithoutChangeRequestsFromNestedInput
   toPaymentMethod?: Prisma.PropertyPaymentMethodUpdateOneRequiredWithoutChangeRequestsToNestedInput
   requestor?: Prisma.UserUpdateOneRequiredWithoutPaymentMethodChangeRequestsNestedInput
@@ -596,7 +596,7 @@ export type PaymentMethodChangeRequestUpdateInput = {
 export type PaymentMethodChangeRequestUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   fromPaymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   toPaymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   requestorId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -623,7 +623,7 @@ export type PaymentMethodChangeRequestUncheckedUpdateInput = {
 export type PaymentMethodChangeRequestCreateManyInput = {
   id?: string
   tenantId: string
-  contractId: string
+  applicationId: string
   fromPaymentMethodId: string
   toPaymentMethodId: string
   requestorId: string
@@ -671,7 +671,7 @@ export type PaymentMethodChangeRequestUpdateManyMutationInput = {
 export type PaymentMethodChangeRequestUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   fromPaymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   toPaymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   requestorId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -714,7 +714,7 @@ export type PaymentMethodChangeRequestOrderByRelevanceInput = {
 export type PaymentMethodChangeRequestCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
-  contractId?: Prisma.SortOrder
+  applicationId?: Prisma.SortOrder
   fromPaymentMethodId?: Prisma.SortOrder
   toPaymentMethodId?: Prisma.SortOrder
   requestorId?: Prisma.SortOrder
@@ -749,7 +749,7 @@ export type PaymentMethodChangeRequestAvgOrderByAggregateInput = {
 export type PaymentMethodChangeRequestMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
-  contractId?: Prisma.SortOrder
+  applicationId?: Prisma.SortOrder
   fromPaymentMethodId?: Prisma.SortOrder
   toPaymentMethodId?: Prisma.SortOrder
   requestorId?: Prisma.SortOrder
@@ -773,7 +773,7 @@ export type PaymentMethodChangeRequestMaxOrderByAggregateInput = {
 export type PaymentMethodChangeRequestMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
-  contractId?: Prisma.SortOrder
+  applicationId?: Prisma.SortOrder
   fromPaymentMethodId?: Prisma.SortOrder
   toPaymentMethodId?: Prisma.SortOrder
   requestorId?: Prisma.SortOrder
@@ -1012,45 +1012,45 @@ export type PaymentMethodChangeRequestUncheckedUpdateManyWithoutToPaymentMethodN
   deleteMany?: Prisma.PaymentMethodChangeRequestScalarWhereInput | Prisma.PaymentMethodChangeRequestScalarWhereInput[]
 }
 
-export type PaymentMethodChangeRequestCreateNestedManyWithoutContractInput = {
-  create?: Prisma.XOR<Prisma.PaymentMethodChangeRequestCreateWithoutContractInput, Prisma.PaymentMethodChangeRequestUncheckedCreateWithoutContractInput> | Prisma.PaymentMethodChangeRequestCreateWithoutContractInput[] | Prisma.PaymentMethodChangeRequestUncheckedCreateWithoutContractInput[]
-  connectOrCreate?: Prisma.PaymentMethodChangeRequestCreateOrConnectWithoutContractInput | Prisma.PaymentMethodChangeRequestCreateOrConnectWithoutContractInput[]
-  createMany?: Prisma.PaymentMethodChangeRequestCreateManyContractInputEnvelope
+export type PaymentMethodChangeRequestCreateNestedManyWithoutApplicationInput = {
+  create?: Prisma.XOR<Prisma.PaymentMethodChangeRequestCreateWithoutApplicationInput, Prisma.PaymentMethodChangeRequestUncheckedCreateWithoutApplicationInput> | Prisma.PaymentMethodChangeRequestCreateWithoutApplicationInput[] | Prisma.PaymentMethodChangeRequestUncheckedCreateWithoutApplicationInput[]
+  connectOrCreate?: Prisma.PaymentMethodChangeRequestCreateOrConnectWithoutApplicationInput | Prisma.PaymentMethodChangeRequestCreateOrConnectWithoutApplicationInput[]
+  createMany?: Prisma.PaymentMethodChangeRequestCreateManyApplicationInputEnvelope
   connect?: Prisma.PaymentMethodChangeRequestWhereUniqueInput | Prisma.PaymentMethodChangeRequestWhereUniqueInput[]
 }
 
-export type PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutContractInput = {
-  create?: Prisma.XOR<Prisma.PaymentMethodChangeRequestCreateWithoutContractInput, Prisma.PaymentMethodChangeRequestUncheckedCreateWithoutContractInput> | Prisma.PaymentMethodChangeRequestCreateWithoutContractInput[] | Prisma.PaymentMethodChangeRequestUncheckedCreateWithoutContractInput[]
-  connectOrCreate?: Prisma.PaymentMethodChangeRequestCreateOrConnectWithoutContractInput | Prisma.PaymentMethodChangeRequestCreateOrConnectWithoutContractInput[]
-  createMany?: Prisma.PaymentMethodChangeRequestCreateManyContractInputEnvelope
+export type PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutApplicationInput = {
+  create?: Prisma.XOR<Prisma.PaymentMethodChangeRequestCreateWithoutApplicationInput, Prisma.PaymentMethodChangeRequestUncheckedCreateWithoutApplicationInput> | Prisma.PaymentMethodChangeRequestCreateWithoutApplicationInput[] | Prisma.PaymentMethodChangeRequestUncheckedCreateWithoutApplicationInput[]
+  connectOrCreate?: Prisma.PaymentMethodChangeRequestCreateOrConnectWithoutApplicationInput | Prisma.PaymentMethodChangeRequestCreateOrConnectWithoutApplicationInput[]
+  createMany?: Prisma.PaymentMethodChangeRequestCreateManyApplicationInputEnvelope
   connect?: Prisma.PaymentMethodChangeRequestWhereUniqueInput | Prisma.PaymentMethodChangeRequestWhereUniqueInput[]
 }
 
-export type PaymentMethodChangeRequestUpdateManyWithoutContractNestedInput = {
-  create?: Prisma.XOR<Prisma.PaymentMethodChangeRequestCreateWithoutContractInput, Prisma.PaymentMethodChangeRequestUncheckedCreateWithoutContractInput> | Prisma.PaymentMethodChangeRequestCreateWithoutContractInput[] | Prisma.PaymentMethodChangeRequestUncheckedCreateWithoutContractInput[]
-  connectOrCreate?: Prisma.PaymentMethodChangeRequestCreateOrConnectWithoutContractInput | Prisma.PaymentMethodChangeRequestCreateOrConnectWithoutContractInput[]
-  upsert?: Prisma.PaymentMethodChangeRequestUpsertWithWhereUniqueWithoutContractInput | Prisma.PaymentMethodChangeRequestUpsertWithWhereUniqueWithoutContractInput[]
-  createMany?: Prisma.PaymentMethodChangeRequestCreateManyContractInputEnvelope
+export type PaymentMethodChangeRequestUpdateManyWithoutApplicationNestedInput = {
+  create?: Prisma.XOR<Prisma.PaymentMethodChangeRequestCreateWithoutApplicationInput, Prisma.PaymentMethodChangeRequestUncheckedCreateWithoutApplicationInput> | Prisma.PaymentMethodChangeRequestCreateWithoutApplicationInput[] | Prisma.PaymentMethodChangeRequestUncheckedCreateWithoutApplicationInput[]
+  connectOrCreate?: Prisma.PaymentMethodChangeRequestCreateOrConnectWithoutApplicationInput | Prisma.PaymentMethodChangeRequestCreateOrConnectWithoutApplicationInput[]
+  upsert?: Prisma.PaymentMethodChangeRequestUpsertWithWhereUniqueWithoutApplicationInput | Prisma.PaymentMethodChangeRequestUpsertWithWhereUniqueWithoutApplicationInput[]
+  createMany?: Prisma.PaymentMethodChangeRequestCreateManyApplicationInputEnvelope
   set?: Prisma.PaymentMethodChangeRequestWhereUniqueInput | Prisma.PaymentMethodChangeRequestWhereUniqueInput[]
   disconnect?: Prisma.PaymentMethodChangeRequestWhereUniqueInput | Prisma.PaymentMethodChangeRequestWhereUniqueInput[]
   delete?: Prisma.PaymentMethodChangeRequestWhereUniqueInput | Prisma.PaymentMethodChangeRequestWhereUniqueInput[]
   connect?: Prisma.PaymentMethodChangeRequestWhereUniqueInput | Prisma.PaymentMethodChangeRequestWhereUniqueInput[]
-  update?: Prisma.PaymentMethodChangeRequestUpdateWithWhereUniqueWithoutContractInput | Prisma.PaymentMethodChangeRequestUpdateWithWhereUniqueWithoutContractInput[]
-  updateMany?: Prisma.PaymentMethodChangeRequestUpdateManyWithWhereWithoutContractInput | Prisma.PaymentMethodChangeRequestUpdateManyWithWhereWithoutContractInput[]
+  update?: Prisma.PaymentMethodChangeRequestUpdateWithWhereUniqueWithoutApplicationInput | Prisma.PaymentMethodChangeRequestUpdateWithWhereUniqueWithoutApplicationInput[]
+  updateMany?: Prisma.PaymentMethodChangeRequestUpdateManyWithWhereWithoutApplicationInput | Prisma.PaymentMethodChangeRequestUpdateManyWithWhereWithoutApplicationInput[]
   deleteMany?: Prisma.PaymentMethodChangeRequestScalarWhereInput | Prisma.PaymentMethodChangeRequestScalarWhereInput[]
 }
 
-export type PaymentMethodChangeRequestUncheckedUpdateManyWithoutContractNestedInput = {
-  create?: Prisma.XOR<Prisma.PaymentMethodChangeRequestCreateWithoutContractInput, Prisma.PaymentMethodChangeRequestUncheckedCreateWithoutContractInput> | Prisma.PaymentMethodChangeRequestCreateWithoutContractInput[] | Prisma.PaymentMethodChangeRequestUncheckedCreateWithoutContractInput[]
-  connectOrCreate?: Prisma.PaymentMethodChangeRequestCreateOrConnectWithoutContractInput | Prisma.PaymentMethodChangeRequestCreateOrConnectWithoutContractInput[]
-  upsert?: Prisma.PaymentMethodChangeRequestUpsertWithWhereUniqueWithoutContractInput | Prisma.PaymentMethodChangeRequestUpsertWithWhereUniqueWithoutContractInput[]
-  createMany?: Prisma.PaymentMethodChangeRequestCreateManyContractInputEnvelope
+export type PaymentMethodChangeRequestUncheckedUpdateManyWithoutApplicationNestedInput = {
+  create?: Prisma.XOR<Prisma.PaymentMethodChangeRequestCreateWithoutApplicationInput, Prisma.PaymentMethodChangeRequestUncheckedCreateWithoutApplicationInput> | Prisma.PaymentMethodChangeRequestCreateWithoutApplicationInput[] | Prisma.PaymentMethodChangeRequestUncheckedCreateWithoutApplicationInput[]
+  connectOrCreate?: Prisma.PaymentMethodChangeRequestCreateOrConnectWithoutApplicationInput | Prisma.PaymentMethodChangeRequestCreateOrConnectWithoutApplicationInput[]
+  upsert?: Prisma.PaymentMethodChangeRequestUpsertWithWhereUniqueWithoutApplicationInput | Prisma.PaymentMethodChangeRequestUpsertWithWhereUniqueWithoutApplicationInput[]
+  createMany?: Prisma.PaymentMethodChangeRequestCreateManyApplicationInputEnvelope
   set?: Prisma.PaymentMethodChangeRequestWhereUniqueInput | Prisma.PaymentMethodChangeRequestWhereUniqueInput[]
   disconnect?: Prisma.PaymentMethodChangeRequestWhereUniqueInput | Prisma.PaymentMethodChangeRequestWhereUniqueInput[]
   delete?: Prisma.PaymentMethodChangeRequestWhereUniqueInput | Prisma.PaymentMethodChangeRequestWhereUniqueInput[]
   connect?: Prisma.PaymentMethodChangeRequestWhereUniqueInput | Prisma.PaymentMethodChangeRequestWhereUniqueInput[]
-  update?: Prisma.PaymentMethodChangeRequestUpdateWithWhereUniqueWithoutContractInput | Prisma.PaymentMethodChangeRequestUpdateWithWhereUniqueWithoutContractInput[]
-  updateMany?: Prisma.PaymentMethodChangeRequestUpdateManyWithWhereWithoutContractInput | Prisma.PaymentMethodChangeRequestUpdateManyWithWhereWithoutContractInput[]
+  update?: Prisma.PaymentMethodChangeRequestUpdateWithWhereUniqueWithoutApplicationInput | Prisma.PaymentMethodChangeRequestUpdateWithWhereUniqueWithoutApplicationInput[]
+  updateMany?: Prisma.PaymentMethodChangeRequestUpdateManyWithWhereWithoutApplicationInput | Prisma.PaymentMethodChangeRequestUpdateManyWithWhereWithoutApplicationInput[]
   deleteMany?: Prisma.PaymentMethodChangeRequestScalarWhereInput | Prisma.PaymentMethodChangeRequestScalarWhereInput[]
 }
 
@@ -1078,7 +1078,7 @@ export type PaymentMethodChangeRequestCreateWithoutRequestorInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutPaymentMethodChangeRequestsInput
-  contract: Prisma.ContractCreateNestedOneWithoutPaymentMethodChangeRequestsInput
+  application: Prisma.ApplicationCreateNestedOneWithoutPaymentMethodChangeRequestsInput
   fromPaymentMethod: Prisma.PropertyPaymentMethodCreateNestedOneWithoutChangeRequestsFromInput
   toPaymentMethod: Prisma.PropertyPaymentMethodCreateNestedOneWithoutChangeRequestsToInput
   reviewer?: Prisma.UserCreateNestedOneWithoutReviewedChangeRequestsInput
@@ -1087,7 +1087,7 @@ export type PaymentMethodChangeRequestCreateWithoutRequestorInput = {
 export type PaymentMethodChangeRequestUncheckedCreateWithoutRequestorInput = {
   id?: string
   tenantId: string
-  contractId: string
+  applicationId: string
   fromPaymentMethodId: string
   toPaymentMethodId: string
   reason?: string | null
@@ -1140,7 +1140,7 @@ export type PaymentMethodChangeRequestCreateWithoutReviewerInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutPaymentMethodChangeRequestsInput
-  contract: Prisma.ContractCreateNestedOneWithoutPaymentMethodChangeRequestsInput
+  application: Prisma.ApplicationCreateNestedOneWithoutPaymentMethodChangeRequestsInput
   fromPaymentMethod: Prisma.PropertyPaymentMethodCreateNestedOneWithoutChangeRequestsFromInput
   toPaymentMethod: Prisma.PropertyPaymentMethodCreateNestedOneWithoutChangeRequestsToInput
   requestor: Prisma.UserCreateNestedOneWithoutPaymentMethodChangeRequestsInput
@@ -1149,7 +1149,7 @@ export type PaymentMethodChangeRequestCreateWithoutReviewerInput = {
 export type PaymentMethodChangeRequestUncheckedCreateWithoutReviewerInput = {
   id?: string
   tenantId: string
-  contractId: string
+  applicationId: string
   fromPaymentMethodId: string
   toPaymentMethodId: string
   requestorId: string
@@ -1204,7 +1204,7 @@ export type PaymentMethodChangeRequestScalarWhereInput = {
   NOT?: Prisma.PaymentMethodChangeRequestScalarWhereInput | Prisma.PaymentMethodChangeRequestScalarWhereInput[]
   id?: Prisma.StringFilter<"PaymentMethodChangeRequest"> | string
   tenantId?: Prisma.StringFilter<"PaymentMethodChangeRequest"> | string
-  contractId?: Prisma.StringFilter<"PaymentMethodChangeRequest"> | string
+  applicationId?: Prisma.StringFilter<"PaymentMethodChangeRequest"> | string
   fromPaymentMethodId?: Prisma.StringFilter<"PaymentMethodChangeRequest"> | string
   toPaymentMethodId?: Prisma.StringFilter<"PaymentMethodChangeRequest"> | string
   requestorId?: Prisma.StringFilter<"PaymentMethodChangeRequest"> | string
@@ -1263,7 +1263,7 @@ export type PaymentMethodChangeRequestCreateWithoutTenantInput = {
   newPhaseData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  contract: Prisma.ContractCreateNestedOneWithoutPaymentMethodChangeRequestsInput
+  application: Prisma.ApplicationCreateNestedOneWithoutPaymentMethodChangeRequestsInput
   fromPaymentMethod: Prisma.PropertyPaymentMethodCreateNestedOneWithoutChangeRequestsFromInput
   toPaymentMethod: Prisma.PropertyPaymentMethodCreateNestedOneWithoutChangeRequestsToInput
   requestor: Prisma.UserCreateNestedOneWithoutPaymentMethodChangeRequestsInput
@@ -1272,7 +1272,7 @@ export type PaymentMethodChangeRequestCreateWithoutTenantInput = {
 
 export type PaymentMethodChangeRequestUncheckedCreateWithoutTenantInput = {
   id?: string
-  contractId: string
+  applicationId: string
   fromPaymentMethodId: string
   toPaymentMethodId: string
   requestorId: string
@@ -1342,7 +1342,7 @@ export type PaymentMethodChangeRequestCreateWithoutFromPaymentMethodInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutPaymentMethodChangeRequestsInput
-  contract: Prisma.ContractCreateNestedOneWithoutPaymentMethodChangeRequestsInput
+  application: Prisma.ApplicationCreateNestedOneWithoutPaymentMethodChangeRequestsInput
   toPaymentMethod: Prisma.PropertyPaymentMethodCreateNestedOneWithoutChangeRequestsToInput
   requestor: Prisma.UserCreateNestedOneWithoutPaymentMethodChangeRequestsInput
   reviewer?: Prisma.UserCreateNestedOneWithoutReviewedChangeRequestsInput
@@ -1351,7 +1351,7 @@ export type PaymentMethodChangeRequestCreateWithoutFromPaymentMethodInput = {
 export type PaymentMethodChangeRequestUncheckedCreateWithoutFromPaymentMethodInput = {
   id?: string
   tenantId: string
-  contractId: string
+  applicationId: string
   toPaymentMethodId: string
   requestorId: string
   reason?: string | null
@@ -1404,7 +1404,7 @@ export type PaymentMethodChangeRequestCreateWithoutToPaymentMethodInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutPaymentMethodChangeRequestsInput
-  contract: Prisma.ContractCreateNestedOneWithoutPaymentMethodChangeRequestsInput
+  application: Prisma.ApplicationCreateNestedOneWithoutPaymentMethodChangeRequestsInput
   fromPaymentMethod: Prisma.PropertyPaymentMethodCreateNestedOneWithoutChangeRequestsFromInput
   requestor: Prisma.UserCreateNestedOneWithoutPaymentMethodChangeRequestsInput
   reviewer?: Prisma.UserCreateNestedOneWithoutReviewedChangeRequestsInput
@@ -1413,7 +1413,7 @@ export type PaymentMethodChangeRequestCreateWithoutToPaymentMethodInput = {
 export type PaymentMethodChangeRequestUncheckedCreateWithoutToPaymentMethodInput = {
   id?: string
   tenantId: string
-  contractId: string
+  applicationId: string
   fromPaymentMethodId: string
   requestorId: string
   reason?: string | null
@@ -1478,7 +1478,7 @@ export type PaymentMethodChangeRequestUpdateManyWithWhereWithoutToPaymentMethodI
   data: Prisma.XOR<Prisma.PaymentMethodChangeRequestUpdateManyMutationInput, Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutToPaymentMethodInput>
 }
 
-export type PaymentMethodChangeRequestCreateWithoutContractInput = {
+export type PaymentMethodChangeRequestCreateWithoutApplicationInput = {
   id?: string
   reason?: string | null
   requiredDocumentTypes?: string | null
@@ -1504,7 +1504,7 @@ export type PaymentMethodChangeRequestCreateWithoutContractInput = {
   reviewer?: Prisma.UserCreateNestedOneWithoutReviewedChangeRequestsInput
 }
 
-export type PaymentMethodChangeRequestUncheckedCreateWithoutContractInput = {
+export type PaymentMethodChangeRequestUncheckedCreateWithoutApplicationInput = {
   id?: string
   tenantId: string
   fromPaymentMethodId: string
@@ -1530,36 +1530,36 @@ export type PaymentMethodChangeRequestUncheckedCreateWithoutContractInput = {
   updatedAt?: Date | string
 }
 
-export type PaymentMethodChangeRequestCreateOrConnectWithoutContractInput = {
+export type PaymentMethodChangeRequestCreateOrConnectWithoutApplicationInput = {
   where: Prisma.PaymentMethodChangeRequestWhereUniqueInput
-  create: Prisma.XOR<Prisma.PaymentMethodChangeRequestCreateWithoutContractInput, Prisma.PaymentMethodChangeRequestUncheckedCreateWithoutContractInput>
+  create: Prisma.XOR<Prisma.PaymentMethodChangeRequestCreateWithoutApplicationInput, Prisma.PaymentMethodChangeRequestUncheckedCreateWithoutApplicationInput>
 }
 
-export type PaymentMethodChangeRequestCreateManyContractInputEnvelope = {
-  data: Prisma.PaymentMethodChangeRequestCreateManyContractInput | Prisma.PaymentMethodChangeRequestCreateManyContractInput[]
+export type PaymentMethodChangeRequestCreateManyApplicationInputEnvelope = {
+  data: Prisma.PaymentMethodChangeRequestCreateManyApplicationInput | Prisma.PaymentMethodChangeRequestCreateManyApplicationInput[]
   skipDuplicates?: boolean
 }
 
-export type PaymentMethodChangeRequestUpsertWithWhereUniqueWithoutContractInput = {
+export type PaymentMethodChangeRequestUpsertWithWhereUniqueWithoutApplicationInput = {
   where: Prisma.PaymentMethodChangeRequestWhereUniqueInput
-  update: Prisma.XOR<Prisma.PaymentMethodChangeRequestUpdateWithoutContractInput, Prisma.PaymentMethodChangeRequestUncheckedUpdateWithoutContractInput>
-  create: Prisma.XOR<Prisma.PaymentMethodChangeRequestCreateWithoutContractInput, Prisma.PaymentMethodChangeRequestUncheckedCreateWithoutContractInput>
+  update: Prisma.XOR<Prisma.PaymentMethodChangeRequestUpdateWithoutApplicationInput, Prisma.PaymentMethodChangeRequestUncheckedUpdateWithoutApplicationInput>
+  create: Prisma.XOR<Prisma.PaymentMethodChangeRequestCreateWithoutApplicationInput, Prisma.PaymentMethodChangeRequestUncheckedCreateWithoutApplicationInput>
 }
 
-export type PaymentMethodChangeRequestUpdateWithWhereUniqueWithoutContractInput = {
+export type PaymentMethodChangeRequestUpdateWithWhereUniqueWithoutApplicationInput = {
   where: Prisma.PaymentMethodChangeRequestWhereUniqueInput
-  data: Prisma.XOR<Prisma.PaymentMethodChangeRequestUpdateWithoutContractInput, Prisma.PaymentMethodChangeRequestUncheckedUpdateWithoutContractInput>
+  data: Prisma.XOR<Prisma.PaymentMethodChangeRequestUpdateWithoutApplicationInput, Prisma.PaymentMethodChangeRequestUncheckedUpdateWithoutApplicationInput>
 }
 
-export type PaymentMethodChangeRequestUpdateManyWithWhereWithoutContractInput = {
+export type PaymentMethodChangeRequestUpdateManyWithWhereWithoutApplicationInput = {
   where: Prisma.PaymentMethodChangeRequestScalarWhereInput
-  data: Prisma.XOR<Prisma.PaymentMethodChangeRequestUpdateManyMutationInput, Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutContractInput>
+  data: Prisma.XOR<Prisma.PaymentMethodChangeRequestUpdateManyMutationInput, Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutApplicationInput>
 }
 
 export type PaymentMethodChangeRequestCreateManyRequestorInput = {
   id?: string
   tenantId: string
-  contractId: string
+  applicationId: string
   fromPaymentMethodId: string
   toPaymentMethodId: string
   reason?: string | null
@@ -1585,7 +1585,7 @@ export type PaymentMethodChangeRequestCreateManyRequestorInput = {
 export type PaymentMethodChangeRequestCreateManyReviewerInput = {
   id?: string
   tenantId: string
-  contractId: string
+  applicationId: string
   fromPaymentMethodId: string
   toPaymentMethodId: string
   requestorId: string
@@ -1628,7 +1628,7 @@ export type PaymentMethodChangeRequestUpdateWithoutRequestorInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutPaymentMethodChangeRequestsNestedInput
-  contract?: Prisma.ContractUpdateOneRequiredWithoutPaymentMethodChangeRequestsNestedInput
+  application?: Prisma.ApplicationUpdateOneRequiredWithoutPaymentMethodChangeRequestsNestedInput
   fromPaymentMethod?: Prisma.PropertyPaymentMethodUpdateOneRequiredWithoutChangeRequestsFromNestedInput
   toPaymentMethod?: Prisma.PropertyPaymentMethodUpdateOneRequiredWithoutChangeRequestsToNestedInput
   reviewer?: Prisma.UserUpdateOneWithoutReviewedChangeRequestsNestedInput
@@ -1637,7 +1637,7 @@ export type PaymentMethodChangeRequestUpdateWithoutRequestorInput = {
 export type PaymentMethodChangeRequestUncheckedUpdateWithoutRequestorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   fromPaymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   toPaymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1663,7 +1663,7 @@ export type PaymentMethodChangeRequestUncheckedUpdateWithoutRequestorInput = {
 export type PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   fromPaymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   toPaymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1706,7 +1706,7 @@ export type PaymentMethodChangeRequestUpdateWithoutReviewerInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutPaymentMethodChangeRequestsNestedInput
-  contract?: Prisma.ContractUpdateOneRequiredWithoutPaymentMethodChangeRequestsNestedInput
+  application?: Prisma.ApplicationUpdateOneRequiredWithoutPaymentMethodChangeRequestsNestedInput
   fromPaymentMethod?: Prisma.PropertyPaymentMethodUpdateOneRequiredWithoutChangeRequestsFromNestedInput
   toPaymentMethod?: Prisma.PropertyPaymentMethodUpdateOneRequiredWithoutChangeRequestsToNestedInput
   requestor?: Prisma.UserUpdateOneRequiredWithoutPaymentMethodChangeRequestsNestedInput
@@ -1715,7 +1715,7 @@ export type PaymentMethodChangeRequestUpdateWithoutReviewerInput = {
 export type PaymentMethodChangeRequestUncheckedUpdateWithoutReviewerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   fromPaymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   toPaymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   requestorId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1741,7 +1741,7 @@ export type PaymentMethodChangeRequestUncheckedUpdateWithoutReviewerInput = {
 export type PaymentMethodChangeRequestUncheckedUpdateManyWithoutReviewerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   fromPaymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   toPaymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   requestorId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1766,7 +1766,7 @@ export type PaymentMethodChangeRequestUncheckedUpdateManyWithoutReviewerInput = 
 
 export type PaymentMethodChangeRequestCreateManyTenantInput = {
   id?: string
-  contractId: string
+  applicationId: string
   fromPaymentMethodId: string
   toPaymentMethodId: string
   requestorId: string
@@ -1809,7 +1809,7 @@ export type PaymentMethodChangeRequestUpdateWithoutTenantInput = {
   newPhaseData?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  contract?: Prisma.ContractUpdateOneRequiredWithoutPaymentMethodChangeRequestsNestedInput
+  application?: Prisma.ApplicationUpdateOneRequiredWithoutPaymentMethodChangeRequestsNestedInput
   fromPaymentMethod?: Prisma.PropertyPaymentMethodUpdateOneRequiredWithoutChangeRequestsFromNestedInput
   toPaymentMethod?: Prisma.PropertyPaymentMethodUpdateOneRequiredWithoutChangeRequestsToNestedInput
   requestor?: Prisma.UserUpdateOneRequiredWithoutPaymentMethodChangeRequestsNestedInput
@@ -1818,7 +1818,7 @@ export type PaymentMethodChangeRequestUpdateWithoutTenantInput = {
 
 export type PaymentMethodChangeRequestUncheckedUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   fromPaymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   toPaymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   requestorId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1844,7 +1844,7 @@ export type PaymentMethodChangeRequestUncheckedUpdateWithoutTenantInput = {
 
 export type PaymentMethodChangeRequestUncheckedUpdateManyWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   fromPaymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   toPaymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   requestorId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1871,7 +1871,7 @@ export type PaymentMethodChangeRequestUncheckedUpdateManyWithoutTenantInput = {
 export type PaymentMethodChangeRequestCreateManyFromPaymentMethodInput = {
   id?: string
   tenantId: string
-  contractId: string
+  applicationId: string
   toPaymentMethodId: string
   requestorId: string
   reason?: string | null
@@ -1897,7 +1897,7 @@ export type PaymentMethodChangeRequestCreateManyFromPaymentMethodInput = {
 export type PaymentMethodChangeRequestCreateManyToPaymentMethodInput = {
   id?: string
   tenantId: string
-  contractId: string
+  applicationId: string
   fromPaymentMethodId: string
   requestorId: string
   reason?: string | null
@@ -1940,7 +1940,7 @@ export type PaymentMethodChangeRequestUpdateWithoutFromPaymentMethodInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutPaymentMethodChangeRequestsNestedInput
-  contract?: Prisma.ContractUpdateOneRequiredWithoutPaymentMethodChangeRequestsNestedInput
+  application?: Prisma.ApplicationUpdateOneRequiredWithoutPaymentMethodChangeRequestsNestedInput
   toPaymentMethod?: Prisma.PropertyPaymentMethodUpdateOneRequiredWithoutChangeRequestsToNestedInput
   requestor?: Prisma.UserUpdateOneRequiredWithoutPaymentMethodChangeRequestsNestedInput
   reviewer?: Prisma.UserUpdateOneWithoutReviewedChangeRequestsNestedInput
@@ -1949,7 +1949,7 @@ export type PaymentMethodChangeRequestUpdateWithoutFromPaymentMethodInput = {
 export type PaymentMethodChangeRequestUncheckedUpdateWithoutFromPaymentMethodInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   toPaymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   requestorId?: Prisma.StringFieldUpdateOperationsInput | string
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1975,7 +1975,7 @@ export type PaymentMethodChangeRequestUncheckedUpdateWithoutFromPaymentMethodInp
 export type PaymentMethodChangeRequestUncheckedUpdateManyWithoutFromPaymentMethodInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   toPaymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   requestorId?: Prisma.StringFieldUpdateOperationsInput | string
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2018,7 +2018,7 @@ export type PaymentMethodChangeRequestUpdateWithoutToPaymentMethodInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutPaymentMethodChangeRequestsNestedInput
-  contract?: Prisma.ContractUpdateOneRequiredWithoutPaymentMethodChangeRequestsNestedInput
+  application?: Prisma.ApplicationUpdateOneRequiredWithoutPaymentMethodChangeRequestsNestedInput
   fromPaymentMethod?: Prisma.PropertyPaymentMethodUpdateOneRequiredWithoutChangeRequestsFromNestedInput
   requestor?: Prisma.UserUpdateOneRequiredWithoutPaymentMethodChangeRequestsNestedInput
   reviewer?: Prisma.UserUpdateOneWithoutReviewedChangeRequestsNestedInput
@@ -2027,7 +2027,7 @@ export type PaymentMethodChangeRequestUpdateWithoutToPaymentMethodInput = {
 export type PaymentMethodChangeRequestUncheckedUpdateWithoutToPaymentMethodInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   fromPaymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   requestorId?: Prisma.StringFieldUpdateOperationsInput | string
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2053,7 +2053,7 @@ export type PaymentMethodChangeRequestUncheckedUpdateWithoutToPaymentMethodInput
 export type PaymentMethodChangeRequestUncheckedUpdateManyWithoutToPaymentMethodInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   fromPaymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   requestorId?: Prisma.StringFieldUpdateOperationsInput | string
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2076,7 +2076,7 @@ export type PaymentMethodChangeRequestUncheckedUpdateManyWithoutToPaymentMethodI
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type PaymentMethodChangeRequestCreateManyContractInput = {
+export type PaymentMethodChangeRequestCreateManyApplicationInput = {
   id?: string
   tenantId: string
   fromPaymentMethodId: string
@@ -2102,7 +2102,7 @@ export type PaymentMethodChangeRequestCreateManyContractInput = {
   updatedAt?: Date | string
 }
 
-export type PaymentMethodChangeRequestUpdateWithoutContractInput = {
+export type PaymentMethodChangeRequestUpdateWithoutApplicationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   requiredDocumentTypes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2128,7 +2128,7 @@ export type PaymentMethodChangeRequestUpdateWithoutContractInput = {
   reviewer?: Prisma.UserUpdateOneWithoutReviewedChangeRequestsNestedInput
 }
 
-export type PaymentMethodChangeRequestUncheckedUpdateWithoutContractInput = {
+export type PaymentMethodChangeRequestUncheckedUpdateWithoutApplicationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   fromPaymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2154,7 +2154,7 @@ export type PaymentMethodChangeRequestUncheckedUpdateWithoutContractInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type PaymentMethodChangeRequestUncheckedUpdateManyWithoutContractInput = {
+export type PaymentMethodChangeRequestUncheckedUpdateManyWithoutApplicationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   fromPaymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -2185,7 +2185,7 @@ export type PaymentMethodChangeRequestUncheckedUpdateManyWithoutContractInput = 
 export type PaymentMethodChangeRequestSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   tenantId?: boolean
-  contractId?: boolean
+  applicationId?: boolean
   fromPaymentMethodId?: boolean
   toPaymentMethodId?: boolean
   requestorId?: boolean
@@ -2208,7 +2208,7 @@ export type PaymentMethodChangeRequestSelect<ExtArgs extends runtime.Types.Exten
   createdAt?: boolean
   updatedAt?: boolean
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
-  contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
+  application?: boolean | Prisma.ApplicationDefaultArgs<ExtArgs>
   fromPaymentMethod?: boolean | Prisma.PropertyPaymentMethodDefaultArgs<ExtArgs>
   toPaymentMethod?: boolean | Prisma.PropertyPaymentMethodDefaultArgs<ExtArgs>
   requestor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -2220,7 +2220,7 @@ export type PaymentMethodChangeRequestSelect<ExtArgs extends runtime.Types.Exten
 export type PaymentMethodChangeRequestSelectScalar = {
   id?: boolean
   tenantId?: boolean
-  contractId?: boolean
+  applicationId?: boolean
   fromPaymentMethodId?: boolean
   toPaymentMethodId?: boolean
   requestorId?: boolean
@@ -2244,10 +2244,10 @@ export type PaymentMethodChangeRequestSelectScalar = {
   updatedAt?: boolean
 }
 
-export type PaymentMethodChangeRequestOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "contractId" | "fromPaymentMethodId" | "toPaymentMethodId" | "requestorId" | "reason" | "requiredDocumentTypes" | "submittedDocuments" | "currentOutstanding" | "newTermMonths" | "newInterestRate" | "newMonthlyPayment" | "penaltyAmount" | "financialImpactNotes" | "status" | "reviewerId" | "reviewNotes" | "reviewedAt" | "executedAt" | "previousPhaseData" | "newPhaseData" | "createdAt" | "updatedAt", ExtArgs["result"]["paymentMethodChangeRequest"]>
+export type PaymentMethodChangeRequestOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "applicationId" | "fromPaymentMethodId" | "toPaymentMethodId" | "requestorId" | "reason" | "requiredDocumentTypes" | "submittedDocuments" | "currentOutstanding" | "newTermMonths" | "newInterestRate" | "newMonthlyPayment" | "penaltyAmount" | "financialImpactNotes" | "status" | "reviewerId" | "reviewNotes" | "reviewedAt" | "executedAt" | "previousPhaseData" | "newPhaseData" | "createdAt" | "updatedAt", ExtArgs["result"]["paymentMethodChangeRequest"]>
 export type PaymentMethodChangeRequestInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
-  contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
+  application?: boolean | Prisma.ApplicationDefaultArgs<ExtArgs>
   fromPaymentMethod?: boolean | Prisma.PropertyPaymentMethodDefaultArgs<ExtArgs>
   toPaymentMethod?: boolean | Prisma.PropertyPaymentMethodDefaultArgs<ExtArgs>
   requestor?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -2258,7 +2258,7 @@ export type $PaymentMethodChangeRequestPayload<ExtArgs extends runtime.Types.Ext
   name: "PaymentMethodChangeRequest"
   objects: {
     tenant: Prisma.$TenantPayload<ExtArgs>
-    contract: Prisma.$ContractPayload<ExtArgs>
+    application: Prisma.$ApplicationPayload<ExtArgs>
     fromPaymentMethod: Prisma.$PropertyPaymentMethodPayload<ExtArgs>
     toPaymentMethod: Prisma.$PropertyPaymentMethodPayload<ExtArgs>
     requestor: Prisma.$UserPayload<ExtArgs>
@@ -2267,7 +2267,7 @@ export type $PaymentMethodChangeRequestPayload<ExtArgs extends runtime.Types.Ext
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     tenantId: string
-    contractId: string
+    applicationId: string
     fromPaymentMethodId: string
     toPaymentMethodId: string
     requestorId: string
@@ -2630,7 +2630,7 @@ readonly fields: PaymentMethodChangeRequestFieldRefs;
 export interface Prisma__PaymentMethodChangeRequestClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  contract<T extends Prisma.ContractDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContractDefaultArgs<ExtArgs>>): Prisma.Prisma__ContractClient<runtime.Types.Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  application<T extends Prisma.ApplicationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApplicationDefaultArgs<ExtArgs>>): Prisma.Prisma__ApplicationClient<runtime.Types.Result.GetResult<Prisma.$ApplicationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   fromPaymentMethod<T extends Prisma.PropertyPaymentMethodDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyPaymentMethodDefaultArgs<ExtArgs>>): Prisma.Prisma__PropertyPaymentMethodClient<runtime.Types.Result.GetResult<Prisma.$PropertyPaymentMethodPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   toPaymentMethod<T extends Prisma.PropertyPaymentMethodDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyPaymentMethodDefaultArgs<ExtArgs>>): Prisma.Prisma__PropertyPaymentMethodClient<runtime.Types.Result.GetResult<Prisma.$PropertyPaymentMethodPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   requestor<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
@@ -2666,7 +2666,7 @@ export interface Prisma__PaymentMethodChangeRequestClient<T, Null = never, ExtAr
 export interface PaymentMethodChangeRequestFieldRefs {
   readonly id: Prisma.FieldRef<"PaymentMethodChangeRequest", 'String'>
   readonly tenantId: Prisma.FieldRef<"PaymentMethodChangeRequest", 'String'>
-  readonly contractId: Prisma.FieldRef<"PaymentMethodChangeRequest", 'String'>
+  readonly applicationId: Prisma.FieldRef<"PaymentMethodChangeRequest", 'String'>
   readonly fromPaymentMethodId: Prisma.FieldRef<"PaymentMethodChangeRequest", 'String'>
   readonly toPaymentMethodId: Prisma.FieldRef<"PaymentMethodChangeRequest", 'String'>
   readonly requestorId: Prisma.FieldRef<"PaymentMethodChangeRequest", 'String'>

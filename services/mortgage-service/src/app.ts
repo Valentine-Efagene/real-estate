@@ -7,11 +7,11 @@ import {
 import { generateOpenAPIDocument } from './config/swagger';
 import { prisma } from './lib/prisma';
 
-// New unified contract-based routes
+// New unified application-based routes
 import paymentPlanRouter from './routes/payment-plan';
 import paymentMethodRouter from './routes/payment-method';
-import contractRouter from './routes/contract';
-import terminationRouter from './routes/contract-termination';
+import applicationRouter from './routes/application';
+import terminationRouter from './routes/application-termination';
 import offerLetterRouter from './routes/offer-letter';
 import underwritingRouter from './routes/underwriting';
 import paymentMethodChangeRouter from './routes/payment-method-change';
@@ -61,7 +61,7 @@ function getSwaggerHtml(): string {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>API Documentation - QShelter Contract Service</title>
+    <title>API Documentation - QShelter application Service</title>
     <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@5/swagger-ui.css" />
 </head>
 <body>
@@ -97,12 +97,12 @@ function getSwaggerHtml(): string {
 // New unified routes
 app.use('/payment-plans', paymentPlanRouter);
 app.use('/payment-methods', paymentMethodRouter);
-app.use('/contracts', contractRouter);
+app.use('/applications', applicationRouter);
 app.use('/offer-letters', offerLetterRouter);
 app.use('/underwriting', underwritingRouter);
 app.use('/approval-requests', approvalRequestRouter);
-app.use('/', terminationRouter); // Handles both /contracts/:id/... and /terminations/...
-app.use('/', paymentMethodChangeRouter); // Handles /contracts/:id/payment-method-change-requests and /payment-method-change-requests
-app.use('/', propertyTransferRouter); // Handles /contracts/:id/transfer-requests and /transfer-requests
+app.use('/', terminationRouter); // Handles both /applications/:id/... and /terminations/...
+app.use('/', paymentMethodChangeRouter); // Handles /applications/:id/payment-method-change-requests and /payment-method-change-requests
+app.use('/', propertyTransferRouter); // Handles /applications/:id/transfer-requests and /transfer-requests
 
 app.use(errorHandler);

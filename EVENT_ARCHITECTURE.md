@@ -15,13 +15,13 @@ Our system uses **two distinct event models** with clear, non-overlapping respon
 - **Has retry logic**: Yes (`status`, `failureCount`, `nextRetryAt`)
 - **Routing**: Uses `queueName` field to route to appropriate handlers
 
-### 2. ContractEvent (Audit Log)
+### 2. ApplicationEvent (Audit Log)
 
-**Location**: `shared/common/prisma/schema.prisma` - `ContractEvent` model  
+**Location**: `shared/common/prisma/schema.prisma` - `ApplicationEvent` model  
 **Purpose**: Immutable audit trail for compliance and forensics
 
 - **Used for**: Historical records, compliance, debugging, analytics
-- **Naming**: Enum values (`ContractEventType.CONTRACT_CREATED`)
+- **Naming**: Enum values (`ApplicationEventType.CONTRACT_CREATED`)
 - **Lifecycle**: Permanent - write-once, never modified or deleted
 - **Type safety**: Database-enforced enums prevent typos
 - **Structured**: Dedicated fields for state transitions, actor tracking
@@ -32,16 +32,16 @@ Our system uses **two distinct event models** with clear, non-overlapping respon
 
 ### Use Both (Most Common)
 
-Most contract-related actions need BOTH event types:
+Most application-related actions need BOTH event types:
 
 ```typescript
 await prisma.$transaction(async (tx) => {
-  const contract = await tx.contract.create({ data });
+  const application = await tx.application.create({ data });
 
   // AUDIT: Permanent record
-  await tx.contractEvent.create({
+  await tx.applicationEvent.create({
     data: {
-      contractId: contract.id,
+      applicationId: application.id,
       eventType: "CONTRACT_CREATED", // Enum
       eventGroup: "STATE_CHANGE",
       data: {
@@ -57,8 +57,8 @@ await prisma.$transaction(async (tx) => {
     data: {
       id: uuidv4(),
       eventType: "CONTRACT.CREATED", // String
-      aggregateType: "Contract",
-      aggregateId: contract.id,
+      aggregateType: "Application",
+      aggregateId: application.id,
       queueName: "notifications",
       payload: JSON.stringify({
         /* message payload */
@@ -68,17 +68,17 @@ await prisma.$transaction(async (tx) => {
 });
 ```
 
-### ContractEvent Only
+### ApplicationEvent Only
 
 Pure audit/tracking without triggering actions:
 
-- User viewing a contract
+- User viewing a application
 - Recording access logs
 - Tracking read-only operations
 
 ### DomainEvent Only
 
-External system events not related to contracts:
+External system events not related to applications:
 
 - Property price updates
 - Third-party webhook events
@@ -88,10 +88,10 @@ External system events not related to contracts:
 
 ## Type Conventions
 
-### ContractEvent Enums (Type-Safe)
+### ApplicationEvent Enums (Type-Safe)
 
 ```typescript
-enum ContractEventType {
+enum ApplicationEventType {
   CONTRACT_CREATED
   CONTRACT_STATE_CHANGED
   PHASE_ACTIVATED
@@ -99,7 +99,7 @@ enum ContractEventType {
   // ... 14 more values
 }
 
-enum ContractEventGroup {
+enum ApplicationEventGroup {
   STATE_CHANGE
   PAYMENT
   DOCUMENT
@@ -133,21 +133,21 @@ Examples:
 1. **Separation of Concerns**
 
    - Audit trail never mixed with processing logic
-   - Can query contract history without noise from processing events
+   - Can query application history without noise from processing events
 
 2. **Type Safety Where It Matters**
 
-   - ContractEvent uses enums → compile-time safety for audit events
+   - ApplicationEvent uses enums → compile-time safety for audit events
    - DomainEvent uses strings → flexibility for any service to emit events
 
 3. **Performance**
 
    - DomainEvents cleaned up after processing (no bloat)
-   - ContractEvents optimized for historical queries
+   - ApplicationEvents optimized for historical queries
 
 4. **Compliance**
 
-   - ContractEvent provides immutable audit trail
+   - ApplicationEvent provides immutable audit trail
    - Cannot be modified or accidentally deleted
 
 5. **Clear Intent**

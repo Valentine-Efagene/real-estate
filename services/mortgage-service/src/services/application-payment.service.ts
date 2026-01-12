@@ -5,19 +5,19 @@ import type {
     CreatePaymentInput,
     ProcessPaymentInput,
     RefundPaymentInput,
-} from '../validators/contract-payment.validator';
+} from '../validators/application-payment.validator';
 import {
     sendPaymentReceivedNotification,
     sendPaymentFailedNotification,
     formatCurrency,
     formatDate,
 } from '../lib/notifications';
-import { contractPhaseService } from './contract-phase.service';
+import { applicationPhaseService } from './application-phase.service';
 
 // Dashboard URL base
 const DASHBOARD_URL = process.env.DASHBOARD_URL || 'https://app.contribuild.com';
 
-class ContractPaymentService {
+class ApplicationPaymentService {
     /**
      * Generate a unique payment reference
      */
@@ -28,33 +28,33 @@ class ContractPaymentService {
     }
 
     /**
-     * Create a payment for a contract
+     * Create a payment for a application
      */
     async create(data: CreatePaymentInput, userId: string) {
-        const contract = await prisma.contract.findUnique({
-            where: { id: data.contractId },
+        const application = await prisma.application.findUnique({
+            where: { id: data.applicationId },
             include: {
                 phases: true,
             },
         });
 
-        if (!contract) {
-            throw new AppError(404, 'Contract not found');
+        if (!application) {
+            throw new AppError(404, 'application not found');
         }
 
         // Validate phase if provided
         let phase = null;
         let paymentPhase = null;
         if (data.phaseId) {
-            phase = await prisma.contractPhase.findUnique({
+            phase = await prisma.applicationPhase.findUnique({
                 where: { id: data.phaseId },
                 include: {
                     paymentPhase: true,
                 },
             });
 
-            if (!phase || phase.contractId !== data.contractId) {
-                throw new AppError(400, 'Invalid phase for this contract');
+            if (!phase || phase.applicationId !== data.applicationId) {
+                throw new AppError(400, 'Invalid phase for this application');
             }
 
             paymentPhase = phase.paymentPhase;
@@ -70,7 +70,7 @@ class ContractPaymentService {
         // Validate installment if provided
         let installment = null;
         if (data.installmentId) {
-            installment = await prisma.contractInstallment.findUnique({
+            installment = await prisma.paymentInstallment.findUnique({
                 where: { id: data.installmentId },
                 include: {
                     paymentPhase: {
@@ -100,9 +100,9 @@ class ContractPaymentService {
 
         const payment = await prisma.$transaction(async (tx) => {
             // Create payment record
-            const created = await tx.contractPayment.create({
+            const created = await tx.applicationPayment.create({
                 data: {
-                    contractId: data.contractId,
+                    applicationId: data.applicationId,
                     phaseId: data.phaseId,
                     installmentId: data.installmentId,
                     payerId: userId,
@@ -118,12 +118,12 @@ class ContractPaymentService {
                 data: {
                     id: uuidv4(),
                     eventType: 'PAYMENT.INITIATED',
-                    aggregateType: 'ContractPayment',
+                    aggregateType: 'ApplicationPayment',
                     aggregateId: created.id,
                     queueName: 'payments',
                     payload: JSON.stringify({
                         paymentId: created.id,
-                        contractId: data.contractId,
+                        applicationId: data.applicationId,
                         phaseId: data.phaseId,
                         installmentId: data.installmentId,
                         amount: data.amount,
@@ -140,10 +140,10 @@ class ContractPaymentService {
     }
 
     async findById(id: string): Promise<any> {
-        const payment = await prisma.contractPayment.findUnique({
+        const payment = await prisma.applicationPayment.findUnique({
             where: { id },
             include: {
-                contract: true,
+                application: true,
                 phase: true,
                 installment: true,
                 payer: {
@@ -165,10 +165,10 @@ class ContractPaymentService {
     }
 
     async findByReference(reference: string): Promise<any> {
-        const payment = await prisma.contractPayment.findUnique({
+        const payment = await prisma.applicationPayment.findUnique({
             where: { reference },
             include: {
-                contract: true,
+                application: true,
                 phase: true,
                 installment: true,
             },
@@ -181,9 +181,9 @@ class ContractPaymentService {
         return payment;
     }
 
-    async findByContract(contractId: string): Promise<any[]> {
-        const payments = await prisma.contractPayment.findMany({
-            where: { contractId },
+    async findByApplication(applicationId: string): Promise<any[]> {
+        const payments = await prisma.applicationPayment.findMany({
+            where: { applicationId },
             orderBy: { createdAt: 'desc' },
             include: {
                 phase: true,
@@ -194,7 +194,7 @@ class ContractPaymentService {
     }
 
     async findByPhase(phaseId: string) {
-        const payments = await prisma.contractPayment.findMany({
+        const payments = await prisma.applicationPayment.findMany({
             where: { phaseId },
             orderBy: { createdAt: 'desc' },
             include: {
@@ -236,7 +236,7 @@ class ContractPaymentService {
             let activatedNextPhaseId: string | null = null;
 
             // Update payment status
-            const result = await tx.contractPayment.update({
+            const result = await tx.applicationPayment.update({
                 where: { id: paymentId },
                 data: {
                     status: 'COMPLETED',
@@ -247,7 +247,7 @@ class ContractPaymentService {
 
             // Update installment if linked
             if (payment.installmentId) {
-                const installment = await tx.contractInstallment.findUnique({
+                const installment = await tx.paymentInstallment.findUnique({
                     where: { id: payment.installmentId },
                 });
 
@@ -255,7 +255,7 @@ class ContractPaymentService {
                     const newPaidAmount = installment.paidAmount + payment.amount;
                     const isPaid = newPaidAmount >= installment.amount;
 
-                    await tx.contractInstallment.update({
+                    await tx.paymentInstallment.update({
                         where: { id: payment.installmentId },
                         data: {
                             paidAmount: newPaidAmount,
@@ -268,7 +268,7 @@ class ContractPaymentService {
 
             // Update phase totals (via PaymentPhase extension)
             if (payment.phaseId) {
-                const phase = await tx.contractPhase.findUnique({
+                const phase = await tx.applicationPhase.findUnique({
                     where: { id: payment.phaseId },
                     include: {
                         paymentPhase: true,
@@ -289,9 +289,9 @@ class ContractPaymentService {
                         },
                     });
 
-                    // Update ContractPhase status
+                    // Update ApplicationPhase status
                     if (isFullyPaid) {
-                        await tx.contractPhase.update({
+                        await tx.applicationPhase.update({
                             where: { id: payment.phaseId },
                             data: {
                                 status: 'COMPLETED',
@@ -307,27 +307,27 @@ class ContractPaymentService {
                             data: {
                                 id: uuidv4(),
                                 eventType: 'PHASE.COMPLETED',
-                                aggregateType: 'ContractPhase',
+                                aggregateType: 'ApplicationPhase',
                                 aggregateId: payment.phaseId,
-                                queueName: 'contract-steps',
+                                queueName: 'application-steps',
                                 payload: JSON.stringify({
                                     phaseId: payment.phaseId,
-                                    contractId: payment.contractId,
+                                    applicationId: payment.applicationId,
                                     phaseType: phase.phaseType,
                                 }),
                             },
                         });
 
                         // Auto-activate next phase
-                        const nextPhase = await tx.contractPhase.findFirst({
+                        const nextPhase = await tx.applicationPhase.findFirst({
                             where: {
-                                contractId: payment.contractId,
+                                applicationId: payment.applicationId,
                                 order: phase.order + 1,
                             },
                         });
 
                         if (nextPhase) {
-                            await tx.contractPhase.update({
+                            await tx.applicationPhase.update({
                                 where: { id: nextPhase.id },
                                 data: {
                                     status: 'IN_PROGRESS',
@@ -337,9 +337,9 @@ class ContractPaymentService {
                             // Track the activated phase for post-transaction processing
                             activatedNextPhaseId = nextPhase.id;
 
-                            // Update contract's current phase
-                            await tx.contract.update({
-                                where: { id: payment.contractId },
+                            // Update application's current phase
+                            await tx.application.update({
+                                where: { id: payment.applicationId },
                                 data: { currentPhaseId: nextPhase.id },
                             });
 
@@ -348,12 +348,12 @@ class ContractPaymentService {
                                 data: {
                                     id: uuidv4(),
                                     eventType: 'PHASE.ACTIVATED',
-                                    aggregateType: 'ContractPhase',
+                                    aggregateType: 'ApplicationPhase',
                                     aggregateId: nextPhase.id,
-                                    queueName: 'contract-steps',
+                                    queueName: 'application-steps',
                                     payload: JSON.stringify({
                                         phaseId: nextPhase.id,
-                                        contractId: payment.contractId,
+                                        applicationId: payment.applicationId,
                                         phaseType: nextPhase.phaseType,
                                     }),
                                 },
@@ -363,18 +363,18 @@ class ContractPaymentService {
                 }
             }
 
-            // Find next unpaid installment for this contract (via PaymentPhase)
-            const nextInstallment = await tx.contractInstallment.findFirst({
+            // Find next unpaid installment for this application (via PaymentPhase)
+            const nextInstallment = await tx.paymentInstallment.findFirst({
                 where: {
-                    paymentPhase: { phase: { contractId: payment.contractId } },
+                    paymentPhase: { phase: { applicationId: payment.applicationId } },
                     status: { in: ['PENDING', 'PARTIALLY_PAID'] },
                 },
                 orderBy: { dueDate: 'asc' },
             });
 
             if (nextInstallment) {
-                await tx.contract.update({
-                    where: { id: payment.contractId },
+                await tx.application.update({
+                    where: { id: payment.applicationId },
                     data: { nextPaymentDueDate: nextInstallment.dueDate },
                 });
             }
@@ -384,12 +384,12 @@ class ContractPaymentService {
                 data: {
                     id: uuidv4(),
                     eventType: 'PAYMENT.COMPLETED',
-                    aggregateType: 'ContractPayment',
+                    aggregateType: 'ApplicationPayment',
                     aggregateId: paymentId,
                     queueName: 'notifications',
                     payload: JSON.stringify({
                         paymentId,
-                        contractId: payment.contractId,
+                        applicationId: payment.applicationId,
                         amount: payment.amount,
                     }),
                 },
@@ -401,13 +401,13 @@ class ContractPaymentService {
         // If a new phase was activated, process any auto-executable steps (e.g., GENERATE_DOCUMENT)
         if (activatedNextPhaseId) {
             try {
-                // Use the contract's buyer ID for auto-generated documents
-                const userId = payment.contract?.buyerId || payment.payerId;
+                // Use the application's buyer ID for auto-generated documents
+                const userId = payment.application?.buyerId || payment.payerId;
                 if (userId) {
-                    await contractPhaseService.processAutoExecutableSteps(activatedNextPhaseId, userId);
+                    await applicationPhaseService.processAutoExecutableSteps(activatedNextPhaseId, userId);
                 }
             } catch (error) {
-                console.error('[ContractPaymentService] Failed to process auto-executable steps for activated phase', {
+                console.error('[ApplicationPaymentService] Failed to process auto-executable steps for activated phase', {
                     phaseId: activatedNextPhaseId,
                     error: error instanceof Error ? error.message : String(error),
                 });
@@ -419,8 +419,8 @@ class ContractPaymentService {
 
         // Send payment received notification
         try {
-            const contract = await prisma.contract.findUnique({
-                where: { id: payment.contractId },
+            const application = await prisma.application.findUnique({
+                where: { id: payment.applicationId },
                 include: {
                     buyer: { select: { email: true, firstName: true } },
                     propertyUnit: {
@@ -431,11 +431,11 @@ class ContractPaymentService {
                 },
             });
 
-            if (contract?.buyer?.email) {
+            if (application?.buyer?.email) {
                 // Find next installment for next payment date
-                const nextInstallment = await prisma.contractInstallment.findFirst({
+                const nextInstallment = await prisma.paymentInstallment.findFirst({
                     where: {
-                        paymentPhase: { phase: { contractId: payment.contractId } },
+                        paymentPhase: { phase: { applicationId: payment.applicationId } },
                         status: { in: ['PENDING', 'PARTIALLY_PAID'] },
                     },
                     orderBy: { dueDate: 'asc' },
@@ -443,23 +443,23 @@ class ContractPaymentService {
 
                 // Calculate remaining balance from all payment phases
                 const allPaymentPhases = await prisma.paymentPhase.findMany({
-                    where: { phase: { contractId: payment.contractId } },
+                    where: { phase: { applicationId: payment.applicationId } },
                 });
                 const totalPaid = allPaymentPhases.reduce((sum, pp) => sum + pp.paidAmount, 0);
-                const remainingBalance = Math.max(0, contract.totalAmount - totalPaid);
+                const remainingBalance = Math.max(0, application.totalAmount - totalPaid);
 
                 await sendPaymentReceivedNotification({
-                    email: contract.buyer.email,
-                    userName: contract.buyer.firstName || 'Valued Customer',
-                    contractId: contract.id,
-                    contractNumber: contract.contractNumber,
+                    email: application.buyer.email,
+                    userName: application.buyer.firstName || 'Valued Customer',
+                    applicationId: application.id,
+                    applicationNumber: application.applicationNumber,
                     paymentAmount: payment.amount,
                     paymentDate: new Date(),
                     paymentReference: payment.reference || `PAY-${paymentId.substring(0, 8)}`,
                     remainingBalance,
                     nextPaymentDate: nextInstallment?.dueDate,
                     nextPaymentAmount: nextInstallment?.amount,
-                    dashboardUrl: `${DASHBOARD_URL}/contracts/${payment.contractId}`,
+                    dashboardUrl: `${DASHBOARD_URL}/applications/${payment.applicationId}`,
                 }, paymentId);
             }
         } catch (error) {
@@ -474,7 +474,7 @@ class ContractPaymentService {
      */
     private async failPayment(paymentId: string, gatewayResponse?: Record<string, any>) {
         const updated = await prisma.$transaction(async (tx) => {
-            const result = await tx.contractPayment.update({
+            const result = await tx.applicationPayment.update({
                 where: { id: paymentId },
                 data: {
                     status: 'FAILED',
@@ -483,7 +483,7 @@ class ContractPaymentService {
                 },
             });
 
-            const payment = await tx.contractPayment.findUnique({
+            const payment = await tx.applicationPayment.findUnique({
                 where: { id: paymentId },
             });
 
@@ -491,12 +491,12 @@ class ContractPaymentService {
                 data: {
                     id: uuidv4(),
                     eventType: 'PAYMENT.FAILED',
-                    aggregateType: 'ContractPayment',
+                    aggregateType: 'ApplicationPayment',
                     aggregateId: paymentId,
                     queueName: 'notifications',
                     payload: JSON.stringify({
                         paymentId,
-                        contractId: payment?.contractId,
+                        applicationId: payment?.applicationId,
                     }),
                 },
             });
@@ -506,28 +506,28 @@ class ContractPaymentService {
 
         // Send payment failed notification
         try {
-            const contract = await prisma.contract.findUnique({
-                where: { id: updated.contractId },
+            const application = await prisma.application.findUnique({
+                where: { id: updated.applicationId },
                 include: { buyer: true },
             });
 
-            if (contract?.buyer?.email) {
-                const nextInstallment = await prisma.contractInstallment.findFirst({
+            if (application?.buyer?.email) {
+                const nextInstallment = await prisma.paymentInstallment.findFirst({
                     where: {
-                        paymentPhase: { phase: { contractId: contract.id } },
+                        paymentPhase: { phase: { applicationId: application.id } },
                         status: { in: ['PENDING', 'PARTIALLY_PAID'] },
                     },
                     orderBy: { dueDate: 'asc' },
                 });
 
                 await sendPaymentFailedNotification({
-                    email: contract.buyer.email,
-                    userName: `${contract.buyer.firstName} ${contract.buyer.lastName}`,
-                    contractId: contract.id,
+                    email: application.buyer.email,
+                    userName: `${application.buyer.firstName} ${application.buyer.lastName}`,
+                    applicationId: application.id,
                     paymentAmount: updated.amount,
                     amountDue: nextInstallment?.amount || updated.amount,
                     dueDate: nextInstallment?.dueDate || new Date(),
-                    retryUrl: `${DASHBOARD_URL}/mortgages/${contract.id}/payments/${updated.id}/retry`,
+                    retryUrl: `${DASHBOARD_URL}/mortgages/${application.id}/payments/${updated.id}/retry`,
                     supportUrl: `${DASHBOARD_URL}/support`,
                 });
             }
@@ -549,7 +549,7 @@ class ContractPaymentService {
         }
 
         const updated = await prisma.$transaction(async (tx) => {
-            const result = await tx.contractPayment.update({
+            const result = await tx.applicationPayment.update({
                 where: { id: paymentId },
                 data: {
                     status: 'REFUNDED',
@@ -558,13 +558,13 @@ class ContractPaymentService {
 
             // Reverse installment update if linked
             if (payment.installmentId) {
-                const installment = await tx.contractInstallment.findUnique({
+                const installment = await tx.paymentInstallment.findUnique({
                     where: { id: payment.installmentId },
                 });
 
                 if (installment) {
                     const newPaidAmount = Math.max(0, installment.paidAmount - payment.amount);
-                    await tx.contractInstallment.update({
+                    await tx.paymentInstallment.update({
                         where: { id: payment.installmentId },
                         data: {
                             paidAmount: newPaidAmount,
@@ -577,7 +577,7 @@ class ContractPaymentService {
 
             // Reverse phase totals (via PaymentPhase extension)
             if (payment.phaseId) {
-                const phase = await tx.contractPhase.findUnique({
+                const phase = await tx.applicationPhase.findUnique({
                     where: { id: payment.phaseId },
                     include: {
                         paymentPhase: true,
@@ -598,12 +598,12 @@ class ContractPaymentService {
                 data: {
                     id: uuidv4(),
                     eventType: 'PAYMENT.REFUNDED',
-                    aggregateType: 'ContractPayment',
+                    aggregateType: 'ApplicationPayment',
                     aggregateId: paymentId,
                     queueName: 'accounting',
                     payload: JSON.stringify({
                         paymentId,
-                        contractId: payment.contractId,
+                        applicationId: payment.applicationId,
                         amount: payment.amount,
                         reason: data.reason,
                     }),
@@ -620,19 +620,19 @@ class ContractPaymentService {
     /**
      * Pay-ahead: apply excess payment to future installments
      */
-    async payAhead(contractId: string, amount: number, userId: string) {
-        const contract = await prisma.contract.findUnique({
-            where: { id: contractId },
+    async payAhead(applicationId: string, amount: number, userId: string) {
+        const application = await prisma.application.findUnique({
+            where: { id: applicationId },
         });
 
-        if (!contract) {
-            throw new AppError(404, 'Contract not found');
+        if (!application) {
+            throw new AppError(404, 'application not found');
         }
 
-        // Find all pending installments for this contract (via PaymentPhase)
-        const pendingInstallments = await prisma.contractInstallment.findMany({
+        // Find all pending installments for this application (via PaymentPhase)
+        const pendingInstallments = await prisma.paymentInstallment.findMany({
             where: {
-                paymentPhase: { phase: { contractId } },
+                paymentPhase: { phase: { applicationId } },
                 status: { in: ['PENDING', 'PARTIALLY_PAID'] },
             },
             orderBy: { dueDate: 'asc' },
@@ -661,9 +661,9 @@ class ContractPaymentService {
                 const phaseId = installment.paymentPhase?.phase?.id;
 
                 // Create payment for this installment
-                await tx.contractPayment.create({
+                await tx.applicationPayment.create({
                     data: {
-                        contractId,
+                        applicationId,
                         phaseId: phaseId,
                         installmentId: installment.id,
                         payerId: userId,
@@ -681,7 +681,7 @@ class ContractPaymentService {
                 const newPaidAmount = installment.paidAmount + paymentAmount;
                 const isPaid = newPaidAmount >= installment.amount;
 
-                await tx.contractInstallment.update({
+                await tx.paymentInstallment.update({
                     where: { id: installment.id },
                     data: {
                         paidAmount: newPaidAmount,
@@ -711,11 +711,11 @@ class ContractPaymentService {
                 data: {
                     id: uuidv4(),
                     eventType: 'PAYMENT.PAY_AHEAD',
-                    aggregateType: 'Contract',
-                    aggregateId: contractId,
+                    aggregateType: 'Application',
+                    aggregateId: applicationId,
                     queueName: 'notifications',
                     payload: JSON.stringify({
-                        contractId,
+                        applicationId,
                         totalPaid: amount - remainingAmount,
                         installmentsPaid: paidInstallments.length,
                         remainingCredit: remainingAmount,
@@ -733,4 +733,4 @@ class ContractPaymentService {
     }
 }
 
-export const contractPaymentService = new ContractPaymentService();
+export const applicationPaymentService = new ApplicationPaymentService();

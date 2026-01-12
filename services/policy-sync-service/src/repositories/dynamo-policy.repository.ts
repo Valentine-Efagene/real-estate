@@ -325,7 +325,7 @@ export class DynamoPolicyRepository {
 
         // Singularize common resource names
         const singularMap: Record<string, string> = {
-            'contracts': 'contract',
+            'applications': 'application',
             'users': 'user',
             'properties': 'property',
             'payments': 'payment',

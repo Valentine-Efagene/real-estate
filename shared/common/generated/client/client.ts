@@ -225,20 +225,20 @@ export type PaymentMethodPhaseDocument = Prisma.PaymentMethodPhaseDocumentModel
  */
 export type PaymentMethodPhaseField = Prisma.PaymentMethodPhaseFieldModel
 /**
- * Model Contract
+ * Model Application
  * 
  */
-export type Contract = Prisma.ContractModel
+export type Application = Prisma.ApplicationModel
 /**
- * Model ContractRefund
+ * Model ApplicationRefund
  * 
  */
-export type ContractRefund = Prisma.ContractRefundModel
+export type ApplicationRefund = Prisma.ApplicationRefundModel
 /**
- * Model ContractPhase
+ * Model ApplicationPhase
  * 
  */
-export type ContractPhase = Prisma.ContractPhaseModel
+export type ApplicationPhase = Prisma.ApplicationPhaseModel
 /**
  * Model QuestionnairePhase
  * 
@@ -260,10 +260,10 @@ export type PaymentPhase = Prisma.PaymentPhaseModel
  */
 export type QuestionnaireField = Prisma.QuestionnaireFieldModel
 /**
- * Model ContractEvent
+ * Model ApplicationEvent
  * 
  */
-export type ContractEvent = Prisma.ContractEventModel
+export type ApplicationEvent = Prisma.ApplicationEventModel
 /**
  * Model DocumentationStep
  * 
@@ -280,20 +280,20 @@ export type DocumentationStepDocument = Prisma.DocumentationStepDocumentModel
  */
 export type DocumentationStepApproval = Prisma.DocumentationStepApprovalModel
 /**
- * Model ContractInstallment
+ * Model PaymentInstallment
  * 
  */
-export type ContractInstallment = Prisma.ContractInstallmentModel
+export type PaymentInstallment = Prisma.PaymentInstallmentModel
 /**
- * Model ContractPayment
+ * Model ApplicationPayment
  * 
  */
-export type ContractPayment = Prisma.ContractPaymentModel
+export type ApplicationPayment = Prisma.ApplicationPaymentModel
 /**
- * Model ContractDocument
+ * Model ApplicationDocument
  * 
  */
-export type ContractDocument = Prisma.ContractDocumentModel
+export type ApplicationDocument = Prisma.ApplicationDocumentModel
 /**
  * Model DocumentTemplate
  * 
@@ -305,10 +305,10 @@ export type DocumentTemplate = Prisma.DocumentTemplateModel
  */
 export type OfferLetter = Prisma.OfferLetterModel
 /**
- * Model ContractTermination
+ * Model ApplicationTermination
  * 
  */
-export type ContractTermination = Prisma.ContractTerminationModel
+export type ApplicationTermination = Prisma.ApplicationTerminationModel
 /**
  * Model PaymentMethodChangeRequest
  * 

@@ -16,8 +16,8 @@ We've successfully unified three separate event systems into a single, cohesive 
 ┌─────────────────────────────────────────────────────────────────┐
 │                    Service Layer (mortgage-service)              │
 │                                                                   │
-│  emitContractCreated(prisma, tenantId, {                        │
-│    contractId, buyerId, buyerEmail, ...                         │
+│  emitApplicationCreated(prisma, tenantId, {                        │
+│    applicationId, buyerId, buyerEmail, ...                         │
 │  })                                                              │
 └──────────────────────────────┬──────────────────────────────────┘
                                │
@@ -88,8 +88,8 @@ const eventService = createUnifiedEventService(prisma);
 
 await eventService.emit(tenantId, {
   eventType: 'CONTRACT_CREATED',
-  payload: { contractId, buyerId, ... },
-  source: 'contract-service',
+  payload: { applicationId, buyerId, ... },
+  source: 'application-service',
   actor: { id: userId, type: 'USER' }
 });
 ```
@@ -123,12 +123,12 @@ Service-specific event emission helpers using the unified system.
 **Functions:**
 
 ```typescript
-// Contract events
-emitContractCreated(prisma, tenantId, payload, actorId?, correlationId?)
-emitContractActivated(prisma, tenantId, payload, actorId?, correlationId?)
-emitContractTerminationRequested(...)
-emitContractTerminationApproved(...)
-emitContractTerminated(...)
+// Application events
+emitApplicationCreated(prisma, tenantId, payload, actorId?, correlationId?)
+emitApplicationActivated(prisma, tenantId, payload, actorId?, correlationId?)
+emitApplicationTerminationRequested(...)
+emitApplicationTerminationApproved(...)
+emitApplicationTerminated(...)
 
 // Payment events
 emitPaymentReceived(...)
@@ -154,17 +154,17 @@ emitStepRejected(...)
 
 Seeds EventChannel and EventType records for tenants.
 
-#### ContractEvent Migration
+#### ApplicationEvent Migration
 
-**Location:** [`services/mortgage-service/scripts/migrate-contract-events.ts`](services/mortgage-service/scripts/migrate-contract-events.ts)
+**Location:** [`services/mortgage-service/scripts/migrate-application-events.ts`](services/mortgage-service/scripts/migrate-application-events.ts)
 
-Migrates historical ContractEvent records to WorkflowEvent.
+Migrates historical ApplicationEvent records to WorkflowEvent.
 
 **Usage:**
 
 ```bash
-tsx services/mortgage-service/scripts/migrate-contract-events.ts --tenant-id <ID>
-tsx services/mortgage-service/scripts/migrate-contract-events.ts --dry-run
+tsx services/mortgage-service/scripts/migrate-application-events.ts --tenant-id <ID>
+tsx services/mortgage-service/scripts/migrate-application-events.ts --dry-run
 ```
 
 ### 5. EventBus Integration
@@ -175,11 +175,11 @@ Bridges WorkflowEventService handlers with EventBusService transport layer.
 
 ## Event Types Defined
 
-### Contracts Channel
+### Applications Channel
 
-- `CONTRACT_CREATED` - New contract created
-- `CONTRACT_ACTIVATED` - Contract activated
-- `CONTRACT_TERMINATED` - Contract terminated
+- `CONTRACT_CREATED` - New application created
+- `CONTRACT_ACTIVATED` - Application activated
+- `CONTRACT_TERMINATED` - Application terminated
 - `CONTRACT_TERMINATION_REQUESTED` - Termination requested
 - `CONTRACT_TERMINATION_APPROVED` - Termination approved
 
@@ -198,8 +198,8 @@ Bridges WorkflowEventService handlers with EventBusService transport layer.
 
 ### Workflow Channel
 
-- `PHASE_ACTIVATED` - Contract phase activated
-- `PHASE_COMPLETED` - Contract phase completed
+- `PHASE_ACTIVATED` - Application phase activated
+- `PHASE_COMPLETED` - Application phase completed
 - `STEP_COMPLETED` - Workflow step completed
 - `STEP_REJECTED` - Workflow step rejected
 
@@ -310,12 +310,12 @@ Replace legacy EventPublisher calls with unified event helpers:
 
 ```typescript
 // Before
-import { sendContractCreatedNotification } from "./notifications";
-await sendContractCreatedNotification(payload, correlationId);
+import { sendApplicationCreatedNotification } from "./notifications";
+await sendApplicationCreatedNotification(payload, correlationId);
 
 // After
-import { emitContractCreated } from "./unified-notifications";
-await emitContractCreated(prisma, tenantId, payload, userId, correlationId);
+import { emitApplicationCreated } from "./unified-notifications";
+await emitApplicationCreated(prisma, tenantId, payload, userId, correlationId);
 ```
 
 ### 3. Configure Handlers (Admin Task)
@@ -329,7 +329,7 @@ tsx shared/common/scripts/seed-events.ts --tenant-id <ID> --with-examples
 ### 4. Migrate Historical Events (Optional)
 
 ```bash
-tsx services/mortgage-service/scripts/migrate-contract-events.ts --tenant-id <ID>
+tsx services/mortgage-service/scripts/migrate-application-events.ts --tenant-id <ID>
 ```
 
 ### 5. Update E2E Tests

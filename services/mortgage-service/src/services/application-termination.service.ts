@@ -2,9 +2,9 @@ import { prisma as defaultPrisma } from '../lib/prisma';
 import { AppError, PrismaClient } from '@valentine-efagene/qshelter-common';
 import { v4 as uuidv4 } from 'uuid';
 import {
-    sendContractTerminationRequestedNotification,
-    sendContractTerminationApprovedNotification,
-    sendContractTerminatedNotification,
+    sendApplicationTerminationRequestedNotification,
+    sendApplicationTerminationApprovedNotification,
+    sendApplicationTerminatedNotification,
     formatCurrency,
 } from '../lib/notifications';
 import type {
@@ -14,7 +14,7 @@ import type {
     ProcessRefundInput,
     CompleteRefundInput,
     CancelTerminationInput,
-} from '../validators/contract-termination.validator';
+} from '../validators/application-termination.validator';
 
 const DASHBOARD_URL = process.env.DASHBOARD_URL || 'https://dashboard.qshelter.com';
 
@@ -56,15 +56,15 @@ type TerminationInitiator = 'BUYER' | 'SELLER' | 'ADMIN' | 'SYSTEM';
 type AnyPrismaClient = PrismaClient;
 
 /** Service interface to avoid non-portable inferred types */
-export interface ContractTerminationService {
+export interface ApplicationTerminationService {
     requestTermination(
-        contractId: string,
+        applicationId: string,
         userId: string,
         data: RequestTerminationInput,
         opts?: { idempotencyKey?: string }
     ): Promise<any>;
     adminTerminate(
-        contractId: string,
+        applicationId: string,
         adminId: string,
         data: AdminTerminationInput,
         opts?: { idempotencyKey?: string }
@@ -95,7 +95,7 @@ export interface ContractTerminationService {
         data?: CancelTerminationInput
     ): Promise<any>;
     findById(terminationId: string): Promise<any>;
-    findByContract(contractId: string): Promise<any[]>;
+    findByApplication(applicationId: string): Promise<any[]>;
     findPendingReview(tenantId: string): Promise<any[]>;
 }
 
@@ -109,16 +109,16 @@ function generateRequestNumber(): string {
 }
 
 /**
- * Calculate settlement amounts based on contract state and termination type
+ * Calculate settlement amounts based on application state and termination type
  * Industry standard considerations:
- * - Non-refundable deposits (typically 1-5% of contract value)
+ * - Non-refundable deposits (typically 1-5% of application value)
  * - Admin/processing fees
  * - Penalties for buyer-initiated withdrawal after signing
  * - Full refund for seller/property issues
  * - Pro-rated refunds based on completion percentage
  */
 function calculateSettlement(
-    contract: any,
+    application: any,
     terminationType: TerminationType,
     tenantPolicies?: any
 ): {
@@ -128,7 +128,7 @@ function calculateSettlement(
     adminFeeAmount: number;
     netRefundAmount: number;
 } {
-    const totalPaid = contract.totalPaidToDate || 0;
+    const totalPaid = application.totalPaidToDate || 0;
 
     // Default policies (can be overridden by tenant config)
     const policies = tenantPolicies || {
@@ -148,16 +148,16 @@ function calculateSettlement(
     switch (terminationType) {
         case 'BUYER_WITHDRAWAL':
             // Check if within grace period (full refund)
-            if (contract.signedAt) {
+            if (application.signedAt) {
                 const daysSinceSigning = Math.floor(
-                    (Date.now() - new Date(contract.signedAt).getTime()) / (1000 * 60 * 60 * 24)
+                    (Date.now() - new Date(application.signedAt).getTime()) / (1000 * 60 * 60 * 24)
                 );
                 if (daysSinceSigning <= policies.gracePeriodDays) {
                     // Within grace period - full refund minus admin fee
                     adminFeeAmount = Math.min(policies.adminFeeFlat, totalPaid * 0.1);
                 } else {
                     // After grace period - apply penalties
-                    penaltyAmount = (contract.totalAmount * policies.buyerWithdrawalPenaltyPercent) / 100;
+                    penaltyAmount = (application.totalAmount * policies.buyerWithdrawalPenaltyPercent) / 100;
                     adminFeeAmount = Math.max(
                         policies.adminFeeFlat,
                         (totalPaid * policies.adminFeePercent) / 100
@@ -183,14 +183,14 @@ function calculateSettlement(
 
         case 'PAYMENT_DEFAULT':
             // Buyer defaulted - forfeit non-refundable deposit + penalties
-            forfeitedAmount = (contract.totalAmount * policies.nonRefundableDepositPercent) / 100;
-            penaltyAmount = (contract.totalAmount * policies.buyerWithdrawalPenaltyPercent) / 100;
+            forfeitedAmount = (application.totalAmount * policies.nonRefundableDepositPercent) / 100;
+            penaltyAmount = (application.totalAmount * policies.buyerWithdrawalPenaltyPercent) / 100;
             adminFeeAmount = policies.adminFeeFlat;
             break;
 
         case 'DOCUMENT_FAILURE':
             // Buyer failed to provide docs - partial forfeit
-            forfeitedAmount = (contract.totalAmount * policies.nonRefundableDepositPercent) / 100;
+            forfeitedAmount = (application.totalAmount * policies.nonRefundableDepositPercent) / 100;
             adminFeeAmount = policies.adminFeeFlat;
             break;
 
@@ -225,15 +225,15 @@ function calculateSettlement(
 }
 
 /**
- * Create a contract termination service
+ * Create a application termination service
  */
-export function createContractTerminationService(prisma: AnyPrismaClient = defaultPrisma): ContractTerminationService {
+export function createApplicationTerminationService(prisma: AnyPrismaClient = defaultPrisma): ApplicationTerminationService {
 
     /**
      * Request termination (buyer/seller initiated)
      */
     async function requestTermination(
-        contractId: string,
+        applicationId: string,
         userId: string,
         data: RequestTerminationInput,
         opts?: { idempotencyKey?: string }
@@ -241,7 +241,7 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
         return prisma.$transaction(async (tx: any) => {
             // Check idempotency
             if (opts?.idempotencyKey) {
-                const existing = await tx.contractTermination.findUnique({
+                const existing = await tx.applicationTermination.findUnique({
                     where: { idempotencyKey: opts.idempotencyKey },
                 });
                 if (existing) {
@@ -249,9 +249,9 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
                 }
             }
 
-            // Get contract with full details
-            const contract = await tx.contract.findUnique({
-                where: { id: contractId },
+            // Get application with full details
+            const application = await tx.application.findUnique({
+                where: { id: applicationId },
                 include: {
                     phases: true,
                     payments: true,
@@ -261,53 +261,53 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
                 },
             });
 
-            if (!contract) {
-                throw new AppError(404, 'Contract not found');
+            if (!application) {
+                throw new AppError(404, 'application not found');
             }
 
             // Check if already terminated or has pending termination
-            if (contract.status === 'CANCELLED' || contract.status === 'TERMINATED') {
-                throw new AppError(400, `Contract is already ${contract.status.toLowerCase()}`);
+            if (application.status === 'CANCELLED' || application.status === 'TERMINATED') {
+                throw new AppError(400, `Application is already ${application.status.toLowerCase()}`);
             }
 
-            const existingTermination = await tx.contractTermination.findFirst({
+            const existingTermination = await tx.applicationTermination.findFirst({
                 where: {
-                    contractId,
+                    applicationId,
                     status: { in: ['REQUESTED', 'PENDING_REVIEW', 'PENDING_REFUND', 'REFUND_IN_PROGRESS'] },
                 },
             });
 
             if (existingTermination) {
-                throw new AppError(400, 'A termination request is already in progress for this contract');
+                throw new AppError(400, 'A termination request is already in progress for this application');
             }
 
             // Determine initiator type
             let initiatedBy: TerminationInitiator = 'BUYER';
-            if (contract.sellerId === userId) {
+            if (application.sellerId === userId) {
                 initiatedBy = 'SELLER';
             }
 
             // Check if auto-approve eligible (pre-signature, no payments)
-            const hasPayments = (contract.payments || []).some(
+            const hasPayments = (application.payments || []).some(
                 (p: any) => p.status === 'COMPLETED' || p.status === 'PAID'
             );
-            const isSigned = !!contract.signedAt;
+            const isSigned = !!application.signedAt;
             const autoApproveEligible = !isSigned && !hasPayments;
 
             // Calculate settlement
-            const settlement = calculateSettlement(contract, data.type as TerminationType);
+            const settlement = calculateSettlement(application, data.type as TerminationType);
 
             // Determine refund status
             let refundStatus: RefundStatus = 'NOT_APPLICABLE';
-            if (contract.totalPaidToDate > 0 && settlement.netRefundAmount > 0) {
+            if (application.totalPaidToDate > 0 && settlement.netRefundAmount > 0) {
                 refundStatus = 'PENDING';
             }
 
             // Create termination request
-            const termination = await tx.contractTermination.create({
+            const termination = await tx.applicationTermination.create({
                 data: {
-                    contractId,
-                    tenantId: contract.tenantId,
+                    applicationId,
+                    tenantId: application.tenantId,
                     requestNumber: generateRequestNumber(),
                     initiatedBy,
                     initiatorId: userId,
@@ -318,23 +318,23 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
                     requiresApproval: !autoApproveEligible,
                     autoApproveEligible,
                     // Snapshot
-                    contractSnapshot: {
-                        id: contract.id,
-                        contractNumber: contract.contractNumber,
-                        status: contract.status,
-                        totalAmount: contract.totalAmount,
-                        totalPaidToDate: contract.totalPaidToDate,
-                        signedAt: contract.signedAt,
-                        phases: contract.phases.map((p: any) => ({
+                    applicationSnapshot: {
+                        id: application.id,
+                        applicationNumber: application.applicationNumber,
+                        status: application.status,
+                        totalAmount: application.totalAmount,
+                        totalPaidToDate: application.totalPaidToDate,
+                        signedAt: application.signedAt,
+                        phases: application.phases.map((p: any) => ({
                             id: p.id,
                             name: p.name,
                             status: p.status,
                             paidAmount: p.paidAmount,
                         })),
                     },
-                    totalContractAmount: contract.totalAmount,
-                    totalPaidToDate: contract.totalPaidToDate,
-                    outstandingBalance: contract.totalAmount - contract.totalPaidToDate,
+                    totalApplicationAmount: application.totalAmount,
+                    totalPaidToDate: application.totalPaidToDate,
+                    outstandingBalance: application.totalAmount - application.totalPaidToDate,
                     // Settlement
                     ...settlement,
                     refundStatus,
@@ -351,12 +351,12 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
-                    eventType: 'CONTRACT.TERMINATION_REQUESTED',
-                    aggregateType: 'Contract',
-                    aggregateId: contractId,
+                    eventType: 'APPLICATION.TERMINATION_REQUESTED',
+                    aggregateType: 'Application',
+                    aggregateId: applicationId,
                     queueName: 'notifications',
                     payload: JSON.stringify({
-                        contractId,
+                        applicationId,
                         terminationId: termination.id,
                         requestNumber: termination.requestNumber,
                         initiatedBy,
@@ -369,17 +369,17 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
 
             // Send termination requested notification
             try {
-                if (contract.buyer?.email) {
-                    await sendContractTerminationRequestedNotification({
-                        email: contract.buyer.email,
-                        userName: `${contract.buyer.firstName} ${contract.buyer.lastName}`,
-                        contractId: contract.id,
-                        contractNumber: contract.contractNumber,
+                if (application.buyer?.email) {
+                    await sendApplicationTerminationRequestedNotification({
+                        email: application.buyer.email,
+                        userName: `${application.buyer.firstName} ${application.buyer.lastName}`,
+                        applicationId: application.id,
+                        applicationNumber: application.applicationNumber,
                         requestNumber: termination.requestNumber,
                         terminationType: data.type,
                         reason: data.reason || 'Not specified',
                         requestDate: new Date(),
-                        statusUrl: `${DASHBOARD_URL}/mortgages/${contract.id}/termination/${termination.id}`,
+                        statusUrl: `${DASHBOARD_URL}/mortgages/${application.id}/termination/${termination.id}`,
                     });
                 }
             } catch (error) {
@@ -394,7 +394,7 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
      * Admin-initiated termination (e.g., payment default, fraud)
      */
     async function adminTerminate(
-        contractId: string,
+        applicationId: string,
         adminId: string,
         data: AdminTerminationInput,
         opts?: { idempotencyKey?: string }
@@ -402,7 +402,7 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
         return prisma.$transaction(async (tx: any) => {
             // Check idempotency
             if (opts?.idempotencyKey) {
-                const existing = await tx.contractTermination.findUnique({
+                const existing = await tx.applicationTermination.findUnique({
                     where: { idempotencyKey: opts.idempotencyKey },
                 });
                 if (existing) {
@@ -410,8 +410,8 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
                 }
             }
 
-            const contract = await tx.contract.findUnique({
-                where: { id: contractId },
+            const application = await tx.application.findUnique({
+                where: { id: applicationId },
                 include: {
                     phases: true,
                     payments: true,
@@ -419,25 +419,25 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
                 },
             });
 
-            if (!contract) {
-                throw new AppError(404, 'Contract not found');
+            if (!application) {
+                throw new AppError(404, 'application not found');
             }
 
-            if (contract.status === 'CANCELLED' || contract.status === 'TERMINATED') {
-                throw new AppError(400, `Contract is already ${contract.status.toLowerCase()}`);
+            if (application.status === 'CANCELLED' || application.status === 'TERMINATED') {
+                throw new AppError(400, `Application is already ${application.status.toLowerCase()}`);
             }
 
-            const settlement = calculateSettlement(contract, data.type as TerminationType);
+            const settlement = calculateSettlement(application, data.type as TerminationType);
 
             let refundStatus: RefundStatus = 'NOT_APPLICABLE';
-            if (contract.totalPaidToDate > 0 && settlement.netRefundAmount > 0) {
+            if (application.totalPaidToDate > 0 && settlement.netRefundAmount > 0) {
                 refundStatus = 'PENDING';
             }
 
-            const termination = await tx.contractTermination.create({
+            const termination = await tx.applicationTermination.create({
                 data: {
-                    contractId,
-                    tenantId: contract.tenantId,
+                    applicationId,
+                    tenantId: application.tenantId,
                     requestNumber: generateRequestNumber(),
                     initiatedBy: 'ADMIN',
                     initiatorId: adminId,
@@ -447,17 +447,17 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
                     status: data.bypassApproval ? 'PENDING_REFUND' : 'PENDING_REVIEW',
                     requiresApproval: !data.bypassApproval,
                     autoApproveEligible: false,
-                    contractSnapshot: {
-                        id: contract.id,
-                        contractNumber: contract.contractNumber,
-                        status: contract.status,
-                        totalAmount: contract.totalAmount,
-                        totalPaidToDate: contract.totalPaidToDate,
-                        signedAt: contract.signedAt,
+                    applicationSnapshot: {
+                        id: application.id,
+                        applicationNumber: application.applicationNumber,
+                        status: application.status,
+                        totalAmount: application.totalAmount,
+                        totalPaidToDate: application.totalPaidToDate,
+                        signedAt: application.signedAt,
                     },
-                    totalContractAmount: contract.totalAmount,
-                    totalPaidToDate: contract.totalPaidToDate,
-                    outstandingBalance: contract.totalAmount - contract.totalPaidToDate,
+                    totalApplicationAmount: application.totalAmount,
+                    totalPaidToDate: application.totalPaidToDate,
+                    outstandingBalance: application.totalAmount - application.totalPaidToDate,
                     ...settlement,
                     refundStatus,
                     approvedAt: data.bypassApproval ? new Date() : null,
@@ -475,12 +475,12 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
-                    eventType: 'CONTRACT.TERMINATION_INITIATED',
-                    aggregateType: 'Contract',
-                    aggregateId: contractId,
+                    eventType: 'APPLICATION.TERMINATION_INITIATED',
+                    aggregateType: 'Application',
+                    aggregateId: applicationId,
                     queueName: 'notifications',
                     payload: JSON.stringify({
-                        contractId,
+                        applicationId,
                         terminationId: termination.id,
                         type: data.type,
                         initiatedBy: 'ADMIN',
@@ -503,9 +503,9 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
         data: ReviewTerminationInput
     ) {
         return prisma.$transaction(async (tx: any) => {
-            const termination = await tx.contractTermination.findUnique({
+            const termination = await tx.applicationTermination.findUnique({
                 where: { id: terminationId },
-                include: { contract: true },
+                include: { application: true },
             });
 
             if (!termination) {
@@ -518,7 +518,7 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
 
             if (data.decision === 'REJECT') {
                 // Reject the request
-                const updated = await tx.contractTermination.update({
+                const updated = await tx.applicationTermination.update({
                     where: { id: terminationId },
                     data: {
                         status: 'REJECTED',
@@ -532,12 +532,12 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
                 await tx.domainEvent.create({
                     data: {
                         id: uuidv4(),
-                        eventType: 'CONTRACT.TERMINATION_REJECTED',
-                        aggregateType: 'Contract',
-                        aggregateId: termination.contractId,
+                        eventType: 'APPLICATION.TERMINATION_REJECTED',
+                        aggregateType: 'Application',
+                        aggregateId: termination.applicationId,
                         queueName: 'notifications',
                         payload: JSON.stringify({
-                            contractId: termination.contractId,
+                            applicationId: termination.applicationId,
                             terminationId,
                             rejectionReason: data.rejectionReason,
                         }),
@@ -546,7 +546,7 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
                 });
 
                 // Note: Rejection notification not implemented as there's no template for it
-                // In the future, we could add a sendContractTerminationRejectedNotification
+                // In the future, we could add a sendApplicationTerminationRejectedNotification
 
                 return updated;
             }
@@ -559,7 +559,7 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
                 (settlementUpdate.forfeitedAmount ?? termination.forfeitedAmount) -
                 (settlementUpdate.adminFeeAmount ?? termination.adminFeeAmount);
 
-            const updated = await tx.contractTermination.update({
+            const updated = await tx.applicationTermination.update({
                 where: { id: terminationId },
                 data: {
                     status: termination.refundStatus !== 'NOT_APPLICABLE' ? 'PENDING_REFUND' : 'COMPLETED',
@@ -581,12 +581,12 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
-                    eventType: 'CONTRACT.TERMINATION_APPROVED',
-                    aggregateType: 'Contract',
-                    aggregateId: termination.contractId,
+                    eventType: 'APPLICATION.TERMINATION_APPROVED',
+                    aggregateType: 'Application',
+                    aggregateId: termination.applicationId,
                     queueName: 'notifications',
                     payload: JSON.stringify({
-                        contractId: termination.contractId,
+                        applicationId: termination.applicationId,
                         terminationId,
                         netRefundAmount: updated.netRefundAmount,
                     }),
@@ -596,20 +596,20 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
 
             // Send termination approved notification
             try {
-                const contract = await tx.contract.findUnique({
-                    where: { id: termination.contractId },
+                const application = await tx.application.findUnique({
+                    where: { id: termination.applicationId },
                     include: { buyer: true },
                 });
 
-                if (contract?.buyer?.email) {
-                    await sendContractTerminationApprovedNotification({
-                        email: contract.buyer.email,
-                        userName: `${contract.buyer.firstName} ${contract.buyer.lastName}`,
-                        contractId: contract.id,
-                        contractNumber: contract.contractNumber,
+                if (application?.buyer?.email) {
+                    await sendApplicationTerminationApprovedNotification({
+                        email: application.buyer.email,
+                        userName: `${application.buyer.firstName} ${application.buyer.lastName}`,
+                        applicationId: application.id,
+                        applicationNumber: application.applicationNumber,
                         refundAmount: updated.netRefundAmount || 0,
                         processingTime: '5-7 business days',
-                        statusUrl: `${DASHBOARD_URL}/mortgages/${contract.id}/termination/${terminationId}`,
+                        statusUrl: `${DASHBOARD_URL}/mortgages/${application.id}/termination/${terminationId}`,
                     });
                 }
             } catch (error) {
@@ -634,7 +634,7 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
         data: ProcessRefundInput
     ) {
         return prisma.$transaction(async (tx: any) => {
-            const termination = await tx.contractTermination.findUnique({
+            const termination = await tx.applicationTermination.findUnique({
                 where: { id: terminationId },
             });
 
@@ -653,7 +653,7 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
             // TODO: Integrate with payment gateway to initiate refund
             // For now, we mark as INITIATED and expect webhook/manual completion
 
-            const updated = await tx.contractTermination.update({
+            const updated = await tx.applicationTermination.update({
                 where: { id: terminationId },
                 data: {
                     status: 'REFUND_IN_PROGRESS',
@@ -667,12 +667,12 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
-                    eventType: 'CONTRACT.REFUND_INITIATED',
-                    aggregateType: 'Contract',
-                    aggregateId: termination.contractId,
+                    eventType: 'APPLICATION.REFUND_INITIATED',
+                    aggregateType: 'Application',
+                    aggregateId: termination.applicationId,
                     queueName: 'payments',
                     payload: JSON.stringify({
-                        contractId: termination.contractId,
+                        applicationId: termination.applicationId,
                         terminationId,
                         refundAmount: termination.netRefundAmount,
                         refundMethod: data.refundMethod,
@@ -694,7 +694,7 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
         data: CompleteRefundInput
     ) {
         return prisma.$transaction(async (tx: any) => {
-            const termination = await tx.contractTermination.findUnique({
+            const termination = await tx.applicationTermination.findUnique({
                 where: { id: terminationId },
             });
 
@@ -706,7 +706,7 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
                 throw new AppError(400, `Cannot complete refund in ${termination.status} status`);
             }
 
-            const updated = await tx.contractTermination.update({
+            const updated = await tx.applicationTermination.update({
                 where: { id: terminationId },
                 data: {
                     status: 'REFUND_COMPLETED',
@@ -722,12 +722,12 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
-                    eventType: 'CONTRACT.REFUND_COMPLETED',
-                    aggregateType: 'Contract',
-                    aggregateId: termination.contractId,
+                    eventType: 'APPLICATION.REFUND_COMPLETED',
+                    aggregateType: 'Application',
+                    aggregateId: termination.applicationId,
                     queueName: 'notifications',
                     payload: JSON.stringify({
-                        contractId: termination.contractId,
+                        applicationId: termination.applicationId,
                         terminationId,
                         refundReference: data.refundReference,
                         refundAmount: updated.netRefundAmount,
@@ -742,7 +742,7 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
     }
 
     /**
-     * Execute termination (final step - update contract, release unit)
+     * Execute termination (final step - update application, release unit)
      */
     async function executeTermination(
         terminationId: string,
@@ -750,10 +750,10 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
         txOrPrisma: any = prisma
     ) {
         const execute = async (tx: any) => {
-            const termination = await tx.contractTermination.findUnique({
+            const termination = await tx.applicationTermination.findUnique({
                 where: { id: terminationId },
                 include: {
-                    contract: {
+                    application: {
                         include: { propertyUnit: true },
                     },
                 },
@@ -769,9 +769,9 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
                 throw new AppError(400, `Cannot execute termination in ${termination.status} status`);
             }
 
-            // Update contract status
-            await tx.contract.update({
-                where: { id: termination.contractId },
+            // Update application status
+            await tx.application.update({
+                where: { id: termination.applicationId },
                 data: {
                     status: 'TERMINATED',
                     state: 'TERMINATED',
@@ -780,9 +780,9 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
             });
 
             // Release property unit
-            if (termination.contract.propertyUnitId) {
+            if (termination.application.propertyUnitId) {
                 await tx.propertyUnit.update({
-                    where: { id: termination.contract.propertyUnitId },
+                    where: { id: termination.application.propertyUnitId },
                     data: {
                         status: 'AVAILABLE',
                         reservedById: null,
@@ -791,9 +791,9 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
                 });
 
                 // Update variant counters
-                if (termination.contract.propertyUnit?.variantId) {
+                if (termination.application.propertyUnit?.variantId) {
                     await tx.propertyVariant.update({
-                        where: { id: termination.contract.propertyUnit.variantId },
+                        where: { id: termination.application.propertyUnit.variantId },
                         data: {
                             availableUnits: { increment: 1 },
                             reservedUnits: { decrement: 1 },
@@ -803,7 +803,7 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
             }
 
             // Update termination record
-            const updated = await tx.contractTermination.update({
+            const updated = await tx.applicationTermination.update({
                 where: { id: terminationId },
                 data: {
                     status: 'COMPLETED',
@@ -817,12 +817,12 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
-                    eventType: 'CONTRACT.TERMINATED',
-                    aggregateType: 'Contract',
-                    aggregateId: termination.contractId,
+                    eventType: 'APPLICATION.TERMINATED',
+                    aggregateType: 'Application',
+                    aggregateId: termination.applicationId,
                     queueName: 'notifications',
                     payload: JSON.stringify({
-                        contractId: termination.contractId,
+                        applicationId: termination.applicationId,
                         terminationId,
                         type: termination.type,
                         reason: termination.reason,
@@ -832,18 +832,18 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
                 },
             });
 
-            // Send contract terminated notification
+            // Send application terminated notification
             try {
                 const buyer = await tx.user.findUnique({
-                    where: { id: termination.contract.buyerId },
+                    where: { id: termination.application.buyerId },
                 });
 
                 if (buyer?.email) {
-                    await sendContractTerminatedNotification({
+                    await sendApplicationTerminatedNotification({
                         email: buyer.email,
                         userName: `${buyer.firstName} ${buyer.lastName}`,
-                        contractId: termination.contractId,
-                        contractNumber: termination.contract.contractNumber,
+                        applicationId: termination.applicationId,
+                        applicationNumber: termination.application.applicationNumber,
                         terminationDate: new Date(),
                         refundAmount: termination.netRefundAmount || 0,
                         refundStatus: termination.netRefundAmount > 0 ? 'Refund will be processed within 5-7 business days' : 'No refund applicable',
@@ -851,7 +851,7 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
                     });
                 }
             } catch (error) {
-                console.error('Failed to send contract terminated notification:', error);
+                console.error('Failed to send application terminated notification:', error);
             }
 
             return updated;
@@ -873,7 +873,7 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
         data?: CancelTerminationInput
     ) {
         return prisma.$transaction(async (tx: any) => {
-            const termination = await tx.contractTermination.findUnique({
+            const termination = await tx.applicationTermination.findUnique({
                 where: { id: terminationId },
             });
 
@@ -891,7 +891,7 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
                 throw new AppError(403, 'Only the initiator can cancel this request');
             }
 
-            const updated = await tx.contractTermination.update({
+            const updated = await tx.applicationTermination.update({
                 where: { id: terminationId },
                 data: {
                     status: 'CANCELLED',
@@ -907,12 +907,12 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
-                    eventType: 'CONTRACT.TERMINATION_CANCELLED',
-                    aggregateType: 'Contract',
-                    aggregateId: termination.contractId,
+                    eventType: 'APPLICATION.TERMINATION_CANCELLED',
+                    aggregateType: 'Application',
+                    aggregateId: termination.applicationId,
                     queueName: 'notifications',
                     payload: JSON.stringify({
-                        contractId: termination.contractId,
+                        applicationId: termination.applicationId,
                         terminationId,
                         reason: data?.reason,
                     }),
@@ -928,13 +928,13 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
      * Get termination by ID
      */
     async function findById(terminationId: string) {
-        const termination = await prisma.contractTermination.findUnique({
+        const termination = await prisma.applicationTermination.findUnique({
             where: { id: terminationId },
             include: {
-                contract: {
+                application: {
                     select: {
                         id: true,
-                        contractNumber: true,
+                        applicationNumber: true,
                         title: true,
                         status: true,
                         buyerId: true,
@@ -968,11 +968,11 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
     }
 
     /**
-     * Get all terminations for a contract
+     * Get all terminations for a application
      */
-    async function findByContract(contractId: string) {
-        return prisma.contractTermination.findMany({
-            where: { contractId },
+    async function findByApplication(applicationId: string) {
+        return prisma.applicationTermination.findMany({
+            where: { applicationId },
             orderBy: { requestedAt: 'desc' },
             include: {
                 initiator: {
@@ -991,17 +991,17 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
      * Get pending terminations for review (admin)
      */
     async function findPendingReview(tenantId: string) {
-        return prisma.contractTermination.findMany({
+        return prisma.applicationTermination.findMany({
             where: {
                 tenantId,
                 status: { in: ['REQUESTED', 'PENDING_REVIEW'] },
             },
             orderBy: { requestedAt: 'asc' },
             include: {
-                contract: {
+                application: {
                     select: {
                         id: true,
-                        contractNumber: true,
+                        applicationNumber: true,
                         title: true,
                         totalAmount: true,
                         buyer: {
@@ -1035,10 +1035,10 @@ export function createContractTerminationService(prisma: AnyPrismaClient = defau
         executeTermination,
         cancelTermination,
         findById,
-        findByContract,
+        findByApplication,
         findPendingReview,
     };
 }
 
 // Default instance
-export const contractTerminationService: ContractTerminationService = createContractTerminationService();
+export const applicationTerminationService: ApplicationTerminationService = createApplicationTerminationService();

@@ -1,6 +1,6 @@
 # Simplified Loan Origination Flow
 
-> **Summary**: This document describes the simplified loan origination flow where prequalification is merged into the first documentation phase of a contract.
+> **Summary**: This document describes the simplified loan origination flow where prequalification is merged into the first documentation phase of a application.
 
 ## The Problem
 
@@ -12,7 +12,7 @@ Previously, we had two overlapping concepts:
    - Upload documents (ID, bank statement, employment letter)
    - Get scored by underwriting
 
-2. **Documentation Phase** — Part of a contract where customers:
+2. **Documentation Phase** — Part of a application where customers:
    - Upload the _same_ documents again
    - Go through approval steps
    - Sign offer letters
@@ -28,7 +28,7 @@ This duplication meant:
 
 **Merge prequalification into the first documentation phase.**
 
-The contract becomes the single source of truth. The first documentation phase now includes:
+The application becomes the single source of truth. The first documentation phase now includes:
 
 - Pre-approval questionnaire (income, employment, debt questions)
 - Document uploads
@@ -39,9 +39,9 @@ The contract becomes the single source of truth. The first documentation phase n
 ## New Flow
 
 ```
-Customer browses property → Selects unit → Creates contract (DRAFT)
+Customer browses property → Selects unit → Creates application (DRAFT)
     │
-    └── Contract includes phases from payment method template
+    └── Application includes phases from payment method template
             │
             ├── Phase 1: Underwriting & Documentation (DOCUMENTATION, KYC)
             │       ├── Step 1: Pre-Approval Questionnaire (PRE_APPROVAL)
@@ -110,15 +110,15 @@ model DocumentationStep {
 }
 ```
 
-### 3. Contract model changes
+### 3. Application model changes
 
 ```prisma
-model Contract {
+model Application {
   // Make prequalification optional (for backward compatibility)
   prequalificationId String?
   prequalification   Prequalification? @relation(...)
 
-  // Store pre-approval data directly on contract
+  // Store pre-approval data directly on application
   monthlyIncome      Decimal?
   monthlyExpenses    Decimal?
   preApprovalAnswers Json?
@@ -129,7 +129,7 @@ model Contract {
 
 ## API Changes
 
-### Contract Creation (simplified)
+### Application Creation (simplified)
 
 **Before** (required prequalification):
 
@@ -138,13 +138,13 @@ POST /prequalifications
 POST /prequalifications/:id/documents
 POST /prequalifications/:id/submit
 # ... wait for approval ...
-POST /contracts { prequalificationId: "..." }
+POST /applications { prequalificationId: "..." }
 ```
 
-**After** (direct contract creation):
+**After** (direct application creation):
 
 ```http
-POST /contracts {
+POST /applications {
   propertyUnitId: "...",
   paymentMethodId: "...",
   totalAmount: 85000000,
@@ -159,7 +159,7 @@ POST /contracts {
 **PRE_APPROVAL step:**
 
 ```http
-POST /contracts/:id/phases/:phaseId/steps/complete
+POST /applications/:id/phases/:phaseId/steps/complete
 {
   "stepName": "Pre-Approval Questionnaire",
   "answers": [
@@ -184,19 +184,19 @@ POST /contracts/:id/phases/:phaseId/steps/complete
 1. **Phase 1: Add new step types** (backward compatible)
 
    - Add `PRE_APPROVAL` and `UNDERWRITING` to enum
-   - Add new fields to `DocumentationStep` and `Contract`
+   - Add new fields to `DocumentationStep` and `Application`
    - Keep `Prequalification` model and routes
 
 2. **Phase 2: Update payment method templates**
 
    - Add pre-approval and underwriting steps to documentation phase
-   - New contracts use simplified flow
+   - New applications use simplified flow
 
 3. **Phase 3: Deprecate prequalification**
 
    - Mark `/prequalifications` routes as deprecated
-   - Existing contracts with prequalificationId continue to work
-   - New contracts don't require prequalification
+   - Existing applications with prequalificationId continue to work
+   - New applications don't require prequalification
 
 4. **Phase 4: Remove prequalification** (future)
    - After all existing prequalifications are resolved
@@ -204,19 +204,19 @@ POST /contracts/:id/phases/:phaseId/steps/complete
 
 ## Benefits
 
-1. **Single entity** — Contract is the only application entity
+1. **Single entity** — Application is the only application entity
 2. **No duplicate uploads** — Documents uploaded once during documentation phase
 3. **Simpler state machine** — One workflow instead of two
 4. **Better UX** — Customer sees one linear flow
-5. **Easier auditing** — All events tied to contract
+5. **Easier auditing** — All events tied to application
 6. **Flexible** — Steps can be reordered per payment method
 
 ## Backward Compatibility
 
-- `prequalificationId` on Contract becomes optional
+- `prequalificationId` on Application becomes optional
 - `/prequalifications` endpoints continue to work (deprecated)
-- Existing contracts with prequalification are unaffected
-- New contracts can skip prequalification entirely
+- Existing applications with prequalification are unaffected
+- New applications can skip prequalification entirely
 
 ---
 
