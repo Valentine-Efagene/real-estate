@@ -186,8 +186,6 @@ Content-Type: application/json
 
 ## Phase 3: Property Setup
 
-> **Note**: Property-service needs variant and unit creation endpoints. These are currently missing and need to be implemented.
-
 ### Step 3.1: Create Property (Admin)
 
 ```http
@@ -221,10 +219,10 @@ Content-Type: application/json
 }
 ```
 
-### Step 3.2: Create Property Variant (Admin) — ⚠️ ENDPOINT NEEDED
+### Step 3.2: Create Property Variant (Admin)
 
 ```http
-POST {{propertyServiceUrl}}/properties/{{propertyId}}/variants
+POST {{propertyServiceUrl}}/property/properties/{{propertyId}}/variants
 Authorization: Bearer {{adaezeAccessToken}}
 x-tenant-id: {{tenantId}}
 Content-Type: application/json
@@ -255,10 +253,10 @@ Content-Type: application/json
 }
 ```
 
-### Step 3.3: Create Property Unit (Admin) — ⚠️ ENDPOINT NEEDED
+### Step 3.3: Create Property Unit (Admin)
 
 ```http
-POST {{propertyServiceUrl}}/properties/{{propertyId}}/variants/{{variantId}}/units
+POST {{propertyServiceUrl}}/property/properties/{{propertyId}}/variants/{{variantId}}/units
 Authorization: Bearer {{adaezeAccessToken}}
 x-tenant-id: {{tenantId}}
 Content-Type: application/json
@@ -284,10 +282,10 @@ Content-Type: application/json
 }
 ```
 
-### Step 3.4: Publish Property (Admin) — ⚠️ ENDPOINT NEEDED
+### Step 3.4: Publish Property (Admin)
 
 ```http
-PATCH {{propertyServiceUrl}}/properties/{{propertyId}}/publish
+PATCH {{propertyServiceUrl}}/property/properties/{{propertyId}}/publish
 Authorization: Bearer {{adaezeAccessToken}}
 x-tenant-id: {{tenantId}}
 ```
@@ -510,7 +508,7 @@ Content-Type: application/json
 }
 ```
 
-### Step 4.5: Configure Document Requirement Rules (Admin) — ⚠️ ENDPOINT NEEDED
+### Step 4.5: Configure Document Requirement Rules (Admin)
 
 ```http
 POST {{mortgageServiceUrl}}/payment-methods/{{paymentMethodId}}/document-rules

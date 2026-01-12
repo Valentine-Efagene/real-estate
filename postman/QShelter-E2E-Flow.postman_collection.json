@@ -443,11 +443,12 @@
                             "raw": "{\n  \"unitNumber\": \"14B\",\n  \"floorNumber\": 14,\n  \"blockName\": \"Block B\"\n}"
                         },
                         "url": {
-                            "raw": "{{propertyServiceUrl}}/properties/{{propertyId}}/variants/{{variantId}}/units",
+                            "raw": "{{propertyServiceUrl}}/property/properties/{{propertyId}}/variants/{{variantId}}/units",
                             "host": [
                                 "{{propertyServiceUrl}}"
                             ],
                             "path": [
+                                "property",
                                 "properties",
                                 "{{propertyId}}",
                                 "variants",
@@ -455,11 +456,11 @@
                                 "units"
                             ]
                         },
-                        "description": "⚠️ This endpoint needs to be implemented in property-service"
+                        "description": "Creates a unit under a specific variant"
                     }
                 },
                 {
-                    "name": "3.4 Publish Property (⚠️ TODO)",
+                    "name": "3.4 Publish Property",
                     "request": {
                         "method": "PATCH",
                         "header": [
@@ -473,17 +474,18 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{propertyServiceUrl}}/properties/{{propertyId}}/publish",
+                            "raw": "{{propertyServiceUrl}}/property/properties/{{propertyId}}/publish",
                             "host": [
                                 "{{propertyServiceUrl}}"
                             ],
                             "path": [
+                                "property",
                                 "properties",
                                 "{{propertyId}}",
                                 "publish"
                             ]
                         },
-                        "description": "⚠️ This endpoint needs to be implemented in property-service"
+                        "description": "Publishes the property to make it visible to applicants"
                     }
                 }
             ]
