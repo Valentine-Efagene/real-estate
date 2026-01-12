@@ -54,6 +54,13 @@ describe("Chidi's Lekki Mortgage Flow", () => {
     const mortgagePercent = 90;
     const mortgageInterestRate = 9.5; // 9.5% per annum
 
+    // Chidi's mortgage term selection (based on his age)
+    // Chidi is 40, maxAgeAtMaturity is 65, so max term is 25 years
+    // Chidi chooses 20 years
+    const chidiAge = 40;
+    const chidiSelectedTermYears = 20;
+    const chidiSelectedTermMonths = chidiSelectedTermYears * 12; // 240 months
+
     beforeAll(async () => {
         await cleanupTestData();
 
@@ -183,22 +190,32 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             expect(event).toBeDefined();
         });
 
-        it('Adaeze creates a 20-year mortgage plan at 9.5% p.a.', async () => {
+        it('Adaeze creates a flexible-term mortgage plan at 9.5% p.a.', async () => {
+            // Mortgage plan with flexible term (5-30 years based on applicant's age)
+            // maxAgeAtMaturity: 65 means if Chidi is 40, he can get max 25 years
             const response = await api
                 .post('/payment-plans')
                 .set(authHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('adaeze-create-mortgage-plan'))
                 .send({
-                    name: '20-Year Mortgage at 9.5%',
-                    description: '240 monthly payments at 9.5% annual interest',
+                    name: 'Flexible Mortgage at 9.5%',
+                    description: 'Monthly payments at 9.5% annual interest, term selected by applicant',
                     frequency: 'MONTHLY',
-                    numberOfInstallments: 240,
+                    // Flexible term configuration
+                    allowFlexibleTerm: true,
+                    minTermMonths: 60,       // 5 years minimum
+                    maxTermMonths: 360,      // 30 years maximum
+                    termStepMonths: 12,      // Increments of 1 year
+                    maxAgeAtMaturity: 65,    // Applicant + term cannot exceed 65
                     interestRate: mortgageInterestRate,
                     gracePeriodDays: 15,
                 });
 
             expect(response.status).toBe(201);
-            expect(response.body.interestRate).toBe(mortgageInterestRate);
+            expect(response.body.allowFlexibleTerm).toBe(true);
+            expect(response.body.minTermMonths).toBe(60);
+            expect(response.body.maxTermMonths).toBe(360);
+            expect(response.body.maxAgeAtMaturity).toBe(65);
             mortgagePlanId = response.body.id;
         });
 
@@ -410,7 +427,9 @@ describe("Chidi's Lekki Mortgage Flow", () => {
     // Underwriting now happens as a step within the KYC phase.
     // =========================================================================
     describe("Step 2: Chidi creates and activates a contract", () => {
-        it('Chidi creates a contract for Unit 14B', async () => {
+        it('Chidi creates a contract for Unit 14B with his preferred mortgage term', async () => {
+            // Chidi is 40 years old, so with maxAgeAtMaturity: 65, he can select up to 25 years
+            // Chidi chooses 20 years (240 months)
             const response = await api
                 .post('/contracts')
                 .set(authHeaders(chidiId, tenantId))
@@ -423,6 +442,9 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                     totalAmount: propertyPrice,
                     monthlyIncome: 2_500_000, // ₦2.5M/month
                     monthlyExpenses: 800_000,  // ₦800k/month
+                    // Chidi selects his preferred mortgage term
+                    applicantAge: chidiAge,
+                    selectedMortgageTermMonths: chidiSelectedTermMonths, // 240 months = 20 years
                 });
 
             expect(response.status).toBe(201);
@@ -469,6 +491,16 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             expect(finalDocPhase.totalAmount).toBe(0);      // Documentation phase, no payment
             expect(mortPhase.totalAmount).toBe(76_500_000); // 90% of ₦85M
             expect(mortPhase.interestRate).toBe(mortgageInterestRate);
+        });
+
+        it('Mortgage phase has Chidi\'s selected term (20 years / 240 months)', async () => {
+            const phase = await prisma.contractPhase.findUnique({
+                where: { id: mortgagePhaseId },
+                include: { paymentPhase: true },
+            });
+
+            expect(phase?.paymentPhase?.selectedTermMonths).toBe(chidiSelectedTermMonths);
+            expect(phase?.paymentPhase?.numberOfInstallments).toBe(chidiSelectedTermMonths);
         });
 
         it('Unit 14B is reserved for Chidi', async () => {
@@ -742,7 +774,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             expect(phase?.status).toBe('IN_PROGRESS');
         });
 
-        it('System generates 240 monthly mortgage installments', async () => {
+        it('System generates mortgage installments based on Chidi\'s selected term (240 months)', async () => {
             const response = await api
                 .post(`/contracts/${contractId}/phases/${mortgagePhaseId}/installments`)
                 .set(authHeaders(chidiId, tenantId))
@@ -750,7 +782,8 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                 .send({ startDate: new Date().toISOString() });
 
             expect(response.status).toBe(200);
-            expect(response.body.installments.length).toBe(240);
+            // Number of installments matches Chidi's selected term
+            expect(response.body.installments.length).toBe(chidiSelectedTermMonths);
         });
 
         it('Chidi signs and activates the contract', async () => {

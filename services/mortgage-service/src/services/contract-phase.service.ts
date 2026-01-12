@@ -310,8 +310,22 @@ class ContractPhaseService {
         const startDate = new Date(data.startDate);
         const interestRate = data.interestRate ?? paymentPhase.interestRate ?? 0;
         const totalAmount = paymentPhase.totalAmount ?? 0;
-        const numberOfInstallments = paymentPlan.numberOfInstallments;
         const intervalDays = paymentPlanService.getIntervalDays(paymentPlan);
+
+        // Determine number of installments: for flexible-term plans, use the user's selected term
+        // For fixed-term plans, use the plan's default numberOfInstallments
+        let numberOfInstallments: number;
+        if (paymentPlan.allowFlexibleTerm) {
+            if (!paymentPhase.numberOfInstallments) {
+                throw new AppError(400, 'Flexible term plan requires selected term to be set on the phase');
+            }
+            numberOfInstallments = paymentPhase.numberOfInstallments;
+        } else {
+            if (!paymentPlan.numberOfInstallments) {
+                throw new AppError(400, 'Payment plan must have numberOfInstallments configured');
+            }
+            numberOfInstallments = paymentPlan.numberOfInstallments;
+        }
 
         // Calculate installment amounts using amortization
         const installments = this.calculateInstallments(

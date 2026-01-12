@@ -3,9 +3,9 @@
 ## Actors
 
 - **Adaeze** (Admin): Loan operations manager at QShelter
-- **Chidi** (Customer): First-time homebuyer purchasing a 3-bedroom flat in Lekki
+- **Chidi** (Customer): First-time homebuyer purchasing a 3-bedroom flat in Lekki (age: 40)
 - **Property**: Lekki Gardens Estate, Unit 14B, ₦85,000,000
-- **Payment Plan**: 10% downpayment, 90% mortgage at 9.5% p.a. over 20 years
+- **Payment Plan**: 10% downpayment, 90% mortgage at 9.5% p.a. (term selected by applicant)
 - **Investor**: Sterling Bank (receives final offer letter for loan packaging)
 
 ---
@@ -27,7 +27,7 @@
 
    **Phase 2: Downpayment** (PAYMENT)
    - 10% of property price = ₦8,500,000
-   - One-time payment
+   - One-time payment (fixed term)
 
    **Phase 3: Final Documentation** (DOCUMENTATION)
    - Step 1: Admin Uploads Final Offer Letter _(UPLOAD, admin-only)_
@@ -36,13 +36,15 @@
 
    **Phase 4: Mortgage** (PAYMENT)
    - 90% of property price = ₦76,500,000
-   - 240 monthly installments at 9.5% p.a.
+   - **Flexible term**: 5-30 years (applicant selects within constraints)
+   - Term constraints: `maxAgeAtMaturity: 65` (Chidi at 40 can select up to 25 years)
+   - Chidi selects 20 years → 240 monthly installments at 9.5% p.a.
 
 ---
 
 ### Customer Journey
 
-2. Chidi selects Unit 14B at Lekki Gardens and chooses the 10/90 payment plan; the system creates a draft application for him.
+2. Chidi selects Unit 14B at Lekki Gardens and chooses the 10/90 payment plan. Based on his age (40) and the plan's constraints (maxAgeAtMaturity: 65), the system shows him available terms: 5-25 years. Chidi selects 20 years. The system creates a draft application with his selected term.
 
 3. Chidi completes the pre-approval questionnaire with his employment and income details.
 

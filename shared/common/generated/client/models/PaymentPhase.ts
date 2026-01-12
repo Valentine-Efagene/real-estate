@@ -30,6 +30,8 @@ export type PaymentPhaseAvgAggregateOutputType = {
   totalAmount: number | null
   paidAmount: number | null
   interestRate: number | null
+  selectedTermMonths: number | null
+  numberOfInstallments: number | null
   minimumCompletionPercentage: number | null
 }
 
@@ -37,6 +39,8 @@ export type PaymentPhaseSumAggregateOutputType = {
   totalAmount: number | null
   paidAmount: number | null
   interestRate: number | null
+  selectedTermMonths: number | null
+  numberOfInstallments: number | null
   minimumCompletionPercentage: number | null
 }
 
@@ -47,6 +51,8 @@ export type PaymentPhaseMinAggregateOutputType = {
   totalAmount: number | null
   paidAmount: number | null
   interestRate: number | null
+  selectedTermMonths: number | null
+  numberOfInstallments: number | null
   collectFunds: boolean | null
   minimumCompletionPercentage: number | null
   createdAt: Date | null
@@ -60,6 +66,8 @@ export type PaymentPhaseMaxAggregateOutputType = {
   totalAmount: number | null
   paidAmount: number | null
   interestRate: number | null
+  selectedTermMonths: number | null
+  numberOfInstallments: number | null
   collectFunds: boolean | null
   minimumCompletionPercentage: number | null
   createdAt: Date | null
@@ -73,6 +81,8 @@ export type PaymentPhaseCountAggregateOutputType = {
   totalAmount: number
   paidAmount: number
   interestRate: number
+  selectedTermMonths: number
+  numberOfInstallments: number
   collectFunds: number
   minimumCompletionPercentage: number
   paymentPlanSnapshot: number
@@ -86,6 +96,8 @@ export type PaymentPhaseAvgAggregateInputType = {
   totalAmount?: true
   paidAmount?: true
   interestRate?: true
+  selectedTermMonths?: true
+  numberOfInstallments?: true
   minimumCompletionPercentage?: true
 }
 
@@ -93,6 +105,8 @@ export type PaymentPhaseSumAggregateInputType = {
   totalAmount?: true
   paidAmount?: true
   interestRate?: true
+  selectedTermMonths?: true
+  numberOfInstallments?: true
   minimumCompletionPercentage?: true
 }
 
@@ -103,6 +117,8 @@ export type PaymentPhaseMinAggregateInputType = {
   totalAmount?: true
   paidAmount?: true
   interestRate?: true
+  selectedTermMonths?: true
+  numberOfInstallments?: true
   collectFunds?: true
   minimumCompletionPercentage?: true
   createdAt?: true
@@ -116,6 +132,8 @@ export type PaymentPhaseMaxAggregateInputType = {
   totalAmount?: true
   paidAmount?: true
   interestRate?: true
+  selectedTermMonths?: true
+  numberOfInstallments?: true
   collectFunds?: true
   minimumCompletionPercentage?: true
   createdAt?: true
@@ -129,6 +147,8 @@ export type PaymentPhaseCountAggregateInputType = {
   totalAmount?: true
   paidAmount?: true
   interestRate?: true
+  selectedTermMonths?: true
+  numberOfInstallments?: true
   collectFunds?: true
   minimumCompletionPercentage?: true
   paymentPlanSnapshot?: true
@@ -230,6 +250,8 @@ export type PaymentPhaseGroupByOutputType = {
   totalAmount: number
   paidAmount: number
   interestRate: number
+  selectedTermMonths: number | null
+  numberOfInstallments: number | null
   collectFunds: boolean
   minimumCompletionPercentage: number | null
   paymentPlanSnapshot: runtime.JsonValue | null
@@ -267,6 +289,8 @@ export type PaymentPhaseWhereInput = {
   totalAmount?: Prisma.FloatFilter<"PaymentPhase"> | number
   paidAmount?: Prisma.FloatFilter<"PaymentPhase"> | number
   interestRate?: Prisma.FloatFilter<"PaymentPhase"> | number
+  selectedTermMonths?: Prisma.IntNullableFilter<"PaymentPhase"> | number | null
+  numberOfInstallments?: Prisma.IntNullableFilter<"PaymentPhase"> | number | null
   collectFunds?: Prisma.BoolFilter<"PaymentPhase"> | boolean
   minimumCompletionPercentage?: Prisma.FloatNullableFilter<"PaymentPhase"> | number | null
   paymentPlanSnapshot?: Prisma.JsonNullableFilter<"PaymentPhase">
@@ -284,6 +308,8 @@ export type PaymentPhaseOrderByWithRelationInput = {
   totalAmount?: Prisma.SortOrder
   paidAmount?: Prisma.SortOrder
   interestRate?: Prisma.SortOrder
+  selectedTermMonths?: Prisma.SortOrderInput | Prisma.SortOrder
+  numberOfInstallments?: Prisma.SortOrderInput | Prisma.SortOrder
   collectFunds?: Prisma.SortOrder
   minimumCompletionPercentage?: Prisma.SortOrderInput | Prisma.SortOrder
   paymentPlanSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -305,6 +331,8 @@ export type PaymentPhaseWhereUniqueInput = Prisma.AtLeast<{
   totalAmount?: Prisma.FloatFilter<"PaymentPhase"> | number
   paidAmount?: Prisma.FloatFilter<"PaymentPhase"> | number
   interestRate?: Prisma.FloatFilter<"PaymentPhase"> | number
+  selectedTermMonths?: Prisma.IntNullableFilter<"PaymentPhase"> | number | null
+  numberOfInstallments?: Prisma.IntNullableFilter<"PaymentPhase"> | number | null
   collectFunds?: Prisma.BoolFilter<"PaymentPhase"> | boolean
   minimumCompletionPercentage?: Prisma.FloatNullableFilter<"PaymentPhase"> | number | null
   paymentPlanSnapshot?: Prisma.JsonNullableFilter<"PaymentPhase">
@@ -322,6 +350,8 @@ export type PaymentPhaseOrderByWithAggregationInput = {
   totalAmount?: Prisma.SortOrder
   paidAmount?: Prisma.SortOrder
   interestRate?: Prisma.SortOrder
+  selectedTermMonths?: Prisma.SortOrderInput | Prisma.SortOrder
+  numberOfInstallments?: Prisma.SortOrderInput | Prisma.SortOrder
   collectFunds?: Prisma.SortOrder
   minimumCompletionPercentage?: Prisma.SortOrderInput | Prisma.SortOrder
   paymentPlanSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -344,6 +374,8 @@ export type PaymentPhaseScalarWhereWithAggregatesInput = {
   totalAmount?: Prisma.FloatWithAggregatesFilter<"PaymentPhase"> | number
   paidAmount?: Prisma.FloatWithAggregatesFilter<"PaymentPhase"> | number
   interestRate?: Prisma.FloatWithAggregatesFilter<"PaymentPhase"> | number
+  selectedTermMonths?: Prisma.IntNullableWithAggregatesFilter<"PaymentPhase"> | number | null
+  numberOfInstallments?: Prisma.IntNullableWithAggregatesFilter<"PaymentPhase"> | number | null
   collectFunds?: Prisma.BoolWithAggregatesFilter<"PaymentPhase"> | boolean
   minimumCompletionPercentage?: Prisma.FloatNullableWithAggregatesFilter<"PaymentPhase"> | number | null
   paymentPlanSnapshot?: Prisma.JsonNullableWithAggregatesFilter<"PaymentPhase">
@@ -356,6 +388,8 @@ export type PaymentPhaseCreateInput = {
   totalAmount: number
   paidAmount?: number
   interestRate?: number
+  selectedTermMonths?: number | null
+  numberOfInstallments?: number | null
   collectFunds?: boolean
   minimumCompletionPercentage?: number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -373,6 +407,8 @@ export type PaymentPhaseUncheckedCreateInput = {
   totalAmount: number
   paidAmount?: number
   interestRate?: number
+  selectedTermMonths?: number | null
+  numberOfInstallments?: number | null
   collectFunds?: boolean
   minimumCompletionPercentage?: number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -386,6 +422,8 @@ export type PaymentPhaseUpdateInput = {
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   interestRate?: Prisma.FloatFieldUpdateOperationsInput | number
+  selectedTermMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfInstallments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -403,6 +441,8 @@ export type PaymentPhaseUncheckedUpdateInput = {
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   interestRate?: Prisma.FloatFieldUpdateOperationsInput | number
+  selectedTermMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfInstallments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -418,6 +458,8 @@ export type PaymentPhaseCreateManyInput = {
   totalAmount: number
   paidAmount?: number
   interestRate?: number
+  selectedTermMonths?: number | null
+  numberOfInstallments?: number | null
   collectFunds?: boolean
   minimumCompletionPercentage?: number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -430,6 +472,8 @@ export type PaymentPhaseUpdateManyMutationInput = {
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   interestRate?: Prisma.FloatFieldUpdateOperationsInput | number
+  selectedTermMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfInstallments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -444,6 +488,8 @@ export type PaymentPhaseUncheckedUpdateManyInput = {
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   interestRate?: Prisma.FloatFieldUpdateOperationsInput | number
+  selectedTermMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfInstallments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -479,6 +525,8 @@ export type PaymentPhaseCountOrderByAggregateInput = {
   totalAmount?: Prisma.SortOrder
   paidAmount?: Prisma.SortOrder
   interestRate?: Prisma.SortOrder
+  selectedTermMonths?: Prisma.SortOrder
+  numberOfInstallments?: Prisma.SortOrder
   collectFunds?: Prisma.SortOrder
   minimumCompletionPercentage?: Prisma.SortOrder
   paymentPlanSnapshot?: Prisma.SortOrder
@@ -490,6 +538,8 @@ export type PaymentPhaseAvgOrderByAggregateInput = {
   totalAmount?: Prisma.SortOrder
   paidAmount?: Prisma.SortOrder
   interestRate?: Prisma.SortOrder
+  selectedTermMonths?: Prisma.SortOrder
+  numberOfInstallments?: Prisma.SortOrder
   minimumCompletionPercentage?: Prisma.SortOrder
 }
 
@@ -500,6 +550,8 @@ export type PaymentPhaseMaxOrderByAggregateInput = {
   totalAmount?: Prisma.SortOrder
   paidAmount?: Prisma.SortOrder
   interestRate?: Prisma.SortOrder
+  selectedTermMonths?: Prisma.SortOrder
+  numberOfInstallments?: Prisma.SortOrder
   collectFunds?: Prisma.SortOrder
   minimumCompletionPercentage?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -513,6 +565,8 @@ export type PaymentPhaseMinOrderByAggregateInput = {
   totalAmount?: Prisma.SortOrder
   paidAmount?: Prisma.SortOrder
   interestRate?: Prisma.SortOrder
+  selectedTermMonths?: Prisma.SortOrder
+  numberOfInstallments?: Prisma.SortOrder
   collectFunds?: Prisma.SortOrder
   minimumCompletionPercentage?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -523,6 +577,8 @@ export type PaymentPhaseSumOrderByAggregateInput = {
   totalAmount?: Prisma.SortOrder
   paidAmount?: Prisma.SortOrder
   interestRate?: Prisma.SortOrder
+  selectedTermMonths?: Prisma.SortOrder
+  numberOfInstallments?: Prisma.SortOrder
   minimumCompletionPercentage?: Prisma.SortOrder
 }
 
@@ -624,6 +680,8 @@ export type PaymentPhaseCreateWithoutPaymentPlanInput = {
   totalAmount: number
   paidAmount?: number
   interestRate?: number
+  selectedTermMonths?: number | null
+  numberOfInstallments?: number | null
   collectFunds?: boolean
   minimumCompletionPercentage?: number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -639,6 +697,8 @@ export type PaymentPhaseUncheckedCreateWithoutPaymentPlanInput = {
   totalAmount: number
   paidAmount?: number
   interestRate?: number
+  selectedTermMonths?: number | null
+  numberOfInstallments?: number | null
   collectFunds?: boolean
   minimumCompletionPercentage?: number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -683,6 +743,8 @@ export type PaymentPhaseScalarWhereInput = {
   totalAmount?: Prisma.FloatFilter<"PaymentPhase"> | number
   paidAmount?: Prisma.FloatFilter<"PaymentPhase"> | number
   interestRate?: Prisma.FloatFilter<"PaymentPhase"> | number
+  selectedTermMonths?: Prisma.IntNullableFilter<"PaymentPhase"> | number | null
+  numberOfInstallments?: Prisma.IntNullableFilter<"PaymentPhase"> | number | null
   collectFunds?: Prisma.BoolFilter<"PaymentPhase"> | boolean
   minimumCompletionPercentage?: Prisma.FloatNullableFilter<"PaymentPhase"> | number | null
   paymentPlanSnapshot?: Prisma.JsonNullableFilter<"PaymentPhase">
@@ -695,6 +757,8 @@ export type PaymentPhaseCreateWithoutPhaseInput = {
   totalAmount: number
   paidAmount?: number
   interestRate?: number
+  selectedTermMonths?: number | null
+  numberOfInstallments?: number | null
   collectFunds?: boolean
   minimumCompletionPercentage?: number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -710,6 +774,8 @@ export type PaymentPhaseUncheckedCreateWithoutPhaseInput = {
   totalAmount: number
   paidAmount?: number
   interestRate?: number
+  selectedTermMonths?: number | null
+  numberOfInstallments?: number | null
   collectFunds?: boolean
   minimumCompletionPercentage?: number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -739,6 +805,8 @@ export type PaymentPhaseUpdateWithoutPhaseInput = {
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   interestRate?: Prisma.FloatFieldUpdateOperationsInput | number
+  selectedTermMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfInstallments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -754,6 +822,8 @@ export type PaymentPhaseUncheckedUpdateWithoutPhaseInput = {
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   interestRate?: Prisma.FloatFieldUpdateOperationsInput | number
+  selectedTermMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfInstallments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -767,6 +837,8 @@ export type PaymentPhaseCreateWithoutInstallmentsInput = {
   totalAmount: number
   paidAmount?: number
   interestRate?: number
+  selectedTermMonths?: number | null
+  numberOfInstallments?: number | null
   collectFunds?: boolean
   minimumCompletionPercentage?: number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -783,6 +855,8 @@ export type PaymentPhaseUncheckedCreateWithoutInstallmentsInput = {
   totalAmount: number
   paidAmount?: number
   interestRate?: number
+  selectedTermMonths?: number | null
+  numberOfInstallments?: number | null
   collectFunds?: boolean
   minimumCompletionPercentage?: number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -811,6 +885,8 @@ export type PaymentPhaseUpdateWithoutInstallmentsInput = {
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   interestRate?: Prisma.FloatFieldUpdateOperationsInput | number
+  selectedTermMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfInstallments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -827,6 +903,8 @@ export type PaymentPhaseUncheckedUpdateWithoutInstallmentsInput = {
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   interestRate?: Prisma.FloatFieldUpdateOperationsInput | number
+  selectedTermMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfInstallments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -840,6 +918,8 @@ export type PaymentPhaseCreateManyPaymentPlanInput = {
   totalAmount: number
   paidAmount?: number
   interestRate?: number
+  selectedTermMonths?: number | null
+  numberOfInstallments?: number | null
   collectFunds?: boolean
   minimumCompletionPercentage?: number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -852,6 +932,8 @@ export type PaymentPhaseUpdateWithoutPaymentPlanInput = {
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   interestRate?: Prisma.FloatFieldUpdateOperationsInput | number
+  selectedTermMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfInstallments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -867,6 +949,8 @@ export type PaymentPhaseUncheckedUpdateWithoutPaymentPlanInput = {
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   interestRate?: Prisma.FloatFieldUpdateOperationsInput | number
+  selectedTermMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfInstallments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -881,6 +965,8 @@ export type PaymentPhaseUncheckedUpdateManyWithoutPaymentPlanInput = {
   totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   paidAmount?: Prisma.FloatFieldUpdateOperationsInput | number
   interestRate?: Prisma.FloatFieldUpdateOperationsInput | number
+  selectedTermMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  numberOfInstallments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
@@ -926,6 +1012,8 @@ export type PaymentPhaseSelect<ExtArgs extends runtime.Types.Extensions.Internal
   totalAmount?: boolean
   paidAmount?: boolean
   interestRate?: boolean
+  selectedTermMonths?: boolean
+  numberOfInstallments?: boolean
   collectFunds?: boolean
   minimumCompletionPercentage?: boolean
   paymentPlanSnapshot?: boolean
@@ -946,6 +1034,8 @@ export type PaymentPhaseSelectScalar = {
   totalAmount?: boolean
   paidAmount?: boolean
   interestRate?: boolean
+  selectedTermMonths?: boolean
+  numberOfInstallments?: boolean
   collectFunds?: boolean
   minimumCompletionPercentage?: boolean
   paymentPlanSnapshot?: boolean
@@ -953,7 +1043,7 @@ export type PaymentPhaseSelectScalar = {
   updatedAt?: boolean
 }
 
-export type PaymentPhaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "phaseId" | "paymentPlanId" | "totalAmount" | "paidAmount" | "interestRate" | "collectFunds" | "minimumCompletionPercentage" | "paymentPlanSnapshot" | "createdAt" | "updatedAt", ExtArgs["result"]["paymentPhase"]>
+export type PaymentPhaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "phaseId" | "paymentPlanId" | "totalAmount" | "paidAmount" | "interestRate" | "selectedTermMonths" | "numberOfInstallments" | "collectFunds" | "minimumCompletionPercentage" | "paymentPlanSnapshot" | "createdAt" | "updatedAt", ExtArgs["result"]["paymentPhase"]>
 export type PaymentPhaseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   phase?: boolean | Prisma.ContractPhaseDefaultArgs<ExtArgs>
   paymentPlan?: boolean | Prisma.PaymentPhase$paymentPlanArgs<ExtArgs>
@@ -975,6 +1065,8 @@ export type $PaymentPhasePayload<ExtArgs extends runtime.Types.Extensions.Intern
     totalAmount: number
     paidAmount: number
     interestRate: number
+    selectedTermMonths: number | null
+    numberOfInstallments: number | null
     collectFunds: boolean
     minimumCompletionPercentage: number | null
     paymentPlanSnapshot: runtime.JsonValue | null
@@ -1358,6 +1450,8 @@ export interface PaymentPhaseFieldRefs {
   readonly totalAmount: Prisma.FieldRef<"PaymentPhase", 'Float'>
   readonly paidAmount: Prisma.FieldRef<"PaymentPhase", 'Float'>
   readonly interestRate: Prisma.FieldRef<"PaymentPhase", 'Float'>
+  readonly selectedTermMonths: Prisma.FieldRef<"PaymentPhase", 'Int'>
+  readonly numberOfInstallments: Prisma.FieldRef<"PaymentPhase", 'Int'>
   readonly collectFunds: Prisma.FieldRef<"PaymentPhase", 'Boolean'>
   readonly minimumCompletionPercentage: Prisma.FieldRef<"PaymentPhase", 'Float'>
   readonly paymentPlanSnapshot: Prisma.FieldRef<"PaymentPhase", 'Json'>

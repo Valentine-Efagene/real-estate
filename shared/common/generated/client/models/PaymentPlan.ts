@@ -30,12 +30,20 @@ export type PaymentPlanAvgAggregateOutputType = {
   customFrequencyDays: number | null
   numberOfInstallments: number | null
   gracePeriodDays: number | null
+  minTermMonths: number | null
+  maxTermMonths: number | null
+  termStepMonths: number | null
+  maxAgeAtMaturity: number | null
 }
 
 export type PaymentPlanSumAggregateOutputType = {
   customFrequencyDays: number | null
   numberOfInstallments: number | null
   gracePeriodDays: number | null
+  minTermMonths: number | null
+  maxTermMonths: number | null
+  termStepMonths: number | null
+  maxAgeAtMaturity: number | null
 }
 
 export type PaymentPlanMinAggregateOutputType = {
@@ -49,6 +57,11 @@ export type PaymentPlanMinAggregateOutputType = {
   numberOfInstallments: number | null
   calculateInterestDaily: boolean | null
   gracePeriodDays: number | null
+  allowFlexibleTerm: boolean | null
+  minTermMonths: number | null
+  maxTermMonths: number | null
+  termStepMonths: number | null
+  maxAgeAtMaturity: number | null
   collectFunds: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -65,6 +78,11 @@ export type PaymentPlanMaxAggregateOutputType = {
   numberOfInstallments: number | null
   calculateInterestDaily: boolean | null
   gracePeriodDays: number | null
+  allowFlexibleTerm: boolean | null
+  minTermMonths: number | null
+  maxTermMonths: number | null
+  termStepMonths: number | null
+  maxAgeAtMaturity: number | null
   collectFunds: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -81,6 +99,11 @@ export type PaymentPlanCountAggregateOutputType = {
   numberOfInstallments: number
   calculateInterestDaily: number
   gracePeriodDays: number
+  allowFlexibleTerm: number
+  minTermMonths: number
+  maxTermMonths: number
+  termStepMonths: number
+  maxAgeAtMaturity: number
   collectFunds: number
   createdAt: number
   updatedAt: number
@@ -92,12 +115,20 @@ export type PaymentPlanAvgAggregateInputType = {
   customFrequencyDays?: true
   numberOfInstallments?: true
   gracePeriodDays?: true
+  minTermMonths?: true
+  maxTermMonths?: true
+  termStepMonths?: true
+  maxAgeAtMaturity?: true
 }
 
 export type PaymentPlanSumAggregateInputType = {
   customFrequencyDays?: true
   numberOfInstallments?: true
   gracePeriodDays?: true
+  minTermMonths?: true
+  maxTermMonths?: true
+  termStepMonths?: true
+  maxAgeAtMaturity?: true
 }
 
 export type PaymentPlanMinAggregateInputType = {
@@ -111,6 +142,11 @@ export type PaymentPlanMinAggregateInputType = {
   numberOfInstallments?: true
   calculateInterestDaily?: true
   gracePeriodDays?: true
+  allowFlexibleTerm?: true
+  minTermMonths?: true
+  maxTermMonths?: true
+  termStepMonths?: true
+  maxAgeAtMaturity?: true
   collectFunds?: true
   createdAt?: true
   updatedAt?: true
@@ -127,6 +163,11 @@ export type PaymentPlanMaxAggregateInputType = {
   numberOfInstallments?: true
   calculateInterestDaily?: true
   gracePeriodDays?: true
+  allowFlexibleTerm?: true
+  minTermMonths?: true
+  maxTermMonths?: true
+  termStepMonths?: true
+  maxAgeAtMaturity?: true
   collectFunds?: true
   createdAt?: true
   updatedAt?: true
@@ -143,6 +184,11 @@ export type PaymentPlanCountAggregateInputType = {
   numberOfInstallments?: true
   calculateInterestDaily?: true
   gracePeriodDays?: true
+  allowFlexibleTerm?: true
+  minTermMonths?: true
+  maxTermMonths?: true
+  termStepMonths?: true
+  maxAgeAtMaturity?: true
   collectFunds?: true
   createdAt?: true
   updatedAt?: true
@@ -243,9 +289,14 @@ export type PaymentPlanGroupByOutputType = {
   isActive: boolean
   paymentFrequency: $Enums.PaymentFrequency
   customFrequencyDays: number | null
-  numberOfInstallments: number
+  numberOfInstallments: number | null
   calculateInterestDaily: boolean
   gracePeriodDays: number
+  allowFlexibleTerm: boolean
+  minTermMonths: number | null
+  maxTermMonths: number | null
+  termStepMonths: number | null
+  maxAgeAtMaturity: number | null
   collectFunds: boolean
   createdAt: Date
   updatedAt: Date
@@ -282,9 +333,14 @@ export type PaymentPlanWhereInput = {
   isActive?: Prisma.BoolFilter<"PaymentPlan"> | boolean
   paymentFrequency?: Prisma.EnumPaymentFrequencyFilter<"PaymentPlan"> | $Enums.PaymentFrequency
   customFrequencyDays?: Prisma.IntNullableFilter<"PaymentPlan"> | number | null
-  numberOfInstallments?: Prisma.IntFilter<"PaymentPlan"> | number
+  numberOfInstallments?: Prisma.IntNullableFilter<"PaymentPlan"> | number | null
   calculateInterestDaily?: Prisma.BoolFilter<"PaymentPlan"> | boolean
   gracePeriodDays?: Prisma.IntFilter<"PaymentPlan"> | number
+  allowFlexibleTerm?: Prisma.BoolFilter<"PaymentPlan"> | boolean
+  minTermMonths?: Prisma.IntNullableFilter<"PaymentPlan"> | number | null
+  maxTermMonths?: Prisma.IntNullableFilter<"PaymentPlan"> | number | null
+  termStepMonths?: Prisma.IntNullableFilter<"PaymentPlan"> | number | null
+  maxAgeAtMaturity?: Prisma.IntNullableFilter<"PaymentPlan"> | number | null
   collectFunds?: Prisma.BoolFilter<"PaymentPlan"> | boolean
   createdAt?: Prisma.DateTimeFilter<"PaymentPlan"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PaymentPlan"> | Date | string
@@ -301,9 +357,14 @@ export type PaymentPlanOrderByWithRelationInput = {
   isActive?: Prisma.SortOrder
   paymentFrequency?: Prisma.SortOrder
   customFrequencyDays?: Prisma.SortOrderInput | Prisma.SortOrder
-  numberOfInstallments?: Prisma.SortOrder
+  numberOfInstallments?: Prisma.SortOrderInput | Prisma.SortOrder
   calculateInterestDaily?: Prisma.SortOrder
   gracePeriodDays?: Prisma.SortOrder
+  allowFlexibleTerm?: Prisma.SortOrder
+  minTermMonths?: Prisma.SortOrderInput | Prisma.SortOrder
+  maxTermMonths?: Prisma.SortOrderInput | Prisma.SortOrder
+  termStepMonths?: Prisma.SortOrderInput | Prisma.SortOrder
+  maxAgeAtMaturity?: Prisma.SortOrderInput | Prisma.SortOrder
   collectFunds?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -325,9 +386,14 @@ export type PaymentPlanWhereUniqueInput = Prisma.AtLeast<{
   isActive?: Prisma.BoolFilter<"PaymentPlan"> | boolean
   paymentFrequency?: Prisma.EnumPaymentFrequencyFilter<"PaymentPlan"> | $Enums.PaymentFrequency
   customFrequencyDays?: Prisma.IntNullableFilter<"PaymentPlan"> | number | null
-  numberOfInstallments?: Prisma.IntFilter<"PaymentPlan"> | number
+  numberOfInstallments?: Prisma.IntNullableFilter<"PaymentPlan"> | number | null
   calculateInterestDaily?: Prisma.BoolFilter<"PaymentPlan"> | boolean
   gracePeriodDays?: Prisma.IntFilter<"PaymentPlan"> | number
+  allowFlexibleTerm?: Prisma.BoolFilter<"PaymentPlan"> | boolean
+  minTermMonths?: Prisma.IntNullableFilter<"PaymentPlan"> | number | null
+  maxTermMonths?: Prisma.IntNullableFilter<"PaymentPlan"> | number | null
+  termStepMonths?: Prisma.IntNullableFilter<"PaymentPlan"> | number | null
+  maxAgeAtMaturity?: Prisma.IntNullableFilter<"PaymentPlan"> | number | null
   collectFunds?: Prisma.BoolFilter<"PaymentPlan"> | boolean
   createdAt?: Prisma.DateTimeFilter<"PaymentPlan"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PaymentPlan"> | Date | string
@@ -344,9 +410,14 @@ export type PaymentPlanOrderByWithAggregationInput = {
   isActive?: Prisma.SortOrder
   paymentFrequency?: Prisma.SortOrder
   customFrequencyDays?: Prisma.SortOrderInput | Prisma.SortOrder
-  numberOfInstallments?: Prisma.SortOrder
+  numberOfInstallments?: Prisma.SortOrderInput | Prisma.SortOrder
   calculateInterestDaily?: Prisma.SortOrder
   gracePeriodDays?: Prisma.SortOrder
+  allowFlexibleTerm?: Prisma.SortOrder
+  minTermMonths?: Prisma.SortOrderInput | Prisma.SortOrder
+  maxTermMonths?: Prisma.SortOrderInput | Prisma.SortOrder
+  termStepMonths?: Prisma.SortOrderInput | Prisma.SortOrder
+  maxAgeAtMaturity?: Prisma.SortOrderInput | Prisma.SortOrder
   collectFunds?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -368,9 +439,14 @@ export type PaymentPlanScalarWhereWithAggregatesInput = {
   isActive?: Prisma.BoolWithAggregatesFilter<"PaymentPlan"> | boolean
   paymentFrequency?: Prisma.EnumPaymentFrequencyWithAggregatesFilter<"PaymentPlan"> | $Enums.PaymentFrequency
   customFrequencyDays?: Prisma.IntNullableWithAggregatesFilter<"PaymentPlan"> | number | null
-  numberOfInstallments?: Prisma.IntWithAggregatesFilter<"PaymentPlan"> | number
+  numberOfInstallments?: Prisma.IntNullableWithAggregatesFilter<"PaymentPlan"> | number | null
   calculateInterestDaily?: Prisma.BoolWithAggregatesFilter<"PaymentPlan"> | boolean
   gracePeriodDays?: Prisma.IntWithAggregatesFilter<"PaymentPlan"> | number
+  allowFlexibleTerm?: Prisma.BoolWithAggregatesFilter<"PaymentPlan"> | boolean
+  minTermMonths?: Prisma.IntNullableWithAggregatesFilter<"PaymentPlan"> | number | null
+  maxTermMonths?: Prisma.IntNullableWithAggregatesFilter<"PaymentPlan"> | number | null
+  termStepMonths?: Prisma.IntNullableWithAggregatesFilter<"PaymentPlan"> | number | null
+  maxAgeAtMaturity?: Prisma.IntNullableWithAggregatesFilter<"PaymentPlan"> | number | null
   collectFunds?: Prisma.BoolWithAggregatesFilter<"PaymentPlan"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"PaymentPlan"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"PaymentPlan"> | Date | string
@@ -383,9 +459,14 @@ export type PaymentPlanCreateInput = {
   isActive?: boolean
   paymentFrequency: $Enums.PaymentFrequency
   customFrequencyDays?: number | null
-  numberOfInstallments: number
+  numberOfInstallments?: number | null
   calculateInterestDaily?: boolean
   gracePeriodDays?: number
+  allowFlexibleTerm?: boolean
+  minTermMonths?: number | null
+  maxTermMonths?: number | null
+  termStepMonths?: number | null
+  maxAgeAtMaturity?: number | null
   collectFunds?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -402,9 +483,14 @@ export type PaymentPlanUncheckedCreateInput = {
   isActive?: boolean
   paymentFrequency: $Enums.PaymentFrequency
   customFrequencyDays?: number | null
-  numberOfInstallments: number
+  numberOfInstallments?: number | null
   calculateInterestDaily?: boolean
   gracePeriodDays?: number
+  allowFlexibleTerm?: boolean
+  minTermMonths?: number | null
+  maxTermMonths?: number | null
+  termStepMonths?: number | null
+  maxAgeAtMaturity?: number | null
   collectFunds?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -419,9 +505,14 @@ export type PaymentPlanUpdateInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   paymentFrequency?: Prisma.EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
   customFrequencyDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  numberOfInstallments?: Prisma.IntFieldUpdateOperationsInput | number
+  numberOfInstallments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   calculateInterestDaily?: Prisma.BoolFieldUpdateOperationsInput | boolean
   gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
+  allowFlexibleTerm?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  minTermMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxTermMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  termStepMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxAgeAtMaturity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -438,9 +529,14 @@ export type PaymentPlanUncheckedUpdateInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   paymentFrequency?: Prisma.EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
   customFrequencyDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  numberOfInstallments?: Prisma.IntFieldUpdateOperationsInput | number
+  numberOfInstallments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   calculateInterestDaily?: Prisma.BoolFieldUpdateOperationsInput | boolean
   gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
+  allowFlexibleTerm?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  minTermMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxTermMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  termStepMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxAgeAtMaturity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -456,9 +552,14 @@ export type PaymentPlanCreateManyInput = {
   isActive?: boolean
   paymentFrequency: $Enums.PaymentFrequency
   customFrequencyDays?: number | null
-  numberOfInstallments: number
+  numberOfInstallments?: number | null
   calculateInterestDaily?: boolean
   gracePeriodDays?: number
+  allowFlexibleTerm?: boolean
+  minTermMonths?: number | null
+  maxTermMonths?: number | null
+  termStepMonths?: number | null
+  maxAgeAtMaturity?: number | null
   collectFunds?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -471,9 +572,14 @@ export type PaymentPlanUpdateManyMutationInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   paymentFrequency?: Prisma.EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
   customFrequencyDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  numberOfInstallments?: Prisma.IntFieldUpdateOperationsInput | number
+  numberOfInstallments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   calculateInterestDaily?: Prisma.BoolFieldUpdateOperationsInput | boolean
   gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
+  allowFlexibleTerm?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  minTermMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxTermMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  termStepMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxAgeAtMaturity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -487,9 +593,14 @@ export type PaymentPlanUncheckedUpdateManyInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   paymentFrequency?: Prisma.EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
   customFrequencyDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  numberOfInstallments?: Prisma.IntFieldUpdateOperationsInput | number
+  numberOfInstallments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   calculateInterestDaily?: Prisma.BoolFieldUpdateOperationsInput | boolean
   gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
+  allowFlexibleTerm?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  minTermMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxTermMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  termStepMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxAgeAtMaturity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -527,6 +638,11 @@ export type PaymentPlanCountOrderByAggregateInput = {
   numberOfInstallments?: Prisma.SortOrder
   calculateInterestDaily?: Prisma.SortOrder
   gracePeriodDays?: Prisma.SortOrder
+  allowFlexibleTerm?: Prisma.SortOrder
+  minTermMonths?: Prisma.SortOrder
+  maxTermMonths?: Prisma.SortOrder
+  termStepMonths?: Prisma.SortOrder
+  maxAgeAtMaturity?: Prisma.SortOrder
   collectFunds?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -536,6 +652,10 @@ export type PaymentPlanAvgOrderByAggregateInput = {
   customFrequencyDays?: Prisma.SortOrder
   numberOfInstallments?: Prisma.SortOrder
   gracePeriodDays?: Prisma.SortOrder
+  minTermMonths?: Prisma.SortOrder
+  maxTermMonths?: Prisma.SortOrder
+  termStepMonths?: Prisma.SortOrder
+  maxAgeAtMaturity?: Prisma.SortOrder
 }
 
 export type PaymentPlanMaxOrderByAggregateInput = {
@@ -549,6 +669,11 @@ export type PaymentPlanMaxOrderByAggregateInput = {
   numberOfInstallments?: Prisma.SortOrder
   calculateInterestDaily?: Prisma.SortOrder
   gracePeriodDays?: Prisma.SortOrder
+  allowFlexibleTerm?: Prisma.SortOrder
+  minTermMonths?: Prisma.SortOrder
+  maxTermMonths?: Prisma.SortOrder
+  termStepMonths?: Prisma.SortOrder
+  maxAgeAtMaturity?: Prisma.SortOrder
   collectFunds?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -565,6 +690,11 @@ export type PaymentPlanMinOrderByAggregateInput = {
   numberOfInstallments?: Prisma.SortOrder
   calculateInterestDaily?: Prisma.SortOrder
   gracePeriodDays?: Prisma.SortOrder
+  allowFlexibleTerm?: Prisma.SortOrder
+  minTermMonths?: Prisma.SortOrder
+  maxTermMonths?: Prisma.SortOrder
+  termStepMonths?: Prisma.SortOrder
+  maxAgeAtMaturity?: Prisma.SortOrder
   collectFunds?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -574,6 +704,10 @@ export type PaymentPlanSumOrderByAggregateInput = {
   customFrequencyDays?: Prisma.SortOrder
   numberOfInstallments?: Prisma.SortOrder
   gracePeriodDays?: Prisma.SortOrder
+  minTermMonths?: Prisma.SortOrder
+  maxTermMonths?: Prisma.SortOrder
+  termStepMonths?: Prisma.SortOrder
+  maxAgeAtMaturity?: Prisma.SortOrder
 }
 
 export type PaymentPlanNullableScalarRelationFilter = {
@@ -666,9 +800,14 @@ export type PaymentPlanCreateWithoutTenantInput = {
   isActive?: boolean
   paymentFrequency: $Enums.PaymentFrequency
   customFrequencyDays?: number | null
-  numberOfInstallments: number
+  numberOfInstallments?: number | null
   calculateInterestDaily?: boolean
   gracePeriodDays?: number
+  allowFlexibleTerm?: boolean
+  minTermMonths?: number | null
+  maxTermMonths?: number | null
+  termStepMonths?: number | null
+  maxAgeAtMaturity?: number | null
   collectFunds?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -683,9 +822,14 @@ export type PaymentPlanUncheckedCreateWithoutTenantInput = {
   isActive?: boolean
   paymentFrequency: $Enums.PaymentFrequency
   customFrequencyDays?: number | null
-  numberOfInstallments: number
+  numberOfInstallments?: number | null
   calculateInterestDaily?: boolean
   gracePeriodDays?: number
+  allowFlexibleTerm?: boolean
+  minTermMonths?: number | null
+  maxTermMonths?: number | null
+  termStepMonths?: number | null
+  maxAgeAtMaturity?: number | null
   collectFunds?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -730,9 +874,14 @@ export type PaymentPlanScalarWhereInput = {
   isActive?: Prisma.BoolFilter<"PaymentPlan"> | boolean
   paymentFrequency?: Prisma.EnumPaymentFrequencyFilter<"PaymentPlan"> | $Enums.PaymentFrequency
   customFrequencyDays?: Prisma.IntNullableFilter<"PaymentPlan"> | number | null
-  numberOfInstallments?: Prisma.IntFilter<"PaymentPlan"> | number
+  numberOfInstallments?: Prisma.IntNullableFilter<"PaymentPlan"> | number | null
   calculateInterestDaily?: Prisma.BoolFilter<"PaymentPlan"> | boolean
   gracePeriodDays?: Prisma.IntFilter<"PaymentPlan"> | number
+  allowFlexibleTerm?: Prisma.BoolFilter<"PaymentPlan"> | boolean
+  minTermMonths?: Prisma.IntNullableFilter<"PaymentPlan"> | number | null
+  maxTermMonths?: Prisma.IntNullableFilter<"PaymentPlan"> | number | null
+  termStepMonths?: Prisma.IntNullableFilter<"PaymentPlan"> | number | null
+  maxAgeAtMaturity?: Prisma.IntNullableFilter<"PaymentPlan"> | number | null
   collectFunds?: Prisma.BoolFilter<"PaymentPlan"> | boolean
   createdAt?: Prisma.DateTimeFilter<"PaymentPlan"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PaymentPlan"> | Date | string
@@ -745,9 +894,14 @@ export type PaymentPlanCreateWithoutMethodPhasesInput = {
   isActive?: boolean
   paymentFrequency: $Enums.PaymentFrequency
   customFrequencyDays?: number | null
-  numberOfInstallments: number
+  numberOfInstallments?: number | null
   calculateInterestDaily?: boolean
   gracePeriodDays?: number
+  allowFlexibleTerm?: boolean
+  minTermMonths?: number | null
+  maxTermMonths?: number | null
+  termStepMonths?: number | null
+  maxAgeAtMaturity?: number | null
   collectFunds?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -763,9 +917,14 @@ export type PaymentPlanUncheckedCreateWithoutMethodPhasesInput = {
   isActive?: boolean
   paymentFrequency: $Enums.PaymentFrequency
   customFrequencyDays?: number | null
-  numberOfInstallments: number
+  numberOfInstallments?: number | null
   calculateInterestDaily?: boolean
   gracePeriodDays?: number
+  allowFlexibleTerm?: boolean
+  minTermMonths?: number | null
+  maxTermMonths?: number | null
+  termStepMonths?: number | null
+  maxAgeAtMaturity?: number | null
   collectFunds?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -795,9 +954,14 @@ export type PaymentPlanUpdateWithoutMethodPhasesInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   paymentFrequency?: Prisma.EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
   customFrequencyDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  numberOfInstallments?: Prisma.IntFieldUpdateOperationsInput | number
+  numberOfInstallments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   calculateInterestDaily?: Prisma.BoolFieldUpdateOperationsInput | boolean
   gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
+  allowFlexibleTerm?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  minTermMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxTermMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  termStepMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxAgeAtMaturity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -813,9 +977,14 @@ export type PaymentPlanUncheckedUpdateWithoutMethodPhasesInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   paymentFrequency?: Prisma.EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
   customFrequencyDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  numberOfInstallments?: Prisma.IntFieldUpdateOperationsInput | number
+  numberOfInstallments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   calculateInterestDaily?: Prisma.BoolFieldUpdateOperationsInput | boolean
   gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
+  allowFlexibleTerm?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  minTermMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxTermMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  termStepMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxAgeAtMaturity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -829,9 +998,14 @@ export type PaymentPlanCreateWithoutPaymentPhasesInput = {
   isActive?: boolean
   paymentFrequency: $Enums.PaymentFrequency
   customFrequencyDays?: number | null
-  numberOfInstallments: number
+  numberOfInstallments?: number | null
   calculateInterestDaily?: boolean
   gracePeriodDays?: number
+  allowFlexibleTerm?: boolean
+  minTermMonths?: number | null
+  maxTermMonths?: number | null
+  termStepMonths?: number | null
+  maxAgeAtMaturity?: number | null
   collectFunds?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -847,9 +1021,14 @@ export type PaymentPlanUncheckedCreateWithoutPaymentPhasesInput = {
   isActive?: boolean
   paymentFrequency: $Enums.PaymentFrequency
   customFrequencyDays?: number | null
-  numberOfInstallments: number
+  numberOfInstallments?: number | null
   calculateInterestDaily?: boolean
   gracePeriodDays?: number
+  allowFlexibleTerm?: boolean
+  minTermMonths?: number | null
+  maxTermMonths?: number | null
+  termStepMonths?: number | null
+  maxAgeAtMaturity?: number | null
   collectFunds?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -879,9 +1058,14 @@ export type PaymentPlanUpdateWithoutPaymentPhasesInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   paymentFrequency?: Prisma.EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
   customFrequencyDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  numberOfInstallments?: Prisma.IntFieldUpdateOperationsInput | number
+  numberOfInstallments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   calculateInterestDaily?: Prisma.BoolFieldUpdateOperationsInput | boolean
   gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
+  allowFlexibleTerm?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  minTermMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxTermMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  termStepMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxAgeAtMaturity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -897,9 +1081,14 @@ export type PaymentPlanUncheckedUpdateWithoutPaymentPhasesInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   paymentFrequency?: Prisma.EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
   customFrequencyDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  numberOfInstallments?: Prisma.IntFieldUpdateOperationsInput | number
+  numberOfInstallments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   calculateInterestDaily?: Prisma.BoolFieldUpdateOperationsInput | boolean
   gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
+  allowFlexibleTerm?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  minTermMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxTermMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  termStepMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxAgeAtMaturity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -913,9 +1102,14 @@ export type PaymentPlanCreateManyTenantInput = {
   isActive?: boolean
   paymentFrequency: $Enums.PaymentFrequency
   customFrequencyDays?: number | null
-  numberOfInstallments: number
+  numberOfInstallments?: number | null
   calculateInterestDaily?: boolean
   gracePeriodDays?: number
+  allowFlexibleTerm?: boolean
+  minTermMonths?: number | null
+  maxTermMonths?: number | null
+  termStepMonths?: number | null
+  maxAgeAtMaturity?: number | null
   collectFunds?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -928,9 +1122,14 @@ export type PaymentPlanUpdateWithoutTenantInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   paymentFrequency?: Prisma.EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
   customFrequencyDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  numberOfInstallments?: Prisma.IntFieldUpdateOperationsInput | number
+  numberOfInstallments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   calculateInterestDaily?: Prisma.BoolFieldUpdateOperationsInput | boolean
   gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
+  allowFlexibleTerm?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  minTermMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxTermMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  termStepMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxAgeAtMaturity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -945,9 +1144,14 @@ export type PaymentPlanUncheckedUpdateWithoutTenantInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   paymentFrequency?: Prisma.EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
   customFrequencyDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  numberOfInstallments?: Prisma.IntFieldUpdateOperationsInput | number
+  numberOfInstallments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   calculateInterestDaily?: Prisma.BoolFieldUpdateOperationsInput | boolean
   gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
+  allowFlexibleTerm?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  minTermMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxTermMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  termStepMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxAgeAtMaturity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -962,9 +1166,14 @@ export type PaymentPlanUncheckedUpdateManyWithoutTenantInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   paymentFrequency?: Prisma.EnumPaymentFrequencyFieldUpdateOperationsInput | $Enums.PaymentFrequency
   customFrequencyDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  numberOfInstallments?: Prisma.IntFieldUpdateOperationsInput | number
+  numberOfInstallments?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   calculateInterestDaily?: Prisma.BoolFieldUpdateOperationsInput | boolean
   gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
+  allowFlexibleTerm?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  minTermMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxTermMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  termStepMonths?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  maxAgeAtMaturity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1021,6 +1230,11 @@ export type PaymentPlanSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   numberOfInstallments?: boolean
   calculateInterestDaily?: boolean
   gracePeriodDays?: boolean
+  allowFlexibleTerm?: boolean
+  minTermMonths?: boolean
+  maxTermMonths?: boolean
+  termStepMonths?: boolean
+  maxAgeAtMaturity?: boolean
   collectFunds?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1043,12 +1257,17 @@ export type PaymentPlanSelectScalar = {
   numberOfInstallments?: boolean
   calculateInterestDaily?: boolean
   gracePeriodDays?: boolean
+  allowFlexibleTerm?: boolean
+  minTermMonths?: boolean
+  maxTermMonths?: boolean
+  termStepMonths?: boolean
+  maxAgeAtMaturity?: boolean
   collectFunds?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type PaymentPlanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "name" | "description" | "isActive" | "paymentFrequency" | "customFrequencyDays" | "numberOfInstallments" | "calculateInterestDaily" | "gracePeriodDays" | "collectFunds" | "createdAt" | "updatedAt", ExtArgs["result"]["paymentPlan"]>
+export type PaymentPlanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "name" | "description" | "isActive" | "paymentFrequency" | "customFrequencyDays" | "numberOfInstallments" | "calculateInterestDaily" | "gracePeriodDays" | "allowFlexibleTerm" | "minTermMonths" | "maxTermMonths" | "termStepMonths" | "maxAgeAtMaturity" | "collectFunds" | "createdAt" | "updatedAt", ExtArgs["result"]["paymentPlan"]>
 export type PaymentPlanInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.PaymentPlan$tenantArgs<ExtArgs>
   methodPhases?: boolean | Prisma.PaymentPlan$methodPhasesArgs<ExtArgs>
@@ -1071,9 +1290,14 @@ export type $PaymentPlanPayload<ExtArgs extends runtime.Types.Extensions.Interna
     isActive: boolean
     paymentFrequency: $Enums.PaymentFrequency
     customFrequencyDays: number | null
-    numberOfInstallments: number
+    numberOfInstallments: number | null
     calculateInterestDaily: boolean
     gracePeriodDays: number
+    allowFlexibleTerm: boolean
+    minTermMonths: number | null
+    maxTermMonths: number | null
+    termStepMonths: number | null
+    maxAgeAtMaturity: number | null
     collectFunds: boolean
     createdAt: Date
     updatedAt: Date
@@ -1459,6 +1683,11 @@ export interface PaymentPlanFieldRefs {
   readonly numberOfInstallments: Prisma.FieldRef<"PaymentPlan", 'Int'>
   readonly calculateInterestDaily: Prisma.FieldRef<"PaymentPlan", 'Boolean'>
   readonly gracePeriodDays: Prisma.FieldRef<"PaymentPlan", 'Int'>
+  readonly allowFlexibleTerm: Prisma.FieldRef<"PaymentPlan", 'Boolean'>
+  readonly minTermMonths: Prisma.FieldRef<"PaymentPlan", 'Int'>
+  readonly maxTermMonths: Prisma.FieldRef<"PaymentPlan", 'Int'>
+  readonly termStepMonths: Prisma.FieldRef<"PaymentPlan", 'Int'>
+  readonly maxAgeAtMaturity: Prisma.FieldRef<"PaymentPlan", 'Int'>
   readonly collectFunds: Prisma.FieldRef<"PaymentPlan", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"PaymentPlan", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"PaymentPlan", 'DateTime'>
