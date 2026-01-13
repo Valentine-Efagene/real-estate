@@ -113,7 +113,8 @@ export const ModelName = {
   EventHandlerExecution: 'EventHandlerExecution',
   DomainEvent: 'DomainEvent',
   PropertyTransferRequest: 'PropertyTransferRequest',
-  ApprovalRequest: 'ApprovalRequest'
+  ApprovalRequest: 'ApprovalRequest',
+  WorkflowBlocker: 'WorkflowBlocker'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1268,6 +1269,36 @@ export const ApprovalRequestScalarFieldEnum = {
 export type ApprovalRequestScalarFieldEnum = (typeof ApprovalRequestScalarFieldEnum)[keyof typeof ApprovalRequestScalarFieldEnum]
 
 
+export const WorkflowBlockerScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  applicationId: 'applicationId',
+  phaseId: 'phaseId',
+  stepId: 'stepId',
+  blockerActor: 'blockerActor',
+  blockerCategory: 'blockerCategory',
+  urgency: 'urgency',
+  actionRequired: 'actionRequired',
+  context: 'context',
+  expectedByDate: 'expectedByDate',
+  isOverdue: 'isOverdue',
+  overdueAt: 'overdueAt',
+  startedAt: 'startedAt',
+  resolvedAt: 'resolvedAt',
+  durationMs: 'durationMs',
+  resolvedByActor: 'resolvedByActor',
+  resolutionTrigger: 'resolutionTrigger',
+  reminderCount: 'reminderCount',
+  lastReminderAt: 'lastReminderAt',
+  nextReminderAt: 'nextReminderAt',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WorkflowBlockerScalarFieldEnum = (typeof WorkflowBlockerScalarFieldEnum)[keyof typeof WorkflowBlockerScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -2050,4 +2081,19 @@ export const ApprovalRequestOrderByRelevanceFieldEnum = {
 } as const
 
 export type ApprovalRequestOrderByRelevanceFieldEnum = (typeof ApprovalRequestOrderByRelevanceFieldEnum)[keyof typeof ApprovalRequestOrderByRelevanceFieldEnum]
+
+
+export const WorkflowBlockerOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  applicationId: 'applicationId',
+  phaseId: 'phaseId',
+  stepId: 'stepId',
+  actionRequired: 'actionRequired',
+  context: 'context',
+  resolvedByActor: 'resolvedByActor',
+  resolutionTrigger: 'resolutionTrigger'
+} as const
+
+export type WorkflowBlockerOrderByRelevanceFieldEnum = (typeof WorkflowBlockerOrderByRelevanceFieldEnum)[keyof typeof WorkflowBlockerOrderByRelevanceFieldEnum]
 

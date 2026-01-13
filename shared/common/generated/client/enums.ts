@@ -432,3 +432,38 @@ export const ApprovalRequestPriority = {
 } as const
 
 export type ApprovalRequestPriority = (typeof ApprovalRequestPriority)[keyof typeof ApprovalRequestPriority]
+
+
+export const BlockerActor = {
+  CUSTOMER: 'CUSTOMER',
+  ADMIN: 'ADMIN',
+  SYSTEM: 'SYSTEM',
+  EXTERNAL: 'EXTERNAL'
+} as const
+
+export type BlockerActor = (typeof BlockerActor)[keyof typeof BlockerActor]
+
+
+export const BlockerCategory = {
+  UPLOAD: 'UPLOAD',
+  RESUBMISSION: 'RESUBMISSION',
+  SIGNATURE: 'SIGNATURE',
+  REVIEW: 'REVIEW',
+  APPROVAL: 'APPROVAL',
+  PAYMENT: 'PAYMENT',
+  PROCESSING: 'PROCESSING',
+  EXTERNAL_CHECK: 'EXTERNAL_CHECK',
+  QUESTIONNAIRE: 'QUESTIONNAIRE'
+} as const
+
+export type BlockerCategory = (typeof BlockerCategory)[keyof typeof BlockerCategory]
+
+
+export const BlockerUrgency = {
+  LOW: 'LOW',
+  NORMAL: 'NORMAL',
+  HIGH: 'HIGH',
+  CRITICAL: 'CRITICAL'
+} as const
+
+export type BlockerUrgency = (typeof BlockerUrgency)[keyof typeof BlockerUrgency]

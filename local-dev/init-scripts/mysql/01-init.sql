@@ -6,8 +6,14 @@ CREATE DATABASE IF NOT EXISTS qshelter_test
   CHARACTER SET utf8mb4
   COLLATE utf8mb4_unicode_ci;
 
--- Grant permissions
+-- Grant permissions on qshelter_test database
 GRANT ALL PRIVILEGES ON qshelter_test.* TO 'qshelter'@'%';
+
+-- Grant permissions to create/drop shadow databases (required by Prisma Migrate)
+-- Prisma creates shadow databases named like: prisma_migrate_shadow_db_*
+GRANT CREATE, DROP ON *.* TO 'qshelter'@'%';
+GRANT ALL PRIVILEGES ON `prisma_migrate_shadow_db_%`.* TO 'qshelter'@'%';
+
 FLUSH PRIVILEGES;
 
 -- Use the database

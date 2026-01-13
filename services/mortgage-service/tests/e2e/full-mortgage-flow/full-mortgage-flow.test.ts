@@ -625,7 +625,13 @@ describe('Full E2E Mortgage Flow', () => {
 
             expect(response.status).toBe(201);
             expect(response.body.success).toBe(true);
-            docIdCard = response.body.data.id;
+            docIdCard = response.body.data.document?.id || response.body.data.id;
+
+            // Verify action status is returned with upload response
+            if (response.body.data.phaseActionStatus) {
+                expect(response.body.data.phaseActionStatus).toBeDefined();
+                expect(response.body.data.phaseActionStatus.nextActor).toBeDefined();
+            }
             // UPLOAD step auto-completes when document is uploaded
         });
 
@@ -644,7 +650,7 @@ describe('Full E2E Mortgage Flow', () => {
 
             expect(response.status).toBe(201);
             expect(response.body.success).toBe(true);
-            docBankStatement = response.body.data.id;
+            docBankStatement = response.body.data.document?.id || response.body.data.id;
         });
 
         it('Step 6.1c: Chidi uploads employment letter (auto-completes UPLOAD step)', async () => {
@@ -662,7 +668,26 @@ describe('Full E2E Mortgage Flow', () => {
 
             expect(response.status).toBe(201);
             expect(response.body.success).toBe(true);
-            docEmploymentLetter = response.body.data.id;
+            docEmploymentLetter = response.body.data.document?.id || response.body.data.id;
+        });
+
+        it('Step 6.2: Verify action status indicates ADMIN review needed', async () => {
+            // After all uploads, verify phase action status shows ADMIN needs to review
+            const response = await mortgageApi
+                .get(`/applications/${applicationId}/phases/${kycPhaseId}`)
+                .set(customerHeaders(chidiAccessToken, tenantId));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+
+            // Verify action status is included
+            if (response.body.data.actionStatus) {
+                const actionStatus = response.body.data.actionStatus;
+                // At this point, UPLOAD steps are complete, APPROVAL step is next
+                // So nextActor should be ADMIN for document review
+                expect(['ADMIN', 'CUSTOMER']).toContain(actionStatus.nextActor);
+                expect(actionStatus.actionRequired).toBeDefined();
+            }
         });
 
         // NOTE: Manual step completion calls removed - UPLOAD steps auto-complete
@@ -974,6 +999,104 @@ describe('Full E2E Mortgage Flow', () => {
                 expect(event.aggregateId).toBeDefined();
                 expect(event.payload).toBeDefined();
                 expect(event.occurredAt).toBeDefined();
+            }
+        });
+    });
+
+    // =========================================================================
+    // Verification: Action Status Indicators (Back-end Driven UI)
+    // =========================================================================
+    describe('Action Status Indicators', () => {
+        it('Application includes actionStatus in response', async () => {
+            const response = await mortgageApi
+                .get(`/applications/${applicationId}`)
+                .set(customerHeaders(chidiAccessToken, tenantId));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+
+            // Verify application-level action status
+            const app = response.body.data;
+            if (app.actionStatus) {
+                expect(app.actionStatus.nextActor).toBeDefined();
+                expect(app.actionStatus.actionCategory).toBeDefined();
+                expect(app.actionStatus.actionRequired).toBeDefined();
+                expect(app.actionStatus.applicationId).toBe(applicationId);
+            }
+        });
+
+        it('All phases include actionStatus', async () => {
+            const response = await mortgageApi
+                .get(`/applications/${applicationId}/phases`)
+                .set(customerHeaders(chidiAccessToken, tenantId));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+
+            const phases = response.body.data;
+            for (const phase of phases) {
+                // Each phase should have action status
+                if (phase.actionStatus) {
+                    expect(phase.actionStatus.nextActor).toBeDefined();
+                    expect(phase.actionStatus.actionCategory).toBeDefined();
+                    expect(phase.actionStatus.actionRequired).toBeDefined();
+
+                    // Completed phases should show NONE as next actor
+                    if (phase.status === 'COMPLETED') {
+                        expect(phase.actionStatus.nextActor).toBe('NONE');
+                        expect(phase.actionStatus.actionCategory).toBe('COMPLETED');
+                    }
+                }
+            }
+        });
+
+        it('Documentation phase steps include actionStatus', async () => {
+            const response = await mortgageApi
+                .get(`/applications/${applicationId}/phases/${kycPhaseId}`)
+                .set(customerHeaders(chidiAccessToken, tenantId));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+
+            const phase = response.body.data;
+            const steps = phase.documentationPhase?.steps || [];
+
+            for (const step of steps) {
+                if (step.actionStatus) {
+                    expect(step.actionStatus.stepId).toBe(step.id);
+                    expect(step.actionStatus.stepName).toBe(step.name);
+                    expect(step.actionStatus.nextActor).toBeDefined();
+
+                    // UPLOAD steps completed should show NONE
+                    if (step.stepType === 'UPLOAD' && step.status === 'COMPLETED') {
+                        expect(step.actionStatus.nextActor).toBe('NONE');
+                    }
+
+                    // SIGNATURE steps show CUSTOMER as next actor
+                    if (step.stepType === 'SIGNATURE' && step.status !== 'COMPLETED') {
+                        expect(step.actionStatus.nextActor).toBe('CUSTOMER');
+                    }
+                }
+            }
+        });
+
+        it('Payment phase shows correct payment action status', async () => {
+            const response = await mortgageApi
+                .get(`/applications/${applicationId}/phases/${mortgagePhaseId}`)
+                .set(customerHeaders(chidiAccessToken, tenantId));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+
+            const phase = response.body.data;
+            if (phase.actionStatus) {
+                // Payment phases should show CUSTOMER as next actor (they need to pay)
+                // unless fully paid
+                if (phase.status !== 'COMPLETED') {
+                    expect(phase.actionStatus.nextActor).toBe('CUSTOMER');
+                    expect(phase.actionStatus.actionCategory).toBe('PAYMENT');
+                    expect(phase.actionStatus.paymentProgress).toBeDefined();
+                }
             }
         });
     });

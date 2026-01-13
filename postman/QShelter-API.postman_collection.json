@@ -80,6 +80,12 @@
             "description": "Role name for policy lookup"
         },
         {
+            "key": "blockerId",
+            "value": "blocker-001",
+            "type": "string",
+            "description": "Workflow blocker ID for resolution operations"
+        },
+        {
             "key": "bootstrapSecret",
             "value": "local-bootstrap-secret",
             "type": "string",
@@ -2675,6 +2681,303 @@
                             ]
                         },
                         "description": "Execute an approved change request. This performs the actual application modification."
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Workflow Blockers",
+            "description": "Track workflow delays and bottlenecks for analytics and customer service. Blockers indicate who is holding up the workflow (customer, admin, or system) and what action is needed.",
+            "item": [
+                {
+                    "name": "Get Analytics",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/workflow-blockers/analytics?periodDays=30",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "workflow-blockers",
+                                "analytics"
+                            ],
+                            "query": [
+                                {
+                                    "key": "periodDays",
+                                    "value": "30",
+                                    "description": "Number of days to analyze (default: 30)"
+                                }
+                            ]
+                        },
+                        "description": "Get blocker analytics for admin dashboard. Returns breakdown by actor, category, and top bottlenecks."
+                    }
+                },
+                {
+                    "name": "Get Blockers Needing Reminders",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/workflow-blockers/needing-reminders",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "workflow-blockers",
+                                "needing-reminders"
+                            ]
+                        },
+                        "description": "Get blockers that need follow-up reminders (for customer service team)."
+                    }
+                },
+                {
+                    "name": "Update Overdue Blockers",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/workflow-blockers/update-overdue",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "workflow-blockers",
+                                "update-overdue"
+                            ]
+                        },
+                        "description": "Batch update blockers that have become overdue. Run periodically (e.g., via cron job)."
+                    }
+                },
+                {
+                    "name": "Get Application Blockers",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/workflow-blockers/application/{{applicationId}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "workflow-blockers",
+                                "application",
+                                "{{applicationId}}"
+                            ]
+                        },
+                        "description": "Get all blockers (open and resolved) for an application."
+                    }
+                },
+                {
+                    "name": "Get Open Application Blockers",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/workflow-blockers/application/{{applicationId}}/open",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "workflow-blockers",
+                                "application",
+                                "{{applicationId}}",
+                                "open"
+                            ]
+                        },
+                        "description": "Get only open (unresolved) blockers for an application."
+                    }
+                },
+                {
+                    "name": "Resolve Blocker",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"resolvedByActor\": \"{{adminUserId}}\",\n  \"resolutionTrigger\": \"MANUAL_RESOLUTION\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/workflow-blockers/{{blockerId}}/resolve",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "workflow-blockers",
+                                "{{blockerId}}",
+                                "resolve"
+                            ]
+                        },
+                        "description": "Manually resolve a blocker when the blocking action has been completed."
+                    }
+                },
+                {
+                    "name": "Record Reminder Sent",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"nextReminderAt\": \"2026-01-20T10:00:00Z\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/workflow-blockers/{{blockerId}}/reminder-sent",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "workflow-blockers",
+                                "{{blockerId}}",
+                                "reminder-sent"
+                            ]
+                        },
+                        "description": "Record that a reminder was sent to the customer. Updates reminder count and next reminder timestamp."
+                    }
+                },
+                {
+                    "name": "Resolve Step Blockers",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"resolvedByActor\": \"{{userId}}\",\n  \"resolutionTrigger\": \"DOCUMENT_UPLOADED\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/workflow-blockers/step/{{stepId}}/resolve",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "workflow-blockers",
+                                "step",
+                                "{{stepId}}",
+                                "resolve"
+                            ]
+                        },
+                        "description": "Resolve all blockers for a documentation step."
+                    }
+                },
+                {
+                    "name": "Resolve Phase Blockers",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"resolvedByActor\": \"{{userId}}\",\n  \"resolutionTrigger\": \"PHASE_COMPLETED\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/workflow-blockers/phase/{{phaseId}}/resolve",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "workflow-blockers",
+                                "phase",
+                                "{{phaseId}}",
+                                "resolve"
+                            ]
+                        },
+                        "description": "Resolve all blockers for an application phase."
                     }
                 }
             ]

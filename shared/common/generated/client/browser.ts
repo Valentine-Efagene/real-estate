@@ -341,3 +341,8 @@ export type PropertyTransferRequest = Prisma.PropertyTransferRequestModel
  * 
  */
 export type ApprovalRequest = Prisma.ApprovalRequestModel
+/**
+ * Model WorkflowBlocker
+ * Workflow Blocker - Records who is blocking workflow and for how long
+ */
+export type WorkflowBlocker = Prisma.WorkflowBlockerModel

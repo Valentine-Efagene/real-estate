@@ -58,6 +58,54 @@ export const GenerateInstallmentsSchema = z
     })
     .openapi('GenerateInstallments');
 
+// Action status schema - back-end driven UI indicator
+export const ActionStatusSchema = z
+    .object({
+        nextActor: z.enum(['CUSTOMER', 'ADMIN', 'SYSTEM', 'NONE']).openapi({
+            description: 'Who needs to take the next action',
+            example: 'CUSTOMER',
+        }),
+        actionCategory: z.enum(['UPLOAD', 'SIGNATURE', 'REVIEW', 'PAYMENT', 'PROCESSING', 'COMPLETED', 'WAITING']).openapi({
+            description: 'Category of action required',
+            example: 'UPLOAD',
+        }),
+        actionRequired: z.string().openapi({
+            description: 'Human-readable description of what is needed',
+            example: 'Upload required: Valid ID Card',
+        }),
+        progress: z.string().optional().openapi({
+            description: 'Additional progress context',
+            example: '2 of 3 documents uploaded',
+        }),
+        dueDate: z.string().datetime().nullable().optional().openapi({
+            description: 'When this action is due',
+        }),
+        isBlocking: z.boolean().optional().openapi({
+            description: 'Whether this action is blocking the workflow',
+            example: true,
+        }),
+    })
+    .openapi('ActionStatus');
+
+// Step action status schema
+export const StepActionStatusSchema = ActionStatusSchema.extend({
+    stepId: z.string(),
+    stepName: z.string(),
+    stepType: z.string(),
+    stepOrder: z.number(),
+}).openapi('StepActionStatus');
+
+// Phase action status schema
+export const PhaseActionStatusSchema = ActionStatusSchema.extend({
+    phaseId: z.string(),
+    phaseName: z.string(),
+    phaseType: z.string(),
+    phaseCategory: z.string(),
+    currentStep: StepActionStatusSchema.optional().nullable(),
+    stepsProgress: z.string().optional(),
+    paymentProgress: z.string().optional(),
+}).openapi('PhaseActionStatus');
+
 // Phase response
 export const ApplicationPhaseResponseSchema = z
     .object({
@@ -83,6 +131,9 @@ export const ApplicationPhaseResponseSchema = z
         updatedAt: z.date(),
         installments: z.array(z.any()).optional(),
         steps: z.array(z.any()).optional(),
+        actionStatus: PhaseActionStatusSchema.optional().openapi({
+            description: 'Action status indicator showing who needs to act next',
+        }),
     })
     .openapi('ApplicationPhaseResponse');
 

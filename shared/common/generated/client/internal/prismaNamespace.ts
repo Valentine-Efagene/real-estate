@@ -446,7 +446,8 @@ export const ModelName = {
   EventHandlerExecution: 'EventHandlerExecution',
   DomainEvent: 'DomainEvent',
   PropertyTransferRequest: 'PropertyTransferRequest',
-  ApprovalRequest: 'ApprovalRequest'
+  ApprovalRequest: 'ApprovalRequest',
+  WorkflowBlocker: 'WorkflowBlocker'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -462,7 +463,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenantMembership" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "phaseEventAttachment" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "paymentMethodPhaseField" | "application" | "applicationRefund" | "applicationPhase" | "questionnairePhase" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "applicationEvent" | "documentationStep" | "documentationStepDocument" | "documentationStepApproval" | "paymentInstallment" | "applicationPayment" | "applicationDocument" | "documentTemplate" | "offerLetter" | "applicationTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "workflowEvent" | "eventHandlerExecution" | "domainEvent" | "propertyTransferRequest" | "approvalRequest"
+    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenantMembership" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "phaseEventAttachment" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "paymentMethodPhaseField" | "application" | "applicationRefund" | "applicationPhase" | "questionnairePhase" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "applicationEvent" | "documentationStep" | "documentationStepDocument" | "documentationStepApproval" | "paymentInstallment" | "applicationPayment" | "applicationDocument" | "documentTemplate" | "offerLetter" | "applicationTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "workflowEvent" | "eventHandlerExecution" | "domainEvent" | "propertyTransferRequest" | "approvalRequest" | "workflowBlocker"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -4624,6 +4625,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    WorkflowBlocker: {
+      payload: Prisma.$WorkflowBlockerPayload<ExtArgs>
+      fields: Prisma.WorkflowBlockerFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.WorkflowBlockerFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowBlockerPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.WorkflowBlockerFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowBlockerPayload>
+        }
+        findFirst: {
+          args: Prisma.WorkflowBlockerFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowBlockerPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.WorkflowBlockerFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowBlockerPayload>
+        }
+        findMany: {
+          args: Prisma.WorkflowBlockerFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowBlockerPayload>[]
+        }
+        create: {
+          args: Prisma.WorkflowBlockerCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowBlockerPayload>
+        }
+        createMany: {
+          args: Prisma.WorkflowBlockerCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.WorkflowBlockerDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowBlockerPayload>
+        }
+        update: {
+          args: Prisma.WorkflowBlockerUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowBlockerPayload>
+        }
+        deleteMany: {
+          args: Prisma.WorkflowBlockerDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.WorkflowBlockerUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.WorkflowBlockerUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowBlockerPayload>
+        }
+        aggregate: {
+          args: Prisma.WorkflowBlockerAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateWorkflowBlocker>
+        }
+        groupBy: {
+          args: Prisma.WorkflowBlockerGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WorkflowBlockerGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.WorkflowBlockerCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.WorkflowBlockerCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -5799,6 +5866,36 @@ export const ApprovalRequestScalarFieldEnum = {
 export type ApprovalRequestScalarFieldEnum = (typeof ApprovalRequestScalarFieldEnum)[keyof typeof ApprovalRequestScalarFieldEnum]
 
 
+export const WorkflowBlockerScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  applicationId: 'applicationId',
+  phaseId: 'phaseId',
+  stepId: 'stepId',
+  blockerActor: 'blockerActor',
+  blockerCategory: 'blockerCategory',
+  urgency: 'urgency',
+  actionRequired: 'actionRequired',
+  context: 'context',
+  expectedByDate: 'expectedByDate',
+  isOverdue: 'isOverdue',
+  overdueAt: 'overdueAt',
+  startedAt: 'startedAt',
+  resolvedAt: 'resolvedAt',
+  durationMs: 'durationMs',
+  resolvedByActor: 'resolvedByActor',
+  resolutionTrigger: 'resolutionTrigger',
+  reminderCount: 'reminderCount',
+  lastReminderAt: 'lastReminderAt',
+  nextReminderAt: 'nextReminderAt',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WorkflowBlockerScalarFieldEnum = (typeof WorkflowBlockerScalarFieldEnum)[keyof typeof WorkflowBlockerScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -6583,6 +6680,21 @@ export const ApprovalRequestOrderByRelevanceFieldEnum = {
 export type ApprovalRequestOrderByRelevanceFieldEnum = (typeof ApprovalRequestOrderByRelevanceFieldEnum)[keyof typeof ApprovalRequestOrderByRelevanceFieldEnum]
 
 
+export const WorkflowBlockerOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  applicationId: 'applicationId',
+  phaseId: 'phaseId',
+  stepId: 'stepId',
+  actionRequired: 'actionRequired',
+  context: 'context',
+  resolvedByActor: 'resolvedByActor',
+  resolutionTrigger: 'resolutionTrigger'
+} as const
+
+export type WorkflowBlockerOrderByRelevanceFieldEnum = (typeof WorkflowBlockerOrderByRelevanceFieldEnum)[keyof typeof WorkflowBlockerOrderByRelevanceFieldEnum]
+
+
 
 /**
  * Field references
@@ -6882,6 +6994,27 @@ export type EnumApprovalRequestStatusFieldRefInput<$PrismaModel> = FieldRefInput
 export type EnumApprovalRequestPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ApprovalRequestPriority'>
     
 
+
+/**
+ * Reference to a field of type 'BlockerActor'
+ */
+export type EnumBlockerActorFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BlockerActor'>
+    
+
+
+/**
+ * Reference to a field of type 'BlockerCategory'
+ */
+export type EnumBlockerCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BlockerCategory'>
+    
+
+
+/**
+ * Reference to a field of type 'BlockerUrgency'
+ */
+export type EnumBlockerUrgencyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BlockerUrgency'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -7040,6 +7173,7 @@ export type GlobalOmitConfig = {
   domainEvent?: Prisma.DomainEventOmit
   propertyTransferRequest?: Prisma.PropertyTransferRequestOmit
   approvalRequest?: Prisma.ApprovalRequestOmit
+  workflowBlocker?: Prisma.WorkflowBlockerOmit
 }
 
 /* Types for Logging */

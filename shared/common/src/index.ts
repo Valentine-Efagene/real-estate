@@ -1,4 +1,5 @@
 export * from './types/response';
+export * from './types/action-status';
 export * from './utils/errors';
 export * from './config';
 export { PrismaClient, Prisma } from '../generated/client/client';

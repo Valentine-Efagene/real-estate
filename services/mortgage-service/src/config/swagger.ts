@@ -871,6 +871,296 @@ registry.registerPath({
   },
 });
 
+// ============ Workflow Blockers ============
+registry.registerPath({
+  method: 'get',
+  path: '/workflow-blockers/analytics',
+  tags: ['Workflow Blockers'],
+  summary: 'Get blocker analytics for dashboard',
+  description: 'Returns aggregated analytics about workflow blockers including breakdown by actor, category, and top bottlenecks.',
+  security: [{ bearerAuth: [] }],
+  request: {
+    query: z.object({
+      periodDays: z.string().regex(/^\d+$/).optional().openapi({ description: 'Number of days to analyze (default: 30)' }),
+    }),
+  },
+  responses: {
+    200: {
+      description: 'Blocker analytics',
+      content: {
+        'application/json': {
+          schema: z.object({
+            period: z.string(),
+            periodStart: z.string(),
+            periodEnd: z.string(),
+            blockersByActor: z.array(z.object({
+              actor: z.string(),
+              count: z.number(),
+              avgDurationMs: z.number().nullable(),
+              overdueCount: z.number(),
+            })),
+            blockersByCategory: z.array(z.object({
+              category: z.string(),
+              count: z.number(),
+              avgDurationMs: z.number().nullable(),
+              overdueCount: z.number(),
+            })),
+            topBottlenecks: z.array(z.object({
+              stepId: z.string().nullable(),
+              phaseId: z.string().nullable(),
+              blockerCategory: z.string(),
+              count: z.number(),
+              avgDurationMs: z.number().nullable(),
+            })),
+            openBlockers: z.number(),
+            resolvedBlockers: z.number(),
+          }),
+        },
+      },
+    },
+  },
+});
+
+registry.registerPath({
+  method: 'get',
+  path: '/workflow-blockers/needing-reminders',
+  tags: ['Workflow Blockers'],
+  summary: 'Get blockers that need reminder notifications',
+  description: 'Returns blockers that have not been acted upon and need customer service follow-up.',
+  security: [{ bearerAuth: [] }],
+  responses: {
+    200: {
+      description: 'Blockers needing reminders',
+      content: {
+        'application/json': {
+          schema: z.object({
+            blockers: z.array(z.any()),
+            count: z.number(),
+          }),
+        },
+      },
+    },
+  },
+});
+
+registry.registerPath({
+  method: 'post',
+  path: '/workflow-blockers/update-overdue',
+  tags: ['Workflow Blockers'],
+  summary: 'Batch update blockers that have become overdue',
+  description: 'Marks blockers as overdue if their expectedByDate has passed. Should be called periodically.',
+  security: [{ bearerAuth: [] }],
+  responses: {
+    200: {
+      description: 'Overdue blockers updated',
+      content: {
+        'application/json': {
+          schema: z.object({
+            message: z.string(),
+            count: z.number(),
+          }),
+        },
+      },
+    },
+  },
+});
+
+registry.registerPath({
+  method: 'get',
+  path: '/workflow-blockers/application/{applicationId}',
+  tags: ['Workflow Blockers'],
+  summary: 'Get all blockers for a specific application',
+  description: 'Returns the full blocker history for an application including open and resolved blockers.',
+  security: [{ bearerAuth: [] }],
+  request: {
+    params: z.object({ applicationId: z.string() }),
+  },
+  responses: {
+    200: {
+      description: 'Application blockers',
+      content: {
+        'application/json': {
+          schema: z.object({
+            blockers: z.array(z.any()),
+            summary: z.object({
+              total: z.number(),
+              open: z.number(),
+              resolved: z.number(),
+            }),
+          }),
+        },
+      },
+    },
+  },
+});
+
+registry.registerPath({
+  method: 'get',
+  path: '/workflow-blockers/application/{applicationId}/open',
+  tags: ['Workflow Blockers'],
+  summary: 'Get only open blockers for an application',
+  description: 'Returns only unresolved blockers for an application.',
+  security: [{ bearerAuth: [] }],
+  request: {
+    params: z.object({ applicationId: z.string() }),
+  },
+  responses: {
+    200: {
+      description: 'Open blockers',
+      content: {
+        'application/json': {
+          schema: z.object({
+            blockers: z.array(z.any()),
+            count: z.number(),
+          }),
+        },
+      },
+    },
+  },
+});
+
+registry.registerPath({
+  method: 'post',
+  path: '/workflow-blockers/{id}/resolve',
+  tags: ['Workflow Blockers'],
+  summary: 'Resolve a specific blocker',
+  description: 'Manually resolve a blocker when the blocking action has been completed.',
+  security: [{ bearerAuth: [] }],
+  request: {
+    params: z.object({ id: z.string() }),
+    body: {
+      content: {
+        'application/json': {
+          schema: z.object({
+            resolvedByActor: z.string().openapi({ description: 'ID of user or "SYSTEM" who resolved the blocker' }),
+            resolutionTrigger: z.string().openapi({ description: 'What action resolved the blocker (e.g., "DOCUMENT_UPLOADED")' }),
+          }),
+        },
+      },
+    },
+  },
+  responses: {
+    200: {
+      description: 'Blocker resolved',
+      content: {
+        'application/json': {
+          schema: z.object({
+            message: z.string(),
+            count: z.number(),
+          }),
+        },
+      },
+    },
+    404: { description: 'Blocker not found' },
+    400: { description: 'Blocker already resolved' },
+  },
+});
+
+registry.registerPath({
+  method: 'post',
+  path: '/workflow-blockers/{id}/reminder-sent',
+  tags: ['Workflow Blockers'],
+  summary: 'Record that a reminder was sent for a blocker',
+  description: 'Track reminder notifications sent to customers for follow-up on blocked workflows.',
+  security: [{ bearerAuth: [] }],
+  request: {
+    params: z.object({ id: z.string() }),
+    body: {
+      content: {
+        'application/json': {
+          schema: z.object({
+            nextReminderAt: z.string().datetime().optional().openapi({ description: 'When to send the next reminder' }),
+          }),
+        },
+      },
+    },
+  },
+  responses: {
+    200: {
+      description: 'Reminder recorded',
+      content: {
+        'application/json': {
+          schema: z.object({
+            message: z.string(),
+          }),
+        },
+      },
+    },
+  },
+});
+
+registry.registerPath({
+  method: 'post',
+  path: '/workflow-blockers/step/{stepId}/resolve',
+  tags: ['Workflow Blockers'],
+  summary: 'Resolve all blockers for a step',
+  description: 'Resolve all open blockers associated with a specific documentation step.',
+  security: [{ bearerAuth: [] }],
+  request: {
+    params: z.object({ stepId: z.string() }),
+    body: {
+      content: {
+        'application/json': {
+          schema: z.object({
+            resolvedByActor: z.string(),
+            resolutionTrigger: z.string(),
+          }),
+        },
+      },
+    },
+  },
+  responses: {
+    200: {
+      description: 'Step blockers resolved',
+      content: {
+        'application/json': {
+          schema: z.object({
+            message: z.string(),
+            count: z.number(),
+          }),
+        },
+      },
+    },
+    404: { description: 'Step not found' },
+  },
+});
+
+registry.registerPath({
+  method: 'post',
+  path: '/workflow-blockers/phase/{phaseId}/resolve',
+  tags: ['Workflow Blockers'],
+  summary: 'Resolve all blockers for a phase',
+  description: 'Resolve all open blockers associated with a specific application phase.',
+  security: [{ bearerAuth: [] }],
+  request: {
+    params: z.object({ phaseId: z.string() }),
+    body: {
+      content: {
+        'application/json': {
+          schema: z.object({
+            resolvedByActor: z.string(),
+            resolutionTrigger: z.string(),
+          }),
+        },
+      },
+    },
+  },
+  responses: {
+    200: {
+      description: 'Phase blockers resolved',
+      content: {
+        'application/json': {
+          schema: z.object({
+            message: z.string(),
+            count: z.number(),
+          }),
+        },
+      },
+    },
+    404: { description: 'Phase not found' },
+  },
+});
+
 export function generateOpenAPIDocument(baseUrl?: string): any {
   const generator = new OpenApiGeneratorV3(registry.definitions);
 
@@ -895,6 +1185,7 @@ export function generateOpenAPIDocument(baseUrl?: string): any {
       { name: 'Application Payments', description: 'Payment processing for applications' },
       { name: 'application Terminations', description: 'application termination workflow' },
       { name: 'Prequalifications', description: 'Buyer prequalification for properties' },
+      { name: 'Workflow Blockers', description: 'Track workflow delays and bottlenecks for analytics and customer service' },
       { name: 'Health', description: 'Health check endpoints' },
     ],
   });

@@ -1,5 +1,18 @@
 import { prisma } from '../lib/prisma';
-import { AppError, PhaseStatus, StepStatus, InstallmentStatus, PaymentStatus, DocumentStatus } from '@valentine-efagene/qshelter-common';
+import {
+    AppError,
+    PhaseStatus,
+    StepStatus,
+    InstallmentStatus,
+    PaymentStatus,
+    DocumentStatus,
+    computePhaseActionStatus,
+    computeStepActionStatus,
+    PhaseActionStatus,
+    StepActionStatus,
+    NextActor,
+    ActionCategory,
+} from '@valentine-efagene/qshelter-common';
 import { v4 as uuidv4 } from 'uuid';
 import type {
     ActivatePhaseInput,
@@ -15,6 +28,7 @@ import {
     sendDocumentRejectedNotification,
     formatDate,
 } from '../lib/notifications';
+import { createWorkflowBlockerService, type CreateBlockerInput } from './workflow-blocker.service';
 
 class ApplicationPhaseService {
     async findById(phaseId: string): Promise<any> {
@@ -77,6 +91,188 @@ class ApplicationPhaseService {
     }
 
     /**
+     * Enrich a step with action status information
+     */
+    enrichStepWithActionStatus(step: any): any {
+        const actionStatus = computeStepActionStatus({
+            id: step.id,
+            name: step.name,
+            stepType: step.stepType,
+            order: step.order,
+            status: step.status,
+            actionReason: step.actionReason,
+            dueDate: step.dueDate,
+        });
+
+        return {
+            ...step,
+            actionStatus,
+        };
+    }
+
+    /**
+     * Enrich a phase with action status information
+     */
+    enrichPhaseWithActionStatus(phase: any): any {
+        // Enrich all steps with action status
+        if (phase.documentationPhase?.steps) {
+            phase.documentationPhase.steps = phase.documentationPhase.steps.map(
+                (step: any) => this.enrichStepWithActionStatus(step)
+            );
+        }
+
+        // Compute phase-level action status
+        const actionStatus = computePhaseActionStatus({
+            id: phase.id,
+            name: phase.name,
+            phaseType: phase.phaseType,
+            phaseCategory: phase.phaseCategory,
+            status: phase.status,
+            dueDate: phase.dueDate,
+            documentationPhase: phase.documentationPhase,
+            paymentPhase: phase.paymentPhase,
+            questionnairePhase: phase.questionnairePhase,
+        });
+
+        return {
+            ...phase,
+            actionStatus,
+        };
+    }
+
+    /**
+     * Get a phase by ID with enriched action status
+     */
+    async findByIdWithActionStatus(phaseId: string): Promise<any> {
+        const phase = await this.findById(phaseId);
+        return this.enrichPhaseWithActionStatus(phase);
+    }
+
+    // =========================================================================
+    // WORKFLOW BLOCKER TRACKING
+    // =========================================================================
+
+    /**
+     * Create a blocker based on the current action status of a phase
+     * Called when a phase is activated or transitions to a waiting state
+     */
+    private async createBlockerFromActionStatus(
+        phase: any,
+        enrichedPhase: any,
+        userId: string
+    ): Promise<void> {
+        const actionStatus = enrichedPhase.actionStatus;
+        if (!actionStatus || actionStatus.nextActor === NextActor.NONE) {
+            return; // No blocker needed
+        }
+
+        const tenantId = phase.application?.buyer?.tenantId || phase.tenantId;
+        if (!tenantId) {
+            console.warn('[WorkflowBlocker] Cannot create blocker - no tenantId found');
+            return;
+        }
+
+        const blockerService = createWorkflowBlockerService(tenantId);
+
+        // Determine step ID if applicable
+        let stepId: string | undefined;
+        if (phase.documentationPhase?.currentStepId) {
+            stepId = phase.documentationPhase.currentStepId;
+        }
+
+        await blockerService.createBlocker({
+            tenantId,
+            applicationId: phase.applicationId,
+            phaseId: phase.id,
+            stepId,
+            nextActor: actionStatus.nextActor,
+            actionCategory: actionStatus.actionCategory,
+            actionRequired: actionStatus.actionRequired,
+            metadata: {
+                phaseName: phase.name,
+                phaseType: phase.phaseType,
+                phaseCategory: phase.phaseCategory,
+                stepName: stepId ? this.getStepNameById(phase, stepId) : undefined,
+            },
+        });
+    }
+
+    /**
+     * Resolve step-level blockers when a step action is completed
+     */
+    private async resolveStepBlockers(
+        phase: any,
+        stepId: string,
+        trigger: string,
+        userId: string
+    ): Promise<void> {
+        const tenantId = phase.application?.buyer?.tenantId || phase.tenantId;
+        if (!tenantId) return;
+
+        const blockerService = createWorkflowBlockerService(tenantId);
+        await blockerService.resolveStepBlockers(phase.applicationId, stepId, {
+            resolvedByActor: userId,
+            resolutionTrigger: trigger,
+        });
+    }
+
+    /**
+     * Resolve phase-level blockers when a phase is completed
+     */
+    private async resolvePhaseBlockers(
+        phase: any,
+        trigger: string,
+        userId: string
+    ): Promise<void> {
+        const tenantId = phase.application?.buyer?.tenantId || phase.tenantId;
+        if (!tenantId) return;
+
+        const blockerService = createWorkflowBlockerService(tenantId);
+        await blockerService.resolvePhaseBlockers(phase.applicationId, phase.id, {
+            resolvedByActor: userId,
+            resolutionTrigger: trigger,
+        });
+    }
+
+    /**
+     * Helper to get step name by ID
+     */
+    private getStepNameById(phase: any, stepId: string): string | undefined {
+        const steps = phase.documentationPhase?.steps || [];
+        const step = steps.find((s: any) => s.id === stepId);
+        return step?.name;
+    }
+
+    /**
+     * Update blockers after a phase state change
+     * Resolves old blockers and creates new ones based on current action status
+     */
+    private async updateBlockersAfterTransition(
+        phase: any,
+        enrichedPhase: any,
+        trigger: string,
+        userId: string,
+        stepId?: string
+    ): Promise<void> {
+        try {
+            // Resolve existing blockers for the step or phase
+            if (stepId) {
+                await this.resolveStepBlockers(phase, stepId, trigger, userId);
+            }
+
+            // Create new blocker if phase still needs action
+            await this.createBlockerFromActionStatus(phase, enrichedPhase, userId);
+        } catch (error) {
+            // Blocker tracking should not break the main flow
+            console.error('[WorkflowBlocker] Error updating blockers:', error);
+        }
+    }
+
+    // =========================================================================
+    // END WORKFLOW BLOCKER TRACKING
+    // =========================================================================
+
+    /**
      * Get the next step requiring attention in a phase
      * Order of priority:
      * 1. NEEDS_RESUBMISSION / ACTION_REQUIRED (user must fix)
@@ -133,7 +329,8 @@ class ApplicationPhaseService {
                 },
             },
         });
-        return phases;
+        // Enrich each phase with action status
+        return phases.map((phase) => this.enrichPhaseWithActionStatus(phase));
     }
 
     /**
@@ -274,7 +471,19 @@ class ApplicationPhaseService {
         // After activation, auto-execute any GENERATE_DOCUMENT steps that are ready
         await this.processAutoExecutableSteps(phaseId, userId);
 
-        return this.findById(updated.id);
+        // Get enriched phase with action status
+        const enrichedPhase = await this.findByIdWithActionStatus(updated.id);
+
+        // Create blocker for the newly activated phase
+        await this.updateBlockersAfterTransition(
+            phase,
+            enrichedPhase,
+            'PHASE_ACTIVATED',
+            userId,
+            firstStep?.id
+        );
+
+        return enrichedPhase;
     }
 
     /**
@@ -430,7 +639,7 @@ class ApplicationPhaseService {
             });
         });
 
-        return this.findById(phaseId);
+        return this.findByIdWithActionStatus(phaseId);
     }
 
     /**
@@ -703,7 +912,7 @@ class ApplicationPhaseService {
         // After completing a step, check for auto-executable next steps
         await this.processAutoExecutableSteps(phaseId, userId);
 
-        return this.findById(phaseId);
+        return this.findByIdWithActionStatus(phaseId);
     }
 
     /**
@@ -804,7 +1013,25 @@ class ApplicationPhaseService {
         // After transaction, check for auto-executable steps (like GENERATE_DOCUMENT)
         await this.processAutoExecutableSteps(phaseId, userId);
 
-        return document;
+        // Return document with current phase action status
+        const updatedPhase = await this.findByIdWithActionStatus(phaseId);
+
+        // Track blocker transition (upload completed, may now await review)
+        const resolvedStepId = document.stepId;
+        if (resolvedStepId) {
+            await this.updateBlockersAfterTransition(
+                phase,
+                updatedPhase,
+                'DOCUMENT_UPLOADED',
+                userId,
+                resolvedStepId
+            );
+        }
+
+        return {
+            document,
+            phaseActionStatus: updatedPhase.actionStatus,
+        };
     }
 
     /**
@@ -897,7 +1124,17 @@ class ApplicationPhaseService {
             });
         }
 
-        return this.findById(phaseId);
+        // Track blocker transition (step rejected, customer must resubmit)
+        const enrichedPhase = await this.findByIdWithActionStatus(phaseId);
+        await this.updateBlockersAfterTransition(
+            phase,
+            enrichedPhase,
+            'STEP_REJECTED',
+            userId,
+            stepId
+        );
+
+        return enrichedPhase;
     }
 
     /**
@@ -971,7 +1208,7 @@ class ApplicationPhaseService {
             });
         });
 
-        return this.findById(phaseId);
+        return this.findByIdWithActionStatus(phaseId);
     }
 
     /**
@@ -1085,10 +1322,22 @@ class ApplicationPhaseService {
             await this.processAutoExecutableSteps(document.phaseId, userId);
         }
 
-        // Return updated document
-        return prisma.applicationDocument.findUnique({
+        // Return updated document with phase action status
+        const updatedDocument = await prisma.applicationDocument.findUnique({
             where: { id: documentId },
         });
+
+        // Get phase action status if document has phaseId
+        let phaseActionStatus = null;
+        if (document.phaseId) {
+            const phase = await this.findByIdWithActionStatus(document.phaseId);
+            phaseActionStatus = phase.actionStatus;
+        }
+
+        return {
+            ...updatedDocument,
+            phaseActionStatus,
+        };
     }
 
     /**
@@ -1332,7 +1581,7 @@ class ApplicationPhaseService {
             return result;
         });
 
-        return this.findById(updated.id);
+        return this.findByIdWithActionStatus(updated.id);
     }
 
     /**
@@ -1373,7 +1622,7 @@ class ApplicationPhaseService {
             return result;
         });
 
-        return this.findById(updated.id);
+        return this.findByIdWithActionStatus(updated.id);
     }
 }
 

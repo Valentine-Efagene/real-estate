@@ -983,6 +983,57 @@ export type EnumApprovalDecisionNullableWithAggregatesFilter<$PrismaModel = neve
   _max?: Prisma.NestedEnumApprovalDecisionNullableFilter<$PrismaModel>
 }
 
+export type EnumBlockerActorFilter<$PrismaModel = never> = {
+  equals?: $Enums.BlockerActor | Prisma.EnumBlockerActorFieldRefInput<$PrismaModel>
+  in?: $Enums.BlockerActor[]
+  notIn?: $Enums.BlockerActor[]
+  not?: Prisma.NestedEnumBlockerActorFilter<$PrismaModel> | $Enums.BlockerActor
+}
+
+export type EnumBlockerCategoryFilter<$PrismaModel = never> = {
+  equals?: $Enums.BlockerCategory | Prisma.EnumBlockerCategoryFieldRefInput<$PrismaModel>
+  in?: $Enums.BlockerCategory[]
+  notIn?: $Enums.BlockerCategory[]
+  not?: Prisma.NestedEnumBlockerCategoryFilter<$PrismaModel> | $Enums.BlockerCategory
+}
+
+export type EnumBlockerUrgencyFilter<$PrismaModel = never> = {
+  equals?: $Enums.BlockerUrgency | Prisma.EnumBlockerUrgencyFieldRefInput<$PrismaModel>
+  in?: $Enums.BlockerUrgency[]
+  notIn?: $Enums.BlockerUrgency[]
+  not?: Prisma.NestedEnumBlockerUrgencyFilter<$PrismaModel> | $Enums.BlockerUrgency
+}
+
+export type EnumBlockerActorWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.BlockerActor | Prisma.EnumBlockerActorFieldRefInput<$PrismaModel>
+  in?: $Enums.BlockerActor[]
+  notIn?: $Enums.BlockerActor[]
+  not?: Prisma.NestedEnumBlockerActorWithAggregatesFilter<$PrismaModel> | $Enums.BlockerActor
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumBlockerActorFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumBlockerActorFilter<$PrismaModel>
+}
+
+export type EnumBlockerCategoryWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.BlockerCategory | Prisma.EnumBlockerCategoryFieldRefInput<$PrismaModel>
+  in?: $Enums.BlockerCategory[]
+  notIn?: $Enums.BlockerCategory[]
+  not?: Prisma.NestedEnumBlockerCategoryWithAggregatesFilter<$PrismaModel> | $Enums.BlockerCategory
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumBlockerCategoryFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumBlockerCategoryFilter<$PrismaModel>
+}
+
+export type EnumBlockerUrgencyWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.BlockerUrgency | Prisma.EnumBlockerUrgencyFieldRefInput<$PrismaModel>
+  in?: $Enums.BlockerUrgency[]
+  notIn?: $Enums.BlockerUrgency[]
+  not?: Prisma.NestedEnumBlockerUrgencyWithAggregatesFilter<$PrismaModel> | $Enums.BlockerUrgency
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumBlockerUrgencyFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumBlockerUrgencyFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[]
@@ -1891,6 +1942,57 @@ export type NestedEnumApprovalDecisionNullableWithAggregatesFilter<$PrismaModel 
   _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
   _min?: Prisma.NestedEnumApprovalDecisionNullableFilter<$PrismaModel>
   _max?: Prisma.NestedEnumApprovalDecisionNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumBlockerActorFilter<$PrismaModel = never> = {
+  equals?: $Enums.BlockerActor | Prisma.EnumBlockerActorFieldRefInput<$PrismaModel>
+  in?: $Enums.BlockerActor[]
+  notIn?: $Enums.BlockerActor[]
+  not?: Prisma.NestedEnumBlockerActorFilter<$PrismaModel> | $Enums.BlockerActor
+}
+
+export type NestedEnumBlockerCategoryFilter<$PrismaModel = never> = {
+  equals?: $Enums.BlockerCategory | Prisma.EnumBlockerCategoryFieldRefInput<$PrismaModel>
+  in?: $Enums.BlockerCategory[]
+  notIn?: $Enums.BlockerCategory[]
+  not?: Prisma.NestedEnumBlockerCategoryFilter<$PrismaModel> | $Enums.BlockerCategory
+}
+
+export type NestedEnumBlockerUrgencyFilter<$PrismaModel = never> = {
+  equals?: $Enums.BlockerUrgency | Prisma.EnumBlockerUrgencyFieldRefInput<$PrismaModel>
+  in?: $Enums.BlockerUrgency[]
+  notIn?: $Enums.BlockerUrgency[]
+  not?: Prisma.NestedEnumBlockerUrgencyFilter<$PrismaModel> | $Enums.BlockerUrgency
+}
+
+export type NestedEnumBlockerActorWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.BlockerActor | Prisma.EnumBlockerActorFieldRefInput<$PrismaModel>
+  in?: $Enums.BlockerActor[]
+  notIn?: $Enums.BlockerActor[]
+  not?: Prisma.NestedEnumBlockerActorWithAggregatesFilter<$PrismaModel> | $Enums.BlockerActor
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumBlockerActorFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumBlockerActorFilter<$PrismaModel>
+}
+
+export type NestedEnumBlockerCategoryWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.BlockerCategory | Prisma.EnumBlockerCategoryFieldRefInput<$PrismaModel>
+  in?: $Enums.BlockerCategory[]
+  notIn?: $Enums.BlockerCategory[]
+  not?: Prisma.NestedEnumBlockerCategoryWithAggregatesFilter<$PrismaModel> | $Enums.BlockerCategory
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumBlockerCategoryFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumBlockerCategoryFilter<$PrismaModel>
+}
+
+export type NestedEnumBlockerUrgencyWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.BlockerUrgency | Prisma.EnumBlockerUrgencyFieldRefInput<$PrismaModel>
+  in?: $Enums.BlockerUrgency[]
+  notIn?: $Enums.BlockerUrgency[]
+  not?: Prisma.NestedEnumBlockerUrgencyWithAggregatesFilter<$PrismaModel> | $Enums.BlockerUrgency
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumBlockerUrgencyFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumBlockerUrgencyFilter<$PrismaModel>
 }
 
 

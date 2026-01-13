@@ -1,5 +1,18 @@
 import { prisma as defaultPrisma } from '../lib/prisma';
-import { AppError, PrismaClient, StepType, ApplicationStatus, PhaseStatus, StepStatus } from '@valentine-efagene/qshelter-common';
+import {
+    AppError,
+    PrismaClient,
+    StepType,
+    ApplicationStatus,
+    PhaseStatus,
+    StepStatus,
+    computePhaseActionStatus,
+    computeStepActionStatus,
+    NextActor,
+    ActionCategory,
+    ApplicationActionStatus,
+    PhaseActionStatus,
+} from '@valentine-efagene/qshelter-common';
 import { v4 as uuidv4 } from 'uuid';
 import type {
     CreateApplicationInput,
@@ -180,6 +193,132 @@ function getNextState(currentState: ApplicationStatus, trigger: string): Applica
 function mapStateToStatus(state: ApplicationStatus): ApplicationStatus {
     // State and status are now the same type
     return state;
+}
+
+/**
+ * Enrich a step with action status
+ */
+function enrichStepWithActionStatus(step: any): any {
+    const actionStatus = computeStepActionStatus({
+        id: step.id,
+        name: step.name,
+        stepType: step.stepType,
+        order: step.order,
+        status: step.status,
+        actionReason: step.actionReason,
+        dueDate: step.dueDate,
+    });
+
+    return {
+        ...step,
+        actionStatus,
+    };
+}
+
+/**
+ * Enrich a phase with action status
+ */
+function enrichPhaseWithActionStatus(phase: any): any {
+    // Enrich steps if present
+    if (phase.documentationPhase?.steps) {
+        phase.documentationPhase.steps = phase.documentationPhase.steps.map(
+            (step: any) => enrichStepWithActionStatus(step)
+        );
+    }
+
+    // Compute phase action status
+    const actionStatus = computePhaseActionStatus({
+        id: phase.id,
+        name: phase.name,
+        phaseType: phase.phaseType,
+        phaseCategory: phase.phaseCategory,
+        status: phase.status,
+        dueDate: phase.dueDate,
+        documentationPhase: phase.documentationPhase,
+        paymentPhase: phase.paymentPhase,
+        questionnairePhase: phase.questionnairePhase,
+    });
+
+    return {
+        ...phase,
+        actionStatus,
+    };
+}
+
+/**
+ * Enrich an application with action status at all levels
+ */
+function enrichApplicationWithActionStatus(application: any): any {
+    // Enrich all phases
+    const enrichedPhases = application.phases?.map((phase: any) =>
+        enrichPhaseWithActionStatus(phase)
+    ) || [];
+
+    // Find current phase and compute application-level status
+    const currentPhase = enrichedPhases.find(
+        (p: any) => p.id === application.currentPhaseId
+    ) || enrichedPhases.find(
+        (p: any) => p.status === 'IN_PROGRESS' || p.status === 'ACTIVE'
+    );
+
+    // Compute application-level action status
+    let applicationActionStatus: ApplicationActionStatus;
+
+    if (application.status === 'COMPLETED') {
+        applicationActionStatus = {
+            applicationId: application.id,
+            applicationNumber: application.applicationNumber,
+            nextActor: NextActor.NONE,
+            actionCategory: ActionCategory.COMPLETED,
+            actionRequired: 'Application completed',
+            isBlocking: false,
+        };
+    } else if (application.status === 'CANCELLED' || application.status === 'TERMINATED') {
+        applicationActionStatus = {
+            applicationId: application.id,
+            applicationNumber: application.applicationNumber,
+            nextActor: NextActor.NONE,
+            actionCategory: ActionCategory.COMPLETED,
+            actionRequired: `Application ${application.status.toLowerCase()}`,
+            isBlocking: false,
+        };
+    } else if (application.status === 'DRAFT') {
+        applicationActionStatus = {
+            applicationId: application.id,
+            applicationNumber: application.applicationNumber,
+            nextActor: NextActor.CUSTOMER,
+            actionCategory: ActionCategory.UPLOAD,
+            actionRequired: 'Submit application for review',
+            isBlocking: true,
+        };
+    } else if (currentPhase) {
+        applicationActionStatus = {
+            applicationId: application.id,
+            applicationNumber: application.applicationNumber,
+            nextActor: currentPhase.actionStatus?.nextActor || NextActor.CUSTOMER,
+            actionCategory: currentPhase.actionStatus?.actionCategory || ActionCategory.UPLOAD,
+            actionRequired: currentPhase.actionStatus?.actionRequired || 'Action required',
+            progress: currentPhase.actionStatus?.progress,
+            currentPhase: currentPhase.actionStatus,
+            phasesProgress: `Phase ${currentPhase.order + 1} of ${enrichedPhases.length}`,
+            isBlocking: true,
+        };
+    } else {
+        applicationActionStatus = {
+            applicationId: application.id,
+            applicationNumber: application.applicationNumber,
+            nextActor: NextActor.CUSTOMER,
+            actionCategory: ActionCategory.WAITING,
+            actionRequired: 'Pending',
+            isBlocking: true,
+        };
+    }
+
+    return {
+        ...application,
+        phases: enrichedPhases,
+        actionStatus: applicationActionStatus,
+    };
 }
 
 /**
@@ -561,7 +700,8 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
             throw new AppError(404, 'application not found');
         }
 
-        return application;
+        // Enrich phases with action status
+        return enrichApplicationWithActionStatus(application);
     }
 
     async function findByApplicationNumber(applicationNumber: string) {

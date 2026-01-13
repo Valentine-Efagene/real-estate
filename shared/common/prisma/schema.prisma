@@ -345,7 +345,7 @@ model User {
   socials                Social[]
 
   // Relations to other domains
-  properties       Property[]
+  properties          Property[]
   applications        Application[]        @relation("ApplicationBuyer")
   soldApplications    Application[]        @relation("ApplicationSeller")
   applicationPayments ApplicationPayment[] @relation("ApplicationPayer")
@@ -353,7 +353,7 @@ model User {
   // Documentation step assignments and approvals
   assignedSteps DocumentationStep[]         @relation("DocumentationStepAssignee")
   stepApprovals DocumentationStepApproval[] @relation("DocumentationStepApprover")
-  uploadedDocs  ApplicationDocument[]          @relation("DocumentUploader")
+  uploadedDocs  ApplicationDocument[]       @relation("DocumentUploader")
 
   // Payment method changes
   paymentMethodChangeRequests PaymentMethodChangeRequest[] @relation("ChangeRequestor")
@@ -496,7 +496,7 @@ model Tenant {
   properties     Property[]
   paymentPlans   PaymentPlan[]
   paymentMethods PropertyPaymentMethod[]
-  applications      Application[]
+  applications   Application[]
 
   // RBAC: Tenant-scoped roles and permissions
   roles       Role[]
@@ -1023,11 +1023,11 @@ model PropertyPaymentMethod {
   updatedAt DateTime @updatedAt
 
   // Many-to-many with properties
-  properties PropertyPaymentMethodLink[]
+  properties   PropertyPaymentMethodLink[]
   // Phases that make up this method (templates)
-  phases     PropertyPaymentMethodPhase[]
+  phases       PropertyPaymentMethodPhase[]
   // Contracts using this method
-  applications  Application[]
+  applications Application[]
 
   // Payment method change tracking
   changeRequestsFrom PaymentMethodChangeRequest[] @relation("ChangeFromMethod")
@@ -1292,8 +1292,8 @@ model Application {
 
   // Contract identification
   applicationNumber String  @unique
-  title          String
-  description    String? @db.Text
+  title             String
+  description       String? @db.Text
   applicationType   String // Admin-defined: MORTGAGE, INSTALLMENT, RENT_TO_OWN, CASH, LEASE, etc.
 
   // Contract value (negotiated from unit price)
@@ -1325,7 +1325,7 @@ model Application {
   paymentMethodChangeRequests PaymentMethodChangeRequest[]
 
   // Transfer tracking - when a contract is transferred to a different property
-  transferredFromId String?   @unique // Source contract if this was created via transfer
+  transferredFromId String?      @unique // Source contract if this was created via transfer
   transferredFrom   Application? @relation("ApplicationTransfer", fields: [transferredFromId], references: [id])
   transferredTo     Application? @relation("ApplicationTransfer")
 
@@ -1419,7 +1419,7 @@ model ApplicationRefund {
 // =============================================================================
 
 model ApplicationPhase {
-  id         String   @id @default(cuid())
+  id            String      @id @default(cuid())
   applicationId String
   application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
 
@@ -1473,8 +1473,8 @@ model ApplicationPhase {
 // =============================================================================
 
 model QuestionnairePhase {
-  id      String        @id @default(cuid())
-  phaseId String        @unique
+  id      String           @id @default(cuid())
+  phaseId String           @unique
   phase   ApplicationPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
 
   // Progress tracking
@@ -1507,8 +1507,8 @@ model QuestionnairePhase {
 // =============================================================================
 
 model DocumentationPhase {
-  id      String        @id @default(cuid())
-  phaseId String        @unique
+  id      String           @id @default(cuid())
+  phaseId String           @unique
   phase   ApplicationPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
 
   // Current step pointer for UX and orchestration
@@ -1547,8 +1547,8 @@ model DocumentationPhase {
 // =============================================================================
 
 model PaymentPhase {
-  id      String        @id @default(cuid())
-  phaseId String        @unique
+  id      String           @id @default(cuid())
+  phaseId String           @unique
   phase   ApplicationPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
 
   // Payment plan reference
@@ -1646,7 +1646,7 @@ model QuestionnaireField {
 // ApplicationEvent is purely for historical tracking and state machine transitions.
 // =============================================================================
 model ApplicationEvent {
-  id         String   @id @default(cuid())
+  id            String      @id @default(cuid())
   applicationId String
   application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
 
@@ -1797,15 +1797,15 @@ model PaymentInstallment {
 
 // Unified payment record for contracts
 model ApplicationPayment {
-  id            String               @id @default(cuid())
-  applicationId    String
-  application Application             @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  id            String              @id @default(cuid())
+  applicationId String
+  application   Application         @relation(fields: [applicationId], references: [id], onDelete: Cascade)
   phaseId       String?
-  phase         ApplicationPhase?       @relation(fields: [phaseId], references: [id])
+  phase         ApplicationPhase?   @relation(fields: [phaseId], references: [id])
   installmentId String?
   installment   PaymentInstallment? @relation(fields: [installmentId], references: [id])
   payerId       String?
-  payer         User?                @relation("ApplicationPayer", fields: [payerId], references: [id])
+  payer         User?               @relation("ApplicationPayer", fields: [payerId], references: [id])
 
   amount          Float
   principalAmount Float @default(0)
@@ -1833,11 +1833,11 @@ model ApplicationPayment {
 
 // Contract documents (owned by contract, linked to phases/steps as needed)
 model ApplicationDocument {
-  id         String   @id @default(cuid())
+  id            String      @id @default(cuid())
   applicationId String
   application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
-  phaseId    String? // Optional link to specific phase
-  stepId     String? // Optional link to specific step
+  phaseId       String? // Optional link to specific phase
+  stepId        String? // Optional link to specific step
 
   name         String
   url          String
@@ -1894,9 +1894,9 @@ model DocumentTemplate {
 }
 
 model OfferLetter {
-  id         String   @id @default(cuid())
-  tenantId   String
-  tenant     Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  id            String      @id @default(cuid())
+  tenantId      String
+  tenant        Tenant      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   applicationId String
   application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
 
@@ -1959,11 +1959,11 @@ model OfferLetter {
 // =============================================================================
 
 model ApplicationTermination {
-  id         String   @id @default(cuid())
+  id            String      @id @default(cuid())
   applicationId String
   application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
-  tenantId   String
-  tenant     Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  tenantId      String
+  tenant        Tenant      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
   // Request identification
   requestNumber String @unique // TRM-XXXXXX
@@ -1991,8 +1991,8 @@ model ApplicationTermination {
   // Financial snapshot at time of request
   applicationSnapshot    Json // Full contract state snapshot
   totalApplicationAmount Float
-  totalPaidToDate     Float
-  outstandingBalance  Float
+  totalPaidToDate        Float
+  outstandingBalance     Float
 
   // Settlement calculation
   refundableAmount Float   @default(0) // Amount eligible for refund
@@ -2057,9 +2057,9 @@ enum PaymentMethodChangeStatus {
 }
 
 model PaymentMethodChangeRequest {
-  id         String   @id @default(cuid())
-  tenantId   String
-  tenant     Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  id            String      @id @default(cuid())
+  tenantId      String
+  tenant        Tenant      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   applicationId String
   application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
 
@@ -2598,4 +2598,104 @@ model ApprovalRequest {
   @@index([createdAt])
   @@index([type, status]) // Efficient queries for approval dashboard
   @@map("approval_requests")
+}
+
+// =============================================================================
+// WORKFLOW BLOCKER TRACKING - Analytics for workflow delays
+// =============================================================================
+// Tracks who is blocking the workflow at any point, enabling analytics like:
+// - Average time customers take to upload documents
+// - Average time admins take to review/approve
+// - Most common bottleneck steps
+// - SLA compliance tracking
+// - Customer service intervention triggers
+// =============================================================================
+
+/// Who is responsible for the current workflow block
+enum BlockerActor {
+  CUSTOMER // Customer action required (upload, sign, pay)
+  ADMIN // Admin action required (review, approve, reject)
+  SYSTEM // System processing (auto-generation, external checks)
+  EXTERNAL // External party (bank, government, third-party verification)
+}
+
+/// Category of action that is blocking workflow
+enum BlockerCategory {
+  UPLOAD // Document upload needed
+  RESUBMISSION // Document resubmission after rejection
+  SIGNATURE // Signature required
+  REVIEW // Admin review needed
+  APPROVAL // Admin approval needed
+  PAYMENT // Payment required
+  PROCESSING // System processing
+  EXTERNAL_CHECK // External verification
+  QUESTIONNAIRE // Form/questionnaire completion
+}
+
+/// Urgency level for prioritization and SLA tracking
+enum BlockerUrgency {
+  LOW // No immediate deadline
+  NORMAL // Standard processing
+  HIGH // Approaching deadline or overdue
+  CRITICAL // Significantly overdue or business-critical
+}
+
+/// Workflow Blocker - Records who is blocking workflow and for how long
+model WorkflowBlocker {
+  id       String @id @default(cuid())
+  tenantId String
+
+  // Reference to the blocked entity
+  applicationId String
+  phaseId       String?
+  stepId        String?
+
+  // Actor and action details
+  blockerActor    BlockerActor
+  blockerCategory BlockerCategory
+  urgency         BlockerUrgency  @default(NORMAL)
+
+  // Human-readable descriptions
+  actionRequired String  @db.VarChar(500) // What action is needed
+  context        String? @db.Text // Additional context
+
+  // SLA tracking
+  expectedByDate DateTime? // When this action should be completed
+  isOverdue      Boolean   @default(false)
+  overdueAt      DateTime? // When it became overdue
+
+  // Duration tracking
+  startedAt  DateTime  @default(now()) // When this block started
+  resolvedAt DateTime? // When it was resolved
+  durationMs Int? // Calculated duration on resolution
+
+  // Resolution details
+  resolvedByActor   String? // Who resolved it (userId or "SYSTEM")
+  resolutionTrigger String? // What action resolved it (e.g., "DOCUMENT_UPLOADED", "STEP_COMPLETED")
+
+  // Reminder tracking (for customer service)
+  reminderCount  Int       @default(0) // Number of reminders sent
+  lastReminderAt DateTime? // Last reminder timestamp
+  nextReminderAt DateTime? // Scheduled next reminder
+
+  // Metadata for additional analytics
+  metadata Json? // Flexible data: { documentType, stepType, phaseType, etc. }
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tenantId])
+  @@index([applicationId])
+  @@index([phaseId])
+  @@index([stepId])
+  @@index([blockerActor])
+  @@index([blockerCategory])
+  @@index([urgency])
+  @@index([isOverdue])
+  @@index([startedAt])
+  @@index([resolvedAt])
+  @@index([tenantId, blockerActor, resolvedAt]) // For "open blockers by actor" queries
+  @@index([tenantId, blockerCategory, resolvedAt]) // For "open blockers by category" queries
+  @@index([tenantId, isOverdue, blockerActor]) // For SLA violation queries
+  @@map("workflow_blockers")
 }

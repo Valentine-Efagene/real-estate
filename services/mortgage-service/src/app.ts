@@ -17,6 +17,7 @@ import underwritingRouter from './routes/underwriting';
 import paymentMethodChangeRouter from './routes/payment-method-change';
 import propertyTransferRouter from './routes/property-transfer';
 import approvalRequestRouter from './routes/approval-request';
+import workflowBlockerRouter from './routes/workflow-blocker';
 
 export const app: Application = express();
 
@@ -101,6 +102,7 @@ app.use('/applications', applicationRouter);
 app.use('/offer-letters', offerLetterRouter);
 app.use('/underwriting', underwritingRouter);
 app.use('/approval-requests', approvalRequestRouter);
+app.use('/workflow-blockers', workflowBlockerRouter);
 app.use('/', terminationRouter); // Handles both /applications/:id/... and /terminations/...
 app.use('/', paymentMethodChangeRouter); // Handles /applications/:id/payment-method-change-requests and /payment-method-change-requests
 app.use('/', propertyTransferRouter); // Handles /applications/:id/transfer-requests and /transfer-requests
