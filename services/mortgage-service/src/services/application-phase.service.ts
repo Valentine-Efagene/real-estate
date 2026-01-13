@@ -137,6 +137,55 @@ class ApplicationPhaseService {
     }
 
     /**
+     * Get documents uploaded to a phase
+     */
+    async getDocumentsByPhase(phaseId: string): Promise<any[]> {
+        const phase = await prisma.applicationPhase.findUnique({
+            where: { id: phaseId },
+        });
+
+        if (!phase) {
+            throw new AppError(404, 'Phase not found');
+        }
+
+        const documents = await prisma.applicationDocument.findMany({
+            where: { phaseId },
+            orderBy: { createdAt: 'asc' },
+        });
+
+        return documents;
+    }
+
+    /**
+     * Get installments for a payment phase
+     */
+    async getInstallmentsByPhase(
+        phaseId: string,
+        filters?: { status?: string; limit?: number }
+    ): Promise<any[]> {
+        const phase = await prisma.applicationPhase.findUnique({
+            where: { id: phaseId },
+            include: {
+                paymentPhase: {
+                    include: {
+                        installments: {
+                            where: filters?.status ? { status: filters.status as InstallmentStatus } : {},
+                            orderBy: { installmentNumber: 'asc' },
+                            take: filters?.limit,
+                        },
+                    },
+                },
+            },
+        });
+
+        if (!phase) {
+            throw new AppError(404, 'Phase not found');
+        }
+
+        return phase.paymentPhase?.installments ?? [];
+    }
+
+    /**
      * Activate a phase - can only activate if previous phases are completed
      */
     async activate(phaseId: string, data: ActivatePhaseInput, userId: string): Promise<any> {
