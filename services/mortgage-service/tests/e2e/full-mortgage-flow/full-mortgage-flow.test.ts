@@ -610,7 +610,7 @@ describe('Full E2E Mortgage Flow', () => {
     // Phase 6: KYC Document Upload & Approval
     // =========================================================================
     describe('Phase 6: KYC Document Upload & Approval', () => {
-        it('Step 6.1a: Chidi uploads ID card', async () => {
+        it('Step 6.1a: Chidi uploads ID card (auto-completes UPLOAD step)', async () => {
             const response = await mortgageApi
                 .post(
                     `/applications/${applicationId}/phases/${kycPhaseId}/documents`
@@ -626,9 +626,10 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.status).toBe(201);
             expect(response.body.success).toBe(true);
             docIdCard = response.body.data.id;
+            // UPLOAD step auto-completes when document is uploaded
         });
 
-        it('Step 6.1b: Chidi uploads bank statement', async () => {
+        it('Step 6.1b: Chidi uploads bank statement (auto-completes UPLOAD step)', async () => {
             const response = await mortgageApi
                 .post(
                     `/applications/${applicationId}/phases/${kycPhaseId}/documents`
@@ -646,7 +647,7 @@ describe('Full E2E Mortgage Flow', () => {
             docBankStatement = response.body.data.id;
         });
 
-        it('Step 6.1c: Chidi uploads employment letter', async () => {
+        it('Step 6.1c: Chidi uploads employment letter (auto-completes UPLOAD step)', async () => {
             const response = await mortgageApi
                 .post(
                     `/applications/${applicationId}/phases/${kycPhaseId}/documents`
@@ -664,44 +665,7 @@ describe('Full E2E Mortgage Flow', () => {
             docEmploymentLetter = response.body.data.id;
         });
 
-        it('Step 6.2a: Chidi completes Upload Valid ID step', async () => {
-            const response = await mortgageApi
-                .post(
-                    `/applications/${applicationId}/phases/${kycPhaseId}/steps/complete`
-                )
-                .set(customerHeaders(chidiAccessToken, tenantId))
-                .set('x-idempotency-key', idempotencyKey('complete-step-upload-id'))
-                .send({ stepName: 'Upload Valid ID' });
-
-            expect(response.status).toBe(200);
-            expect(response.body.success).toBe(true);
-        });
-
-        it('Step 6.2b: Chidi completes Upload Bank Statements step', async () => {
-            const response = await mortgageApi
-                .post(
-                    `/applications/${applicationId}/phases/${kycPhaseId}/steps/complete`
-                )
-                .set(customerHeaders(chidiAccessToken, tenantId))
-                .set('x-idempotency-key', idempotencyKey('complete-step-upload-bank'))
-                .send({ stepName: 'Upload Bank Statements' });
-
-            expect(response.status).toBe(200);
-            expect(response.body.success).toBe(true);
-        });
-
-        it('Step 6.2c: Chidi completes Upload Employment Letter step', async () => {
-            const response = await mortgageApi
-                .post(
-                    `/applications/${applicationId}/phases/${kycPhaseId}/steps/complete`
-                )
-                .set(customerHeaders(chidiAccessToken, tenantId))
-                .set('x-idempotency-key', idempotencyKey('complete-step-upload-employment'))
-                .send({ stepName: 'Upload Employment Letter' });
-
-            expect(response.status).toBe(200);
-            expect(response.body.success).toBe(true);
-        });
+        // NOTE: Manual step completion calls removed - UPLOAD steps auto-complete
 
         it('Step 6.3: Admin retrieves documents for review', async () => {
             const response = await mortgageApi
@@ -743,7 +707,8 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.body.success).toBe(true);
         });
 
-        it('Step 6.4c: Admin approves employment letter', async () => {
+        it('Step 6.4c: Admin approves employment letter (auto-completes APPROVAL step)', async () => {
+            // When the last document is approved, APPROVAL step auto-completes
             const response = await mortgageApi
                 .post(
                     `/applications/${applicationId}/documents/${docEmploymentLetter}/review`
@@ -757,25 +722,13 @@ describe('Full E2E Mortgage Flow', () => {
 
             expect(response.status).toBe(200);
             expect(response.body.success).toBe(true);
+            // APPROVAL step auto-completes when all documents are approved
         });
 
-        it('Step 6.5: Admin completes review step', async () => {
-            const response = await mortgageApi
-                .post(
-                    `/applications/${applicationId}/phases/${kycPhaseId}/steps/complete`
-                )
-                .set(adminHeaders(adaezeAccessToken, tenantId))
-                .set('x-idempotency-key', idempotencyKey('complete-review-step'))
-                .send({
-                    stepName: 'Admin Reviews Documents',
-                    note: 'All documents verified and approved',
-                });
+        // NOTE: Manual review step completion removed - APPROVAL step auto-completes
 
-            expect(response.status).toBe(200);
-            expect(response.body.success).toBe(true);
-        });
-
-        it('Step 6.7: Chidi signs provisional offer', async () => {
+        it('Step 6.7: Chidi signs provisional offer (manual SIGNATURE step)', async () => {
+            // SIGNATURE steps require explicit user action
             const response = await mortgageApi
                 .post(
                     `/applications/${applicationId}/phases/${kycPhaseId}/steps/complete`
@@ -786,11 +739,10 @@ describe('Full E2E Mortgage Flow', () => {
 
             expect(response.status).toBe(200);
             expect(response.body.success).toBe(true);
-
-            // KYC phase should now be completed
+            // KYC phase auto-completes when all steps done
         });
 
-        it('Verify KYC phase is completed', async () => {
+        it('Verify KYC phase is completed (auto-transition)', async () => {
             const response = await mortgageApi
                 .get(`/applications/${applicationId}/phases/${kycPhaseId}`)
                 .set(customerHeaders(chidiAccessToken, tenantId));
@@ -870,7 +822,7 @@ describe('Full E2E Mortgage Flow', () => {
     // Phase 8: Final Documentation
     // =========================================================================
     describe('Phase 8: Final Documentation', () => {
-        it('Step 8.1: Admin uploads final offer letter', async () => {
+        it('Step 8.1: Admin uploads final offer letter (auto-completes UPLOAD step)', async () => {
             const response = await mortgageApi
                 .post(
                     `/applications/${applicationId}/phases/${verificationPhaseId}/documents`
@@ -885,22 +837,13 @@ describe('Full E2E Mortgage Flow', () => {
 
             expect(response.status).toBe(201);
             expect(response.body.success).toBe(true);
+            // UPLOAD step auto-completes when document is uploaded
         });
 
-        it('Step 8.2: Admin completes upload step', async () => {
-            const response = await mortgageApi
-                .post(
-                    `/applications/${applicationId}/phases/${verificationPhaseId}/steps/complete`
-                )
-                .set(adminHeaders(adaezeAccessToken, tenantId))
-                .set('x-idempotency-key', idempotencyKey('complete-final-offer-upload'))
-                .send({ stepName: 'Admin Uploads Final Offer' });
+        // NOTE: Manual upload step completion removed - auto-completes
 
-            expect(response.status).toBe(200);
-            expect(response.body.success).toBe(true);
-        });
-
-        it('Step 8.3: Chidi signs final offer', async () => {
+        it('Step 8.3: Chidi signs final offer (manual SIGNATURE step)', async () => {
+            // SIGNATURE steps require explicit user action
             const response = await mortgageApi
                 .post(
                     `/applications/${applicationId}/phases/${verificationPhaseId}/steps/complete`
@@ -911,9 +854,10 @@ describe('Full E2E Mortgage Flow', () => {
 
             expect(response.status).toBe(200);
             expect(response.body.success).toBe(true);
+            // Phase auto-completes when all steps done
         });
 
-        it('Verify verification phase is completed', async () => {
+        it('Verify verification phase is completed (auto-transition)', async () => {
             const response = await mortgageApi
                 .get(
                     `/applications/${applicationId}/phases/${verificationPhaseId}`
