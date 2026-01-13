@@ -1033,4 +1033,190 @@ describe('Full E2E Mortgage Flow', () => {
             }
         });
     });
+
+    // =========================================================================
+    // Verification: Authorization & Access Control
+    // =========================================================================
+    describe('Authorization & Access Control', () => {
+        describe('Unauthenticated Access', () => {
+            it('Rejects requests without auth headers', async () => {
+                const response = await mortgageApi
+                    .get(`/applications/${applicationId}`)
+                    .set('Content-Type', 'application/json');
+
+                // Should fail without auth context
+                expect([400, 401, 403, 500]).toContain(response.status);
+            });
+
+            it('Rejects requests with only Authorization header (no authorizer context)', async () => {
+                const response = await mortgageApi
+                    .get(`/applications/${applicationId}`)
+                    .set('Authorization', `Bearer ${chidiAccessToken}`)
+                    .set('Content-Type', 'application/json');
+
+                // Should fail without x-authorizer-* headers (tenant context missing)
+                expect([400, 401, 403, 500]).toContain(response.status);
+            });
+        });
+
+        describe('Customer Cannot Access Admin Endpoints', () => {
+            it('Customer cannot create payment plans', async () => {
+                const response = await mortgageApi
+                    .post('/payment-plans')
+                    .set(customerHeaders(chidiAccessToken, tenantId))
+                    .set('x-idempotency-key', idempotencyKey('customer-create-plan-fail'))
+                    .send({
+                        name: 'Unauthorized Plan',
+                        description: 'Customer should not be able to create this',
+                        frequency: 'MONTHLY',
+                        numberOfInstallments: 12,
+                        interestRate: 5,
+                        gracePeriodDays: 15,
+                    });
+
+                // Payment plan creation is admin-only
+                expect([401, 403]).toContain(response.status);
+            });
+
+            it('Customer cannot create payment methods', async () => {
+                const response = await mortgageApi
+                    .post('/payment-methods')
+                    .set(customerHeaders(chidiAccessToken, tenantId))
+                    .set('x-idempotency-key', idempotencyKey('customer-create-method-fail'))
+                    .send({
+                        name: 'Unauthorized Method',
+                        description: 'Customer should not be able to create this',
+                        requiresManualApproval: false,
+                        phases: [],
+                    });
+
+                // Payment method creation is admin-only
+                expect([401, 403]).toContain(response.status);
+            });
+
+            it('Customer cannot admin-terminate an application', async () => {
+                const response = await mortgageApi
+                    .post(`/applications/${applicationId}/admin-terminate`)
+                    .set(customerHeaders(chidiAccessToken, tenantId))
+                    .set('x-idempotency-key', idempotencyKey('customer-admin-terminate-fail'))
+                    .send({
+                        reason: 'ADMIN_DECISION',
+                        refundAmount: 1000000,
+                        internalNotes: 'Customer trying to admin-terminate',
+                    });
+
+                // Admin termination is admin-only
+                expect([401, 403]).toContain(response.status);
+            });
+        });
+
+        describe('Cross-Tenant Isolation', () => {
+            let otherTenantId: string;
+            let otherAdminToken: string;
+
+            beforeAll(async () => {
+                // Create a second tenant
+                const bootstrapResponse = await userApi
+                    .post('/admin/bootstrap-tenant')
+                    .set('x-bootstrap-secret', BOOTSTRAP_SECRET)
+                    .set('Content-Type', 'application/json')
+                    .send({
+                        tenant: {
+                            name: 'Other Real Estate Co',
+                            subdomain: `other-${TEST_RUN_ID.slice(0, 8)}`,
+                        },
+                        admin: {
+                            email: `other-admin-${TEST_RUN_ID.slice(0, 8)}@other.com`,
+                            password: 'OtherAdmin123!',
+                            firstName: 'Other',
+                            lastName: 'Admin',
+                        },
+                    });
+
+                expect(bootstrapResponse.status).toBe(201);
+                otherTenantId = bootstrapResponse.body.tenant.id;
+
+                // Login as other admin
+                const loginResponse = await userApi
+                    .post('/auth/login')
+                    .set('Content-Type', 'application/json')
+                    .send({
+                        email: `other-admin-${TEST_RUN_ID.slice(0, 8)}@other.com`,
+                        password: 'OtherAdmin123!',
+                    });
+
+                expect(loginResponse.status).toBe(200);
+                otherAdminToken = loginResponse.body.data.accessToken;
+            });
+
+            it('Other tenant admin cannot access first tenant application', async () => {
+                const response = await mortgageApi
+                    .get(`/applications/${applicationId}`)
+                    .set(adminHeaders(otherAdminToken, otherTenantId));
+
+                // Should not find the application (belongs to different tenant)
+                expect([403, 404]).toContain(response.status);
+            });
+
+            it('Other tenant admin cannot list first tenant applications', async () => {
+                const response = await mortgageApi
+                    .get('/applications')
+                    .set(adminHeaders(otherAdminToken, otherTenantId));
+
+                expect(response.status).toBe(200);
+                // Should not include applications from first tenant
+                const apps = response.body.data || [];
+                const foundOurApp = apps.some((app: { id: string }) => app.id === applicationId);
+                expect(foundOurApp).toBe(false);
+            });
+
+            it('Other tenant admin cannot modify first tenant payment method', async () => {
+                const response = await mortgageApi
+                    .patch(`/payment-methods/${paymentMethodId}`)
+                    .set(adminHeaders(otherAdminToken, otherTenantId))
+                    .send({
+                        name: 'Hijacked Payment Method',
+                    });
+
+                // Should not be able to modify (belongs to different tenant)
+                expect([403, 404]).toContain(response.status);
+            });
+        });
+
+        describe('Ownership Verification', () => {
+            it('Customer can only sign their own application', async () => {
+                // Chidi should be able to view his own application
+                const response = await mortgageApi
+                    .get(`/applications/${applicationId}`)
+                    .set(customerHeaders(chidiAccessToken, tenantId));
+
+                expect(response.status).toBe(200);
+                expect(response.body.data.buyerId).toBe(chidiId);
+            });
+
+            it('Different customer cannot access Chidi application', async () => {
+                // Create another customer in the same tenant
+                const signupResponse = await userApi
+                    .post('/auth/signup')
+                    .set('Content-Type', 'application/json')
+                    .send({
+                        email: `emeka-${TEST_RUN_ID.slice(0, 8)}@gmail.com`,
+                        password: 'EmekaPass123!',
+                        firstName: 'Emeka',
+                        lastName: 'Obi',
+                    });
+
+                expect(signupResponse.status).toBe(201);
+                const emekaToken = signupResponse.body.data.accessToken;
+
+                // Emeka tries to access Chidi's application
+                const response = await mortgageApi
+                    .get(`/applications/${applicationId}`)
+                    .set(customerHeaders(emekaToken, tenantId));
+
+                // Should be forbidden (not the buyer)
+                expect([403, 404]).toContain(response.status);
+            });
+        });
+    });
 });

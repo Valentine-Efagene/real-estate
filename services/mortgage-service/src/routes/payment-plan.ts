@@ -1,16 +1,31 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import { paymentPlanService } from '../services/payment-plan.service';
+import { createPaymentPlanService } from '../services/payment-plan.service';
 import { CreatePaymentPlanSchema, UpdatePaymentPlanSchema } from '../validators/payment-plan.validator';
 import { z } from 'zod';
-import { getAuthContext, successResponse } from '@valentine-efagene/qshelter-common';
+import {
+    getAuthContext,
+    successResponse,
+    requireTenant,
+    requireRole,
+    ADMIN_ROLES,
+} from '@valentine-efagene/qshelter-common';
+import { getTenantPrisma } from '../lib/tenant-services';
 
 const router = Router();
 
-// Create payment plan
-router.post('/', async (req: Request, res: Response, next: NextFunction) => {
+/**
+ * Helper to get tenant-scoped payment plan service from request
+ */
+function getPaymentPlanService(req: Request) {
+    return createPaymentPlanService(getTenantPrisma(req));
+}
+
+// Create payment plan (admin only)
+router.post('/', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { tenantId } = getAuthContext(req);
         const data = CreatePaymentPlanSchema.parse(req.body);
+        const paymentPlanService = getPaymentPlanService(req);
         const plan = await paymentPlanService.create(tenantId, data);
         // Include interestRate from input in response (interest rate is phase-specific, but echoed for convenience)
         res.status(201).json(successResponse({ ...plan, interestRate: data.interestRate }));
@@ -23,10 +38,11 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
     }
 });
 
-// Get all payment plans
-router.get('/', async (req: Request, res: Response, next: NextFunction) => {
+// Get all payment plans (public - customers need to see available plans)
+router.get('/', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const isActive = req.query.isActive === 'true' ? true : req.query.isActive === 'false' ? false : undefined;
+        const paymentPlanService = getPaymentPlanService(req);
         const plans = await paymentPlanService.findAll({ isActive });
         res.json(successResponse(plans));
     } catch (error) {
@@ -35,8 +51,9 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
 });
 
 // Get payment plan by ID
-router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/:id', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const paymentPlanService = getPaymentPlanService(req);
         const plan = await paymentPlanService.findById(req.params.id);
         res.json(successResponse(plan));
     } catch (error) {
@@ -44,10 +61,11 @@ router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
     }
 });
 
-// Update payment plan
-router.patch('/:id', async (req: Request, res: Response, next: NextFunction) => {
+// Update payment plan (admin only)
+router.patch('/:id', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = UpdatePaymentPlanSchema.parse(req.body);
+        const paymentPlanService = getPaymentPlanService(req);
         const plan = await paymentPlanService.update(req.params.id, data);
         res.json(successResponse(plan));
     } catch (error) {
@@ -59,9 +77,10 @@ router.patch('/:id', async (req: Request, res: Response, next: NextFunction) => 
     }
 });
 
-// Delete payment plan
-router.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
+// Delete payment plan (admin only)
+router.delete('/:id', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const paymentPlanService = getPaymentPlanService(req);
         const result = await paymentPlanService.delete(req.params.id);
         res.json(successResponse(result));
     } catch (error) {
@@ -69,14 +88,15 @@ router.delete('/:id', async (req: Request, res: Response, next: NextFunction) =>
     }
 });
 
-// Clone payment plan
-router.post('/:id/clone', async (req: Request, res: Response, next: NextFunction) => {
+// Clone payment plan (admin only)
+router.post('/:id/clone', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { name } = req.body;
         if (!name) {
             res.status(400).json({ success: false, error: 'name is required for cloning' });
             return;
         }
+        const paymentPlanService = getPaymentPlanService(req);
         const plan = await paymentPlanService.clone(req.params.id, name);
         res.status(201).json(successResponse(plan));
     } catch (error) {

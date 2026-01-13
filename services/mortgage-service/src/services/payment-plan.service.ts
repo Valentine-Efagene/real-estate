@@ -1,9 +1,29 @@
-import { prisma } from '../lib/prisma';
-import { AppError } from '@valentine-efagene/qshelter-common';
+import { prisma as defaultPrisma } from '../lib/prisma';
+import { AppError, PrismaClient } from '@valentine-efagene/qshelter-common';
 import type { CreatePaymentPlanInput, UpdatePaymentPlanInput } from '../validators/payment-plan.validator';
 
-class PaymentPlanService {
-    async create(tenantId: string, data: CreatePaymentPlanInput) {
+type AnyPrismaClient = PrismaClient;
+
+/**
+ * PaymentPlanService interface
+ */
+export interface PaymentPlanService {
+    create(tenantId: string, data: CreatePaymentPlanInput): Promise<any>;
+    findAll(filters?: { isActive?: boolean }): Promise<any[]>;
+    findById(id: string): Promise<any>;
+    findByName(tenantId: string | null, name: string): Promise<any>;
+    update(id: string, data: UpdatePaymentPlanInput): Promise<any>;
+    delete(id: string): Promise<{ success: boolean }>;
+    clone(id: string, newName: string): Promise<any>;
+    getIntervalDays(plan: { paymentFrequency: string; customFrequencyDays: number | null }): number;
+}
+
+/**
+ * Create a payment plan service with the given Prisma client.
+ * Use this for tenant-scoped operations.
+ */
+export function createPaymentPlanService(prisma: AnyPrismaClient = defaultPrisma): PaymentPlanService {
+    async function create(tenantId: string, data: CreatePaymentPlanInput) {
         // Validate custom frequency
         if (data.paymentFrequency === 'CUSTOM' && !data.customFrequencyDays) {
             throw new AppError(400, 'customFrequencyDays is required for CUSTOM frequency');
@@ -26,7 +46,7 @@ class PaymentPlanService {
         return plan;
     }
 
-    async findAll(filters?: { isActive?: boolean }) {
+    async function findAll(filters?: { isActive?: boolean }) {
         const plans = await prisma.paymentPlan.findMany({
             where: filters,
             orderBy: { name: 'asc' },
@@ -34,7 +54,7 @@ class PaymentPlanService {
         return plans;
     }
 
-    async findById(id: string) {
+    async function findById(id: string) {
         const plan = await prisma.paymentPlan.findUnique({
             where: { id },
         });
@@ -46,7 +66,7 @@ class PaymentPlanService {
         return plan;
     }
 
-    async findByName(tenantId: string | null, name: string) {
+    async function findByName(tenantId: string | null, name: string) {
         // For global plans (tenantId is null), search by name only
         // For tenant-specific plans, search by tenantId + name compound key
         if (!tenantId) {
@@ -63,8 +83,8 @@ class PaymentPlanService {
         return plan;
     }
 
-    async update(id: string, data: UpdatePaymentPlanInput) {
-        const existing = await this.findById(id);
+    async function update(id: string, data: UpdatePaymentPlanInput) {
+        const existing = await findById(id);
 
         // Validate custom frequency
         const frequency = data.paymentFrequency ?? existing.paymentFrequency;
@@ -81,8 +101,8 @@ class PaymentPlanService {
         return updated;
     }
 
-    async delete(id: string) {
-        await this.findById(id);
+    async function deleteById(id: string) {
+        await findById(id);
 
         // Check if plan is in use
         const usageCount = await prisma.propertyPaymentMethodPhase.count({
@@ -100,8 +120,8 @@ class PaymentPlanService {
         return { success: true };
     }
 
-    async clone(id: string, newName: string) {
-        const source = await this.findById(id);
+    async function clone(id: string, newName: string) {
+        const source = await findById(id);
 
         const cloned = await prisma.paymentPlan.create({
             data: {
@@ -122,7 +142,7 @@ class PaymentPlanService {
     /**
      * Calculate the interval in days between installments based on frequency
      */
-    getIntervalDays(plan: { paymentFrequency: string; customFrequencyDays: number | null }): number {
+    function getIntervalDays(plan: { paymentFrequency: string; customFrequencyDays: number | null }): number {
         switch (plan.paymentFrequency) {
             case 'MONTHLY':
                 return 30;
@@ -138,6 +158,17 @@ class PaymentPlanService {
                 return 30;
         }
     }
+
+    return {
+        create,
+        findAll,
+        findById,
+        findByName,
+        update,
+        delete: deleteById,
+        clone,
+        getIntervalDays,
+    };
 }
 
-export const paymentPlanService = new PaymentPlanService();
+export const paymentPlanService: PaymentPlanService = createPaymentPlanService();

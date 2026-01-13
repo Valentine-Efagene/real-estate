@@ -1,5 +1,5 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import { paymentMethodService } from '../services/payment-method.service';
+import { createPaymentMethodService } from '../services/payment-method.service';
 import {
     CreatePaymentMethodSchema,
     UpdatePaymentMethodSchema,
@@ -19,16 +19,31 @@ import {
     BulkDocumentRulesSchema,
 } from '../validators/payment-method.validator';
 import { z } from 'zod';
-import { getAuthContext, successResponse } from '@valentine-efagene/qshelter-common';
+import {
+    getAuthContext,
+    successResponse,
+    requireTenant,
+    requireRole,
+    ADMIN_ROLES,
+} from '@valentine-efagene/qshelter-common';
 import { prisma } from '../lib/prisma';
+import { getTenantPrisma } from '../lib/tenant-services';
 
 const router = Router();
 
-// Create payment method
-router.post('/', async (req: Request, res: Response, next: NextFunction) => {
+/**
+ * Helper to get tenant-scoped payment method service from request
+ */
+function getPaymentMethodService(req: Request) {
+    return createPaymentMethodService(getTenantPrisma(req));
+}
+
+// Create payment method (admin only)
+router.post('/', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { tenantId } = getAuthContext(req);
         const data = CreatePaymentMethodSchema.parse(req.body);
+        const paymentMethodService = getPaymentMethodService(req);
         const method = await paymentMethodService.create(tenantId, data);
         res.status(201).json(successResponse(method));
     } catch (error: any) {
@@ -41,10 +56,11 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
     }
 });
 
-// Get all payment methods
-router.get('/', async (req: Request, res: Response, next: NextFunction) => {
+// Get all payment methods (public - customers need to see available methods)
+router.get('/', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const isActive = req.query.isActive === 'true' ? true : req.query.isActive === 'false' ? false : undefined;
+        const paymentMethodService = getPaymentMethodService(req);
         const methods = await paymentMethodService.findAll({ isActive });
         res.json(successResponse(methods));
     } catch (error) {
@@ -53,8 +69,9 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
 });
 
 // Get payment method by ID
-router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/:id', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const paymentMethodService = getPaymentMethodService(req);
         const method = await paymentMethodService.findById(req.params.id);
         res.json(successResponse(method));
     } catch (error) {
@@ -62,10 +79,11 @@ router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
     }
 });
 
-// Update payment method
-router.patch('/:id', async (req: Request, res: Response, next: NextFunction) => {
+// Update payment method (admin only)
+router.patch('/:id', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = UpdatePaymentMethodSchema.parse(req.body);
+        const paymentMethodService = getPaymentMethodService(req);
         const method = await paymentMethodService.update(req.params.id, data);
         res.json(successResponse(method));
     } catch (error) {
@@ -77,9 +95,10 @@ router.patch('/:id', async (req: Request, res: Response, next: NextFunction) => 
     }
 });
 
-// Delete payment method
-router.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
+// Delete payment method (admin only)
+router.delete('/:id', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const paymentMethodService = getPaymentMethodService(req);
         const result = await paymentMethodService.delete(req.params.id);
         res.json(successResponse(result));
     } catch (error) {
@@ -87,10 +106,11 @@ router.delete('/:id', async (req: Request, res: Response, next: NextFunction) =>
     }
 });
 
-// Add phase to payment method
-router.post('/:id/phases', async (req: Request, res: Response, next: NextFunction) => {
+// Add phase to payment method (admin only)
+router.post('/:id/phases', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = AddPhaseSchema.parse(req.body);
+        const paymentMethodService = getPaymentMethodService(req);
         const phase = await paymentMethodService.addPhase(req.params.id, data);
         res.status(201).json(successResponse(phase));
     } catch (error) {
@@ -102,10 +122,11 @@ router.post('/:id/phases', async (req: Request, res: Response, next: NextFunctio
     }
 });
 
-// Update phase
-router.patch('/:id/phases/:phaseId', async (req: Request, res: Response, next: NextFunction) => {
+// Update phase (admin only)
+router.patch('/:id/phases/:phaseId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = PartialPhaseSchema.parse(req.body);
+        const paymentMethodService = getPaymentMethodService(req);
         const phase = await paymentMethodService.updatePhase(req.params.phaseId, data);
         res.json(successResponse(phase));
     } catch (error) {
@@ -117,9 +138,10 @@ router.patch('/:id/phases/:phaseId', async (req: Request, res: Response, next: N
     }
 });
 
-// Delete phase
-router.delete('/:id/phases/:phaseId', async (req: Request, res: Response, next: NextFunction) => {
+// Delete phase (admin only)
+router.delete('/:id/phases/:phaseId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const paymentMethodService = getPaymentMethodService(req);
         const result = await paymentMethodService.deletePhase(req.params.phaseId);
         res.json(successResponse(result));
     } catch (error) {
@@ -127,14 +149,15 @@ router.delete('/:id/phases/:phaseId', async (req: Request, res: Response, next: 
     }
 });
 
-// Reorder phases
-router.post('/:id/phases/reorder', async (req: Request, res: Response, next: NextFunction) => {
+// Reorder phases (admin only)
+router.post('/:id/phases/reorder', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { phaseOrders } = req.body;
         if (!Array.isArray(phaseOrders)) {
             res.status(400).json({ success: false, error: 'phaseOrders array is required' });
             return;
         }
+        const paymentMethodService = getPaymentMethodService(req);
         const method = await paymentMethodService.reorderPhases(req.params.id, phaseOrders);
         res.json(successResponse(method));
     } catch (error) {
@@ -146,11 +169,12 @@ router.post('/:id/phases/reorder', async (req: Request, res: Response, next: Nex
 // Clone Template
 // ============================================================
 
-// Clone a payment method (duplicate template)
-router.post('/:id/clone', async (req: Request, res: Response, next: NextFunction) => {
+// Clone a payment method (admin only)
+router.post('/:id/clone', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { tenantId } = getAuthContext(req);
         const data = ClonePaymentMethodSchema.parse(req.body);
+        const paymentMethodService = getPaymentMethodService(req);
         const cloned = await paymentMethodService.clone(req.params.id, tenantId, data);
         res.status(201).json(successResponse(cloned));
     } catch (error) {
@@ -163,13 +187,14 @@ router.post('/:id/clone', async (req: Request, res: Response, next: NextFunction
 });
 
 // ============================================================
-// Step CRUD within a Phase
+// Step CRUD within a Phase (admin only)
 // ============================================================
 
-// Add step to phase
-router.post('/:id/phases/:phaseId/steps', async (req: Request, res: Response, next: NextFunction) => {
+// Add step to phase (admin only)
+router.post('/:id/phases/:phaseId/steps', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = AddStepSchema.parse(req.body);
+        const paymentMethodService = getPaymentMethodService(req);
         const step = await paymentMethodService.addStep(req.params.phaseId, data);
         res.status(201).json(successResponse(step));
     } catch (error) {
@@ -181,10 +206,11 @@ router.post('/:id/phases/:phaseId/steps', async (req: Request, res: Response, ne
     }
 });
 
-// Update step
-router.patch('/:id/phases/:phaseId/steps/:stepId', async (req: Request, res: Response, next: NextFunction) => {
+// Update step (admin only)
+router.patch('/:id/phases/:phaseId/steps/:stepId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = UpdateStepSchema.parse(req.body);
+        const paymentMethodService = getPaymentMethodService(req);
         const step = await paymentMethodService.updateStep(req.params.stepId, data);
         res.json(successResponse(step));
     } catch (error) {
@@ -196,9 +222,10 @@ router.patch('/:id/phases/:phaseId/steps/:stepId', async (req: Request, res: Res
     }
 });
 
-// Delete step
-router.delete('/:id/phases/:phaseId/steps/:stepId', async (req: Request, res: Response, next: NextFunction) => {
+// Delete step (admin only)
+router.delete('/:id/phases/:phaseId/steps/:stepId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const paymentMethodService = getPaymentMethodService(req);
         const result = await paymentMethodService.deleteStep(req.params.stepId);
         res.json(successResponse(result));
     } catch (error) {
@@ -206,10 +233,11 @@ router.delete('/:id/phases/:phaseId/steps/:stepId', async (req: Request, res: Re
     }
 });
 
-// Reorder steps within a phase
-router.post('/:id/phases/:phaseId/steps/reorder', async (req: Request, res: Response, next: NextFunction) => {
+// Reorder steps within a phase (admin only)
+router.post('/:id/phases/:phaseId/steps/reorder', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = ReorderStepsSchema.parse(req.body);
+        const paymentMethodService = getPaymentMethodService(req);
         const steps = await paymentMethodService.reorderSteps(req.params.phaseId, data.stepOrders);
         res.json(successResponse(steps));
     } catch (error) {
@@ -222,13 +250,14 @@ router.post('/:id/phases/:phaseId/steps/reorder', async (req: Request, res: Resp
 });
 
 // ============================================================
-// Document Requirement CRUD within a Phase
+// Document Requirement CRUD within a Phase (admin only)
 // ============================================================
 
-// Add document requirement to phase
-router.post('/:id/phases/:phaseId/documents', async (req: Request, res: Response, next: NextFunction) => {
+// Add document requirement to phase (admin only)
+router.post('/:id/phases/:phaseId/documents', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = AddDocumentRequirementSchema.parse(req.body);
+        const paymentMethodService = getPaymentMethodService(req);
         const doc = await paymentMethodService.addDocumentRequirement(req.params.phaseId, data);
         res.status(201).json(successResponse(doc));
     } catch (error) {
@@ -240,10 +269,11 @@ router.post('/:id/phases/:phaseId/documents', async (req: Request, res: Response
     }
 });
 
-// Update document requirement
-router.patch('/:id/phases/:phaseId/documents/:documentId', async (req: Request, res: Response, next: NextFunction) => {
+// Update document requirement (admin only)
+router.patch('/:id/phases/:phaseId/documents/:documentId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = UpdateDocumentRequirementSchema.parse(req.body);
+        const paymentMethodService = getPaymentMethodService(req);
         const doc = await paymentMethodService.updateDocumentRequirement(req.params.documentId, data);
         res.json(successResponse(doc));
     } catch (error) {
@@ -255,9 +285,10 @@ router.patch('/:id/phases/:phaseId/documents/:documentId', async (req: Request, 
     }
 });
 
-// Delete document requirement
-router.delete('/:id/phases/:phaseId/documents/:documentId', async (req: Request, res: Response, next: NextFunction) => {
+// Delete document requirement (admin only)
+router.delete('/:id/phases/:phaseId/documents/:documentId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const paymentMethodService = getPaymentMethodService(req);
         const result = await paymentMethodService.deleteDocumentRequirement(req.params.documentId);
         res.json(successResponse(result));
     } catch (error) {
@@ -265,10 +296,11 @@ router.delete('/:id/phases/:phaseId/documents/:documentId', async (req: Request,
     }
 });
 
-// Link to property
-router.post('/:id/properties', async (req: Request, res: Response, next: NextFunction) => {
+// Link to property (admin only)
+router.post('/:id/properties', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = LinkToPropertySchema.parse(req.body);
+        const paymentMethodService = getPaymentMethodService(req);
         const link = await paymentMethodService.linkToProperty(req.params.id, data);
         res.status(201).json(successResponse(link));
     } catch (error) {
@@ -280,9 +312,10 @@ router.post('/:id/properties', async (req: Request, res: Response, next: NextFun
     }
 });
 
-// Unlink from property
-router.delete('/:id/properties/:propertyId', async (req: Request, res: Response, next: NextFunction) => {
+// Unlink from property (admin only)
+router.delete('/:id/properties/:propertyId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const paymentMethodService = getPaymentMethodService(req);
         const result = await paymentMethodService.unlinkFromProperty(req.params.id, req.params.propertyId);
         res.json(successResponse(result));
     } catch (error) {
@@ -290,9 +323,10 @@ router.delete('/:id/properties/:propertyId', async (req: Request, res: Response,
     }
 });
 
-// Get payment methods for a property
-router.get('/property/:propertyId', async (req: Request, res: Response, next: NextFunction) => {
+// Get payment methods for a property (public)
+router.get('/property/:propertyId', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const paymentMethodService = getPaymentMethodService(req);
         const methods = await paymentMethodService.getMethodsForProperty(req.params.propertyId);
         res.json(successResponse(methods));
     } catch (error) {
@@ -301,13 +335,14 @@ router.get('/property/:propertyId', async (req: Request, res: Response, next: Ne
 });
 
 // ============================================================
-// Phase Event Attachment CRUD
+// Phase Event Attachment CRUD (admin only)
 // ============================================================
 
-// Add event attachment to phase
-router.post('/:id/phases/:phaseId/event-attachments', async (req: Request, res: Response, next: NextFunction) => {
+// Add event attachment to phase (admin only)
+router.post('/:id/phases/:phaseId/event-attachments', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = AddPhaseEventAttachmentSchema.parse(req.body);
+        const paymentMethodService = getPaymentMethodService(req);
         const attachment = await paymentMethodService.addPhaseEventAttachment(req.params.phaseId, data);
         res.status(201).json(successResponse(attachment));
     } catch (error) {
@@ -320,8 +355,9 @@ router.post('/:id/phases/:phaseId/event-attachments', async (req: Request, res: 
 });
 
 // Get event attachments for a phase
-router.get('/:id/phases/:phaseId/event-attachments', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/:id/phases/:phaseId/event-attachments', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const paymentMethodService = getPaymentMethodService(req);
         const attachments = await paymentMethodService.getPhaseEventAttachments(req.params.phaseId);
         res.json(successResponse(attachments));
     } catch (error) {
@@ -329,10 +365,11 @@ router.get('/:id/phases/:phaseId/event-attachments', async (req: Request, res: R
     }
 });
 
-// Update phase event attachment
-router.patch('/phase-event-attachments/:attachmentId', async (req: Request, res: Response, next: NextFunction) => {
+// Update phase event attachment (admin only)
+router.patch('/phase-event-attachments/:attachmentId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = UpdatePhaseEventAttachmentSchema.parse(req.body);
+        const paymentMethodService = getPaymentMethodService(req);
         const attachment = await paymentMethodService.updatePhaseEventAttachment(req.params.attachmentId, data);
         res.json(successResponse(attachment));
     } catch (error) {
@@ -344,9 +381,10 @@ router.patch('/phase-event-attachments/:attachmentId', async (req: Request, res:
     }
 });
 
-// Delete phase event attachment
-router.delete('/phase-event-attachments/:attachmentId', async (req: Request, res: Response, next: NextFunction) => {
+// Delete phase event attachment (admin only)
+router.delete('/phase-event-attachments/:attachmentId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const paymentMethodService = getPaymentMethodService(req);
         const result = await paymentMethodService.deletePhaseEventAttachment(req.params.attachmentId);
         res.json(successResponse(result));
     } catch (error) {
@@ -355,13 +393,14 @@ router.delete('/phase-event-attachments/:attachmentId', async (req: Request, res
 });
 
 // ============================================================
-// Step Event Attachment CRUD
+// Step Event Attachment CRUD (admin only)
 // ============================================================
 
-// Add event attachment to step
-router.post('/:id/phases/:phaseId/steps/:stepId/event-attachments', async (req: Request, res: Response, next: NextFunction) => {
+// Add event attachment to step (admin only)
+router.post('/:id/phases/:phaseId/steps/:stepId/event-attachments', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = AddStepEventAttachmentSchema.parse(req.body);
+        const paymentMethodService = getPaymentMethodService(req);
         const attachment = await paymentMethodService.addStepEventAttachment(req.params.stepId, data);
         res.status(201).json(successResponse(attachment));
     } catch (error) {
@@ -374,8 +413,9 @@ router.post('/:id/phases/:phaseId/steps/:stepId/event-attachments', async (req: 
 });
 
 // Get event attachments for a step
-router.get('/:id/phases/:phaseId/steps/:stepId/event-attachments', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/:id/phases/:phaseId/steps/:stepId/event-attachments', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const paymentMethodService = getPaymentMethodService(req);
         const attachments = await paymentMethodService.getStepEventAttachments(req.params.stepId);
         res.json(successResponse(attachments));
     } catch (error) {
@@ -383,10 +423,11 @@ router.get('/:id/phases/:phaseId/steps/:stepId/event-attachments', async (req: R
     }
 });
 
-// Update step event attachment
-router.patch('/step-event-attachments/:attachmentId', async (req: Request, res: Response, next: NextFunction) => {
+// Update step event attachment (admin only)
+router.patch('/step-event-attachments/:attachmentId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = UpdateStepEventAttachmentSchema.parse(req.body);
+        const paymentMethodService = getPaymentMethodService(req);
         const attachment = await paymentMethodService.updateStepEventAttachment(req.params.attachmentId, data);
         res.json(successResponse(attachment));
     } catch (error) {
@@ -398,9 +439,10 @@ router.patch('/step-event-attachments/:attachmentId', async (req: Request, res: 
     }
 });
 
-// Delete step event attachment
-router.delete('/step-event-attachments/:attachmentId', async (req: Request, res: Response, next: NextFunction) => {
+// Delete step event attachment (admin only)
+router.delete('/step-event-attachments/:attachmentId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const paymentMethodService = getPaymentMethodService(req);
         const result = await paymentMethodService.deleteStepEventAttachment(req.params.attachmentId);
         res.json(successResponse(result));
     } catch (error) {
@@ -409,19 +451,22 @@ router.delete('/step-event-attachments/:attachmentId', async (req: Request, res:
 });
 
 // ============================================================
-// Document Requirement Rules (Bulk Operations)
+// Document Requirement Rules (Bulk Operations) - admin only
 // ============================================================
 
-// Create document requirement rules for a payment method
-router.post('/:id/document-rules', async (req: Request, res: Response, next: NextFunction) => {
+// Create document requirement rules for a payment method (admin only)
+router.post('/:id/document-rules', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { tenantId } = getAuthContext(req);
         const paymentMethodId = req.params.id;
         const data = BulkDocumentRulesSchema.parse(req.body);
 
-        // Verify payment method exists and belongs to tenant
-        const paymentMethod = await prisma.propertyPaymentMethod.findFirst({
-            where: { id: paymentMethodId, tenantId },
+        // The tenant-scoped prisma will automatically filter by tenant
+        const tenantPrisma = getTenantPrisma(req);
+
+        // Verify payment method exists (tenant scoping handled by wrapper)
+        const paymentMethod = await tenantPrisma.propertyPaymentMethod.findUnique({
+            where: { id: paymentMethodId },
         });
 
         if (!paymentMethod) {
@@ -464,15 +509,16 @@ router.post('/:id/document-rules', async (req: Request, res: Response, next: Nex
 });
 
 // Get document requirement rules for a payment method
-router.get('/:id/document-rules', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/:id/document-rules', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { tenantId } = getAuthContext(req);
         const paymentMethodId = req.params.id;
         const phaseType = req.query.phaseType as string | undefined;
 
-        // Verify payment method exists and belongs to tenant
-        const paymentMethod = await prisma.propertyPaymentMethod.findFirst({
-            where: { id: paymentMethodId, tenantId },
+        const tenantPrisma = getTenantPrisma(req);
+
+        // Verify payment method exists (tenant scoping handled by wrapper)
+        const paymentMethod = await tenantPrisma.propertyPaymentMethod.findUnique({
+            where: { id: paymentMethodId },
         });
 
         if (!paymentMethod) {
@@ -480,17 +526,16 @@ router.get('/:id/document-rules', async (req: Request, res: Response, next: Next
             return;
         }
 
-        const rules = await prisma.documentRequirementRule.findMany({
+        const rules = await tenantPrisma.documentRequirementRule.findMany({
             where: {
                 paymentMethodId,
-                tenantId,
                 ...(phaseType ? { phaseType } : {}),
             },
             orderBy: [{ phaseType: 'asc' }, { documentType: 'asc' }],
         });
 
         // Transform allowedMimeTypes back to array
-        const transformedRules = rules.map((rule) => ({
+        const transformedRules = rules.map((rule: any) => ({
             ...rule,
             allowedMimeTypes: rule.allowedMimeTypes ? rule.allowedMimeTypes.split(',') : [],
         }));
@@ -501,15 +546,16 @@ router.get('/:id/document-rules', async (req: Request, res: Response, next: Next
     }
 });
 
-// Delete a document requirement rule
-router.delete('/:id/document-rules/:ruleId', async (req: Request, res: Response, next: NextFunction) => {
+// Delete a document requirement rule (admin only)
+router.delete('/:id/document-rules/:ruleId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { tenantId } = getAuthContext(req);
         const { ruleId } = req.params;
 
-        // Verify rule exists and belongs to tenant
-        const rule = await prisma.documentRequirementRule.findFirst({
-            where: { id: ruleId, tenantId },
+        const tenantPrisma = getTenantPrisma(req);
+
+        // Verify rule exists (tenant scoping handled by wrapper)
+        const rule = await tenantPrisma.documentRequirementRule.findUnique({
+            where: { id: ruleId },
         });
 
         if (!rule) {
@@ -517,7 +563,7 @@ router.delete('/:id/document-rules/:ruleId', async (req: Request, res: Response,
             return;
         }
 
-        await prisma.documentRequirementRule.delete({
+        await tenantPrisma.documentRequirementRule.delete({
             where: { id: ruleId },
         });
 

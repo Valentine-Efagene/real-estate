@@ -1,8 +1,16 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import { applicationService } from '../services/application.service';
+import { createApplicationService } from '../services/application.service';
 import { applicationPhaseService } from '../services/application-phase.service';
 import { applicationPaymentService } from '../services/application-payment.service';
-import { ApplicationStatus, successResponse } from '@valentine-efagene/qshelter-common';
+import {
+    ApplicationStatus,
+    successResponse,
+    getAuthContext,
+    requireTenant,
+    requireRole,
+    isAdmin,
+    ADMIN_ROLES,
+} from '@valentine-efagene/qshelter-common';
 import {
     CreateApplicationSchema,
     UpdateApplicationSchema,
@@ -21,21 +29,59 @@ import {
     RefundPaymentSchema,
 } from '../validators/application-payment.validator';
 import { z } from 'zod';
-import { getAuthContext } from '@valentine-efagene/qshelter-common';
+import { getTenantPrisma } from '../lib/tenant-services';
+import { AppError } from '@valentine-efagene/qshelter-common';
 
 const router = Router();
+
+/**
+ * Helper to get tenant-scoped application service from request
+ */
+function getApplicationService(req: Request) {
+    return createApplicationService(getTenantPrisma(req));
+}
+
+/**
+ * Middleware to verify user can access an application.
+ * Admins can access any application in their tenant.
+ * Customers can only access their own applications.
+ */
+async function canAccessApplication(req: Request, res: Response, next: NextFunction) {
+    try {
+        const { userId, roles } = getAuthContext(req);
+        const applicationId = req.params.id;
+
+        // Admins can access any application
+        if (isAdmin(roles)) {
+            return next();
+        }
+
+        // For customers, check ownership
+        const applicationService = getApplicationService(req);
+        const application = await applicationService.findById(applicationId);
+
+        if (application.buyerId !== userId) {
+            throw new AppError(403, 'You do not have permission to access this application');
+        }
+
+        next();
+    } catch (error) {
+        next(error);
+    }
+}
 
 // ============================================================================
 // APPLICATION ROUTES
 // ============================================================================
 
 // Create application from payment method
-router.post('/', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { tenantId, userId } = getAuthContext(req);
         const data = CreateApplicationSchema.parse(req.body);
         // Use userId from header as buyerId if not provided in body
         const applicationData = { ...data, tenantId, buyerId: data.buyerId || userId };
+        const applicationService = getApplicationService(req);
         const application = await applicationService.create(applicationData);
         res.status(201).json(successResponse(application));
     } catch (error: any) {
@@ -50,14 +96,27 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
 });
 
 // Get all applications
-router.get('/', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { buyerId, propertyUnitId, status } = req.query;
-        const applications = await applicationService.findAll({
-            buyerId: buyerId as string,
+        const { userId, roles } = getAuthContext(req);
+        const applicationService = getApplicationService(req);
+
+        // Non-admins can only see their own applications
+        const filters: any = {
             propertyUnitId: propertyUnitId as string,
             status: status as ApplicationStatus | undefined,
-        });
+        };
+
+        if (isAdmin(roles)) {
+            // Admins can filter by any buyerId
+            filters.buyerId = buyerId as string;
+        } else {
+            // Customers can only see their own
+            filters.buyerId = userId;
+        }
+
+        const applications = await applicationService.findAll(filters);
         res.json(successResponse(applications));
     } catch (error) {
         next(error);
@@ -65,8 +124,9 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
 });
 
 // Get application by ID
-router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/:id', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const applicationService = getApplicationService(req);
         const application = await applicationService.findById(req.params.id);
         res.json(successResponse(application));
     } catch (error) {
@@ -76,8 +136,9 @@ router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
 
 // Get current action required for an application
 // This is the canonical endpoint for the app to know what to show the user
-router.get('/:id/current-action', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/:id/current-action', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const applicationService = getApplicationService(req);
         const result = await applicationService.getCurrentAction(req.params.id);
         res.json(successResponse(result));
     } catch (error) {
@@ -86,9 +147,17 @@ router.get('/:id/current-action', async (req: Request, res: Response, next: Next
 });
 
 // Get application by application number
-router.get('/number/:applicationNumber', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/number/:applicationNumber', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const applicationService = getApplicationService(req);
         const application = await applicationService.findByApplicationNumber(req.params.applicationNumber);
+
+        // Check access - admins can access any, customers only their own
+        const { userId, roles } = getAuthContext(req);
+        if (!isAdmin(roles) && application.buyerId !== userId) {
+            throw new AppError(403, 'You do not have permission to access this application');
+        }
+
         res.json(successResponse(application));
     } catch (error) {
         next(error);
@@ -96,10 +165,11 @@ router.get('/number/:applicationNumber', async (req: Request, res: Response, nex
 });
 
 // Update application
-router.patch('/:id', async (req: Request, res: Response, next: NextFunction) => {
+router.patch('/:id', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = UpdateApplicationSchema.parse(req.body);
         const { userId } = getAuthContext(req);
+        const applicationService = getApplicationService(req);
         const application = await applicationService.update(req.params.id, data, userId);
         res.json(successResponse(application));
     } catch (error) {
@@ -112,10 +182,11 @@ router.patch('/:id', async (req: Request, res: Response, next: NextFunction) => 
 });
 
 // Transition application state
-router.post('/:id/transition', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/:id/transition', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = TransitionApplicationSchema.parse(req.body);
         const { userId } = getAuthContext(req);
+        const applicationService = getApplicationService(req);
         const application = await applicationService.transition(req.params.id, data, userId);
         res.json(successResponse(application));
     } catch (error) {
@@ -128,9 +199,10 @@ router.post('/:id/transition', async (req: Request, res: Response, next: NextFun
 });
 
 // Sign application
-router.post('/:id/sign', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/:id/sign', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { userId } = getAuthContext(req);
+        const applicationService = getApplicationService(req);
         const application = await applicationService.sign(req.params.id, userId);
         res.json(successResponse(application));
     } catch (error) {
@@ -139,10 +211,11 @@ router.post('/:id/sign', async (req: Request, res: Response, next: NextFunction)
 });
 
 // Cancel application
-router.post('/:id/cancel', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/:id/cancel', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { userId } = getAuthContext(req);
         const { reason } = req.body;
+        const applicationService = getApplicationService(req);
         const application = await applicationService.cancel(req.params.id, userId, reason);
         res.json(successResponse(application));
     } catch (error) {
@@ -151,9 +224,10 @@ router.post('/:id/cancel', async (req: Request, res: Response, next: NextFunctio
 });
 
 // Delete application (draft only)
-router.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
+router.delete('/:id', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { userId } = getAuthContext(req);
+        const applicationService = getApplicationService(req);
         const result = await applicationService.delete(req.params.id, userId);
         res.json(successResponse(result));
     } catch (error) {
@@ -166,7 +240,7 @@ router.delete('/:id', async (req: Request, res: Response, next: NextFunction) =>
 // ============================================================================
 
 // Get phases for an application
-router.get('/:id/phases', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/:id/phases', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const phases = await applicationPhaseService.getPhasesByApplication(req.params.id);
         // Flatten payment phase fields for backwards compatibility
@@ -191,7 +265,7 @@ router.get('/:id/phases', async (req: Request, res: Response, next: NextFunction
 });
 
 // Get phase by ID
-router.get('/:id/phases/:phaseId', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/:id/phases/:phaseId', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const phase = await applicationPhaseService.findById(req.params.phaseId);
         // Flatten polymorphic fields for backwards compatibility
@@ -213,7 +287,7 @@ router.get('/:id/phases/:phaseId', async (req: Request, res: Response, next: Nex
 });
 
 // Activate phase
-router.post('/:id/phases/:phaseId/activate', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/:id/phases/:phaseId/activate', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = ActivatePhaseSchema.parse(req.body);
         const { userId } = getAuthContext(req);
@@ -229,7 +303,7 @@ router.post('/:id/phases/:phaseId/activate', async (req: Request, res: Response,
 });
 
 // Generate installments for phase
-router.post('/:id/phases/:phaseId/installments', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/:id/phases/:phaseId/installments', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = GenerateInstallmentsSchema.parse(req.body);
         const { userId } = getAuthContext(req);
@@ -255,7 +329,7 @@ router.post('/:id/phases/:phaseId/installments', async (req: Request, res: Respo
 });
 
 // Complete a step in a documentation phase
-router.post('/:id/phases/:phaseId/steps/complete', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/:id/phases/:phaseId/steps/complete', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = CompleteStepSchema.parse(req.body);
         const { userId } = getAuthContext(req);
@@ -271,7 +345,7 @@ router.post('/:id/phases/:phaseId/steps/complete', async (req: Request, res: Res
 });
 
 // Reject a step in a documentation phase (admin action)
-router.post('/:id/phases/:phaseId/steps/:stepId/reject', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/:id/phases/:phaseId/steps/:stepId/reject', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { reason } = req.body;
         if (!reason) {
@@ -287,7 +361,7 @@ router.post('/:id/phases/:phaseId/steps/:stepId/reject', async (req: Request, re
 });
 
 // Request changes on a step (admin action)
-router.post('/:id/phases/:phaseId/steps/:stepId/request-changes', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/:id/phases/:phaseId/steps/:stepId/request-changes', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { reason } = req.body;
         if (!reason) {
@@ -303,7 +377,7 @@ router.post('/:id/phases/:phaseId/steps/:stepId/request-changes', async (req: Re
 });
 
 // Get documents for a phase
-router.get('/:id/phases/:phaseId/documents', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/:id/phases/:phaseId/documents', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const documents = await applicationPhaseService.getDocumentsByPhase(req.params.phaseId);
         res.json(successResponse(documents));
@@ -313,7 +387,7 @@ router.get('/:id/phases/:phaseId/documents', async (req: Request, res: Response,
 });
 
 // Get installments for a phase
-router.get('/:id/phases/:phaseId/installments', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/:id/phases/:phaseId/installments', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const status = req.query.status as string | undefined;
         const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : undefined;
@@ -325,7 +399,7 @@ router.get('/:id/phases/:phaseId/installments', async (req: Request, res: Respon
 });
 
 // Upload document for phase
-router.post('/:id/phases/:phaseId/documents', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/:id/phases/:phaseId/documents', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = UploadDocumentSchema.parse(req.body);
         const { userId } = getAuthContext(req);
@@ -340,8 +414,8 @@ router.post('/:id/phases/:phaseId/documents', async (req: Request, res: Response
     }
 });
 
-// Review/approve a document
-router.post('/:id/documents/:documentId/review', async (req: Request, res: Response, next: NextFunction) => {
+// Review/approve a document (admin only)
+router.post('/:id/documents/:documentId/review', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = ApproveDocumentSchema.parse(req.body);
         const { userId } = getAuthContext(req);
@@ -357,7 +431,7 @@ router.post('/:id/documents/:documentId/review', async (req: Request, res: Respo
 });
 
 // Complete phase
-router.post('/:id/phases/:phaseId/complete', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/:id/phases/:phaseId/complete', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { userId } = getAuthContext(req);
         const phase = await applicationPhaseService.complete(req.params.phaseId, userId);
@@ -367,8 +441,8 @@ router.post('/:id/phases/:phaseId/complete', async (req: Request, res: Response,
     }
 });
 
-// Skip phase (admin)
-router.post('/:id/phases/:phaseId/skip', async (req: Request, res: Response, next: NextFunction) => {
+// Skip phase (admin only)
+router.post('/:id/phases/:phaseId/skip', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { userId } = getAuthContext(req);
         const { reason } = req.body;
@@ -384,7 +458,7 @@ router.post('/:id/phases/:phaseId/skip', async (req: Request, res: Response, nex
 // ============================================================================
 
 // Create payment
-router.post('/:id/payments', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/:id/payments', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = CreatePaymentSchema.parse({
             ...req.body,
@@ -403,7 +477,7 @@ router.post('/:id/payments', async (req: Request, res: Response, next: NextFunct
 });
 
 // Get payments for application
-router.get('/:id/payments', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/:id/payments', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const payments = await applicationPaymentService.findByApplication(req.params.id);
         res.json(successResponse(payments));
@@ -413,7 +487,7 @@ router.get('/:id/payments', async (req: Request, res: Response, next: NextFuncti
 });
 
 // Get payment by ID
-router.get('/:id/payments/:paymentId', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/:id/payments/:paymentId', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const payment = await applicationPaymentService.findById(req.params.paymentId);
         res.json(successResponse(payment));
@@ -423,7 +497,7 @@ router.get('/:id/payments/:paymentId', async (req: Request, res: Response, next:
 });
 
 // Process payment (webhook callback)
-router.post('/payments/process', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/payments/process', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = ProcessPaymentSchema.parse(req.body);
         const payment = await applicationPaymentService.process(data);
@@ -437,8 +511,8 @@ router.post('/payments/process', async (req: Request, res: Response, next: NextF
     }
 });
 
-// Refund payment
-router.post('/:id/payments/:paymentId/refund', async (req: Request, res: Response, next: NextFunction) => {
+// Refund payment (admin only)
+router.post('/:id/payments/:paymentId/refund', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = RefundPaymentSchema.parse(req.body);
         const { userId } = getAuthContext(req);
@@ -454,7 +528,7 @@ router.post('/:id/payments/:paymentId/refund', async (req: Request, res: Respons
 });
 
 // Pay ahead (apply excess to future installments)
-router.post('/:id/pay-ahead', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/:id/pay-ahead', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { amount } = req.body;
         if (typeof amount !== 'number' || amount <= 0) {
