@@ -587,17 +587,18 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             }
         });
 
-        it('Chidi completes document upload steps', async () => {
-            const uploadSteps = ['Upload Valid ID', 'Upload Bank Statements', 'Upload Employment Letter'];
+        it('UPLOAD steps are auto-completed when documents are uploaded', async () => {
+            // UPLOAD steps are auto-completed when documents are uploaded (per the implementation)
+            // We verify that the upload steps are now COMPLETED
+            const phase = await prisma.applicationPhase.findUnique({
+                where: { id: documentationPhaseId },
+                include: { documentationPhase: { include: { steps: true } } },
+            });
 
-            for (const stepName of uploadSteps) {
-                const response = await api
-                    .post(`/applications/${applicationId}/phases/${documentationPhaseId}/steps/complete`)
-                    .set(customerHeaders(chidiId, tenantId))
-                    .set('x-idempotency-key', idempotencyKey(`chidi-complete-${stepName.replace(/\s+/g, '-').toLowerCase()}`))
-                    .send({ stepName });
-
-                expect(response.status).toBe(200);
+            const uploadStepNames = ['Upload Valid ID', 'Upload Bank Statements', 'Upload Employment Letter'];
+            for (const stepName of uploadStepNames) {
+                const step = phase?.documentationPhase?.steps.find((s: any) => s.name === stepName);
+                expect(step?.status).toBe('COMPLETED');
             }
         });
 
@@ -621,17 +622,15 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                 expect(response.status).toBe(200);
             }
 
-            // Adaeze completes approval step
-            const response = await api
-                .post(`/applications/${applicationId}/phases/${documentationPhaseId}/steps/complete`)
-                .set(adminHeaders(adaezeId, tenantId))
-                .set('x-idempotency-key', idempotencyKey('adaeze-complete-review'))
-                .send({
-                    stepName: 'Adaeze Reviews Documents',
-                    note: 'All documents verified and approved',
-                });
+            // APPROVAL step is auto-completed when all documents are approved
+            // Verify the approval step is now COMPLETED
+            const phase = await prisma.applicationPhase.findUnique({
+                where: { id: documentationPhaseId },
+                include: { documentationPhase: { include: { steps: true } } },
+            });
 
-            expect(response.status).toBe(200);
+            const approvalStep = phase?.documentationPhase?.steps.find((s: any) => s.name === 'Adaeze Reviews Documents');
+            expect(approvalStep?.status).toBe('COMPLETED');
         });
 
         it('GENERATE_DOCUMENT step auto-executes and generates provisional offer', async () => {
@@ -769,16 +768,15 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
             expect(response.status).toBe(201);
 
-            // Complete the upload step
-            const stepResponse = await api
-                .post(`/applications/${applicationId}/phases/${finalDocumentationPhaseId}/steps/complete`)
-                .set(adminHeaders(adaezeId, tenantId))
-                .set('x-idempotency-key', idempotencyKey('adaeze-complete-final-offer-upload'))
-                .send({
-                    stepName: 'Admin Uploads Final Offer',
-                });
+            // UPLOAD step is auto-completed when document is uploaded
+            // Verify the step is now COMPLETED
+            const phase = await prisma.applicationPhase.findUnique({
+                where: { id: finalDocumentationPhaseId },
+                include: { documentationPhase: { include: { steps: true } } },
+            });
 
-            expect(stepResponse.status).toBe(200);
+            const uploadStep = phase?.documentationPhase?.steps.find((s: any) => s.name === 'Admin Uploads Final Offer');
+            expect(uploadStep?.status).toBe('COMPLETED');
         });
 
         it('Chidi signs the final offer', async () => {
