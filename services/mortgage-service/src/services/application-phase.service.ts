@@ -989,20 +989,17 @@ class ApplicationPhaseService {
                 });
 
                 if (step && step.stepType === 'UPLOAD') {
-                    // For UPLOAD steps: Auto-complete when a document is uploaded
+                    // For UPLOAD steps: Mark as AWAITING_REVIEW when document is uploaded
+                    // Step will be COMPLETED when the document is approved
                     if (step.status !== 'COMPLETED') {
                         await tx.documentationStep.update({
                             where: { id: stepId },
                             data: {
-                                status: 'COMPLETED',
-                                completedAt: new Date(),
+                                status: 'AWAITING_REVIEW',
                                 submissionCount: { increment: 1 },
                                 lastSubmittedAt: new Date(),
                             },
                         });
-
-                        // Check for phase completion
-                        await this.evaluatePhaseCompletionInternal(tx, phaseId, userId);
                     }
                 } else if (step) {
                     // For non-UPLOAD steps: Just track submission
@@ -1296,9 +1293,27 @@ class ApplicationPhaseService {
                 });
             }
 
-            // State Machine: Check if all documents are approved → auto-complete APPROVAL step
-            if (data.status === 'APPROVED' && document.phaseId) {
-                await this.evaluateApprovalStepCompletion(tx, document.phaseId, userId);
+            // State Machine: Complete the UPLOAD step for this document and check APPROVAL step
+            if (data.status === 'APPROVED') {
+                // Complete the UPLOAD step for this specific document
+                if (document.stepId) {
+                    const step = await tx.documentationStep.findUnique({
+                        where: { id: document.stepId },
+                    });
+                    if (step && step.stepType === 'UPLOAD' && step.status !== 'COMPLETED') {
+                        await tx.documentationStep.update({
+                            where: { id: document.stepId },
+                            data: {
+                                status: 'COMPLETED',
+                                completedAt: new Date(),
+                            },
+                        });
+                    }
+                }
+                // Check if all documents approved → auto-complete APPROVAL step
+                if (document.phaseId) {
+                    await this.evaluateApprovalStepCompletion(tx, document.phaseId, userId);
+                }
             }
         });
 

@@ -587,9 +587,9 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             }
         });
 
-        it('UPLOAD steps are auto-completed when documents are uploaded', async () => {
-            // UPLOAD steps are auto-completed when documents are uploaded (per the implementation)
-            // We verify that the upload steps are now COMPLETED
+        it('UPLOAD steps are AWAITING_REVIEW after documents are uploaded', async () => {
+            // UPLOAD steps are marked AWAITING_REVIEW when documents are uploaded
+            // They will be COMPLETED when the documents are approved
             const phase = await prisma.applicationPhase.findUnique({
                 where: { id: documentationPhaseId },
                 include: { documentationPhase: { include: { steps: true } } },
@@ -598,7 +598,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             const uploadStepNames = ['Upload Valid ID', 'Upload Bank Statements', 'Upload Employment Letter'];
             for (const stepName of uploadStepNames) {
                 const step = phase?.documentationPhase?.steps.find((s: any) => s.name === stepName);
-                expect(step?.status).toBe('COMPLETED');
+                expect(step?.status).toBe('AWAITING_REVIEW');
             }
         });
 
@@ -623,12 +623,20 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             }
 
             // APPROVAL step is auto-completed when all documents are approved
-            // Verify the approval step is now COMPLETED
+            // UPLOAD steps are also auto-completed when their documents are approved
             const phase = await prisma.applicationPhase.findUnique({
                 where: { id: documentationPhaseId },
                 include: { documentationPhase: { include: { steps: true } } },
             });
 
+            // Verify all UPLOAD steps are now COMPLETED (after their documents were approved)
+            const uploadStepNames = ['Upload Valid ID', 'Upload Bank Statements', 'Upload Employment Letter'];
+            for (const stepName of uploadStepNames) {
+                const step = phase?.documentationPhase?.steps.find((s: any) => s.name === stepName);
+                expect(step?.status).toBe('COMPLETED');
+            }
+
+            // Verify APPROVAL step is now COMPLETED (after all documents approved)
             const approvalStep = phase?.documentationPhase?.steps.find((s: any) => s.name === 'Adaeze Reviews Documents');
             expect(approvalStep?.status).toBe('COMPLETED');
         });
@@ -756,7 +764,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         it('Adaeze uploads the final offer letter', async () => {
             // After downpayment phase completes, Final Documentation phase activates
             // Adaeze (admin) uploads the final offer letter prepared offline
-            const response = await api
+            const uploadResponse = await api
                 .post(`/applications/${applicationId}/phases/${finalDocumentationPhaseId}/documents`)
                 .set(adminHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('adaeze-upload-final-offer'))
@@ -766,17 +774,41 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                     fileName: 'chidi-final-offer.pdf',
                 });
 
-            expect(response.status).toBe(201);
+            expect(uploadResponse.status).toBe(201);
 
-            // UPLOAD step is auto-completed when document is uploaded
-            // Verify the step is now COMPLETED
-            const phase = await prisma.applicationPhase.findUnique({
+            // UPLOAD step is AWAITING_REVIEW after upload
+            let phase = await prisma.applicationPhase.findUnique({
                 where: { id: finalDocumentationPhaseId },
                 include: { documentationPhase: { include: { steps: true } } },
             });
 
             const uploadStep = phase?.documentationPhase?.steps.find((s: any) => s.name === 'Admin Uploads Final Offer');
-            expect(uploadStep?.status).toBe('COMPLETED');
+            expect(uploadStep?.status).toBe('AWAITING_REVIEW');
+
+            // Admin approves the final offer document (internal approval, not customer signing)
+            const doc = await prisma.applicationDocument.findFirst({
+                where: { phaseId: finalDocumentationPhaseId, type: 'FINAL_OFFER' },
+            });
+
+            const approveResponse = await api
+                .post(`/applications/${applicationId}/documents/${doc!.id}/review`)
+                .set(adminHeaders(adaezeId, tenantId))
+                .set('x-idempotency-key', idempotencyKey('adaeze-approve-final-offer'))
+                .send({
+                    status: 'APPROVED',
+                    note: 'Final offer letter verified',
+                });
+
+            expect(approveResponse.status).toBe(200);
+
+            // UPLOAD step is now COMPLETED after document approval
+            phase = await prisma.applicationPhase.findUnique({
+                where: { id: finalDocumentationPhaseId },
+                include: { documentationPhase: { include: { steps: true } } },
+            });
+
+            const uploadStepAfterApproval = phase?.documentationPhase?.steps.find((s: any) => s.name === 'Admin Uploads Final Offer');
+            expect(uploadStepAfterApproval?.status).toBe('COMPLETED');
         });
 
         it('Chidi signs the final offer', async () => {
