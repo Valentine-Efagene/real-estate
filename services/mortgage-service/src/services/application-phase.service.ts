@@ -451,6 +451,7 @@ class ApplicationPhaseService {
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
+                    tenantId: phase.application?.tenantId || phase.tenantId,
                     eventType: 'PHASE.ACTIVATED',
                     aggregateType: 'ApplicationPhase',
                     aggregateId: phaseId,
@@ -595,11 +596,14 @@ class ApplicationPhaseService {
             paymentPlan.gracePeriodDays
         );
 
+        const tenantId = phase.application.tenantId;
+
         await prisma.$transaction(async (tx) => {
             // Create installments
             for (const installment of installments) {
                 await tx.paymentInstallment.create({
                     data: {
+                        tenantId,
                         paymentPhaseId: paymentPhase.id,
                         installmentNumber: installment.installmentNumber,
                         amount: installment.amount,
@@ -624,6 +628,7 @@ class ApplicationPhaseService {
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
+                    tenantId: phase.application?.tenantId || phase.tenantId,
                     eventType: 'INSTALLMENTS.GENERATED',
                     aggregateType: 'ApplicationPhase',
                     aggregateId: phaseId,
@@ -763,6 +768,8 @@ class ApplicationPhaseService {
             throw new AppError(400, 'Step already completed');
         }
 
+        const tenantId = phase.application.tenantId;
+
         await prisma.$transaction(async (tx) => {
             // Update step status
             await tx.documentationStep.update({
@@ -777,6 +784,7 @@ class ApplicationPhaseService {
             if (data.decision) {
                 await tx.documentationStepApproval.create({
                     data: {
+                        tenantId,
                         stepId: stepId,
                         approverId: userId,
                         decision: data.decision,
@@ -817,6 +825,7 @@ class ApplicationPhaseService {
                 await tx.domainEvent.create({
                     data: {
                         id: uuidv4(),
+                        tenantId: phase.application?.tenantId || phase.tenantId,
                         eventType: 'PHASE.COMPLETED',
                         aggregateType: 'ApplicationPhase',
                         aggregateId: phaseId,
@@ -856,6 +865,7 @@ class ApplicationPhaseService {
                     await tx.domainEvent.create({
                         data: {
                             id: uuidv4(),
+                            tenantId: phase.application?.tenantId || phase.tenantId,
                             eventType: 'PHASE.ACTIVATED',
                             aggregateType: 'ApplicationPhase',
                             aggregateId: nextPhase.id,
@@ -894,6 +904,7 @@ class ApplicationPhaseService {
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
+                    tenantId: phase.application?.tenantId || phase.tenantId,
                     eventType: 'PHASE.STEP.COMPLETED',
                     aggregateType: 'DocumentationStep',
                     aggregateId: stepId,
@@ -958,6 +969,7 @@ class ApplicationPhaseService {
             // Create the document with resolved stepId
             const doc = await tx.applicationDocument.create({
                 data: {
+                    tenantId: phase.application.tenantId,
                     applicationId: phase.applicationId,
                     phaseId,
                     stepId,
@@ -1060,6 +1072,8 @@ class ApplicationPhaseService {
             throw new AppError(400, 'Cannot reject a completed step');
         }
 
+        const tenantId = phase.application.tenantId;
+
         await prisma.$transaction(async (tx) => {
             // Update step to NEEDS_RESUBMISSION with reason
             await tx.documentationStep.update({
@@ -1073,6 +1087,7 @@ class ApplicationPhaseService {
             // Create approval record with REJECTED decision
             await tx.documentationStepApproval.create({
                 data: {
+                    tenantId,
                     stepId,
                     approverId: userId,
                     decision: 'REJECTED',
@@ -1090,6 +1105,7 @@ class ApplicationPhaseService {
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
+                    tenantId: phase.application?.tenantId || phase.tenantId,
                     eventType: 'PHASE.STEP.REJECTED',
                     aggregateType: 'DocumentationStep',
                     aggregateId: stepId,
@@ -1163,6 +1179,8 @@ class ApplicationPhaseService {
             throw new AppError(400, 'Cannot request changes on a completed step');
         }
 
+        const tenantId = phase.application.tenantId;
+
         await prisma.$transaction(async (tx) => {
             // Update step to ACTION_REQUIRED with reason
             await tx.documentationStep.update({
@@ -1176,6 +1194,7 @@ class ApplicationPhaseService {
             // Create approval record with REQUEST_CHANGES decision
             await tx.documentationStepApproval.create({
                 data: {
+                    tenantId,
                     stepId,
                     approverId: userId,
                     decision: 'REQUEST_CHANGES',
@@ -1193,6 +1212,7 @@ class ApplicationPhaseService {
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
+                    tenantId: phase.application?.tenantId || phase.tenantId,
                     eventType: 'PHASE.STEP.CHANGES_REQUESTED',
                     aggregateType: 'DocumentationStep',
                     aggregateId: stepId,
@@ -1430,6 +1450,7 @@ class ApplicationPhaseService {
         await tx.domainEvent.create({
             data: {
                 id: uuidv4(),
+                tenantId: phase.application?.tenantId || phase.tenantId,
                 eventType: 'PHASE.COMPLETED',
                 aggregateType: 'ApplicationPhase',
                 aggregateId: phaseId,
@@ -1465,6 +1486,7 @@ class ApplicationPhaseService {
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
+                    tenantId: phase.application?.tenantId || phase.tenantId,
                     eventType: 'PHASE.ACTIVATED',
                     aggregateType: 'ApplicationPhase',
                     aggregateId: nextPhase.id,
@@ -1552,6 +1574,7 @@ class ApplicationPhaseService {
                 await tx.domainEvent.create({
                     data: {
                         id: uuidv4(),
+                        tenantId: phase.application?.tenantId || phase.tenantId,
                         eventType: 'APPLICATION.COMPLETED',
                         aggregateType: 'Application',
                         aggregateId: phase.applicationId,
@@ -1565,6 +1588,7 @@ class ApplicationPhaseService {
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
+                    tenantId: phase.application?.tenantId || phase.tenantId,
                     eventType: 'PHASE.COMPLETED',
                     aggregateType: 'ApplicationPhase',
                     aggregateId: phaseId,
@@ -1606,6 +1630,7 @@ class ApplicationPhaseService {
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
+                    tenantId: phase.application?.tenantId || phase.tenantId,
                     eventType: 'PHASE.SKIPPED',
                     aggregateType: 'ApplicationPhase',
                     aggregateId: phaseId,

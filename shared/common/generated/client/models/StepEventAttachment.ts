@@ -37,6 +37,7 @@ export type StepEventAttachmentSumAggregateOutputType = {
 
 export type StepEventAttachmentMinAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   stepId: string | null
   trigger: $Enums.StepTrigger | null
   handlerId: string | null
@@ -48,6 +49,7 @@ export type StepEventAttachmentMinAggregateOutputType = {
 
 export type StepEventAttachmentMaxAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   stepId: string | null
   trigger: $Enums.StepTrigger | null
   handlerId: string | null
@@ -59,6 +61,7 @@ export type StepEventAttachmentMaxAggregateOutputType = {
 
 export type StepEventAttachmentCountAggregateOutputType = {
   id: number
+  tenantId: number
   stepId: number
   trigger: number
   handlerId: number
@@ -80,6 +83,7 @@ export type StepEventAttachmentSumAggregateInputType = {
 
 export type StepEventAttachmentMinAggregateInputType = {
   id?: true
+  tenantId?: true
   stepId?: true
   trigger?: true
   handlerId?: true
@@ -91,6 +95,7 @@ export type StepEventAttachmentMinAggregateInputType = {
 
 export type StepEventAttachmentMaxAggregateInputType = {
   id?: true
+  tenantId?: true
   stepId?: true
   trigger?: true
   handlerId?: true
@@ -102,6 +107,7 @@ export type StepEventAttachmentMaxAggregateInputType = {
 
 export type StepEventAttachmentCountAggregateInputType = {
   id?: true
+  tenantId?: true
   stepId?: true
   trigger?: true
   handlerId?: true
@@ -200,6 +206,7 @@ export type StepEventAttachmentGroupByArgs<ExtArgs extends runtime.Types.Extensi
 
 export type StepEventAttachmentGroupByOutputType = {
   id: string
+  tenantId: string
   stepId: string
   trigger: $Enums.StepTrigger
   handlerId: string
@@ -234,6 +241,7 @@ export type StepEventAttachmentWhereInput = {
   OR?: Prisma.StepEventAttachmentWhereInput[]
   NOT?: Prisma.StepEventAttachmentWhereInput | Prisma.StepEventAttachmentWhereInput[]
   id?: Prisma.StringFilter<"StepEventAttachment"> | string
+  tenantId?: Prisma.StringFilter<"StepEventAttachment"> | string
   stepId?: Prisma.StringFilter<"StepEventAttachment"> | string
   trigger?: Prisma.EnumStepTriggerFilter<"StepEventAttachment"> | $Enums.StepTrigger
   handlerId?: Prisma.StringFilter<"StepEventAttachment"> | string
@@ -241,12 +249,14 @@ export type StepEventAttachmentWhereInput = {
   enabled?: Prisma.BoolFilter<"StepEventAttachment"> | boolean
   createdAt?: Prisma.DateTimeFilter<"StepEventAttachment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"StepEventAttachment"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   step?: Prisma.XOR<Prisma.PaymentMethodPhaseStepScalarRelationFilter, Prisma.PaymentMethodPhaseStepWhereInput>
   handler?: Prisma.XOR<Prisma.EventHandlerScalarRelationFilter, Prisma.EventHandlerWhereInput>
 }
 
 export type StepEventAttachmentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   stepId?: Prisma.SortOrder
   trigger?: Prisma.SortOrder
   handlerId?: Prisma.SortOrder
@@ -254,6 +264,7 @@ export type StepEventAttachmentOrderByWithRelationInput = {
   enabled?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  tenant?: Prisma.TenantOrderByWithRelationInput
   step?: Prisma.PaymentMethodPhaseStepOrderByWithRelationInput
   handler?: Prisma.EventHandlerOrderByWithRelationInput
   _relevance?: Prisma.StepEventAttachmentOrderByRelevanceInput
@@ -265,6 +276,7 @@ export type StepEventAttachmentWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.StepEventAttachmentWhereInput | Prisma.StepEventAttachmentWhereInput[]
   OR?: Prisma.StepEventAttachmentWhereInput[]
   NOT?: Prisma.StepEventAttachmentWhereInput | Prisma.StepEventAttachmentWhereInput[]
+  tenantId?: Prisma.StringFilter<"StepEventAttachment"> | string
   stepId?: Prisma.StringFilter<"StepEventAttachment"> | string
   trigger?: Prisma.EnumStepTriggerFilter<"StepEventAttachment"> | $Enums.StepTrigger
   handlerId?: Prisma.StringFilter<"StepEventAttachment"> | string
@@ -272,12 +284,14 @@ export type StepEventAttachmentWhereUniqueInput = Prisma.AtLeast<{
   enabled?: Prisma.BoolFilter<"StepEventAttachment"> | boolean
   createdAt?: Prisma.DateTimeFilter<"StepEventAttachment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"StepEventAttachment"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   step?: Prisma.XOR<Prisma.PaymentMethodPhaseStepScalarRelationFilter, Prisma.PaymentMethodPhaseStepWhereInput>
   handler?: Prisma.XOR<Prisma.EventHandlerScalarRelationFilter, Prisma.EventHandlerWhereInput>
 }, "id" | "stepId_handlerId_trigger">
 
 export type StepEventAttachmentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   stepId?: Prisma.SortOrder
   trigger?: Prisma.SortOrder
   handlerId?: Prisma.SortOrder
@@ -297,6 +311,7 @@ export type StepEventAttachmentScalarWhereWithAggregatesInput = {
   OR?: Prisma.StepEventAttachmentScalarWhereWithAggregatesInput[]
   NOT?: Prisma.StepEventAttachmentScalarWhereWithAggregatesInput | Prisma.StepEventAttachmentScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"StepEventAttachment"> | string
+  tenantId?: Prisma.StringWithAggregatesFilter<"StepEventAttachment"> | string
   stepId?: Prisma.StringWithAggregatesFilter<"StepEventAttachment"> | string
   trigger?: Prisma.EnumStepTriggerWithAggregatesFilter<"StepEventAttachment"> | $Enums.StepTrigger
   handlerId?: Prisma.StringWithAggregatesFilter<"StepEventAttachment"> | string
@@ -313,12 +328,14 @@ export type StepEventAttachmentCreateInput = {
   enabled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutStepEventAttachmentsInput
   step: Prisma.PaymentMethodPhaseStepCreateNestedOneWithoutEventAttachmentsInput
   handler: Prisma.EventHandlerCreateNestedOneWithoutStepAttachmentsInput
 }
 
 export type StepEventAttachmentUncheckedCreateInput = {
   id?: string
+  tenantId: string
   stepId: string
   trigger: $Enums.StepTrigger
   handlerId: string
@@ -335,12 +352,14 @@ export type StepEventAttachmentUpdateInput = {
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutStepEventAttachmentsNestedInput
   step?: Prisma.PaymentMethodPhaseStepUpdateOneRequiredWithoutEventAttachmentsNestedInput
   handler?: Prisma.EventHandlerUpdateOneRequiredWithoutStepAttachmentsNestedInput
 }
 
 export type StepEventAttachmentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   stepId?: Prisma.StringFieldUpdateOperationsInput | string
   trigger?: Prisma.EnumStepTriggerFieldUpdateOperationsInput | $Enums.StepTrigger
   handlerId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -352,6 +371,7 @@ export type StepEventAttachmentUncheckedUpdateInput = {
 
 export type StepEventAttachmentCreateManyInput = {
   id?: string
+  tenantId: string
   stepId: string
   trigger: $Enums.StepTrigger
   handlerId: string
@@ -372,6 +392,7 @@ export type StepEventAttachmentUpdateManyMutationInput = {
 
 export type StepEventAttachmentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   stepId?: Prisma.StringFieldUpdateOperationsInput | string
   trigger?: Prisma.EnumStepTriggerFieldUpdateOperationsInput | $Enums.StepTrigger
   handlerId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -405,6 +426,7 @@ export type StepEventAttachmentStepIdHandlerIdTriggerCompoundUniqueInput = {
 
 export type StepEventAttachmentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   stepId?: Prisma.SortOrder
   trigger?: Prisma.SortOrder
   handlerId?: Prisma.SortOrder
@@ -420,6 +442,7 @@ export type StepEventAttachmentAvgOrderByAggregateInput = {
 
 export type StepEventAttachmentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   stepId?: Prisma.SortOrder
   trigger?: Prisma.SortOrder
   handlerId?: Prisma.SortOrder
@@ -431,6 +454,7 @@ export type StepEventAttachmentMaxOrderByAggregateInput = {
 
 export type StepEventAttachmentMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   stepId?: Prisma.SortOrder
   trigger?: Prisma.SortOrder
   handlerId?: Prisma.SortOrder
@@ -442,6 +466,48 @@ export type StepEventAttachmentMinOrderByAggregateInput = {
 
 export type StepEventAttachmentSumOrderByAggregateInput = {
   priority?: Prisma.SortOrder
+}
+
+export type StepEventAttachmentCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.StepEventAttachmentCreateWithoutTenantInput, Prisma.StepEventAttachmentUncheckedCreateWithoutTenantInput> | Prisma.StepEventAttachmentCreateWithoutTenantInput[] | Prisma.StepEventAttachmentUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.StepEventAttachmentCreateOrConnectWithoutTenantInput | Prisma.StepEventAttachmentCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.StepEventAttachmentCreateManyTenantInputEnvelope
+  connect?: Prisma.StepEventAttachmentWhereUniqueInput | Prisma.StepEventAttachmentWhereUniqueInput[]
+}
+
+export type StepEventAttachmentUncheckedCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.StepEventAttachmentCreateWithoutTenantInput, Prisma.StepEventAttachmentUncheckedCreateWithoutTenantInput> | Prisma.StepEventAttachmentCreateWithoutTenantInput[] | Prisma.StepEventAttachmentUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.StepEventAttachmentCreateOrConnectWithoutTenantInput | Prisma.StepEventAttachmentCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.StepEventAttachmentCreateManyTenantInputEnvelope
+  connect?: Prisma.StepEventAttachmentWhereUniqueInput | Prisma.StepEventAttachmentWhereUniqueInput[]
+}
+
+export type StepEventAttachmentUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.StepEventAttachmentCreateWithoutTenantInput, Prisma.StepEventAttachmentUncheckedCreateWithoutTenantInput> | Prisma.StepEventAttachmentCreateWithoutTenantInput[] | Prisma.StepEventAttachmentUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.StepEventAttachmentCreateOrConnectWithoutTenantInput | Prisma.StepEventAttachmentCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.StepEventAttachmentUpsertWithWhereUniqueWithoutTenantInput | Prisma.StepEventAttachmentUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.StepEventAttachmentCreateManyTenantInputEnvelope
+  set?: Prisma.StepEventAttachmentWhereUniqueInput | Prisma.StepEventAttachmentWhereUniqueInput[]
+  disconnect?: Prisma.StepEventAttachmentWhereUniqueInput | Prisma.StepEventAttachmentWhereUniqueInput[]
+  delete?: Prisma.StepEventAttachmentWhereUniqueInput | Prisma.StepEventAttachmentWhereUniqueInput[]
+  connect?: Prisma.StepEventAttachmentWhereUniqueInput | Prisma.StepEventAttachmentWhereUniqueInput[]
+  update?: Prisma.StepEventAttachmentUpdateWithWhereUniqueWithoutTenantInput | Prisma.StepEventAttachmentUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.StepEventAttachmentUpdateManyWithWhereWithoutTenantInput | Prisma.StepEventAttachmentUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.StepEventAttachmentScalarWhereInput | Prisma.StepEventAttachmentScalarWhereInput[]
+}
+
+export type StepEventAttachmentUncheckedUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.StepEventAttachmentCreateWithoutTenantInput, Prisma.StepEventAttachmentUncheckedCreateWithoutTenantInput> | Prisma.StepEventAttachmentCreateWithoutTenantInput[] | Prisma.StepEventAttachmentUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.StepEventAttachmentCreateOrConnectWithoutTenantInput | Prisma.StepEventAttachmentCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.StepEventAttachmentUpsertWithWhereUniqueWithoutTenantInput | Prisma.StepEventAttachmentUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.StepEventAttachmentCreateManyTenantInputEnvelope
+  set?: Prisma.StepEventAttachmentWhereUniqueInput | Prisma.StepEventAttachmentWhereUniqueInput[]
+  disconnect?: Prisma.StepEventAttachmentWhereUniqueInput | Prisma.StepEventAttachmentWhereUniqueInput[]
+  delete?: Prisma.StepEventAttachmentWhereUniqueInput | Prisma.StepEventAttachmentWhereUniqueInput[]
+  connect?: Prisma.StepEventAttachmentWhereUniqueInput | Prisma.StepEventAttachmentWhereUniqueInput[]
+  update?: Prisma.StepEventAttachmentUpdateWithWhereUniqueWithoutTenantInput | Prisma.StepEventAttachmentUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.StepEventAttachmentUpdateManyWithWhereWithoutTenantInput | Prisma.StepEventAttachmentUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.StepEventAttachmentScalarWhereInput | Prisma.StepEventAttachmentScalarWhereInput[]
 }
 
 export type StepEventAttachmentCreateNestedManyWithoutStepInput = {
@@ -532,6 +598,69 @@ export type StepEventAttachmentUncheckedUpdateManyWithoutHandlerNestedInput = {
   deleteMany?: Prisma.StepEventAttachmentScalarWhereInput | Prisma.StepEventAttachmentScalarWhereInput[]
 }
 
+export type StepEventAttachmentCreateWithoutTenantInput = {
+  id?: string
+  trigger: $Enums.StepTrigger
+  priority?: number
+  enabled?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  step: Prisma.PaymentMethodPhaseStepCreateNestedOneWithoutEventAttachmentsInput
+  handler: Prisma.EventHandlerCreateNestedOneWithoutStepAttachmentsInput
+}
+
+export type StepEventAttachmentUncheckedCreateWithoutTenantInput = {
+  id?: string
+  stepId: string
+  trigger: $Enums.StepTrigger
+  handlerId: string
+  priority?: number
+  enabled?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type StepEventAttachmentCreateOrConnectWithoutTenantInput = {
+  where: Prisma.StepEventAttachmentWhereUniqueInput
+  create: Prisma.XOR<Prisma.StepEventAttachmentCreateWithoutTenantInput, Prisma.StepEventAttachmentUncheckedCreateWithoutTenantInput>
+}
+
+export type StepEventAttachmentCreateManyTenantInputEnvelope = {
+  data: Prisma.StepEventAttachmentCreateManyTenantInput | Prisma.StepEventAttachmentCreateManyTenantInput[]
+  skipDuplicates?: boolean
+}
+
+export type StepEventAttachmentUpsertWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.StepEventAttachmentWhereUniqueInput
+  update: Prisma.XOR<Prisma.StepEventAttachmentUpdateWithoutTenantInput, Prisma.StepEventAttachmentUncheckedUpdateWithoutTenantInput>
+  create: Prisma.XOR<Prisma.StepEventAttachmentCreateWithoutTenantInput, Prisma.StepEventAttachmentUncheckedCreateWithoutTenantInput>
+}
+
+export type StepEventAttachmentUpdateWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.StepEventAttachmentWhereUniqueInput
+  data: Prisma.XOR<Prisma.StepEventAttachmentUpdateWithoutTenantInput, Prisma.StepEventAttachmentUncheckedUpdateWithoutTenantInput>
+}
+
+export type StepEventAttachmentUpdateManyWithWhereWithoutTenantInput = {
+  where: Prisma.StepEventAttachmentScalarWhereInput
+  data: Prisma.XOR<Prisma.StepEventAttachmentUpdateManyMutationInput, Prisma.StepEventAttachmentUncheckedUpdateManyWithoutTenantInput>
+}
+
+export type StepEventAttachmentScalarWhereInput = {
+  AND?: Prisma.StepEventAttachmentScalarWhereInput | Prisma.StepEventAttachmentScalarWhereInput[]
+  OR?: Prisma.StepEventAttachmentScalarWhereInput[]
+  NOT?: Prisma.StepEventAttachmentScalarWhereInput | Prisma.StepEventAttachmentScalarWhereInput[]
+  id?: Prisma.StringFilter<"StepEventAttachment"> | string
+  tenantId?: Prisma.StringFilter<"StepEventAttachment"> | string
+  stepId?: Prisma.StringFilter<"StepEventAttachment"> | string
+  trigger?: Prisma.EnumStepTriggerFilter<"StepEventAttachment"> | $Enums.StepTrigger
+  handlerId?: Prisma.StringFilter<"StepEventAttachment"> | string
+  priority?: Prisma.IntFilter<"StepEventAttachment"> | number
+  enabled?: Prisma.BoolFilter<"StepEventAttachment"> | boolean
+  createdAt?: Prisma.DateTimeFilter<"StepEventAttachment"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"StepEventAttachment"> | Date | string
+}
+
 export type StepEventAttachmentCreateWithoutStepInput = {
   id?: string
   trigger: $Enums.StepTrigger
@@ -539,11 +668,13 @@ export type StepEventAttachmentCreateWithoutStepInput = {
   enabled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutStepEventAttachmentsInput
   handler: Prisma.EventHandlerCreateNestedOneWithoutStepAttachmentsInput
 }
 
 export type StepEventAttachmentUncheckedCreateWithoutStepInput = {
   id?: string
+  tenantId: string
   trigger: $Enums.StepTrigger
   handlerId: string
   priority?: number
@@ -578,20 +709,6 @@ export type StepEventAttachmentUpdateManyWithWhereWithoutStepInput = {
   data: Prisma.XOR<Prisma.StepEventAttachmentUpdateManyMutationInput, Prisma.StepEventAttachmentUncheckedUpdateManyWithoutStepInput>
 }
 
-export type StepEventAttachmentScalarWhereInput = {
-  AND?: Prisma.StepEventAttachmentScalarWhereInput | Prisma.StepEventAttachmentScalarWhereInput[]
-  OR?: Prisma.StepEventAttachmentScalarWhereInput[]
-  NOT?: Prisma.StepEventAttachmentScalarWhereInput | Prisma.StepEventAttachmentScalarWhereInput[]
-  id?: Prisma.StringFilter<"StepEventAttachment"> | string
-  stepId?: Prisma.StringFilter<"StepEventAttachment"> | string
-  trigger?: Prisma.EnumStepTriggerFilter<"StepEventAttachment"> | $Enums.StepTrigger
-  handlerId?: Prisma.StringFilter<"StepEventAttachment"> | string
-  priority?: Prisma.IntFilter<"StepEventAttachment"> | number
-  enabled?: Prisma.BoolFilter<"StepEventAttachment"> | boolean
-  createdAt?: Prisma.DateTimeFilter<"StepEventAttachment"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"StepEventAttachment"> | Date | string
-}
-
 export type StepEventAttachmentCreateWithoutHandlerInput = {
   id?: string
   trigger: $Enums.StepTrigger
@@ -599,11 +716,13 @@ export type StepEventAttachmentCreateWithoutHandlerInput = {
   enabled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutStepEventAttachmentsInput
   step: Prisma.PaymentMethodPhaseStepCreateNestedOneWithoutEventAttachmentsInput
 }
 
 export type StepEventAttachmentUncheckedCreateWithoutHandlerInput = {
   id?: string
+  tenantId: string
   stepId: string
   trigger: $Enums.StepTrigger
   priority?: number
@@ -638,8 +757,53 @@ export type StepEventAttachmentUpdateManyWithWhereWithoutHandlerInput = {
   data: Prisma.XOR<Prisma.StepEventAttachmentUpdateManyMutationInput, Prisma.StepEventAttachmentUncheckedUpdateManyWithoutHandlerInput>
 }
 
+export type StepEventAttachmentCreateManyTenantInput = {
+  id?: string
+  stepId: string
+  trigger: $Enums.StepTrigger
+  handlerId: string
+  priority?: number
+  enabled?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type StepEventAttachmentUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  trigger?: Prisma.EnumStepTriggerFieldUpdateOperationsInput | $Enums.StepTrigger
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  step?: Prisma.PaymentMethodPhaseStepUpdateOneRequiredWithoutEventAttachmentsNestedInput
+  handler?: Prisma.EventHandlerUpdateOneRequiredWithoutStepAttachmentsNestedInput
+}
+
+export type StepEventAttachmentUncheckedUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  stepId?: Prisma.StringFieldUpdateOperationsInput | string
+  trigger?: Prisma.EnumStepTriggerFieldUpdateOperationsInput | $Enums.StepTrigger
+  handlerId?: Prisma.StringFieldUpdateOperationsInput | string
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type StepEventAttachmentUncheckedUpdateManyWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  stepId?: Prisma.StringFieldUpdateOperationsInput | string
+  trigger?: Prisma.EnumStepTriggerFieldUpdateOperationsInput | $Enums.StepTrigger
+  handlerId?: Prisma.StringFieldUpdateOperationsInput | string
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type StepEventAttachmentCreateManyStepInput = {
   id?: string
+  tenantId: string
   trigger: $Enums.StepTrigger
   handlerId: string
   priority?: number
@@ -655,11 +819,13 @@ export type StepEventAttachmentUpdateWithoutStepInput = {
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutStepEventAttachmentsNestedInput
   handler?: Prisma.EventHandlerUpdateOneRequiredWithoutStepAttachmentsNestedInput
 }
 
 export type StepEventAttachmentUncheckedUpdateWithoutStepInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   trigger?: Prisma.EnumStepTriggerFieldUpdateOperationsInput | $Enums.StepTrigger
   handlerId?: Prisma.StringFieldUpdateOperationsInput | string
   priority?: Prisma.IntFieldUpdateOperationsInput | number
@@ -670,6 +836,7 @@ export type StepEventAttachmentUncheckedUpdateWithoutStepInput = {
 
 export type StepEventAttachmentUncheckedUpdateManyWithoutStepInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   trigger?: Prisma.EnumStepTriggerFieldUpdateOperationsInput | $Enums.StepTrigger
   handlerId?: Prisma.StringFieldUpdateOperationsInput | string
   priority?: Prisma.IntFieldUpdateOperationsInput | number
@@ -680,6 +847,7 @@ export type StepEventAttachmentUncheckedUpdateManyWithoutStepInput = {
 
 export type StepEventAttachmentCreateManyHandlerInput = {
   id?: string
+  tenantId: string
   stepId: string
   trigger: $Enums.StepTrigger
   priority?: number
@@ -695,11 +863,13 @@ export type StepEventAttachmentUpdateWithoutHandlerInput = {
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutStepEventAttachmentsNestedInput
   step?: Prisma.PaymentMethodPhaseStepUpdateOneRequiredWithoutEventAttachmentsNestedInput
 }
 
 export type StepEventAttachmentUncheckedUpdateWithoutHandlerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   stepId?: Prisma.StringFieldUpdateOperationsInput | string
   trigger?: Prisma.EnumStepTriggerFieldUpdateOperationsInput | $Enums.StepTrigger
   priority?: Prisma.IntFieldUpdateOperationsInput | number
@@ -710,6 +880,7 @@ export type StepEventAttachmentUncheckedUpdateWithoutHandlerInput = {
 
 export type StepEventAttachmentUncheckedUpdateManyWithoutHandlerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   stepId?: Prisma.StringFieldUpdateOperationsInput | string
   trigger?: Prisma.EnumStepTriggerFieldUpdateOperationsInput | $Enums.StepTrigger
   priority?: Prisma.IntFieldUpdateOperationsInput | number
@@ -722,6 +893,7 @@ export type StepEventAttachmentUncheckedUpdateManyWithoutHandlerInput = {
 
 export type StepEventAttachmentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   stepId?: boolean
   trigger?: boolean
   handlerId?: boolean
@@ -729,6 +901,7 @@ export type StepEventAttachmentSelect<ExtArgs extends runtime.Types.Extensions.I
   enabled?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   step?: boolean | Prisma.PaymentMethodPhaseStepDefaultArgs<ExtArgs>
   handler?: boolean | Prisma.EventHandlerDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["stepEventAttachment"]>
@@ -737,6 +910,7 @@ export type StepEventAttachmentSelect<ExtArgs extends runtime.Types.Extensions.I
 
 export type StepEventAttachmentSelectScalar = {
   id?: boolean
+  tenantId?: boolean
   stepId?: boolean
   trigger?: boolean
   handlerId?: boolean
@@ -746,8 +920,9 @@ export type StepEventAttachmentSelectScalar = {
   updatedAt?: boolean
 }
 
-export type StepEventAttachmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "stepId" | "trigger" | "handlerId" | "priority" | "enabled" | "createdAt" | "updatedAt", ExtArgs["result"]["stepEventAttachment"]>
+export type StepEventAttachmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "stepId" | "trigger" | "handlerId" | "priority" | "enabled" | "createdAt" | "updatedAt", ExtArgs["result"]["stepEventAttachment"]>
 export type StepEventAttachmentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   step?: boolean | Prisma.PaymentMethodPhaseStepDefaultArgs<ExtArgs>
   handler?: boolean | Prisma.EventHandlerDefaultArgs<ExtArgs>
 }
@@ -755,11 +930,13 @@ export type StepEventAttachmentInclude<ExtArgs extends runtime.Types.Extensions.
 export type $StepEventAttachmentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "StepEventAttachment"
   objects: {
+    tenant: Prisma.$TenantPayload<ExtArgs>
     step: Prisma.$PaymentMethodPhaseStepPayload<ExtArgs>
     handler: Prisma.$EventHandlerPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    tenantId: string
     stepId: string
     /**
      * When this handler should fire
@@ -1119,6 +1296,7 @@ readonly fields: StepEventAttachmentFieldRefs;
  */
 export interface Prisma__StepEventAttachmentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   step<T extends Prisma.PaymentMethodPhaseStepDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PaymentMethodPhaseStepDefaultArgs<ExtArgs>>): Prisma.Prisma__PaymentMethodPhaseStepClient<runtime.Types.Result.GetResult<Prisma.$PaymentMethodPhaseStepPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   handler<T extends Prisma.EventHandlerDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EventHandlerDefaultArgs<ExtArgs>>): Prisma.Prisma__EventHandlerClient<runtime.Types.Result.GetResult<Prisma.$EventHandlerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
@@ -1151,6 +1329,7 @@ export interface Prisma__StepEventAttachmentClient<T, Null = never, ExtArgs exte
  */
 export interface StepEventAttachmentFieldRefs {
   readonly id: Prisma.FieldRef<"StepEventAttachment", 'String'>
+  readonly tenantId: Prisma.FieldRef<"StepEventAttachment", 'String'>
   readonly stepId: Prisma.FieldRef<"StepEventAttachment", 'String'>
   readonly trigger: Prisma.FieldRef<"StepEventAttachment", 'StepTrigger'>
   readonly handlerId: Prisma.FieldRef<"StepEventAttachment", 'String'>

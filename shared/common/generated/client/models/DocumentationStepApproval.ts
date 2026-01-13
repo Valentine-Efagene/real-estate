@@ -26,6 +26,7 @@ export type AggregateDocumentationStepApproval = {
 
 export type DocumentationStepApprovalMinAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   stepId: string | null
   approverId: string | null
   decision: $Enums.ApprovalDecision | null
@@ -36,6 +37,7 @@ export type DocumentationStepApprovalMinAggregateOutputType = {
 
 export type DocumentationStepApprovalMaxAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   stepId: string | null
   approverId: string | null
   decision: $Enums.ApprovalDecision | null
@@ -46,6 +48,7 @@ export type DocumentationStepApprovalMaxAggregateOutputType = {
 
 export type DocumentationStepApprovalCountAggregateOutputType = {
   id: number
+  tenantId: number
   stepId: number
   approverId: number
   decision: number
@@ -58,6 +61,7 @@ export type DocumentationStepApprovalCountAggregateOutputType = {
 
 export type DocumentationStepApprovalMinAggregateInputType = {
   id?: true
+  tenantId?: true
   stepId?: true
   approverId?: true
   decision?: true
@@ -68,6 +72,7 @@ export type DocumentationStepApprovalMinAggregateInputType = {
 
 export type DocumentationStepApprovalMaxAggregateInputType = {
   id?: true
+  tenantId?: true
   stepId?: true
   approverId?: true
   decision?: true
@@ -78,6 +83,7 @@ export type DocumentationStepApprovalMaxAggregateInputType = {
 
 export type DocumentationStepApprovalCountAggregateInputType = {
   id?: true
+  tenantId?: true
   stepId?: true
   approverId?: true
   decision?: true
@@ -161,6 +167,7 @@ export type DocumentationStepApprovalGroupByArgs<ExtArgs extends runtime.Types.E
 
 export type DocumentationStepApprovalGroupByOutputType = {
   id: string
+  tenantId: string
   stepId: string
   approverId: string | null
   decision: $Enums.ApprovalDecision
@@ -192,24 +199,28 @@ export type DocumentationStepApprovalWhereInput = {
   OR?: Prisma.DocumentationStepApprovalWhereInput[]
   NOT?: Prisma.DocumentationStepApprovalWhereInput | Prisma.DocumentationStepApprovalWhereInput[]
   id?: Prisma.StringFilter<"DocumentationStepApproval"> | string
+  tenantId?: Prisma.StringFilter<"DocumentationStepApproval"> | string
   stepId?: Prisma.StringFilter<"DocumentationStepApproval"> | string
   approverId?: Prisma.StringNullableFilter<"DocumentationStepApproval"> | string | null
   decision?: Prisma.EnumApprovalDecisionFilter<"DocumentationStepApproval"> | $Enums.ApprovalDecision
   comment?: Prisma.StringNullableFilter<"DocumentationStepApproval"> | string | null
   decidedAt?: Prisma.DateTimeFilter<"DocumentationStepApproval"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"DocumentationStepApproval"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   step?: Prisma.XOR<Prisma.DocumentationStepScalarRelationFilter, Prisma.DocumentationStepWhereInput>
   approver?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }
 
 export type DocumentationStepApprovalOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   stepId?: Prisma.SortOrder
   approverId?: Prisma.SortOrderInput | Prisma.SortOrder
   decision?: Prisma.SortOrder
   comment?: Prisma.SortOrderInput | Prisma.SortOrder
   decidedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  tenant?: Prisma.TenantOrderByWithRelationInput
   step?: Prisma.DocumentationStepOrderByWithRelationInput
   approver?: Prisma.UserOrderByWithRelationInput
   _relevance?: Prisma.DocumentationStepApprovalOrderByRelevanceInput
@@ -220,18 +231,21 @@ export type DocumentationStepApprovalWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.DocumentationStepApprovalWhereInput | Prisma.DocumentationStepApprovalWhereInput[]
   OR?: Prisma.DocumentationStepApprovalWhereInput[]
   NOT?: Prisma.DocumentationStepApprovalWhereInput | Prisma.DocumentationStepApprovalWhereInput[]
+  tenantId?: Prisma.StringFilter<"DocumentationStepApproval"> | string
   stepId?: Prisma.StringFilter<"DocumentationStepApproval"> | string
   approverId?: Prisma.StringNullableFilter<"DocumentationStepApproval"> | string | null
   decision?: Prisma.EnumApprovalDecisionFilter<"DocumentationStepApproval"> | $Enums.ApprovalDecision
   comment?: Prisma.StringNullableFilter<"DocumentationStepApproval"> | string | null
   decidedAt?: Prisma.DateTimeFilter<"DocumentationStepApproval"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"DocumentationStepApproval"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   step?: Prisma.XOR<Prisma.DocumentationStepScalarRelationFilter, Prisma.DocumentationStepWhereInput>
   approver?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }, "id">
 
 export type DocumentationStepApprovalOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   stepId?: Prisma.SortOrder
   approverId?: Prisma.SortOrderInput | Prisma.SortOrder
   decision?: Prisma.SortOrder
@@ -248,6 +262,7 @@ export type DocumentationStepApprovalScalarWhereWithAggregatesInput = {
   OR?: Prisma.DocumentationStepApprovalScalarWhereWithAggregatesInput[]
   NOT?: Prisma.DocumentationStepApprovalScalarWhereWithAggregatesInput | Prisma.DocumentationStepApprovalScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"DocumentationStepApproval"> | string
+  tenantId?: Prisma.StringWithAggregatesFilter<"DocumentationStepApproval"> | string
   stepId?: Prisma.StringWithAggregatesFilter<"DocumentationStepApproval"> | string
   approverId?: Prisma.StringNullableWithAggregatesFilter<"DocumentationStepApproval"> | string | null
   decision?: Prisma.EnumApprovalDecisionWithAggregatesFilter<"DocumentationStepApproval"> | $Enums.ApprovalDecision
@@ -262,12 +277,14 @@ export type DocumentationStepApprovalCreateInput = {
   comment?: string | null
   decidedAt?: Date | string
   createdAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutDocumentationStepApprovalsInput
   step: Prisma.DocumentationStepCreateNestedOneWithoutApprovalsInput
   approver?: Prisma.UserCreateNestedOneWithoutStepApprovalsInput
 }
 
 export type DocumentationStepApprovalUncheckedCreateInput = {
   id?: string
+  tenantId: string
   stepId: string
   approverId?: string | null
   decision: $Enums.ApprovalDecision
@@ -282,12 +299,14 @@ export type DocumentationStepApprovalUpdateInput = {
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decidedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutDocumentationStepApprovalsNestedInput
   step?: Prisma.DocumentationStepUpdateOneRequiredWithoutApprovalsNestedInput
   approver?: Prisma.UserUpdateOneWithoutStepApprovalsNestedInput
 }
 
 export type DocumentationStepApprovalUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   stepId?: Prisma.StringFieldUpdateOperationsInput | string
   approverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decision?: Prisma.EnumApprovalDecisionFieldUpdateOperationsInput | $Enums.ApprovalDecision
@@ -298,6 +317,7 @@ export type DocumentationStepApprovalUncheckedUpdateInput = {
 
 export type DocumentationStepApprovalCreateManyInput = {
   id?: string
+  tenantId: string
   stepId: string
   approverId?: string | null
   decision: $Enums.ApprovalDecision
@@ -316,6 +336,7 @@ export type DocumentationStepApprovalUpdateManyMutationInput = {
 
 export type DocumentationStepApprovalUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   stepId?: Prisma.StringFieldUpdateOperationsInput | string
   approverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decision?: Prisma.EnumApprovalDecisionFieldUpdateOperationsInput | $Enums.ApprovalDecision
@@ -342,6 +363,7 @@ export type DocumentationStepApprovalOrderByRelevanceInput = {
 
 export type DocumentationStepApprovalCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   stepId?: Prisma.SortOrder
   approverId?: Prisma.SortOrder
   decision?: Prisma.SortOrder
@@ -352,6 +374,7 @@ export type DocumentationStepApprovalCountOrderByAggregateInput = {
 
 export type DocumentationStepApprovalMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   stepId?: Prisma.SortOrder
   approverId?: Prisma.SortOrder
   decision?: Prisma.SortOrder
@@ -362,6 +385,7 @@ export type DocumentationStepApprovalMaxOrderByAggregateInput = {
 
 export type DocumentationStepApprovalMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   stepId?: Prisma.SortOrder
   approverId?: Prisma.SortOrder
   decision?: Prisma.SortOrder
@@ -409,6 +433,48 @@ export type DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInp
   connect?: Prisma.DocumentationStepApprovalWhereUniqueInput | Prisma.DocumentationStepApprovalWhereUniqueInput[]
   update?: Prisma.DocumentationStepApprovalUpdateWithWhereUniqueWithoutApproverInput | Prisma.DocumentationStepApprovalUpdateWithWhereUniqueWithoutApproverInput[]
   updateMany?: Prisma.DocumentationStepApprovalUpdateManyWithWhereWithoutApproverInput | Prisma.DocumentationStepApprovalUpdateManyWithWhereWithoutApproverInput[]
+  deleteMany?: Prisma.DocumentationStepApprovalScalarWhereInput | Prisma.DocumentationStepApprovalScalarWhereInput[]
+}
+
+export type DocumentationStepApprovalCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.DocumentationStepApprovalCreateWithoutTenantInput, Prisma.DocumentationStepApprovalUncheckedCreateWithoutTenantInput> | Prisma.DocumentationStepApprovalCreateWithoutTenantInput[] | Prisma.DocumentationStepApprovalUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.DocumentationStepApprovalCreateOrConnectWithoutTenantInput | Prisma.DocumentationStepApprovalCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.DocumentationStepApprovalCreateManyTenantInputEnvelope
+  connect?: Prisma.DocumentationStepApprovalWhereUniqueInput | Prisma.DocumentationStepApprovalWhereUniqueInput[]
+}
+
+export type DocumentationStepApprovalUncheckedCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.DocumentationStepApprovalCreateWithoutTenantInput, Prisma.DocumentationStepApprovalUncheckedCreateWithoutTenantInput> | Prisma.DocumentationStepApprovalCreateWithoutTenantInput[] | Prisma.DocumentationStepApprovalUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.DocumentationStepApprovalCreateOrConnectWithoutTenantInput | Prisma.DocumentationStepApprovalCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.DocumentationStepApprovalCreateManyTenantInputEnvelope
+  connect?: Prisma.DocumentationStepApprovalWhereUniqueInput | Prisma.DocumentationStepApprovalWhereUniqueInput[]
+}
+
+export type DocumentationStepApprovalUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentationStepApprovalCreateWithoutTenantInput, Prisma.DocumentationStepApprovalUncheckedCreateWithoutTenantInput> | Prisma.DocumentationStepApprovalCreateWithoutTenantInput[] | Prisma.DocumentationStepApprovalUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.DocumentationStepApprovalCreateOrConnectWithoutTenantInput | Prisma.DocumentationStepApprovalCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.DocumentationStepApprovalUpsertWithWhereUniqueWithoutTenantInput | Prisma.DocumentationStepApprovalUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.DocumentationStepApprovalCreateManyTenantInputEnvelope
+  set?: Prisma.DocumentationStepApprovalWhereUniqueInput | Prisma.DocumentationStepApprovalWhereUniqueInput[]
+  disconnect?: Prisma.DocumentationStepApprovalWhereUniqueInput | Prisma.DocumentationStepApprovalWhereUniqueInput[]
+  delete?: Prisma.DocumentationStepApprovalWhereUniqueInput | Prisma.DocumentationStepApprovalWhereUniqueInput[]
+  connect?: Prisma.DocumentationStepApprovalWhereUniqueInput | Prisma.DocumentationStepApprovalWhereUniqueInput[]
+  update?: Prisma.DocumentationStepApprovalUpdateWithWhereUniqueWithoutTenantInput | Prisma.DocumentationStepApprovalUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.DocumentationStepApprovalUpdateManyWithWhereWithoutTenantInput | Prisma.DocumentationStepApprovalUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.DocumentationStepApprovalScalarWhereInput | Prisma.DocumentationStepApprovalScalarWhereInput[]
+}
+
+export type DocumentationStepApprovalUncheckedUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentationStepApprovalCreateWithoutTenantInput, Prisma.DocumentationStepApprovalUncheckedCreateWithoutTenantInput> | Prisma.DocumentationStepApprovalCreateWithoutTenantInput[] | Prisma.DocumentationStepApprovalUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.DocumentationStepApprovalCreateOrConnectWithoutTenantInput | Prisma.DocumentationStepApprovalCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.DocumentationStepApprovalUpsertWithWhereUniqueWithoutTenantInput | Prisma.DocumentationStepApprovalUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.DocumentationStepApprovalCreateManyTenantInputEnvelope
+  set?: Prisma.DocumentationStepApprovalWhereUniqueInput | Prisma.DocumentationStepApprovalWhereUniqueInput[]
+  disconnect?: Prisma.DocumentationStepApprovalWhereUniqueInput | Prisma.DocumentationStepApprovalWhereUniqueInput[]
+  delete?: Prisma.DocumentationStepApprovalWhereUniqueInput | Prisma.DocumentationStepApprovalWhereUniqueInput[]
+  connect?: Prisma.DocumentationStepApprovalWhereUniqueInput | Prisma.DocumentationStepApprovalWhereUniqueInput[]
+  update?: Prisma.DocumentationStepApprovalUpdateWithWhereUniqueWithoutTenantInput | Prisma.DocumentationStepApprovalUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.DocumentationStepApprovalUpdateManyWithWhereWithoutTenantInput | Prisma.DocumentationStepApprovalUpdateManyWithWhereWithoutTenantInput[]
   deleteMany?: Prisma.DocumentationStepApprovalScalarWhereInput | Prisma.DocumentationStepApprovalScalarWhereInput[]
 }
 
@@ -464,11 +530,13 @@ export type DocumentationStepApprovalCreateWithoutApproverInput = {
   comment?: string | null
   decidedAt?: Date | string
   createdAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutDocumentationStepApprovalsInput
   step: Prisma.DocumentationStepCreateNestedOneWithoutApprovalsInput
 }
 
 export type DocumentationStepApprovalUncheckedCreateWithoutApproverInput = {
   id?: string
+  tenantId: string
   stepId: string
   decision: $Enums.ApprovalDecision
   comment?: string | null
@@ -507,6 +575,7 @@ export type DocumentationStepApprovalScalarWhereInput = {
   OR?: Prisma.DocumentationStepApprovalScalarWhereInput[]
   NOT?: Prisma.DocumentationStepApprovalScalarWhereInput | Prisma.DocumentationStepApprovalScalarWhereInput[]
   id?: Prisma.StringFilter<"DocumentationStepApproval"> | string
+  tenantId?: Prisma.StringFilter<"DocumentationStepApproval"> | string
   stepId?: Prisma.StringFilter<"DocumentationStepApproval"> | string
   approverId?: Prisma.StringNullableFilter<"DocumentationStepApproval"> | string | null
   decision?: Prisma.EnumApprovalDecisionFilter<"DocumentationStepApproval"> | $Enums.ApprovalDecision
@@ -515,17 +584,65 @@ export type DocumentationStepApprovalScalarWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"DocumentationStepApproval"> | Date | string
 }
 
+export type DocumentationStepApprovalCreateWithoutTenantInput = {
+  id?: string
+  decision: $Enums.ApprovalDecision
+  comment?: string | null
+  decidedAt?: Date | string
+  createdAt?: Date | string
+  step: Prisma.DocumentationStepCreateNestedOneWithoutApprovalsInput
+  approver?: Prisma.UserCreateNestedOneWithoutStepApprovalsInput
+}
+
+export type DocumentationStepApprovalUncheckedCreateWithoutTenantInput = {
+  id?: string
+  stepId: string
+  approverId?: string | null
+  decision: $Enums.ApprovalDecision
+  comment?: string | null
+  decidedAt?: Date | string
+  createdAt?: Date | string
+}
+
+export type DocumentationStepApprovalCreateOrConnectWithoutTenantInput = {
+  where: Prisma.DocumentationStepApprovalWhereUniqueInput
+  create: Prisma.XOR<Prisma.DocumentationStepApprovalCreateWithoutTenantInput, Prisma.DocumentationStepApprovalUncheckedCreateWithoutTenantInput>
+}
+
+export type DocumentationStepApprovalCreateManyTenantInputEnvelope = {
+  data: Prisma.DocumentationStepApprovalCreateManyTenantInput | Prisma.DocumentationStepApprovalCreateManyTenantInput[]
+  skipDuplicates?: boolean
+}
+
+export type DocumentationStepApprovalUpsertWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.DocumentationStepApprovalWhereUniqueInput
+  update: Prisma.XOR<Prisma.DocumentationStepApprovalUpdateWithoutTenantInput, Prisma.DocumentationStepApprovalUncheckedUpdateWithoutTenantInput>
+  create: Prisma.XOR<Prisma.DocumentationStepApprovalCreateWithoutTenantInput, Prisma.DocumentationStepApprovalUncheckedCreateWithoutTenantInput>
+}
+
+export type DocumentationStepApprovalUpdateWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.DocumentationStepApprovalWhereUniqueInput
+  data: Prisma.XOR<Prisma.DocumentationStepApprovalUpdateWithoutTenantInput, Prisma.DocumentationStepApprovalUncheckedUpdateWithoutTenantInput>
+}
+
+export type DocumentationStepApprovalUpdateManyWithWhereWithoutTenantInput = {
+  where: Prisma.DocumentationStepApprovalScalarWhereInput
+  data: Prisma.XOR<Prisma.DocumentationStepApprovalUpdateManyMutationInput, Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutTenantInput>
+}
+
 export type DocumentationStepApprovalCreateWithoutStepInput = {
   id?: string
   decision: $Enums.ApprovalDecision
   comment?: string | null
   decidedAt?: Date | string
   createdAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutDocumentationStepApprovalsInput
   approver?: Prisma.UserCreateNestedOneWithoutStepApprovalsInput
 }
 
 export type DocumentationStepApprovalUncheckedCreateWithoutStepInput = {
   id?: string
+  tenantId: string
   approverId?: string | null
   decision: $Enums.ApprovalDecision
   comment?: string | null
@@ -561,6 +678,7 @@ export type DocumentationStepApprovalUpdateManyWithWhereWithoutStepInput = {
 
 export type DocumentationStepApprovalCreateManyApproverInput = {
   id?: string
+  tenantId: string
   stepId: string
   decision: $Enums.ApprovalDecision
   comment?: string | null
@@ -574,11 +692,13 @@ export type DocumentationStepApprovalUpdateWithoutApproverInput = {
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decidedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutDocumentationStepApprovalsNestedInput
   step?: Prisma.DocumentationStepUpdateOneRequiredWithoutApprovalsNestedInput
 }
 
 export type DocumentationStepApprovalUncheckedUpdateWithoutApproverInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   stepId?: Prisma.StringFieldUpdateOperationsInput | string
   decision?: Prisma.EnumApprovalDecisionFieldUpdateOperationsInput | $Enums.ApprovalDecision
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -588,7 +708,48 @@ export type DocumentationStepApprovalUncheckedUpdateWithoutApproverInput = {
 
 export type DocumentationStepApprovalUncheckedUpdateManyWithoutApproverInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   stepId?: Prisma.StringFieldUpdateOperationsInput | string
+  decision?: Prisma.EnumApprovalDecisionFieldUpdateOperationsInput | $Enums.ApprovalDecision
+  comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  decidedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type DocumentationStepApprovalCreateManyTenantInput = {
+  id?: string
+  stepId: string
+  approverId?: string | null
+  decision: $Enums.ApprovalDecision
+  comment?: string | null
+  decidedAt?: Date | string
+  createdAt?: Date | string
+}
+
+export type DocumentationStepApprovalUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  decision?: Prisma.EnumApprovalDecisionFieldUpdateOperationsInput | $Enums.ApprovalDecision
+  comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  decidedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  step?: Prisma.DocumentationStepUpdateOneRequiredWithoutApprovalsNestedInput
+  approver?: Prisma.UserUpdateOneWithoutStepApprovalsNestedInput
+}
+
+export type DocumentationStepApprovalUncheckedUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  stepId?: Prisma.StringFieldUpdateOperationsInput | string
+  approverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  decision?: Prisma.EnumApprovalDecisionFieldUpdateOperationsInput | $Enums.ApprovalDecision
+  comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  decidedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type DocumentationStepApprovalUncheckedUpdateManyWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  stepId?: Prisma.StringFieldUpdateOperationsInput | string
+  approverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decision?: Prisma.EnumApprovalDecisionFieldUpdateOperationsInput | $Enums.ApprovalDecision
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decidedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -597,6 +758,7 @@ export type DocumentationStepApprovalUncheckedUpdateManyWithoutApproverInput = {
 
 export type DocumentationStepApprovalCreateManyStepInput = {
   id?: string
+  tenantId: string
   approverId?: string | null
   decision: $Enums.ApprovalDecision
   comment?: string | null
@@ -610,11 +772,13 @@ export type DocumentationStepApprovalUpdateWithoutStepInput = {
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decidedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutDocumentationStepApprovalsNestedInput
   approver?: Prisma.UserUpdateOneWithoutStepApprovalsNestedInput
 }
 
 export type DocumentationStepApprovalUncheckedUpdateWithoutStepInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   approverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decision?: Prisma.EnumApprovalDecisionFieldUpdateOperationsInput | $Enums.ApprovalDecision
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -624,6 +788,7 @@ export type DocumentationStepApprovalUncheckedUpdateWithoutStepInput = {
 
 export type DocumentationStepApprovalUncheckedUpdateManyWithoutStepInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   approverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decision?: Prisma.EnumApprovalDecisionFieldUpdateOperationsInput | $Enums.ApprovalDecision
   comment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -635,12 +800,14 @@ export type DocumentationStepApprovalUncheckedUpdateManyWithoutStepInput = {
 
 export type DocumentationStepApprovalSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   stepId?: boolean
   approverId?: boolean
   decision?: boolean
   comment?: boolean
   decidedAt?: boolean
   createdAt?: boolean
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   step?: boolean | Prisma.DocumentationStepDefaultArgs<ExtArgs>
   approver?: boolean | Prisma.DocumentationStepApproval$approverArgs<ExtArgs>
 }, ExtArgs["result"]["documentationStepApproval"]>
@@ -649,6 +816,7 @@ export type DocumentationStepApprovalSelect<ExtArgs extends runtime.Types.Extens
 
 export type DocumentationStepApprovalSelectScalar = {
   id?: boolean
+  tenantId?: boolean
   stepId?: boolean
   approverId?: boolean
   decision?: boolean
@@ -657,8 +825,9 @@ export type DocumentationStepApprovalSelectScalar = {
   createdAt?: boolean
 }
 
-export type DocumentationStepApprovalOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "stepId" | "approverId" | "decision" | "comment" | "decidedAt" | "createdAt", ExtArgs["result"]["documentationStepApproval"]>
+export type DocumentationStepApprovalOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "stepId" | "approverId" | "decision" | "comment" | "decidedAt" | "createdAt", ExtArgs["result"]["documentationStepApproval"]>
 export type DocumentationStepApprovalInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   step?: boolean | Prisma.DocumentationStepDefaultArgs<ExtArgs>
   approver?: boolean | Prisma.DocumentationStepApproval$approverArgs<ExtArgs>
 }
@@ -666,11 +835,13 @@ export type DocumentationStepApprovalInclude<ExtArgs extends runtime.Types.Exten
 export type $DocumentationStepApprovalPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "DocumentationStepApproval"
   objects: {
+    tenant: Prisma.$TenantPayload<ExtArgs>
     step: Prisma.$DocumentationStepPayload<ExtArgs>
     approver: Prisma.$UserPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    tenantId: string
     stepId: string
     approverId: string | null
     decision: $Enums.ApprovalDecision
@@ -1017,6 +1188,7 @@ readonly fields: DocumentationStepApprovalFieldRefs;
  */
 export interface Prisma__DocumentationStepApprovalClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   step<T extends Prisma.DocumentationStepDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentationStepDefaultArgs<ExtArgs>>): Prisma.Prisma__DocumentationStepClient<runtime.Types.Result.GetResult<Prisma.$DocumentationStepPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   approver<T extends Prisma.DocumentationStepApproval$approverArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentationStepApproval$approverArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
@@ -1049,6 +1221,7 @@ export interface Prisma__DocumentationStepApprovalClient<T, Null = never, ExtArg
  */
 export interface DocumentationStepApprovalFieldRefs {
   readonly id: Prisma.FieldRef<"DocumentationStepApproval", 'String'>
+  readonly tenantId: Prisma.FieldRef<"DocumentationStepApproval", 'String'>
   readonly stepId: Prisma.FieldRef<"DocumentationStepApproval", 'String'>
   readonly approverId: Prisma.FieldRef<"DocumentationStepApproval", 'String'>
   readonly decision: Prisma.FieldRef<"DocumentationStepApproval", 'ApprovalDecision'>

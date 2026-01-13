@@ -13,6 +13,7 @@ export interface OutboxEnqueueOptions<T> {
     aggregateId: string;
     queueName: string;
     payload: T;
+    tenantId: string;
     actorId?: string;
     actorRole?: string;
 }
@@ -29,6 +30,7 @@ export async function enqueueOutboxInTx<T>(
     await tx.domainEvent.create({
         data: {
             id,
+            tenantId: opts.tenantId,
             eventType: opts.eventType,
             aggregateType: opts.aggregateType,
             aggregateId: opts.aggregateId,

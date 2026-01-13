@@ -26,6 +26,7 @@ export type AggregateSocial = {
 
 export type SocialMinAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   userId: string | null
   provider: string | null
   socialId: string | null
@@ -35,6 +36,7 @@ export type SocialMinAggregateOutputType = {
 
 export type SocialMaxAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   userId: string | null
   provider: string | null
   socialId: string | null
@@ -44,6 +46,7 @@ export type SocialMaxAggregateOutputType = {
 
 export type SocialCountAggregateOutputType = {
   id: number
+  tenantId: number
   userId: number
   provider: number
   socialId: number
@@ -55,6 +58,7 @@ export type SocialCountAggregateOutputType = {
 
 export type SocialMinAggregateInputType = {
   id?: true
+  tenantId?: true
   userId?: true
   provider?: true
   socialId?: true
@@ -64,6 +68,7 @@ export type SocialMinAggregateInputType = {
 
 export type SocialMaxAggregateInputType = {
   id?: true
+  tenantId?: true
   userId?: true
   provider?: true
   socialId?: true
@@ -73,6 +78,7 @@ export type SocialMaxAggregateInputType = {
 
 export type SocialCountAggregateInputType = {
   id?: true
+  tenantId?: true
   userId?: true
   provider?: true
   socialId?: true
@@ -155,6 +161,7 @@ export type SocialGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 
 export type SocialGroupByOutputType = {
   id: string
+  tenantId: string
   userId: string
   provider: string
   socialId: string
@@ -185,21 +192,25 @@ export type SocialWhereInput = {
   OR?: Prisma.SocialWhereInput[]
   NOT?: Prisma.SocialWhereInput | Prisma.SocialWhereInput[]
   id?: Prisma.StringFilter<"Social"> | string
+  tenantId?: Prisma.StringFilter<"Social"> | string
   userId?: Prisma.StringFilter<"Social"> | string
   provider?: Prisma.StringFilter<"Social"> | string
   socialId?: Prisma.StringFilter<"Social"> | string
   createdAt?: Prisma.DateTimeFilter<"Social"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Social"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type SocialOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   provider?: Prisma.SortOrder
   socialId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  tenant?: Prisma.TenantOrderByWithRelationInput
   user?: Prisma.UserOrderByWithRelationInput
   _relevance?: Prisma.SocialOrderByRelevanceInput
 }
@@ -210,16 +221,19 @@ export type SocialWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.SocialWhereInput | Prisma.SocialWhereInput[]
   OR?: Prisma.SocialWhereInput[]
   NOT?: Prisma.SocialWhereInput | Prisma.SocialWhereInput[]
+  tenantId?: Prisma.StringFilter<"Social"> | string
   userId?: Prisma.StringFilter<"Social"> | string
   provider?: Prisma.StringFilter<"Social"> | string
   socialId?: Prisma.StringFilter<"Social"> | string
   createdAt?: Prisma.DateTimeFilter<"Social"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Social"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "provider_socialId">
 
 export type SocialOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   provider?: Prisma.SortOrder
   socialId?: Prisma.SortOrder
@@ -235,6 +249,7 @@ export type SocialScalarWhereWithAggregatesInput = {
   OR?: Prisma.SocialScalarWhereWithAggregatesInput[]
   NOT?: Prisma.SocialScalarWhereWithAggregatesInput | Prisma.SocialScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Social"> | string
+  tenantId?: Prisma.StringWithAggregatesFilter<"Social"> | string
   userId?: Prisma.StringWithAggregatesFilter<"Social"> | string
   provider?: Prisma.StringWithAggregatesFilter<"Social"> | string
   socialId?: Prisma.StringWithAggregatesFilter<"Social"> | string
@@ -248,11 +263,13 @@ export type SocialCreateInput = {
   socialId: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutSocialsInput
   user: Prisma.UserCreateNestedOneWithoutSocialsInput
 }
 
 export type SocialUncheckedCreateInput = {
   id?: string
+  tenantId: string
   userId: string
   provider: string
   socialId: string
@@ -266,11 +283,13 @@ export type SocialUpdateInput = {
   socialId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutSocialsNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutSocialsNestedInput
 }
 
 export type SocialUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   provider?: Prisma.StringFieldUpdateOperationsInput | string
   socialId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -280,6 +299,7 @@ export type SocialUncheckedUpdateInput = {
 
 export type SocialCreateManyInput = {
   id?: string
+  tenantId: string
   userId: string
   provider: string
   socialId: string
@@ -297,6 +317,7 @@ export type SocialUpdateManyMutationInput = {
 
 export type SocialUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   provider?: Prisma.StringFieldUpdateOperationsInput | string
   socialId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -327,6 +348,7 @@ export type SocialProviderSocialIdCompoundUniqueInput = {
 
 export type SocialCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   provider?: Prisma.SortOrder
   socialId?: Prisma.SortOrder
@@ -336,6 +358,7 @@ export type SocialCountOrderByAggregateInput = {
 
 export type SocialMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   provider?: Prisma.SortOrder
   socialId?: Prisma.SortOrder
@@ -345,6 +368,7 @@ export type SocialMaxOrderByAggregateInput = {
 
 export type SocialMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   provider?: Prisma.SortOrder
   socialId?: Prisma.SortOrder
@@ -394,16 +418,60 @@ export type SocialUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.SocialScalarWhereInput | Prisma.SocialScalarWhereInput[]
 }
 
+export type SocialCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.SocialCreateWithoutTenantInput, Prisma.SocialUncheckedCreateWithoutTenantInput> | Prisma.SocialCreateWithoutTenantInput[] | Prisma.SocialUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.SocialCreateOrConnectWithoutTenantInput | Prisma.SocialCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.SocialCreateManyTenantInputEnvelope
+  connect?: Prisma.SocialWhereUniqueInput | Prisma.SocialWhereUniqueInput[]
+}
+
+export type SocialUncheckedCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.SocialCreateWithoutTenantInput, Prisma.SocialUncheckedCreateWithoutTenantInput> | Prisma.SocialCreateWithoutTenantInput[] | Prisma.SocialUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.SocialCreateOrConnectWithoutTenantInput | Prisma.SocialCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.SocialCreateManyTenantInputEnvelope
+  connect?: Prisma.SocialWhereUniqueInput | Prisma.SocialWhereUniqueInput[]
+}
+
+export type SocialUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.SocialCreateWithoutTenantInput, Prisma.SocialUncheckedCreateWithoutTenantInput> | Prisma.SocialCreateWithoutTenantInput[] | Prisma.SocialUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.SocialCreateOrConnectWithoutTenantInput | Prisma.SocialCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.SocialUpsertWithWhereUniqueWithoutTenantInput | Prisma.SocialUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.SocialCreateManyTenantInputEnvelope
+  set?: Prisma.SocialWhereUniqueInput | Prisma.SocialWhereUniqueInput[]
+  disconnect?: Prisma.SocialWhereUniqueInput | Prisma.SocialWhereUniqueInput[]
+  delete?: Prisma.SocialWhereUniqueInput | Prisma.SocialWhereUniqueInput[]
+  connect?: Prisma.SocialWhereUniqueInput | Prisma.SocialWhereUniqueInput[]
+  update?: Prisma.SocialUpdateWithWhereUniqueWithoutTenantInput | Prisma.SocialUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.SocialUpdateManyWithWhereWithoutTenantInput | Prisma.SocialUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.SocialScalarWhereInput | Prisma.SocialScalarWhereInput[]
+}
+
+export type SocialUncheckedUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.SocialCreateWithoutTenantInput, Prisma.SocialUncheckedCreateWithoutTenantInput> | Prisma.SocialCreateWithoutTenantInput[] | Prisma.SocialUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.SocialCreateOrConnectWithoutTenantInput | Prisma.SocialCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.SocialUpsertWithWhereUniqueWithoutTenantInput | Prisma.SocialUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.SocialCreateManyTenantInputEnvelope
+  set?: Prisma.SocialWhereUniqueInput | Prisma.SocialWhereUniqueInput[]
+  disconnect?: Prisma.SocialWhereUniqueInput | Prisma.SocialWhereUniqueInput[]
+  delete?: Prisma.SocialWhereUniqueInput | Prisma.SocialWhereUniqueInput[]
+  connect?: Prisma.SocialWhereUniqueInput | Prisma.SocialWhereUniqueInput[]
+  update?: Prisma.SocialUpdateWithWhereUniqueWithoutTenantInput | Prisma.SocialUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.SocialUpdateManyWithWhereWithoutTenantInput | Prisma.SocialUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.SocialScalarWhereInput | Prisma.SocialScalarWhereInput[]
+}
+
 export type SocialCreateWithoutUserInput = {
   id?: string
   provider: string
   socialId: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutSocialsInput
 }
 
 export type SocialUncheckedCreateWithoutUserInput = {
   id?: string
+  tenantId: string
   provider: string
   socialId: string
   createdAt?: Date | string
@@ -441,6 +509,7 @@ export type SocialScalarWhereInput = {
   OR?: Prisma.SocialScalarWhereInput[]
   NOT?: Prisma.SocialScalarWhereInput | Prisma.SocialScalarWhereInput[]
   id?: Prisma.StringFilter<"Social"> | string
+  tenantId?: Prisma.StringFilter<"Social"> | string
   userId?: Prisma.StringFilter<"Social"> | string
   provider?: Prisma.StringFilter<"Social"> | string
   socialId?: Prisma.StringFilter<"Social"> | string
@@ -448,8 +517,53 @@ export type SocialScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Social"> | Date | string
 }
 
+export type SocialCreateWithoutTenantInput = {
+  id?: string
+  provider: string
+  socialId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutSocialsInput
+}
+
+export type SocialUncheckedCreateWithoutTenantInput = {
+  id?: string
+  userId: string
+  provider: string
+  socialId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type SocialCreateOrConnectWithoutTenantInput = {
+  where: Prisma.SocialWhereUniqueInput
+  create: Prisma.XOR<Prisma.SocialCreateWithoutTenantInput, Prisma.SocialUncheckedCreateWithoutTenantInput>
+}
+
+export type SocialCreateManyTenantInputEnvelope = {
+  data: Prisma.SocialCreateManyTenantInput | Prisma.SocialCreateManyTenantInput[]
+  skipDuplicates?: boolean
+}
+
+export type SocialUpsertWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.SocialWhereUniqueInput
+  update: Prisma.XOR<Prisma.SocialUpdateWithoutTenantInput, Prisma.SocialUncheckedUpdateWithoutTenantInput>
+  create: Prisma.XOR<Prisma.SocialCreateWithoutTenantInput, Prisma.SocialUncheckedCreateWithoutTenantInput>
+}
+
+export type SocialUpdateWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.SocialWhereUniqueInput
+  data: Prisma.XOR<Prisma.SocialUpdateWithoutTenantInput, Prisma.SocialUncheckedUpdateWithoutTenantInput>
+}
+
+export type SocialUpdateManyWithWhereWithoutTenantInput = {
+  where: Prisma.SocialScalarWhereInput
+  data: Prisma.XOR<Prisma.SocialUpdateManyMutationInput, Prisma.SocialUncheckedUpdateManyWithoutTenantInput>
+}
+
 export type SocialCreateManyUserInput = {
   id?: string
+  tenantId: string
   provider: string
   socialId: string
   createdAt?: Date | string
@@ -462,10 +576,12 @@ export type SocialUpdateWithoutUserInput = {
   socialId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutSocialsNestedInput
 }
 
 export type SocialUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   provider?: Prisma.StringFieldUpdateOperationsInput | string
   socialId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -474,6 +590,43 @@ export type SocialUncheckedUpdateWithoutUserInput = {
 
 export type SocialUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  provider?: Prisma.StringFieldUpdateOperationsInput | string
+  socialId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type SocialCreateManyTenantInput = {
+  id?: string
+  userId: string
+  provider: string
+  socialId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type SocialUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  provider?: Prisma.StringFieldUpdateOperationsInput | string
+  socialId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutSocialsNestedInput
+}
+
+export type SocialUncheckedUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  provider?: Prisma.StringFieldUpdateOperationsInput | string
+  socialId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type SocialUncheckedUpdateManyWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   provider?: Prisma.StringFieldUpdateOperationsInput | string
   socialId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -484,11 +637,13 @@ export type SocialUncheckedUpdateManyWithoutUserInput = {
 
 export type SocialSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   userId?: boolean
   provider?: boolean
   socialId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["social"]>
 
@@ -496,6 +651,7 @@ export type SocialSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
 
 export type SocialSelectScalar = {
   id?: boolean
+  tenantId?: boolean
   userId?: boolean
   provider?: boolean
   socialId?: boolean
@@ -503,18 +659,21 @@ export type SocialSelectScalar = {
   updatedAt?: boolean
 }
 
-export type SocialOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "provider" | "socialId" | "createdAt" | "updatedAt", ExtArgs["result"]["social"]>
+export type SocialOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "userId" | "provider" | "socialId" | "createdAt" | "updatedAt", ExtArgs["result"]["social"]>
 export type SocialInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
 export type $SocialPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Social"
   objects: {
+    tenant: Prisma.$TenantPayload<ExtArgs>
     user: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    tenantId: string
     userId: string
     provider: string
     socialId: string
@@ -860,6 +1019,7 @@ readonly fields: SocialFieldRefs;
  */
 export interface Prisma__SocialClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -891,6 +1051,7 @@ export interface Prisma__SocialClient<T, Null = never, ExtArgs extends runtime.T
  */
 export interface SocialFieldRefs {
   readonly id: Prisma.FieldRef<"Social", 'String'>
+  readonly tenantId: Prisma.FieldRef<"Social", 'String'>
   readonly userId: Prisma.FieldRef<"Social", 'String'>
   readonly provider: Prisma.FieldRef<"Social", 'String'>
   readonly socialId: Prisma.FieldRef<"Social", 'String'>

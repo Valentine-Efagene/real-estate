@@ -36,6 +36,7 @@ export type QuestionnaireFieldSumAggregateOutputType = {
 
 export type QuestionnaireFieldMinAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   questionnairePhaseId: string | null
   name: string | null
   label: string | null
@@ -52,6 +53,7 @@ export type QuestionnaireFieldMinAggregateOutputType = {
 
 export type QuestionnaireFieldMaxAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   questionnairePhaseId: string | null
   name: string | null
   label: string | null
@@ -68,6 +70,7 @@ export type QuestionnaireFieldMaxAggregateOutputType = {
 
 export type QuestionnaireFieldCountAggregateOutputType = {
   id: number
+  tenantId: number
   questionnairePhaseId: number
   name: number
   label: number
@@ -99,6 +102,7 @@ export type QuestionnaireFieldSumAggregateInputType = {
 
 export type QuestionnaireFieldMinAggregateInputType = {
   id?: true
+  tenantId?: true
   questionnairePhaseId?: true
   name?: true
   label?: true
@@ -115,6 +119,7 @@ export type QuestionnaireFieldMinAggregateInputType = {
 
 export type QuestionnaireFieldMaxAggregateInputType = {
   id?: true
+  tenantId?: true
   questionnairePhaseId?: true
   name?: true
   label?: true
@@ -131,6 +136,7 @@ export type QuestionnaireFieldMaxAggregateInputType = {
 
 export type QuestionnaireFieldCountAggregateInputType = {
   id?: true
+  tenantId?: true
   questionnairePhaseId?: true
   name?: true
   label?: true
@@ -239,6 +245,7 @@ export type QuestionnaireFieldGroupByArgs<ExtArgs extends runtime.Types.Extensio
 
 export type QuestionnaireFieldGroupByOutputType = {
   id: string
+  tenantId: string
   questionnairePhaseId: string
   name: string
   label: string
@@ -283,6 +290,7 @@ export type QuestionnaireFieldWhereInput = {
   OR?: Prisma.QuestionnaireFieldWhereInput[]
   NOT?: Prisma.QuestionnaireFieldWhereInput | Prisma.QuestionnaireFieldWhereInput[]
   id?: Prisma.StringFilter<"QuestionnaireField"> | string
+  tenantId?: Prisma.StringFilter<"QuestionnaireField"> | string
   questionnairePhaseId?: Prisma.StringFilter<"QuestionnaireField"> | string
   name?: Prisma.StringFilter<"QuestionnaireField"> | string
   label?: Prisma.StringFilter<"QuestionnaireField"> | string
@@ -300,11 +308,13 @@ export type QuestionnaireFieldWhereInput = {
   submittedAt?: Prisma.DateTimeNullableFilter<"QuestionnaireField"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"QuestionnaireField"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"QuestionnaireField"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   questionnairePhase?: Prisma.XOR<Prisma.QuestionnairePhaseScalarRelationFilter, Prisma.QuestionnairePhaseWhereInput>
 }
 
 export type QuestionnaireFieldOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   questionnairePhaseId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   label?: Prisma.SortOrder
@@ -322,6 +332,7 @@ export type QuestionnaireFieldOrderByWithRelationInput = {
   submittedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  tenant?: Prisma.TenantOrderByWithRelationInput
   questionnairePhase?: Prisma.QuestionnairePhaseOrderByWithRelationInput
   _relevance?: Prisma.QuestionnaireFieldOrderByRelevanceInput
 }
@@ -332,6 +343,7 @@ export type QuestionnaireFieldWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.QuestionnaireFieldWhereInput | Prisma.QuestionnaireFieldWhereInput[]
   OR?: Prisma.QuestionnaireFieldWhereInput[]
   NOT?: Prisma.QuestionnaireFieldWhereInput | Prisma.QuestionnaireFieldWhereInput[]
+  tenantId?: Prisma.StringFilter<"QuestionnaireField"> | string
   questionnairePhaseId?: Prisma.StringFilter<"QuestionnaireField"> | string
   name?: Prisma.StringFilter<"QuestionnaireField"> | string
   label?: Prisma.StringFilter<"QuestionnaireField"> | string
@@ -349,11 +361,13 @@ export type QuestionnaireFieldWhereUniqueInput = Prisma.AtLeast<{
   submittedAt?: Prisma.DateTimeNullableFilter<"QuestionnaireField"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"QuestionnaireField"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"QuestionnaireField"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   questionnairePhase?: Prisma.XOR<Prisma.QuestionnairePhaseScalarRelationFilter, Prisma.QuestionnairePhaseWhereInput>
 }, "id" | "questionnairePhaseId_name">
 
 export type QuestionnaireFieldOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   questionnairePhaseId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   label?: Prisma.SortOrder
@@ -383,6 +397,7 @@ export type QuestionnaireFieldScalarWhereWithAggregatesInput = {
   OR?: Prisma.QuestionnaireFieldScalarWhereWithAggregatesInput[]
   NOT?: Prisma.QuestionnaireFieldScalarWhereWithAggregatesInput | Prisma.QuestionnaireFieldScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"QuestionnaireField"> | string
+  tenantId?: Prisma.StringWithAggregatesFilter<"QuestionnaireField"> | string
   questionnairePhaseId?: Prisma.StringWithAggregatesFilter<"QuestionnaireField"> | string
   name?: Prisma.StringWithAggregatesFilter<"QuestionnaireField"> | string
   label?: Prisma.StringWithAggregatesFilter<"QuestionnaireField"> | string
@@ -420,11 +435,13 @@ export type QuestionnaireFieldCreateInput = {
   submittedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutQuestionnaireFieldsInput
   questionnairePhase: Prisma.QuestionnairePhaseCreateNestedOneWithoutFieldsInput
 }
 
 export type QuestionnaireFieldUncheckedCreateInput = {
   id?: string
+  tenantId: string
   questionnairePhaseId: string
   name: string
   label: string
@@ -462,11 +479,13 @@ export type QuestionnaireFieldUpdateInput = {
   submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutQuestionnaireFieldsNestedInput
   questionnairePhase?: Prisma.QuestionnairePhaseUpdateOneRequiredWithoutFieldsNestedInput
 }
 
 export type QuestionnaireFieldUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   questionnairePhaseId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
@@ -488,6 +507,7 @@ export type QuestionnaireFieldUncheckedUpdateInput = {
 
 export type QuestionnaireFieldCreateManyInput = {
   id?: string
+  tenantId: string
   questionnairePhaseId: string
   name: string
   label: string
@@ -529,6 +549,7 @@ export type QuestionnaireFieldUpdateManyMutationInput = {
 
 export type QuestionnaireFieldUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   questionnairePhaseId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
@@ -571,6 +592,7 @@ export type QuestionnaireFieldQuestionnairePhaseIdNameCompoundUniqueInput = {
 
 export type QuestionnaireFieldCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   questionnairePhaseId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   label?: Prisma.SortOrder
@@ -596,6 +618,7 @@ export type QuestionnaireFieldAvgOrderByAggregateInput = {
 
 export type QuestionnaireFieldMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   questionnairePhaseId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   label?: Prisma.SortOrder
@@ -612,6 +635,7 @@ export type QuestionnaireFieldMaxOrderByAggregateInput = {
 
 export type QuestionnaireFieldMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   questionnairePhaseId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   label?: Prisma.SortOrder
@@ -628,6 +652,48 @@ export type QuestionnaireFieldMinOrderByAggregateInput = {
 
 export type QuestionnaireFieldSumOrderByAggregateInput = {
   order?: Prisma.SortOrder
+}
+
+export type QuestionnaireFieldCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.QuestionnaireFieldCreateWithoutTenantInput, Prisma.QuestionnaireFieldUncheckedCreateWithoutTenantInput> | Prisma.QuestionnaireFieldCreateWithoutTenantInput[] | Prisma.QuestionnaireFieldUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.QuestionnaireFieldCreateOrConnectWithoutTenantInput | Prisma.QuestionnaireFieldCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.QuestionnaireFieldCreateManyTenantInputEnvelope
+  connect?: Prisma.QuestionnaireFieldWhereUniqueInput | Prisma.QuestionnaireFieldWhereUniqueInput[]
+}
+
+export type QuestionnaireFieldUncheckedCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.QuestionnaireFieldCreateWithoutTenantInput, Prisma.QuestionnaireFieldUncheckedCreateWithoutTenantInput> | Prisma.QuestionnaireFieldCreateWithoutTenantInput[] | Prisma.QuestionnaireFieldUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.QuestionnaireFieldCreateOrConnectWithoutTenantInput | Prisma.QuestionnaireFieldCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.QuestionnaireFieldCreateManyTenantInputEnvelope
+  connect?: Prisma.QuestionnaireFieldWhereUniqueInput | Prisma.QuestionnaireFieldWhereUniqueInput[]
+}
+
+export type QuestionnaireFieldUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.QuestionnaireFieldCreateWithoutTenantInput, Prisma.QuestionnaireFieldUncheckedCreateWithoutTenantInput> | Prisma.QuestionnaireFieldCreateWithoutTenantInput[] | Prisma.QuestionnaireFieldUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.QuestionnaireFieldCreateOrConnectWithoutTenantInput | Prisma.QuestionnaireFieldCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.QuestionnaireFieldUpsertWithWhereUniqueWithoutTenantInput | Prisma.QuestionnaireFieldUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.QuestionnaireFieldCreateManyTenantInputEnvelope
+  set?: Prisma.QuestionnaireFieldWhereUniqueInput | Prisma.QuestionnaireFieldWhereUniqueInput[]
+  disconnect?: Prisma.QuestionnaireFieldWhereUniqueInput | Prisma.QuestionnaireFieldWhereUniqueInput[]
+  delete?: Prisma.QuestionnaireFieldWhereUniqueInput | Prisma.QuestionnaireFieldWhereUniqueInput[]
+  connect?: Prisma.QuestionnaireFieldWhereUniqueInput | Prisma.QuestionnaireFieldWhereUniqueInput[]
+  update?: Prisma.QuestionnaireFieldUpdateWithWhereUniqueWithoutTenantInput | Prisma.QuestionnaireFieldUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.QuestionnaireFieldUpdateManyWithWhereWithoutTenantInput | Prisma.QuestionnaireFieldUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.QuestionnaireFieldScalarWhereInput | Prisma.QuestionnaireFieldScalarWhereInput[]
+}
+
+export type QuestionnaireFieldUncheckedUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.QuestionnaireFieldCreateWithoutTenantInput, Prisma.QuestionnaireFieldUncheckedCreateWithoutTenantInput> | Prisma.QuestionnaireFieldCreateWithoutTenantInput[] | Prisma.QuestionnaireFieldUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.QuestionnaireFieldCreateOrConnectWithoutTenantInput | Prisma.QuestionnaireFieldCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.QuestionnaireFieldUpsertWithWhereUniqueWithoutTenantInput | Prisma.QuestionnaireFieldUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.QuestionnaireFieldCreateManyTenantInputEnvelope
+  set?: Prisma.QuestionnaireFieldWhereUniqueInput | Prisma.QuestionnaireFieldWhereUniqueInput[]
+  disconnect?: Prisma.QuestionnaireFieldWhereUniqueInput | Prisma.QuestionnaireFieldWhereUniqueInput[]
+  delete?: Prisma.QuestionnaireFieldWhereUniqueInput | Prisma.QuestionnaireFieldWhereUniqueInput[]
+  connect?: Prisma.QuestionnaireFieldWhereUniqueInput | Prisma.QuestionnaireFieldWhereUniqueInput[]
+  update?: Prisma.QuestionnaireFieldUpdateWithWhereUniqueWithoutTenantInput | Prisma.QuestionnaireFieldUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.QuestionnaireFieldUpdateManyWithWhereWithoutTenantInput | Prisma.QuestionnaireFieldUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.QuestionnaireFieldScalarWhereInput | Prisma.QuestionnaireFieldScalarWhereInput[]
 }
 
 export type QuestionnaireFieldCreateNestedManyWithoutQuestionnairePhaseInput = {
@@ -672,8 +738,30 @@ export type QuestionnaireFieldUncheckedUpdateManyWithoutQuestionnairePhaseNested
   deleteMany?: Prisma.QuestionnaireFieldScalarWhereInput | Prisma.QuestionnaireFieldScalarWhereInput[]
 }
 
-export type QuestionnaireFieldCreateWithoutQuestionnairePhaseInput = {
+export type QuestionnaireFieldCreateWithoutTenantInput = {
   id?: string
+  name: string
+  label: string
+  description?: string | null
+  placeholder?: string | null
+  fieldType: $Enums.FieldType
+  isRequired?: boolean
+  order: number
+  validation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  displayCondition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  defaultValue?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  answer?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isValid?: boolean
+  validationErrors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  submittedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  questionnairePhase: Prisma.QuestionnairePhaseCreateNestedOneWithoutFieldsInput
+}
+
+export type QuestionnaireFieldUncheckedCreateWithoutTenantInput = {
+  id?: string
+  questionnairePhaseId: string
   name: string
   label: string
   description?: string | null
@@ -692,8 +780,81 @@ export type QuestionnaireFieldCreateWithoutQuestionnairePhaseInput = {
   updatedAt?: Date | string
 }
 
+export type QuestionnaireFieldCreateOrConnectWithoutTenantInput = {
+  where: Prisma.QuestionnaireFieldWhereUniqueInput
+  create: Prisma.XOR<Prisma.QuestionnaireFieldCreateWithoutTenantInput, Prisma.QuestionnaireFieldUncheckedCreateWithoutTenantInput>
+}
+
+export type QuestionnaireFieldCreateManyTenantInputEnvelope = {
+  data: Prisma.QuestionnaireFieldCreateManyTenantInput | Prisma.QuestionnaireFieldCreateManyTenantInput[]
+  skipDuplicates?: boolean
+}
+
+export type QuestionnaireFieldUpsertWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.QuestionnaireFieldWhereUniqueInput
+  update: Prisma.XOR<Prisma.QuestionnaireFieldUpdateWithoutTenantInput, Prisma.QuestionnaireFieldUncheckedUpdateWithoutTenantInput>
+  create: Prisma.XOR<Prisma.QuestionnaireFieldCreateWithoutTenantInput, Prisma.QuestionnaireFieldUncheckedCreateWithoutTenantInput>
+}
+
+export type QuestionnaireFieldUpdateWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.QuestionnaireFieldWhereUniqueInput
+  data: Prisma.XOR<Prisma.QuestionnaireFieldUpdateWithoutTenantInput, Prisma.QuestionnaireFieldUncheckedUpdateWithoutTenantInput>
+}
+
+export type QuestionnaireFieldUpdateManyWithWhereWithoutTenantInput = {
+  where: Prisma.QuestionnaireFieldScalarWhereInput
+  data: Prisma.XOR<Prisma.QuestionnaireFieldUpdateManyMutationInput, Prisma.QuestionnaireFieldUncheckedUpdateManyWithoutTenantInput>
+}
+
+export type QuestionnaireFieldScalarWhereInput = {
+  AND?: Prisma.QuestionnaireFieldScalarWhereInput | Prisma.QuestionnaireFieldScalarWhereInput[]
+  OR?: Prisma.QuestionnaireFieldScalarWhereInput[]
+  NOT?: Prisma.QuestionnaireFieldScalarWhereInput | Prisma.QuestionnaireFieldScalarWhereInput[]
+  id?: Prisma.StringFilter<"QuestionnaireField"> | string
+  tenantId?: Prisma.StringFilter<"QuestionnaireField"> | string
+  questionnairePhaseId?: Prisma.StringFilter<"QuestionnaireField"> | string
+  name?: Prisma.StringFilter<"QuestionnaireField"> | string
+  label?: Prisma.StringFilter<"QuestionnaireField"> | string
+  description?: Prisma.StringNullableFilter<"QuestionnaireField"> | string | null
+  placeholder?: Prisma.StringNullableFilter<"QuestionnaireField"> | string | null
+  fieldType?: Prisma.EnumFieldTypeFilter<"QuestionnaireField"> | $Enums.FieldType
+  isRequired?: Prisma.BoolFilter<"QuestionnaireField"> | boolean
+  order?: Prisma.IntFilter<"QuestionnaireField"> | number
+  validation?: Prisma.JsonNullableFilter<"QuestionnaireField">
+  displayCondition?: Prisma.JsonNullableFilter<"QuestionnaireField">
+  defaultValue?: Prisma.JsonNullableFilter<"QuestionnaireField">
+  answer?: Prisma.JsonNullableFilter<"QuestionnaireField">
+  isValid?: Prisma.BoolFilter<"QuestionnaireField"> | boolean
+  validationErrors?: Prisma.JsonNullableFilter<"QuestionnaireField">
+  submittedAt?: Prisma.DateTimeNullableFilter<"QuestionnaireField"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"QuestionnaireField"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"QuestionnaireField"> | Date | string
+}
+
+export type QuestionnaireFieldCreateWithoutQuestionnairePhaseInput = {
+  id?: string
+  name: string
+  label: string
+  description?: string | null
+  placeholder?: string | null
+  fieldType: $Enums.FieldType
+  isRequired?: boolean
+  order: number
+  validation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  displayCondition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  defaultValue?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  answer?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isValid?: boolean
+  validationErrors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  submittedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutQuestionnaireFieldsInput
+}
+
 export type QuestionnaireFieldUncheckedCreateWithoutQuestionnairePhaseInput = {
   id?: string
+  tenantId: string
   name: string
   label: string
   description?: string | null
@@ -738,32 +899,93 @@ export type QuestionnaireFieldUpdateManyWithWhereWithoutQuestionnairePhaseInput 
   data: Prisma.XOR<Prisma.QuestionnaireFieldUpdateManyMutationInput, Prisma.QuestionnaireFieldUncheckedUpdateManyWithoutQuestionnairePhaseInput>
 }
 
-export type QuestionnaireFieldScalarWhereInput = {
-  AND?: Prisma.QuestionnaireFieldScalarWhereInput | Prisma.QuestionnaireFieldScalarWhereInput[]
-  OR?: Prisma.QuestionnaireFieldScalarWhereInput[]
-  NOT?: Prisma.QuestionnaireFieldScalarWhereInput | Prisma.QuestionnaireFieldScalarWhereInput[]
-  id?: Prisma.StringFilter<"QuestionnaireField"> | string
-  questionnairePhaseId?: Prisma.StringFilter<"QuestionnaireField"> | string
-  name?: Prisma.StringFilter<"QuestionnaireField"> | string
-  label?: Prisma.StringFilter<"QuestionnaireField"> | string
-  description?: Prisma.StringNullableFilter<"QuestionnaireField"> | string | null
-  placeholder?: Prisma.StringNullableFilter<"QuestionnaireField"> | string | null
-  fieldType?: Prisma.EnumFieldTypeFilter<"QuestionnaireField"> | $Enums.FieldType
-  isRequired?: Prisma.BoolFilter<"QuestionnaireField"> | boolean
-  order?: Prisma.IntFilter<"QuestionnaireField"> | number
-  validation?: Prisma.JsonNullableFilter<"QuestionnaireField">
-  displayCondition?: Prisma.JsonNullableFilter<"QuestionnaireField">
-  defaultValue?: Prisma.JsonNullableFilter<"QuestionnaireField">
-  answer?: Prisma.JsonNullableFilter<"QuestionnaireField">
-  isValid?: Prisma.BoolFilter<"QuestionnaireField"> | boolean
-  validationErrors?: Prisma.JsonNullableFilter<"QuestionnaireField">
-  submittedAt?: Prisma.DateTimeNullableFilter<"QuestionnaireField"> | Date | string | null
-  createdAt?: Prisma.DateTimeFilter<"QuestionnaireField"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"QuestionnaireField"> | Date | string
+export type QuestionnaireFieldCreateManyTenantInput = {
+  id?: string
+  questionnairePhaseId: string
+  name: string
+  label: string
+  description?: string | null
+  placeholder?: string | null
+  fieldType: $Enums.FieldType
+  isRequired?: boolean
+  order: number
+  validation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  displayCondition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  defaultValue?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  answer?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isValid?: boolean
+  validationErrors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  submittedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type QuestionnaireFieldUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  placeholder?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType
+  isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  validation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  displayCondition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  defaultValue?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  answer?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isValid?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  validationErrors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  questionnairePhase?: Prisma.QuestionnairePhaseUpdateOneRequiredWithoutFieldsNestedInput
+}
+
+export type QuestionnaireFieldUncheckedUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  questionnairePhaseId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  placeholder?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType
+  isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  validation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  displayCondition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  defaultValue?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  answer?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isValid?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  validationErrors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type QuestionnaireFieldUncheckedUpdateManyWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  questionnairePhaseId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  placeholder?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType
+  isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  validation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  displayCondition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  defaultValue?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  answer?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isValid?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  validationErrors?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type QuestionnaireFieldCreateManyQuestionnairePhaseInput = {
   id?: string
+  tenantId: string
   name: string
   label: string
   description?: string | null
@@ -800,10 +1022,12 @@ export type QuestionnaireFieldUpdateWithoutQuestionnairePhaseInput = {
   submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutQuestionnaireFieldsNestedInput
 }
 
 export type QuestionnaireFieldUncheckedUpdateWithoutQuestionnairePhaseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -824,6 +1048,7 @@ export type QuestionnaireFieldUncheckedUpdateWithoutQuestionnairePhaseInput = {
 
 export type QuestionnaireFieldUncheckedUpdateManyWithoutQuestionnairePhaseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -846,6 +1071,7 @@ export type QuestionnaireFieldUncheckedUpdateManyWithoutQuestionnairePhaseInput 
 
 export type QuestionnaireFieldSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   questionnairePhaseId?: boolean
   name?: boolean
   label?: boolean
@@ -863,6 +1089,7 @@ export type QuestionnaireFieldSelect<ExtArgs extends runtime.Types.Extensions.In
   submittedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   questionnairePhase?: boolean | Prisma.QuestionnairePhaseDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["questionnaireField"]>
 
@@ -870,6 +1097,7 @@ export type QuestionnaireFieldSelect<ExtArgs extends runtime.Types.Extensions.In
 
 export type QuestionnaireFieldSelectScalar = {
   id?: boolean
+  tenantId?: boolean
   questionnairePhaseId?: boolean
   name?: boolean
   label?: boolean
@@ -889,18 +1117,21 @@ export type QuestionnaireFieldSelectScalar = {
   updatedAt?: boolean
 }
 
-export type QuestionnaireFieldOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "questionnairePhaseId" | "name" | "label" | "description" | "placeholder" | "fieldType" | "isRequired" | "order" | "validation" | "displayCondition" | "defaultValue" | "answer" | "isValid" | "validationErrors" | "submittedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["questionnaireField"]>
+export type QuestionnaireFieldOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "questionnairePhaseId" | "name" | "label" | "description" | "placeholder" | "fieldType" | "isRequired" | "order" | "validation" | "displayCondition" | "defaultValue" | "answer" | "isValid" | "validationErrors" | "submittedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["questionnaireField"]>
 export type QuestionnaireFieldInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   questionnairePhase?: boolean | Prisma.QuestionnairePhaseDefaultArgs<ExtArgs>
 }
 
 export type $QuestionnaireFieldPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "QuestionnaireField"
   objects: {
+    tenant: Prisma.$TenantPayload<ExtArgs>
     questionnairePhase: Prisma.$QuestionnairePhasePayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    tenantId: string
     questionnairePhaseId: string
     name: string
     label: string
@@ -1258,6 +1489,7 @@ readonly fields: QuestionnaireFieldFieldRefs;
  */
 export interface Prisma__QuestionnaireFieldClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   questionnairePhase<T extends Prisma.QuestionnairePhaseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QuestionnairePhaseDefaultArgs<ExtArgs>>): Prisma.Prisma__QuestionnairePhaseClient<runtime.Types.Result.GetResult<Prisma.$QuestionnairePhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1289,6 +1521,7 @@ export interface Prisma__QuestionnaireFieldClient<T, Null = never, ExtArgs exten
  */
 export interface QuestionnaireFieldFieldRefs {
   readonly id: Prisma.FieldRef<"QuestionnaireField", 'String'>
+  readonly tenantId: Prisma.FieldRef<"QuestionnaireField", 'String'>
   readonly questionnairePhaseId: Prisma.FieldRef<"QuestionnaireField", 'String'>
   readonly name: Prisma.FieldRef<"QuestionnaireField", 'String'>
   readonly label: Prisma.FieldRef<"QuestionnaireField", 'String'>

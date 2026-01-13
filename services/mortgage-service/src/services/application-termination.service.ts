@@ -351,6 +351,7 @@ export function createApplicationTerminationService(prisma: AnyPrismaClient = de
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
+                    tenantId: application.tenantId,
                     eventType: 'APPLICATION.TERMINATION_REQUESTED',
                     aggregateType: 'Application',
                     aggregateId: applicationId,
@@ -475,6 +476,7 @@ export function createApplicationTerminationService(prisma: AnyPrismaClient = de
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
+                    tenantId: application.tenantId,
                     eventType: 'APPLICATION.TERMINATION_INITIATED',
                     aggregateType: 'Application',
                     aggregateId: applicationId,
@@ -532,6 +534,7 @@ export function createApplicationTerminationService(prisma: AnyPrismaClient = de
                 await tx.domainEvent.create({
                     data: {
                         id: uuidv4(),
+                        tenantId: termination.application.tenantId,
                         eventType: 'APPLICATION.TERMINATION_REJECTED',
                         aggregateType: 'Application',
                         aggregateId: termination.applicationId,
@@ -581,6 +584,7 @@ export function createApplicationTerminationService(prisma: AnyPrismaClient = de
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
+                    tenantId: termination.application.tenantId,
                     eventType: 'APPLICATION.TERMINATION_APPROVED',
                     aggregateType: 'Application',
                     aggregateId: termination.applicationId,
@@ -667,6 +671,7 @@ export function createApplicationTerminationService(prisma: AnyPrismaClient = de
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
+                    tenantId: termination.tenantId,
                     eventType: 'APPLICATION.REFUND_INITIATED',
                     aggregateType: 'Application',
                     aggregateId: termination.applicationId,
@@ -722,6 +727,7 @@ export function createApplicationTerminationService(prisma: AnyPrismaClient = de
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
+                    tenantId: termination.tenantId,
                     eventType: 'APPLICATION.REFUND_COMPLETED',
                     aggregateType: 'Application',
                     aggregateId: termination.applicationId,
@@ -817,6 +823,7 @@ export function createApplicationTerminationService(prisma: AnyPrismaClient = de
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
+                    tenantId: termination.tenantId,
                     eventType: 'APPLICATION.TERMINATED',
                     aggregateType: 'Application',
                     aggregateId: termination.applicationId,
@@ -907,6 +914,7 @@ export function createApplicationTerminationService(prisma: AnyPrismaClient = de
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
+                    tenantId: termination.tenantId,
                     eventType: 'APPLICATION.TERMINATION_CANCELLED',
                     aggregateType: 'Application',
                     aggregateId: termination.applicationId,

@@ -36,6 +36,7 @@ export type ApplicationPhaseSumAggregateOutputType = {
 
 export type ApplicationPhaseMinAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   applicationId: string | null
   name: string | null
   description: string | null
@@ -55,6 +56,7 @@ export type ApplicationPhaseMinAggregateOutputType = {
 
 export type ApplicationPhaseMaxAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   applicationId: string | null
   name: string | null
   description: string | null
@@ -74,6 +76,7 @@ export type ApplicationPhaseMaxAggregateOutputType = {
 
 export type ApplicationPhaseCountAggregateOutputType = {
   id: number
+  tenantId: number
   applicationId: number
   name: number
   description: number
@@ -103,6 +106,7 @@ export type ApplicationPhaseSumAggregateInputType = {
 
 export type ApplicationPhaseMinAggregateInputType = {
   id?: true
+  tenantId?: true
   applicationId?: true
   name?: true
   description?: true
@@ -122,6 +126,7 @@ export type ApplicationPhaseMinAggregateInputType = {
 
 export type ApplicationPhaseMaxAggregateInputType = {
   id?: true
+  tenantId?: true
   applicationId?: true
   name?: true
   description?: true
@@ -141,6 +146,7 @@ export type ApplicationPhaseMaxAggregateInputType = {
 
 export type ApplicationPhaseCountAggregateInputType = {
   id?: true
+  tenantId?: true
   applicationId?: true
   name?: true
   description?: true
@@ -247,6 +253,7 @@ export type ApplicationPhaseGroupByArgs<ExtArgs extends runtime.Types.Extensions
 
 export type ApplicationPhaseGroupByOutputType = {
   id: string
+  tenantId: string
   applicationId: string
   name: string
   description: string | null
@@ -289,6 +296,7 @@ export type ApplicationPhaseWhereInput = {
   OR?: Prisma.ApplicationPhaseWhereInput[]
   NOT?: Prisma.ApplicationPhaseWhereInput | Prisma.ApplicationPhaseWhereInput[]
   id?: Prisma.StringFilter<"ApplicationPhase"> | string
+  tenantId?: Prisma.StringFilter<"ApplicationPhase"> | string
   applicationId?: Prisma.StringFilter<"ApplicationPhase"> | string
   name?: Prisma.StringFilter<"ApplicationPhase"> | string
   description?: Prisma.StringNullableFilter<"ApplicationPhase"> | string | null
@@ -304,6 +312,7 @@ export type ApplicationPhaseWhereInput = {
   requiresPreviousPhaseCompletion?: Prisma.BoolFilter<"ApplicationPhase"> | boolean
   createdAt?: Prisma.DateTimeFilter<"ApplicationPhase"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ApplicationPhase"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   application?: Prisma.XOR<Prisma.ApplicationScalarRelationFilter, Prisma.ApplicationWhereInput>
   questionnairePhase?: Prisma.XOR<Prisma.QuestionnairePhaseNullableScalarRelationFilter, Prisma.QuestionnairePhaseWhereInput> | null
   documentationPhase?: Prisma.XOR<Prisma.DocumentationPhaseNullableScalarRelationFilter, Prisma.DocumentationPhaseWhereInput> | null
@@ -314,6 +323,7 @@ export type ApplicationPhaseWhereInput = {
 
 export type ApplicationPhaseOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   applicationId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -329,6 +339,7 @@ export type ApplicationPhaseOrderByWithRelationInput = {
   requiresPreviousPhaseCompletion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  tenant?: Prisma.TenantOrderByWithRelationInput
   application?: Prisma.ApplicationOrderByWithRelationInput
   questionnairePhase?: Prisma.QuestionnairePhaseOrderByWithRelationInput
   documentationPhase?: Prisma.DocumentationPhaseOrderByWithRelationInput
@@ -343,6 +354,7 @@ export type ApplicationPhaseWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.ApplicationPhaseWhereInput | Prisma.ApplicationPhaseWhereInput[]
   OR?: Prisma.ApplicationPhaseWhereInput[]
   NOT?: Prisma.ApplicationPhaseWhereInput | Prisma.ApplicationPhaseWhereInput[]
+  tenantId?: Prisma.StringFilter<"ApplicationPhase"> | string
   applicationId?: Prisma.StringFilter<"ApplicationPhase"> | string
   name?: Prisma.StringFilter<"ApplicationPhase"> | string
   description?: Prisma.StringNullableFilter<"ApplicationPhase"> | string | null
@@ -358,6 +370,7 @@ export type ApplicationPhaseWhereUniqueInput = Prisma.AtLeast<{
   requiresPreviousPhaseCompletion?: Prisma.BoolFilter<"ApplicationPhase"> | boolean
   createdAt?: Prisma.DateTimeFilter<"ApplicationPhase"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ApplicationPhase"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   application?: Prisma.XOR<Prisma.ApplicationScalarRelationFilter, Prisma.ApplicationWhereInput>
   questionnairePhase?: Prisma.XOR<Prisma.QuestionnairePhaseNullableScalarRelationFilter, Prisma.QuestionnairePhaseWhereInput> | null
   documentationPhase?: Prisma.XOR<Prisma.DocumentationPhaseNullableScalarRelationFilter, Prisma.DocumentationPhaseWhereInput> | null
@@ -368,6 +381,7 @@ export type ApplicationPhaseWhereUniqueInput = Prisma.AtLeast<{
 
 export type ApplicationPhaseOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   applicationId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -395,6 +409,7 @@ export type ApplicationPhaseScalarWhereWithAggregatesInput = {
   OR?: Prisma.ApplicationPhaseScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ApplicationPhaseScalarWhereWithAggregatesInput | Prisma.ApplicationPhaseScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"ApplicationPhase"> | string
+  tenantId?: Prisma.StringWithAggregatesFilter<"ApplicationPhase"> | string
   applicationId?: Prisma.StringWithAggregatesFilter<"ApplicationPhase"> | string
   name?: Prisma.StringWithAggregatesFilter<"ApplicationPhase"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"ApplicationPhase"> | string | null
@@ -428,6 +443,7 @@ export type ApplicationPhaseCreateInput = {
   requiresPreviousPhaseCompletion?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutApplicationPhasesInput
   application: Prisma.ApplicationCreateNestedOneWithoutPhasesInput
   questionnairePhase?: Prisma.QuestionnairePhaseCreateNestedOneWithoutPhaseInput
   documentationPhase?: Prisma.DocumentationPhaseCreateNestedOneWithoutPhaseInput
@@ -438,6 +454,7 @@ export type ApplicationPhaseCreateInput = {
 
 export type ApplicationPhaseUncheckedCreateInput = {
   id?: string
+  tenantId: string
   applicationId: string
   name: string
   description?: string | null
@@ -476,6 +493,7 @@ export type ApplicationPhaseUpdateInput = {
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutApplicationPhasesNestedInput
   application?: Prisma.ApplicationUpdateOneRequiredWithoutPhasesNestedInput
   questionnairePhase?: Prisma.QuestionnairePhaseUpdateOneWithoutPhaseNestedInput
   documentationPhase?: Prisma.DocumentationPhaseUpdateOneWithoutPhaseNestedInput
@@ -486,6 +504,7 @@ export type ApplicationPhaseUpdateInput = {
 
 export type ApplicationPhaseUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -510,6 +529,7 @@ export type ApplicationPhaseUncheckedUpdateInput = {
 
 export type ApplicationPhaseCreateManyInput = {
   id?: string
+  tenantId: string
   applicationId: string
   name: string
   description?: string | null
@@ -547,6 +567,7 @@ export type ApplicationPhaseUpdateManyMutationInput = {
 
 export type ApplicationPhaseUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -564,11 +585,6 @@ export type ApplicationPhaseUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type ApplicationPhaseNullableScalarRelationFilter = {
-  is?: Prisma.ApplicationPhaseWhereInput | null
-  isNot?: Prisma.ApplicationPhaseWhereInput | null
-}
-
 export type ApplicationPhaseListRelationFilter = {
   every?: Prisma.ApplicationPhaseWhereInput
   some?: Prisma.ApplicationPhaseWhereInput
@@ -579,6 +595,11 @@ export type ApplicationPhaseOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type ApplicationPhaseNullableScalarRelationFilter = {
+  is?: Prisma.ApplicationPhaseWhereInput | null
+  isNot?: Prisma.ApplicationPhaseWhereInput | null
+}
+
 export type ApplicationPhaseOrderByRelevanceInput = {
   fields: Prisma.ApplicationPhaseOrderByRelevanceFieldEnum | Prisma.ApplicationPhaseOrderByRelevanceFieldEnum[]
   sort: Prisma.SortOrder
@@ -587,6 +608,7 @@ export type ApplicationPhaseOrderByRelevanceInput = {
 
 export type ApplicationPhaseCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   applicationId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -610,6 +632,7 @@ export type ApplicationPhaseAvgOrderByAggregateInput = {
 
 export type ApplicationPhaseMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   applicationId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -629,6 +652,7 @@ export type ApplicationPhaseMaxOrderByAggregateInput = {
 
 export type ApplicationPhaseMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   applicationId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -653,6 +677,48 @@ export type ApplicationPhaseSumOrderByAggregateInput = {
 export type ApplicationPhaseScalarRelationFilter = {
   is?: Prisma.ApplicationPhaseWhereInput
   isNot?: Prisma.ApplicationPhaseWhereInput
+}
+
+export type ApplicationPhaseCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.ApplicationPhaseCreateWithoutTenantInput, Prisma.ApplicationPhaseUncheckedCreateWithoutTenantInput> | Prisma.ApplicationPhaseCreateWithoutTenantInput[] | Prisma.ApplicationPhaseUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.ApplicationPhaseCreateOrConnectWithoutTenantInput | Prisma.ApplicationPhaseCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.ApplicationPhaseCreateManyTenantInputEnvelope
+  connect?: Prisma.ApplicationPhaseWhereUniqueInput | Prisma.ApplicationPhaseWhereUniqueInput[]
+}
+
+export type ApplicationPhaseUncheckedCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.ApplicationPhaseCreateWithoutTenantInput, Prisma.ApplicationPhaseUncheckedCreateWithoutTenantInput> | Prisma.ApplicationPhaseCreateWithoutTenantInput[] | Prisma.ApplicationPhaseUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.ApplicationPhaseCreateOrConnectWithoutTenantInput | Prisma.ApplicationPhaseCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.ApplicationPhaseCreateManyTenantInputEnvelope
+  connect?: Prisma.ApplicationPhaseWhereUniqueInput | Prisma.ApplicationPhaseWhereUniqueInput[]
+}
+
+export type ApplicationPhaseUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.ApplicationPhaseCreateWithoutTenantInput, Prisma.ApplicationPhaseUncheckedCreateWithoutTenantInput> | Prisma.ApplicationPhaseCreateWithoutTenantInput[] | Prisma.ApplicationPhaseUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.ApplicationPhaseCreateOrConnectWithoutTenantInput | Prisma.ApplicationPhaseCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.ApplicationPhaseUpsertWithWhereUniqueWithoutTenantInput | Prisma.ApplicationPhaseUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.ApplicationPhaseCreateManyTenantInputEnvelope
+  set?: Prisma.ApplicationPhaseWhereUniqueInput | Prisma.ApplicationPhaseWhereUniqueInput[]
+  disconnect?: Prisma.ApplicationPhaseWhereUniqueInput | Prisma.ApplicationPhaseWhereUniqueInput[]
+  delete?: Prisma.ApplicationPhaseWhereUniqueInput | Prisma.ApplicationPhaseWhereUniqueInput[]
+  connect?: Prisma.ApplicationPhaseWhereUniqueInput | Prisma.ApplicationPhaseWhereUniqueInput[]
+  update?: Prisma.ApplicationPhaseUpdateWithWhereUniqueWithoutTenantInput | Prisma.ApplicationPhaseUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.ApplicationPhaseUpdateManyWithWhereWithoutTenantInput | Prisma.ApplicationPhaseUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.ApplicationPhaseScalarWhereInput | Prisma.ApplicationPhaseScalarWhereInput[]
+}
+
+export type ApplicationPhaseUncheckedUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.ApplicationPhaseCreateWithoutTenantInput, Prisma.ApplicationPhaseUncheckedCreateWithoutTenantInput> | Prisma.ApplicationPhaseCreateWithoutTenantInput[] | Prisma.ApplicationPhaseUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.ApplicationPhaseCreateOrConnectWithoutTenantInput | Prisma.ApplicationPhaseCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.ApplicationPhaseUpsertWithWhereUniqueWithoutTenantInput | Prisma.ApplicationPhaseUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.ApplicationPhaseCreateManyTenantInputEnvelope
+  set?: Prisma.ApplicationPhaseWhereUniqueInput | Prisma.ApplicationPhaseWhereUniqueInput[]
+  disconnect?: Prisma.ApplicationPhaseWhereUniqueInput | Prisma.ApplicationPhaseWhereUniqueInput[]
+  delete?: Prisma.ApplicationPhaseWhereUniqueInput | Prisma.ApplicationPhaseWhereUniqueInput[]
+  connect?: Prisma.ApplicationPhaseWhereUniqueInput | Prisma.ApplicationPhaseWhereUniqueInput[]
+  update?: Prisma.ApplicationPhaseUpdateWithWhereUniqueWithoutTenantInput | Prisma.ApplicationPhaseUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.ApplicationPhaseUpdateManyWithWhereWithoutTenantInput | Prisma.ApplicationPhaseUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.ApplicationPhaseScalarWhereInput | Prisma.ApplicationPhaseScalarWhereInput[]
 }
 
 export type ApplicationPhaseCreateNestedOneWithoutCurrentForApplicationsInput = {
@@ -775,7 +841,7 @@ export type ApplicationPhaseUpdateOneWithoutPaymentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ApplicationPhaseUpdateToOneWithWhereWithoutPaymentsInput, Prisma.ApplicationPhaseUpdateWithoutPaymentsInput>, Prisma.ApplicationPhaseUncheckedUpdateWithoutPaymentsInput>
 }
 
-export type ApplicationPhaseCreateWithoutCurrentForApplicationsInput = {
+export type ApplicationPhaseCreateWithoutTenantInput = {
   id?: string
   name: string
   description?: string | null
@@ -796,10 +862,109 @@ export type ApplicationPhaseCreateWithoutCurrentForApplicationsInput = {
   documentationPhase?: Prisma.DocumentationPhaseCreateNestedOneWithoutPhaseInput
   paymentPhase?: Prisma.PaymentPhaseCreateNestedOneWithoutPhaseInput
   payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPhaseInput
+  currentForApplications?: Prisma.ApplicationCreateNestedManyWithoutCurrentPhaseInput
+}
+
+export type ApplicationPhaseUncheckedCreateWithoutTenantInput = {
+  id?: string
+  applicationId: string
+  name: string
+  description?: string | null
+  phaseCategory: $Enums.PhaseCategory
+  phaseType: $Enums.PhaseType
+  order: number
+  status?: $Enums.PhaseStatus
+  dueDate?: Date | string | null
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  activatedAt?: Date | string | null
+  completedAt?: Date | string | null
+  requiresPreviousPhaseCompletion?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  questionnairePhase?: Prisma.QuestionnairePhaseUncheckedCreateNestedOneWithoutPhaseInput
+  documentationPhase?: Prisma.DocumentationPhaseUncheckedCreateNestedOneWithoutPhaseInput
+  paymentPhase?: Prisma.PaymentPhaseUncheckedCreateNestedOneWithoutPhaseInput
+  payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPhaseInput
+  currentForApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutCurrentPhaseInput
+}
+
+export type ApplicationPhaseCreateOrConnectWithoutTenantInput = {
+  where: Prisma.ApplicationPhaseWhereUniqueInput
+  create: Prisma.XOR<Prisma.ApplicationPhaseCreateWithoutTenantInput, Prisma.ApplicationPhaseUncheckedCreateWithoutTenantInput>
+}
+
+export type ApplicationPhaseCreateManyTenantInputEnvelope = {
+  data: Prisma.ApplicationPhaseCreateManyTenantInput | Prisma.ApplicationPhaseCreateManyTenantInput[]
+  skipDuplicates?: boolean
+}
+
+export type ApplicationPhaseUpsertWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.ApplicationPhaseWhereUniqueInput
+  update: Prisma.XOR<Prisma.ApplicationPhaseUpdateWithoutTenantInput, Prisma.ApplicationPhaseUncheckedUpdateWithoutTenantInput>
+  create: Prisma.XOR<Prisma.ApplicationPhaseCreateWithoutTenantInput, Prisma.ApplicationPhaseUncheckedCreateWithoutTenantInput>
+}
+
+export type ApplicationPhaseUpdateWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.ApplicationPhaseWhereUniqueInput
+  data: Prisma.XOR<Prisma.ApplicationPhaseUpdateWithoutTenantInput, Prisma.ApplicationPhaseUncheckedUpdateWithoutTenantInput>
+}
+
+export type ApplicationPhaseUpdateManyWithWhereWithoutTenantInput = {
+  where: Prisma.ApplicationPhaseScalarWhereInput
+  data: Prisma.XOR<Prisma.ApplicationPhaseUpdateManyMutationInput, Prisma.ApplicationPhaseUncheckedUpdateManyWithoutTenantInput>
+}
+
+export type ApplicationPhaseScalarWhereInput = {
+  AND?: Prisma.ApplicationPhaseScalarWhereInput | Prisma.ApplicationPhaseScalarWhereInput[]
+  OR?: Prisma.ApplicationPhaseScalarWhereInput[]
+  NOT?: Prisma.ApplicationPhaseScalarWhereInput | Prisma.ApplicationPhaseScalarWhereInput[]
+  id?: Prisma.StringFilter<"ApplicationPhase"> | string
+  tenantId?: Prisma.StringFilter<"ApplicationPhase"> | string
+  applicationId?: Prisma.StringFilter<"ApplicationPhase"> | string
+  name?: Prisma.StringFilter<"ApplicationPhase"> | string
+  description?: Prisma.StringNullableFilter<"ApplicationPhase"> | string | null
+  phaseCategory?: Prisma.EnumPhaseCategoryFilter<"ApplicationPhase"> | $Enums.PhaseCategory
+  phaseType?: Prisma.EnumPhaseTypeFilter<"ApplicationPhase"> | $Enums.PhaseType
+  order?: Prisma.IntFilter<"ApplicationPhase"> | number
+  status?: Prisma.EnumPhaseStatusFilter<"ApplicationPhase"> | $Enums.PhaseStatus
+  dueDate?: Prisma.DateTimeNullableFilter<"ApplicationPhase"> | Date | string | null
+  startDate?: Prisma.DateTimeNullableFilter<"ApplicationPhase"> | Date | string | null
+  endDate?: Prisma.DateTimeNullableFilter<"ApplicationPhase"> | Date | string | null
+  activatedAt?: Prisma.DateTimeNullableFilter<"ApplicationPhase"> | Date | string | null
+  completedAt?: Prisma.DateTimeNullableFilter<"ApplicationPhase"> | Date | string | null
+  requiresPreviousPhaseCompletion?: Prisma.BoolFilter<"ApplicationPhase"> | boolean
+  createdAt?: Prisma.DateTimeFilter<"ApplicationPhase"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ApplicationPhase"> | Date | string
+}
+
+export type ApplicationPhaseCreateWithoutCurrentForApplicationsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  phaseCategory: $Enums.PhaseCategory
+  phaseType: $Enums.PhaseType
+  order: number
+  status?: $Enums.PhaseStatus
+  dueDate?: Date | string | null
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  activatedAt?: Date | string | null
+  completedAt?: Date | string | null
+  requiresPreviousPhaseCompletion?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutApplicationPhasesInput
+  application: Prisma.ApplicationCreateNestedOneWithoutPhasesInput
+  questionnairePhase?: Prisma.QuestionnairePhaseCreateNestedOneWithoutPhaseInput
+  documentationPhase?: Prisma.DocumentationPhaseCreateNestedOneWithoutPhaseInput
+  paymentPhase?: Prisma.PaymentPhaseCreateNestedOneWithoutPhaseInput
+  payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPhaseInput
 }
 
 export type ApplicationPhaseUncheckedCreateWithoutCurrentForApplicationsInput = {
   id?: string
+  tenantId: string
   applicationId: string
   name: string
   description?: string | null
@@ -842,6 +1007,7 @@ export type ApplicationPhaseCreateWithoutApplicationInput = {
   requiresPreviousPhaseCompletion?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutApplicationPhasesInput
   questionnairePhase?: Prisma.QuestionnairePhaseCreateNestedOneWithoutPhaseInput
   documentationPhase?: Prisma.DocumentationPhaseCreateNestedOneWithoutPhaseInput
   paymentPhase?: Prisma.PaymentPhaseCreateNestedOneWithoutPhaseInput
@@ -851,6 +1017,7 @@ export type ApplicationPhaseCreateWithoutApplicationInput = {
 
 export type ApplicationPhaseUncheckedCreateWithoutApplicationInput = {
   id?: string
+  tenantId: string
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
@@ -909,6 +1076,7 @@ export type ApplicationPhaseUpdateWithoutCurrentForApplicationsInput = {
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutApplicationPhasesNestedInput
   application?: Prisma.ApplicationUpdateOneRequiredWithoutPhasesNestedInput
   questionnairePhase?: Prisma.QuestionnairePhaseUpdateOneWithoutPhaseNestedInput
   documentationPhase?: Prisma.DocumentationPhaseUpdateOneWithoutPhaseNestedInput
@@ -918,6 +1086,7 @@ export type ApplicationPhaseUpdateWithoutCurrentForApplicationsInput = {
 
 export type ApplicationPhaseUncheckedUpdateWithoutCurrentForApplicationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -955,28 +1124,6 @@ export type ApplicationPhaseUpdateManyWithWhereWithoutApplicationInput = {
   data: Prisma.XOR<Prisma.ApplicationPhaseUpdateManyMutationInput, Prisma.ApplicationPhaseUncheckedUpdateManyWithoutApplicationInput>
 }
 
-export type ApplicationPhaseScalarWhereInput = {
-  AND?: Prisma.ApplicationPhaseScalarWhereInput | Prisma.ApplicationPhaseScalarWhereInput[]
-  OR?: Prisma.ApplicationPhaseScalarWhereInput[]
-  NOT?: Prisma.ApplicationPhaseScalarWhereInput | Prisma.ApplicationPhaseScalarWhereInput[]
-  id?: Prisma.StringFilter<"ApplicationPhase"> | string
-  applicationId?: Prisma.StringFilter<"ApplicationPhase"> | string
-  name?: Prisma.StringFilter<"ApplicationPhase"> | string
-  description?: Prisma.StringNullableFilter<"ApplicationPhase"> | string | null
-  phaseCategory?: Prisma.EnumPhaseCategoryFilter<"ApplicationPhase"> | $Enums.PhaseCategory
-  phaseType?: Prisma.EnumPhaseTypeFilter<"ApplicationPhase"> | $Enums.PhaseType
-  order?: Prisma.IntFilter<"ApplicationPhase"> | number
-  status?: Prisma.EnumPhaseStatusFilter<"ApplicationPhase"> | $Enums.PhaseStatus
-  dueDate?: Prisma.DateTimeNullableFilter<"ApplicationPhase"> | Date | string | null
-  startDate?: Prisma.DateTimeNullableFilter<"ApplicationPhase"> | Date | string | null
-  endDate?: Prisma.DateTimeNullableFilter<"ApplicationPhase"> | Date | string | null
-  activatedAt?: Prisma.DateTimeNullableFilter<"ApplicationPhase"> | Date | string | null
-  completedAt?: Prisma.DateTimeNullableFilter<"ApplicationPhase"> | Date | string | null
-  requiresPreviousPhaseCompletion?: Prisma.BoolFilter<"ApplicationPhase"> | boolean
-  createdAt?: Prisma.DateTimeFilter<"ApplicationPhase"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"ApplicationPhase"> | Date | string
-}
-
 export type ApplicationPhaseCreateWithoutQuestionnairePhaseInput = {
   id?: string
   name: string
@@ -993,6 +1140,7 @@ export type ApplicationPhaseCreateWithoutQuestionnairePhaseInput = {
   requiresPreviousPhaseCompletion?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutApplicationPhasesInput
   application: Prisma.ApplicationCreateNestedOneWithoutPhasesInput
   documentationPhase?: Prisma.DocumentationPhaseCreateNestedOneWithoutPhaseInput
   paymentPhase?: Prisma.PaymentPhaseCreateNestedOneWithoutPhaseInput
@@ -1002,6 +1150,7 @@ export type ApplicationPhaseCreateWithoutQuestionnairePhaseInput = {
 
 export type ApplicationPhaseUncheckedCreateWithoutQuestionnairePhaseInput = {
   id?: string
+  tenantId: string
   applicationId: string
   name: string
   description?: string | null
@@ -1055,6 +1204,7 @@ export type ApplicationPhaseUpdateWithoutQuestionnairePhaseInput = {
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutApplicationPhasesNestedInput
   application?: Prisma.ApplicationUpdateOneRequiredWithoutPhasesNestedInput
   documentationPhase?: Prisma.DocumentationPhaseUpdateOneWithoutPhaseNestedInput
   paymentPhase?: Prisma.PaymentPhaseUpdateOneWithoutPhaseNestedInput
@@ -1064,6 +1214,7 @@ export type ApplicationPhaseUpdateWithoutQuestionnairePhaseInput = {
 
 export type ApplicationPhaseUncheckedUpdateWithoutQuestionnairePhaseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1101,6 +1252,7 @@ export type ApplicationPhaseCreateWithoutDocumentationPhaseInput = {
   requiresPreviousPhaseCompletion?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutApplicationPhasesInput
   application: Prisma.ApplicationCreateNestedOneWithoutPhasesInput
   questionnairePhase?: Prisma.QuestionnairePhaseCreateNestedOneWithoutPhaseInput
   paymentPhase?: Prisma.PaymentPhaseCreateNestedOneWithoutPhaseInput
@@ -1110,6 +1262,7 @@ export type ApplicationPhaseCreateWithoutDocumentationPhaseInput = {
 
 export type ApplicationPhaseUncheckedCreateWithoutDocumentationPhaseInput = {
   id?: string
+  tenantId: string
   applicationId: string
   name: string
   description?: string | null
@@ -1163,6 +1316,7 @@ export type ApplicationPhaseUpdateWithoutDocumentationPhaseInput = {
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutApplicationPhasesNestedInput
   application?: Prisma.ApplicationUpdateOneRequiredWithoutPhasesNestedInput
   questionnairePhase?: Prisma.QuestionnairePhaseUpdateOneWithoutPhaseNestedInput
   paymentPhase?: Prisma.PaymentPhaseUpdateOneWithoutPhaseNestedInput
@@ -1172,6 +1326,7 @@ export type ApplicationPhaseUpdateWithoutDocumentationPhaseInput = {
 
 export type ApplicationPhaseUncheckedUpdateWithoutDocumentationPhaseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1209,6 +1364,7 @@ export type ApplicationPhaseCreateWithoutPaymentPhaseInput = {
   requiresPreviousPhaseCompletion?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutApplicationPhasesInput
   application: Prisma.ApplicationCreateNestedOneWithoutPhasesInput
   questionnairePhase?: Prisma.QuestionnairePhaseCreateNestedOneWithoutPhaseInput
   documentationPhase?: Prisma.DocumentationPhaseCreateNestedOneWithoutPhaseInput
@@ -1218,6 +1374,7 @@ export type ApplicationPhaseCreateWithoutPaymentPhaseInput = {
 
 export type ApplicationPhaseUncheckedCreateWithoutPaymentPhaseInput = {
   id?: string
+  tenantId: string
   applicationId: string
   name: string
   description?: string | null
@@ -1271,6 +1428,7 @@ export type ApplicationPhaseUpdateWithoutPaymentPhaseInput = {
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutApplicationPhasesNestedInput
   application?: Prisma.ApplicationUpdateOneRequiredWithoutPhasesNestedInput
   questionnairePhase?: Prisma.QuestionnairePhaseUpdateOneWithoutPhaseNestedInput
   documentationPhase?: Prisma.DocumentationPhaseUpdateOneWithoutPhaseNestedInput
@@ -1280,6 +1438,7 @@ export type ApplicationPhaseUpdateWithoutPaymentPhaseInput = {
 
 export type ApplicationPhaseUncheckedUpdateWithoutPaymentPhaseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1317,6 +1476,7 @@ export type ApplicationPhaseCreateWithoutPaymentsInput = {
   requiresPreviousPhaseCompletion?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutApplicationPhasesInput
   application: Prisma.ApplicationCreateNestedOneWithoutPhasesInput
   questionnairePhase?: Prisma.QuestionnairePhaseCreateNestedOneWithoutPhaseInput
   documentationPhase?: Prisma.DocumentationPhaseCreateNestedOneWithoutPhaseInput
@@ -1326,6 +1486,7 @@ export type ApplicationPhaseCreateWithoutPaymentsInput = {
 
 export type ApplicationPhaseUncheckedCreateWithoutPaymentsInput = {
   id?: string
+  tenantId: string
   applicationId: string
   name: string
   description?: string | null
@@ -1379,6 +1540,7 @@ export type ApplicationPhaseUpdateWithoutPaymentsInput = {
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutApplicationPhasesNestedInput
   application?: Prisma.ApplicationUpdateOneRequiredWithoutPhasesNestedInput
   questionnairePhase?: Prisma.QuestionnairePhaseUpdateOneWithoutPhaseNestedInput
   documentationPhase?: Prisma.DocumentationPhaseUpdateOneWithoutPhaseNestedInput
@@ -1388,6 +1550,7 @@ export type ApplicationPhaseUpdateWithoutPaymentsInput = {
 
 export type ApplicationPhaseUncheckedUpdateWithoutPaymentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1409,8 +1572,95 @@ export type ApplicationPhaseUncheckedUpdateWithoutPaymentsInput = {
   currentForApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutCurrentPhaseNestedInput
 }
 
+export type ApplicationPhaseCreateManyTenantInput = {
+  id?: string
+  applicationId: string
+  name: string
+  description?: string | null
+  phaseCategory: $Enums.PhaseCategory
+  phaseType: $Enums.PhaseType
+  order: number
+  status?: $Enums.PhaseStatus
+  dueDate?: Date | string | null
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  activatedAt?: Date | string | null
+  completedAt?: Date | string | null
+  requiresPreviousPhaseCompletion?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ApplicationPhaseUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
+  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  application?: Prisma.ApplicationUpdateOneRequiredWithoutPhasesNestedInput
+  questionnairePhase?: Prisma.QuestionnairePhaseUpdateOneWithoutPhaseNestedInput
+  documentationPhase?: Prisma.DocumentationPhaseUpdateOneWithoutPhaseNestedInput
+  paymentPhase?: Prisma.PaymentPhaseUpdateOneWithoutPhaseNestedInput
+  payments?: Prisma.ApplicationPaymentUpdateManyWithoutPhaseNestedInput
+  currentForApplications?: Prisma.ApplicationUpdateManyWithoutCurrentPhaseNestedInput
+}
+
+export type ApplicationPhaseUncheckedUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  applicationId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
+  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  questionnairePhase?: Prisma.QuestionnairePhaseUncheckedUpdateOneWithoutPhaseNestedInput
+  documentationPhase?: Prisma.DocumentationPhaseUncheckedUpdateOneWithoutPhaseNestedInput
+  paymentPhase?: Prisma.PaymentPhaseUncheckedUpdateOneWithoutPhaseNestedInput
+  payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPhaseNestedInput
+  currentForApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutCurrentPhaseNestedInput
+}
+
+export type ApplicationPhaseUncheckedUpdateManyWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  applicationId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
+  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumPhaseStatusFieldUpdateOperationsInput | $Enums.PhaseStatus
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type ApplicationPhaseCreateManyApplicationInput = {
   id?: string
+  tenantId: string
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
@@ -1443,6 +1693,7 @@ export type ApplicationPhaseUpdateWithoutApplicationInput = {
   requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutApplicationPhasesNestedInput
   questionnairePhase?: Prisma.QuestionnairePhaseUpdateOneWithoutPhaseNestedInput
   documentationPhase?: Prisma.DocumentationPhaseUpdateOneWithoutPhaseNestedInput
   paymentPhase?: Prisma.PaymentPhaseUpdateOneWithoutPhaseNestedInput
@@ -1452,6 +1703,7 @@ export type ApplicationPhaseUpdateWithoutApplicationInput = {
 
 export type ApplicationPhaseUncheckedUpdateWithoutApplicationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
@@ -1475,6 +1727,7 @@ export type ApplicationPhaseUncheckedUpdateWithoutApplicationInput = {
 
 export type ApplicationPhaseUncheckedUpdateManyWithoutApplicationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
@@ -1533,6 +1786,7 @@ export type ApplicationPhaseCountOutputTypeCountCurrentForApplicationsArgs<ExtAr
 
 export type ApplicationPhaseSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   applicationId?: boolean
   name?: boolean
   description?: boolean
@@ -1548,6 +1802,7 @@ export type ApplicationPhaseSelect<ExtArgs extends runtime.Types.Extensions.Inte
   requiresPreviousPhaseCompletion?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   application?: boolean | Prisma.ApplicationDefaultArgs<ExtArgs>
   questionnairePhase?: boolean | Prisma.ApplicationPhase$questionnairePhaseArgs<ExtArgs>
   documentationPhase?: boolean | Prisma.ApplicationPhase$documentationPhaseArgs<ExtArgs>
@@ -1561,6 +1816,7 @@ export type ApplicationPhaseSelect<ExtArgs extends runtime.Types.Extensions.Inte
 
 export type ApplicationPhaseSelectScalar = {
   id?: boolean
+  tenantId?: boolean
   applicationId?: boolean
   name?: boolean
   description?: boolean
@@ -1578,8 +1834,9 @@ export type ApplicationPhaseSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ApplicationPhaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "applicationId" | "name" | "description" | "phaseCategory" | "phaseType" | "order" | "status" | "dueDate" | "startDate" | "endDate" | "activatedAt" | "completedAt" | "requiresPreviousPhaseCompletion" | "createdAt" | "updatedAt", ExtArgs["result"]["applicationPhase"]>
+export type ApplicationPhaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "applicationId" | "name" | "description" | "phaseCategory" | "phaseType" | "order" | "status" | "dueDate" | "startDate" | "endDate" | "activatedAt" | "completedAt" | "requiresPreviousPhaseCompletion" | "createdAt" | "updatedAt", ExtArgs["result"]["applicationPhase"]>
 export type ApplicationPhaseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   application?: boolean | Prisma.ApplicationDefaultArgs<ExtArgs>
   questionnairePhase?: boolean | Prisma.ApplicationPhase$questionnairePhaseArgs<ExtArgs>
   documentationPhase?: boolean | Prisma.ApplicationPhase$documentationPhaseArgs<ExtArgs>
@@ -1592,6 +1849,7 @@ export type ApplicationPhaseInclude<ExtArgs extends runtime.Types.Extensions.Int
 export type $ApplicationPhasePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "ApplicationPhase"
   objects: {
+    tenant: Prisma.$TenantPayload<ExtArgs>
     application: Prisma.$ApplicationPayload<ExtArgs>
     questionnairePhase: Prisma.$QuestionnairePhasePayload<ExtArgs> | null
     documentationPhase: Prisma.$DocumentationPhasePayload<ExtArgs> | null
@@ -1601,6 +1859,7 @@ export type $ApplicationPhasePayload<ExtArgs extends runtime.Types.Extensions.In
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    tenantId: string
     applicationId: string
     name: string
     description: string | null
@@ -1956,6 +2215,7 @@ readonly fields: ApplicationPhaseFieldRefs;
  */
 export interface Prisma__ApplicationPhaseClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   application<T extends Prisma.ApplicationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApplicationDefaultArgs<ExtArgs>>): Prisma.Prisma__ApplicationClient<runtime.Types.Result.GetResult<Prisma.$ApplicationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   questionnairePhase<T extends Prisma.ApplicationPhase$questionnairePhaseArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApplicationPhase$questionnairePhaseArgs<ExtArgs>>): Prisma.Prisma__QuestionnairePhaseClient<runtime.Types.Result.GetResult<Prisma.$QuestionnairePhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   documentationPhase<T extends Prisma.ApplicationPhase$documentationPhaseArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApplicationPhase$documentationPhaseArgs<ExtArgs>>): Prisma.Prisma__DocumentationPhaseClient<runtime.Types.Result.GetResult<Prisma.$DocumentationPhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -1992,6 +2252,7 @@ export interface Prisma__ApplicationPhaseClient<T, Null = never, ExtArgs extends
  */
 export interface ApplicationPhaseFieldRefs {
   readonly id: Prisma.FieldRef<"ApplicationPhase", 'String'>
+  readonly tenantId: Prisma.FieldRef<"ApplicationPhase", 'String'>
   readonly applicationId: Prisma.FieldRef<"ApplicationPhase", 'String'>
   readonly name: Prisma.FieldRef<"ApplicationPhase", 'String'>
   readonly description: Prisma.FieldRef<"ApplicationPhase", 'String'>

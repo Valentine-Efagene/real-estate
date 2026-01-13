@@ -184,6 +184,7 @@ export class PaymentMethodChangeService {
         await this.db.domainEvent.create({
             data: {
                 id: uuidv4(),
+                tenantId: data.tenantId,
                 eventType: 'PAYMENT_METHOD_CHANGE.REQUESTED',
                 aggregateType: 'PaymentMethodChangeRequest',
                 aggregateId: request.id,
@@ -365,6 +366,7 @@ export class PaymentMethodChangeService {
         await this.db.domainEvent.create({
             data: {
                 id: uuidv4(),
+                tenantId,
                 eventType: 'PAYMENT_METHOD_CHANGE.APPROVED',
                 aggregateType: 'PaymentMethodChangeRequest',
                 aggregateId: requestId,
@@ -410,6 +412,7 @@ export class PaymentMethodChangeService {
         await this.db.domainEvent.create({
             data: {
                 id: uuidv4(),
+                tenantId,
                 eventType: 'PAYMENT_METHOD_CHANGE.REJECTED',
                 aggregateType: 'PaymentMethodChangeRequest',
                 aggregateId: requestId,
@@ -449,6 +452,7 @@ export class PaymentMethodChangeService {
         await this.db.domainEvent.create({
             data: {
                 id: uuidv4(),
+                tenantId,
                 eventType: 'PAYMENT_METHOD_CHANGE.CANCELLED',
                 aggregateType: 'PaymentMethodChangeRequest',
                 aggregateId: requestId,
@@ -581,6 +585,7 @@ export class PaymentMethodChangeService {
                 // Create the base ApplicationPhase
                 const newPhase = await tx.applicationPhase.create({
                     data: {
+                        tenantId: application.tenantId,
                         applicationId: application.id,
                         name: `${template.name} (Changed)`,
                         description: template.description,
@@ -595,6 +600,7 @@ export class PaymentMethodChangeService {
                 if (template.phaseCategory === 'PAYMENT') {
                     await tx.paymentPhase.create({
                         data: {
+                            tenantId: application.tenantId,
                             phaseId: newPhase.id,
                             paymentPlanId: template.paymentPlanId,
                             totalAmount: phaseAmount,
@@ -638,6 +644,7 @@ export class PaymentMethodChangeService {
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
+                    tenantId,
                     eventType: 'PAYMENT_METHOD_CHANGE.EXECUTED',
                     aggregateType: 'PaymentMethodChangeRequest',
                     aggregateId: requestId,
@@ -656,6 +663,7 @@ export class PaymentMethodChangeService {
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
+                    tenantId,
                     eventType: 'application.AMENDED',
                     aggregateType: 'application',
                     aggregateId: application.id,

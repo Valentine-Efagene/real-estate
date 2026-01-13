@@ -25,6 +25,7 @@ export type AggregatePropertyPaymentMethodLink = {
 }
 
 export type PropertyPaymentMethodLinkMinAggregateOutputType = {
+  tenantId: string | null
   propertyId: string | null
   paymentMethodId: string | null
   isDefault: boolean | null
@@ -33,6 +34,7 @@ export type PropertyPaymentMethodLinkMinAggregateOutputType = {
 }
 
 export type PropertyPaymentMethodLinkMaxAggregateOutputType = {
+  tenantId: string | null
   propertyId: string | null
   paymentMethodId: string | null
   isDefault: boolean | null
@@ -41,6 +43,7 @@ export type PropertyPaymentMethodLinkMaxAggregateOutputType = {
 }
 
 export type PropertyPaymentMethodLinkCountAggregateOutputType = {
+  tenantId: number
   propertyId: number
   paymentMethodId: number
   isDefault: number
@@ -51,6 +54,7 @@ export type PropertyPaymentMethodLinkCountAggregateOutputType = {
 
 
 export type PropertyPaymentMethodLinkMinAggregateInputType = {
+  tenantId?: true
   propertyId?: true
   paymentMethodId?: true
   isDefault?: true
@@ -59,6 +63,7 @@ export type PropertyPaymentMethodLinkMinAggregateInputType = {
 }
 
 export type PropertyPaymentMethodLinkMaxAggregateInputType = {
+  tenantId?: true
   propertyId?: true
   paymentMethodId?: true
   isDefault?: true
@@ -67,6 +72,7 @@ export type PropertyPaymentMethodLinkMaxAggregateInputType = {
 }
 
 export type PropertyPaymentMethodLinkCountAggregateInputType = {
+  tenantId?: true
   propertyId?: true
   paymentMethodId?: true
   isDefault?: true
@@ -148,6 +154,7 @@ export type PropertyPaymentMethodLinkGroupByArgs<ExtArgs extends runtime.Types.E
 }
 
 export type PropertyPaymentMethodLinkGroupByOutputType = {
+  tenantId: string
   propertyId: string
   paymentMethodId: string
   isDefault: boolean
@@ -177,21 +184,25 @@ export type PropertyPaymentMethodLinkWhereInput = {
   AND?: Prisma.PropertyPaymentMethodLinkWhereInput | Prisma.PropertyPaymentMethodLinkWhereInput[]
   OR?: Prisma.PropertyPaymentMethodLinkWhereInput[]
   NOT?: Prisma.PropertyPaymentMethodLinkWhereInput | Prisma.PropertyPaymentMethodLinkWhereInput[]
+  tenantId?: Prisma.StringFilter<"PropertyPaymentMethodLink"> | string
   propertyId?: Prisma.StringFilter<"PropertyPaymentMethodLink"> | string
   paymentMethodId?: Prisma.StringFilter<"PropertyPaymentMethodLink"> | string
   isDefault?: Prisma.BoolFilter<"PropertyPaymentMethodLink"> | boolean
   isActive?: Prisma.BoolFilter<"PropertyPaymentMethodLink"> | boolean
   createdAt?: Prisma.DateTimeFilter<"PropertyPaymentMethodLink"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   property?: Prisma.XOR<Prisma.PropertyScalarRelationFilter, Prisma.PropertyWhereInput>
   paymentMethod?: Prisma.XOR<Prisma.PropertyPaymentMethodScalarRelationFilter, Prisma.PropertyPaymentMethodWhereInput>
 }
 
 export type PropertyPaymentMethodLinkOrderByWithRelationInput = {
+  tenantId?: Prisma.SortOrder
   propertyId?: Prisma.SortOrder
   paymentMethodId?: Prisma.SortOrder
   isDefault?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  tenant?: Prisma.TenantOrderByWithRelationInput
   property?: Prisma.PropertyOrderByWithRelationInput
   paymentMethod?: Prisma.PropertyPaymentMethodOrderByWithRelationInput
   _relevance?: Prisma.PropertyPaymentMethodLinkOrderByRelevanceInput
@@ -202,16 +213,19 @@ export type PropertyPaymentMethodLinkWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.PropertyPaymentMethodLinkWhereInput | Prisma.PropertyPaymentMethodLinkWhereInput[]
   OR?: Prisma.PropertyPaymentMethodLinkWhereInput[]
   NOT?: Prisma.PropertyPaymentMethodLinkWhereInput | Prisma.PropertyPaymentMethodLinkWhereInput[]
+  tenantId?: Prisma.StringFilter<"PropertyPaymentMethodLink"> | string
   propertyId?: Prisma.StringFilter<"PropertyPaymentMethodLink"> | string
   paymentMethodId?: Prisma.StringFilter<"PropertyPaymentMethodLink"> | string
   isDefault?: Prisma.BoolFilter<"PropertyPaymentMethodLink"> | boolean
   isActive?: Prisma.BoolFilter<"PropertyPaymentMethodLink"> | boolean
   createdAt?: Prisma.DateTimeFilter<"PropertyPaymentMethodLink"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   property?: Prisma.XOR<Prisma.PropertyScalarRelationFilter, Prisma.PropertyWhereInput>
   paymentMethod?: Prisma.XOR<Prisma.PropertyPaymentMethodScalarRelationFilter, Prisma.PropertyPaymentMethodWhereInput>
 }, "propertyId_paymentMethodId">
 
 export type PropertyPaymentMethodLinkOrderByWithAggregationInput = {
+  tenantId?: Prisma.SortOrder
   propertyId?: Prisma.SortOrder
   paymentMethodId?: Prisma.SortOrder
   isDefault?: Prisma.SortOrder
@@ -226,6 +240,7 @@ export type PropertyPaymentMethodLinkScalarWhereWithAggregatesInput = {
   AND?: Prisma.PropertyPaymentMethodLinkScalarWhereWithAggregatesInput | Prisma.PropertyPaymentMethodLinkScalarWhereWithAggregatesInput[]
   OR?: Prisma.PropertyPaymentMethodLinkScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PropertyPaymentMethodLinkScalarWhereWithAggregatesInput | Prisma.PropertyPaymentMethodLinkScalarWhereWithAggregatesInput[]
+  tenantId?: Prisma.StringWithAggregatesFilter<"PropertyPaymentMethodLink"> | string
   propertyId?: Prisma.StringWithAggregatesFilter<"PropertyPaymentMethodLink"> | string
   paymentMethodId?: Prisma.StringWithAggregatesFilter<"PropertyPaymentMethodLink"> | string
   isDefault?: Prisma.BoolWithAggregatesFilter<"PropertyPaymentMethodLink"> | boolean
@@ -237,11 +252,13 @@ export type PropertyPaymentMethodLinkCreateInput = {
   isDefault?: boolean
   isActive?: boolean
   createdAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutPropertyPaymentMethodLinksInput
   property: Prisma.PropertyCreateNestedOneWithoutPaymentMethodsInput
   paymentMethod: Prisma.PropertyPaymentMethodCreateNestedOneWithoutPropertiesInput
 }
 
 export type PropertyPaymentMethodLinkUncheckedCreateInput = {
+  tenantId: string
   propertyId: string
   paymentMethodId: string
   isDefault?: boolean
@@ -253,11 +270,13 @@ export type PropertyPaymentMethodLinkUpdateInput = {
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutPropertyPaymentMethodLinksNestedInput
   property?: Prisma.PropertyUpdateOneRequiredWithoutPaymentMethodsNestedInput
   paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneRequiredWithoutPropertiesNestedInput
 }
 
 export type PropertyPaymentMethodLinkUncheckedUpdateInput = {
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   propertyId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -266,6 +285,7 @@ export type PropertyPaymentMethodLinkUncheckedUpdateInput = {
 }
 
 export type PropertyPaymentMethodLinkCreateManyInput = {
+  tenantId: string
   propertyId: string
   paymentMethodId: string
   isDefault?: boolean
@@ -280,6 +300,7 @@ export type PropertyPaymentMethodLinkUpdateManyMutationInput = {
 }
 
 export type PropertyPaymentMethodLinkUncheckedUpdateManyInput = {
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   propertyId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -309,6 +330,7 @@ export type PropertyPaymentMethodLinkPropertyIdPaymentMethodIdCompoundUniqueInpu
 }
 
 export type PropertyPaymentMethodLinkCountOrderByAggregateInput = {
+  tenantId?: Prisma.SortOrder
   propertyId?: Prisma.SortOrder
   paymentMethodId?: Prisma.SortOrder
   isDefault?: Prisma.SortOrder
@@ -317,6 +339,7 @@ export type PropertyPaymentMethodLinkCountOrderByAggregateInput = {
 }
 
 export type PropertyPaymentMethodLinkMaxOrderByAggregateInput = {
+  tenantId?: Prisma.SortOrder
   propertyId?: Prisma.SortOrder
   paymentMethodId?: Prisma.SortOrder
   isDefault?: Prisma.SortOrder
@@ -325,11 +348,54 @@ export type PropertyPaymentMethodLinkMaxOrderByAggregateInput = {
 }
 
 export type PropertyPaymentMethodLinkMinOrderByAggregateInput = {
+  tenantId?: Prisma.SortOrder
   propertyId?: Prisma.SortOrder
   paymentMethodId?: Prisma.SortOrder
   isDefault?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+}
+
+export type PropertyPaymentMethodLinkCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.PropertyPaymentMethodLinkCreateWithoutTenantInput, Prisma.PropertyPaymentMethodLinkUncheckedCreateWithoutTenantInput> | Prisma.PropertyPaymentMethodLinkCreateWithoutTenantInput[] | Prisma.PropertyPaymentMethodLinkUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PropertyPaymentMethodLinkCreateOrConnectWithoutTenantInput | Prisma.PropertyPaymentMethodLinkCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.PropertyPaymentMethodLinkCreateManyTenantInputEnvelope
+  connect?: Prisma.PropertyPaymentMethodLinkWhereUniqueInput | Prisma.PropertyPaymentMethodLinkWhereUniqueInput[]
+}
+
+export type PropertyPaymentMethodLinkUncheckedCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.PropertyPaymentMethodLinkCreateWithoutTenantInput, Prisma.PropertyPaymentMethodLinkUncheckedCreateWithoutTenantInput> | Prisma.PropertyPaymentMethodLinkCreateWithoutTenantInput[] | Prisma.PropertyPaymentMethodLinkUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PropertyPaymentMethodLinkCreateOrConnectWithoutTenantInput | Prisma.PropertyPaymentMethodLinkCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.PropertyPaymentMethodLinkCreateManyTenantInputEnvelope
+  connect?: Prisma.PropertyPaymentMethodLinkWhereUniqueInput | Prisma.PropertyPaymentMethodLinkWhereUniqueInput[]
+}
+
+export type PropertyPaymentMethodLinkUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.PropertyPaymentMethodLinkCreateWithoutTenantInput, Prisma.PropertyPaymentMethodLinkUncheckedCreateWithoutTenantInput> | Prisma.PropertyPaymentMethodLinkCreateWithoutTenantInput[] | Prisma.PropertyPaymentMethodLinkUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PropertyPaymentMethodLinkCreateOrConnectWithoutTenantInput | Prisma.PropertyPaymentMethodLinkCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.PropertyPaymentMethodLinkUpsertWithWhereUniqueWithoutTenantInput | Prisma.PropertyPaymentMethodLinkUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.PropertyPaymentMethodLinkCreateManyTenantInputEnvelope
+  set?: Prisma.PropertyPaymentMethodLinkWhereUniqueInput | Prisma.PropertyPaymentMethodLinkWhereUniqueInput[]
+  disconnect?: Prisma.PropertyPaymentMethodLinkWhereUniqueInput | Prisma.PropertyPaymentMethodLinkWhereUniqueInput[]
+  delete?: Prisma.PropertyPaymentMethodLinkWhereUniqueInput | Prisma.PropertyPaymentMethodLinkWhereUniqueInput[]
+  connect?: Prisma.PropertyPaymentMethodLinkWhereUniqueInput | Prisma.PropertyPaymentMethodLinkWhereUniqueInput[]
+  update?: Prisma.PropertyPaymentMethodLinkUpdateWithWhereUniqueWithoutTenantInput | Prisma.PropertyPaymentMethodLinkUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.PropertyPaymentMethodLinkUpdateManyWithWhereWithoutTenantInput | Prisma.PropertyPaymentMethodLinkUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.PropertyPaymentMethodLinkScalarWhereInput | Prisma.PropertyPaymentMethodLinkScalarWhereInput[]
+}
+
+export type PropertyPaymentMethodLinkUncheckedUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.PropertyPaymentMethodLinkCreateWithoutTenantInput, Prisma.PropertyPaymentMethodLinkUncheckedCreateWithoutTenantInput> | Prisma.PropertyPaymentMethodLinkCreateWithoutTenantInput[] | Prisma.PropertyPaymentMethodLinkUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PropertyPaymentMethodLinkCreateOrConnectWithoutTenantInput | Prisma.PropertyPaymentMethodLinkCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.PropertyPaymentMethodLinkUpsertWithWhereUniqueWithoutTenantInput | Prisma.PropertyPaymentMethodLinkUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.PropertyPaymentMethodLinkCreateManyTenantInputEnvelope
+  set?: Prisma.PropertyPaymentMethodLinkWhereUniqueInput | Prisma.PropertyPaymentMethodLinkWhereUniqueInput[]
+  disconnect?: Prisma.PropertyPaymentMethodLinkWhereUniqueInput | Prisma.PropertyPaymentMethodLinkWhereUniqueInput[]
+  delete?: Prisma.PropertyPaymentMethodLinkWhereUniqueInput | Prisma.PropertyPaymentMethodLinkWhereUniqueInput[]
+  connect?: Prisma.PropertyPaymentMethodLinkWhereUniqueInput | Prisma.PropertyPaymentMethodLinkWhereUniqueInput[]
+  update?: Prisma.PropertyPaymentMethodLinkUpdateWithWhereUniqueWithoutTenantInput | Prisma.PropertyPaymentMethodLinkUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.PropertyPaymentMethodLinkUpdateManyWithWhereWithoutTenantInput | Prisma.PropertyPaymentMethodLinkUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.PropertyPaymentMethodLinkScalarWhereInput | Prisma.PropertyPaymentMethodLinkScalarWhereInput[]
 }
 
 export type PropertyPaymentMethodLinkCreateNestedManyWithoutPropertyInput = {
@@ -416,14 +482,70 @@ export type PropertyPaymentMethodLinkUncheckedUpdateManyWithoutPaymentMethodNest
   deleteMany?: Prisma.PropertyPaymentMethodLinkScalarWhereInput | Prisma.PropertyPaymentMethodLinkScalarWhereInput[]
 }
 
+export type PropertyPaymentMethodLinkCreateWithoutTenantInput = {
+  isDefault?: boolean
+  isActive?: boolean
+  createdAt?: Date | string
+  property: Prisma.PropertyCreateNestedOneWithoutPaymentMethodsInput
+  paymentMethod: Prisma.PropertyPaymentMethodCreateNestedOneWithoutPropertiesInput
+}
+
+export type PropertyPaymentMethodLinkUncheckedCreateWithoutTenantInput = {
+  propertyId: string
+  paymentMethodId: string
+  isDefault?: boolean
+  isActive?: boolean
+  createdAt?: Date | string
+}
+
+export type PropertyPaymentMethodLinkCreateOrConnectWithoutTenantInput = {
+  where: Prisma.PropertyPaymentMethodLinkWhereUniqueInput
+  create: Prisma.XOR<Prisma.PropertyPaymentMethodLinkCreateWithoutTenantInput, Prisma.PropertyPaymentMethodLinkUncheckedCreateWithoutTenantInput>
+}
+
+export type PropertyPaymentMethodLinkCreateManyTenantInputEnvelope = {
+  data: Prisma.PropertyPaymentMethodLinkCreateManyTenantInput | Prisma.PropertyPaymentMethodLinkCreateManyTenantInput[]
+  skipDuplicates?: boolean
+}
+
+export type PropertyPaymentMethodLinkUpsertWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.PropertyPaymentMethodLinkWhereUniqueInput
+  update: Prisma.XOR<Prisma.PropertyPaymentMethodLinkUpdateWithoutTenantInput, Prisma.PropertyPaymentMethodLinkUncheckedUpdateWithoutTenantInput>
+  create: Prisma.XOR<Prisma.PropertyPaymentMethodLinkCreateWithoutTenantInput, Prisma.PropertyPaymentMethodLinkUncheckedCreateWithoutTenantInput>
+}
+
+export type PropertyPaymentMethodLinkUpdateWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.PropertyPaymentMethodLinkWhereUniqueInput
+  data: Prisma.XOR<Prisma.PropertyPaymentMethodLinkUpdateWithoutTenantInput, Prisma.PropertyPaymentMethodLinkUncheckedUpdateWithoutTenantInput>
+}
+
+export type PropertyPaymentMethodLinkUpdateManyWithWhereWithoutTenantInput = {
+  where: Prisma.PropertyPaymentMethodLinkScalarWhereInput
+  data: Prisma.XOR<Prisma.PropertyPaymentMethodLinkUpdateManyMutationInput, Prisma.PropertyPaymentMethodLinkUncheckedUpdateManyWithoutTenantInput>
+}
+
+export type PropertyPaymentMethodLinkScalarWhereInput = {
+  AND?: Prisma.PropertyPaymentMethodLinkScalarWhereInput | Prisma.PropertyPaymentMethodLinkScalarWhereInput[]
+  OR?: Prisma.PropertyPaymentMethodLinkScalarWhereInput[]
+  NOT?: Prisma.PropertyPaymentMethodLinkScalarWhereInput | Prisma.PropertyPaymentMethodLinkScalarWhereInput[]
+  tenantId?: Prisma.StringFilter<"PropertyPaymentMethodLink"> | string
+  propertyId?: Prisma.StringFilter<"PropertyPaymentMethodLink"> | string
+  paymentMethodId?: Prisma.StringFilter<"PropertyPaymentMethodLink"> | string
+  isDefault?: Prisma.BoolFilter<"PropertyPaymentMethodLink"> | boolean
+  isActive?: Prisma.BoolFilter<"PropertyPaymentMethodLink"> | boolean
+  createdAt?: Prisma.DateTimeFilter<"PropertyPaymentMethodLink"> | Date | string
+}
+
 export type PropertyPaymentMethodLinkCreateWithoutPropertyInput = {
   isDefault?: boolean
   isActive?: boolean
   createdAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutPropertyPaymentMethodLinksInput
   paymentMethod: Prisma.PropertyPaymentMethodCreateNestedOneWithoutPropertiesInput
 }
 
 export type PropertyPaymentMethodLinkUncheckedCreateWithoutPropertyInput = {
+  tenantId: string
   paymentMethodId: string
   isDefault?: boolean
   isActive?: boolean
@@ -456,25 +578,16 @@ export type PropertyPaymentMethodLinkUpdateManyWithWhereWithoutPropertyInput = {
   data: Prisma.XOR<Prisma.PropertyPaymentMethodLinkUpdateManyMutationInput, Prisma.PropertyPaymentMethodLinkUncheckedUpdateManyWithoutPropertyInput>
 }
 
-export type PropertyPaymentMethodLinkScalarWhereInput = {
-  AND?: Prisma.PropertyPaymentMethodLinkScalarWhereInput | Prisma.PropertyPaymentMethodLinkScalarWhereInput[]
-  OR?: Prisma.PropertyPaymentMethodLinkScalarWhereInput[]
-  NOT?: Prisma.PropertyPaymentMethodLinkScalarWhereInput | Prisma.PropertyPaymentMethodLinkScalarWhereInput[]
-  propertyId?: Prisma.StringFilter<"PropertyPaymentMethodLink"> | string
-  paymentMethodId?: Prisma.StringFilter<"PropertyPaymentMethodLink"> | string
-  isDefault?: Prisma.BoolFilter<"PropertyPaymentMethodLink"> | boolean
-  isActive?: Prisma.BoolFilter<"PropertyPaymentMethodLink"> | boolean
-  createdAt?: Prisma.DateTimeFilter<"PropertyPaymentMethodLink"> | Date | string
-}
-
 export type PropertyPaymentMethodLinkCreateWithoutPaymentMethodInput = {
   isDefault?: boolean
   isActive?: boolean
   createdAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutPropertyPaymentMethodLinksInput
   property: Prisma.PropertyCreateNestedOneWithoutPaymentMethodsInput
 }
 
 export type PropertyPaymentMethodLinkUncheckedCreateWithoutPaymentMethodInput = {
+  tenantId: string
   propertyId: string
   isDefault?: boolean
   isActive?: boolean
@@ -507,7 +620,40 @@ export type PropertyPaymentMethodLinkUpdateManyWithWhereWithoutPaymentMethodInpu
   data: Prisma.XOR<Prisma.PropertyPaymentMethodLinkUpdateManyMutationInput, Prisma.PropertyPaymentMethodLinkUncheckedUpdateManyWithoutPaymentMethodInput>
 }
 
+export type PropertyPaymentMethodLinkCreateManyTenantInput = {
+  propertyId: string
+  paymentMethodId: string
+  isDefault?: boolean
+  isActive?: boolean
+  createdAt?: Date | string
+}
+
+export type PropertyPaymentMethodLinkUpdateWithoutTenantInput = {
+  isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  property?: Prisma.PropertyUpdateOneRequiredWithoutPaymentMethodsNestedInput
+  paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneRequiredWithoutPropertiesNestedInput
+}
+
+export type PropertyPaymentMethodLinkUncheckedUpdateWithoutTenantInput = {
+  propertyId?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
+  isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PropertyPaymentMethodLinkUncheckedUpdateManyWithoutTenantInput = {
+  propertyId?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
+  isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type PropertyPaymentMethodLinkCreateManyPropertyInput = {
+  tenantId: string
   paymentMethodId: string
   isDefault?: boolean
   isActive?: boolean
@@ -518,10 +664,12 @@ export type PropertyPaymentMethodLinkUpdateWithoutPropertyInput = {
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutPropertyPaymentMethodLinksNestedInput
   paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneRequiredWithoutPropertiesNestedInput
 }
 
 export type PropertyPaymentMethodLinkUncheckedUpdateWithoutPropertyInput = {
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -529,6 +677,7 @@ export type PropertyPaymentMethodLinkUncheckedUpdateWithoutPropertyInput = {
 }
 
 export type PropertyPaymentMethodLinkUncheckedUpdateManyWithoutPropertyInput = {
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -536,6 +685,7 @@ export type PropertyPaymentMethodLinkUncheckedUpdateManyWithoutPropertyInput = {
 }
 
 export type PropertyPaymentMethodLinkCreateManyPaymentMethodInput = {
+  tenantId: string
   propertyId: string
   isDefault?: boolean
   isActive?: boolean
@@ -546,10 +696,12 @@ export type PropertyPaymentMethodLinkUpdateWithoutPaymentMethodInput = {
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutPropertyPaymentMethodLinksNestedInput
   property?: Prisma.PropertyUpdateOneRequiredWithoutPaymentMethodsNestedInput
 }
 
 export type PropertyPaymentMethodLinkUncheckedUpdateWithoutPaymentMethodInput = {
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   propertyId?: Prisma.StringFieldUpdateOperationsInput | string
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -557,6 +709,7 @@ export type PropertyPaymentMethodLinkUncheckedUpdateWithoutPaymentMethodInput = 
 }
 
 export type PropertyPaymentMethodLinkUncheckedUpdateManyWithoutPaymentMethodInput = {
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   propertyId?: Prisma.StringFieldUpdateOperationsInput | string
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -566,11 +719,13 @@ export type PropertyPaymentMethodLinkUncheckedUpdateManyWithoutPaymentMethodInpu
 
 
 export type PropertyPaymentMethodLinkSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  tenantId?: boolean
   propertyId?: boolean
   paymentMethodId?: boolean
   isDefault?: boolean
   isActive?: boolean
   createdAt?: boolean
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
   paymentMethod?: boolean | Prisma.PropertyPaymentMethodDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["propertyPaymentMethodLink"]>
@@ -578,6 +733,7 @@ export type PropertyPaymentMethodLinkSelect<ExtArgs extends runtime.Types.Extens
 
 
 export type PropertyPaymentMethodLinkSelectScalar = {
+  tenantId?: boolean
   propertyId?: boolean
   paymentMethodId?: boolean
   isDefault?: boolean
@@ -585,8 +741,9 @@ export type PropertyPaymentMethodLinkSelectScalar = {
   createdAt?: boolean
 }
 
-export type PropertyPaymentMethodLinkOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"propertyId" | "paymentMethodId" | "isDefault" | "isActive" | "createdAt", ExtArgs["result"]["propertyPaymentMethodLink"]>
+export type PropertyPaymentMethodLinkOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"tenantId" | "propertyId" | "paymentMethodId" | "isDefault" | "isActive" | "createdAt", ExtArgs["result"]["propertyPaymentMethodLink"]>
 export type PropertyPaymentMethodLinkInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
   paymentMethod?: boolean | Prisma.PropertyPaymentMethodDefaultArgs<ExtArgs>
 }
@@ -594,10 +751,12 @@ export type PropertyPaymentMethodLinkInclude<ExtArgs extends runtime.Types.Exten
 export type $PropertyPaymentMethodLinkPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "PropertyPaymentMethodLink"
   objects: {
+    tenant: Prisma.$TenantPayload<ExtArgs>
     property: Prisma.$PropertyPayload<ExtArgs>
     paymentMethod: Prisma.$PropertyPaymentMethodPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
+    tenantId: string
     propertyId: string
     paymentMethodId: string
     isDefault: boolean
@@ -686,8 +845,8 @@ export interface PropertyPaymentMethodLinkDelegate<ExtArgs extends runtime.Types
    * // Get first 10 PropertyPaymentMethodLinks
    * const propertyPaymentMethodLinks = await prisma.propertyPaymentMethodLink.findMany({ take: 10 })
    * 
-   * // Only select the `propertyId`
-   * const propertyPaymentMethodLinkWithPropertyIdOnly = await prisma.propertyPaymentMethodLink.findMany({ select: { propertyId: true } })
+   * // Only select the `tenantId`
+   * const propertyPaymentMethodLinkWithTenantIdOnly = await prisma.propertyPaymentMethodLink.findMany({ select: { tenantId: true } })
    * 
    */
   findMany<T extends PropertyPaymentMethodLinkFindManyArgs>(args?: Prisma.SelectSubset<T, PropertyPaymentMethodLinkFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyPaymentMethodLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -943,6 +1102,7 @@ readonly fields: PropertyPaymentMethodLinkFieldRefs;
  */
 export interface Prisma__PropertyPaymentMethodLinkClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   property<T extends Prisma.PropertyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyDefaultArgs<ExtArgs>>): Prisma.Prisma__PropertyClient<runtime.Types.Result.GetResult<Prisma.$PropertyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   paymentMethod<T extends Prisma.PropertyPaymentMethodDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyPaymentMethodDefaultArgs<ExtArgs>>): Prisma.Prisma__PropertyPaymentMethodClient<runtime.Types.Result.GetResult<Prisma.$PropertyPaymentMethodPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
@@ -974,6 +1134,7 @@ export interface Prisma__PropertyPaymentMethodLinkClient<T, Null = never, ExtArg
  * Fields of the PropertyPaymentMethodLink model
  */
 export interface PropertyPaymentMethodLinkFieldRefs {
+  readonly tenantId: Prisma.FieldRef<"PropertyPaymentMethodLink", 'String'>
   readonly propertyId: Prisma.FieldRef<"PropertyPaymentMethodLink", 'String'>
   readonly paymentMethodId: Prisma.FieldRef<"PropertyPaymentMethodLink", 'String'>
   readonly isDefault: Prisma.FieldRef<"PropertyPaymentMethodLink", 'Boolean'>

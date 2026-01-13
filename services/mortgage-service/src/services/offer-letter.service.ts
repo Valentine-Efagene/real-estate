@@ -211,6 +211,7 @@ export function createOfferLetterService(prisma: AnyPrismaClient = defaultPrisma
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
+                    tenantId,
                     eventType: 'OFFER_LETTER.GENERATED',
                     aggregateType: 'OfferLetter',
                     aggregateId: created.id,

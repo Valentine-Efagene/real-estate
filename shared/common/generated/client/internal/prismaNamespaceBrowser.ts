@@ -316,6 +316,7 @@ export type DeviceEndpointScalarFieldEnum = (typeof DeviceEndpointScalarFieldEnu
 
 export const SocialScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   userId: 'userId',
   provider: 'provider',
   socialId: 'socialId',
@@ -338,6 +339,7 @@ export type OAuthStateScalarFieldEnum = (typeof OAuthStateScalarFieldEnum)[keyof
 
 export const WalletScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   balance: 'balance',
   currency: 'currency',
   createdAt: 'createdAt',
@@ -349,6 +351,7 @@ export type WalletScalarFieldEnum = (typeof WalletScalarFieldEnum)[keyof typeof 
 
 export const TransactionScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   walletId: 'walletId',
   amount: 'amount',
   type: 'type',
@@ -364,6 +367,7 @@ export type TransactionScalarFieldEnum = (typeof TransactionScalarFieldEnum)[key
 
 export const SettingsScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   key: 'key',
   value: 'value',
   category: 'category',
@@ -403,6 +407,7 @@ export type PropertyScalarFieldEnum = (typeof PropertyScalarFieldEnum)[keyof typ
 
 export const PropertyMediaScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   propertyId: 'propertyId',
   url: 'url',
   type: 'type',
@@ -417,6 +422,7 @@ export type PropertyMediaScalarFieldEnum = (typeof PropertyMediaScalarFieldEnum)
 
 export const PropertyDocumentScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   propertyId: 'propertyId',
   name: 'name',
   url: 'url',
@@ -430,6 +436,7 @@ export type PropertyDocumentScalarFieldEnum = (typeof PropertyDocumentScalarFiel
 
 export const AmenityScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   name: 'name',
   category: 'category',
   icon: 'icon',
@@ -442,6 +449,7 @@ export type AmenityScalarFieldEnum = (typeof AmenityScalarFieldEnum)[keyof typeo
 
 export const PropertyVariantScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   propertyId: 'propertyId',
   name: 'name',
   description: 'description',
@@ -465,6 +473,7 @@ export type PropertyVariantScalarFieldEnum = (typeof PropertyVariantScalarFieldE
 
 
 export const PropertyVariantAmenityScalarFieldEnum = {
+  tenantId: 'tenantId',
   variantId: 'variantId',
   amenityId: 'amenityId',
   createdAt: 'createdAt'
@@ -475,6 +484,7 @@ export type PropertyVariantAmenityScalarFieldEnum = (typeof PropertyVariantAmeni
 
 export const PropertyVariantMediaScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   variantId: 'variantId',
   url: 'url',
   type: 'type',
@@ -489,6 +499,7 @@ export type PropertyVariantMediaScalarFieldEnum = (typeof PropertyVariantMediaSc
 
 export const PropertyUnitScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   variantId: 'variantId',
   unitNumber: 'unitNumber',
   floorNumber: 'floorNumber',
@@ -509,6 +520,7 @@ export type PropertyUnitScalarFieldEnum = (typeof PropertyUnitScalarFieldEnum)[k
 
 
 export const PropertyAmenityScalarFieldEnum = {
+  tenantId: 'tenantId',
   propertyId: 'propertyId',
   amenityId: 'amenityId',
   createdAt: 'createdAt'
@@ -559,6 +571,7 @@ export type PropertyPaymentMethodScalarFieldEnum = (typeof PropertyPaymentMethod
 
 
 export const PropertyPaymentMethodLinkScalarFieldEnum = {
+  tenantId: 'tenantId',
   propertyId: 'propertyId',
   paymentMethodId: 'paymentMethodId',
   isDefault: 'isDefault',
@@ -571,6 +584,7 @@ export type PropertyPaymentMethodLinkScalarFieldEnum = (typeof PropertyPaymentMe
 
 export const PropertyPaymentMethodPhaseScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   paymentMethodId: 'paymentMethodId',
   paymentPlanId: 'paymentPlanId',
   name: 'name',
@@ -595,6 +609,7 @@ export type PropertyPaymentMethodPhaseScalarFieldEnum = (typeof PropertyPaymentM
 
 export const PhaseEventAttachmentScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   phaseId: 'phaseId',
   trigger: 'trigger',
   handlerId: 'handlerId',
@@ -609,6 +624,7 @@ export type PhaseEventAttachmentScalarFieldEnum = (typeof PhaseEventAttachmentSc
 
 export const PaymentMethodPhaseStepScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   phaseId: 'phaseId',
   name: 'name',
   stepType: 'stepType',
@@ -623,6 +639,7 @@ export type PaymentMethodPhaseStepScalarFieldEnum = (typeof PaymentMethodPhaseSt
 
 export const StepEventAttachmentScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   stepId: 'stepId',
   trigger: 'trigger',
   handlerId: 'handlerId',
@@ -637,6 +654,7 @@ export type StepEventAttachmentScalarFieldEnum = (typeof StepEventAttachmentScal
 
 export const PaymentMethodPhaseDocumentScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   phaseId: 'phaseId',
   documentType: 'documentType',
   isRequired: 'isRequired',
@@ -652,6 +670,7 @@ export type PaymentMethodPhaseDocumentScalarFieldEnum = (typeof PaymentMethodPha
 
 export const PaymentMethodPhaseFieldScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   phaseId: 'phaseId',
   name: 'name',
   label: 'label',
@@ -729,6 +748,7 @@ export type ApplicationRefundScalarFieldEnum = (typeof ApplicationRefundScalarFi
 
 export const ApplicationPhaseScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   applicationId: 'applicationId',
   name: 'name',
   description: 'description',
@@ -751,6 +771,7 @@ export type ApplicationPhaseScalarFieldEnum = (typeof ApplicationPhaseScalarFiel
 
 export const QuestionnairePhaseScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   phaseId: 'phaseId',
   completedFieldsCount: 'completedFieldsCount',
   totalFieldsCount: 'totalFieldsCount',
@@ -768,6 +789,7 @@ export type QuestionnairePhaseScalarFieldEnum = (typeof QuestionnairePhaseScalar
 
 export const DocumentationPhaseScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   phaseId: 'phaseId',
   currentStepId: 'currentStepId',
   approvedDocumentsCount: 'approvedDocumentsCount',
@@ -787,6 +809,7 @@ export type DocumentationPhaseScalarFieldEnum = (typeof DocumentationPhaseScalar
 
 export const PaymentPhaseScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   phaseId: 'phaseId',
   paymentPlanId: 'paymentPlanId',
   totalAmount: 'totalAmount',
@@ -806,6 +829,7 @@ export type PaymentPhaseScalarFieldEnum = (typeof PaymentPhaseScalarFieldEnum)[k
 
 export const QuestionnaireFieldScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   questionnairePhaseId: 'questionnairePhaseId',
   name: 'name',
   label: 'label',
@@ -830,6 +854,7 @@ export type QuestionnaireFieldScalarFieldEnum = (typeof QuestionnaireFieldScalar
 
 export const ApplicationEventScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   applicationId: 'applicationId',
   eventType: 'eventType',
   eventGroup: 'eventGroup',
@@ -847,6 +872,7 @@ export type ApplicationEventScalarFieldEnum = (typeof ApplicationEventScalarFiel
 
 export const DocumentationStepScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   documentationPhaseId: 'documentationPhaseId',
   name: 'name',
   description: 'description',
@@ -869,6 +895,7 @@ export type DocumentationStepScalarFieldEnum = (typeof DocumentationStepScalarFi
 
 export const DocumentationStepDocumentScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   stepId: 'stepId',
   documentType: 'documentType',
   isRequired: 'isRequired',
@@ -880,6 +907,7 @@ export type DocumentationStepDocumentScalarFieldEnum = (typeof DocumentationStep
 
 export const DocumentationStepApprovalScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   stepId: 'stepId',
   approverId: 'approverId',
   decision: 'decision',
@@ -893,6 +921,7 @@ export type DocumentationStepApprovalScalarFieldEnum = (typeof DocumentationStep
 
 export const PaymentInstallmentScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   paymentPhaseId: 'paymentPhaseId',
   installmentNumber: 'installmentNumber',
   amount: 'amount',
@@ -915,6 +944,7 @@ export type PaymentInstallmentScalarFieldEnum = (typeof PaymentInstallmentScalar
 
 export const ApplicationPaymentScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   applicationId: 'applicationId',
   phaseId: 'phaseId',
   installmentId: 'installmentId',
@@ -937,6 +967,7 @@ export type ApplicationPaymentScalarFieldEnum = (typeof ApplicationPaymentScalar
 
 export const ApplicationDocumentScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   applicationId: 'applicationId',
   phaseId: 'phaseId',
   stepId: 'stepId',
@@ -1175,6 +1206,7 @@ export type WorkflowEventScalarFieldEnum = (typeof WorkflowEventScalarFieldEnum)
 
 export const EventHandlerExecutionScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   eventId: 'eventId',
   handlerId: 'handlerId',
   status: 'status',
@@ -1194,6 +1226,7 @@ export type EventHandlerExecutionScalarFieldEnum = (typeof EventHandlerExecution
 
 export const DomainEventScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   eventType: 'eventType',
   aggregateType: 'aggregateType',
   aggregateId: 'aggregateId',
@@ -1482,6 +1515,7 @@ export type DeviceEndpointOrderByRelevanceFieldEnum = (typeof DeviceEndpointOrde
 
 export const SocialOrderByRelevanceFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   userId: 'userId',
   provider: 'provider',
   socialId: 'socialId'
@@ -1500,6 +1534,7 @@ export type OAuthStateOrderByRelevanceFieldEnum = (typeof OAuthStateOrderByRelev
 
 export const WalletOrderByRelevanceFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   currency: 'currency'
 } as const
 
@@ -1508,6 +1543,7 @@ export type WalletOrderByRelevanceFieldEnum = (typeof WalletOrderByRelevanceFiel
 
 export const TransactionOrderByRelevanceFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   walletId: 'walletId',
   type: 'type',
   status: 'status',
@@ -1520,6 +1556,7 @@ export type TransactionOrderByRelevanceFieldEnum = (typeof TransactionOrderByRel
 
 export const SettingsOrderByRelevanceFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   key: 'key',
   value: 'value',
   category: 'category'
@@ -1551,6 +1588,7 @@ export type PropertyOrderByRelevanceFieldEnum = (typeof PropertyOrderByRelevance
 
 export const PropertyMediaOrderByRelevanceFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   propertyId: 'propertyId',
   url: 'url',
   type: 'type',
@@ -1562,6 +1600,7 @@ export type PropertyMediaOrderByRelevanceFieldEnum = (typeof PropertyMediaOrderB
 
 export const PropertyDocumentOrderByRelevanceFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   propertyId: 'propertyId',
   name: 'name',
   url: 'url',
@@ -1573,6 +1612,7 @@ export type PropertyDocumentOrderByRelevanceFieldEnum = (typeof PropertyDocument
 
 export const AmenityOrderByRelevanceFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   name: 'name',
   category: 'category',
   icon: 'icon'
@@ -1583,6 +1623,7 @@ export type AmenityOrderByRelevanceFieldEnum = (typeof AmenityOrderByRelevanceFi
 
 export const PropertyVariantOrderByRelevanceFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   propertyId: 'propertyId',
   name: 'name',
   description: 'description',
@@ -1593,6 +1634,7 @@ export type PropertyVariantOrderByRelevanceFieldEnum = (typeof PropertyVariantOr
 
 
 export const PropertyVariantAmenityOrderByRelevanceFieldEnum = {
+  tenantId: 'tenantId',
   variantId: 'variantId',
   amenityId: 'amenityId'
 } as const
@@ -1602,6 +1644,7 @@ export type PropertyVariantAmenityOrderByRelevanceFieldEnum = (typeof PropertyVa
 
 export const PropertyVariantMediaOrderByRelevanceFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   variantId: 'variantId',
   url: 'url',
   type: 'type',
@@ -1613,6 +1656,7 @@ export type PropertyVariantMediaOrderByRelevanceFieldEnum = (typeof PropertyVari
 
 export const PropertyUnitOrderByRelevanceFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   variantId: 'variantId',
   unitNumber: 'unitNumber',
   blockName: 'blockName',
@@ -1626,6 +1670,7 @@ export type PropertyUnitOrderByRelevanceFieldEnum = (typeof PropertyUnitOrderByR
 
 
 export const PropertyAmenityOrderByRelevanceFieldEnum = {
+  tenantId: 'tenantId',
   propertyId: 'propertyId',
   amenityId: 'amenityId'
 } as const
@@ -1654,6 +1699,7 @@ export type PropertyPaymentMethodOrderByRelevanceFieldEnum = (typeof PropertyPay
 
 
 export const PropertyPaymentMethodLinkOrderByRelevanceFieldEnum = {
+  tenantId: 'tenantId',
   propertyId: 'propertyId',
   paymentMethodId: 'paymentMethodId'
 } as const
@@ -1663,6 +1709,7 @@ export type PropertyPaymentMethodLinkOrderByRelevanceFieldEnum = (typeof Propert
 
 export const PropertyPaymentMethodPhaseOrderByRelevanceFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   paymentMethodId: 'paymentMethodId',
   paymentPlanId: 'paymentPlanId',
   name: 'name',
@@ -1674,6 +1721,7 @@ export type PropertyPaymentMethodPhaseOrderByRelevanceFieldEnum = (typeof Proper
 
 export const PhaseEventAttachmentOrderByRelevanceFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   phaseId: 'phaseId',
   handlerId: 'handlerId'
 } as const
@@ -1683,6 +1731,7 @@ export type PhaseEventAttachmentOrderByRelevanceFieldEnum = (typeof PhaseEventAt
 
 export const PaymentMethodPhaseStepOrderByRelevanceFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   phaseId: 'phaseId',
   name: 'name'
 } as const
@@ -1692,6 +1741,7 @@ export type PaymentMethodPhaseStepOrderByRelevanceFieldEnum = (typeof PaymentMet
 
 export const StepEventAttachmentOrderByRelevanceFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   stepId: 'stepId',
   handlerId: 'handlerId'
 } as const
@@ -1701,6 +1751,7 @@ export type StepEventAttachmentOrderByRelevanceFieldEnum = (typeof StepEventAtta
 
 export const PaymentMethodPhaseDocumentOrderByRelevanceFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   phaseId: 'phaseId',
   documentType: 'documentType',
   description: 'description',
@@ -1712,6 +1763,7 @@ export type PaymentMethodPhaseDocumentOrderByRelevanceFieldEnum = (typeof Paymen
 
 export const PaymentMethodPhaseFieldOrderByRelevanceFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   phaseId: 'phaseId',
   name: 'name',
   label: 'label',
@@ -1763,6 +1815,7 @@ export type ApplicationRefundOrderByRelevanceFieldEnum = (typeof ApplicationRefu
 
 export const ApplicationPhaseOrderByRelevanceFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   applicationId: 'applicationId',
   name: 'name',
   description: 'description'
@@ -1773,6 +1826,7 @@ export type ApplicationPhaseOrderByRelevanceFieldEnum = (typeof ApplicationPhase
 
 export const QuestionnairePhaseOrderByRelevanceFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   phaseId: 'phaseId',
   underwritingDecision: 'underwritingDecision',
   underwritingNotes: 'underwritingNotes'
@@ -1783,6 +1837,7 @@ export type QuestionnairePhaseOrderByRelevanceFieldEnum = (typeof QuestionnaireP
 
 export const DocumentationPhaseOrderByRelevanceFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   phaseId: 'phaseId',
   currentStepId: 'currentStepId'
 } as const
@@ -1792,6 +1847,7 @@ export type DocumentationPhaseOrderByRelevanceFieldEnum = (typeof DocumentationP
 
 export const PaymentPhaseOrderByRelevanceFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   phaseId: 'phaseId',
   paymentPlanId: 'paymentPlanId'
 } as const
@@ -1801,6 +1857,7 @@ export type PaymentPhaseOrderByRelevanceFieldEnum = (typeof PaymentPhaseOrderByR
 
 export const QuestionnaireFieldOrderByRelevanceFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   questionnairePhaseId: 'questionnairePhaseId',
   name: 'name',
   label: 'label',
@@ -1813,6 +1870,7 @@ export type QuestionnaireFieldOrderByRelevanceFieldEnum = (typeof QuestionnaireF
 
 export const ApplicationEventOrderByRelevanceFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   applicationId: 'applicationId',
   fromState: 'fromState',
   toState: 'toState',
@@ -1825,6 +1883,7 @@ export type ApplicationEventOrderByRelevanceFieldEnum = (typeof ApplicationEvent
 
 export const DocumentationStepOrderByRelevanceFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   documentationPhaseId: 'documentationPhaseId',
   name: 'name',
   description: 'description',
@@ -1837,6 +1896,7 @@ export type DocumentationStepOrderByRelevanceFieldEnum = (typeof DocumentationSt
 
 export const DocumentationStepDocumentOrderByRelevanceFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   stepId: 'stepId',
   documentType: 'documentType'
 } as const
@@ -1846,6 +1906,7 @@ export type DocumentationStepDocumentOrderByRelevanceFieldEnum = (typeof Documen
 
 export const DocumentationStepApprovalOrderByRelevanceFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   stepId: 'stepId',
   approverId: 'approverId',
   comment: 'comment'
@@ -1856,6 +1917,7 @@ export type DocumentationStepApprovalOrderByRelevanceFieldEnum = (typeof Documen
 
 export const PaymentInstallmentOrderByRelevanceFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   paymentPhaseId: 'paymentPhaseId'
 } as const
 
@@ -1864,6 +1926,7 @@ export type PaymentInstallmentOrderByRelevanceFieldEnum = (typeof PaymentInstall
 
 export const ApplicationPaymentOrderByRelevanceFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   applicationId: 'applicationId',
   phaseId: 'phaseId',
   installmentId: 'installmentId',
@@ -1878,6 +1941,7 @@ export type ApplicationPaymentOrderByRelevanceFieldEnum = (typeof ApplicationPay
 
 export const ApplicationDocumentOrderByRelevanceFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   applicationId: 'applicationId',
   phaseId: 'phaseId',
   stepId: 'stepId',
@@ -2025,6 +2089,7 @@ export type WorkflowEventOrderByRelevanceFieldEnum = (typeof WorkflowEventOrderB
 
 export const EventHandlerExecutionOrderByRelevanceFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   eventId: 'eventId',
   handlerId: 'handlerId',
   error: 'error',
@@ -2036,6 +2101,7 @@ export type EventHandlerExecutionOrderByRelevanceFieldEnum = (typeof EventHandle
 
 export const DomainEventOrderByRelevanceFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   eventType: 'eventType',
   aggregateType: 'aggregateType',
   aggregateId: 'aggregateId',

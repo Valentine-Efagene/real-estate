@@ -44,6 +44,7 @@ export type DocumentationPhaseSumAggregateOutputType = {
 
 export type DocumentationPhaseMinAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   phaseId: string | null
   currentStepId: string | null
   approvedDocumentsCount: number | null
@@ -58,6 +59,7 @@ export type DocumentationPhaseMinAggregateOutputType = {
 
 export type DocumentationPhaseMaxAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   phaseId: string | null
   currentStepId: string | null
   approvedDocumentsCount: number | null
@@ -72,6 +74,7 @@ export type DocumentationPhaseMaxAggregateOutputType = {
 
 export type DocumentationPhaseCountAggregateOutputType = {
   id: number
+  tenantId: number
   phaseId: number
   currentStepId: number
   approvedDocumentsCount: number
@@ -106,6 +109,7 @@ export type DocumentationPhaseSumAggregateInputType = {
 
 export type DocumentationPhaseMinAggregateInputType = {
   id?: true
+  tenantId?: true
   phaseId?: true
   currentStepId?: true
   approvedDocumentsCount?: true
@@ -120,6 +124,7 @@ export type DocumentationPhaseMinAggregateInputType = {
 
 export type DocumentationPhaseMaxAggregateInputType = {
   id?: true
+  tenantId?: true
   phaseId?: true
   currentStepId?: true
   approvedDocumentsCount?: true
@@ -134,6 +139,7 @@ export type DocumentationPhaseMaxAggregateInputType = {
 
 export type DocumentationPhaseCountAggregateInputType = {
   id?: true
+  tenantId?: true
   phaseId?: true
   currentStepId?: true
   approvedDocumentsCount?: true
@@ -237,6 +243,7 @@ export type DocumentationPhaseGroupByArgs<ExtArgs extends runtime.Types.Extensio
 
 export type DocumentationPhaseGroupByOutputType = {
   id: string
+  tenantId: string
   phaseId: string
   currentStepId: string | null
   approvedDocumentsCount: number
@@ -276,6 +283,7 @@ export type DocumentationPhaseWhereInput = {
   OR?: Prisma.DocumentationPhaseWhereInput[]
   NOT?: Prisma.DocumentationPhaseWhereInput | Prisma.DocumentationPhaseWhereInput[]
   id?: Prisma.StringFilter<"DocumentationPhase"> | string
+  tenantId?: Prisma.StringFilter<"DocumentationPhase"> | string
   phaseId?: Prisma.StringFilter<"DocumentationPhase"> | string
   currentStepId?: Prisma.StringNullableFilter<"DocumentationPhase"> | string | null
   approvedDocumentsCount?: Prisma.IntFilter<"DocumentationPhase"> | number
@@ -288,6 +296,7 @@ export type DocumentationPhaseWhereInput = {
   requiredDocumentSnapshot?: Prisma.JsonNullableFilter<"DocumentationPhase">
   createdAt?: Prisma.DateTimeFilter<"DocumentationPhase"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"DocumentationPhase"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   phase?: Prisma.XOR<Prisma.ApplicationPhaseScalarRelationFilter, Prisma.ApplicationPhaseWhereInput>
   currentStep?: Prisma.XOR<Prisma.DocumentationStepNullableScalarRelationFilter, Prisma.DocumentationStepWhereInput> | null
   steps?: Prisma.DocumentationStepListRelationFilter
@@ -295,6 +304,7 @@ export type DocumentationPhaseWhereInput = {
 
 export type DocumentationPhaseOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   phaseId?: Prisma.SortOrder
   currentStepId?: Prisma.SortOrderInput | Prisma.SortOrder
   approvedDocumentsCount?: Prisma.SortOrder
@@ -307,6 +317,7 @@ export type DocumentationPhaseOrderByWithRelationInput = {
   requiredDocumentSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  tenant?: Prisma.TenantOrderByWithRelationInput
   phase?: Prisma.ApplicationPhaseOrderByWithRelationInput
   currentStep?: Prisma.DocumentationStepOrderByWithRelationInput
   steps?: Prisma.DocumentationStepOrderByRelationAggregateInput
@@ -319,6 +330,7 @@ export type DocumentationPhaseWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.DocumentationPhaseWhereInput | Prisma.DocumentationPhaseWhereInput[]
   OR?: Prisma.DocumentationPhaseWhereInput[]
   NOT?: Prisma.DocumentationPhaseWhereInput | Prisma.DocumentationPhaseWhereInput[]
+  tenantId?: Prisma.StringFilter<"DocumentationPhase"> | string
   currentStepId?: Prisma.StringNullableFilter<"DocumentationPhase"> | string | null
   approvedDocumentsCount?: Prisma.IntFilter<"DocumentationPhase"> | number
   requiredDocumentsCount?: Prisma.IntFilter<"DocumentationPhase"> | number
@@ -330,6 +342,7 @@ export type DocumentationPhaseWhereUniqueInput = Prisma.AtLeast<{
   requiredDocumentSnapshot?: Prisma.JsonNullableFilter<"DocumentationPhase">
   createdAt?: Prisma.DateTimeFilter<"DocumentationPhase"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"DocumentationPhase"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   phase?: Prisma.XOR<Prisma.ApplicationPhaseScalarRelationFilter, Prisma.ApplicationPhaseWhereInput>
   currentStep?: Prisma.XOR<Prisma.DocumentationStepNullableScalarRelationFilter, Prisma.DocumentationStepWhereInput> | null
   steps?: Prisma.DocumentationStepListRelationFilter
@@ -337,6 +350,7 @@ export type DocumentationPhaseWhereUniqueInput = Prisma.AtLeast<{
 
 export type DocumentationPhaseOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   phaseId?: Prisma.SortOrder
   currentStepId?: Prisma.SortOrderInput | Prisma.SortOrder
   approvedDocumentsCount?: Prisma.SortOrder
@@ -361,6 +375,7 @@ export type DocumentationPhaseScalarWhereWithAggregatesInput = {
   OR?: Prisma.DocumentationPhaseScalarWhereWithAggregatesInput[]
   NOT?: Prisma.DocumentationPhaseScalarWhereWithAggregatesInput | Prisma.DocumentationPhaseScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"DocumentationPhase"> | string
+  tenantId?: Prisma.StringWithAggregatesFilter<"DocumentationPhase"> | string
   phaseId?: Prisma.StringWithAggregatesFilter<"DocumentationPhase"> | string
   currentStepId?: Prisma.StringNullableWithAggregatesFilter<"DocumentationPhase"> | string | null
   approvedDocumentsCount?: Prisma.IntWithAggregatesFilter<"DocumentationPhase"> | number
@@ -387,6 +402,7 @@ export type DocumentationPhaseCreateInput = {
   requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutDocumentationPhasesInput
   phase: Prisma.ApplicationPhaseCreateNestedOneWithoutDocumentationPhaseInput
   currentStep?: Prisma.DocumentationStepCreateNestedOneWithoutCurrentForPhaseInput
   steps?: Prisma.DocumentationStepCreateNestedManyWithoutDocumentationPhaseInput
@@ -394,6 +410,7 @@ export type DocumentationPhaseCreateInput = {
 
 export type DocumentationPhaseUncheckedCreateInput = {
   id?: string
+  tenantId: string
   phaseId: string
   currentStepId?: string | null
   approvedDocumentsCount?: number
@@ -421,6 +438,7 @@ export type DocumentationPhaseUpdateInput = {
   requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutDocumentationPhasesNestedInput
   phase?: Prisma.ApplicationPhaseUpdateOneRequiredWithoutDocumentationPhaseNestedInput
   currentStep?: Prisma.DocumentationStepUpdateOneWithoutCurrentForPhaseNestedInput
   steps?: Prisma.DocumentationStepUpdateManyWithoutDocumentationPhaseNestedInput
@@ -428,6 +446,7 @@ export type DocumentationPhaseUpdateInput = {
 
 export type DocumentationPhaseUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.StringFieldUpdateOperationsInput | string
   currentStepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -445,6 +464,7 @@ export type DocumentationPhaseUncheckedUpdateInput = {
 
 export type DocumentationPhaseCreateManyInput = {
   id?: string
+  tenantId: string
   phaseId: string
   currentStepId?: string | null
   approvedDocumentsCount?: number
@@ -475,6 +495,7 @@ export type DocumentationPhaseUpdateManyMutationInput = {
 
 export type DocumentationPhaseUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.StringFieldUpdateOperationsInput | string
   currentStepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -487,6 +508,16 @@ export type DocumentationPhaseUncheckedUpdateManyInput = {
   requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type DocumentationPhaseListRelationFilter = {
+  every?: Prisma.DocumentationPhaseWhereInput
+  some?: Prisma.DocumentationPhaseWhereInput
+  none?: Prisma.DocumentationPhaseWhereInput
+}
+
+export type DocumentationPhaseOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type DocumentationPhaseNullableScalarRelationFilter = {
@@ -502,6 +533,7 @@ export type DocumentationPhaseOrderByRelevanceInput = {
 
 export type DocumentationPhaseCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   phaseId?: Prisma.SortOrder
   currentStepId?: Prisma.SortOrder
   approvedDocumentsCount?: Prisma.SortOrder
@@ -526,6 +558,7 @@ export type DocumentationPhaseAvgOrderByAggregateInput = {
 
 export type DocumentationPhaseMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   phaseId?: Prisma.SortOrder
   currentStepId?: Prisma.SortOrder
   approvedDocumentsCount?: Prisma.SortOrder
@@ -540,6 +573,7 @@ export type DocumentationPhaseMaxOrderByAggregateInput = {
 
 export type DocumentationPhaseMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   phaseId?: Prisma.SortOrder
   currentStepId?: Prisma.SortOrder
   approvedDocumentsCount?: Prisma.SortOrder
@@ -565,14 +599,46 @@ export type DocumentationPhaseScalarRelationFilter = {
   isNot?: Prisma.DocumentationPhaseWhereInput
 }
 
-export type DocumentationPhaseListRelationFilter = {
-  every?: Prisma.DocumentationPhaseWhereInput
-  some?: Prisma.DocumentationPhaseWhereInput
-  none?: Prisma.DocumentationPhaseWhereInput
+export type DocumentationPhaseCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.DocumentationPhaseCreateWithoutTenantInput, Prisma.DocumentationPhaseUncheckedCreateWithoutTenantInput> | Prisma.DocumentationPhaseCreateWithoutTenantInput[] | Prisma.DocumentationPhaseUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.DocumentationPhaseCreateOrConnectWithoutTenantInput | Prisma.DocumentationPhaseCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.DocumentationPhaseCreateManyTenantInputEnvelope
+  connect?: Prisma.DocumentationPhaseWhereUniqueInput | Prisma.DocumentationPhaseWhereUniqueInput[]
 }
 
-export type DocumentationPhaseOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
+export type DocumentationPhaseUncheckedCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.DocumentationPhaseCreateWithoutTenantInput, Prisma.DocumentationPhaseUncheckedCreateWithoutTenantInput> | Prisma.DocumentationPhaseCreateWithoutTenantInput[] | Prisma.DocumentationPhaseUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.DocumentationPhaseCreateOrConnectWithoutTenantInput | Prisma.DocumentationPhaseCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.DocumentationPhaseCreateManyTenantInputEnvelope
+  connect?: Prisma.DocumentationPhaseWhereUniqueInput | Prisma.DocumentationPhaseWhereUniqueInput[]
+}
+
+export type DocumentationPhaseUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentationPhaseCreateWithoutTenantInput, Prisma.DocumentationPhaseUncheckedCreateWithoutTenantInput> | Prisma.DocumentationPhaseCreateWithoutTenantInput[] | Prisma.DocumentationPhaseUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.DocumentationPhaseCreateOrConnectWithoutTenantInput | Prisma.DocumentationPhaseCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.DocumentationPhaseUpsertWithWhereUniqueWithoutTenantInput | Prisma.DocumentationPhaseUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.DocumentationPhaseCreateManyTenantInputEnvelope
+  set?: Prisma.DocumentationPhaseWhereUniqueInput | Prisma.DocumentationPhaseWhereUniqueInput[]
+  disconnect?: Prisma.DocumentationPhaseWhereUniqueInput | Prisma.DocumentationPhaseWhereUniqueInput[]
+  delete?: Prisma.DocumentationPhaseWhereUniqueInput | Prisma.DocumentationPhaseWhereUniqueInput[]
+  connect?: Prisma.DocumentationPhaseWhereUniqueInput | Prisma.DocumentationPhaseWhereUniqueInput[]
+  update?: Prisma.DocumentationPhaseUpdateWithWhereUniqueWithoutTenantInput | Prisma.DocumentationPhaseUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.DocumentationPhaseUpdateManyWithWhereWithoutTenantInput | Prisma.DocumentationPhaseUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.DocumentationPhaseScalarWhereInput | Prisma.DocumentationPhaseScalarWhereInput[]
+}
+
+export type DocumentationPhaseUncheckedUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentationPhaseCreateWithoutTenantInput, Prisma.DocumentationPhaseUncheckedCreateWithoutTenantInput> | Prisma.DocumentationPhaseCreateWithoutTenantInput[] | Prisma.DocumentationPhaseUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.DocumentationPhaseCreateOrConnectWithoutTenantInput | Prisma.DocumentationPhaseCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.DocumentationPhaseUpsertWithWhereUniqueWithoutTenantInput | Prisma.DocumentationPhaseUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.DocumentationPhaseCreateManyTenantInputEnvelope
+  set?: Prisma.DocumentationPhaseWhereUniqueInput | Prisma.DocumentationPhaseWhereUniqueInput[]
+  disconnect?: Prisma.DocumentationPhaseWhereUniqueInput | Prisma.DocumentationPhaseWhereUniqueInput[]
+  delete?: Prisma.DocumentationPhaseWhereUniqueInput | Prisma.DocumentationPhaseWhereUniqueInput[]
+  connect?: Prisma.DocumentationPhaseWhereUniqueInput | Prisma.DocumentationPhaseWhereUniqueInput[]
+  update?: Prisma.DocumentationPhaseUpdateWithWhereUniqueWithoutTenantInput | Prisma.DocumentationPhaseUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.DocumentationPhaseUpdateManyWithWhereWithoutTenantInput | Prisma.DocumentationPhaseUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.DocumentationPhaseScalarWhereInput | Prisma.DocumentationPhaseScalarWhereInput[]
 }
 
 export type DocumentationPhaseCreateNestedOneWithoutPhaseInput = {
@@ -663,6 +729,86 @@ export type DocumentationPhaseUncheckedUpdateManyWithoutCurrentStepNestedInput =
   deleteMany?: Prisma.DocumentationPhaseScalarWhereInput | Prisma.DocumentationPhaseScalarWhereInput[]
 }
 
+export type DocumentationPhaseCreateWithoutTenantInput = {
+  id?: string
+  approvedDocumentsCount?: number
+  requiredDocumentsCount?: number
+  completedStepsCount?: number
+  totalStepsCount?: number
+  minimumCompletionPercentage?: number | null
+  completionCriterion?: $Enums.CompletionCriterion | null
+  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  phase: Prisma.ApplicationPhaseCreateNestedOneWithoutDocumentationPhaseInput
+  currentStep?: Prisma.DocumentationStepCreateNestedOneWithoutCurrentForPhaseInput
+  steps?: Prisma.DocumentationStepCreateNestedManyWithoutDocumentationPhaseInput
+}
+
+export type DocumentationPhaseUncheckedCreateWithoutTenantInput = {
+  id?: string
+  phaseId: string
+  currentStepId?: string | null
+  approvedDocumentsCount?: number
+  requiredDocumentsCount?: number
+  completedStepsCount?: number
+  totalStepsCount?: number
+  minimumCompletionPercentage?: number | null
+  completionCriterion?: $Enums.CompletionCriterion | null
+  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  steps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutDocumentationPhaseInput
+}
+
+export type DocumentationPhaseCreateOrConnectWithoutTenantInput = {
+  where: Prisma.DocumentationPhaseWhereUniqueInput
+  create: Prisma.XOR<Prisma.DocumentationPhaseCreateWithoutTenantInput, Prisma.DocumentationPhaseUncheckedCreateWithoutTenantInput>
+}
+
+export type DocumentationPhaseCreateManyTenantInputEnvelope = {
+  data: Prisma.DocumentationPhaseCreateManyTenantInput | Prisma.DocumentationPhaseCreateManyTenantInput[]
+  skipDuplicates?: boolean
+}
+
+export type DocumentationPhaseUpsertWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.DocumentationPhaseWhereUniqueInput
+  update: Prisma.XOR<Prisma.DocumentationPhaseUpdateWithoutTenantInput, Prisma.DocumentationPhaseUncheckedUpdateWithoutTenantInput>
+  create: Prisma.XOR<Prisma.DocumentationPhaseCreateWithoutTenantInput, Prisma.DocumentationPhaseUncheckedCreateWithoutTenantInput>
+}
+
+export type DocumentationPhaseUpdateWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.DocumentationPhaseWhereUniqueInput
+  data: Prisma.XOR<Prisma.DocumentationPhaseUpdateWithoutTenantInput, Prisma.DocumentationPhaseUncheckedUpdateWithoutTenantInput>
+}
+
+export type DocumentationPhaseUpdateManyWithWhereWithoutTenantInput = {
+  where: Prisma.DocumentationPhaseScalarWhereInput
+  data: Prisma.XOR<Prisma.DocumentationPhaseUpdateManyMutationInput, Prisma.DocumentationPhaseUncheckedUpdateManyWithoutTenantInput>
+}
+
+export type DocumentationPhaseScalarWhereInput = {
+  AND?: Prisma.DocumentationPhaseScalarWhereInput | Prisma.DocumentationPhaseScalarWhereInput[]
+  OR?: Prisma.DocumentationPhaseScalarWhereInput[]
+  NOT?: Prisma.DocumentationPhaseScalarWhereInput | Prisma.DocumentationPhaseScalarWhereInput[]
+  id?: Prisma.StringFilter<"DocumentationPhase"> | string
+  tenantId?: Prisma.StringFilter<"DocumentationPhase"> | string
+  phaseId?: Prisma.StringFilter<"DocumentationPhase"> | string
+  currentStepId?: Prisma.StringNullableFilter<"DocumentationPhase"> | string | null
+  approvedDocumentsCount?: Prisma.IntFilter<"DocumentationPhase"> | number
+  requiredDocumentsCount?: Prisma.IntFilter<"DocumentationPhase"> | number
+  completedStepsCount?: Prisma.IntFilter<"DocumentationPhase"> | number
+  totalStepsCount?: Prisma.IntFilter<"DocumentationPhase"> | number
+  minimumCompletionPercentage?: Prisma.FloatNullableFilter<"DocumentationPhase"> | number | null
+  completionCriterion?: Prisma.EnumCompletionCriterionNullableFilter<"DocumentationPhase"> | $Enums.CompletionCriterion | null
+  stepDefinitionsSnapshot?: Prisma.JsonNullableFilter<"DocumentationPhase">
+  requiredDocumentSnapshot?: Prisma.JsonNullableFilter<"DocumentationPhase">
+  createdAt?: Prisma.DateTimeFilter<"DocumentationPhase"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"DocumentationPhase"> | Date | string
+}
+
 export type DocumentationPhaseCreateWithoutPhaseInput = {
   id?: string
   approvedDocumentsCount?: number
@@ -675,12 +821,14 @@ export type DocumentationPhaseCreateWithoutPhaseInput = {
   requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutDocumentationPhasesInput
   currentStep?: Prisma.DocumentationStepCreateNestedOneWithoutCurrentForPhaseInput
   steps?: Prisma.DocumentationStepCreateNestedManyWithoutDocumentationPhaseInput
 }
 
 export type DocumentationPhaseUncheckedCreateWithoutPhaseInput = {
   id?: string
+  tenantId: string
   currentStepId?: string | null
   approvedDocumentsCount?: number
   requiredDocumentsCount?: number
@@ -723,12 +871,14 @@ export type DocumentationPhaseUpdateWithoutPhaseInput = {
   requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutDocumentationPhasesNestedInput
   currentStep?: Prisma.DocumentationStepUpdateOneWithoutCurrentForPhaseNestedInput
   steps?: Prisma.DocumentationStepUpdateManyWithoutDocumentationPhaseNestedInput
 }
 
 export type DocumentationPhaseUncheckedUpdateWithoutPhaseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   currentStepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -755,12 +905,14 @@ export type DocumentationPhaseCreateWithoutStepsInput = {
   requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutDocumentationPhasesInput
   phase: Prisma.ApplicationPhaseCreateNestedOneWithoutDocumentationPhaseInput
   currentStep?: Prisma.DocumentationStepCreateNestedOneWithoutCurrentForPhaseInput
 }
 
 export type DocumentationPhaseUncheckedCreateWithoutStepsInput = {
   id?: string
+  tenantId: string
   phaseId: string
   currentStepId?: string | null
   approvedDocumentsCount?: number
@@ -792,12 +944,14 @@ export type DocumentationPhaseCreateWithoutCurrentStepInput = {
   requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutDocumentationPhasesInput
   phase: Prisma.ApplicationPhaseCreateNestedOneWithoutDocumentationPhaseInput
   steps?: Prisma.DocumentationStepCreateNestedManyWithoutDocumentationPhaseInput
 }
 
 export type DocumentationPhaseUncheckedCreateWithoutCurrentStepInput = {
   id?: string
+  tenantId: string
   phaseId: string
   approvedDocumentsCount?: number
   requiredDocumentsCount?: number
@@ -845,12 +999,14 @@ export type DocumentationPhaseUpdateWithoutStepsInput = {
   requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutDocumentationPhasesNestedInput
   phase?: Prisma.ApplicationPhaseUpdateOneRequiredWithoutDocumentationPhaseNestedInput
   currentStep?: Prisma.DocumentationStepUpdateOneWithoutCurrentForPhaseNestedInput
 }
 
 export type DocumentationPhaseUncheckedUpdateWithoutStepsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.StringFieldUpdateOperationsInput | string
   currentStepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -881,27 +1037,75 @@ export type DocumentationPhaseUpdateManyWithWhereWithoutCurrentStepInput = {
   data: Prisma.XOR<Prisma.DocumentationPhaseUpdateManyMutationInput, Prisma.DocumentationPhaseUncheckedUpdateManyWithoutCurrentStepInput>
 }
 
-export type DocumentationPhaseScalarWhereInput = {
-  AND?: Prisma.DocumentationPhaseScalarWhereInput | Prisma.DocumentationPhaseScalarWhereInput[]
-  OR?: Prisma.DocumentationPhaseScalarWhereInput[]
-  NOT?: Prisma.DocumentationPhaseScalarWhereInput | Prisma.DocumentationPhaseScalarWhereInput[]
-  id?: Prisma.StringFilter<"DocumentationPhase"> | string
-  phaseId?: Prisma.StringFilter<"DocumentationPhase"> | string
-  currentStepId?: Prisma.StringNullableFilter<"DocumentationPhase"> | string | null
-  approvedDocumentsCount?: Prisma.IntFilter<"DocumentationPhase"> | number
-  requiredDocumentsCount?: Prisma.IntFilter<"DocumentationPhase"> | number
-  completedStepsCount?: Prisma.IntFilter<"DocumentationPhase"> | number
-  totalStepsCount?: Prisma.IntFilter<"DocumentationPhase"> | number
-  minimumCompletionPercentage?: Prisma.FloatNullableFilter<"DocumentationPhase"> | number | null
-  completionCriterion?: Prisma.EnumCompletionCriterionNullableFilter<"DocumentationPhase"> | $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.JsonNullableFilter<"DocumentationPhase">
-  requiredDocumentSnapshot?: Prisma.JsonNullableFilter<"DocumentationPhase">
-  createdAt?: Prisma.DateTimeFilter<"DocumentationPhase"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"DocumentationPhase"> | Date | string
+export type DocumentationPhaseCreateManyTenantInput = {
+  id?: string
+  phaseId: string
+  currentStepId?: string | null
+  approvedDocumentsCount?: number
+  requiredDocumentsCount?: number
+  completedStepsCount?: number
+  totalStepsCount?: number
+  minimumCompletionPercentage?: number | null
+  completionCriterion?: $Enums.CompletionCriterion | null
+  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type DocumentationPhaseUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
+  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  phase?: Prisma.ApplicationPhaseUpdateOneRequiredWithoutDocumentationPhaseNestedInput
+  currentStep?: Prisma.DocumentationStepUpdateOneWithoutCurrentForPhaseNestedInput
+  steps?: Prisma.DocumentationStepUpdateManyWithoutDocumentationPhaseNestedInput
+}
+
+export type DocumentationPhaseUncheckedUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseId?: Prisma.StringFieldUpdateOperationsInput | string
+  currentStepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
+  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  steps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutDocumentationPhaseNestedInput
+}
+
+export type DocumentationPhaseUncheckedUpdateManyWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseId?: Prisma.StringFieldUpdateOperationsInput | string
+  currentStepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
+  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type DocumentationPhaseCreateManyCurrentStepInput = {
   id?: string
+  tenantId: string
   phaseId: string
   approvedDocumentsCount?: number
   requiredDocumentsCount?: number
@@ -927,12 +1131,14 @@ export type DocumentationPhaseUpdateWithoutCurrentStepInput = {
   requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutDocumentationPhasesNestedInput
   phase?: Prisma.ApplicationPhaseUpdateOneRequiredWithoutDocumentationPhaseNestedInput
   steps?: Prisma.DocumentationStepUpdateManyWithoutDocumentationPhaseNestedInput
 }
 
 export type DocumentationPhaseUncheckedUpdateWithoutCurrentStepInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.StringFieldUpdateOperationsInput | string
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -949,6 +1155,7 @@ export type DocumentationPhaseUncheckedUpdateWithoutCurrentStepInput = {
 
 export type DocumentationPhaseUncheckedUpdateManyWithoutCurrentStepInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.StringFieldUpdateOperationsInput | string
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -995,6 +1202,7 @@ export type DocumentationPhaseCountOutputTypeCountStepsArgs<ExtArgs extends runt
 
 export type DocumentationPhaseSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   phaseId?: boolean
   currentStepId?: boolean
   approvedDocumentsCount?: boolean
@@ -1007,6 +1215,7 @@ export type DocumentationPhaseSelect<ExtArgs extends runtime.Types.Extensions.In
   requiredDocumentSnapshot?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   phase?: boolean | Prisma.ApplicationPhaseDefaultArgs<ExtArgs>
   currentStep?: boolean | Prisma.DocumentationPhase$currentStepArgs<ExtArgs>
   steps?: boolean | Prisma.DocumentationPhase$stepsArgs<ExtArgs>
@@ -1017,6 +1226,7 @@ export type DocumentationPhaseSelect<ExtArgs extends runtime.Types.Extensions.In
 
 export type DocumentationPhaseSelectScalar = {
   id?: boolean
+  tenantId?: boolean
   phaseId?: boolean
   currentStepId?: boolean
   approvedDocumentsCount?: boolean
@@ -1031,8 +1241,9 @@ export type DocumentationPhaseSelectScalar = {
   updatedAt?: boolean
 }
 
-export type DocumentationPhaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "phaseId" | "currentStepId" | "approvedDocumentsCount" | "requiredDocumentsCount" | "completedStepsCount" | "totalStepsCount" | "minimumCompletionPercentage" | "completionCriterion" | "stepDefinitionsSnapshot" | "requiredDocumentSnapshot" | "createdAt" | "updatedAt", ExtArgs["result"]["documentationPhase"]>
+export type DocumentationPhaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "phaseId" | "currentStepId" | "approvedDocumentsCount" | "requiredDocumentsCount" | "completedStepsCount" | "totalStepsCount" | "minimumCompletionPercentage" | "completionCriterion" | "stepDefinitionsSnapshot" | "requiredDocumentSnapshot" | "createdAt" | "updatedAt", ExtArgs["result"]["documentationPhase"]>
 export type DocumentationPhaseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   phase?: boolean | Prisma.ApplicationPhaseDefaultArgs<ExtArgs>
   currentStep?: boolean | Prisma.DocumentationPhase$currentStepArgs<ExtArgs>
   steps?: boolean | Prisma.DocumentationPhase$stepsArgs<ExtArgs>
@@ -1042,12 +1253,14 @@ export type DocumentationPhaseInclude<ExtArgs extends runtime.Types.Extensions.I
 export type $DocumentationPhasePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "DocumentationPhase"
   objects: {
+    tenant: Prisma.$TenantPayload<ExtArgs>
     phase: Prisma.$ApplicationPhasePayload<ExtArgs>
     currentStep: Prisma.$DocumentationStepPayload<ExtArgs> | null
     steps: Prisma.$DocumentationStepPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    tenantId: string
     phaseId: string
     currentStepId: string | null
     approvedDocumentsCount: number
@@ -1400,6 +1613,7 @@ readonly fields: DocumentationPhaseFieldRefs;
  */
 export interface Prisma__DocumentationPhaseClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   phase<T extends Prisma.ApplicationPhaseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApplicationPhaseDefaultArgs<ExtArgs>>): Prisma.Prisma__ApplicationPhaseClient<runtime.Types.Result.GetResult<Prisma.$ApplicationPhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   currentStep<T extends Prisma.DocumentationPhase$currentStepArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentationPhase$currentStepArgs<ExtArgs>>): Prisma.Prisma__DocumentationStepClient<runtime.Types.Result.GetResult<Prisma.$DocumentationStepPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   steps<T extends Prisma.DocumentationPhase$stepsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentationPhase$stepsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentationStepPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -1433,6 +1647,7 @@ export interface Prisma__DocumentationPhaseClient<T, Null = never, ExtArgs exten
  */
 export interface DocumentationPhaseFieldRefs {
   readonly id: Prisma.FieldRef<"DocumentationPhase", 'String'>
+  readonly tenantId: Prisma.FieldRef<"DocumentationPhase", 'String'>
   readonly phaseId: Prisma.FieldRef<"DocumentationPhase", 'String'>
   readonly currentStepId: Prisma.FieldRef<"DocumentationPhase", 'String'>
   readonly approvedDocumentsCount: Prisma.FieldRef<"DocumentationPhase", 'Int'>

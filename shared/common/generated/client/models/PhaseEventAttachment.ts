@@ -37,6 +37,7 @@ export type PhaseEventAttachmentSumAggregateOutputType = {
 
 export type PhaseEventAttachmentMinAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   phaseId: string | null
   trigger: $Enums.PhaseTrigger | null
   handlerId: string | null
@@ -48,6 +49,7 @@ export type PhaseEventAttachmentMinAggregateOutputType = {
 
 export type PhaseEventAttachmentMaxAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   phaseId: string | null
   trigger: $Enums.PhaseTrigger | null
   handlerId: string | null
@@ -59,6 +61,7 @@ export type PhaseEventAttachmentMaxAggregateOutputType = {
 
 export type PhaseEventAttachmentCountAggregateOutputType = {
   id: number
+  tenantId: number
   phaseId: number
   trigger: number
   handlerId: number
@@ -80,6 +83,7 @@ export type PhaseEventAttachmentSumAggregateInputType = {
 
 export type PhaseEventAttachmentMinAggregateInputType = {
   id?: true
+  tenantId?: true
   phaseId?: true
   trigger?: true
   handlerId?: true
@@ -91,6 +95,7 @@ export type PhaseEventAttachmentMinAggregateInputType = {
 
 export type PhaseEventAttachmentMaxAggregateInputType = {
   id?: true
+  tenantId?: true
   phaseId?: true
   trigger?: true
   handlerId?: true
@@ -102,6 +107,7 @@ export type PhaseEventAttachmentMaxAggregateInputType = {
 
 export type PhaseEventAttachmentCountAggregateInputType = {
   id?: true
+  tenantId?: true
   phaseId?: true
   trigger?: true
   handlerId?: true
@@ -200,6 +206,7 @@ export type PhaseEventAttachmentGroupByArgs<ExtArgs extends runtime.Types.Extens
 
 export type PhaseEventAttachmentGroupByOutputType = {
   id: string
+  tenantId: string
   phaseId: string
   trigger: $Enums.PhaseTrigger
   handlerId: string
@@ -234,6 +241,7 @@ export type PhaseEventAttachmentWhereInput = {
   OR?: Prisma.PhaseEventAttachmentWhereInput[]
   NOT?: Prisma.PhaseEventAttachmentWhereInput | Prisma.PhaseEventAttachmentWhereInput[]
   id?: Prisma.StringFilter<"PhaseEventAttachment"> | string
+  tenantId?: Prisma.StringFilter<"PhaseEventAttachment"> | string
   phaseId?: Prisma.StringFilter<"PhaseEventAttachment"> | string
   trigger?: Prisma.EnumPhaseTriggerFilter<"PhaseEventAttachment"> | $Enums.PhaseTrigger
   handlerId?: Prisma.StringFilter<"PhaseEventAttachment"> | string
@@ -241,12 +249,14 @@ export type PhaseEventAttachmentWhereInput = {
   enabled?: Prisma.BoolFilter<"PhaseEventAttachment"> | boolean
   createdAt?: Prisma.DateTimeFilter<"PhaseEventAttachment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PhaseEventAttachment"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   phase?: Prisma.XOR<Prisma.PropertyPaymentMethodPhaseScalarRelationFilter, Prisma.PropertyPaymentMethodPhaseWhereInput>
   handler?: Prisma.XOR<Prisma.EventHandlerScalarRelationFilter, Prisma.EventHandlerWhereInput>
 }
 
 export type PhaseEventAttachmentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   phaseId?: Prisma.SortOrder
   trigger?: Prisma.SortOrder
   handlerId?: Prisma.SortOrder
@@ -254,6 +264,7 @@ export type PhaseEventAttachmentOrderByWithRelationInput = {
   enabled?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  tenant?: Prisma.TenantOrderByWithRelationInput
   phase?: Prisma.PropertyPaymentMethodPhaseOrderByWithRelationInput
   handler?: Prisma.EventHandlerOrderByWithRelationInput
   _relevance?: Prisma.PhaseEventAttachmentOrderByRelevanceInput
@@ -265,6 +276,7 @@ export type PhaseEventAttachmentWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.PhaseEventAttachmentWhereInput | Prisma.PhaseEventAttachmentWhereInput[]
   OR?: Prisma.PhaseEventAttachmentWhereInput[]
   NOT?: Prisma.PhaseEventAttachmentWhereInput | Prisma.PhaseEventAttachmentWhereInput[]
+  tenantId?: Prisma.StringFilter<"PhaseEventAttachment"> | string
   phaseId?: Prisma.StringFilter<"PhaseEventAttachment"> | string
   trigger?: Prisma.EnumPhaseTriggerFilter<"PhaseEventAttachment"> | $Enums.PhaseTrigger
   handlerId?: Prisma.StringFilter<"PhaseEventAttachment"> | string
@@ -272,12 +284,14 @@ export type PhaseEventAttachmentWhereUniqueInput = Prisma.AtLeast<{
   enabled?: Prisma.BoolFilter<"PhaseEventAttachment"> | boolean
   createdAt?: Prisma.DateTimeFilter<"PhaseEventAttachment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PhaseEventAttachment"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   phase?: Prisma.XOR<Prisma.PropertyPaymentMethodPhaseScalarRelationFilter, Prisma.PropertyPaymentMethodPhaseWhereInput>
   handler?: Prisma.XOR<Prisma.EventHandlerScalarRelationFilter, Prisma.EventHandlerWhereInput>
 }, "id" | "phaseId_handlerId_trigger">
 
 export type PhaseEventAttachmentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   phaseId?: Prisma.SortOrder
   trigger?: Prisma.SortOrder
   handlerId?: Prisma.SortOrder
@@ -297,6 +311,7 @@ export type PhaseEventAttachmentScalarWhereWithAggregatesInput = {
   OR?: Prisma.PhaseEventAttachmentScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PhaseEventAttachmentScalarWhereWithAggregatesInput | Prisma.PhaseEventAttachmentScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"PhaseEventAttachment"> | string
+  tenantId?: Prisma.StringWithAggregatesFilter<"PhaseEventAttachment"> | string
   phaseId?: Prisma.StringWithAggregatesFilter<"PhaseEventAttachment"> | string
   trigger?: Prisma.EnumPhaseTriggerWithAggregatesFilter<"PhaseEventAttachment"> | $Enums.PhaseTrigger
   handlerId?: Prisma.StringWithAggregatesFilter<"PhaseEventAttachment"> | string
@@ -313,12 +328,14 @@ export type PhaseEventAttachmentCreateInput = {
   enabled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutPhaseEventAttachmentsInput
   phase: Prisma.PropertyPaymentMethodPhaseCreateNestedOneWithoutEventAttachmentsInput
   handler: Prisma.EventHandlerCreateNestedOneWithoutPhaseAttachmentsInput
 }
 
 export type PhaseEventAttachmentUncheckedCreateInput = {
   id?: string
+  tenantId: string
   phaseId: string
   trigger: $Enums.PhaseTrigger
   handlerId: string
@@ -335,12 +352,14 @@ export type PhaseEventAttachmentUpdateInput = {
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutPhaseEventAttachmentsNestedInput
   phase?: Prisma.PropertyPaymentMethodPhaseUpdateOneRequiredWithoutEventAttachmentsNestedInput
   handler?: Prisma.EventHandlerUpdateOneRequiredWithoutPhaseAttachmentsNestedInput
 }
 
 export type PhaseEventAttachmentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.StringFieldUpdateOperationsInput | string
   trigger?: Prisma.EnumPhaseTriggerFieldUpdateOperationsInput | $Enums.PhaseTrigger
   handlerId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -352,6 +371,7 @@ export type PhaseEventAttachmentUncheckedUpdateInput = {
 
 export type PhaseEventAttachmentCreateManyInput = {
   id?: string
+  tenantId: string
   phaseId: string
   trigger: $Enums.PhaseTrigger
   handlerId: string
@@ -372,6 +392,7 @@ export type PhaseEventAttachmentUpdateManyMutationInput = {
 
 export type PhaseEventAttachmentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.StringFieldUpdateOperationsInput | string
   trigger?: Prisma.EnumPhaseTriggerFieldUpdateOperationsInput | $Enums.PhaseTrigger
   handlerId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -405,6 +426,7 @@ export type PhaseEventAttachmentPhaseIdHandlerIdTriggerCompoundUniqueInput = {
 
 export type PhaseEventAttachmentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   phaseId?: Prisma.SortOrder
   trigger?: Prisma.SortOrder
   handlerId?: Prisma.SortOrder
@@ -420,6 +442,7 @@ export type PhaseEventAttachmentAvgOrderByAggregateInput = {
 
 export type PhaseEventAttachmentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   phaseId?: Prisma.SortOrder
   trigger?: Prisma.SortOrder
   handlerId?: Prisma.SortOrder
@@ -431,6 +454,7 @@ export type PhaseEventAttachmentMaxOrderByAggregateInput = {
 
 export type PhaseEventAttachmentMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   phaseId?: Prisma.SortOrder
   trigger?: Prisma.SortOrder
   handlerId?: Prisma.SortOrder
@@ -442,6 +466,48 @@ export type PhaseEventAttachmentMinOrderByAggregateInput = {
 
 export type PhaseEventAttachmentSumOrderByAggregateInput = {
   priority?: Prisma.SortOrder
+}
+
+export type PhaseEventAttachmentCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.PhaseEventAttachmentCreateWithoutTenantInput, Prisma.PhaseEventAttachmentUncheckedCreateWithoutTenantInput> | Prisma.PhaseEventAttachmentCreateWithoutTenantInput[] | Prisma.PhaseEventAttachmentUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PhaseEventAttachmentCreateOrConnectWithoutTenantInput | Prisma.PhaseEventAttachmentCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.PhaseEventAttachmentCreateManyTenantInputEnvelope
+  connect?: Prisma.PhaseEventAttachmentWhereUniqueInput | Prisma.PhaseEventAttachmentWhereUniqueInput[]
+}
+
+export type PhaseEventAttachmentUncheckedCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.PhaseEventAttachmentCreateWithoutTenantInput, Prisma.PhaseEventAttachmentUncheckedCreateWithoutTenantInput> | Prisma.PhaseEventAttachmentCreateWithoutTenantInput[] | Prisma.PhaseEventAttachmentUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PhaseEventAttachmentCreateOrConnectWithoutTenantInput | Prisma.PhaseEventAttachmentCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.PhaseEventAttachmentCreateManyTenantInputEnvelope
+  connect?: Prisma.PhaseEventAttachmentWhereUniqueInput | Prisma.PhaseEventAttachmentWhereUniqueInput[]
+}
+
+export type PhaseEventAttachmentUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.PhaseEventAttachmentCreateWithoutTenantInput, Prisma.PhaseEventAttachmentUncheckedCreateWithoutTenantInput> | Prisma.PhaseEventAttachmentCreateWithoutTenantInput[] | Prisma.PhaseEventAttachmentUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PhaseEventAttachmentCreateOrConnectWithoutTenantInput | Prisma.PhaseEventAttachmentCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.PhaseEventAttachmentUpsertWithWhereUniqueWithoutTenantInput | Prisma.PhaseEventAttachmentUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.PhaseEventAttachmentCreateManyTenantInputEnvelope
+  set?: Prisma.PhaseEventAttachmentWhereUniqueInput | Prisma.PhaseEventAttachmentWhereUniqueInput[]
+  disconnect?: Prisma.PhaseEventAttachmentWhereUniqueInput | Prisma.PhaseEventAttachmentWhereUniqueInput[]
+  delete?: Prisma.PhaseEventAttachmentWhereUniqueInput | Prisma.PhaseEventAttachmentWhereUniqueInput[]
+  connect?: Prisma.PhaseEventAttachmentWhereUniqueInput | Prisma.PhaseEventAttachmentWhereUniqueInput[]
+  update?: Prisma.PhaseEventAttachmentUpdateWithWhereUniqueWithoutTenantInput | Prisma.PhaseEventAttachmentUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.PhaseEventAttachmentUpdateManyWithWhereWithoutTenantInput | Prisma.PhaseEventAttachmentUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.PhaseEventAttachmentScalarWhereInput | Prisma.PhaseEventAttachmentScalarWhereInput[]
+}
+
+export type PhaseEventAttachmentUncheckedUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.PhaseEventAttachmentCreateWithoutTenantInput, Prisma.PhaseEventAttachmentUncheckedCreateWithoutTenantInput> | Prisma.PhaseEventAttachmentCreateWithoutTenantInput[] | Prisma.PhaseEventAttachmentUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PhaseEventAttachmentCreateOrConnectWithoutTenantInput | Prisma.PhaseEventAttachmentCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.PhaseEventAttachmentUpsertWithWhereUniqueWithoutTenantInput | Prisma.PhaseEventAttachmentUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.PhaseEventAttachmentCreateManyTenantInputEnvelope
+  set?: Prisma.PhaseEventAttachmentWhereUniqueInput | Prisma.PhaseEventAttachmentWhereUniqueInput[]
+  disconnect?: Prisma.PhaseEventAttachmentWhereUniqueInput | Prisma.PhaseEventAttachmentWhereUniqueInput[]
+  delete?: Prisma.PhaseEventAttachmentWhereUniqueInput | Prisma.PhaseEventAttachmentWhereUniqueInput[]
+  connect?: Prisma.PhaseEventAttachmentWhereUniqueInput | Prisma.PhaseEventAttachmentWhereUniqueInput[]
+  update?: Prisma.PhaseEventAttachmentUpdateWithWhereUniqueWithoutTenantInput | Prisma.PhaseEventAttachmentUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.PhaseEventAttachmentUpdateManyWithWhereWithoutTenantInput | Prisma.PhaseEventAttachmentUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.PhaseEventAttachmentScalarWhereInput | Prisma.PhaseEventAttachmentScalarWhereInput[]
 }
 
 export type PhaseEventAttachmentCreateNestedManyWithoutPhaseInput = {
@@ -532,6 +598,69 @@ export type PhaseEventAttachmentUncheckedUpdateManyWithoutHandlerNestedInput = {
   deleteMany?: Prisma.PhaseEventAttachmentScalarWhereInput | Prisma.PhaseEventAttachmentScalarWhereInput[]
 }
 
+export type PhaseEventAttachmentCreateWithoutTenantInput = {
+  id?: string
+  trigger: $Enums.PhaseTrigger
+  priority?: number
+  enabled?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  phase: Prisma.PropertyPaymentMethodPhaseCreateNestedOneWithoutEventAttachmentsInput
+  handler: Prisma.EventHandlerCreateNestedOneWithoutPhaseAttachmentsInput
+}
+
+export type PhaseEventAttachmentUncheckedCreateWithoutTenantInput = {
+  id?: string
+  phaseId: string
+  trigger: $Enums.PhaseTrigger
+  handlerId: string
+  priority?: number
+  enabled?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PhaseEventAttachmentCreateOrConnectWithoutTenantInput = {
+  where: Prisma.PhaseEventAttachmentWhereUniqueInput
+  create: Prisma.XOR<Prisma.PhaseEventAttachmentCreateWithoutTenantInput, Prisma.PhaseEventAttachmentUncheckedCreateWithoutTenantInput>
+}
+
+export type PhaseEventAttachmentCreateManyTenantInputEnvelope = {
+  data: Prisma.PhaseEventAttachmentCreateManyTenantInput | Prisma.PhaseEventAttachmentCreateManyTenantInput[]
+  skipDuplicates?: boolean
+}
+
+export type PhaseEventAttachmentUpsertWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.PhaseEventAttachmentWhereUniqueInput
+  update: Prisma.XOR<Prisma.PhaseEventAttachmentUpdateWithoutTenantInput, Prisma.PhaseEventAttachmentUncheckedUpdateWithoutTenantInput>
+  create: Prisma.XOR<Prisma.PhaseEventAttachmentCreateWithoutTenantInput, Prisma.PhaseEventAttachmentUncheckedCreateWithoutTenantInput>
+}
+
+export type PhaseEventAttachmentUpdateWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.PhaseEventAttachmentWhereUniqueInput
+  data: Prisma.XOR<Prisma.PhaseEventAttachmentUpdateWithoutTenantInput, Prisma.PhaseEventAttachmentUncheckedUpdateWithoutTenantInput>
+}
+
+export type PhaseEventAttachmentUpdateManyWithWhereWithoutTenantInput = {
+  where: Prisma.PhaseEventAttachmentScalarWhereInput
+  data: Prisma.XOR<Prisma.PhaseEventAttachmentUpdateManyMutationInput, Prisma.PhaseEventAttachmentUncheckedUpdateManyWithoutTenantInput>
+}
+
+export type PhaseEventAttachmentScalarWhereInput = {
+  AND?: Prisma.PhaseEventAttachmentScalarWhereInput | Prisma.PhaseEventAttachmentScalarWhereInput[]
+  OR?: Prisma.PhaseEventAttachmentScalarWhereInput[]
+  NOT?: Prisma.PhaseEventAttachmentScalarWhereInput | Prisma.PhaseEventAttachmentScalarWhereInput[]
+  id?: Prisma.StringFilter<"PhaseEventAttachment"> | string
+  tenantId?: Prisma.StringFilter<"PhaseEventAttachment"> | string
+  phaseId?: Prisma.StringFilter<"PhaseEventAttachment"> | string
+  trigger?: Prisma.EnumPhaseTriggerFilter<"PhaseEventAttachment"> | $Enums.PhaseTrigger
+  handlerId?: Prisma.StringFilter<"PhaseEventAttachment"> | string
+  priority?: Prisma.IntFilter<"PhaseEventAttachment"> | number
+  enabled?: Prisma.BoolFilter<"PhaseEventAttachment"> | boolean
+  createdAt?: Prisma.DateTimeFilter<"PhaseEventAttachment"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"PhaseEventAttachment"> | Date | string
+}
+
 export type PhaseEventAttachmentCreateWithoutPhaseInput = {
   id?: string
   trigger: $Enums.PhaseTrigger
@@ -539,11 +668,13 @@ export type PhaseEventAttachmentCreateWithoutPhaseInput = {
   enabled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutPhaseEventAttachmentsInput
   handler: Prisma.EventHandlerCreateNestedOneWithoutPhaseAttachmentsInput
 }
 
 export type PhaseEventAttachmentUncheckedCreateWithoutPhaseInput = {
   id?: string
+  tenantId: string
   trigger: $Enums.PhaseTrigger
   handlerId: string
   priority?: number
@@ -578,20 +709,6 @@ export type PhaseEventAttachmentUpdateManyWithWhereWithoutPhaseInput = {
   data: Prisma.XOR<Prisma.PhaseEventAttachmentUpdateManyMutationInput, Prisma.PhaseEventAttachmentUncheckedUpdateManyWithoutPhaseInput>
 }
 
-export type PhaseEventAttachmentScalarWhereInput = {
-  AND?: Prisma.PhaseEventAttachmentScalarWhereInput | Prisma.PhaseEventAttachmentScalarWhereInput[]
-  OR?: Prisma.PhaseEventAttachmentScalarWhereInput[]
-  NOT?: Prisma.PhaseEventAttachmentScalarWhereInput | Prisma.PhaseEventAttachmentScalarWhereInput[]
-  id?: Prisma.StringFilter<"PhaseEventAttachment"> | string
-  phaseId?: Prisma.StringFilter<"PhaseEventAttachment"> | string
-  trigger?: Prisma.EnumPhaseTriggerFilter<"PhaseEventAttachment"> | $Enums.PhaseTrigger
-  handlerId?: Prisma.StringFilter<"PhaseEventAttachment"> | string
-  priority?: Prisma.IntFilter<"PhaseEventAttachment"> | number
-  enabled?: Prisma.BoolFilter<"PhaseEventAttachment"> | boolean
-  createdAt?: Prisma.DateTimeFilter<"PhaseEventAttachment"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"PhaseEventAttachment"> | Date | string
-}
-
 export type PhaseEventAttachmentCreateWithoutHandlerInput = {
   id?: string
   trigger: $Enums.PhaseTrigger
@@ -599,11 +716,13 @@ export type PhaseEventAttachmentCreateWithoutHandlerInput = {
   enabled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutPhaseEventAttachmentsInput
   phase: Prisma.PropertyPaymentMethodPhaseCreateNestedOneWithoutEventAttachmentsInput
 }
 
 export type PhaseEventAttachmentUncheckedCreateWithoutHandlerInput = {
   id?: string
+  tenantId: string
   phaseId: string
   trigger: $Enums.PhaseTrigger
   priority?: number
@@ -638,8 +757,53 @@ export type PhaseEventAttachmentUpdateManyWithWhereWithoutHandlerInput = {
   data: Prisma.XOR<Prisma.PhaseEventAttachmentUpdateManyMutationInput, Prisma.PhaseEventAttachmentUncheckedUpdateManyWithoutHandlerInput>
 }
 
+export type PhaseEventAttachmentCreateManyTenantInput = {
+  id?: string
+  phaseId: string
+  trigger: $Enums.PhaseTrigger
+  handlerId: string
+  priority?: number
+  enabled?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PhaseEventAttachmentUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  trigger?: Prisma.EnumPhaseTriggerFieldUpdateOperationsInput | $Enums.PhaseTrigger
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  phase?: Prisma.PropertyPaymentMethodPhaseUpdateOneRequiredWithoutEventAttachmentsNestedInput
+  handler?: Prisma.EventHandlerUpdateOneRequiredWithoutPhaseAttachmentsNestedInput
+}
+
+export type PhaseEventAttachmentUncheckedUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseId?: Prisma.StringFieldUpdateOperationsInput | string
+  trigger?: Prisma.EnumPhaseTriggerFieldUpdateOperationsInput | $Enums.PhaseTrigger
+  handlerId?: Prisma.StringFieldUpdateOperationsInput | string
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PhaseEventAttachmentUncheckedUpdateManyWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseId?: Prisma.StringFieldUpdateOperationsInput | string
+  trigger?: Prisma.EnumPhaseTriggerFieldUpdateOperationsInput | $Enums.PhaseTrigger
+  handlerId?: Prisma.StringFieldUpdateOperationsInput | string
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type PhaseEventAttachmentCreateManyPhaseInput = {
   id?: string
+  tenantId: string
   trigger: $Enums.PhaseTrigger
   handlerId: string
   priority?: number
@@ -655,11 +819,13 @@ export type PhaseEventAttachmentUpdateWithoutPhaseInput = {
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutPhaseEventAttachmentsNestedInput
   handler?: Prisma.EventHandlerUpdateOneRequiredWithoutPhaseAttachmentsNestedInput
 }
 
 export type PhaseEventAttachmentUncheckedUpdateWithoutPhaseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   trigger?: Prisma.EnumPhaseTriggerFieldUpdateOperationsInput | $Enums.PhaseTrigger
   handlerId?: Prisma.StringFieldUpdateOperationsInput | string
   priority?: Prisma.IntFieldUpdateOperationsInput | number
@@ -670,6 +836,7 @@ export type PhaseEventAttachmentUncheckedUpdateWithoutPhaseInput = {
 
 export type PhaseEventAttachmentUncheckedUpdateManyWithoutPhaseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   trigger?: Prisma.EnumPhaseTriggerFieldUpdateOperationsInput | $Enums.PhaseTrigger
   handlerId?: Prisma.StringFieldUpdateOperationsInput | string
   priority?: Prisma.IntFieldUpdateOperationsInput | number
@@ -680,6 +847,7 @@ export type PhaseEventAttachmentUncheckedUpdateManyWithoutPhaseInput = {
 
 export type PhaseEventAttachmentCreateManyHandlerInput = {
   id?: string
+  tenantId: string
   phaseId: string
   trigger: $Enums.PhaseTrigger
   priority?: number
@@ -695,11 +863,13 @@ export type PhaseEventAttachmentUpdateWithoutHandlerInput = {
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutPhaseEventAttachmentsNestedInput
   phase?: Prisma.PropertyPaymentMethodPhaseUpdateOneRequiredWithoutEventAttachmentsNestedInput
 }
 
 export type PhaseEventAttachmentUncheckedUpdateWithoutHandlerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.StringFieldUpdateOperationsInput | string
   trigger?: Prisma.EnumPhaseTriggerFieldUpdateOperationsInput | $Enums.PhaseTrigger
   priority?: Prisma.IntFieldUpdateOperationsInput | number
@@ -710,6 +880,7 @@ export type PhaseEventAttachmentUncheckedUpdateWithoutHandlerInput = {
 
 export type PhaseEventAttachmentUncheckedUpdateManyWithoutHandlerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.StringFieldUpdateOperationsInput | string
   trigger?: Prisma.EnumPhaseTriggerFieldUpdateOperationsInput | $Enums.PhaseTrigger
   priority?: Prisma.IntFieldUpdateOperationsInput | number
@@ -722,6 +893,7 @@ export type PhaseEventAttachmentUncheckedUpdateManyWithoutHandlerInput = {
 
 export type PhaseEventAttachmentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   phaseId?: boolean
   trigger?: boolean
   handlerId?: boolean
@@ -729,6 +901,7 @@ export type PhaseEventAttachmentSelect<ExtArgs extends runtime.Types.Extensions.
   enabled?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   phase?: boolean | Prisma.PropertyPaymentMethodPhaseDefaultArgs<ExtArgs>
   handler?: boolean | Prisma.EventHandlerDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["phaseEventAttachment"]>
@@ -737,6 +910,7 @@ export type PhaseEventAttachmentSelect<ExtArgs extends runtime.Types.Extensions.
 
 export type PhaseEventAttachmentSelectScalar = {
   id?: boolean
+  tenantId?: boolean
   phaseId?: boolean
   trigger?: boolean
   handlerId?: boolean
@@ -746,8 +920,9 @@ export type PhaseEventAttachmentSelectScalar = {
   updatedAt?: boolean
 }
 
-export type PhaseEventAttachmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "phaseId" | "trigger" | "handlerId" | "priority" | "enabled" | "createdAt" | "updatedAt", ExtArgs["result"]["phaseEventAttachment"]>
+export type PhaseEventAttachmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "phaseId" | "trigger" | "handlerId" | "priority" | "enabled" | "createdAt" | "updatedAt", ExtArgs["result"]["phaseEventAttachment"]>
 export type PhaseEventAttachmentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   phase?: boolean | Prisma.PropertyPaymentMethodPhaseDefaultArgs<ExtArgs>
   handler?: boolean | Prisma.EventHandlerDefaultArgs<ExtArgs>
 }
@@ -755,11 +930,13 @@ export type PhaseEventAttachmentInclude<ExtArgs extends runtime.Types.Extensions
 export type $PhaseEventAttachmentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "PhaseEventAttachment"
   objects: {
+    tenant: Prisma.$TenantPayload<ExtArgs>
     phase: Prisma.$PropertyPaymentMethodPhasePayload<ExtArgs>
     handler: Prisma.$EventHandlerPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    tenantId: string
     phaseId: string
     /**
      * When this handler should fire
@@ -1119,6 +1296,7 @@ readonly fields: PhaseEventAttachmentFieldRefs;
  */
 export interface Prisma__PhaseEventAttachmentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   phase<T extends Prisma.PropertyPaymentMethodPhaseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyPaymentMethodPhaseDefaultArgs<ExtArgs>>): Prisma.Prisma__PropertyPaymentMethodPhaseClient<runtime.Types.Result.GetResult<Prisma.$PropertyPaymentMethodPhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   handler<T extends Prisma.EventHandlerDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EventHandlerDefaultArgs<ExtArgs>>): Prisma.Prisma__EventHandlerClient<runtime.Types.Result.GetResult<Prisma.$EventHandlerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
@@ -1151,6 +1329,7 @@ export interface Prisma__PhaseEventAttachmentClient<T, Null = never, ExtArgs ext
  */
 export interface PhaseEventAttachmentFieldRefs {
   readonly id: Prisma.FieldRef<"PhaseEventAttachment", 'String'>
+  readonly tenantId: Prisma.FieldRef<"PhaseEventAttachment", 'String'>
   readonly phaseId: Prisma.FieldRef<"PhaseEventAttachment", 'String'>
   readonly trigger: Prisma.FieldRef<"PhaseEventAttachment", 'PhaseTrigger'>
   readonly handlerId: Prisma.FieldRef<"PhaseEventAttachment", 'String'>

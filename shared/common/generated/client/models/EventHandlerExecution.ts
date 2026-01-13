@@ -38,6 +38,7 @@ export type EventHandlerExecutionSumAggregateOutputType = {
 
 export type EventHandlerExecutionMinAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   eventId: string | null
   handlerId: string | null
   status: $Enums.ExecutionStatus | null
@@ -52,6 +53,7 @@ export type EventHandlerExecutionMinAggregateOutputType = {
 
 export type EventHandlerExecutionMaxAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   eventId: string | null
   handlerId: string | null
   status: $Enums.ExecutionStatus | null
@@ -66,6 +68,7 @@ export type EventHandlerExecutionMaxAggregateOutputType = {
 
 export type EventHandlerExecutionCountAggregateOutputType = {
   id: number
+  tenantId: number
   eventId: number
   handlerId: number
   status: number
@@ -94,6 +97,7 @@ export type EventHandlerExecutionSumAggregateInputType = {
 
 export type EventHandlerExecutionMinAggregateInputType = {
   id?: true
+  tenantId?: true
   eventId?: true
   handlerId?: true
   status?: true
@@ -108,6 +112,7 @@ export type EventHandlerExecutionMinAggregateInputType = {
 
 export type EventHandlerExecutionMaxAggregateInputType = {
   id?: true
+  tenantId?: true
   eventId?: true
   handlerId?: true
   status?: true
@@ -122,6 +127,7 @@ export type EventHandlerExecutionMaxAggregateInputType = {
 
 export type EventHandlerExecutionCountAggregateInputType = {
   id?: true
+  tenantId?: true
   eventId?: true
   handlerId?: true
   status?: true
@@ -225,6 +231,7 @@ export type EventHandlerExecutionGroupByArgs<ExtArgs extends runtime.Types.Exten
 
 export type EventHandlerExecutionGroupByOutputType = {
   id: string
+  tenantId: string
   eventId: string
   handlerId: string
   status: $Enums.ExecutionStatus
@@ -264,6 +271,7 @@ export type EventHandlerExecutionWhereInput = {
   OR?: Prisma.EventHandlerExecutionWhereInput[]
   NOT?: Prisma.EventHandlerExecutionWhereInput | Prisma.EventHandlerExecutionWhereInput[]
   id?: Prisma.StringFilter<"EventHandlerExecution"> | string
+  tenantId?: Prisma.StringFilter<"EventHandlerExecution"> | string
   eventId?: Prisma.StringFilter<"EventHandlerExecution"> | string
   handlerId?: Prisma.StringFilter<"EventHandlerExecution"> | string
   status?: Prisma.EnumExecutionStatusFilter<"EventHandlerExecution"> | $Enums.ExecutionStatus
@@ -276,12 +284,14 @@ export type EventHandlerExecutionWhereInput = {
   completedAt?: Prisma.DateTimeNullableFilter<"EventHandlerExecution"> | Date | string | null
   durationMs?: Prisma.IntNullableFilter<"EventHandlerExecution"> | number | null
   createdAt?: Prisma.DateTimeFilter<"EventHandlerExecution"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   event?: Prisma.XOR<Prisma.WorkflowEventScalarRelationFilter, Prisma.WorkflowEventWhereInput>
   handler?: Prisma.XOR<Prisma.EventHandlerScalarRelationFilter, Prisma.EventHandlerWhereInput>
 }
 
 export type EventHandlerExecutionOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   eventId?: Prisma.SortOrder
   handlerId?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -294,6 +304,7 @@ export type EventHandlerExecutionOrderByWithRelationInput = {
   completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   durationMs?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  tenant?: Prisma.TenantOrderByWithRelationInput
   event?: Prisma.WorkflowEventOrderByWithRelationInput
   handler?: Prisma.EventHandlerOrderByWithRelationInput
   _relevance?: Prisma.EventHandlerExecutionOrderByRelevanceInput
@@ -304,6 +315,7 @@ export type EventHandlerExecutionWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.EventHandlerExecutionWhereInput | Prisma.EventHandlerExecutionWhereInput[]
   OR?: Prisma.EventHandlerExecutionWhereInput[]
   NOT?: Prisma.EventHandlerExecutionWhereInput | Prisma.EventHandlerExecutionWhereInput[]
+  tenantId?: Prisma.StringFilter<"EventHandlerExecution"> | string
   eventId?: Prisma.StringFilter<"EventHandlerExecution"> | string
   handlerId?: Prisma.StringFilter<"EventHandlerExecution"> | string
   status?: Prisma.EnumExecutionStatusFilter<"EventHandlerExecution"> | $Enums.ExecutionStatus
@@ -316,12 +328,14 @@ export type EventHandlerExecutionWhereUniqueInput = Prisma.AtLeast<{
   completedAt?: Prisma.DateTimeNullableFilter<"EventHandlerExecution"> | Date | string | null
   durationMs?: Prisma.IntNullableFilter<"EventHandlerExecution"> | number | null
   createdAt?: Prisma.DateTimeFilter<"EventHandlerExecution"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   event?: Prisma.XOR<Prisma.WorkflowEventScalarRelationFilter, Prisma.WorkflowEventWhereInput>
   handler?: Prisma.XOR<Prisma.EventHandlerScalarRelationFilter, Prisma.EventHandlerWhereInput>
 }, "id">
 
 export type EventHandlerExecutionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   eventId?: Prisma.SortOrder
   handlerId?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -346,6 +360,7 @@ export type EventHandlerExecutionScalarWhereWithAggregatesInput = {
   OR?: Prisma.EventHandlerExecutionScalarWhereWithAggregatesInput[]
   NOT?: Prisma.EventHandlerExecutionScalarWhereWithAggregatesInput | Prisma.EventHandlerExecutionScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"EventHandlerExecution"> | string
+  tenantId?: Prisma.StringWithAggregatesFilter<"EventHandlerExecution"> | string
   eventId?: Prisma.StringWithAggregatesFilter<"EventHandlerExecution"> | string
   handlerId?: Prisma.StringWithAggregatesFilter<"EventHandlerExecution"> | string
   status?: Prisma.EnumExecutionStatusWithAggregatesFilter<"EventHandlerExecution"> | $Enums.ExecutionStatus
@@ -372,12 +387,14 @@ export type EventHandlerExecutionCreateInput = {
   completedAt?: Date | string | null
   durationMs?: number | null
   createdAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutEventHandlerExecutionsInput
   event: Prisma.WorkflowEventCreateNestedOneWithoutExecutionsInput
   handler: Prisma.EventHandlerCreateNestedOneWithoutExecutionsInput
 }
 
 export type EventHandlerExecutionUncheckedCreateInput = {
   id?: string
+  tenantId: string
   eventId: string
   handlerId: string
   status?: $Enums.ExecutionStatus
@@ -404,12 +421,14 @@ export type EventHandlerExecutionUpdateInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   durationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutEventHandlerExecutionsNestedInput
   event?: Prisma.WorkflowEventUpdateOneRequiredWithoutExecutionsNestedInput
   handler?: Prisma.EventHandlerUpdateOneRequiredWithoutExecutionsNestedInput
 }
 
 export type EventHandlerExecutionUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   eventId?: Prisma.StringFieldUpdateOperationsInput | string
   handlerId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumExecutionStatusFieldUpdateOperationsInput | $Enums.ExecutionStatus
@@ -426,6 +445,7 @@ export type EventHandlerExecutionUncheckedUpdateInput = {
 
 export type EventHandlerExecutionCreateManyInput = {
   id?: string
+  tenantId: string
   eventId: string
   handlerId: string
   status?: $Enums.ExecutionStatus
@@ -456,6 +476,7 @@ export type EventHandlerExecutionUpdateManyMutationInput = {
 
 export type EventHandlerExecutionUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   eventId?: Prisma.StringFieldUpdateOperationsInput | string
   handlerId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumExecutionStatusFieldUpdateOperationsInput | $Enums.ExecutionStatus
@@ -488,6 +509,7 @@ export type EventHandlerExecutionOrderByRelevanceInput = {
 
 export type EventHandlerExecutionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   eventId?: Prisma.SortOrder
   handlerId?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -509,6 +531,7 @@ export type EventHandlerExecutionAvgOrderByAggregateInput = {
 
 export type EventHandlerExecutionMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   eventId?: Prisma.SortOrder
   handlerId?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -523,6 +546,7 @@ export type EventHandlerExecutionMaxOrderByAggregateInput = {
 
 export type EventHandlerExecutionMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   eventId?: Prisma.SortOrder
   handlerId?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -538,6 +562,48 @@ export type EventHandlerExecutionMinOrderByAggregateInput = {
 export type EventHandlerExecutionSumOrderByAggregateInput = {
   attempt?: Prisma.SortOrder
   durationMs?: Prisma.SortOrder
+}
+
+export type EventHandlerExecutionCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.EventHandlerExecutionCreateWithoutTenantInput, Prisma.EventHandlerExecutionUncheckedCreateWithoutTenantInput> | Prisma.EventHandlerExecutionCreateWithoutTenantInput[] | Prisma.EventHandlerExecutionUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.EventHandlerExecutionCreateOrConnectWithoutTenantInput | Prisma.EventHandlerExecutionCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.EventHandlerExecutionCreateManyTenantInputEnvelope
+  connect?: Prisma.EventHandlerExecutionWhereUniqueInput | Prisma.EventHandlerExecutionWhereUniqueInput[]
+}
+
+export type EventHandlerExecutionUncheckedCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.EventHandlerExecutionCreateWithoutTenantInput, Prisma.EventHandlerExecutionUncheckedCreateWithoutTenantInput> | Prisma.EventHandlerExecutionCreateWithoutTenantInput[] | Prisma.EventHandlerExecutionUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.EventHandlerExecutionCreateOrConnectWithoutTenantInput | Prisma.EventHandlerExecutionCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.EventHandlerExecutionCreateManyTenantInputEnvelope
+  connect?: Prisma.EventHandlerExecutionWhereUniqueInput | Prisma.EventHandlerExecutionWhereUniqueInput[]
+}
+
+export type EventHandlerExecutionUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.EventHandlerExecutionCreateWithoutTenantInput, Prisma.EventHandlerExecutionUncheckedCreateWithoutTenantInput> | Prisma.EventHandlerExecutionCreateWithoutTenantInput[] | Prisma.EventHandlerExecutionUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.EventHandlerExecutionCreateOrConnectWithoutTenantInput | Prisma.EventHandlerExecutionCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.EventHandlerExecutionUpsertWithWhereUniqueWithoutTenantInput | Prisma.EventHandlerExecutionUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.EventHandlerExecutionCreateManyTenantInputEnvelope
+  set?: Prisma.EventHandlerExecutionWhereUniqueInput | Prisma.EventHandlerExecutionWhereUniqueInput[]
+  disconnect?: Prisma.EventHandlerExecutionWhereUniqueInput | Prisma.EventHandlerExecutionWhereUniqueInput[]
+  delete?: Prisma.EventHandlerExecutionWhereUniqueInput | Prisma.EventHandlerExecutionWhereUniqueInput[]
+  connect?: Prisma.EventHandlerExecutionWhereUniqueInput | Prisma.EventHandlerExecutionWhereUniqueInput[]
+  update?: Prisma.EventHandlerExecutionUpdateWithWhereUniqueWithoutTenantInput | Prisma.EventHandlerExecutionUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.EventHandlerExecutionUpdateManyWithWhereWithoutTenantInput | Prisma.EventHandlerExecutionUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.EventHandlerExecutionScalarWhereInput | Prisma.EventHandlerExecutionScalarWhereInput[]
+}
+
+export type EventHandlerExecutionUncheckedUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.EventHandlerExecutionCreateWithoutTenantInput, Prisma.EventHandlerExecutionUncheckedCreateWithoutTenantInput> | Prisma.EventHandlerExecutionCreateWithoutTenantInput[] | Prisma.EventHandlerExecutionUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.EventHandlerExecutionCreateOrConnectWithoutTenantInput | Prisma.EventHandlerExecutionCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.EventHandlerExecutionUpsertWithWhereUniqueWithoutTenantInput | Prisma.EventHandlerExecutionUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.EventHandlerExecutionCreateManyTenantInputEnvelope
+  set?: Prisma.EventHandlerExecutionWhereUniqueInput | Prisma.EventHandlerExecutionWhereUniqueInput[]
+  disconnect?: Prisma.EventHandlerExecutionWhereUniqueInput | Prisma.EventHandlerExecutionWhereUniqueInput[]
+  delete?: Prisma.EventHandlerExecutionWhereUniqueInput | Prisma.EventHandlerExecutionWhereUniqueInput[]
+  connect?: Prisma.EventHandlerExecutionWhereUniqueInput | Prisma.EventHandlerExecutionWhereUniqueInput[]
+  update?: Prisma.EventHandlerExecutionUpdateWithWhereUniqueWithoutTenantInput | Prisma.EventHandlerExecutionUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.EventHandlerExecutionUpdateManyWithWhereWithoutTenantInput | Prisma.EventHandlerExecutionUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.EventHandlerExecutionScalarWhereInput | Prisma.EventHandlerExecutionScalarWhereInput[]
 }
 
 export type EventHandlerExecutionCreateNestedManyWithoutHandlerInput = {
@@ -628,7 +694,7 @@ export type EnumExecutionStatusFieldUpdateOperationsInput = {
   set?: $Enums.ExecutionStatus
 }
 
-export type EventHandlerExecutionCreateWithoutHandlerInput = {
+export type EventHandlerExecutionCreateWithoutTenantInput = {
   id?: string
   status?: $Enums.ExecutionStatus
   attempt?: number
@@ -641,10 +707,90 @@ export type EventHandlerExecutionCreateWithoutHandlerInput = {
   durationMs?: number | null
   createdAt?: Date | string
   event: Prisma.WorkflowEventCreateNestedOneWithoutExecutionsInput
+  handler: Prisma.EventHandlerCreateNestedOneWithoutExecutionsInput
+}
+
+export type EventHandlerExecutionUncheckedCreateWithoutTenantInput = {
+  id?: string
+  eventId: string
+  handlerId: string
+  status?: $Enums.ExecutionStatus
+  attempt?: number
+  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  error?: string | null
+  errorCode?: string | null
+  startedAt?: Date | string | null
+  completedAt?: Date | string | null
+  durationMs?: number | null
+  createdAt?: Date | string
+}
+
+export type EventHandlerExecutionCreateOrConnectWithoutTenantInput = {
+  where: Prisma.EventHandlerExecutionWhereUniqueInput
+  create: Prisma.XOR<Prisma.EventHandlerExecutionCreateWithoutTenantInput, Prisma.EventHandlerExecutionUncheckedCreateWithoutTenantInput>
+}
+
+export type EventHandlerExecutionCreateManyTenantInputEnvelope = {
+  data: Prisma.EventHandlerExecutionCreateManyTenantInput | Prisma.EventHandlerExecutionCreateManyTenantInput[]
+  skipDuplicates?: boolean
+}
+
+export type EventHandlerExecutionUpsertWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.EventHandlerExecutionWhereUniqueInput
+  update: Prisma.XOR<Prisma.EventHandlerExecutionUpdateWithoutTenantInput, Prisma.EventHandlerExecutionUncheckedUpdateWithoutTenantInput>
+  create: Prisma.XOR<Prisma.EventHandlerExecutionCreateWithoutTenantInput, Prisma.EventHandlerExecutionUncheckedCreateWithoutTenantInput>
+}
+
+export type EventHandlerExecutionUpdateWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.EventHandlerExecutionWhereUniqueInput
+  data: Prisma.XOR<Prisma.EventHandlerExecutionUpdateWithoutTenantInput, Prisma.EventHandlerExecutionUncheckedUpdateWithoutTenantInput>
+}
+
+export type EventHandlerExecutionUpdateManyWithWhereWithoutTenantInput = {
+  where: Prisma.EventHandlerExecutionScalarWhereInput
+  data: Prisma.XOR<Prisma.EventHandlerExecutionUpdateManyMutationInput, Prisma.EventHandlerExecutionUncheckedUpdateManyWithoutTenantInput>
+}
+
+export type EventHandlerExecutionScalarWhereInput = {
+  AND?: Prisma.EventHandlerExecutionScalarWhereInput | Prisma.EventHandlerExecutionScalarWhereInput[]
+  OR?: Prisma.EventHandlerExecutionScalarWhereInput[]
+  NOT?: Prisma.EventHandlerExecutionScalarWhereInput | Prisma.EventHandlerExecutionScalarWhereInput[]
+  id?: Prisma.StringFilter<"EventHandlerExecution"> | string
+  tenantId?: Prisma.StringFilter<"EventHandlerExecution"> | string
+  eventId?: Prisma.StringFilter<"EventHandlerExecution"> | string
+  handlerId?: Prisma.StringFilter<"EventHandlerExecution"> | string
+  status?: Prisma.EnumExecutionStatusFilter<"EventHandlerExecution"> | $Enums.ExecutionStatus
+  attempt?: Prisma.IntFilter<"EventHandlerExecution"> | number
+  input?: Prisma.JsonNullableFilter<"EventHandlerExecution">
+  output?: Prisma.JsonNullableFilter<"EventHandlerExecution">
+  error?: Prisma.StringNullableFilter<"EventHandlerExecution"> | string | null
+  errorCode?: Prisma.StringNullableFilter<"EventHandlerExecution"> | string | null
+  startedAt?: Prisma.DateTimeNullableFilter<"EventHandlerExecution"> | Date | string | null
+  completedAt?: Prisma.DateTimeNullableFilter<"EventHandlerExecution"> | Date | string | null
+  durationMs?: Prisma.IntNullableFilter<"EventHandlerExecution"> | number | null
+  createdAt?: Prisma.DateTimeFilter<"EventHandlerExecution"> | Date | string
+}
+
+export type EventHandlerExecutionCreateWithoutHandlerInput = {
+  id?: string
+  status?: $Enums.ExecutionStatus
+  attempt?: number
+  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  error?: string | null
+  errorCode?: string | null
+  startedAt?: Date | string | null
+  completedAt?: Date | string | null
+  durationMs?: number | null
+  createdAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutEventHandlerExecutionsInput
+  event: Prisma.WorkflowEventCreateNestedOneWithoutExecutionsInput
 }
 
 export type EventHandlerExecutionUncheckedCreateWithoutHandlerInput = {
   id?: string
+  tenantId: string
   eventId: string
   status?: $Enums.ExecutionStatus
   attempt?: number
@@ -684,25 +830,6 @@ export type EventHandlerExecutionUpdateManyWithWhereWithoutHandlerInput = {
   data: Prisma.XOR<Prisma.EventHandlerExecutionUpdateManyMutationInput, Prisma.EventHandlerExecutionUncheckedUpdateManyWithoutHandlerInput>
 }
 
-export type EventHandlerExecutionScalarWhereInput = {
-  AND?: Prisma.EventHandlerExecutionScalarWhereInput | Prisma.EventHandlerExecutionScalarWhereInput[]
-  OR?: Prisma.EventHandlerExecutionScalarWhereInput[]
-  NOT?: Prisma.EventHandlerExecutionScalarWhereInput | Prisma.EventHandlerExecutionScalarWhereInput[]
-  id?: Prisma.StringFilter<"EventHandlerExecution"> | string
-  eventId?: Prisma.StringFilter<"EventHandlerExecution"> | string
-  handlerId?: Prisma.StringFilter<"EventHandlerExecution"> | string
-  status?: Prisma.EnumExecutionStatusFilter<"EventHandlerExecution"> | $Enums.ExecutionStatus
-  attempt?: Prisma.IntFilter<"EventHandlerExecution"> | number
-  input?: Prisma.JsonNullableFilter<"EventHandlerExecution">
-  output?: Prisma.JsonNullableFilter<"EventHandlerExecution">
-  error?: Prisma.StringNullableFilter<"EventHandlerExecution"> | string | null
-  errorCode?: Prisma.StringNullableFilter<"EventHandlerExecution"> | string | null
-  startedAt?: Prisma.DateTimeNullableFilter<"EventHandlerExecution"> | Date | string | null
-  completedAt?: Prisma.DateTimeNullableFilter<"EventHandlerExecution"> | Date | string | null
-  durationMs?: Prisma.IntNullableFilter<"EventHandlerExecution"> | number | null
-  createdAt?: Prisma.DateTimeFilter<"EventHandlerExecution"> | Date | string
-}
-
 export type EventHandlerExecutionCreateWithoutEventInput = {
   id?: string
   status?: $Enums.ExecutionStatus
@@ -715,11 +842,13 @@ export type EventHandlerExecutionCreateWithoutEventInput = {
   completedAt?: Date | string | null
   durationMs?: number | null
   createdAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutEventHandlerExecutionsInput
   handler: Prisma.EventHandlerCreateNestedOneWithoutExecutionsInput
 }
 
 export type EventHandlerExecutionUncheckedCreateWithoutEventInput = {
   id?: string
+  tenantId: string
   handlerId: string
   status?: $Enums.ExecutionStatus
   attempt?: number
@@ -759,8 +888,73 @@ export type EventHandlerExecutionUpdateManyWithWhereWithoutEventInput = {
   data: Prisma.XOR<Prisma.EventHandlerExecutionUpdateManyMutationInput, Prisma.EventHandlerExecutionUncheckedUpdateManyWithoutEventInput>
 }
 
+export type EventHandlerExecutionCreateManyTenantInput = {
+  id?: string
+  eventId: string
+  handlerId: string
+  status?: $Enums.ExecutionStatus
+  attempt?: number
+  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  error?: string | null
+  errorCode?: string | null
+  startedAt?: Date | string | null
+  completedAt?: Date | string | null
+  durationMs?: number | null
+  createdAt?: Date | string
+}
+
+export type EventHandlerExecutionUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumExecutionStatusFieldUpdateOperationsInput | $Enums.ExecutionStatus
+  attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  errorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  durationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  event?: Prisma.WorkflowEventUpdateOneRequiredWithoutExecutionsNestedInput
+  handler?: Prisma.EventHandlerUpdateOneRequiredWithoutExecutionsNestedInput
+}
+
+export type EventHandlerExecutionUncheckedUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  eventId?: Prisma.StringFieldUpdateOperationsInput | string
+  handlerId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumExecutionStatusFieldUpdateOperationsInput | $Enums.ExecutionStatus
+  attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  errorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  durationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type EventHandlerExecutionUncheckedUpdateManyWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  eventId?: Prisma.StringFieldUpdateOperationsInput | string
+  handlerId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumExecutionStatusFieldUpdateOperationsInput | $Enums.ExecutionStatus
+  attempt?: Prisma.IntFieldUpdateOperationsInput | number
+  input?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  output?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  errorCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  durationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type EventHandlerExecutionCreateManyHandlerInput = {
   id?: string
+  tenantId: string
   eventId: string
   status?: $Enums.ExecutionStatus
   attempt?: number
@@ -786,11 +980,13 @@ export type EventHandlerExecutionUpdateWithoutHandlerInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   durationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutEventHandlerExecutionsNestedInput
   event?: Prisma.WorkflowEventUpdateOneRequiredWithoutExecutionsNestedInput
 }
 
 export type EventHandlerExecutionUncheckedUpdateWithoutHandlerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   eventId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumExecutionStatusFieldUpdateOperationsInput | $Enums.ExecutionStatus
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
@@ -806,6 +1002,7 @@ export type EventHandlerExecutionUncheckedUpdateWithoutHandlerInput = {
 
 export type EventHandlerExecutionUncheckedUpdateManyWithoutHandlerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   eventId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumExecutionStatusFieldUpdateOperationsInput | $Enums.ExecutionStatus
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
@@ -821,6 +1018,7 @@ export type EventHandlerExecutionUncheckedUpdateManyWithoutHandlerInput = {
 
 export type EventHandlerExecutionCreateManyEventInput = {
   id?: string
+  tenantId: string
   handlerId: string
   status?: $Enums.ExecutionStatus
   attempt?: number
@@ -846,11 +1044,13 @@ export type EventHandlerExecutionUpdateWithoutEventInput = {
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   durationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutEventHandlerExecutionsNestedInput
   handler?: Prisma.EventHandlerUpdateOneRequiredWithoutExecutionsNestedInput
 }
 
 export type EventHandlerExecutionUncheckedUpdateWithoutEventInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   handlerId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumExecutionStatusFieldUpdateOperationsInput | $Enums.ExecutionStatus
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
@@ -866,6 +1066,7 @@ export type EventHandlerExecutionUncheckedUpdateWithoutEventInput = {
 
 export type EventHandlerExecutionUncheckedUpdateManyWithoutEventInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   handlerId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumExecutionStatusFieldUpdateOperationsInput | $Enums.ExecutionStatus
   attempt?: Prisma.IntFieldUpdateOperationsInput | number
@@ -883,6 +1084,7 @@ export type EventHandlerExecutionUncheckedUpdateManyWithoutEventInput = {
 
 export type EventHandlerExecutionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   eventId?: boolean
   handlerId?: boolean
   status?: boolean
@@ -895,6 +1097,7 @@ export type EventHandlerExecutionSelect<ExtArgs extends runtime.Types.Extensions
   completedAt?: boolean
   durationMs?: boolean
   createdAt?: boolean
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   event?: boolean | Prisma.WorkflowEventDefaultArgs<ExtArgs>
   handler?: boolean | Prisma.EventHandlerDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["eventHandlerExecution"]>
@@ -903,6 +1106,7 @@ export type EventHandlerExecutionSelect<ExtArgs extends runtime.Types.Extensions
 
 export type EventHandlerExecutionSelectScalar = {
   id?: boolean
+  tenantId?: boolean
   eventId?: boolean
   handlerId?: boolean
   status?: boolean
@@ -917,8 +1121,9 @@ export type EventHandlerExecutionSelectScalar = {
   createdAt?: boolean
 }
 
-export type EventHandlerExecutionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "eventId" | "handlerId" | "status" | "attempt" | "input" | "output" | "error" | "errorCode" | "startedAt" | "completedAt" | "durationMs" | "createdAt", ExtArgs["result"]["eventHandlerExecution"]>
+export type EventHandlerExecutionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "eventId" | "handlerId" | "status" | "attempt" | "input" | "output" | "error" | "errorCode" | "startedAt" | "completedAt" | "durationMs" | "createdAt", ExtArgs["result"]["eventHandlerExecution"]>
 export type EventHandlerExecutionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   event?: boolean | Prisma.WorkflowEventDefaultArgs<ExtArgs>
   handler?: boolean | Prisma.EventHandlerDefaultArgs<ExtArgs>
 }
@@ -926,11 +1131,13 @@ export type EventHandlerExecutionInclude<ExtArgs extends runtime.Types.Extension
 export type $EventHandlerExecutionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "EventHandlerExecution"
   objects: {
+    tenant: Prisma.$TenantPayload<ExtArgs>
     event: Prisma.$WorkflowEventPayload<ExtArgs>
     handler: Prisma.$EventHandlerPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    tenantId: string
     /**
      * The event being processed
      */
@@ -1307,6 +1514,7 @@ readonly fields: EventHandlerExecutionFieldRefs;
  */
 export interface Prisma__EventHandlerExecutionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   event<T extends Prisma.WorkflowEventDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkflowEventDefaultArgs<ExtArgs>>): Prisma.Prisma__WorkflowEventClient<runtime.Types.Result.GetResult<Prisma.$WorkflowEventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   handler<T extends Prisma.EventHandlerDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EventHandlerDefaultArgs<ExtArgs>>): Prisma.Prisma__EventHandlerClient<runtime.Types.Result.GetResult<Prisma.$EventHandlerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
@@ -1339,6 +1547,7 @@ export interface Prisma__EventHandlerExecutionClient<T, Null = never, ExtArgs ex
  */
 export interface EventHandlerExecutionFieldRefs {
   readonly id: Prisma.FieldRef<"EventHandlerExecution", 'String'>
+  readonly tenantId: Prisma.FieldRef<"EventHandlerExecution", 'String'>
   readonly eventId: Prisma.FieldRef<"EventHandlerExecution", 'String'>
   readonly handlerId: Prisma.FieldRef<"EventHandlerExecution", 'String'>
   readonly status: Prisma.FieldRef<"EventHandlerExecution", 'ExecutionStatus'>

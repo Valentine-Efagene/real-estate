@@ -368,6 +368,7 @@ export type WorkflowBlockerWhereInput = {
   metadata?: Prisma.JsonNullableFilter<"WorkflowBlocker">
   createdAt?: Prisma.DateTimeFilter<"WorkflowBlocker"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"WorkflowBlocker"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
 }
 
 export type WorkflowBlockerOrderByWithRelationInput = {
@@ -395,6 +396,7 @@ export type WorkflowBlockerOrderByWithRelationInput = {
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  tenant?: Prisma.TenantOrderByWithRelationInput
   _relevance?: Prisma.WorkflowBlockerOrderByRelevanceInput
 }
 
@@ -426,6 +428,7 @@ export type WorkflowBlockerWhereUniqueInput = Prisma.AtLeast<{
   metadata?: Prisma.JsonNullableFilter<"WorkflowBlocker">
   createdAt?: Prisma.DateTimeFilter<"WorkflowBlocker"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"WorkflowBlocker"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
 }, "id">
 
 export type WorkflowBlockerOrderByWithAggregationInput = {
@@ -492,7 +495,6 @@ export type WorkflowBlockerScalarWhereWithAggregatesInput = {
 
 export type WorkflowBlockerCreateInput = {
   id?: string
-  tenantId: string
   applicationId: string
   phaseId?: string | null
   stepId?: string | null
@@ -515,6 +517,7 @@ export type WorkflowBlockerCreateInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutWorkflowBlockersInput
 }
 
 export type WorkflowBlockerUncheckedCreateInput = {
@@ -546,7 +549,6 @@ export type WorkflowBlockerUncheckedCreateInput = {
 
 export type WorkflowBlockerUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -569,6 +571,7 @@ export type WorkflowBlockerUpdateInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutWorkflowBlockersNestedInput
 }
 
 export type WorkflowBlockerUncheckedUpdateInput = {
@@ -627,7 +630,6 @@ export type WorkflowBlockerCreateManyInput = {
 
 export type WorkflowBlockerUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -677,6 +679,16 @@ export type WorkflowBlockerUncheckedUpdateManyInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type WorkflowBlockerListRelationFilter = {
+  every?: Prisma.WorkflowBlockerWhereInput
+  some?: Prisma.WorkflowBlockerWhereInput
+  none?: Prisma.WorkflowBlockerWhereInput
+}
+
+export type WorkflowBlockerOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type WorkflowBlockerOrderByRelevanceInput = {
@@ -774,6 +786,48 @@ export type WorkflowBlockerSumOrderByAggregateInput = {
   reminderCount?: Prisma.SortOrder
 }
 
+export type WorkflowBlockerCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.WorkflowBlockerCreateWithoutTenantInput, Prisma.WorkflowBlockerUncheckedCreateWithoutTenantInput> | Prisma.WorkflowBlockerCreateWithoutTenantInput[] | Prisma.WorkflowBlockerUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.WorkflowBlockerCreateOrConnectWithoutTenantInput | Prisma.WorkflowBlockerCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.WorkflowBlockerCreateManyTenantInputEnvelope
+  connect?: Prisma.WorkflowBlockerWhereUniqueInput | Prisma.WorkflowBlockerWhereUniqueInput[]
+}
+
+export type WorkflowBlockerUncheckedCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.WorkflowBlockerCreateWithoutTenantInput, Prisma.WorkflowBlockerUncheckedCreateWithoutTenantInput> | Prisma.WorkflowBlockerCreateWithoutTenantInput[] | Prisma.WorkflowBlockerUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.WorkflowBlockerCreateOrConnectWithoutTenantInput | Prisma.WorkflowBlockerCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.WorkflowBlockerCreateManyTenantInputEnvelope
+  connect?: Prisma.WorkflowBlockerWhereUniqueInput | Prisma.WorkflowBlockerWhereUniqueInput[]
+}
+
+export type WorkflowBlockerUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.WorkflowBlockerCreateWithoutTenantInput, Prisma.WorkflowBlockerUncheckedCreateWithoutTenantInput> | Prisma.WorkflowBlockerCreateWithoutTenantInput[] | Prisma.WorkflowBlockerUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.WorkflowBlockerCreateOrConnectWithoutTenantInput | Prisma.WorkflowBlockerCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.WorkflowBlockerUpsertWithWhereUniqueWithoutTenantInput | Prisma.WorkflowBlockerUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.WorkflowBlockerCreateManyTenantInputEnvelope
+  set?: Prisma.WorkflowBlockerWhereUniqueInput | Prisma.WorkflowBlockerWhereUniqueInput[]
+  disconnect?: Prisma.WorkflowBlockerWhereUniqueInput | Prisma.WorkflowBlockerWhereUniqueInput[]
+  delete?: Prisma.WorkflowBlockerWhereUniqueInput | Prisma.WorkflowBlockerWhereUniqueInput[]
+  connect?: Prisma.WorkflowBlockerWhereUniqueInput | Prisma.WorkflowBlockerWhereUniqueInput[]
+  update?: Prisma.WorkflowBlockerUpdateWithWhereUniqueWithoutTenantInput | Prisma.WorkflowBlockerUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.WorkflowBlockerUpdateManyWithWhereWithoutTenantInput | Prisma.WorkflowBlockerUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.WorkflowBlockerScalarWhereInput | Prisma.WorkflowBlockerScalarWhereInput[]
+}
+
+export type WorkflowBlockerUncheckedUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.WorkflowBlockerCreateWithoutTenantInput, Prisma.WorkflowBlockerUncheckedCreateWithoutTenantInput> | Prisma.WorkflowBlockerCreateWithoutTenantInput[] | Prisma.WorkflowBlockerUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.WorkflowBlockerCreateOrConnectWithoutTenantInput | Prisma.WorkflowBlockerCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.WorkflowBlockerUpsertWithWhereUniqueWithoutTenantInput | Prisma.WorkflowBlockerUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.WorkflowBlockerCreateManyTenantInputEnvelope
+  set?: Prisma.WorkflowBlockerWhereUniqueInput | Prisma.WorkflowBlockerWhereUniqueInput[]
+  disconnect?: Prisma.WorkflowBlockerWhereUniqueInput | Prisma.WorkflowBlockerWhereUniqueInput[]
+  delete?: Prisma.WorkflowBlockerWhereUniqueInput | Prisma.WorkflowBlockerWhereUniqueInput[]
+  connect?: Prisma.WorkflowBlockerWhereUniqueInput | Prisma.WorkflowBlockerWhereUniqueInput[]
+  update?: Prisma.WorkflowBlockerUpdateWithWhereUniqueWithoutTenantInput | Prisma.WorkflowBlockerUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.WorkflowBlockerUpdateManyWithWhereWithoutTenantInput | Prisma.WorkflowBlockerUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.WorkflowBlockerScalarWhereInput | Prisma.WorkflowBlockerScalarWhereInput[]
+}
+
 export type EnumBlockerActorFieldUpdateOperationsInput = {
   set?: $Enums.BlockerActor
 }
@@ -784,6 +838,218 @@ export type EnumBlockerCategoryFieldUpdateOperationsInput = {
 
 export type EnumBlockerUrgencyFieldUpdateOperationsInput = {
   set?: $Enums.BlockerUrgency
+}
+
+export type WorkflowBlockerCreateWithoutTenantInput = {
+  id?: string
+  applicationId: string
+  phaseId?: string | null
+  stepId?: string | null
+  blockerActor: $Enums.BlockerActor
+  blockerCategory: $Enums.BlockerCategory
+  urgency?: $Enums.BlockerUrgency
+  actionRequired: string
+  context?: string | null
+  expectedByDate?: Date | string | null
+  isOverdue?: boolean
+  overdueAt?: Date | string | null
+  startedAt?: Date | string
+  resolvedAt?: Date | string | null
+  durationMs?: number | null
+  resolvedByActor?: string | null
+  resolutionTrigger?: string | null
+  reminderCount?: number
+  lastReminderAt?: Date | string | null
+  nextReminderAt?: Date | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type WorkflowBlockerUncheckedCreateWithoutTenantInput = {
+  id?: string
+  applicationId: string
+  phaseId?: string | null
+  stepId?: string | null
+  blockerActor: $Enums.BlockerActor
+  blockerCategory: $Enums.BlockerCategory
+  urgency?: $Enums.BlockerUrgency
+  actionRequired: string
+  context?: string | null
+  expectedByDate?: Date | string | null
+  isOverdue?: boolean
+  overdueAt?: Date | string | null
+  startedAt?: Date | string
+  resolvedAt?: Date | string | null
+  durationMs?: number | null
+  resolvedByActor?: string | null
+  resolutionTrigger?: string | null
+  reminderCount?: number
+  lastReminderAt?: Date | string | null
+  nextReminderAt?: Date | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type WorkflowBlockerCreateOrConnectWithoutTenantInput = {
+  where: Prisma.WorkflowBlockerWhereUniqueInput
+  create: Prisma.XOR<Prisma.WorkflowBlockerCreateWithoutTenantInput, Prisma.WorkflowBlockerUncheckedCreateWithoutTenantInput>
+}
+
+export type WorkflowBlockerCreateManyTenantInputEnvelope = {
+  data: Prisma.WorkflowBlockerCreateManyTenantInput | Prisma.WorkflowBlockerCreateManyTenantInput[]
+  skipDuplicates?: boolean
+}
+
+export type WorkflowBlockerUpsertWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.WorkflowBlockerWhereUniqueInput
+  update: Prisma.XOR<Prisma.WorkflowBlockerUpdateWithoutTenantInput, Prisma.WorkflowBlockerUncheckedUpdateWithoutTenantInput>
+  create: Prisma.XOR<Prisma.WorkflowBlockerCreateWithoutTenantInput, Prisma.WorkflowBlockerUncheckedCreateWithoutTenantInput>
+}
+
+export type WorkflowBlockerUpdateWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.WorkflowBlockerWhereUniqueInput
+  data: Prisma.XOR<Prisma.WorkflowBlockerUpdateWithoutTenantInput, Prisma.WorkflowBlockerUncheckedUpdateWithoutTenantInput>
+}
+
+export type WorkflowBlockerUpdateManyWithWhereWithoutTenantInput = {
+  where: Prisma.WorkflowBlockerScalarWhereInput
+  data: Prisma.XOR<Prisma.WorkflowBlockerUpdateManyMutationInput, Prisma.WorkflowBlockerUncheckedUpdateManyWithoutTenantInput>
+}
+
+export type WorkflowBlockerScalarWhereInput = {
+  AND?: Prisma.WorkflowBlockerScalarWhereInput | Prisma.WorkflowBlockerScalarWhereInput[]
+  OR?: Prisma.WorkflowBlockerScalarWhereInput[]
+  NOT?: Prisma.WorkflowBlockerScalarWhereInput | Prisma.WorkflowBlockerScalarWhereInput[]
+  id?: Prisma.StringFilter<"WorkflowBlocker"> | string
+  tenantId?: Prisma.StringFilter<"WorkflowBlocker"> | string
+  applicationId?: Prisma.StringFilter<"WorkflowBlocker"> | string
+  phaseId?: Prisma.StringNullableFilter<"WorkflowBlocker"> | string | null
+  stepId?: Prisma.StringNullableFilter<"WorkflowBlocker"> | string | null
+  blockerActor?: Prisma.EnumBlockerActorFilter<"WorkflowBlocker"> | $Enums.BlockerActor
+  blockerCategory?: Prisma.EnumBlockerCategoryFilter<"WorkflowBlocker"> | $Enums.BlockerCategory
+  urgency?: Prisma.EnumBlockerUrgencyFilter<"WorkflowBlocker"> | $Enums.BlockerUrgency
+  actionRequired?: Prisma.StringFilter<"WorkflowBlocker"> | string
+  context?: Prisma.StringNullableFilter<"WorkflowBlocker"> | string | null
+  expectedByDate?: Prisma.DateTimeNullableFilter<"WorkflowBlocker"> | Date | string | null
+  isOverdue?: Prisma.BoolFilter<"WorkflowBlocker"> | boolean
+  overdueAt?: Prisma.DateTimeNullableFilter<"WorkflowBlocker"> | Date | string | null
+  startedAt?: Prisma.DateTimeFilter<"WorkflowBlocker"> | Date | string
+  resolvedAt?: Prisma.DateTimeNullableFilter<"WorkflowBlocker"> | Date | string | null
+  durationMs?: Prisma.IntNullableFilter<"WorkflowBlocker"> | number | null
+  resolvedByActor?: Prisma.StringNullableFilter<"WorkflowBlocker"> | string | null
+  resolutionTrigger?: Prisma.StringNullableFilter<"WorkflowBlocker"> | string | null
+  reminderCount?: Prisma.IntFilter<"WorkflowBlocker"> | number
+  lastReminderAt?: Prisma.DateTimeNullableFilter<"WorkflowBlocker"> | Date | string | null
+  nextReminderAt?: Prisma.DateTimeNullableFilter<"WorkflowBlocker"> | Date | string | null
+  metadata?: Prisma.JsonNullableFilter<"WorkflowBlocker">
+  createdAt?: Prisma.DateTimeFilter<"WorkflowBlocker"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"WorkflowBlocker"> | Date | string
+}
+
+export type WorkflowBlockerCreateManyTenantInput = {
+  id?: string
+  applicationId: string
+  phaseId?: string | null
+  stepId?: string | null
+  blockerActor: $Enums.BlockerActor
+  blockerCategory: $Enums.BlockerCategory
+  urgency?: $Enums.BlockerUrgency
+  actionRequired: string
+  context?: string | null
+  expectedByDate?: Date | string | null
+  isOverdue?: boolean
+  overdueAt?: Date | string | null
+  startedAt?: Date | string
+  resolvedAt?: Date | string | null
+  durationMs?: number | null
+  resolvedByActor?: string | null
+  resolutionTrigger?: string | null
+  reminderCount?: number
+  lastReminderAt?: Date | string | null
+  nextReminderAt?: Date | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type WorkflowBlockerUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  applicationId?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  blockerActor?: Prisma.EnumBlockerActorFieldUpdateOperationsInput | $Enums.BlockerActor
+  blockerCategory?: Prisma.EnumBlockerCategoryFieldUpdateOperationsInput | $Enums.BlockerCategory
+  urgency?: Prisma.EnumBlockerUrgencyFieldUpdateOperationsInput | $Enums.BlockerUrgency
+  actionRequired?: Prisma.StringFieldUpdateOperationsInput | string
+  context?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expectedByDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isOverdue?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  overdueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  durationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  resolvedByActor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resolutionTrigger?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reminderCount?: Prisma.IntFieldUpdateOperationsInput | number
+  lastReminderAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  nextReminderAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type WorkflowBlockerUncheckedUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  applicationId?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  blockerActor?: Prisma.EnumBlockerActorFieldUpdateOperationsInput | $Enums.BlockerActor
+  blockerCategory?: Prisma.EnumBlockerCategoryFieldUpdateOperationsInput | $Enums.BlockerCategory
+  urgency?: Prisma.EnumBlockerUrgencyFieldUpdateOperationsInput | $Enums.BlockerUrgency
+  actionRequired?: Prisma.StringFieldUpdateOperationsInput | string
+  context?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expectedByDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isOverdue?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  overdueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  durationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  resolvedByActor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resolutionTrigger?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reminderCount?: Prisma.IntFieldUpdateOperationsInput | number
+  lastReminderAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  nextReminderAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type WorkflowBlockerUncheckedUpdateManyWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  applicationId?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  blockerActor?: Prisma.EnumBlockerActorFieldUpdateOperationsInput | $Enums.BlockerActor
+  blockerCategory?: Prisma.EnumBlockerCategoryFieldUpdateOperationsInput | $Enums.BlockerCategory
+  urgency?: Prisma.EnumBlockerUrgencyFieldUpdateOperationsInput | $Enums.BlockerUrgency
+  actionRequired?: Prisma.StringFieldUpdateOperationsInput | string
+  context?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expectedByDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isOverdue?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  overdueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  durationMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  resolvedByActor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resolutionTrigger?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reminderCount?: Prisma.IntFieldUpdateOperationsInput | number
+  lastReminderAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  nextReminderAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -813,6 +1079,7 @@ export type WorkflowBlockerSelect<ExtArgs extends runtime.Types.Extensions.Inter
   metadata?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["workflowBlocker"]>
 
 
@@ -845,10 +1112,15 @@ export type WorkflowBlockerSelectScalar = {
 }
 
 export type WorkflowBlockerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "applicationId" | "phaseId" | "stepId" | "blockerActor" | "blockerCategory" | "urgency" | "actionRequired" | "context" | "expectedByDate" | "isOverdue" | "overdueAt" | "startedAt" | "resolvedAt" | "durationMs" | "resolvedByActor" | "resolutionTrigger" | "reminderCount" | "lastReminderAt" | "nextReminderAt" | "metadata" | "createdAt" | "updatedAt", ExtArgs["result"]["workflowBlocker"]>
+export type WorkflowBlockerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
+}
 
 export type $WorkflowBlockerPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "WorkflowBlocker"
-  objects: {}
+  objects: {
+    tenant: Prisma.$TenantPayload<ExtArgs>
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     tenantId: string
@@ -1214,6 +1486,7 @@ readonly fields: WorkflowBlockerFieldRefs;
  */
 export interface Prisma__WorkflowBlockerClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1284,6 +1557,10 @@ export type WorkflowBlockerFindUniqueArgs<ExtArgs extends runtime.Types.Extensio
    */
   omit?: Prisma.WorkflowBlockerOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WorkflowBlockerInclude<ExtArgs> | null
+  /**
    * Filter, which WorkflowBlocker to fetch.
    */
   where: Prisma.WorkflowBlockerWhereUniqueInput
@@ -1302,6 +1579,10 @@ export type WorkflowBlockerFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.E
    */
   omit?: Prisma.WorkflowBlockerOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WorkflowBlockerInclude<ExtArgs> | null
+  /**
    * Filter, which WorkflowBlocker to fetch.
    */
   where: Prisma.WorkflowBlockerWhereUniqueInput
@@ -1319,6 +1600,10 @@ export type WorkflowBlockerFindFirstArgs<ExtArgs extends runtime.Types.Extension
    * Omit specific fields from the WorkflowBlocker
    */
   omit?: Prisma.WorkflowBlockerOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WorkflowBlockerInclude<ExtArgs> | null
   /**
    * Filter, which WorkflowBlocker to fetch.
    */
@@ -1368,6 +1653,10 @@ export type WorkflowBlockerFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Ex
    */
   omit?: Prisma.WorkflowBlockerOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WorkflowBlockerInclude<ExtArgs> | null
+  /**
    * Filter, which WorkflowBlocker to fetch.
    */
   where?: Prisma.WorkflowBlockerWhereInput
@@ -1416,6 +1705,10 @@ export type WorkflowBlockerFindManyArgs<ExtArgs extends runtime.Types.Extensions
    */
   omit?: Prisma.WorkflowBlockerOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WorkflowBlockerInclude<ExtArgs> | null
+  /**
    * Filter, which WorkflowBlockers to fetch.
    */
   where?: Prisma.WorkflowBlockerWhereInput
@@ -1459,6 +1752,10 @@ export type WorkflowBlockerCreateArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   omit?: Prisma.WorkflowBlockerOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WorkflowBlockerInclude<ExtArgs> | null
+  /**
    * The data needed to create a WorkflowBlocker.
    */
   data: Prisma.XOR<Prisma.WorkflowBlockerCreateInput, Prisma.WorkflowBlockerUncheckedCreateInput>
@@ -1487,6 +1784,10 @@ export type WorkflowBlockerUpdateArgs<ExtArgs extends runtime.Types.Extensions.I
    * Omit specific fields from the WorkflowBlocker
    */
   omit?: Prisma.WorkflowBlockerOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WorkflowBlockerInclude<ExtArgs> | null
   /**
    * The data needed to update a WorkflowBlocker.
    */
@@ -1528,6 +1829,10 @@ export type WorkflowBlockerUpsertArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   omit?: Prisma.WorkflowBlockerOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WorkflowBlockerInclude<ExtArgs> | null
+  /**
    * The filter to search for the WorkflowBlocker to update in case it exists.
    */
   where: Prisma.WorkflowBlockerWhereUniqueInput
@@ -1553,6 +1858,10 @@ export type WorkflowBlockerDeleteArgs<ExtArgs extends runtime.Types.Extensions.I
    * Omit specific fields from the WorkflowBlocker
    */
   omit?: Prisma.WorkflowBlockerOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WorkflowBlockerInclude<ExtArgs> | null
   /**
    * Filter which WorkflowBlocker to delete.
    */
@@ -1585,4 +1894,8 @@ export type WorkflowBlockerDefaultArgs<ExtArgs extends runtime.Types.Extensions.
    * Omit specific fields from the WorkflowBlocker
    */
   omit?: Prisma.WorkflowBlockerOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WorkflowBlockerInclude<ExtArgs> | null
 }

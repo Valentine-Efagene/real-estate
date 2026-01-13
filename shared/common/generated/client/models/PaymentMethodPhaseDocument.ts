@@ -36,6 +36,7 @@ export type PaymentMethodPhaseDocumentSumAggregateOutputType = {
 
 export type PaymentMethodPhaseDocumentMinAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   phaseId: string | null
   documentType: string | null
   isRequired: boolean | null
@@ -47,6 +48,7 @@ export type PaymentMethodPhaseDocumentMinAggregateOutputType = {
 
 export type PaymentMethodPhaseDocumentMaxAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   phaseId: string | null
   documentType: string | null
   isRequired: boolean | null
@@ -58,6 +60,7 @@ export type PaymentMethodPhaseDocumentMaxAggregateOutputType = {
 
 export type PaymentMethodPhaseDocumentCountAggregateOutputType = {
   id: number
+  tenantId: number
   phaseId: number
   documentType: number
   isRequired: number
@@ -80,6 +83,7 @@ export type PaymentMethodPhaseDocumentSumAggregateInputType = {
 
 export type PaymentMethodPhaseDocumentMinAggregateInputType = {
   id?: true
+  tenantId?: true
   phaseId?: true
   documentType?: true
   isRequired?: true
@@ -91,6 +95,7 @@ export type PaymentMethodPhaseDocumentMinAggregateInputType = {
 
 export type PaymentMethodPhaseDocumentMaxAggregateInputType = {
   id?: true
+  tenantId?: true
   phaseId?: true
   documentType?: true
   isRequired?: true
@@ -102,6 +107,7 @@ export type PaymentMethodPhaseDocumentMaxAggregateInputType = {
 
 export type PaymentMethodPhaseDocumentCountAggregateInputType = {
   id?: true
+  tenantId?: true
   phaseId?: true
   documentType?: true
   isRequired?: true
@@ -201,6 +207,7 @@ export type PaymentMethodPhaseDocumentGroupByArgs<ExtArgs extends runtime.Types.
 
 export type PaymentMethodPhaseDocumentGroupByOutputType = {
   id: string
+  tenantId: string
   phaseId: string
   documentType: string
   isRequired: boolean
@@ -236,6 +243,7 @@ export type PaymentMethodPhaseDocumentWhereInput = {
   OR?: Prisma.PaymentMethodPhaseDocumentWhereInput[]
   NOT?: Prisma.PaymentMethodPhaseDocumentWhereInput | Prisma.PaymentMethodPhaseDocumentWhereInput[]
   id?: Prisma.StringFilter<"PaymentMethodPhaseDocument"> | string
+  tenantId?: Prisma.StringFilter<"PaymentMethodPhaseDocument"> | string
   phaseId?: Prisma.StringFilter<"PaymentMethodPhaseDocument"> | string
   documentType?: Prisma.StringFilter<"PaymentMethodPhaseDocument"> | string
   isRequired?: Prisma.BoolFilter<"PaymentMethodPhaseDocument"> | boolean
@@ -244,11 +252,13 @@ export type PaymentMethodPhaseDocumentWhereInput = {
   maxSizeBytes?: Prisma.IntNullableFilter<"PaymentMethodPhaseDocument"> | number | null
   metadata?: Prisma.JsonNullableFilter<"PaymentMethodPhaseDocument">
   createdAt?: Prisma.DateTimeFilter<"PaymentMethodPhaseDocument"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   phase?: Prisma.XOR<Prisma.PropertyPaymentMethodPhaseScalarRelationFilter, Prisma.PropertyPaymentMethodPhaseWhereInput>
 }
 
 export type PaymentMethodPhaseDocumentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   phaseId?: Prisma.SortOrder
   documentType?: Prisma.SortOrder
   isRequired?: Prisma.SortOrder
@@ -257,6 +267,7 @@ export type PaymentMethodPhaseDocumentOrderByWithRelationInput = {
   maxSizeBytes?: Prisma.SortOrderInput | Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  tenant?: Prisma.TenantOrderByWithRelationInput
   phase?: Prisma.PropertyPaymentMethodPhaseOrderByWithRelationInput
   _relevance?: Prisma.PaymentMethodPhaseDocumentOrderByRelevanceInput
 }
@@ -266,6 +277,7 @@ export type PaymentMethodPhaseDocumentWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.PaymentMethodPhaseDocumentWhereInput | Prisma.PaymentMethodPhaseDocumentWhereInput[]
   OR?: Prisma.PaymentMethodPhaseDocumentWhereInput[]
   NOT?: Prisma.PaymentMethodPhaseDocumentWhereInput | Prisma.PaymentMethodPhaseDocumentWhereInput[]
+  tenantId?: Prisma.StringFilter<"PaymentMethodPhaseDocument"> | string
   phaseId?: Prisma.StringFilter<"PaymentMethodPhaseDocument"> | string
   documentType?: Prisma.StringFilter<"PaymentMethodPhaseDocument"> | string
   isRequired?: Prisma.BoolFilter<"PaymentMethodPhaseDocument"> | boolean
@@ -274,11 +286,13 @@ export type PaymentMethodPhaseDocumentWhereUniqueInput = Prisma.AtLeast<{
   maxSizeBytes?: Prisma.IntNullableFilter<"PaymentMethodPhaseDocument"> | number | null
   metadata?: Prisma.JsonNullableFilter<"PaymentMethodPhaseDocument">
   createdAt?: Prisma.DateTimeFilter<"PaymentMethodPhaseDocument"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   phase?: Prisma.XOR<Prisma.PropertyPaymentMethodPhaseScalarRelationFilter, Prisma.PropertyPaymentMethodPhaseWhereInput>
 }, "id">
 
 export type PaymentMethodPhaseDocumentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   phaseId?: Prisma.SortOrder
   documentType?: Prisma.SortOrder
   isRequired?: Prisma.SortOrder
@@ -299,6 +313,7 @@ export type PaymentMethodPhaseDocumentScalarWhereWithAggregatesInput = {
   OR?: Prisma.PaymentMethodPhaseDocumentScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PaymentMethodPhaseDocumentScalarWhereWithAggregatesInput | Prisma.PaymentMethodPhaseDocumentScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"PaymentMethodPhaseDocument"> | string
+  tenantId?: Prisma.StringWithAggregatesFilter<"PaymentMethodPhaseDocument"> | string
   phaseId?: Prisma.StringWithAggregatesFilter<"PaymentMethodPhaseDocument"> | string
   documentType?: Prisma.StringWithAggregatesFilter<"PaymentMethodPhaseDocument"> | string
   isRequired?: Prisma.BoolWithAggregatesFilter<"PaymentMethodPhaseDocument"> | boolean
@@ -318,11 +333,13 @@ export type PaymentMethodPhaseDocumentCreateInput = {
   maxSizeBytes?: number | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutPaymentMethodPhaseDocumentsInput
   phase: Prisma.PropertyPaymentMethodPhaseCreateNestedOneWithoutRequiredDocumentsInput
 }
 
 export type PaymentMethodPhaseDocumentUncheckedCreateInput = {
   id?: string
+  tenantId: string
   phaseId: string
   documentType: string
   isRequired?: boolean
@@ -342,11 +359,13 @@ export type PaymentMethodPhaseDocumentUpdateInput = {
   maxSizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutPaymentMethodPhaseDocumentsNestedInput
   phase?: Prisma.PropertyPaymentMethodPhaseUpdateOneRequiredWithoutRequiredDocumentsNestedInput
 }
 
 export type PaymentMethodPhaseDocumentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.StringFieldUpdateOperationsInput | string
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -359,6 +378,7 @@ export type PaymentMethodPhaseDocumentUncheckedUpdateInput = {
 
 export type PaymentMethodPhaseDocumentCreateManyInput = {
   id?: string
+  tenantId: string
   phaseId: string
   documentType: string
   isRequired?: boolean
@@ -382,6 +402,7 @@ export type PaymentMethodPhaseDocumentUpdateManyMutationInput = {
 
 export type PaymentMethodPhaseDocumentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.StringFieldUpdateOperationsInput | string
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -410,6 +431,7 @@ export type PaymentMethodPhaseDocumentOrderByRelevanceInput = {
 
 export type PaymentMethodPhaseDocumentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   phaseId?: Prisma.SortOrder
   documentType?: Prisma.SortOrder
   isRequired?: Prisma.SortOrder
@@ -426,6 +448,7 @@ export type PaymentMethodPhaseDocumentAvgOrderByAggregateInput = {
 
 export type PaymentMethodPhaseDocumentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   phaseId?: Prisma.SortOrder
   documentType?: Prisma.SortOrder
   isRequired?: Prisma.SortOrder
@@ -437,6 +460,7 @@ export type PaymentMethodPhaseDocumentMaxOrderByAggregateInput = {
 
 export type PaymentMethodPhaseDocumentMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   phaseId?: Prisma.SortOrder
   documentType?: Prisma.SortOrder
   isRequired?: Prisma.SortOrder
@@ -448,6 +472,48 @@ export type PaymentMethodPhaseDocumentMinOrderByAggregateInput = {
 
 export type PaymentMethodPhaseDocumentSumOrderByAggregateInput = {
   maxSizeBytes?: Prisma.SortOrder
+}
+
+export type PaymentMethodPhaseDocumentCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.PaymentMethodPhaseDocumentCreateWithoutTenantInput, Prisma.PaymentMethodPhaseDocumentUncheckedCreateWithoutTenantInput> | Prisma.PaymentMethodPhaseDocumentCreateWithoutTenantInput[] | Prisma.PaymentMethodPhaseDocumentUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PaymentMethodPhaseDocumentCreateOrConnectWithoutTenantInput | Prisma.PaymentMethodPhaseDocumentCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.PaymentMethodPhaseDocumentCreateManyTenantInputEnvelope
+  connect?: Prisma.PaymentMethodPhaseDocumentWhereUniqueInput | Prisma.PaymentMethodPhaseDocumentWhereUniqueInput[]
+}
+
+export type PaymentMethodPhaseDocumentUncheckedCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.PaymentMethodPhaseDocumentCreateWithoutTenantInput, Prisma.PaymentMethodPhaseDocumentUncheckedCreateWithoutTenantInput> | Prisma.PaymentMethodPhaseDocumentCreateWithoutTenantInput[] | Prisma.PaymentMethodPhaseDocumentUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PaymentMethodPhaseDocumentCreateOrConnectWithoutTenantInput | Prisma.PaymentMethodPhaseDocumentCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.PaymentMethodPhaseDocumentCreateManyTenantInputEnvelope
+  connect?: Prisma.PaymentMethodPhaseDocumentWhereUniqueInput | Prisma.PaymentMethodPhaseDocumentWhereUniqueInput[]
+}
+
+export type PaymentMethodPhaseDocumentUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.PaymentMethodPhaseDocumentCreateWithoutTenantInput, Prisma.PaymentMethodPhaseDocumentUncheckedCreateWithoutTenantInput> | Prisma.PaymentMethodPhaseDocumentCreateWithoutTenantInput[] | Prisma.PaymentMethodPhaseDocumentUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PaymentMethodPhaseDocumentCreateOrConnectWithoutTenantInput | Prisma.PaymentMethodPhaseDocumentCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.PaymentMethodPhaseDocumentUpsertWithWhereUniqueWithoutTenantInput | Prisma.PaymentMethodPhaseDocumentUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.PaymentMethodPhaseDocumentCreateManyTenantInputEnvelope
+  set?: Prisma.PaymentMethodPhaseDocumentWhereUniqueInput | Prisma.PaymentMethodPhaseDocumentWhereUniqueInput[]
+  disconnect?: Prisma.PaymentMethodPhaseDocumentWhereUniqueInput | Prisma.PaymentMethodPhaseDocumentWhereUniqueInput[]
+  delete?: Prisma.PaymentMethodPhaseDocumentWhereUniqueInput | Prisma.PaymentMethodPhaseDocumentWhereUniqueInput[]
+  connect?: Prisma.PaymentMethodPhaseDocumentWhereUniqueInput | Prisma.PaymentMethodPhaseDocumentWhereUniqueInput[]
+  update?: Prisma.PaymentMethodPhaseDocumentUpdateWithWhereUniqueWithoutTenantInput | Prisma.PaymentMethodPhaseDocumentUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.PaymentMethodPhaseDocumentUpdateManyWithWhereWithoutTenantInput | Prisma.PaymentMethodPhaseDocumentUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.PaymentMethodPhaseDocumentScalarWhereInput | Prisma.PaymentMethodPhaseDocumentScalarWhereInput[]
+}
+
+export type PaymentMethodPhaseDocumentUncheckedUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.PaymentMethodPhaseDocumentCreateWithoutTenantInput, Prisma.PaymentMethodPhaseDocumentUncheckedCreateWithoutTenantInput> | Prisma.PaymentMethodPhaseDocumentCreateWithoutTenantInput[] | Prisma.PaymentMethodPhaseDocumentUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PaymentMethodPhaseDocumentCreateOrConnectWithoutTenantInput | Prisma.PaymentMethodPhaseDocumentCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.PaymentMethodPhaseDocumentUpsertWithWhereUniqueWithoutTenantInput | Prisma.PaymentMethodPhaseDocumentUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.PaymentMethodPhaseDocumentCreateManyTenantInputEnvelope
+  set?: Prisma.PaymentMethodPhaseDocumentWhereUniqueInput | Prisma.PaymentMethodPhaseDocumentWhereUniqueInput[]
+  disconnect?: Prisma.PaymentMethodPhaseDocumentWhereUniqueInput | Prisma.PaymentMethodPhaseDocumentWhereUniqueInput[]
+  delete?: Prisma.PaymentMethodPhaseDocumentWhereUniqueInput | Prisma.PaymentMethodPhaseDocumentWhereUniqueInput[]
+  connect?: Prisma.PaymentMethodPhaseDocumentWhereUniqueInput | Prisma.PaymentMethodPhaseDocumentWhereUniqueInput[]
+  update?: Prisma.PaymentMethodPhaseDocumentUpdateWithWhereUniqueWithoutTenantInput | Prisma.PaymentMethodPhaseDocumentUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.PaymentMethodPhaseDocumentUpdateManyWithWhereWithoutTenantInput | Prisma.PaymentMethodPhaseDocumentUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.PaymentMethodPhaseDocumentScalarWhereInput | Prisma.PaymentMethodPhaseDocumentScalarWhereInput[]
 }
 
 export type PaymentMethodPhaseDocumentCreateNestedManyWithoutPhaseInput = {
@@ -492,8 +558,21 @@ export type PaymentMethodPhaseDocumentUncheckedUpdateManyWithoutPhaseNestedInput
   deleteMany?: Prisma.PaymentMethodPhaseDocumentScalarWhereInput | Prisma.PaymentMethodPhaseDocumentScalarWhereInput[]
 }
 
-export type PaymentMethodPhaseDocumentCreateWithoutPhaseInput = {
+export type PaymentMethodPhaseDocumentCreateWithoutTenantInput = {
   id?: string
+  documentType: string
+  isRequired?: boolean
+  description?: string | null
+  allowedMimeTypes?: string | null
+  maxSizeBytes?: number | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  phase: Prisma.PropertyPaymentMethodPhaseCreateNestedOneWithoutRequiredDocumentsInput
+}
+
+export type PaymentMethodPhaseDocumentUncheckedCreateWithoutTenantInput = {
+  id?: string
+  phaseId: string
   documentType: string
   isRequired?: boolean
   description?: string | null
@@ -503,8 +582,63 @@ export type PaymentMethodPhaseDocumentCreateWithoutPhaseInput = {
   createdAt?: Date | string
 }
 
+export type PaymentMethodPhaseDocumentCreateOrConnectWithoutTenantInput = {
+  where: Prisma.PaymentMethodPhaseDocumentWhereUniqueInput
+  create: Prisma.XOR<Prisma.PaymentMethodPhaseDocumentCreateWithoutTenantInput, Prisma.PaymentMethodPhaseDocumentUncheckedCreateWithoutTenantInput>
+}
+
+export type PaymentMethodPhaseDocumentCreateManyTenantInputEnvelope = {
+  data: Prisma.PaymentMethodPhaseDocumentCreateManyTenantInput | Prisma.PaymentMethodPhaseDocumentCreateManyTenantInput[]
+  skipDuplicates?: boolean
+}
+
+export type PaymentMethodPhaseDocumentUpsertWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.PaymentMethodPhaseDocumentWhereUniqueInput
+  update: Prisma.XOR<Prisma.PaymentMethodPhaseDocumentUpdateWithoutTenantInput, Prisma.PaymentMethodPhaseDocumentUncheckedUpdateWithoutTenantInput>
+  create: Prisma.XOR<Prisma.PaymentMethodPhaseDocumentCreateWithoutTenantInput, Prisma.PaymentMethodPhaseDocumentUncheckedCreateWithoutTenantInput>
+}
+
+export type PaymentMethodPhaseDocumentUpdateWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.PaymentMethodPhaseDocumentWhereUniqueInput
+  data: Prisma.XOR<Prisma.PaymentMethodPhaseDocumentUpdateWithoutTenantInput, Prisma.PaymentMethodPhaseDocumentUncheckedUpdateWithoutTenantInput>
+}
+
+export type PaymentMethodPhaseDocumentUpdateManyWithWhereWithoutTenantInput = {
+  where: Prisma.PaymentMethodPhaseDocumentScalarWhereInput
+  data: Prisma.XOR<Prisma.PaymentMethodPhaseDocumentUpdateManyMutationInput, Prisma.PaymentMethodPhaseDocumentUncheckedUpdateManyWithoutTenantInput>
+}
+
+export type PaymentMethodPhaseDocumentScalarWhereInput = {
+  AND?: Prisma.PaymentMethodPhaseDocumentScalarWhereInput | Prisma.PaymentMethodPhaseDocumentScalarWhereInput[]
+  OR?: Prisma.PaymentMethodPhaseDocumentScalarWhereInput[]
+  NOT?: Prisma.PaymentMethodPhaseDocumentScalarWhereInput | Prisma.PaymentMethodPhaseDocumentScalarWhereInput[]
+  id?: Prisma.StringFilter<"PaymentMethodPhaseDocument"> | string
+  tenantId?: Prisma.StringFilter<"PaymentMethodPhaseDocument"> | string
+  phaseId?: Prisma.StringFilter<"PaymentMethodPhaseDocument"> | string
+  documentType?: Prisma.StringFilter<"PaymentMethodPhaseDocument"> | string
+  isRequired?: Prisma.BoolFilter<"PaymentMethodPhaseDocument"> | boolean
+  description?: Prisma.StringNullableFilter<"PaymentMethodPhaseDocument"> | string | null
+  allowedMimeTypes?: Prisma.StringNullableFilter<"PaymentMethodPhaseDocument"> | string | null
+  maxSizeBytes?: Prisma.IntNullableFilter<"PaymentMethodPhaseDocument"> | number | null
+  metadata?: Prisma.JsonNullableFilter<"PaymentMethodPhaseDocument">
+  createdAt?: Prisma.DateTimeFilter<"PaymentMethodPhaseDocument"> | Date | string
+}
+
+export type PaymentMethodPhaseDocumentCreateWithoutPhaseInput = {
+  id?: string
+  documentType: string
+  isRequired?: boolean
+  description?: string | null
+  allowedMimeTypes?: string | null
+  maxSizeBytes?: number | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutPaymentMethodPhaseDocumentsInput
+}
+
 export type PaymentMethodPhaseDocumentUncheckedCreateWithoutPhaseInput = {
   id?: string
+  tenantId: string
   documentType: string
   isRequired?: boolean
   description?: string | null
@@ -540,23 +674,57 @@ export type PaymentMethodPhaseDocumentUpdateManyWithWhereWithoutPhaseInput = {
   data: Prisma.XOR<Prisma.PaymentMethodPhaseDocumentUpdateManyMutationInput, Prisma.PaymentMethodPhaseDocumentUncheckedUpdateManyWithoutPhaseInput>
 }
 
-export type PaymentMethodPhaseDocumentScalarWhereInput = {
-  AND?: Prisma.PaymentMethodPhaseDocumentScalarWhereInput | Prisma.PaymentMethodPhaseDocumentScalarWhereInput[]
-  OR?: Prisma.PaymentMethodPhaseDocumentScalarWhereInput[]
-  NOT?: Prisma.PaymentMethodPhaseDocumentScalarWhereInput | Prisma.PaymentMethodPhaseDocumentScalarWhereInput[]
-  id?: Prisma.StringFilter<"PaymentMethodPhaseDocument"> | string
-  phaseId?: Prisma.StringFilter<"PaymentMethodPhaseDocument"> | string
-  documentType?: Prisma.StringFilter<"PaymentMethodPhaseDocument"> | string
-  isRequired?: Prisma.BoolFilter<"PaymentMethodPhaseDocument"> | boolean
-  description?: Prisma.StringNullableFilter<"PaymentMethodPhaseDocument"> | string | null
-  allowedMimeTypes?: Prisma.StringNullableFilter<"PaymentMethodPhaseDocument"> | string | null
-  maxSizeBytes?: Prisma.IntNullableFilter<"PaymentMethodPhaseDocument"> | number | null
-  metadata?: Prisma.JsonNullableFilter<"PaymentMethodPhaseDocument">
-  createdAt?: Prisma.DateTimeFilter<"PaymentMethodPhaseDocument"> | Date | string
+export type PaymentMethodPhaseDocumentCreateManyTenantInput = {
+  id?: string
+  phaseId: string
+  documentType: string
+  isRequired?: boolean
+  description?: string | null
+  allowedMimeTypes?: string | null
+  maxSizeBytes?: number | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+}
+
+export type PaymentMethodPhaseDocumentUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  documentType?: Prisma.StringFieldUpdateOperationsInput | string
+  isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowedMimeTypes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  maxSizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  phase?: Prisma.PropertyPaymentMethodPhaseUpdateOneRequiredWithoutRequiredDocumentsNestedInput
+}
+
+export type PaymentMethodPhaseDocumentUncheckedUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseId?: Prisma.StringFieldUpdateOperationsInput | string
+  documentType?: Prisma.StringFieldUpdateOperationsInput | string
+  isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowedMimeTypes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  maxSizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PaymentMethodPhaseDocumentUncheckedUpdateManyWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseId?: Prisma.StringFieldUpdateOperationsInput | string
+  documentType?: Prisma.StringFieldUpdateOperationsInput | string
+  isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowedMimeTypes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  maxSizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PaymentMethodPhaseDocumentCreateManyPhaseInput = {
   id?: string
+  tenantId: string
   documentType: string
   isRequired?: boolean
   description?: string | null
@@ -575,10 +743,12 @@ export type PaymentMethodPhaseDocumentUpdateWithoutPhaseInput = {
   maxSizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutPaymentMethodPhaseDocumentsNestedInput
 }
 
 export type PaymentMethodPhaseDocumentUncheckedUpdateWithoutPhaseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -590,6 +760,7 @@ export type PaymentMethodPhaseDocumentUncheckedUpdateWithoutPhaseInput = {
 
 export type PaymentMethodPhaseDocumentUncheckedUpdateManyWithoutPhaseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -603,6 +774,7 @@ export type PaymentMethodPhaseDocumentUncheckedUpdateManyWithoutPhaseInput = {
 
 export type PaymentMethodPhaseDocumentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   phaseId?: boolean
   documentType?: boolean
   isRequired?: boolean
@@ -611,6 +783,7 @@ export type PaymentMethodPhaseDocumentSelect<ExtArgs extends runtime.Types.Exten
   maxSizeBytes?: boolean
   metadata?: boolean
   createdAt?: boolean
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   phase?: boolean | Prisma.PropertyPaymentMethodPhaseDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["paymentMethodPhaseDocument"]>
 
@@ -618,6 +791,7 @@ export type PaymentMethodPhaseDocumentSelect<ExtArgs extends runtime.Types.Exten
 
 export type PaymentMethodPhaseDocumentSelectScalar = {
   id?: boolean
+  tenantId?: boolean
   phaseId?: boolean
   documentType?: boolean
   isRequired?: boolean
@@ -628,18 +802,21 @@ export type PaymentMethodPhaseDocumentSelectScalar = {
   createdAt?: boolean
 }
 
-export type PaymentMethodPhaseDocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "phaseId" | "documentType" | "isRequired" | "description" | "allowedMimeTypes" | "maxSizeBytes" | "metadata" | "createdAt", ExtArgs["result"]["paymentMethodPhaseDocument"]>
+export type PaymentMethodPhaseDocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "phaseId" | "documentType" | "isRequired" | "description" | "allowedMimeTypes" | "maxSizeBytes" | "metadata" | "createdAt", ExtArgs["result"]["paymentMethodPhaseDocument"]>
 export type PaymentMethodPhaseDocumentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   phase?: boolean | Prisma.PropertyPaymentMethodPhaseDefaultArgs<ExtArgs>
 }
 
 export type $PaymentMethodPhaseDocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "PaymentMethodPhaseDocument"
   objects: {
+    tenant: Prisma.$TenantPayload<ExtArgs>
     phase: Prisma.$PropertyPaymentMethodPhasePayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    tenantId: string
     phaseId: string
     documentType: string
     isRequired: boolean
@@ -988,6 +1165,7 @@ readonly fields: PaymentMethodPhaseDocumentFieldRefs;
  */
 export interface Prisma__PaymentMethodPhaseDocumentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   phase<T extends Prisma.PropertyPaymentMethodPhaseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyPaymentMethodPhaseDefaultArgs<ExtArgs>>): Prisma.Prisma__PropertyPaymentMethodPhaseClient<runtime.Types.Result.GetResult<Prisma.$PropertyPaymentMethodPhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1019,6 +1197,7 @@ export interface Prisma__PaymentMethodPhaseDocumentClient<T, Null = never, ExtAr
  */
 export interface PaymentMethodPhaseDocumentFieldRefs {
   readonly id: Prisma.FieldRef<"PaymentMethodPhaseDocument", 'String'>
+  readonly tenantId: Prisma.FieldRef<"PaymentMethodPhaseDocument", 'String'>
   readonly phaseId: Prisma.FieldRef<"PaymentMethodPhaseDocument", 'String'>
   readonly documentType: Prisma.FieldRef<"PaymentMethodPhaseDocument", 'String'>
   readonly isRequired: Prisma.FieldRef<"PaymentMethodPhaseDocument", 'Boolean'>

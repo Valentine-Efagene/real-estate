@@ -26,6 +26,7 @@ export type AggregatePropertyDocument = {
 
 export type PropertyDocumentMinAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   propertyId: string | null
   name: string | null
   url: string | null
@@ -36,6 +37,7 @@ export type PropertyDocumentMinAggregateOutputType = {
 
 export type PropertyDocumentMaxAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   propertyId: string | null
   name: string | null
   url: string | null
@@ -46,6 +48,7 @@ export type PropertyDocumentMaxAggregateOutputType = {
 
 export type PropertyDocumentCountAggregateOutputType = {
   id: number
+  tenantId: number
   propertyId: number
   name: number
   url: number
@@ -58,6 +61,7 @@ export type PropertyDocumentCountAggregateOutputType = {
 
 export type PropertyDocumentMinAggregateInputType = {
   id?: true
+  tenantId?: true
   propertyId?: true
   name?: true
   url?: true
@@ -68,6 +72,7 @@ export type PropertyDocumentMinAggregateInputType = {
 
 export type PropertyDocumentMaxAggregateInputType = {
   id?: true
+  tenantId?: true
   propertyId?: true
   name?: true
   url?: true
@@ -78,6 +83,7 @@ export type PropertyDocumentMaxAggregateInputType = {
 
 export type PropertyDocumentCountAggregateInputType = {
   id?: true
+  tenantId?: true
   propertyId?: true
   name?: true
   url?: true
@@ -161,6 +167,7 @@ export type PropertyDocumentGroupByArgs<ExtArgs extends runtime.Types.Extensions
 
 export type PropertyDocumentGroupByOutputType = {
   id: string
+  tenantId: string
   propertyId: string
   name: string
   url: string
@@ -192,23 +199,27 @@ export type PropertyDocumentWhereInput = {
   OR?: Prisma.PropertyDocumentWhereInput[]
   NOT?: Prisma.PropertyDocumentWhereInput | Prisma.PropertyDocumentWhereInput[]
   id?: Prisma.StringFilter<"PropertyDocument"> | string
+  tenantId?: Prisma.StringFilter<"PropertyDocument"> | string
   propertyId?: Prisma.StringFilter<"PropertyDocument"> | string
   name?: Prisma.StringFilter<"PropertyDocument"> | string
   url?: Prisma.StringFilter<"PropertyDocument"> | string
   type?: Prisma.StringFilter<"PropertyDocument"> | string
   createdAt?: Prisma.DateTimeFilter<"PropertyDocument"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PropertyDocument"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   property?: Prisma.XOR<Prisma.PropertyScalarRelationFilter, Prisma.PropertyWhereInput>
 }
 
 export type PropertyDocumentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   propertyId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   url?: Prisma.SortOrder
   type?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  tenant?: Prisma.TenantOrderByWithRelationInput
   property?: Prisma.PropertyOrderByWithRelationInput
   _relevance?: Prisma.PropertyDocumentOrderByRelevanceInput
 }
@@ -218,17 +229,20 @@ export type PropertyDocumentWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.PropertyDocumentWhereInput | Prisma.PropertyDocumentWhereInput[]
   OR?: Prisma.PropertyDocumentWhereInput[]
   NOT?: Prisma.PropertyDocumentWhereInput | Prisma.PropertyDocumentWhereInput[]
+  tenantId?: Prisma.StringFilter<"PropertyDocument"> | string
   propertyId?: Prisma.StringFilter<"PropertyDocument"> | string
   name?: Prisma.StringFilter<"PropertyDocument"> | string
   url?: Prisma.StringFilter<"PropertyDocument"> | string
   type?: Prisma.StringFilter<"PropertyDocument"> | string
   createdAt?: Prisma.DateTimeFilter<"PropertyDocument"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PropertyDocument"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   property?: Prisma.XOR<Prisma.PropertyScalarRelationFilter, Prisma.PropertyWhereInput>
 }, "id">
 
 export type PropertyDocumentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   propertyId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   url?: Prisma.SortOrder
@@ -245,6 +259,7 @@ export type PropertyDocumentScalarWhereWithAggregatesInput = {
   OR?: Prisma.PropertyDocumentScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PropertyDocumentScalarWhereWithAggregatesInput | Prisma.PropertyDocumentScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"PropertyDocument"> | string
+  tenantId?: Prisma.StringWithAggregatesFilter<"PropertyDocument"> | string
   propertyId?: Prisma.StringWithAggregatesFilter<"PropertyDocument"> | string
   name?: Prisma.StringWithAggregatesFilter<"PropertyDocument"> | string
   url?: Prisma.StringWithAggregatesFilter<"PropertyDocument"> | string
@@ -260,11 +275,13 @@ export type PropertyDocumentCreateInput = {
   type: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutPropertyDocumentsInput
   property: Prisma.PropertyCreateNestedOneWithoutDocumentsInput
 }
 
 export type PropertyDocumentUncheckedCreateInput = {
   id?: string
+  tenantId: string
   propertyId: string
   name: string
   url: string
@@ -280,11 +297,13 @@ export type PropertyDocumentUpdateInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutPropertyDocumentsNestedInput
   property?: Prisma.PropertyUpdateOneRequiredWithoutDocumentsNestedInput
 }
 
 export type PropertyDocumentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   propertyId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
@@ -295,6 +314,7 @@ export type PropertyDocumentUncheckedUpdateInput = {
 
 export type PropertyDocumentCreateManyInput = {
   id?: string
+  tenantId: string
   propertyId: string
   name: string
   url: string
@@ -314,6 +334,7 @@ export type PropertyDocumentUpdateManyMutationInput = {
 
 export type PropertyDocumentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   propertyId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
@@ -340,6 +361,7 @@ export type PropertyDocumentOrderByRelevanceInput = {
 
 export type PropertyDocumentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   propertyId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   url?: Prisma.SortOrder
@@ -350,6 +372,7 @@ export type PropertyDocumentCountOrderByAggregateInput = {
 
 export type PropertyDocumentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   propertyId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   url?: Prisma.SortOrder
@@ -360,12 +383,55 @@ export type PropertyDocumentMaxOrderByAggregateInput = {
 
 export type PropertyDocumentMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   propertyId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   url?: Prisma.SortOrder
   type?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type PropertyDocumentCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.PropertyDocumentCreateWithoutTenantInput, Prisma.PropertyDocumentUncheckedCreateWithoutTenantInput> | Prisma.PropertyDocumentCreateWithoutTenantInput[] | Prisma.PropertyDocumentUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PropertyDocumentCreateOrConnectWithoutTenantInput | Prisma.PropertyDocumentCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.PropertyDocumentCreateManyTenantInputEnvelope
+  connect?: Prisma.PropertyDocumentWhereUniqueInput | Prisma.PropertyDocumentWhereUniqueInput[]
+}
+
+export type PropertyDocumentUncheckedCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.PropertyDocumentCreateWithoutTenantInput, Prisma.PropertyDocumentUncheckedCreateWithoutTenantInput> | Prisma.PropertyDocumentCreateWithoutTenantInput[] | Prisma.PropertyDocumentUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PropertyDocumentCreateOrConnectWithoutTenantInput | Prisma.PropertyDocumentCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.PropertyDocumentCreateManyTenantInputEnvelope
+  connect?: Prisma.PropertyDocumentWhereUniqueInput | Prisma.PropertyDocumentWhereUniqueInput[]
+}
+
+export type PropertyDocumentUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.PropertyDocumentCreateWithoutTenantInput, Prisma.PropertyDocumentUncheckedCreateWithoutTenantInput> | Prisma.PropertyDocumentCreateWithoutTenantInput[] | Prisma.PropertyDocumentUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PropertyDocumentCreateOrConnectWithoutTenantInput | Prisma.PropertyDocumentCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.PropertyDocumentUpsertWithWhereUniqueWithoutTenantInput | Prisma.PropertyDocumentUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.PropertyDocumentCreateManyTenantInputEnvelope
+  set?: Prisma.PropertyDocumentWhereUniqueInput | Prisma.PropertyDocumentWhereUniqueInput[]
+  disconnect?: Prisma.PropertyDocumentWhereUniqueInput | Prisma.PropertyDocumentWhereUniqueInput[]
+  delete?: Prisma.PropertyDocumentWhereUniqueInput | Prisma.PropertyDocumentWhereUniqueInput[]
+  connect?: Prisma.PropertyDocumentWhereUniqueInput | Prisma.PropertyDocumentWhereUniqueInput[]
+  update?: Prisma.PropertyDocumentUpdateWithWhereUniqueWithoutTenantInput | Prisma.PropertyDocumentUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.PropertyDocumentUpdateManyWithWhereWithoutTenantInput | Prisma.PropertyDocumentUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.PropertyDocumentScalarWhereInput | Prisma.PropertyDocumentScalarWhereInput[]
+}
+
+export type PropertyDocumentUncheckedUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.PropertyDocumentCreateWithoutTenantInput, Prisma.PropertyDocumentUncheckedCreateWithoutTenantInput> | Prisma.PropertyDocumentCreateWithoutTenantInput[] | Prisma.PropertyDocumentUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PropertyDocumentCreateOrConnectWithoutTenantInput | Prisma.PropertyDocumentCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.PropertyDocumentUpsertWithWhereUniqueWithoutTenantInput | Prisma.PropertyDocumentUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.PropertyDocumentCreateManyTenantInputEnvelope
+  set?: Prisma.PropertyDocumentWhereUniqueInput | Prisma.PropertyDocumentWhereUniqueInput[]
+  disconnect?: Prisma.PropertyDocumentWhereUniqueInput | Prisma.PropertyDocumentWhereUniqueInput[]
+  delete?: Prisma.PropertyDocumentWhereUniqueInput | Prisma.PropertyDocumentWhereUniqueInput[]
+  connect?: Prisma.PropertyDocumentWhereUniqueInput | Prisma.PropertyDocumentWhereUniqueInput[]
+  update?: Prisma.PropertyDocumentUpdateWithWhereUniqueWithoutTenantInput | Prisma.PropertyDocumentUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.PropertyDocumentUpdateManyWithWhereWithoutTenantInput | Prisma.PropertyDocumentUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.PropertyDocumentScalarWhereInput | Prisma.PropertyDocumentScalarWhereInput[]
 }
 
 export type PropertyDocumentCreateNestedManyWithoutPropertyInput = {
@@ -410,8 +476,19 @@ export type PropertyDocumentUncheckedUpdateManyWithoutPropertyNestedInput = {
   deleteMany?: Prisma.PropertyDocumentScalarWhereInput | Prisma.PropertyDocumentScalarWhereInput[]
 }
 
-export type PropertyDocumentCreateWithoutPropertyInput = {
+export type PropertyDocumentCreateWithoutTenantInput = {
   id?: string
+  name: string
+  url: string
+  type: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  property: Prisma.PropertyCreateNestedOneWithoutDocumentsInput
+}
+
+export type PropertyDocumentUncheckedCreateWithoutTenantInput = {
+  id?: string
+  propertyId: string
   name: string
   url: string
   type: string
@@ -419,8 +496,59 @@ export type PropertyDocumentCreateWithoutPropertyInput = {
   updatedAt?: Date | string
 }
 
+export type PropertyDocumentCreateOrConnectWithoutTenantInput = {
+  where: Prisma.PropertyDocumentWhereUniqueInput
+  create: Prisma.XOR<Prisma.PropertyDocumentCreateWithoutTenantInput, Prisma.PropertyDocumentUncheckedCreateWithoutTenantInput>
+}
+
+export type PropertyDocumentCreateManyTenantInputEnvelope = {
+  data: Prisma.PropertyDocumentCreateManyTenantInput | Prisma.PropertyDocumentCreateManyTenantInput[]
+  skipDuplicates?: boolean
+}
+
+export type PropertyDocumentUpsertWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.PropertyDocumentWhereUniqueInput
+  update: Prisma.XOR<Prisma.PropertyDocumentUpdateWithoutTenantInput, Prisma.PropertyDocumentUncheckedUpdateWithoutTenantInput>
+  create: Prisma.XOR<Prisma.PropertyDocumentCreateWithoutTenantInput, Prisma.PropertyDocumentUncheckedCreateWithoutTenantInput>
+}
+
+export type PropertyDocumentUpdateWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.PropertyDocumentWhereUniqueInput
+  data: Prisma.XOR<Prisma.PropertyDocumentUpdateWithoutTenantInput, Prisma.PropertyDocumentUncheckedUpdateWithoutTenantInput>
+}
+
+export type PropertyDocumentUpdateManyWithWhereWithoutTenantInput = {
+  where: Prisma.PropertyDocumentScalarWhereInput
+  data: Prisma.XOR<Prisma.PropertyDocumentUpdateManyMutationInput, Prisma.PropertyDocumentUncheckedUpdateManyWithoutTenantInput>
+}
+
+export type PropertyDocumentScalarWhereInput = {
+  AND?: Prisma.PropertyDocumentScalarWhereInput | Prisma.PropertyDocumentScalarWhereInput[]
+  OR?: Prisma.PropertyDocumentScalarWhereInput[]
+  NOT?: Prisma.PropertyDocumentScalarWhereInput | Prisma.PropertyDocumentScalarWhereInput[]
+  id?: Prisma.StringFilter<"PropertyDocument"> | string
+  tenantId?: Prisma.StringFilter<"PropertyDocument"> | string
+  propertyId?: Prisma.StringFilter<"PropertyDocument"> | string
+  name?: Prisma.StringFilter<"PropertyDocument"> | string
+  url?: Prisma.StringFilter<"PropertyDocument"> | string
+  type?: Prisma.StringFilter<"PropertyDocument"> | string
+  createdAt?: Prisma.DateTimeFilter<"PropertyDocument"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"PropertyDocument"> | Date | string
+}
+
+export type PropertyDocumentCreateWithoutPropertyInput = {
+  id?: string
+  name: string
+  url: string
+  type: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutPropertyDocumentsInput
+}
+
 export type PropertyDocumentUncheckedCreateWithoutPropertyInput = {
   id?: string
+  tenantId: string
   name: string
   url: string
   type: string
@@ -454,21 +582,49 @@ export type PropertyDocumentUpdateManyWithWhereWithoutPropertyInput = {
   data: Prisma.XOR<Prisma.PropertyDocumentUpdateManyMutationInput, Prisma.PropertyDocumentUncheckedUpdateManyWithoutPropertyInput>
 }
 
-export type PropertyDocumentScalarWhereInput = {
-  AND?: Prisma.PropertyDocumentScalarWhereInput | Prisma.PropertyDocumentScalarWhereInput[]
-  OR?: Prisma.PropertyDocumentScalarWhereInput[]
-  NOT?: Prisma.PropertyDocumentScalarWhereInput | Prisma.PropertyDocumentScalarWhereInput[]
-  id?: Prisma.StringFilter<"PropertyDocument"> | string
-  propertyId?: Prisma.StringFilter<"PropertyDocument"> | string
-  name?: Prisma.StringFilter<"PropertyDocument"> | string
-  url?: Prisma.StringFilter<"PropertyDocument"> | string
-  type?: Prisma.StringFilter<"PropertyDocument"> | string
-  createdAt?: Prisma.DateTimeFilter<"PropertyDocument"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"PropertyDocument"> | Date | string
+export type PropertyDocumentCreateManyTenantInput = {
+  id?: string
+  propertyId: string
+  name: string
+  url: string
+  type: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PropertyDocumentUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  property?: Prisma.PropertyUpdateOneRequiredWithoutDocumentsNestedInput
+}
+
+export type PropertyDocumentUncheckedUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  propertyId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PropertyDocumentUncheckedUpdateManyWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  propertyId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PropertyDocumentCreateManyPropertyInput = {
   id?: string
+  tenantId: string
   name: string
   url: string
   type: string
@@ -483,10 +639,12 @@ export type PropertyDocumentUpdateWithoutPropertyInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutPropertyDocumentsNestedInput
 }
 
 export type PropertyDocumentUncheckedUpdateWithoutPropertyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -496,6 +654,7 @@ export type PropertyDocumentUncheckedUpdateWithoutPropertyInput = {
 
 export type PropertyDocumentUncheckedUpdateManyWithoutPropertyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -507,12 +666,14 @@ export type PropertyDocumentUncheckedUpdateManyWithoutPropertyInput = {
 
 export type PropertyDocumentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   propertyId?: boolean
   name?: boolean
   url?: boolean
   type?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["propertyDocument"]>
 
@@ -520,6 +681,7 @@ export type PropertyDocumentSelect<ExtArgs extends runtime.Types.Extensions.Inte
 
 export type PropertyDocumentSelectScalar = {
   id?: boolean
+  tenantId?: boolean
   propertyId?: boolean
   name?: boolean
   url?: boolean
@@ -528,18 +690,21 @@ export type PropertyDocumentSelectScalar = {
   updatedAt?: boolean
 }
 
-export type PropertyDocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "propertyId" | "name" | "url" | "type" | "createdAt" | "updatedAt", ExtArgs["result"]["propertyDocument"]>
+export type PropertyDocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "propertyId" | "name" | "url" | "type" | "createdAt" | "updatedAt", ExtArgs["result"]["propertyDocument"]>
 export type PropertyDocumentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
 }
 
 export type $PropertyDocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "PropertyDocument"
   objects: {
+    tenant: Prisma.$TenantPayload<ExtArgs>
     property: Prisma.$PropertyPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    tenantId: string
     propertyId: string
     name: string
     url: string
@@ -886,6 +1051,7 @@ readonly fields: PropertyDocumentFieldRefs;
  */
 export interface Prisma__PropertyDocumentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   property<T extends Prisma.PropertyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyDefaultArgs<ExtArgs>>): Prisma.Prisma__PropertyClient<runtime.Types.Result.GetResult<Prisma.$PropertyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -917,6 +1083,7 @@ export interface Prisma__PropertyDocumentClient<T, Null = never, ExtArgs extends
  */
 export interface PropertyDocumentFieldRefs {
   readonly id: Prisma.FieldRef<"PropertyDocument", 'String'>
+  readonly tenantId: Prisma.FieldRef<"PropertyDocument", 'String'>
   readonly propertyId: Prisma.FieldRef<"PropertyDocument", 'String'>
   readonly name: Prisma.FieldRef<"PropertyDocument", 'String'>
   readonly url: Prisma.FieldRef<"PropertyDocument", 'String'>

@@ -98,6 +98,7 @@ export const testData = {
         for (let v = 0; v < variantCount; v++) {
             const variant = await prisma.propertyVariant.create({
                 data: {
+                    tenantId,
                     propertyId: property.id,
                     name: `${v + 2}-Bedroom ${faker.helpers.arrayElement(['Standard', 'Corner Piece', 'Penthouse'])}`,
                     nBedrooms: v + 2,
@@ -115,6 +116,7 @@ export const testData = {
             for (let u = 0; u < unitsPerVariant; u++) {
                 await prisma.propertyUnit.create({
                     data: {
+                        tenantId,
                         variantId: variant.id,
                         unitNumber: `${String.fromCharCode(65 + v)}${u + 1}`, // A1, A2, ... B1, B2
                         floorNumber: Math.floor(u / 2) + 1,

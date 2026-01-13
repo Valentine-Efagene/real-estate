@@ -120,6 +120,7 @@ describe('Payment Method Change Flow', () => {
         // Create variant
         const variant = await prisma.propertyVariant.create({
             data: {
+                tenantId,
                 propertyId,
                 name: '2-Bedroom Flat',
                 nBedrooms: 2,
@@ -137,6 +138,7 @@ describe('Payment Method Change Flow', () => {
         // Create Unit 22A
         const unit22A = await prisma.propertyUnit.create({
             data: {
+                tenantId,
                 variantId: variant.id,
                 unitNumber: '22A',
                 floorNumber: 22,
@@ -354,6 +356,7 @@ describe('Payment Method Change Flow', () => {
             const downpaymentPhase = await prisma.applicationPhase.create({
                 data: {
                     id: faker.string.uuid(),
+                    tenantId,
                     applicationId,
                     name: '10% Downpayment',
                     phaseCategory: 'PAYMENT',
@@ -368,6 +371,7 @@ describe('Payment Method Change Flow', () => {
             // Create PaymentPhase extension for downpayment
             await prisma.paymentPhase.create({
                 data: {
+                    tenantId,
                     phaseId: downpaymentPhase.id,
                     paymentPlanId: downpaymentPlanId,
                     totalAmount: propertyPrice * 0.1,
@@ -380,6 +384,7 @@ describe('Payment Method Change Flow', () => {
             const mortgagePhase = await prisma.applicationPhase.create({
                 data: {
                     id: faker.string.uuid(),
+                    tenantId,
                     applicationId,
                     name: '90% Mortgage (20 Years)',
                     phaseCategory: 'PAYMENT',
@@ -394,6 +399,7 @@ describe('Payment Method Change Flow', () => {
             // Create PaymentPhase extension for mortgage
             await prisma.paymentPhase.create({
                 data: {
+                    tenantId,
                     phaseId: mortgagePhase.id,
                     paymentPlanId: originalMortgagePlanId,
                     totalAmount: propertyPrice * 0.9, // ₦45M
@@ -709,11 +715,11 @@ describe('Payment Method Change - Alternative Flows', () => {
         propertyId = property.id;
 
         const variant = await prisma.propertyVariant.create({
-            data: { propertyId: property.id, name: 'Test Unit', price: 10_000_000, status: 'AVAILABLE' },
+            data: { tenantId, propertyId: property.id, name: 'Test Unit', price: 10_000_000, status: 'AVAILABLE' },
         });
 
         const unit = await prisma.propertyUnit.create({
-            data: { variantId: variant.id, unitNumber: `ALT-${Date.now()}`, status: 'AVAILABLE' },
+            data: { tenantId, variantId: variant.id, unitNumber: `ALT-${Date.now()}`, status: 'AVAILABLE' },
         });
 
         // Create simple payment plans
@@ -794,6 +800,7 @@ describe('Payment Method Change - Alternative Flows', () => {
         const paymentPhaseRecord = await prisma.applicationPhase.create({
             data: {
                 id: faker.string.uuid(),
+                tenantId,
                 applicationId,
                 name: 'Payment Phase',
                 phaseCategory: 'PAYMENT',
@@ -807,6 +814,7 @@ describe('Payment Method Change - Alternative Flows', () => {
         // Create PaymentPhase extension
         await prisma.paymentPhase.create({
             data: {
+                tenantId,
                 phaseId: paymentPhaseRecord.id,
                 paymentPlanId: origPlan.id,
                 totalAmount: 9_000_000,

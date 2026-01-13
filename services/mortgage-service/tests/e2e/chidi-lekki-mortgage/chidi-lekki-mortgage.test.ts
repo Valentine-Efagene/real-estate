@@ -3,7 +3,16 @@
 import { api, prisma, cleanupTestData } from '../../setup.js';
 import { faker } from '@faker-js/faker';
 import { randomUUID } from 'crypto';
-import { authHeaders } from '@valentine-efagene/qshelter-common';
+import { authHeaders, ROLES } from '@valentine-efagene/qshelter-common';
+
+// Helper functions for auth headers with proper roles
+function adminHeaders(userId: string, tenantId: string) {
+    return authHeaders(userId, tenantId, { roles: [ROLES.TENANT_ADMIN] });
+}
+
+function customerHeaders(userId: string, tenantId: string) {
+    return authHeaders(userId, tenantId, { roles: [ROLES.CUSTOMER] });
+}
 
 /**
  * E2E Test: Chidi's Lekki Mortgage Flow
@@ -122,6 +131,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         // Create 3-bedroom flat variant
         const variant = await prisma.propertyVariant.create({
             data: {
+                tenantId,
                 propertyId,
                 name: '3-Bedroom Flat',
                 nBedrooms: 3,
@@ -138,6 +148,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         // Create Unit 14B
         const unit14B = await prisma.propertyUnit.create({
             data: {
+                tenantId,
                 variantId: variant.id,
                 unitNumber: '14B',
                 floorNumber: 14,
@@ -164,7 +175,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         it('Adaeze creates a one-off downpayment plan (10%)', async () => {
             const response = await api
                 .post('/payment-plans')
-                .set(authHeaders(adaezeId, tenantId))
+                .set(adminHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('adaeze-create-downpayment-plan'))
                 .send({
                     name: '10% One-Off Downpayment',
@@ -176,8 +187,8 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                 });
 
             expect(response.status).toBe(201);
-            expect(response.body.id).toBeDefined();
-            downpaymentPlanId = response.body.id;
+            expect(response.body.data.id).toBeDefined();
+            downpaymentPlanId = response.body.data.id;
 
             // Verify domain event created
             const event = await prisma.domainEvent.findFirst({
@@ -195,7 +206,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             // maxAgeAtMaturity: 65 means if Chidi is 40, he can get max 25 years
             const response = await api
                 .post('/payment-plans')
-                .set(authHeaders(adaezeId, tenantId))
+                .set(adminHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('adaeze-create-mortgage-plan'))
                 .send({
                     name: 'Flexible Mortgage at 9.5%',
@@ -212,17 +223,17 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                 });
 
             expect(response.status).toBe(201);
-            expect(response.body.allowFlexibleTerm).toBe(true);
-            expect(response.body.minTermMonths).toBe(60);
-            expect(response.body.maxTermMonths).toBe(360);
-            expect(response.body.maxAgeAtMaturity).toBe(65);
-            mortgagePlanId = response.body.id;
+            expect(response.body.data.allowFlexibleTerm).toBe(true);
+            expect(response.body.data.minTermMonths).toBe(60);
+            expect(response.body.data.maxTermMonths).toBe(360);
+            expect(response.body.data.maxAgeAtMaturity).toBe(65);
+            mortgagePlanId = response.body.data.id;
         });
 
         it('Adaeze creates a payment method with 4 phases per SCENARIO.md', async () => {
             const response = await api
                 .post('/payment-methods')
-                .set(authHeaders(adaezeId, tenantId))
+                .set(adminHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('adaeze-create-payment-method'))
                 .send({
                     name: '10/90 Lekki Mortgage',
@@ -296,15 +307,15 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                 });
 
             expect(response.status).toBe(201);
-            expect(response.body.id).toBeDefined();
-            expect(response.body.phases.length).toBe(4);
-            paymentMethodId = response.body.id;
+            expect(response.body.data.id).toBeDefined();
+            expect(response.body.data.phases.length).toBe(4);
+            paymentMethodId = response.body.data.id;
         });
 
         it('Adaeze links the payment method to Lekki Gardens Estate', async () => {
             const response = await api
                 .post(`/payment-methods/${paymentMethodId}/properties`)
-                .set(authHeaders(adaezeId, tenantId))
+                .set(adminHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('adaeze-link-payment-method'))
                 .send({
                     propertyId,
@@ -403,10 +414,10 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             // Get the payment method to find the downpayment phase ID
             const getMethodResponse = await api
                 .get(`/payment-methods/${paymentMethodId}`)
-                .set(authHeaders(adaezeId, tenantId));
+                .set(adminHeaders(adaezeId, tenantId));
 
             expect(getMethodResponse.status).toBe(200);
-            const paymentMethod = getMethodResponse.body;
+            const paymentMethod = getMethodResponse.body.data;
             const downpaymentPhaseTemplate = paymentMethod.phases.find(
                 (p: any) => p.phaseType === 'DOWNPAYMENT'
             );
@@ -415,7 +426,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             // Attach handler to phase ON_COMPLETE trigger via REST API
             const attachResponse = await api
                 .post(`/payment-methods/${paymentMethodId}/phases/${downpaymentPhaseTemplate.id}/event-attachments`)
-                .set(authHeaders(adaezeId, tenantId))
+                .set(adminHeaders(adaezeId, tenantId))
                 .send({
                     trigger: 'ON_COMPLETE',
                     handlerId: handler.id,
@@ -424,14 +435,14 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                 });
 
             expect(attachResponse.status).toBe(201);
-            expect(attachResponse.body.id).toBeDefined();
-            expect(attachResponse.body.trigger).toBe('ON_COMPLETE');
-            expect(attachResponse.body.handlerId).toBe(handler.id);
+            expect(attachResponse.body.data.id).toBeDefined();
+            expect(attachResponse.body.data.trigger).toBe('ON_COMPLETE');
+            expect(attachResponse.body.data.handlerId).toBe(handler.id);
 
             // Verify we can retrieve the attachments via API
             const getAttachmentsResponse = await api
                 .get(`/payment-methods/${paymentMethodId}/phases/${downpaymentPhaseTemplate.id}/event-attachments`)
-                .set(authHeaders(adaezeId, tenantId));
+                .set(adminHeaders(adaezeId, tenantId));
 
             expect(getAttachmentsResponse.status).toBe(200);
             expect(getAttachmentsResponse.body.length).toBe(1);
@@ -450,7 +461,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             // Chidi chooses 20 years (240 months)
             const response = await api
                 .post('/applications')
-                .set(authHeaders(chidiId, tenantId))
+                .set(customerHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-create-application'))
                 .send({
                     propertyUnitId: unit14BId,
@@ -465,16 +476,20 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                     selectedMortgageTermMonths: chidiSelectedTermMonths, // 240 months = 20 years
                 });
 
-            expect(response.status).toBe(201);
-            expect(response.body.id).toBeDefined();
-            expect(response.body.applicationNumber).toBeDefined();
-            expect(response.body.status).toBe('DRAFT');
-            expect(response.body.phases.length).toBe(4);
+            if (response.status !== 201) {
+                console.error('Application creation failed:', response.body);
+            }
 
-            applicationId = response.body.id;
+            expect(response.status).toBe(201);
+            expect(response.body.data.id).toBeDefined();
+            expect(response.body.data.applicationNumber).toBeDefined();
+            expect(response.body.data.status).toBe('DRAFT');
+            expect(response.body.data.phases.length).toBe(4);
+
+            applicationId = response.body.data.id;
 
             // Extract phase IDs (4 phases per SCENARIO.md)
-            const phases = response.body.phases;
+            const phases = response.body.data.phases;
             documentationPhaseId = phases.find((p: any) => p.phaseType === 'KYC').id;
             downpaymentPhaseId = phases.find((p: any) => p.phaseType === 'DOWNPAYMENT').id;
             finalDocumentationPhaseId = phases.find((p: any) => p.phaseType === 'VERIFICATION').id;
@@ -494,15 +509,15 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         it('Application has correct phase amounts (₦8.5M downpayment, ₦76.5M mortgage)', async () => {
             const response = await api
                 .get(`/applications/${applicationId}/phases`)
-                .set(authHeaders(chidiId, tenantId));
+                .set(customerHeaders(chidiId, tenantId));
 
             expect(response.status).toBe(200);
-            expect(response.body.length).toBe(4);
+            expect(response.body.data.length).toBe(4);
 
-            const docPhase = response.body.find((p: any) => p.phaseType === 'KYC');
-            const downPhase = response.body.find((p: any) => p.phaseType === 'DOWNPAYMENT');
-            const finalDocPhase = response.body.find((p: any) => p.phaseType === 'VERIFICATION');
-            const mortPhase = response.body.find((p: any) => p.phaseType === 'MORTGAGE');
+            const docPhase = response.body.data.find((p: any) => p.phaseType === 'KYC');
+            const downPhase = response.body.data.find((p: any) => p.phaseType === 'DOWNPAYMENT');
+            const finalDocPhase = response.body.data.find((p: any) => p.phaseType === 'VERIFICATION');
+            const mortPhase = response.body.data.find((p: any) => p.phaseType === 'MORTGAGE');
 
             expect(docPhase.totalAmount).toBe(0);
             expect(downPhase.totalAmount).toBe(8_500_000);  // 10% of ₦85M
@@ -533,7 +548,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         it('Chidi submits the application for processing', async () => {
             const response = await api
                 .post(`/applications/${applicationId}/transition`)
-                .set(authHeaders(chidiId, tenantId))
+                .set(customerHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-submit-application'))
                 .send({
                     action: 'SUBMIT',
@@ -541,17 +556,17 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                 });
 
             expect(response.status).toBe(200);
-            expect(response.body.status).toBe('PENDING');
+            expect(response.body.data.status).toBe('PENDING');
         });
 
         it('Documentation phase is activated', async () => {
             const response = await api
                 .post(`/applications/${applicationId}/phases/${documentationPhaseId}/activate`)
-                .set(authHeaders(chidiId, tenantId))
+                .set(customerHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-activate-kyc-phase'));
 
             expect(response.status).toBe(200);
-            expect(response.body.status).toBe('IN_PROGRESS');
+            expect(response.body.data.status).toBe('IN_PROGRESS');
         });
 
         it('Chidi uploads KYC documents for the application', async () => {
@@ -564,7 +579,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             for (const doc of documents) {
                 const response = await api
                     .post(`/applications/${applicationId}/phases/${documentationPhaseId}/documents`)
-                    .set(authHeaders(chidiId, tenantId))
+                    .set(customerHeaders(chidiId, tenantId))
                     .set('x-idempotency-key', idempotencyKey(`chidi-application-doc-${doc.documentType}`))
                     .send(doc);
 
@@ -578,7 +593,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             for (const stepName of uploadSteps) {
                 const response = await api
                     .post(`/applications/${applicationId}/phases/${documentationPhaseId}/steps/complete`)
-                    .set(authHeaders(chidiId, tenantId))
+                    .set(customerHeaders(chidiId, tenantId))
                     .set('x-idempotency-key', idempotencyKey(`chidi-complete-${stepName.replace(/\s+/g, '-').toLowerCase()}`))
                     .send({ stepName });
 
@@ -596,7 +611,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                 const doc = docs[i];
                 const response = await api
                     .post(`/applications/${applicationId}/documents/${doc.id}/review`)
-                    .set(authHeaders(adaezeId, tenantId))
+                    .set(adminHeaders(adaezeId, tenantId))
                     .set('x-idempotency-key', idempotencyKey(`adaeze-approve-doc-${i}`))
                     .send({
                         status: 'APPROVED',
@@ -609,7 +624,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             // Adaeze completes approval step
             const response = await api
                 .post(`/applications/${applicationId}/phases/${documentationPhaseId}/steps/complete`)
-                .set(authHeaders(adaezeId, tenantId))
+                .set(adminHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('adaeze-complete-review'))
                 .send({
                     stepName: 'Adaeze Reviews Documents',
@@ -642,7 +657,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         it('Chidi signs the provisional offer', async () => {
             const response = await api
                 .post(`/applications/${applicationId}/phases/${documentationPhaseId}/steps/complete`)
-                .set(authHeaders(chidiId, tenantId))
+                .set(customerHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-signs-provisional'))
                 .send({
                     stepName: 'Customer Signs Provisional Offer',
@@ -669,7 +684,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             // Generate installment
             await api
                 .post(`/applications/${applicationId}/phases/${downpaymentPhaseId}/installments`)
-                .set(authHeaders(chidiId, tenantId))
+                .set(customerHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-generate-downpayment'))
                 .send({ startDate: new Date().toISOString() });
 
@@ -682,7 +697,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             // Record payment
             const paymentResponse = await api
                 .post(`/applications/${applicationId}/payments`)
-                .set(authHeaders(chidiId, tenantId))
+                .set(customerHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-downpayment'))
                 .send({
                     phaseId: downpaymentPhaseId,
@@ -701,7 +716,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
             const processResponse = await api
                 .post('/applications/payments/process')
-                .set(authHeaders(chidiId, tenantId))
+                .set(customerHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('process-chidi-downpayment'))
                 .send({
                     reference: payment!.reference,
@@ -744,7 +759,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             // Adaeze (admin) uploads the final offer letter prepared offline
             const response = await api
                 .post(`/applications/${applicationId}/phases/${finalDocumentationPhaseId}/documents`)
-                .set(authHeaders(adaezeId, tenantId))
+                .set(adminHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('adaeze-upload-final-offer'))
                 .send({
                     documentType: 'FINAL_OFFER',
@@ -757,7 +772,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             // Complete the upload step
             const stepResponse = await api
                 .post(`/applications/${applicationId}/phases/${finalDocumentationPhaseId}/steps/complete`)
-                .set(authHeaders(adaezeId, tenantId))
+                .set(adminHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('adaeze-complete-final-offer-upload'))
                 .send({
                     stepName: 'Admin Uploads Final Offer',
@@ -769,7 +784,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         it('Chidi signs the final offer', async () => {
             const response = await api
                 .post(`/applications/${applicationId}/phases/${finalDocumentationPhaseId}/steps/complete`)
-                .set(authHeaders(chidiId, tenantId))
+                .set(customerHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-signs-final-offer'))
                 .send({
                     stepName: 'Customer Signs Final Offer',
@@ -795,24 +810,24 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         it('System generates mortgage installments based on Chidi\'s selected term (240 months)', async () => {
             const response = await api
                 .post(`/applications/${applicationId}/phases/${mortgagePhaseId}/installments`)
-                .set(authHeaders(chidiId, tenantId))
+                .set(customerHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-generate-mortgage-installments'))
                 .send({ startDate: new Date().toISOString() });
 
             expect(response.status).toBe(200);
             // Number of installments matches Chidi's selected term
-            expect(response.body.installments.length).toBe(chidiSelectedTermMonths);
+            expect(response.body.data.installments.length).toBe(chidiSelectedTermMonths);
         });
 
         it('Chidi signs and activates the application', async () => {
             const response = await api
                 .post(`/applications/${applicationId}/sign`)
-                .set(authHeaders(chidiId, tenantId))
+                .set(customerHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('chidi-signs-application'));
 
             expect(response.status).toBe(200);
-            expect(response.body.status).toBe('ACTIVE');
-            expect(response.body.signedAt).toBeDefined();
+            expect(response.body.data.status).toBe('ACTIVE');
+            expect(response.body.data.signedAt).toBeDefined();
 
             // Verify APPLICATION.SIGNED event
             const event = await prisma.domainEvent.findFirst({

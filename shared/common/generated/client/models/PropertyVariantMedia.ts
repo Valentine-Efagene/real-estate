@@ -36,6 +36,7 @@ export type PropertyVariantMediaSumAggregateOutputType = {
 
 export type PropertyVariantMediaMinAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   variantId: string | null
   url: string | null
   type: string | null
@@ -47,6 +48,7 @@ export type PropertyVariantMediaMinAggregateOutputType = {
 
 export type PropertyVariantMediaMaxAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   variantId: string | null
   url: string | null
   type: string | null
@@ -58,6 +60,7 @@ export type PropertyVariantMediaMaxAggregateOutputType = {
 
 export type PropertyVariantMediaCountAggregateOutputType = {
   id: number
+  tenantId: number
   variantId: number
   url: number
   type: number
@@ -79,6 +82,7 @@ export type PropertyVariantMediaSumAggregateInputType = {
 
 export type PropertyVariantMediaMinAggregateInputType = {
   id?: true
+  tenantId?: true
   variantId?: true
   url?: true
   type?: true
@@ -90,6 +94,7 @@ export type PropertyVariantMediaMinAggregateInputType = {
 
 export type PropertyVariantMediaMaxAggregateInputType = {
   id?: true
+  tenantId?: true
   variantId?: true
   url?: true
   type?: true
@@ -101,6 +106,7 @@ export type PropertyVariantMediaMaxAggregateInputType = {
 
 export type PropertyVariantMediaCountAggregateInputType = {
   id?: true
+  tenantId?: true
   variantId?: true
   url?: true
   type?: true
@@ -199,6 +205,7 @@ export type PropertyVariantMediaGroupByArgs<ExtArgs extends runtime.Types.Extens
 
 export type PropertyVariantMediaGroupByOutputType = {
   id: string
+  tenantId: string
   variantId: string
   url: string
   type: string
@@ -233,6 +240,7 @@ export type PropertyVariantMediaWhereInput = {
   OR?: Prisma.PropertyVariantMediaWhereInput[]
   NOT?: Prisma.PropertyVariantMediaWhereInput | Prisma.PropertyVariantMediaWhereInput[]
   id?: Prisma.StringFilter<"PropertyVariantMedia"> | string
+  tenantId?: Prisma.StringFilter<"PropertyVariantMedia"> | string
   variantId?: Prisma.StringFilter<"PropertyVariantMedia"> | string
   url?: Prisma.StringFilter<"PropertyVariantMedia"> | string
   type?: Prisma.StringFilter<"PropertyVariantMedia"> | string
@@ -240,11 +248,13 @@ export type PropertyVariantMediaWhereInput = {
   order?: Prisma.IntFilter<"PropertyVariantMedia"> | number
   createdAt?: Prisma.DateTimeFilter<"PropertyVariantMedia"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PropertyVariantMedia"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   variant?: Prisma.XOR<Prisma.PropertyVariantScalarRelationFilter, Prisma.PropertyVariantWhereInput>
 }
 
 export type PropertyVariantMediaOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   variantId?: Prisma.SortOrder
   url?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -252,6 +262,7 @@ export type PropertyVariantMediaOrderByWithRelationInput = {
   order?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  tenant?: Prisma.TenantOrderByWithRelationInput
   variant?: Prisma.PropertyVariantOrderByWithRelationInput
   _relevance?: Prisma.PropertyVariantMediaOrderByRelevanceInput
 }
@@ -261,6 +272,7 @@ export type PropertyVariantMediaWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.PropertyVariantMediaWhereInput | Prisma.PropertyVariantMediaWhereInput[]
   OR?: Prisma.PropertyVariantMediaWhereInput[]
   NOT?: Prisma.PropertyVariantMediaWhereInput | Prisma.PropertyVariantMediaWhereInput[]
+  tenantId?: Prisma.StringFilter<"PropertyVariantMedia"> | string
   variantId?: Prisma.StringFilter<"PropertyVariantMedia"> | string
   url?: Prisma.StringFilter<"PropertyVariantMedia"> | string
   type?: Prisma.StringFilter<"PropertyVariantMedia"> | string
@@ -268,11 +280,13 @@ export type PropertyVariantMediaWhereUniqueInput = Prisma.AtLeast<{
   order?: Prisma.IntFilter<"PropertyVariantMedia"> | number
   createdAt?: Prisma.DateTimeFilter<"PropertyVariantMedia"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PropertyVariantMedia"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   variant?: Prisma.XOR<Prisma.PropertyVariantScalarRelationFilter, Prisma.PropertyVariantWhereInput>
 }, "id">
 
 export type PropertyVariantMediaOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   variantId?: Prisma.SortOrder
   url?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -292,6 +306,7 @@ export type PropertyVariantMediaScalarWhereWithAggregatesInput = {
   OR?: Prisma.PropertyVariantMediaScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PropertyVariantMediaScalarWhereWithAggregatesInput | Prisma.PropertyVariantMediaScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"PropertyVariantMedia"> | string
+  tenantId?: Prisma.StringWithAggregatesFilter<"PropertyVariantMedia"> | string
   variantId?: Prisma.StringWithAggregatesFilter<"PropertyVariantMedia"> | string
   url?: Prisma.StringWithAggregatesFilter<"PropertyVariantMedia"> | string
   type?: Prisma.StringWithAggregatesFilter<"PropertyVariantMedia"> | string
@@ -309,11 +324,13 @@ export type PropertyVariantMediaCreateInput = {
   order?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutPropertyVariantMediaInput
   variant: Prisma.PropertyVariantCreateNestedOneWithoutMediaInput
 }
 
 export type PropertyVariantMediaUncheckedCreateInput = {
   id?: string
+  tenantId: string
   variantId: string
   url: string
   type: string
@@ -331,11 +348,13 @@ export type PropertyVariantMediaUpdateInput = {
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutPropertyVariantMediaNestedInput
   variant?: Prisma.PropertyVariantUpdateOneRequiredWithoutMediaNestedInput
 }
 
 export type PropertyVariantMediaUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   variantId?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -347,6 +366,7 @@ export type PropertyVariantMediaUncheckedUpdateInput = {
 
 export type PropertyVariantMediaCreateManyInput = {
   id?: string
+  tenantId: string
   variantId: string
   url: string
   type: string
@@ -368,6 +388,7 @@ export type PropertyVariantMediaUpdateManyMutationInput = {
 
 export type PropertyVariantMediaUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   variantId?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -395,6 +416,7 @@ export type PropertyVariantMediaOrderByRelevanceInput = {
 
 export type PropertyVariantMediaCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   variantId?: Prisma.SortOrder
   url?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -410,6 +432,7 @@ export type PropertyVariantMediaAvgOrderByAggregateInput = {
 
 export type PropertyVariantMediaMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   variantId?: Prisma.SortOrder
   url?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -421,6 +444,7 @@ export type PropertyVariantMediaMaxOrderByAggregateInput = {
 
 export type PropertyVariantMediaMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   variantId?: Prisma.SortOrder
   url?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -432,6 +456,48 @@ export type PropertyVariantMediaMinOrderByAggregateInput = {
 
 export type PropertyVariantMediaSumOrderByAggregateInput = {
   order?: Prisma.SortOrder
+}
+
+export type PropertyVariantMediaCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.PropertyVariantMediaCreateWithoutTenantInput, Prisma.PropertyVariantMediaUncheckedCreateWithoutTenantInput> | Prisma.PropertyVariantMediaCreateWithoutTenantInput[] | Prisma.PropertyVariantMediaUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PropertyVariantMediaCreateOrConnectWithoutTenantInput | Prisma.PropertyVariantMediaCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.PropertyVariantMediaCreateManyTenantInputEnvelope
+  connect?: Prisma.PropertyVariantMediaWhereUniqueInput | Prisma.PropertyVariantMediaWhereUniqueInput[]
+}
+
+export type PropertyVariantMediaUncheckedCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.PropertyVariantMediaCreateWithoutTenantInput, Prisma.PropertyVariantMediaUncheckedCreateWithoutTenantInput> | Prisma.PropertyVariantMediaCreateWithoutTenantInput[] | Prisma.PropertyVariantMediaUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PropertyVariantMediaCreateOrConnectWithoutTenantInput | Prisma.PropertyVariantMediaCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.PropertyVariantMediaCreateManyTenantInputEnvelope
+  connect?: Prisma.PropertyVariantMediaWhereUniqueInput | Prisma.PropertyVariantMediaWhereUniqueInput[]
+}
+
+export type PropertyVariantMediaUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.PropertyVariantMediaCreateWithoutTenantInput, Prisma.PropertyVariantMediaUncheckedCreateWithoutTenantInput> | Prisma.PropertyVariantMediaCreateWithoutTenantInput[] | Prisma.PropertyVariantMediaUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PropertyVariantMediaCreateOrConnectWithoutTenantInput | Prisma.PropertyVariantMediaCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.PropertyVariantMediaUpsertWithWhereUniqueWithoutTenantInput | Prisma.PropertyVariantMediaUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.PropertyVariantMediaCreateManyTenantInputEnvelope
+  set?: Prisma.PropertyVariantMediaWhereUniqueInput | Prisma.PropertyVariantMediaWhereUniqueInput[]
+  disconnect?: Prisma.PropertyVariantMediaWhereUniqueInput | Prisma.PropertyVariantMediaWhereUniqueInput[]
+  delete?: Prisma.PropertyVariantMediaWhereUniqueInput | Prisma.PropertyVariantMediaWhereUniqueInput[]
+  connect?: Prisma.PropertyVariantMediaWhereUniqueInput | Prisma.PropertyVariantMediaWhereUniqueInput[]
+  update?: Prisma.PropertyVariantMediaUpdateWithWhereUniqueWithoutTenantInput | Prisma.PropertyVariantMediaUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.PropertyVariantMediaUpdateManyWithWhereWithoutTenantInput | Prisma.PropertyVariantMediaUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.PropertyVariantMediaScalarWhereInput | Prisma.PropertyVariantMediaScalarWhereInput[]
+}
+
+export type PropertyVariantMediaUncheckedUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.PropertyVariantMediaCreateWithoutTenantInput, Prisma.PropertyVariantMediaUncheckedCreateWithoutTenantInput> | Prisma.PropertyVariantMediaCreateWithoutTenantInput[] | Prisma.PropertyVariantMediaUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PropertyVariantMediaCreateOrConnectWithoutTenantInput | Prisma.PropertyVariantMediaCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.PropertyVariantMediaUpsertWithWhereUniqueWithoutTenantInput | Prisma.PropertyVariantMediaUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.PropertyVariantMediaCreateManyTenantInputEnvelope
+  set?: Prisma.PropertyVariantMediaWhereUniqueInput | Prisma.PropertyVariantMediaWhereUniqueInput[]
+  disconnect?: Prisma.PropertyVariantMediaWhereUniqueInput | Prisma.PropertyVariantMediaWhereUniqueInput[]
+  delete?: Prisma.PropertyVariantMediaWhereUniqueInput | Prisma.PropertyVariantMediaWhereUniqueInput[]
+  connect?: Prisma.PropertyVariantMediaWhereUniqueInput | Prisma.PropertyVariantMediaWhereUniqueInput[]
+  update?: Prisma.PropertyVariantMediaUpdateWithWhereUniqueWithoutTenantInput | Prisma.PropertyVariantMediaUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.PropertyVariantMediaUpdateManyWithWhereWithoutTenantInput | Prisma.PropertyVariantMediaUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.PropertyVariantMediaScalarWhereInput | Prisma.PropertyVariantMediaScalarWhereInput[]
 }
 
 export type PropertyVariantMediaCreateNestedManyWithoutVariantInput = {
@@ -476,8 +542,20 @@ export type PropertyVariantMediaUncheckedUpdateManyWithoutVariantNestedInput = {
   deleteMany?: Prisma.PropertyVariantMediaScalarWhereInput | Prisma.PropertyVariantMediaScalarWhereInput[]
 }
 
-export type PropertyVariantMediaCreateWithoutVariantInput = {
+export type PropertyVariantMediaCreateWithoutTenantInput = {
   id?: string
+  url: string
+  type: string
+  caption?: string | null
+  order?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  variant: Prisma.PropertyVariantCreateNestedOneWithoutMediaInput
+}
+
+export type PropertyVariantMediaUncheckedCreateWithoutTenantInput = {
+  id?: string
+  variantId: string
   url: string
   type: string
   caption?: string | null
@@ -486,8 +564,61 @@ export type PropertyVariantMediaCreateWithoutVariantInput = {
   updatedAt?: Date | string
 }
 
+export type PropertyVariantMediaCreateOrConnectWithoutTenantInput = {
+  where: Prisma.PropertyVariantMediaWhereUniqueInput
+  create: Prisma.XOR<Prisma.PropertyVariantMediaCreateWithoutTenantInput, Prisma.PropertyVariantMediaUncheckedCreateWithoutTenantInput>
+}
+
+export type PropertyVariantMediaCreateManyTenantInputEnvelope = {
+  data: Prisma.PropertyVariantMediaCreateManyTenantInput | Prisma.PropertyVariantMediaCreateManyTenantInput[]
+  skipDuplicates?: boolean
+}
+
+export type PropertyVariantMediaUpsertWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.PropertyVariantMediaWhereUniqueInput
+  update: Prisma.XOR<Prisma.PropertyVariantMediaUpdateWithoutTenantInput, Prisma.PropertyVariantMediaUncheckedUpdateWithoutTenantInput>
+  create: Prisma.XOR<Prisma.PropertyVariantMediaCreateWithoutTenantInput, Prisma.PropertyVariantMediaUncheckedCreateWithoutTenantInput>
+}
+
+export type PropertyVariantMediaUpdateWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.PropertyVariantMediaWhereUniqueInput
+  data: Prisma.XOR<Prisma.PropertyVariantMediaUpdateWithoutTenantInput, Prisma.PropertyVariantMediaUncheckedUpdateWithoutTenantInput>
+}
+
+export type PropertyVariantMediaUpdateManyWithWhereWithoutTenantInput = {
+  where: Prisma.PropertyVariantMediaScalarWhereInput
+  data: Prisma.XOR<Prisma.PropertyVariantMediaUpdateManyMutationInput, Prisma.PropertyVariantMediaUncheckedUpdateManyWithoutTenantInput>
+}
+
+export type PropertyVariantMediaScalarWhereInput = {
+  AND?: Prisma.PropertyVariantMediaScalarWhereInput | Prisma.PropertyVariantMediaScalarWhereInput[]
+  OR?: Prisma.PropertyVariantMediaScalarWhereInput[]
+  NOT?: Prisma.PropertyVariantMediaScalarWhereInput | Prisma.PropertyVariantMediaScalarWhereInput[]
+  id?: Prisma.StringFilter<"PropertyVariantMedia"> | string
+  tenantId?: Prisma.StringFilter<"PropertyVariantMedia"> | string
+  variantId?: Prisma.StringFilter<"PropertyVariantMedia"> | string
+  url?: Prisma.StringFilter<"PropertyVariantMedia"> | string
+  type?: Prisma.StringFilter<"PropertyVariantMedia"> | string
+  caption?: Prisma.StringNullableFilter<"PropertyVariantMedia"> | string | null
+  order?: Prisma.IntFilter<"PropertyVariantMedia"> | number
+  createdAt?: Prisma.DateTimeFilter<"PropertyVariantMedia"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"PropertyVariantMedia"> | Date | string
+}
+
+export type PropertyVariantMediaCreateWithoutVariantInput = {
+  id?: string
+  url: string
+  type: string
+  caption?: string | null
+  order?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutPropertyVariantMediaInput
+}
+
 export type PropertyVariantMediaUncheckedCreateWithoutVariantInput = {
   id?: string
+  tenantId: string
   url: string
   type: string
   caption?: string | null
@@ -522,22 +653,53 @@ export type PropertyVariantMediaUpdateManyWithWhereWithoutVariantInput = {
   data: Prisma.XOR<Prisma.PropertyVariantMediaUpdateManyMutationInput, Prisma.PropertyVariantMediaUncheckedUpdateManyWithoutVariantInput>
 }
 
-export type PropertyVariantMediaScalarWhereInput = {
-  AND?: Prisma.PropertyVariantMediaScalarWhereInput | Prisma.PropertyVariantMediaScalarWhereInput[]
-  OR?: Prisma.PropertyVariantMediaScalarWhereInput[]
-  NOT?: Prisma.PropertyVariantMediaScalarWhereInput | Prisma.PropertyVariantMediaScalarWhereInput[]
-  id?: Prisma.StringFilter<"PropertyVariantMedia"> | string
-  variantId?: Prisma.StringFilter<"PropertyVariantMedia"> | string
-  url?: Prisma.StringFilter<"PropertyVariantMedia"> | string
-  type?: Prisma.StringFilter<"PropertyVariantMedia"> | string
-  caption?: Prisma.StringNullableFilter<"PropertyVariantMedia"> | string | null
-  order?: Prisma.IntFilter<"PropertyVariantMedia"> | number
-  createdAt?: Prisma.DateTimeFilter<"PropertyVariantMedia"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"PropertyVariantMedia"> | Date | string
+export type PropertyVariantMediaCreateManyTenantInput = {
+  id?: string
+  variantId: string
+  url: string
+  type: string
+  caption?: string | null
+  order?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PropertyVariantMediaUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  variant?: Prisma.PropertyVariantUpdateOneRequiredWithoutMediaNestedInput
+}
+
+export type PropertyVariantMediaUncheckedUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  variantId?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PropertyVariantMediaUncheckedUpdateManyWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  variantId?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PropertyVariantMediaCreateManyVariantInput = {
   id?: string
+  tenantId: string
   url: string
   type: string
   caption?: string | null
@@ -554,10 +716,12 @@ export type PropertyVariantMediaUpdateWithoutVariantInput = {
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutPropertyVariantMediaNestedInput
 }
 
 export type PropertyVariantMediaUncheckedUpdateWithoutVariantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -568,6 +732,7 @@ export type PropertyVariantMediaUncheckedUpdateWithoutVariantInput = {
 
 export type PropertyVariantMediaUncheckedUpdateManyWithoutVariantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -580,6 +745,7 @@ export type PropertyVariantMediaUncheckedUpdateManyWithoutVariantInput = {
 
 export type PropertyVariantMediaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   variantId?: boolean
   url?: boolean
   type?: boolean
@@ -587,6 +753,7 @@ export type PropertyVariantMediaSelect<ExtArgs extends runtime.Types.Extensions.
   order?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   variant?: boolean | Prisma.PropertyVariantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["propertyVariantMedia"]>
 
@@ -594,6 +761,7 @@ export type PropertyVariantMediaSelect<ExtArgs extends runtime.Types.Extensions.
 
 export type PropertyVariantMediaSelectScalar = {
   id?: boolean
+  tenantId?: boolean
   variantId?: boolean
   url?: boolean
   type?: boolean
@@ -603,18 +771,21 @@ export type PropertyVariantMediaSelectScalar = {
   updatedAt?: boolean
 }
 
-export type PropertyVariantMediaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "variantId" | "url" | "type" | "caption" | "order" | "createdAt" | "updatedAt", ExtArgs["result"]["propertyVariantMedia"]>
+export type PropertyVariantMediaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "variantId" | "url" | "type" | "caption" | "order" | "createdAt" | "updatedAt", ExtArgs["result"]["propertyVariantMedia"]>
 export type PropertyVariantMediaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   variant?: boolean | Prisma.PropertyVariantDefaultArgs<ExtArgs>
 }
 
 export type $PropertyVariantMediaPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "PropertyVariantMedia"
   objects: {
+    tenant: Prisma.$TenantPayload<ExtArgs>
     variant: Prisma.$PropertyVariantPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    tenantId: string
     variantId: string
     url: string
     type: string
@@ -962,6 +1133,7 @@ readonly fields: PropertyVariantMediaFieldRefs;
  */
 export interface Prisma__PropertyVariantMediaClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   variant<T extends Prisma.PropertyVariantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyVariantDefaultArgs<ExtArgs>>): Prisma.Prisma__PropertyVariantClient<runtime.Types.Result.GetResult<Prisma.$PropertyVariantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -993,6 +1165,7 @@ export interface Prisma__PropertyVariantMediaClient<T, Null = never, ExtArgs ext
  */
 export interface PropertyVariantMediaFieldRefs {
   readonly id: Prisma.FieldRef<"PropertyVariantMedia", 'String'>
+  readonly tenantId: Prisma.FieldRef<"PropertyVariantMedia", 'String'>
   readonly variantId: Prisma.FieldRef<"PropertyVariantMedia", 'String'>
   readonly url: Prisma.FieldRef<"PropertyVariantMedia", 'String'>
   readonly type: Prisma.FieldRef<"PropertyVariantMedia", 'String'>

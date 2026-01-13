@@ -444,6 +444,7 @@ class PropertyTransferService {
                 await tx.domainEvent.create({
                     data: {
                         id: uuidv4(),
+                        tenantId: sourceApplication.tenantId,
                         eventType: 'TRANSFER.REFUND_REQUESTED',
                         aggregateType: 'PropertyTransferRequest',
                         aggregateId: requestId,
@@ -492,6 +493,7 @@ class PropertyTransferService {
                 // Create base ApplicationPhase
                 const newPhase = await tx.applicationPhase.create({
                     data: {
+                        tenantId,
                         applicationId: newApplication.id,
                         name: templatePhase.name,
                         description: templatePhase.description,
@@ -513,6 +515,7 @@ class PropertyTransferService {
                     case PhaseCategory.QUESTIONNAIRE:
                         await tx.questionnairePhase.create({
                             data: {
+                                tenantId,
                                 phaseId: newPhase.id,
                                 totalFieldsCount: templatePhase.questionnaireFields?.length || 0,
                                 completedFieldsCount: 0,
@@ -523,6 +526,7 @@ class PropertyTransferService {
                     case PhaseCategory.DOCUMENTATION:
                         const docPhase = await tx.documentationPhase.create({
                             data: {
+                                tenantId,
                                 phaseId: newPhase.id,
                                 totalStepsCount: templatePhase.steps?.length || 0,
                                 completedStepsCount: 0,
@@ -538,6 +542,7 @@ class PropertyTransferService {
                         for (const stepTemplate of templatePhase.steps || []) {
                             await tx.documentationStep.create({
                                 data: {
+                                    tenantId,
                                     documentationPhaseId: docPhase.id,
                                     name: stepTemplate.name,
                                     stepType: stepTemplate.stepType,
@@ -557,6 +562,7 @@ class PropertyTransferService {
 
                         await tx.paymentPhase.create({
                             data: {
+                                tenantId,
                                 phaseId: newPhase.id,
                                 paymentPlanId: templatePhase.paymentPlanId,
                                 totalAmount: phaseAmount,
@@ -582,6 +588,7 @@ class PropertyTransferService {
             for (const doc of sourceApplication.documents) {
                 await tx.applicationDocument.create({
                     data: {
+                        tenantId,
                         applicationId: newApplication.id,
                         phaseId: null, // Documents not linked to new phases
                         stepId: null,

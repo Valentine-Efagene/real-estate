@@ -36,6 +36,7 @@ export type PaymentMethodPhaseStepSumAggregateOutputType = {
 
 export type PaymentMethodPhaseStepMinAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   phaseId: string | null
   name: string | null
   stepType: $Enums.StepType | null
@@ -46,6 +47,7 @@ export type PaymentMethodPhaseStepMinAggregateOutputType = {
 
 export type PaymentMethodPhaseStepMaxAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   phaseId: string | null
   name: string | null
   stepType: $Enums.StepType | null
@@ -56,6 +58,7 @@ export type PaymentMethodPhaseStepMaxAggregateOutputType = {
 
 export type PaymentMethodPhaseStepCountAggregateOutputType = {
   id: number
+  tenantId: number
   phaseId: number
   name: number
   stepType: number
@@ -77,6 +80,7 @@ export type PaymentMethodPhaseStepSumAggregateInputType = {
 
 export type PaymentMethodPhaseStepMinAggregateInputType = {
   id?: true
+  tenantId?: true
   phaseId?: true
   name?: true
   stepType?: true
@@ -87,6 +91,7 @@ export type PaymentMethodPhaseStepMinAggregateInputType = {
 
 export type PaymentMethodPhaseStepMaxAggregateInputType = {
   id?: true
+  tenantId?: true
   phaseId?: true
   name?: true
   stepType?: true
@@ -97,6 +102,7 @@ export type PaymentMethodPhaseStepMaxAggregateInputType = {
 
 export type PaymentMethodPhaseStepCountAggregateInputType = {
   id?: true
+  tenantId?: true
   phaseId?: true
   name?: true
   stepType?: true
@@ -195,6 +201,7 @@ export type PaymentMethodPhaseStepGroupByArgs<ExtArgs extends runtime.Types.Exte
 
 export type PaymentMethodPhaseStepGroupByOutputType = {
   id: string
+  tenantId: string
   phaseId: string
   name: string
   stepType: $Enums.StepType
@@ -229,6 +236,7 @@ export type PaymentMethodPhaseStepWhereInput = {
   OR?: Prisma.PaymentMethodPhaseStepWhereInput[]
   NOT?: Prisma.PaymentMethodPhaseStepWhereInput | Prisma.PaymentMethodPhaseStepWhereInput[]
   id?: Prisma.StringFilter<"PaymentMethodPhaseStep"> | string
+  tenantId?: Prisma.StringFilter<"PaymentMethodPhaseStep"> | string
   phaseId?: Prisma.StringFilter<"PaymentMethodPhaseStep"> | string
   name?: Prisma.StringFilter<"PaymentMethodPhaseStep"> | string
   stepType?: Prisma.EnumStepTypeFilter<"PaymentMethodPhaseStep"> | $Enums.StepType
@@ -236,12 +244,14 @@ export type PaymentMethodPhaseStepWhereInput = {
   metadata?: Prisma.JsonNullableFilter<"PaymentMethodPhaseStep">
   createdAt?: Prisma.DateTimeFilter<"PaymentMethodPhaseStep"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PaymentMethodPhaseStep"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   phase?: Prisma.XOR<Prisma.PropertyPaymentMethodPhaseScalarRelationFilter, Prisma.PropertyPaymentMethodPhaseWhereInput>
   eventAttachments?: Prisma.StepEventAttachmentListRelationFilter
 }
 
 export type PaymentMethodPhaseStepOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   phaseId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   stepType?: Prisma.SortOrder
@@ -249,6 +259,7 @@ export type PaymentMethodPhaseStepOrderByWithRelationInput = {
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  tenant?: Prisma.TenantOrderByWithRelationInput
   phase?: Prisma.PropertyPaymentMethodPhaseOrderByWithRelationInput
   eventAttachments?: Prisma.StepEventAttachmentOrderByRelationAggregateInput
   _relevance?: Prisma.PaymentMethodPhaseStepOrderByRelevanceInput
@@ -259,6 +270,7 @@ export type PaymentMethodPhaseStepWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.PaymentMethodPhaseStepWhereInput | Prisma.PaymentMethodPhaseStepWhereInput[]
   OR?: Prisma.PaymentMethodPhaseStepWhereInput[]
   NOT?: Prisma.PaymentMethodPhaseStepWhereInput | Prisma.PaymentMethodPhaseStepWhereInput[]
+  tenantId?: Prisma.StringFilter<"PaymentMethodPhaseStep"> | string
   phaseId?: Prisma.StringFilter<"PaymentMethodPhaseStep"> | string
   name?: Prisma.StringFilter<"PaymentMethodPhaseStep"> | string
   stepType?: Prisma.EnumStepTypeFilter<"PaymentMethodPhaseStep"> | $Enums.StepType
@@ -266,12 +278,14 @@ export type PaymentMethodPhaseStepWhereUniqueInput = Prisma.AtLeast<{
   metadata?: Prisma.JsonNullableFilter<"PaymentMethodPhaseStep">
   createdAt?: Prisma.DateTimeFilter<"PaymentMethodPhaseStep"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PaymentMethodPhaseStep"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   phase?: Prisma.XOR<Prisma.PropertyPaymentMethodPhaseScalarRelationFilter, Prisma.PropertyPaymentMethodPhaseWhereInput>
   eventAttachments?: Prisma.StepEventAttachmentListRelationFilter
 }, "id">
 
 export type PaymentMethodPhaseStepOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   phaseId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   stepType?: Prisma.SortOrder
@@ -291,6 +305,7 @@ export type PaymentMethodPhaseStepScalarWhereWithAggregatesInput = {
   OR?: Prisma.PaymentMethodPhaseStepScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PaymentMethodPhaseStepScalarWhereWithAggregatesInput | Prisma.PaymentMethodPhaseStepScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"PaymentMethodPhaseStep"> | string
+  tenantId?: Prisma.StringWithAggregatesFilter<"PaymentMethodPhaseStep"> | string
   phaseId?: Prisma.StringWithAggregatesFilter<"PaymentMethodPhaseStep"> | string
   name?: Prisma.StringWithAggregatesFilter<"PaymentMethodPhaseStep"> | string
   stepType?: Prisma.EnumStepTypeWithAggregatesFilter<"PaymentMethodPhaseStep"> | $Enums.StepType
@@ -308,12 +323,14 @@ export type PaymentMethodPhaseStepCreateInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutPaymentMethodPhaseStepsInput
   phase: Prisma.PropertyPaymentMethodPhaseCreateNestedOneWithoutStepsInput
   eventAttachments?: Prisma.StepEventAttachmentCreateNestedManyWithoutStepInput
 }
 
 export type PaymentMethodPhaseStepUncheckedCreateInput = {
   id?: string
+  tenantId: string
   phaseId: string
   name: string
   stepType: $Enums.StepType
@@ -332,12 +349,14 @@ export type PaymentMethodPhaseStepUpdateInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutPaymentMethodPhaseStepsNestedInput
   phase?: Prisma.PropertyPaymentMethodPhaseUpdateOneRequiredWithoutStepsNestedInput
   eventAttachments?: Prisma.StepEventAttachmentUpdateManyWithoutStepNestedInput
 }
 
 export type PaymentMethodPhaseStepUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
@@ -350,6 +369,7 @@ export type PaymentMethodPhaseStepUncheckedUpdateInput = {
 
 export type PaymentMethodPhaseStepCreateManyInput = {
   id?: string
+  tenantId: string
   phaseId: string
   name: string
   stepType: $Enums.StepType
@@ -371,6 +391,7 @@ export type PaymentMethodPhaseStepUpdateManyMutationInput = {
 
 export type PaymentMethodPhaseStepUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
@@ -398,6 +419,7 @@ export type PaymentMethodPhaseStepOrderByRelevanceInput = {
 
 export type PaymentMethodPhaseStepCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   phaseId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   stepType?: Prisma.SortOrder
@@ -413,6 +435,7 @@ export type PaymentMethodPhaseStepAvgOrderByAggregateInput = {
 
 export type PaymentMethodPhaseStepMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   phaseId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   stepType?: Prisma.SortOrder
@@ -423,6 +446,7 @@ export type PaymentMethodPhaseStepMaxOrderByAggregateInput = {
 
 export type PaymentMethodPhaseStepMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   phaseId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   stepType?: Prisma.SortOrder
@@ -438,6 +462,48 @@ export type PaymentMethodPhaseStepSumOrderByAggregateInput = {
 export type PaymentMethodPhaseStepScalarRelationFilter = {
   is?: Prisma.PaymentMethodPhaseStepWhereInput
   isNot?: Prisma.PaymentMethodPhaseStepWhereInput
+}
+
+export type PaymentMethodPhaseStepCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.PaymentMethodPhaseStepCreateWithoutTenantInput, Prisma.PaymentMethodPhaseStepUncheckedCreateWithoutTenantInput> | Prisma.PaymentMethodPhaseStepCreateWithoutTenantInput[] | Prisma.PaymentMethodPhaseStepUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PaymentMethodPhaseStepCreateOrConnectWithoutTenantInput | Prisma.PaymentMethodPhaseStepCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.PaymentMethodPhaseStepCreateManyTenantInputEnvelope
+  connect?: Prisma.PaymentMethodPhaseStepWhereUniqueInput | Prisma.PaymentMethodPhaseStepWhereUniqueInput[]
+}
+
+export type PaymentMethodPhaseStepUncheckedCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.PaymentMethodPhaseStepCreateWithoutTenantInput, Prisma.PaymentMethodPhaseStepUncheckedCreateWithoutTenantInput> | Prisma.PaymentMethodPhaseStepCreateWithoutTenantInput[] | Prisma.PaymentMethodPhaseStepUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PaymentMethodPhaseStepCreateOrConnectWithoutTenantInput | Prisma.PaymentMethodPhaseStepCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.PaymentMethodPhaseStepCreateManyTenantInputEnvelope
+  connect?: Prisma.PaymentMethodPhaseStepWhereUniqueInput | Prisma.PaymentMethodPhaseStepWhereUniqueInput[]
+}
+
+export type PaymentMethodPhaseStepUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.PaymentMethodPhaseStepCreateWithoutTenantInput, Prisma.PaymentMethodPhaseStepUncheckedCreateWithoutTenantInput> | Prisma.PaymentMethodPhaseStepCreateWithoutTenantInput[] | Prisma.PaymentMethodPhaseStepUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PaymentMethodPhaseStepCreateOrConnectWithoutTenantInput | Prisma.PaymentMethodPhaseStepCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.PaymentMethodPhaseStepUpsertWithWhereUniqueWithoutTenantInput | Prisma.PaymentMethodPhaseStepUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.PaymentMethodPhaseStepCreateManyTenantInputEnvelope
+  set?: Prisma.PaymentMethodPhaseStepWhereUniqueInput | Prisma.PaymentMethodPhaseStepWhereUniqueInput[]
+  disconnect?: Prisma.PaymentMethodPhaseStepWhereUniqueInput | Prisma.PaymentMethodPhaseStepWhereUniqueInput[]
+  delete?: Prisma.PaymentMethodPhaseStepWhereUniqueInput | Prisma.PaymentMethodPhaseStepWhereUniqueInput[]
+  connect?: Prisma.PaymentMethodPhaseStepWhereUniqueInput | Prisma.PaymentMethodPhaseStepWhereUniqueInput[]
+  update?: Prisma.PaymentMethodPhaseStepUpdateWithWhereUniqueWithoutTenantInput | Prisma.PaymentMethodPhaseStepUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.PaymentMethodPhaseStepUpdateManyWithWhereWithoutTenantInput | Prisma.PaymentMethodPhaseStepUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.PaymentMethodPhaseStepScalarWhereInput | Prisma.PaymentMethodPhaseStepScalarWhereInput[]
+}
+
+export type PaymentMethodPhaseStepUncheckedUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.PaymentMethodPhaseStepCreateWithoutTenantInput, Prisma.PaymentMethodPhaseStepUncheckedCreateWithoutTenantInput> | Prisma.PaymentMethodPhaseStepCreateWithoutTenantInput[] | Prisma.PaymentMethodPhaseStepUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PaymentMethodPhaseStepCreateOrConnectWithoutTenantInput | Prisma.PaymentMethodPhaseStepCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.PaymentMethodPhaseStepUpsertWithWhereUniqueWithoutTenantInput | Prisma.PaymentMethodPhaseStepUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.PaymentMethodPhaseStepCreateManyTenantInputEnvelope
+  set?: Prisma.PaymentMethodPhaseStepWhereUniqueInput | Prisma.PaymentMethodPhaseStepWhereUniqueInput[]
+  disconnect?: Prisma.PaymentMethodPhaseStepWhereUniqueInput | Prisma.PaymentMethodPhaseStepWhereUniqueInput[]
+  delete?: Prisma.PaymentMethodPhaseStepWhereUniqueInput | Prisma.PaymentMethodPhaseStepWhereUniqueInput[]
+  connect?: Prisma.PaymentMethodPhaseStepWhereUniqueInput | Prisma.PaymentMethodPhaseStepWhereUniqueInput[]
+  update?: Prisma.PaymentMethodPhaseStepUpdateWithWhereUniqueWithoutTenantInput | Prisma.PaymentMethodPhaseStepUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.PaymentMethodPhaseStepUpdateManyWithWhereWithoutTenantInput | Prisma.PaymentMethodPhaseStepUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.PaymentMethodPhaseStepScalarWhereInput | Prisma.PaymentMethodPhaseStepScalarWhereInput[]
 }
 
 export type PaymentMethodPhaseStepCreateNestedManyWithoutPhaseInput = {
@@ -500,6 +566,71 @@ export type PaymentMethodPhaseStepUpdateOneRequiredWithoutEventAttachmentsNested
   update?: Prisma.XOR<Prisma.XOR<Prisma.PaymentMethodPhaseStepUpdateToOneWithWhereWithoutEventAttachmentsInput, Prisma.PaymentMethodPhaseStepUpdateWithoutEventAttachmentsInput>, Prisma.PaymentMethodPhaseStepUncheckedUpdateWithoutEventAttachmentsInput>
 }
 
+export type PaymentMethodPhaseStepCreateWithoutTenantInput = {
+  id?: string
+  name: string
+  stepType: $Enums.StepType
+  order: number
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  phase: Prisma.PropertyPaymentMethodPhaseCreateNestedOneWithoutStepsInput
+  eventAttachments?: Prisma.StepEventAttachmentCreateNestedManyWithoutStepInput
+}
+
+export type PaymentMethodPhaseStepUncheckedCreateWithoutTenantInput = {
+  id?: string
+  phaseId: string
+  name: string
+  stepType: $Enums.StepType
+  order: number
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  eventAttachments?: Prisma.StepEventAttachmentUncheckedCreateNestedManyWithoutStepInput
+}
+
+export type PaymentMethodPhaseStepCreateOrConnectWithoutTenantInput = {
+  where: Prisma.PaymentMethodPhaseStepWhereUniqueInput
+  create: Prisma.XOR<Prisma.PaymentMethodPhaseStepCreateWithoutTenantInput, Prisma.PaymentMethodPhaseStepUncheckedCreateWithoutTenantInput>
+}
+
+export type PaymentMethodPhaseStepCreateManyTenantInputEnvelope = {
+  data: Prisma.PaymentMethodPhaseStepCreateManyTenantInput | Prisma.PaymentMethodPhaseStepCreateManyTenantInput[]
+  skipDuplicates?: boolean
+}
+
+export type PaymentMethodPhaseStepUpsertWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.PaymentMethodPhaseStepWhereUniqueInput
+  update: Prisma.XOR<Prisma.PaymentMethodPhaseStepUpdateWithoutTenantInput, Prisma.PaymentMethodPhaseStepUncheckedUpdateWithoutTenantInput>
+  create: Prisma.XOR<Prisma.PaymentMethodPhaseStepCreateWithoutTenantInput, Prisma.PaymentMethodPhaseStepUncheckedCreateWithoutTenantInput>
+}
+
+export type PaymentMethodPhaseStepUpdateWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.PaymentMethodPhaseStepWhereUniqueInput
+  data: Prisma.XOR<Prisma.PaymentMethodPhaseStepUpdateWithoutTenantInput, Prisma.PaymentMethodPhaseStepUncheckedUpdateWithoutTenantInput>
+}
+
+export type PaymentMethodPhaseStepUpdateManyWithWhereWithoutTenantInput = {
+  where: Prisma.PaymentMethodPhaseStepScalarWhereInput
+  data: Prisma.XOR<Prisma.PaymentMethodPhaseStepUpdateManyMutationInput, Prisma.PaymentMethodPhaseStepUncheckedUpdateManyWithoutTenantInput>
+}
+
+export type PaymentMethodPhaseStepScalarWhereInput = {
+  AND?: Prisma.PaymentMethodPhaseStepScalarWhereInput | Prisma.PaymentMethodPhaseStepScalarWhereInput[]
+  OR?: Prisma.PaymentMethodPhaseStepScalarWhereInput[]
+  NOT?: Prisma.PaymentMethodPhaseStepScalarWhereInput | Prisma.PaymentMethodPhaseStepScalarWhereInput[]
+  id?: Prisma.StringFilter<"PaymentMethodPhaseStep"> | string
+  tenantId?: Prisma.StringFilter<"PaymentMethodPhaseStep"> | string
+  phaseId?: Prisma.StringFilter<"PaymentMethodPhaseStep"> | string
+  name?: Prisma.StringFilter<"PaymentMethodPhaseStep"> | string
+  stepType?: Prisma.EnumStepTypeFilter<"PaymentMethodPhaseStep"> | $Enums.StepType
+  order?: Prisma.IntFilter<"PaymentMethodPhaseStep"> | number
+  metadata?: Prisma.JsonNullableFilter<"PaymentMethodPhaseStep">
+  createdAt?: Prisma.DateTimeFilter<"PaymentMethodPhaseStep"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"PaymentMethodPhaseStep"> | Date | string
+}
+
 export type PaymentMethodPhaseStepCreateWithoutPhaseInput = {
   id?: string
   name: string
@@ -508,11 +639,13 @@ export type PaymentMethodPhaseStepCreateWithoutPhaseInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutPaymentMethodPhaseStepsInput
   eventAttachments?: Prisma.StepEventAttachmentCreateNestedManyWithoutStepInput
 }
 
 export type PaymentMethodPhaseStepUncheckedCreateWithoutPhaseInput = {
   id?: string
+  tenantId: string
   name: string
   stepType: $Enums.StepType
   order: number
@@ -548,20 +681,6 @@ export type PaymentMethodPhaseStepUpdateManyWithWhereWithoutPhaseInput = {
   data: Prisma.XOR<Prisma.PaymentMethodPhaseStepUpdateManyMutationInput, Prisma.PaymentMethodPhaseStepUncheckedUpdateManyWithoutPhaseInput>
 }
 
-export type PaymentMethodPhaseStepScalarWhereInput = {
-  AND?: Prisma.PaymentMethodPhaseStepScalarWhereInput | Prisma.PaymentMethodPhaseStepScalarWhereInput[]
-  OR?: Prisma.PaymentMethodPhaseStepScalarWhereInput[]
-  NOT?: Prisma.PaymentMethodPhaseStepScalarWhereInput | Prisma.PaymentMethodPhaseStepScalarWhereInput[]
-  id?: Prisma.StringFilter<"PaymentMethodPhaseStep"> | string
-  phaseId?: Prisma.StringFilter<"PaymentMethodPhaseStep"> | string
-  name?: Prisma.StringFilter<"PaymentMethodPhaseStep"> | string
-  stepType?: Prisma.EnumStepTypeFilter<"PaymentMethodPhaseStep"> | $Enums.StepType
-  order?: Prisma.IntFilter<"PaymentMethodPhaseStep"> | number
-  metadata?: Prisma.JsonNullableFilter<"PaymentMethodPhaseStep">
-  createdAt?: Prisma.DateTimeFilter<"PaymentMethodPhaseStep"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"PaymentMethodPhaseStep"> | Date | string
-}
-
 export type PaymentMethodPhaseStepCreateWithoutEventAttachmentsInput = {
   id?: string
   name: string
@@ -570,11 +689,13 @@ export type PaymentMethodPhaseStepCreateWithoutEventAttachmentsInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutPaymentMethodPhaseStepsInput
   phase: Prisma.PropertyPaymentMethodPhaseCreateNestedOneWithoutStepsInput
 }
 
 export type PaymentMethodPhaseStepUncheckedCreateWithoutEventAttachmentsInput = {
   id?: string
+  tenantId: string
   phaseId: string
   name: string
   stepType: $Enums.StepType
@@ -608,10 +729,58 @@ export type PaymentMethodPhaseStepUpdateWithoutEventAttachmentsInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutPaymentMethodPhaseStepsNestedInput
   phase?: Prisma.PropertyPaymentMethodPhaseUpdateOneRequiredWithoutStepsNestedInput
 }
 
 export type PaymentMethodPhaseStepUncheckedUpdateWithoutEventAttachmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PaymentMethodPhaseStepCreateManyTenantInput = {
+  id?: string
+  phaseId: string
+  name: string
+  stepType: $Enums.StepType
+  order: number
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PaymentMethodPhaseStepUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  phase?: Prisma.PropertyPaymentMethodPhaseUpdateOneRequiredWithoutStepsNestedInput
+  eventAttachments?: Prisma.StepEventAttachmentUpdateManyWithoutStepNestedInput
+}
+
+export type PaymentMethodPhaseStepUncheckedUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  eventAttachments?: Prisma.StepEventAttachmentUncheckedUpdateManyWithoutStepNestedInput
+}
+
+export type PaymentMethodPhaseStepUncheckedUpdateManyWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
@@ -624,6 +793,7 @@ export type PaymentMethodPhaseStepUncheckedUpdateWithoutEventAttachmentsInput = 
 
 export type PaymentMethodPhaseStepCreateManyPhaseInput = {
   id?: string
+  tenantId: string
   name: string
   stepType: $Enums.StepType
   order: number
@@ -640,11 +810,13 @@ export type PaymentMethodPhaseStepUpdateWithoutPhaseInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutPaymentMethodPhaseStepsNestedInput
   eventAttachments?: Prisma.StepEventAttachmentUpdateManyWithoutStepNestedInput
 }
 
 export type PaymentMethodPhaseStepUncheckedUpdateWithoutPhaseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   order?: Prisma.IntFieldUpdateOperationsInput | number
@@ -656,6 +828,7 @@ export type PaymentMethodPhaseStepUncheckedUpdateWithoutPhaseInput = {
 
 export type PaymentMethodPhaseStepUncheckedUpdateManyWithoutPhaseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   order?: Prisma.IntFieldUpdateOperationsInput | number
@@ -697,6 +870,7 @@ export type PaymentMethodPhaseStepCountOutputTypeCountEventAttachmentsArgs<ExtAr
 
 export type PaymentMethodPhaseStepSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   phaseId?: boolean
   name?: boolean
   stepType?: boolean
@@ -704,6 +878,7 @@ export type PaymentMethodPhaseStepSelect<ExtArgs extends runtime.Types.Extension
   metadata?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   phase?: boolean | Prisma.PropertyPaymentMethodPhaseDefaultArgs<ExtArgs>
   eventAttachments?: boolean | Prisma.PaymentMethodPhaseStep$eventAttachmentsArgs<ExtArgs>
   _count?: boolean | Prisma.PaymentMethodPhaseStepCountOutputTypeDefaultArgs<ExtArgs>
@@ -713,6 +888,7 @@ export type PaymentMethodPhaseStepSelect<ExtArgs extends runtime.Types.Extension
 
 export type PaymentMethodPhaseStepSelectScalar = {
   id?: boolean
+  tenantId?: boolean
   phaseId?: boolean
   name?: boolean
   stepType?: boolean
@@ -722,8 +898,9 @@ export type PaymentMethodPhaseStepSelectScalar = {
   updatedAt?: boolean
 }
 
-export type PaymentMethodPhaseStepOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "phaseId" | "name" | "stepType" | "order" | "metadata" | "createdAt" | "updatedAt", ExtArgs["result"]["paymentMethodPhaseStep"]>
+export type PaymentMethodPhaseStepOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "phaseId" | "name" | "stepType" | "order" | "metadata" | "createdAt" | "updatedAt", ExtArgs["result"]["paymentMethodPhaseStep"]>
 export type PaymentMethodPhaseStepInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   phase?: boolean | Prisma.PropertyPaymentMethodPhaseDefaultArgs<ExtArgs>
   eventAttachments?: boolean | Prisma.PaymentMethodPhaseStep$eventAttachmentsArgs<ExtArgs>
   _count?: boolean | Prisma.PaymentMethodPhaseStepCountOutputTypeDefaultArgs<ExtArgs>
@@ -732,11 +909,13 @@ export type PaymentMethodPhaseStepInclude<ExtArgs extends runtime.Types.Extensio
 export type $PaymentMethodPhaseStepPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "PaymentMethodPhaseStep"
   objects: {
+    tenant: Prisma.$TenantPayload<ExtArgs>
     phase: Prisma.$PropertyPaymentMethodPhasePayload<ExtArgs>
     eventAttachments: Prisma.$StepEventAttachmentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    tenantId: string
     phaseId: string
     name: string
     stepType: $Enums.StepType
@@ -1084,6 +1263,7 @@ readonly fields: PaymentMethodPhaseStepFieldRefs;
  */
 export interface Prisma__PaymentMethodPhaseStepClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   phase<T extends Prisma.PropertyPaymentMethodPhaseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyPaymentMethodPhaseDefaultArgs<ExtArgs>>): Prisma.Prisma__PropertyPaymentMethodPhaseClient<runtime.Types.Result.GetResult<Prisma.$PropertyPaymentMethodPhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   eventAttachments<T extends Prisma.PaymentMethodPhaseStep$eventAttachmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PaymentMethodPhaseStep$eventAttachmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StepEventAttachmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -1116,6 +1296,7 @@ export interface Prisma__PaymentMethodPhaseStepClient<T, Null = never, ExtArgs e
  */
 export interface PaymentMethodPhaseStepFieldRefs {
   readonly id: Prisma.FieldRef<"PaymentMethodPhaseStep", 'String'>
+  readonly tenantId: Prisma.FieldRef<"PaymentMethodPhaseStep", 'String'>
   readonly phaseId: Prisma.FieldRef<"PaymentMethodPhaseStep", 'String'>
   readonly name: Prisma.FieldRef<"PaymentMethodPhaseStep", 'String'>
   readonly stepType: Prisma.FieldRef<"PaymentMethodPhaseStep", 'StepType'>

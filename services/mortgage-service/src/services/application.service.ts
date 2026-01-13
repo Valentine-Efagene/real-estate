@@ -439,6 +439,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                 // Create base ApplicationPhase (shared fields only)
                 const phase = await tx.applicationPhase.create({
                     data: {
+                        tenantId: (data as any).tenantId,
                         applicationId: created.id,
                         name: phaseTemplate.name,
                         description: phaseTemplate.description,
@@ -455,6 +456,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                     // Create QuestionnairePhase extension
                     const questionnairePhase = await tx.questionnairePhase.create({
                         data: {
+                            tenantId: (data as any).tenantId,
                             phaseId: phase.id,
                             totalFieldsCount: 0, // Will be populated when fields are defined
                             completedFieldsCount: 0,
@@ -467,6 +469,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                     // Create DocumentationPhase extension
                     const documentationPhase = await tx.documentationPhase.create({
                         data: {
+                            tenantId: (data as any).tenantId,
                             phaseId: phase.id,
                             totalStepsCount: steps.length,
                             completedStepsCount: 0,
@@ -482,6 +485,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                     for (const step of steps) {
                         const createdStep = await tx.documentationStep.create({
                             data: {
+                                tenantId: (data as any).tenantId,
                                 documentationPhaseId: documentationPhase.id,
                                 name: step.name,
                                 description: step.description,
@@ -497,6 +501,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                             for (const doc of step.requiredDocuments) {
                                 await tx.documentationStepDocument.create({
                                     data: {
+                                        tenantId: (data as any).tenantId,
                                         stepId: createdStep.id,
                                         documentType: doc.documentType,
                                         isRequired: doc.isRequired ?? true,
@@ -509,6 +514,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                     // Create PaymentPhase extension
                     await tx.paymentPhase.create({
                         data: {
+                            tenantId: (data as any).tenantId,
                             phaseId: phase.id,
                             paymentPlanId: phaseTemplate.paymentPlanId,
                             totalAmount: phaseAmount ?? 0,
@@ -525,6 +531,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
             // Audit trail (permanent record)
             await tx.applicationEvent.create({
                 data: {
+                    tenantId: (data as any).tenantId,
                     applicationId: created.id,
                     eventType: 'APPLICATION_CREATED',
                     eventGroup: 'STATE_CHANGE',
@@ -544,6 +551,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
+                    tenantId: created.tenantId,
                     eventType: 'APPLICATION.CREATED',
                     aggregateType: 'Application',
                     aggregateId: created.id,
@@ -757,6 +765,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
+                    tenantId: application.tenantId,
                     eventType: 'APPLICATION.STATE_CHANGED',
                     aggregateType: 'Application',
                     aggregateId: id,
@@ -801,6 +810,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
+                    tenantId: application.tenantId,
                     eventType: 'APPLICATION.SIGNED',
                     aggregateType: 'Application',
                     aggregateId: id,
@@ -868,6 +878,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
+                    tenantId: application.tenantId,
                     eventType: 'APPLICATION.CANCELLED',
                     aggregateType: 'Application',
                     aggregateId: id,

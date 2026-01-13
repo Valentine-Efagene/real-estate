@@ -102,6 +102,7 @@ class ApplicationPaymentService {
             // Create payment record
             const created = await tx.applicationPayment.create({
                 data: {
+                    tenantId: application.tenantId,
                     applicationId: data.applicationId,
                     phaseId: data.phaseId,
                     installmentId: data.installmentId,
@@ -117,6 +118,7 @@ class ApplicationPaymentService {
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
+                    tenantId: application.tenantId,
                     eventType: 'PAYMENT.INITIATED',
                     aggregateType: 'ApplicationPayment',
                     aggregateId: created.id,
@@ -306,6 +308,7 @@ class ApplicationPaymentService {
                         await tx.domainEvent.create({
                             data: {
                                 id: uuidv4(),
+                                tenantId: payment.tenantId,
                                 eventType: 'PHASE.COMPLETED',
                                 aggregateType: 'ApplicationPhase',
                                 aggregateId: payment.phaseId,
@@ -347,6 +350,7 @@ class ApplicationPaymentService {
                             await tx.domainEvent.create({
                                 data: {
                                     id: uuidv4(),
+                                    tenantId: payment.tenantId,
                                     eventType: 'PHASE.ACTIVATED',
                                     aggregateType: 'ApplicationPhase',
                                     aggregateId: nextPhase.id,
@@ -383,6 +387,7 @@ class ApplicationPaymentService {
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
+                    tenantId: payment.tenantId,
                     eventType: 'PAYMENT.COMPLETED',
                     aggregateType: 'ApplicationPayment',
                     aggregateId: paymentId,
@@ -487,9 +492,14 @@ class ApplicationPaymentService {
                 where: { id: paymentId },
             });
 
+            if (!payment?.tenantId) {
+                throw new Error('Payment must have tenantId for event creation');
+            }
+
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
+                    tenantId: payment.tenantId,
                     eventType: 'PAYMENT.FAILED',
                     aggregateType: 'ApplicationPayment',
                     aggregateId: paymentId,
@@ -597,6 +607,7 @@ class ApplicationPaymentService {
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
+                    tenantId: payment.tenantId,
                     eventType: 'PAYMENT.REFUNDED',
                     aggregateType: 'ApplicationPayment',
                     aggregateId: paymentId,
@@ -663,6 +674,7 @@ class ApplicationPaymentService {
                 // Create payment for this installment
                 await tx.applicationPayment.create({
                     data: {
+                        tenantId: application.tenantId,
                         applicationId,
                         phaseId: phaseId,
                         installmentId: installment.id,
@@ -710,6 +722,7 @@ class ApplicationPaymentService {
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
+                    tenantId: application.tenantId,
                     eventType: 'PAYMENT.PAY_AHEAD',
                     aggregateType: 'Application',
                     aggregateId: applicationId,

@@ -1,33 +1,28 @@
 import { PrismaClient, Prisma } from "../../generated/client/client";
 
 /**
- * INVERTED APPROACH: All models are tenant-scoped by default.
- * Only list models that are explicitly GLOBAL (no tenant scoping).
- * 
- * This reduces the risk of accidentally omitting a new model from tenant scoping.
+ * INVERTED APPROACH: List models that DON'T have a tenantId field.
+ * All other models are assumed to be tenant-scoped.
+ * This is easier to manage since most models ARE tenant-scoped.
  */
 
 /**
- * Models that are intentionally GLOBAL and should NOT be tenant-scoped.
- * These models either:
- * - Don't have a tenantId field (system tables)
- * - Have optional tenantId but are designed to work across tenants (User)
- * - Are cross-tenant lookup/join tables (TenantMembership)
+ * Models that are truly global and have NO tenantId field at all.
+ * These are excluded from tenant filtering/injection.
  */
 const GLOBAL_MODELS = [
-    // User can exist across tenants or without a tenant (federated)
-    "user",
-    // TenantMembership is the user-tenant join table (queries by userId or tenantId)
-    "tenantMembership",
-    // System/infrastructure tables without tenantId
+    // System-level entities with no tenant ownership
     "tenant",
-    // Legacy role assignment (global, not tenant-scoped)
-    "userRole",
-    "rolePermission",
+    "user",
+    "tenantMembership",
+    // Auth/session related (linked to user, not tenant)
     "refreshToken",
     "passwordReset",
-    "wallet",
-    "domainEvent",
+    "userSuspension",
+    "oAuthState",
+    // User preferences/devices (linked to user, not tenant)
+    "emailPreference",
+    "deviceEndpoint",
 ] as const;
 
 type GlobalModel = (typeof GLOBAL_MODELS)[number];
@@ -56,9 +51,17 @@ function isOptionalTenantModel(model: string): model is OptionalTenantModel {
 }
 
 /**
- * A model is tenant-scoped by default unless explicitly listed as global.
+ * Check if model is tenant-scoped (required tenantId)
+ * A model is tenant-scoped if it's NOT global and NOT optional-tenant
  */
 function isTenantScopedModel(model: string): boolean {
+    return !isGlobalModel(model) && !isOptionalTenantModel(model);
+}
+
+/**
+ * Check if model has any tenant scoping (required or optional)
+ */
+function hasTenantField(model: string): boolean {
     return !isGlobalModel(model);
 }
 
@@ -92,7 +95,7 @@ export function createTenantPrisma(
         query: {
             $allModels: {
                 async findMany({ model, args, query }) {
-                    if (isTenantScopedModel(model)) {
+                    if (hasTenantField(model)) {
                         const tenantFilter = isOptionalTenantModel(model)
                             ? { OR: [{ tenantId }, { tenantId: null }] }
                             : { tenantId };
@@ -106,7 +109,7 @@ export function createTenantPrisma(
                 },
 
                 async findFirst({ model, args, query }) {
-                    if (isTenantScopedModel(model)) {
+                    if (hasTenantField(model)) {
                         const tenantFilter = isOptionalTenantModel(model)
                             ? { OR: [{ tenantId }, { tenantId: null }] }
                             : { tenantId };
@@ -122,7 +125,7 @@ export function createTenantPrisma(
                 async findUnique({ model, args, query }) {
                     // findUnique can only filter by unique fields, so we verify after fetch
                     const result = await query(args);
-                    if (result && isTenantScopedModel(model)) {
+                    if (result && hasTenantField(model)) {
                         const record = result as { tenantId?: string | null };
                         if (isOptionalTenantModel(model)) {
                             // Allow null tenantId (global) or matching tenantId
@@ -139,7 +142,7 @@ export function createTenantPrisma(
                 },
 
                 async create({ model, args, query }) {
-                    if (isTenantScopedModel(model) && !isOptionalTenantModel(model)) {
+                    if (isTenantScopedModel(model)) {
                         // Inject tenantId for required tenant models
                         (args.data as any).tenantId = tenantId;
                     } else if (isOptionalTenantModel(model)) {
@@ -152,10 +155,10 @@ export function createTenantPrisma(
                 },
 
                 async createMany({ model, args, query }) {
-                    if (isTenantScopedModel(model)) {
+                    if (hasTenantField(model)) {
                         const data = Array.isArray(args.data) ? args.data : [args.data];
                         args.data = data.map((item: any) => {
-                            if (!isOptionalTenantModel(model)) {
+                            if (isTenantScopedModel(model)) {
                                 return { ...item, tenantId };
                             }
                             // For optional models, inject if not explicitly set
@@ -169,7 +172,7 @@ export function createTenantPrisma(
                 },
 
                 async update({ model, args, query }) {
-                    if (isTenantScopedModel(model)) {
+                    if (hasTenantField(model)) {
                         // Verify tenant ownership before update
                         const tenantFilter = isOptionalTenantModel(model)
                             ? { OR: [{ tenantId }, { tenantId: null }] }
@@ -184,7 +187,7 @@ export function createTenantPrisma(
                 },
 
                 async updateMany({ model, args, query }) {
-                    if (isTenantScopedModel(model)) {
+                    if (hasTenantField(model)) {
                         const tenantFilter = isOptionalTenantModel(model)
                             ? { OR: [{ tenantId }, { tenantId: null }] }
                             : { tenantId };
@@ -198,7 +201,7 @@ export function createTenantPrisma(
                 },
 
                 async delete({ model, args, query }) {
-                    if (isTenantScopedModel(model)) {
+                    if (hasTenantField(model)) {
                         const tenantFilter = isOptionalTenantModel(model)
                             ? { OR: [{ tenantId }, { tenantId: null }] }
                             : { tenantId };
@@ -212,7 +215,7 @@ export function createTenantPrisma(
                 },
 
                 async deleteMany({ model, args, query }) {
-                    if (isTenantScopedModel(model)) {
+                    if (hasTenantField(model)) {
                         const tenantFilter = isOptionalTenantModel(model)
                             ? { OR: [{ tenantId }, { tenantId: null }] }
                             : { tenantId };
@@ -226,7 +229,7 @@ export function createTenantPrisma(
                 },
 
                 async count({ model, args, query }) {
-                    if (isTenantScopedModel(model)) {
+                    if (hasTenantField(model)) {
                         const tenantFilter = isOptionalTenantModel(model)
                             ? { OR: [{ tenantId }, { tenantId: null }] }
                             : { tenantId };

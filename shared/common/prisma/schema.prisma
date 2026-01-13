@@ -531,7 +531,41 @@ model Tenant {
   approvalRequests ApprovalRequest[]
 
   // Contract refunds
-  contractRefunds ApplicationRefund[]
+  contractRefunds             ApplicationRefund[]
+  propertyPaymentMethodLinks  PropertyPaymentMethodLink[]
+  propertyPaymentMethodPhases PropertyPaymentMethodPhase[]
+  phaseEventAttachments       PhaseEventAttachment[]
+  paymentMethodPhaseSteps     PaymentMethodPhaseStep[]
+  stepEventAttachments        StepEventAttachment[]
+  paymentMethodPhaseDocuments PaymentMethodPhaseDocument[]
+  paymentMethodPhaseFields    PaymentMethodPhaseField[]
+  applicationPhases           ApplicationPhase[]
+  questionnairePhases         QuestionnairePhase[]
+  documentationPhases         DocumentationPhase[]
+  paymentPhases               PaymentPhase[]
+  questionnaireFields         QuestionnaireField[]
+  applicationEvents           ApplicationEvent[]
+  documentationSteps          DocumentationStep[]
+  documentationStepDocuments  DocumentationStepDocument[]
+  documentationStepApprovals  DocumentationStepApproval[]
+  paymentInstallments         PaymentInstallment[]
+  applicationPayments         ApplicationPayment[]
+  applicationDocuments        ApplicationDocument[]
+  propertyMedia               PropertyMedia[]
+  propertyDocuments           PropertyDocument[]
+  propertyVariants            PropertyVariant[]
+  propertyVariantAmenities    PropertyVariantAmenity[]
+  propertyVariantMedia        PropertyVariantMedia[]
+  propertyUnits               PropertyUnit[]
+  propertyAmenities           PropertyAmenity[]
+  eventHandlerExecutions      EventHandlerExecution[]
+  amenities                   Amenity[]
+  socials                     Social[]
+  wallets                     Wallet[]
+  transactions                Transaction[]
+  settings                    Settings[]
+  domainEvents                DomainEvent[]
+  workflowBlockers            WorkflowBlocker[]
 
   @@index([subdomain])
   @@map("tenants")
@@ -664,6 +698,8 @@ model DeviceEndpoint {
 
 model Social {
   id        String   @id @default(cuid())
+  tenantId  String
+  tenant    Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   provider  String // google, facebook, twitter, etc
@@ -673,6 +709,7 @@ model Social {
 
   @@unique([provider, socialId])
   @@index([userId])
+  @@index([tenantId])
   @@map("socials")
 }
 
@@ -689,6 +726,8 @@ model OAuthState {
 
 model Wallet {
   id           String        @id @default(cuid())
+  tenantId     String
+  tenant       Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   balance      Float         @default(0)
   currency     String        @default("USD")
   user         User?
@@ -696,11 +735,14 @@ model Wallet {
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
 
+  @@index([tenantId])
   @@map("wallets")
 }
 
 model Transaction {
   id          String   @id @default(cuid())
+  tenantId    String
+  tenant      Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   walletId    String
   wallet      Wallet   @relation(fields: [walletId], references: [id], onDelete: Cascade)
   amount      Float
@@ -712,18 +754,23 @@ model Transaction {
   updatedAt   DateTime @updatedAt
 
   @@index([walletId])
+  @@index([tenantId])
   @@map("transactions")
 }
 
 model Settings {
   id        String   @id @default(cuid())
-  key       String   @unique
+  tenantId  String
+  tenant    Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  key       String
   value     String   @db.Text
   category  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@unique([tenantId, key])
   @@index([category])
+  @@index([tenantId])
   @@map("settings")
 }
 
@@ -779,6 +826,8 @@ model Property {
 
 model PropertyMedia {
   id         String   @id @default(cuid())
+  tenantId   String
+  tenant     Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   propertyId String
   property   Property @relation("PropertyMedia", fields: [propertyId], references: [id], onDelete: Cascade)
   url        String
@@ -790,12 +839,15 @@ model PropertyMedia {
 
   displayForProperties Property[] @relation("DisplayImage")
 
+  @@index([tenantId])
   @@index([propertyId])
   @@map("property_media")
 }
 
 model PropertyDocument {
   id         String   @id @default(cuid())
+  tenantId   String
+  tenant     Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   propertyId String
   property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
   name       String
@@ -804,13 +856,16 @@ model PropertyDocument {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
+  @@index([tenantId])
   @@index([propertyId])
   @@map("property_documents")
 }
 
 model Amenity {
   id         String                   @id @default(cuid())
-  name       String                   @unique
+  tenantId   String
+  tenant     Tenant                   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  name       String
   category   String? // PROPERTY, VARIANT, BOTH - helps filter which amenities to show
   icon       String? // Icon name/URL for UI
   createdAt  DateTime                 @default(now())
@@ -818,6 +873,8 @@ model Amenity {
   properties PropertyAmenity[]
   variants   PropertyVariantAmenity[]
 
+  @@unique([tenantId, name]) // Unique per tenant
+  @@index([tenantId])
   @@index([category])
   @@map("amenities")
 }
@@ -830,6 +887,8 @@ model Amenity {
 // e.g., "3-Bedroom Corner Piece - Fully Finished", "2-Bedroom Standard - Carcass"
 model PropertyVariant {
   id         String   @id @default(cuid())
+  tenantId   String
+  tenant     Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   propertyId String
   property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
 
@@ -863,6 +922,7 @@ model PropertyVariant {
   units     PropertyUnit[]
   media     PropertyVariantMedia[]
 
+  @@index([tenantId])
   @@index([propertyId])
   @@index([status])
   @@index([price])
@@ -872,6 +932,8 @@ model PropertyVariant {
 // PropertyVariantAmenity = amenities specific to a variant
 // e.g., "Finished Kitchen", "Smart Home System", "Private Garden"
 model PropertyVariantAmenity {
+  tenantId  String
+  tenant    Tenant          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   variantId String
   amenityId String
   variant   PropertyVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
@@ -879,12 +941,15 @@ model PropertyVariantAmenity {
   createdAt DateTime        @default(now())
 
   @@id([variantId, amenityId])
+  @@index([tenantId])
   @@map("property_variant_amenities")
 }
 
 // PropertyVariantMedia = images/videos specific to a variant
 model PropertyVariantMedia {
   id        String          @id @default(cuid())
+  tenantId  String
+  tenant    Tenant          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   variantId String
   variant   PropertyVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
   url       String
@@ -894,6 +959,7 @@ model PropertyVariantMedia {
   createdAt DateTime        @default(now())
   updatedAt DateTime        @updatedAt
 
+  @@index([tenantId])
   @@index([variantId])
   @@map("property_variant_media")
 }
@@ -902,6 +968,8 @@ model PropertyVariantMedia {
 // e.g., "Unit A1", "Block B - Flat 3", "Plot 15"
 model PropertyUnit {
   id        String          @id @default(cuid())
+  tenantId  String
+  tenant    Tenant          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   variantId String
   variant   PropertyVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
 
@@ -935,12 +1003,15 @@ model PropertyUnit {
   transferRequests PropertyTransferRequest[]
 
   @@unique([variantId, unitNumber])
+  @@index([tenantId])
   @@index([variantId])
   @@index([status])
   @@map("property_units")
 }
 
 model PropertyAmenity {
+  tenantId   String
+  tenant     Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   propertyId String
   amenityId  String
   property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
@@ -948,6 +1019,7 @@ model PropertyAmenity {
   createdAt  DateTime @default(now())
 
   @@id([propertyId, amenityId])
+  @@index([tenantId])
   @@map("property_amenities")
 }
 
@@ -1045,6 +1117,8 @@ model PropertyPaymentMethod {
 
 // Many-to-many link between Property and PaymentMethod
 model PropertyPaymentMethodLink {
+  tenantId        String
+  tenant          Tenant                @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   propertyId      String
   property        Property              @relation(fields: [propertyId], references: [id], onDelete: Cascade)
   paymentMethodId String
@@ -1056,6 +1130,7 @@ model PropertyPaymentMethodLink {
   createdAt DateTime @default(now())
 
   @@id([propertyId, paymentMethodId])
+  @@index([tenantId])
   @@map("property_payment_method_links")
 }
 
@@ -1063,6 +1138,8 @@ model PropertyPaymentMethodLink {
 // phaseCategory determines the FSM type: DOCUMENTATION or PAYMENT
 model PropertyPaymentMethodPhase {
   id              String                @id @default(cuid())
+  tenantId        String
+  tenant          Tenant                @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   paymentMethodId String
   paymentMethod   PropertyPaymentMethod @relation(fields: [paymentMethodId], references: [id], onDelete: Cascade)
   paymentPlanId   String? // Only for PAYMENT phases
@@ -1105,6 +1182,7 @@ model PropertyPaymentMethodPhase {
   // Event attachments - handlers that fire on phase transitions
   eventAttachments    PhaseEventAttachment[]
 
+  @@index([tenantId])
   @@index([paymentMethodId])
   @@index([paymentPlanId])
   @@index([phaseCategory])
@@ -1114,9 +1192,11 @@ model PropertyPaymentMethodPhase {
 /// Phase Event Attachment - Links event handlers to phase template triggers
 /// When a phase transitions (complete, payment received, etc.), attached handlers fire
 model PhaseEventAttachment {
-  id      String                     @id @default(cuid())
-  phaseId String
-  phase   PropertyPaymentMethodPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+  id       String                     @id @default(cuid())
+  tenantId String
+  tenant   Tenant                     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  phaseId  String
+  phase    PropertyPaymentMethodPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
 
   /// When this handler should fire
   trigger PhaseTrigger
@@ -1135,6 +1215,7 @@ model PhaseEventAttachment {
   updatedAt DateTime @updatedAt
 
   @@unique([phaseId, handlerId, trigger])
+  @@index([tenantId])
   @@index([phaseId])
   @@index([handlerId])
   @@map("phase_event_attachments")
@@ -1142,9 +1223,11 @@ model PhaseEventAttachment {
 
 // Step template within a DOCUMENTATION phase
 model PaymentMethodPhaseStep {
-  id      String                     @id @default(cuid())
-  phaseId String
-  phase   PropertyPaymentMethodPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+  id       String                     @id @default(cuid())
+  tenantId String
+  tenant   Tenant                     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  phaseId  String
+  phase    PropertyPaymentMethodPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
 
   name     String
   stepType StepType
@@ -1157,6 +1240,7 @@ model PaymentMethodPhaseStep {
   // Event attachments - handlers that fire on step transitions
   eventAttachments StepEventAttachment[]
 
+  @@index([tenantId])
   @@index([phaseId])
   @@map("payment_method_phase_steps")
 }
@@ -1164,9 +1248,11 @@ model PaymentMethodPhaseStep {
 /// Step Event Attachment - Links event handlers to step template triggers
 /// When a step transitions (complete, reject, etc.), attached handlers fire
 model StepEventAttachment {
-  id     String                 @id @default(cuid())
-  stepId String
-  step   PaymentMethodPhaseStep @relation(fields: [stepId], references: [id], onDelete: Cascade)
+  id       String                 @id @default(cuid())
+  tenantId String
+  tenant   Tenant                 @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  stepId   String
+  step     PaymentMethodPhaseStep @relation(fields: [stepId], references: [id], onDelete: Cascade)
 
   /// When this handler should fire
   trigger StepTrigger
@@ -1185,6 +1271,7 @@ model StepEventAttachment {
   updatedAt DateTime @updatedAt
 
   @@unique([stepId, handlerId, trigger])
+  @@index([tenantId])
   @@index([stepId])
   @@index([handlerId])
   @@map("step_event_attachments")
@@ -1192,9 +1279,11 @@ model StepEventAttachment {
 
 // Required document within a DOCUMENTATION phase
 model PaymentMethodPhaseDocument {
-  id      String                     @id @default(cuid())
-  phaseId String
-  phase   PropertyPaymentMethodPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+  id       String                     @id @default(cuid())
+  tenantId String
+  tenant   Tenant                     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  phaseId  String
+  phase    PropertyPaymentMethodPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
 
   documentType     String
   isRequired       Boolean @default(true)
@@ -1205,6 +1294,7 @@ model PaymentMethodPhaseDocument {
   metadata  Json?
   createdAt DateTime @default(now())
 
+  @@index([tenantId])
   @@index([phaseId, documentType])
   @@map("payment_method_phase_documents")
 }
@@ -1230,9 +1320,11 @@ enum FieldType {
 
 // Questionnaire field template within a QUESTIONNAIRE phase
 model PaymentMethodPhaseField {
-  id      String                     @id @default(cuid())
-  phaseId String
-  phase   PropertyPaymentMethodPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+  id       String                     @id @default(cuid())
+  tenantId String
+  tenant   Tenant                     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  phaseId  String
+  phase    PropertyPaymentMethodPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
 
   // Field identification
   name        String // Internal field name (e.g., "monthly_income")
@@ -1264,6 +1356,7 @@ model PaymentMethodPhaseField {
   updatedAt DateTime @updatedAt
 
   @@unique([phaseId, name])
+  @@index([tenantId])
   @@index([phaseId])
   @@map("payment_method_phase_fields")
 }
@@ -1420,6 +1513,8 @@ model ApplicationRefund {
 
 model ApplicationPhase {
   id            String      @id @default(cuid())
+  tenantId      String
+  tenant        Tenant      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   applicationId String
   application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
 
@@ -1459,6 +1554,7 @@ model ApplicationPhase {
   // Back-relation for applications where this is the current phase
   currentForApplications Application[] @relation("CurrentPhase")
 
+  @@index([tenantId])
   @@index([applicationId])
   @@index([phaseCategory])
   @@index([status])
@@ -1473,9 +1569,11 @@ model ApplicationPhase {
 // =============================================================================
 
 model QuestionnairePhase {
-  id      String           @id @default(cuid())
-  phaseId String           @unique
-  phase   ApplicationPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+  id       String           @id @default(cuid())
+  tenantId String
+  tenant   Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  phaseId  String           @unique
+  phase    ApplicationPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
 
   // Progress tracking
   completedFieldsCount Int @default(0)
@@ -1496,6 +1594,7 @@ model QuestionnairePhase {
   // Child records
   fields QuestionnaireField[]
 
+  @@index([tenantId])
   @@index([phaseId])
   @@map("questionnaire_phases")
 }
@@ -1507,9 +1606,11 @@ model QuestionnairePhase {
 // =============================================================================
 
 model DocumentationPhase {
-  id      String           @id @default(cuid())
-  phaseId String           @unique
-  phase   ApplicationPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+  id       String           @id @default(cuid())
+  tenantId String
+  tenant   Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  phaseId  String           @unique
+  phase    ApplicationPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
 
   // Current step pointer for UX and orchestration
   currentStepId String?
@@ -1535,6 +1636,7 @@ model DocumentationPhase {
   // Child records
   steps DocumentationStep[]
 
+  @@index([tenantId])
   @@index([phaseId])
   @@index([currentStepId])
   @@map("documentation_phases")
@@ -1547,9 +1649,11 @@ model DocumentationPhase {
 // =============================================================================
 
 model PaymentPhase {
-  id      String           @id @default(cuid())
-  phaseId String           @unique
-  phase   ApplicationPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+  id       String           @id @default(cuid())
+  tenantId String
+  tenant   Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  phaseId  String           @unique
+  phase    ApplicationPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
 
   // Payment plan reference
   paymentPlanId String?
@@ -1582,6 +1686,7 @@ model PaymentPhase {
   // Child records
   installments PaymentInstallment[]
 
+  @@index([tenantId])
   @@index([phaseId])
   @@index([paymentPlanId])
   @@map("payment_phases")
@@ -1596,6 +1701,8 @@ model PaymentPhase {
 
 model QuestionnaireField {
   id                   String             @id @default(cuid())
+  tenantId             String
+  tenant               Tenant             @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   questionnairePhaseId String
   questionnairePhase   QuestionnairePhase @relation(fields: [questionnairePhaseId], references: [id], onDelete: Cascade)
 
@@ -1634,6 +1741,7 @@ model QuestionnaireField {
   updatedAt   DateTime  @updatedAt
 
   @@unique([questionnairePhaseId, name])
+  @@index([tenantId])
   @@index([questionnairePhaseId])
   @@map("questionnaire_fields")
 }
@@ -1647,6 +1755,8 @@ model QuestionnaireField {
 // =============================================================================
 model ApplicationEvent {
   id            String      @id @default(cuid())
+  tenantId      String
+  tenant        Tenant      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   applicationId String
   application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
 
@@ -1669,6 +1779,7 @@ model ApplicationEvent {
   // Timing
   occurredAt DateTime @default(now())
 
+  @@index([tenantId])
   @@index([applicationId])
   @@index([eventType])
   @@index([eventGroup])
@@ -1679,6 +1790,8 @@ model ApplicationEvent {
 // Steps within a DOCUMENTATION phase (FSM for document collection/approval)
 model DocumentationStep {
   id                   String             @id @default(cuid())
+  tenantId             String
+  tenant               Tenant             @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   documentationPhaseId String
   documentationPhase   DocumentationPhase @relation(fields: [documentationPhaseId], references: [id], onDelete: Cascade)
 
@@ -1722,6 +1835,7 @@ model DocumentationStep {
   approvals       DocumentationStepApproval[]
   currentForPhase DocumentationPhase[]        @relation("CurrentStep")
 
+  @@index([tenantId])
   @@index([documentationPhaseId])
   @@index([status])
   @@index([order])
@@ -1730,15 +1844,18 @@ model DocumentationStep {
 
 // Required documents for a step (normalized from CSV)
 model DocumentationStepDocument {
-  id     String            @id @default(cuid())
-  stepId String
-  step   DocumentationStep @relation(fields: [stepId], references: [id], onDelete: Cascade)
+  id       String            @id @default(cuid())
+  tenantId String
+  tenant   Tenant            @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  stepId   String
+  step     DocumentationStep @relation(fields: [stepId], references: [id], onDelete: Cascade)
 
   documentType String
   isRequired   Boolean @default(true)
 
   createdAt DateTime @default(now())
 
+  @@index([tenantId])
   @@index([stepId, documentType])
   @@map("documentation_step_documents")
 }
@@ -1746,6 +1863,8 @@ model DocumentationStepDocument {
 // Approvals for documentation steps
 model DocumentationStepApproval {
   id         String            @id @default(cuid())
+  tenantId   String
+  tenant     Tenant            @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   stepId     String
   step       DocumentationStep @relation(fields: [stepId], references: [id], onDelete: Cascade)
   approverId String?
@@ -1757,6 +1876,7 @@ model DocumentationStepApproval {
 
   createdAt DateTime @default(now())
 
+  @@index([tenantId])
   @@index([stepId])
   @@map("documentation_step_approvals")
 }
@@ -1764,6 +1884,8 @@ model DocumentationStepApproval {
 // Installments within a PAYMENT phase
 model PaymentInstallment {
   id             String       @id @default(cuid())
+  tenantId       String
+  tenant         Tenant       @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   paymentPhaseId String
   paymentPhase   PaymentPhase @relation(fields: [paymentPhaseId], references: [id], onDelete: Cascade)
 
@@ -1789,6 +1911,7 @@ model PaymentInstallment {
 
   payments ApplicationPayment[]
 
+  @@index([tenantId])
   @@index([paymentPhaseId])
   @@index([dueDate])
   @@index([status])
@@ -1798,6 +1921,8 @@ model PaymentInstallment {
 // Unified payment record for contracts
 model ApplicationPayment {
   id            String              @id @default(cuid())
+  tenantId      String
+  tenant        Tenant              @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   applicationId String
   application   Application         @relation(fields: [applicationId], references: [id], onDelete: Cascade)
   phaseId       String?
@@ -1822,6 +1947,7 @@ model ApplicationPayment {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
+  @@index([tenantId])
   @@index([applicationId])
   @@index([phaseId])
   @@index([installmentId])
@@ -1834,6 +1960,8 @@ model ApplicationPayment {
 // Contract documents (owned by contract, linked to phases/steps as needed)
 model ApplicationDocument {
   id            String      @id @default(cuid())
+  tenantId      String
+  tenant        Tenant      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   applicationId String
   application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
   phaseId       String? // Optional link to specific phase
@@ -1850,6 +1978,7 @@ model ApplicationDocument {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@index([tenantId])
   @@index([applicationId])
   @@index([phaseId])
   @@index([stepId])
@@ -2358,7 +2487,9 @@ model WorkflowEvent {
 
 /// Event Handler Execution - Log of a handler processing an event
 model EventHandlerExecution {
-  id String @id @default(cuid())
+  id       String @id @default(cuid())
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
   /// The event being processed
   eventId String
@@ -2391,6 +2522,7 @@ model EventHandlerExecution {
 
   createdAt DateTime @default(now())
 
+  @@index([tenantId])
   @@index([eventId])
   @@index([handlerId])
   @@index([status])
@@ -2402,7 +2534,9 @@ model EventHandlerExecution {
 // =============================================================================
 
 model DomainEvent {
-  id String @id @default(cuid())
+  id       String @id @default(cuid())
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
   // Event identification
   eventType     String // MORTGAGE.CREATED, PHASE.ACTIVATED, PAYMENT.COMPLETED, etc
@@ -2431,6 +2565,7 @@ model DomainEvent {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@index([tenantId])
   @@index([status, nextRetryAt])
   @@index([eventType])
   @@index([aggregateType, aggregateId])
@@ -2644,6 +2779,7 @@ enum BlockerUrgency {
 model WorkflowBlocker {
   id       String @id @default(cuid())
   tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
   // Reference to the blocked entity
   applicationId String

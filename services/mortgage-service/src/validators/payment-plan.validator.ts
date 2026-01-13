@@ -20,7 +20,7 @@ const PaymentPlanBaseSchema = z.object({
     paymentFrequency: PaymentFrequencyEnum.optional().openapi({ example: 'MONTHLY' }),
     frequency: PaymentFrequencyEnum.optional().openapi({ example: 'MONTHLY' }), // alias for paymentFrequency
     customFrequencyDays: z.number().int().positive().optional().openapi({ example: 14 }),
-    numberOfInstallments: z.number().int().positive().openapi({ example: 360 }),
+    numberOfInstallments: z.number().int().positive().optional().openapi({ example: 360 }),
     calculateInterestDaily: z.boolean().default(false),
     gracePeriodDays: z.number().int().min(0).default(0).openapi({ example: 5 }),
     interestRate: z.number().min(0).optional().openapi({ example: 9.5 }),
@@ -28,6 +28,13 @@ const PaymentPlanBaseSchema = z.object({
     // true = we collect funds via wallet/gateway (e.g., downpayment)
     // false = external payment, we only track/reconcile (e.g., bank mortgage)
     collectFunds: z.boolean().default(true).openapi({ example: true, description: 'Whether we collect funds or just track external payments' }),
+    // Flexible term configuration (for user-selectable duration like mortgages)
+    allowFlexibleTerm: z.boolean().default(false).openapi({ example: false, description: 'If true, user can select term within range' }),
+    minTermMonths: z.number().int().positive().optional().openapi({ example: 60, description: 'Minimum term in months (e.g., 60 = 5 years)' }),
+    maxTermMonths: z.number().int().positive().optional().openapi({ example: 360, description: 'Maximum term in months (e.g., 360 = 30 years)' }),
+    termStepMonths: z.number().int().positive().optional().openapi({ example: 12, description: 'Term increments in months (e.g., 12 = 1 year)' }),
+    // Age-based constraints (for mortgage eligibility)
+    maxAgeAtMaturity: z.number().int().positive().optional().openapi({ example: 65, description: 'User age + term cannot exceed this' }),
 });
 
 // Create payment plan schema with transform

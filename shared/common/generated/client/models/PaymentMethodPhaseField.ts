@@ -36,6 +36,7 @@ export type PaymentMethodPhaseFieldSumAggregateOutputType = {
 
 export type PaymentMethodPhaseFieldMinAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   phaseId: string | null
   name: string | null
   label: string | null
@@ -50,6 +51,7 @@ export type PaymentMethodPhaseFieldMinAggregateOutputType = {
 
 export type PaymentMethodPhaseFieldMaxAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   phaseId: string | null
   name: string | null
   label: string | null
@@ -64,6 +66,7 @@ export type PaymentMethodPhaseFieldMaxAggregateOutputType = {
 
 export type PaymentMethodPhaseFieldCountAggregateOutputType = {
   id: number
+  tenantId: number
   phaseId: number
   name: number
   label: number
@@ -91,6 +94,7 @@ export type PaymentMethodPhaseFieldSumAggregateInputType = {
 
 export type PaymentMethodPhaseFieldMinAggregateInputType = {
   id?: true
+  tenantId?: true
   phaseId?: true
   name?: true
   label?: true
@@ -105,6 +109,7 @@ export type PaymentMethodPhaseFieldMinAggregateInputType = {
 
 export type PaymentMethodPhaseFieldMaxAggregateInputType = {
   id?: true
+  tenantId?: true
   phaseId?: true
   name?: true
   label?: true
@@ -119,6 +124,7 @@ export type PaymentMethodPhaseFieldMaxAggregateInputType = {
 
 export type PaymentMethodPhaseFieldCountAggregateInputType = {
   id?: true
+  tenantId?: true
   phaseId?: true
   name?: true
   label?: true
@@ -223,6 +229,7 @@ export type PaymentMethodPhaseFieldGroupByArgs<ExtArgs extends runtime.Types.Ext
 
 export type PaymentMethodPhaseFieldGroupByOutputType = {
   id: string
+  tenantId: string
   phaseId: string
   name: string
   label: string
@@ -263,6 +270,7 @@ export type PaymentMethodPhaseFieldWhereInput = {
   OR?: Prisma.PaymentMethodPhaseFieldWhereInput[]
   NOT?: Prisma.PaymentMethodPhaseFieldWhereInput | Prisma.PaymentMethodPhaseFieldWhereInput[]
   id?: Prisma.StringFilter<"PaymentMethodPhaseField"> | string
+  tenantId?: Prisma.StringFilter<"PaymentMethodPhaseField"> | string
   phaseId?: Prisma.StringFilter<"PaymentMethodPhaseField"> | string
   name?: Prisma.StringFilter<"PaymentMethodPhaseField"> | string
   label?: Prisma.StringFilter<"PaymentMethodPhaseField"> | string
@@ -276,11 +284,13 @@ export type PaymentMethodPhaseFieldWhereInput = {
   defaultValue?: Prisma.JsonNullableFilter<"PaymentMethodPhaseField">
   createdAt?: Prisma.DateTimeFilter<"PaymentMethodPhaseField"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PaymentMethodPhaseField"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   phase?: Prisma.XOR<Prisma.PropertyPaymentMethodPhaseScalarRelationFilter, Prisma.PropertyPaymentMethodPhaseWhereInput>
 }
 
 export type PaymentMethodPhaseFieldOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   phaseId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   label?: Prisma.SortOrder
@@ -294,6 +304,7 @@ export type PaymentMethodPhaseFieldOrderByWithRelationInput = {
   defaultValue?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  tenant?: Prisma.TenantOrderByWithRelationInput
   phase?: Prisma.PropertyPaymentMethodPhaseOrderByWithRelationInput
   _relevance?: Prisma.PaymentMethodPhaseFieldOrderByRelevanceInput
 }
@@ -304,6 +315,7 @@ export type PaymentMethodPhaseFieldWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.PaymentMethodPhaseFieldWhereInput | Prisma.PaymentMethodPhaseFieldWhereInput[]
   OR?: Prisma.PaymentMethodPhaseFieldWhereInput[]
   NOT?: Prisma.PaymentMethodPhaseFieldWhereInput | Prisma.PaymentMethodPhaseFieldWhereInput[]
+  tenantId?: Prisma.StringFilter<"PaymentMethodPhaseField"> | string
   phaseId?: Prisma.StringFilter<"PaymentMethodPhaseField"> | string
   name?: Prisma.StringFilter<"PaymentMethodPhaseField"> | string
   label?: Prisma.StringFilter<"PaymentMethodPhaseField"> | string
@@ -317,11 +329,13 @@ export type PaymentMethodPhaseFieldWhereUniqueInput = Prisma.AtLeast<{
   defaultValue?: Prisma.JsonNullableFilter<"PaymentMethodPhaseField">
   createdAt?: Prisma.DateTimeFilter<"PaymentMethodPhaseField"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PaymentMethodPhaseField"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   phase?: Prisma.XOR<Prisma.PropertyPaymentMethodPhaseScalarRelationFilter, Prisma.PropertyPaymentMethodPhaseWhereInput>
 }, "id" | "phaseId_name">
 
 export type PaymentMethodPhaseFieldOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   phaseId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   label?: Prisma.SortOrder
@@ -347,6 +361,7 @@ export type PaymentMethodPhaseFieldScalarWhereWithAggregatesInput = {
   OR?: Prisma.PaymentMethodPhaseFieldScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PaymentMethodPhaseFieldScalarWhereWithAggregatesInput | Prisma.PaymentMethodPhaseFieldScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"PaymentMethodPhaseField"> | string
+  tenantId?: Prisma.StringWithAggregatesFilter<"PaymentMethodPhaseField"> | string
   phaseId?: Prisma.StringWithAggregatesFilter<"PaymentMethodPhaseField"> | string
   name?: Prisma.StringWithAggregatesFilter<"PaymentMethodPhaseField"> | string
   label?: Prisma.StringWithAggregatesFilter<"PaymentMethodPhaseField"> | string
@@ -376,11 +391,13 @@ export type PaymentMethodPhaseFieldCreateInput = {
   defaultValue?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutPaymentMethodPhaseFieldsInput
   phase: Prisma.PropertyPaymentMethodPhaseCreateNestedOneWithoutQuestionnaireFieldsInput
 }
 
 export type PaymentMethodPhaseFieldUncheckedCreateInput = {
   id?: string
+  tenantId: string
   phaseId: string
   name: string
   label: string
@@ -410,11 +427,13 @@ export type PaymentMethodPhaseFieldUpdateInput = {
   defaultValue?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutPaymentMethodPhaseFieldsNestedInput
   phase?: Prisma.PropertyPaymentMethodPhaseUpdateOneRequiredWithoutQuestionnaireFieldsNestedInput
 }
 
 export type PaymentMethodPhaseFieldUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
@@ -432,6 +451,7 @@ export type PaymentMethodPhaseFieldUncheckedUpdateInput = {
 
 export type PaymentMethodPhaseFieldCreateManyInput = {
   id?: string
+  tenantId: string
   phaseId: string
   name: string
   label: string
@@ -465,6 +485,7 @@ export type PaymentMethodPhaseFieldUpdateManyMutationInput = {
 
 export type PaymentMethodPhaseFieldUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
@@ -503,6 +524,7 @@ export type PaymentMethodPhaseFieldPhaseIdNameCompoundUniqueInput = {
 
 export type PaymentMethodPhaseFieldCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   phaseId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   label?: Prisma.SortOrder
@@ -524,6 +546,7 @@ export type PaymentMethodPhaseFieldAvgOrderByAggregateInput = {
 
 export type PaymentMethodPhaseFieldMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   phaseId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   label?: Prisma.SortOrder
@@ -538,6 +561,7 @@ export type PaymentMethodPhaseFieldMaxOrderByAggregateInput = {
 
 export type PaymentMethodPhaseFieldMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   phaseId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   label?: Prisma.SortOrder
@@ -552,6 +576,48 @@ export type PaymentMethodPhaseFieldMinOrderByAggregateInput = {
 
 export type PaymentMethodPhaseFieldSumOrderByAggregateInput = {
   order?: Prisma.SortOrder
+}
+
+export type PaymentMethodPhaseFieldCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.PaymentMethodPhaseFieldCreateWithoutTenantInput, Prisma.PaymentMethodPhaseFieldUncheckedCreateWithoutTenantInput> | Prisma.PaymentMethodPhaseFieldCreateWithoutTenantInput[] | Prisma.PaymentMethodPhaseFieldUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PaymentMethodPhaseFieldCreateOrConnectWithoutTenantInput | Prisma.PaymentMethodPhaseFieldCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.PaymentMethodPhaseFieldCreateManyTenantInputEnvelope
+  connect?: Prisma.PaymentMethodPhaseFieldWhereUniqueInput | Prisma.PaymentMethodPhaseFieldWhereUniqueInput[]
+}
+
+export type PaymentMethodPhaseFieldUncheckedCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.PaymentMethodPhaseFieldCreateWithoutTenantInput, Prisma.PaymentMethodPhaseFieldUncheckedCreateWithoutTenantInput> | Prisma.PaymentMethodPhaseFieldCreateWithoutTenantInput[] | Prisma.PaymentMethodPhaseFieldUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PaymentMethodPhaseFieldCreateOrConnectWithoutTenantInput | Prisma.PaymentMethodPhaseFieldCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.PaymentMethodPhaseFieldCreateManyTenantInputEnvelope
+  connect?: Prisma.PaymentMethodPhaseFieldWhereUniqueInput | Prisma.PaymentMethodPhaseFieldWhereUniqueInput[]
+}
+
+export type PaymentMethodPhaseFieldUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.PaymentMethodPhaseFieldCreateWithoutTenantInput, Prisma.PaymentMethodPhaseFieldUncheckedCreateWithoutTenantInput> | Prisma.PaymentMethodPhaseFieldCreateWithoutTenantInput[] | Prisma.PaymentMethodPhaseFieldUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PaymentMethodPhaseFieldCreateOrConnectWithoutTenantInput | Prisma.PaymentMethodPhaseFieldCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.PaymentMethodPhaseFieldUpsertWithWhereUniqueWithoutTenantInput | Prisma.PaymentMethodPhaseFieldUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.PaymentMethodPhaseFieldCreateManyTenantInputEnvelope
+  set?: Prisma.PaymentMethodPhaseFieldWhereUniqueInput | Prisma.PaymentMethodPhaseFieldWhereUniqueInput[]
+  disconnect?: Prisma.PaymentMethodPhaseFieldWhereUniqueInput | Prisma.PaymentMethodPhaseFieldWhereUniqueInput[]
+  delete?: Prisma.PaymentMethodPhaseFieldWhereUniqueInput | Prisma.PaymentMethodPhaseFieldWhereUniqueInput[]
+  connect?: Prisma.PaymentMethodPhaseFieldWhereUniqueInput | Prisma.PaymentMethodPhaseFieldWhereUniqueInput[]
+  update?: Prisma.PaymentMethodPhaseFieldUpdateWithWhereUniqueWithoutTenantInput | Prisma.PaymentMethodPhaseFieldUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.PaymentMethodPhaseFieldUpdateManyWithWhereWithoutTenantInput | Prisma.PaymentMethodPhaseFieldUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.PaymentMethodPhaseFieldScalarWhereInput | Prisma.PaymentMethodPhaseFieldScalarWhereInput[]
+}
+
+export type PaymentMethodPhaseFieldUncheckedUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.PaymentMethodPhaseFieldCreateWithoutTenantInput, Prisma.PaymentMethodPhaseFieldUncheckedCreateWithoutTenantInput> | Prisma.PaymentMethodPhaseFieldCreateWithoutTenantInput[] | Prisma.PaymentMethodPhaseFieldUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PaymentMethodPhaseFieldCreateOrConnectWithoutTenantInput | Prisma.PaymentMethodPhaseFieldCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.PaymentMethodPhaseFieldUpsertWithWhereUniqueWithoutTenantInput | Prisma.PaymentMethodPhaseFieldUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.PaymentMethodPhaseFieldCreateManyTenantInputEnvelope
+  set?: Prisma.PaymentMethodPhaseFieldWhereUniqueInput | Prisma.PaymentMethodPhaseFieldWhereUniqueInput[]
+  disconnect?: Prisma.PaymentMethodPhaseFieldWhereUniqueInput | Prisma.PaymentMethodPhaseFieldWhereUniqueInput[]
+  delete?: Prisma.PaymentMethodPhaseFieldWhereUniqueInput | Prisma.PaymentMethodPhaseFieldWhereUniqueInput[]
+  connect?: Prisma.PaymentMethodPhaseFieldWhereUniqueInput | Prisma.PaymentMethodPhaseFieldWhereUniqueInput[]
+  update?: Prisma.PaymentMethodPhaseFieldUpdateWithWhereUniqueWithoutTenantInput | Prisma.PaymentMethodPhaseFieldUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.PaymentMethodPhaseFieldUpdateManyWithWhereWithoutTenantInput | Prisma.PaymentMethodPhaseFieldUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.PaymentMethodPhaseFieldScalarWhereInput | Prisma.PaymentMethodPhaseFieldScalarWhereInput[]
 }
 
 export type PaymentMethodPhaseFieldCreateNestedManyWithoutPhaseInput = {
@@ -600,8 +666,26 @@ export type EnumFieldTypeFieldUpdateOperationsInput = {
   set?: $Enums.FieldType
 }
 
-export type PaymentMethodPhaseFieldCreateWithoutPhaseInput = {
+export type PaymentMethodPhaseFieldCreateWithoutTenantInput = {
   id?: string
+  name: string
+  label: string
+  description?: string | null
+  placeholder?: string | null
+  fieldType: $Enums.FieldType
+  isRequired?: boolean
+  order: number
+  validation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  displayCondition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  defaultValue?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  phase: Prisma.PropertyPaymentMethodPhaseCreateNestedOneWithoutQuestionnaireFieldsInput
+}
+
+export type PaymentMethodPhaseFieldUncheckedCreateWithoutTenantInput = {
+  id?: string
+  phaseId: string
   name: string
   label: string
   description?: string | null
@@ -616,8 +700,73 @@ export type PaymentMethodPhaseFieldCreateWithoutPhaseInput = {
   updatedAt?: Date | string
 }
 
+export type PaymentMethodPhaseFieldCreateOrConnectWithoutTenantInput = {
+  where: Prisma.PaymentMethodPhaseFieldWhereUniqueInput
+  create: Prisma.XOR<Prisma.PaymentMethodPhaseFieldCreateWithoutTenantInput, Prisma.PaymentMethodPhaseFieldUncheckedCreateWithoutTenantInput>
+}
+
+export type PaymentMethodPhaseFieldCreateManyTenantInputEnvelope = {
+  data: Prisma.PaymentMethodPhaseFieldCreateManyTenantInput | Prisma.PaymentMethodPhaseFieldCreateManyTenantInput[]
+  skipDuplicates?: boolean
+}
+
+export type PaymentMethodPhaseFieldUpsertWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.PaymentMethodPhaseFieldWhereUniqueInput
+  update: Prisma.XOR<Prisma.PaymentMethodPhaseFieldUpdateWithoutTenantInput, Prisma.PaymentMethodPhaseFieldUncheckedUpdateWithoutTenantInput>
+  create: Prisma.XOR<Prisma.PaymentMethodPhaseFieldCreateWithoutTenantInput, Prisma.PaymentMethodPhaseFieldUncheckedCreateWithoutTenantInput>
+}
+
+export type PaymentMethodPhaseFieldUpdateWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.PaymentMethodPhaseFieldWhereUniqueInput
+  data: Prisma.XOR<Prisma.PaymentMethodPhaseFieldUpdateWithoutTenantInput, Prisma.PaymentMethodPhaseFieldUncheckedUpdateWithoutTenantInput>
+}
+
+export type PaymentMethodPhaseFieldUpdateManyWithWhereWithoutTenantInput = {
+  where: Prisma.PaymentMethodPhaseFieldScalarWhereInput
+  data: Prisma.XOR<Prisma.PaymentMethodPhaseFieldUpdateManyMutationInput, Prisma.PaymentMethodPhaseFieldUncheckedUpdateManyWithoutTenantInput>
+}
+
+export type PaymentMethodPhaseFieldScalarWhereInput = {
+  AND?: Prisma.PaymentMethodPhaseFieldScalarWhereInput | Prisma.PaymentMethodPhaseFieldScalarWhereInput[]
+  OR?: Prisma.PaymentMethodPhaseFieldScalarWhereInput[]
+  NOT?: Prisma.PaymentMethodPhaseFieldScalarWhereInput | Prisma.PaymentMethodPhaseFieldScalarWhereInput[]
+  id?: Prisma.StringFilter<"PaymentMethodPhaseField"> | string
+  tenantId?: Prisma.StringFilter<"PaymentMethodPhaseField"> | string
+  phaseId?: Prisma.StringFilter<"PaymentMethodPhaseField"> | string
+  name?: Prisma.StringFilter<"PaymentMethodPhaseField"> | string
+  label?: Prisma.StringFilter<"PaymentMethodPhaseField"> | string
+  description?: Prisma.StringNullableFilter<"PaymentMethodPhaseField"> | string | null
+  placeholder?: Prisma.StringNullableFilter<"PaymentMethodPhaseField"> | string | null
+  fieldType?: Prisma.EnumFieldTypeFilter<"PaymentMethodPhaseField"> | $Enums.FieldType
+  isRequired?: Prisma.BoolFilter<"PaymentMethodPhaseField"> | boolean
+  order?: Prisma.IntFilter<"PaymentMethodPhaseField"> | number
+  validation?: Prisma.JsonNullableFilter<"PaymentMethodPhaseField">
+  displayCondition?: Prisma.JsonNullableFilter<"PaymentMethodPhaseField">
+  defaultValue?: Prisma.JsonNullableFilter<"PaymentMethodPhaseField">
+  createdAt?: Prisma.DateTimeFilter<"PaymentMethodPhaseField"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"PaymentMethodPhaseField"> | Date | string
+}
+
+export type PaymentMethodPhaseFieldCreateWithoutPhaseInput = {
+  id?: string
+  name: string
+  label: string
+  description?: string | null
+  placeholder?: string | null
+  fieldType: $Enums.FieldType
+  isRequired?: boolean
+  order: number
+  validation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  displayCondition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  defaultValue?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutPaymentMethodPhaseFieldsInput
+}
+
 export type PaymentMethodPhaseFieldUncheckedCreateWithoutPhaseInput = {
   id?: string
+  tenantId: string
   name: string
   label: string
   description?: string | null
@@ -658,28 +807,77 @@ export type PaymentMethodPhaseFieldUpdateManyWithWhereWithoutPhaseInput = {
   data: Prisma.XOR<Prisma.PaymentMethodPhaseFieldUpdateManyMutationInput, Prisma.PaymentMethodPhaseFieldUncheckedUpdateManyWithoutPhaseInput>
 }
 
-export type PaymentMethodPhaseFieldScalarWhereInput = {
-  AND?: Prisma.PaymentMethodPhaseFieldScalarWhereInput | Prisma.PaymentMethodPhaseFieldScalarWhereInput[]
-  OR?: Prisma.PaymentMethodPhaseFieldScalarWhereInput[]
-  NOT?: Prisma.PaymentMethodPhaseFieldScalarWhereInput | Prisma.PaymentMethodPhaseFieldScalarWhereInput[]
-  id?: Prisma.StringFilter<"PaymentMethodPhaseField"> | string
-  phaseId?: Prisma.StringFilter<"PaymentMethodPhaseField"> | string
-  name?: Prisma.StringFilter<"PaymentMethodPhaseField"> | string
-  label?: Prisma.StringFilter<"PaymentMethodPhaseField"> | string
-  description?: Prisma.StringNullableFilter<"PaymentMethodPhaseField"> | string | null
-  placeholder?: Prisma.StringNullableFilter<"PaymentMethodPhaseField"> | string | null
-  fieldType?: Prisma.EnumFieldTypeFilter<"PaymentMethodPhaseField"> | $Enums.FieldType
-  isRequired?: Prisma.BoolFilter<"PaymentMethodPhaseField"> | boolean
-  order?: Prisma.IntFilter<"PaymentMethodPhaseField"> | number
-  validation?: Prisma.JsonNullableFilter<"PaymentMethodPhaseField">
-  displayCondition?: Prisma.JsonNullableFilter<"PaymentMethodPhaseField">
-  defaultValue?: Prisma.JsonNullableFilter<"PaymentMethodPhaseField">
-  createdAt?: Prisma.DateTimeFilter<"PaymentMethodPhaseField"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"PaymentMethodPhaseField"> | Date | string
+export type PaymentMethodPhaseFieldCreateManyTenantInput = {
+  id?: string
+  phaseId: string
+  name: string
+  label: string
+  description?: string | null
+  placeholder?: string | null
+  fieldType: $Enums.FieldType
+  isRequired?: boolean
+  order: number
+  validation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  displayCondition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  defaultValue?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PaymentMethodPhaseFieldUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  placeholder?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType
+  isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  validation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  displayCondition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  defaultValue?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  phase?: Prisma.PropertyPaymentMethodPhaseUpdateOneRequiredWithoutQuestionnaireFieldsNestedInput
+}
+
+export type PaymentMethodPhaseFieldUncheckedUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  placeholder?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType
+  isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  validation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  displayCondition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  defaultValue?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PaymentMethodPhaseFieldUncheckedUpdateManyWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  placeholder?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fieldType?: Prisma.EnumFieldTypeFieldUpdateOperationsInput | $Enums.FieldType
+  isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  validation?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  displayCondition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  defaultValue?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PaymentMethodPhaseFieldCreateManyPhaseInput = {
   id?: string
+  tenantId: string
   name: string
   label: string
   description?: string | null
@@ -708,10 +906,12 @@ export type PaymentMethodPhaseFieldUpdateWithoutPhaseInput = {
   defaultValue?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutPaymentMethodPhaseFieldsNestedInput
 }
 
 export type PaymentMethodPhaseFieldUncheckedUpdateWithoutPhaseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -728,6 +928,7 @@ export type PaymentMethodPhaseFieldUncheckedUpdateWithoutPhaseInput = {
 
 export type PaymentMethodPhaseFieldUncheckedUpdateManyWithoutPhaseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   label?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -746,6 +947,7 @@ export type PaymentMethodPhaseFieldUncheckedUpdateManyWithoutPhaseInput = {
 
 export type PaymentMethodPhaseFieldSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   phaseId?: boolean
   name?: boolean
   label?: boolean
@@ -759,6 +961,7 @@ export type PaymentMethodPhaseFieldSelect<ExtArgs extends runtime.Types.Extensio
   defaultValue?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   phase?: boolean | Prisma.PropertyPaymentMethodPhaseDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["paymentMethodPhaseField"]>
 
@@ -766,6 +969,7 @@ export type PaymentMethodPhaseFieldSelect<ExtArgs extends runtime.Types.Extensio
 
 export type PaymentMethodPhaseFieldSelectScalar = {
   id?: boolean
+  tenantId?: boolean
   phaseId?: boolean
   name?: boolean
   label?: boolean
@@ -781,18 +985,21 @@ export type PaymentMethodPhaseFieldSelectScalar = {
   updatedAt?: boolean
 }
 
-export type PaymentMethodPhaseFieldOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "phaseId" | "name" | "label" | "description" | "placeholder" | "fieldType" | "isRequired" | "order" | "validation" | "displayCondition" | "defaultValue" | "createdAt" | "updatedAt", ExtArgs["result"]["paymentMethodPhaseField"]>
+export type PaymentMethodPhaseFieldOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "phaseId" | "name" | "label" | "description" | "placeholder" | "fieldType" | "isRequired" | "order" | "validation" | "displayCondition" | "defaultValue" | "createdAt" | "updatedAt", ExtArgs["result"]["paymentMethodPhaseField"]>
 export type PaymentMethodPhaseFieldInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   phase?: boolean | Prisma.PropertyPaymentMethodPhaseDefaultArgs<ExtArgs>
 }
 
 export type $PaymentMethodPhaseFieldPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "PaymentMethodPhaseField"
   objects: {
+    tenant: Prisma.$TenantPayload<ExtArgs>
     phase: Prisma.$PropertyPaymentMethodPhasePayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    tenantId: string
     phaseId: string
     name: string
     label: string
@@ -1146,6 +1353,7 @@ readonly fields: PaymentMethodPhaseFieldFieldRefs;
  */
 export interface Prisma__PaymentMethodPhaseFieldClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   phase<T extends Prisma.PropertyPaymentMethodPhaseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyPaymentMethodPhaseDefaultArgs<ExtArgs>>): Prisma.Prisma__PropertyPaymentMethodPhaseClient<runtime.Types.Result.GetResult<Prisma.$PropertyPaymentMethodPhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1177,6 +1385,7 @@ export interface Prisma__PaymentMethodPhaseFieldClient<T, Null = never, ExtArgs 
  */
 export interface PaymentMethodPhaseFieldFieldRefs {
   readonly id: Prisma.FieldRef<"PaymentMethodPhaseField", 'String'>
+  readonly tenantId: Prisma.FieldRef<"PaymentMethodPhaseField", 'String'>
   readonly phaseId: Prisma.FieldRef<"PaymentMethodPhaseField", 'String'>
   readonly name: Prisma.FieldRef<"PaymentMethodPhaseField", 'String'>
   readonly label: Prisma.FieldRef<"PaymentMethodPhaseField", 'String'>

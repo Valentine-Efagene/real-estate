@@ -416,12 +416,13 @@ export class ApprovalRequestService {
                 // Create audit event
                 const refund = await db.applicationRefund.findUnique({
                     where: { id: entityId },
-                    select: { applicationId: true, amount: true },
+                    select: { applicationId: true, amount: true, application: { select: { tenantId: true } } },
                 });
 
                 if (refund) {
                     await db.applicationEvent.create({
                         data: {
+                            tenantId: refund.application.tenantId,
                             applicationId: refund.applicationId,
                             eventType: 'PAYMENT_COMPLETED',
                             eventGroup: 'PAYMENT',

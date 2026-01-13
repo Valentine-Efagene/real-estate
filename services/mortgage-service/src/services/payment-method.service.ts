@@ -89,6 +89,7 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
 
                     const createdPhase = await tx.propertyPaymentMethodPhase.create({
                         data: {
+                            tenantId,
                             paymentMethodId: created.id,
                             paymentPlanId: phase.paymentPlanId,
                             name: phase.name,
@@ -110,6 +111,7 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                         for (const step of phase.stepDefinitions) {
                             await tx.paymentMethodPhaseStep.create({
                                 data: {
+                                    tenantId,
                                     phaseId: createdPhase.id,
                                     name: step.name,
                                     stepType: step.stepType as StepType,
@@ -125,6 +127,7 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                         for (const doc of phase.requiredDocuments) {
                             await tx.paymentMethodPhaseDocument.create({
                                 data: {
+                                    tenantId,
                                     phaseId: createdPhase.id,
                                     documentType: doc.documentType,
                                     isRequired: doc.isRequired ?? true,
@@ -236,7 +239,7 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
     }
 
     async function addPhase(methodId: string, data: AddPhaseInput) {
-        await findById(methodId);
+        const method = await findById(methodId);
 
         if (data.phaseCategory === 'PAYMENT' && !data.paymentPlanId) {
             throw new AppError(400, 'PAYMENT phases require paymentPlanId');
@@ -249,6 +252,7 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
         const phase = await prisma.$transaction(async (tx: any) => {
             const createdPhase = await tx.propertyPaymentMethodPhase.create({
                 data: {
+                    tenantId: method.tenantId,
                     paymentMethodId: methodId,
                     paymentPlanId: data.paymentPlanId,
                     name: data.name,
@@ -270,6 +274,7 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                 for (const step of data.stepDefinitions) {
                     await tx.paymentMethodPhaseStep.create({
                         data: {
+                            tenantId: method.tenantId,
                             phaseId: createdPhase.id,
                             name: step.name,
                             stepType: step.stepType as StepType,
@@ -285,6 +290,7 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                 for (const doc of data.requiredDocuments) {
                     await tx.paymentMethodPhaseDocument.create({
                         data: {
+                            tenantId: method.tenantId,
                             phaseId: createdPhase.id,
                             documentType: doc.documentType,
                             isRequired: doc.isRequired ?? true,
@@ -351,6 +357,7 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                     for (const step of stepDefinitions) {
                         await tx.paymentMethodPhaseStep.create({
                             data: {
+                                tenantId: phase.tenantId,
                                 phaseId,
                                 name: step.name,
                                 stepType: step.stepType as StepType,
@@ -369,6 +376,7 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                     for (const doc of requiredDocuments) {
                         await tx.paymentMethodPhaseDocument.create({
                             data: {
+                                tenantId: phase.tenantId,
                                 phaseId,
                                 documentType: doc.documentType,
                                 isRequired: doc.isRequired ?? true,
@@ -443,6 +451,7 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
 
         const step = await prisma.paymentMethodPhaseStep.create({
             data: {
+                tenantId: phase.tenantId,
                 phaseId,
                 name: data.name,
                 stepType: data.stepType as StepType,
@@ -564,6 +573,7 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
 
         const doc = await prisma.paymentMethodPhaseDocument.create({
             data: {
+                tenantId: phase.tenantId,
                 phaseId,
                 documentType: data.documentType,
                 isRequired: data.isRequired ?? true,
@@ -674,6 +684,7 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
             for (const phase of source.phases) {
                 const newPhase = await tx.propertyPaymentMethodPhase.create({
                     data: {
+                        tenantId,
                         paymentMethodId: newMethod.id,
                         paymentPlanId: phase.paymentPlanId,
                         name: phase.name,
@@ -694,6 +705,7 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                 for (const step of phase.steps) {
                     await tx.paymentMethodPhaseStep.create({
                         data: {
+                            tenantId,
                             phaseId: newPhase.id,
                             name: step.name,
                             stepType: step.stepType,
@@ -707,6 +719,7 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                 for (const doc of phase.requiredDocuments) {
                     await tx.paymentMethodPhaseDocument.create({
                         data: {
+                            tenantId,
                             phaseId: newPhase.id,
                             documentType: doc.documentType,
                             isRequired: doc.isRequired,
@@ -726,7 +739,7 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
     }
 
     async function linkToProperty(methodId: string, data: LinkToPropertyInput) {
-        await findById(methodId);
+        const method = await findById(methodId);
 
         const property = await prisma.property.findUnique({
             where: { id: data.propertyId },
@@ -748,6 +761,7 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                 isActive: data.isActive,
             },
             create: {
+                tenantId: method.tenantId,
                 propertyId: data.propertyId,
                 paymentMethodId: methodId,
                 isDefault: data.isDefault ?? false,
@@ -823,6 +837,7 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
 
         const attachment = await prisma.phaseEventAttachment.create({
             data: {
+                tenantId: phase.tenantId,
                 phaseId,
                 handlerId: data.handlerId,
                 trigger: data.trigger as PhaseTrigger,
@@ -930,6 +945,7 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
 
         const attachment = await prisma.stepEventAttachment.create({
             data: {
+                tenantId: step.tenantId,
                 stepId,
                 handlerId: data.handlerId,
                 trigger: data.trigger as StepTrigger,

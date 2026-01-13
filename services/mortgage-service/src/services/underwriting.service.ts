@@ -387,6 +387,7 @@ export class UnderwritingService {
 
             // Enqueue domain event for notification
             const outboxId = await enqueueOutboxInTx(tx, {
+                tenantId: application.tenantId,
                 eventType: notificationType,
                 aggregateType: 'application',
                 aggregateId: applicationId,

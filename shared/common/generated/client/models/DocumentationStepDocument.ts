@@ -26,6 +26,7 @@ export type AggregateDocumentationStepDocument = {
 
 export type DocumentationStepDocumentMinAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   stepId: string | null
   documentType: string | null
   isRequired: boolean | null
@@ -34,6 +35,7 @@ export type DocumentationStepDocumentMinAggregateOutputType = {
 
 export type DocumentationStepDocumentMaxAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   stepId: string | null
   documentType: string | null
   isRequired: boolean | null
@@ -42,6 +44,7 @@ export type DocumentationStepDocumentMaxAggregateOutputType = {
 
 export type DocumentationStepDocumentCountAggregateOutputType = {
   id: number
+  tenantId: number
   stepId: number
   documentType: number
   isRequired: number
@@ -52,6 +55,7 @@ export type DocumentationStepDocumentCountAggregateOutputType = {
 
 export type DocumentationStepDocumentMinAggregateInputType = {
   id?: true
+  tenantId?: true
   stepId?: true
   documentType?: true
   isRequired?: true
@@ -60,6 +64,7 @@ export type DocumentationStepDocumentMinAggregateInputType = {
 
 export type DocumentationStepDocumentMaxAggregateInputType = {
   id?: true
+  tenantId?: true
   stepId?: true
   documentType?: true
   isRequired?: true
@@ -68,6 +73,7 @@ export type DocumentationStepDocumentMaxAggregateInputType = {
 
 export type DocumentationStepDocumentCountAggregateInputType = {
   id?: true
+  tenantId?: true
   stepId?: true
   documentType?: true
   isRequired?: true
@@ -149,6 +155,7 @@ export type DocumentationStepDocumentGroupByArgs<ExtArgs extends runtime.Types.E
 
 export type DocumentationStepDocumentGroupByOutputType = {
   id: string
+  tenantId: string
   stepId: string
   documentType: string
   isRequired: boolean
@@ -178,19 +185,23 @@ export type DocumentationStepDocumentWhereInput = {
   OR?: Prisma.DocumentationStepDocumentWhereInput[]
   NOT?: Prisma.DocumentationStepDocumentWhereInput | Prisma.DocumentationStepDocumentWhereInput[]
   id?: Prisma.StringFilter<"DocumentationStepDocument"> | string
+  tenantId?: Prisma.StringFilter<"DocumentationStepDocument"> | string
   stepId?: Prisma.StringFilter<"DocumentationStepDocument"> | string
   documentType?: Prisma.StringFilter<"DocumentationStepDocument"> | string
   isRequired?: Prisma.BoolFilter<"DocumentationStepDocument"> | boolean
   createdAt?: Prisma.DateTimeFilter<"DocumentationStepDocument"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   step?: Prisma.XOR<Prisma.DocumentationStepScalarRelationFilter, Prisma.DocumentationStepWhereInput>
 }
 
 export type DocumentationStepDocumentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   stepId?: Prisma.SortOrder
   documentType?: Prisma.SortOrder
   isRequired?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  tenant?: Prisma.TenantOrderByWithRelationInput
   step?: Prisma.DocumentationStepOrderByWithRelationInput
   _relevance?: Prisma.DocumentationStepDocumentOrderByRelevanceInput
 }
@@ -200,15 +211,18 @@ export type DocumentationStepDocumentWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.DocumentationStepDocumentWhereInput | Prisma.DocumentationStepDocumentWhereInput[]
   OR?: Prisma.DocumentationStepDocumentWhereInput[]
   NOT?: Prisma.DocumentationStepDocumentWhereInput | Prisma.DocumentationStepDocumentWhereInput[]
+  tenantId?: Prisma.StringFilter<"DocumentationStepDocument"> | string
   stepId?: Prisma.StringFilter<"DocumentationStepDocument"> | string
   documentType?: Prisma.StringFilter<"DocumentationStepDocument"> | string
   isRequired?: Prisma.BoolFilter<"DocumentationStepDocument"> | boolean
   createdAt?: Prisma.DateTimeFilter<"DocumentationStepDocument"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   step?: Prisma.XOR<Prisma.DocumentationStepScalarRelationFilter, Prisma.DocumentationStepWhereInput>
 }, "id">
 
 export type DocumentationStepDocumentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   stepId?: Prisma.SortOrder
   documentType?: Prisma.SortOrder
   isRequired?: Prisma.SortOrder
@@ -223,6 +237,7 @@ export type DocumentationStepDocumentScalarWhereWithAggregatesInput = {
   OR?: Prisma.DocumentationStepDocumentScalarWhereWithAggregatesInput[]
   NOT?: Prisma.DocumentationStepDocumentScalarWhereWithAggregatesInput | Prisma.DocumentationStepDocumentScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"DocumentationStepDocument"> | string
+  tenantId?: Prisma.StringWithAggregatesFilter<"DocumentationStepDocument"> | string
   stepId?: Prisma.StringWithAggregatesFilter<"DocumentationStepDocument"> | string
   documentType?: Prisma.StringWithAggregatesFilter<"DocumentationStepDocument"> | string
   isRequired?: Prisma.BoolWithAggregatesFilter<"DocumentationStepDocument"> | boolean
@@ -234,11 +249,13 @@ export type DocumentationStepDocumentCreateInput = {
   documentType: string
   isRequired?: boolean
   createdAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutDocumentationStepDocumentsInput
   step: Prisma.DocumentationStepCreateNestedOneWithoutRequiredDocumentsInput
 }
 
 export type DocumentationStepDocumentUncheckedCreateInput = {
   id?: string
+  tenantId: string
   stepId: string
   documentType: string
   isRequired?: boolean
@@ -250,11 +267,13 @@ export type DocumentationStepDocumentUpdateInput = {
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutDocumentationStepDocumentsNestedInput
   step?: Prisma.DocumentationStepUpdateOneRequiredWithoutRequiredDocumentsNestedInput
 }
 
 export type DocumentationStepDocumentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   stepId?: Prisma.StringFieldUpdateOperationsInput | string
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -263,6 +282,7 @@ export type DocumentationStepDocumentUncheckedUpdateInput = {
 
 export type DocumentationStepDocumentCreateManyInput = {
   id?: string
+  tenantId: string
   stepId: string
   documentType: string
   isRequired?: boolean
@@ -278,6 +298,7 @@ export type DocumentationStepDocumentUpdateManyMutationInput = {
 
 export type DocumentationStepDocumentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   stepId?: Prisma.StringFieldUpdateOperationsInput | string
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -302,6 +323,7 @@ export type DocumentationStepDocumentOrderByRelevanceInput = {
 
 export type DocumentationStepDocumentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   stepId?: Prisma.SortOrder
   documentType?: Prisma.SortOrder
   isRequired?: Prisma.SortOrder
@@ -310,6 +332,7 @@ export type DocumentationStepDocumentCountOrderByAggregateInput = {
 
 export type DocumentationStepDocumentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   stepId?: Prisma.SortOrder
   documentType?: Prisma.SortOrder
   isRequired?: Prisma.SortOrder
@@ -318,10 +341,53 @@ export type DocumentationStepDocumentMaxOrderByAggregateInput = {
 
 export type DocumentationStepDocumentMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   stepId?: Prisma.SortOrder
   documentType?: Prisma.SortOrder
   isRequired?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+}
+
+export type DocumentationStepDocumentCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.DocumentationStepDocumentCreateWithoutTenantInput, Prisma.DocumentationStepDocumentUncheckedCreateWithoutTenantInput> | Prisma.DocumentationStepDocumentCreateWithoutTenantInput[] | Prisma.DocumentationStepDocumentUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.DocumentationStepDocumentCreateOrConnectWithoutTenantInput | Prisma.DocumentationStepDocumentCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.DocumentationStepDocumentCreateManyTenantInputEnvelope
+  connect?: Prisma.DocumentationStepDocumentWhereUniqueInput | Prisma.DocumentationStepDocumentWhereUniqueInput[]
+}
+
+export type DocumentationStepDocumentUncheckedCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.DocumentationStepDocumentCreateWithoutTenantInput, Prisma.DocumentationStepDocumentUncheckedCreateWithoutTenantInput> | Prisma.DocumentationStepDocumentCreateWithoutTenantInput[] | Prisma.DocumentationStepDocumentUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.DocumentationStepDocumentCreateOrConnectWithoutTenantInput | Prisma.DocumentationStepDocumentCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.DocumentationStepDocumentCreateManyTenantInputEnvelope
+  connect?: Prisma.DocumentationStepDocumentWhereUniqueInput | Prisma.DocumentationStepDocumentWhereUniqueInput[]
+}
+
+export type DocumentationStepDocumentUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentationStepDocumentCreateWithoutTenantInput, Prisma.DocumentationStepDocumentUncheckedCreateWithoutTenantInput> | Prisma.DocumentationStepDocumentCreateWithoutTenantInput[] | Prisma.DocumentationStepDocumentUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.DocumentationStepDocumentCreateOrConnectWithoutTenantInput | Prisma.DocumentationStepDocumentCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.DocumentationStepDocumentUpsertWithWhereUniqueWithoutTenantInput | Prisma.DocumentationStepDocumentUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.DocumentationStepDocumentCreateManyTenantInputEnvelope
+  set?: Prisma.DocumentationStepDocumentWhereUniqueInput | Prisma.DocumentationStepDocumentWhereUniqueInput[]
+  disconnect?: Prisma.DocumentationStepDocumentWhereUniqueInput | Prisma.DocumentationStepDocumentWhereUniqueInput[]
+  delete?: Prisma.DocumentationStepDocumentWhereUniqueInput | Prisma.DocumentationStepDocumentWhereUniqueInput[]
+  connect?: Prisma.DocumentationStepDocumentWhereUniqueInput | Prisma.DocumentationStepDocumentWhereUniqueInput[]
+  update?: Prisma.DocumentationStepDocumentUpdateWithWhereUniqueWithoutTenantInput | Prisma.DocumentationStepDocumentUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.DocumentationStepDocumentUpdateManyWithWhereWithoutTenantInput | Prisma.DocumentationStepDocumentUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.DocumentationStepDocumentScalarWhereInput | Prisma.DocumentationStepDocumentScalarWhereInput[]
+}
+
+export type DocumentationStepDocumentUncheckedUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentationStepDocumentCreateWithoutTenantInput, Prisma.DocumentationStepDocumentUncheckedCreateWithoutTenantInput> | Prisma.DocumentationStepDocumentCreateWithoutTenantInput[] | Prisma.DocumentationStepDocumentUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.DocumentationStepDocumentCreateOrConnectWithoutTenantInput | Prisma.DocumentationStepDocumentCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.DocumentationStepDocumentUpsertWithWhereUniqueWithoutTenantInput | Prisma.DocumentationStepDocumentUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.DocumentationStepDocumentCreateManyTenantInputEnvelope
+  set?: Prisma.DocumentationStepDocumentWhereUniqueInput | Prisma.DocumentationStepDocumentWhereUniqueInput[]
+  disconnect?: Prisma.DocumentationStepDocumentWhereUniqueInput | Prisma.DocumentationStepDocumentWhereUniqueInput[]
+  delete?: Prisma.DocumentationStepDocumentWhereUniqueInput | Prisma.DocumentationStepDocumentWhereUniqueInput[]
+  connect?: Prisma.DocumentationStepDocumentWhereUniqueInput | Prisma.DocumentationStepDocumentWhereUniqueInput[]
+  update?: Prisma.DocumentationStepDocumentUpdateWithWhereUniqueWithoutTenantInput | Prisma.DocumentationStepDocumentUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.DocumentationStepDocumentUpdateManyWithWhereWithoutTenantInput | Prisma.DocumentationStepDocumentUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.DocumentationStepDocumentScalarWhereInput | Prisma.DocumentationStepDocumentScalarWhereInput[]
 }
 
 export type DocumentationStepDocumentCreateNestedManyWithoutStepInput = {
@@ -366,15 +432,71 @@ export type DocumentationStepDocumentUncheckedUpdateManyWithoutStepNestedInput =
   deleteMany?: Prisma.DocumentationStepDocumentScalarWhereInput | Prisma.DocumentationStepDocumentScalarWhereInput[]
 }
 
-export type DocumentationStepDocumentCreateWithoutStepInput = {
+export type DocumentationStepDocumentCreateWithoutTenantInput = {
   id?: string
+  documentType: string
+  isRequired?: boolean
+  createdAt?: Date | string
+  step: Prisma.DocumentationStepCreateNestedOneWithoutRequiredDocumentsInput
+}
+
+export type DocumentationStepDocumentUncheckedCreateWithoutTenantInput = {
+  id?: string
+  stepId: string
   documentType: string
   isRequired?: boolean
   createdAt?: Date | string
 }
 
+export type DocumentationStepDocumentCreateOrConnectWithoutTenantInput = {
+  where: Prisma.DocumentationStepDocumentWhereUniqueInput
+  create: Prisma.XOR<Prisma.DocumentationStepDocumentCreateWithoutTenantInput, Prisma.DocumentationStepDocumentUncheckedCreateWithoutTenantInput>
+}
+
+export type DocumentationStepDocumentCreateManyTenantInputEnvelope = {
+  data: Prisma.DocumentationStepDocumentCreateManyTenantInput | Prisma.DocumentationStepDocumentCreateManyTenantInput[]
+  skipDuplicates?: boolean
+}
+
+export type DocumentationStepDocumentUpsertWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.DocumentationStepDocumentWhereUniqueInput
+  update: Prisma.XOR<Prisma.DocumentationStepDocumentUpdateWithoutTenantInput, Prisma.DocumentationStepDocumentUncheckedUpdateWithoutTenantInput>
+  create: Prisma.XOR<Prisma.DocumentationStepDocumentCreateWithoutTenantInput, Prisma.DocumentationStepDocumentUncheckedCreateWithoutTenantInput>
+}
+
+export type DocumentationStepDocumentUpdateWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.DocumentationStepDocumentWhereUniqueInput
+  data: Prisma.XOR<Prisma.DocumentationStepDocumentUpdateWithoutTenantInput, Prisma.DocumentationStepDocumentUncheckedUpdateWithoutTenantInput>
+}
+
+export type DocumentationStepDocumentUpdateManyWithWhereWithoutTenantInput = {
+  where: Prisma.DocumentationStepDocumentScalarWhereInput
+  data: Prisma.XOR<Prisma.DocumentationStepDocumentUpdateManyMutationInput, Prisma.DocumentationStepDocumentUncheckedUpdateManyWithoutTenantInput>
+}
+
+export type DocumentationStepDocumentScalarWhereInput = {
+  AND?: Prisma.DocumentationStepDocumentScalarWhereInput | Prisma.DocumentationStepDocumentScalarWhereInput[]
+  OR?: Prisma.DocumentationStepDocumentScalarWhereInput[]
+  NOT?: Prisma.DocumentationStepDocumentScalarWhereInput | Prisma.DocumentationStepDocumentScalarWhereInput[]
+  id?: Prisma.StringFilter<"DocumentationStepDocument"> | string
+  tenantId?: Prisma.StringFilter<"DocumentationStepDocument"> | string
+  stepId?: Prisma.StringFilter<"DocumentationStepDocument"> | string
+  documentType?: Prisma.StringFilter<"DocumentationStepDocument"> | string
+  isRequired?: Prisma.BoolFilter<"DocumentationStepDocument"> | boolean
+  createdAt?: Prisma.DateTimeFilter<"DocumentationStepDocument"> | Date | string
+}
+
+export type DocumentationStepDocumentCreateWithoutStepInput = {
+  id?: string
+  documentType: string
+  isRequired?: boolean
+  createdAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutDocumentationStepDocumentsInput
+}
+
 export type DocumentationStepDocumentUncheckedCreateWithoutStepInput = {
   id?: string
+  tenantId: string
   documentType: string
   isRequired?: boolean
   createdAt?: Date | string
@@ -406,19 +528,41 @@ export type DocumentationStepDocumentUpdateManyWithWhereWithoutStepInput = {
   data: Prisma.XOR<Prisma.DocumentationStepDocumentUpdateManyMutationInput, Prisma.DocumentationStepDocumentUncheckedUpdateManyWithoutStepInput>
 }
 
-export type DocumentationStepDocumentScalarWhereInput = {
-  AND?: Prisma.DocumentationStepDocumentScalarWhereInput | Prisma.DocumentationStepDocumentScalarWhereInput[]
-  OR?: Prisma.DocumentationStepDocumentScalarWhereInput[]
-  NOT?: Prisma.DocumentationStepDocumentScalarWhereInput | Prisma.DocumentationStepDocumentScalarWhereInput[]
-  id?: Prisma.StringFilter<"DocumentationStepDocument"> | string
-  stepId?: Prisma.StringFilter<"DocumentationStepDocument"> | string
-  documentType?: Prisma.StringFilter<"DocumentationStepDocument"> | string
-  isRequired?: Prisma.BoolFilter<"DocumentationStepDocument"> | boolean
-  createdAt?: Prisma.DateTimeFilter<"DocumentationStepDocument"> | Date | string
+export type DocumentationStepDocumentCreateManyTenantInput = {
+  id?: string
+  stepId: string
+  documentType: string
+  isRequired?: boolean
+  createdAt?: Date | string
+}
+
+export type DocumentationStepDocumentUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  documentType?: Prisma.StringFieldUpdateOperationsInput | string
+  isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  step?: Prisma.DocumentationStepUpdateOneRequiredWithoutRequiredDocumentsNestedInput
+}
+
+export type DocumentationStepDocumentUncheckedUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  stepId?: Prisma.StringFieldUpdateOperationsInput | string
+  documentType?: Prisma.StringFieldUpdateOperationsInput | string
+  isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type DocumentationStepDocumentUncheckedUpdateManyWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  stepId?: Prisma.StringFieldUpdateOperationsInput | string
+  documentType?: Prisma.StringFieldUpdateOperationsInput | string
+  isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type DocumentationStepDocumentCreateManyStepInput = {
   id?: string
+  tenantId: string
   documentType: string
   isRequired?: boolean
   createdAt?: Date | string
@@ -429,10 +573,12 @@ export type DocumentationStepDocumentUpdateWithoutStepInput = {
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutDocumentationStepDocumentsNestedInput
 }
 
 export type DocumentationStepDocumentUncheckedUpdateWithoutStepInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -440,6 +586,7 @@ export type DocumentationStepDocumentUncheckedUpdateWithoutStepInput = {
 
 export type DocumentationStepDocumentUncheckedUpdateManyWithoutStepInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   isRequired?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -449,10 +596,12 @@ export type DocumentationStepDocumentUncheckedUpdateManyWithoutStepInput = {
 
 export type DocumentationStepDocumentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   stepId?: boolean
   documentType?: boolean
   isRequired?: boolean
   createdAt?: boolean
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   step?: boolean | Prisma.DocumentationStepDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["documentationStepDocument"]>
 
@@ -460,24 +609,28 @@ export type DocumentationStepDocumentSelect<ExtArgs extends runtime.Types.Extens
 
 export type DocumentationStepDocumentSelectScalar = {
   id?: boolean
+  tenantId?: boolean
   stepId?: boolean
   documentType?: boolean
   isRequired?: boolean
   createdAt?: boolean
 }
 
-export type DocumentationStepDocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "stepId" | "documentType" | "isRequired" | "createdAt", ExtArgs["result"]["documentationStepDocument"]>
+export type DocumentationStepDocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "stepId" | "documentType" | "isRequired" | "createdAt", ExtArgs["result"]["documentationStepDocument"]>
 export type DocumentationStepDocumentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   step?: boolean | Prisma.DocumentationStepDefaultArgs<ExtArgs>
 }
 
 export type $DocumentationStepDocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "DocumentationStepDocument"
   objects: {
+    tenant: Prisma.$TenantPayload<ExtArgs>
     step: Prisma.$DocumentationStepPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    tenantId: string
     stepId: string
     documentType: string
     isRequired: boolean
@@ -822,6 +975,7 @@ readonly fields: DocumentationStepDocumentFieldRefs;
  */
 export interface Prisma__DocumentationStepDocumentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   step<T extends Prisma.DocumentationStepDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentationStepDefaultArgs<ExtArgs>>): Prisma.Prisma__DocumentationStepClient<runtime.Types.Result.GetResult<Prisma.$DocumentationStepPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -853,6 +1007,7 @@ export interface Prisma__DocumentationStepDocumentClient<T, Null = never, ExtArg
  */
 export interface DocumentationStepDocumentFieldRefs {
   readonly id: Prisma.FieldRef<"DocumentationStepDocument", 'String'>
+  readonly tenantId: Prisma.FieldRef<"DocumentationStepDocument", 'String'>
   readonly stepId: Prisma.FieldRef<"DocumentationStepDocument", 'String'>
   readonly documentType: Prisma.FieldRef<"DocumentationStepDocument", 'String'>
   readonly isRequired: Prisma.FieldRef<"DocumentationStepDocument", 'Boolean'>

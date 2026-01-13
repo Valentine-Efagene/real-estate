@@ -36,6 +36,7 @@ export type PropertyMediaSumAggregateOutputType = {
 
 export type PropertyMediaMinAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   propertyId: string | null
   url: string | null
   type: string | null
@@ -47,6 +48,7 @@ export type PropertyMediaMinAggregateOutputType = {
 
 export type PropertyMediaMaxAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   propertyId: string | null
   url: string | null
   type: string | null
@@ -58,6 +60,7 @@ export type PropertyMediaMaxAggregateOutputType = {
 
 export type PropertyMediaCountAggregateOutputType = {
   id: number
+  tenantId: number
   propertyId: number
   url: number
   type: number
@@ -79,6 +82,7 @@ export type PropertyMediaSumAggregateInputType = {
 
 export type PropertyMediaMinAggregateInputType = {
   id?: true
+  tenantId?: true
   propertyId?: true
   url?: true
   type?: true
@@ -90,6 +94,7 @@ export type PropertyMediaMinAggregateInputType = {
 
 export type PropertyMediaMaxAggregateInputType = {
   id?: true
+  tenantId?: true
   propertyId?: true
   url?: true
   type?: true
@@ -101,6 +106,7 @@ export type PropertyMediaMaxAggregateInputType = {
 
 export type PropertyMediaCountAggregateInputType = {
   id?: true
+  tenantId?: true
   propertyId?: true
   url?: true
   type?: true
@@ -199,6 +205,7 @@ export type PropertyMediaGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
 
 export type PropertyMediaGroupByOutputType = {
   id: string
+  tenantId: string
   propertyId: string
   url: string
   type: string
@@ -233,6 +240,7 @@ export type PropertyMediaWhereInput = {
   OR?: Prisma.PropertyMediaWhereInput[]
   NOT?: Prisma.PropertyMediaWhereInput | Prisma.PropertyMediaWhereInput[]
   id?: Prisma.StringFilter<"PropertyMedia"> | string
+  tenantId?: Prisma.StringFilter<"PropertyMedia"> | string
   propertyId?: Prisma.StringFilter<"PropertyMedia"> | string
   url?: Prisma.StringFilter<"PropertyMedia"> | string
   type?: Prisma.StringFilter<"PropertyMedia"> | string
@@ -240,12 +248,14 @@ export type PropertyMediaWhereInput = {
   order?: Prisma.IntFilter<"PropertyMedia"> | number
   createdAt?: Prisma.DateTimeFilter<"PropertyMedia"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PropertyMedia"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   property?: Prisma.XOR<Prisma.PropertyScalarRelationFilter, Prisma.PropertyWhereInput>
   displayForProperties?: Prisma.PropertyListRelationFilter
 }
 
 export type PropertyMediaOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   propertyId?: Prisma.SortOrder
   url?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -253,6 +263,7 @@ export type PropertyMediaOrderByWithRelationInput = {
   order?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  tenant?: Prisma.TenantOrderByWithRelationInput
   property?: Prisma.PropertyOrderByWithRelationInput
   displayForProperties?: Prisma.PropertyOrderByRelationAggregateInput
   _relevance?: Prisma.PropertyMediaOrderByRelevanceInput
@@ -263,6 +274,7 @@ export type PropertyMediaWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.PropertyMediaWhereInput | Prisma.PropertyMediaWhereInput[]
   OR?: Prisma.PropertyMediaWhereInput[]
   NOT?: Prisma.PropertyMediaWhereInput | Prisma.PropertyMediaWhereInput[]
+  tenantId?: Prisma.StringFilter<"PropertyMedia"> | string
   propertyId?: Prisma.StringFilter<"PropertyMedia"> | string
   url?: Prisma.StringFilter<"PropertyMedia"> | string
   type?: Prisma.StringFilter<"PropertyMedia"> | string
@@ -270,12 +282,14 @@ export type PropertyMediaWhereUniqueInput = Prisma.AtLeast<{
   order?: Prisma.IntFilter<"PropertyMedia"> | number
   createdAt?: Prisma.DateTimeFilter<"PropertyMedia"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PropertyMedia"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   property?: Prisma.XOR<Prisma.PropertyScalarRelationFilter, Prisma.PropertyWhereInput>
   displayForProperties?: Prisma.PropertyListRelationFilter
 }, "id">
 
 export type PropertyMediaOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   propertyId?: Prisma.SortOrder
   url?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -295,6 +309,7 @@ export type PropertyMediaScalarWhereWithAggregatesInput = {
   OR?: Prisma.PropertyMediaScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PropertyMediaScalarWhereWithAggregatesInput | Prisma.PropertyMediaScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"PropertyMedia"> | string
+  tenantId?: Prisma.StringWithAggregatesFilter<"PropertyMedia"> | string
   propertyId?: Prisma.StringWithAggregatesFilter<"PropertyMedia"> | string
   url?: Prisma.StringWithAggregatesFilter<"PropertyMedia"> | string
   type?: Prisma.StringWithAggregatesFilter<"PropertyMedia"> | string
@@ -312,12 +327,14 @@ export type PropertyMediaCreateInput = {
   order?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutPropertyMediaInput
   property: Prisma.PropertyCreateNestedOneWithoutMediaInput
   displayForProperties?: Prisma.PropertyCreateNestedManyWithoutDisplayImageInput
 }
 
 export type PropertyMediaUncheckedCreateInput = {
   id?: string
+  tenantId: string
   propertyId: string
   url: string
   type: string
@@ -336,12 +353,14 @@ export type PropertyMediaUpdateInput = {
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutPropertyMediaNestedInput
   property?: Prisma.PropertyUpdateOneRequiredWithoutMediaNestedInput
   displayForProperties?: Prisma.PropertyUpdateManyWithoutDisplayImageNestedInput
 }
 
 export type PropertyMediaUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   propertyId?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -354,6 +373,7 @@ export type PropertyMediaUncheckedUpdateInput = {
 
 export type PropertyMediaCreateManyInput = {
   id?: string
+  tenantId: string
   propertyId: string
   url: string
   type: string
@@ -375,6 +395,7 @@ export type PropertyMediaUpdateManyMutationInput = {
 
 export type PropertyMediaUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   propertyId?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -382,11 +403,6 @@ export type PropertyMediaUncheckedUpdateManyInput = {
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type PropertyMediaNullableScalarRelationFilter = {
-  is?: Prisma.PropertyMediaWhereInput | null
-  isNot?: Prisma.PropertyMediaWhereInput | null
 }
 
 export type PropertyMediaListRelationFilter = {
@@ -399,6 +415,11 @@ export type PropertyMediaOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type PropertyMediaNullableScalarRelationFilter = {
+  is?: Prisma.PropertyMediaWhereInput | null
+  isNot?: Prisma.PropertyMediaWhereInput | null
+}
+
 export type PropertyMediaOrderByRelevanceInput = {
   fields: Prisma.PropertyMediaOrderByRelevanceFieldEnum | Prisma.PropertyMediaOrderByRelevanceFieldEnum[]
   sort: Prisma.SortOrder
@@ -407,6 +428,7 @@ export type PropertyMediaOrderByRelevanceInput = {
 
 export type PropertyMediaCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   propertyId?: Prisma.SortOrder
   url?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -422,6 +444,7 @@ export type PropertyMediaAvgOrderByAggregateInput = {
 
 export type PropertyMediaMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   propertyId?: Prisma.SortOrder
   url?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -433,6 +456,7 @@ export type PropertyMediaMaxOrderByAggregateInput = {
 
 export type PropertyMediaMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   propertyId?: Prisma.SortOrder
   url?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -444,6 +468,48 @@ export type PropertyMediaMinOrderByAggregateInput = {
 
 export type PropertyMediaSumOrderByAggregateInput = {
   order?: Prisma.SortOrder
+}
+
+export type PropertyMediaCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.PropertyMediaCreateWithoutTenantInput, Prisma.PropertyMediaUncheckedCreateWithoutTenantInput> | Prisma.PropertyMediaCreateWithoutTenantInput[] | Prisma.PropertyMediaUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PropertyMediaCreateOrConnectWithoutTenantInput | Prisma.PropertyMediaCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.PropertyMediaCreateManyTenantInputEnvelope
+  connect?: Prisma.PropertyMediaWhereUniqueInput | Prisma.PropertyMediaWhereUniqueInput[]
+}
+
+export type PropertyMediaUncheckedCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.PropertyMediaCreateWithoutTenantInput, Prisma.PropertyMediaUncheckedCreateWithoutTenantInput> | Prisma.PropertyMediaCreateWithoutTenantInput[] | Prisma.PropertyMediaUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PropertyMediaCreateOrConnectWithoutTenantInput | Prisma.PropertyMediaCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.PropertyMediaCreateManyTenantInputEnvelope
+  connect?: Prisma.PropertyMediaWhereUniqueInput | Prisma.PropertyMediaWhereUniqueInput[]
+}
+
+export type PropertyMediaUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.PropertyMediaCreateWithoutTenantInput, Prisma.PropertyMediaUncheckedCreateWithoutTenantInput> | Prisma.PropertyMediaCreateWithoutTenantInput[] | Prisma.PropertyMediaUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PropertyMediaCreateOrConnectWithoutTenantInput | Prisma.PropertyMediaCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.PropertyMediaUpsertWithWhereUniqueWithoutTenantInput | Prisma.PropertyMediaUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.PropertyMediaCreateManyTenantInputEnvelope
+  set?: Prisma.PropertyMediaWhereUniqueInput | Prisma.PropertyMediaWhereUniqueInput[]
+  disconnect?: Prisma.PropertyMediaWhereUniqueInput | Prisma.PropertyMediaWhereUniqueInput[]
+  delete?: Prisma.PropertyMediaWhereUniqueInput | Prisma.PropertyMediaWhereUniqueInput[]
+  connect?: Prisma.PropertyMediaWhereUniqueInput | Prisma.PropertyMediaWhereUniqueInput[]
+  update?: Prisma.PropertyMediaUpdateWithWhereUniqueWithoutTenantInput | Prisma.PropertyMediaUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.PropertyMediaUpdateManyWithWhereWithoutTenantInput | Prisma.PropertyMediaUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.PropertyMediaScalarWhereInput | Prisma.PropertyMediaScalarWhereInput[]
+}
+
+export type PropertyMediaUncheckedUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.PropertyMediaCreateWithoutTenantInput, Prisma.PropertyMediaUncheckedCreateWithoutTenantInput> | Prisma.PropertyMediaCreateWithoutTenantInput[] | Prisma.PropertyMediaUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.PropertyMediaCreateOrConnectWithoutTenantInput | Prisma.PropertyMediaCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.PropertyMediaUpsertWithWhereUniqueWithoutTenantInput | Prisma.PropertyMediaUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.PropertyMediaCreateManyTenantInputEnvelope
+  set?: Prisma.PropertyMediaWhereUniqueInput | Prisma.PropertyMediaWhereUniqueInput[]
+  disconnect?: Prisma.PropertyMediaWhereUniqueInput | Prisma.PropertyMediaWhereUniqueInput[]
+  delete?: Prisma.PropertyMediaWhereUniqueInput | Prisma.PropertyMediaWhereUniqueInput[]
+  connect?: Prisma.PropertyMediaWhereUniqueInput | Prisma.PropertyMediaWhereUniqueInput[]
+  update?: Prisma.PropertyMediaUpdateWithWhereUniqueWithoutTenantInput | Prisma.PropertyMediaUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.PropertyMediaUpdateManyWithWhereWithoutTenantInput | Prisma.PropertyMediaUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.PropertyMediaScalarWhereInput | Prisma.PropertyMediaScalarWhereInput[]
 }
 
 export type PropertyMediaCreateNestedOneWithoutDisplayForPropertiesInput = {
@@ -512,7 +578,7 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number
 }
 
-export type PropertyMediaCreateWithoutDisplayForPropertiesInput = {
+export type PropertyMediaCreateWithoutTenantInput = {
   id?: string
   url: string
   type: string
@@ -521,10 +587,77 @@ export type PropertyMediaCreateWithoutDisplayForPropertiesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   property: Prisma.PropertyCreateNestedOneWithoutMediaInput
+  displayForProperties?: Prisma.PropertyCreateNestedManyWithoutDisplayImageInput
+}
+
+export type PropertyMediaUncheckedCreateWithoutTenantInput = {
+  id?: string
+  propertyId: string
+  url: string
+  type: string
+  caption?: string | null
+  order?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  displayForProperties?: Prisma.PropertyUncheckedCreateNestedManyWithoutDisplayImageInput
+}
+
+export type PropertyMediaCreateOrConnectWithoutTenantInput = {
+  where: Prisma.PropertyMediaWhereUniqueInput
+  create: Prisma.XOR<Prisma.PropertyMediaCreateWithoutTenantInput, Prisma.PropertyMediaUncheckedCreateWithoutTenantInput>
+}
+
+export type PropertyMediaCreateManyTenantInputEnvelope = {
+  data: Prisma.PropertyMediaCreateManyTenantInput | Prisma.PropertyMediaCreateManyTenantInput[]
+  skipDuplicates?: boolean
+}
+
+export type PropertyMediaUpsertWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.PropertyMediaWhereUniqueInput
+  update: Prisma.XOR<Prisma.PropertyMediaUpdateWithoutTenantInput, Prisma.PropertyMediaUncheckedUpdateWithoutTenantInput>
+  create: Prisma.XOR<Prisma.PropertyMediaCreateWithoutTenantInput, Prisma.PropertyMediaUncheckedCreateWithoutTenantInput>
+}
+
+export type PropertyMediaUpdateWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.PropertyMediaWhereUniqueInput
+  data: Prisma.XOR<Prisma.PropertyMediaUpdateWithoutTenantInput, Prisma.PropertyMediaUncheckedUpdateWithoutTenantInput>
+}
+
+export type PropertyMediaUpdateManyWithWhereWithoutTenantInput = {
+  where: Prisma.PropertyMediaScalarWhereInput
+  data: Prisma.XOR<Prisma.PropertyMediaUpdateManyMutationInput, Prisma.PropertyMediaUncheckedUpdateManyWithoutTenantInput>
+}
+
+export type PropertyMediaScalarWhereInput = {
+  AND?: Prisma.PropertyMediaScalarWhereInput | Prisma.PropertyMediaScalarWhereInput[]
+  OR?: Prisma.PropertyMediaScalarWhereInput[]
+  NOT?: Prisma.PropertyMediaScalarWhereInput | Prisma.PropertyMediaScalarWhereInput[]
+  id?: Prisma.StringFilter<"PropertyMedia"> | string
+  tenantId?: Prisma.StringFilter<"PropertyMedia"> | string
+  propertyId?: Prisma.StringFilter<"PropertyMedia"> | string
+  url?: Prisma.StringFilter<"PropertyMedia"> | string
+  type?: Prisma.StringFilter<"PropertyMedia"> | string
+  caption?: Prisma.StringNullableFilter<"PropertyMedia"> | string | null
+  order?: Prisma.IntFilter<"PropertyMedia"> | number
+  createdAt?: Prisma.DateTimeFilter<"PropertyMedia"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"PropertyMedia"> | Date | string
+}
+
+export type PropertyMediaCreateWithoutDisplayForPropertiesInput = {
+  id?: string
+  url: string
+  type: string
+  caption?: string | null
+  order?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutPropertyMediaInput
+  property: Prisma.PropertyCreateNestedOneWithoutMediaInput
 }
 
 export type PropertyMediaUncheckedCreateWithoutDisplayForPropertiesInput = {
   id?: string
+  tenantId: string
   propertyId: string
   url: string
   type: string
@@ -547,11 +680,13 @@ export type PropertyMediaCreateWithoutPropertyInput = {
   order?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutPropertyMediaInput
   displayForProperties?: Prisma.PropertyCreateNestedManyWithoutDisplayImageInput
 }
 
 export type PropertyMediaUncheckedCreateWithoutPropertyInput = {
   id?: string
+  tenantId: string
   url: string
   type: string
   caption?: string | null
@@ -590,11 +725,13 @@ export type PropertyMediaUpdateWithoutDisplayForPropertiesInput = {
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutPropertyMediaNestedInput
   property?: Prisma.PropertyUpdateOneRequiredWithoutMediaNestedInput
 }
 
 export type PropertyMediaUncheckedUpdateWithoutDisplayForPropertiesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   propertyId?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -620,22 +757,55 @@ export type PropertyMediaUpdateManyWithWhereWithoutPropertyInput = {
   data: Prisma.XOR<Prisma.PropertyMediaUpdateManyMutationInput, Prisma.PropertyMediaUncheckedUpdateManyWithoutPropertyInput>
 }
 
-export type PropertyMediaScalarWhereInput = {
-  AND?: Prisma.PropertyMediaScalarWhereInput | Prisma.PropertyMediaScalarWhereInput[]
-  OR?: Prisma.PropertyMediaScalarWhereInput[]
-  NOT?: Prisma.PropertyMediaScalarWhereInput | Prisma.PropertyMediaScalarWhereInput[]
-  id?: Prisma.StringFilter<"PropertyMedia"> | string
-  propertyId?: Prisma.StringFilter<"PropertyMedia"> | string
-  url?: Prisma.StringFilter<"PropertyMedia"> | string
-  type?: Prisma.StringFilter<"PropertyMedia"> | string
-  caption?: Prisma.StringNullableFilter<"PropertyMedia"> | string | null
-  order?: Prisma.IntFilter<"PropertyMedia"> | number
-  createdAt?: Prisma.DateTimeFilter<"PropertyMedia"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"PropertyMedia"> | Date | string
+export type PropertyMediaCreateManyTenantInput = {
+  id?: string
+  propertyId: string
+  url: string
+  type: string
+  caption?: string | null
+  order?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PropertyMediaUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  property?: Prisma.PropertyUpdateOneRequiredWithoutMediaNestedInput
+  displayForProperties?: Prisma.PropertyUpdateManyWithoutDisplayImageNestedInput
+}
+
+export type PropertyMediaUncheckedUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  propertyId?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  displayForProperties?: Prisma.PropertyUncheckedUpdateManyWithoutDisplayImageNestedInput
+}
+
+export type PropertyMediaUncheckedUpdateManyWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  propertyId?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PropertyMediaCreateManyPropertyInput = {
   id?: string
+  tenantId: string
   url: string
   type: string
   caption?: string | null
@@ -652,11 +822,13 @@ export type PropertyMediaUpdateWithoutPropertyInput = {
   order?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutPropertyMediaNestedInput
   displayForProperties?: Prisma.PropertyUpdateManyWithoutDisplayImageNestedInput
 }
 
 export type PropertyMediaUncheckedUpdateWithoutPropertyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -668,6 +840,7 @@ export type PropertyMediaUncheckedUpdateWithoutPropertyInput = {
 
 export type PropertyMediaUncheckedUpdateManyWithoutPropertyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   caption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -709,6 +882,7 @@ export type PropertyMediaCountOutputTypeCountDisplayForPropertiesArgs<ExtArgs ex
 
 export type PropertyMediaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   propertyId?: boolean
   url?: boolean
   type?: boolean
@@ -716,6 +890,7 @@ export type PropertyMediaSelect<ExtArgs extends runtime.Types.Extensions.Interna
   order?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
   displayForProperties?: boolean | Prisma.PropertyMedia$displayForPropertiesArgs<ExtArgs>
   _count?: boolean | Prisma.PropertyMediaCountOutputTypeDefaultArgs<ExtArgs>
@@ -725,6 +900,7 @@ export type PropertyMediaSelect<ExtArgs extends runtime.Types.Extensions.Interna
 
 export type PropertyMediaSelectScalar = {
   id?: boolean
+  tenantId?: boolean
   propertyId?: boolean
   url?: boolean
   type?: boolean
@@ -734,8 +910,9 @@ export type PropertyMediaSelectScalar = {
   updatedAt?: boolean
 }
 
-export type PropertyMediaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "propertyId" | "url" | "type" | "caption" | "order" | "createdAt" | "updatedAt", ExtArgs["result"]["propertyMedia"]>
+export type PropertyMediaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "propertyId" | "url" | "type" | "caption" | "order" | "createdAt" | "updatedAt", ExtArgs["result"]["propertyMedia"]>
 export type PropertyMediaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   property?: boolean | Prisma.PropertyDefaultArgs<ExtArgs>
   displayForProperties?: boolean | Prisma.PropertyMedia$displayForPropertiesArgs<ExtArgs>
   _count?: boolean | Prisma.PropertyMediaCountOutputTypeDefaultArgs<ExtArgs>
@@ -744,11 +921,13 @@ export type PropertyMediaInclude<ExtArgs extends runtime.Types.Extensions.Intern
 export type $PropertyMediaPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "PropertyMedia"
   objects: {
+    tenant: Prisma.$TenantPayload<ExtArgs>
     property: Prisma.$PropertyPayload<ExtArgs>
     displayForProperties: Prisma.$PropertyPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    tenantId: string
     propertyId: string
     url: string
     type: string
@@ -1096,6 +1275,7 @@ readonly fields: PropertyMediaFieldRefs;
  */
 export interface Prisma__PropertyMediaClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   property<T extends Prisma.PropertyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyDefaultArgs<ExtArgs>>): Prisma.Prisma__PropertyClient<runtime.Types.Result.GetResult<Prisma.$PropertyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   displayForProperties<T extends Prisma.PropertyMedia$displayForPropertiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyMedia$displayForPropertiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -1128,6 +1308,7 @@ export interface Prisma__PropertyMediaClient<T, Null = never, ExtArgs extends ru
  */
 export interface PropertyMediaFieldRefs {
   readonly id: Prisma.FieldRef<"PropertyMedia", 'String'>
+  readonly tenantId: Prisma.FieldRef<"PropertyMedia", 'String'>
   readonly propertyId: Prisma.FieldRef<"PropertyMedia", 'String'>
   readonly url: Prisma.FieldRef<"PropertyMedia", 'String'>
   readonly type: Prisma.FieldRef<"PropertyMedia", 'String'>

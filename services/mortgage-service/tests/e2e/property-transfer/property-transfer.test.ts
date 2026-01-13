@@ -119,6 +119,7 @@ describe('Property Transfer with Progress Preservation', () => {
         // Create variant for Property X
         const variantX = await prisma.propertyVariant.create({
             data: {
+                tenantId,
                 propertyId: propertyXId,
                 name: '3-Bedroom Standard',
                 nBedrooms: 3,
@@ -136,6 +137,7 @@ describe('Property Transfer with Progress Preservation', () => {
         // Create unit A1 for Chidi
         const unitX = await prisma.propertyUnit.create({
             data: {
+                tenantId,
                 variantId: variantXId,
                 unitNumber: 'A1',
                 floorNumber: 1,
@@ -167,6 +169,7 @@ describe('Property Transfer with Progress Preservation', () => {
         // Create variant for Property Y
         const variantY = await prisma.propertyVariant.create({
             data: {
+                tenantId,
                 propertyId: propertyYId,
                 name: '3-Bedroom Premium',
                 nBedrooms: 3,
@@ -184,6 +187,7 @@ describe('Property Transfer with Progress Preservation', () => {
         // Create unit B3 as transfer target
         const unitY = await prisma.propertyUnit.create({
             data: {
+                tenantId,
                 variantId: variantYId,
                 unitNumber: 'B3',
                 floorNumber: 3,
@@ -391,6 +395,7 @@ describe('Property Transfer with Progress Preservation', () => {
             for (let i = 1; i <= 6; i++) {
                 await prisma.applicationPayment.create({
                     data: {
+                        tenantId,
                         applicationId: applicationAId,
                         phaseId: downpaymentPhase.id,
                         payerId: chidiId,

@@ -36,6 +36,7 @@ export type DomainEventSumAggregateOutputType = {
 
 export type DomainEventMinAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   eventType: string | null
   aggregateType: string | null
   aggregateId: string | null
@@ -56,6 +57,7 @@ export type DomainEventMinAggregateOutputType = {
 
 export type DomainEventMaxAggregateOutputType = {
   id: string | null
+  tenantId: string | null
   eventType: string | null
   aggregateType: string | null
   aggregateId: string | null
@@ -76,6 +78,7 @@ export type DomainEventMaxAggregateOutputType = {
 
 export type DomainEventCountAggregateOutputType = {
   id: number
+  tenantId: number
   eventType: number
   aggregateType: number
   aggregateId: number
@@ -106,6 +109,7 @@ export type DomainEventSumAggregateInputType = {
 
 export type DomainEventMinAggregateInputType = {
   id?: true
+  tenantId?: true
   eventType?: true
   aggregateType?: true
   aggregateId?: true
@@ -126,6 +130,7 @@ export type DomainEventMinAggregateInputType = {
 
 export type DomainEventMaxAggregateInputType = {
   id?: true
+  tenantId?: true
   eventType?: true
   aggregateType?: true
   aggregateId?: true
@@ -146,6 +151,7 @@ export type DomainEventMaxAggregateInputType = {
 
 export type DomainEventCountAggregateInputType = {
   id?: true
+  tenantId?: true
   eventType?: true
   aggregateType?: true
   aggregateId?: true
@@ -253,6 +259,7 @@ export type DomainEventGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inte
 
 export type DomainEventGroupByOutputType = {
   id: string
+  tenantId: string
   eventType: string
   aggregateType: string
   aggregateId: string
@@ -296,6 +303,7 @@ export type DomainEventWhereInput = {
   OR?: Prisma.DomainEventWhereInput[]
   NOT?: Prisma.DomainEventWhereInput | Prisma.DomainEventWhereInput[]
   id?: Prisma.StringFilter<"DomainEvent"> | string
+  tenantId?: Prisma.StringFilter<"DomainEvent"> | string
   eventType?: Prisma.StringFilter<"DomainEvent"> | string
   aggregateType?: Prisma.StringFilter<"DomainEvent"> | string
   aggregateId?: Prisma.StringFilter<"DomainEvent"> | string
@@ -312,10 +320,12 @@ export type DomainEventWhereInput = {
   nextRetryAt?: Prisma.DateTimeNullableFilter<"DomainEvent"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"DomainEvent"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"DomainEvent"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
 }
 
 export type DomainEventOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   eventType?: Prisma.SortOrder
   aggregateType?: Prisma.SortOrder
   aggregateId?: Prisma.SortOrder
@@ -332,6 +342,7 @@ export type DomainEventOrderByWithRelationInput = {
   nextRetryAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  tenant?: Prisma.TenantOrderByWithRelationInput
   _relevance?: Prisma.DomainEventOrderByRelevanceInput
 }
 
@@ -340,6 +351,7 @@ export type DomainEventWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.DomainEventWhereInput | Prisma.DomainEventWhereInput[]
   OR?: Prisma.DomainEventWhereInput[]
   NOT?: Prisma.DomainEventWhereInput | Prisma.DomainEventWhereInput[]
+  tenantId?: Prisma.StringFilter<"DomainEvent"> | string
   eventType?: Prisma.StringFilter<"DomainEvent"> | string
   aggregateType?: Prisma.StringFilter<"DomainEvent"> | string
   aggregateId?: Prisma.StringFilter<"DomainEvent"> | string
@@ -356,10 +368,12 @@ export type DomainEventWhereUniqueInput = Prisma.AtLeast<{
   nextRetryAt?: Prisma.DateTimeNullableFilter<"DomainEvent"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"DomainEvent"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"DomainEvent"> | Date | string
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
 }, "id">
 
 export type DomainEventOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   eventType?: Prisma.SortOrder
   aggregateType?: Prisma.SortOrder
   aggregateId?: Prisma.SortOrder
@@ -388,6 +402,7 @@ export type DomainEventScalarWhereWithAggregatesInput = {
   OR?: Prisma.DomainEventScalarWhereWithAggregatesInput[]
   NOT?: Prisma.DomainEventScalarWhereWithAggregatesInput | Prisma.DomainEventScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"DomainEvent"> | string
+  tenantId?: Prisma.StringWithAggregatesFilter<"DomainEvent"> | string
   eventType?: Prisma.StringWithAggregatesFilter<"DomainEvent"> | string
   aggregateType?: Prisma.StringWithAggregatesFilter<"DomainEvent"> | string
   aggregateId?: Prisma.StringWithAggregatesFilter<"DomainEvent"> | string
@@ -424,10 +439,12 @@ export type DomainEventCreateInput = {
   nextRetryAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutDomainEventsInput
 }
 
 export type DomainEventUncheckedCreateInput = {
   id?: string
+  tenantId: string
   eventType: string
   aggregateType: string
   aggregateId: string
@@ -464,10 +481,12 @@ export type DomainEventUpdateInput = {
   nextRetryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutDomainEventsNestedInput
 }
 
 export type DomainEventUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
   aggregateType?: Prisma.StringFieldUpdateOperationsInput | string
   aggregateId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -488,6 +507,7 @@ export type DomainEventUncheckedUpdateInput = {
 
 export type DomainEventCreateManyInput = {
   id?: string
+  tenantId: string
   eventType: string
   aggregateType: string
   aggregateId: string
@@ -528,6 +548,7 @@ export type DomainEventUpdateManyMutationInput = {
 
 export type DomainEventUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   eventType?: Prisma.StringFieldUpdateOperationsInput | string
   aggregateType?: Prisma.StringFieldUpdateOperationsInput | string
   aggregateId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -546,6 +567,16 @@ export type DomainEventUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type DomainEventListRelationFilter = {
+  every?: Prisma.DomainEventWhereInput
+  some?: Prisma.DomainEventWhereInput
+  none?: Prisma.DomainEventWhereInput
+}
+
+export type DomainEventOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
 export type DomainEventOrderByRelevanceInput = {
   fields: Prisma.DomainEventOrderByRelevanceFieldEnum | Prisma.DomainEventOrderByRelevanceFieldEnum[]
   sort: Prisma.SortOrder
@@ -554,6 +585,7 @@ export type DomainEventOrderByRelevanceInput = {
 
 export type DomainEventCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   eventType?: Prisma.SortOrder
   aggregateType?: Prisma.SortOrder
   aggregateId?: Prisma.SortOrder
@@ -578,6 +610,7 @@ export type DomainEventAvgOrderByAggregateInput = {
 
 export type DomainEventMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   eventType?: Prisma.SortOrder
   aggregateType?: Prisma.SortOrder
   aggregateId?: Prisma.SortOrder
@@ -598,6 +631,7 @@ export type DomainEventMaxOrderByAggregateInput = {
 
 export type DomainEventMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   eventType?: Prisma.SortOrder
   aggregateType?: Prisma.SortOrder
   aggregateId?: Prisma.SortOrder
@@ -620,10 +654,223 @@ export type DomainEventSumOrderByAggregateInput = {
   failureCount?: Prisma.SortOrder
 }
 
+export type DomainEventCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.DomainEventCreateWithoutTenantInput, Prisma.DomainEventUncheckedCreateWithoutTenantInput> | Prisma.DomainEventCreateWithoutTenantInput[] | Prisma.DomainEventUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.DomainEventCreateOrConnectWithoutTenantInput | Prisma.DomainEventCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.DomainEventCreateManyTenantInputEnvelope
+  connect?: Prisma.DomainEventWhereUniqueInput | Prisma.DomainEventWhereUniqueInput[]
+}
+
+export type DomainEventUncheckedCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.DomainEventCreateWithoutTenantInput, Prisma.DomainEventUncheckedCreateWithoutTenantInput> | Prisma.DomainEventCreateWithoutTenantInput[] | Prisma.DomainEventUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.DomainEventCreateOrConnectWithoutTenantInput | Prisma.DomainEventCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.DomainEventCreateManyTenantInputEnvelope
+  connect?: Prisma.DomainEventWhereUniqueInput | Prisma.DomainEventWhereUniqueInput[]
+}
+
+export type DomainEventUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.DomainEventCreateWithoutTenantInput, Prisma.DomainEventUncheckedCreateWithoutTenantInput> | Prisma.DomainEventCreateWithoutTenantInput[] | Prisma.DomainEventUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.DomainEventCreateOrConnectWithoutTenantInput | Prisma.DomainEventCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.DomainEventUpsertWithWhereUniqueWithoutTenantInput | Prisma.DomainEventUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.DomainEventCreateManyTenantInputEnvelope
+  set?: Prisma.DomainEventWhereUniqueInput | Prisma.DomainEventWhereUniqueInput[]
+  disconnect?: Prisma.DomainEventWhereUniqueInput | Prisma.DomainEventWhereUniqueInput[]
+  delete?: Prisma.DomainEventWhereUniqueInput | Prisma.DomainEventWhereUniqueInput[]
+  connect?: Prisma.DomainEventWhereUniqueInput | Prisma.DomainEventWhereUniqueInput[]
+  update?: Prisma.DomainEventUpdateWithWhereUniqueWithoutTenantInput | Prisma.DomainEventUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.DomainEventUpdateManyWithWhereWithoutTenantInput | Prisma.DomainEventUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.DomainEventScalarWhereInput | Prisma.DomainEventScalarWhereInput[]
+}
+
+export type DomainEventUncheckedUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.DomainEventCreateWithoutTenantInput, Prisma.DomainEventUncheckedCreateWithoutTenantInput> | Prisma.DomainEventCreateWithoutTenantInput[] | Prisma.DomainEventUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.DomainEventCreateOrConnectWithoutTenantInput | Prisma.DomainEventCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.DomainEventUpsertWithWhereUniqueWithoutTenantInput | Prisma.DomainEventUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.DomainEventCreateManyTenantInputEnvelope
+  set?: Prisma.DomainEventWhereUniqueInput | Prisma.DomainEventWhereUniqueInput[]
+  disconnect?: Prisma.DomainEventWhereUniqueInput | Prisma.DomainEventWhereUniqueInput[]
+  delete?: Prisma.DomainEventWhereUniqueInput | Prisma.DomainEventWhereUniqueInput[]
+  connect?: Prisma.DomainEventWhereUniqueInput | Prisma.DomainEventWhereUniqueInput[]
+  update?: Prisma.DomainEventUpdateWithWhereUniqueWithoutTenantInput | Prisma.DomainEventUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.DomainEventUpdateManyWithWhereWithoutTenantInput | Prisma.DomainEventUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.DomainEventScalarWhereInput | Prisma.DomainEventScalarWhereInput[]
+}
+
+export type DomainEventCreateWithoutTenantInput = {
+  id?: string
+  eventType: string
+  aggregateType: string
+  aggregateId: string
+  queueName: string
+  payload: string
+  occurredAt?: Date | string
+  actorId?: string | null
+  actorRole?: string | null
+  status?: string
+  processedAt?: Date | string | null
+  sentAt?: Date | string | null
+  failureCount?: number
+  lastError?: string | null
+  nextRetryAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type DomainEventUncheckedCreateWithoutTenantInput = {
+  id?: string
+  eventType: string
+  aggregateType: string
+  aggregateId: string
+  queueName: string
+  payload: string
+  occurredAt?: Date | string
+  actorId?: string | null
+  actorRole?: string | null
+  status?: string
+  processedAt?: Date | string | null
+  sentAt?: Date | string | null
+  failureCount?: number
+  lastError?: string | null
+  nextRetryAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type DomainEventCreateOrConnectWithoutTenantInput = {
+  where: Prisma.DomainEventWhereUniqueInput
+  create: Prisma.XOR<Prisma.DomainEventCreateWithoutTenantInput, Prisma.DomainEventUncheckedCreateWithoutTenantInput>
+}
+
+export type DomainEventCreateManyTenantInputEnvelope = {
+  data: Prisma.DomainEventCreateManyTenantInput | Prisma.DomainEventCreateManyTenantInput[]
+  skipDuplicates?: boolean
+}
+
+export type DomainEventUpsertWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.DomainEventWhereUniqueInput
+  update: Prisma.XOR<Prisma.DomainEventUpdateWithoutTenantInput, Prisma.DomainEventUncheckedUpdateWithoutTenantInput>
+  create: Prisma.XOR<Prisma.DomainEventCreateWithoutTenantInput, Prisma.DomainEventUncheckedCreateWithoutTenantInput>
+}
+
+export type DomainEventUpdateWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.DomainEventWhereUniqueInput
+  data: Prisma.XOR<Prisma.DomainEventUpdateWithoutTenantInput, Prisma.DomainEventUncheckedUpdateWithoutTenantInput>
+}
+
+export type DomainEventUpdateManyWithWhereWithoutTenantInput = {
+  where: Prisma.DomainEventScalarWhereInput
+  data: Prisma.XOR<Prisma.DomainEventUpdateManyMutationInput, Prisma.DomainEventUncheckedUpdateManyWithoutTenantInput>
+}
+
+export type DomainEventScalarWhereInput = {
+  AND?: Prisma.DomainEventScalarWhereInput | Prisma.DomainEventScalarWhereInput[]
+  OR?: Prisma.DomainEventScalarWhereInput[]
+  NOT?: Prisma.DomainEventScalarWhereInput | Prisma.DomainEventScalarWhereInput[]
+  id?: Prisma.StringFilter<"DomainEvent"> | string
+  tenantId?: Prisma.StringFilter<"DomainEvent"> | string
+  eventType?: Prisma.StringFilter<"DomainEvent"> | string
+  aggregateType?: Prisma.StringFilter<"DomainEvent"> | string
+  aggregateId?: Prisma.StringFilter<"DomainEvent"> | string
+  queueName?: Prisma.StringFilter<"DomainEvent"> | string
+  payload?: Prisma.StringFilter<"DomainEvent"> | string
+  occurredAt?: Prisma.DateTimeFilter<"DomainEvent"> | Date | string
+  actorId?: Prisma.StringNullableFilter<"DomainEvent"> | string | null
+  actorRole?: Prisma.StringNullableFilter<"DomainEvent"> | string | null
+  status?: Prisma.StringFilter<"DomainEvent"> | string
+  processedAt?: Prisma.DateTimeNullableFilter<"DomainEvent"> | Date | string | null
+  sentAt?: Prisma.DateTimeNullableFilter<"DomainEvent"> | Date | string | null
+  failureCount?: Prisma.IntFilter<"DomainEvent"> | number
+  lastError?: Prisma.StringNullableFilter<"DomainEvent"> | string | null
+  nextRetryAt?: Prisma.DateTimeNullableFilter<"DomainEvent"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"DomainEvent"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"DomainEvent"> | Date | string
+}
+
+export type DomainEventCreateManyTenantInput = {
+  id?: string
+  eventType: string
+  aggregateType: string
+  aggregateId: string
+  queueName: string
+  payload: string
+  occurredAt?: Date | string
+  actorId?: string | null
+  actorRole?: string | null
+  status?: string
+  processedAt?: Date | string | null
+  sentAt?: Date | string | null
+  failureCount?: number
+  lastError?: string | null
+  nextRetryAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type DomainEventUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  eventType?: Prisma.StringFieldUpdateOperationsInput | string
+  aggregateType?: Prisma.StringFieldUpdateOperationsInput | string
+  aggregateId?: Prisma.StringFieldUpdateOperationsInput | string
+  queueName?: Prisma.StringFieldUpdateOperationsInput | string
+  payload?: Prisma.StringFieldUpdateOperationsInput | string
+  occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  actorRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failureCount?: Prisma.IntFieldUpdateOperationsInput | number
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextRetryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type DomainEventUncheckedUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  eventType?: Prisma.StringFieldUpdateOperationsInput | string
+  aggregateType?: Prisma.StringFieldUpdateOperationsInput | string
+  aggregateId?: Prisma.StringFieldUpdateOperationsInput | string
+  queueName?: Prisma.StringFieldUpdateOperationsInput | string
+  payload?: Prisma.StringFieldUpdateOperationsInput | string
+  occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  actorRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failureCount?: Prisma.IntFieldUpdateOperationsInput | number
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextRetryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type DomainEventUncheckedUpdateManyWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  eventType?: Prisma.StringFieldUpdateOperationsInput | string
+  aggregateType?: Prisma.StringFieldUpdateOperationsInput | string
+  aggregateId?: Prisma.StringFieldUpdateOperationsInput | string
+  queueName?: Prisma.StringFieldUpdateOperationsInput | string
+  payload?: Prisma.StringFieldUpdateOperationsInput | string
+  occurredAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  actorRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failureCount?: Prisma.IntFieldUpdateOperationsInput | number
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextRetryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 
 
 export type DomainEventSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  tenantId?: boolean
   eventType?: boolean
   aggregateType?: boolean
   aggregateId?: boolean
@@ -640,12 +887,14 @@ export type DomainEventSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   nextRetryAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["domainEvent"]>
 
 
 
 export type DomainEventSelectScalar = {
   id?: boolean
+  tenantId?: boolean
   eventType?: boolean
   aggregateType?: boolean
   aggregateId?: boolean
@@ -664,13 +913,19 @@ export type DomainEventSelectScalar = {
   updatedAt?: boolean
 }
 
-export type DomainEventOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "eventType" | "aggregateType" | "aggregateId" | "queueName" | "payload" | "occurredAt" | "actorId" | "actorRole" | "status" | "processedAt" | "sentAt" | "failureCount" | "lastError" | "nextRetryAt" | "createdAt" | "updatedAt", ExtArgs["result"]["domainEvent"]>
+export type DomainEventOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "eventType" | "aggregateType" | "aggregateId" | "queueName" | "payload" | "occurredAt" | "actorId" | "actorRole" | "status" | "processedAt" | "sentAt" | "failureCount" | "lastError" | "nextRetryAt" | "createdAt" | "updatedAt", ExtArgs["result"]["domainEvent"]>
+export type DomainEventInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
+}
 
 export type $DomainEventPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "DomainEvent"
-  objects: {}
+  objects: {
+    tenant: Prisma.$TenantPayload<ExtArgs>
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    tenantId: string
     eventType: string
     aggregateType: string
     aggregateId: string
@@ -1027,6 +1282,7 @@ readonly fields: DomainEventFieldRefs;
  */
 export interface Prisma__DomainEventClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1057,6 +1313,7 @@ export interface Prisma__DomainEventClient<T, Null = never, ExtArgs extends runt
  */
 export interface DomainEventFieldRefs {
   readonly id: Prisma.FieldRef<"DomainEvent", 'String'>
+  readonly tenantId: Prisma.FieldRef<"DomainEvent", 'String'>
   readonly eventType: Prisma.FieldRef<"DomainEvent", 'String'>
   readonly aggregateType: Prisma.FieldRef<"DomainEvent", 'String'>
   readonly aggregateId: Prisma.FieldRef<"DomainEvent", 'String'>
@@ -1090,6 +1347,10 @@ export type DomainEventFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   omit?: Prisma.DomainEventOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DomainEventInclude<ExtArgs> | null
+  /**
    * Filter, which DomainEvent to fetch.
    */
   where: Prisma.DomainEventWhereUniqueInput
@@ -1108,6 +1369,10 @@ export type DomainEventFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Exten
    */
   omit?: Prisma.DomainEventOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DomainEventInclude<ExtArgs> | null
+  /**
    * Filter, which DomainEvent to fetch.
    */
   where: Prisma.DomainEventWhereUniqueInput
@@ -1125,6 +1390,10 @@ export type DomainEventFindFirstArgs<ExtArgs extends runtime.Types.Extensions.In
    * Omit specific fields from the DomainEvent
    */
   omit?: Prisma.DomainEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DomainEventInclude<ExtArgs> | null
   /**
    * Filter, which DomainEvent to fetch.
    */
@@ -1174,6 +1443,10 @@ export type DomainEventFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extens
    */
   omit?: Prisma.DomainEventOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DomainEventInclude<ExtArgs> | null
+  /**
    * Filter, which DomainEvent to fetch.
    */
   where?: Prisma.DomainEventWhereInput
@@ -1222,6 +1495,10 @@ export type DomainEventFindManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    */
   omit?: Prisma.DomainEventOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DomainEventInclude<ExtArgs> | null
+  /**
    * Filter, which DomainEvents to fetch.
    */
   where?: Prisma.DomainEventWhereInput
@@ -1265,6 +1542,10 @@ export type DomainEventCreateArgs<ExtArgs extends runtime.Types.Extensions.Inter
    */
   omit?: Prisma.DomainEventOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DomainEventInclude<ExtArgs> | null
+  /**
    * The data needed to create a DomainEvent.
    */
   data: Prisma.XOR<Prisma.DomainEventCreateInput, Prisma.DomainEventUncheckedCreateInput>
@@ -1293,6 +1574,10 @@ export type DomainEventUpdateArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Omit specific fields from the DomainEvent
    */
   omit?: Prisma.DomainEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DomainEventInclude<ExtArgs> | null
   /**
    * The data needed to update a DomainEvent.
    */
@@ -1334,6 +1619,10 @@ export type DomainEventUpsertArgs<ExtArgs extends runtime.Types.Extensions.Inter
    */
   omit?: Prisma.DomainEventOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DomainEventInclude<ExtArgs> | null
+  /**
    * The filter to search for the DomainEvent to update in case it exists.
    */
   where: Prisma.DomainEventWhereUniqueInput
@@ -1359,6 +1648,10 @@ export type DomainEventDeleteArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Omit specific fields from the DomainEvent
    */
   omit?: Prisma.DomainEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DomainEventInclude<ExtArgs> | null
   /**
    * Filter which DomainEvent to delete.
    */
@@ -1391,4 +1684,8 @@ export type DomainEventDefaultArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Omit specific fields from the DomainEvent
    */
   omit?: Prisma.DomainEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DomainEventInclude<ExtArgs> | null
 }
