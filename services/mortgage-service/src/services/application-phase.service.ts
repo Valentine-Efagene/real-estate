@@ -724,21 +724,21 @@ class ApplicationPhaseService {
                 // Try to find matching UPLOAD step based on document type
                 const steps = phase.documentationPhase.steps || [];
                 const docType = data.type?.toUpperCase() || '';
-                
+
                 // Match step by name containing the document type (e.g., "Upload Valid ID" for ID_CARD)
                 const matchingStep = steps.find((s: any) => {
                     if (s.stepType !== 'UPLOAD' || s.status === 'COMPLETED') return false;
-                    
+
                     const stepNameUpper = s.name.toUpperCase();
                     // Common mappings
                     if (docType.includes('ID') && (stepNameUpper.includes('ID') || stepNameUpper.includes('IDENTIFICATION'))) return true;
                     if (docType.includes('BANK') && stepNameUpper.includes('BANK')) return true;
                     if (docType.includes('EMPLOYMENT') && stepNameUpper.includes('EMPLOYMENT')) return true;
                     if (docType.includes('OFFER') && stepNameUpper.includes('OFFER')) return true;
-                    
+
                     // Fallback: check if step name contains doc type
-                    return stepNameUpper.includes(docType.replace('_', ' ')) || 
-                           stepNameUpper.includes(docType.replace('_', ''));
+                    return stepNameUpper.includes(docType.replace('_', ' ')) ||
+                        stepNameUpper.includes(docType.replace('_', ''));
                 });
 
                 if (matchingStep) {
