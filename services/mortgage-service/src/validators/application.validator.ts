@@ -16,6 +16,17 @@ export const CreateApplicationSchema = z
         totalAmount: z.number().positive().optional().openapi({ example: 500000 }), // If not provided, uses unit price
         downPayment: z.number().min(0).optional().openapi({ example: 50000 }),
         startDate: z.string().datetime().optional(),
+        // Flexible-term mortgage fields
+        selectedMortgageTermMonths: z.number().positive().optional().openapi({
+            example: 240,
+            description: 'User-selected mortgage term in months (for flexible-term plans)'
+        }),
+        applicantAge: z.number().positive().optional().openapi({
+            example: 35,
+            description: 'Applicant age for max-age-at-maturity validation'
+        }),
+        monthlyIncome: z.number().min(0).optional().openapi({ example: 2500000, description: 'Monthly income for DTI calculation' }),
+        monthlyExpenses: z.number().min(0).optional().openapi({ example: 800000, description: 'Monthly expenses for DTI calculation' }),
     })
     .openapi('CreateApplication');
 

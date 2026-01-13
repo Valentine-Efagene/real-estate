@@ -511,6 +511,39 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                         }
                     }
                 } else if (phaseTemplate.phaseCategory === 'PAYMENT') {
+                    // For flexible-term plans (like mortgages), use user's selected term
+                    const paymentPlan = phaseTemplate.paymentPlan;
+                    let selectedTermMonths: number | null = null;
+                    let numberOfInstallments: number | null = null;
+
+                    if (paymentPlan?.allowFlexibleTerm && phaseTemplate.phaseType === 'MORTGAGE') {
+                        const userSelectedTerm = (data as any).selectedMortgageTermMonths;
+                        const applicantAge = (data as any).applicantAge;
+
+                        if (userSelectedTerm) {
+                            // Validate user-selected term is within allowed range
+                            const minTerm = paymentPlan.minTermMonths || 12;
+                            const maxTerm = paymentPlan.maxTermMonths || 360;
+
+                            // Calculate maximum allowed term based on age if maxAgeAtMaturity is set
+                            let effectiveMaxTerm = maxTerm;
+                            if (applicantAge && paymentPlan.maxAgeAtMaturity) {
+                                const yearsUntilMaxAge = paymentPlan.maxAgeAtMaturity - applicantAge;
+                                const maxTermByAge = yearsUntilMaxAge * 12;
+                                effectiveMaxTerm = Math.min(maxTerm, maxTermByAge);
+                            }
+
+                            if (userSelectedTerm < minTerm || userSelectedTerm > effectiveMaxTerm) {
+                                throw new AppError(400,
+                                    `Selected mortgage term ${userSelectedTerm} months is outside allowed range (${minTerm}-${effectiveMaxTerm} months)`
+                                );
+                            }
+
+                            selectedTermMonths = userSelectedTerm;
+                            numberOfInstallments = userSelectedTerm; // Monthly installments = term in months
+                        }
+                    }
+
                     // Create PaymentPhase extension
                     await tx.paymentPhase.create({
                         data: {
@@ -523,6 +556,9 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                             collectFunds: phaseTemplate.collectFunds ?? phaseTemplate.paymentPlan?.collectFunds ?? true,
                             minimumCompletionPercentage: phaseTemplate.minimumCompletionPercentage,
                             paymentPlanSnapshot: phaseTemplate.paymentPlan ? JSON.parse(JSON.stringify(phaseTemplate.paymentPlan)) : null,
+                            // Flexible-term fields
+                            selectedTermMonths,
+                            numberOfInstallments,
                         },
                     });
                 }

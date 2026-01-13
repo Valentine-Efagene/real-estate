@@ -376,6 +376,7 @@ export function createOfferLetterService(prisma: AnyPrismaClient = defaultPrisma
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
+                    tenantId: application.tenantId,
                     eventType: 'OFFER_LETTER.SENT',
                     aggregateType: 'OfferLetter',
                     aggregateId: id,
@@ -472,6 +473,7 @@ export function createOfferLetterService(prisma: AnyPrismaClient = defaultPrisma
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
+                    tenantId: application.tenantId,
                     eventType: 'OFFER_LETTER.SIGNED',
                     aggregateType: 'OfferLetter',
                     aggregateId: id,
@@ -535,6 +537,7 @@ export function createOfferLetterService(prisma: AnyPrismaClient = defaultPrisma
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
+                    tenantId: offerLetter.application.tenantId,
                     eventType: 'OFFER_LETTER.CANCELLED',
                     aggregateType: 'OfferLetter',
                     aggregateId: id,

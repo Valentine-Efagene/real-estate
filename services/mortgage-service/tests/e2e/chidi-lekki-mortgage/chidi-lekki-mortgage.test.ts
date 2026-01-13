@@ -445,8 +445,8 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                 .set(adminHeaders(adaezeId, tenantId));
 
             expect(getAttachmentsResponse.status).toBe(200);
-            expect(getAttachmentsResponse.body.length).toBe(1);
-            expect(getAttachmentsResponse.body[0].handler.name).toBe('Notify Admin: Upload Final Offer');
+            expect(getAttachmentsResponse.body.data.length).toBe(1);
+            expect(getAttachmentsResponse.body.data[0].handler.name).toBe('Notify Admin: Upload Final Offer');
         });
     });
 
