@@ -80,6 +80,8 @@ export const ModelName = {
   PropertyAmenity: 'PropertyAmenity',
   DocumentationPlan: 'DocumentationPlan',
   DocumentationPlanStep: 'DocumentationPlanStep',
+  QuestionnairePlan: 'QuestionnairePlan',
+  QuestionnairePlanQuestion: 'QuestionnairePlanQuestion',
   PaymentPlan: 'PaymentPlan',
   PropertyPaymentMethod: 'PropertyPaymentMethod',
   PropertyPaymentMethodLink: 'PropertyPaymentMethodLink',
@@ -560,6 +562,47 @@ export const DocumentationPlanStepScalarFieldEnum = {
 export type DocumentationPlanStepScalarFieldEnum = (typeof DocumentationPlanStepScalarFieldEnum)[keyof typeof DocumentationPlanStepScalarFieldEnum]
 
 
+export const QuestionnairePlanScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  name: 'name',
+  description: 'description',
+  version: 'version',
+  isActive: 'isActive',
+  passingScore: 'passingScore',
+  scoringStrategy: 'scoringStrategy',
+  autoDecisionEnabled: 'autoDecisionEnabled',
+  estimatedMinutes: 'estimatedMinutes',
+  category: 'category',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type QuestionnairePlanScalarFieldEnum = (typeof QuestionnairePlanScalarFieldEnum)[keyof typeof QuestionnairePlanScalarFieldEnum]
+
+
+export const QuestionnairePlanQuestionScalarFieldEnum = {
+  id: 'id',
+  questionnairePlanId: 'questionnairePlanId',
+  questionKey: 'questionKey',
+  questionText: 'questionText',
+  helpText: 'helpText',
+  questionType: 'questionType',
+  order: 'order',
+  isRequired: 'isRequired',
+  validationRules: 'validationRules',
+  options: 'options',
+  scoreWeight: 'scoreWeight',
+  scoringRules: 'scoringRules',
+  showIf: 'showIf',
+  category: 'category',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type QuestionnairePlanQuestionScalarFieldEnum = (typeof QuestionnairePlanQuestionScalarFieldEnum)[keyof typeof QuestionnairePlanQuestionScalarFieldEnum]
+
+
 export const PaymentPlanScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -619,6 +662,7 @@ export const PropertyPaymentMethodPhaseScalarFieldEnum = {
   paymentMethodId: 'paymentMethodId',
   paymentPlanId: 'paymentPlanId',
   documentationPlanId: 'documentationPlanId',
+  questionnairePlanId: 'questionnairePlanId',
   name: 'name',
   description: 'description',
   phaseCategory: 'phaseCategory',
@@ -805,8 +849,13 @@ export const QuestionnairePhaseScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   phaseId: 'phaseId',
+  questionnairePlanId: 'questionnairePlanId',
   completedFieldsCount: 'completedFieldsCount',
   totalFieldsCount: 'totalFieldsCount',
+  totalScore: 'totalScore',
+  passingScore: 'passingScore',
+  passed: 'passed',
+  scoredAt: 'scoredAt',
   underwritingScore: 'underwritingScore',
   debtToIncomeRatio: 'debtToIncomeRatio',
   underwritingDecision: 'underwritingDecision',
@@ -1731,6 +1780,28 @@ export const DocumentationPlanStepOrderByRelevanceFieldEnum = {
 export type DocumentationPlanStepOrderByRelevanceFieldEnum = (typeof DocumentationPlanStepOrderByRelevanceFieldEnum)[keyof typeof DocumentationPlanStepOrderByRelevanceFieldEnum]
 
 
+export const QuestionnairePlanOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  name: 'name',
+  description: 'description'
+} as const
+
+export type QuestionnairePlanOrderByRelevanceFieldEnum = (typeof QuestionnairePlanOrderByRelevanceFieldEnum)[keyof typeof QuestionnairePlanOrderByRelevanceFieldEnum]
+
+
+export const QuestionnairePlanQuestionOrderByRelevanceFieldEnum = {
+  id: 'id',
+  questionnairePlanId: 'questionnairePlanId',
+  questionKey: 'questionKey',
+  questionText: 'questionText',
+  helpText: 'helpText',
+  category: 'category'
+} as const
+
+export type QuestionnairePlanQuestionOrderByRelevanceFieldEnum = (typeof QuestionnairePlanQuestionOrderByRelevanceFieldEnum)[keyof typeof QuestionnairePlanQuestionOrderByRelevanceFieldEnum]
+
+
 export const PaymentPlanOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -1766,6 +1837,7 @@ export const PropertyPaymentMethodPhaseOrderByRelevanceFieldEnum = {
   paymentMethodId: 'paymentMethodId',
   paymentPlanId: 'paymentPlanId',
   documentationPlanId: 'documentationPlanId',
+  questionnairePlanId: 'questionnairePlanId',
   name: 'name',
   description: 'description'
 } as const
@@ -1882,6 +1954,7 @@ export const QuestionnairePhaseOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   phaseId: 'phaseId',
+  questionnairePlanId: 'questionnairePlanId',
   underwritingDecision: 'underwritingDecision',
   underwritingNotes: 'underwritingNotes'
 } as const

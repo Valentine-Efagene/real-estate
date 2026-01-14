@@ -471,18 +471,59 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
 
                 // Create appropriate extension record based on phaseCategory
                 if (phaseTemplate.phaseCategory === 'QUESTIONNAIRE') {
+                    // Get questions from questionnaire plan if available
+                    const questionnairePlan = phaseTemplate.questionnairePlan;
+                    const questions = questionnairePlan?.questions || [];
+
                     // Create QuestionnairePhase extension
                     const questionnairePhase = await tx.questionnairePhase.create({
                         data: {
                             tenantId: (data as any).tenantId,
                             phaseId: phase.id,
-                            totalFieldsCount: 0, // Will be populated when fields are defined
+                            questionnairePlanId: phaseTemplate.questionnairePlanId,
+                            totalFieldsCount: questions.length,
                             completedFieldsCount: 0,
-                            fieldsSnapshot: phaseTemplate.stepDefinitionsSnapshot,
+                            // Copy scoring config from plan
+                            passingScore: questionnairePlan?.passingScore,
+                            fieldsSnapshot: questionnairePlan ? {
+                                questions: questions.map((q: any) => ({
+                                    questionKey: q.questionKey,
+                                    questionText: q.questionText,
+                                    helpText: q.helpText,
+                                    questionType: q.questionType,
+                                    order: q.order,
+                                    isRequired: q.isRequired,
+                                    validationRules: q.validationRules,
+                                    options: q.options,
+                                    scoreWeight: q.scoreWeight,
+                                    scoringRules: q.scoringRules,
+                                    showIf: q.showIf,
+                                    category: q.category,
+                                })),
+                                scoringStrategy: questionnairePlan.scoringStrategy,
+                                passingScore: questionnairePlan.passingScore,
+                                autoDecisionEnabled: questionnairePlan.autoDecisionEnabled,
+                            } : phaseTemplate.stepDefinitionsSnapshot,
                         },
                     });
 
-                    // TODO: Create QuestionnaireField records if template has field definitions
+                    // Create QuestionnaireField records from plan questions
+                    for (const question of questions) {
+                        await tx.questionnaireField.create({
+                            data: {
+                                tenantId: (data as any).tenantId,
+                                questionnairePhaseId: questionnairePhase.id,
+                                fieldKey: question.questionKey,
+                                fieldType: question.questionType,
+                                label: question.questionText,
+                                helpText: question.helpText,
+                                order: question.order,
+                                isRequired: question.isRequired ?? true,
+                                validationRules: question.validationRules,
+                                options: question.options,
+                            },
+                        });
+                    }
                 } else if (phaseTemplate.phaseCategory === 'DOCUMENTATION') {
                     // Create DocumentationPhase extension
                     const documentationPhase = await tx.documentationPhase.create({

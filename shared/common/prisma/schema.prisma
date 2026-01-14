@@ -567,6 +567,7 @@ model Tenant {
   settings                    Settings[]
   domainEvents                DomainEvent[]
   workflowBlockers            WorkflowBlocker[]
+  questionnairePlans          QuestionnairePlan[]
 
   @@index([subdomain])
   @@map("tenants")
@@ -1078,6 +1079,91 @@ model DocumentationPlanStep {
 }
 
 // =============================================================================
+// QUESTIONNAIRE PLAN DOMAIN - Reusable form templates with scoring
+// =============================================================================
+// QuestionnairePlan = reusable structure for prequalification/screening forms
+// Examples: "Mortgage Prequalification", "Affordability Assessment", "Risk Screening"
+// =============================================================================
+
+model QuestionnairePlan {
+  id          String  @id @default(cuid())
+  tenantId    String? // NULL = global template available to all tenants
+  tenant      Tenant? @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  name        String
+  description String? @db.Text
+  version     Int     @default(1)
+  isActive    Boolean @default(true)
+
+  // Scoring configuration
+  passingScore        Int? // Minimum score to pass (null = no auto-scoring)
+  scoringStrategy     ScoringStrategy @default(SUM)
+  autoDecisionEnabled Boolean         @default(false) // Auto-pass/fail based on score
+
+  // Metadata
+  estimatedMinutes Int? // Estimated time to complete
+  category         QuestionnaireCategory @default(PREQUALIFICATION)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Questions that make up this plan
+  questions QuestionnairePlanQuestion[]
+
+  // Used by property payment method phases (templates)
+  methodPhases PropertyPaymentMethodPhase[]
+
+  // Used by instantiated questionnaire phases
+  questionnairePhases QuestionnairePhase[]
+
+  @@unique([tenantId, name, version])
+  @@index([tenantId])
+  @@index([category])
+  @@map("questionnaire_plans")
+}
+
+// Question template within a QuestionnairePlan
+model QuestionnairePlanQuestion {
+  id                  String            @id @default(cuid())
+  questionnairePlanId String
+  questionnairePlan   QuestionnairePlan @relation(fields: [questionnairePlanId], references: [id], onDelete: Cascade)
+
+  // Question identification
+  questionKey  String // Unique key for this question (e.g., "annual_income")
+  questionText String  @db.Text // The actual question text
+  helpText     String? @db.Text // Optional help/tooltip text
+
+  // Field configuration
+  questionType QuestionType
+  order        Int
+
+  // Validation
+  isRequired      Boolean @default(true)
+  validationRules Json? // { min: 0, max: 1000000, pattern: "^[0-9]+$" }
+
+  // Options for SELECT/MULTI_SELECT/RADIO
+  // [{ value: "employed", label: "Employed", score: 10 }, ...]
+  options Json?
+
+  // Scoring
+  scoreWeight  Int   @default(1) // Multiplier for this question's score
+  scoringRules Json? // { "employed": 10, "self_employed": 7, "unemployed": 0 } or ranges
+
+  // Conditional logic (branching)
+  // { "questionKey": "employment_status", "equals": "employed" }
+  showIf Json?
+
+  // Metadata for grouping
+  category String? // Group questions (e.g., "income", "employment", "property")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([questionnairePlanId, questionKey])
+  @@index([questionnairePlanId])
+  @@map("questionnaire_plan_questions")
+}
+
+// =============================================================================
 // PAYMENT PLAN DOMAIN - Reusable installment structure templates
 // =============================================================================
 
@@ -1202,6 +1288,8 @@ model PropertyPaymentMethodPhase {
   paymentPlan         PaymentPlan?       @relation(fields: [paymentPlanId], references: [id])
   documentationPlanId String? // Only for DOCUMENTATION phases
   documentationPlan   DocumentationPlan? @relation(fields: [documentationPlanId], references: [id])
+  questionnairePlanId String? // Only for QUESTIONNAIRE phases
+  questionnairePlan   QuestionnairePlan? @relation(fields: [questionnairePlanId], references: [id])
 
   name        String
   description String? @db.Text
@@ -1245,6 +1333,7 @@ model PropertyPaymentMethodPhase {
   @@index([paymentMethodId])
   @@index([paymentPlanId])
   @@index([documentationPlanId])
+  @@index([questionnairePlanId])
   @@index([phaseCategory])
   @@map("property_payment_method_phases")
 }
@@ -1376,6 +1465,44 @@ enum FieldType {
   CHECKBOX // Boolean yes/no
   RADIO // Radio button group
   FILE // File upload (single)
+}
+
+// =============================================================================
+// QUESTIONNAIRE PLAN ENUMS - For scoring and categorization
+// =============================================================================
+
+enum QuestionType {
+  TEXT
+  NUMBER
+  CURRENCY
+  DATE
+  SELECT
+  MULTI_SELECT
+  RADIO
+  CHECKBOX
+  FILE_UPLOAD
+  PHONE
+  EMAIL
+  ADDRESS
+  PERCENTAGE
+  YEARS_MONTHS
+}
+
+enum ScoringStrategy {
+  SUM // Add up all scores
+  AVERAGE // Average of all scores
+  WEIGHTED_SUM // Sum with weights (score * weight)
+  MIN_ALL // Must meet minimum on all questions
+  CUSTOM // Use custom scoring function
+}
+
+enum QuestionnaireCategory {
+  PREQUALIFICATION // Initial eligibility screening
+  AFFORDABILITY // Income/expense assessment
+  PROPERTY_INTENT // What property are they looking for
+  RISK_ASSESSMENT // Credit/risk questions
+  COMPLIANCE // KYC/AML questions
+  CUSTOM
 }
 
 // Questionnaire field template within a QUESTIONNAIRE phase
@@ -1635,9 +1762,19 @@ model QuestionnairePhase {
   phaseId  String           @unique
   phase    ApplicationPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
 
+  // Questionnaire plan reference (if created from a plan)
+  questionnairePlanId String?
+  questionnairePlan   QuestionnairePlan? @relation(fields: [questionnairePlanId], references: [id])
+
   // Progress tracking
   completedFieldsCount Int @default(0)
   totalFieldsCount     Int @default(0)
+
+  // Scoring results (from QuestionnairePlan scoring)
+  totalScore   Int?
+  passingScore Int? // Copied from plan at creation
+  passed       Boolean?
+  scoredAt     DateTime?
 
   // Computed results (for UNDERWRITING phases)
   underwritingScore    Float?
@@ -1656,6 +1793,7 @@ model QuestionnairePhase {
 
   @@index([tenantId])
   @@index([phaseId])
+  @@index([questionnairePlanId])
   @@map("questionnaire_phases")
 }
 

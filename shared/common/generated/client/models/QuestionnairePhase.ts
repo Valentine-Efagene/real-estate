@@ -29,6 +29,8 @@ export type AggregateQuestionnairePhase = {
 export type QuestionnairePhaseAvgAggregateOutputType = {
   completedFieldsCount: number | null
   totalFieldsCount: number | null
+  totalScore: number | null
+  passingScore: number | null
   underwritingScore: number | null
   debtToIncomeRatio: number | null
 }
@@ -36,6 +38,8 @@ export type QuestionnairePhaseAvgAggregateOutputType = {
 export type QuestionnairePhaseSumAggregateOutputType = {
   completedFieldsCount: number | null
   totalFieldsCount: number | null
+  totalScore: number | null
+  passingScore: number | null
   underwritingScore: number | null
   debtToIncomeRatio: number | null
 }
@@ -44,8 +48,13 @@ export type QuestionnairePhaseMinAggregateOutputType = {
   id: string | null
   tenantId: string | null
   phaseId: string | null
+  questionnairePlanId: string | null
   completedFieldsCount: number | null
   totalFieldsCount: number | null
+  totalScore: number | null
+  passingScore: number | null
+  passed: boolean | null
+  scoredAt: Date | null
   underwritingScore: number | null
   debtToIncomeRatio: number | null
   underwritingDecision: string | null
@@ -58,8 +67,13 @@ export type QuestionnairePhaseMaxAggregateOutputType = {
   id: string | null
   tenantId: string | null
   phaseId: string | null
+  questionnairePlanId: string | null
   completedFieldsCount: number | null
   totalFieldsCount: number | null
+  totalScore: number | null
+  passingScore: number | null
+  passed: boolean | null
+  scoredAt: Date | null
   underwritingScore: number | null
   debtToIncomeRatio: number | null
   underwritingDecision: string | null
@@ -72,8 +86,13 @@ export type QuestionnairePhaseCountAggregateOutputType = {
   id: number
   tenantId: number
   phaseId: number
+  questionnairePlanId: number
   completedFieldsCount: number
   totalFieldsCount: number
+  totalScore: number
+  passingScore: number
+  passed: number
+  scoredAt: number
   underwritingScore: number
   debtToIncomeRatio: number
   underwritingDecision: number
@@ -88,6 +107,8 @@ export type QuestionnairePhaseCountAggregateOutputType = {
 export type QuestionnairePhaseAvgAggregateInputType = {
   completedFieldsCount?: true
   totalFieldsCount?: true
+  totalScore?: true
+  passingScore?: true
   underwritingScore?: true
   debtToIncomeRatio?: true
 }
@@ -95,6 +116,8 @@ export type QuestionnairePhaseAvgAggregateInputType = {
 export type QuestionnairePhaseSumAggregateInputType = {
   completedFieldsCount?: true
   totalFieldsCount?: true
+  totalScore?: true
+  passingScore?: true
   underwritingScore?: true
   debtToIncomeRatio?: true
 }
@@ -103,8 +126,13 @@ export type QuestionnairePhaseMinAggregateInputType = {
   id?: true
   tenantId?: true
   phaseId?: true
+  questionnairePlanId?: true
   completedFieldsCount?: true
   totalFieldsCount?: true
+  totalScore?: true
+  passingScore?: true
+  passed?: true
+  scoredAt?: true
   underwritingScore?: true
   debtToIncomeRatio?: true
   underwritingDecision?: true
@@ -117,8 +145,13 @@ export type QuestionnairePhaseMaxAggregateInputType = {
   id?: true
   tenantId?: true
   phaseId?: true
+  questionnairePlanId?: true
   completedFieldsCount?: true
   totalFieldsCount?: true
+  totalScore?: true
+  passingScore?: true
+  passed?: true
+  scoredAt?: true
   underwritingScore?: true
   debtToIncomeRatio?: true
   underwritingDecision?: true
@@ -131,8 +164,13 @@ export type QuestionnairePhaseCountAggregateInputType = {
   id?: true
   tenantId?: true
   phaseId?: true
+  questionnairePlanId?: true
   completedFieldsCount?: true
   totalFieldsCount?: true
+  totalScore?: true
+  passingScore?: true
+  passed?: true
+  scoredAt?: true
   underwritingScore?: true
   debtToIncomeRatio?: true
   underwritingDecision?: true
@@ -233,8 +271,13 @@ export type QuestionnairePhaseGroupByOutputType = {
   id: string
   tenantId: string
   phaseId: string
+  questionnairePlanId: string | null
   completedFieldsCount: number
   totalFieldsCount: number
+  totalScore: number | null
+  passingScore: number | null
+  passed: boolean | null
+  scoredAt: Date | null
   underwritingScore: number | null
   debtToIncomeRatio: number | null
   underwritingDecision: string | null
@@ -271,8 +314,13 @@ export type QuestionnairePhaseWhereInput = {
   id?: Prisma.StringFilter<"QuestionnairePhase"> | string
   tenantId?: Prisma.StringFilter<"QuestionnairePhase"> | string
   phaseId?: Prisma.StringFilter<"QuestionnairePhase"> | string
+  questionnairePlanId?: Prisma.StringNullableFilter<"QuestionnairePhase"> | string | null
   completedFieldsCount?: Prisma.IntFilter<"QuestionnairePhase"> | number
   totalFieldsCount?: Prisma.IntFilter<"QuestionnairePhase"> | number
+  totalScore?: Prisma.IntNullableFilter<"QuestionnairePhase"> | number | null
+  passingScore?: Prisma.IntNullableFilter<"QuestionnairePhase"> | number | null
+  passed?: Prisma.BoolNullableFilter<"QuestionnairePhase"> | boolean | null
+  scoredAt?: Prisma.DateTimeNullableFilter<"QuestionnairePhase"> | Date | string | null
   underwritingScore?: Prisma.FloatNullableFilter<"QuestionnairePhase"> | number | null
   debtToIncomeRatio?: Prisma.FloatNullableFilter<"QuestionnairePhase"> | number | null
   underwritingDecision?: Prisma.StringNullableFilter<"QuestionnairePhase"> | string | null
@@ -282,6 +330,7 @@ export type QuestionnairePhaseWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"QuestionnairePhase"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   phase?: Prisma.XOR<Prisma.ApplicationPhaseScalarRelationFilter, Prisma.ApplicationPhaseWhereInput>
+  questionnairePlan?: Prisma.XOR<Prisma.QuestionnairePlanNullableScalarRelationFilter, Prisma.QuestionnairePlanWhereInput> | null
   fields?: Prisma.QuestionnaireFieldListRelationFilter
 }
 
@@ -289,8 +338,13 @@ export type QuestionnairePhaseOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   phaseId?: Prisma.SortOrder
+  questionnairePlanId?: Prisma.SortOrderInput | Prisma.SortOrder
   completedFieldsCount?: Prisma.SortOrder
   totalFieldsCount?: Prisma.SortOrder
+  totalScore?: Prisma.SortOrderInput | Prisma.SortOrder
+  passingScore?: Prisma.SortOrderInput | Prisma.SortOrder
+  passed?: Prisma.SortOrderInput | Prisma.SortOrder
+  scoredAt?: Prisma.SortOrderInput | Prisma.SortOrder
   underwritingScore?: Prisma.SortOrderInput | Prisma.SortOrder
   debtToIncomeRatio?: Prisma.SortOrderInput | Prisma.SortOrder
   underwritingDecision?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -300,6 +354,7 @@ export type QuestionnairePhaseOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   tenant?: Prisma.TenantOrderByWithRelationInput
   phase?: Prisma.ApplicationPhaseOrderByWithRelationInput
+  questionnairePlan?: Prisma.QuestionnairePlanOrderByWithRelationInput
   fields?: Prisma.QuestionnaireFieldOrderByRelationAggregateInput
   _relevance?: Prisma.QuestionnairePhaseOrderByRelevanceInput
 }
@@ -311,8 +366,13 @@ export type QuestionnairePhaseWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.QuestionnairePhaseWhereInput[]
   NOT?: Prisma.QuestionnairePhaseWhereInput | Prisma.QuestionnairePhaseWhereInput[]
   tenantId?: Prisma.StringFilter<"QuestionnairePhase"> | string
+  questionnairePlanId?: Prisma.StringNullableFilter<"QuestionnairePhase"> | string | null
   completedFieldsCount?: Prisma.IntFilter<"QuestionnairePhase"> | number
   totalFieldsCount?: Prisma.IntFilter<"QuestionnairePhase"> | number
+  totalScore?: Prisma.IntNullableFilter<"QuestionnairePhase"> | number | null
+  passingScore?: Prisma.IntNullableFilter<"QuestionnairePhase"> | number | null
+  passed?: Prisma.BoolNullableFilter<"QuestionnairePhase"> | boolean | null
+  scoredAt?: Prisma.DateTimeNullableFilter<"QuestionnairePhase"> | Date | string | null
   underwritingScore?: Prisma.FloatNullableFilter<"QuestionnairePhase"> | number | null
   debtToIncomeRatio?: Prisma.FloatNullableFilter<"QuestionnairePhase"> | number | null
   underwritingDecision?: Prisma.StringNullableFilter<"QuestionnairePhase"> | string | null
@@ -322,6 +382,7 @@ export type QuestionnairePhaseWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"QuestionnairePhase"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   phase?: Prisma.XOR<Prisma.ApplicationPhaseScalarRelationFilter, Prisma.ApplicationPhaseWhereInput>
+  questionnairePlan?: Prisma.XOR<Prisma.QuestionnairePlanNullableScalarRelationFilter, Prisma.QuestionnairePlanWhereInput> | null
   fields?: Prisma.QuestionnaireFieldListRelationFilter
 }, "id" | "phaseId">
 
@@ -329,8 +390,13 @@ export type QuestionnairePhaseOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   phaseId?: Prisma.SortOrder
+  questionnairePlanId?: Prisma.SortOrderInput | Prisma.SortOrder
   completedFieldsCount?: Prisma.SortOrder
   totalFieldsCount?: Prisma.SortOrder
+  totalScore?: Prisma.SortOrderInput | Prisma.SortOrder
+  passingScore?: Prisma.SortOrderInput | Prisma.SortOrder
+  passed?: Prisma.SortOrderInput | Prisma.SortOrder
+  scoredAt?: Prisma.SortOrderInput | Prisma.SortOrder
   underwritingScore?: Prisma.SortOrderInput | Prisma.SortOrder
   debtToIncomeRatio?: Prisma.SortOrderInput | Prisma.SortOrder
   underwritingDecision?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -352,8 +418,13 @@ export type QuestionnairePhaseScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"QuestionnairePhase"> | string
   tenantId?: Prisma.StringWithAggregatesFilter<"QuestionnairePhase"> | string
   phaseId?: Prisma.StringWithAggregatesFilter<"QuestionnairePhase"> | string
+  questionnairePlanId?: Prisma.StringNullableWithAggregatesFilter<"QuestionnairePhase"> | string | null
   completedFieldsCount?: Prisma.IntWithAggregatesFilter<"QuestionnairePhase"> | number
   totalFieldsCount?: Prisma.IntWithAggregatesFilter<"QuestionnairePhase"> | number
+  totalScore?: Prisma.IntNullableWithAggregatesFilter<"QuestionnairePhase"> | number | null
+  passingScore?: Prisma.IntNullableWithAggregatesFilter<"QuestionnairePhase"> | number | null
+  passed?: Prisma.BoolNullableWithAggregatesFilter<"QuestionnairePhase"> | boolean | null
+  scoredAt?: Prisma.DateTimeNullableWithAggregatesFilter<"QuestionnairePhase"> | Date | string | null
   underwritingScore?: Prisma.FloatNullableWithAggregatesFilter<"QuestionnairePhase"> | number | null
   debtToIncomeRatio?: Prisma.FloatNullableWithAggregatesFilter<"QuestionnairePhase"> | number | null
   underwritingDecision?: Prisma.StringNullableWithAggregatesFilter<"QuestionnairePhase"> | string | null
@@ -367,6 +438,10 @@ export type QuestionnairePhaseCreateInput = {
   id?: string
   completedFieldsCount?: number
   totalFieldsCount?: number
+  totalScore?: number | null
+  passingScore?: number | null
+  passed?: boolean | null
+  scoredAt?: Date | string | null
   underwritingScore?: number | null
   debtToIncomeRatio?: number | null
   underwritingDecision?: string | null
@@ -376,6 +451,7 @@ export type QuestionnairePhaseCreateInput = {
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutQuestionnairePhasesInput
   phase: Prisma.ApplicationPhaseCreateNestedOneWithoutQuestionnairePhaseInput
+  questionnairePlan?: Prisma.QuestionnairePlanCreateNestedOneWithoutQuestionnairePhasesInput
   fields?: Prisma.QuestionnaireFieldCreateNestedManyWithoutQuestionnairePhaseInput
 }
 
@@ -383,8 +459,13 @@ export type QuestionnairePhaseUncheckedCreateInput = {
   id?: string
   tenantId: string
   phaseId: string
+  questionnairePlanId?: string | null
   completedFieldsCount?: number
   totalFieldsCount?: number
+  totalScore?: number | null
+  passingScore?: number | null
+  passed?: boolean | null
+  scoredAt?: Date | string | null
   underwritingScore?: number | null
   debtToIncomeRatio?: number | null
   underwritingDecision?: string | null
@@ -399,6 +480,10 @@ export type QuestionnairePhaseUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   completedFieldsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalFieldsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  passingScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  passed?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  scoredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   underwritingDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -408,6 +493,7 @@ export type QuestionnairePhaseUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutQuestionnairePhasesNestedInput
   phase?: Prisma.ApplicationPhaseUpdateOneRequiredWithoutQuestionnairePhaseNestedInput
+  questionnairePlan?: Prisma.QuestionnairePlanUpdateOneWithoutQuestionnairePhasesNestedInput
   fields?: Prisma.QuestionnaireFieldUpdateManyWithoutQuestionnairePhaseNestedInput
 }
 
@@ -415,8 +501,13 @@ export type QuestionnairePhaseUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.StringFieldUpdateOperationsInput | string
+  questionnairePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   completedFieldsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalFieldsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  passingScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  passed?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  scoredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   underwritingDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -431,8 +522,13 @@ export type QuestionnairePhaseCreateManyInput = {
   id?: string
   tenantId: string
   phaseId: string
+  questionnairePlanId?: string | null
   completedFieldsCount?: number
   totalFieldsCount?: number
+  totalScore?: number | null
+  passingScore?: number | null
+  passed?: boolean | null
+  scoredAt?: Date | string | null
   underwritingScore?: number | null
   debtToIncomeRatio?: number | null
   underwritingDecision?: string | null
@@ -446,6 +542,10 @@ export type QuestionnairePhaseUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   completedFieldsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalFieldsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  passingScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  passed?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  scoredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   underwritingDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -459,8 +559,13 @@ export type QuestionnairePhaseUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.StringFieldUpdateOperationsInput | string
+  questionnairePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   completedFieldsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalFieldsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  passingScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  passed?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  scoredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   underwritingDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -495,8 +600,13 @@ export type QuestionnairePhaseCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   phaseId?: Prisma.SortOrder
+  questionnairePlanId?: Prisma.SortOrder
   completedFieldsCount?: Prisma.SortOrder
   totalFieldsCount?: Prisma.SortOrder
+  totalScore?: Prisma.SortOrder
+  passingScore?: Prisma.SortOrder
+  passed?: Prisma.SortOrder
+  scoredAt?: Prisma.SortOrder
   underwritingScore?: Prisma.SortOrder
   debtToIncomeRatio?: Prisma.SortOrder
   underwritingDecision?: Prisma.SortOrder
@@ -509,6 +619,8 @@ export type QuestionnairePhaseCountOrderByAggregateInput = {
 export type QuestionnairePhaseAvgOrderByAggregateInput = {
   completedFieldsCount?: Prisma.SortOrder
   totalFieldsCount?: Prisma.SortOrder
+  totalScore?: Prisma.SortOrder
+  passingScore?: Prisma.SortOrder
   underwritingScore?: Prisma.SortOrder
   debtToIncomeRatio?: Prisma.SortOrder
 }
@@ -517,8 +629,13 @@ export type QuestionnairePhaseMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   phaseId?: Prisma.SortOrder
+  questionnairePlanId?: Prisma.SortOrder
   completedFieldsCount?: Prisma.SortOrder
   totalFieldsCount?: Prisma.SortOrder
+  totalScore?: Prisma.SortOrder
+  passingScore?: Prisma.SortOrder
+  passed?: Prisma.SortOrder
+  scoredAt?: Prisma.SortOrder
   underwritingScore?: Prisma.SortOrder
   debtToIncomeRatio?: Prisma.SortOrder
   underwritingDecision?: Prisma.SortOrder
@@ -531,8 +648,13 @@ export type QuestionnairePhaseMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   phaseId?: Prisma.SortOrder
+  questionnairePlanId?: Prisma.SortOrder
   completedFieldsCount?: Prisma.SortOrder
   totalFieldsCount?: Prisma.SortOrder
+  totalScore?: Prisma.SortOrder
+  passingScore?: Prisma.SortOrder
+  passed?: Prisma.SortOrder
+  scoredAt?: Prisma.SortOrder
   underwritingScore?: Prisma.SortOrder
   debtToIncomeRatio?: Prisma.SortOrder
   underwritingDecision?: Prisma.SortOrder
@@ -544,6 +666,8 @@ export type QuestionnairePhaseMinOrderByAggregateInput = {
 export type QuestionnairePhaseSumOrderByAggregateInput = {
   completedFieldsCount?: Prisma.SortOrder
   totalFieldsCount?: Prisma.SortOrder
+  totalScore?: Prisma.SortOrder
+  passingScore?: Prisma.SortOrder
   underwritingScore?: Prisma.SortOrder
   debtToIncomeRatio?: Prisma.SortOrder
 }
@@ -592,6 +716,48 @@ export type QuestionnairePhaseUncheckedUpdateManyWithoutTenantNestedInput = {
   connect?: Prisma.QuestionnairePhaseWhereUniqueInput | Prisma.QuestionnairePhaseWhereUniqueInput[]
   update?: Prisma.QuestionnairePhaseUpdateWithWhereUniqueWithoutTenantInput | Prisma.QuestionnairePhaseUpdateWithWhereUniqueWithoutTenantInput[]
   updateMany?: Prisma.QuestionnairePhaseUpdateManyWithWhereWithoutTenantInput | Prisma.QuestionnairePhaseUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.QuestionnairePhaseScalarWhereInput | Prisma.QuestionnairePhaseScalarWhereInput[]
+}
+
+export type QuestionnairePhaseCreateNestedManyWithoutQuestionnairePlanInput = {
+  create?: Prisma.XOR<Prisma.QuestionnairePhaseCreateWithoutQuestionnairePlanInput, Prisma.QuestionnairePhaseUncheckedCreateWithoutQuestionnairePlanInput> | Prisma.QuestionnairePhaseCreateWithoutQuestionnairePlanInput[] | Prisma.QuestionnairePhaseUncheckedCreateWithoutQuestionnairePlanInput[]
+  connectOrCreate?: Prisma.QuestionnairePhaseCreateOrConnectWithoutQuestionnairePlanInput | Prisma.QuestionnairePhaseCreateOrConnectWithoutQuestionnairePlanInput[]
+  createMany?: Prisma.QuestionnairePhaseCreateManyQuestionnairePlanInputEnvelope
+  connect?: Prisma.QuestionnairePhaseWhereUniqueInput | Prisma.QuestionnairePhaseWhereUniqueInput[]
+}
+
+export type QuestionnairePhaseUncheckedCreateNestedManyWithoutQuestionnairePlanInput = {
+  create?: Prisma.XOR<Prisma.QuestionnairePhaseCreateWithoutQuestionnairePlanInput, Prisma.QuestionnairePhaseUncheckedCreateWithoutQuestionnairePlanInput> | Prisma.QuestionnairePhaseCreateWithoutQuestionnairePlanInput[] | Prisma.QuestionnairePhaseUncheckedCreateWithoutQuestionnairePlanInput[]
+  connectOrCreate?: Prisma.QuestionnairePhaseCreateOrConnectWithoutQuestionnairePlanInput | Prisma.QuestionnairePhaseCreateOrConnectWithoutQuestionnairePlanInput[]
+  createMany?: Prisma.QuestionnairePhaseCreateManyQuestionnairePlanInputEnvelope
+  connect?: Prisma.QuestionnairePhaseWhereUniqueInput | Prisma.QuestionnairePhaseWhereUniqueInput[]
+}
+
+export type QuestionnairePhaseUpdateManyWithoutQuestionnairePlanNestedInput = {
+  create?: Prisma.XOR<Prisma.QuestionnairePhaseCreateWithoutQuestionnairePlanInput, Prisma.QuestionnairePhaseUncheckedCreateWithoutQuestionnairePlanInput> | Prisma.QuestionnairePhaseCreateWithoutQuestionnairePlanInput[] | Prisma.QuestionnairePhaseUncheckedCreateWithoutQuestionnairePlanInput[]
+  connectOrCreate?: Prisma.QuestionnairePhaseCreateOrConnectWithoutQuestionnairePlanInput | Prisma.QuestionnairePhaseCreateOrConnectWithoutQuestionnairePlanInput[]
+  upsert?: Prisma.QuestionnairePhaseUpsertWithWhereUniqueWithoutQuestionnairePlanInput | Prisma.QuestionnairePhaseUpsertWithWhereUniqueWithoutQuestionnairePlanInput[]
+  createMany?: Prisma.QuestionnairePhaseCreateManyQuestionnairePlanInputEnvelope
+  set?: Prisma.QuestionnairePhaseWhereUniqueInput | Prisma.QuestionnairePhaseWhereUniqueInput[]
+  disconnect?: Prisma.QuestionnairePhaseWhereUniqueInput | Prisma.QuestionnairePhaseWhereUniqueInput[]
+  delete?: Prisma.QuestionnairePhaseWhereUniqueInput | Prisma.QuestionnairePhaseWhereUniqueInput[]
+  connect?: Prisma.QuestionnairePhaseWhereUniqueInput | Prisma.QuestionnairePhaseWhereUniqueInput[]
+  update?: Prisma.QuestionnairePhaseUpdateWithWhereUniqueWithoutQuestionnairePlanInput | Prisma.QuestionnairePhaseUpdateWithWhereUniqueWithoutQuestionnairePlanInput[]
+  updateMany?: Prisma.QuestionnairePhaseUpdateManyWithWhereWithoutQuestionnairePlanInput | Prisma.QuestionnairePhaseUpdateManyWithWhereWithoutQuestionnairePlanInput[]
+  deleteMany?: Prisma.QuestionnairePhaseScalarWhereInput | Prisma.QuestionnairePhaseScalarWhereInput[]
+}
+
+export type QuestionnairePhaseUncheckedUpdateManyWithoutQuestionnairePlanNestedInput = {
+  create?: Prisma.XOR<Prisma.QuestionnairePhaseCreateWithoutQuestionnairePlanInput, Prisma.QuestionnairePhaseUncheckedCreateWithoutQuestionnairePlanInput> | Prisma.QuestionnairePhaseCreateWithoutQuestionnairePlanInput[] | Prisma.QuestionnairePhaseUncheckedCreateWithoutQuestionnairePlanInput[]
+  connectOrCreate?: Prisma.QuestionnairePhaseCreateOrConnectWithoutQuestionnairePlanInput | Prisma.QuestionnairePhaseCreateOrConnectWithoutQuestionnairePlanInput[]
+  upsert?: Prisma.QuestionnairePhaseUpsertWithWhereUniqueWithoutQuestionnairePlanInput | Prisma.QuestionnairePhaseUpsertWithWhereUniqueWithoutQuestionnairePlanInput[]
+  createMany?: Prisma.QuestionnairePhaseCreateManyQuestionnairePlanInputEnvelope
+  set?: Prisma.QuestionnairePhaseWhereUniqueInput | Prisma.QuestionnairePhaseWhereUniqueInput[]
+  disconnect?: Prisma.QuestionnairePhaseWhereUniqueInput | Prisma.QuestionnairePhaseWhereUniqueInput[]
+  delete?: Prisma.QuestionnairePhaseWhereUniqueInput | Prisma.QuestionnairePhaseWhereUniqueInput[]
+  connect?: Prisma.QuestionnairePhaseWhereUniqueInput | Prisma.QuestionnairePhaseWhereUniqueInput[]
+  update?: Prisma.QuestionnairePhaseUpdateWithWhereUniqueWithoutQuestionnairePlanInput | Prisma.QuestionnairePhaseUpdateWithWhereUniqueWithoutQuestionnairePlanInput[]
+  updateMany?: Prisma.QuestionnairePhaseUpdateManyWithWhereWithoutQuestionnairePlanInput | Prisma.QuestionnairePhaseUpdateManyWithWhereWithoutQuestionnairePlanInput[]
   deleteMany?: Prisma.QuestionnairePhaseScalarWhereInput | Prisma.QuestionnairePhaseScalarWhereInput[]
 }
 
@@ -645,6 +811,10 @@ export type QuestionnairePhaseCreateWithoutTenantInput = {
   id?: string
   completedFieldsCount?: number
   totalFieldsCount?: number
+  totalScore?: number | null
+  passingScore?: number | null
+  passed?: boolean | null
+  scoredAt?: Date | string | null
   underwritingScore?: number | null
   debtToIncomeRatio?: number | null
   underwritingDecision?: string | null
@@ -653,14 +823,20 @@ export type QuestionnairePhaseCreateWithoutTenantInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   phase: Prisma.ApplicationPhaseCreateNestedOneWithoutQuestionnairePhaseInput
+  questionnairePlan?: Prisma.QuestionnairePlanCreateNestedOneWithoutQuestionnairePhasesInput
   fields?: Prisma.QuestionnaireFieldCreateNestedManyWithoutQuestionnairePhaseInput
 }
 
 export type QuestionnairePhaseUncheckedCreateWithoutTenantInput = {
   id?: string
   phaseId: string
+  questionnairePlanId?: string | null
   completedFieldsCount?: number
   totalFieldsCount?: number
+  totalScore?: number | null
+  passingScore?: number | null
+  passed?: boolean | null
+  scoredAt?: Date | string | null
   underwritingScore?: number | null
   debtToIncomeRatio?: number | null
   underwritingDecision?: string | null
@@ -704,8 +880,13 @@ export type QuestionnairePhaseScalarWhereInput = {
   id?: Prisma.StringFilter<"QuestionnairePhase"> | string
   tenantId?: Prisma.StringFilter<"QuestionnairePhase"> | string
   phaseId?: Prisma.StringFilter<"QuestionnairePhase"> | string
+  questionnairePlanId?: Prisma.StringNullableFilter<"QuestionnairePhase"> | string | null
   completedFieldsCount?: Prisma.IntFilter<"QuestionnairePhase"> | number
   totalFieldsCount?: Prisma.IntFilter<"QuestionnairePhase"> | number
+  totalScore?: Prisma.IntNullableFilter<"QuestionnairePhase"> | number | null
+  passingScore?: Prisma.IntNullableFilter<"QuestionnairePhase"> | number | null
+  passed?: Prisma.BoolNullableFilter<"QuestionnairePhase"> | boolean | null
+  scoredAt?: Prisma.DateTimeNullableFilter<"QuestionnairePhase"> | Date | string | null
   underwritingScore?: Prisma.FloatNullableFilter<"QuestionnairePhase"> | number | null
   debtToIncomeRatio?: Prisma.FloatNullableFilter<"QuestionnairePhase"> | number | null
   underwritingDecision?: Prisma.StringNullableFilter<"QuestionnairePhase"> | string | null
@@ -715,10 +896,14 @@ export type QuestionnairePhaseScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"QuestionnairePhase"> | Date | string
 }
 
-export type QuestionnairePhaseCreateWithoutPhaseInput = {
+export type QuestionnairePhaseCreateWithoutQuestionnairePlanInput = {
   id?: string
   completedFieldsCount?: number
   totalFieldsCount?: number
+  totalScore?: number | null
+  passingScore?: number | null
+  passed?: boolean | null
+  scoredAt?: Date | string | null
   underwritingScore?: number | null
   debtToIncomeRatio?: number | null
   underwritingDecision?: string | null
@@ -727,14 +912,86 @@ export type QuestionnairePhaseCreateWithoutPhaseInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutQuestionnairePhasesInput
+  phase: Prisma.ApplicationPhaseCreateNestedOneWithoutQuestionnairePhaseInput
+  fields?: Prisma.QuestionnaireFieldCreateNestedManyWithoutQuestionnairePhaseInput
+}
+
+export type QuestionnairePhaseUncheckedCreateWithoutQuestionnairePlanInput = {
+  id?: string
+  tenantId: string
+  phaseId: string
+  completedFieldsCount?: number
+  totalFieldsCount?: number
+  totalScore?: number | null
+  passingScore?: number | null
+  passed?: boolean | null
+  scoredAt?: Date | string | null
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
+  underwritingDecision?: string | null
+  underwritingNotes?: string | null
+  fieldsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  fields?: Prisma.QuestionnaireFieldUncheckedCreateNestedManyWithoutQuestionnairePhaseInput
+}
+
+export type QuestionnairePhaseCreateOrConnectWithoutQuestionnairePlanInput = {
+  where: Prisma.QuestionnairePhaseWhereUniqueInput
+  create: Prisma.XOR<Prisma.QuestionnairePhaseCreateWithoutQuestionnairePlanInput, Prisma.QuestionnairePhaseUncheckedCreateWithoutQuestionnairePlanInput>
+}
+
+export type QuestionnairePhaseCreateManyQuestionnairePlanInputEnvelope = {
+  data: Prisma.QuestionnairePhaseCreateManyQuestionnairePlanInput | Prisma.QuestionnairePhaseCreateManyQuestionnairePlanInput[]
+  skipDuplicates?: boolean
+}
+
+export type QuestionnairePhaseUpsertWithWhereUniqueWithoutQuestionnairePlanInput = {
+  where: Prisma.QuestionnairePhaseWhereUniqueInput
+  update: Prisma.XOR<Prisma.QuestionnairePhaseUpdateWithoutQuestionnairePlanInput, Prisma.QuestionnairePhaseUncheckedUpdateWithoutQuestionnairePlanInput>
+  create: Prisma.XOR<Prisma.QuestionnairePhaseCreateWithoutQuestionnairePlanInput, Prisma.QuestionnairePhaseUncheckedCreateWithoutQuestionnairePlanInput>
+}
+
+export type QuestionnairePhaseUpdateWithWhereUniqueWithoutQuestionnairePlanInput = {
+  where: Prisma.QuestionnairePhaseWhereUniqueInput
+  data: Prisma.XOR<Prisma.QuestionnairePhaseUpdateWithoutQuestionnairePlanInput, Prisma.QuestionnairePhaseUncheckedUpdateWithoutQuestionnairePlanInput>
+}
+
+export type QuestionnairePhaseUpdateManyWithWhereWithoutQuestionnairePlanInput = {
+  where: Prisma.QuestionnairePhaseScalarWhereInput
+  data: Prisma.XOR<Prisma.QuestionnairePhaseUpdateManyMutationInput, Prisma.QuestionnairePhaseUncheckedUpdateManyWithoutQuestionnairePlanInput>
+}
+
+export type QuestionnairePhaseCreateWithoutPhaseInput = {
+  id?: string
+  completedFieldsCount?: number
+  totalFieldsCount?: number
+  totalScore?: number | null
+  passingScore?: number | null
+  passed?: boolean | null
+  scoredAt?: Date | string | null
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
+  underwritingDecision?: string | null
+  underwritingNotes?: string | null
+  fieldsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutQuestionnairePhasesInput
+  questionnairePlan?: Prisma.QuestionnairePlanCreateNestedOneWithoutQuestionnairePhasesInput
   fields?: Prisma.QuestionnaireFieldCreateNestedManyWithoutQuestionnairePhaseInput
 }
 
 export type QuestionnairePhaseUncheckedCreateWithoutPhaseInput = {
   id?: string
   tenantId: string
+  questionnairePlanId?: string | null
   completedFieldsCount?: number
   totalFieldsCount?: number
+  totalScore?: number | null
+  passingScore?: number | null
+  passed?: boolean | null
+  scoredAt?: Date | string | null
   underwritingScore?: number | null
   debtToIncomeRatio?: number | null
   underwritingDecision?: string | null
@@ -765,6 +1022,10 @@ export type QuestionnairePhaseUpdateWithoutPhaseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   completedFieldsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalFieldsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  passingScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  passed?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  scoredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   underwritingDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -773,14 +1034,20 @@ export type QuestionnairePhaseUpdateWithoutPhaseInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutQuestionnairePhasesNestedInput
+  questionnairePlan?: Prisma.QuestionnairePlanUpdateOneWithoutQuestionnairePhasesNestedInput
   fields?: Prisma.QuestionnaireFieldUpdateManyWithoutQuestionnairePhaseNestedInput
 }
 
 export type QuestionnairePhaseUncheckedUpdateWithoutPhaseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  questionnairePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   completedFieldsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalFieldsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  passingScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  passed?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  scoredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   underwritingDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -795,6 +1062,10 @@ export type QuestionnairePhaseCreateWithoutFieldsInput = {
   id?: string
   completedFieldsCount?: number
   totalFieldsCount?: number
+  totalScore?: number | null
+  passingScore?: number | null
+  passed?: boolean | null
+  scoredAt?: Date | string | null
   underwritingScore?: number | null
   debtToIncomeRatio?: number | null
   underwritingDecision?: string | null
@@ -804,14 +1075,20 @@ export type QuestionnairePhaseCreateWithoutFieldsInput = {
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutQuestionnairePhasesInput
   phase: Prisma.ApplicationPhaseCreateNestedOneWithoutQuestionnairePhaseInput
+  questionnairePlan?: Prisma.QuestionnairePlanCreateNestedOneWithoutQuestionnairePhasesInput
 }
 
 export type QuestionnairePhaseUncheckedCreateWithoutFieldsInput = {
   id?: string
   tenantId: string
   phaseId: string
+  questionnairePlanId?: string | null
   completedFieldsCount?: number
   totalFieldsCount?: number
+  totalScore?: number | null
+  passingScore?: number | null
+  passed?: boolean | null
+  scoredAt?: Date | string | null
   underwritingScore?: number | null
   debtToIncomeRatio?: number | null
   underwritingDecision?: string | null
@@ -841,6 +1118,10 @@ export type QuestionnairePhaseUpdateWithoutFieldsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   completedFieldsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalFieldsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  passingScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  passed?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  scoredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   underwritingDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -850,14 +1131,20 @@ export type QuestionnairePhaseUpdateWithoutFieldsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutQuestionnairePhasesNestedInput
   phase?: Prisma.ApplicationPhaseUpdateOneRequiredWithoutQuestionnairePhaseNestedInput
+  questionnairePlan?: Prisma.QuestionnairePlanUpdateOneWithoutQuestionnairePhasesNestedInput
 }
 
 export type QuestionnairePhaseUncheckedUpdateWithoutFieldsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.StringFieldUpdateOperationsInput | string
+  questionnairePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   completedFieldsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalFieldsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  passingScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  passed?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  scoredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   underwritingDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -870,8 +1157,13 @@ export type QuestionnairePhaseUncheckedUpdateWithoutFieldsInput = {
 export type QuestionnairePhaseCreateManyTenantInput = {
   id?: string
   phaseId: string
+  questionnairePlanId?: string | null
   completedFieldsCount?: number
   totalFieldsCount?: number
+  totalScore?: number | null
+  passingScore?: number | null
+  passed?: boolean | null
+  scoredAt?: Date | string | null
   underwritingScore?: number | null
   debtToIncomeRatio?: number | null
   underwritingDecision?: string | null
@@ -885,6 +1177,10 @@ export type QuestionnairePhaseUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   completedFieldsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalFieldsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  passingScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  passed?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  scoredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   underwritingDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -893,14 +1189,20 @@ export type QuestionnairePhaseUpdateWithoutTenantInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   phase?: Prisma.ApplicationPhaseUpdateOneRequiredWithoutQuestionnairePhaseNestedInput
+  questionnairePlan?: Prisma.QuestionnairePlanUpdateOneWithoutQuestionnairePhasesNestedInput
   fields?: Prisma.QuestionnaireFieldUpdateManyWithoutQuestionnairePhaseNestedInput
 }
 
 export type QuestionnairePhaseUncheckedUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.StringFieldUpdateOperationsInput | string
+  questionnairePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   completedFieldsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalFieldsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  passingScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  passed?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  scoredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   underwritingDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -914,8 +1216,91 @@ export type QuestionnairePhaseUncheckedUpdateWithoutTenantInput = {
 export type QuestionnairePhaseUncheckedUpdateManyWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.StringFieldUpdateOperationsInput | string
+  questionnairePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   completedFieldsCount?: Prisma.IntFieldUpdateOperationsInput | number
   totalFieldsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  passingScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  passed?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  scoredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  underwritingDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  underwritingNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fieldsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type QuestionnairePhaseCreateManyQuestionnairePlanInput = {
+  id?: string
+  tenantId: string
+  phaseId: string
+  completedFieldsCount?: number
+  totalFieldsCount?: number
+  totalScore?: number | null
+  passingScore?: number | null
+  passed?: boolean | null
+  scoredAt?: Date | string | null
+  underwritingScore?: number | null
+  debtToIncomeRatio?: number | null
+  underwritingDecision?: string | null
+  underwritingNotes?: string | null
+  fieldsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type QuestionnairePhaseUpdateWithoutQuestionnairePlanInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  completedFieldsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalFieldsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  passingScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  passed?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  scoredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  underwritingDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  underwritingNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fieldsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutQuestionnairePhasesNestedInput
+  phase?: Prisma.ApplicationPhaseUpdateOneRequiredWithoutQuestionnairePhaseNestedInput
+  fields?: Prisma.QuestionnaireFieldUpdateManyWithoutQuestionnairePhaseNestedInput
+}
+
+export type QuestionnairePhaseUncheckedUpdateWithoutQuestionnairePlanInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseId?: Prisma.StringFieldUpdateOperationsInput | string
+  completedFieldsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalFieldsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  passingScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  passed?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  scoredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  underwritingDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  underwritingNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fieldsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fields?: Prisma.QuestionnaireFieldUncheckedUpdateManyWithoutQuestionnairePhaseNestedInput
+}
+
+export type QuestionnairePhaseUncheckedUpdateManyWithoutQuestionnairePlanInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseId?: Prisma.StringFieldUpdateOperationsInput | string
+  completedFieldsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalFieldsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  passingScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  passed?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  scoredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   underwritingScore?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   debtToIncomeRatio?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   underwritingDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -960,8 +1345,13 @@ export type QuestionnairePhaseSelect<ExtArgs extends runtime.Types.Extensions.In
   id?: boolean
   tenantId?: boolean
   phaseId?: boolean
+  questionnairePlanId?: boolean
   completedFieldsCount?: boolean
   totalFieldsCount?: boolean
+  totalScore?: boolean
+  passingScore?: boolean
+  passed?: boolean
+  scoredAt?: boolean
   underwritingScore?: boolean
   debtToIncomeRatio?: boolean
   underwritingDecision?: boolean
@@ -971,6 +1361,7 @@ export type QuestionnairePhaseSelect<ExtArgs extends runtime.Types.Extensions.In
   updatedAt?: boolean
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   phase?: boolean | Prisma.ApplicationPhaseDefaultArgs<ExtArgs>
+  questionnairePlan?: boolean | Prisma.QuestionnairePhase$questionnairePlanArgs<ExtArgs>
   fields?: boolean | Prisma.QuestionnairePhase$fieldsArgs<ExtArgs>
   _count?: boolean | Prisma.QuestionnairePhaseCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["questionnairePhase"]>
@@ -981,8 +1372,13 @@ export type QuestionnairePhaseSelectScalar = {
   id?: boolean
   tenantId?: boolean
   phaseId?: boolean
+  questionnairePlanId?: boolean
   completedFieldsCount?: boolean
   totalFieldsCount?: boolean
+  totalScore?: boolean
+  passingScore?: boolean
+  passed?: boolean
+  scoredAt?: boolean
   underwritingScore?: boolean
   debtToIncomeRatio?: boolean
   underwritingDecision?: boolean
@@ -992,10 +1388,11 @@ export type QuestionnairePhaseSelectScalar = {
   updatedAt?: boolean
 }
 
-export type QuestionnairePhaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "phaseId" | "completedFieldsCount" | "totalFieldsCount" | "underwritingScore" | "debtToIncomeRatio" | "underwritingDecision" | "underwritingNotes" | "fieldsSnapshot" | "createdAt" | "updatedAt", ExtArgs["result"]["questionnairePhase"]>
+export type QuestionnairePhaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "phaseId" | "questionnairePlanId" | "completedFieldsCount" | "totalFieldsCount" | "totalScore" | "passingScore" | "passed" | "scoredAt" | "underwritingScore" | "debtToIncomeRatio" | "underwritingDecision" | "underwritingNotes" | "fieldsSnapshot" | "createdAt" | "updatedAt", ExtArgs["result"]["questionnairePhase"]>
 export type QuestionnairePhaseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   phase?: boolean | Prisma.ApplicationPhaseDefaultArgs<ExtArgs>
+  questionnairePlan?: boolean | Prisma.QuestionnairePhase$questionnairePlanArgs<ExtArgs>
   fields?: boolean | Prisma.QuestionnairePhase$fieldsArgs<ExtArgs>
   _count?: boolean | Prisma.QuestionnairePhaseCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -1005,14 +1402,20 @@ export type $QuestionnairePhasePayload<ExtArgs extends runtime.Types.Extensions.
   objects: {
     tenant: Prisma.$TenantPayload<ExtArgs>
     phase: Prisma.$ApplicationPhasePayload<ExtArgs>
+    questionnairePlan: Prisma.$QuestionnairePlanPayload<ExtArgs> | null
     fields: Prisma.$QuestionnaireFieldPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     tenantId: string
     phaseId: string
+    questionnairePlanId: string | null
     completedFieldsCount: number
     totalFieldsCount: number
+    totalScore: number | null
+    passingScore: number | null
+    passed: boolean | null
+    scoredAt: Date | null
     underwritingScore: number | null
     debtToIncomeRatio: number | null
     underwritingDecision: string | null
@@ -1362,6 +1765,7 @@ export interface Prisma__QuestionnairePhaseClient<T, Null = never, ExtArgs exten
   readonly [Symbol.toStringTag]: "PrismaPromise"
   tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   phase<T extends Prisma.ApplicationPhaseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApplicationPhaseDefaultArgs<ExtArgs>>): Prisma.Prisma__ApplicationPhaseClient<runtime.Types.Result.GetResult<Prisma.$ApplicationPhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  questionnairePlan<T extends Prisma.QuestionnairePhase$questionnairePlanArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QuestionnairePhase$questionnairePlanArgs<ExtArgs>>): Prisma.Prisma__QuestionnairePlanClient<runtime.Types.Result.GetResult<Prisma.$QuestionnairePlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   fields<T extends Prisma.QuestionnairePhase$fieldsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QuestionnairePhase$fieldsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QuestionnaireFieldPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1395,8 +1799,13 @@ export interface QuestionnairePhaseFieldRefs {
   readonly id: Prisma.FieldRef<"QuestionnairePhase", 'String'>
   readonly tenantId: Prisma.FieldRef<"QuestionnairePhase", 'String'>
   readonly phaseId: Prisma.FieldRef<"QuestionnairePhase", 'String'>
+  readonly questionnairePlanId: Prisma.FieldRef<"QuestionnairePhase", 'String'>
   readonly completedFieldsCount: Prisma.FieldRef<"QuestionnairePhase", 'Int'>
   readonly totalFieldsCount: Prisma.FieldRef<"QuestionnairePhase", 'Int'>
+  readonly totalScore: Prisma.FieldRef<"QuestionnairePhase", 'Int'>
+  readonly passingScore: Prisma.FieldRef<"QuestionnairePhase", 'Int'>
+  readonly passed: Prisma.FieldRef<"QuestionnairePhase", 'Boolean'>
+  readonly scoredAt: Prisma.FieldRef<"QuestionnairePhase", 'DateTime'>
   readonly underwritingScore: Prisma.FieldRef<"QuestionnairePhase", 'Float'>
   readonly debtToIncomeRatio: Prisma.FieldRef<"QuestionnairePhase", 'Float'>
   readonly underwritingDecision: Prisma.FieldRef<"QuestionnairePhase", 'String'>
@@ -1744,6 +2153,25 @@ export type QuestionnairePhaseDeleteManyArgs<ExtArgs extends runtime.Types.Exten
    * Limit how many QuestionnairePhases to delete.
    */
   limit?: number
+}
+
+/**
+ * QuestionnairePhase.questionnairePlan
+ */
+export type QuestionnairePhase$questionnairePlanArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the QuestionnairePlan
+   */
+  select?: Prisma.QuestionnairePlanSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the QuestionnairePlan
+   */
+  omit?: Prisma.QuestionnairePlanOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.QuestionnairePlanInclude<ExtArgs> | null
+  where?: Prisma.QuestionnairePlanWhereInput
 }
 
 /**

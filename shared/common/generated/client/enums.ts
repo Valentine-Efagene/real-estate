@@ -379,6 +379,49 @@ export const FieldType = {
 export type FieldType = (typeof FieldType)[keyof typeof FieldType]
 
 
+export const QuestionType = {
+  TEXT: 'TEXT',
+  NUMBER: 'NUMBER',
+  CURRENCY: 'CURRENCY',
+  DATE: 'DATE',
+  SELECT: 'SELECT',
+  MULTI_SELECT: 'MULTI_SELECT',
+  RADIO: 'RADIO',
+  CHECKBOX: 'CHECKBOX',
+  FILE_UPLOAD: 'FILE_UPLOAD',
+  PHONE: 'PHONE',
+  EMAIL: 'EMAIL',
+  ADDRESS: 'ADDRESS',
+  PERCENTAGE: 'PERCENTAGE',
+  YEARS_MONTHS: 'YEARS_MONTHS'
+} as const
+
+export type QuestionType = (typeof QuestionType)[keyof typeof QuestionType]
+
+
+export const ScoringStrategy = {
+  SUM: 'SUM',
+  AVERAGE: 'AVERAGE',
+  WEIGHTED_SUM: 'WEIGHTED_SUM',
+  MIN_ALL: 'MIN_ALL',
+  CUSTOM: 'CUSTOM'
+} as const
+
+export type ScoringStrategy = (typeof ScoringStrategy)[keyof typeof ScoringStrategy]
+
+
+export const QuestionnaireCategory = {
+  PREQUALIFICATION: 'PREQUALIFICATION',
+  AFFORDABILITY: 'AFFORDABILITY',
+  PROPERTY_INTENT: 'PROPERTY_INTENT',
+  RISK_ASSESSMENT: 'RISK_ASSESSMENT',
+  COMPLIANCE: 'COMPLIANCE',
+  CUSTOM: 'CUSTOM'
+} as const
+
+export type QuestionnaireCategory = (typeof QuestionnaireCategory)[keyof typeof QuestionnaireCategory]
+
+
 export const PaymentMethodChangeStatus = {
   PENDING_DOCUMENTS: 'PENDING_DOCUMENTS',
   DOCUMENTS_SUBMITTED: 'DOCUMENTS_SUBMITTED',

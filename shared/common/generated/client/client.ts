@@ -188,6 +188,16 @@ export type DocumentationPlan = Prisma.DocumentationPlanModel
  */
 export type DocumentationPlanStep = Prisma.DocumentationPlanStepModel
 /**
+ * Model QuestionnairePlan
+ * 
+ */
+export type QuestionnairePlan = Prisma.QuestionnairePlanModel
+/**
+ * Model QuestionnairePlanQuestion
+ * 
+ */
+export type QuestionnairePlanQuestion = Prisma.QuestionnairePlanQuestionModel
+/**
  * Model PaymentPlan
  * 
  */

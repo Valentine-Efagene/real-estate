@@ -4,7 +4,7 @@ import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
 extendZodWithOpenApi(z);
 
 // Phase category enum (matches Prisma PhaseCategory)
-export const PhaseCategoryEnum = z.enum(['DOCUMENTATION', 'PAYMENT']);
+export const PhaseCategoryEnum = z.enum(['QUESTIONNAIRE', 'DOCUMENTATION', 'PAYMENT']);
 
 // Phase type enum (matches Prisma PhaseType)
 export const PhaseTypeEnum = z.enum(['KYC', 'VERIFICATION', 'DOWNPAYMENT', 'MORTGAGE', 'BALLOON', 'CUSTOM']);
@@ -36,6 +36,7 @@ const PaymentMethodPhaseBaseSchema = z.object({
     // Plan references (only one should be set based on phaseCategory)
     paymentPlanId: z.string().optional().openapi({ description: 'Required for PAYMENT phases - references a PaymentPlan' }),
     documentationPlanId: z.string().optional().openapi({ description: 'Optional for DOCUMENTATION phases - references a DocumentationPlan' }),
+    questionnairePlanId: z.string().optional().openapi({ description: 'Optional for QUESTIONNAIRE phases - references a QuestionnairePlan for prequalification forms' }),
 
     name: z.string().min(1).max(100).openapi({ example: 'KYC Verification' }),
     description: z.string().optional(),

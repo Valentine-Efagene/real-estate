@@ -46,6 +46,7 @@ export type PropertyPaymentMethodPhaseMinAggregateOutputType = {
   paymentMethodId: string | null
   paymentPlanId: string | null
   documentationPlanId: string | null
+  questionnairePlanId: string | null
   name: string | null
   description: string | null
   phaseCategory: $Enums.PhaseCategory | null
@@ -67,6 +68,7 @@ export type PropertyPaymentMethodPhaseMaxAggregateOutputType = {
   paymentMethodId: string | null
   paymentPlanId: string | null
   documentationPlanId: string | null
+  questionnairePlanId: string | null
   name: string | null
   description: string | null
   phaseCategory: $Enums.PhaseCategory | null
@@ -88,6 +90,7 @@ export type PropertyPaymentMethodPhaseCountAggregateOutputType = {
   paymentMethodId: number
   paymentPlanId: number
   documentationPlanId: number
+  questionnairePlanId: number
   name: number
   description: number
   phaseCategory: number
@@ -127,6 +130,7 @@ export type PropertyPaymentMethodPhaseMinAggregateInputType = {
   paymentMethodId?: true
   paymentPlanId?: true
   documentationPlanId?: true
+  questionnairePlanId?: true
   name?: true
   description?: true
   phaseCategory?: true
@@ -148,6 +152,7 @@ export type PropertyPaymentMethodPhaseMaxAggregateInputType = {
   paymentMethodId?: true
   paymentPlanId?: true
   documentationPlanId?: true
+  questionnairePlanId?: true
   name?: true
   description?: true
   phaseCategory?: true
@@ -169,6 +174,7 @@ export type PropertyPaymentMethodPhaseCountAggregateInputType = {
   paymentMethodId?: true
   paymentPlanId?: true
   documentationPlanId?: true
+  questionnairePlanId?: true
   name?: true
   description?: true
   phaseCategory?: true
@@ -279,6 +285,7 @@ export type PropertyPaymentMethodPhaseGroupByOutputType = {
   paymentMethodId: string
   paymentPlanId: string | null
   documentationPlanId: string | null
+  questionnairePlanId: string | null
   name: string
   description: string | null
   phaseCategory: $Enums.PhaseCategory
@@ -325,6 +332,7 @@ export type PropertyPaymentMethodPhaseWhereInput = {
   paymentMethodId?: Prisma.StringFilter<"PropertyPaymentMethodPhase"> | string
   paymentPlanId?: Prisma.StringNullableFilter<"PropertyPaymentMethodPhase"> | string | null
   documentationPlanId?: Prisma.StringNullableFilter<"PropertyPaymentMethodPhase"> | string | null
+  questionnairePlanId?: Prisma.StringNullableFilter<"PropertyPaymentMethodPhase"> | string | null
   name?: Prisma.StringFilter<"PropertyPaymentMethodPhase"> | string
   description?: Prisma.StringNullableFilter<"PropertyPaymentMethodPhase"> | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFilter<"PropertyPaymentMethodPhase"> | $Enums.PhaseCategory
@@ -344,6 +352,7 @@ export type PropertyPaymentMethodPhaseWhereInput = {
   paymentMethod?: Prisma.XOR<Prisma.PropertyPaymentMethodScalarRelationFilter, Prisma.PropertyPaymentMethodWhereInput>
   paymentPlan?: Prisma.XOR<Prisma.PaymentPlanNullableScalarRelationFilter, Prisma.PaymentPlanWhereInput> | null
   documentationPlan?: Prisma.XOR<Prisma.DocumentationPlanNullableScalarRelationFilter, Prisma.DocumentationPlanWhereInput> | null
+  questionnairePlan?: Prisma.XOR<Prisma.QuestionnairePlanNullableScalarRelationFilter, Prisma.QuestionnairePlanWhereInput> | null
   steps?: Prisma.PaymentMethodPhaseStepListRelationFilter
   requiredDocuments?: Prisma.PaymentMethodPhaseDocumentListRelationFilter
   questionnaireFields?: Prisma.PaymentMethodPhaseFieldListRelationFilter
@@ -356,6 +365,7 @@ export type PropertyPaymentMethodPhaseOrderByWithRelationInput = {
   paymentMethodId?: Prisma.SortOrder
   paymentPlanId?: Prisma.SortOrderInput | Prisma.SortOrder
   documentationPlanId?: Prisma.SortOrderInput | Prisma.SortOrder
+  questionnairePlanId?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   phaseCategory?: Prisma.SortOrder
@@ -375,6 +385,7 @@ export type PropertyPaymentMethodPhaseOrderByWithRelationInput = {
   paymentMethod?: Prisma.PropertyPaymentMethodOrderByWithRelationInput
   paymentPlan?: Prisma.PaymentPlanOrderByWithRelationInput
   documentationPlan?: Prisma.DocumentationPlanOrderByWithRelationInput
+  questionnairePlan?: Prisma.QuestionnairePlanOrderByWithRelationInput
   steps?: Prisma.PaymentMethodPhaseStepOrderByRelationAggregateInput
   requiredDocuments?: Prisma.PaymentMethodPhaseDocumentOrderByRelationAggregateInput
   questionnaireFields?: Prisma.PaymentMethodPhaseFieldOrderByRelationAggregateInput
@@ -391,6 +402,7 @@ export type PropertyPaymentMethodPhaseWhereUniqueInput = Prisma.AtLeast<{
   paymentMethodId?: Prisma.StringFilter<"PropertyPaymentMethodPhase"> | string
   paymentPlanId?: Prisma.StringNullableFilter<"PropertyPaymentMethodPhase"> | string | null
   documentationPlanId?: Prisma.StringNullableFilter<"PropertyPaymentMethodPhase"> | string | null
+  questionnairePlanId?: Prisma.StringNullableFilter<"PropertyPaymentMethodPhase"> | string | null
   name?: Prisma.StringFilter<"PropertyPaymentMethodPhase"> | string
   description?: Prisma.StringNullableFilter<"PropertyPaymentMethodPhase"> | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFilter<"PropertyPaymentMethodPhase"> | $Enums.PhaseCategory
@@ -410,6 +422,7 @@ export type PropertyPaymentMethodPhaseWhereUniqueInput = Prisma.AtLeast<{
   paymentMethod?: Prisma.XOR<Prisma.PropertyPaymentMethodScalarRelationFilter, Prisma.PropertyPaymentMethodWhereInput>
   paymentPlan?: Prisma.XOR<Prisma.PaymentPlanNullableScalarRelationFilter, Prisma.PaymentPlanWhereInput> | null
   documentationPlan?: Prisma.XOR<Prisma.DocumentationPlanNullableScalarRelationFilter, Prisma.DocumentationPlanWhereInput> | null
+  questionnairePlan?: Prisma.XOR<Prisma.QuestionnairePlanNullableScalarRelationFilter, Prisma.QuestionnairePlanWhereInput> | null
   steps?: Prisma.PaymentMethodPhaseStepListRelationFilter
   requiredDocuments?: Prisma.PaymentMethodPhaseDocumentListRelationFilter
   questionnaireFields?: Prisma.PaymentMethodPhaseFieldListRelationFilter
@@ -422,6 +435,7 @@ export type PropertyPaymentMethodPhaseOrderByWithAggregationInput = {
   paymentMethodId?: Prisma.SortOrder
   paymentPlanId?: Prisma.SortOrderInput | Prisma.SortOrder
   documentationPlanId?: Prisma.SortOrderInput | Prisma.SortOrder
+  questionnairePlanId?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   phaseCategory?: Prisma.SortOrder
@@ -453,6 +467,7 @@ export type PropertyPaymentMethodPhaseScalarWhereWithAggregatesInput = {
   paymentMethodId?: Prisma.StringWithAggregatesFilter<"PropertyPaymentMethodPhase"> | string
   paymentPlanId?: Prisma.StringNullableWithAggregatesFilter<"PropertyPaymentMethodPhase"> | string | null
   documentationPlanId?: Prisma.StringNullableWithAggregatesFilter<"PropertyPaymentMethodPhase"> | string | null
+  questionnairePlanId?: Prisma.StringNullableWithAggregatesFilter<"PropertyPaymentMethodPhase"> | string | null
   name?: Prisma.StringWithAggregatesFilter<"PropertyPaymentMethodPhase"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"PropertyPaymentMethodPhase"> | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryWithAggregatesFilter<"PropertyPaymentMethodPhase"> | $Enums.PhaseCategory
@@ -491,6 +506,7 @@ export type PropertyPaymentMethodPhaseCreateInput = {
   paymentMethod: Prisma.PropertyPaymentMethodCreateNestedOneWithoutPhasesInput
   paymentPlan?: Prisma.PaymentPlanCreateNestedOneWithoutMethodPhasesInput
   documentationPlan?: Prisma.DocumentationPlanCreateNestedOneWithoutMethodPhasesInput
+  questionnairePlan?: Prisma.QuestionnairePlanCreateNestedOneWithoutMethodPhasesInput
   steps?: Prisma.PaymentMethodPhaseStepCreateNestedManyWithoutPhaseInput
   requiredDocuments?: Prisma.PaymentMethodPhaseDocumentCreateNestedManyWithoutPhaseInput
   questionnaireFields?: Prisma.PaymentMethodPhaseFieldCreateNestedManyWithoutPhaseInput
@@ -503,6 +519,7 @@ export type PropertyPaymentMethodPhaseUncheckedCreateInput = {
   paymentMethodId: string
   paymentPlanId?: string | null
   documentationPlanId?: string | null
+  questionnairePlanId?: string | null
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
@@ -545,6 +562,7 @@ export type PropertyPaymentMethodPhaseUpdateInput = {
   paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneRequiredWithoutPhasesNestedInput
   paymentPlan?: Prisma.PaymentPlanUpdateOneWithoutMethodPhasesNestedInput
   documentationPlan?: Prisma.DocumentationPlanUpdateOneWithoutMethodPhasesNestedInput
+  questionnairePlan?: Prisma.QuestionnairePlanUpdateOneWithoutMethodPhasesNestedInput
   steps?: Prisma.PaymentMethodPhaseStepUpdateManyWithoutPhaseNestedInput
   requiredDocuments?: Prisma.PaymentMethodPhaseDocumentUpdateManyWithoutPhaseNestedInput
   questionnaireFields?: Prisma.PaymentMethodPhaseFieldUpdateManyWithoutPhaseNestedInput
@@ -557,6 +575,7 @@ export type PropertyPaymentMethodPhaseUncheckedUpdateInput = {
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documentationPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  questionnairePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
@@ -584,6 +603,7 @@ export type PropertyPaymentMethodPhaseCreateManyInput = {
   paymentMethodId: string
   paymentPlanId?: string | null
   documentationPlanId?: string | null
+  questionnairePlanId?: string | null
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
@@ -626,6 +646,7 @@ export type PropertyPaymentMethodPhaseUncheckedUpdateManyInput = {
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documentationPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  questionnairePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
@@ -665,6 +686,7 @@ export type PropertyPaymentMethodPhaseCountOrderByAggregateInput = {
   paymentMethodId?: Prisma.SortOrder
   paymentPlanId?: Prisma.SortOrder
   documentationPlanId?: Prisma.SortOrder
+  questionnairePlanId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   phaseCategory?: Prisma.SortOrder
@@ -695,6 +717,7 @@ export type PropertyPaymentMethodPhaseMaxOrderByAggregateInput = {
   paymentMethodId?: Prisma.SortOrder
   paymentPlanId?: Prisma.SortOrder
   documentationPlanId?: Prisma.SortOrder
+  questionnairePlanId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   phaseCategory?: Prisma.SortOrder
@@ -716,6 +739,7 @@ export type PropertyPaymentMethodPhaseMinOrderByAggregateInput = {
   paymentMethodId?: Prisma.SortOrder
   paymentPlanId?: Prisma.SortOrder
   documentationPlanId?: Prisma.SortOrder
+  questionnairePlanId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   phaseCategory?: Prisma.SortOrder
@@ -824,6 +848,48 @@ export type PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutDocumentationPla
   connect?: Prisma.PropertyPaymentMethodPhaseWhereUniqueInput | Prisma.PropertyPaymentMethodPhaseWhereUniqueInput[]
   update?: Prisma.PropertyPaymentMethodPhaseUpdateWithWhereUniqueWithoutDocumentationPlanInput | Prisma.PropertyPaymentMethodPhaseUpdateWithWhereUniqueWithoutDocumentationPlanInput[]
   updateMany?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithWhereWithoutDocumentationPlanInput | Prisma.PropertyPaymentMethodPhaseUpdateManyWithWhereWithoutDocumentationPlanInput[]
+  deleteMany?: Prisma.PropertyPaymentMethodPhaseScalarWhereInput | Prisma.PropertyPaymentMethodPhaseScalarWhereInput[]
+}
+
+export type PropertyPaymentMethodPhaseCreateNestedManyWithoutQuestionnairePlanInput = {
+  create?: Prisma.XOR<Prisma.PropertyPaymentMethodPhaseCreateWithoutQuestionnairePlanInput, Prisma.PropertyPaymentMethodPhaseUncheckedCreateWithoutQuestionnairePlanInput> | Prisma.PropertyPaymentMethodPhaseCreateWithoutQuestionnairePlanInput[] | Prisma.PropertyPaymentMethodPhaseUncheckedCreateWithoutQuestionnairePlanInput[]
+  connectOrCreate?: Prisma.PropertyPaymentMethodPhaseCreateOrConnectWithoutQuestionnairePlanInput | Prisma.PropertyPaymentMethodPhaseCreateOrConnectWithoutQuestionnairePlanInput[]
+  createMany?: Prisma.PropertyPaymentMethodPhaseCreateManyQuestionnairePlanInputEnvelope
+  connect?: Prisma.PropertyPaymentMethodPhaseWhereUniqueInput | Prisma.PropertyPaymentMethodPhaseWhereUniqueInput[]
+}
+
+export type PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutQuestionnairePlanInput = {
+  create?: Prisma.XOR<Prisma.PropertyPaymentMethodPhaseCreateWithoutQuestionnairePlanInput, Prisma.PropertyPaymentMethodPhaseUncheckedCreateWithoutQuestionnairePlanInput> | Prisma.PropertyPaymentMethodPhaseCreateWithoutQuestionnairePlanInput[] | Prisma.PropertyPaymentMethodPhaseUncheckedCreateWithoutQuestionnairePlanInput[]
+  connectOrCreate?: Prisma.PropertyPaymentMethodPhaseCreateOrConnectWithoutQuestionnairePlanInput | Prisma.PropertyPaymentMethodPhaseCreateOrConnectWithoutQuestionnairePlanInput[]
+  createMany?: Prisma.PropertyPaymentMethodPhaseCreateManyQuestionnairePlanInputEnvelope
+  connect?: Prisma.PropertyPaymentMethodPhaseWhereUniqueInput | Prisma.PropertyPaymentMethodPhaseWhereUniqueInput[]
+}
+
+export type PropertyPaymentMethodPhaseUpdateManyWithoutQuestionnairePlanNestedInput = {
+  create?: Prisma.XOR<Prisma.PropertyPaymentMethodPhaseCreateWithoutQuestionnairePlanInput, Prisma.PropertyPaymentMethodPhaseUncheckedCreateWithoutQuestionnairePlanInput> | Prisma.PropertyPaymentMethodPhaseCreateWithoutQuestionnairePlanInput[] | Prisma.PropertyPaymentMethodPhaseUncheckedCreateWithoutQuestionnairePlanInput[]
+  connectOrCreate?: Prisma.PropertyPaymentMethodPhaseCreateOrConnectWithoutQuestionnairePlanInput | Prisma.PropertyPaymentMethodPhaseCreateOrConnectWithoutQuestionnairePlanInput[]
+  upsert?: Prisma.PropertyPaymentMethodPhaseUpsertWithWhereUniqueWithoutQuestionnairePlanInput | Prisma.PropertyPaymentMethodPhaseUpsertWithWhereUniqueWithoutQuestionnairePlanInput[]
+  createMany?: Prisma.PropertyPaymentMethodPhaseCreateManyQuestionnairePlanInputEnvelope
+  set?: Prisma.PropertyPaymentMethodPhaseWhereUniqueInput | Prisma.PropertyPaymentMethodPhaseWhereUniqueInput[]
+  disconnect?: Prisma.PropertyPaymentMethodPhaseWhereUniqueInput | Prisma.PropertyPaymentMethodPhaseWhereUniqueInput[]
+  delete?: Prisma.PropertyPaymentMethodPhaseWhereUniqueInput | Prisma.PropertyPaymentMethodPhaseWhereUniqueInput[]
+  connect?: Prisma.PropertyPaymentMethodPhaseWhereUniqueInput | Prisma.PropertyPaymentMethodPhaseWhereUniqueInput[]
+  update?: Prisma.PropertyPaymentMethodPhaseUpdateWithWhereUniqueWithoutQuestionnairePlanInput | Prisma.PropertyPaymentMethodPhaseUpdateWithWhereUniqueWithoutQuestionnairePlanInput[]
+  updateMany?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithWhereWithoutQuestionnairePlanInput | Prisma.PropertyPaymentMethodPhaseUpdateManyWithWhereWithoutQuestionnairePlanInput[]
+  deleteMany?: Prisma.PropertyPaymentMethodPhaseScalarWhereInput | Prisma.PropertyPaymentMethodPhaseScalarWhereInput[]
+}
+
+export type PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutQuestionnairePlanNestedInput = {
+  create?: Prisma.XOR<Prisma.PropertyPaymentMethodPhaseCreateWithoutQuestionnairePlanInput, Prisma.PropertyPaymentMethodPhaseUncheckedCreateWithoutQuestionnairePlanInput> | Prisma.PropertyPaymentMethodPhaseCreateWithoutQuestionnairePlanInput[] | Prisma.PropertyPaymentMethodPhaseUncheckedCreateWithoutQuestionnairePlanInput[]
+  connectOrCreate?: Prisma.PropertyPaymentMethodPhaseCreateOrConnectWithoutQuestionnairePlanInput | Prisma.PropertyPaymentMethodPhaseCreateOrConnectWithoutQuestionnairePlanInput[]
+  upsert?: Prisma.PropertyPaymentMethodPhaseUpsertWithWhereUniqueWithoutQuestionnairePlanInput | Prisma.PropertyPaymentMethodPhaseUpsertWithWhereUniqueWithoutQuestionnairePlanInput[]
+  createMany?: Prisma.PropertyPaymentMethodPhaseCreateManyQuestionnairePlanInputEnvelope
+  set?: Prisma.PropertyPaymentMethodPhaseWhereUniqueInput | Prisma.PropertyPaymentMethodPhaseWhereUniqueInput[]
+  disconnect?: Prisma.PropertyPaymentMethodPhaseWhereUniqueInput | Prisma.PropertyPaymentMethodPhaseWhereUniqueInput[]
+  delete?: Prisma.PropertyPaymentMethodPhaseWhereUniqueInput | Prisma.PropertyPaymentMethodPhaseWhereUniqueInput[]
+  connect?: Prisma.PropertyPaymentMethodPhaseWhereUniqueInput | Prisma.PropertyPaymentMethodPhaseWhereUniqueInput[]
+  update?: Prisma.PropertyPaymentMethodPhaseUpdateWithWhereUniqueWithoutQuestionnairePlanInput | Prisma.PropertyPaymentMethodPhaseUpdateWithWhereUniqueWithoutQuestionnairePlanInput[]
+  updateMany?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithWhereWithoutQuestionnairePlanInput | Prisma.PropertyPaymentMethodPhaseUpdateManyWithWhereWithoutQuestionnairePlanInput[]
   deleteMany?: Prisma.PropertyPaymentMethodPhaseScalarWhereInput | Prisma.PropertyPaymentMethodPhaseScalarWhereInput[]
 }
 
@@ -1003,6 +1069,7 @@ export type PropertyPaymentMethodPhaseCreateWithoutTenantInput = {
   paymentMethod: Prisma.PropertyPaymentMethodCreateNestedOneWithoutPhasesInput
   paymentPlan?: Prisma.PaymentPlanCreateNestedOneWithoutMethodPhasesInput
   documentationPlan?: Prisma.DocumentationPlanCreateNestedOneWithoutMethodPhasesInput
+  questionnairePlan?: Prisma.QuestionnairePlanCreateNestedOneWithoutMethodPhasesInput
   steps?: Prisma.PaymentMethodPhaseStepCreateNestedManyWithoutPhaseInput
   requiredDocuments?: Prisma.PaymentMethodPhaseDocumentCreateNestedManyWithoutPhaseInput
   questionnaireFields?: Prisma.PaymentMethodPhaseFieldCreateNestedManyWithoutPhaseInput
@@ -1014,6 +1081,7 @@ export type PropertyPaymentMethodPhaseUncheckedCreateWithoutTenantInput = {
   paymentMethodId: string
   paymentPlanId?: string | null
   documentationPlanId?: string | null
+  questionnairePlanId?: string | null
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
@@ -1070,6 +1138,7 @@ export type PropertyPaymentMethodPhaseScalarWhereInput = {
   paymentMethodId?: Prisma.StringFilter<"PropertyPaymentMethodPhase"> | string
   paymentPlanId?: Prisma.StringNullableFilter<"PropertyPaymentMethodPhase"> | string | null
   documentationPlanId?: Prisma.StringNullableFilter<"PropertyPaymentMethodPhase"> | string | null
+  questionnairePlanId?: Prisma.StringNullableFilter<"PropertyPaymentMethodPhase"> | string | null
   name?: Prisma.StringFilter<"PropertyPaymentMethodPhase"> | string
   description?: Prisma.StringNullableFilter<"PropertyPaymentMethodPhase"> | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFilter<"PropertyPaymentMethodPhase"> | $Enums.PhaseCategory
@@ -1107,6 +1176,7 @@ export type PropertyPaymentMethodPhaseCreateWithoutDocumentationPlanInput = {
   tenant: Prisma.TenantCreateNestedOneWithoutPropertyPaymentMethodPhasesInput
   paymentMethod: Prisma.PropertyPaymentMethodCreateNestedOneWithoutPhasesInput
   paymentPlan?: Prisma.PaymentPlanCreateNestedOneWithoutMethodPhasesInput
+  questionnairePlan?: Prisma.QuestionnairePlanCreateNestedOneWithoutMethodPhasesInput
   steps?: Prisma.PaymentMethodPhaseStepCreateNestedManyWithoutPhaseInput
   requiredDocuments?: Prisma.PaymentMethodPhaseDocumentCreateNestedManyWithoutPhaseInput
   questionnaireFields?: Prisma.PaymentMethodPhaseFieldCreateNestedManyWithoutPhaseInput
@@ -1118,6 +1188,7 @@ export type PropertyPaymentMethodPhaseUncheckedCreateWithoutDocumentationPlanInp
   tenantId: string
   paymentMethodId: string
   paymentPlanId?: string | null
+  questionnairePlanId?: string | null
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
@@ -1165,6 +1236,86 @@ export type PropertyPaymentMethodPhaseUpdateManyWithWhereWithoutDocumentationPla
   data: Prisma.XOR<Prisma.PropertyPaymentMethodPhaseUpdateManyMutationInput, Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutDocumentationPlanInput>
 }
 
+export type PropertyPaymentMethodPhaseCreateWithoutQuestionnairePlanInput = {
+  id?: string
+  name: string
+  description?: string | null
+  phaseCategory: $Enums.PhaseCategory
+  phaseType: $Enums.PhaseType
+  order: number
+  interestRate?: number | null
+  percentOfPrice?: number | null
+  collectFunds?: boolean | null
+  requiresPreviousPhaseCompletion?: boolean
+  minimumCompletionPercentage?: number | null
+  completionCriterion?: $Enums.CompletionCriterion | null
+  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutPropertyPaymentMethodPhasesInput
+  paymentMethod: Prisma.PropertyPaymentMethodCreateNestedOneWithoutPhasesInput
+  paymentPlan?: Prisma.PaymentPlanCreateNestedOneWithoutMethodPhasesInput
+  documentationPlan?: Prisma.DocumentationPlanCreateNestedOneWithoutMethodPhasesInput
+  steps?: Prisma.PaymentMethodPhaseStepCreateNestedManyWithoutPhaseInput
+  requiredDocuments?: Prisma.PaymentMethodPhaseDocumentCreateNestedManyWithoutPhaseInput
+  questionnaireFields?: Prisma.PaymentMethodPhaseFieldCreateNestedManyWithoutPhaseInput
+  eventAttachments?: Prisma.PhaseEventAttachmentCreateNestedManyWithoutPhaseInput
+}
+
+export type PropertyPaymentMethodPhaseUncheckedCreateWithoutQuestionnairePlanInput = {
+  id?: string
+  tenantId: string
+  paymentMethodId: string
+  paymentPlanId?: string | null
+  documentationPlanId?: string | null
+  name: string
+  description?: string | null
+  phaseCategory: $Enums.PhaseCategory
+  phaseType: $Enums.PhaseType
+  order: number
+  interestRate?: number | null
+  percentOfPrice?: number | null
+  collectFunds?: boolean | null
+  requiresPreviousPhaseCompletion?: boolean
+  minimumCompletionPercentage?: number | null
+  completionCriterion?: $Enums.CompletionCriterion | null
+  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  steps?: Prisma.PaymentMethodPhaseStepUncheckedCreateNestedManyWithoutPhaseInput
+  requiredDocuments?: Prisma.PaymentMethodPhaseDocumentUncheckedCreateNestedManyWithoutPhaseInput
+  questionnaireFields?: Prisma.PaymentMethodPhaseFieldUncheckedCreateNestedManyWithoutPhaseInput
+  eventAttachments?: Prisma.PhaseEventAttachmentUncheckedCreateNestedManyWithoutPhaseInput
+}
+
+export type PropertyPaymentMethodPhaseCreateOrConnectWithoutQuestionnairePlanInput = {
+  where: Prisma.PropertyPaymentMethodPhaseWhereUniqueInput
+  create: Prisma.XOR<Prisma.PropertyPaymentMethodPhaseCreateWithoutQuestionnairePlanInput, Prisma.PropertyPaymentMethodPhaseUncheckedCreateWithoutQuestionnairePlanInput>
+}
+
+export type PropertyPaymentMethodPhaseCreateManyQuestionnairePlanInputEnvelope = {
+  data: Prisma.PropertyPaymentMethodPhaseCreateManyQuestionnairePlanInput | Prisma.PropertyPaymentMethodPhaseCreateManyQuestionnairePlanInput[]
+  skipDuplicates?: boolean
+}
+
+export type PropertyPaymentMethodPhaseUpsertWithWhereUniqueWithoutQuestionnairePlanInput = {
+  where: Prisma.PropertyPaymentMethodPhaseWhereUniqueInput
+  update: Prisma.XOR<Prisma.PropertyPaymentMethodPhaseUpdateWithoutQuestionnairePlanInput, Prisma.PropertyPaymentMethodPhaseUncheckedUpdateWithoutQuestionnairePlanInput>
+  create: Prisma.XOR<Prisma.PropertyPaymentMethodPhaseCreateWithoutQuestionnairePlanInput, Prisma.PropertyPaymentMethodPhaseUncheckedCreateWithoutQuestionnairePlanInput>
+}
+
+export type PropertyPaymentMethodPhaseUpdateWithWhereUniqueWithoutQuestionnairePlanInput = {
+  where: Prisma.PropertyPaymentMethodPhaseWhereUniqueInput
+  data: Prisma.XOR<Prisma.PropertyPaymentMethodPhaseUpdateWithoutQuestionnairePlanInput, Prisma.PropertyPaymentMethodPhaseUncheckedUpdateWithoutQuestionnairePlanInput>
+}
+
+export type PropertyPaymentMethodPhaseUpdateManyWithWhereWithoutQuestionnairePlanInput = {
+  where: Prisma.PropertyPaymentMethodPhaseScalarWhereInput
+  data: Prisma.XOR<Prisma.PropertyPaymentMethodPhaseUpdateManyMutationInput, Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutQuestionnairePlanInput>
+}
+
 export type PropertyPaymentMethodPhaseCreateWithoutPaymentPlanInput = {
   id?: string
   name: string
@@ -1185,6 +1336,7 @@ export type PropertyPaymentMethodPhaseCreateWithoutPaymentPlanInput = {
   tenant: Prisma.TenantCreateNestedOneWithoutPropertyPaymentMethodPhasesInput
   paymentMethod: Prisma.PropertyPaymentMethodCreateNestedOneWithoutPhasesInput
   documentationPlan?: Prisma.DocumentationPlanCreateNestedOneWithoutMethodPhasesInput
+  questionnairePlan?: Prisma.QuestionnairePlanCreateNestedOneWithoutMethodPhasesInput
   steps?: Prisma.PaymentMethodPhaseStepCreateNestedManyWithoutPhaseInput
   requiredDocuments?: Prisma.PaymentMethodPhaseDocumentCreateNestedManyWithoutPhaseInput
   questionnaireFields?: Prisma.PaymentMethodPhaseFieldCreateNestedManyWithoutPhaseInput
@@ -1196,6 +1348,7 @@ export type PropertyPaymentMethodPhaseUncheckedCreateWithoutPaymentPlanInput = {
   tenantId: string
   paymentMethodId: string
   documentationPlanId?: string | null
+  questionnairePlanId?: string | null
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
@@ -1263,6 +1416,7 @@ export type PropertyPaymentMethodPhaseCreateWithoutPaymentMethodInput = {
   tenant: Prisma.TenantCreateNestedOneWithoutPropertyPaymentMethodPhasesInput
   paymentPlan?: Prisma.PaymentPlanCreateNestedOneWithoutMethodPhasesInput
   documentationPlan?: Prisma.DocumentationPlanCreateNestedOneWithoutMethodPhasesInput
+  questionnairePlan?: Prisma.QuestionnairePlanCreateNestedOneWithoutMethodPhasesInput
   steps?: Prisma.PaymentMethodPhaseStepCreateNestedManyWithoutPhaseInput
   requiredDocuments?: Prisma.PaymentMethodPhaseDocumentCreateNestedManyWithoutPhaseInput
   questionnaireFields?: Prisma.PaymentMethodPhaseFieldCreateNestedManyWithoutPhaseInput
@@ -1274,6 +1428,7 @@ export type PropertyPaymentMethodPhaseUncheckedCreateWithoutPaymentMethodInput =
   tenantId: string
   paymentPlanId?: string | null
   documentationPlanId?: string | null
+  questionnairePlanId?: string | null
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
@@ -1342,6 +1497,7 @@ export type PropertyPaymentMethodPhaseCreateWithoutEventAttachmentsInput = {
   paymentMethod: Prisma.PropertyPaymentMethodCreateNestedOneWithoutPhasesInput
   paymentPlan?: Prisma.PaymentPlanCreateNestedOneWithoutMethodPhasesInput
   documentationPlan?: Prisma.DocumentationPlanCreateNestedOneWithoutMethodPhasesInput
+  questionnairePlan?: Prisma.QuestionnairePlanCreateNestedOneWithoutMethodPhasesInput
   steps?: Prisma.PaymentMethodPhaseStepCreateNestedManyWithoutPhaseInput
   requiredDocuments?: Prisma.PaymentMethodPhaseDocumentCreateNestedManyWithoutPhaseInput
   questionnaireFields?: Prisma.PaymentMethodPhaseFieldCreateNestedManyWithoutPhaseInput
@@ -1353,6 +1509,7 @@ export type PropertyPaymentMethodPhaseUncheckedCreateWithoutEventAttachmentsInpu
   paymentMethodId: string
   paymentPlanId?: string | null
   documentationPlanId?: string | null
+  questionnairePlanId?: string | null
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
@@ -1410,6 +1567,7 @@ export type PropertyPaymentMethodPhaseUpdateWithoutEventAttachmentsInput = {
   paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneRequiredWithoutPhasesNestedInput
   paymentPlan?: Prisma.PaymentPlanUpdateOneWithoutMethodPhasesNestedInput
   documentationPlan?: Prisma.DocumentationPlanUpdateOneWithoutMethodPhasesNestedInput
+  questionnairePlan?: Prisma.QuestionnairePlanUpdateOneWithoutMethodPhasesNestedInput
   steps?: Prisma.PaymentMethodPhaseStepUpdateManyWithoutPhaseNestedInput
   requiredDocuments?: Prisma.PaymentMethodPhaseDocumentUpdateManyWithoutPhaseNestedInput
   questionnaireFields?: Prisma.PaymentMethodPhaseFieldUpdateManyWithoutPhaseNestedInput
@@ -1421,6 +1579,7 @@ export type PropertyPaymentMethodPhaseUncheckedUpdateWithoutEventAttachmentsInpu
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documentationPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  questionnairePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
@@ -1462,6 +1621,7 @@ export type PropertyPaymentMethodPhaseCreateWithoutStepsInput = {
   paymentMethod: Prisma.PropertyPaymentMethodCreateNestedOneWithoutPhasesInput
   paymentPlan?: Prisma.PaymentPlanCreateNestedOneWithoutMethodPhasesInput
   documentationPlan?: Prisma.DocumentationPlanCreateNestedOneWithoutMethodPhasesInput
+  questionnairePlan?: Prisma.QuestionnairePlanCreateNestedOneWithoutMethodPhasesInput
   requiredDocuments?: Prisma.PaymentMethodPhaseDocumentCreateNestedManyWithoutPhaseInput
   questionnaireFields?: Prisma.PaymentMethodPhaseFieldCreateNestedManyWithoutPhaseInput
   eventAttachments?: Prisma.PhaseEventAttachmentCreateNestedManyWithoutPhaseInput
@@ -1473,6 +1633,7 @@ export type PropertyPaymentMethodPhaseUncheckedCreateWithoutStepsInput = {
   paymentMethodId: string
   paymentPlanId?: string | null
   documentationPlanId?: string | null
+  questionnairePlanId?: string | null
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
@@ -1530,6 +1691,7 @@ export type PropertyPaymentMethodPhaseUpdateWithoutStepsInput = {
   paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneRequiredWithoutPhasesNestedInput
   paymentPlan?: Prisma.PaymentPlanUpdateOneWithoutMethodPhasesNestedInput
   documentationPlan?: Prisma.DocumentationPlanUpdateOneWithoutMethodPhasesNestedInput
+  questionnairePlan?: Prisma.QuestionnairePlanUpdateOneWithoutMethodPhasesNestedInput
   requiredDocuments?: Prisma.PaymentMethodPhaseDocumentUpdateManyWithoutPhaseNestedInput
   questionnaireFields?: Prisma.PaymentMethodPhaseFieldUpdateManyWithoutPhaseNestedInput
   eventAttachments?: Prisma.PhaseEventAttachmentUpdateManyWithoutPhaseNestedInput
@@ -1541,6 +1703,7 @@ export type PropertyPaymentMethodPhaseUncheckedUpdateWithoutStepsInput = {
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documentationPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  questionnairePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
@@ -1582,6 +1745,7 @@ export type PropertyPaymentMethodPhaseCreateWithoutRequiredDocumentsInput = {
   paymentMethod: Prisma.PropertyPaymentMethodCreateNestedOneWithoutPhasesInput
   paymentPlan?: Prisma.PaymentPlanCreateNestedOneWithoutMethodPhasesInput
   documentationPlan?: Prisma.DocumentationPlanCreateNestedOneWithoutMethodPhasesInput
+  questionnairePlan?: Prisma.QuestionnairePlanCreateNestedOneWithoutMethodPhasesInput
   steps?: Prisma.PaymentMethodPhaseStepCreateNestedManyWithoutPhaseInput
   questionnaireFields?: Prisma.PaymentMethodPhaseFieldCreateNestedManyWithoutPhaseInput
   eventAttachments?: Prisma.PhaseEventAttachmentCreateNestedManyWithoutPhaseInput
@@ -1593,6 +1757,7 @@ export type PropertyPaymentMethodPhaseUncheckedCreateWithoutRequiredDocumentsInp
   paymentMethodId: string
   paymentPlanId?: string | null
   documentationPlanId?: string | null
+  questionnairePlanId?: string | null
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
@@ -1650,6 +1815,7 @@ export type PropertyPaymentMethodPhaseUpdateWithoutRequiredDocumentsInput = {
   paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneRequiredWithoutPhasesNestedInput
   paymentPlan?: Prisma.PaymentPlanUpdateOneWithoutMethodPhasesNestedInput
   documentationPlan?: Prisma.DocumentationPlanUpdateOneWithoutMethodPhasesNestedInput
+  questionnairePlan?: Prisma.QuestionnairePlanUpdateOneWithoutMethodPhasesNestedInput
   steps?: Prisma.PaymentMethodPhaseStepUpdateManyWithoutPhaseNestedInput
   questionnaireFields?: Prisma.PaymentMethodPhaseFieldUpdateManyWithoutPhaseNestedInput
   eventAttachments?: Prisma.PhaseEventAttachmentUpdateManyWithoutPhaseNestedInput
@@ -1661,6 +1827,7 @@ export type PropertyPaymentMethodPhaseUncheckedUpdateWithoutRequiredDocumentsInp
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documentationPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  questionnairePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
@@ -1702,6 +1869,7 @@ export type PropertyPaymentMethodPhaseCreateWithoutQuestionnaireFieldsInput = {
   paymentMethod: Prisma.PropertyPaymentMethodCreateNestedOneWithoutPhasesInput
   paymentPlan?: Prisma.PaymentPlanCreateNestedOneWithoutMethodPhasesInput
   documentationPlan?: Prisma.DocumentationPlanCreateNestedOneWithoutMethodPhasesInput
+  questionnairePlan?: Prisma.QuestionnairePlanCreateNestedOneWithoutMethodPhasesInput
   steps?: Prisma.PaymentMethodPhaseStepCreateNestedManyWithoutPhaseInput
   requiredDocuments?: Prisma.PaymentMethodPhaseDocumentCreateNestedManyWithoutPhaseInput
   eventAttachments?: Prisma.PhaseEventAttachmentCreateNestedManyWithoutPhaseInput
@@ -1713,6 +1881,7 @@ export type PropertyPaymentMethodPhaseUncheckedCreateWithoutQuestionnaireFieldsI
   paymentMethodId: string
   paymentPlanId?: string | null
   documentationPlanId?: string | null
+  questionnairePlanId?: string | null
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
@@ -1770,6 +1939,7 @@ export type PropertyPaymentMethodPhaseUpdateWithoutQuestionnaireFieldsInput = {
   paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneRequiredWithoutPhasesNestedInput
   paymentPlan?: Prisma.PaymentPlanUpdateOneWithoutMethodPhasesNestedInput
   documentationPlan?: Prisma.DocumentationPlanUpdateOneWithoutMethodPhasesNestedInput
+  questionnairePlan?: Prisma.QuestionnairePlanUpdateOneWithoutMethodPhasesNestedInput
   steps?: Prisma.PaymentMethodPhaseStepUpdateManyWithoutPhaseNestedInput
   requiredDocuments?: Prisma.PaymentMethodPhaseDocumentUpdateManyWithoutPhaseNestedInput
   eventAttachments?: Prisma.PhaseEventAttachmentUpdateManyWithoutPhaseNestedInput
@@ -1781,6 +1951,7 @@ export type PropertyPaymentMethodPhaseUncheckedUpdateWithoutQuestionnaireFieldsI
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documentationPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  questionnairePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
@@ -1806,6 +1977,7 @@ export type PropertyPaymentMethodPhaseCreateManyTenantInput = {
   paymentMethodId: string
   paymentPlanId?: string | null
   documentationPlanId?: string | null
+  questionnairePlanId?: string | null
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
@@ -1843,6 +2015,7 @@ export type PropertyPaymentMethodPhaseUpdateWithoutTenantInput = {
   paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneRequiredWithoutPhasesNestedInput
   paymentPlan?: Prisma.PaymentPlanUpdateOneWithoutMethodPhasesNestedInput
   documentationPlan?: Prisma.DocumentationPlanUpdateOneWithoutMethodPhasesNestedInput
+  questionnairePlan?: Prisma.QuestionnairePlanUpdateOneWithoutMethodPhasesNestedInput
   steps?: Prisma.PaymentMethodPhaseStepUpdateManyWithoutPhaseNestedInput
   requiredDocuments?: Prisma.PaymentMethodPhaseDocumentUpdateManyWithoutPhaseNestedInput
   questionnaireFields?: Prisma.PaymentMethodPhaseFieldUpdateManyWithoutPhaseNestedInput
@@ -1854,6 +2027,7 @@ export type PropertyPaymentMethodPhaseUncheckedUpdateWithoutTenantInput = {
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documentationPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  questionnairePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
@@ -1880,6 +2054,7 @@ export type PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutTenantInput = {
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documentationPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  questionnairePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
@@ -1902,6 +2077,7 @@ export type PropertyPaymentMethodPhaseCreateManyDocumentationPlanInput = {
   tenantId: string
   paymentMethodId: string
   paymentPlanId?: string | null
+  questionnairePlanId?: string | null
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
@@ -1939,6 +2115,7 @@ export type PropertyPaymentMethodPhaseUpdateWithoutDocumentationPlanInput = {
   tenant?: Prisma.TenantUpdateOneRequiredWithoutPropertyPaymentMethodPhasesNestedInput
   paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneRequiredWithoutPhasesNestedInput
   paymentPlan?: Prisma.PaymentPlanUpdateOneWithoutMethodPhasesNestedInput
+  questionnairePlan?: Prisma.QuestionnairePlanUpdateOneWithoutMethodPhasesNestedInput
   steps?: Prisma.PaymentMethodPhaseStepUpdateManyWithoutPhaseNestedInput
   requiredDocuments?: Prisma.PaymentMethodPhaseDocumentUpdateManyWithoutPhaseNestedInput
   questionnaireFields?: Prisma.PaymentMethodPhaseFieldUpdateManyWithoutPhaseNestedInput
@@ -1950,6 +2127,7 @@ export type PropertyPaymentMethodPhaseUncheckedUpdateWithoutDocumentationPlanInp
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  questionnairePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
@@ -1976,6 +2154,107 @@ export type PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutDocumentationPla
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  questionnairePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
+  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  percentOfPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  collectFunds?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
+  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PropertyPaymentMethodPhaseCreateManyQuestionnairePlanInput = {
+  id?: string
+  tenantId: string
+  paymentMethodId: string
+  paymentPlanId?: string | null
+  documentationPlanId?: string | null
+  name: string
+  description?: string | null
+  phaseCategory: $Enums.PhaseCategory
+  phaseType: $Enums.PhaseType
+  order: number
+  interestRate?: number | null
+  percentOfPrice?: number | null
+  collectFunds?: boolean | null
+  requiresPreviousPhaseCompletion?: boolean
+  minimumCompletionPercentage?: number | null
+  completionCriterion?: $Enums.CompletionCriterion | null
+  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PropertyPaymentMethodPhaseUpdateWithoutQuestionnairePlanInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
+  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  percentOfPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  collectFunds?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
+  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutPropertyPaymentMethodPhasesNestedInput
+  paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneRequiredWithoutPhasesNestedInput
+  paymentPlan?: Prisma.PaymentPlanUpdateOneWithoutMethodPhasesNestedInput
+  documentationPlan?: Prisma.DocumentationPlanUpdateOneWithoutMethodPhasesNestedInput
+  steps?: Prisma.PaymentMethodPhaseStepUpdateManyWithoutPhaseNestedInput
+  requiredDocuments?: Prisma.PaymentMethodPhaseDocumentUpdateManyWithoutPhaseNestedInput
+  questionnaireFields?: Prisma.PaymentMethodPhaseFieldUpdateManyWithoutPhaseNestedInput
+  eventAttachments?: Prisma.PhaseEventAttachmentUpdateManyWithoutPhaseNestedInput
+}
+
+export type PropertyPaymentMethodPhaseUncheckedUpdateWithoutQuestionnairePlanInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentationPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
+  phaseType?: Prisma.EnumPhaseTypeFieldUpdateOperationsInput | $Enums.PhaseType
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  interestRate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  percentOfPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  collectFunds?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  requiresPreviousPhaseCompletion?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
+  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  steps?: Prisma.PaymentMethodPhaseStepUncheckedUpdateManyWithoutPhaseNestedInput
+  requiredDocuments?: Prisma.PaymentMethodPhaseDocumentUncheckedUpdateManyWithoutPhaseNestedInput
+  questionnaireFields?: Prisma.PaymentMethodPhaseFieldUncheckedUpdateManyWithoutPhaseNestedInput
+  eventAttachments?: Prisma.PhaseEventAttachmentUncheckedUpdateManyWithoutPhaseNestedInput
+}
+
+export type PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutQuestionnairePlanInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentationPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
@@ -1998,6 +2277,7 @@ export type PropertyPaymentMethodPhaseCreateManyPaymentPlanInput = {
   tenantId: string
   paymentMethodId: string
   documentationPlanId?: string | null
+  questionnairePlanId?: string | null
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
@@ -2035,6 +2315,7 @@ export type PropertyPaymentMethodPhaseUpdateWithoutPaymentPlanInput = {
   tenant?: Prisma.TenantUpdateOneRequiredWithoutPropertyPaymentMethodPhasesNestedInput
   paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneRequiredWithoutPhasesNestedInput
   documentationPlan?: Prisma.DocumentationPlanUpdateOneWithoutMethodPhasesNestedInput
+  questionnairePlan?: Prisma.QuestionnairePlanUpdateOneWithoutMethodPhasesNestedInput
   steps?: Prisma.PaymentMethodPhaseStepUpdateManyWithoutPhaseNestedInput
   requiredDocuments?: Prisma.PaymentMethodPhaseDocumentUpdateManyWithoutPhaseNestedInput
   questionnaireFields?: Prisma.PaymentMethodPhaseFieldUpdateManyWithoutPhaseNestedInput
@@ -2046,6 +2327,7 @@ export type PropertyPaymentMethodPhaseUncheckedUpdateWithoutPaymentPlanInput = {
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   documentationPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  questionnairePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
@@ -2072,6 +2354,7 @@ export type PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutPaymentPlanInput
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   documentationPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  questionnairePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
@@ -2094,6 +2377,7 @@ export type PropertyPaymentMethodPhaseCreateManyPaymentMethodInput = {
   tenantId: string
   paymentPlanId?: string | null
   documentationPlanId?: string | null
+  questionnairePlanId?: string | null
   name: string
   description?: string | null
   phaseCategory: $Enums.PhaseCategory
@@ -2131,6 +2415,7 @@ export type PropertyPaymentMethodPhaseUpdateWithoutPaymentMethodInput = {
   tenant?: Prisma.TenantUpdateOneRequiredWithoutPropertyPaymentMethodPhasesNestedInput
   paymentPlan?: Prisma.PaymentPlanUpdateOneWithoutMethodPhasesNestedInput
   documentationPlan?: Prisma.DocumentationPlanUpdateOneWithoutMethodPhasesNestedInput
+  questionnairePlan?: Prisma.QuestionnairePlanUpdateOneWithoutMethodPhasesNestedInput
   steps?: Prisma.PaymentMethodPhaseStepUpdateManyWithoutPhaseNestedInput
   requiredDocuments?: Prisma.PaymentMethodPhaseDocumentUpdateManyWithoutPhaseNestedInput
   questionnaireFields?: Prisma.PaymentMethodPhaseFieldUpdateManyWithoutPhaseNestedInput
@@ -2142,6 +2427,7 @@ export type PropertyPaymentMethodPhaseUncheckedUpdateWithoutPaymentMethodInput =
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documentationPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  questionnairePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
@@ -2168,6 +2454,7 @@ export type PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutPaymentMethodInp
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documentationPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  questionnairePlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phaseCategory?: Prisma.EnumPhaseCategoryFieldUpdateOperationsInput | $Enums.PhaseCategory
@@ -2249,6 +2536,7 @@ export type PropertyPaymentMethodPhaseSelect<ExtArgs extends runtime.Types.Exten
   paymentMethodId?: boolean
   paymentPlanId?: boolean
   documentationPlanId?: boolean
+  questionnairePlanId?: boolean
   name?: boolean
   description?: boolean
   phaseCategory?: boolean
@@ -2268,6 +2556,7 @@ export type PropertyPaymentMethodPhaseSelect<ExtArgs extends runtime.Types.Exten
   paymentMethod?: boolean | Prisma.PropertyPaymentMethodDefaultArgs<ExtArgs>
   paymentPlan?: boolean | Prisma.PropertyPaymentMethodPhase$paymentPlanArgs<ExtArgs>
   documentationPlan?: boolean | Prisma.PropertyPaymentMethodPhase$documentationPlanArgs<ExtArgs>
+  questionnairePlan?: boolean | Prisma.PropertyPaymentMethodPhase$questionnairePlanArgs<ExtArgs>
   steps?: boolean | Prisma.PropertyPaymentMethodPhase$stepsArgs<ExtArgs>
   requiredDocuments?: boolean | Prisma.PropertyPaymentMethodPhase$requiredDocumentsArgs<ExtArgs>
   questionnaireFields?: boolean | Prisma.PropertyPaymentMethodPhase$questionnaireFieldsArgs<ExtArgs>
@@ -2283,6 +2572,7 @@ export type PropertyPaymentMethodPhaseSelectScalar = {
   paymentMethodId?: boolean
   paymentPlanId?: boolean
   documentationPlanId?: boolean
+  questionnairePlanId?: boolean
   name?: boolean
   description?: boolean
   phaseCategory?: boolean
@@ -2300,12 +2590,13 @@ export type PropertyPaymentMethodPhaseSelectScalar = {
   updatedAt?: boolean
 }
 
-export type PropertyPaymentMethodPhaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "paymentMethodId" | "paymentPlanId" | "documentationPlanId" | "name" | "description" | "phaseCategory" | "phaseType" | "order" | "interestRate" | "percentOfPrice" | "collectFunds" | "requiresPreviousPhaseCompletion" | "minimumCompletionPercentage" | "completionCriterion" | "stepDefinitionsSnapshot" | "requiredDocumentSnapshot" | "createdAt" | "updatedAt", ExtArgs["result"]["propertyPaymentMethodPhase"]>
+export type PropertyPaymentMethodPhaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "paymentMethodId" | "paymentPlanId" | "documentationPlanId" | "questionnairePlanId" | "name" | "description" | "phaseCategory" | "phaseType" | "order" | "interestRate" | "percentOfPrice" | "collectFunds" | "requiresPreviousPhaseCompletion" | "minimumCompletionPercentage" | "completionCriterion" | "stepDefinitionsSnapshot" | "requiredDocumentSnapshot" | "createdAt" | "updatedAt", ExtArgs["result"]["propertyPaymentMethodPhase"]>
 export type PropertyPaymentMethodPhaseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   paymentMethod?: boolean | Prisma.PropertyPaymentMethodDefaultArgs<ExtArgs>
   paymentPlan?: boolean | Prisma.PropertyPaymentMethodPhase$paymentPlanArgs<ExtArgs>
   documentationPlan?: boolean | Prisma.PropertyPaymentMethodPhase$documentationPlanArgs<ExtArgs>
+  questionnairePlan?: boolean | Prisma.PropertyPaymentMethodPhase$questionnairePlanArgs<ExtArgs>
   steps?: boolean | Prisma.PropertyPaymentMethodPhase$stepsArgs<ExtArgs>
   requiredDocuments?: boolean | Prisma.PropertyPaymentMethodPhase$requiredDocumentsArgs<ExtArgs>
   questionnaireFields?: boolean | Prisma.PropertyPaymentMethodPhase$questionnaireFieldsArgs<ExtArgs>
@@ -2320,6 +2611,7 @@ export type $PropertyPaymentMethodPhasePayload<ExtArgs extends runtime.Types.Ext
     paymentMethod: Prisma.$PropertyPaymentMethodPayload<ExtArgs>
     paymentPlan: Prisma.$PaymentPlanPayload<ExtArgs> | null
     documentationPlan: Prisma.$DocumentationPlanPayload<ExtArgs> | null
+    questionnairePlan: Prisma.$QuestionnairePlanPayload<ExtArgs> | null
     steps: Prisma.$PaymentMethodPhaseStepPayload<ExtArgs>[]
     requiredDocuments: Prisma.$PaymentMethodPhaseDocumentPayload<ExtArgs>[]
     questionnaireFields: Prisma.$PaymentMethodPhaseFieldPayload<ExtArgs>[]
@@ -2331,6 +2623,7 @@ export type $PropertyPaymentMethodPhasePayload<ExtArgs extends runtime.Types.Ext
     paymentMethodId: string
     paymentPlanId: string | null
     documentationPlanId: string | null
+    questionnairePlanId: string | null
     name: string
     description: string | null
     phaseCategory: $Enums.PhaseCategory
@@ -2690,6 +2983,7 @@ export interface Prisma__PropertyPaymentMethodPhaseClient<T, Null = never, ExtAr
   paymentMethod<T extends Prisma.PropertyPaymentMethodDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyPaymentMethodDefaultArgs<ExtArgs>>): Prisma.Prisma__PropertyPaymentMethodClient<runtime.Types.Result.GetResult<Prisma.$PropertyPaymentMethodPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   paymentPlan<T extends Prisma.PropertyPaymentMethodPhase$paymentPlanArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyPaymentMethodPhase$paymentPlanArgs<ExtArgs>>): Prisma.Prisma__PaymentPlanClient<runtime.Types.Result.GetResult<Prisma.$PaymentPlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   documentationPlan<T extends Prisma.PropertyPaymentMethodPhase$documentationPlanArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyPaymentMethodPhase$documentationPlanArgs<ExtArgs>>): Prisma.Prisma__DocumentationPlanClient<runtime.Types.Result.GetResult<Prisma.$DocumentationPlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  questionnairePlan<T extends Prisma.PropertyPaymentMethodPhase$questionnairePlanArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyPaymentMethodPhase$questionnairePlanArgs<ExtArgs>>): Prisma.Prisma__QuestionnairePlanClient<runtime.Types.Result.GetResult<Prisma.$QuestionnairePlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   steps<T extends Prisma.PropertyPaymentMethodPhase$stepsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyPaymentMethodPhase$stepsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentMethodPhaseStepPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   requiredDocuments<T extends Prisma.PropertyPaymentMethodPhase$requiredDocumentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyPaymentMethodPhase$requiredDocumentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentMethodPhaseDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   questionnaireFields<T extends Prisma.PropertyPaymentMethodPhase$questionnaireFieldsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyPaymentMethodPhase$questionnaireFieldsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentMethodPhaseFieldPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2728,6 +3022,7 @@ export interface PropertyPaymentMethodPhaseFieldRefs {
   readonly paymentMethodId: Prisma.FieldRef<"PropertyPaymentMethodPhase", 'String'>
   readonly paymentPlanId: Prisma.FieldRef<"PropertyPaymentMethodPhase", 'String'>
   readonly documentationPlanId: Prisma.FieldRef<"PropertyPaymentMethodPhase", 'String'>
+  readonly questionnairePlanId: Prisma.FieldRef<"PropertyPaymentMethodPhase", 'String'>
   readonly name: Prisma.FieldRef<"PropertyPaymentMethodPhase", 'String'>
   readonly description: Prisma.FieldRef<"PropertyPaymentMethodPhase", 'String'>
   readonly phaseCategory: Prisma.FieldRef<"PropertyPaymentMethodPhase", 'PhaseCategory'>
@@ -3121,6 +3416,25 @@ export type PropertyPaymentMethodPhase$documentationPlanArgs<ExtArgs extends run
    */
   include?: Prisma.DocumentationPlanInclude<ExtArgs> | null
   where?: Prisma.DocumentationPlanWhereInput
+}
+
+/**
+ * PropertyPaymentMethodPhase.questionnairePlan
+ */
+export type PropertyPaymentMethodPhase$questionnairePlanArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the QuestionnairePlan
+   */
+  select?: Prisma.QuestionnairePlanSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the QuestionnairePlan
+   */
+  omit?: Prisma.QuestionnairePlanOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.QuestionnairePlanInclude<ExtArgs> | null
+  where?: Prisma.QuestionnairePlanWhereInput
 }
 
 /**

@@ -36,6 +36,8 @@ const OPTIONAL_TENANT_MODELS = [
     "paymentPlan",
     // DocumentationPlan can be global template (tenantId = null) or tenant-specific
     "documentationPlan",
+    // QuestionnairePlan can be global template (tenantId = null) or tenant-specific
+    "questionnairePlan",
     // Role can be global template (tenantId = null) or tenant-specific
     "role",
     // Permission can be global template or tenant-specific

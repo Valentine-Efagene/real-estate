@@ -392,6 +392,57 @@ export type EnumStepTypeWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumStepTypeFilter<$PrismaModel>
 }
 
+export type EnumScoringStrategyFilter<$PrismaModel = never> = {
+  equals?: $Enums.ScoringStrategy | Prisma.EnumScoringStrategyFieldRefInput<$PrismaModel>
+  in?: $Enums.ScoringStrategy[]
+  notIn?: $Enums.ScoringStrategy[]
+  not?: Prisma.NestedEnumScoringStrategyFilter<$PrismaModel> | $Enums.ScoringStrategy
+}
+
+export type EnumQuestionnaireCategoryFilter<$PrismaModel = never> = {
+  equals?: $Enums.QuestionnaireCategory | Prisma.EnumQuestionnaireCategoryFieldRefInput<$PrismaModel>
+  in?: $Enums.QuestionnaireCategory[]
+  notIn?: $Enums.QuestionnaireCategory[]
+  not?: Prisma.NestedEnumQuestionnaireCategoryFilter<$PrismaModel> | $Enums.QuestionnaireCategory
+}
+
+export type EnumScoringStrategyWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ScoringStrategy | Prisma.EnumScoringStrategyFieldRefInput<$PrismaModel>
+  in?: $Enums.ScoringStrategy[]
+  notIn?: $Enums.ScoringStrategy[]
+  not?: Prisma.NestedEnumScoringStrategyWithAggregatesFilter<$PrismaModel> | $Enums.ScoringStrategy
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumScoringStrategyFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumScoringStrategyFilter<$PrismaModel>
+}
+
+export type EnumQuestionnaireCategoryWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.QuestionnaireCategory | Prisma.EnumQuestionnaireCategoryFieldRefInput<$PrismaModel>
+  in?: $Enums.QuestionnaireCategory[]
+  notIn?: $Enums.QuestionnaireCategory[]
+  not?: Prisma.NestedEnumQuestionnaireCategoryWithAggregatesFilter<$PrismaModel> | $Enums.QuestionnaireCategory
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumQuestionnaireCategoryFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumQuestionnaireCategoryFilter<$PrismaModel>
+}
+
+export type EnumQuestionTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.QuestionType | Prisma.EnumQuestionTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.QuestionType[]
+  notIn?: $Enums.QuestionType[]
+  not?: Prisma.NestedEnumQuestionTypeFilter<$PrismaModel> | $Enums.QuestionType
+}
+
+export type EnumQuestionTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.QuestionType | Prisma.EnumQuestionTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.QuestionType[]
+  notIn?: $Enums.QuestionType[]
+  not?: Prisma.NestedEnumQuestionTypeWithAggregatesFilter<$PrismaModel> | $Enums.QuestionType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumQuestionTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumQuestionTypeFilter<$PrismaModel>
+}
+
 export type EnumPaymentFrequencyFilter<$PrismaModel = never> = {
   equals?: $Enums.PaymentFrequency | Prisma.EnumPaymentFrequencyFieldRefInput<$PrismaModel>
   in?: $Enums.PaymentFrequency[]
@@ -1351,6 +1402,57 @@ export type NestedEnumStepTypeWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumStepTypeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumStepTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumScoringStrategyFilter<$PrismaModel = never> = {
+  equals?: $Enums.ScoringStrategy | Prisma.EnumScoringStrategyFieldRefInput<$PrismaModel>
+  in?: $Enums.ScoringStrategy[]
+  notIn?: $Enums.ScoringStrategy[]
+  not?: Prisma.NestedEnumScoringStrategyFilter<$PrismaModel> | $Enums.ScoringStrategy
+}
+
+export type NestedEnumQuestionnaireCategoryFilter<$PrismaModel = never> = {
+  equals?: $Enums.QuestionnaireCategory | Prisma.EnumQuestionnaireCategoryFieldRefInput<$PrismaModel>
+  in?: $Enums.QuestionnaireCategory[]
+  notIn?: $Enums.QuestionnaireCategory[]
+  not?: Prisma.NestedEnumQuestionnaireCategoryFilter<$PrismaModel> | $Enums.QuestionnaireCategory
+}
+
+export type NestedEnumScoringStrategyWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ScoringStrategy | Prisma.EnumScoringStrategyFieldRefInput<$PrismaModel>
+  in?: $Enums.ScoringStrategy[]
+  notIn?: $Enums.ScoringStrategy[]
+  not?: Prisma.NestedEnumScoringStrategyWithAggregatesFilter<$PrismaModel> | $Enums.ScoringStrategy
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumScoringStrategyFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumScoringStrategyFilter<$PrismaModel>
+}
+
+export type NestedEnumQuestionnaireCategoryWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.QuestionnaireCategory | Prisma.EnumQuestionnaireCategoryFieldRefInput<$PrismaModel>
+  in?: $Enums.QuestionnaireCategory[]
+  notIn?: $Enums.QuestionnaireCategory[]
+  not?: Prisma.NestedEnumQuestionnaireCategoryWithAggregatesFilter<$PrismaModel> | $Enums.QuestionnaireCategory
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumQuestionnaireCategoryFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumQuestionnaireCategoryFilter<$PrismaModel>
+}
+
+export type NestedEnumQuestionTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.QuestionType | Prisma.EnumQuestionTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.QuestionType[]
+  notIn?: $Enums.QuestionType[]
+  not?: Prisma.NestedEnumQuestionTypeFilter<$PrismaModel> | $Enums.QuestionType
+}
+
+export type NestedEnumQuestionTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.QuestionType | Prisma.EnumQuestionTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.QuestionType[]
+  notIn?: $Enums.QuestionType[]
+  not?: Prisma.NestedEnumQuestionTypeWithAggregatesFilter<$PrismaModel> | $Enums.QuestionType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumQuestionTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumQuestionTypeFilter<$PrismaModel>
 }
 
 export type NestedEnumPaymentFrequencyFilter<$PrismaModel = never> = {

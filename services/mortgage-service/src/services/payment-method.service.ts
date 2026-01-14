@@ -118,6 +118,18 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                         }
                     }
 
+                    // For QUESTIONNAIRE phases, validate questionnairePlanId if provided
+                    if (phase.phaseCategory === 'QUESTIONNAIRE' && phase.questionnairePlanId) {
+                        const questionnairePlan = await tx.questionnairePlan.findUnique({
+                            where: { id: phase.questionnairePlanId },
+                            include: { questions: { orderBy: { order: 'asc' } } },
+                        });
+
+                        if (!questionnairePlan) {
+                            throw new AppError(404, `Questionnaire plan "${phase.questionnairePlanId}" not found`);
+                        }
+                    }
+
                     // Store snapshots for audit
                     const stepDefinitionsSnapshot = stepDefinitionsToUse ? stepDefinitionsToUse : null;
                     const requiredDocumentSnapshot = requiredDocumentTypesToUse ? requiredDocumentTypesToUse : null;
@@ -128,6 +140,7 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                             paymentMethodId: created.id,
                             paymentPlanId: phase.paymentPlanId,
                             documentationPlanId: phase.documentationPlanId,
+                            questionnairePlanId: phase.questionnairePlanId,
                             name: phase.name,
                             description: phase.description,
                             phaseCategory: phase.phaseCategory,
@@ -196,6 +209,9 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                         documentationPlan: {
                             include: { steps: { orderBy: { order: 'asc' } } },
                         },
+                        questionnairePlan: {
+                            include: { questions: { orderBy: { order: 'asc' } } },
+                        },
                         steps: {
                             orderBy: { order: 'asc' },
                         },
@@ -217,6 +233,9 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                         paymentPlan: true,
                         documentationPlan: {
                             include: { steps: { orderBy: { order: 'asc' } } },
+                        },
+                        questionnairePlan: {
+                            include: { questions: { orderBy: { order: 'asc' } } },
                         },
                         steps: {
                             orderBy: { order: 'asc' },

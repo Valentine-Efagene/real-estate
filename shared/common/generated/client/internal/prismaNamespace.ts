@@ -413,6 +413,8 @@ export const ModelName = {
   PropertyAmenity: 'PropertyAmenity',
   DocumentationPlan: 'DocumentationPlan',
   DocumentationPlanStep: 'DocumentationPlanStep',
+  QuestionnairePlan: 'QuestionnairePlan',
+  QuestionnairePlanQuestion: 'QuestionnairePlanQuestion',
   PaymentPlan: 'PaymentPlan',
   PropertyPaymentMethod: 'PropertyPaymentMethod',
   PropertyPaymentMethodLink: 'PropertyPaymentMethodLink',
@@ -465,7 +467,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenantMembership" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "documentationPlan" | "documentationPlanStep" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "phaseEventAttachment" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "paymentMethodPhaseField" | "application" | "applicationRefund" | "applicationPhase" | "questionnairePhase" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "applicationEvent" | "documentationStep" | "documentationStepDocument" | "documentationStepApproval" | "paymentInstallment" | "applicationPayment" | "applicationDocument" | "documentTemplate" | "offerLetter" | "applicationTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "workflowEvent" | "eventHandlerExecution" | "domainEvent" | "propertyTransferRequest" | "approvalRequest" | "workflowBlocker"
+    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenantMembership" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "documentationPlan" | "documentationPlanStep" | "questionnairePlan" | "questionnairePlanQuestion" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "phaseEventAttachment" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "paymentMethodPhaseField" | "application" | "applicationRefund" | "applicationPhase" | "questionnairePhase" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "applicationEvent" | "documentationStep" | "documentationStepDocument" | "documentationStepApproval" | "paymentInstallment" | "applicationPayment" | "applicationDocument" | "documentTemplate" | "offerLetter" | "applicationTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "workflowEvent" | "eventHandlerExecution" | "domainEvent" | "propertyTransferRequest" | "approvalRequest" | "workflowBlocker"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2380,6 +2382,138 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.DocumentationPlanStepCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.DocumentationPlanStepCountAggregateOutputType> | number
+        }
+      }
+    }
+    QuestionnairePlan: {
+      payload: Prisma.$QuestionnairePlanPayload<ExtArgs>
+      fields: Prisma.QuestionnairePlanFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.QuestionnairePlanFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePlanPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.QuestionnairePlanFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePlanPayload>
+        }
+        findFirst: {
+          args: Prisma.QuestionnairePlanFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePlanPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.QuestionnairePlanFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePlanPayload>
+        }
+        findMany: {
+          args: Prisma.QuestionnairePlanFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePlanPayload>[]
+        }
+        create: {
+          args: Prisma.QuestionnairePlanCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePlanPayload>
+        }
+        createMany: {
+          args: Prisma.QuestionnairePlanCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.QuestionnairePlanDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePlanPayload>
+        }
+        update: {
+          args: Prisma.QuestionnairePlanUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePlanPayload>
+        }
+        deleteMany: {
+          args: Prisma.QuestionnairePlanDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.QuestionnairePlanUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.QuestionnairePlanUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePlanPayload>
+        }
+        aggregate: {
+          args: Prisma.QuestionnairePlanAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateQuestionnairePlan>
+        }
+        groupBy: {
+          args: Prisma.QuestionnairePlanGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.QuestionnairePlanGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.QuestionnairePlanCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.QuestionnairePlanCountAggregateOutputType> | number
+        }
+      }
+    }
+    QuestionnairePlanQuestion: {
+      payload: Prisma.$QuestionnairePlanQuestionPayload<ExtArgs>
+      fields: Prisma.QuestionnairePlanQuestionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.QuestionnairePlanQuestionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePlanQuestionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.QuestionnairePlanQuestionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePlanQuestionPayload>
+        }
+        findFirst: {
+          args: Prisma.QuestionnairePlanQuestionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePlanQuestionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.QuestionnairePlanQuestionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePlanQuestionPayload>
+        }
+        findMany: {
+          args: Prisma.QuestionnairePlanQuestionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePlanQuestionPayload>[]
+        }
+        create: {
+          args: Prisma.QuestionnairePlanQuestionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePlanQuestionPayload>
+        }
+        createMany: {
+          args: Prisma.QuestionnairePlanQuestionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.QuestionnairePlanQuestionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePlanQuestionPayload>
+        }
+        update: {
+          args: Prisma.QuestionnairePlanQuestionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePlanQuestionPayload>
+        }
+        deleteMany: {
+          args: Prisma.QuestionnairePlanQuestionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.QuestionnairePlanQuestionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.QuestionnairePlanQuestionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePlanQuestionPayload>
+        }
+        aggregate: {
+          args: Prisma.QuestionnairePlanQuestionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateQuestionnairePlanQuestion>
+        }
+        groupBy: {
+          args: Prisma.QuestionnairePlanQuestionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.QuestionnairePlanQuestionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.QuestionnairePlanQuestionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.QuestionnairePlanQuestionCountAggregateOutputType> | number
         }
       }
     }
@@ -5289,6 +5423,47 @@ export const DocumentationPlanStepScalarFieldEnum = {
 export type DocumentationPlanStepScalarFieldEnum = (typeof DocumentationPlanStepScalarFieldEnum)[keyof typeof DocumentationPlanStepScalarFieldEnum]
 
 
+export const QuestionnairePlanScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  name: 'name',
+  description: 'description',
+  version: 'version',
+  isActive: 'isActive',
+  passingScore: 'passingScore',
+  scoringStrategy: 'scoringStrategy',
+  autoDecisionEnabled: 'autoDecisionEnabled',
+  estimatedMinutes: 'estimatedMinutes',
+  category: 'category',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type QuestionnairePlanScalarFieldEnum = (typeof QuestionnairePlanScalarFieldEnum)[keyof typeof QuestionnairePlanScalarFieldEnum]
+
+
+export const QuestionnairePlanQuestionScalarFieldEnum = {
+  id: 'id',
+  questionnairePlanId: 'questionnairePlanId',
+  questionKey: 'questionKey',
+  questionText: 'questionText',
+  helpText: 'helpText',
+  questionType: 'questionType',
+  order: 'order',
+  isRequired: 'isRequired',
+  validationRules: 'validationRules',
+  options: 'options',
+  scoreWeight: 'scoreWeight',
+  scoringRules: 'scoringRules',
+  showIf: 'showIf',
+  category: 'category',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type QuestionnairePlanQuestionScalarFieldEnum = (typeof QuestionnairePlanQuestionScalarFieldEnum)[keyof typeof QuestionnairePlanQuestionScalarFieldEnum]
+
+
 export const PaymentPlanScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -5348,6 +5523,7 @@ export const PropertyPaymentMethodPhaseScalarFieldEnum = {
   paymentMethodId: 'paymentMethodId',
   paymentPlanId: 'paymentPlanId',
   documentationPlanId: 'documentationPlanId',
+  questionnairePlanId: 'questionnairePlanId',
   name: 'name',
   description: 'description',
   phaseCategory: 'phaseCategory',
@@ -5534,8 +5710,13 @@ export const QuestionnairePhaseScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   phaseId: 'phaseId',
+  questionnairePlanId: 'questionnairePlanId',
   completedFieldsCount: 'completedFieldsCount',
   totalFieldsCount: 'totalFieldsCount',
+  totalScore: 'totalScore',
+  passingScore: 'passingScore',
+  passed: 'passed',
+  scoredAt: 'scoredAt',
   underwritingScore: 'underwritingScore',
   debtToIncomeRatio: 'debtToIncomeRatio',
   underwritingDecision: 'underwritingDecision',
@@ -6460,6 +6641,28 @@ export const DocumentationPlanStepOrderByRelevanceFieldEnum = {
 export type DocumentationPlanStepOrderByRelevanceFieldEnum = (typeof DocumentationPlanStepOrderByRelevanceFieldEnum)[keyof typeof DocumentationPlanStepOrderByRelevanceFieldEnum]
 
 
+export const QuestionnairePlanOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  name: 'name',
+  description: 'description'
+} as const
+
+export type QuestionnairePlanOrderByRelevanceFieldEnum = (typeof QuestionnairePlanOrderByRelevanceFieldEnum)[keyof typeof QuestionnairePlanOrderByRelevanceFieldEnum]
+
+
+export const QuestionnairePlanQuestionOrderByRelevanceFieldEnum = {
+  id: 'id',
+  questionnairePlanId: 'questionnairePlanId',
+  questionKey: 'questionKey',
+  questionText: 'questionText',
+  helpText: 'helpText',
+  category: 'category'
+} as const
+
+export type QuestionnairePlanQuestionOrderByRelevanceFieldEnum = (typeof QuestionnairePlanQuestionOrderByRelevanceFieldEnum)[keyof typeof QuestionnairePlanQuestionOrderByRelevanceFieldEnum]
+
+
 export const PaymentPlanOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -6495,6 +6698,7 @@ export const PropertyPaymentMethodPhaseOrderByRelevanceFieldEnum = {
   paymentMethodId: 'paymentMethodId',
   paymentPlanId: 'paymentPlanId',
   documentationPlanId: 'documentationPlanId',
+  questionnairePlanId: 'questionnairePlanId',
   name: 'name',
   description: 'description'
 } as const
@@ -6611,6 +6815,7 @@ export const QuestionnairePhaseOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   phaseId: 'phaseId',
+  questionnairePlanId: 'questionnairePlanId',
   underwritingDecision: 'underwritingDecision',
   underwritingNotes: 'underwritingNotes'
 } as const
@@ -7018,6 +7223,27 @@ export type EnumStepTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
+ * Reference to a field of type 'ScoringStrategy'
+ */
+export type EnumScoringStrategyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ScoringStrategy'>
+    
+
+
+/**
+ * Reference to a field of type 'QuestionnaireCategory'
+ */
+export type EnumQuestionnaireCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QuestionnaireCategory'>
+    
+
+
+/**
+ * Reference to a field of type 'QuestionType'
+ */
+export type EnumQuestionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QuestionType'>
+    
+
+
+/**
  * Reference to a field of type 'PaymentFrequency'
  */
 export type EnumPaymentFrequencyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentFrequency'>
@@ -7392,6 +7618,8 @@ export type GlobalOmitConfig = {
   propertyAmenity?: Prisma.PropertyAmenityOmit
   documentationPlan?: Prisma.DocumentationPlanOmit
   documentationPlanStep?: Prisma.DocumentationPlanStepOmit
+  questionnairePlan?: Prisma.QuestionnairePlanOmit
+  questionnairePlanQuestion?: Prisma.QuestionnairePlanQuestionOmit
   paymentPlan?: Prisma.PaymentPlanOmit
   propertyPaymentMethod?: Prisma.PropertyPaymentMethodOmit
   propertyPaymentMethodLink?: Prisma.PropertyPaymentMethodLinkOmit

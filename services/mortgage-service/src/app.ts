@@ -10,6 +10,7 @@ import { prisma } from './lib/prisma';
 // New unified application-based routes
 import paymentPlanRouter from './routes/payment-plan';
 import documentationPlanRouter from './routes/documentation-plan';
+import questionnairePlanRouter from './routes/questionnaire-plan';
 import paymentMethodRouter from './routes/payment-method';
 import applicationRouter from './routes/application';
 import terminationRouter from './routes/application-termination';
@@ -99,6 +100,7 @@ function getSwaggerHtml(): string {
 // New unified routes
 app.use('/payment-plans', paymentPlanRouter);
 app.use('/documentation-plans', documentationPlanRouter);
+app.use('/questionnaire-plans', questionnairePlanRouter);
 app.use('/payment-methods', paymentMethodRouter);
 app.use('/applications', applicationRouter);
 app.use('/offer-letters', offerLetterRouter);
