@@ -419,49 +419,46 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         });
 
         it('Adaeze configures document requirement rules', async () => {
-            await prisma.documentRequirementRule.createMany({
-                data: [
-                    {
-                        tenantId,
-                        context: 'APPLICATION_PHASE',
-                        paymentMethodId,
-                        phaseType: 'KYC',
-                        documentType: 'ID_CARD',
-                        isRequired: true,
-                        description: 'Valid government-issued ID (NIN, Passport, or Driver License)',
-                        maxSizeBytes: 5 * 1024 * 1024,
-                        allowedMimeTypes: 'image/jpeg,image/png,application/pdf',
-                    },
-                    {
-                        tenantId,
-                        context: 'APPLICATION_PHASE',
-                        paymentMethodId,
-                        phaseType: 'KYC',
-                        documentType: 'BANK_STATEMENT',
-                        isRequired: true,
-                        description: 'Last 6 months bank statements',
-                        maxSizeBytes: 10 * 1024 * 1024,
-                        allowedMimeTypes: 'application/pdf',
-                        expiryDays: 90,
-                    },
-                    {
-                        tenantId,
-                        context: 'APPLICATION_PHASE',
-                        paymentMethodId,
-                        phaseType: 'KYC',
-                        documentType: 'EMPLOYMENT_LETTER',
-                        isRequired: true,
-                        description: 'Employment confirmation letter',
-                        maxSizeBytes: 5 * 1024 * 1024,
-                        allowedMimeTypes: 'application/pdf',
-                    },
-                ],
-            });
+            // Add document requirements via bulk REST API
+            const response = await api
+                .post(`/payment-methods/${paymentMethodId}/document-rules`)
+                .set(adminHeaders(adaezeId, tenantId))
+                .set('x-idempotency-key', idempotencyKey('adaeze-add-doc-requirements'))
+                .send({
+                    rules: [
+                        {
+                            context: 'APPLICATION_PHASE',
+                            phaseType: 'KYC',
+                            documentType: 'ID_CARD',
+                            isRequired: true,
+                            description: 'Valid government-issued ID (NIN, Passport, or Driver License)',
+                            maxSizeBytes: 5 * 1024 * 1024,
+                            allowedMimeTypes: ['image/jpeg', 'image/png', 'application/pdf'],
+                        },
+                        {
+                            context: 'APPLICATION_PHASE',
+                            phaseType: 'KYC',
+                            documentType: 'BANK_STATEMENT',
+                            isRequired: true,
+                            description: 'Last 6 months bank statements',
+                            maxSizeBytes: 10 * 1024 * 1024,
+                            allowedMimeTypes: ['application/pdf'],
+                            expiryDays: 90,
+                        },
+                        {
+                            context: 'APPLICATION_PHASE',
+                            phaseType: 'KYC',
+                            documentType: 'EMPLOYMENT_LETTER',
+                            isRequired: true,
+                            description: 'Employment confirmation letter',
+                            maxSizeBytes: 5 * 1024 * 1024,
+                            allowedMimeTypes: ['application/pdf'],
+                        },
+                    ],
+                });
 
-            const rules = await prisma.documentRequirementRule.findMany({
-                where: { tenantId },
-            });
-            expect(rules.length).toBe(3);
+            expect(response.status).toBe(201);
+            expect(response.body.data.length).toBe(3);
         });
 
         it('Adaeze configures phase event to notify when downpayment completes', async () => {

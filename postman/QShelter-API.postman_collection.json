@@ -98,6 +98,18 @@
             "description": "Question ID for question operations within a plan"
         },
         {
+            "key": "documentationPlanId",
+            "value": "dp-001",
+            "type": "string",
+            "description": "Documentation plan ID for documentation operations"
+        },
+        {
+            "key": "stepId",
+            "value": "step-001",
+            "type": "string",
+            "description": "Step ID for step operations within a documentation plan"
+        },
+        {
             "key": "bootstrapSecret",
             "value": "local-bootstrap-secret",
             "type": "string",
@@ -1608,6 +1620,313 @@
                                 "{{stepEventAttachmentId}}"
                             ]
                         }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Documentation Plans",
+            "description": "Documentation plans are reusable templates that define the documents required during mortgage application processing. Each plan consists of steps (document types) that applicants must submit.",
+            "item": [
+                {
+                    "name": "Create Documentation Plan",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}",
+                                "description": "Admin only"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Standard Mortgage Documentation\",\n  \"description\": \"Standard set of documents required for mortgage processing\",\n  \"isActive\": true,\n  \"steps\": [\n    {\n      \"name\": \"Government ID\",\n      \"description\": \"Valid government-issued identification\",\n      \"documentType\": \"ID_DOCUMENT\",\n      \"isRequired\": true,\n      \"position\": 0,\n      \"allowedFileTypes\": [\"application/pdf\", \"image/jpeg\", \"image/png\"],\n      \"maxFileSizeMB\": 5,\n      \"minFiles\": 1,\n      \"maxFiles\": 2\n    },\n    {\n      \"name\": \"Proof of Income\",\n      \"description\": \"Recent pay slips or employment letter\",\n      \"documentType\": \"INCOME_PROOF\",\n      \"isRequired\": true,\n      \"position\": 1,\n      \"allowedFileTypes\": [\"application/pdf\"],\n      \"maxFileSizeMB\": 10,\n      \"minFiles\": 1,\n      \"maxFiles\": 3\n    },\n    {\n      \"name\": \"Bank Statements\",\n      \"description\": \"Last 3 months bank statements\",\n      \"documentType\": \"BANK_STATEMENT\",\n      \"isRequired\": true,\n      \"position\": 2,\n      \"allowedFileTypes\": [\"application/pdf\"],\n      \"maxFileSizeMB\": 15,\n      \"minFiles\": 3,\n      \"maxFiles\": 6\n    }\n  ]\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/documentation-plans",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "documentation-plans"
+                            ]
+                        },
+                        "description": "Create a new documentation plan with predefined steps. Only admins can create plans."
+                    }
+                },
+                {
+                    "name": "Get All Documentation Plans",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/documentation-plans?isActive=true",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "documentation-plans"
+                            ],
+                            "query": [
+                                {
+                                    "key": "isActive",
+                                    "value": "true",
+                                    "description": "Filter by active status (optional)"
+                                }
+                            ]
+                        },
+                        "description": "Get all documentation plans. Optionally filter by active status. Public endpoint - customers can view available plans."
+                    }
+                },
+                {
+                    "name": "Get Documentation Plan by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/documentation-plans/{{documentationPlanId}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "documentation-plans",
+                                "{{documentationPlanId}}"
+                            ]
+                        },
+                        "description": "Get a specific documentation plan by ID with all its steps."
+                    }
+                },
+                {
+                    "name": "Update Documentation Plan",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}",
+                                "description": "Admin only"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Updated Documentation Plan Name\",\n  \"description\": \"Updated description\",\n  \"isActive\": false\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/documentation-plans/{{documentationPlanId}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "documentation-plans",
+                                "{{documentationPlanId}}"
+                            ]
+                        },
+                        "description": "Update documentation plan metadata. Only admins can update plans."
+                    }
+                },
+                {
+                    "name": "Delete Documentation Plan",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}",
+                                "description": "Admin only"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/documentation-plans/{{documentationPlanId}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "documentation-plans",
+                                "{{documentationPlanId}}"
+                            ]
+                        },
+                        "description": "Delete a documentation plan. Cannot delete if the plan is used by any payment method phases. Only admins can delete plans."
+                    }
+                },
+                {
+                    "name": "Clone Documentation Plan",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}",
+                                "description": "Admin only"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Cloned Documentation Plan\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/documentation-plans/{{documentationPlanId}}/clone",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "documentation-plans",
+                                "{{documentationPlanId}}",
+                                "clone"
+                            ]
+                        },
+                        "description": "Clone an existing documentation plan with all its steps. Only admins can clone plans."
+                    }
+                },
+                {
+                    "name": "Add Step to Plan",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}",
+                                "description": "Admin only"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Credit Report\",\n  \"description\": \"Official credit report from approved bureau\",\n  \"documentType\": \"CREDIT_REPORT\",\n  \"isRequired\": true,\n  \"position\": 3,\n  \"allowedFileTypes\": [\"application/pdf\"],\n  \"maxFileSizeMB\": 5,\n  \"minFiles\": 1,\n  \"maxFiles\": 1\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/documentation-plans/{{documentationPlanId}}/steps",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "documentation-plans",
+                                "{{documentationPlanId}}",
+                                "steps"
+                            ]
+                        },
+                        "description": "Add a new step (document requirement) to an existing documentation plan. Only admins can add steps."
+                    }
+                },
+                {
+                    "name": "Update Step in Plan",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}",
+                                "description": "Admin only"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Updated Step Name\",\n  \"description\": \"Updated description\",\n  \"maxFiles\": 5\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/documentation-plans/{{documentationPlanId}}/steps/{{stepId}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "documentation-plans",
+                                "{{documentationPlanId}}",
+                                "steps",
+                                "{{stepId}}"
+                            ]
+                        },
+                        "description": "Update a step within a documentation plan. Only admins can update steps."
+                    }
+                },
+                {
+                    "name": "Remove Step from Plan",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}",
+                                "description": "Admin only"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/documentation-plans/{{documentationPlanId}}/steps/{{stepId}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "documentation-plans",
+                                "{{documentationPlanId}}",
+                                "steps",
+                                "{{stepId}}"
+                            ]
+                        },
+                        "description": "Remove a step from a documentation plan. Only admins can remove steps."
                     }
                 }
             ]
