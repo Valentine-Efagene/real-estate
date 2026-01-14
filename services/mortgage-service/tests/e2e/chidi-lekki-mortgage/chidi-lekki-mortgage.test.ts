@@ -49,9 +49,11 @@ describe("Chidi's Lekki Mortgage Flow", () => {
     let downpaymentPlanId: string;
     let mortgagePlanId: string;
     let paymentMethodId: string;
+    let prequalificationPlanId: string; // QuestionnairePlan for prequalification
 
     // Chidi's application
     let applicationId: string;
+    let prequalificationPhaseId: string; // New: Prequalification questionnaire phase
     let documentationPhaseId: string;
     let downpaymentPhaseId: string;
     let finalDocumentationPhaseId: string;
@@ -64,11 +66,17 @@ describe("Chidi's Lekki Mortgage Flow", () => {
     const mortgageInterestRate = 9.5; // 9.5% per annum
 
     // Chidi's mortgage term selection (based on his age)
-    // Chidi is 40, maxAgeAtMaturity is 65, so max term is 25 years
+    // Retirement age is 60, so Chidi (age 40) can get max 20 years
     // Chidi chooses 20 years
     const chidiAge = 40;
+    const retirementAge = 60;
     const chidiSelectedTermYears = 20;
     const chidiSelectedTermMonths = chidiSelectedTermYears * 12; // 240 months
+
+    // Chidi's financial situation
+    const chidiMonthlyIncome = 2_500_000; // ₦2.5M/month
+    const chidiMonthlyExpenses = 800_000;  // ₦800k/month
+    const maxRepaymentRatio = 1 / 3; // Bank can't deduct more than 1/3 of income
 
     beforeAll(async () => {
         await cleanupTestData();
@@ -203,7 +211,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
         it('Adaeze creates a flexible-term mortgage plan at 9.5% p.a.', async () => {
             // Mortgage plan with flexible term (5-30 years based on applicant's age)
-            // maxAgeAtMaturity: 65 means if Chidi is 40, he can get max 25 years
+            // maxAgeAtMaturity: 60 (retirement age) means if Chidi is 40, he can get max 20 years
             const response = await api
                 .post('/payment-plans')
                 .set(adminHeaders(adaezeId, tenantId))
@@ -217,7 +225,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                     minTermMonths: 60,       // 5 years minimum
                     maxTermMonths: 360,      // 30 years maximum
                     termStepMonths: 12,      // Increments of 1 year
-                    maxAgeAtMaturity: 65,    // Applicant + term cannot exceed 65
+                    maxAgeAtMaturity: retirementAge, // Retirement age - applicant + term cannot exceed 60
                     interestRate: mortgageInterestRate,
                     gracePeriodDays: 15,
                 });
@@ -226,26 +234,111 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             expect(response.body.data.allowFlexibleTerm).toBe(true);
             expect(response.body.data.minTermMonths).toBe(60);
             expect(response.body.data.maxTermMonths).toBe(360);
-            expect(response.body.data.maxAgeAtMaturity).toBe(65);
+            expect(response.body.data.maxAgeAtMaturity).toBe(retirementAge);
             mortgagePlanId = response.body.data.id;
         });
 
-        it('Adaeze creates a payment method with 4 phases per SCENARIO.md', async () => {
+        it('Adaeze creates a prequalification questionnaire plan', async () => {
+            // This questionnaire collects age, income, and validates eligibility
+            // Rules:
+            // 1. Age + mortgage term <= 60 (retirement age)
+            // 2. Monthly payment <= 1/3 of monthly income
+            const response = await api
+                .post('/questionnaire-plans')
+                .set(adminHeaders(adaezeId, tenantId))
+                .set('x-idempotency-key', idempotencyKey('adaeze-create-prequalification-plan'))
+                .send({
+                    name: 'Mortgage Prequalification',
+                    description: 'Collects applicant age and income to validate mortgage eligibility',
+                    isActive: true,
+                    passingScore: 100, // Must score 100 to pass (all checks must pass)
+                    scoringStrategy: 'MIN_ALL', // All questions must pass
+                    autoDecisionEnabled: true,
+                    estimatedMinutes: 5,
+                    category: 'PREQUALIFICATION',
+                    questions: [
+                        {
+                            questionKey: 'applicant_age',
+                            questionText: 'What is your current age?',
+                            helpText: 'Your age determines the maximum mortgage term (retirement age is 60)',
+                            questionType: 'NUMBER',
+                            order: 1,
+                            isRequired: true,
+                            validationRules: { min: 18, max: 59 },
+                            // Score 100 if age allows at least 5 years mortgage (age <= 55)
+                            scoringRules: { '<=55': 100, '>55': 0 },
+                            scoreWeight: 1,
+                            category: 'eligibility',
+                        },
+                        {
+                            questionKey: 'monthly_income',
+                            questionText: 'What is your monthly gross income?',
+                            helpText: 'Include salary, bonuses, and other regular income',
+                            questionType: 'CURRENCY',
+                            order: 2,
+                            isRequired: true,
+                            validationRules: { min: 0 },
+                            // Score 100 if income >= ₦500,000 (reasonable for mortgage)
+                            scoringRules: { '>=500000': 100, '<500000': 0 },
+                            scoreWeight: 1,
+                            category: 'affordability',
+                        },
+                        {
+                            questionKey: 'monthly_expenses',
+                            questionText: 'What are your total monthly expenses?',
+                            helpText: 'Include rent, utilities, loans, and other recurring expenses',
+                            questionType: 'CURRENCY',
+                            order: 3,
+                            isRequired: true,
+                            validationRules: { min: 0 },
+                            scoreWeight: 0, // Informational, used for DTI calculation
+                            category: 'affordability',
+                        },
+                        {
+                            questionKey: 'desired_term_years',
+                            questionText: 'What mortgage term (in years) would you prefer?',
+                            helpText: 'Maximum term is 30 years, but limited by retirement age (60)',
+                            questionType: 'NUMBER',
+                            order: 4,
+                            isRequired: true,
+                            validationRules: { min: 5, max: 30 },
+                            scoringRules: { '>=5': 100, '<5': 0 },
+                            scoreWeight: 1,
+                            category: 'preferences',
+                        },
+                    ],
+                });
+
+            expect(response.status).toBe(201);
+            expect(response.body.data.id).toBeDefined();
+            expect(response.body.data.questions.length).toBe(4);
+            prequalificationPlanId = response.body.data.id;
+        });
+
+        it('Adaeze creates a payment method with 5 phases (including prequalification)', async () => {
             const response = await api
                 .post('/payment-methods')
                 .set(adminHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('adaeze-create-payment-method'))
                 .send({
                     name: '10/90 Lekki Mortgage',
-                    description: 'Underwriting → Downpayment → Final Documentation → Mortgage',
+                    description: 'Prequalification → Underwriting → Downpayment → Final Documentation → Mortgage',
                     requiresManualApproval: true,
                     phases: [
-                        // Phase 1: Underwriting & Documentation
+                        // Phase 1: Prequalification Questionnaire
+                        {
+                            name: 'Prequalification',
+                            phaseCategory: 'QUESTIONNAIRE',
+                            phaseType: 'ELIGIBILITY',
+                            order: 1,
+                            questionnairePlanId: prequalificationPlanId,
+                        },
+                        // Phase 2: Underwriting & Documentation
                         {
                             name: 'Underwriting & Documentation',
                             phaseCategory: 'DOCUMENTATION',
                             phaseType: 'KYC',
-                            order: 1,
+                            order: 2,
                             requiredDocumentTypes: ['ID_CARD', 'BANK_STATEMENT', 'EMPLOYMENT_LETTER'],
                             stepDefinitions: [
                                 { name: 'Upload Valid ID', stepType: 'UPLOAD', order: 1 },
@@ -265,21 +358,21 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                                 { name: 'Customer Signs Provisional Offer', stepType: 'SIGNATURE', order: 6 },
                             ],
                         },
-                        // Phase 2: Downpayment
+                        // Phase 3: Downpayment
                         {
                             name: '10% Downpayment',
                             phaseCategory: 'PAYMENT',
                             phaseType: 'DOWNPAYMENT',
-                            order: 2,
+                            order: 3,
                             percentOfPrice: downpaymentPercent,
                             paymentPlanId: downpaymentPlanId,
                         },
-                        // Phase 3: Final Documentation (after downpayment per Sterling Bank's requirements)
+                        // Phase 4: Final Documentation (after downpayment per Sterling Bank's requirements)
                         {
                             name: 'Final Documentation',
                             phaseCategory: 'DOCUMENTATION',
                             phaseType: 'VERIFICATION',
-                            order: 3,
+                            order: 4,
                             stepDefinitions: [
                                 {
                                     name: 'Admin Uploads Final Offer',
@@ -293,12 +386,12 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                                 { name: 'Customer Signs Final Offer', stepType: 'SIGNATURE', order: 2 },
                             ],
                         },
-                        // Phase 4: Mortgage
+                        // Phase 5: Mortgage
                         {
                             name: '20-Year Mortgage',
                             phaseCategory: 'PAYMENT',
                             phaseType: 'MORTGAGE',
-                            order: 4,
+                            order: 5,
                             percentOfPrice: mortgagePercent,
                             interestRate: mortgageInterestRate,
                             paymentPlanId: mortgagePlanId,
@@ -308,7 +401,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
             expect(response.status).toBe(201);
             expect(response.body.data.id).toBeDefined();
-            expect(response.body.data.phases.length).toBe(4);
+            expect(response.body.data.phases.length).toBe(5);
             paymentMethodId = response.body.data.id;
         });
 
@@ -452,12 +545,11 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
     // =========================================================================
     // Step 2: Chidi creates a application for Unit 14B
-    // Note: Prequalification has been merged into the application documentation phase.
-    // Underwriting now happens as a step within the KYC phase.
+    // Flow: Prequalification → KYC/Documentation → Downpayment → Final Docs → Mortgage
     // =========================================================================
     describe("Step 2: Chidi creates and activates a application", () => {
         it('Chidi creates a application for Unit 14B with his preferred mortgage term', async () => {
-            // Chidi is 40 years old, so with maxAgeAtMaturity: 65, he can select up to 25 years
+            // Chidi is 40 years old, so with retirement age 60, he can select up to 20 years
             // Chidi chooses 20 years (240 months)
             const response = await api
                 .post('/applications')
@@ -469,8 +561,8 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                     title: 'Purchase Agreement - Lekki Gardens Unit 14B',
                     applicationType: 'MORTGAGE',
                     totalAmount: propertyPrice,
-                    monthlyIncome: 2_500_000, // ₦2.5M/month
-                    monthlyExpenses: 800_000,  // ₦800k/month
+                    monthlyIncome: chidiMonthlyIncome,
+                    monthlyExpenses: chidiMonthlyExpenses,
                     // Chidi selects his preferred mortgage term
                     applicantAge: chidiAge,
                     selectedMortgageTermMonths: chidiSelectedTermMonths, // 240 months = 20 years
@@ -484,12 +576,13 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             expect(response.body.data.id).toBeDefined();
             expect(response.body.data.applicationNumber).toBeDefined();
             expect(response.body.data.status).toBe('DRAFT');
-            expect(response.body.data.phases.length).toBe(4);
+            expect(response.body.data.phases.length).toBe(5); // Now 5 phases including prequalification
 
             applicationId = response.body.data.id;
 
-            // Extract phase IDs (4 phases per SCENARIO.md)
+            // Extract phase IDs (5 phases: Prequalification → KYC → Downpayment → Final Docs → Mortgage)
             const phases = response.body.data.phases;
+            prequalificationPhaseId = phases.find((p: any) => p.phaseType === 'ELIGIBILITY').id;
             documentationPhaseId = phases.find((p: any) => p.phaseType === 'KYC').id;
             downpaymentPhaseId = phases.find((p: any) => p.phaseType === 'DOWNPAYMENT').id;
             finalDocumentationPhaseId = phases.find((p: any) => p.phaseType === 'VERIFICATION').id;
@@ -512,18 +605,39 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                 .set(customerHeaders(chidiId, tenantId));
 
             expect(response.status).toBe(200);
-            expect(response.body.data.length).toBe(4);
+            expect(response.body.data.length).toBe(5); // 5 phases now
 
+            const prequalPhase = response.body.data.find((p: any) => p.phaseType === 'ELIGIBILITY');
             const docPhase = response.body.data.find((p: any) => p.phaseType === 'KYC');
             const downPhase = response.body.data.find((p: any) => p.phaseType === 'DOWNPAYMENT');
             const finalDocPhase = response.body.data.find((p: any) => p.phaseType === 'VERIFICATION');
             const mortPhase = response.body.data.find((p: any) => p.phaseType === 'MORTGAGE');
 
+            expect(prequalPhase.totalAmount).toBe(0);       // Questionnaire phase, no payment
             expect(docPhase.totalAmount).toBe(0);
             expect(downPhase.totalAmount).toBe(8_500_000);  // 10% of ₦85M
             expect(finalDocPhase.totalAmount).toBe(0);      // Documentation phase, no payment
             expect(mortPhase.totalAmount).toBe(76_500_000); // 90% of ₦85M
             expect(mortPhase.interestRate).toBe(mortgageInterestRate);
+        });
+
+        it('Prequalification phase has questionnaire fields from the plan', async () => {
+            const phase = await prisma.applicationPhase.findUnique({
+                where: { id: prequalificationPhaseId },
+                include: { questionnairePhase: { include: { fields: true } } },
+            });
+
+            expect(phase?.questionnairePhase).toBeDefined();
+            expect(phase?.questionnairePhase?.totalFieldsCount).toBe(4);
+            expect(phase?.questionnairePhase?.fields.length).toBe(4);
+
+            // Verify the fields match the questionnaire plan
+            // QuestionnaireField uses `name` not `fieldKey`
+            const fieldNames = phase?.questionnairePhase?.fields.map((f: any) => f.name);
+            expect(fieldNames).toContain('applicant_age');
+            expect(fieldNames).toContain('monthly_income');
+            expect(fieldNames).toContain('monthly_expenses');
+            expect(fieldNames).toContain('desired_term_years');
         });
 
         it('Mortgage phase has Chidi\'s selected term (20 years / 240 months)', async () => {
@@ -558,6 +672,106 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             expect(response.status).toBe(200);
             expect(response.body.data.status).toBe('PENDING');
         });
+
+        // ========================================
+        // Step 3: Chidi Completes Prequalification
+        // ========================================
+        // The prequalification phase ensures:
+        // 1. Age + mortgage term <= retirement age (60)
+        // 2. Monthly repayment <= 1/3 of monthly income
+        // 3. Maximum mortgage term is 30 years
+
+        it('Prequalification phase is activated first', async () => {
+            const response = await api
+                .post(`/applications/${applicationId}/phases/${prequalificationPhaseId}/activate`)
+                .set(customerHeaders(chidiId, tenantId))
+                .set('x-idempotency-key', idempotencyKey('chidi-activate-prequalification-phase'));
+
+            expect(response.status).toBe(200);
+            expect(response.body.data.status).toBe('IN_PROGRESS');
+        });
+
+        it('Chidi sees the prequalification questionnaire fields', async () => {
+            const response = await api
+                .get(`/applications/${applicationId}/phases/${prequalificationPhaseId}`)
+                .set(customerHeaders(chidiId, tenantId));
+
+            expect(response.status).toBe(200);
+            expect(response.body.data.phaseType).toBe('ELIGIBILITY');
+            expect(response.body.data.questionnairePhase).toBeDefined();
+            expect(response.body.data.questionnairePhase.fields.length).toBe(4);
+
+            const fieldKeys = response.body.data.questionnairePhase.fields.map((f: any) => f.name);
+            expect(fieldKeys).toContain('applicant_age');
+            expect(fieldKeys).toContain('monthly_income');
+            expect(fieldKeys).toContain('monthly_expenses');
+            expect(fieldKeys).toContain('desired_term_years');
+        });
+
+        // TODO: Implement POST /applications/:id/phases/:phaseId/questionnaire/submit endpoint
+        it.skip('Chidi submits his prequalification answers', async () => {
+            // Chidi is 40 years old, earns ₦2.5M/month, spends ₦800K/month on expenses
+            // He wants a 20-year mortgage term (well within 60-40=20 years max)
+            const answers = [
+                { fieldKey: 'applicant_age', value: '40' },
+                { fieldKey: 'monthly_income', value: String(chidiMonthlyIncome) },
+                { fieldKey: 'monthly_expenses', value: String(chidiMonthlyExpenses) },
+                { fieldKey: 'desired_term_years', value: '20' },
+            ];
+
+            const response = await api
+                .post(`/applications/${applicationId}/phases/${prequalificationPhaseId}/questionnaire/submit`)
+                .set(customerHeaders(chidiId, tenantId))
+                .set('x-idempotency-key', idempotencyKey('chidi-submit-prequalification'))
+                .send({ answers });
+
+            expect(response.status).toBe(200);
+
+            // The response includes the scoring result
+            expect(response.body.data.questionnaire.completedAt).toBeDefined();
+            expect(response.body.data.questionnaire.answeredFieldsCount).toBe(4);
+        });
+
+        // TODO: Depends on questionnaire submit endpoint
+        it.skip('Prequalification calculates eligibility correctly', async () => {
+            // The scoring rules should validate:
+            // 1. Age (40) + Term (20) = 60 <= retirement age (60) ✓
+            // 2. Monthly payment (~₦714K at 9.5% for ₦76.5M over 20 years)
+            //    ₦714K <= ₦833K (1/3 of ₦2.5M income) ✓
+            const phase = await prisma.applicationPhase.findUnique({
+                where: { id: prequalificationPhaseId },
+                include: {
+                    questionnairePhase: {
+                        include: {
+                            fields: true,
+                        },
+                    },
+                },
+            });
+
+            expect(phase?.questionnairePhase?.scoredAt).toBeDefined();
+
+            // With MIN_ALL strategy, all questions must pass for eligibility
+            // Scoring fields are directly on QuestionnairePhase
+            expect(phase?.questionnairePhase?.passed).toBe(true);
+            expect(phase?.questionnairePhase?.totalScore).toBeGreaterThan(0);
+        });
+
+        // TODO: Depends on questionnaire submit endpoint
+        it.skip('Prequalification phase completes after successful scoring', async () => {
+            // Phase should auto-complete after questionnaire is submitted and scored
+            const response = await api
+                .get(`/applications/${applicationId}/phases/${prequalificationPhaseId}`)
+                .set(customerHeaders(chidiId, tenantId));
+
+            expect(response.status).toBe(200);
+            expect(response.body.data.status).toBe('COMPLETED');
+            expect(response.body.data.completedAt).toBeDefined();
+        });
+
+        // ========================================
+        // Step 4: Chidi Completes KYC/Documentation
+        // ========================================
 
         it('Documentation phase is activated', async () => {
             const response = await api

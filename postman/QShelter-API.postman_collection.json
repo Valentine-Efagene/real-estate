@@ -86,6 +86,18 @@
             "description": "Workflow blocker ID for resolution operations"
         },
         {
+            "key": "questionnairePlanId",
+            "value": "qp-001",
+            "type": "string",
+            "description": "Questionnaire plan ID for questionnaire operations"
+        },
+        {
+            "key": "questionId",
+            "value": "q-001",
+            "type": "string",
+            "description": "Question ID for question operations within a plan"
+        },
+        {
             "key": "bootstrapSecret",
             "value": "local-bootstrap-secret",
             "type": "string",
@@ -471,6 +483,341 @@
                             "path": [
                                 "payment-plans",
                                 "{{paymentPlanId}}"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Questionnaire Plans",
+            "description": "Questionnaire plans are reusable templates for prequalification/screening forms with scoring capabilities. They define questions, validation rules, and scoring logic.",
+            "item": [
+                {
+                    "name": "Create Questionnaire Plan",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Prequalification Form\",\n  \"description\": \"Initial prequalification questionnaire for mortgage applicants\",\n  \"isActive\": true,\n  \"passingScore\": 70,\n  \"scoringStrategy\": \"SUM\",\n  \"autoDecisionEnabled\": true,\n  \"estimatedMinutes\": 10,\n  \"category\": \"PREQUALIFICATION\",\n  \"questions\": [\n    {\n      \"questionKey\": \"employment_status\",\n      \"questionText\": \"What is your current employment status?\",\n      \"helpText\": \"Select the option that best describes your current employment\",\n      \"questionType\": \"SELECT\",\n      \"order\": 1,\n      \"isRequired\": true,\n      \"options\": [\n        {\"value\": \"employed\", \"label\": \"Employed\", \"score\": 10},\n        {\"value\": \"self_employed\", \"label\": \"Self-Employed\", \"score\": 7},\n        {\"value\": \"retired\", \"label\": \"Retired\", \"score\": 5},\n        {\"value\": \"unemployed\", \"label\": \"Unemployed\", \"score\": 0}\n      ],\n      \"scoreWeight\": 2,\n      \"category\": \"employment\"\n    },\n    {\n      \"questionKey\": \"annual_income\",\n      \"questionText\": \"What is your annual gross income?\",\n      \"helpText\": \"Include salary, bonuses, and other regular income\",\n      \"questionType\": \"CURRENCY\",\n      \"order\": 2,\n      \"isRequired\": true,\n      \"validationRules\": {\"min\": 0, \"max\": 10000000},\n      \"scoringRules\": {\">=100000\": 20, \">=75000\": 15, \">=50000\": 10, \">=25000\": 5},\n      \"scoreWeight\": 3,\n      \"category\": \"income\"\n    },\n    {\n      \"questionKey\": \"years_employed\",\n      \"questionText\": \"How many years have you been with your current employer?\",\n      \"questionType\": \"NUMBER\",\n      \"order\": 3,\n      \"isRequired\": true,\n      \"validationRules\": {\"min\": 0, \"max\": 50},\n      \"scoringRules\": {\">=5\": 15, \">=2\": 10, \">=1\": 5},\n      \"scoreWeight\": 1,\n      \"showIf\": {\"questionKey\": \"employment_status\", \"equals\": \"employed\"},\n      \"category\": \"employment\"\n    }\n  ]\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/questionnaire-plans",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "questionnaire-plans"
+                            ]
+                        },
+                        "description": "Create a new questionnaire plan template with questions and scoring rules.\n\n**Question Types:**\n- `TEXT` - Free text input\n- `NUMBER` - Numeric input\n- `CURRENCY` - Monetary value\n- `DATE` - Date picker\n- `SELECT` - Single selection dropdown\n- `MULTI_SELECT` - Multiple selection\n- `RADIO` - Radio button selection\n- `CHECKBOX` - Checkbox\n- `FILE_UPLOAD` - File upload\n- `PHONE` - Phone number\n- `EMAIL` - Email address\n- `ADDRESS` - Full address\n- `PERCENTAGE` - Percentage value\n- `YEARS_MONTHS` - Duration in years/months\n\n**Scoring Strategies:**\n- `SUM` - Add up all scores\n- `AVERAGE` - Average of all scores\n- `WEIGHTED_SUM` - Sum with weights (score * weight)\n- `MIN_ALL` - Must meet minimum on all questions\n- `CUSTOM` - Custom scoring logic\n\n**Categories:**\n- `PREQUALIFICATION` - Initial eligibility screening\n- `AFFORDABILITY` - Income/expense assessment\n- `PROPERTY_INTENT` - Property preferences\n- `RISK_ASSESSMENT` - Credit/risk questions\n- `COMPLIANCE` - KYC/AML questions\n- `CUSTOM` - Custom category"
+                    }
+                },
+                {
+                    "name": "Get All Questionnaire Plans",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/questionnaire-plans?isActive=true",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "questionnaire-plans"
+                            ],
+                            "query": [
+                                {
+                                    "key": "isActive",
+                                    "value": "true",
+                                    "description": "Filter by active status"
+                                },
+                                {
+                                    "key": "category",
+                                    "value": "PREQUALIFICATION",
+                                    "description": "Filter by category",
+                                    "disabled": true
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Questionnaire Plan by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/questionnaire-plans/{{questionnairePlanId}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "questionnaire-plans",
+                                "{{questionnairePlanId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Update Questionnaire Plan",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"description\": \"Updated description\",\n  \"passingScore\": 75,\n  \"isActive\": true\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/questionnaire-plans/{{questionnairePlanId}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "questionnaire-plans",
+                                "{{questionnairePlanId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Clone Questionnaire Plan",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Prequalification Form V2\",\n  \"incrementVersion\": false\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/questionnaire-plans/{{questionnairePlanId}}/clone",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "questionnaire-plans",
+                                "{{questionnairePlanId}}",
+                                "clone"
+                            ]
+                        },
+                        "description": "Clone an existing questionnaire plan. Use `name` to create a new plan with a different name, or use `incrementVersion: true` to create a new version of the same plan."
+                    }
+                },
+                {
+                    "name": "Calculate Score",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"answers\": {\n    \"employment_status\": \"employed\",\n    \"annual_income\": 85000,\n    \"years_employed\": 3\n  }\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/questionnaire-plans/{{questionnairePlanId}}/score",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "questionnaire-plans",
+                                "{{questionnairePlanId}}",
+                                "score"
+                            ]
+                        },
+                        "description": "Calculate the score for given answers against a questionnaire plan. Returns the total score, max possible score, and whether the applicant passed."
+                    }
+                },
+                {
+                    "name": "Add Question to Plan",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"questionKey\": \"debt_to_income\",\n  \"questionText\": \"What is your estimated monthly debt payments?\",\n  \"questionType\": \"CURRENCY\",\n  \"order\": 4,\n  \"isRequired\": true,\n  \"validationRules\": {\"min\": 0},\n  \"scoreWeight\": 2,\n  \"category\": \"financial\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/questionnaire-plans/{{questionnairePlanId}}/questions",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "questionnaire-plans",
+                                "{{questionnairePlanId}}",
+                                "questions"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Update Question in Plan",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"questionText\": \"Updated question text\",\n  \"helpText\": \"Additional guidance for this question\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/questionnaire-plans/{{questionnairePlanId}}/questions/{{questionId}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "questionnaire-plans",
+                                "{{questionnairePlanId}}",
+                                "questions",
+                                "{{questionId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Remove Question from Plan",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/questionnaire-plans/{{questionnairePlanId}}/questions/{{questionId}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "questionnaire-plans",
+                                "{{questionnairePlanId}}",
+                                "questions",
+                                "{{questionId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Questionnaire Plan",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/questionnaire-plans/{{questionnairePlanId}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "questionnaire-plans",
+                                "{{questionnairePlanId}}"
                             ]
                         }
                     }
