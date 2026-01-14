@@ -3,7 +3,7 @@
 import { api, prisma, cleanupTestData } from '../../setup.js';
 import { faker } from '@faker-js/faker';
 import { randomUUID } from 'crypto';
-import { authHeaders, ROLES, CONDITION_OPERATORS } from '@valentine-efagene/qshelter-common';
+import { authHeaders, ROLES, CONDITION_OPERATORS, UPLOADED_BY } from '@valentine-efagene/qshelter-common';
 
 // Helper functions for auth headers with proper roles
 function adminHeaders(userId: string, tenantId: string) {
@@ -555,7 +555,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                             maxSizeBytes: 10 * 1024 * 1024,
                             allowedMimeTypes: ['application/pdf'],
                             metadata: {
-                                uploadedBy: 'ADMIN',
+                                uploadedBy: UPLOADED_BY.ADMIN,
                             },
                         },
                         {
