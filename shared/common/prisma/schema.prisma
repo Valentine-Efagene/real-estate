@@ -1071,6 +1071,16 @@ model DocumentationPlanStep {
   documentType String?
   metadata     Json?
 
+  // Document validation rules (for UPLOAD steps)
+  isRequired           Boolean @default(true)
+  description          String? @db.Text // Instructions for the user
+  maxSizeBytes         Int? // Max file size allowed (e.g., 5242880 for 5MB)
+  allowedMimeTypes     String? // CSV: application/pdf,image/jpeg,image/png
+  expiryDays           Int? // Document must not be older than X days
+  requiresManualReview Boolean @default(false)
+  minFiles             Int     @default(1) // Minimum number of files required
+  maxFiles             Int     @default(1) // Maximum number of files allowed
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

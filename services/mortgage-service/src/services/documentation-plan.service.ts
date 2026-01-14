@@ -46,6 +46,15 @@ export function createDocumentationPlanService(prisma: AnyPrismaClient = default
                         order: step.order,
                         documentType: step.documentType,
                         metadata: step.metadata,
+                        // Document validation rules
+                        isRequired: step.isRequired ?? true,
+                        description: step.description,
+                        maxSizeBytes: step.maxSizeBytes,
+                        allowedMimeTypes: step.allowedMimeTypes?.join(','),
+                        expiryDays: step.expiryDays,
+                        requiresManualReview: step.requiresManualReview ?? false,
+                        minFiles: step.minFiles ?? 1,
+                        maxFiles: step.maxFiles ?? 1,
                     })),
                 },
             },
@@ -171,6 +180,15 @@ export function createDocumentationPlanService(prisma: AnyPrismaClient = default
                         order: step.order,
                         documentType: step.documentType,
                         metadata: step.metadata,
+                        // Document validation rules
+                        isRequired: step.isRequired,
+                        description: step.description,
+                        maxSizeBytes: step.maxSizeBytes,
+                        allowedMimeTypes: step.allowedMimeTypes,
+                        expiryDays: step.expiryDays,
+                        requiresManualReview: step.requiresManualReview,
+                        minFiles: step.minFiles,
+                        maxFiles: step.maxFiles,
                     })),
                 },
             },
@@ -195,6 +213,15 @@ export function createDocumentationPlanService(prisma: AnyPrismaClient = default
                 order: data.order,
                 documentType: data.documentType,
                 metadata: data.metadata,
+                // Document validation rules
+                isRequired: data.isRequired ?? true,
+                description: data.description,
+                maxSizeBytes: data.maxSizeBytes,
+                allowedMimeTypes: data.allowedMimeTypes?.join(','),
+                expiryDays: data.expiryDays,
+                requiresManualReview: data.requiresManualReview ?? false,
+                minFiles: data.minFiles ?? 1,
+                maxFiles: data.maxFiles ?? 1,
             },
         });
 
@@ -238,6 +265,15 @@ export function createDocumentationPlanService(prisma: AnyPrismaClient = default
                 order: data.order,
                 documentType: data.documentType,
                 metadata: data.metadata,
+                // Document validation rules
+                isRequired: data.isRequired,
+                description: data.description,
+                maxSizeBytes: data.maxSizeBytes,
+                allowedMimeTypes: data.allowedMimeTypes?.join(','),
+                expiryDays: data.expiryDays,
+                requiresManualReview: data.requiresManualReview,
+                minFiles: data.minFiles,
+                maxFiles: data.maxFiles,
             },
         });
 

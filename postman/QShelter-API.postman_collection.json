@@ -110,6 +110,12 @@
             "description": "Step ID for step operations within a documentation plan"
         },
         {
+            "key": "documentRuleId",
+            "value": "dr-001",
+            "type": "string",
+            "description": "Document requirement rule ID"
+        },
+        {
             "key": "bootstrapSecret",
             "value": "local-bootstrap-secret",
             "type": "string",
@@ -1621,12 +1627,114 @@
                             ]
                         }
                     }
+                },
+                {
+                    "name": "Create Document Requirement Rules (Bulk)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}",
+                                "description": "Admin only"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"rules\": [\n    {\n      \"context\": \"APPLICATION_PHASE\",\n      \"phaseType\": \"KYC\",\n      \"documentType\": \"ID_CARD\",\n      \"isRequired\": true,\n      \"description\": \"Valid government-issued ID (NIN, Passport, or Driver License)\",\n      \"maxSizeBytes\": 5242880,\n      \"allowedMimeTypes\": [\"image/jpeg\", \"image/png\", \"application/pdf\"]\n    },\n    {\n      \"context\": \"APPLICATION_PHASE\",\n      \"phaseType\": \"KYC\",\n      \"documentType\": \"BANK_STATEMENT\",\n      \"isRequired\": true,\n      \"description\": \"Last 6 months bank statements\",\n      \"maxSizeBytes\": 10485760,\n      \"allowedMimeTypes\": [\"application/pdf\"],\n      \"expiryDays\": 90\n    },\n    {\n      \"context\": \"APPLICATION_PHASE\",\n      \"phaseType\": \"KYC\",\n      \"documentType\": \"EMPLOYMENT_LETTER\",\n      \"isRequired\": true,\n      \"description\": \"Employment confirmation letter\",\n      \"maxSizeBytes\": 5242880,\n      \"allowedMimeTypes\": [\"application/pdf\"]\n    }\n  ]\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-methods/{{paymentMethodId}}/document-rules",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-methods",
+                                "{{paymentMethodId}}",
+                                "document-rules"
+                            ]
+                        },
+                        "description": "Create multiple document requirement rules for a payment method in a single request. Rules define what documents are required for specific phases (e.g., KYC documents for underwriting phase)."
+                    }
+                },
+                {
+                    "name": "Get Document Requirement Rules",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-methods/{{paymentMethodId}}/document-rules?phaseType=KYC",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-methods",
+                                "{{paymentMethodId}}",
+                                "document-rules"
+                            ],
+                            "query": [
+                                {
+                                    "key": "phaseType",
+                                    "value": "KYC",
+                                    "description": "Optional: filter by phase type"
+                                }
+                            ]
+                        },
+                        "description": "Get all document requirement rules for a payment method. Optionally filter by phase type."
+                    }
+                },
+                {
+                    "name": "Delete Document Requirement Rule",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}",
+                                "description": "Admin only"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-methods/{{paymentMethodId}}/document-rules/{{documentRuleId}}",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-methods",
+                                "{{paymentMethodId}}",
+                                "document-rules",
+                                "{{documentRuleId}}"
+                            ]
+                        },
+                        "description": "Delete a specific document requirement rule. Only admins can delete rules."
+                    }
                 }
             ]
         },
         {
             "name": "Documentation Plans",
-            "description": "Documentation plans are reusable templates that define the documents required during mortgage application processing. Each plan consists of steps (document types) that applicants must submit.",
+            "description": "Documentation plans are reusable templates that define the documents required during mortgage application processing. Each plan consists of steps (document types) that applicants must submit. Steps include validation rules such as allowed MIME types, file size limits, expiry requirements, and manual review flags. These plans can be linked to payment method phases to define what documents are required at each stage.",
             "item": [
                 {
                     "name": "Create Documentation Plan",
@@ -1649,7 +1757,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"name\": \"Standard Mortgage Documentation\",\n  \"description\": \"Standard set of documents required for mortgage processing\",\n  \"isActive\": true,\n  \"steps\": [\n    {\n      \"name\": \"Government ID\",\n      \"description\": \"Valid government-issued identification\",\n      \"documentType\": \"ID_DOCUMENT\",\n      \"isRequired\": true,\n      \"position\": 0,\n      \"allowedFileTypes\": [\"application/pdf\", \"image/jpeg\", \"image/png\"],\n      \"maxFileSizeMB\": 5,\n      \"minFiles\": 1,\n      \"maxFiles\": 2\n    },\n    {\n      \"name\": \"Proof of Income\",\n      \"description\": \"Recent pay slips or employment letter\",\n      \"documentType\": \"INCOME_PROOF\",\n      \"isRequired\": true,\n      \"position\": 1,\n      \"allowedFileTypes\": [\"application/pdf\"],\n      \"maxFileSizeMB\": 10,\n      \"minFiles\": 1,\n      \"maxFiles\": 3\n    },\n    {\n      \"name\": \"Bank Statements\",\n      \"description\": \"Last 3 months bank statements\",\n      \"documentType\": \"BANK_STATEMENT\",\n      \"isRequired\": true,\n      \"position\": 2,\n      \"allowedFileTypes\": [\"application/pdf\"],\n      \"maxFileSizeMB\": 15,\n      \"minFiles\": 3,\n      \"maxFiles\": 6\n    }\n  ]\n}"
+                            "raw": "{\n  \"name\": \"Standard Mortgage Documentation\",\n  \"description\": \"Standard set of documents required for mortgage processing\",\n  \"isActive\": true,\n  \"requiredDocumentTypes\": [\"ID_CARD\", \"BANK_STATEMENT\", \"EMPLOYMENT_LETTER\"],\n  \"steps\": [\n    {\n      \"name\": \"Government ID Upload\",\n      \"stepType\": \"UPLOAD\",\n      \"order\": 1,\n      \"documentType\": \"ID_CARD\",\n      \"isRequired\": true,\n      \"description\": \"Valid government-issued ID (NIN, Passport, or Driver License)\",\n      \"maxSizeBytes\": 5242880,\n      \"allowedMimeTypes\": [\"application/pdf\", \"image/jpeg\", \"image/png\"],\n      \"minFiles\": 1,\n      \"maxFiles\": 2\n    },\n    {\n      \"name\": \"Proof of Income Upload\",\n      \"stepType\": \"UPLOAD\",\n      \"order\": 2,\n      \"documentType\": \"INCOME_PROOF\",\n      \"isRequired\": true,\n      \"description\": \"Recent pay slips or employment letter\",\n      \"maxSizeBytes\": 10485760,\n      \"allowedMimeTypes\": [\"application/pdf\"],\n      \"minFiles\": 1,\n      \"maxFiles\": 3\n    },\n    {\n      \"name\": \"Bank Statement Upload\",\n      \"stepType\": \"UPLOAD\",\n      \"order\": 3,\n      \"documentType\": \"BANK_STATEMENT\",\n      \"isRequired\": true,\n      \"description\": \"Last 6 months bank statements\",\n      \"maxSizeBytes\": 15728640,\n      \"allowedMimeTypes\": [\"application/pdf\"],\n      \"expiryDays\": 90,\n      \"requiresManualReview\": true,\n      \"minFiles\": 3,\n      \"maxFiles\": 6\n    }\n  ]\n}"
                         },
                         "url": {
                             "raw": "{{mortgageServiceUrl}}/documentation-plans",
@@ -1845,7 +1953,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"name\": \"Credit Report\",\n  \"description\": \"Official credit report from approved bureau\",\n  \"documentType\": \"CREDIT_REPORT\",\n  \"isRequired\": true,\n  \"position\": 3,\n  \"allowedFileTypes\": [\"application/pdf\"],\n  \"maxFileSizeMB\": 5,\n  \"minFiles\": 1,\n  \"maxFiles\": 1\n}"
+                            "raw": "{\n  \"name\": \"Credit Report Upload\",\n  \"stepType\": \"UPLOAD\",\n  \"order\": 4,\n  \"documentType\": \"CREDIT_REPORT\",\n  \"isRequired\": true,\n  \"description\": \"Official credit report from approved bureau\",\n  \"maxSizeBytes\": 5242880,\n  \"allowedMimeTypes\": [\"application/pdf\"],\n  \"expiryDays\": 30,\n  \"requiresManualReview\": true,\n  \"minFiles\": 1,\n  \"maxFiles\": 1\n}"
                         },
                         "url": {
                             "raw": "{{mortgageServiceUrl}}/documentation-plans/{{documentationPlanId}}/steps",
@@ -1882,7 +1990,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"name\": \"Updated Step Name\",\n  \"description\": \"Updated description\",\n  \"maxFiles\": 5\n}"
+                            "raw": "{\n  \"name\": \"Updated Step Name\",\n  \"description\": \"Updated description\",\n  \"maxSizeBytes\": 10485760,\n  \"allowedMimeTypes\": [\"application/pdf\", \"image/jpeg\"],\n  \"maxFiles\": 5,\n  \"requiresManualReview\": true\n}"
                         },
                         "url": {
                             "raw": "{{mortgageServiceUrl}}/documentation-plans/{{documentationPlanId}}/steps/{{stepId}}",

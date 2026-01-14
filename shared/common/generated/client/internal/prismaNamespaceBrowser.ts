@@ -555,6 +555,14 @@ export const DocumentationPlanStepScalarFieldEnum = {
   order: 'order',
   documentType: 'documentType',
   metadata: 'metadata',
+  isRequired: 'isRequired',
+  description: 'description',
+  maxSizeBytes: 'maxSizeBytes',
+  allowedMimeTypes: 'allowedMimeTypes',
+  expiryDays: 'expiryDays',
+  requiresManualReview: 'requiresManualReview',
+  minFiles: 'minFiles',
+  maxFiles: 'maxFiles',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1774,7 +1782,9 @@ export const DocumentationPlanStepOrderByRelevanceFieldEnum = {
   id: 'id',
   planId: 'planId',
   name: 'name',
-  documentType: 'documentType'
+  documentType: 'documentType',
+  description: 'description',
+  allowedMimeTypes: 'allowedMimeTypes'
 } as const
 
 export type DocumentationPlanStepOrderByRelevanceFieldEnum = (typeof DocumentationPlanStepOrderByRelevanceFieldEnum)[keyof typeof DocumentationPlanStepOrderByRelevanceFieldEnum]

@@ -50,6 +50,8 @@ describe("Chidi's Lekki Mortgage Flow", () => {
     let mortgagePlanId: string;
     let paymentMethodId: string;
     let prequalificationPlanId: string; // QuestionnairePlan for prequalification
+    let kycDocumentationPlanId: string; // DocumentationPlan for KYC phase
+    let finalDocumentationPlanId: string; // DocumentationPlan for final documentation phase
 
     // Chidi's application
     let applicationId: string;
@@ -315,6 +317,125 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             prequalificationPlanId = response.body.data.id;
         });
 
+        it('Adaeze creates a KYC documentation plan with document requirements', async () => {
+            // This plan defines the KYC workflow with steps and document validation rules
+            const response = await api
+                .post('/documentation-plans')
+                .set(adminHeaders(adaezeId, tenantId))
+                .set('x-idempotency-key', idempotencyKey('adaeze-create-kyc-documentation-plan'))
+                .send({
+                    name: 'Mortgage KYC Documentation',
+                    description: 'Standard KYC documentation workflow with ID, bank statement, and employment letter',
+                    isActive: true,
+                    requiredDocumentTypes: ['ID_CARD', 'BANK_STATEMENT', 'EMPLOYMENT_LETTER'],
+                    steps: [
+                        {
+                            name: 'Upload Valid ID',
+                            stepType: 'UPLOAD',
+                            order: 1,
+                            documentType: 'ID_CARD',
+                            isRequired: true,
+                            description: 'Valid government-issued ID (NIN, Passport, or Driver License)',
+                            maxSizeBytes: 5 * 1024 * 1024,
+                            allowedMimeTypes: ['image/jpeg', 'image/png', 'application/pdf'],
+                            requiresManualReview: true,
+                        },
+                        {
+                            name: 'Upload Bank Statements',
+                            stepType: 'UPLOAD',
+                            order: 2,
+                            documentType: 'BANK_STATEMENT',
+                            isRequired: true,
+                            description: 'Last 6 months bank statements',
+                            maxSizeBytes: 10 * 1024 * 1024,
+                            allowedMimeTypes: ['application/pdf'],
+                            expiryDays: 90,
+                            requiresManualReview: true,
+                            minFiles: 3,
+                            maxFiles: 6,
+                        },
+                        {
+                            name: 'Upload Employment Letter',
+                            stepType: 'UPLOAD',
+                            order: 3,
+                            documentType: 'EMPLOYMENT_LETTER',
+                            isRequired: true,
+                            description: 'Employment confirmation letter',
+                            maxSizeBytes: 5 * 1024 * 1024,
+                            allowedMimeTypes: ['application/pdf'],
+                            requiresManualReview: true,
+                        },
+                        {
+                            name: 'Adaeze Reviews Documents',
+                            stepType: 'APPROVAL',
+                            order: 4,
+                        },
+                        {
+                            name: 'Generate Provisional Offer',
+                            stepType: 'GENERATE_DOCUMENT',
+                            order: 5,
+                            metadata: {
+                                documentType: 'PROVISIONAL_OFFER',
+                                autoSend: true,
+                                expiresInDays: 30,
+                            },
+                        },
+                        {
+                            name: 'Customer Signs Provisional Offer',
+                            stepType: 'SIGNATURE',
+                            order: 6,
+                        },
+                    ],
+                });
+
+            expect(response.status).toBe(201);
+            expect(response.body.data.id).toBeDefined();
+            expect(response.body.data.steps.length).toBe(6);
+            kycDocumentationPlanId = response.body.data.id;
+
+            // Verify the steps have the document validation rules
+            const uploadIdStep = response.body.data.steps.find((s: any) => s.documentType === 'ID_CARD');
+            expect(uploadIdStep.maxSizeBytes).toBe(5 * 1024 * 1024);
+            expect(uploadIdStep.requiresManualReview).toBe(true);
+        });
+
+        it('Adaeze creates a final documentation plan', async () => {
+            const response = await api
+                .post('/documentation-plans')
+                .set(adminHeaders(adaezeId, tenantId))
+                .set('x-idempotency-key', idempotencyKey('adaeze-create-final-documentation-plan'))
+                .send({
+                    name: 'Final Offer Documentation',
+                    description: 'Final offer letter upload and signature workflow',
+                    isActive: true,
+                    steps: [
+                        {
+                            name: 'Admin Uploads Final Offer',
+                            stepType: 'UPLOAD',
+                            order: 1,
+                            documentType: 'FINAL_OFFER',
+                            isRequired: true,
+                            description: 'Final offer letter prepared by bank',
+                            maxSizeBytes: 10 * 1024 * 1024,
+                            allowedMimeTypes: ['application/pdf'],
+                            metadata: {
+                                uploadedBy: 'ADMIN',
+                            },
+                        },
+                        {
+                            name: 'Customer Signs Final Offer',
+                            stepType: 'SIGNATURE',
+                            order: 2,
+                        },
+                    ],
+                });
+
+            expect(response.status).toBe(201);
+            expect(response.body.data.id).toBeDefined();
+            expect(response.body.data.steps.length).toBe(2);
+            finalDocumentationPlanId = response.body.data.id;
+        });
+
         it('Adaeze creates a payment method with 5 phases (including prequalification)', async () => {
             const response = await api
                 .post('/payment-methods')
@@ -333,30 +454,13 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                             order: 1,
                             questionnairePlanId: prequalificationPlanId,
                         },
-                        // Phase 2: Underwriting & Documentation
+                        // Phase 2: Underwriting & Documentation (uses KYC documentation plan)
                         {
                             name: 'Underwriting & Documentation',
                             phaseCategory: 'DOCUMENTATION',
                             phaseType: 'KYC',
                             order: 2,
-                            requiredDocumentTypes: ['ID_CARD', 'BANK_STATEMENT', 'EMPLOYMENT_LETTER'],
-                            stepDefinitions: [
-                                { name: 'Upload Valid ID', stepType: 'UPLOAD', order: 1 },
-                                { name: 'Upload Bank Statements', stepType: 'UPLOAD', order: 2 },
-                                { name: 'Upload Employment Letter', stepType: 'UPLOAD', order: 3 },
-                                { name: 'Adaeze Reviews Documents', stepType: 'APPROVAL', order: 4 },
-                                {
-                                    name: 'Generate Provisional Offer',
-                                    stepType: 'GENERATE_DOCUMENT',
-                                    order: 5,
-                                    metadata: {
-                                        documentType: 'PROVISIONAL_OFFER',
-                                        autoSend: true,
-                                        expiresInDays: 30,
-                                    },
-                                },
-                                { name: 'Customer Signs Provisional Offer', stepType: 'SIGNATURE', order: 6 },
-                            ],
+                            documentationPlanId: kycDocumentationPlanId,
                         },
                         // Phase 3: Downpayment
                         {
@@ -367,24 +471,13 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                             percentOfPrice: downpaymentPercent,
                             paymentPlanId: downpaymentPlanId,
                         },
-                        // Phase 4: Final Documentation (after downpayment per Sterling Bank's requirements)
+                        // Phase 4: Final Documentation (uses final documentation plan)
                         {
                             name: 'Final Documentation',
                             phaseCategory: 'DOCUMENTATION',
                             phaseType: 'VERIFICATION',
                             order: 4,
-                            stepDefinitions: [
-                                {
-                                    name: 'Admin Uploads Final Offer',
-                                    stepType: 'UPLOAD',
-                                    order: 1,
-                                    metadata: {
-                                        documentType: 'FINAL_OFFER',
-                                        uploadedBy: 'ADMIN', // Only admin can upload
-                                    },
-                                },
-                                { name: 'Customer Signs Final Offer', stepType: 'SIGNATURE', order: 2 },
-                            ],
+                            documentationPlanId: finalDocumentationPlanId,
                         },
                         // Phase 5: Mortgage
                         {
@@ -418,48 +511,8 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             expect(response.status).toBe(201);
         });
 
-        it('Adaeze configures document requirement rules', async () => {
-            // Add document requirements via bulk REST API
-            const response = await api
-                .post(`/payment-methods/${paymentMethodId}/document-rules`)
-                .set(adminHeaders(adaezeId, tenantId))
-                .set('x-idempotency-key', idempotencyKey('adaeze-add-doc-requirements'))
-                .send({
-                    rules: [
-                        {
-                            context: 'APPLICATION_PHASE',
-                            phaseType: 'KYC',
-                            documentType: 'ID_CARD',
-                            isRequired: true,
-                            description: 'Valid government-issued ID (NIN, Passport, or Driver License)',
-                            maxSizeBytes: 5 * 1024 * 1024,
-                            allowedMimeTypes: ['image/jpeg', 'image/png', 'application/pdf'],
-                        },
-                        {
-                            context: 'APPLICATION_PHASE',
-                            phaseType: 'KYC',
-                            documentType: 'BANK_STATEMENT',
-                            isRequired: true,
-                            description: 'Last 6 months bank statements',
-                            maxSizeBytes: 10 * 1024 * 1024,
-                            allowedMimeTypes: ['application/pdf'],
-                            expiryDays: 90,
-                        },
-                        {
-                            context: 'APPLICATION_PHASE',
-                            phaseType: 'KYC',
-                            documentType: 'EMPLOYMENT_LETTER',
-                            isRequired: true,
-                            description: 'Employment confirmation letter',
-                            maxSizeBytes: 5 * 1024 * 1024,
-                            allowedMimeTypes: ['application/pdf'],
-                        },
-                    ],
-                });
-
-            expect(response.status).toBe(201);
-            expect(response.body.data.length).toBe(3);
-        });
+        // NOTE: Document requirement rules are now defined in the DocumentationPlan steps
+        // No need for separate document-rules configuration on the payment method
 
         it('Adaeze configures phase event to notify when downpayment completes', async () => {
             // First, create an event channel and type for downpayment notifications
