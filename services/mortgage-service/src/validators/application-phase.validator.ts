@@ -137,8 +137,32 @@ export const ApplicationPhaseResponseSchema = z
     })
     .openapi('ApplicationPhaseResponse');
 
+// Submit questionnaire answers
+export const SubmitQuestionnaireSchema = z
+    .object({
+        answers: z
+            .array(
+                z.object({
+                    fieldName: z.string().min(1).openapi({
+                        description: 'The field name (key) to answer',
+                        example: 'monthly_income',
+                    }),
+                    value: z.union([z.string(), z.number(), z.boolean(), z.array(z.string())]).openapi({
+                        description: 'The answer value',
+                        example: '2500000',
+                    }),
+                })
+            )
+            .min(1)
+            .openapi({
+                description: 'Array of field answers',
+            }),
+    })
+    .openapi('SubmitQuestionnaire');
+
 export type ActivatePhaseInput = z.infer<typeof ActivatePhaseSchema>;
 export type CompleteStepInput = z.infer<typeof CompleteStepSchema>;
 export type UploadDocumentInput = z.infer<typeof UploadDocumentSchema>;
 export type ApproveDocumentInput = z.infer<typeof ApproveDocumentSchema>;
 export type GenerateInstallmentsInput = z.infer<typeof GenerateInstallmentsSchema>;
+export type SubmitQuestionnaireInput = z.infer<typeof SubmitQuestionnaireSchema>;

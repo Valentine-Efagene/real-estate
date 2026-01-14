@@ -20,6 +20,7 @@ import type {
     UploadDocumentInput,
     ApproveDocumentInput,
     GenerateInstallmentsInput,
+    SubmitQuestionnaireInput,
 } from '../validators/application-phase.validator';
 import { handleGenerateDocumentStep } from './step-handlers';
 import { paymentPlanService } from './payment-plan.service';
@@ -1621,6 +1622,231 @@ class ApplicationPhaseService {
         });
 
         return this.findByIdWithActionStatus(updated.id);
+    }
+
+    /**
+     * Submit questionnaire answers for a QUESTIONNAIRE phase.
+     * Validates answers, calculates scores based on the QuestionnairePlan,
+     * and optionally auto-completes the phase if scoring passes.
+     */
+    async submitQuestionnaire(phaseId: string, data: SubmitQuestionnaireInput, userId: string): Promise<any> {
+        const phase = await this.findById(phaseId);
+
+        if (phase.phaseCategory !== 'QUESTIONNAIRE') {
+            throw new AppError(400, 'This endpoint is only for QUESTIONNAIRE phases');
+        }
+
+        if (phase.status !== 'IN_PROGRESS') {
+            throw new AppError(400, 'Phase must be IN_PROGRESS to submit questionnaire');
+        }
+
+        if (!phase.questionnairePhase) {
+            throw new AppError(400, 'Questionnaire phase data not found');
+        }
+
+        const questionnairePhase = phase.questionnairePhase;
+        const fields = questionnairePhase.fields || [];
+
+        // Map answers by field name for easy lookup
+        const answerMap = new Map(data.answers.map((a) => [a.fieldName, a.value]));
+
+        // Validate that all required fields have answers
+        const missingFields: string[] = [];
+        for (const field of fields) {
+            if (field.isRequired && !answerMap.has(field.name)) {
+                missingFields.push(field.name);
+            }
+        }
+
+        if (missingFields.length > 0) {
+            throw new AppError(400, `Missing required fields: ${missingFields.join(', ')}`);
+        }
+
+        // Get the questionnaire plan for scoring rules (if exists)
+        let questionnairePlan: any = null;
+        if (questionnairePhase.questionnairePlanId) {
+            questionnairePlan = await prisma.questionnairePlan.findUnique({
+                where: { id: questionnairePhase.questionnairePlanId },
+                include: { questions: true },
+            });
+        }
+
+        // Calculate score based on scoring strategy
+        let totalScore = 0;
+        let allPassed = true;
+        const fieldScores: Record<string, { score: number; passed: boolean }> = {};
+
+        for (const field of fields) {
+            const answer = answerMap.get(field.name);
+            if (answer === undefined) continue;
+
+            // Find the corresponding question from the plan for scoring rules
+            const question = questionnairePlan?.questions?.find((q: any) => q.questionKey === field.name);
+
+            let fieldScore = 0;
+            let fieldPassed = true;
+
+            if (question?.scoringRules) {
+                const rules = question.scoringRules as Record<string, any>;
+
+                // Handle different scoring rule types
+                if (typeof rules === 'object') {
+                    // Direct value mapping: { "employed": 10, "unemployed": 0 }
+                    if (rules[String(answer)] !== undefined) {
+                        fieldScore = Number(rules[String(answer)]) || 0;
+                    }
+                    // Range-based scoring: { min: 0, max: 100, minScore: 0, maxScore: 10 }
+                    else if (rules.min !== undefined && rules.max !== undefined && typeof answer === 'number') {
+                        const value = Number(answer);
+                        if (value >= rules.min && value <= rules.max) {
+                            fieldScore = rules.score || 10;
+                        } else {
+                            fieldPassed = false;
+                        }
+                    }
+                    // Pass/fail threshold: { minValue: 18, score: 10 }
+                    else if (rules.minValue !== undefined) {
+                        const value = Number(answer);
+                        if (value >= rules.minValue) {
+                            fieldScore = rules.score || 10;
+                        } else {
+                            fieldPassed = false;
+                        }
+                    }
+                    // Max value threshold: { maxValue: 60, score: 10 }
+                    else if (rules.maxValue !== undefined) {
+                        const value = Number(answer);
+                        if (value <= rules.maxValue) {
+                            fieldScore = rules.score || 10;
+                        } else {
+                            fieldPassed = false;
+                        }
+                    }
+                }
+            } else {
+                // No scoring rules - field just needs to be answered
+                fieldScore = 1;
+            }
+
+            // Apply score weight from question
+            const weight = question?.scoreWeight || 1;
+            fieldScore *= weight;
+
+            totalScore += fieldScore;
+            fieldScores[field.name] = { score: fieldScore, passed: fieldPassed };
+
+            if (!fieldPassed) {
+                allPassed = false;
+            }
+        }
+
+        // Determine if passed based on scoring strategy
+        const scoringStrategy = questionnairePlan?.scoringStrategy || 'SUM';
+        const passingScore = questionnairePhase.passingScore || questionnairePlan?.passingScore || 0;
+        let passed = false;
+
+        switch (scoringStrategy) {
+            case 'MIN_ALL':
+                // All fields must pass their individual validation
+                passed = allPassed;
+                break;
+            case 'SUM':
+                // Total score must meet passing threshold
+                passed = totalScore >= passingScore;
+                break;
+            case 'AVERAGE':
+                const avgScore = fields.length > 0 ? totalScore / fields.length : 0;
+                passed = avgScore >= passingScore;
+                break;
+            case 'WEIGHTED_SUM':
+                passed = totalScore >= passingScore;
+                break;
+            default:
+                passed = totalScore >= passingScore;
+        }
+
+        const now = new Date();
+
+        // Update all fields with their answers
+        const updated = await prisma.$transaction(async (tx) => {
+            // Update each field with its answer
+            for (const field of fields) {
+                const answer = answerMap.get(field.name);
+                if (answer !== undefined) {
+                    await tx.questionnaireField.update({
+                        where: { id: field.id },
+                        data: {
+                            answer: JSON.stringify(answer),
+                            isValid: fieldScores[field.name]?.passed ?? true,
+                            submittedAt: now,
+                        },
+                    });
+                }
+            }
+
+            // Update the questionnaire phase with scoring results
+            await tx.questionnairePhase.update({
+                where: { id: questionnairePhase.id },
+                data: {
+                    completedFieldsCount: data.answers.length,
+                    totalScore,
+                    passed,
+                    scoredAt: now,
+                },
+            });
+
+            // If auto-decision is enabled and passed, complete the phase
+            const autoComplete = questionnairePlan?.autoDecisionEnabled && passed;
+
+            if (autoComplete) {
+                await tx.applicationPhase.update({
+                    where: { id: phaseId },
+                    data: {
+                        status: 'COMPLETED',
+                        completedAt: now,
+                    },
+                });
+            }
+
+            // Create domain event
+            await tx.domainEvent.create({
+                data: {
+                    id: uuidv4(),
+                    tenantId: phase.tenantId,
+                    eventType: 'QUESTIONNAIRE.SUBMITTED',
+                    aggregateType: 'ApplicationPhase',
+                    aggregateId: phaseId,
+                    queueName: 'application-steps',
+                    payload: JSON.stringify({
+                        phaseId,
+                        applicationId: phase.applicationId,
+                        totalScore,
+                        passed,
+                        scoringStrategy,
+                        autoCompleted: autoComplete,
+                        fieldScores,
+                    }),
+                    actorId: userId,
+                },
+            });
+
+            return { autoComplete };
+        });
+
+        // Return the updated phase with questionnaire data
+        const result = await this.findById(phaseId);
+        return {
+            ...result,
+            questionnaire: {
+                completedAt: now,
+                answeredFieldsCount: data.answers.length,
+                totalFieldsCount: fields.length,
+                totalScore,
+                passed,
+                scoringStrategy,
+                autoCompleted: updated.autoComplete,
+            },
+        };
     }
 
     /**

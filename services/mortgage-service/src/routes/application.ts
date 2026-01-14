@@ -22,6 +22,7 @@ import {
     UploadDocumentSchema,
     GenerateInstallmentsSchema,
     ApproveDocumentSchema,
+    SubmitQuestionnaireSchema,
 } from '../validators/application-phase.validator';
 import {
     CreatePaymentSchema,
@@ -293,6 +294,22 @@ router.post('/:id/phases/:phaseId/activate', requireTenant, canAccessApplication
         const { userId } = getAuthContext(req);
         const phase = await applicationPhaseService.activate(req.params.phaseId as string, data, userId);
         res.json(successResponse(phase));
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });
+            return;
+        }
+        next(error);
+    }
+});
+
+// Submit questionnaire answers for a QUESTIONNAIRE phase
+router.post('/:id/phases/:phaseId/questionnaire/submit', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const data = SubmitQuestionnaireSchema.parse(req.body);
+        const { userId } = getAuthContext(req);
+        const result = await applicationPhaseService.submitQuestionnaire(req.params.phaseId as string, data, userId);
+        res.json(successResponse(result));
     } catch (error) {
         if (error instanceof z.ZodError) {
             res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });

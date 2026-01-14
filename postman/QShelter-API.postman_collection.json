@@ -2032,6 +2032,45 @@
                     }
                 },
                 {
+                    "name": "Submit Questionnaire Answers",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{userId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"answers\": [\n    { \"fieldName\": \"applicant_age\", \"value\": \"35\" },\n    { \"fieldName\": \"monthly_income\", \"value\": \"2500000\" },\n    { \"fieldName\": \"monthly_expenses\", \"value\": \"800000\" },\n    { \"fieldName\": \"desired_term_years\", \"value\": \"20\" }\n  ]\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{phaseId}}/questionnaire/submit",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "{{applicationId}}",
+                                "phases",
+                                "{{phaseId}}",
+                                "questionnaire",
+                                "submit"
+                            ]
+                        },
+                        "description": "Submit questionnaire answers for a QUESTIONNAIRE phase (prequalification, eligibility, etc.).\n\n**Request Body:**\n- `answers`: Array of field answers with `fieldName` (the field key) and `value`\n\n**Response:**\nReturns the updated phase with scoring results:\n- `questionnaire.completedAt`: When answers were submitted\n- `questionnaire.answeredFieldsCount`: Number of fields answered\n- `questionnaire.totalScore`: Calculated score based on scoring rules\n- `questionnaire.passed`: Whether the applicant passed (based on scoring strategy)\n- `questionnaire.autoCompleted`: Whether the phase was auto-completed\n\n**Scoring Strategies:**\n- `MIN_ALL`: All fields must pass their individual validation\n- `SUM`: Total score must meet passing threshold\n- `AVERAGE`: Average score must meet passing threshold\n- `WEIGHTED_SUM`: Weighted total score must meet threshold"
+                    }
+                },
+                {
                     "name": "Generate Installments",
                     "request": {
                         "method": "POST",

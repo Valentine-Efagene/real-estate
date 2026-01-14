@@ -708,15 +708,14 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             expect(fieldKeys).toContain('desired_term_years');
         });
 
-        // TODO: Implement POST /applications/:id/phases/:phaseId/questionnaire/submit endpoint
-        it.skip('Chidi submits his prequalification answers', async () => {
+        it('Chidi submits his prequalification answers', async () => {
             // Chidi is 40 years old, earns ₦2.5M/month, spends ₦800K/month on expenses
             // He wants a 20-year mortgage term (well within 60-40=20 years max)
             const answers = [
-                { fieldKey: 'applicant_age', value: '40' },
-                { fieldKey: 'monthly_income', value: String(chidiMonthlyIncome) },
-                { fieldKey: 'monthly_expenses', value: String(chidiMonthlyExpenses) },
-                { fieldKey: 'desired_term_years', value: '20' },
+                { fieldName: 'applicant_age', value: '40' },
+                { fieldName: 'monthly_income', value: String(chidiMonthlyIncome) },
+                { fieldName: 'monthly_expenses', value: String(chidiMonthlyExpenses) },
+                { fieldName: 'desired_term_years', value: '20' },
             ];
 
             const response = await api
@@ -732,8 +731,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             expect(response.body.data.questionnaire.answeredFieldsCount).toBe(4);
         });
 
-        // TODO: Depends on questionnaire submit endpoint
-        it.skip('Prequalification calculates eligibility correctly', async () => {
+        it('Prequalification calculates eligibility correctly', async () => {
             // The scoring rules should validate:
             // 1. Age (40) + Term (20) = 60 <= retirement age (60) ✓
             // 2. Monthly payment (~₦714K at 9.5% for ₦76.5M over 20 years)
@@ -757,8 +755,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             expect(phase?.questionnairePhase?.totalScore).toBeGreaterThan(0);
         });
 
-        // TODO: Depends on questionnaire submit endpoint
-        it.skip('Prequalification phase completes after successful scoring', async () => {
+        it('Prequalification phase completes after successful scoring', async () => {
             // Phase should auto-complete after questionnaire is submitted and scored
             const response = await api
                 .get(`/applications/${applicationId}/phases/${prequalificationPhaseId}`)
