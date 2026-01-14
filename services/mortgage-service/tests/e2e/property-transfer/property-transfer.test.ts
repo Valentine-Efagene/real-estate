@@ -1,7 +1,16 @@
 import { api, prisma, cleanupTestData } from '../../setup.js';
 import { faker } from '@faker-js/faker';
 import { randomUUID } from 'crypto';
-import { authHeaders } from '@valentine-efagene/qshelter-common';
+import { authHeaders, ROLES } from '@valentine-efagene/qshelter-common';
+
+// Helper functions for auth headers with proper roles
+function adminHeaders(userId: string, tenantId: string) {
+    return authHeaders(userId, tenantId, { roles: [ROLES.TENANT_ADMIN] });
+}
+
+function customerHeaders(userId: string, tenantId: string) {
+    return authHeaders(userId, tenantId, { roles: [ROLES.CUSTOMER] });
+}
 
 /**
  * E2E Test: Property Transfer with Progress Preservation
@@ -215,7 +224,7 @@ describe('Property Transfer with Progress Preservation', () => {
         it('Jinx creates a downpayment plan (12 instalments)', async () => {
             const response = await api
                 .post('/payment-plans')
-                .set(authHeaders(jinxId, tenantId))
+                .set(adminHeaders(jinxId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('create-downpayment-plan'))
                 .send({
                     name: 'Downpayment - 12 Months',
@@ -227,13 +236,13 @@ describe('Property Transfer with Progress Preservation', () => {
                 });
 
             expect(response.status).toBe(201);
-            downpaymentPlanId = response.body.id;
+            downpaymentPlanId = response.body.data.id;
         });
 
         it('Jinx creates a 20-year mortgage plan', async () => {
             const response = await api
                 .post('/payment-plans')
-                .set(authHeaders(jinxId, tenantId))
+                .set(adminHeaders(jinxId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('create-mortgage-plan'))
                 .send({
                     name: 'Mortgage - 20 Years Monthly',
@@ -245,13 +254,13 @@ describe('Property Transfer with Progress Preservation', () => {
                 });
 
             expect(response.status).toBe(201);
-            mortgagePlanId = response.body.id;
+            mortgagePlanId = response.body.data.id;
         });
 
         it('Jinx creates a 10/90 payment method template', async () => {
             const response = await api
                 .post('/payment-methods')
-                .set(authHeaders(jinxId, tenantId))
+                .set(adminHeaders(jinxId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('create-payment-method'))
                 .send({
                     name: '10/90 Mortgage - 12 Instalment Downpayment',
@@ -259,13 +268,13 @@ describe('Property Transfer with Progress Preservation', () => {
                 });
 
             expect(response.status).toBe(201);
-            paymentMethodId = response.body.id;
+            paymentMethodId = response.body.data.id;
         });
 
         it('Jinx adds the documentation phase', async () => {
             const response = await api
                 .post(`/payment-methods/${paymentMethodId}/phases`)
-                .set(authHeaders(jinxId, tenantId))
+                .set(adminHeaders(jinxId, tenantId))
                 .send({
                     name: 'KYC & Documentation',
                     phaseCategory: 'DOCUMENTATION',
@@ -280,7 +289,7 @@ describe('Property Transfer with Progress Preservation', () => {
         it('Jinx adds the downpayment phase (10%, 12 instalments)', async () => {
             const response = await api
                 .post(`/payment-methods/${paymentMethodId}/phases`)
-                .set(authHeaders(jinxId, tenantId))
+                .set(adminHeaders(jinxId, tenantId))
                 .send({
                     name: 'Downpayment',
                     phaseCategory: 'PAYMENT',
@@ -296,7 +305,7 @@ describe('Property Transfer with Progress Preservation', () => {
         it('Jinx adds the mortgage phase (90%)', async () => {
             const response = await api
                 .post(`/payment-methods/${paymentMethodId}/phases`)
-                .set(authHeaders(jinxId, tenantId))
+                .set(adminHeaders(jinxId, tenantId))
                 .send({
                     name: 'Mortgage',
                     phaseCategory: 'PAYMENT',
@@ -312,7 +321,7 @@ describe('Property Transfer with Progress Preservation', () => {
         it('Jinx links payment method to Property X', async () => {
             const response = await api
                 .post(`/payment-methods/${paymentMethodId}/properties`)
-                .set(authHeaders(jinxId, tenantId))
+                .set(adminHeaders(jinxId, tenantId))
                 .send({ propertyId: propertyXId });
 
             expect(response.status).toBe(201);
@@ -326,7 +335,7 @@ describe('Property Transfer with Progress Preservation', () => {
         it('Chidi creates a application for Property X Unit A1', async () => {
             const response = await api
                 .post('/applications')
-                .set(authHeaders(chidiId, tenantId))
+                .set(customerHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('create-application'))
                 .send({
                     propertyUnitId: unitXId,
@@ -336,23 +345,23 @@ describe('Property Transfer with Progress Preservation', () => {
                 });
 
             expect(response.status).toBe(201);
-            expect(response.body.propertyUnitId).toBe(unitXId);
-            expect(response.body.totalAmount).toBe(PROPERTY_X_PRICE);
+            expect(response.body.data.propertyUnitId).toBe(unitXId);
+            expect(response.body.data.totalAmount).toBe(PROPERTY_X_PRICE);
 
-            applicationAId = response.body.id;
-            applicationANumber = response.body.applicationNumber;
+            applicationAId = response.body.data.id;
+            applicationANumber = response.body.data.applicationNumber;
         });
 
         it('Application A has correct phase structure', async () => {
             const response = await api
                 .get(`/applications/${applicationAId}`)
-                .set(authHeaders(chidiId, tenantId));
+                .set(customerHeaders(chidiId, tenantId));
 
             expect(response.status).toBe(200);
-            expect(response.body.phases).toHaveLength(3);
-            expect(response.body.phases[0].name).toBe('KYC & Documentation');
-            expect(response.body.phases[1].name).toBe('Downpayment');
-            expect(response.body.phases[2].name).toBe('Mortgage');
+            expect(response.body.data.phases).toHaveLength(3);
+            expect(response.body.data.phases[0].name).toBe('KYC & Documentation');
+            expect(response.body.data.phases[1].name).toBe('Downpayment');
+            expect(response.body.data.phases[2].name).toBe('Mortgage');
         });
     });
 
@@ -446,36 +455,36 @@ describe('Property Transfer with Progress Preservation', () => {
         it('Chidi submits a transfer request to Property Y Unit B3', async () => {
             const response = await api
                 .post(`/applications/${applicationAId}/transfer-requests`)
-                .set(authHeaders(chidiId, tenantId))
+                .set(customerHeaders(chidiId, tenantId))
                 .send({
                     targetPropertyUnitId: unitYId,
                     reason: 'Prefer location closer to workplace in Victoria Island',
                 });
 
             expect(response.status).toBe(201);
-            expect(response.body.status).toBe('PENDING');
-            expect(response.body.sourceApplicationId).toBe(applicationAId);
-            expect(response.body.targetPropertyUnitId).toBe(unitYId);
-            expect(response.body.priceAdjustment).toBe(PROPERTY_Y_PRICE - PROPERTY_X_PRICE);
+            expect(response.body.data.status).toBe('PENDING');
+            expect(response.body.data.sourceApplicationId).toBe(applicationAId);
+            expect(response.body.data.targetPropertyUnitId).toBe(unitYId);
+            expect(response.body.data.priceAdjustment).toBe(PROPERTY_Y_PRICE - PROPERTY_X_PRICE);
 
-            transferRequestId = response.body.id;
+            transferRequestId = response.body.data.id;
         });
 
         it('Transfer request shows correct price difference', async () => {
             const response = await api
                 .get(`/transfer-requests/${transferRequestId}`)
-                .set(authHeaders(jinxId, tenantId));
+                .set(adminHeaders(jinxId, tenantId));
 
             expect(response.status).toBe(200);
-            expect(response.body.sourceTotalAmount).toBe(PROPERTY_X_PRICE);
-            expect(response.body.targetTotalAmount).toBe(PROPERTY_Y_PRICE);
-            expect(response.body.priceAdjustment).toBe(1_000_000); // ₦1M difference
+            expect(response.body.data.sourceTotalAmount).toBe(PROPERTY_X_PRICE);
+            expect(response.body.data.targetTotalAmount).toBe(PROPERTY_Y_PRICE);
+            expect(response.body.data.priceAdjustment).toBe(1_000_000); // ₦1M difference
         });
 
         it('Cannot create duplicate transfer request', async () => {
             const response = await api
                 .post(`/applications/${applicationAId}/transfer-requests`)
-                .set(authHeaders(chidiId, tenantId))
+                .set(customerHeaders(chidiId, tenantId))
                 .send({
                     targetPropertyUnitId: unitYId,
                     reason: 'Another attempt',
@@ -493,12 +502,12 @@ describe('Property Transfer with Progress Preservation', () => {
         it('Jinx sees the pending transfer request', async () => {
             const response = await api
                 .get('/transfer-requests')
-                .set(authHeaders(jinxId, tenantId));
+                .set(adminHeaders(jinxId, tenantId));
 
             expect(response.status).toBe(200);
-            expect(response.body.length).toBeGreaterThanOrEqual(1);
+            expect(response.body.data.length).toBeGreaterThanOrEqual(1);
 
-            const request = response.body.find((r: any) => r.id === transferRequestId);
+            const request = response.body.data.find((r: any) => r.id === transferRequestId);
             expect(request).toBeDefined();
             expect(request.status).toBe('PENDING');
         });
@@ -506,20 +515,20 @@ describe('Property Transfer with Progress Preservation', () => {
         it('Jinx approves the transfer with price adjustment handling', async () => {
             const response = await api
                 .patch(`/transfer-requests/${transferRequestId}/approve`)
-                .set(authHeaders(jinxId, tenantId))
+                .set(adminHeaders(jinxId, tenantId))
                 .send({
                     reviewNotes: 'Approved - price difference will be added to mortgage principal',
                     priceAdjustmentHandling: 'ADD_TO_MORTGAGE',
                 });
 
             expect(response.status).toBe(200);
-            expect(response.body.message).toBe('Transfer approved successfully');
-            expect(response.body.request.status).toBe('COMPLETED');
-            expect(response.body.newApplication).toBeDefined();
+            expect(response.body.data.message).toBe('Transfer approved successfully');
+            expect(response.body.data.request.status).toBe('COMPLETED');
+            expect(response.body.data.newApplication).toBeDefined();
             // New business rule: refundedAmount instead of paymentsMigrated
-            expect(response.body.refundedAmount).toBeCloseTo(INSTALMENT_AMOUNT * 6, 2);
+            expect(response.body.data.refundedAmount).toBeCloseTo(INSTALMENT_AMOUNT * 6, 2);
 
-            applicationBId = response.body.newApplication.id;
+            applicationBId = response.body.data.newApplication.id;
         });
     });
 
@@ -530,21 +539,21 @@ describe('Property Transfer with Progress Preservation', () => {
         it('Application A is marked as TRANSFERRED', async () => {
             const response = await api
                 .get(`/applications/${applicationAId}`)
-                .set(authHeaders(chidiId, tenantId));
+                .set(customerHeaders(chidiId, tenantId));
 
             expect(response.status).toBe(200);
-            expect(response.body.status).toBe('TRANSFERRED');
+            expect(response.body.data.status).toBe('TRANSFERRED');
         });
 
         it('Application B exists with correct property', async () => {
             const response = await api
                 .get(`/applications/${applicationBId}`)
-                .set(authHeaders(chidiId, tenantId));
+                .set(customerHeaders(chidiId, tenantId));
 
             expect(response.status).toBe(200);
-            expect(response.body.propertyUnitId).toBe(unitYId);
-            expect(response.body.totalAmount).toBe(PROPERTY_Y_PRICE);
-            expect(response.body.transferredFromId).toBe(applicationAId);
+            expect(response.body.data.propertyUnitId).toBe(unitYId);
+            expect(response.body.data.totalAmount).toBe(PROPERTY_Y_PRICE);
+            expect(response.body.data.transferredFromId).toBe(applicationAId);
         });
 
         it('Application B has no payments (fresh start)', async () => {
@@ -605,14 +614,14 @@ describe('Property Transfer with Progress Preservation', () => {
         it('Transfer request shows completion details', async () => {
             const response = await api
                 .get(`/transfer-requests/${transferRequestId}`)
-                .set(authHeaders(jinxId, tenantId));
+                .set(adminHeaders(jinxId, tenantId));
 
             expect(response.status).toBe(200);
-            expect(response.body.status).toBe('COMPLETED');
-            expect(response.body.targetApplicationId).toBe(applicationBId);
+            expect(response.body.data.status).toBe('COMPLETED');
+            expect(response.body.data.targetApplicationId).toBe(applicationBId);
             // New business rule: refundedAmount instead of paymentsMigrated
-            expect(response.body.refundedAmount).toBeCloseTo(INSTALMENT_AMOUNT * 6, 2);
-            expect(response.body.completedAt).not.toBeNull();
+            expect(response.body.data.refundedAmount).toBeCloseTo(INSTALMENT_AMOUNT * 6, 2);
+            expect(response.body.data.completedAt).not.toBeNull();
         });
     });
 
@@ -623,13 +632,13 @@ describe('Property Transfer with Progress Preservation', () => {
         it('Application B has the same phase structure', async () => {
             const response = await api
                 .get(`/applications/${applicationBId}`)
-                .set(authHeaders(chidiId, tenantId));
+                .set(customerHeaders(chidiId, tenantId));
 
             expect(response.status).toBe(200);
-            expect(response.body.phases).toHaveLength(3);
-            expect(response.body.phases[0].name).toBe('KYC & Documentation');
-            expect(response.body.phases[1].name).toBe('Downpayment');
-            expect(response.body.phases[2].name).toBe('Mortgage');
+            expect(response.body.data.phases).toHaveLength(3);
+            expect(response.body.data.phases[0].name).toBe('KYC & Documentation');
+            expect(response.body.data.phases[1].name).toBe('Downpayment');
+            expect(response.body.data.phases[2].name).toBe('Mortgage');
         });
 
         it('KYC phase starts fresh (new application rule)', async () => {

@@ -193,6 +193,7 @@ export type TenantWhereInput = {
   users?: Prisma.UserListRelationFilter
   properties?: Prisma.PropertyListRelationFilter
   paymentPlans?: Prisma.PaymentPlanListRelationFilter
+  documentationPlans?: Prisma.DocumentationPlanListRelationFilter
   paymentMethods?: Prisma.PropertyPaymentMethodListRelationFilter
   applications?: Prisma.ApplicationListRelationFilter
   roles?: Prisma.RoleListRelationFilter
@@ -257,6 +258,7 @@ export type TenantOrderByWithRelationInput = {
   users?: Prisma.UserOrderByRelationAggregateInput
   properties?: Prisma.PropertyOrderByRelationAggregateInput
   paymentPlans?: Prisma.PaymentPlanOrderByRelationAggregateInput
+  documentationPlans?: Prisma.DocumentationPlanOrderByRelationAggregateInput
   paymentMethods?: Prisma.PropertyPaymentMethodOrderByRelationAggregateInput
   applications?: Prisma.ApplicationOrderByRelationAggregateInput
   roles?: Prisma.RoleOrderByRelationAggregateInput
@@ -325,6 +327,7 @@ export type TenantWhereUniqueInput = Prisma.AtLeast<{
   users?: Prisma.UserListRelationFilter
   properties?: Prisma.PropertyListRelationFilter
   paymentPlans?: Prisma.PaymentPlanListRelationFilter
+  documentationPlans?: Prisma.DocumentationPlanListRelationFilter
   paymentMethods?: Prisma.PropertyPaymentMethodListRelationFilter
   applications?: Prisma.ApplicationListRelationFilter
   roles?: Prisma.RoleListRelationFilter
@@ -413,6 +416,7 @@ export type TenantCreateInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -477,6 +481,7 @@ export type TenantUncheckedCreateInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -541,6 +546,7 @@ export type TenantUpdateInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -605,6 +611,7 @@ export type TenantUncheckedUpdateInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -985,6 +992,22 @@ export type TenantUpdateOneRequiredWithoutPropertyAmenitiesNestedInput = {
   upsert?: Prisma.TenantUpsertWithoutPropertyAmenitiesInput
   connect?: Prisma.TenantWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutPropertyAmenitiesInput, Prisma.TenantUpdateWithoutPropertyAmenitiesInput>, Prisma.TenantUncheckedUpdateWithoutPropertyAmenitiesInput>
+}
+
+export type TenantCreateNestedOneWithoutDocumentationPlansInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutDocumentationPlansInput, Prisma.TenantUncheckedCreateWithoutDocumentationPlansInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutDocumentationPlansInput
+  connect?: Prisma.TenantWhereUniqueInput
+}
+
+export type TenantUpdateOneWithoutDocumentationPlansNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutDocumentationPlansInput, Prisma.TenantUncheckedCreateWithoutDocumentationPlansInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutDocumentationPlansInput
+  upsert?: Prisma.TenantUpsertWithoutDocumentationPlansInput
+  disconnect?: Prisma.TenantWhereInput | boolean
+  delete?: Prisma.TenantWhereInput | boolean
+  connect?: Prisma.TenantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutDocumentationPlansInput, Prisma.TenantUpdateWithoutDocumentationPlansInput>, Prisma.TenantUncheckedUpdateWithoutDocumentationPlansInput>
 }
 
 export type TenantCreateNestedOneWithoutPaymentPlansInput = {
@@ -1516,6 +1539,7 @@ export type TenantCreateWithoutUsersInput = {
   updatedAt?: Date | string
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -1579,6 +1603,7 @@ export type TenantUncheckedCreateWithoutUsersInput = {
   updatedAt?: Date | string
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -1658,6 +1683,7 @@ export type TenantUpdateWithoutUsersInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -1721,6 +1747,7 @@ export type TenantUncheckedUpdateWithoutUsersInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -1785,6 +1812,7 @@ export type TenantCreateWithoutRolesInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   permissions?: Prisma.PermissionCreateNestedManyWithoutTenantInput
@@ -1848,6 +1876,7 @@ export type TenantUncheckedCreateWithoutRolesInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutTenantInput
@@ -1927,6 +1956,7 @@ export type TenantUpdateWithoutRolesInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   permissions?: Prisma.PermissionUpdateManyWithoutTenantNestedInput
@@ -1990,6 +2020,7 @@ export type TenantUncheckedUpdateWithoutRolesInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   permissions?: Prisma.PermissionUncheckedUpdateManyWithoutTenantNestedInput
@@ -2053,6 +2084,7 @@ export type TenantCreateWithoutPermissionsInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -2116,6 +2148,7 @@ export type TenantUncheckedCreateWithoutPermissionsInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -2195,6 +2228,7 @@ export type TenantUpdateWithoutPermissionsInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -2258,6 +2292,7 @@ export type TenantUncheckedUpdateWithoutPermissionsInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -2321,6 +2356,7 @@ export type TenantCreateWithoutMembershipsInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -2384,6 +2420,7 @@ export type TenantUncheckedCreateWithoutMembershipsInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -2463,6 +2500,7 @@ export type TenantUpdateWithoutMembershipsInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -2526,6 +2564,7 @@ export type TenantUncheckedUpdateWithoutMembershipsInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -2589,6 +2628,7 @@ export type TenantCreateWithoutApiKeysInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -2652,6 +2692,7 @@ export type TenantUncheckedCreateWithoutApiKeysInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -2731,6 +2772,7 @@ export type TenantUpdateWithoutApiKeysInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -2794,6 +2836,7 @@ export type TenantUncheckedUpdateWithoutApiKeysInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -2857,6 +2900,7 @@ export type TenantCreateWithoutSocialsInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -2920,6 +2964,7 @@ export type TenantUncheckedCreateWithoutSocialsInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -2999,6 +3044,7 @@ export type TenantUpdateWithoutSocialsInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -3062,6 +3108,7 @@ export type TenantUncheckedUpdateWithoutSocialsInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -3125,6 +3172,7 @@ export type TenantCreateWithoutWalletsInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -3188,6 +3236,7 @@ export type TenantUncheckedCreateWithoutWalletsInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -3267,6 +3316,7 @@ export type TenantUpdateWithoutWalletsInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -3330,6 +3380,7 @@ export type TenantUncheckedUpdateWithoutWalletsInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -3393,6 +3444,7 @@ export type TenantCreateWithoutTransactionsInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -3456,6 +3508,7 @@ export type TenantUncheckedCreateWithoutTransactionsInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -3535,6 +3588,7 @@ export type TenantUpdateWithoutTransactionsInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -3598,6 +3652,7 @@ export type TenantUncheckedUpdateWithoutTransactionsInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -3661,6 +3716,7 @@ export type TenantCreateWithoutSettingsInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -3724,6 +3780,7 @@ export type TenantUncheckedCreateWithoutSettingsInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -3803,6 +3860,7 @@ export type TenantUpdateWithoutSettingsInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -3866,6 +3924,7 @@ export type TenantUncheckedUpdateWithoutSettingsInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -3928,6 +3987,7 @@ export type TenantCreateWithoutPropertiesInput = {
   updatedAt?: Date | string
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -3991,6 +4051,7 @@ export type TenantUncheckedCreateWithoutPropertiesInput = {
   updatedAt?: Date | string
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -4070,6 +4131,7 @@ export type TenantUpdateWithoutPropertiesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -4133,6 +4195,7 @@ export type TenantUncheckedUpdateWithoutPropertiesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -4197,6 +4260,7 @@ export type TenantCreateWithoutPropertyMediaInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -4260,6 +4324,7 @@ export type TenantUncheckedCreateWithoutPropertyMediaInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -4339,6 +4404,7 @@ export type TenantUpdateWithoutPropertyMediaInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -4402,6 +4468,7 @@ export type TenantUncheckedUpdateWithoutPropertyMediaInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -4465,6 +4532,7 @@ export type TenantCreateWithoutPropertyDocumentsInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -4528,6 +4596,7 @@ export type TenantUncheckedCreateWithoutPropertyDocumentsInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -4607,6 +4676,7 @@ export type TenantUpdateWithoutPropertyDocumentsInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -4670,6 +4740,7 @@ export type TenantUncheckedUpdateWithoutPropertyDocumentsInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -4733,6 +4804,7 @@ export type TenantCreateWithoutAmenitiesInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -4796,6 +4868,7 @@ export type TenantUncheckedCreateWithoutAmenitiesInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -4875,6 +4948,7 @@ export type TenantUpdateWithoutAmenitiesInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -4938,6 +5012,7 @@ export type TenantUncheckedUpdateWithoutAmenitiesInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -5001,6 +5076,7 @@ export type TenantCreateWithoutPropertyVariantsInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -5064,6 +5140,7 @@ export type TenantUncheckedCreateWithoutPropertyVariantsInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -5143,6 +5220,7 @@ export type TenantUpdateWithoutPropertyVariantsInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -5206,6 +5284,7 @@ export type TenantUncheckedUpdateWithoutPropertyVariantsInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -5269,6 +5348,7 @@ export type TenantCreateWithoutPropertyVariantAmenitiesInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -5332,6 +5412,7 @@ export type TenantUncheckedCreateWithoutPropertyVariantAmenitiesInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -5411,6 +5492,7 @@ export type TenantUpdateWithoutPropertyVariantAmenitiesInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -5474,6 +5556,7 @@ export type TenantUncheckedUpdateWithoutPropertyVariantAmenitiesInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -5537,6 +5620,7 @@ export type TenantCreateWithoutPropertyVariantMediaInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -5600,6 +5684,7 @@ export type TenantUncheckedCreateWithoutPropertyVariantMediaInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -5679,6 +5764,7 @@ export type TenantUpdateWithoutPropertyVariantMediaInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -5742,6 +5828,7 @@ export type TenantUncheckedUpdateWithoutPropertyVariantMediaInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -5805,6 +5892,7 @@ export type TenantCreateWithoutPropertyUnitsInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -5868,6 +5956,7 @@ export type TenantUncheckedCreateWithoutPropertyUnitsInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -5947,6 +6036,7 @@ export type TenantUpdateWithoutPropertyUnitsInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -6010,6 +6100,7 @@ export type TenantUncheckedUpdateWithoutPropertyUnitsInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -6073,6 +6164,7 @@ export type TenantCreateWithoutPropertyAmenitiesInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -6136,6 +6228,7 @@ export type TenantUncheckedCreateWithoutPropertyAmenitiesInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -6215,6 +6308,7 @@ export type TenantUpdateWithoutPropertyAmenitiesInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -6278,6 +6372,7 @@ export type TenantUncheckedUpdateWithoutPropertyAmenitiesInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -6331,6 +6426,278 @@ export type TenantUncheckedUpdateWithoutPropertyAmenitiesInput = {
   workflowBlockers?: Prisma.WorkflowBlockerUncheckedUpdateManyWithoutTenantNestedInput
 }
 
+export type TenantCreateWithoutDocumentationPlansInput = {
+  id?: string
+  name: string
+  subdomain: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserCreateNestedManyWithoutTenantInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
+  paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
+  applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
+  roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
+  permissions?: Prisma.PermissionCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.TenantMembershipCreateNestedManyWithoutTenantInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutTenantInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleCreateNestedManyWithoutTenantInput
+  contractTerminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutTenantInput
+  documentTemplates?: Prisma.DocumentTemplateCreateNestedManyWithoutTenantInput
+  offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutTenantInput
+  apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutTenantInput
+  eventChannels?: Prisma.EventChannelCreateNestedManyWithoutTenantInput
+  eventTypes?: Prisma.EventTypeCreateNestedManyWithoutTenantInput
+  eventHandlers?: Prisma.EventHandlerCreateNestedManyWithoutTenantInput
+  workflowEvents?: Prisma.WorkflowEventCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTenantInput
+  approvalRequests?: Prisma.ApprovalRequestCreateNestedManyWithoutTenantInput
+  contractRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutTenantInput
+  propertyPaymentMethodLinks?: Prisma.PropertyPaymentMethodLinkCreateNestedManyWithoutTenantInput
+  propertyPaymentMethodPhases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutTenantInput
+  phaseEventAttachments?: Prisma.PhaseEventAttachmentCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseSteps?: Prisma.PaymentMethodPhaseStepCreateNestedManyWithoutTenantInput
+  stepEventAttachments?: Prisma.StepEventAttachmentCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseDocuments?: Prisma.PaymentMethodPhaseDocumentCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseFields?: Prisma.PaymentMethodPhaseFieldCreateNestedManyWithoutTenantInput
+  applicationPhases?: Prisma.ApplicationPhaseCreateNestedManyWithoutTenantInput
+  questionnairePhases?: Prisma.QuestionnairePhaseCreateNestedManyWithoutTenantInput
+  documentationPhases?: Prisma.DocumentationPhaseCreateNestedManyWithoutTenantInput
+  paymentPhases?: Prisma.PaymentPhaseCreateNestedManyWithoutTenantInput
+  questionnaireFields?: Prisma.QuestionnaireFieldCreateNestedManyWithoutTenantInput
+  applicationEvents?: Prisma.ApplicationEventCreateNestedManyWithoutTenantInput
+  documentationSteps?: Prisma.DocumentationStepCreateNestedManyWithoutTenantInput
+  documentationStepDocuments?: Prisma.DocumentationStepDocumentCreateNestedManyWithoutTenantInput
+  documentationStepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutTenantInput
+  paymentInstallments?: Prisma.PaymentInstallmentCreateNestedManyWithoutTenantInput
+  applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutTenantInput
+  applicationDocuments?: Prisma.ApplicationDocumentCreateNestedManyWithoutTenantInput
+  propertyMedia?: Prisma.PropertyMediaCreateNestedManyWithoutTenantInput
+  propertyDocuments?: Prisma.PropertyDocumentCreateNestedManyWithoutTenantInput
+  propertyVariants?: Prisma.PropertyVariantCreateNestedManyWithoutTenantInput
+  propertyVariantAmenities?: Prisma.PropertyVariantAmenityCreateNestedManyWithoutTenantInput
+  propertyVariantMedia?: Prisma.PropertyVariantMediaCreateNestedManyWithoutTenantInput
+  propertyUnits?: Prisma.PropertyUnitCreateNestedManyWithoutTenantInput
+  propertyAmenities?: Prisma.PropertyAmenityCreateNestedManyWithoutTenantInput
+  eventHandlerExecutions?: Prisma.EventHandlerExecutionCreateNestedManyWithoutTenantInput
+  amenities?: Prisma.AmenityCreateNestedManyWithoutTenantInput
+  socials?: Prisma.SocialCreateNestedManyWithoutTenantInput
+  wallets?: Prisma.WalletCreateNestedManyWithoutTenantInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutTenantInput
+  settings?: Prisma.SettingsCreateNestedManyWithoutTenantInput
+  domainEvents?: Prisma.DomainEventCreateNestedManyWithoutTenantInput
+  workflowBlockers?: Prisma.WorkflowBlockerCreateNestedManyWithoutTenantInput
+}
+
+export type TenantUncheckedCreateWithoutDocumentationPlansInput = {
+  id?: string
+  name: string
+  subdomain: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
+  paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
+  roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
+  permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutTenantInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleUncheckedCreateNestedManyWithoutTenantInput
+  contractTerminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutTenantInput
+  documentTemplates?: Prisma.DocumentTemplateUncheckedCreateNestedManyWithoutTenantInput
+  offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutTenantInput
+  apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutTenantInput
+  eventChannels?: Prisma.EventChannelUncheckedCreateNestedManyWithoutTenantInput
+  eventTypes?: Prisma.EventTypeUncheckedCreateNestedManyWithoutTenantInput
+  eventHandlers?: Prisma.EventHandlerUncheckedCreateNestedManyWithoutTenantInput
+  workflowEvents?: Prisma.WorkflowEventUncheckedCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTenantInput
+  approvalRequests?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutTenantInput
+  contractRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutTenantInput
+  propertyPaymentMethodLinks?: Prisma.PropertyPaymentMethodLinkUncheckedCreateNestedManyWithoutTenantInput
+  propertyPaymentMethodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  phaseEventAttachments?: Prisma.PhaseEventAttachmentUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseSteps?: Prisma.PaymentMethodPhaseStepUncheckedCreateNestedManyWithoutTenantInput
+  stepEventAttachments?: Prisma.StepEventAttachmentUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseDocuments?: Prisma.PaymentMethodPhaseDocumentUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseFields?: Prisma.PaymentMethodPhaseFieldUncheckedCreateNestedManyWithoutTenantInput
+  applicationPhases?: Prisma.ApplicationPhaseUncheckedCreateNestedManyWithoutTenantInput
+  questionnairePhases?: Prisma.QuestionnairePhaseUncheckedCreateNestedManyWithoutTenantInput
+  documentationPhases?: Prisma.DocumentationPhaseUncheckedCreateNestedManyWithoutTenantInput
+  paymentPhases?: Prisma.PaymentPhaseUncheckedCreateNestedManyWithoutTenantInput
+  questionnaireFields?: Prisma.QuestionnaireFieldUncheckedCreateNestedManyWithoutTenantInput
+  applicationEvents?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutTenantInput
+  documentationSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutTenantInput
+  documentationStepDocuments?: Prisma.DocumentationStepDocumentUncheckedCreateNestedManyWithoutTenantInput
+  documentationStepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutTenantInput
+  paymentInstallments?: Prisma.PaymentInstallmentUncheckedCreateNestedManyWithoutTenantInput
+  applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutTenantInput
+  applicationDocuments?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutTenantInput
+  propertyMedia?: Prisma.PropertyMediaUncheckedCreateNestedManyWithoutTenantInput
+  propertyDocuments?: Prisma.PropertyDocumentUncheckedCreateNestedManyWithoutTenantInput
+  propertyVariants?: Prisma.PropertyVariantUncheckedCreateNestedManyWithoutTenantInput
+  propertyVariantAmenities?: Prisma.PropertyVariantAmenityUncheckedCreateNestedManyWithoutTenantInput
+  propertyVariantMedia?: Prisma.PropertyVariantMediaUncheckedCreateNestedManyWithoutTenantInput
+  propertyUnits?: Prisma.PropertyUnitUncheckedCreateNestedManyWithoutTenantInput
+  propertyAmenities?: Prisma.PropertyAmenityUncheckedCreateNestedManyWithoutTenantInput
+  eventHandlerExecutions?: Prisma.EventHandlerExecutionUncheckedCreateNestedManyWithoutTenantInput
+  amenities?: Prisma.AmenityUncheckedCreateNestedManyWithoutTenantInput
+  socials?: Prisma.SocialUncheckedCreateNestedManyWithoutTenantInput
+  wallets?: Prisma.WalletUncheckedCreateNestedManyWithoutTenantInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutTenantInput
+  settings?: Prisma.SettingsUncheckedCreateNestedManyWithoutTenantInput
+  domainEvents?: Prisma.DomainEventUncheckedCreateNestedManyWithoutTenantInput
+  workflowBlockers?: Prisma.WorkflowBlockerUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type TenantCreateOrConnectWithoutDocumentationPlansInput = {
+  where: Prisma.TenantWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantCreateWithoutDocumentationPlansInput, Prisma.TenantUncheckedCreateWithoutDocumentationPlansInput>
+}
+
+export type TenantUpsertWithoutDocumentationPlansInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutDocumentationPlansInput, Prisma.TenantUncheckedUpdateWithoutDocumentationPlansInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutDocumentationPlansInput, Prisma.TenantUncheckedCreateWithoutDocumentationPlansInput>
+  where?: Prisma.TenantWhereInput
+}
+
+export type TenantUpdateToOneWithWhereWithoutDocumentationPlansInput = {
+  where?: Prisma.TenantWhereInput
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutDocumentationPlansInput, Prisma.TenantUncheckedUpdateWithoutDocumentationPlansInput>
+}
+
+export type TenantUpdateWithoutDocumentationPlansInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  subdomain?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserUpdateManyWithoutTenantNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
+  paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
+  applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
+  roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
+  permissions?: Prisma.PermissionUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.TenantMembershipUpdateManyWithoutTenantNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutTenantNestedInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleUpdateManyWithoutTenantNestedInput
+  contractTerminations?: Prisma.ApplicationTerminationUpdateManyWithoutTenantNestedInput
+  documentTemplates?: Prisma.DocumentTemplateUpdateManyWithoutTenantNestedInput
+  offerLetters?: Prisma.OfferLetterUpdateManyWithoutTenantNestedInput
+  apiKeys?: Prisma.ApiKeyUpdateManyWithoutTenantNestedInput
+  eventChannels?: Prisma.EventChannelUpdateManyWithoutTenantNestedInput
+  eventTypes?: Prisma.EventTypeUpdateManyWithoutTenantNestedInput
+  eventHandlers?: Prisma.EventHandlerUpdateManyWithoutTenantNestedInput
+  workflowEvents?: Prisma.WorkflowEventUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTenantNestedInput
+  approvalRequests?: Prisma.ApprovalRequestUpdateManyWithoutTenantNestedInput
+  contractRefunds?: Prisma.ApplicationRefundUpdateManyWithoutTenantNestedInput
+  propertyPaymentMethodLinks?: Prisma.PropertyPaymentMethodLinkUpdateManyWithoutTenantNestedInput
+  propertyPaymentMethodPhases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutTenantNestedInput
+  phaseEventAttachments?: Prisma.PhaseEventAttachmentUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseSteps?: Prisma.PaymentMethodPhaseStepUpdateManyWithoutTenantNestedInput
+  stepEventAttachments?: Prisma.StepEventAttachmentUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseDocuments?: Prisma.PaymentMethodPhaseDocumentUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseFields?: Prisma.PaymentMethodPhaseFieldUpdateManyWithoutTenantNestedInput
+  applicationPhases?: Prisma.ApplicationPhaseUpdateManyWithoutTenantNestedInput
+  questionnairePhases?: Prisma.QuestionnairePhaseUpdateManyWithoutTenantNestedInput
+  documentationPhases?: Prisma.DocumentationPhaseUpdateManyWithoutTenantNestedInput
+  paymentPhases?: Prisma.PaymentPhaseUpdateManyWithoutTenantNestedInput
+  questionnaireFields?: Prisma.QuestionnaireFieldUpdateManyWithoutTenantNestedInput
+  applicationEvents?: Prisma.ApplicationEventUpdateManyWithoutTenantNestedInput
+  documentationSteps?: Prisma.DocumentationStepUpdateManyWithoutTenantNestedInput
+  documentationStepDocuments?: Prisma.DocumentationStepDocumentUpdateManyWithoutTenantNestedInput
+  documentationStepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutTenantNestedInput
+  paymentInstallments?: Prisma.PaymentInstallmentUpdateManyWithoutTenantNestedInput
+  applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutTenantNestedInput
+  applicationDocuments?: Prisma.ApplicationDocumentUpdateManyWithoutTenantNestedInput
+  propertyMedia?: Prisma.PropertyMediaUpdateManyWithoutTenantNestedInput
+  propertyDocuments?: Prisma.PropertyDocumentUpdateManyWithoutTenantNestedInput
+  propertyVariants?: Prisma.PropertyVariantUpdateManyWithoutTenantNestedInput
+  propertyVariantAmenities?: Prisma.PropertyVariantAmenityUpdateManyWithoutTenantNestedInput
+  propertyVariantMedia?: Prisma.PropertyVariantMediaUpdateManyWithoutTenantNestedInput
+  propertyUnits?: Prisma.PropertyUnitUpdateManyWithoutTenantNestedInput
+  propertyAmenities?: Prisma.PropertyAmenityUpdateManyWithoutTenantNestedInput
+  eventHandlerExecutions?: Prisma.EventHandlerExecutionUpdateManyWithoutTenantNestedInput
+  amenities?: Prisma.AmenityUpdateManyWithoutTenantNestedInput
+  socials?: Prisma.SocialUpdateManyWithoutTenantNestedInput
+  wallets?: Prisma.WalletUpdateManyWithoutTenantNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutTenantNestedInput
+  settings?: Prisma.SettingsUpdateManyWithoutTenantNestedInput
+  domainEvents?: Prisma.DomainEventUpdateManyWithoutTenantNestedInput
+  workflowBlockers?: Prisma.WorkflowBlockerUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateWithoutDocumentationPlansInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  subdomain?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
+  paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
+  roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
+  permissions?: Prisma.PermissionUncheckedUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleUncheckedUpdateManyWithoutTenantNestedInput
+  contractTerminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutTenantNestedInput
+  documentTemplates?: Prisma.DocumentTemplateUncheckedUpdateManyWithoutTenantNestedInput
+  offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutTenantNestedInput
+  apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutTenantNestedInput
+  eventChannels?: Prisma.EventChannelUncheckedUpdateManyWithoutTenantNestedInput
+  eventTypes?: Prisma.EventTypeUncheckedUpdateManyWithoutTenantNestedInput
+  eventHandlers?: Prisma.EventHandlerUncheckedUpdateManyWithoutTenantNestedInput
+  workflowEvents?: Prisma.WorkflowEventUncheckedUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTenantNestedInput
+  approvalRequests?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutTenantNestedInput
+  contractRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutTenantNestedInput
+  propertyPaymentMethodLinks?: Prisma.PropertyPaymentMethodLinkUncheckedUpdateManyWithoutTenantNestedInput
+  propertyPaymentMethodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  phaseEventAttachments?: Prisma.PhaseEventAttachmentUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseSteps?: Prisma.PaymentMethodPhaseStepUncheckedUpdateManyWithoutTenantNestedInput
+  stepEventAttachments?: Prisma.StepEventAttachmentUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseDocuments?: Prisma.PaymentMethodPhaseDocumentUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseFields?: Prisma.PaymentMethodPhaseFieldUncheckedUpdateManyWithoutTenantNestedInput
+  applicationPhases?: Prisma.ApplicationPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  questionnairePhases?: Prisma.QuestionnairePhaseUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPhases?: Prisma.DocumentationPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  paymentPhases?: Prisma.PaymentPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  questionnaireFields?: Prisma.QuestionnaireFieldUncheckedUpdateManyWithoutTenantNestedInput
+  applicationEvents?: Prisma.ApplicationEventUncheckedUpdateManyWithoutTenantNestedInput
+  documentationSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutTenantNestedInput
+  documentationStepDocuments?: Prisma.DocumentationStepDocumentUncheckedUpdateManyWithoutTenantNestedInput
+  documentationStepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutTenantNestedInput
+  paymentInstallments?: Prisma.PaymentInstallmentUncheckedUpdateManyWithoutTenantNestedInput
+  applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutTenantNestedInput
+  applicationDocuments?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutTenantNestedInput
+  propertyMedia?: Prisma.PropertyMediaUncheckedUpdateManyWithoutTenantNestedInput
+  propertyDocuments?: Prisma.PropertyDocumentUncheckedUpdateManyWithoutTenantNestedInput
+  propertyVariants?: Prisma.PropertyVariantUncheckedUpdateManyWithoutTenantNestedInput
+  propertyVariantAmenities?: Prisma.PropertyVariantAmenityUncheckedUpdateManyWithoutTenantNestedInput
+  propertyVariantMedia?: Prisma.PropertyVariantMediaUncheckedUpdateManyWithoutTenantNestedInput
+  propertyUnits?: Prisma.PropertyUnitUncheckedUpdateManyWithoutTenantNestedInput
+  propertyAmenities?: Prisma.PropertyAmenityUncheckedUpdateManyWithoutTenantNestedInput
+  eventHandlerExecutions?: Prisma.EventHandlerExecutionUncheckedUpdateManyWithoutTenantNestedInput
+  amenities?: Prisma.AmenityUncheckedUpdateManyWithoutTenantNestedInput
+  socials?: Prisma.SocialUncheckedUpdateManyWithoutTenantNestedInput
+  wallets?: Prisma.WalletUncheckedUpdateManyWithoutTenantNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutTenantNestedInput
+  settings?: Prisma.SettingsUncheckedUpdateManyWithoutTenantNestedInput
+  domainEvents?: Prisma.DomainEventUncheckedUpdateManyWithoutTenantNestedInput
+  workflowBlockers?: Prisma.WorkflowBlockerUncheckedUpdateManyWithoutTenantNestedInput
+}
+
 export type TenantCreateWithoutPaymentPlansInput = {
   id?: string
   name: string
@@ -6340,6 +6707,7 @@ export type TenantCreateWithoutPaymentPlansInput = {
   updatedAt?: Date | string
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -6403,6 +6771,7 @@ export type TenantUncheckedCreateWithoutPaymentPlansInput = {
   updatedAt?: Date | string
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -6482,6 +6851,7 @@ export type TenantUpdateWithoutPaymentPlansInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -6545,6 +6915,7 @@ export type TenantUncheckedUpdateWithoutPaymentPlansInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -6609,6 +6980,7 @@ export type TenantCreateWithoutPaymentMethodsInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
   permissions?: Prisma.PermissionCreateNestedManyWithoutTenantInput
@@ -6672,6 +7044,7 @@ export type TenantUncheckedCreateWithoutPaymentMethodsInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
   permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutTenantInput
@@ -6751,6 +7124,7 @@ export type TenantUpdateWithoutPaymentMethodsInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
   permissions?: Prisma.PermissionUpdateManyWithoutTenantNestedInput
@@ -6814,6 +7188,7 @@ export type TenantUncheckedUpdateWithoutPaymentMethodsInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
   permissions?: Prisma.PermissionUncheckedUpdateManyWithoutTenantNestedInput
@@ -6877,6 +7252,7 @@ export type TenantCreateWithoutPropertyPaymentMethodLinksInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -6940,6 +7316,7 @@ export type TenantUncheckedCreateWithoutPropertyPaymentMethodLinksInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -7019,6 +7396,7 @@ export type TenantUpdateWithoutPropertyPaymentMethodLinksInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -7082,6 +7460,7 @@ export type TenantUncheckedUpdateWithoutPropertyPaymentMethodLinksInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -7145,6 +7524,7 @@ export type TenantCreateWithoutPropertyPaymentMethodPhasesInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -7208,6 +7588,7 @@ export type TenantUncheckedCreateWithoutPropertyPaymentMethodPhasesInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -7287,6 +7668,7 @@ export type TenantUpdateWithoutPropertyPaymentMethodPhasesInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -7350,6 +7732,7 @@ export type TenantUncheckedUpdateWithoutPropertyPaymentMethodPhasesInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -7413,6 +7796,7 @@ export type TenantCreateWithoutPhaseEventAttachmentsInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -7476,6 +7860,7 @@ export type TenantUncheckedCreateWithoutPhaseEventAttachmentsInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -7555,6 +7940,7 @@ export type TenantUpdateWithoutPhaseEventAttachmentsInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -7618,6 +8004,7 @@ export type TenantUncheckedUpdateWithoutPhaseEventAttachmentsInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -7681,6 +8068,7 @@ export type TenantCreateWithoutPaymentMethodPhaseStepsInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -7744,6 +8132,7 @@ export type TenantUncheckedCreateWithoutPaymentMethodPhaseStepsInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -7823,6 +8212,7 @@ export type TenantUpdateWithoutPaymentMethodPhaseStepsInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -7886,6 +8276,7 @@ export type TenantUncheckedUpdateWithoutPaymentMethodPhaseStepsInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -7949,6 +8340,7 @@ export type TenantCreateWithoutStepEventAttachmentsInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -8012,6 +8404,7 @@ export type TenantUncheckedCreateWithoutStepEventAttachmentsInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -8091,6 +8484,7 @@ export type TenantUpdateWithoutStepEventAttachmentsInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -8154,6 +8548,7 @@ export type TenantUncheckedUpdateWithoutStepEventAttachmentsInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -8217,6 +8612,7 @@ export type TenantCreateWithoutPaymentMethodPhaseDocumentsInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -8280,6 +8676,7 @@ export type TenantUncheckedCreateWithoutPaymentMethodPhaseDocumentsInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -8359,6 +8756,7 @@ export type TenantUpdateWithoutPaymentMethodPhaseDocumentsInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -8422,6 +8820,7 @@ export type TenantUncheckedUpdateWithoutPaymentMethodPhaseDocumentsInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -8485,6 +8884,7 @@ export type TenantCreateWithoutPaymentMethodPhaseFieldsInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -8548,6 +8948,7 @@ export type TenantUncheckedCreateWithoutPaymentMethodPhaseFieldsInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -8627,6 +9028,7 @@ export type TenantUpdateWithoutPaymentMethodPhaseFieldsInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -8690,6 +9092,7 @@ export type TenantUncheckedUpdateWithoutPaymentMethodPhaseFieldsInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -8753,6 +9156,7 @@ export type TenantCreateWithoutApplicationsInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
   permissions?: Prisma.PermissionCreateNestedManyWithoutTenantInput
@@ -8816,6 +9220,7 @@ export type TenantUncheckedCreateWithoutApplicationsInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
   permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutTenantInput
@@ -8895,6 +9300,7 @@ export type TenantUpdateWithoutApplicationsInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
   permissions?: Prisma.PermissionUpdateManyWithoutTenantNestedInput
@@ -8958,6 +9364,7 @@ export type TenantUncheckedUpdateWithoutApplicationsInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
   permissions?: Prisma.PermissionUncheckedUpdateManyWithoutTenantNestedInput
@@ -9021,6 +9428,7 @@ export type TenantCreateWithoutContractRefundsInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -9084,6 +9492,7 @@ export type TenantUncheckedCreateWithoutContractRefundsInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -9163,6 +9572,7 @@ export type TenantUpdateWithoutContractRefundsInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -9226,6 +9636,7 @@ export type TenantUncheckedUpdateWithoutContractRefundsInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -9289,6 +9700,7 @@ export type TenantCreateWithoutApplicationPhasesInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -9352,6 +9764,7 @@ export type TenantUncheckedCreateWithoutApplicationPhasesInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -9431,6 +9844,7 @@ export type TenantUpdateWithoutApplicationPhasesInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -9494,6 +9908,7 @@ export type TenantUncheckedUpdateWithoutApplicationPhasesInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -9557,6 +9972,7 @@ export type TenantCreateWithoutQuestionnairePhasesInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -9620,6 +10036,7 @@ export type TenantUncheckedCreateWithoutQuestionnairePhasesInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -9699,6 +10116,7 @@ export type TenantUpdateWithoutQuestionnairePhasesInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -9762,6 +10180,7 @@ export type TenantUncheckedUpdateWithoutQuestionnairePhasesInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -9825,6 +10244,7 @@ export type TenantCreateWithoutDocumentationPhasesInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -9888,6 +10308,7 @@ export type TenantUncheckedCreateWithoutDocumentationPhasesInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -9967,6 +10388,7 @@ export type TenantUpdateWithoutDocumentationPhasesInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -10030,6 +10452,7 @@ export type TenantUncheckedUpdateWithoutDocumentationPhasesInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -10093,6 +10516,7 @@ export type TenantCreateWithoutPaymentPhasesInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -10156,6 +10580,7 @@ export type TenantUncheckedCreateWithoutPaymentPhasesInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -10235,6 +10660,7 @@ export type TenantUpdateWithoutPaymentPhasesInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -10298,6 +10724,7 @@ export type TenantUncheckedUpdateWithoutPaymentPhasesInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -10361,6 +10788,7 @@ export type TenantCreateWithoutQuestionnaireFieldsInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -10424,6 +10852,7 @@ export type TenantUncheckedCreateWithoutQuestionnaireFieldsInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -10503,6 +10932,7 @@ export type TenantUpdateWithoutQuestionnaireFieldsInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -10566,6 +10996,7 @@ export type TenantUncheckedUpdateWithoutQuestionnaireFieldsInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -10629,6 +11060,7 @@ export type TenantCreateWithoutApplicationEventsInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -10692,6 +11124,7 @@ export type TenantUncheckedCreateWithoutApplicationEventsInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -10771,6 +11204,7 @@ export type TenantUpdateWithoutApplicationEventsInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -10834,6 +11268,7 @@ export type TenantUncheckedUpdateWithoutApplicationEventsInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -10897,6 +11332,7 @@ export type TenantCreateWithoutDocumentationStepsInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -10960,6 +11396,7 @@ export type TenantUncheckedCreateWithoutDocumentationStepsInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -11039,6 +11476,7 @@ export type TenantUpdateWithoutDocumentationStepsInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -11102,6 +11540,7 @@ export type TenantUncheckedUpdateWithoutDocumentationStepsInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -11165,6 +11604,7 @@ export type TenantCreateWithoutDocumentationStepDocumentsInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -11228,6 +11668,7 @@ export type TenantUncheckedCreateWithoutDocumentationStepDocumentsInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -11307,6 +11748,7 @@ export type TenantUpdateWithoutDocumentationStepDocumentsInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -11370,6 +11812,7 @@ export type TenantUncheckedUpdateWithoutDocumentationStepDocumentsInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -11433,6 +11876,7 @@ export type TenantCreateWithoutDocumentationStepApprovalsInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -11496,6 +11940,7 @@ export type TenantUncheckedCreateWithoutDocumentationStepApprovalsInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -11575,6 +12020,7 @@ export type TenantUpdateWithoutDocumentationStepApprovalsInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -11638,6 +12084,7 @@ export type TenantUncheckedUpdateWithoutDocumentationStepApprovalsInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -11701,6 +12148,7 @@ export type TenantCreateWithoutPaymentInstallmentsInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -11764,6 +12212,7 @@ export type TenantUncheckedCreateWithoutPaymentInstallmentsInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -11843,6 +12292,7 @@ export type TenantUpdateWithoutPaymentInstallmentsInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -11906,6 +12356,7 @@ export type TenantUncheckedUpdateWithoutPaymentInstallmentsInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -11969,6 +12420,7 @@ export type TenantCreateWithoutApplicationPaymentsInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -12032,6 +12484,7 @@ export type TenantUncheckedCreateWithoutApplicationPaymentsInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -12111,6 +12564,7 @@ export type TenantUpdateWithoutApplicationPaymentsInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -12174,6 +12628,7 @@ export type TenantUncheckedUpdateWithoutApplicationPaymentsInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -12237,6 +12692,7 @@ export type TenantCreateWithoutApplicationDocumentsInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -12300,6 +12756,7 @@ export type TenantUncheckedCreateWithoutApplicationDocumentsInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -12379,6 +12836,7 @@ export type TenantUpdateWithoutApplicationDocumentsInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -12442,6 +12900,7 @@ export type TenantUncheckedUpdateWithoutApplicationDocumentsInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -12505,6 +12964,7 @@ export type TenantCreateWithoutDocumentTemplatesInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -12568,6 +13028,7 @@ export type TenantUncheckedCreateWithoutDocumentTemplatesInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -12647,6 +13108,7 @@ export type TenantUpdateWithoutDocumentTemplatesInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -12710,6 +13172,7 @@ export type TenantUncheckedUpdateWithoutDocumentTemplatesInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -12773,6 +13236,7 @@ export type TenantCreateWithoutOfferLettersInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -12836,6 +13300,7 @@ export type TenantUncheckedCreateWithoutOfferLettersInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -12915,6 +13380,7 @@ export type TenantUpdateWithoutOfferLettersInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -12978,6 +13444,7 @@ export type TenantUncheckedUpdateWithoutOfferLettersInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -13041,6 +13508,7 @@ export type TenantCreateWithoutContractTerminationsInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -13104,6 +13572,7 @@ export type TenantUncheckedCreateWithoutContractTerminationsInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -13183,6 +13652,7 @@ export type TenantUpdateWithoutContractTerminationsInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -13246,6 +13716,7 @@ export type TenantUncheckedUpdateWithoutContractTerminationsInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -13309,6 +13780,7 @@ export type TenantCreateWithoutPaymentMethodChangeRequestsInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -13372,6 +13844,7 @@ export type TenantUncheckedCreateWithoutPaymentMethodChangeRequestsInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -13451,6 +13924,7 @@ export type TenantUpdateWithoutPaymentMethodChangeRequestsInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -13514,6 +13988,7 @@ export type TenantUncheckedUpdateWithoutPaymentMethodChangeRequestsInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -13577,6 +14052,7 @@ export type TenantCreateWithoutDocumentRequirementRulesInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -13640,6 +14116,7 @@ export type TenantUncheckedCreateWithoutDocumentRequirementRulesInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -13719,6 +14196,7 @@ export type TenantUpdateWithoutDocumentRequirementRulesInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -13782,6 +14260,7 @@ export type TenantUncheckedUpdateWithoutDocumentRequirementRulesInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -13845,6 +14324,7 @@ export type TenantCreateWithoutEventChannelsInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -13908,6 +14388,7 @@ export type TenantUncheckedCreateWithoutEventChannelsInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -13987,6 +14468,7 @@ export type TenantUpdateWithoutEventChannelsInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -14050,6 +14532,7 @@ export type TenantUncheckedUpdateWithoutEventChannelsInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -14113,6 +14596,7 @@ export type TenantCreateWithoutEventTypesInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -14176,6 +14660,7 @@ export type TenantUncheckedCreateWithoutEventTypesInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -14255,6 +14740,7 @@ export type TenantUpdateWithoutEventTypesInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -14318,6 +14804,7 @@ export type TenantUncheckedUpdateWithoutEventTypesInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -14381,6 +14868,7 @@ export type TenantCreateWithoutEventHandlersInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -14444,6 +14932,7 @@ export type TenantUncheckedCreateWithoutEventHandlersInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -14523,6 +15012,7 @@ export type TenantUpdateWithoutEventHandlersInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -14586,6 +15076,7 @@ export type TenantUncheckedUpdateWithoutEventHandlersInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -14649,6 +15140,7 @@ export type TenantCreateWithoutWorkflowEventsInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -14712,6 +15204,7 @@ export type TenantUncheckedCreateWithoutWorkflowEventsInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -14791,6 +15284,7 @@ export type TenantUpdateWithoutWorkflowEventsInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -14854,6 +15348,7 @@ export type TenantUncheckedUpdateWithoutWorkflowEventsInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -14917,6 +15412,7 @@ export type TenantCreateWithoutEventHandlerExecutionsInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -14980,6 +15476,7 @@ export type TenantUncheckedCreateWithoutEventHandlerExecutionsInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -15059,6 +15556,7 @@ export type TenantUpdateWithoutEventHandlerExecutionsInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -15122,6 +15620,7 @@ export type TenantUncheckedUpdateWithoutEventHandlerExecutionsInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -15185,6 +15684,7 @@ export type TenantCreateWithoutDomainEventsInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -15248,6 +15748,7 @@ export type TenantUncheckedCreateWithoutDomainEventsInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -15327,6 +15828,7 @@ export type TenantUpdateWithoutDomainEventsInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -15390,6 +15892,7 @@ export type TenantUncheckedUpdateWithoutDomainEventsInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -15453,6 +15956,7 @@ export type TenantCreateWithoutPropertyTransferRequestsInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -15516,6 +16020,7 @@ export type TenantUncheckedCreateWithoutPropertyTransferRequestsInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -15595,6 +16100,7 @@ export type TenantUpdateWithoutPropertyTransferRequestsInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -15658,6 +16164,7 @@ export type TenantUncheckedUpdateWithoutPropertyTransferRequestsInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -15721,6 +16228,7 @@ export type TenantCreateWithoutApprovalRequestsInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -15784,6 +16292,7 @@ export type TenantUncheckedCreateWithoutApprovalRequestsInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -15863,6 +16372,7 @@ export type TenantUpdateWithoutApprovalRequestsInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -15926,6 +16436,7 @@ export type TenantUncheckedUpdateWithoutApprovalRequestsInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -15989,6 +16500,7 @@ export type TenantCreateWithoutWorkflowBlockersInput = {
   users?: Prisma.UserCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
@@ -16052,6 +16564,7 @@ export type TenantUncheckedCreateWithoutWorkflowBlockersInput = {
   users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
   properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
   paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
   roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
@@ -16131,6 +16644,7 @@ export type TenantUpdateWithoutWorkflowBlockersInput = {
   users?: Prisma.UserUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
@@ -16194,6 +16708,7 @@ export type TenantUncheckedUpdateWithoutWorkflowBlockersInput = {
   users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
   properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
   paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
   paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
   roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
@@ -16256,6 +16771,7 @@ export type TenantCountOutputType = {
   users: number
   properties: number
   paymentPlans: number
+  documentationPlans: number
   paymentMethods: number
   applications: number
   roles: number
@@ -16314,6 +16830,7 @@ export type TenantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions
   users?: boolean | TenantCountOutputTypeCountUsersArgs
   properties?: boolean | TenantCountOutputTypeCountPropertiesArgs
   paymentPlans?: boolean | TenantCountOutputTypeCountPaymentPlansArgs
+  documentationPlans?: boolean | TenantCountOutputTypeCountDocumentationPlansArgs
   paymentMethods?: boolean | TenantCountOutputTypeCountPaymentMethodsArgs
   applications?: boolean | TenantCountOutputTypeCountApplicationsArgs
   roles?: boolean | TenantCountOutputTypeCountRolesArgs
@@ -16397,6 +16914,13 @@ export type TenantCountOutputTypeCountPropertiesArgs<ExtArgs extends runtime.Typ
  */
 export type TenantCountOutputTypeCountPaymentPlansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.PaymentPlanWhereInput
+}
+
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountDocumentationPlansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DocumentationPlanWhereInput
 }
 
 /**
@@ -16774,6 +17298,7 @@ export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   users?: boolean | Prisma.Tenant$usersArgs<ExtArgs>
   properties?: boolean | Prisma.Tenant$propertiesArgs<ExtArgs>
   paymentPlans?: boolean | Prisma.Tenant$paymentPlansArgs<ExtArgs>
+  documentationPlans?: boolean | Prisma.Tenant$documentationPlansArgs<ExtArgs>
   paymentMethods?: boolean | Prisma.Tenant$paymentMethodsArgs<ExtArgs>
   applications?: boolean | Prisma.Tenant$applicationsArgs<ExtArgs>
   roles?: boolean | Prisma.Tenant$rolesArgs<ExtArgs>
@@ -16845,6 +17370,7 @@ export type TenantInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   users?: boolean | Prisma.Tenant$usersArgs<ExtArgs>
   properties?: boolean | Prisma.Tenant$propertiesArgs<ExtArgs>
   paymentPlans?: boolean | Prisma.Tenant$paymentPlansArgs<ExtArgs>
+  documentationPlans?: boolean | Prisma.Tenant$documentationPlansArgs<ExtArgs>
   paymentMethods?: boolean | Prisma.Tenant$paymentMethodsArgs<ExtArgs>
   applications?: boolean | Prisma.Tenant$applicationsArgs<ExtArgs>
   roles?: boolean | Prisma.Tenant$rolesArgs<ExtArgs>
@@ -16906,6 +17432,7 @@ export type $TenantPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     users: Prisma.$UserPayload<ExtArgs>[]
     properties: Prisma.$PropertyPayload<ExtArgs>[]
     paymentPlans: Prisma.$PaymentPlanPayload<ExtArgs>[]
+    documentationPlans: Prisma.$DocumentationPlanPayload<ExtArgs>[]
     paymentMethods: Prisma.$PropertyPaymentMethodPayload<ExtArgs>[]
     applications: Prisma.$ApplicationPayload<ExtArgs>[]
     roles: Prisma.$RolePayload<ExtArgs>[]
@@ -17309,6 +17836,7 @@ export interface Prisma__TenantClient<T, Null = never, ExtArgs extends runtime.T
   users<T extends Prisma.Tenant$usersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$usersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   properties<T extends Prisma.Tenant$propertiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$propertiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   paymentPlans<T extends Prisma.Tenant$paymentPlansArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$paymentPlansArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  documentationPlans<T extends Prisma.Tenant$documentationPlansArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$documentationPlansArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentationPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   paymentMethods<T extends Prisma.Tenant$paymentMethodsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$paymentMethodsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyPaymentMethodPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   applications<T extends Prisma.Tenant$applicationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$applicationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApplicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   roles<T extends Prisma.Tenant$rolesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$rolesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -17808,6 +18336,30 @@ export type Tenant$paymentPlansArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.PaymentPlanScalarFieldEnum | Prisma.PaymentPlanScalarFieldEnum[]
+}
+
+/**
+ * Tenant.documentationPlans
+ */
+export type Tenant$documentationPlansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DocumentationPlan
+   */
+  select?: Prisma.DocumentationPlanSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DocumentationPlan
+   */
+  omit?: Prisma.DocumentationPlanOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DocumentationPlanInclude<ExtArgs> | null
+  where?: Prisma.DocumentationPlanWhereInput
+  orderBy?: Prisma.DocumentationPlanOrderByWithRelationInput | Prisma.DocumentationPlanOrderByWithRelationInput[]
+  cursor?: Prisma.DocumentationPlanWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DocumentationPlanScalarFieldEnum | Prisma.DocumentationPlanScalarFieldEnum[]
 }
 
 /**

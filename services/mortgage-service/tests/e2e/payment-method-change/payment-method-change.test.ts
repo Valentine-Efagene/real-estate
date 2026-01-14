@@ -3,7 +3,16 @@ import { app } from '../../../src/app';
 import { api, prisma, cleanupTestData } from '../../setup';
 import { faker } from '@faker-js/faker';
 import { randomUUID } from 'crypto';
-import { authHeaders } from '@valentine-efagene/qshelter-common';
+import { authHeaders, ROLES } from '@valentine-efagene/qshelter-common';
+
+// Helper functions for auth headers with proper roles
+function adminHeaders(userId: string, tenantId: string) {
+    return authHeaders(userId, tenantId, { roles: [ROLES.TENANT_ADMIN] });
+}
+
+function customerHeaders(userId: string, tenantId: string) {
+    return authHeaders(userId, tenantId, { roles: [ROLES.CUSTOMER] });
+}
 
 /**
  * E2E Test: Payment Method Change Flow
@@ -165,7 +174,7 @@ describe('Payment Method Change Flow', () => {
         it('creates a one-off downpayment plan (10%)', async () => {
             const response = await api
                 .post('/payment-plans')
-                .set(authHeaders(adaezeId, tenantId))
+                .set(adminHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('create-downpayment-plan'))
                 .send({
                     name: '10% Downpayment',
@@ -177,13 +186,13 @@ describe('Payment Method Change Flow', () => {
                 });
 
             expect(response.status).toBe(201);
-            downpaymentPlanId = response.body.id;
+            downpaymentPlanId = response.body.data.id;
         });
 
         it('creates the original 20-year mortgage plan at 9.5% p.a.', async () => {
             const response = await api
                 .post('/payment-plans')
-                .set(authHeaders(adaezeId, tenantId))
+                .set(adminHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('create-original-mortgage-plan'))
                 .send({
                     name: '20-Year Mortgage at 9.5%',
@@ -195,13 +204,13 @@ describe('Payment Method Change Flow', () => {
                 });
 
             expect(response.status).toBe(201);
-            originalMortgagePlanId = response.body.id;
+            originalMortgagePlanId = response.body.data.id;
         });
 
         it('creates the alternative 15-year mortgage plan at 9.0% p.a.', async () => {
             const response = await api
                 .post('/payment-plans')
-                .set(authHeaders(adaezeId, tenantId))
+                .set(adminHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('create-alternative-mortgage-plan'))
                 .send({
                     name: '15-Year Mortgage at 9.0%',
@@ -213,13 +222,13 @@ describe('Payment Method Change Flow', () => {
                 });
 
             expect(response.status).toBe(201);
-            alternativeMortgagePlanId = response.body.id;
+            alternativeMortgagePlanId = response.body.data.id;
         });
 
         it('creates the original payment method (20-year mortgage)', async () => {
             const response = await api
                 .post('/payment-methods')
-                .set(authHeaders(adaezeId, tenantId))
+                .set(adminHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('create-original-payment-method'))
                 .send({
                     name: '10/90 - 20 Year Mortgage',
@@ -258,13 +267,13 @@ describe('Payment Method Change Flow', () => {
                 });
 
             expect(response.status).toBe(201);
-            originalPaymentMethodId = response.body.id;
+            originalPaymentMethodId = response.body.data.id;
         });
 
         it('creates the alternative payment method (15-year mortgage)', async () => {
             const response = await api
                 .post('/payment-methods')
-                .set(authHeaders(adaezeId, tenantId))
+                .set(adminHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('create-alternative-payment-method'))
                 .send({
                     name: '10/90 - 15 Year Mortgage',
@@ -303,14 +312,14 @@ describe('Payment Method Change Flow', () => {
                 });
 
             expect(response.status).toBe(201);
-            alternativePaymentMethodId = response.body.id;
+            alternativePaymentMethodId = response.body.data.id;
         });
 
         it('links both payment methods to the property', async () => {
             // Link original method
             let response = await api
                 .post(`/payment-methods/${originalPaymentMethodId}/properties`)
-                .set(authHeaders(adaezeId, tenantId))
+                .set(adminHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('link-original-method'))
                 .send({ propertyId });
 
@@ -319,7 +328,7 @@ describe('Payment Method Change Flow', () => {
             // Link alternative method
             response = await api
                 .post(`/payment-methods/${alternativePaymentMethodId}/properties`)
-                .set(authHeaders(adaezeId, tenantId))
+                .set(adminHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('link-alternative-method'))
                 .send({ propertyId });
 
@@ -428,7 +437,7 @@ describe('Payment Method Change Flow', () => {
         it('Chidi creates a payment method change request', async () => {
             const response = await api
                 .post(`/applications/${applicationId}/payment-method-change-requests`)
-                .set(authHeaders(chidiId, tenantId))
+                .set(customerHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('create-change-request'))
                 .send({
                     toPaymentMethodId: alternativePaymentMethodId,
@@ -436,23 +445,23 @@ describe('Payment Method Change Flow', () => {
                 });
 
             expect(response.status).toBe(201);
-            expect(response.body.status).toBe('PENDING_DOCUMENTS');
-            expect(response.body.fromPaymentMethodId).toBe(originalPaymentMethodId);
-            expect(response.body.toPaymentMethodId).toBe(alternativePaymentMethodId);
-            expect(response.body.currentOutstanding).toBe(propertyPrice * 0.9); // ₦45M
+            expect(response.body.data.status).toBe('PENDING_DOCUMENTS');
+            expect(response.body.data.fromPaymentMethodId).toBe(originalPaymentMethodId);
+            expect(response.body.data.toPaymentMethodId).toBe(alternativePaymentMethodId);
+            expect(response.body.data.currentOutstanding).toBe(propertyPrice * 0.9); // ₦45M
 
-            changeRequestId = response.body.id;
+            changeRequestId = response.body.data.id;
         });
 
         it('Request has financial impact preview calculated', async () => {
             const response = await api
                 .get(`/applications/${applicationId}/payment-method-change-requests/${changeRequestId}`)
-                .set(authHeaders(chidiId, tenantId));
+                .set(customerHeaders(chidiId, tenantId));
 
             expect(response.status).toBe(200);
-            expect(response.body.newTermMonths).toBe(180); // 15 years
-            expect(response.body.newInterestRate).toBe(newInterestRate);
-            expect(response.body.newMonthlyPayment).toBeGreaterThan(0);
+            expect(response.body.data.newTermMonths).toBe(180); // 15 years
+            expect(response.body.data.newInterestRate).toBe(newInterestRate);
+            expect(response.body.data.newMonthlyPayment).toBeGreaterThan(0);
         });
 
         it('Domain event PAYMENT_METHOD_CHANGE.REQUESTED is created', async () => {
@@ -475,20 +484,20 @@ describe('Payment Method Change Flow', () => {
         it('Chidi submits documents for the change request', async () => {
             const response = await api
                 .post(`/applications/${applicationId}/payment-method-change-requests/${changeRequestId}/submit-documents`)
-                .set(authHeaders(chidiId, tenantId))
+                .set(customerHeaders(chidiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('submit-change-documents'));
 
             expect(response.status).toBe(200);
-            expect(response.body.status).toBe('DOCUMENTS_SUBMITTED');
+            expect(response.body.data.status).toBe('DOCUMENTS_SUBMITTED');
         });
 
         it('Request appears in admin pending review list', async () => {
             const response = await api
                 .get('/payment-method-change-requests')
-                .set(authHeaders(adaezeId, tenantId));
+                .set(adminHeaders(adaezeId, tenantId));
 
             expect(response.status).toBe(200);
-            expect(response.body.some((r: any) => r.id === changeRequestId)).toBe(true);
+            expect(response.body.data.some((r: any) => r.id === changeRequestId)).toBe(true);
         });
     });
 
@@ -499,25 +508,25 @@ describe('Payment Method Change Flow', () => {
         it('Adaeze starts review of the request', async () => {
             const response = await api
                 .post(`/payment-method-change-requests/${changeRequestId}/start-review`)
-                .set(authHeaders(adaezeId, tenantId))
+                .set(adminHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('start-review'));
 
             expect(response.status).toBe(200);
-            expect(response.body.status).toBe('UNDER_REVIEW');
-            expect(response.body.reviewerId).toBe(adaezeId);
+            expect(response.body.data.status).toBe('UNDER_REVIEW');
+            expect(response.body.data.reviewerId).toBe(adaezeId);
         });
 
         it('Adaeze approves the payment method change', async () => {
             const response = await api
                 .post(`/payment-method-change-requests/${changeRequestId}/approve`)
-                .set(authHeaders(adaezeId, tenantId))
+                .set(adminHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('approve-change'))
                 .send({
                     reviewNotes: 'Customer has good payment history. Approved.',
                 });
 
             expect(response.status).toBe(200);
-            expect(response.body.status).toBe('APPROVED');
+            expect(response.body.data.status).toBe('APPROVED');
         });
 
         it('Domain event PAYMENT_METHOD_CHANGE.APPROVED is created', async () => {
@@ -549,7 +558,7 @@ describe('Payment Method Change Flow', () => {
         it('Admin executes the approved change', async () => {
             const response = await api
                 .post(`/payment-method-change-requests/${changeRequestId}/execute`)
-                .set(authHeaders(adaezeId, tenantId))
+                .set(adminHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('execute-change'));
 
             // Debug: Log the error if not 200
@@ -558,9 +567,9 @@ describe('Payment Method Change Flow', () => {
             }
 
             expect(response.status).toBe(200);
-            expect(response.body.message).toBe('Payment method change executed successfully');
-            expect(response.body.request.status).toBe('EXECUTED');
-            expect(response.body.newPhases.length).toBeGreaterThan(0);
+            expect(response.body.data.message).toBe('Payment method change executed successfully');
+            expect(response.body.data.request.status).toBe('EXECUTED');
+            expect(response.body.data.newPhases.length).toBeGreaterThan(0);
         });
 
         it('Original mortgage phase is now SUPERSEDED', async () => {
@@ -575,12 +584,12 @@ describe('Payment Method Change Flow', () => {
         it('New mortgage phase is created with 15-year terms', async () => {
             const phasesResponse = await api
                 .get(`/applications/${applicationId}/phases`)
-                .set(authHeaders(chidiId, tenantId));
+                .set(customerHeaders(chidiId, tenantId));
 
             expect(phasesResponse.status).toBe(200);
 
             // The new mortgage phase should have "(Changed)" in its name as per the service
-            const newMortgagePhase = phasesResponse.body.find(
+            const newMortgagePhase = phasesResponse.body.data.find(
                 (p: any) => p.name.includes('(Changed)') && p.phaseType === 'MORTGAGE'
             );
 
@@ -628,13 +637,13 @@ describe('Payment Method Change Flow', () => {
         it('Change request has complete audit data', async () => {
             const response = await api
                 .get(`/applications/${applicationId}/payment-method-change-requests/${changeRequestId}`)
-                .set(authHeaders(chidiId, tenantId));
+                .set(customerHeaders(chidiId, tenantId));
 
             expect(response.status).toBe(200);
-            expect(response.body.status).toBe('EXECUTED');
-            expect(response.body.reviewerId).toBe(adaezeId);
-            expect(response.body.reviewedAt).toBeDefined();
-            expect(response.body.executedAt).toBeDefined();
+            expect(response.body.data.status).toBe('EXECUTED');
+            expect(response.body.data.reviewerId).toBe(adaezeId);
+            expect(response.body.data.reviewedAt).toBeDefined();
+            expect(response.body.data.executedAt).toBeDefined();
         });
 
         it('Complete event trail exists for the change', async () => {
@@ -746,35 +755,35 @@ describe('Payment Method Change - Alternative Flows', () => {
         // Create simple payment methods
         const origMethodResp = await api
             .post('/payment-methods')
-            .set(authHeaders(adminId, tenantId))
+            .set(adminHeaders(adminId, tenantId))
             .send({
                 name: 'Original Method Alt',
                 phases: [
                     { name: 'Payment', phaseCategory: 'PAYMENT', phaseType: 'DOWNPAYMENT', order: 1, percentOfPrice: 100, paymentPlanId: origPlan.id },
                 ],
             });
-        originalPaymentMethodId = origMethodResp.body.id;
+        originalPaymentMethodId = origMethodResp.body.data.id;
 
         const altMethodResp = await api
             .post('/payment-methods')
-            .set(authHeaders(adminId, tenantId))
+            .set(adminHeaders(adminId, tenantId))
             .send({
                 name: 'Alternative Method Alt',
                 phases: [
                     { name: 'Payment', phaseCategory: 'PAYMENT', phaseType: 'DOWNPAYMENT', order: 1, percentOfPrice: 100, paymentPlanId: altPlan.id },
                 ],
             });
-        alternativePaymentMethodId = altMethodResp.body.id;
+        alternativePaymentMethodId = altMethodResp.body.data.id;
 
         // Link to property
         await api
             .post(`/payment-methods/${originalPaymentMethodId}/properties`)
-            .set(authHeaders(adminId, tenantId))
+            .set(adminHeaders(adminId, tenantId))
             .send({ propertyId: property.id });
 
         await api
             .post(`/payment-methods/${alternativePaymentMethodId}/properties`)
-            .set(authHeaders(adminId, tenantId))
+            .set(adminHeaders(adminId, tenantId))
             .send({ propertyId: property.id });
 
         // Create application directly in database in ACTIVE state
@@ -839,20 +848,20 @@ describe('Payment Method Change - Alternative Flows', () => {
         it('Customer creates a change request', async () => {
             const response = await api
                 .post(`/applications/${applicationId}/payment-method-change-requests`)
-                .set(authHeaders(customerId, tenantId))
+                .set(customerHeaders(customerId, tenantId))
                 .send({
                     toPaymentMethodId: alternativePaymentMethodId,
                     reason: 'Want to change',
                 });
 
             expect(response.status).toBe(201);
-            rejectRequestId = response.body.id;
+            rejectRequestId = response.body.data.id;
         });
 
         it('Customer submits documents', async () => {
             const response = await api
                 .post(`/applications/${applicationId}/payment-method-change-requests/${rejectRequestId}/submit-documents`)
-                .set(authHeaders(customerId, tenantId));
+                .set(customerHeaders(customerId, tenantId));
 
             expect(response.status).toBe(200);
         });
@@ -861,17 +870,17 @@ describe('Payment Method Change - Alternative Flows', () => {
             // First start the review
             await api
                 .post(`/payment-method-change-requests/${rejectRequestId}/start-review`)
-                .set(authHeaders(adminId, tenantId));
+                .set(adminHeaders(adminId, tenantId));
 
             const response = await api
                 .post(`/payment-method-change-requests/${rejectRequestId}/reject`)
-                .set(authHeaders(adminId, tenantId))
+                .set(adminHeaders(adminId, tenantId))
                 .send({
                     rejectionReason: 'Minimum 12 months required before payment method changes',
                 });
 
             expect(response.status).toBe(200);
-            expect(response.body.status).toBe('REJECTED');
+            expect(response.body.data.status).toBe('REJECTED');
         });
 
         it('Domain event PAYMENT_METHOD_CHANGE.REJECTED is created', async () => {
@@ -898,23 +907,23 @@ describe('Payment Method Change - Alternative Flows', () => {
         it('Customer creates another change request', async () => {
             const response = await api
                 .post(`/applications/${applicationId}/payment-method-change-requests`)
-                .set(authHeaders(customerId, tenantId))
+                .set(customerHeaders(customerId, tenantId))
                 .send({
                     toPaymentMethodId: alternativePaymentMethodId,
                     reason: 'Want to try again',
                 });
 
             expect(response.status).toBe(201);
-            cancelRequestId = response.body.id;
+            cancelRequestId = response.body.data.id;
         });
 
         it('Customer cancels the request', async () => {
             const response = await api
                 .post(`/applications/${applicationId}/payment-method-change-requests/${cancelRequestId}/cancel`)
-                .set(authHeaders(customerId, tenantId));
+                .set(customerHeaders(customerId, tenantId));
 
             expect(response.status).toBe(200);
-            expect(response.body.status).toBe('CANCELLED');
+            expect(response.body.data.status).toBe('CANCELLED');
         });
 
         it('Domain event PAYMENT_METHOD_CHANGE.CANCELLED is created', async () => {

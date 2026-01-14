@@ -153,7 +153,7 @@ router.get("/stats", async (req: Request, res: Response) => {
 router.get("/:id", async (req: Request, res: Response) => {
     try {
         const { tenantId } = getAuthContext(req);
-        const { id } = req.params;
+        const id = req.params.id as string;
 
         const approvalRequest = await approvalRequestService.getById(tenantId, id);
 
@@ -175,7 +175,7 @@ router.get("/:id", async (req: Request, res: Response) => {
 router.patch("/:id", async (req: Request, res: Response) => {
     try {
         const { tenantId } = getAuthContext(req);
-        const { id } = req.params;
+        const id = req.params.id as string;
 
         const body = updateApprovalRequestSchema.parse(req.body);
 
@@ -206,7 +206,7 @@ router.patch("/:id", async (req: Request, res: Response) => {
 router.post("/:id/assign", async (req: Request, res: Response) => {
     try {
         const { tenantId } = getAuthContext(req);
-        const { id } = req.params;
+        const id = req.params.id as string;
 
         const body = assignApprovalRequestSchema.parse(req.body);
 
@@ -235,7 +235,7 @@ router.post("/:id/assign", async (req: Request, res: Response) => {
 router.post("/:id/review", async (req: Request, res: Response) => {
     try {
         const { tenantId, userId } = getAuthContext(req);
-        const { id } = req.params;
+        const id = req.params.id as string;
 
         const body = reviewApprovalRequestSchema.parse(req.body);
 
@@ -261,7 +261,7 @@ router.post("/:id/review", async (req: Request, res: Response) => {
 router.delete("/:id", async (req: Request, res: Response) => {
     try {
         const { tenantId } = getAuthContext(req);
-        const { id } = req.params;
+        const id = req.params.id as string;
 
         const updated = await approvalRequestService.cancel(tenantId, id);
 

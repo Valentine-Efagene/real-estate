@@ -49,7 +49,7 @@ function getApplicationService(req: Request) {
 async function canAccessApplication(req: Request, res: Response, next: NextFunction) {
     try {
         const { userId, roles } = getAuthContext(req);
-        const applicationId = req.params.id;
+        const applicationId = req.params.id as string;
 
         // Admins can access any application
         if (isAdmin(roles)) {
@@ -127,7 +127,7 @@ router.get('/', requireTenant, async (req: Request, res: Response, next: NextFun
 router.get('/:id', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const applicationService = getApplicationService(req);
-        const application = await applicationService.findById(req.params.id);
+        const application = await applicationService.findById(req.params.id as string);
         res.json(successResponse(application));
     } catch (error) {
         next(error);
@@ -139,7 +139,7 @@ router.get('/:id', requireTenant, canAccessApplication, async (req: Request, res
 router.get('/:id/current-action', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const applicationService = getApplicationService(req);
-        const result = await applicationService.getCurrentAction(req.params.id);
+        const result = await applicationService.getCurrentAction(req.params.id as string);
         res.json(successResponse(result));
     } catch (error) {
         next(error);
@@ -150,7 +150,7 @@ router.get('/:id/current-action', requireTenant, canAccessApplication, async (re
 router.get('/number/:applicationNumber', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const applicationService = getApplicationService(req);
-        const application = await applicationService.findByApplicationNumber(req.params.applicationNumber);
+        const application = await applicationService.findByApplicationNumber(req.params.applicationNumber as string);
 
         // Check access - admins can access any, customers only their own
         const { userId, roles } = getAuthContext(req);
@@ -170,7 +170,7 @@ router.patch('/:id', requireTenant, canAccessApplication, async (req: Request, r
         const data = UpdateApplicationSchema.parse(req.body);
         const { userId } = getAuthContext(req);
         const applicationService = getApplicationService(req);
-        const application = await applicationService.update(req.params.id, data, userId);
+        const application = await applicationService.update(req.params.id as string, data, userId);
         res.json(successResponse(application));
     } catch (error) {
         if (error instanceof z.ZodError) {
@@ -187,7 +187,7 @@ router.post('/:id/transition', requireTenant, canAccessApplication, async (req: 
         const data = TransitionApplicationSchema.parse(req.body);
         const { userId } = getAuthContext(req);
         const applicationService = getApplicationService(req);
-        const application = await applicationService.transition(req.params.id, data, userId);
+        const application = await applicationService.transition(req.params.id as string, data, userId);
         res.json(successResponse(application));
     } catch (error) {
         if (error instanceof z.ZodError) {
@@ -203,7 +203,7 @@ router.post('/:id/sign', requireTenant, canAccessApplication, async (req: Reques
     try {
         const { userId } = getAuthContext(req);
         const applicationService = getApplicationService(req);
-        const application = await applicationService.sign(req.params.id, userId);
+        const application = await applicationService.sign(req.params.id as string, userId);
         res.json(successResponse(application));
     } catch (error) {
         next(error);
@@ -216,7 +216,7 @@ router.post('/:id/cancel', requireTenant, canAccessApplication, async (req: Requ
         const { userId } = getAuthContext(req);
         const { reason } = req.body;
         const applicationService = getApplicationService(req);
-        const application = await applicationService.cancel(req.params.id, userId, reason);
+        const application = await applicationService.cancel(req.params.id as string, userId, reason);
         res.json(successResponse(application));
     } catch (error) {
         next(error);
@@ -228,7 +228,7 @@ router.delete('/:id', requireTenant, canAccessApplication, async (req: Request, 
     try {
         const { userId } = getAuthContext(req);
         const applicationService = getApplicationService(req);
-        const result = await applicationService.delete(req.params.id, userId);
+        const result = await applicationService.delete(req.params.id as string, userId);
         res.json(successResponse(result));
     } catch (error) {
         next(error);
@@ -242,7 +242,7 @@ router.delete('/:id', requireTenant, canAccessApplication, async (req: Request, 
 // Get phases for an application
 router.get('/:id/phases', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const phases = await applicationPhaseService.getPhasesByApplication(req.params.id);
+        const phases = await applicationPhaseService.getPhasesByApplication(req.params.id as string);
         // Flatten payment phase fields for backwards compatibility
         const flattenedPhases = phases.map((phase: any) => ({
             ...phase,
@@ -267,7 +267,7 @@ router.get('/:id/phases', requireTenant, canAccessApplication, async (req: Reque
 // Get phase by ID
 router.get('/:id/phases/:phaseId', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const phase = await applicationPhaseService.findById(req.params.phaseId);
+        const phase = await applicationPhaseService.findById(req.params.phaseId as string);
         // Flatten polymorphic fields for backwards compatibility
         const flattenedPhase = {
             ...phase,
@@ -291,7 +291,7 @@ router.post('/:id/phases/:phaseId/activate', requireTenant, canAccessApplication
     try {
         const data = ActivatePhaseSchema.parse(req.body);
         const { userId } = getAuthContext(req);
-        const phase = await applicationPhaseService.activate(req.params.phaseId, data, userId);
+        const phase = await applicationPhaseService.activate(req.params.phaseId as string, data, userId);
         res.json(successResponse(phase));
     } catch (error) {
         if (error instanceof z.ZodError) {
@@ -307,7 +307,7 @@ router.post('/:id/phases/:phaseId/installments', requireTenant, canAccessApplica
     try {
         const data = GenerateInstallmentsSchema.parse(req.body);
         const { userId } = getAuthContext(req);
-        const phase = await applicationPhaseService.generateInstallments(req.params.phaseId, data, userId);
+        const phase = await applicationPhaseService.generateInstallments(req.params.phaseId as string, data, userId);
         // Transform installments to include amountDue for backwards compatibility
         // Installments are now on paymentPhase extension
         const installments = phase.paymentPhase?.installments ?? [];
@@ -333,7 +333,7 @@ router.post('/:id/phases/:phaseId/steps/complete', requireTenant, canAccessAppli
     try {
         const data = CompleteStepSchema.parse(req.body);
         const { userId } = getAuthContext(req);
-        const phase = await applicationPhaseService.completeStep(req.params.phaseId, data, userId);
+        const phase = await applicationPhaseService.completeStep(req.params.phaseId as string, data, userId);
         res.json(successResponse(phase));
     } catch (error) {
         if (error instanceof z.ZodError) {
@@ -353,7 +353,7 @@ router.post('/:id/phases/:phaseId/steps/:stepId/reject', requireTenant, requireR
             return;
         }
         const { userId } = getAuthContext(req);
-        const phase = await applicationPhaseService.rejectStep(req.params.phaseId, req.params.stepId, reason, userId);
+        const phase = await applicationPhaseService.rejectStep(req.params.phaseId as string, req.params.stepId as string, reason, userId);
         res.json(successResponse(phase));
     } catch (error) {
         next(error);
@@ -369,7 +369,7 @@ router.post('/:id/phases/:phaseId/steps/:stepId/request-changes', requireTenant,
             return;
         }
         const { userId } = getAuthContext(req);
-        const phase = await applicationPhaseService.requestStepChanges(req.params.phaseId, req.params.stepId, reason, userId);
+        const phase = await applicationPhaseService.requestStepChanges(req.params.phaseId as string, req.params.stepId as string, reason, userId);
         res.json(successResponse(phase));
     } catch (error) {
         next(error);
@@ -379,7 +379,7 @@ router.post('/:id/phases/:phaseId/steps/:stepId/request-changes', requireTenant,
 // Get documents for a phase
 router.get('/:id/phases/:phaseId/documents', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const documents = await applicationPhaseService.getDocumentsByPhase(req.params.phaseId);
+        const documents = await applicationPhaseService.getDocumentsByPhase(req.params.phaseId as string);
         res.json(successResponse(documents));
     } catch (error) {
         next(error);
@@ -391,7 +391,7 @@ router.get('/:id/phases/:phaseId/installments', requireTenant, canAccessApplicat
     try {
         const status = req.query.status as string | undefined;
         const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : undefined;
-        const installments = await applicationPhaseService.getInstallmentsByPhase(req.params.phaseId, { status, limit });
+        const installments = await applicationPhaseService.getInstallmentsByPhase(req.params.phaseId as string, { status, limit });
         res.json(successResponse(installments));
     } catch (error) {
         next(error);
@@ -403,7 +403,7 @@ router.post('/:id/phases/:phaseId/documents', requireTenant, canAccessApplicatio
     try {
         const data = UploadDocumentSchema.parse(req.body);
         const { userId } = getAuthContext(req);
-        const document = await applicationPhaseService.uploadDocument(req.params.phaseId, data, userId);
+        const document = await applicationPhaseService.uploadDocument(req.params.phaseId as string, data, userId);
         res.status(201).json(successResponse(document));
     } catch (error) {
         if (error instanceof z.ZodError) {
@@ -419,7 +419,7 @@ router.post('/:id/documents/:documentId/review', requireTenant, requireRole(ADMI
     try {
         const data = ApproveDocumentSchema.parse(req.body);
         const { userId } = getAuthContext(req);
-        const document = await applicationPhaseService.approveDocument(req.params.documentId, data, userId);
+        const document = await applicationPhaseService.approveDocument(req.params.documentId as string, data, userId);
         res.json(successResponse(document));
     } catch (error) {
         if (error instanceof z.ZodError) {
@@ -434,7 +434,7 @@ router.post('/:id/documents/:documentId/review', requireTenant, requireRole(ADMI
 router.post('/:id/phases/:phaseId/complete', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { userId } = getAuthContext(req);
-        const phase = await applicationPhaseService.complete(req.params.phaseId, userId);
+        const phase = await applicationPhaseService.complete(req.params.phaseId as string, userId);
         res.json(successResponse(phase));
     } catch (error) {
         next(error);
@@ -446,7 +446,7 @@ router.post('/:id/phases/:phaseId/skip', requireTenant, requireRole(ADMIN_ROLES)
     try {
         const { userId } = getAuthContext(req);
         const { reason } = req.body;
-        const phase = await applicationPhaseService.skip(req.params.phaseId, userId, reason);
+        const phase = await applicationPhaseService.skip(req.params.phaseId as string, userId, reason);
         res.json(successResponse(phase));
     } catch (error) {
         next(error);
@@ -462,7 +462,7 @@ router.post('/:id/payments', requireTenant, canAccessApplication, async (req: Re
     try {
         const data = CreatePaymentSchema.parse({
             ...req.body,
-            applicationId: req.params.id,
+            applicationId: req.params.id as string,
         });
         const { userId } = getAuthContext(req);
         const payment = await applicationPaymentService.create(data, userId);
@@ -479,7 +479,7 @@ router.post('/:id/payments', requireTenant, canAccessApplication, async (req: Re
 // Get payments for application
 router.get('/:id/payments', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const payments = await applicationPaymentService.findByApplication(req.params.id);
+        const payments = await applicationPaymentService.findByApplication(req.params.id as string);
         res.json(successResponse(payments));
     } catch (error) {
         next(error);
@@ -489,7 +489,7 @@ router.get('/:id/payments', requireTenant, canAccessApplication, async (req: Req
 // Get payment by ID
 router.get('/:id/payments/:paymentId', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const payment = await applicationPaymentService.findById(req.params.paymentId);
+        const payment = await applicationPaymentService.findById(req.params.paymentId as string);
         res.json(successResponse(payment));
     } catch (error) {
         next(error);
@@ -516,7 +516,7 @@ router.post('/:id/payments/:paymentId/refund', requireTenant, requireRole(ADMIN_
     try {
         const data = RefundPaymentSchema.parse(req.body);
         const { userId } = getAuthContext(req);
-        const payment = await applicationPaymentService.refund(req.params.paymentId, data, userId);
+        const payment = await applicationPaymentService.refund(req.params.paymentId as string, data, userId);
         res.json(successResponse(payment));
     } catch (error) {
         if (error instanceof z.ZodError) {
@@ -536,7 +536,7 @@ router.post('/:id/pay-ahead', requireTenant, canAccessApplication, async (req: R
             return;
         }
         const { userId } = getAuthContext(req);
-        const result = await applicationPaymentService.payAhead(req.params.id, amount, userId);
+        const result = await applicationPaymentService.payAhead(req.params.id as string, amount, userId);
         res.json(successResponse(result));
     } catch (error) {
         next(error);

@@ -1,9 +1,9 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { z } from 'zod';
 import { propertyTransferService } from '../services/property-transfer.service';
-import { AppError, getAuthContext } from '@valentine-efagene/qshelter-common';
+import { AppError, getAuthContext, successResponse } from '@valentine-efagene/qshelter-common';
 
-const router = Router();
+const router: Router = Router();
 
 // =============================================================================
 // Validation Schemas
@@ -36,7 +36,7 @@ router.post(
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { tenantId, userId } = getAuthContext(req);
-            const { applicationId } = req.params;
+            const applicationId = req.params.applicationId as string;
 
             const body = createRequestSchema.parse(req.body);
 
@@ -48,7 +48,7 @@ router.post(
                 tenantId,
             });
 
-            res.status(201).json(request);
+            res.status(201).json(successResponse(request));
         } catch (error) {
             next(error);
         }
@@ -67,11 +67,11 @@ router.get(
             if (!tenantId) {
                 throw new AppError(400, 'Missing tenant context');
             }
-            const { applicationId } = req.params;
+            const applicationId = req.params.applicationId as string;
 
             const requests = await propertyTransferService.listByapplication(applicationId, tenantId);
 
-            res.json(requests);
+            res.json(successResponse(requests));
         } catch (error) {
             next(error);
         }
@@ -97,7 +97,7 @@ router.get(
 
             const requests = await propertyTransferService.listPending(tenantId);
 
-            res.json(requests);
+            res.json(successResponse(requests));
         } catch (error) {
             next(error);
         }
@@ -116,11 +116,11 @@ router.get(
             if (!tenantId) {
                 throw new AppError(400, 'Missing tenant context');
             }
-            const { requestId } = req.params;
+            const requestId = req.params.requestId as string;
 
             const request = await propertyTransferService.getById(requestId, tenantId);
 
-            res.json(request);
+            res.json(successResponse(request));
         } catch (error) {
             next(error);
         }
@@ -136,7 +136,7 @@ router.patch(
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { tenantId, userId } = getAuthContext(req);
-            const { requestId } = req.params;
+            const requestId = req.params.requestId as string;
 
             const body = approveSchema.parse(req.body);
 
@@ -148,7 +148,7 @@ router.patch(
                 tenantId,
             });
 
-            res.json({
+            res.json(successResponse({
                 message: 'Transfer approved successfully',
                 request: result.request,
                 newApplication: {
@@ -157,7 +157,7 @@ router.patch(
                     status: result.newApplication.status,
                 },
                 refundedAmount: result.refundedAmount,
-            });
+            }));
         } catch (error) {
             next(error);
         }
@@ -173,7 +173,7 @@ router.patch(
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { tenantId, userId } = getAuthContext(req);
-            const { requestId } = req.params;
+            const requestId = req.params.requestId as string;
 
             const body = rejectSchema.parse(req.body);
 
@@ -184,10 +184,10 @@ router.patch(
                 tenantId,
             });
 
-            res.json({
+            res.json(successResponse({
                 message: 'Transfer request rejected',
                 request,
-            });
+            }));
         } catch (error) {
             next(error);
         }

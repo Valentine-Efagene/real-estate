@@ -411,6 +411,8 @@ export const ModelName = {
   PropertyVariantMedia: 'PropertyVariantMedia',
   PropertyUnit: 'PropertyUnit',
   PropertyAmenity: 'PropertyAmenity',
+  DocumentationPlan: 'DocumentationPlan',
+  DocumentationPlanStep: 'DocumentationPlanStep',
   PaymentPlan: 'PaymentPlan',
   PropertyPaymentMethod: 'PropertyPaymentMethod',
   PropertyPaymentMethodLink: 'PropertyPaymentMethodLink',
@@ -463,7 +465,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenantMembership" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "phaseEventAttachment" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "paymentMethodPhaseField" | "application" | "applicationRefund" | "applicationPhase" | "questionnairePhase" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "applicationEvent" | "documentationStep" | "documentationStepDocument" | "documentationStepApproval" | "paymentInstallment" | "applicationPayment" | "applicationDocument" | "documentTemplate" | "offerLetter" | "applicationTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "workflowEvent" | "eventHandlerExecution" | "domainEvent" | "propertyTransferRequest" | "approvalRequest" | "workflowBlocker"
+    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenantMembership" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "documentationPlan" | "documentationPlanStep" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "phaseEventAttachment" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "paymentMethodPhaseField" | "application" | "applicationRefund" | "applicationPhase" | "questionnairePhase" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "applicationEvent" | "documentationStep" | "documentationStepDocument" | "documentationStepApproval" | "paymentInstallment" | "applicationPayment" | "applicationDocument" | "documentTemplate" | "offerLetter" | "applicationTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "workflowEvent" | "eventHandlerExecution" | "domainEvent" | "propertyTransferRequest" | "approvalRequest" | "workflowBlocker"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2246,6 +2248,138 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.PropertyAmenityCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.PropertyAmenityCountAggregateOutputType> | number
+        }
+      }
+    }
+    DocumentationPlan: {
+      payload: Prisma.$DocumentationPlanPayload<ExtArgs>
+      fields: Prisma.DocumentationPlanFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DocumentationPlanFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPlanPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DocumentationPlanFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPlanPayload>
+        }
+        findFirst: {
+          args: Prisma.DocumentationPlanFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPlanPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DocumentationPlanFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPlanPayload>
+        }
+        findMany: {
+          args: Prisma.DocumentationPlanFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPlanPayload>[]
+        }
+        create: {
+          args: Prisma.DocumentationPlanCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPlanPayload>
+        }
+        createMany: {
+          args: Prisma.DocumentationPlanCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.DocumentationPlanDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPlanPayload>
+        }
+        update: {
+          args: Prisma.DocumentationPlanUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPlanPayload>
+        }
+        deleteMany: {
+          args: Prisma.DocumentationPlanDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DocumentationPlanUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.DocumentationPlanUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPlanPayload>
+        }
+        aggregate: {
+          args: Prisma.DocumentationPlanAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDocumentationPlan>
+        }
+        groupBy: {
+          args: Prisma.DocumentationPlanGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentationPlanGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DocumentationPlanCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentationPlanCountAggregateOutputType> | number
+        }
+      }
+    }
+    DocumentationPlanStep: {
+      payload: Prisma.$DocumentationPlanStepPayload<ExtArgs>
+      fields: Prisma.DocumentationPlanStepFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DocumentationPlanStepFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPlanStepPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DocumentationPlanStepFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPlanStepPayload>
+        }
+        findFirst: {
+          args: Prisma.DocumentationPlanStepFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPlanStepPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DocumentationPlanStepFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPlanStepPayload>
+        }
+        findMany: {
+          args: Prisma.DocumentationPlanStepFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPlanStepPayload>[]
+        }
+        create: {
+          args: Prisma.DocumentationPlanStepCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPlanStepPayload>
+        }
+        createMany: {
+          args: Prisma.DocumentationPlanStepCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.DocumentationPlanStepDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPlanStepPayload>
+        }
+        update: {
+          args: Prisma.DocumentationPlanStepUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPlanStepPayload>
+        }
+        deleteMany: {
+          args: Prisma.DocumentationPlanStepDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DocumentationPlanStepUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.DocumentationPlanStepUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPlanStepPayload>
+        }
+        aggregate: {
+          args: Prisma.DocumentationPlanStepAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDocumentationPlanStep>
+        }
+        groupBy: {
+          args: Prisma.DocumentationPlanStepGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentationPlanStepGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DocumentationPlanStepCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentationPlanStepCountAggregateOutputType> | number
         }
       }
     }
@@ -5126,6 +5260,35 @@ export const PropertyAmenityScalarFieldEnum = {
 export type PropertyAmenityScalarFieldEnum = (typeof PropertyAmenityScalarFieldEnum)[keyof typeof PropertyAmenityScalarFieldEnum]
 
 
+export const DocumentationPlanScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  name: 'name',
+  description: 'description',
+  isActive: 'isActive',
+  requiredDocumentTypes: 'requiredDocumentTypes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DocumentationPlanScalarFieldEnum = (typeof DocumentationPlanScalarFieldEnum)[keyof typeof DocumentationPlanScalarFieldEnum]
+
+
+export const DocumentationPlanStepScalarFieldEnum = {
+  id: 'id',
+  planId: 'planId',
+  name: 'name',
+  stepType: 'stepType',
+  order: 'order',
+  documentType: 'documentType',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DocumentationPlanStepScalarFieldEnum = (typeof DocumentationPlanStepScalarFieldEnum)[keyof typeof DocumentationPlanStepScalarFieldEnum]
+
+
 export const PaymentPlanScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -5184,6 +5347,7 @@ export const PropertyPaymentMethodPhaseScalarFieldEnum = {
   tenantId: 'tenantId',
   paymentMethodId: 'paymentMethodId',
   paymentPlanId: 'paymentPlanId',
+  documentationPlanId: 'documentationPlanId',
   name: 'name',
   description: 'description',
   phaseCategory: 'phaseCategory',
@@ -5388,6 +5552,7 @@ export const DocumentationPhaseScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   phaseId: 'phaseId',
+  documentationPlanId: 'documentationPlanId',
   currentStepId: 'currentStepId',
   approvedDocumentsCount: 'approvedDocumentsCount',
   requiredDocumentsCount: 'requiredDocumentsCount',
@@ -6275,6 +6440,26 @@ export const PropertyAmenityOrderByRelevanceFieldEnum = {
 export type PropertyAmenityOrderByRelevanceFieldEnum = (typeof PropertyAmenityOrderByRelevanceFieldEnum)[keyof typeof PropertyAmenityOrderByRelevanceFieldEnum]
 
 
+export const DocumentationPlanOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  name: 'name',
+  description: 'description'
+} as const
+
+export type DocumentationPlanOrderByRelevanceFieldEnum = (typeof DocumentationPlanOrderByRelevanceFieldEnum)[keyof typeof DocumentationPlanOrderByRelevanceFieldEnum]
+
+
+export const DocumentationPlanStepOrderByRelevanceFieldEnum = {
+  id: 'id',
+  planId: 'planId',
+  name: 'name',
+  documentType: 'documentType'
+} as const
+
+export type DocumentationPlanStepOrderByRelevanceFieldEnum = (typeof DocumentationPlanStepOrderByRelevanceFieldEnum)[keyof typeof DocumentationPlanStepOrderByRelevanceFieldEnum]
+
+
 export const PaymentPlanOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -6309,6 +6494,7 @@ export const PropertyPaymentMethodPhaseOrderByRelevanceFieldEnum = {
   tenantId: 'tenantId',
   paymentMethodId: 'paymentMethodId',
   paymentPlanId: 'paymentPlanId',
+  documentationPlanId: 'documentationPlanId',
   name: 'name',
   description: 'description'
 } as const
@@ -6436,6 +6622,7 @@ export const DocumentationPhaseOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   phaseId: 'phaseId',
+  documentationPlanId: 'documentationPlanId',
   currentStepId: 'currentStepId'
 } as const
 
@@ -6824,6 +7011,13 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
 
 
 /**
+ * Reference to a field of type 'StepType'
+ */
+export type EnumStepTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StepType'>
+    
+
+
+/**
  * Reference to a field of type 'PaymentFrequency'
  */
 export type EnumPaymentFrequencyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentFrequency'>
@@ -6855,13 +7049,6 @@ export type EnumCompletionCriterionFieldRefInput<$PrismaModel> = FieldRefInputTy
  * Reference to a field of type 'PhaseTrigger'
  */
 export type EnumPhaseTriggerFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PhaseTrigger'>
-    
-
-
-/**
- * Reference to a field of type 'StepType'
- */
-export type EnumStepTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StepType'>
     
 
 
@@ -7203,6 +7390,8 @@ export type GlobalOmitConfig = {
   propertyVariantMedia?: Prisma.PropertyVariantMediaOmit
   propertyUnit?: Prisma.PropertyUnitOmit
   propertyAmenity?: Prisma.PropertyAmenityOmit
+  documentationPlan?: Prisma.DocumentationPlanOmit
+  documentationPlanStep?: Prisma.DocumentationPlanStepOmit
   paymentPlan?: Prisma.PaymentPlanOmit
   propertyPaymentMethod?: Prisma.PropertyPaymentMethodOmit
   propertyPaymentMethodLink?: Prisma.PropertyPaymentMethodLinkOmit

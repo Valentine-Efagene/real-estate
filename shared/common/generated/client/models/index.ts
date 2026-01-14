@@ -12,6 +12,8 @@ export * from './DeviceEndpoint';
 export * from './DocumentRequirementRule';
 export * from './DocumentTemplate';
 export * from './DocumentationPhase';
+export * from './DocumentationPlan';
+export * from './DocumentationPlanStep';
 export * from './DocumentationStep';
 export * from './DocumentationStepApproval';
 export * from './DocumentationStepDocument';

@@ -492,11 +492,12 @@ model Tenant {
   updatedAt DateTime @updatedAt
 
   // Back-relations for multitenancy
-  users          User[]
-  properties     Property[]
-  paymentPlans   PaymentPlan[]
-  paymentMethods PropertyPaymentMethod[]
-  applications   Application[]
+  users              User[]
+  properties         Property[]
+  paymentPlans       PaymentPlan[]
+  documentationPlans DocumentationPlan[]
+  paymentMethods     PropertyPaymentMethod[]
+  applications       Application[]
 
   // RBAC: Tenant-scoped roles and permissions
   roles       Role[]
@@ -1024,6 +1025,59 @@ model PropertyAmenity {
 }
 
 // =============================================================================
+// DOCUMENTATION PLAN DOMAIN - Reusable step workflow templates
+// =============================================================================
+
+// DocumentationPlan = reusable structure for documentation workflows
+// Examples: "Standard KYC", "Quick Verification", "Full Underwriting"
+model DocumentationPlan {
+  id          String  @id @default(cuid())
+  tenantId    String? // NULL = global template available to all tenants
+  tenant      Tenant? @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  name        String
+  description String? @db.Text
+  isActive    Boolean @default(true)
+
+  // Document requirements for this plan
+  requiredDocumentTypes Json? // Array of document type strings, e.g., ["ID_CARD", "BANK_STATEMENT"]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Steps that make up this plan
+  steps               DocumentationPlanStep[]
+  // Used by property payment method phases (templates)
+  methodPhases        PropertyPaymentMethodPhase[]
+  // Used by instantiated documentation phases
+  documentationPhases DocumentationPhase[]
+
+  @@unique([tenantId, name]) // Unique per tenant, or globally if tenantId is null
+  @@index([tenantId])
+  @@map("documentation_plans")
+}
+
+// Step template within a DocumentationPlan
+model DocumentationPlanStep {
+  id     String            @id @default(cuid())
+  planId String
+  plan   DocumentationPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  name     String
+  stepType StepType
+  order    Int
+
+  // Optional: which document type this step handles (for UPLOAD steps)
+  documentType String?
+  metadata     Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([planId])
+  @@map("documentation_plan_steps")
+}
+
+// =============================================================================
 // PAYMENT PLAN DOMAIN - Reusable installment structure templates
 // =============================================================================
 
@@ -1142,8 +1196,12 @@ model PropertyPaymentMethodPhase {
   tenant          Tenant                @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   paymentMethodId String
   paymentMethod   PropertyPaymentMethod @relation(fields: [paymentMethodId], references: [id], onDelete: Cascade)
-  paymentPlanId   String? // Only for PAYMENT phases
-  paymentPlan     PaymentPlan?          @relation(fields: [paymentPlanId], references: [id])
+
+  // Plan references (only one should be set based on phaseCategory)
+  paymentPlanId       String? // Only for PAYMENT phases
+  paymentPlan         PaymentPlan?       @relation(fields: [paymentPlanId], references: [id])
+  documentationPlanId String? // Only for DOCUMENTATION phases
+  documentationPlan   DocumentationPlan? @relation(fields: [documentationPlanId], references: [id])
 
   name        String
   description String? @db.Text
@@ -1168,13 +1226,14 @@ model PropertyPaymentMethodPhase {
   completionCriterion             CompletionCriterion?
 
   // Snapshots for audit (original config at creation time)
+  // These are still needed for inline definitions (backward compatibility)
   stepDefinitionsSnapshot  Json?
   requiredDocumentSnapshot Json?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // Normalized child tables (for DOCUMENTATION phases)
+  // Normalized child tables (for DOCUMENTATION phases - inline definitions)
   steps               PaymentMethodPhaseStep[]
   requiredDocuments   PaymentMethodPhaseDocument[]
   // Normalized child tables (for QUESTIONNAIRE phases)
@@ -1185,6 +1244,7 @@ model PropertyPaymentMethodPhase {
   @@index([tenantId])
   @@index([paymentMethodId])
   @@index([paymentPlanId])
+  @@index([documentationPlanId])
   @@index([phaseCategory])
   @@map("property_payment_method_phases")
 }
@@ -1611,6 +1671,10 @@ model DocumentationPhase {
   tenant   Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   phaseId  String           @unique
   phase    ApplicationPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+
+  // Documentation plan reference (if created from a plan)
+  documentationPlanId String?
+  documentationPlan   DocumentationPlan? @relation(fields: [documentationPlanId], references: [id])
 
   // Current step pointer for UX and orchestration
   currentStepId String?

@@ -54,7 +54,7 @@ router.get('/', requireTenant, async (req: Request, res: Response, next: NextFun
 router.get('/:id', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const paymentPlanService = getPaymentPlanService(req);
-        const plan = await paymentPlanService.findById(req.params.id);
+        const plan = await paymentPlanService.findById(req.params.id as string);
         res.json(successResponse(plan));
     } catch (error) {
         next(error);
@@ -66,7 +66,7 @@ router.patch('/:id', requireTenant, requireRole(ADMIN_ROLES), async (req: Reques
     try {
         const data = UpdatePaymentPlanSchema.parse(req.body);
         const paymentPlanService = getPaymentPlanService(req);
-        const plan = await paymentPlanService.update(req.params.id, data);
+        const plan = await paymentPlanService.update(req.params.id as string, data);
         res.json(successResponse(plan));
     } catch (error) {
         if (error instanceof z.ZodError) {
@@ -81,7 +81,7 @@ router.patch('/:id', requireTenant, requireRole(ADMIN_ROLES), async (req: Reques
 router.delete('/:id', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const paymentPlanService = getPaymentPlanService(req);
-        const result = await paymentPlanService.delete(req.params.id);
+        const result = await paymentPlanService.delete(req.params.id as string);
         res.json(successResponse(result));
     } catch (error) {
         next(error);
@@ -97,7 +97,7 @@ router.post('/:id/clone', requireTenant, requireRole(ADMIN_ROLES), async (req: R
             return;
         }
         const paymentPlanService = getPaymentPlanService(req);
-        const plan = await paymentPlanService.clone(req.params.id, name);
+        const plan = await paymentPlanService.clone(req.params.id as string, name);
         res.status(201).json(successResponse(plan));
     } catch (error) {
         next(error);

@@ -1,9 +1,9 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { z } from 'zod';
 import { paymentMethodChangeService } from '../services/payment-method-change.service';
-import { AppError, getAuthContext } from '@valentine-efagene/qshelter-common';
+import { AppError, getAuthContext, successResponse } from '@valentine-efagene/qshelter-common';
 
-const router = Router();
+const router: Router = Router();
 
 // =============================================================================
 // Validation Schemas
@@ -35,7 +35,7 @@ router.post(
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { tenantId, userId } = getAuthContext(req);
-            const { applicationId } = req.params;
+            const applicationId = req.params.applicationId as string;
 
             const body = createRequestSchema.parse(req.body);
 
@@ -47,7 +47,7 @@ router.post(
                 tenantId,
             });
 
-            res.status(201).json(request);
+            res.status(201).json(successResponse(request));
         } catch (error) {
             next(error);
         }
@@ -66,11 +66,11 @@ router.get(
             if (!tenantId) {
                 throw new AppError(400, 'Missing tenant context');
             }
-            const { applicationId } = req.params;
+            const applicationId = req.params.applicationId as string;
 
             const requests = await paymentMethodChangeService.listByapplication(applicationId, tenantId);
 
-            res.json(requests);
+            res.json(successResponse(requests));
         } catch (error) {
             next(error);
         }
@@ -89,11 +89,11 @@ router.get(
             if (!tenantId) {
                 throw new AppError(400, 'Missing tenant context');
             }
-            const { requestId } = req.params;
+            const requestId = req.params.requestId as string;
 
             const request = await paymentMethodChangeService.findById(requestId, tenantId);
 
-            res.json(request);
+            res.json(successResponse(request));
         } catch (error) {
             next(error);
         }
@@ -112,11 +112,11 @@ router.post(
             if (!tenantId) {
                 throw new AppError(400, 'Missing tenant context');
             }
-            const { requestId } = req.params;
+            const requestId = req.params.requestId as string;
 
             const request = await paymentMethodChangeService.submitDocuments(requestId, tenantId);
 
-            res.json(request);
+            res.json(successResponse(request));
         } catch (error) {
             next(error);
         }
@@ -135,11 +135,11 @@ router.post(
             if (!tenantId || !userId) {
                 throw new AppError(400, 'Missing tenant or user context');
             }
-            const { requestId } = req.params;
+            const requestId = req.params.requestId as string;
 
             const request = await paymentMethodChangeService.cancel(requestId, userId, tenantId);
 
-            res.json(request);
+            res.json(successResponse(request));
         } catch (error) {
             next(error);
         }
@@ -165,7 +165,7 @@ router.get(
 
             const requests = await paymentMethodChangeService.listPendingForReview(tenantId);
 
-            res.json(requests);
+            res.json(successResponse(requests));
         } catch (error) {
             next(error);
         }
@@ -184,11 +184,11 @@ router.post(
             if (!tenantId || !userId) {
                 throw new AppError(400, 'Missing tenant or user context');
             }
-            const { requestId } = req.params;
+            const requestId = req.params.requestId as string;
 
             const request = await paymentMethodChangeService.startReview(requestId, userId, tenantId);
 
-            res.json(request);
+            res.json(successResponse(request));
         } catch (error) {
             next(error);
         }
@@ -207,7 +207,7 @@ router.post(
             if (!tenantId || !userId) {
                 throw new AppError(400, 'Missing tenant or user context');
             }
-            const { requestId } = req.params;
+            const requestId = req.params.requestId as string;
 
             const body = reviewSchema.parse(req.body);
 
@@ -218,7 +218,7 @@ router.post(
                 tenantId
             );
 
-            res.json(request);
+            res.json(successResponse(request));
         } catch (error) {
             next(error);
         }
@@ -237,7 +237,7 @@ router.post(
             if (!tenantId || !userId) {
                 throw new AppError(400, 'Missing tenant or user context');
             }
-            const { requestId } = req.params;
+            const requestId = req.params.requestId as string;
 
             const body = rejectSchema.parse(req.body);
 
@@ -248,7 +248,7 @@ router.post(
                 tenantId
             );
 
-            res.json(request);
+            res.json(successResponse(request));
         } catch (error) {
             next(error);
         }
@@ -268,15 +268,15 @@ router.post(
             if (!tenantId || !userId) {
                 throw new AppError(400, 'Missing tenant or user context');
             }
-            const { requestId } = req.params;
+            const requestId = req.params.requestId as string;
 
             const result = await paymentMethodChangeService.execute(requestId, userId, tenantId);
 
-            res.json({
+            res.json(successResponse({
                 message: 'Payment method change executed successfully',
                 request: result.request,
                 newPhases: result.newPhases,
-            });
+            }));
         } catch (error) {
             next(error);
         }

@@ -21,7 +21,7 @@ terminationRouter.post(
     '/applications/:applicationId/terminate',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { applicationId } = req.params;
+            const applicationId = req.params.applicationId as string;
             const { userId } = getAuthContext(req);
 
             if (!userId) {
@@ -68,7 +68,7 @@ terminationRouter.post(
     '/applications/:applicationId/admin-terminate',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { applicationId } = req.params;
+            const applicationId = req.params.applicationId as string;
             const { userId } = getAuthContext(req);
 
             if (!userId) {
@@ -142,7 +142,7 @@ terminationRouter.get(
     '/terminations/:terminationId',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { terminationId } = req.params;
+            const terminationId = req.params.terminationId as string;
             const terminationService = createApplicationTerminationService();
 
             const termination = await terminationService.findById(terminationId);
@@ -165,7 +165,7 @@ terminationRouter.get(
     '/applications/:applicationId/terminations',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { applicationId } = req.params;
+            const applicationId = req.params.applicationId as string;
             const terminationService = createApplicationTerminationService();
 
             const terminations = await terminationService.findByApplication(applicationId);
@@ -188,7 +188,7 @@ terminationRouter.post(
     '/terminations/:terminationId/review',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { terminationId } = req.params;
+            const terminationId = req.params.terminationId as string;
             const { userId } = getAuthContext(req);
 
             if (!userId) {
@@ -233,7 +233,7 @@ terminationRouter.post(
     '/terminations/:terminationId/refund',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { terminationId } = req.params;
+            const terminationId = req.params.terminationId as string;
             const { userId } = getAuthContext(req);
 
             if (!userId) {
@@ -275,7 +275,7 @@ terminationRouter.post(
     '/terminations/:terminationId/refund/complete',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { terminationId } = req.params;
+            const terminationId = req.params.terminationId as string;
             const { userId } = getAuthContext(req);
 
             if (!userId) {
@@ -317,7 +317,7 @@ terminationRouter.post(
     '/terminations/:terminationId/cancel',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { terminationId } = req.params;
+            const terminationId = req.params.terminationId as string;
             const { userId } = getAuthContext(req);
 
             if (!userId) {

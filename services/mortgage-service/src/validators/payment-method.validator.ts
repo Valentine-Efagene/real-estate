@@ -33,7 +33,10 @@ export const DocumentRequirementSchema = z.object({
 
 // Phase template base schema (without transform for partial to work)
 const PaymentMethodPhaseBaseSchema = z.object({
-    paymentPlanId: z.string().optional().openapi({ description: 'Required for PAYMENT phases' }),
+    // Plan references (only one should be set based on phaseCategory)
+    paymentPlanId: z.string().optional().openapi({ description: 'Required for PAYMENT phases - references a PaymentPlan' }),
+    documentationPlanId: z.string().optional().openapi({ description: 'Optional for DOCUMENTATION phases - references a DocumentationPlan' }),
+
     name: z.string().min(1).max(100).openapi({ example: 'KYC Verification' }),
     description: z.string().optional(),
     phaseCategory: PhaseCategoryEnum.openapi({ example: 'DOCUMENTATION' }),
@@ -52,7 +55,8 @@ const PaymentMethodPhaseBaseSchema = z.object({
     requiredDocuments: z.array(DocumentRequirementSchema).optional().openapi({ description: 'Required documents for DOCUMENTATION phases' }),
     // Legacy format for backward compatibility (will be converted to requiredDocuments)
     requiredDocumentTypes: z.array(z.string()).optional().openapi({ description: 'Legacy: array of document type strings' }),
-    stepDefinitions: z.array(StepDefinitionSchema).optional().openapi({ description: 'Step definitions for DOCUMENTATION phases' }),
+    // Inline step definitions (alternative to using documentationPlanId)
+    stepDefinitions: z.array(StepDefinitionSchema).optional().openapi({ description: 'Inline step definitions for DOCUMENTATION phases (alternative to documentationPlanId)' }),
 });
 
 // Function to transform legacy requiredDocumentTypes to requiredDocuments

@@ -11,7 +11,7 @@ import {
 } from "@valentine-efagene/qshelter-common";
 import { createWorkflowBlockerService } from "../services/workflow-blocker.service";
 
-const router = Router();
+const router: Router = Router();
 
 // =============================================================================
 // VALIDATION SCHEMAS
@@ -123,7 +123,7 @@ router.post("/update-overdue", requireTenant, requireRole(ADMIN_ROLES), async (r
 router.get("/application/:applicationId", requireTenant, async (req: Request, res: Response) => {
     try {
         const { tenantId } = getAuthContext(req);
-        const { applicationId } = req.params;
+        const applicationId = req.params.applicationId as string;
 
         const service = getBlockerService(tenantId);
         const blockers = await service.getBlockerHistory(applicationId);
@@ -151,7 +151,7 @@ router.get("/application/:applicationId", requireTenant, async (req: Request, re
 router.get("/application/:applicationId/open", requireTenant, async (req: Request, res: Response) => {
     try {
         const { tenantId } = getAuthContext(req);
-        const { applicationId } = req.params;
+        const applicationId = req.params.applicationId as string;
 
         const service = getBlockerService(tenantId);
         const blockers = await service.getOpenBlockers(applicationId);
@@ -170,7 +170,7 @@ router.get("/application/:applicationId/open", requireTenant, async (req: Reques
 router.post("/:id/resolve", requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response) => {
     try {
         const { tenantId } = getAuthContext(req);
-        const { id } = req.params;
+        const id = req.params.id as string;
         const body = resolveBlockerSchema.parse(req.body);
 
         const service = getBlockerService(tenantId);
@@ -216,7 +216,7 @@ router.post("/:id/resolve", requireTenant, requireRole(ADMIN_ROLES), async (req:
 router.post("/:id/reminder-sent", requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response) => {
     try {
         const { tenantId } = getAuthContext(req);
-        const { id } = req.params;
+        const id = req.params.id as string;
         const body = recordReminderSchema.parse(req.body);
 
         const service = getBlockerService(tenantId);
@@ -242,7 +242,7 @@ router.post("/:id/reminder-sent", requireTenant, requireRole(ADMIN_ROLES), async
 router.post("/step/:stepId/resolve", requireTenant, async (req: Request, res: Response) => {
     try {
         const { tenantId } = getAuthContext(req);
-        const { stepId } = req.params;
+        const stepId = req.params.stepId as string;
         const body = resolveBlockerSchema.parse(req.body);
 
         // Get applicationId from step
@@ -283,7 +283,7 @@ router.post("/step/:stepId/resolve", requireTenant, async (req: Request, res: Re
 router.post("/phase/:phaseId/resolve", requireTenant, async (req: Request, res: Response) => {
     try {
         const { tenantId } = getAuthContext(req);
-        const { phaseId } = req.params;
+        const phaseId = req.params.phaseId as string;
         const body = resolveBlockerSchema.parse(req.body);
 
         // Get applicationId from phase

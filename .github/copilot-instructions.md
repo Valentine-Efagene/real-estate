@@ -13,6 +13,7 @@
 - All authorization should be handled by the API Gateway using a Lambda authorizer. Services should trust the authorizer and not implement their own authorization logic.
 - There must be no entity duplication. All entities must come from the shared library.
 - Use config service from @valentine-efagene/qshelter-common for configuration management in all services.
+- We must always use the published npm packages for shared code. Never import directly from local paths or workspaces.
 - Don't add .js extensions to import statements.
 - Anything that recurs across services should go into the shared library.
 - We use AWS SSM Parameter Store and Secrets Manager for configuration and secrets management.

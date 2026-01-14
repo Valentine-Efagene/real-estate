@@ -352,6 +352,9 @@ class PropertyTransferService {
                                     include: {
                                         steps: true,
                                         questionnaireFields: true,
+                                        documentationPlan: {
+                                            include: { steps: { orderBy: { order: 'asc' } } },
+                                        },
                                     },
                                     orderBy: { order: 'asc' },
                                 },
@@ -528,7 +531,8 @@ class PropertyTransferService {
                             data: {
                                 tenantId,
                                 phaseId: newPhase.id,
-                                totalStepsCount: templatePhase.steps?.length || 0,
+                                documentationPlanId: templatePhase.documentationPlanId,
+                                totalStepsCount: templatePhase.steps?.length || templatePhase.documentationPlan?.steps?.length || 0,
                                 completedStepsCount: 0,
                                 requiredDocumentsCount: 0,
                                 approvedDocumentsCount: 0,
@@ -538,8 +542,13 @@ class PropertyTransferService {
                             },
                         });
 
+                        // Get steps from template or documentation plan
+                        const stepsToCreate = templatePhase.steps?.length > 0
+                            ? templatePhase.steps
+                            : templatePhase.documentationPlan?.steps || [];
+
                         // Create documentation steps from template
-                        for (const stepTemplate of templatePhase.steps || []) {
+                        for (const stepTemplate of stepsToCreate) {
                             await tx.documentationStep.create({
                                 data: {
                                     tenantId,

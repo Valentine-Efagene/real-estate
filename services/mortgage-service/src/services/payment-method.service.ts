@@ -83,15 +83,51 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                         throw new AppError(400, `Phase "${phase.name}" is a PAYMENT phase and requires paymentPlanId`);
                     }
 
+                    // For DOCUMENTATION phases, either documentationPlanId or inline stepDefinitions should be provided
+                    let stepDefinitionsToUse = phase.stepDefinitions;
+                    let requiredDocumentTypesToUse = phase.requiredDocuments;
+
+                    // If documentationPlanId is provided, fetch the plan and use its steps/documents
+                    if (phase.phaseCategory === 'DOCUMENTATION' && phase.documentationPlanId) {
+                        const docPlan = await tx.documentationPlan.findUnique({
+                            where: { id: phase.documentationPlanId },
+                            include: { steps: { orderBy: { order: 'asc' } } },
+                        });
+
+                        if (!docPlan) {
+                            throw new AppError(404, `Documentation plan "${phase.documentationPlanId}" not found`);
+                        }
+
+                        // Use steps from documentation plan if not overridden
+                        if (!stepDefinitionsToUse || stepDefinitionsToUse.length === 0) {
+                            stepDefinitionsToUse = docPlan.steps.map((s: any) => ({
+                                name: s.name,
+                                stepType: s.stepType,
+                                order: s.order,
+                                metadata: s.metadata,
+                            }));
+                        }
+
+                        // Use required documents from documentation plan if not overridden
+                        if ((!requiredDocumentTypesToUse || requiredDocumentTypesToUse.length === 0) && docPlan.requiredDocumentTypes) {
+                            const docTypes = docPlan.requiredDocumentTypes as string[];
+                            requiredDocumentTypesToUse = docTypes.map((docType: string) => ({
+                                documentType: docType,
+                                isRequired: true,
+                            }));
+                        }
+                    }
+
                     // Store snapshots for audit
-                    const stepDefinitionsSnapshot = phase.stepDefinitions ? phase.stepDefinitions : null;
-                    const requiredDocumentSnapshot = phase.requiredDocuments ? phase.requiredDocuments : null;
+                    const stepDefinitionsSnapshot = stepDefinitionsToUse ? stepDefinitionsToUse : null;
+                    const requiredDocumentSnapshot = requiredDocumentTypesToUse ? requiredDocumentTypesToUse : null;
 
                     const createdPhase = await tx.propertyPaymentMethodPhase.create({
                         data: {
                             tenantId,
                             paymentMethodId: created.id,
                             paymentPlanId: phase.paymentPlanId,
+                            documentationPlanId: phase.documentationPlanId,
                             name: phase.name,
                             description: phase.description,
                             phaseCategory: phase.phaseCategory,
@@ -107,8 +143,8 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                     });
 
                     // Create step child records
-                    if (phase.stepDefinitions && phase.stepDefinitions.length > 0) {
-                        for (const step of phase.stepDefinitions) {
+                    if (stepDefinitionsToUse && stepDefinitionsToUse.length > 0) {
+                        for (const step of stepDefinitionsToUse) {
                             await tx.paymentMethodPhaseStep.create({
                                 data: {
                                     tenantId,
@@ -123,8 +159,8 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                     }
 
                     // Create required document child records
-                    if (phase.requiredDocuments && phase.requiredDocuments.length > 0) {
-                        for (const doc of phase.requiredDocuments) {
+                    if (requiredDocumentTypesToUse && requiredDocumentTypesToUse.length > 0) {
+                        for (const doc of requiredDocumentTypesToUse) {
                             await tx.paymentMethodPhaseDocument.create({
                                 data: {
                                     tenantId,
@@ -157,6 +193,9 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                     orderBy: { order: 'asc' },
                     include: {
                         paymentPlan: true,
+                        documentationPlan: {
+                            include: { steps: { orderBy: { order: 'asc' } } },
+                        },
                         steps: {
                             orderBy: { order: 'asc' },
                         },
@@ -176,6 +215,9 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                     orderBy: { order: 'asc' },
                     include: {
                         paymentPlan: true,
+                        documentationPlan: {
+                            include: { steps: { orderBy: { order: 'asc' } } },
+                        },
                         steps: {
                             orderBy: { order: 'asc' },
                         },
@@ -245,9 +287,44 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
             throw new AppError(400, 'PAYMENT phases require paymentPlanId');
         }
 
+        // For DOCUMENTATION phases, either documentationPlanId or inline stepDefinitions should be provided
+        let stepDefinitionsToUse = data.stepDefinitions;
+        let requiredDocumentTypesToUse = data.requiredDocuments;
+
+        // If documentationPlanId is provided, fetch the plan and use its steps/documents
+        if (data.phaseCategory === 'DOCUMENTATION' && data.documentationPlanId) {
+            const docPlan = await prisma.documentationPlan.findUnique({
+                where: { id: data.documentationPlanId },
+                include: { steps: { orderBy: { order: 'asc' } } },
+            });
+
+            if (!docPlan) {
+                throw new AppError(404, `Documentation plan "${data.documentationPlanId}" not found`);
+            }
+
+            // Use steps from documentation plan if not overridden
+            if (!stepDefinitionsToUse || stepDefinitionsToUse.length === 0) {
+                stepDefinitionsToUse = docPlan.steps.map((s: any) => ({
+                    name: s.name,
+                    stepType: s.stepType,
+                    order: s.order,
+                    metadata: s.metadata,
+                }));
+            }
+
+            // Use required documents from documentation plan if not overridden
+            if ((!requiredDocumentTypesToUse || requiredDocumentTypesToUse.length === 0) && docPlan.requiredDocumentTypes) {
+                const docTypes = docPlan.requiredDocumentTypes as string[];
+                requiredDocumentTypesToUse = docTypes.map((docType: string) => ({
+                    documentType: docType,
+                    isRequired: true,
+                }));
+            }
+        }
+
         // Store snapshots for audit
-        const stepDefinitionsSnapshot = data.stepDefinitions ? data.stepDefinitions : null;
-        const requiredDocumentSnapshot = data.requiredDocuments ? data.requiredDocuments : null;
+        const stepDefinitionsSnapshot = stepDefinitionsToUse ? stepDefinitionsToUse : null;
+        const requiredDocumentSnapshot = requiredDocumentTypesToUse ? requiredDocumentTypesToUse : null;
 
         const phase = await prisma.$transaction(async (tx: any) => {
             const createdPhase = await tx.propertyPaymentMethodPhase.create({
@@ -255,6 +332,7 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                     tenantId: method.tenantId,
                     paymentMethodId: methodId,
                     paymentPlanId: data.paymentPlanId,
+                    documentationPlanId: data.documentationPlanId,
                     name: data.name,
                     description: data.description,
                     phaseCategory: data.phaseCategory,
@@ -270,8 +348,8 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
             });
 
             // Create step child records
-            if (data.stepDefinitions && data.stepDefinitions.length > 0) {
-                for (const step of data.stepDefinitions) {
+            if (stepDefinitionsToUse && stepDefinitionsToUse.length > 0) {
+                for (const step of stepDefinitionsToUse) {
                     await tx.paymentMethodPhaseStep.create({
                         data: {
                             tenantId: method.tenantId,
@@ -286,8 +364,8 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
             }
 
             // Create required document child records
-            if (data.requiredDocuments && data.requiredDocuments.length > 0) {
-                for (const doc of data.requiredDocuments) {
+            if (requiredDocumentTypesToUse && requiredDocumentTypesToUse.length > 0) {
+                for (const doc of requiredDocumentTypesToUse) {
                     await tx.paymentMethodPhaseDocument.create({
                         data: {
                             tenantId: method.tenantId,
@@ -310,6 +388,9 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
             where: { id: phase.id },
             include: {
                 paymentPlan: true,
+                documentationPlan: {
+                    include: { steps: { orderBy: { order: 'asc' } } },
+                },
                 steps: {
                     orderBy: { order: 'asc' },
                 },

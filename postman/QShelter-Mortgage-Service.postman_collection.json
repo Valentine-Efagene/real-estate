@@ -1,0 +1,811 @@
+{
+    "info": {
+        "_postman_id": "qshelter-mortgage-service-v1",
+        "name": "QShelter Mortgage Service",
+        "description": "Mortgage service endpoints: payment plans, payment methods, applications, phases, documents, payments.",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "variable": [
+        {
+            "key": "mortgageServiceUrl",
+            "value": "http://localhost:3001",
+            "type": "string"
+        },
+        {
+            "key": "tenantId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "adminAccessToken",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "customerAccessToken",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "downpaymentPlanId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "mortgagePlanId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "paymentMethodId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "propertyId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "unitId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "applicationId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "kycPhaseId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "downpaymentPhaseId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "verificationPhaseId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "mortgagePhaseId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "docId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "installmentId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "paymentReference",
+            "value": "",
+            "type": "string"
+        }
+    ],
+    "item": [
+        {
+            "name": "Payment Plans",
+            "item": [
+                {
+                    "name": "Create Downpayment Plan (10% One-Off)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{adminAccessToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"10% One-Off Downpayment\",\n  \"description\": \"Single payment for 10% downpayment\",\n  \"frequency\": \"ONE_TIME\",\n  \"numberOfInstallments\": 1,\n  \"interestRate\": 0,\n  \"gracePeriodDays\": 0\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-plans",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-plans"
+                            ]
+                        }
+                    },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "const res = pm.response.json();",
+                                    "if (res.success && res.data) {",
+                                    "  pm.collectionVariables.set('downpaymentPlanId', res.data.id);",
+                                    "  pm.test('Downpayment plan created', () => { pm.expect(res.data.id).to.be.a('string'); });",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Create Flexible Mortgage Plan (9.5%)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{adminAccessToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Flexible Mortgage at 9.5%\",\n  \"description\": \"Monthly payments at 9.5% annual interest, term selected by applicant\",\n  \"frequency\": \"MONTHLY\",\n  \"allowFlexibleTerm\": true,\n  \"minTermMonths\": 60,\n  \"maxTermMonths\": 360,\n  \"termStepMonths\": 12,\n  \"maxAgeAtMaturity\": 65,\n  \"interestRate\": 9.5,\n  \"gracePeriodDays\": 15\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-plans",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-plans"
+                            ]
+                        }
+                    },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "const res = pm.response.json();",
+                                    "if (res.success && res.data) {",
+                                    "  pm.collectionVariables.set('mortgagePlanId', res.data.id);",
+                                    "  pm.test('Mortgage plan created', () => { pm.expect(res.data.id).to.be.a('string'); });",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Payment Methods",
+            "item": [
+                {
+                    "name": "Create Payment Method (10/90 Lekki Mortgage)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{adminAccessToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"10/90 Lekki Mortgage\",\n  \"description\": \"Underwriting → Downpayment → Final Documentation → Mortgage\",\n  \"requiresManualApproval\": true,\n  \"phases\": [\n    {\n      \"name\": \"Underwriting & Documentation\",\n      \"phaseCategory\": \"DOCUMENTATION\",\n      \"phaseType\": \"KYC\",\n      \"order\": 1,\n      \"requiredDocumentTypes\": [\"ID_CARD\", \"BANK_STATEMENT\", \"EMPLOYMENT_LETTER\"],\n      \"stepDefinitions\": [\n        { \"name\": \"Upload Valid ID\", \"stepType\": \"UPLOAD\", \"order\": 1 },\n        { \"name\": \"Upload Bank Statements\", \"stepType\": \"UPLOAD\", \"order\": 2 },\n        { \"name\": \"Upload Employment Letter\", \"stepType\": \"UPLOAD\", \"order\": 3 },\n        { \"name\": \"Admin Reviews Documents\", \"stepType\": \"APPROVAL\", \"order\": 4 },\n        { \"name\": \"Generate Provisional Offer\", \"stepType\": \"GENERATE_DOCUMENT\", \"order\": 5, \"metadata\": { \"documentType\": \"PROVISIONAL_OFFER\", \"autoSend\": true, \"expiresInDays\": 30 } },\n        { \"name\": \"Customer Signs Provisional Offer\", \"stepType\": \"SIGNATURE\", \"order\": 6 }\n      ]\n    },\n    {\n      \"name\": \"10% Downpayment\",\n      \"phaseCategory\": \"PAYMENT\",\n      \"phaseType\": \"DOWNPAYMENT\",\n      \"order\": 2,\n      \"percentOfPrice\": 10,\n      \"paymentPlanId\": \"{{downpaymentPlanId}}\"\n    },\n    {\n      \"name\": \"Final Documentation\",\n      \"phaseCategory\": \"DOCUMENTATION\",\n      \"phaseType\": \"VERIFICATION\",\n      \"order\": 3,\n      \"stepDefinitions\": [\n        { \"name\": \"Admin Uploads Final Offer\", \"stepType\": \"UPLOAD\", \"order\": 1, \"metadata\": { \"documentType\": \"FINAL_OFFER\", \"uploadedBy\": \"ADMIN\" } },\n        { \"name\": \"Customer Signs Final Offer\", \"stepType\": \"SIGNATURE\", \"order\": 2 }\n      ]\n    },\n    {\n      \"name\": \"20-Year Mortgage\",\n      \"phaseCategory\": \"PAYMENT\",\n      \"phaseType\": \"MORTGAGE\",\n      \"order\": 4,\n      \"percentOfPrice\": 90,\n      \"interestRate\": 9.5,\n      \"paymentPlanId\": \"{{mortgagePlanId}}\"\n    }\n  ]\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-methods",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-methods"
+                            ]
+                        }
+                    },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "const res = pm.response.json();",
+                                    "if (res.success && res.data) {",
+                                    "  pm.collectionVariables.set('paymentMethodId', res.data.id);",
+                                    "  pm.test('Payment method created', () => { pm.expect(res.data.phases.length).to.equal(4); });",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Link Payment Method to Property",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{adminAccessToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"propertyId\": \"{{propertyId}}\",\n  \"isDefault\": true\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/payment-methods/{{paymentMethodId}}/properties",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "payment-methods",
+                                "{{paymentMethodId}}",
+                                "properties"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Applications",
+            "item": [
+                {
+                    "name": "Create Application (Chidi)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{customerAccessToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"propertyUnitId\": \"{{unitId}}\",\n  \"paymentMethodId\": \"{{paymentMethodId}}\",\n  \"title\": \"Purchase Agreement - Lekki Gardens Unit 14B\",\n  \"applicationType\": \"MORTGAGE\",\n  \"totalAmount\": 85000000,\n  \"monthlyIncome\": 2500000,\n  \"monthlyExpenses\": 800000,\n  \"applicantAge\": 40,\n  \"selectedMortgageTermMonths\": 240\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications"
+                            ]
+                        }
+                    },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "const res = pm.response.json();",
+                                    "if (res.success && res.data) {",
+                                    "  pm.collectionVariables.set('applicationId', res.data.id);",
+                                    "  const phases = res.data.phases;",
+                                    "  pm.collectionVariables.set('kycPhaseId', phases.find(p => p.phaseType === 'KYC')?.id || '');",
+                                    "  pm.collectionVariables.set('downpaymentPhaseId', phases.find(p => p.phaseType === 'DOWNPAYMENT')?.id || '');",
+                                    "  pm.collectionVariables.set('verificationPhaseId', phases.find(p => p.phaseType === 'VERIFICATION')?.id || '');",
+                                    "  pm.collectionVariables.set('mortgagePhaseId', phases.find(p => p.phaseType === 'MORTGAGE')?.id || '');",
+                                    "  pm.test('Application created with 4 phases', () => { pm.expect(phases.length).to.equal(4); });",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Submit Application",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{customerAccessToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"action\": \"SUBMIT\",\n  \"note\": \"Submitting for processing\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/transition",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "{{applicationId}}",
+                                "transition"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Activate KYC Phase",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{customerAccessToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{kycPhaseId}}/activate",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "{{applicationId}}",
+                                "phases",
+                                "{{kycPhaseId}}",
+                                "activate"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Application Phases",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{customerAccessToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "{{applicationId}}",
+                                "phases"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Sign Application",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{customerAccessToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/sign",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "{{applicationId}}",
+                                "sign"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Documents",
+            "item": [
+                {
+                    "name": "Upload Document (ID Card)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{customerAccessToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"documentType\": \"ID_CARD\",\n  \"url\": \"https://s3.amazonaws.com/qshelter/chidi/id.pdf\",\n  \"fileName\": \"id.pdf\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{kycPhaseId}}/documents",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "{{applicationId}}",
+                                "phases",
+                                "{{kycPhaseId}}",
+                                "documents"
+                            ]
+                        }
+                    },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "const res = pm.response.json();",
+                                    "if (res.success && res.data) {",
+                                    "  pm.collectionVariables.set('docId', res.data.id);",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Upload Document (Bank Statement)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{customerAccessToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"documentType\": \"BANK_STATEMENT\",\n  \"url\": \"https://s3.amazonaws.com/qshelter/chidi/bank.pdf\",\n  \"fileName\": \"bank.pdf\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{kycPhaseId}}/documents",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "{{applicationId}}",
+                                "phases",
+                                "{{kycPhaseId}}",
+                                "documents"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Upload Document (Employment Letter)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{customerAccessToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"documentType\": \"EMPLOYMENT_LETTER\",\n  \"url\": \"https://s3.amazonaws.com/qshelter/chidi/employment.pdf\",\n  \"fileName\": \"employment.pdf\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{kycPhaseId}}/documents",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "{{applicationId}}",
+                                "phases",
+                                "{{kycPhaseId}}",
+                                "documents"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Approve Document (Admin)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{adminAccessToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"status\": \"APPROVED\",\n  \"note\": \"Document verified\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/documents/{{docId}}/review",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "{{applicationId}}",
+                                "documents",
+                                "{{docId}}",
+                                "review"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Steps",
+            "item": [
+                {
+                    "name": "Complete Step (Sign Provisional Offer)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{customerAccessToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"stepName\": \"Customer Signs Provisional Offer\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{kycPhaseId}}/steps/complete",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "{{applicationId}}",
+                                "phases",
+                                "{{kycPhaseId}}",
+                                "steps",
+                                "complete"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Complete Step (Sign Final Offer)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{customerAccessToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"stepName\": \"Customer Signs Final Offer\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{verificationPhaseId}}/steps/complete",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "{{applicationId}}",
+                                "phases",
+                                "{{verificationPhaseId}}",
+                                "steps",
+                                "complete"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Payments",
+            "item": [
+                {
+                    "name": "Generate Installments (Downpayment)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{customerAccessToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"startDate\": \"2026-01-15T00:00:00.000Z\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{downpaymentPhaseId}}/installments",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "{{applicationId}}",
+                                "phases",
+                                "{{downpaymentPhaseId}}",
+                                "installments"
+                            ]
+                        }
+                    },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "const res = pm.response.json();",
+                                    "if (res.success && res.data && res.data.installments && res.data.installments.length > 0) {",
+                                    "  pm.collectionVariables.set('installmentId', res.data.installments[0].id);",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Record Payment (Downpayment)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{customerAccessToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"phaseId\": \"{{downpaymentPhaseId}}\",\n  \"installmentId\": \"{{installmentId}}\",\n  \"amount\": 8500000,\n  \"paymentMethod\": \"BANK_TRANSFER\",\n  \"externalReference\": \"chidi-downpayment-ref-001\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/payments",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "{{applicationId}}",
+                                "payments"
+                            ]
+                        }
+                    },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "const res = pm.response.json();",
+                                    "if (res.success && res.data) {",
+                                    "  pm.collectionVariables.set('paymentReference', res.data.reference);",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Process Payment Confirmation",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{customerAccessToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"reference\": \"{{paymentReference}}\",\n  \"status\": \"COMPLETED\",\n  \"gatewayTransactionId\": \"gateway-tx-001\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/payments/process",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "payments",
+                                "process"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Generate Installments (Mortgage)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{customerAccessToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"startDate\": \"2026-02-01T00:00:00.000Z\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{mortgagePhaseId}}/installments",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "applications",
+                                "{{applicationId}}",
+                                "phases",
+                                "{{mortgagePhaseId}}",
+                                "installments"
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

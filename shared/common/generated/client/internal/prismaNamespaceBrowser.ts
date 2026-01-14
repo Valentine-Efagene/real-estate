@@ -78,6 +78,8 @@ export const ModelName = {
   PropertyVariantMedia: 'PropertyVariantMedia',
   PropertyUnit: 'PropertyUnit',
   PropertyAmenity: 'PropertyAmenity',
+  DocumentationPlan: 'DocumentationPlan',
+  DocumentationPlanStep: 'DocumentationPlanStep',
   PaymentPlan: 'PaymentPlan',
   PropertyPaymentMethod: 'PropertyPaymentMethod',
   PropertyPaymentMethodLink: 'PropertyPaymentMethodLink',
@@ -529,6 +531,35 @@ export const PropertyAmenityScalarFieldEnum = {
 export type PropertyAmenityScalarFieldEnum = (typeof PropertyAmenityScalarFieldEnum)[keyof typeof PropertyAmenityScalarFieldEnum]
 
 
+export const DocumentationPlanScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  name: 'name',
+  description: 'description',
+  isActive: 'isActive',
+  requiredDocumentTypes: 'requiredDocumentTypes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DocumentationPlanScalarFieldEnum = (typeof DocumentationPlanScalarFieldEnum)[keyof typeof DocumentationPlanScalarFieldEnum]
+
+
+export const DocumentationPlanStepScalarFieldEnum = {
+  id: 'id',
+  planId: 'planId',
+  name: 'name',
+  stepType: 'stepType',
+  order: 'order',
+  documentType: 'documentType',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DocumentationPlanStepScalarFieldEnum = (typeof DocumentationPlanStepScalarFieldEnum)[keyof typeof DocumentationPlanStepScalarFieldEnum]
+
+
 export const PaymentPlanScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -587,6 +618,7 @@ export const PropertyPaymentMethodPhaseScalarFieldEnum = {
   tenantId: 'tenantId',
   paymentMethodId: 'paymentMethodId',
   paymentPlanId: 'paymentPlanId',
+  documentationPlanId: 'documentationPlanId',
   name: 'name',
   description: 'description',
   phaseCategory: 'phaseCategory',
@@ -791,6 +823,7 @@ export const DocumentationPhaseScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   phaseId: 'phaseId',
+  documentationPlanId: 'documentationPlanId',
   currentStepId: 'currentStepId',
   approvedDocumentsCount: 'approvedDocumentsCount',
   requiredDocumentsCount: 'requiredDocumentsCount',
@@ -1678,6 +1711,26 @@ export const PropertyAmenityOrderByRelevanceFieldEnum = {
 export type PropertyAmenityOrderByRelevanceFieldEnum = (typeof PropertyAmenityOrderByRelevanceFieldEnum)[keyof typeof PropertyAmenityOrderByRelevanceFieldEnum]
 
 
+export const DocumentationPlanOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  name: 'name',
+  description: 'description'
+} as const
+
+export type DocumentationPlanOrderByRelevanceFieldEnum = (typeof DocumentationPlanOrderByRelevanceFieldEnum)[keyof typeof DocumentationPlanOrderByRelevanceFieldEnum]
+
+
+export const DocumentationPlanStepOrderByRelevanceFieldEnum = {
+  id: 'id',
+  planId: 'planId',
+  name: 'name',
+  documentType: 'documentType'
+} as const
+
+export type DocumentationPlanStepOrderByRelevanceFieldEnum = (typeof DocumentationPlanStepOrderByRelevanceFieldEnum)[keyof typeof DocumentationPlanStepOrderByRelevanceFieldEnum]
+
+
 export const PaymentPlanOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -1712,6 +1765,7 @@ export const PropertyPaymentMethodPhaseOrderByRelevanceFieldEnum = {
   tenantId: 'tenantId',
   paymentMethodId: 'paymentMethodId',
   paymentPlanId: 'paymentPlanId',
+  documentationPlanId: 'documentationPlanId',
   name: 'name',
   description: 'description'
 } as const
@@ -1839,6 +1893,7 @@ export const DocumentationPhaseOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   phaseId: 'phaseId',
+  documentationPlanId: 'documentationPlanId',
   currentStepId: 'currentStepId'
 } as const
 

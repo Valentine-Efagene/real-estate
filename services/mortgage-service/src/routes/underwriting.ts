@@ -46,7 +46,7 @@ router.post('/evaluate', async (req: Request, res: Response): Promise<any> => {
  */
 router.get('/step/:stepId', async (req: Request, res: Response): Promise<any> => {
     try {
-        const { stepId } = req.params;
+        const stepId = req.params.stepId as string;
 
         const service = new UnderwritingService(prisma);
 
@@ -71,7 +71,7 @@ router.get('/step/:stepId', async (req: Request, res: Response): Promise<any> =>
  */
 router.get('/application/:applicationId', async (req: Request, res: Response): Promise<any> => {
     try {
-        const { applicationId } = req.params;
+        const applicationId = req.params.applicationId as string;
 
         const service = new UnderwritingService(prisma);
 

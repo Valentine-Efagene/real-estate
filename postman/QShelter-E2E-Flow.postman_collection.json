@@ -140,6 +140,11 @@
             "type": "string"
         },
         {
+            "key": "finalOfferDocId",
+            "value": "",
+            "type": "string"
+        },
+        {
             "key": "paymentReference",
             "value": "",
             "type": "string"
@@ -962,133 +967,7 @@
                     }
                 },
                 {
-                    "name": "6.4 Complete Upload Steps",
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json"
-                            },
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{chidiAccessToken}}"
-                            },
-                            {
-                                "key": "x-tenant-id",
-                                "value": "{{tenantId}}"
-                            },
-                            {
-                                "key": "x-idempotency-key",
-                                "value": "complete-upload-1-{{$timestamp}}"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{ \"stepName\": \"Upload Valid ID\" }"
-                        },
-                        "url": {
-                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{kycPhaseId}}/steps/complete",
-                            "host": [
-                                "{{mortgageServiceUrl}}"
-                            ],
-                            "path": [
-                                "applications",
-                                "{{applicationId}}",
-                                "phases",
-                                "{{kycPhaseId}}",
-                                "steps",
-                                "complete"
-                            ]
-                        }
-                    }
-                },
-                {
-                    "name": "6.5 Complete Bank Statement Step",
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json"
-                            },
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{chidiAccessToken}}"
-                            },
-                            {
-                                "key": "x-tenant-id",
-                                "value": "{{tenantId}}"
-                            },
-                            {
-                                "key": "x-idempotency-key",
-                                "value": "complete-upload-2-{{$timestamp}}"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{ \"stepName\": \"Upload Bank Statements\" }"
-                        },
-                        "url": {
-                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{kycPhaseId}}/steps/complete",
-                            "host": [
-                                "{{mortgageServiceUrl}}"
-                            ],
-                            "path": [
-                                "applications",
-                                "{{applicationId}}",
-                                "phases",
-                                "{{kycPhaseId}}",
-                                "steps",
-                                "complete"
-                            ]
-                        }
-                    }
-                },
-                {
-                    "name": "6.6 Complete Employment Letter Step",
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json"
-                            },
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{chidiAccessToken}}"
-                            },
-                            {
-                                "key": "x-tenant-id",
-                                "value": "{{tenantId}}"
-                            },
-                            {
-                                "key": "x-idempotency-key",
-                                "value": "complete-upload-3-{{$timestamp}}"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{ \"stepName\": \"Upload Employment Letter\" }"
-                        },
-                        "url": {
-                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{kycPhaseId}}/steps/complete",
-                            "host": [
-                                "{{mortgageServiceUrl}}"
-                            ],
-                            "path": [
-                                "applications",
-                                "{{applicationId}}",
-                                "phases",
-                                "{{kycPhaseId}}",
-                                "steps",
-                                "complete"
-                            ]
-                        }
-                    }
-                },
-                {
-                    "name": "6.7 Get Documents for Review",
+                    "name": "6.4 Get Documents for Review",
                     "event": [
                         {
                             "listen": "test",
@@ -1136,7 +1015,7 @@
                     }
                 },
                 {
-                    "name": "6.8 Admin Approves Doc 1",
+                    "name": "6.5 Admin Approves Doc 1 (auto-completes UPLOAD step)",
                     "request": {
                         "method": "POST",
                         "header": [
@@ -1177,7 +1056,7 @@
                     }
                 },
                 {
-                    "name": "6.9 Admin Approves Doc 2",
+                    "name": "6.6 Admin Approves Doc 2 (auto-completes UPLOAD step)",
                     "request": {
                         "method": "POST",
                         "header": [
@@ -1218,7 +1097,7 @@
                     }
                 },
                 {
-                    "name": "6.10 Admin Approves Doc 3",
+                    "name": "6.7 Admin Approves Doc 3 (auto-completes UPLOAD & APPROVAL steps)",
                     "request": {
                         "method": "POST",
                         "header": [
@@ -1259,49 +1138,7 @@
                     }
                 },
                 {
-                    "name": "6.11 Admin Completes Review Step",
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json"
-                            },
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {{adaezeAccessToken}}"
-                            },
-                            {
-                                "key": "x-tenant-id",
-                                "value": "{{tenantId}}"
-                            },
-                            {
-                                "key": "x-idempotency-key",
-                                "value": "complete-review-{{$timestamp}}"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n  \"stepName\": \"Admin Reviews Documents\",\n  \"note\": \"All documents verified and approved\"\n}"
-                        },
-                        "url": {
-                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{kycPhaseId}}/steps/complete",
-                            "host": [
-                                "{{mortgageServiceUrl}}"
-                            ],
-                            "path": [
-                                "applications",
-                                "{{applicationId}}",
-                                "phases",
-                                "{{kycPhaseId}}",
-                                "steps",
-                                "complete"
-                            ]
-                        }
-                    }
-                },
-                {
-                    "name": "6.12 Customer Signs Provisional Offer",
+                    "name": "6.8 Customer Signs Provisional Offer",
                     "request": {
                         "method": "POST",
                         "header": [
@@ -1499,10 +1336,24 @@
         },
         {
             "name": "8. Final Documentation",
-            "description": "Admin uploads final offer, customer signs.",
+            "description": "Admin uploads final offer, approves it (auto-completes UPLOAD step), customer signs.",
             "item": [
                 {
                     "name": "8.1 Admin Uploads Final Offer",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "const response = pm.response.json();",
+                                    "if (response.success && response.data) {",
+                                    "    pm.collectionVariables.set('finalOfferDocId', response.data.id);",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
                     "request": {
                         "method": "POST",
                         "header": [
@@ -1543,7 +1394,7 @@
                     }
                 },
                 {
-                    "name": "8.2 Admin Completes Upload Step",
+                    "name": "8.2 Admin Approves Final Offer (auto-completes UPLOAD step)",
                     "request": {
                         "method": "POST",
                         "header": [
@@ -1561,25 +1412,24 @@
                             },
                             {
                                 "key": "x-idempotency-key",
-                                "value": "complete-final-upload-{{$timestamp}}"
+                                "value": "approve-final-offer-{{$timestamp}}"
                             }
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{ \"stepName\": \"Admin Uploads Final Offer\" }"
+                            "raw": "{\n  \"status\": \"APPROVED\",\n  \"note\": \"Final offer letter approved\"\n}"
                         },
                         "url": {
-                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{verificationPhaseId}}/steps/complete",
+                            "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/documents/{{finalOfferDocId}}/review",
                             "host": [
                                 "{{mortgageServiceUrl}}"
                             ],
                             "path": [
                                 "applications",
                                 "{{applicationId}}",
-                                "phases",
-                                "{{verificationPhaseId}}",
-                                "steps",
-                                "complete"
+                                "documents",
+                                "{{finalOfferDocId}}",
+                                "review"
                             ]
                         }
                     }

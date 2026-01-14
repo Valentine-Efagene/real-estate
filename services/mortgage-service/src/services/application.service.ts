@@ -93,7 +93,7 @@ function getMortgagePaymentInfo(application: any): { termMonths: number; monthly
 
 /**
  * Parse step definitions from phase template
- * Now reads from the child table `steps` instead of JSON string
+ * Now reads from the child table `steps` or from `documentationPlan.steps`
  */
 function parseStepDefinitions(phaseTemplate: {
     steps?: Array<{
@@ -102,6 +102,14 @@ function parseStepDefinitions(phaseTemplate: {
         order: number;
         metadata?: any;
     }>;
+    documentationPlan?: {
+        steps: Array<{
+            name: string;
+            stepType: string;
+            order: number;
+            metadata?: any;
+        }>;
+    } | null;
     requiredDocuments?: Array<{
         documentType: string;
         isRequired: boolean;
@@ -117,13 +125,23 @@ function parseStepDefinitions(phaseTemplate: {
         isRequired: boolean;
     }>;
 }> {
-    // If we have normalized steps, use them
+    // If we have normalized steps from the phase template, use them first
     if (phaseTemplate.steps && phaseTemplate.steps.length > 0) {
         return phaseTemplate.steps.map((step, idx) => ({
             name: step.name,
             stepType: step.stepType,
             order: step.order,
             metadata: step.metadata, // Include metadata for GENERATE_DOCUMENT steps
+        }));
+    }
+
+    // If we have a documentation plan with steps, use those
+    if (phaseTemplate.documentationPlan?.steps && phaseTemplate.documentationPlan.steps.length > 0) {
+        return phaseTemplate.documentationPlan.steps.map((step) => ({
+            name: step.name,
+            stepType: step.stepType as StepType,
+            order: step.order,
+            metadata: step.metadata,
         }));
     }
 
@@ -471,6 +489,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                         data: {
                             tenantId: (data as any).tenantId,
                             phaseId: phase.id,
+                            documentationPlanId: phaseTemplate.documentationPlanId,
                             totalStepsCount: steps.length,
                             completedStepsCount: 0,
                             requiredDocumentsCount: requiredDocs.filter((d: any) => d.isRequired).length,

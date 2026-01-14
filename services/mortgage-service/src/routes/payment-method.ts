@@ -72,7 +72,7 @@ router.get('/', requireTenant, async (req: Request, res: Response, next: NextFun
 router.get('/:id', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const paymentMethodService = getPaymentMethodService(req);
-        const method = await paymentMethodService.findById(req.params.id);
+        const method = await paymentMethodService.findById(req.params.id as string);
         res.json(successResponse(method));
     } catch (error) {
         next(error);
@@ -84,7 +84,7 @@ router.patch('/:id', requireTenant, requireRole(ADMIN_ROLES), async (req: Reques
     try {
         const data = UpdatePaymentMethodSchema.parse(req.body);
         const paymentMethodService = getPaymentMethodService(req);
-        const method = await paymentMethodService.update(req.params.id, data);
+        const method = await paymentMethodService.update(req.params.id as string, data);
         res.json(successResponse(method));
     } catch (error) {
         if (error instanceof z.ZodError) {
@@ -99,7 +99,7 @@ router.patch('/:id', requireTenant, requireRole(ADMIN_ROLES), async (req: Reques
 router.delete('/:id', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const paymentMethodService = getPaymentMethodService(req);
-        const result = await paymentMethodService.delete(req.params.id);
+        const result = await paymentMethodService.delete(req.params.id as string);
         res.json(successResponse(result));
     } catch (error) {
         next(error);
@@ -111,7 +111,7 @@ router.post('/:id/phases', requireTenant, requireRole(ADMIN_ROLES), async (req: 
     try {
         const data = AddPhaseSchema.parse(req.body);
         const paymentMethodService = getPaymentMethodService(req);
-        const phase = await paymentMethodService.addPhase(req.params.id, data);
+        const phase = await paymentMethodService.addPhase(req.params.id as string, data);
         res.status(201).json(successResponse(phase));
     } catch (error) {
         if (error instanceof z.ZodError) {
@@ -127,7 +127,7 @@ router.patch('/:id/phases/:phaseId', requireTenant, requireRole(ADMIN_ROLES), as
     try {
         const data = PartialPhaseSchema.parse(req.body);
         const paymentMethodService = getPaymentMethodService(req);
-        const phase = await paymentMethodService.updatePhase(req.params.phaseId, data);
+        const phase = await paymentMethodService.updatePhase(req.params.phaseId as string, data);
         res.json(successResponse(phase));
     } catch (error) {
         if (error instanceof z.ZodError) {
@@ -142,7 +142,7 @@ router.patch('/:id/phases/:phaseId', requireTenant, requireRole(ADMIN_ROLES), as
 router.delete('/:id/phases/:phaseId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const paymentMethodService = getPaymentMethodService(req);
-        const result = await paymentMethodService.deletePhase(req.params.phaseId);
+        const result = await paymentMethodService.deletePhase(req.params.phaseId as string);
         res.json(successResponse(result));
     } catch (error) {
         next(error);
@@ -158,7 +158,7 @@ router.post('/:id/phases/reorder', requireTenant, requireRole(ADMIN_ROLES), asyn
             return;
         }
         const paymentMethodService = getPaymentMethodService(req);
-        const method = await paymentMethodService.reorderPhases(req.params.id, phaseOrders);
+        const method = await paymentMethodService.reorderPhases(req.params.id as string, phaseOrders);
         res.json(successResponse(method));
     } catch (error) {
         next(error);
@@ -175,7 +175,7 @@ router.post('/:id/clone', requireTenant, requireRole(ADMIN_ROLES), async (req: R
         const { tenantId } = getAuthContext(req);
         const data = ClonePaymentMethodSchema.parse(req.body);
         const paymentMethodService = getPaymentMethodService(req);
-        const cloned = await paymentMethodService.clone(req.params.id, tenantId, data);
+        const cloned = await paymentMethodService.clone(req.params.id as string, tenantId, data);
         res.status(201).json(successResponse(cloned));
     } catch (error) {
         if (error instanceof z.ZodError) {
@@ -195,7 +195,7 @@ router.post('/:id/phases/:phaseId/steps', requireTenant, requireRole(ADMIN_ROLES
     try {
         const data = AddStepSchema.parse(req.body);
         const paymentMethodService = getPaymentMethodService(req);
-        const step = await paymentMethodService.addStep(req.params.phaseId, data);
+        const step = await paymentMethodService.addStep(req.params.phaseId as string, data);
         res.status(201).json(successResponse(step));
     } catch (error) {
         if (error instanceof z.ZodError) {
@@ -211,7 +211,7 @@ router.patch('/:id/phases/:phaseId/steps/:stepId', requireTenant, requireRole(AD
     try {
         const data = UpdateStepSchema.parse(req.body);
         const paymentMethodService = getPaymentMethodService(req);
-        const step = await paymentMethodService.updateStep(req.params.stepId, data);
+        const step = await paymentMethodService.updateStep(req.params.stepId as string, data);
         res.json(successResponse(step));
     } catch (error) {
         if (error instanceof z.ZodError) {
@@ -226,7 +226,7 @@ router.patch('/:id/phases/:phaseId/steps/:stepId', requireTenant, requireRole(AD
 router.delete('/:id/phases/:phaseId/steps/:stepId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const paymentMethodService = getPaymentMethodService(req);
-        const result = await paymentMethodService.deleteStep(req.params.stepId);
+        const result = await paymentMethodService.deleteStep(req.params.stepId as string);
         res.json(successResponse(result));
     } catch (error) {
         next(error);
@@ -238,7 +238,7 @@ router.post('/:id/phases/:phaseId/steps/reorder', requireTenant, requireRole(ADM
     try {
         const data = ReorderStepsSchema.parse(req.body);
         const paymentMethodService = getPaymentMethodService(req);
-        const steps = await paymentMethodService.reorderSteps(req.params.phaseId, data.stepOrders);
+        const steps = await paymentMethodService.reorderSteps(req.params.phaseId as string, data.stepOrders);
         res.json(successResponse(steps));
     } catch (error) {
         if (error instanceof z.ZodError) {
@@ -258,7 +258,7 @@ router.post('/:id/phases/:phaseId/documents', requireTenant, requireRole(ADMIN_R
     try {
         const data = AddDocumentRequirementSchema.parse(req.body);
         const paymentMethodService = getPaymentMethodService(req);
-        const doc = await paymentMethodService.addDocumentRequirement(req.params.phaseId, data);
+        const doc = await paymentMethodService.addDocumentRequirement(req.params.phaseId as string, data);
         res.status(201).json(successResponse(doc));
     } catch (error) {
         if (error instanceof z.ZodError) {
@@ -274,7 +274,7 @@ router.patch('/:id/phases/:phaseId/documents/:documentId', requireTenant, requir
     try {
         const data = UpdateDocumentRequirementSchema.parse(req.body);
         const paymentMethodService = getPaymentMethodService(req);
-        const doc = await paymentMethodService.updateDocumentRequirement(req.params.documentId, data);
+        const doc = await paymentMethodService.updateDocumentRequirement(req.params.documentId as string, data);
         res.json(successResponse(doc));
     } catch (error) {
         if (error instanceof z.ZodError) {
@@ -289,7 +289,7 @@ router.patch('/:id/phases/:phaseId/documents/:documentId', requireTenant, requir
 router.delete('/:id/phases/:phaseId/documents/:documentId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const paymentMethodService = getPaymentMethodService(req);
-        const result = await paymentMethodService.deleteDocumentRequirement(req.params.documentId);
+        const result = await paymentMethodService.deleteDocumentRequirement(req.params.documentId as string);
         res.json(successResponse(result));
     } catch (error) {
         next(error);
@@ -301,7 +301,7 @@ router.post('/:id/properties', requireTenant, requireRole(ADMIN_ROLES), async (r
     try {
         const data = LinkToPropertySchema.parse(req.body);
         const paymentMethodService = getPaymentMethodService(req);
-        const link = await paymentMethodService.linkToProperty(req.params.id, data);
+        const link = await paymentMethodService.linkToProperty(req.params.id as string, data);
         res.status(201).json(successResponse(link));
     } catch (error) {
         if (error instanceof z.ZodError) {
@@ -316,7 +316,7 @@ router.post('/:id/properties', requireTenant, requireRole(ADMIN_ROLES), async (r
 router.delete('/:id/properties/:propertyId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const paymentMethodService = getPaymentMethodService(req);
-        const result = await paymentMethodService.unlinkFromProperty(req.params.id, req.params.propertyId);
+        const result = await paymentMethodService.unlinkFromProperty(req.params.id as string, req.params.propertyId as string);
         res.json(successResponse(result));
     } catch (error) {
         next(error);
@@ -327,7 +327,7 @@ router.delete('/:id/properties/:propertyId', requireTenant, requireRole(ADMIN_RO
 router.get('/property/:propertyId', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const paymentMethodService = getPaymentMethodService(req);
-        const methods = await paymentMethodService.getMethodsForProperty(req.params.propertyId);
+        const methods = await paymentMethodService.getMethodsForProperty(req.params.propertyId as string);
         res.json(successResponse(methods));
     } catch (error) {
         next(error);
@@ -343,7 +343,7 @@ router.post('/:id/phases/:phaseId/event-attachments', requireTenant, requireRole
     try {
         const data = AddPhaseEventAttachmentSchema.parse(req.body);
         const paymentMethodService = getPaymentMethodService(req);
-        const attachment = await paymentMethodService.addPhaseEventAttachment(req.params.phaseId, data);
+        const attachment = await paymentMethodService.addPhaseEventAttachment(req.params.phaseId as string, data);
         res.status(201).json(successResponse(attachment));
     } catch (error) {
         if (error instanceof z.ZodError) {
@@ -358,7 +358,7 @@ router.post('/:id/phases/:phaseId/event-attachments', requireTenant, requireRole
 router.get('/:id/phases/:phaseId/event-attachments', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const paymentMethodService = getPaymentMethodService(req);
-        const attachments = await paymentMethodService.getPhaseEventAttachments(req.params.phaseId);
+        const attachments = await paymentMethodService.getPhaseEventAttachments(req.params.phaseId as string);
         res.json(successResponse(attachments));
     } catch (error) {
         next(error);
@@ -370,7 +370,7 @@ router.patch('/phase-event-attachments/:attachmentId', requireTenant, requireRol
     try {
         const data = UpdatePhaseEventAttachmentSchema.parse(req.body);
         const paymentMethodService = getPaymentMethodService(req);
-        const attachment = await paymentMethodService.updatePhaseEventAttachment(req.params.attachmentId, data);
+        const attachment = await paymentMethodService.updatePhaseEventAttachment(req.params.attachmentId as string, data);
         res.json(successResponse(attachment));
     } catch (error) {
         if (error instanceof z.ZodError) {
@@ -385,7 +385,7 @@ router.patch('/phase-event-attachments/:attachmentId', requireTenant, requireRol
 router.delete('/phase-event-attachments/:attachmentId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const paymentMethodService = getPaymentMethodService(req);
-        const result = await paymentMethodService.deletePhaseEventAttachment(req.params.attachmentId);
+        const result = await paymentMethodService.deletePhaseEventAttachment(req.params.attachmentId as string);
         res.json(successResponse(result));
     } catch (error) {
         next(error);
@@ -401,7 +401,7 @@ router.post('/:id/phases/:phaseId/steps/:stepId/event-attachments', requireTenan
     try {
         const data = AddStepEventAttachmentSchema.parse(req.body);
         const paymentMethodService = getPaymentMethodService(req);
-        const attachment = await paymentMethodService.addStepEventAttachment(req.params.stepId, data);
+        const attachment = await paymentMethodService.addStepEventAttachment(req.params.stepId as string, data);
         res.status(201).json(successResponse(attachment));
     } catch (error) {
         if (error instanceof z.ZodError) {
@@ -416,7 +416,7 @@ router.post('/:id/phases/:phaseId/steps/:stepId/event-attachments', requireTenan
 router.get('/:id/phases/:phaseId/steps/:stepId/event-attachments', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const paymentMethodService = getPaymentMethodService(req);
-        const attachments = await paymentMethodService.getStepEventAttachments(req.params.stepId);
+        const attachments = await paymentMethodService.getStepEventAttachments(req.params.stepId as string);
         res.json(successResponse(attachments));
     } catch (error) {
         next(error);
@@ -428,7 +428,7 @@ router.patch('/step-event-attachments/:attachmentId', requireTenant, requireRole
     try {
         const data = UpdateStepEventAttachmentSchema.parse(req.body);
         const paymentMethodService = getPaymentMethodService(req);
-        const attachment = await paymentMethodService.updateStepEventAttachment(req.params.attachmentId, data);
+        const attachment = await paymentMethodService.updateStepEventAttachment(req.params.attachmentId as string, data);
         res.json(successResponse(attachment));
     } catch (error) {
         if (error instanceof z.ZodError) {
@@ -443,7 +443,7 @@ router.patch('/step-event-attachments/:attachmentId', requireTenant, requireRole
 router.delete('/step-event-attachments/:attachmentId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const paymentMethodService = getPaymentMethodService(req);
-        const result = await paymentMethodService.deleteStepEventAttachment(req.params.attachmentId);
+        const result = await paymentMethodService.deleteStepEventAttachment(req.params.attachmentId as string);
         res.json(successResponse(result));
     } catch (error) {
         next(error);
@@ -458,7 +458,7 @@ router.delete('/step-event-attachments/:attachmentId', requireTenant, requireRol
 router.post('/:id/document-rules', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { tenantId } = getAuthContext(req);
-        const paymentMethodId = req.params.id;
+        const paymentMethodId = req.params.id as string;
         const data = BulkDocumentRulesSchema.parse(req.body);
 
         // The tenant-scoped prisma will automatically filter by tenant
@@ -511,7 +511,7 @@ router.post('/:id/document-rules', requireTenant, requireRole(ADMIN_ROLES), asyn
 // Get document requirement rules for a payment method
 router.get('/:id/document-rules', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const paymentMethodId = req.params.id;
+        const paymentMethodId = req.params.id as string;
         const phaseType = req.query.phaseType as string | undefined;
 
         const tenantPrisma = getTenantPrisma(req);
@@ -549,7 +549,7 @@ router.get('/:id/document-rules', requireTenant, async (req: Request, res: Respo
 // Delete a document requirement rule (admin only)
 router.delete('/:id/document-rules/:ruleId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { ruleId } = req.params;
+        const ruleId = req.params.ruleId as string;
 
         const tenantPrisma = getTenantPrisma(req);
 

@@ -178,6 +178,16 @@ export type PropertyUnit = Prisma.PropertyUnitModel
  */
 export type PropertyAmenity = Prisma.PropertyAmenityModel
 /**
+ * Model DocumentationPlan
+ * 
+ */
+export type DocumentationPlan = Prisma.DocumentationPlanModel
+/**
+ * Model DocumentationPlanStep
+ * 
+ */
+export type DocumentationPlanStep = Prisma.DocumentationPlanStepModel
+/**
  * Model PaymentPlan
  * 
  */

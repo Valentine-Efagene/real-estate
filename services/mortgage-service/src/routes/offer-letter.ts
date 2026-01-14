@@ -65,7 +65,7 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
  */
 router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const offerLetter = await offerLetterService.findById(req.params.id);
+        const offerLetter = await offerLetterService.findById(req.params.id as string);
         res.json(offerLetter);
     } catch (error) {
         next(error);
@@ -78,7 +78,7 @@ router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
  */
 router.get('/application/:applicationId', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const offerLetters = await offerLetterService.findByapplication(req.params.applicationId);
+        const offerLetters = await offerLetterService.findByapplication(req.params.applicationId as string);
         res.json(offerLetters);
     } catch (error) {
         next(error);
@@ -97,7 +97,7 @@ router.post('/:id/send', async (req: Request, res: Response, next: NextFunction)
         }
 
         const data = SendOfferLetterSchema.parse(req.body);
-        const offerLetter = await offerLetterService.send(req.params.id, data, userId);
+        const offerLetter = await offerLetterService.send(req.params.id as string, data, userId);
         res.json(offerLetter);
     } catch (error: any) {
         if (error instanceof z.ZodError) {
@@ -114,7 +114,7 @@ router.post('/:id/send', async (req: Request, res: Response, next: NextFunction)
  */
 router.post('/:id/view', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const offerLetter = await offerLetterService.markViewed(req.params.id);
+        const offerLetter = await offerLetterService.markViewed(req.params.id as string);
         res.json(offerLetter);
     } catch (error) {
         next(error);
@@ -132,7 +132,7 @@ router.post('/:id/sign', async (req: Request, res: Response, next: NextFunction)
         const signerIp = (req.headers['x-forwarded-for'] as string)?.split(',')[0]?.trim()
             || req.socket.remoteAddress
             || 'unknown';
-        const offerLetter = await offerLetterService.sign(req.params.id, data, signerIp);
+        const offerLetter = await offerLetterService.sign(req.params.id as string, data, signerIp);
         res.json(offerLetter);
     } catch (error: any) {
         if (error instanceof z.ZodError) {
@@ -155,7 +155,7 @@ router.patch('/:id', async (req: Request, res: Response, next: NextFunction) => 
         }
 
         const data = UpdateOfferLetterSchema.parse(req.body);
-        const offerLetter = await offerLetterService.update(req.params.id, data, userId);
+        const offerLetter = await offerLetterService.update(req.params.id as string, data, userId);
         res.json(offerLetter);
     } catch (error: any) {
         if (error instanceof z.ZodError) {
@@ -178,7 +178,7 @@ router.post('/:id/cancel', async (req: Request, res: Response, next: NextFunctio
         }
 
         const data = CancelOfferLetterSchema.parse(req.body);
-        const offerLetter = await offerLetterService.cancel(req.params.id, data, userId);
+        const offerLetter = await offerLetterService.cancel(req.params.id as string, data, userId);
         res.json(offerLetter);
     } catch (error: any) {
         if (error instanceof z.ZodError) {
