@@ -6,6 +6,29 @@ extendZodWithOpenApi(z);
 // Step type enum (matches Prisma StepType)
 export const StepTypeEnum = z.enum(['UPLOAD', 'REVIEW', 'SIGNATURE', 'APPROVAL', 'EXTERNAL_CHECK', 'WAIT', 'GENERATE_DOCUMENT']);
 
+// Condition operator enum for conditional document requirements
+export const ConditionOperatorEnum = z.enum([
+    'EQUALS',
+    'NOT_EQUALS',
+    'IN',
+    'NOT_IN',
+    'GREATER_THAN',
+    'LESS_THAN',
+    'EXISTS',
+]);
+export type ConditionOperator = z.infer<typeof ConditionOperatorEnum>;
+
+// Condition schema for conditional document requirements
+export const StepConditionSchema = z.object({
+    questionKey: z.string().optional().openapi({ example: 'mortgage_type', description: 'The questionnaire question key to evaluate' }),
+    operator: ConditionOperatorEnum.optional().openapi({ example: 'EQUALS', description: 'Comparison operator' }),
+    value: z.union([z.string(), z.number(), z.boolean()]).optional().openapi({ example: 'JOINT', description: 'Value to compare against (for EQUALS, NOT_EQUALS, GREATER_THAN, LESS_THAN)' }),
+    values: z.array(z.union([z.string(), z.number()])).optional().openapi({ example: ['SELF_EMPLOYED', 'BUSINESS_OWNER'], description: 'Values to compare against (for IN, NOT_IN)' }),
+    all: z.array(z.lazy(() => StepConditionSchema)).optional().openapi({ description: 'All conditions must be true (AND logic)' }),
+    any: z.array(z.lazy(() => StepConditionSchema)).optional().openapi({ description: 'Any condition must be true (OR logic)' }),
+}).openapi('StepCondition');
+export type StepCondition = z.infer<typeof StepConditionSchema>;
+
 // Step definition schema for documentation plans
 export const DocumentationPlanStepSchema = z.object({
     name: z.string().min(1).openapi({ example: 'Upload Valid ID' }),
@@ -23,6 +46,13 @@ export const DocumentationPlanStepSchema = z.object({
     requiresManualReview: z.boolean().default(false).openapi({ description: 'Whether admin must manually review this document' }),
     minFiles: z.number().int().min(1).default(1).openapi({ example: 1, description: 'Minimum number of files required' }),
     maxFiles: z.number().int().min(1).default(1).openapi({ example: 3, description: 'Maximum number of files allowed' }),
+
+    // Conditional logic - when is this step required based on questionnaire answers?
+    // NULL = always required (unconditional)
+    condition: StepConditionSchema.optional().openapi({
+        description: 'Condition that determines when this step is required. If null, step is always required. Evaluated against questionnaire answers.',
+        example: { questionKey: 'mortgage_type', operator: 'EQUALS', value: 'JOINT' }
+    }),
 }).openapi('DocumentationPlanStep');
 
 // Create documentation plan input schema

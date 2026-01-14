@@ -96,6 +96,7 @@ export type DocumentationPlanStepCountAggregateOutputType = {
   requiresManualReview: number
   minFiles: number
   maxFiles: number
+  condition: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -172,6 +173,7 @@ export type DocumentationPlanStepCountAggregateInputType = {
   requiresManualReview?: true
   minFiles?: true
   maxFiles?: true
+  condition?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -279,6 +281,7 @@ export type DocumentationPlanStepGroupByOutputType = {
   requiresManualReview: boolean
   minFiles: number
   maxFiles: number
+  condition: runtime.JsonValue | null
   createdAt: Date
   updatedAt: Date
   _count: DocumentationPlanStepCountAggregateOutputType | null
@@ -322,6 +325,7 @@ export type DocumentationPlanStepWhereInput = {
   requiresManualReview?: Prisma.BoolFilter<"DocumentationPlanStep"> | boolean
   minFiles?: Prisma.IntFilter<"DocumentationPlanStep"> | number
   maxFiles?: Prisma.IntFilter<"DocumentationPlanStep"> | number
+  condition?: Prisma.JsonNullableFilter<"DocumentationPlanStep">
   createdAt?: Prisma.DateTimeFilter<"DocumentationPlanStep"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"DocumentationPlanStep"> | Date | string
   plan?: Prisma.XOR<Prisma.DocumentationPlanScalarRelationFilter, Prisma.DocumentationPlanWhereInput>
@@ -343,6 +347,7 @@ export type DocumentationPlanStepOrderByWithRelationInput = {
   requiresManualReview?: Prisma.SortOrder
   minFiles?: Prisma.SortOrder
   maxFiles?: Prisma.SortOrder
+  condition?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   plan?: Prisma.DocumentationPlanOrderByWithRelationInput
@@ -368,6 +373,7 @@ export type DocumentationPlanStepWhereUniqueInput = Prisma.AtLeast<{
   requiresManualReview?: Prisma.BoolFilter<"DocumentationPlanStep"> | boolean
   minFiles?: Prisma.IntFilter<"DocumentationPlanStep"> | number
   maxFiles?: Prisma.IntFilter<"DocumentationPlanStep"> | number
+  condition?: Prisma.JsonNullableFilter<"DocumentationPlanStep">
   createdAt?: Prisma.DateTimeFilter<"DocumentationPlanStep"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"DocumentationPlanStep"> | Date | string
   plan?: Prisma.XOR<Prisma.DocumentationPlanScalarRelationFilter, Prisma.DocumentationPlanWhereInput>
@@ -389,6 +395,7 @@ export type DocumentationPlanStepOrderByWithAggregationInput = {
   requiresManualReview?: Prisma.SortOrder
   minFiles?: Prisma.SortOrder
   maxFiles?: Prisma.SortOrder
+  condition?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.DocumentationPlanStepCountOrderByAggregateInput
@@ -417,6 +424,7 @@ export type DocumentationPlanStepScalarWhereWithAggregatesInput = {
   requiresManualReview?: Prisma.BoolWithAggregatesFilter<"DocumentationPlanStep"> | boolean
   minFiles?: Prisma.IntWithAggregatesFilter<"DocumentationPlanStep"> | number
   maxFiles?: Prisma.IntWithAggregatesFilter<"DocumentationPlanStep"> | number
+  condition?: Prisma.JsonNullableWithAggregatesFilter<"DocumentationPlanStep">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"DocumentationPlanStep"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"DocumentationPlanStep"> | Date | string
 }
@@ -436,6 +444,7 @@ export type DocumentationPlanStepCreateInput = {
   requiresManualReview?: boolean
   minFiles?: number
   maxFiles?: number
+  condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   plan: Prisma.DocumentationPlanCreateNestedOneWithoutStepsInput
@@ -457,6 +466,7 @@ export type DocumentationPlanStepUncheckedCreateInput = {
   requiresManualReview?: boolean
   minFiles?: number
   maxFiles?: number
+  condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -476,6 +486,7 @@ export type DocumentationPlanStepUpdateInput = {
   requiresManualReview?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minFiles?: Prisma.IntFieldUpdateOperationsInput | number
   maxFiles?: Prisma.IntFieldUpdateOperationsInput | number
+  condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   plan?: Prisma.DocumentationPlanUpdateOneRequiredWithoutStepsNestedInput
@@ -497,6 +508,7 @@ export type DocumentationPlanStepUncheckedUpdateInput = {
   requiresManualReview?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minFiles?: Prisma.IntFieldUpdateOperationsInput | number
   maxFiles?: Prisma.IntFieldUpdateOperationsInput | number
+  condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -517,6 +529,7 @@ export type DocumentationPlanStepCreateManyInput = {
   requiresManualReview?: boolean
   minFiles?: number
   maxFiles?: number
+  condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -536,6 +549,7 @@ export type DocumentationPlanStepUpdateManyMutationInput = {
   requiresManualReview?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minFiles?: Prisma.IntFieldUpdateOperationsInput | number
   maxFiles?: Prisma.IntFieldUpdateOperationsInput | number
+  condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -556,6 +570,7 @@ export type DocumentationPlanStepUncheckedUpdateManyInput = {
   requiresManualReview?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minFiles?: Prisma.IntFieldUpdateOperationsInput | number
   maxFiles?: Prisma.IntFieldUpdateOperationsInput | number
+  condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -592,6 +607,7 @@ export type DocumentationPlanStepCountOrderByAggregateInput = {
   requiresManualReview?: Prisma.SortOrder
   minFiles?: Prisma.SortOrder
   maxFiles?: Prisma.SortOrder
+  condition?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -711,6 +727,7 @@ export type DocumentationPlanStepCreateWithoutPlanInput = {
   requiresManualReview?: boolean
   minFiles?: number
   maxFiles?: number
+  condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -730,6 +747,7 @@ export type DocumentationPlanStepUncheckedCreateWithoutPlanInput = {
   requiresManualReview?: boolean
   minFiles?: number
   maxFiles?: number
+  condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -779,6 +797,7 @@ export type DocumentationPlanStepScalarWhereInput = {
   requiresManualReview?: Prisma.BoolFilter<"DocumentationPlanStep"> | boolean
   minFiles?: Prisma.IntFilter<"DocumentationPlanStep"> | number
   maxFiles?: Prisma.IntFilter<"DocumentationPlanStep"> | number
+  condition?: Prisma.JsonNullableFilter<"DocumentationPlanStep">
   createdAt?: Prisma.DateTimeFilter<"DocumentationPlanStep"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"DocumentationPlanStep"> | Date | string
 }
@@ -798,6 +817,7 @@ export type DocumentationPlanStepCreateManyPlanInput = {
   requiresManualReview?: boolean
   minFiles?: number
   maxFiles?: number
+  condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -817,6 +837,7 @@ export type DocumentationPlanStepUpdateWithoutPlanInput = {
   requiresManualReview?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minFiles?: Prisma.IntFieldUpdateOperationsInput | number
   maxFiles?: Prisma.IntFieldUpdateOperationsInput | number
+  condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -836,6 +857,7 @@ export type DocumentationPlanStepUncheckedUpdateWithoutPlanInput = {
   requiresManualReview?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minFiles?: Prisma.IntFieldUpdateOperationsInput | number
   maxFiles?: Prisma.IntFieldUpdateOperationsInput | number
+  condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -855,6 +877,7 @@ export type DocumentationPlanStepUncheckedUpdateManyWithoutPlanInput = {
   requiresManualReview?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minFiles?: Prisma.IntFieldUpdateOperationsInput | number
   maxFiles?: Prisma.IntFieldUpdateOperationsInput | number
+  condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -877,6 +900,7 @@ export type DocumentationPlanStepSelect<ExtArgs extends runtime.Types.Extensions
   requiresManualReview?: boolean
   minFiles?: boolean
   maxFiles?: boolean
+  condition?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   plan?: boolean | Prisma.DocumentationPlanDefaultArgs<ExtArgs>
@@ -900,11 +924,12 @@ export type DocumentationPlanStepSelectScalar = {
   requiresManualReview?: boolean
   minFiles?: boolean
   maxFiles?: boolean
+  condition?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type DocumentationPlanStepOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "planId" | "name" | "stepType" | "order" | "documentType" | "metadata" | "isRequired" | "description" | "maxSizeBytes" | "allowedMimeTypes" | "expiryDays" | "requiresManualReview" | "minFiles" | "maxFiles" | "createdAt" | "updatedAt", ExtArgs["result"]["documentationPlanStep"]>
+export type DocumentationPlanStepOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "planId" | "name" | "stepType" | "order" | "documentType" | "metadata" | "isRequired" | "description" | "maxSizeBytes" | "allowedMimeTypes" | "expiryDays" | "requiresManualReview" | "minFiles" | "maxFiles" | "condition" | "createdAt" | "updatedAt", ExtArgs["result"]["documentationPlanStep"]>
 export type DocumentationPlanStepInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   plan?: boolean | Prisma.DocumentationPlanDefaultArgs<ExtArgs>
 }
@@ -930,6 +955,7 @@ export type $DocumentationPlanStepPayload<ExtArgs extends runtime.Types.Extensio
     requiresManualReview: boolean
     minFiles: number
     maxFiles: number
+    condition: runtime.JsonValue | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["documentationPlanStep"]>
@@ -1317,6 +1343,7 @@ export interface DocumentationPlanStepFieldRefs {
   readonly requiresManualReview: Prisma.FieldRef<"DocumentationPlanStep", 'Boolean'>
   readonly minFiles: Prisma.FieldRef<"DocumentationPlanStep", 'Int'>
   readonly maxFiles: Prisma.FieldRef<"DocumentationPlanStep", 'Int'>
+  readonly condition: Prisma.FieldRef<"DocumentationPlanStep", 'Json'>
   readonly createdAt: Prisma.FieldRef<"DocumentationPlanStep", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"DocumentationPlanStep", 'DateTime'>
 }

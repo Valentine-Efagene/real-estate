@@ -3,7 +3,7 @@
 import { api, prisma, cleanupTestData } from '../../setup.js';
 import { faker } from '@faker-js/faker';
 import { randomUUID } from 'crypto';
-import { authHeaders, ROLES } from '@valentine-efagene/qshelter-common';
+import { authHeaders, ROLES, CONDITION_OPERATORS } from '@valentine-efagene/qshelter-common';
 
 // Helper functions for auth headers with proper roles
 function adminHeaders(userId: string, tenantId: string) {
@@ -273,11 +273,41 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                             category: 'eligibility',
                         },
                         {
+                            questionKey: 'mortgage_type',
+                            questionText: 'What type of mortgage are you applying for?',
+                            helpText: 'Joint mortgages require documentation from both applicants',
+                            questionType: 'SELECT',
+                            order: 2,
+                            isRequired: true,
+                            options: [
+                                { value: 'SINGLE', label: 'Single (Individual)', score: 100 },
+                                { value: 'JOINT', label: 'Joint (With Spouse)', score: 100 },
+                            ],
+                            scoreWeight: 0, // No scoring impact, used for document conditions
+                            category: 'application_type',
+                        },
+                        {
+                            questionKey: 'employment_status',
+                            questionText: 'What is your employment status?',
+                            helpText: 'This determines the income verification documents required',
+                            questionType: 'SELECT',
+                            order: 3,
+                            isRequired: true,
+                            options: [
+                                { value: 'EMPLOYED', label: 'Employed (Salary/Wage earner)', score: 100 },
+                                { value: 'SELF_EMPLOYED', label: 'Self-Employed', score: 80 },
+                                { value: 'BUSINESS_OWNER', label: 'Business Owner', score: 80 },
+                                { value: 'RETIRED', label: 'Retired', score: 60 },
+                            ],
+                            scoreWeight: 1,
+                            category: 'employment',
+                        },
+                        {
                             questionKey: 'monthly_income',
                             questionText: 'What is your monthly gross income?',
                             helpText: 'Include salary, bonuses, and other regular income',
                             questionType: 'CURRENCY',
-                            order: 2,
+                            order: 4,
                             isRequired: true,
                             validationRules: { min: 0 },
                             // Score 100 if income >= ₦500,000 (reasonable for mortgage)
@@ -290,7 +320,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                             questionText: 'What are your total monthly expenses?',
                             helpText: 'Include rent, utilities, loans, and other recurring expenses',
                             questionType: 'CURRENCY',
-                            order: 3,
+                            order: 5,
                             isRequired: true,
                             validationRules: { min: 0 },
                             scoreWeight: 0, // Informational, used for DTI calculation
@@ -301,7 +331,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                             questionText: 'What mortgage term (in years) would you prefer?',
                             helpText: 'Maximum term is 30 years, but limited by retirement age (60)',
                             questionType: 'NUMBER',
-                            order: 4,
+                            order: 6,
                             isRequired: true,
                             validationRules: { min: 5, max: 30 },
                             scoringRules: { '>=5': 100, '<5': 0 },
@@ -313,22 +343,24 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
             expect(response.status).toBe(201);
             expect(response.body.data.id).toBeDefined();
-            expect(response.body.data.questions.length).toBe(4);
+            expect(response.body.data.questions.length).toBe(6);
             prequalificationPlanId = response.body.data.id;
         });
 
         it('Adaeze creates a KYC documentation plan with document requirements', async () => {
             // This plan defines the KYC workflow with steps and document validation rules
+            // Some steps are conditional based on prequalification answers (mortgage_type, employment_status)
             const response = await api
                 .post('/documentation-plans')
                 .set(adminHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('adaeze-create-kyc-documentation-plan'))
                 .send({
                     name: 'Mortgage KYC Documentation',
-                    description: 'Standard KYC documentation workflow with ID, bank statement, and employment letter',
+                    description: 'Standard KYC documentation workflow with conditional spouse and business documents',
                     isActive: true,
                     requiredDocumentTypes: ['ID_CARD', 'BANK_STATEMENT', 'EMPLOYMENT_LETTER'],
                     steps: [
+                        // === ALWAYS REQUIRED (no condition) ===
                         {
                             name: 'Upload Valid ID',
                             stepType: 'UPLOAD',
@@ -339,6 +371,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                             maxSizeBytes: 5 * 1024 * 1024,
                             allowedMimeTypes: ['image/jpeg', 'image/png', 'application/pdf'],
                             requiresManualReview: true,
+                            // No condition - always required
                         },
                         {
                             name: 'Upload Bank Statements',
@@ -353,27 +386,122 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                             requiresManualReview: true,
                             minFiles: 3,
                             maxFiles: 6,
+                            // No condition - always required
                         },
+
+                        // === CONDITIONAL: FOR EMPLOYED APPLICANTS ===
                         {
                             name: 'Upload Employment Letter',
                             stepType: 'UPLOAD',
                             order: 3,
                             documentType: 'EMPLOYMENT_LETTER',
                             isRequired: true,
-                            description: 'Employment confirmation letter',
+                            description: 'Employment confirmation letter from your employer',
                             maxSizeBytes: 5 * 1024 * 1024,
                             allowedMimeTypes: ['application/pdf'],
                             requiresManualReview: true,
+                            // Only required for employed applicants
+                            condition: { questionKey: 'employment_status', operator: CONDITION_OPERATORS.EQUALS, value: 'EMPLOYED' },
                         },
+
+                        // === CONDITIONAL: FOR SELF-EMPLOYED / BUSINESS OWNERS ===
+                        {
+                            name: 'Upload Business Registration',
+                            stepType: 'UPLOAD',
+                            order: 4,
+                            documentType: 'BUSINESS_REGISTRATION',
+                            isRequired: true,
+                            description: 'CAC registration certificate or business license',
+                            maxSizeBytes: 5 * 1024 * 1024,
+                            allowedMimeTypes: ['application/pdf', 'image/jpeg', 'image/png'],
+                            requiresManualReview: true,
+                            // Only required for self-employed or business owners
+                            condition: { questionKey: 'employment_status', operator: CONDITION_OPERATORS.IN, values: ['SELF_EMPLOYED', 'BUSINESS_OWNER'] },
+                        },
+                        {
+                            name: 'Upload Tax Returns',
+                            stepType: 'UPLOAD',
+                            order: 5,
+                            documentType: 'TAX_RETURNS',
+                            isRequired: true,
+                            description: 'Last 2 years personal/business tax returns',
+                            maxSizeBytes: 10 * 1024 * 1024,
+                            allowedMimeTypes: ['application/pdf'],
+                            expiryDays: 365, // Must be from the last year
+                            requiresManualReview: true,
+                            minFiles: 2,
+                            maxFiles: 4,
+                            // Only required for self-employed or business owners
+                            condition: { questionKey: 'employment_status', operator: CONDITION_OPERATORS.IN, values: ['SELF_EMPLOYED', 'BUSINESS_OWNER'] },
+                        },
+
+                        // === CONDITIONAL: FOR JOINT MORTGAGES ===
+                        {
+                            name: 'Upload Spouse ID',
+                            stepType: 'UPLOAD',
+                            order: 6,
+                            documentType: 'SPOUSE_ID_CARD',
+                            isRequired: true,
+                            description: 'Valid government-issued ID for your spouse',
+                            maxSizeBytes: 5 * 1024 * 1024,
+                            allowedMimeTypes: ['image/jpeg', 'image/png', 'application/pdf'],
+                            requiresManualReview: true,
+                            // Only required for joint mortgages
+                            condition: { questionKey: 'mortgage_type', operator: CONDITION_OPERATORS.EQUALS, value: 'JOINT' },
+                        },
+                        {
+                            name: 'Upload Marriage Certificate',
+                            stepType: 'UPLOAD',
+                            order: 7,
+                            documentType: 'MARRIAGE_CERTIFICATE',
+                            isRequired: true,
+                            description: 'Marriage certificate or court affidavit',
+                            maxSizeBytes: 5 * 1024 * 1024,
+                            allowedMimeTypes: ['application/pdf', 'image/jpeg', 'image/png'],
+                            requiresManualReview: true,
+                            // Only required for joint mortgages
+                            condition: { questionKey: 'mortgage_type', operator: CONDITION_OPERATORS.EQUALS, value: 'JOINT' },
+                        },
+                        {
+                            name: 'Upload Spouse Bank Statements',
+                            stepType: 'UPLOAD',
+                            order: 8,
+                            documentType: 'SPOUSE_BANK_STATEMENT',
+                            isRequired: true,
+                            description: 'Last 6 months bank statements for your spouse',
+                            maxSizeBytes: 10 * 1024 * 1024,
+                            allowedMimeTypes: ['application/pdf'],
+                            expiryDays: 90,
+                            requiresManualReview: true,
+                            minFiles: 3,
+                            maxFiles: 6,
+                            // Only required for joint mortgages
+                            condition: { questionKey: 'mortgage_type', operator: CONDITION_OPERATORS.EQUALS, value: 'JOINT' },
+                        },
+                        {
+                            name: 'Upload Spouse Consent Letter',
+                            stepType: 'UPLOAD',
+                            order: 9,
+                            documentType: 'SPOUSE_CONSENT',
+                            isRequired: true,
+                            description: 'Signed consent letter from spouse agreeing to the mortgage',
+                            maxSizeBytes: 5 * 1024 * 1024,
+                            allowedMimeTypes: ['application/pdf'],
+                            requiresManualReview: true,
+                            // Only required for joint mortgages
+                            condition: { questionKey: 'mortgage_type', operator: CONDITION_OPERATORS.EQUALS, value: 'JOINT' },
+                        },
+
+                        // === WORKFLOW STEPS (always apply) ===
                         {
                             name: 'Adaeze Reviews Documents',
                             stepType: 'APPROVAL',
-                            order: 4,
+                            order: 10,
                         },
                         {
                             name: 'Generate Provisional Offer',
                             stepType: 'GENERATE_DOCUMENT',
-                            order: 5,
+                            order: 11,
                             metadata: {
                                 documentType: 'PROVISIONAL_OFFER',
                                 autoSend: true,
@@ -383,20 +511,28 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                         {
                             name: 'Customer Signs Provisional Offer',
                             stepType: 'SIGNATURE',
-                            order: 6,
+                            order: 12,
                         },
                     ],
                 });
 
             expect(response.status).toBe(201);
             expect(response.body.data.id).toBeDefined();
-            expect(response.body.data.steps.length).toBe(6);
+            expect(response.body.data.steps.length).toBe(12);
             kycDocumentationPlanId = response.body.data.id;
 
             // Verify the steps have the document validation rules
             const uploadIdStep = response.body.data.steps.find((s: any) => s.documentType === 'ID_CARD');
             expect(uploadIdStep.maxSizeBytes).toBe(5 * 1024 * 1024);
             expect(uploadIdStep.requiresManualReview).toBe(true);
+            expect(uploadIdStep.condition).toBeNull(); // No condition - always required
+
+            // Verify conditional steps have conditions stored
+            const spouseIdStep = response.body.data.steps.find((s: any) => s.documentType === 'SPOUSE_ID_CARD');
+            expect(spouseIdStep.condition).toEqual({ questionKey: 'mortgage_type', operator: 'EQUALS', value: 'JOINT' });
+
+            const businessRegStep = response.body.data.steps.find((s: any) => s.documentType === 'BUSINESS_REGISTRATION');
+            expect(businessRegStep.condition).toEqual({ questionKey: 'employment_status', operator: 'IN', values: ['SELF_EMPLOYED', 'BUSINESS_OWNER'] });
         });
 
         it('Adaeze creates a final documentation plan', async () => {

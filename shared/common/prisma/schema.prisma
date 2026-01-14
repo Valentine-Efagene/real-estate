@@ -1081,6 +1081,14 @@ model DocumentationPlanStep {
   minFiles             Int     @default(1) // Minimum number of files required
   maxFiles             Int     @default(1) // Maximum number of files allowed
 
+  // Conditional logic - when is this step required?
+  // NULL = always required (unconditional)
+  // Examples:
+  // { "questionKey": "mortgage_type", "operator": "EQUALS", "value": "JOINT" }
+  // { "questionKey": "employment_status", "operator": "IN", "values": ["SELF_EMPLOYED", "BUSINESS_OWNER"] }
+  // { "all": [{ "questionKey": "has_spouse", "operator": "EQUALS", "value": "YES" }, { "questionKey": "spouse_employed", "operator": "EQUALS", "value": "YES" }] }
+  condition Json?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

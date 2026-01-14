@@ -5424,6 +5424,7 @@ export const DocumentationPlanStepScalarFieldEnum = {
   requiresManualReview: 'requiresManualReview',
   minFiles: 'minFiles',
   maxFiles: 'maxFiles',
+  condition: 'condition',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

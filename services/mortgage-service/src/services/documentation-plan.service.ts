@@ -55,6 +55,7 @@ export function createDocumentationPlanService(prisma: AnyPrismaClient = default
                         requiresManualReview: step.requiresManualReview ?? false,
                         minFiles: step.minFiles ?? 1,
                         maxFiles: step.maxFiles ?? 1,
+                        condition: step.condition,
                     })),
                 },
             },
@@ -189,6 +190,7 @@ export function createDocumentationPlanService(prisma: AnyPrismaClient = default
                         requiresManualReview: step.requiresManualReview,
                         minFiles: step.minFiles,
                         maxFiles: step.maxFiles,
+                        condition: step.condition,
                     })),
                 },
             },
@@ -222,6 +224,7 @@ export function createDocumentationPlanService(prisma: AnyPrismaClient = default
                 requiresManualReview: data.requiresManualReview ?? false,
                 minFiles: data.minFiles ?? 1,
                 maxFiles: data.maxFiles ?? 1,
+                condition: data.condition,
             },
         });
 
@@ -274,6 +277,7 @@ export function createDocumentationPlanService(prisma: AnyPrismaClient = default
                 requiresManualReview: data.requiresManualReview,
                 minFiles: data.minFiles,
                 maxFiles: data.maxFiles,
+                condition: data.condition,
             },
         });
 
