@@ -519,3 +519,158 @@ export async function sendDocumentRejectedNotification(
         { correlationId },
     );
 }
+
+/**
+ * Payload for application superseded notification
+ */
+export interface ApplicationSupersededPayload {
+    email: string;
+    userName: string;
+    applicationNumber: string;
+    propertyName: string;
+    unitNumber: string;
+    dashboardUrl: string;
+}
+
+/**
+ * Send notification when a buyer's application has been superseded
+ * (another buyer locked the unit they were applying for)
+ */
+export async function sendApplicationSupersededNotification(
+    payload: ApplicationSupersededPayload,
+    correlationId?: string,
+): Promise<void> {
+    const publisher = getPublisher();
+    await publisher.publishEmail(
+        NotificationType.APPLICATION_SUPERSEDED,
+        {
+            to_email: payload.email,
+            homeBuyerName: payload.userName,
+            applicationNumber: payload.applicationNumber,
+            propertyName: payload.propertyName,
+            unitNumber: payload.unitNumber,
+            dashboardLink: payload.dashboardUrl,
+        },
+        { correlationId },
+    );
+}
+
+/**
+ * Payload for questionnaire phase completed notification
+ */
+export interface QuestionnairePhaseCompletedPayload {
+    email: string;
+    userName: string;
+    applicationNumber: string;
+    propertyName: string;
+    unitNumber: string;
+    phaseName: string;
+    score?: number;
+    maxScore?: number;
+    passed: boolean;
+    dashboardUrl: string;
+}
+
+/**
+ * Send notification when a questionnaire phase is completed.
+ */
+export async function sendQuestionnairePhaseCompletedNotification(
+    payload: QuestionnairePhaseCompletedPayload,
+    correlationId?: string,
+): Promise<void> {
+    const publisher = getPublisher();
+    await publisher.publishEmail(
+        NotificationType.QUESTIONNAIRE_PHASE_COMPLETED,
+        {
+            to_email: payload.email,
+            homeBuyerName: payload.userName,
+            applicationNumber: payload.applicationNumber,
+            propertyName: payload.propertyName,
+            unitNumber: payload.unitNumber,
+            phaseName: payload.phaseName,
+            score: payload.score,
+            maxScore: payload.maxScore,
+            passed: payload.passed,
+            dashboardLink: payload.dashboardUrl,
+        },
+        { correlationId },
+    );
+}
+
+/**
+ * Payload for documentation phase completed notification
+ */
+export interface DocumentationPhaseCompletedPayload {
+    email: string;
+    userName: string;
+    applicationNumber: string;
+    propertyName: string;
+    unitNumber: string;
+    phaseName: string;
+    stepsCompleted: number;
+    dashboardUrl: string;
+}
+
+/**
+ * Send notification when a documentation phase is completed.
+ */
+export async function sendDocumentationPhaseCompletedNotification(
+    payload: DocumentationPhaseCompletedPayload,
+    correlationId?: string,
+): Promise<void> {
+    const publisher = getPublisher();
+    await publisher.publishEmail(
+        NotificationType.DOCUMENTATION_PHASE_COMPLETED,
+        {
+            to_email: payload.email,
+            homeBuyerName: payload.userName,
+            applicationNumber: payload.applicationNumber,
+            propertyName: payload.propertyName,
+            unitNumber: payload.unitNumber,
+            phaseName: payload.phaseName,
+            stepsCompleted: payload.stepsCompleted,
+            dashboardLink: payload.dashboardUrl,
+        },
+        { correlationId },
+    );
+}
+
+/**
+ * Payload for payment phase completed notification
+ */
+export interface PaymentPhaseCompletedPayload {
+    email: string;
+    userName: string;
+    applicationNumber: string;
+    propertyName: string;
+    unitNumber: string;
+    phaseName: string;
+    totalPaid: string;
+    installmentsPaid: number;
+    dashboardUrl: string;
+}
+
+/**
+ * Send notification when a payment phase is completed.
+ */
+export async function sendPaymentPhaseCompletedNotification(
+    payload: PaymentPhaseCompletedPayload,
+    correlationId?: string,
+): Promise<void> {
+    const publisher = getPublisher();
+    await publisher.publishEmail(
+        NotificationType.PAYMENT_PHASE_COMPLETED,
+        {
+            to_email: payload.email,
+            homeBuyerName: payload.userName,
+            applicationNumber: payload.applicationNumber,
+            propertyName: payload.propertyName,
+            unitNumber: payload.unitNumber,
+            phaseName: payload.phaseName,
+            totalPaid: payload.totalPaid,
+            installmentsPaid: payload.installmentsPaid,
+            dashboardLink: payload.dashboardUrl,
+        },
+        { correlationId },
+    );
+}

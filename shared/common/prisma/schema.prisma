@@ -59,6 +59,7 @@ enum ApplicationStatus {
   CANCELLED
   TERMINATED
   TRANSFERRED // Application was transferred to a different property
+  SUPERSEDED // Another buyer locked the unit - this application was outbid
 }
 
 enum TransferRequestStatus {
@@ -272,6 +273,7 @@ enum EventHandlerType {
   CALL_WEBHOOK // Call an external API/webhook
   ADVANCE_WORKFLOW // Advance or complete a workflow step
   RUN_AUTOMATION // Execute internal business logic
+  LOCK_UNIT // Lock the property unit for the applicant, supersede competing applications
 }
 
 /// Actor Type - Who triggered an event
@@ -1331,6 +1333,11 @@ model PropertyPaymentMethodPhase {
   minimumCompletionPercentage     Float?
   completionCriterion             CompletionCriterion?
 
+  // Unit locking configuration
+  // If true, completing this phase locks the unit for the applicant
+  // Only one phase per payment method should have this enabled
+  lockUnitOnComplete Boolean @default(false)
+
   // Snapshots for audit (original config at creation time)
   // These are still needed for inline definitions (backward compatibility)
   stepDefinitionsSnapshot  Json?
@@ -1346,6 +1353,8 @@ model PropertyPaymentMethodPhase {
   questionnaireFields PaymentMethodPhaseField[]
   // Event attachments - handlers that fire on phase transitions
   eventAttachments    PhaseEventAttachment[]
+  // Application phases created from this template
+  applicationPhases   ApplicationPhase[]
 
   @@index([tenantId])
   @@index([paymentMethodId])
@@ -1627,6 +1636,13 @@ model Application {
   transferredFrom   Application? @relation("ApplicationTransfer", fields: [transferredFromId], references: [id])
   transferredTo     Application? @relation("ApplicationTransfer")
 
+  // Supersede tracking - when another buyer locks the unit
+  // If status is SUPERSEDED, this references the application that took the unit
+  supersededById         String?
+  supersededBy           Application?  @relation("ApplicationSuperseded", fields: [supersededById], references: [id])
+  supersededAt           DateTime?
+  supersededApplications Application[] @relation("ApplicationSuperseded")
+
   // Transfer requests where this contract is the source
   outgoingTransferRequests PropertyTransferRequest[] @relation("SourceApplication")
   // Transfer requests where this contract is the target (created after approval)
@@ -1645,6 +1661,7 @@ model Application {
   @@index([paymentMethodId])
   @@index([status])
   @@index([currentPhaseId])
+  @@index([supersededById])
   @@map("applications")
 }
 
@@ -1723,6 +1740,10 @@ model ApplicationPhase {
   applicationId String
   application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
 
+  // Reference to the phase template this was instantiated from
+  phaseTemplateId String?
+  phaseTemplate   PropertyPaymentMethodPhase? @relation(fields: [phaseTemplateId], references: [id], onDelete: SetNull)
+
   // Admin-defined naming
   name        String
   description String? @db.Text
@@ -1761,6 +1782,7 @@ model ApplicationPhase {
 
   @@index([tenantId])
   @@index([applicationId])
+  @@index([phaseTemplateId])
   @@index([phaseCategory])
   @@index([status])
   @@index([order])

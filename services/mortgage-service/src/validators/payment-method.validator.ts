@@ -58,6 +58,11 @@ const PaymentMethodPhaseBaseSchema = z.object({
     requiredDocumentTypes: z.array(z.string()).optional().openapi({ description: 'Legacy: array of document type strings' }),
     // Inline step definitions (alternative to using documentationPlanId)
     stepDefinitions: z.array(StepDefinitionSchema).optional().openapi({ description: 'Inline step definitions for DOCUMENTATION phases (alternative to documentationPlanId)' }),
+    // Unit locking: when true, completing this phase locks the unit for the applicant and supersedes competing applications
+    lockUnitOnComplete: z.boolean().default(false).openapi({
+        description: 'When true, completing this phase locks the property unit for the applicant. Other applications for the same unit will be marked as SUPERSEDED.',
+        example: false
+    }),
 });
 
 // Function to transform legacy requiredDocumentTypes to requiredDocuments

@@ -27,9 +27,13 @@ import { paymentPlanService } from './payment-plan.service';
 import {
     sendDocumentApprovedNotification,
     sendDocumentRejectedNotification,
+    sendQuestionnairePhaseCompletedNotification,
+    sendDocumentationPhaseCompletedNotification,
+    sendPaymentPhaseCompletedNotification,
     formatDate,
 } from '../lib/notifications';
 import { createWorkflowBlockerService, type CreateBlockerInput } from './workflow-blocker.service';
+import { unitLockingService } from './unit-locking.service';
 
 class ApplicationPhaseService {
     async findById(phaseId: string): Promise<any> {
@@ -880,6 +884,12 @@ class ApplicationPhaseService {
                         },
                     });
                 }
+
+                // Handle unit locking if this phase is configured to lock on complete
+                await this.handleUnitLockingOnPhaseComplete(tx, phaseId, userId);
+
+                // Send phase completion notification (fire and forget, outside tx)
+                this.sendPhaseCompletionNotification(phaseId);
             } else {
                 // Advance currentStepId to the next actionable step
                 const nextStep = remainingSteps[0];
@@ -1424,6 +1434,168 @@ class ApplicationPhaseService {
     }
 
     /**
+     * Handle unit locking after phase completion.
+     * This is called after a phase is marked complete to check if it should trigger unit locking.
+     * 
+     * @param tx - Transaction context (optional, uses prisma if not provided)
+     * @param phaseId - The application phase that was completed
+     * @param userId - The actor who triggered the completion
+     */
+    private async handleUnitLockingOnPhaseComplete(
+        tx: any | null,
+        phaseId: string,
+        userId: string
+    ): Promise<void> {
+        const db = tx || prisma;
+
+        // Get the phase with its template reference
+        const phase = await db.applicationPhase.findUnique({
+            where: { id: phaseId },
+            include: {
+                phaseTemplate: {
+                    select: { lockUnitOnComplete: true },
+                },
+                application: {
+                    select: { id: true, tenantId: true },
+                },
+            },
+        });
+
+        if (!phase?.phaseTemplate?.lockUnitOnComplete) {
+            return; // This phase is not configured to lock units
+        }
+
+        // Lock the unit and supersede competing applications
+        try {
+            const result = await unitLockingService.lockUnitForApplication(
+                phase.application.tenantId,
+                phase.application.id,
+                userId
+            );
+
+            // Log the lock event
+            await db.domainEvent.create({
+                data: {
+                    id: uuidv4(),
+                    tenantId: phase.application.tenantId,
+                    eventType: 'UNIT.LOCKED',
+                    aggregateType: 'PropertyUnit',
+                    aggregateId: result.lockedUnit.id,
+                    queueName: 'notifications',
+                    payload: JSON.stringify({
+                        unitId: result.lockedUnit.id,
+                        applicationId: phase.application.id,
+                        phaseId,
+                        supersededCount: result.supersededCount,
+                        supersededApplicationIds: result.supersededApplicationIds,
+                    }),
+                    actorId: userId,
+                },
+            });
+        } catch (error: any) {
+            // If unit is already locked by someone else, this is a conflict
+            if (error.statusCode === 409) {
+                throw error; // Re-throw conflict errors
+            }
+            // For other errors, log but don't fail the phase completion
+            console.error('Unit locking failed:', error.message);
+        }
+    }
+
+    /**
+     * Send phase completion notification based on phase category.
+     * Sends the appropriate notification type (questionnaire, documentation, or payment).
+     * 
+     * @param phaseId - The application phase that was completed
+     */
+    private async sendPhaseCompletionNotification(phaseId: string): Promise<void> {
+        try {
+            const phase = await prisma.applicationPhase.findUnique({
+                where: { id: phaseId },
+                include: {
+                    application: {
+                        include: {
+                            buyer: true,
+                            propertyUnit: {
+                                include: {
+                                    variant: {
+                                        include: { property: true },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                    questionnairePhase: true,
+                    documentationPhase: {
+                        include: { steps: true },
+                    },
+                    paymentPhase: {
+                        include: { installments: true },
+                    },
+                },
+            });
+
+            if (!phase?.application?.buyer?.email) {
+                console.log('[ApplicationPhaseService] No buyer email for phase completion notification');
+                return;
+            }
+
+            const buyer = phase.application.buyer;
+            const property = phase.application.propertyUnit?.variant?.property;
+            const unit = phase.application.propertyUnit;
+            const dashboardUrl = process.env.DASHBOARD_URL || 'https://app.qshelter.com';
+
+            const basePayload = {
+                email: buyer.email,
+                userName: buyer.firstName || buyer.email,
+                applicationNumber: phase.application.applicationNumber || '',
+                propertyName: property?.title || 'Property',
+                unitNumber: unit?.unitNumber || '',
+                phaseName: phase.name,
+                dashboardUrl: `${dashboardUrl}/applications/${phase.applicationId}`,
+            };
+
+            switch (phase.phaseCategory) {
+                case 'QUESTIONNAIRE':
+                    await sendQuestionnairePhaseCompletedNotification({
+                        ...basePayload,
+                        score: phase.questionnairePhase?.totalScore ?? undefined,
+                        maxScore: phase.questionnairePhase?.passingScore ?? undefined,
+                        passed: phase.questionnairePhase?.passed ?? true,
+                    });
+                    break;
+
+                case 'DOCUMENTATION':
+                    const stepsCount = phase.documentationPhase?.steps?.length ?? 0;
+                    await sendDocumentationPhaseCompletedNotification({
+                        ...basePayload,
+                        stepsCompleted: stepsCount,
+                    });
+                    break;
+
+                case 'PAYMENT':
+                    const installments = phase.paymentPhase?.installments ?? [];
+                    const paidInstallments = installments.filter((i: any) => 
+                        i.status === 'PAID' || i.status === 'WAIVED'
+                    );
+                    const totalPaid = phase.paymentPhase?.paidAmount ?? 0;
+                    await sendPaymentPhaseCompletedNotification({
+                        ...basePayload,
+                        totalPaid: `₦${totalPaid.toLocaleString()}`,
+                        installmentsPaid: paidInstallments.length,
+                    });
+                    break;
+
+                default:
+                    console.log(`[ApplicationPhaseService] Unknown phase category: ${phase.phaseCategory}`);
+            }
+        } catch (error) {
+            // Don't fail phase completion if notification fails
+            console.error('[ApplicationPhaseService] Failed to send phase completion notification:', error);
+        }
+    }
+
+    /**
      * Evaluate phase completion within a transaction
      * Criteria: All steps are COMPLETED or SKIPPED
      */
@@ -1516,6 +1688,12 @@ class ApplicationPhaseService {
                 },
             });
         }
+
+        // Handle unit locking if this phase is configured to lock on complete
+        await this.handleUnitLockingOnPhaseComplete(tx, phaseId, userId);
+
+        // Send phase completion notification (fire and forget, outside tx)
+        this.sendPhaseCompletionNotification(phaseId);
     }
 
     /**
@@ -1618,8 +1796,14 @@ class ApplicationPhaseService {
                 },
             });
 
+            // Handle unit locking if this phase is configured to lock on complete
+            await this.handleUnitLockingOnPhaseComplete(tx, phaseId, userId);
+
             return result;
         });
+
+        // Send phase completion notification (fire and forget, outside tx)
+        this.sendPhaseCompletionNotification(phaseId);
 
         return this.findByIdWithActionStatus(updated.id);
     }

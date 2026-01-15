@@ -9,10 +9,12 @@ import type {
 import {
     sendPaymentReceivedNotification,
     sendPaymentFailedNotification,
+    sendPaymentPhaseCompletedNotification,
     formatCurrency,
     formatDate,
 } from '../lib/notifications';
 import { applicationPhaseService } from './application-phase.service';
+import { unitLockingService } from './unit-locking.service';
 
 // Dashboard URL base
 const DASHBOARD_URL = process.env.DASHBOARD_URL || 'https://app.contribuild.com';
@@ -25,6 +27,67 @@ class ApplicationPaymentService {
         const timestamp = Date.now().toString(36).toUpperCase();
         const random = Math.random().toString(36).substring(2, 8).toUpperCase();
         return `PAY-${timestamp}-${random}`;
+    }
+
+    /**
+     * Handle unit locking after phase completion in payment context.
+     * 
+     * @param phaseId - The application phase that was completed
+     * @param tenantId - Tenant context
+     * @param applicationId - Application ID
+     */
+    private async handleUnitLockingOnPhaseComplete(
+        phaseId: string,
+        tenantId: string,
+        applicationId: string
+    ): Promise<void> {
+        // Get the phase with its template reference
+        const phase = await prisma.applicationPhase.findUnique({
+            where: { id: phaseId },
+            include: {
+                phaseTemplate: {
+                    select: { lockUnitOnComplete: true },
+                },
+            },
+        });
+
+        if (!phase?.phaseTemplate?.lockUnitOnComplete) {
+            return; // This phase is not configured to lock units
+        }
+
+        // Lock the unit and supersede competing applications
+        try {
+            const result = await unitLockingService.lockUnitForApplication(
+                tenantId,
+                applicationId
+            );
+
+            // Log the lock event
+            await prisma.domainEvent.create({
+                data: {
+                    id: uuidv4(),
+                    tenantId,
+                    eventType: 'UNIT.LOCKED',
+                    aggregateType: 'PropertyUnit',
+                    aggregateId: result.lockedUnit.id,
+                    queueName: 'notifications',
+                    payload: JSON.stringify({
+                        unitId: result.lockedUnit.id,
+                        applicationId,
+                        phaseId,
+                        supersededCount: result.supersededCount,
+                        supersededApplicationIds: result.supersededApplicationIds,
+                    }),
+                },
+            });
+        } catch (error: any) {
+            // If unit is already locked by someone else, this is a conflict
+            if (error.statusCode === 409) {
+                throw error; // Re-throw conflict errors
+            }
+            // For other errors, log but don't fail the payment processing
+            console.error('Unit locking failed:', error.message);
+        }
     }
 
     /**
@@ -234,8 +297,9 @@ class ApplicationPaymentService {
     private async completePayment(paymentId: string, gatewayResponse?: Record<string, any>) {
         const payment = await this.findById(paymentId);
 
-        const { updated, activatedNextPhaseId } = await prisma.$transaction(async (tx) => {
+        const { updated, activatedNextPhaseId, completedPhaseId } = await prisma.$transaction(async (tx) => {
             let activatedNextPhaseId: string | null = null;
+            let completedPhaseId: string | null = null;
 
             // Update payment status
             const result = await tx.applicationPayment.update({
@@ -300,6 +364,9 @@ class ApplicationPaymentService {
                                 completedAt: new Date(),
                             },
                         });
+
+                        // Track for post-transaction notification
+                        completedPhaseId = payment.phaseId;
                     }
 
                     // If phase is completed, auto-activate next phase
@@ -363,6 +430,9 @@ class ApplicationPaymentService {
                                 },
                             });
                         }
+
+                        // Handle unit locking if this phase is configured to lock on complete
+                        await this.handleUnitLockingOnPhaseComplete(payment.phaseId, payment.tenantId, payment.applicationId);
                     }
                 }
             }
@@ -400,8 +470,59 @@ class ApplicationPaymentService {
                 },
             });
 
-            return { updated: result, activatedNextPhaseId };
+            return { updated: result, activatedNextPhaseId, completedPhaseId };
         });
+
+        // Send payment phase completion notification if phase was completed
+        if (completedPhaseId) {
+            try {
+                const completedPhase = await prisma.applicationPhase.findUnique({
+                    where: { id: completedPhaseId },
+                    include: {
+                        application: {
+                            include: {
+                                buyer: true,
+                                propertyUnit: {
+                                    include: {
+                                        variant: { include: { property: true } },
+                                    },
+                                },
+                            },
+                        },
+                        paymentPhase: {
+                            include: { installments: true },
+                        },
+                    },
+                });
+
+                if (completedPhase?.application?.buyer?.email) {
+                    const buyer = completedPhase.application.buyer;
+                    const property = completedPhase.application.propertyUnit?.variant?.property;
+                    const unit = completedPhase.application.propertyUnit;
+                    const installments = completedPhase.paymentPhase?.installments ?? [];
+                    const paidInstallments = installments.filter((i: any) =>
+                        i.status === 'PAID' || i.status === 'WAIVED'
+                    );
+
+                    await sendPaymentPhaseCompletedNotification({
+                        email: buyer.email,
+                        userName: buyer.firstName || buyer.email,
+                        applicationNumber: completedPhase.application.applicationNumber || '',
+                        propertyName: property?.title || 'Property',
+                        unitNumber: unit?.unitNumber || '',
+                        phaseName: completedPhase.name,
+                        totalPaid: `₦${(completedPhase.paymentPhase?.paidAmount ?? 0).toLocaleString()}`,
+                        installmentsPaid: paidInstallments.length,
+                        dashboardUrl: `${DASHBOARD_URL}/applications/${completedPhase.applicationId}`,
+                    });
+                }
+            } catch (error) {
+                console.error('[ApplicationPaymentService] Failed to send phase completion notification', {
+                    phaseId: completedPhaseId,
+                    error: error instanceof Error ? error.message : String(error),
+                });
+            }
+        }
 
         // If a new phase was activated, process any auto-executable steps (e.g., GENERATE_DOCUMENT)
         if (activatedNextPhaseId) {

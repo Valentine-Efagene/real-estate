@@ -34,6 +34,16 @@ export enum NotificationType {
     APPLICATION_TERMINATION_REQUESTED = 'applicationTerminationRequested',
     APPLICATION_TERMINATION_APPROVED = 'applicationTerminationApproved',
     APPLICATION_TERMINATED = 'applicationTerminated',
+    APPLICATION_SUPERSEDED = 'applicationSuperseded',
+
+    // Unit Locking
+    UNIT_LOCKED = 'unitLocked',
+    UNIT_RELEASED = 'unitReleased',
+
+    // Phase Completion
+    QUESTIONNAIRE_PHASE_COMPLETED = 'questionnairePhaseCompleted',
+    DOCUMENTATION_PHASE_COMPLETED = 'documentationPhaseCompleted',
+    PAYMENT_PHASE_COMPLETED = 'paymentPhaseCompleted',
 
     // Offer Letters
     OFFER_LETTER_SENT = 'offerLetterSent',

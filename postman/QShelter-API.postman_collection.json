@@ -1410,7 +1410,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"name\": \"Additional Verification\",\n  \"phaseCategory\": \"DOCUMENTATION\",\n  \"phaseType\": \"VERIFICATION\",\n  \"order\": 2,\n  \"stepDefinitions\": [\n    {\"name\": \"Verify Address\", \"stepType\": \"UPLOAD\", \"order\": 1, \"requiredDocumentTypes\": [\"UTILITY_BILL\"]}\n  ]\n}"
+                            "raw": "{\n  \"name\": \"Additional Verification\",\n  \"phaseCategory\": \"DOCUMENTATION\",\n  \"phaseType\": \"VERIFICATION\",\n  \"order\": 2,\n  \"lockUnitOnComplete\": false,\n  \"stepDefinitions\": [\n    {\"name\": \"Verify Address\", \"stepType\": \"UPLOAD\", \"order\": 1, \"requiredDocumentTypes\": [\"UTILITY_BILL\"]}\n  ]\n}"
                         },
                         "url": {
                             "raw": "{{mortgageServiceUrl}}/payment-methods/{{paymentMethodId}}/phases",
@@ -1422,7 +1422,8 @@
                                 "{{paymentMethodId}}",
                                 "phases"
                             ]
-                        }
+                        },
+                        "description": "Add a phase to an existing payment method.\n\n**lockUnitOnComplete:** When set to true, completing this phase locks the property unit for the applicant. Other applications for the same unit will be marked as SUPERSEDED. Only one phase per payment method should have this enabled (typically the downpayment phase)."
                     }
                 },
                 {
@@ -1445,7 +1446,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"name\": \"Updated Phase Name\",\n  \"percentOfPrice\": 15\n}"
+                            "raw": "{\n  \"name\": \"Updated Phase Name\",\n  \"percentOfPrice\": 15,\n  \"lockUnitOnComplete\": true\n}"
                         },
                         "url": {
                             "raw": "{{mortgageServiceUrl}}/payment-methods/{{paymentMethodId}}/phases/{{phaseTemplateId}}",
@@ -1458,7 +1459,8 @@
                                 "phases",
                                 "{{phaseTemplateId}}"
                             ]
-                        }
+                        },
+                        "description": "Update an existing phase.\n\n**lockUnitOnComplete:** When set to true, completing this phase locks the property unit for the applicant. Other applications for the same unit will be marked as SUPERSEDED."
                     }
                 },
                 {

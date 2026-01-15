@@ -5544,6 +5544,7 @@ export const PropertyPaymentMethodPhaseScalarFieldEnum = {
   requiresPreviousPhaseCompletion: 'requiresPreviousPhaseCompletion',
   minimumCompletionPercentage: 'minimumCompletionPercentage',
   completionCriterion: 'completionCriterion',
+  lockUnitOnComplete: 'lockUnitOnComplete',
   stepDefinitionsSnapshot: 'stepDefinitionsSnapshot',
   requiredDocumentSnapshot: 'requiredDocumentSnapshot',
   createdAt: 'createdAt',
@@ -5657,7 +5658,9 @@ export const ApplicationScalarFieldEnum = {
   terminatedAt: 'terminatedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  transferredFromId: 'transferredFromId'
+  transferredFromId: 'transferredFromId',
+  supersededById: 'supersededById',
+  supersededAt: 'supersededAt'
 } as const
 
 export type ApplicationScalarFieldEnum = (typeof ApplicationScalarFieldEnum)[keyof typeof ApplicationScalarFieldEnum]
@@ -5696,6 +5699,7 @@ export const ApplicationPhaseScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   applicationId: 'applicationId',
+  phaseTemplateId: 'phaseTemplateId',
   name: 'name',
   description: 'description',
   phaseCategory: 'phaseCategory',
@@ -6784,7 +6788,8 @@ export const ApplicationOrderByRelevanceFieldEnum = {
   description: 'description',
   applicationType: 'applicationType',
   currentPhaseId: 'currentPhaseId',
-  transferredFromId: 'transferredFromId'
+  transferredFromId: 'transferredFromId',
+  supersededById: 'supersededById'
 } as const
 
 export type ApplicationOrderByRelevanceFieldEnum = (typeof ApplicationOrderByRelevanceFieldEnum)[keyof typeof ApplicationOrderByRelevanceFieldEnum]
@@ -6815,6 +6820,7 @@ export const ApplicationPhaseOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   applicationId: 'applicationId',
+  phaseTemplateId: 'phaseTemplateId',
   name: 'name',
   description: 'description'
 } as const

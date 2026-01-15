@@ -361,6 +361,7 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                     percentOfPrice: data.percentOfPrice,
                     requiresPreviousPhaseCompletion: data.requiresPreviousPhaseCompletion ?? true,
                     minimumCompletionPercentage: data.minimumCompletionPercentage,
+                    lockUnitOnComplete: data.lockUnitOnComplete ?? false,
                     stepDefinitionsSnapshot,
                     requiredDocumentSnapshot,
                 },

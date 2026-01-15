@@ -50,7 +50,8 @@ export const ApplicationStatus = {
   COMPLETED: 'COMPLETED',
   CANCELLED: 'CANCELLED',
   TERMINATED: 'TERMINATED',
-  TRANSFERRED: 'TRANSFERRED'
+  TRANSFERRED: 'TRANSFERRED',
+  SUPERSEDED: 'SUPERSEDED'
 } as const
 
 export type ApplicationStatus = (typeof ApplicationStatus)[keyof typeof ApplicationStatus]
@@ -314,7 +315,8 @@ export const EventHandlerType = {
   SEND_PUSH: 'SEND_PUSH',
   CALL_WEBHOOK: 'CALL_WEBHOOK',
   ADVANCE_WORKFLOW: 'ADVANCE_WORKFLOW',
-  RUN_AUTOMATION: 'RUN_AUTOMATION'
+  RUN_AUTOMATION: 'RUN_AUTOMATION',
+  LOCK_UNIT: 'LOCK_UNIT'
 } as const
 
 export type EventHandlerType = (typeof EventHandlerType)[keyof typeof EventHandlerType]

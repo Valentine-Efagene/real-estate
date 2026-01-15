@@ -198,11 +198,17 @@ function getNextState(currentState: ApplicationStatus, trigger: string): Applica
             COMPLETE: 'COMPLETED' as ApplicationStatus,
             TERMINATE: 'TERMINATED' as ApplicationStatus,
             TRANSFER: 'TRANSFERRED' as ApplicationStatus,
+            SUPERSEDE: 'SUPERSEDED' as ApplicationStatus, // Another buyer locked the unit
         },
         COMPLETED: {},
         CANCELLED: {},
         TERMINATED: {},
         TRANSFERRED: {},
+        SUPERSEDED: {
+            // Superseded applications can be transferred to different unit or cancelled
+            TRANSFER: 'TRANSFERRED' as ApplicationStatus,
+            CANCEL: 'CANCELLED' as ApplicationStatus,
+        },
     };
 
     return transitions[currentState]?.[trigger] ?? null;
@@ -459,6 +465,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                     data: {
                         tenantId: (data as any).tenantId,
                         applicationId: created.id,
+                        phaseTemplateId: phaseTemplate.id, // Link to source template for config lookup
                         name: phaseTemplate.name,
                         description: phaseTemplate.description,
                         phaseCategory: phaseTemplate.phaseCategory,
