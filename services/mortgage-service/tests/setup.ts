@@ -6,6 +6,7 @@ import { PrismaClient } from '@valentine-efagene/qshelter-common';
 import { faker } from '@faker-js/faker';
 import supertest from 'supertest';
 import { app } from '../src/app.js';
+import { app as notificationApp } from '../../notification-service/src/app.js';
 
 /**
  * E2E Test Mode Configuration
@@ -16,10 +17,14 @@ import { app } from '../src/app.js';
  * Leave unset for fast in-process testing with supertest(app)
  */
 export const API_BASE_URL = process.env.API_BASE_URL;
+export const NOTIFICATION_API_BASE_URL = process.env.NOTIFICATION_API_BASE_URL;
 export const isDeployedMode = !!API_BASE_URL;
 
 // Create a supertest instance that works with both modes
 export const api = API_BASE_URL ? supertest(API_BASE_URL) : supertest(app);
+export const notificationApi = NOTIFICATION_API_BASE_URL
+    ? supertest(NOTIFICATION_API_BASE_URL)
+    : supertest(notificationApp);
 
 // Log the test mode on startup
 console.log(`[E2E] Mode: ${isDeployedMode ? 'DEPLOYED' : 'LOCAL'}`);
@@ -202,12 +207,19 @@ export async function cleanupTestData() {
     await prisma.propertyVariantMedia.deleteMany();
     await prisma.propertyVariant.deleteMany();
     await prisma.propertyPaymentMethodLink.deleteMany();
+    await prisma.phaseEventAttachment.deleteMany();
+    await prisma.stepEventAttachment.deleteMany();
     await prisma.paymentMethodPhaseStep.deleteMany();
     await prisma.paymentMethodPhaseDocument.deleteMany();
     await prisma.propertyPaymentMethodPhase.deleteMany();
     await prisma.documentRequirementRule.deleteMany();
     await prisma.propertyPaymentMethod.deleteMany();
     await prisma.paymentPlan.deleteMany();
+    // Clean up event system (handler -> type -> channel)
+    await prisma.eventHandlerExecution.deleteMany();
+    await prisma.eventHandler.deleteMany();
+    await prisma.eventType.deleteMany();
+    await prisma.eventChannel.deleteMany();
     await prisma.domainEvent.deleteMany();
     await prisma.property.deleteMany();
     await prisma.user.deleteMany();

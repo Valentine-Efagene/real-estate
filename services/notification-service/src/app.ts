@@ -12,6 +12,8 @@ import pushRouter from './routes/push';
 import slackRouter from './routes/slack';
 import whatsappRouter from './routes/whatsapp';
 import eventHandlerRouter from './routes/event-handler';
+import eventChannelRouter from './routes/event-channel';
+import eventTypeRouter from './routes/event-type';
 
 export const app: Application = express();
 
@@ -80,7 +82,9 @@ app.use('/push', pushRouter);
 app.use('/slack', slackRouter);
 app.use('/whatsapp', whatsappRouter);
 
-// Event handler routes
+// Event management routes
+app.use('/event-channels', eventChannelRouter);
+app.use('/event-types', eventTypeRouter);
 app.use('/event-handlers', eventHandlerRouter);
 
 app.use(errorHandler);

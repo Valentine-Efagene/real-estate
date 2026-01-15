@@ -1,6 +1,6 @@
 
 
-import { api, prisma, cleanupTestData } from '../../setup.js';
+import { api, notificationApi, prisma, cleanupTestData } from '../../setup.js';
 import { faker } from '@faker-js/faker';
 import { randomUUID } from 'crypto';
 import { authHeaders, ROLES, CONDITION_OPERATORS, UPLOADED_BY } from '@valentine-efagene/qshelter-common';
@@ -653,31 +653,36 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         it('Adaeze configures phase event to notify when downpayment completes', async () => {
             // First, create an event channel and type for downpayment notifications
             // Note: In production, channels and types would be seeded as part of tenant onboarding
-            const channel = await prisma.eventChannel.create({
-                data: {
-                    tenantId,
+            const channelResponse = await notificationApi
+                .post('/event-channels')
+                .set(adminHeaders(adaezeId, tenantId))
+                .send({
                     code: 'MORTGAGE_OPS',
                     name: 'Mortgage Operations',
                     description: 'Internal events for mortgage workflow',
-                },
-            });
+                });
 
-            const eventType = await prisma.eventType.create({
-                data: {
-                    tenantId,
+            expect(channelResponse.status).toBe(201);
+            const channel = channelResponse.body.data;
+
+            const eventTypeResponse = await notificationApi
+                .post('/event-types')
+                .set(adminHeaders(adaezeId, tenantId))
+                .send({
                     channelId: channel.id,
                     code: 'DOWNPAYMENT_COMPLETED',
                     name: 'Downpayment Completed',
                     description: 'Fired when customer completes downpayment phase',
-                },
-            });
+                });
+
+            expect(eventTypeResponse.status).toBe(201);
+            const eventType = eventTypeResponse.body.data;
 
             // Create handler via notification-service API
-            // Note: In a real test, this would call the notification service
-            // For now we use prisma since we're testing in a single service context
-            const handler = await prisma.eventHandler.create({
-                data: {
-                    tenantId,
+            const handlerResponse = await notificationApi
+                .post('/event-handlers')
+                .set(adminHeaders(adaezeId, tenantId))
+                .send({
                     eventTypeId: eventType.id,
                     name: 'Notify Admin: Upload Final Offer',
                     description: 'Sends notification to admin to upload final offer letter',
@@ -687,8 +692,10 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                         recipients: ['adaeze@qshelter.com'],
                         subject: 'Action Required: Upload Final Offer Letter',
                     },
-                },
-            });
+                });
+
+            expect(handlerResponse.status).toBe(201);
+            const handler = handlerResponse.body.data;
 
             // Get the payment method to find the downpayment phase ID
             const getMethodResponse = await api

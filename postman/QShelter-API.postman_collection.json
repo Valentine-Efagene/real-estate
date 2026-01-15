@@ -120,9 +120,393 @@
             "value": "local-bootstrap-secret",
             "type": "string",
             "description": "Bootstrap secret for admin endpoints (use 'local-bootstrap-secret' for local dev)"
+        },
+        {
+            "key": "eventChannelId",
+            "value": "channel-001",
+            "type": "string",
+            "description": "Event channel ID for event channel operations"
+        },
+        {
+            "key": "eventChannelCode",
+            "value": "MORTGAGE_OPS",
+            "type": "string",
+            "description": "Event channel code for lookup by code"
+        },
+        {
+            "key": "eventTypeId",
+            "value": "evtype-001",
+            "type": "string",
+            "description": "Event type ID for event type and handler operations"
+        },
+        {
+            "key": "eventHandlerId",
+            "value": "handler-001",
+            "type": "string",
+            "description": "Event handler ID for handler operations"
         }
     ],
     "item": [
+        {
+            "name": "Event Channels",
+            "description": "Event channels organize event types by category (e.g., MORTGAGE_OPS, USER_ACTIVITY). Channels are created per-tenant.",
+            "item": [
+                {
+                    "name": "Create Event Channel",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"code\": \"MORTGAGE_OPS\",\n  \"name\": \"Mortgage Operations\",\n  \"description\": \"Internal events for mortgage workflow\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{notificationServiceUrl}}/event-channels",
+                            "host": [
+                                "{{notificationServiceUrl}}"
+                            ],
+                            "path": [
+                                "event-channels"
+                            ]
+                        },
+                        "description": "Create an event channel.\n\n**Code Format:**\n- Must be uppercase with underscores (e.g., MORTGAGE_OPS)\n- Must be unique within the tenant"
+                    }
+                },
+                {
+                    "name": "Get All Event Channels",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{notificationServiceUrl}}/event-channels",
+                            "host": [
+                                "{{notificationServiceUrl}}"
+                            ],
+                            "path": [
+                                "event-channels"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Event Channel by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{notificationServiceUrl}}/event-channels/{{eventChannelId}}",
+                            "host": [
+                                "{{notificationServiceUrl}}"
+                            ],
+                            "path": [
+                                "event-channels",
+                                "{{eventChannelId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Event Channel by Code",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{notificationServiceUrl}}/event-channels/code/{{eventChannelCode}}",
+                            "host": [
+                                "{{notificationServiceUrl}}"
+                            ],
+                            "path": [
+                                "event-channels",
+                                "code",
+                                "{{eventChannelCode}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Update Event Channel",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Updated Mortgage Operations\",\n  \"description\": \"Updated description\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{notificationServiceUrl}}/event-channels/{{eventChannelId}}",
+                            "host": [
+                                "{{notificationServiceUrl}}"
+                            ],
+                            "path": [
+                                "event-channels",
+                                "{{eventChannelId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Event Channel",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{notificationServiceUrl}}/event-channels/{{eventChannelId}}",
+                            "host": [
+                                "{{notificationServiceUrl}}"
+                            ],
+                            "path": [
+                                "event-channels",
+                                "{{eventChannelId}}"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Event Types",
+            "description": "Event types define specific events within a channel (e.g., DOWNPAYMENT_COMPLETED under MORTGAGE_OPS). Handlers are attached to event types.",
+            "item": [
+                {
+                    "name": "Create Event Type",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"channelId\": \"{{eventChannelId}}\",\n  \"code\": \"DOWNPAYMENT_COMPLETED\",\n  \"name\": \"Downpayment Completed\",\n  \"description\": \"Fired when customer completes downpayment phase\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{notificationServiceUrl}}/event-types",
+                            "host": [
+                                "{{notificationServiceUrl}}"
+                            ],
+                            "path": [
+                                "event-types"
+                            ]
+                        },
+                        "description": "Create an event type within a channel.\n\n**Code Format:**\n- Must be uppercase with underscores (e.g., DOWNPAYMENT_COMPLETED)\n- Must be unique within the channel"
+                    }
+                },
+                {
+                    "name": "Get All Event Types",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{notificationServiceUrl}}/event-types",
+                            "host": [
+                                "{{notificationServiceUrl}}"
+                            ],
+                            "path": [
+                                "event-types"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Event Types by Channel",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{notificationServiceUrl}}/event-types?channelId={{eventChannelId}}",
+                            "host": [
+                                "{{notificationServiceUrl}}"
+                            ],
+                            "path": [
+                                "event-types"
+                            ],
+                            "query": [
+                                {
+                                    "key": "channelId",
+                                    "value": "{{eventChannelId}}"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Event Type by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{notificationServiceUrl}}/event-types/{{eventTypeId}}",
+                            "host": [
+                                "{{notificationServiceUrl}}"
+                            ],
+                            "path": [
+                                "event-types",
+                                "{{eventTypeId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Update Event Type",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Updated Event Type Name\",\n  \"description\": \"Updated description\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{notificationServiceUrl}}/event-types/{{eventTypeId}}",
+                            "host": [
+                                "{{notificationServiceUrl}}"
+                            ],
+                            "path": [
+                                "event-types",
+                                "{{eventTypeId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Event Type",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "x-tenant-id",
+                                "value": "{{tenantId}}"
+                            },
+                            {
+                                "key": "x-user-id",
+                                "value": "{{adminUserId}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{notificationServiceUrl}}/event-types/{{eventTypeId}}",
+                            "host": [
+                                "{{notificationServiceUrl}}"
+                            ],
+                            "path": [
+                                "event-types",
+                                "{{eventTypeId}}"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
         {
             "name": "Event Handlers",
             "description": "Event handlers define actions to trigger when workflow events occur (e.g., send email when phase completes). Handlers are attached to phase or step templates.",
