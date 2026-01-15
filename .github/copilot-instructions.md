@@ -22,6 +22,7 @@
 - Our main techs are Node.js, TypeScript, Express, AWS Lambda, API Gateway, DynamoDB, S3, prisma, zod and LocalStack for local emulation.
 - Our framework for serverless apps is the Serverless Framework with serverless-localstack for local development.
 - We use zod to generate our openapi/swagger documentation.
+- The front end will also import the common package, so I need all the appropriate types and enums to be there, so they don't have to be redefined in the front end.
 
 ## Scenario-Based Business Flows
 

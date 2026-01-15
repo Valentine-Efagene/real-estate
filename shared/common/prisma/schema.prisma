@@ -62,6 +62,18 @@ enum ApplicationStatus {
   SUPERSEDED // Another buyer locked the unit - this application was outbid
 }
 
+/// Triggers that cause application state transitions
+enum ApplicationTrigger {
+  SUBMIT // Submit application for review (DRAFT -> PENDING)
+  APPROVE // Approve pending application (PENDING -> ACTIVE)
+  REJECT // Reject pending application (PENDING -> CANCELLED)
+  CANCEL // Cancel application
+  COMPLETE // Complete application (all phases done)
+  TERMINATE // Terminate active application
+  TRANSFER // Transfer to different unit
+  SUPERSEDE // Another buyer locked the unit
+}
+
 enum TransferRequestStatus {
   PENDING
   APPROVED

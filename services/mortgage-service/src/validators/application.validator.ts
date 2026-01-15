@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
+import { ApplicationTrigger } from '@valentine-efagene/qshelter-common';
 
 extendZodWithOpenApi(z);
 
@@ -41,8 +42,8 @@ export const UpdateApplicationSchema = z
 // Transition application state
 export const TransitionApplicationSchema = z
     .object({
-        trigger: z.string().min(1).optional().openapi({ example: 'SUBMIT' }),
-        action: z.string().min(1).optional().openapi({ example: 'SUBMIT' }),
+        trigger: z.nativeEnum(ApplicationTrigger).optional().openapi({ example: 'SUBMIT' }),
+        action: z.nativeEnum(ApplicationTrigger).optional().openapi({ example: 'SUBMIT' }),
         note: z.string().optional(),
         metadata: z.record(z.string(), z.any()).optional(),
     })

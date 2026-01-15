@@ -4,6 +4,7 @@ import {
     PrismaClient,
     StepType,
     ApplicationStatus,
+    ApplicationTrigger,
     PhaseStatus,
     StepStatus,
     computePhaseActionStatus,
@@ -195,22 +196,22 @@ function parseStepDefinitions(phaseTemplate: {
 /**
  * Simple state machine for application states
  */
-function getNextState(currentState: ApplicationStatus, trigger: string): ApplicationStatus | null {
-    const transitions: Record<ApplicationStatus, Record<string, ApplicationStatus>> = {
+function getNextState(currentState: ApplicationStatus, trigger: ApplicationTrigger): ApplicationStatus | null {
+    const transitions: Record<ApplicationStatus, Partial<Record<ApplicationTrigger, ApplicationStatus>>> = {
         DRAFT: {
-            SUBMIT: 'PENDING' as ApplicationStatus,
-            CANCEL: 'CANCELLED' as ApplicationStatus,
+            [ApplicationTrigger.SUBMIT]: ApplicationStatus.PENDING,
+            [ApplicationTrigger.CANCEL]: ApplicationStatus.CANCELLED,
         },
         PENDING: {
-            APPROVE: 'ACTIVE' as ApplicationStatus,
-            REJECT: 'CANCELLED' as ApplicationStatus,
-            CANCEL: 'CANCELLED' as ApplicationStatus,
+            [ApplicationTrigger.APPROVE]: ApplicationStatus.ACTIVE,
+            [ApplicationTrigger.REJECT]: ApplicationStatus.CANCELLED,
+            [ApplicationTrigger.CANCEL]: ApplicationStatus.CANCELLED,
         },
         ACTIVE: {
-            COMPLETE: 'COMPLETED' as ApplicationStatus,
-            TERMINATE: 'TERMINATED' as ApplicationStatus,
-            TRANSFER: 'TRANSFERRED' as ApplicationStatus,
-            SUPERSEDE: 'SUPERSEDED' as ApplicationStatus, // Another buyer locked the unit
+            [ApplicationTrigger.COMPLETE]: ApplicationStatus.COMPLETED,
+            [ApplicationTrigger.TERMINATE]: ApplicationStatus.TERMINATED,
+            [ApplicationTrigger.TRANSFER]: ApplicationStatus.TRANSFERRED,
+            [ApplicationTrigger.SUPERSEDE]: ApplicationStatus.SUPERSEDED,
         },
         COMPLETED: {},
         CANCELLED: {},
@@ -218,8 +219,8 @@ function getNextState(currentState: ApplicationStatus, trigger: string): Applica
         TRANSFERRED: {},
         SUPERSEDED: {
             // Superseded applications can be transferred to different unit or cancelled
-            TRANSFER: 'TRANSFERRED' as ApplicationStatus,
-            CANCEL: 'CANCELLED' as ApplicationStatus,
+            [ApplicationTrigger.TRANSFER]: ApplicationStatus.TRANSFERRED,
+            [ApplicationTrigger.CANCEL]: ApplicationStatus.CANCELLED,
         },
     };
 

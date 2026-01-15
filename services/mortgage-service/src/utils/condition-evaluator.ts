@@ -5,10 +5,10 @@
  * Used to determine which document requirements apply to a specific application.
  */
 
-import { CONDITION_OPERATORS, type StepCondition } from '@valentine-efagene/qshelter-common';
+import { ConditionOperator, type StepCondition } from '@valentine-efagene/qshelter-common';
 
 // Re-export for convenience
-export { CONDITION_OPERATORS };
+export { ConditionOperator };
 export type { StepCondition };
 
 export interface QuestionnaireAnswers {
@@ -47,38 +47,53 @@ export function evaluateCondition(condition: StepCondition | null | undefined, a
     const answerValue = answers[condition.questionKey];
 
     switch (condition.operator) {
-        case CONDITION_OPERATORS.EQUALS:
+        case ConditionOperator.EQUALS:
             return answerValue === condition.value;
 
-        case CONDITION_OPERATORS.NOT_EQUALS:
+        case ConditionOperator.NOT_EQUALS:
             return answerValue !== condition.value;
 
-        case CONDITION_OPERATORS.IN:
+        case ConditionOperator.IN:
             if (!condition.values || !Array.isArray(condition.values)) {
                 return false;
             }
             return condition.values.includes(answerValue as string | number);
 
-        case CONDITION_OPERATORS.NOT_IN:
+        case ConditionOperator.NOT_IN:
             if (!condition.values || !Array.isArray(condition.values)) {
                 return true;
             }
             return !condition.values.includes(answerValue as string | number);
 
-        case CONDITION_OPERATORS.GREATER_THAN:
+        case ConditionOperator.GREATER_THAN:
             if (typeof answerValue !== 'number' || typeof condition.value !== 'number') {
                 return false;
             }
             return answerValue > condition.value;
 
-        case CONDITION_OPERATORS.LESS_THAN:
+        case ConditionOperator.LESS_THAN:
             if (typeof answerValue !== 'number' || typeof condition.value !== 'number') {
                 return false;
             }
             return answerValue < condition.value;
+        
+        case ConditionOperator.GREATER_THAN_OR_EQUAL:
+            if (typeof answerValue !== 'number' || typeof condition.value !== 'number') {
+                return false;
+            }
+            return answerValue >= condition.value;
 
-        case CONDITION_OPERATORS.EXISTS:
+        case ConditionOperator.LESS_THAN_OR_EQUAL:
+            if (typeof answerValue !== 'number' || typeof condition.value !== 'number') {
+                return false;
+            }
+            return answerValue <= condition.value;
+
+        case ConditionOperator.EXISTS:
             return answerValue !== null && answerValue !== undefined;
+
+        case ConditionOperator.NOT_EXISTS:
+            return answerValue === null || answerValue === undefined;
 
         default:
             // Unknown operator - treat as always required for safety

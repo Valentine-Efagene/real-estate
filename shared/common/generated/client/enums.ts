@@ -57,6 +57,20 @@ export const ApplicationStatus = {
 export type ApplicationStatus = (typeof ApplicationStatus)[keyof typeof ApplicationStatus]
 
 
+export const ApplicationTrigger = {
+  SUBMIT: 'SUBMIT',
+  APPROVE: 'APPROVE',
+  REJECT: 'REJECT',
+  CANCEL: 'CANCEL',
+  COMPLETE: 'COMPLETE',
+  TERMINATE: 'TERMINATE',
+  TRANSFER: 'TRANSFER',
+  SUPERSEDE: 'SUPERSEDE'
+} as const
+
+export type ApplicationTrigger = (typeof ApplicationTrigger)[keyof typeof ApplicationTrigger]
+
+
 export const TransferRequestStatus = {
   PENDING: 'PENDING',
   APPROVED: 'APPROVED',
