@@ -1575,7 +1575,7 @@ class ApplicationPhaseService {
 
                 case 'PAYMENT':
                     const installments = phase.paymentPhase?.installments ?? [];
-                    const paidInstallments = installments.filter((i: any) => 
+                    const paidInstallments = installments.filter((i: any) =>
                         i.status === 'PAID' || i.status === 'WAIVED'
                     );
                     const totalPaid = phase.paymentPhase?.paidAmount ?? 0;

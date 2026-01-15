@@ -1,6 +1,6 @@
 
 
-import { api, notificationApi, prisma, cleanupTestData } from '../../setup.js';
+import { api, prisma, cleanupTestData } from '../../setup.js';
 import { faker } from '@faker-js/faker';
 import { randomUUID } from 'crypto';
 import { authHeaders, ROLES, CONDITION_OPERATORS, UPLOADED_BY } from '@valentine-efagene/qshelter-common';
@@ -650,90 +650,10 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         // NOTE: Document requirement rules are now defined in the DocumentationPlan steps
         // No need for separate document-rules configuration on the payment method
 
-        it('Adaeze configures phase event to notify when downpayment completes', async () => {
-            // First, create an event channel and type for downpayment notifications
-            // Note: In production, channels and types would be seeded as part of tenant onboarding
-            const channelResponse = await notificationApi
-                .post('/event-channels')
-                .set(adminHeaders(adaezeId, tenantId))
-                .send({
-                    code: 'MORTGAGE_OPS',
-                    name: 'Mortgage Operations',
-                    description: 'Internal events for mortgage workflow',
-                });
-
-            expect(channelResponse.status).toBe(201);
-            const channel = channelResponse.body.data;
-
-            const eventTypeResponse = await notificationApi
-                .post('/event-types')
-                .set(adminHeaders(adaezeId, tenantId))
-                .send({
-                    channelId: channel.id,
-                    code: 'DOWNPAYMENT_COMPLETED',
-                    name: 'Downpayment Completed',
-                    description: 'Fired when customer completes downpayment phase',
-                });
-
-            expect(eventTypeResponse.status).toBe(201);
-            const eventType = eventTypeResponse.body.data;
-
-            // Create handler via notification-service API
-            const handlerResponse = await notificationApi
-                .post('/event-handlers')
-                .set(adminHeaders(adaezeId, tenantId))
-                .send({
-                    eventTypeId: eventType.id,
-                    name: 'Notify Admin: Upload Final Offer',
-                    description: 'Sends notification to admin to upload final offer letter',
-                    handlerType: 'SEND_EMAIL',
-                    config: {
-                        template: 'admin_upload_final_offer',
-                        recipients: ['adaeze@qshelter.com'],
-                        subject: 'Action Required: Upload Final Offer Letter',
-                    },
-                });
-
-            expect(handlerResponse.status).toBe(201);
-            const handler = handlerResponse.body.data;
-
-            // Get the payment method to find the downpayment phase ID
-            const getMethodResponse = await api
-                .get(`/payment-methods/${paymentMethodId}`)
-                .set(adminHeaders(adaezeId, tenantId));
-
-            expect(getMethodResponse.status).toBe(200);
-            const paymentMethod = getMethodResponse.body.data;
-            const downpaymentPhaseTemplate = paymentMethod.phases.find(
-                (p: any) => p.phaseType === 'DOWNPAYMENT'
-            );
-            expect(downpaymentPhaseTemplate).toBeDefined();
-
-            // Attach handler to phase ON_COMPLETE trigger via REST API
-            const attachResponse = await api
-                .post(`/payment-methods/${paymentMethodId}/phases/${downpaymentPhaseTemplate.id}/event-attachments`)
-                .set(adminHeaders(adaezeId, tenantId))
-                .send({
-                    trigger: 'ON_COMPLETE',
-                    handlerId: handler.id,
-                    priority: 100,
-                    enabled: true,
-                });
-
-            expect(attachResponse.status).toBe(201);
-            expect(attachResponse.body.data.id).toBeDefined();
-            expect(attachResponse.body.data.trigger).toBe('ON_COMPLETE');
-            expect(attachResponse.body.data.handlerId).toBe(handler.id);
-
-            // Verify we can retrieve the attachments via API
-            const getAttachmentsResponse = await api
-                .get(`/payment-methods/${paymentMethodId}/phases/${downpaymentPhaseTemplate.id}/event-attachments`)
-                .set(adminHeaders(adaezeId, tenantId));
-
-            expect(getAttachmentsResponse.status).toBe(200);
-            expect(getAttachmentsResponse.body.data.length).toBe(1);
-            expect(getAttachmentsResponse.body.data[0].handler.name).toBe('Notify Admin: Upload Final Offer');
-        });
+        // NOTE: Phase completion notifications are now automatic.
+        // When any phase completes, the system automatically sends an email to the buyer
+        // based on the phase category (QUESTIONNAIRE, DOCUMENTATION, or PAYMENT).
+        // No manual event channel/type/handler configuration is required.
     });
 
     // =========================================================================
@@ -1146,9 +1066,11 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             expect(phase?.status).toBe('IN_PROGRESS');
         });
 
-        it('Phase event fires to notify Adaeze to upload final offer', async () => {
-            // The phase event attachment configured in Step 1 should have fired
-            // when the downpayment phase completed. Verify via domain event.
+        it('Automatic payment phase completion notification is triggered', async () => {
+            // Phase completion notifications are now automatic.
+            // When the downpayment phase completes, the system automatically sends
+            // a PAYMENT_PHASE_COMPLETED notification to the buyer.
+            // We verify via the PHASE.COMPLETED domain event.
             const event = await prisma.domainEvent.findFirst({
                 where: {
                     aggregateType: 'ApplicationPhase',
@@ -1160,9 +1082,9 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             expect(event).toBeDefined();
             expect(event?.payload).toBeDefined();
 
-            // The handler execution should be logged (if handler execution logging is enabled)
-            // For now, we just verify the phase completion event exists
-            // The notification service would pick this up and send the email
+            // The notification is sent automatically by the mortgage service
+            // via sendPaymentPhaseCompletedNotification() when the phase completes.
+            // No manual event handler configuration is required.
         });
 
         it('Adaeze uploads the final offer letter', async () => {
