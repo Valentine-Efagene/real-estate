@@ -166,3 +166,19 @@ export type UploadDocumentInput = z.infer<typeof UploadDocumentSchema>;
 export type ApproveDocumentInput = z.infer<typeof ApproveDocumentSchema>;
 export type GenerateInstallmentsInput = z.infer<typeof GenerateInstallmentsSchema>;
 export type SubmitQuestionnaireInput = z.infer<typeof SubmitQuestionnaireSchema>;
+
+// Gate action - for GATE step types
+export const GateActionSchema = z
+    .object({
+        action: z.enum(['APPROVE', 'REJECT', 'ACKNOWLEDGE', 'CONFIRM', 'CONSENT']).openapi({
+            description: 'The gate action to perform',
+            example: 'APPROVE',
+        }),
+        comment: z.string().optional().openapi({
+            description: 'Optional comment explaining the decision',
+            example: 'Approved after reviewing all documents',
+        }),
+    })
+    .openapi('GateAction');
+
+export type GateActionInput = z.infer<typeof GateActionSchema>;

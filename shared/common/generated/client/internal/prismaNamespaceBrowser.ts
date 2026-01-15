@@ -564,6 +564,13 @@ export const DocumentationPlanStepScalarFieldEnum = {
   minFiles: 'minFiles',
   maxFiles: 'maxFiles',
   condition: 'condition',
+  gateActor: 'gateActor',
+  gateAction: 'gateAction',
+  gateRoleId: 'gateRoleId',
+  gateInstructions: 'gateInstructions',
+  allowReject: 'allowReject',
+  rejectBehavior: 'rejectBehavior',
+  requiresComment: 'requiresComment',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -979,6 +986,17 @@ export const DocumentationStepScalarFieldEnum = {
   lastSubmittedAt: 'lastSubmittedAt',
   metadata: 'metadata',
   assigneeId: 'assigneeId',
+  gateActor: 'gateActor',
+  gateAction: 'gateAction',
+  gateRoleId: 'gateRoleId',
+  gateInstructions: 'gateInstructions',
+  allowReject: 'allowReject',
+  rejectBehavior: 'rejectBehavior',
+  requiresComment: 'requiresComment',
+  gateActedAt: 'gateActedAt',
+  gateActedById: 'gateActedById',
+  gateDecision: 'gateDecision',
+  gateComment: 'gateComment',
   dueDate: 'dueDate',
   completedAt: 'completedAt',
   createdAt: 'createdAt',
@@ -1789,7 +1807,9 @@ export const DocumentationPlanStepOrderByRelevanceFieldEnum = {
   name: 'name',
   documentType: 'documentType',
   description: 'description',
-  allowedMimeTypes: 'allowedMimeTypes'
+  allowedMimeTypes: 'allowedMimeTypes',
+  gateRoleId: 'gateRoleId',
+  gateInstructions: 'gateInstructions'
 } as const
 
 export type DocumentationPlanStepOrderByRelevanceFieldEnum = (typeof DocumentationPlanStepOrderByRelevanceFieldEnum)[keyof typeof DocumentationPlanStepOrderByRelevanceFieldEnum]
@@ -2033,7 +2053,12 @@ export const DocumentationStepOrderByRelevanceFieldEnum = {
   name: 'name',
   description: 'description',
   actionReason: 'actionReason',
-  assigneeId: 'assigneeId'
+  assigneeId: 'assigneeId',
+  gateRoleId: 'gateRoleId',
+  gateInstructions: 'gateInstructions',
+  gateActedById: 'gateActedById',
+  gateDecision: 'gateDecision',
+  gateComment: 'gateComment'
 } as const
 
 export type DocumentationStepOrderByRelevanceFieldEnum = (typeof DocumentationStepOrderByRelevanceFieldEnum)[keyof typeof DocumentationStepOrderByRelevanceFieldEnum]

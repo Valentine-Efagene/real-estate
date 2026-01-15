@@ -49,6 +49,17 @@ export type DocumentationStepMinAggregateOutputType = {
   submissionCount: number | null
   lastSubmittedAt: Date | null
   assigneeId: string | null
+  gateActor: $Enums.GateActor | null
+  gateAction: $Enums.GateAction | null
+  gateRoleId: string | null
+  gateInstructions: string | null
+  allowReject: boolean | null
+  rejectBehavior: $Enums.GateRejectBehavior | null
+  requiresComment: boolean | null
+  gateActedAt: Date | null
+  gateActedById: string | null
+  gateDecision: string | null
+  gateComment: string | null
   dueDate: Date | null
   completedAt: Date | null
   createdAt: Date | null
@@ -68,6 +79,17 @@ export type DocumentationStepMaxAggregateOutputType = {
   submissionCount: number | null
   lastSubmittedAt: Date | null
   assigneeId: string | null
+  gateActor: $Enums.GateActor | null
+  gateAction: $Enums.GateAction | null
+  gateRoleId: string | null
+  gateInstructions: string | null
+  allowReject: boolean | null
+  rejectBehavior: $Enums.GateRejectBehavior | null
+  requiresComment: boolean | null
+  gateActedAt: Date | null
+  gateActedById: string | null
+  gateDecision: string | null
+  gateComment: string | null
   dueDate: Date | null
   completedAt: Date | null
   createdAt: Date | null
@@ -88,6 +110,17 @@ export type DocumentationStepCountAggregateOutputType = {
   lastSubmittedAt: number
   metadata: number
   assigneeId: number
+  gateActor: number
+  gateAction: number
+  gateRoleId: number
+  gateInstructions: number
+  allowReject: number
+  rejectBehavior: number
+  requiresComment: number
+  gateActedAt: number
+  gateActedById: number
+  gateDecision: number
+  gateComment: number
   dueDate: number
   completedAt: number
   createdAt: number
@@ -119,6 +152,17 @@ export type DocumentationStepMinAggregateInputType = {
   submissionCount?: true
   lastSubmittedAt?: true
   assigneeId?: true
+  gateActor?: true
+  gateAction?: true
+  gateRoleId?: true
+  gateInstructions?: true
+  allowReject?: true
+  rejectBehavior?: true
+  requiresComment?: true
+  gateActedAt?: true
+  gateActedById?: true
+  gateDecision?: true
+  gateComment?: true
   dueDate?: true
   completedAt?: true
   createdAt?: true
@@ -138,6 +182,17 @@ export type DocumentationStepMaxAggregateInputType = {
   submissionCount?: true
   lastSubmittedAt?: true
   assigneeId?: true
+  gateActor?: true
+  gateAction?: true
+  gateRoleId?: true
+  gateInstructions?: true
+  allowReject?: true
+  rejectBehavior?: true
+  requiresComment?: true
+  gateActedAt?: true
+  gateActedById?: true
+  gateDecision?: true
+  gateComment?: true
   dueDate?: true
   completedAt?: true
   createdAt?: true
@@ -158,6 +213,17 @@ export type DocumentationStepCountAggregateInputType = {
   lastSubmittedAt?: true
   metadata?: true
   assigneeId?: true
+  gateActor?: true
+  gateAction?: true
+  gateRoleId?: true
+  gateInstructions?: true
+  allowReject?: true
+  rejectBehavior?: true
+  requiresComment?: true
+  gateActedAt?: true
+  gateActedById?: true
+  gateDecision?: true
+  gateComment?: true
   dueDate?: true
   completedAt?: true
   createdAt?: true
@@ -265,6 +331,17 @@ export type DocumentationStepGroupByOutputType = {
   lastSubmittedAt: Date | null
   metadata: runtime.JsonValue | null
   assigneeId: string | null
+  gateActor: $Enums.GateActor | null
+  gateAction: $Enums.GateAction | null
+  gateRoleId: string | null
+  gateInstructions: string | null
+  allowReject: boolean
+  rejectBehavior: $Enums.GateRejectBehavior | null
+  requiresComment: boolean
+  gateActedAt: Date | null
+  gateActedById: string | null
+  gateDecision: string | null
+  gateComment: string | null
   dueDate: Date | null
   completedAt: Date | null
   createdAt: Date
@@ -308,6 +385,17 @@ export type DocumentationStepWhereInput = {
   lastSubmittedAt?: Prisma.DateTimeNullableFilter<"DocumentationStep"> | Date | string | null
   metadata?: Prisma.JsonNullableFilter<"DocumentationStep">
   assigneeId?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
+  gateActor?: Prisma.EnumGateActorNullableFilter<"DocumentationStep"> | $Enums.GateActor | null
+  gateAction?: Prisma.EnumGateActionNullableFilter<"DocumentationStep"> | $Enums.GateAction | null
+  gateRoleId?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
+  gateInstructions?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
+  allowReject?: Prisma.BoolFilter<"DocumentationStep"> | boolean
+  rejectBehavior?: Prisma.EnumGateRejectBehaviorNullableFilter<"DocumentationStep"> | $Enums.GateRejectBehavior | null
+  requiresComment?: Prisma.BoolFilter<"DocumentationStep"> | boolean
+  gateActedAt?: Prisma.DateTimeNullableFilter<"DocumentationStep"> | Date | string | null
+  gateActedById?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
+  gateDecision?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
+  gateComment?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
   dueDate?: Prisma.DateTimeNullableFilter<"DocumentationStep"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableFilter<"DocumentationStep"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"DocumentationStep"> | Date | string
@@ -316,6 +404,7 @@ export type DocumentationStepWhereInput = {
   documentationPhase?: Prisma.XOR<Prisma.DocumentationPhaseScalarRelationFilter, Prisma.DocumentationPhaseWhereInput>
   assignee?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   requiredDocuments?: Prisma.DocumentationStepDocumentListRelationFilter
+  gateActedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   approvals?: Prisma.DocumentationStepApprovalListRelationFilter
   currentForPhase?: Prisma.DocumentationPhaseListRelationFilter
 }
@@ -334,6 +423,17 @@ export type DocumentationStepOrderByWithRelationInput = {
   lastSubmittedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   assigneeId?: Prisma.SortOrderInput | Prisma.SortOrder
+  gateActor?: Prisma.SortOrderInput | Prisma.SortOrder
+  gateAction?: Prisma.SortOrderInput | Prisma.SortOrder
+  gateRoleId?: Prisma.SortOrderInput | Prisma.SortOrder
+  gateInstructions?: Prisma.SortOrderInput | Prisma.SortOrder
+  allowReject?: Prisma.SortOrder
+  rejectBehavior?: Prisma.SortOrderInput | Prisma.SortOrder
+  requiresComment?: Prisma.SortOrder
+  gateActedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  gateActedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  gateDecision?: Prisma.SortOrderInput | Prisma.SortOrder
+  gateComment?: Prisma.SortOrderInput | Prisma.SortOrder
   dueDate?: Prisma.SortOrderInput | Prisma.SortOrder
   completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -342,6 +442,7 @@ export type DocumentationStepOrderByWithRelationInput = {
   documentationPhase?: Prisma.DocumentationPhaseOrderByWithRelationInput
   assignee?: Prisma.UserOrderByWithRelationInput
   requiredDocuments?: Prisma.DocumentationStepDocumentOrderByRelationAggregateInput
+  gateActedBy?: Prisma.UserOrderByWithRelationInput
   approvals?: Prisma.DocumentationStepApprovalOrderByRelationAggregateInput
   currentForPhase?: Prisma.DocumentationPhaseOrderByRelationAggregateInput
   _relevance?: Prisma.DocumentationStepOrderByRelevanceInput
@@ -364,6 +465,17 @@ export type DocumentationStepWhereUniqueInput = Prisma.AtLeast<{
   lastSubmittedAt?: Prisma.DateTimeNullableFilter<"DocumentationStep"> | Date | string | null
   metadata?: Prisma.JsonNullableFilter<"DocumentationStep">
   assigneeId?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
+  gateActor?: Prisma.EnumGateActorNullableFilter<"DocumentationStep"> | $Enums.GateActor | null
+  gateAction?: Prisma.EnumGateActionNullableFilter<"DocumentationStep"> | $Enums.GateAction | null
+  gateRoleId?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
+  gateInstructions?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
+  allowReject?: Prisma.BoolFilter<"DocumentationStep"> | boolean
+  rejectBehavior?: Prisma.EnumGateRejectBehaviorNullableFilter<"DocumentationStep"> | $Enums.GateRejectBehavior | null
+  requiresComment?: Prisma.BoolFilter<"DocumentationStep"> | boolean
+  gateActedAt?: Prisma.DateTimeNullableFilter<"DocumentationStep"> | Date | string | null
+  gateActedById?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
+  gateDecision?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
+  gateComment?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
   dueDate?: Prisma.DateTimeNullableFilter<"DocumentationStep"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableFilter<"DocumentationStep"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"DocumentationStep"> | Date | string
@@ -372,6 +484,7 @@ export type DocumentationStepWhereUniqueInput = Prisma.AtLeast<{
   documentationPhase?: Prisma.XOR<Prisma.DocumentationPhaseScalarRelationFilter, Prisma.DocumentationPhaseWhereInput>
   assignee?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   requiredDocuments?: Prisma.DocumentationStepDocumentListRelationFilter
+  gateActedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   approvals?: Prisma.DocumentationStepApprovalListRelationFilter
   currentForPhase?: Prisma.DocumentationPhaseListRelationFilter
 }, "id">
@@ -390,6 +503,17 @@ export type DocumentationStepOrderByWithAggregationInput = {
   lastSubmittedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   assigneeId?: Prisma.SortOrderInput | Prisma.SortOrder
+  gateActor?: Prisma.SortOrderInput | Prisma.SortOrder
+  gateAction?: Prisma.SortOrderInput | Prisma.SortOrder
+  gateRoleId?: Prisma.SortOrderInput | Prisma.SortOrder
+  gateInstructions?: Prisma.SortOrderInput | Prisma.SortOrder
+  allowReject?: Prisma.SortOrder
+  rejectBehavior?: Prisma.SortOrderInput | Prisma.SortOrder
+  requiresComment?: Prisma.SortOrder
+  gateActedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  gateActedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  gateDecision?: Prisma.SortOrderInput | Prisma.SortOrder
+  gateComment?: Prisma.SortOrderInput | Prisma.SortOrder
   dueDate?: Prisma.SortOrderInput | Prisma.SortOrder
   completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -418,6 +542,17 @@ export type DocumentationStepScalarWhereWithAggregatesInput = {
   lastSubmittedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"DocumentationStep"> | Date | string | null
   metadata?: Prisma.JsonNullableWithAggregatesFilter<"DocumentationStep">
   assigneeId?: Prisma.StringNullableWithAggregatesFilter<"DocumentationStep"> | string | null
+  gateActor?: Prisma.EnumGateActorNullableWithAggregatesFilter<"DocumentationStep"> | $Enums.GateActor | null
+  gateAction?: Prisma.EnumGateActionNullableWithAggregatesFilter<"DocumentationStep"> | $Enums.GateAction | null
+  gateRoleId?: Prisma.StringNullableWithAggregatesFilter<"DocumentationStep"> | string | null
+  gateInstructions?: Prisma.StringNullableWithAggregatesFilter<"DocumentationStep"> | string | null
+  allowReject?: Prisma.BoolWithAggregatesFilter<"DocumentationStep"> | boolean
+  rejectBehavior?: Prisma.EnumGateRejectBehaviorNullableWithAggregatesFilter<"DocumentationStep"> | $Enums.GateRejectBehavior | null
+  requiresComment?: Prisma.BoolWithAggregatesFilter<"DocumentationStep"> | boolean
+  gateActedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"DocumentationStep"> | Date | string | null
+  gateActedById?: Prisma.StringNullableWithAggregatesFilter<"DocumentationStep"> | string | null
+  gateDecision?: Prisma.StringNullableWithAggregatesFilter<"DocumentationStep"> | string | null
+  gateComment?: Prisma.StringNullableWithAggregatesFilter<"DocumentationStep"> | string | null
   dueDate?: Prisma.DateTimeNullableWithAggregatesFilter<"DocumentationStep"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"DocumentationStep"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"DocumentationStep"> | Date | string
@@ -435,6 +570,16 @@ export type DocumentationStepCreateInput = {
   submissionCount?: number
   lastSubmittedAt?: Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  gateActor?: $Enums.GateActor | null
+  gateAction?: $Enums.GateAction | null
+  gateRoleId?: string | null
+  gateInstructions?: string | null
+  allowReject?: boolean
+  rejectBehavior?: $Enums.GateRejectBehavior | null
+  requiresComment?: boolean
+  gateActedAt?: Date | string | null
+  gateDecision?: string | null
+  gateComment?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -443,6 +588,7 @@ export type DocumentationStepCreateInput = {
   documentationPhase: Prisma.DocumentationPhaseCreateNestedOneWithoutStepsInput
   assignee?: Prisma.UserCreateNestedOneWithoutAssignedStepsInput
   requiredDocuments?: Prisma.DocumentationStepDocumentCreateNestedManyWithoutStepInput
+  gateActedBy?: Prisma.UserCreateNestedOneWithoutGateActedStepsInput
   approvals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutStepInput
   currentForPhase?: Prisma.DocumentationPhaseCreateNestedManyWithoutCurrentStepInput
 }
@@ -461,6 +607,17 @@ export type DocumentationStepUncheckedCreateInput = {
   lastSubmittedAt?: Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeId?: string | null
+  gateActor?: $Enums.GateActor | null
+  gateAction?: $Enums.GateAction | null
+  gateRoleId?: string | null
+  gateInstructions?: string | null
+  allowReject?: boolean
+  rejectBehavior?: $Enums.GateRejectBehavior | null
+  requiresComment?: boolean
+  gateActedAt?: Date | string | null
+  gateActedById?: string | null
+  gateDecision?: string | null
+  gateComment?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -481,6 +638,16 @@ export type DocumentationStepUpdateInput = {
   submissionCount?: Prisma.IntFieldUpdateOperationsInput | number
   lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
+  gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
+  gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowReject?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rejectBehavior?: Prisma.NullableEnumGateRejectBehaviorFieldUpdateOperationsInput | $Enums.GateRejectBehavior | null
+  requiresComment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gateActedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gateDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -489,6 +656,7 @@ export type DocumentationStepUpdateInput = {
   documentationPhase?: Prisma.DocumentationPhaseUpdateOneRequiredWithoutStepsNestedInput
   assignee?: Prisma.UserUpdateOneWithoutAssignedStepsNestedInput
   requiredDocuments?: Prisma.DocumentationStepDocumentUpdateManyWithoutStepNestedInput
+  gateActedBy?: Prisma.UserUpdateOneWithoutGateActedStepsNestedInput
   approvals?: Prisma.DocumentationStepApprovalUpdateManyWithoutStepNestedInput
   currentForPhase?: Prisma.DocumentationPhaseUpdateManyWithoutCurrentStepNestedInput
 }
@@ -507,6 +675,17 @@ export type DocumentationStepUncheckedUpdateInput = {
   lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
+  gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
+  gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowReject?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rejectBehavior?: Prisma.NullableEnumGateRejectBehaviorFieldUpdateOperationsInput | $Enums.GateRejectBehavior | null
+  requiresComment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gateActedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gateActedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -530,6 +709,17 @@ export type DocumentationStepCreateManyInput = {
   lastSubmittedAt?: Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeId?: string | null
+  gateActor?: $Enums.GateActor | null
+  gateAction?: $Enums.GateAction | null
+  gateRoleId?: string | null
+  gateInstructions?: string | null
+  allowReject?: boolean
+  rejectBehavior?: $Enums.GateRejectBehavior | null
+  requiresComment?: boolean
+  gateActedAt?: Date | string | null
+  gateActedById?: string | null
+  gateDecision?: string | null
+  gateComment?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -547,6 +737,16 @@ export type DocumentationStepUpdateManyMutationInput = {
   submissionCount?: Prisma.IntFieldUpdateOperationsInput | number
   lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
+  gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
+  gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowReject?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rejectBehavior?: Prisma.NullableEnumGateRejectBehaviorFieldUpdateOperationsInput | $Enums.GateRejectBehavior | null
+  requiresComment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gateActedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gateDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -567,6 +767,17 @@ export type DocumentationStepUncheckedUpdateManyInput = {
   lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
+  gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
+  gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowReject?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rejectBehavior?: Prisma.NullableEnumGateRejectBehaviorFieldUpdateOperationsInput | $Enums.GateRejectBehavior | null
+  requiresComment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gateActedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gateActedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -608,6 +819,17 @@ export type DocumentationStepCountOrderByAggregateInput = {
   lastSubmittedAt?: Prisma.SortOrder
   metadata?: Prisma.SortOrder
   assigneeId?: Prisma.SortOrder
+  gateActor?: Prisma.SortOrder
+  gateAction?: Prisma.SortOrder
+  gateRoleId?: Prisma.SortOrder
+  gateInstructions?: Prisma.SortOrder
+  allowReject?: Prisma.SortOrder
+  rejectBehavior?: Prisma.SortOrder
+  requiresComment?: Prisma.SortOrder
+  gateActedAt?: Prisma.SortOrder
+  gateActedById?: Prisma.SortOrder
+  gateDecision?: Prisma.SortOrder
+  gateComment?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -632,6 +854,17 @@ export type DocumentationStepMaxOrderByAggregateInput = {
   submissionCount?: Prisma.SortOrder
   lastSubmittedAt?: Prisma.SortOrder
   assigneeId?: Prisma.SortOrder
+  gateActor?: Prisma.SortOrder
+  gateAction?: Prisma.SortOrder
+  gateRoleId?: Prisma.SortOrder
+  gateInstructions?: Prisma.SortOrder
+  allowReject?: Prisma.SortOrder
+  rejectBehavior?: Prisma.SortOrder
+  requiresComment?: Prisma.SortOrder
+  gateActedAt?: Prisma.SortOrder
+  gateActedById?: Prisma.SortOrder
+  gateDecision?: Prisma.SortOrder
+  gateComment?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -651,6 +884,17 @@ export type DocumentationStepMinOrderByAggregateInput = {
   submissionCount?: Prisma.SortOrder
   lastSubmittedAt?: Prisma.SortOrder
   assigneeId?: Prisma.SortOrder
+  gateActor?: Prisma.SortOrder
+  gateAction?: Prisma.SortOrder
+  gateRoleId?: Prisma.SortOrder
+  gateInstructions?: Prisma.SortOrder
+  allowReject?: Prisma.SortOrder
+  rejectBehavior?: Prisma.SortOrder
+  requiresComment?: Prisma.SortOrder
+  gateActedAt?: Prisma.SortOrder
+  gateActedById?: Prisma.SortOrder
+  gateDecision?: Prisma.SortOrder
+  gateComment?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
   completedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -674,10 +918,24 @@ export type DocumentationStepCreateNestedManyWithoutAssigneeInput = {
   connect?: Prisma.DocumentationStepWhereUniqueInput | Prisma.DocumentationStepWhereUniqueInput[]
 }
 
+export type DocumentationStepCreateNestedManyWithoutGateActedByInput = {
+  create?: Prisma.XOR<Prisma.DocumentationStepCreateWithoutGateActedByInput, Prisma.DocumentationStepUncheckedCreateWithoutGateActedByInput> | Prisma.DocumentationStepCreateWithoutGateActedByInput[] | Prisma.DocumentationStepUncheckedCreateWithoutGateActedByInput[]
+  connectOrCreate?: Prisma.DocumentationStepCreateOrConnectWithoutGateActedByInput | Prisma.DocumentationStepCreateOrConnectWithoutGateActedByInput[]
+  createMany?: Prisma.DocumentationStepCreateManyGateActedByInputEnvelope
+  connect?: Prisma.DocumentationStepWhereUniqueInput | Prisma.DocumentationStepWhereUniqueInput[]
+}
+
 export type DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput = {
   create?: Prisma.XOR<Prisma.DocumentationStepCreateWithoutAssigneeInput, Prisma.DocumentationStepUncheckedCreateWithoutAssigneeInput> | Prisma.DocumentationStepCreateWithoutAssigneeInput[] | Prisma.DocumentationStepUncheckedCreateWithoutAssigneeInput[]
   connectOrCreate?: Prisma.DocumentationStepCreateOrConnectWithoutAssigneeInput | Prisma.DocumentationStepCreateOrConnectWithoutAssigneeInput[]
   createMany?: Prisma.DocumentationStepCreateManyAssigneeInputEnvelope
+  connect?: Prisma.DocumentationStepWhereUniqueInput | Prisma.DocumentationStepWhereUniqueInput[]
+}
+
+export type DocumentationStepUncheckedCreateNestedManyWithoutGateActedByInput = {
+  create?: Prisma.XOR<Prisma.DocumentationStepCreateWithoutGateActedByInput, Prisma.DocumentationStepUncheckedCreateWithoutGateActedByInput> | Prisma.DocumentationStepCreateWithoutGateActedByInput[] | Prisma.DocumentationStepUncheckedCreateWithoutGateActedByInput[]
+  connectOrCreate?: Prisma.DocumentationStepCreateOrConnectWithoutGateActedByInput | Prisma.DocumentationStepCreateOrConnectWithoutGateActedByInput[]
+  createMany?: Prisma.DocumentationStepCreateManyGateActedByInputEnvelope
   connect?: Prisma.DocumentationStepWhereUniqueInput | Prisma.DocumentationStepWhereUniqueInput[]
 }
 
@@ -695,6 +953,20 @@ export type DocumentationStepUpdateManyWithoutAssigneeNestedInput = {
   deleteMany?: Prisma.DocumentationStepScalarWhereInput | Prisma.DocumentationStepScalarWhereInput[]
 }
 
+export type DocumentationStepUpdateManyWithoutGateActedByNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentationStepCreateWithoutGateActedByInput, Prisma.DocumentationStepUncheckedCreateWithoutGateActedByInput> | Prisma.DocumentationStepCreateWithoutGateActedByInput[] | Prisma.DocumentationStepUncheckedCreateWithoutGateActedByInput[]
+  connectOrCreate?: Prisma.DocumentationStepCreateOrConnectWithoutGateActedByInput | Prisma.DocumentationStepCreateOrConnectWithoutGateActedByInput[]
+  upsert?: Prisma.DocumentationStepUpsertWithWhereUniqueWithoutGateActedByInput | Prisma.DocumentationStepUpsertWithWhereUniqueWithoutGateActedByInput[]
+  createMany?: Prisma.DocumentationStepCreateManyGateActedByInputEnvelope
+  set?: Prisma.DocumentationStepWhereUniqueInput | Prisma.DocumentationStepWhereUniqueInput[]
+  disconnect?: Prisma.DocumentationStepWhereUniqueInput | Prisma.DocumentationStepWhereUniqueInput[]
+  delete?: Prisma.DocumentationStepWhereUniqueInput | Prisma.DocumentationStepWhereUniqueInput[]
+  connect?: Prisma.DocumentationStepWhereUniqueInput | Prisma.DocumentationStepWhereUniqueInput[]
+  update?: Prisma.DocumentationStepUpdateWithWhereUniqueWithoutGateActedByInput | Prisma.DocumentationStepUpdateWithWhereUniqueWithoutGateActedByInput[]
+  updateMany?: Prisma.DocumentationStepUpdateManyWithWhereWithoutGateActedByInput | Prisma.DocumentationStepUpdateManyWithWhereWithoutGateActedByInput[]
+  deleteMany?: Prisma.DocumentationStepScalarWhereInput | Prisma.DocumentationStepScalarWhereInput[]
+}
+
 export type DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput = {
   create?: Prisma.XOR<Prisma.DocumentationStepCreateWithoutAssigneeInput, Prisma.DocumentationStepUncheckedCreateWithoutAssigneeInput> | Prisma.DocumentationStepCreateWithoutAssigneeInput[] | Prisma.DocumentationStepUncheckedCreateWithoutAssigneeInput[]
   connectOrCreate?: Prisma.DocumentationStepCreateOrConnectWithoutAssigneeInput | Prisma.DocumentationStepCreateOrConnectWithoutAssigneeInput[]
@@ -706,6 +978,20 @@ export type DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput = {
   connect?: Prisma.DocumentationStepWhereUniqueInput | Prisma.DocumentationStepWhereUniqueInput[]
   update?: Prisma.DocumentationStepUpdateWithWhereUniqueWithoutAssigneeInput | Prisma.DocumentationStepUpdateWithWhereUniqueWithoutAssigneeInput[]
   updateMany?: Prisma.DocumentationStepUpdateManyWithWhereWithoutAssigneeInput | Prisma.DocumentationStepUpdateManyWithWhereWithoutAssigneeInput[]
+  deleteMany?: Prisma.DocumentationStepScalarWhereInput | Prisma.DocumentationStepScalarWhereInput[]
+}
+
+export type DocumentationStepUncheckedUpdateManyWithoutGateActedByNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentationStepCreateWithoutGateActedByInput, Prisma.DocumentationStepUncheckedCreateWithoutGateActedByInput> | Prisma.DocumentationStepCreateWithoutGateActedByInput[] | Prisma.DocumentationStepUncheckedCreateWithoutGateActedByInput[]
+  connectOrCreate?: Prisma.DocumentationStepCreateOrConnectWithoutGateActedByInput | Prisma.DocumentationStepCreateOrConnectWithoutGateActedByInput[]
+  upsert?: Prisma.DocumentationStepUpsertWithWhereUniqueWithoutGateActedByInput | Prisma.DocumentationStepUpsertWithWhereUniqueWithoutGateActedByInput[]
+  createMany?: Prisma.DocumentationStepCreateManyGateActedByInputEnvelope
+  set?: Prisma.DocumentationStepWhereUniqueInput | Prisma.DocumentationStepWhereUniqueInput[]
+  disconnect?: Prisma.DocumentationStepWhereUniqueInput | Prisma.DocumentationStepWhereUniqueInput[]
+  delete?: Prisma.DocumentationStepWhereUniqueInput | Prisma.DocumentationStepWhereUniqueInput[]
+  connect?: Prisma.DocumentationStepWhereUniqueInput | Prisma.DocumentationStepWhereUniqueInput[]
+  update?: Prisma.DocumentationStepUpdateWithWhereUniqueWithoutGateActedByInput | Prisma.DocumentationStepUpdateWithWhereUniqueWithoutGateActedByInput[]
+  updateMany?: Prisma.DocumentationStepUpdateManyWithWhereWithoutGateActedByInput | Prisma.DocumentationStepUpdateManyWithWhereWithoutGateActedByInput[]
   deleteMany?: Prisma.DocumentationStepScalarWhereInput | Prisma.DocumentationStepScalarWhereInput[]
 }
 
@@ -852,6 +1138,16 @@ export type DocumentationStepCreateWithoutAssigneeInput = {
   submissionCount?: number
   lastSubmittedAt?: Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  gateActor?: $Enums.GateActor | null
+  gateAction?: $Enums.GateAction | null
+  gateRoleId?: string | null
+  gateInstructions?: string | null
+  allowReject?: boolean
+  rejectBehavior?: $Enums.GateRejectBehavior | null
+  requiresComment?: boolean
+  gateActedAt?: Date | string | null
+  gateDecision?: string | null
+  gateComment?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -859,6 +1155,7 @@ export type DocumentationStepCreateWithoutAssigneeInput = {
   tenant: Prisma.TenantCreateNestedOneWithoutDocumentationStepsInput
   documentationPhase: Prisma.DocumentationPhaseCreateNestedOneWithoutStepsInput
   requiredDocuments?: Prisma.DocumentationStepDocumentCreateNestedManyWithoutStepInput
+  gateActedBy?: Prisma.UserCreateNestedOneWithoutGateActedStepsInput
   approvals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutStepInput
   currentForPhase?: Prisma.DocumentationPhaseCreateNestedManyWithoutCurrentStepInput
 }
@@ -876,6 +1173,17 @@ export type DocumentationStepUncheckedCreateWithoutAssigneeInput = {
   submissionCount?: number
   lastSubmittedAt?: Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  gateActor?: $Enums.GateActor | null
+  gateAction?: $Enums.GateAction | null
+  gateRoleId?: string | null
+  gateInstructions?: string | null
+  allowReject?: boolean
+  rejectBehavior?: $Enums.GateRejectBehavior | null
+  requiresComment?: boolean
+  gateActedAt?: Date | string | null
+  gateActedById?: string | null
+  gateDecision?: string | null
+  gateComment?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -892,6 +1200,82 @@ export type DocumentationStepCreateOrConnectWithoutAssigneeInput = {
 
 export type DocumentationStepCreateManyAssigneeInputEnvelope = {
   data: Prisma.DocumentationStepCreateManyAssigneeInput | Prisma.DocumentationStepCreateManyAssigneeInput[]
+  skipDuplicates?: boolean
+}
+
+export type DocumentationStepCreateWithoutGateActedByInput = {
+  id?: string
+  name: string
+  description?: string | null
+  stepType: $Enums.StepType
+  order: number
+  status?: $Enums.StepStatus
+  actionReason?: string | null
+  submissionCount?: number
+  lastSubmittedAt?: Date | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  gateActor?: $Enums.GateActor | null
+  gateAction?: $Enums.GateAction | null
+  gateRoleId?: string | null
+  gateInstructions?: string | null
+  allowReject?: boolean
+  rejectBehavior?: $Enums.GateRejectBehavior | null
+  requiresComment?: boolean
+  gateActedAt?: Date | string | null
+  gateDecision?: string | null
+  gateComment?: string | null
+  dueDate?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutDocumentationStepsInput
+  documentationPhase: Prisma.DocumentationPhaseCreateNestedOneWithoutStepsInput
+  assignee?: Prisma.UserCreateNestedOneWithoutAssignedStepsInput
+  requiredDocuments?: Prisma.DocumentationStepDocumentCreateNestedManyWithoutStepInput
+  approvals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutStepInput
+  currentForPhase?: Prisma.DocumentationPhaseCreateNestedManyWithoutCurrentStepInput
+}
+
+export type DocumentationStepUncheckedCreateWithoutGateActedByInput = {
+  id?: string
+  tenantId: string
+  documentationPhaseId: string
+  name: string
+  description?: string | null
+  stepType: $Enums.StepType
+  order: number
+  status?: $Enums.StepStatus
+  actionReason?: string | null
+  submissionCount?: number
+  lastSubmittedAt?: Date | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  assigneeId?: string | null
+  gateActor?: $Enums.GateActor | null
+  gateAction?: $Enums.GateAction | null
+  gateRoleId?: string | null
+  gateInstructions?: string | null
+  allowReject?: boolean
+  rejectBehavior?: $Enums.GateRejectBehavior | null
+  requiresComment?: boolean
+  gateActedAt?: Date | string | null
+  gateDecision?: string | null
+  gateComment?: string | null
+  dueDate?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  requiredDocuments?: Prisma.DocumentationStepDocumentUncheckedCreateNestedManyWithoutStepInput
+  approvals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutStepInput
+  currentForPhase?: Prisma.DocumentationPhaseUncheckedCreateNestedManyWithoutCurrentStepInput
+}
+
+export type DocumentationStepCreateOrConnectWithoutGateActedByInput = {
+  where: Prisma.DocumentationStepWhereUniqueInput
+  create: Prisma.XOR<Prisma.DocumentationStepCreateWithoutGateActedByInput, Prisma.DocumentationStepUncheckedCreateWithoutGateActedByInput>
+}
+
+export type DocumentationStepCreateManyGateActedByInputEnvelope = {
+  data: Prisma.DocumentationStepCreateManyGateActedByInput | Prisma.DocumentationStepCreateManyGateActedByInput[]
   skipDuplicates?: boolean
 }
 
@@ -928,10 +1312,37 @@ export type DocumentationStepScalarWhereInput = {
   lastSubmittedAt?: Prisma.DateTimeNullableFilter<"DocumentationStep"> | Date | string | null
   metadata?: Prisma.JsonNullableFilter<"DocumentationStep">
   assigneeId?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
+  gateActor?: Prisma.EnumGateActorNullableFilter<"DocumentationStep"> | $Enums.GateActor | null
+  gateAction?: Prisma.EnumGateActionNullableFilter<"DocumentationStep"> | $Enums.GateAction | null
+  gateRoleId?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
+  gateInstructions?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
+  allowReject?: Prisma.BoolFilter<"DocumentationStep"> | boolean
+  rejectBehavior?: Prisma.EnumGateRejectBehaviorNullableFilter<"DocumentationStep"> | $Enums.GateRejectBehavior | null
+  requiresComment?: Prisma.BoolFilter<"DocumentationStep"> | boolean
+  gateActedAt?: Prisma.DateTimeNullableFilter<"DocumentationStep"> | Date | string | null
+  gateActedById?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
+  gateDecision?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
+  gateComment?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
   dueDate?: Prisma.DateTimeNullableFilter<"DocumentationStep"> | Date | string | null
   completedAt?: Prisma.DateTimeNullableFilter<"DocumentationStep"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"DocumentationStep"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"DocumentationStep"> | Date | string
+}
+
+export type DocumentationStepUpsertWithWhereUniqueWithoutGateActedByInput = {
+  where: Prisma.DocumentationStepWhereUniqueInput
+  update: Prisma.XOR<Prisma.DocumentationStepUpdateWithoutGateActedByInput, Prisma.DocumentationStepUncheckedUpdateWithoutGateActedByInput>
+  create: Prisma.XOR<Prisma.DocumentationStepCreateWithoutGateActedByInput, Prisma.DocumentationStepUncheckedCreateWithoutGateActedByInput>
+}
+
+export type DocumentationStepUpdateWithWhereUniqueWithoutGateActedByInput = {
+  where: Prisma.DocumentationStepWhereUniqueInput
+  data: Prisma.XOR<Prisma.DocumentationStepUpdateWithoutGateActedByInput, Prisma.DocumentationStepUncheckedUpdateWithoutGateActedByInput>
+}
+
+export type DocumentationStepUpdateManyWithWhereWithoutGateActedByInput = {
+  where: Prisma.DocumentationStepScalarWhereInput
+  data: Prisma.XOR<Prisma.DocumentationStepUpdateManyMutationInput, Prisma.DocumentationStepUncheckedUpdateManyWithoutGateActedByInput>
 }
 
 export type DocumentationStepCreateWithoutTenantInput = {
@@ -945,6 +1356,16 @@ export type DocumentationStepCreateWithoutTenantInput = {
   submissionCount?: number
   lastSubmittedAt?: Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  gateActor?: $Enums.GateActor | null
+  gateAction?: $Enums.GateAction | null
+  gateRoleId?: string | null
+  gateInstructions?: string | null
+  allowReject?: boolean
+  rejectBehavior?: $Enums.GateRejectBehavior | null
+  requiresComment?: boolean
+  gateActedAt?: Date | string | null
+  gateDecision?: string | null
+  gateComment?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -952,6 +1373,7 @@ export type DocumentationStepCreateWithoutTenantInput = {
   documentationPhase: Prisma.DocumentationPhaseCreateNestedOneWithoutStepsInput
   assignee?: Prisma.UserCreateNestedOneWithoutAssignedStepsInput
   requiredDocuments?: Prisma.DocumentationStepDocumentCreateNestedManyWithoutStepInput
+  gateActedBy?: Prisma.UserCreateNestedOneWithoutGateActedStepsInput
   approvals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutStepInput
   currentForPhase?: Prisma.DocumentationPhaseCreateNestedManyWithoutCurrentStepInput
 }
@@ -969,6 +1391,17 @@ export type DocumentationStepUncheckedCreateWithoutTenantInput = {
   lastSubmittedAt?: Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeId?: string | null
+  gateActor?: $Enums.GateActor | null
+  gateAction?: $Enums.GateAction | null
+  gateRoleId?: string | null
+  gateInstructions?: string | null
+  allowReject?: boolean
+  rejectBehavior?: $Enums.GateRejectBehavior | null
+  requiresComment?: boolean
+  gateActedAt?: Date | string | null
+  gateActedById?: string | null
+  gateDecision?: string | null
+  gateComment?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -1015,6 +1448,16 @@ export type DocumentationStepCreateWithoutCurrentForPhaseInput = {
   submissionCount?: number
   lastSubmittedAt?: Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  gateActor?: $Enums.GateActor | null
+  gateAction?: $Enums.GateAction | null
+  gateRoleId?: string | null
+  gateInstructions?: string | null
+  allowReject?: boolean
+  rejectBehavior?: $Enums.GateRejectBehavior | null
+  requiresComment?: boolean
+  gateActedAt?: Date | string | null
+  gateDecision?: string | null
+  gateComment?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -1023,6 +1466,7 @@ export type DocumentationStepCreateWithoutCurrentForPhaseInput = {
   documentationPhase: Prisma.DocumentationPhaseCreateNestedOneWithoutStepsInput
   assignee?: Prisma.UserCreateNestedOneWithoutAssignedStepsInput
   requiredDocuments?: Prisma.DocumentationStepDocumentCreateNestedManyWithoutStepInput
+  gateActedBy?: Prisma.UserCreateNestedOneWithoutGateActedStepsInput
   approvals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutStepInput
 }
 
@@ -1040,6 +1484,17 @@ export type DocumentationStepUncheckedCreateWithoutCurrentForPhaseInput = {
   lastSubmittedAt?: Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeId?: string | null
+  gateActor?: $Enums.GateActor | null
+  gateAction?: $Enums.GateAction | null
+  gateRoleId?: string | null
+  gateInstructions?: string | null
+  allowReject?: boolean
+  rejectBehavior?: $Enums.GateRejectBehavior | null
+  requiresComment?: boolean
+  gateActedAt?: Date | string | null
+  gateActedById?: string | null
+  gateDecision?: string | null
+  gateComment?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -1064,6 +1519,16 @@ export type DocumentationStepCreateWithoutDocumentationPhaseInput = {
   submissionCount?: number
   lastSubmittedAt?: Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  gateActor?: $Enums.GateActor | null
+  gateAction?: $Enums.GateAction | null
+  gateRoleId?: string | null
+  gateInstructions?: string | null
+  allowReject?: boolean
+  rejectBehavior?: $Enums.GateRejectBehavior | null
+  requiresComment?: boolean
+  gateActedAt?: Date | string | null
+  gateDecision?: string | null
+  gateComment?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -1071,6 +1536,7 @@ export type DocumentationStepCreateWithoutDocumentationPhaseInput = {
   tenant: Prisma.TenantCreateNestedOneWithoutDocumentationStepsInput
   assignee?: Prisma.UserCreateNestedOneWithoutAssignedStepsInput
   requiredDocuments?: Prisma.DocumentationStepDocumentCreateNestedManyWithoutStepInput
+  gateActedBy?: Prisma.UserCreateNestedOneWithoutGateActedStepsInput
   approvals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutStepInput
   currentForPhase?: Prisma.DocumentationPhaseCreateNestedManyWithoutCurrentStepInput
 }
@@ -1088,6 +1554,17 @@ export type DocumentationStepUncheckedCreateWithoutDocumentationPhaseInput = {
   lastSubmittedAt?: Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeId?: string | null
+  gateActor?: $Enums.GateActor | null
+  gateAction?: $Enums.GateAction | null
+  gateRoleId?: string | null
+  gateInstructions?: string | null
+  allowReject?: boolean
+  rejectBehavior?: $Enums.GateRejectBehavior | null
+  requiresComment?: boolean
+  gateActedAt?: Date | string | null
+  gateActedById?: string | null
+  gateDecision?: string | null
+  gateComment?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -1129,6 +1606,16 @@ export type DocumentationStepUpdateWithoutCurrentForPhaseInput = {
   submissionCount?: Prisma.IntFieldUpdateOperationsInput | number
   lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
+  gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
+  gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowReject?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rejectBehavior?: Prisma.NullableEnumGateRejectBehaviorFieldUpdateOperationsInput | $Enums.GateRejectBehavior | null
+  requiresComment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gateActedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gateDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1137,6 +1624,7 @@ export type DocumentationStepUpdateWithoutCurrentForPhaseInput = {
   documentationPhase?: Prisma.DocumentationPhaseUpdateOneRequiredWithoutStepsNestedInput
   assignee?: Prisma.UserUpdateOneWithoutAssignedStepsNestedInput
   requiredDocuments?: Prisma.DocumentationStepDocumentUpdateManyWithoutStepNestedInput
+  gateActedBy?: Prisma.UserUpdateOneWithoutGateActedStepsNestedInput
   approvals?: Prisma.DocumentationStepApprovalUpdateManyWithoutStepNestedInput
 }
 
@@ -1154,6 +1642,17 @@ export type DocumentationStepUncheckedUpdateWithoutCurrentForPhaseInput = {
   lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
+  gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
+  gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowReject?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rejectBehavior?: Prisma.NullableEnumGateRejectBehaviorFieldUpdateOperationsInput | $Enums.GateRejectBehavior | null
+  requiresComment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gateActedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gateActedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1189,6 +1688,16 @@ export type DocumentationStepCreateWithoutRequiredDocumentsInput = {
   submissionCount?: number
   lastSubmittedAt?: Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  gateActor?: $Enums.GateActor | null
+  gateAction?: $Enums.GateAction | null
+  gateRoleId?: string | null
+  gateInstructions?: string | null
+  allowReject?: boolean
+  rejectBehavior?: $Enums.GateRejectBehavior | null
+  requiresComment?: boolean
+  gateActedAt?: Date | string | null
+  gateDecision?: string | null
+  gateComment?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -1196,6 +1705,7 @@ export type DocumentationStepCreateWithoutRequiredDocumentsInput = {
   tenant: Prisma.TenantCreateNestedOneWithoutDocumentationStepsInput
   documentationPhase: Prisma.DocumentationPhaseCreateNestedOneWithoutStepsInput
   assignee?: Prisma.UserCreateNestedOneWithoutAssignedStepsInput
+  gateActedBy?: Prisma.UserCreateNestedOneWithoutGateActedStepsInput
   approvals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutStepInput
   currentForPhase?: Prisma.DocumentationPhaseCreateNestedManyWithoutCurrentStepInput
 }
@@ -1214,6 +1724,17 @@ export type DocumentationStepUncheckedCreateWithoutRequiredDocumentsInput = {
   lastSubmittedAt?: Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeId?: string | null
+  gateActor?: $Enums.GateActor | null
+  gateAction?: $Enums.GateAction | null
+  gateRoleId?: string | null
+  gateInstructions?: string | null
+  allowReject?: boolean
+  rejectBehavior?: $Enums.GateRejectBehavior | null
+  requiresComment?: boolean
+  gateActedAt?: Date | string | null
+  gateActedById?: string | null
+  gateDecision?: string | null
+  gateComment?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -1249,6 +1770,16 @@ export type DocumentationStepUpdateWithoutRequiredDocumentsInput = {
   submissionCount?: Prisma.IntFieldUpdateOperationsInput | number
   lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
+  gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
+  gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowReject?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rejectBehavior?: Prisma.NullableEnumGateRejectBehaviorFieldUpdateOperationsInput | $Enums.GateRejectBehavior | null
+  requiresComment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gateActedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gateDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1256,6 +1787,7 @@ export type DocumentationStepUpdateWithoutRequiredDocumentsInput = {
   tenant?: Prisma.TenantUpdateOneRequiredWithoutDocumentationStepsNestedInput
   documentationPhase?: Prisma.DocumentationPhaseUpdateOneRequiredWithoutStepsNestedInput
   assignee?: Prisma.UserUpdateOneWithoutAssignedStepsNestedInput
+  gateActedBy?: Prisma.UserUpdateOneWithoutGateActedStepsNestedInput
   approvals?: Prisma.DocumentationStepApprovalUpdateManyWithoutStepNestedInput
   currentForPhase?: Prisma.DocumentationPhaseUpdateManyWithoutCurrentStepNestedInput
 }
@@ -1274,6 +1806,17 @@ export type DocumentationStepUncheckedUpdateWithoutRequiredDocumentsInput = {
   lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
+  gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
+  gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowReject?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rejectBehavior?: Prisma.NullableEnumGateRejectBehaviorFieldUpdateOperationsInput | $Enums.GateRejectBehavior | null
+  requiresComment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gateActedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gateActedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1293,6 +1836,16 @@ export type DocumentationStepCreateWithoutApprovalsInput = {
   submissionCount?: number
   lastSubmittedAt?: Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  gateActor?: $Enums.GateActor | null
+  gateAction?: $Enums.GateAction | null
+  gateRoleId?: string | null
+  gateInstructions?: string | null
+  allowReject?: boolean
+  rejectBehavior?: $Enums.GateRejectBehavior | null
+  requiresComment?: boolean
+  gateActedAt?: Date | string | null
+  gateDecision?: string | null
+  gateComment?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -1301,6 +1854,7 @@ export type DocumentationStepCreateWithoutApprovalsInput = {
   documentationPhase: Prisma.DocumentationPhaseCreateNestedOneWithoutStepsInput
   assignee?: Prisma.UserCreateNestedOneWithoutAssignedStepsInput
   requiredDocuments?: Prisma.DocumentationStepDocumentCreateNestedManyWithoutStepInput
+  gateActedBy?: Prisma.UserCreateNestedOneWithoutGateActedStepsInput
   currentForPhase?: Prisma.DocumentationPhaseCreateNestedManyWithoutCurrentStepInput
 }
 
@@ -1318,6 +1872,17 @@ export type DocumentationStepUncheckedCreateWithoutApprovalsInput = {
   lastSubmittedAt?: Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeId?: string | null
+  gateActor?: $Enums.GateActor | null
+  gateAction?: $Enums.GateAction | null
+  gateRoleId?: string | null
+  gateInstructions?: string | null
+  allowReject?: boolean
+  rejectBehavior?: $Enums.GateRejectBehavior | null
+  requiresComment?: boolean
+  gateActedAt?: Date | string | null
+  gateActedById?: string | null
+  gateDecision?: string | null
+  gateComment?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -1353,6 +1918,16 @@ export type DocumentationStepUpdateWithoutApprovalsInput = {
   submissionCount?: Prisma.IntFieldUpdateOperationsInput | number
   lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
+  gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
+  gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowReject?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rejectBehavior?: Prisma.NullableEnumGateRejectBehaviorFieldUpdateOperationsInput | $Enums.GateRejectBehavior | null
+  requiresComment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gateActedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gateDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1361,6 +1936,7 @@ export type DocumentationStepUpdateWithoutApprovalsInput = {
   documentationPhase?: Prisma.DocumentationPhaseUpdateOneRequiredWithoutStepsNestedInput
   assignee?: Prisma.UserUpdateOneWithoutAssignedStepsNestedInput
   requiredDocuments?: Prisma.DocumentationStepDocumentUpdateManyWithoutStepNestedInput
+  gateActedBy?: Prisma.UserUpdateOneWithoutGateActedStepsNestedInput
   currentForPhase?: Prisma.DocumentationPhaseUpdateManyWithoutCurrentStepNestedInput
 }
 
@@ -1378,6 +1954,17 @@ export type DocumentationStepUncheckedUpdateWithoutApprovalsInput = {
   lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
+  gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
+  gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowReject?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rejectBehavior?: Prisma.NullableEnumGateRejectBehaviorFieldUpdateOperationsInput | $Enums.GateRejectBehavior | null
+  requiresComment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gateActedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gateActedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1399,6 +1986,47 @@ export type DocumentationStepCreateManyAssigneeInput = {
   submissionCount?: number
   lastSubmittedAt?: Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  gateActor?: $Enums.GateActor | null
+  gateAction?: $Enums.GateAction | null
+  gateRoleId?: string | null
+  gateInstructions?: string | null
+  allowReject?: boolean
+  rejectBehavior?: $Enums.GateRejectBehavior | null
+  requiresComment?: boolean
+  gateActedAt?: Date | string | null
+  gateActedById?: string | null
+  gateDecision?: string | null
+  gateComment?: string | null
+  dueDate?: Date | string | null
+  completedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type DocumentationStepCreateManyGateActedByInput = {
+  id?: string
+  tenantId: string
+  documentationPhaseId: string
+  name: string
+  description?: string | null
+  stepType: $Enums.StepType
+  order: number
+  status?: $Enums.StepStatus
+  actionReason?: string | null
+  submissionCount?: number
+  lastSubmittedAt?: Date | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  assigneeId?: string | null
+  gateActor?: $Enums.GateActor | null
+  gateAction?: $Enums.GateAction | null
+  gateRoleId?: string | null
+  gateInstructions?: string | null
+  allowReject?: boolean
+  rejectBehavior?: $Enums.GateRejectBehavior | null
+  requiresComment?: boolean
+  gateActedAt?: Date | string | null
+  gateDecision?: string | null
+  gateComment?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -1416,6 +2044,16 @@ export type DocumentationStepUpdateWithoutAssigneeInput = {
   submissionCount?: Prisma.IntFieldUpdateOperationsInput | number
   lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
+  gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
+  gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowReject?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rejectBehavior?: Prisma.NullableEnumGateRejectBehaviorFieldUpdateOperationsInput | $Enums.GateRejectBehavior | null
+  requiresComment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gateActedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gateDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1423,6 +2061,7 @@ export type DocumentationStepUpdateWithoutAssigneeInput = {
   tenant?: Prisma.TenantUpdateOneRequiredWithoutDocumentationStepsNestedInput
   documentationPhase?: Prisma.DocumentationPhaseUpdateOneRequiredWithoutStepsNestedInput
   requiredDocuments?: Prisma.DocumentationStepDocumentUpdateManyWithoutStepNestedInput
+  gateActedBy?: Prisma.UserUpdateOneWithoutGateActedStepsNestedInput
   approvals?: Prisma.DocumentationStepApprovalUpdateManyWithoutStepNestedInput
   currentForPhase?: Prisma.DocumentationPhaseUpdateManyWithoutCurrentStepNestedInput
 }
@@ -1440,6 +2079,17 @@ export type DocumentationStepUncheckedUpdateWithoutAssigneeInput = {
   submissionCount?: Prisma.IntFieldUpdateOperationsInput | number
   lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
+  gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
+  gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowReject?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rejectBehavior?: Prisma.NullableEnumGateRejectBehaviorFieldUpdateOperationsInput | $Enums.GateRejectBehavior | null
+  requiresComment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gateActedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gateActedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1462,6 +2112,113 @@ export type DocumentationStepUncheckedUpdateManyWithoutAssigneeInput = {
   submissionCount?: Prisma.IntFieldUpdateOperationsInput | number
   lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
+  gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
+  gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowReject?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rejectBehavior?: Prisma.NullableEnumGateRejectBehaviorFieldUpdateOperationsInput | $Enums.GateRejectBehavior | null
+  requiresComment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gateActedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gateActedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type DocumentationStepUpdateWithoutGateActedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
+  actionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  submissionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
+  gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
+  gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowReject?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rejectBehavior?: Prisma.NullableEnumGateRejectBehaviorFieldUpdateOperationsInput | $Enums.GateRejectBehavior | null
+  requiresComment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gateActedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gateDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutDocumentationStepsNestedInput
+  documentationPhase?: Prisma.DocumentationPhaseUpdateOneRequiredWithoutStepsNestedInput
+  assignee?: Prisma.UserUpdateOneWithoutAssignedStepsNestedInput
+  requiredDocuments?: Prisma.DocumentationStepDocumentUpdateManyWithoutStepNestedInput
+  approvals?: Prisma.DocumentationStepApprovalUpdateManyWithoutStepNestedInput
+  currentForPhase?: Prisma.DocumentationPhaseUpdateManyWithoutCurrentStepNestedInput
+}
+
+export type DocumentationStepUncheckedUpdateWithoutGateActedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  documentationPhaseId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
+  actionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  submissionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
+  gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
+  gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowReject?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rejectBehavior?: Prisma.NullableEnumGateRejectBehaviorFieldUpdateOperationsInput | $Enums.GateRejectBehavior | null
+  requiresComment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gateActedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gateDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  requiredDocuments?: Prisma.DocumentationStepDocumentUncheckedUpdateManyWithoutStepNestedInput
+  approvals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutStepNestedInput
+  currentForPhase?: Prisma.DocumentationPhaseUncheckedUpdateManyWithoutCurrentStepNestedInput
+}
+
+export type DocumentationStepUncheckedUpdateManyWithoutGateActedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  documentationPhaseId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stepType?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumStepStatusFieldUpdateOperationsInput | $Enums.StepStatus
+  actionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  submissionCount?: Prisma.IntFieldUpdateOperationsInput | number
+  lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
+  gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
+  gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowReject?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rejectBehavior?: Prisma.NullableEnumGateRejectBehaviorFieldUpdateOperationsInput | $Enums.GateRejectBehavior | null
+  requiresComment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gateActedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gateDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1481,6 +2238,17 @@ export type DocumentationStepCreateManyTenantInput = {
   lastSubmittedAt?: Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeId?: string | null
+  gateActor?: $Enums.GateActor | null
+  gateAction?: $Enums.GateAction | null
+  gateRoleId?: string | null
+  gateInstructions?: string | null
+  allowReject?: boolean
+  rejectBehavior?: $Enums.GateRejectBehavior | null
+  requiresComment?: boolean
+  gateActedAt?: Date | string | null
+  gateActedById?: string | null
+  gateDecision?: string | null
+  gateComment?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -1498,6 +2266,16 @@ export type DocumentationStepUpdateWithoutTenantInput = {
   submissionCount?: Prisma.IntFieldUpdateOperationsInput | number
   lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
+  gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
+  gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowReject?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rejectBehavior?: Prisma.NullableEnumGateRejectBehaviorFieldUpdateOperationsInput | $Enums.GateRejectBehavior | null
+  requiresComment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gateActedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gateDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1505,6 +2283,7 @@ export type DocumentationStepUpdateWithoutTenantInput = {
   documentationPhase?: Prisma.DocumentationPhaseUpdateOneRequiredWithoutStepsNestedInput
   assignee?: Prisma.UserUpdateOneWithoutAssignedStepsNestedInput
   requiredDocuments?: Prisma.DocumentationStepDocumentUpdateManyWithoutStepNestedInput
+  gateActedBy?: Prisma.UserUpdateOneWithoutGateActedStepsNestedInput
   approvals?: Prisma.DocumentationStepApprovalUpdateManyWithoutStepNestedInput
   currentForPhase?: Prisma.DocumentationPhaseUpdateManyWithoutCurrentStepNestedInput
 }
@@ -1522,6 +2301,17 @@ export type DocumentationStepUncheckedUpdateWithoutTenantInput = {
   lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
+  gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
+  gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowReject?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rejectBehavior?: Prisma.NullableEnumGateRejectBehaviorFieldUpdateOperationsInput | $Enums.GateRejectBehavior | null
+  requiresComment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gateActedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gateActedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1544,6 +2334,17 @@ export type DocumentationStepUncheckedUpdateManyWithoutTenantInput = {
   lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
+  gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
+  gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowReject?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rejectBehavior?: Prisma.NullableEnumGateRejectBehaviorFieldUpdateOperationsInput | $Enums.GateRejectBehavior | null
+  requiresComment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gateActedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gateActedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1563,6 +2364,17 @@ export type DocumentationStepCreateManyDocumentationPhaseInput = {
   lastSubmittedAt?: Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeId?: string | null
+  gateActor?: $Enums.GateActor | null
+  gateAction?: $Enums.GateAction | null
+  gateRoleId?: string | null
+  gateInstructions?: string | null
+  allowReject?: boolean
+  rejectBehavior?: $Enums.GateRejectBehavior | null
+  requiresComment?: boolean
+  gateActedAt?: Date | string | null
+  gateActedById?: string | null
+  gateDecision?: string | null
+  gateComment?: string | null
   dueDate?: Date | string | null
   completedAt?: Date | string | null
   createdAt?: Date | string
@@ -1580,6 +2392,16 @@ export type DocumentationStepUpdateWithoutDocumentationPhaseInput = {
   submissionCount?: Prisma.IntFieldUpdateOperationsInput | number
   lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
+  gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
+  gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowReject?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rejectBehavior?: Prisma.NullableEnumGateRejectBehaviorFieldUpdateOperationsInput | $Enums.GateRejectBehavior | null
+  requiresComment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gateActedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gateDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1587,6 +2409,7 @@ export type DocumentationStepUpdateWithoutDocumentationPhaseInput = {
   tenant?: Prisma.TenantUpdateOneRequiredWithoutDocumentationStepsNestedInput
   assignee?: Prisma.UserUpdateOneWithoutAssignedStepsNestedInput
   requiredDocuments?: Prisma.DocumentationStepDocumentUpdateManyWithoutStepNestedInput
+  gateActedBy?: Prisma.UserUpdateOneWithoutGateActedStepsNestedInput
   approvals?: Prisma.DocumentationStepApprovalUpdateManyWithoutStepNestedInput
   currentForPhase?: Prisma.DocumentationPhaseUpdateManyWithoutCurrentStepNestedInput
 }
@@ -1604,6 +2427,17 @@ export type DocumentationStepUncheckedUpdateWithoutDocumentationPhaseInput = {
   lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
+  gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
+  gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowReject?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rejectBehavior?: Prisma.NullableEnumGateRejectBehaviorFieldUpdateOperationsInput | $Enums.GateRejectBehavior | null
+  requiresComment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gateActedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gateActedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1626,6 +2460,17 @@ export type DocumentationStepUncheckedUpdateManyWithoutDocumentationPhaseInput =
   lastSubmittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
+  gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
+  gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateInstructions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  allowReject?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rejectBehavior?: Prisma.NullableEnumGateRejectBehaviorFieldUpdateOperationsInput | $Enums.GateRejectBehavior | null
+  requiresComment?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  gateActedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gateActedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateDecision?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  gateComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1695,6 +2540,17 @@ export type DocumentationStepSelect<ExtArgs extends runtime.Types.Extensions.Int
   lastSubmittedAt?: boolean
   metadata?: boolean
   assigneeId?: boolean
+  gateActor?: boolean
+  gateAction?: boolean
+  gateRoleId?: boolean
+  gateInstructions?: boolean
+  allowReject?: boolean
+  rejectBehavior?: boolean
+  requiresComment?: boolean
+  gateActedAt?: boolean
+  gateActedById?: boolean
+  gateDecision?: boolean
+  gateComment?: boolean
   dueDate?: boolean
   completedAt?: boolean
   createdAt?: boolean
@@ -1703,6 +2559,7 @@ export type DocumentationStepSelect<ExtArgs extends runtime.Types.Extensions.Int
   documentationPhase?: boolean | Prisma.DocumentationPhaseDefaultArgs<ExtArgs>
   assignee?: boolean | Prisma.DocumentationStep$assigneeArgs<ExtArgs>
   requiredDocuments?: boolean | Prisma.DocumentationStep$requiredDocumentsArgs<ExtArgs>
+  gateActedBy?: boolean | Prisma.DocumentationStep$gateActedByArgs<ExtArgs>
   approvals?: boolean | Prisma.DocumentationStep$approvalsArgs<ExtArgs>
   currentForPhase?: boolean | Prisma.DocumentationStep$currentForPhaseArgs<ExtArgs>
   _count?: boolean | Prisma.DocumentationStepCountOutputTypeDefaultArgs<ExtArgs>
@@ -1724,18 +2581,30 @@ export type DocumentationStepSelectScalar = {
   lastSubmittedAt?: boolean
   metadata?: boolean
   assigneeId?: boolean
+  gateActor?: boolean
+  gateAction?: boolean
+  gateRoleId?: boolean
+  gateInstructions?: boolean
+  allowReject?: boolean
+  rejectBehavior?: boolean
+  requiresComment?: boolean
+  gateActedAt?: boolean
+  gateActedById?: boolean
+  gateDecision?: boolean
+  gateComment?: boolean
   dueDate?: boolean
   completedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type DocumentationStepOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "documentationPhaseId" | "name" | "description" | "stepType" | "order" | "status" | "actionReason" | "submissionCount" | "lastSubmittedAt" | "metadata" | "assigneeId" | "dueDate" | "completedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["documentationStep"]>
+export type DocumentationStepOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "documentationPhaseId" | "name" | "description" | "stepType" | "order" | "status" | "actionReason" | "submissionCount" | "lastSubmittedAt" | "metadata" | "assigneeId" | "gateActor" | "gateAction" | "gateRoleId" | "gateInstructions" | "allowReject" | "rejectBehavior" | "requiresComment" | "gateActedAt" | "gateActedById" | "gateDecision" | "gateComment" | "dueDate" | "completedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["documentationStep"]>
 export type DocumentationStepInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   documentationPhase?: boolean | Prisma.DocumentationPhaseDefaultArgs<ExtArgs>
   assignee?: boolean | Prisma.DocumentationStep$assigneeArgs<ExtArgs>
   requiredDocuments?: boolean | Prisma.DocumentationStep$requiredDocumentsArgs<ExtArgs>
+  gateActedBy?: boolean | Prisma.DocumentationStep$gateActedByArgs<ExtArgs>
   approvals?: boolean | Prisma.DocumentationStep$approvalsArgs<ExtArgs>
   currentForPhase?: boolean | Prisma.DocumentationStep$currentForPhaseArgs<ExtArgs>
   _count?: boolean | Prisma.DocumentationStepCountOutputTypeDefaultArgs<ExtArgs>
@@ -1748,6 +2617,7 @@ export type $DocumentationStepPayload<ExtArgs extends runtime.Types.Extensions.I
     documentationPhase: Prisma.$DocumentationPhasePayload<ExtArgs>
     assignee: Prisma.$UserPayload<ExtArgs> | null
     requiredDocuments: Prisma.$DocumentationStepDocumentPayload<ExtArgs>[]
+    gateActedBy: Prisma.$UserPayload<ExtArgs> | null
     approvals: Prisma.$DocumentationStepApprovalPayload<ExtArgs>[]
     currentForPhase: Prisma.$DocumentationPhasePayload<ExtArgs>[]
   }
@@ -1765,6 +2635,17 @@ export type $DocumentationStepPayload<ExtArgs extends runtime.Types.Extensions.I
     lastSubmittedAt: Date | null
     metadata: runtime.JsonValue | null
     assigneeId: string | null
+    gateActor: $Enums.GateActor | null
+    gateAction: $Enums.GateAction | null
+    gateRoleId: string | null
+    gateInstructions: string | null
+    allowReject: boolean
+    rejectBehavior: $Enums.GateRejectBehavior | null
+    requiresComment: boolean
+    gateActedAt: Date | null
+    gateActedById: string | null
+    gateDecision: string | null
+    gateComment: string | null
     dueDate: Date | null
     completedAt: Date | null
     createdAt: Date
@@ -2113,6 +2994,7 @@ export interface Prisma__DocumentationStepClient<T, Null = never, ExtArgs extend
   documentationPhase<T extends Prisma.DocumentationPhaseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentationPhaseDefaultArgs<ExtArgs>>): Prisma.Prisma__DocumentationPhaseClient<runtime.Types.Result.GetResult<Prisma.$DocumentationPhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   assignee<T extends Prisma.DocumentationStep$assigneeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentationStep$assigneeArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   requiredDocuments<T extends Prisma.DocumentationStep$requiredDocumentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentationStep$requiredDocumentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentationStepDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  gateActedBy<T extends Prisma.DocumentationStep$gateActedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentationStep$gateActedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   approvals<T extends Prisma.DocumentationStep$approvalsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentationStep$approvalsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentationStepApprovalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   currentForPhase<T extends Prisma.DocumentationStep$currentForPhaseArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentationStep$currentForPhaseArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentationPhasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -2157,6 +3039,17 @@ export interface DocumentationStepFieldRefs {
   readonly lastSubmittedAt: Prisma.FieldRef<"DocumentationStep", 'DateTime'>
   readonly metadata: Prisma.FieldRef<"DocumentationStep", 'Json'>
   readonly assigneeId: Prisma.FieldRef<"DocumentationStep", 'String'>
+  readonly gateActor: Prisma.FieldRef<"DocumentationStep", 'GateActor'>
+  readonly gateAction: Prisma.FieldRef<"DocumentationStep", 'GateAction'>
+  readonly gateRoleId: Prisma.FieldRef<"DocumentationStep", 'String'>
+  readonly gateInstructions: Prisma.FieldRef<"DocumentationStep", 'String'>
+  readonly allowReject: Prisma.FieldRef<"DocumentationStep", 'Boolean'>
+  readonly rejectBehavior: Prisma.FieldRef<"DocumentationStep", 'GateRejectBehavior'>
+  readonly requiresComment: Prisma.FieldRef<"DocumentationStep", 'Boolean'>
+  readonly gateActedAt: Prisma.FieldRef<"DocumentationStep", 'DateTime'>
+  readonly gateActedById: Prisma.FieldRef<"DocumentationStep", 'String'>
+  readonly gateDecision: Prisma.FieldRef<"DocumentationStep", 'String'>
+  readonly gateComment: Prisma.FieldRef<"DocumentationStep", 'String'>
   readonly dueDate: Prisma.FieldRef<"DocumentationStep", 'DateTime'>
   readonly completedAt: Prisma.FieldRef<"DocumentationStep", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"DocumentationStep", 'DateTime'>
@@ -2544,6 +3437,25 @@ export type DocumentationStep$requiredDocumentsArgs<ExtArgs extends runtime.Type
   take?: number
   skip?: number
   distinct?: Prisma.DocumentationStepDocumentScalarFieldEnum | Prisma.DocumentationStepDocumentScalarFieldEnum[]
+}
+
+/**
+ * DocumentationStep.gateActedBy
+ */
+export type DocumentationStep$gateActedByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
 }
 
 /**

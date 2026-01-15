@@ -10,6 +10,7 @@ import {
     BlockerUrgency,
 } from "@valentine-efagene/qshelter-common";
 import { createWorkflowBlockerService } from "../services/workflow-blocker.service";
+import { prisma } from "../lib/prisma";
 
 const router: Router = Router();
 
@@ -176,7 +177,6 @@ router.post("/:id/resolve", requireTenant, requireRole(ADMIN_ROLES), async (req:
         const service = getBlockerService(tenantId);
 
         // Get the blocker first to resolve by step/phase
-        const prisma = require('../lib/prisma').prisma;
         const blocker = await prisma.workflowBlocker.findUnique({
             where: { id },
         });
@@ -246,7 +246,6 @@ router.post("/step/:stepId/resolve", requireTenant, async (req: Request, res: Re
         const body = resolveBlockerSchema.parse(req.body);
 
         // Get applicationId from step
-        const prisma = require('../lib/prisma').prisma;
         const step = await prisma.documentationStep.findUnique({
             where: { id: stepId },
             include: {
@@ -287,7 +286,6 @@ router.post("/phase/:phaseId/resolve", requireTenant, async (req: Request, res: 
         const body = resolveBlockerSchema.parse(req.body);
 
         // Get applicationId from phase
-        const prisma = require('../lib/prisma').prisma;
         const phase = await prisma.applicationPhase.findUnique({
             where: { id: phaseId },
         });

@@ -794,14 +794,15 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         // 2. Monthly repayment <= 1/3 of monthly income
         // 3. Maximum mortgage term is 30 years
 
-        it('Prequalification phase is activated first', async () => {
+        it('Prequalification phase is auto-activated when application is submitted', async () => {
+            // First phase should be automatically activated when application transitions to PENDING
             const response = await api
-                .post(`/applications/${applicationId}/phases/${prequalificationPhaseId}/activate`)
-                .set(customerHeaders(chidiId, tenantId))
-                .set('x-idempotency-key', idempotencyKey('chidi-activate-prequalification-phase'));
+                .get(`/applications/${applicationId}/phases/${prequalificationPhaseId}`)
+                .set(customerHeaders(chidiId, tenantId));
 
             expect(response.status).toBe(200);
             expect(response.body.data.status).toBe('IN_PROGRESS');
+            expect(response.body.data.activatedAt).toBeDefined();
         });
 
         it('Chidi sees the prequalification questionnaire fields', async () => {
@@ -883,11 +884,11 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         // Step 4: Chidi Completes KYC/Documentation
         // ========================================
 
-        it('Documentation phase is activated', async () => {
+        it('Documentation phase is auto-activated when prequalification completes', async () => {
+            // Second phase should be automatically activated when prequalification phase completes
             const response = await api
-                .post(`/applications/${applicationId}/phases/${documentationPhaseId}/activate`)
-                .set(customerHeaders(chidiId, tenantId))
-                .set('x-idempotency-key', idempotencyKey('chidi-activate-kyc-phase'));
+                .get(`/applications/${applicationId}/phases/${documentationPhaseId}`)
+                .set(customerHeaders(chidiId, tenantId));
 
             expect(response.status).toBe(200);
             expect(response.body.data.status).toBe('IN_PROGRESS');

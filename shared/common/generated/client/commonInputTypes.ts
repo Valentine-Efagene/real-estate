@@ -382,6 +382,27 @@ export type EnumStepTypeFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumStepTypeFilter<$PrismaModel> | $Enums.StepType
 }
 
+export type EnumGateActorNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.GateActor | Prisma.EnumGateActorFieldRefInput<$PrismaModel> | null
+  in?: $Enums.GateActor[] | null
+  notIn?: $Enums.GateActor[] | null
+  not?: Prisma.NestedEnumGateActorNullableFilter<$PrismaModel> | $Enums.GateActor | null
+}
+
+export type EnumGateActionNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.GateAction | Prisma.EnumGateActionFieldRefInput<$PrismaModel> | null
+  in?: $Enums.GateAction[] | null
+  notIn?: $Enums.GateAction[] | null
+  not?: Prisma.NestedEnumGateActionNullableFilter<$PrismaModel> | $Enums.GateAction | null
+}
+
+export type EnumGateRejectBehaviorNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.GateRejectBehavior | Prisma.EnumGateRejectBehaviorFieldRefInput<$PrismaModel> | null
+  in?: $Enums.GateRejectBehavior[] | null
+  notIn?: $Enums.GateRejectBehavior[] | null
+  not?: Prisma.NestedEnumGateRejectBehaviorNullableFilter<$PrismaModel> | $Enums.GateRejectBehavior | null
+}
+
 export type EnumStepTypeWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.StepType | Prisma.EnumStepTypeFieldRefInput<$PrismaModel>
   in?: $Enums.StepType[]
@@ -390,6 +411,36 @@ export type EnumStepTypeWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumStepTypeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumStepTypeFilter<$PrismaModel>
+}
+
+export type EnumGateActorNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GateActor | Prisma.EnumGateActorFieldRefInput<$PrismaModel> | null
+  in?: $Enums.GateActor[] | null
+  notIn?: $Enums.GateActor[] | null
+  not?: Prisma.NestedEnumGateActorNullableWithAggregatesFilter<$PrismaModel> | $Enums.GateActor | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGateActorNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGateActorNullableFilter<$PrismaModel>
+}
+
+export type EnumGateActionNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GateAction | Prisma.EnumGateActionFieldRefInput<$PrismaModel> | null
+  in?: $Enums.GateAction[] | null
+  notIn?: $Enums.GateAction[] | null
+  not?: Prisma.NestedEnumGateActionNullableWithAggregatesFilter<$PrismaModel> | $Enums.GateAction | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGateActionNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGateActionNullableFilter<$PrismaModel>
+}
+
+export type EnumGateRejectBehaviorNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GateRejectBehavior | Prisma.EnumGateRejectBehaviorFieldRefInput<$PrismaModel> | null
+  in?: $Enums.GateRejectBehavior[] | null
+  notIn?: $Enums.GateRejectBehavior[] | null
+  not?: Prisma.NestedEnumGateRejectBehaviorNullableWithAggregatesFilter<$PrismaModel> | $Enums.GateRejectBehavior | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGateRejectBehaviorNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGateRejectBehaviorNullableFilter<$PrismaModel>
 }
 
 export type EnumScoringStrategyFilter<$PrismaModel = never> = {
@@ -1394,6 +1445,27 @@ export type NestedEnumStepTypeFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumStepTypeFilter<$PrismaModel> | $Enums.StepType
 }
 
+export type NestedEnumGateActorNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.GateActor | Prisma.EnumGateActorFieldRefInput<$PrismaModel> | null
+  in?: $Enums.GateActor[] | null
+  notIn?: $Enums.GateActor[] | null
+  not?: Prisma.NestedEnumGateActorNullableFilter<$PrismaModel> | $Enums.GateActor | null
+}
+
+export type NestedEnumGateActionNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.GateAction | Prisma.EnumGateActionFieldRefInput<$PrismaModel> | null
+  in?: $Enums.GateAction[] | null
+  notIn?: $Enums.GateAction[] | null
+  not?: Prisma.NestedEnumGateActionNullableFilter<$PrismaModel> | $Enums.GateAction | null
+}
+
+export type NestedEnumGateRejectBehaviorNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.GateRejectBehavior | Prisma.EnumGateRejectBehaviorFieldRefInput<$PrismaModel> | null
+  in?: $Enums.GateRejectBehavior[] | null
+  notIn?: $Enums.GateRejectBehavior[] | null
+  not?: Prisma.NestedEnumGateRejectBehaviorNullableFilter<$PrismaModel> | $Enums.GateRejectBehavior | null
+}
+
 export type NestedEnumStepTypeWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.StepType | Prisma.EnumStepTypeFieldRefInput<$PrismaModel>
   in?: $Enums.StepType[]
@@ -1402,6 +1474,36 @@ export type NestedEnumStepTypeWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumStepTypeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumStepTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumGateActorNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GateActor | Prisma.EnumGateActorFieldRefInput<$PrismaModel> | null
+  in?: $Enums.GateActor[] | null
+  notIn?: $Enums.GateActor[] | null
+  not?: Prisma.NestedEnumGateActorNullableWithAggregatesFilter<$PrismaModel> | $Enums.GateActor | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGateActorNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGateActorNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumGateActionNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GateAction | Prisma.EnumGateActionFieldRefInput<$PrismaModel> | null
+  in?: $Enums.GateAction[] | null
+  notIn?: $Enums.GateAction[] | null
+  not?: Prisma.NestedEnumGateActionNullableWithAggregatesFilter<$PrismaModel> | $Enums.GateAction | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGateActionNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGateActionNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumGateRejectBehaviorNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GateRejectBehavior | Prisma.EnumGateRejectBehaviorFieldRefInput<$PrismaModel> | null
+  in?: $Enums.GateRejectBehavior[] | null
+  notIn?: $Enums.GateRejectBehavior[] | null
+  not?: Prisma.NestedEnumGateRejectBehaviorNullableWithAggregatesFilter<$PrismaModel> | $Enums.GateRejectBehavior | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGateRejectBehaviorNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGateRejectBehaviorNullableFilter<$PrismaModel>
 }
 
 export type NestedEnumScoringStrategyFilter<$PrismaModel = never> = {

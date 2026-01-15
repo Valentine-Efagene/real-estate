@@ -23,6 +23,7 @@ import {
     GenerateInstallmentsSchema,
     ApproveDocumentSchema,
     SubmitQuestionnaireSchema,
+    GateActionSchema,
 } from '../validators/application-phase.validator';
 import {
     CreatePaymentSchema,
@@ -389,6 +390,28 @@ router.post('/:id/phases/:phaseId/steps/:stepId/request-changes', requireTenant,
         const phase = await applicationPhaseService.requestStepChanges(req.params.phaseId as string, req.params.stepId as string, reason, userId);
         res.json(successResponse(phase));
     } catch (error) {
+        next(error);
+    }
+});
+
+// Perform a gate action (approve/reject/acknowledge) on a GATE step
+router.post('/:id/phases/:phaseId/steps/:stepId/gate', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const data = GateActionSchema.parse(req.body);
+        const { userId, roles } = getAuthContext(req);
+        const phase = await applicationPhaseService.performGateAction(
+            req.params.phaseId as string,
+            req.params.stepId as string,
+            data,
+            userId,
+            roles || []
+        );
+        res.json(successResponse(phase));
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });
+            return;
+        }
         next(error);
     }
 });

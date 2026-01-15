@@ -92,10 +92,40 @@ export const StepType = {
   WAIT: 'WAIT',
   GENERATE_DOCUMENT: 'GENERATE_DOCUMENT',
   PRE_APPROVAL: 'PRE_APPROVAL',
-  UNDERWRITING: 'UNDERWRITING'
+  UNDERWRITING: 'UNDERWRITING',
+  GATE: 'GATE'
 } as const
 
 export type StepType = (typeof StepType)[keyof typeof StepType]
+
+
+export const GateActor = {
+  ADMIN: 'ADMIN',
+  CUSTOMER: 'CUSTOMER',
+  SPECIFIC_ROLE: 'SPECIFIC_ROLE'
+} as const
+
+export type GateActor = (typeof GateActor)[keyof typeof GateActor]
+
+
+export const GateAction = {
+  APPROVE: 'APPROVE',
+  ACKNOWLEDGE: 'ACKNOWLEDGE',
+  CONFIRM: 'CONFIRM',
+  CONSENT: 'CONSENT'
+} as const
+
+export type GateAction = (typeof GateAction)[keyof typeof GateAction]
+
+
+export const GateRejectBehavior = {
+  BLOCK: 'BLOCK',
+  RESTART_STEP: 'RESTART_STEP',
+  RESTART_PHASE: 'RESTART_PHASE',
+  TERMINATE: 'TERMINATE'
+} as const
+
+export type GateRejectBehavior = (typeof GateRejectBehavior)[keyof typeof GateRejectBehavior]
 
 
 export const StepStatus = {

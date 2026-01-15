@@ -92,6 +92,30 @@ enum StepType {
   GENERATE_DOCUMENT // Triggers document generation (offer letters, contracts, etc.)
   PRE_APPROVAL // Customer answers eligibility questionnaire
   UNDERWRITING // System evaluates DTI, score, eligibility
+  GATE // Explicit human gate requiring action (approve, acknowledge, consent)
+}
+
+/// Who must perform a GATE step action
+enum GateActor {
+  ADMIN // Any tenant admin
+  CUSTOMER // The application buyer
+  SPECIFIC_ROLE // Requires gateRoleId to be set
+}
+
+/// What action is required for a GATE step
+enum GateAction {
+  APPROVE // Approve/Reject decision (default)
+  ACKNOWLEDGE // Just acknowledge, no reject option
+  CONFIRM // Confirm details are correct
+  CONSENT // Legal consent (e.g., terms & conditions)
+}
+
+/// What happens when a GATE step is rejected
+enum GateRejectBehavior {
+  BLOCK // Block progression, admin must resolve
+  RESTART_STEP // Reset this step to pending
+  RESTART_PHASE // Reset entire phase
+  TERMINATE // Terminate the application
 }
 
 enum StepStatus {
@@ -353,9 +377,10 @@ model User {
   applicationPayments ApplicationPayment[] @relation("ApplicationPayer")
 
   // Documentation step assignments and approvals
-  assignedSteps DocumentationStep[]         @relation("DocumentationStepAssignee")
-  stepApprovals DocumentationStepApproval[] @relation("DocumentationStepApprover")
-  uploadedDocs  ApplicationDocument[]       @relation("DocumentUploader")
+  assignedSteps  DocumentationStep[]         @relation("DocumentationStepAssignee")
+  gateActedSteps DocumentationStep[]         @relation("GateActedBy")
+  stepApprovals  DocumentationStepApproval[] @relation("DocumentationStepApprover")
+  uploadedDocs   ApplicationDocument[]       @relation("DocumentUploader")
 
   // Payment method changes
   paymentMethodChangeRequests PaymentMethodChangeRequest[] @relation("ChangeRequestor")
@@ -1090,6 +1115,17 @@ model DocumentationPlanStep {
   // { "questionKey": "employment_status", "operator": "IN", "values": ["SELF_EMPLOYED", "BUSINESS_OWNER"] }
   // { "all": [{ "questionKey": "has_spouse", "operator": "EQUALS", "value": "YES" }, { "questionKey": "spouse_employed", "operator": "EQUALS", "value": "YES" }] }
   condition Json?
+
+  // =========================================================================
+  // GATE STEP CONFIGURATION (only applicable when stepType = GATE)
+  // =========================================================================
+  gateActor        GateActor? // Who must perform the action
+  gateAction       GateAction? // What action is required
+  gateRoleId       String? // If gateActor = SPECIFIC_ROLE, which role
+  gateInstructions String?             @db.Text // Instructions shown to actor
+  allowReject      Boolean             @default(true) // Can the actor reject?
+  rejectBehavior   GateRejectBehavior? // What happens on reject
+  requiresComment  Boolean             @default(false) // Must actor provide a comment?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -2066,6 +2102,24 @@ model DocumentationStep {
 
   // Required document types for UPLOAD steps (normalized)
   requiredDocuments DocumentationStepDocument[]
+
+  // =========================================================================
+  // GATE STEP CONFIGURATION (only applicable when stepType = GATE)
+  // =========================================================================
+  gateActor        GateActor? // Who must perform the action
+  gateAction       GateAction? // What action is required
+  gateRoleId       String? // If gateActor = SPECIFIC_ROLE, which role
+  gateInstructions String?             @db.Text // Instructions shown to actor
+  allowReject      Boolean             @default(true) // Can the actor reject?
+  rejectBehavior   GateRejectBehavior? // What happens on reject
+  requiresComment  Boolean             @default(false) // Must actor provide a comment?
+
+  // Gate action tracking
+  gateActedAt   DateTime? // When the gate action was performed
+  gateActedById String? // Who performed the gate action
+  gateActedBy   User?     @relation("GateActedBy", fields: [gateActedById], references: [id])
+  gateDecision  String? // APPROVED, REJECTED, ACKNOWLEDGED, etc.
+  gateComment   String?   @db.Text // Comment from actor
 
   // Timing
   dueDate     DateTime?

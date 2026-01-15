@@ -19,7 +19,7 @@ export const ConditionOperatorEnum = z.enum([
 export type ConditionOperator = z.infer<typeof ConditionOperatorEnum>;
 
 // Condition schema for conditional document requirements
-export const StepConditionSchema = z.object({
+export const StepConditionSchema: z.ZodType<StepCondition> = z.object({
     questionKey: z.string().optional().openapi({ example: 'mortgage_type', description: 'The questionnaire question key to evaluate' }),
     operator: ConditionOperatorEnum.optional().openapi({ example: 'EQUALS', description: 'Comparison operator' }),
     value: z.union([z.string(), z.number(), z.boolean()]).optional().openapi({ example: 'JOINT', description: 'Value to compare against (for EQUALS, NOT_EQUALS, GREATER_THAN, LESS_THAN)' }),
@@ -27,7 +27,16 @@ export const StepConditionSchema = z.object({
     all: z.array(z.lazy(() => StepConditionSchema)).optional().openapi({ description: 'All conditions must be true (AND logic)' }),
     any: z.array(z.lazy(() => StepConditionSchema)).optional().openapi({ description: 'Any condition must be true (OR logic)' }),
 }).openapi('StepCondition');
-export type StepCondition = z.infer<typeof StepConditionSchema>;
+
+// Define the type before the schema to enable proper typing
+export type StepCondition = {
+    questionKey?: string;
+    operator?: ConditionOperator;
+    value?: string | number | boolean;
+    values?: (string | number)[];
+    all?: StepCondition[];
+    any?: StepCondition[];
+};
 
 // Step definition schema for documentation plans
 export const DocumentationPlanStepSchema = z.object({

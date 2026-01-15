@@ -594,11 +594,11 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.body.data.status).toBe('PENDING');
         });
 
-        it('Step 5.4: Activate KYC phase', async () => {
+        it('Step 5.4: KYC phase is auto-activated when application is submitted', async () => {
+            // First phase should be automatically activated when application transitions to PENDING
             const response = await mortgageApi
-                .post(`/applications/${applicationId}/phases/${kycPhaseId}/activate`)
-                .set(customerHeaders(chidiAccessToken, tenantId))
-                .set('x-idempotency-key', idempotencyKey('activate-kyc'));
+                .get(`/applications/${applicationId}/phases/${kycPhaseId}`)
+                .set(customerHeaders(chidiAccessToken, tenantId));
 
             expect(response.status).toBe(200);
             expect(response.body.success).toBe(true);

@@ -1240,6 +1240,257 @@ class ApplicationPhaseService {
     }
 
     /**
+     * Perform a gate action on a GATE step.
+     * 
+     * GATE steps are explicit human gates that require action (approve, acknowledge, etc.)
+     * They can be configured for ADMIN, CUSTOMER, or a SPECIFIC_ROLE.
+     * 
+     * @param phaseId - The phase containing the step
+     * @param stepId - The GATE step ID
+     * @param data - The action and optional comment
+     * @param userId - The actor performing the action
+     * @param userRoles - The actor's roles (for authorization)
+     */
+    async performGateAction(
+        phaseId: string,
+        stepId: string,
+        data: { action: string; comment?: string },
+        userId: string,
+        userRoles: string[]
+    ): Promise<any> {
+        const phase = await this.findById(phaseId);
+
+        if (!phase.documentationPhase) {
+            throw new AppError(400, 'Gate actions are only for DOCUMENTATION phases');
+        }
+
+        const steps = phase.documentationPhase.steps || [];
+        const step = steps.find((s: any) => s.id === stepId);
+        if (!step) {
+            throw new AppError(404, 'Step not found in this phase');
+        }
+
+        if (step.stepType !== 'GATE') {
+            throw new AppError(400, 'This action is only for GATE steps');
+        }
+
+        if (step.status === 'COMPLETED') {
+            throw new AppError(400, 'Gate step already completed');
+        }
+
+        if (step.status !== 'IN_PROGRESS' && step.status !== 'PENDING') {
+            throw new AppError(400, `Cannot perform gate action on step with status ${step.status}`);
+        }
+
+        // Validate actor authorization
+        const isAdmin = userRoles.some(role =>
+            ['TENANT_ADMIN', 'SUPER_ADMIN', 'ADMIN'].includes(role)
+        );
+        const isCustomer = phase.application?.buyerId === userId;
+
+        switch (step.gateActor) {
+            case 'ADMIN':
+                if (!isAdmin) {
+                    throw new AppError(403, 'Only admins can perform this gate action');
+                }
+                break;
+            case 'CUSTOMER':
+                if (!isCustomer) {
+                    throw new AppError(403, 'Only the application buyer can perform this gate action');
+                }
+                break;
+            case 'SPECIFIC_ROLE':
+                if (step.gateRoleId && !userRoles.includes(step.gateRoleId)) {
+                    throw new AppError(403, `Requires role: ${step.gateRoleId}`);
+                }
+                break;
+        }
+
+        // Validate action
+        const isRejection = data.action === 'REJECT';
+
+        if (isRejection && !step.allowReject) {
+            throw new AppError(400, 'This gate does not allow rejection');
+        }
+
+        if (step.requiresComment && !data.comment) {
+            throw new AppError(400, 'A comment is required for this gate action');
+        }
+
+        const tenantId = phase.application.tenantId;
+
+        if (isRejection) {
+            // Handle rejection based on rejectBehavior
+            return this.handleGateRejection(phase, step, data.comment || '', userId, tenantId);
+        }
+
+        // Handle approval/acknowledgment/confirmation/consent
+        await prisma.$transaction(async (tx) => {
+            // Update the step to COMPLETED
+            await tx.documentationStep.update({
+                where: { id: stepId },
+                data: {
+                    status: 'COMPLETED',
+                    completedAt: new Date(),
+                    gateActedAt: new Date(),
+                    gateActedById: userId,
+                    gateDecision: data.action,
+                    gateComment: data.comment,
+                },
+            });
+
+            // Write domain event
+            await tx.domainEvent.create({
+                data: {
+                    id: uuidv4(),
+                    tenantId,
+                    eventType: 'PHASE.STEP.GATE_COMPLETED',
+                    aggregateType: 'DocumentationStep',
+                    aggregateId: stepId,
+                    queueName: 'notifications',
+                    payload: JSON.stringify({
+                        stepId,
+                        phaseId,
+                        applicationId: phase.applicationId,
+                        action: data.action,
+                        actorType: step.gateActor,
+                    }),
+                    actorId: userId,
+                },
+            });
+
+            // Check for phase completion
+            await this.evaluatePhaseCompletionInternal(tx, phaseId, userId);
+        });
+
+        return this.findByIdWithActionStatus(phaseId);
+    }
+
+    /**
+     * Handle rejection of a GATE step based on rejectBehavior configuration
+     */
+    private async handleGateRejection(
+        phase: any,
+        step: any,
+        reason: string,
+        userId: string,
+        tenantId: string
+    ): Promise<any> {
+        const rejectBehavior = step.rejectBehavior || 'BLOCK';
+
+        await prisma.$transaction(async (tx) => {
+            // Record the rejection
+            await tx.documentationStep.update({
+                where: { id: step.id },
+                data: {
+                    gateActedAt: new Date(),
+                    gateActedById: userId,
+                    gateDecision: 'REJECTED',
+                    gateComment: reason,
+                },
+            });
+
+            // Write domain event
+            await tx.domainEvent.create({
+                data: {
+                    id: uuidv4(),
+                    tenantId,
+                    eventType: 'PHASE.STEP.GATE_REJECTED',
+                    aggregateType: 'DocumentationStep',
+                    aggregateId: step.id,
+                    queueName: 'notifications',
+                    payload: JSON.stringify({
+                        stepId: step.id,
+                        phaseId: phase.id,
+                        applicationId: phase.applicationId,
+                        reason,
+                        rejectBehavior,
+                    }),
+                    actorId: userId,
+                },
+            });
+
+            switch (rejectBehavior) {
+                case 'BLOCK':
+                    // Mark step as ACTION_REQUIRED - admin must resolve
+                    await tx.documentationStep.update({
+                        where: { id: step.id },
+                        data: {
+                            status: 'ACTION_REQUIRED',
+                            actionReason: `Gate rejected: ${reason}`,
+                        },
+                    });
+                    break;
+
+                case 'RESTART_STEP':
+                    // Reset this step to PENDING
+                    await tx.documentationStep.update({
+                        where: { id: step.id },
+                        data: {
+                            status: 'PENDING',
+                            gateActedAt: null,
+                            gateActedById: null,
+                            gateDecision: null,
+                            gateComment: null,
+                            actionReason: null,
+                        },
+                    });
+                    break;
+
+                case 'RESTART_PHASE':
+                    // Reset entire phase - all steps to PENDING
+                    await tx.documentationStep.updateMany({
+                        where: { documentationPhaseId: phase.documentationPhase.id },
+                        data: {
+                            status: 'PENDING',
+                            completedAt: null,
+                            gateActedAt: null,
+                            gateActedById: null,
+                            gateDecision: null,
+                            gateComment: null,
+                            actionReason: null,
+                        },
+                    });
+                    // Reset phase status
+                    await tx.applicationPhase.update({
+                        where: { id: phase.id },
+                        data: {
+                            status: 'IN_PROGRESS',
+                            completedAt: null,
+                        },
+                    });
+                    break;
+
+                case 'TERMINATE':
+                    // Terminate the application
+                    await tx.application.update({
+                        where: { id: phase.applicationId },
+                        data: { status: 'CANCELLED' },
+                    });
+                    await tx.domainEvent.create({
+                        data: {
+                            id: uuidv4(),
+                            tenantId,
+                            eventType: 'APPLICATION.TERMINATED',
+                            aggregateType: 'Application',
+                            aggregateId: phase.applicationId,
+                            queueName: 'notifications',
+                            payload: JSON.stringify({
+                                applicationId: phase.applicationId,
+                                reason: `Gate rejection: ${reason}`,
+                                rejectedStepId: step.id,
+                            }),
+                            actorId: userId,
+                        },
+                    });
+                    break;
+            }
+        });
+
+        return this.findByIdWithActionStatus(phase.id);
+    }
+
+    /**
      * Approve or reject a document
      * 
      * State Machine Logic:

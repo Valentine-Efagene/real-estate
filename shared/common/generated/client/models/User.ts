@@ -293,6 +293,7 @@ export type UserWhereInput = {
   soldApplications?: Prisma.ApplicationListRelationFilter
   applicationPayments?: Prisma.ApplicationPaymentListRelationFilter
   assignedSteps?: Prisma.DocumentationStepListRelationFilter
+  gateActedSteps?: Prisma.DocumentationStepListRelationFilter
   stepApprovals?: Prisma.DocumentationStepApprovalListRelationFilter
   uploadedDocs?: Prisma.ApplicationDocumentListRelationFilter
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestListRelationFilter
@@ -344,6 +345,7 @@ export type UserOrderByWithRelationInput = {
   soldApplications?: Prisma.ApplicationOrderByRelationAggregateInput
   applicationPayments?: Prisma.ApplicationPaymentOrderByRelationAggregateInput
   assignedSteps?: Prisma.DocumentationStepOrderByRelationAggregateInput
+  gateActedSteps?: Prisma.DocumentationStepOrderByRelationAggregateInput
   stepApprovals?: Prisma.DocumentationStepApprovalOrderByRelationAggregateInput
   uploadedDocs?: Prisma.ApplicationDocumentOrderByRelationAggregateInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestOrderByRelationAggregateInput
@@ -399,6 +401,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   soldApplications?: Prisma.ApplicationListRelationFilter
   applicationPayments?: Prisma.ApplicationPaymentListRelationFilter
   assignedSteps?: Prisma.DocumentationStepListRelationFilter
+  gateActedSteps?: Prisma.DocumentationStepListRelationFilter
   stepApprovals?: Prisma.DocumentationStepApprovalListRelationFilter
   uploadedDocs?: Prisma.ApplicationDocumentListRelationFilter
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestListRelationFilter
@@ -494,6 +497,7 @@ export type UserCreateInput = {
   soldApplications?: Prisma.ApplicationCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
@@ -543,6 +547,7 @@ export type UserUncheckedCreateInput = {
   soldApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
@@ -592,6 +597,7 @@ export type UserUpdateInput = {
   soldApplications?: Prisma.ApplicationUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
@@ -641,6 +647,7 @@ export type UserUncheckedUpdateInput = {
   soldApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
@@ -1105,6 +1112,12 @@ export type UserCreateNestedOneWithoutAssignedStepsInput = {
   connect?: Prisma.UserWhereUniqueInput
 }
 
+export type UserCreateNestedOneWithoutGateActedStepsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutGateActedStepsInput, Prisma.UserUncheckedCreateWithoutGateActedStepsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutGateActedStepsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
 export type UserUpdateOneWithoutAssignedStepsNestedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutAssignedStepsInput, Prisma.UserUncheckedCreateWithoutAssignedStepsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutAssignedStepsInput
@@ -1113,6 +1126,16 @@ export type UserUpdateOneWithoutAssignedStepsNestedInput = {
   delete?: Prisma.UserWhereInput | boolean
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAssignedStepsInput, Prisma.UserUpdateWithoutAssignedStepsInput>, Prisma.UserUncheckedUpdateWithoutAssignedStepsInput>
+}
+
+export type UserUpdateOneWithoutGateActedStepsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutGateActedStepsInput, Prisma.UserUncheckedCreateWithoutGateActedStepsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutGateActedStepsInput
+  upsert?: Prisma.UserUpsertWithoutGateActedStepsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutGateActedStepsInput, Prisma.UserUpdateWithoutGateActedStepsInput>, Prisma.UserUncheckedUpdateWithoutGateActedStepsInput>
 }
 
 export type UserCreateNestedOneWithoutStepApprovalsInput = {
@@ -1363,6 +1386,7 @@ export type UserCreateWithoutUserRolesInput = {
   soldApplications?: Prisma.ApplicationCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
@@ -1411,6 +1435,7 @@ export type UserUncheckedCreateWithoutUserRolesInput = {
   soldApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
@@ -1475,6 +1500,7 @@ export type UserUpdateWithoutUserRolesInput = {
   soldApplications?: Prisma.ApplicationUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
@@ -1523,6 +1549,7 @@ export type UserUncheckedUpdateWithoutUserRolesInput = {
   soldApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
@@ -1571,6 +1598,7 @@ export type UserCreateWithoutTenantMembershipsInput = {
   soldApplications?: Prisma.ApplicationCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
@@ -1619,6 +1647,7 @@ export type UserUncheckedCreateWithoutTenantMembershipsInput = {
   soldApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
@@ -1683,6 +1712,7 @@ export type UserUpdateWithoutTenantMembershipsInput = {
   soldApplications?: Prisma.ApplicationUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
@@ -1731,6 +1761,7 @@ export type UserUncheckedUpdateWithoutTenantMembershipsInput = {
   soldApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
@@ -1779,6 +1810,7 @@ export type UserCreateWithoutTenantInput = {
   soldApplications?: Prisma.ApplicationCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
@@ -1827,6 +1859,7 @@ export type UserUncheckedCreateWithoutTenantInput = {
   soldApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
@@ -1924,6 +1957,7 @@ export type UserCreateWithoutRefreshTokensInput = {
   soldApplications?: Prisma.ApplicationCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
@@ -1972,6 +2006,7 @@ export type UserUncheckedCreateWithoutRefreshTokensInput = {
   soldApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
@@ -2036,6 +2071,7 @@ export type UserUpdateWithoutRefreshTokensInput = {
   soldApplications?: Prisma.ApplicationUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
@@ -2084,6 +2120,7 @@ export type UserUncheckedUpdateWithoutRefreshTokensInput = {
   soldApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
@@ -2132,6 +2169,7 @@ export type UserCreateWithoutPasswordResetsInput = {
   soldApplications?: Prisma.ApplicationCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
@@ -2180,6 +2218,7 @@ export type UserUncheckedCreateWithoutPasswordResetsInput = {
   soldApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
@@ -2244,6 +2283,7 @@ export type UserUpdateWithoutPasswordResetsInput = {
   soldApplications?: Prisma.ApplicationUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
@@ -2292,6 +2332,7 @@ export type UserUncheckedUpdateWithoutPasswordResetsInput = {
   soldApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
@@ -2340,6 +2381,7 @@ export type UserCreateWithoutSuspensionsInput = {
   soldApplications?: Prisma.ApplicationCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
@@ -2388,6 +2430,7 @@ export type UserUncheckedCreateWithoutSuspensionsInput = {
   soldApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
@@ -2452,6 +2495,7 @@ export type UserUpdateWithoutSuspensionsInput = {
   soldApplications?: Prisma.ApplicationUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
@@ -2500,6 +2544,7 @@ export type UserUncheckedUpdateWithoutSuspensionsInput = {
   soldApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
@@ -2548,6 +2593,7 @@ export type UserCreateWithoutEmailPreferencesInput = {
   soldApplications?: Prisma.ApplicationCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
@@ -2596,6 +2642,7 @@ export type UserUncheckedCreateWithoutEmailPreferencesInput = {
   soldApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
@@ -2660,6 +2707,7 @@ export type UserUpdateWithoutEmailPreferencesInput = {
   soldApplications?: Prisma.ApplicationUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
@@ -2708,6 +2756,7 @@ export type UserUncheckedUpdateWithoutEmailPreferencesInput = {
   soldApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
@@ -2756,6 +2805,7 @@ export type UserCreateWithoutDeviceEndpointsInput = {
   soldApplications?: Prisma.ApplicationCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
@@ -2804,6 +2854,7 @@ export type UserUncheckedCreateWithoutDeviceEndpointsInput = {
   soldApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
@@ -2868,6 +2919,7 @@ export type UserUpdateWithoutDeviceEndpointsInput = {
   soldApplications?: Prisma.ApplicationUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
@@ -2916,6 +2968,7 @@ export type UserUncheckedUpdateWithoutDeviceEndpointsInput = {
   soldApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
@@ -2964,6 +3017,7 @@ export type UserCreateWithoutSocialsInput = {
   soldApplications?: Prisma.ApplicationCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
@@ -3012,6 +3066,7 @@ export type UserUncheckedCreateWithoutSocialsInput = {
   soldApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
@@ -3076,6 +3131,7 @@ export type UserUpdateWithoutSocialsInput = {
   soldApplications?: Prisma.ApplicationUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
@@ -3124,6 +3180,7 @@ export type UserUncheckedUpdateWithoutSocialsInput = {
   soldApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
@@ -3172,6 +3229,7 @@ export type UserCreateWithoutWalletInput = {
   soldApplications?: Prisma.ApplicationCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
@@ -3220,6 +3278,7 @@ export type UserUncheckedCreateWithoutWalletInput = {
   soldApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
@@ -3284,6 +3343,7 @@ export type UserUpdateWithoutWalletInput = {
   soldApplications?: Prisma.ApplicationUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
@@ -3332,6 +3392,7 @@ export type UserUncheckedUpdateWithoutWalletInput = {
   soldApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
@@ -3380,6 +3441,7 @@ export type UserCreateWithoutPropertiesInput = {
   soldApplications?: Prisma.ApplicationCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
@@ -3428,6 +3490,7 @@ export type UserUncheckedCreateWithoutPropertiesInput = {
   soldApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
@@ -3492,6 +3555,7 @@ export type UserUpdateWithoutPropertiesInput = {
   soldApplications?: Prisma.ApplicationUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
@@ -3540,6 +3604,7 @@ export type UserUncheckedUpdateWithoutPropertiesInput = {
   soldApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
@@ -3588,6 +3653,7 @@ export type UserCreateWithoutApplicationsInput = {
   soldApplications?: Prisma.ApplicationCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
@@ -3636,6 +3702,7 @@ export type UserUncheckedCreateWithoutApplicationsInput = {
   soldApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
@@ -3689,6 +3756,7 @@ export type UserCreateWithoutSoldApplicationsInput = {
   applications?: Prisma.ApplicationCreateNestedManyWithoutBuyerInput
   applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
@@ -3737,6 +3805,7 @@ export type UserUncheckedCreateWithoutSoldApplicationsInput = {
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutBuyerInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
@@ -3801,6 +3870,7 @@ export type UserUpdateWithoutApplicationsInput = {
   soldApplications?: Prisma.ApplicationUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
@@ -3849,6 +3919,7 @@ export type UserUncheckedUpdateWithoutApplicationsInput = {
   soldApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
@@ -3908,6 +3979,7 @@ export type UserUpdateWithoutSoldApplicationsInput = {
   applications?: Prisma.ApplicationUpdateManyWithoutBuyerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
@@ -3956,6 +4028,7 @@ export type UserUncheckedUpdateWithoutSoldApplicationsInput = {
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutBuyerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
@@ -4005,6 +4078,7 @@ export type UserCreateWithoutRequestedRefundsInput = {
   soldApplications?: Prisma.ApplicationCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
@@ -4053,6 +4127,7 @@ export type UserUncheckedCreateWithoutRequestedRefundsInput = {
   soldApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
@@ -4106,6 +4181,7 @@ export type UserCreateWithoutApprovedRefundsInput = {
   soldApplications?: Prisma.ApplicationCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
@@ -4154,6 +4230,7 @@ export type UserUncheckedCreateWithoutApprovedRefundsInput = {
   soldApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
@@ -4207,6 +4284,7 @@ export type UserCreateWithoutProcessedRefundsInput = {
   soldApplications?: Prisma.ApplicationCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
@@ -4255,6 +4333,7 @@ export type UserUncheckedCreateWithoutProcessedRefundsInput = {
   soldApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
@@ -4319,6 +4398,7 @@ export type UserUpdateWithoutRequestedRefundsInput = {
   soldApplications?: Prisma.ApplicationUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
@@ -4367,6 +4447,7 @@ export type UserUncheckedUpdateWithoutRequestedRefundsInput = {
   soldApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
@@ -4426,6 +4507,7 @@ export type UserUpdateWithoutApprovedRefundsInput = {
   soldApplications?: Prisma.ApplicationUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
@@ -4474,6 +4556,7 @@ export type UserUncheckedUpdateWithoutApprovedRefundsInput = {
   soldApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
@@ -4533,6 +4616,7 @@ export type UserUpdateWithoutProcessedRefundsInput = {
   soldApplications?: Prisma.ApplicationUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
@@ -4581,6 +4665,7 @@ export type UserUncheckedUpdateWithoutProcessedRefundsInput = {
   soldApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
@@ -4628,6 +4713,7 @@ export type UserCreateWithoutAssignedStepsInput = {
   applications?: Prisma.ApplicationCreateNestedManyWithoutBuyerInput
   soldApplications?: Prisma.ApplicationCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPayerInput
+  gateActedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
@@ -4676,6 +4762,7 @@ export type UserUncheckedCreateWithoutAssignedStepsInput = {
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutBuyerInput
   soldApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPayerInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
@@ -4697,6 +4784,109 @@ export type UserUncheckedCreateWithoutAssignedStepsInput = {
 export type UserCreateOrConnectWithoutAssignedStepsInput = {
   where: Prisma.UserWhereUniqueInput
   create: Prisma.XOR<Prisma.UserCreateWithoutAssignedStepsInput, Prisma.UserUncheckedCreateWithoutAssignedStepsInput>
+}
+
+export type UserCreateWithoutGateActedStepsInput = {
+  id?: string
+  email: string
+  password?: string | null
+  phone?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  isActive?: boolean
+  isEmailVerified?: boolean
+  googleId?: string | null
+  avatar?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  emailVerifiedAt?: Date | string | null
+  emailVerificationToken?: string | null
+  lastLoginAt?: Date | string | null
+  tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  tenantMemberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
+  userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  passwordResets?: Prisma.PasswordResetCreateNestedManyWithoutUserInput
+  suspensions?: Prisma.UserSuspensionCreateNestedManyWithoutUserInput
+  emailPreferences?: Prisma.EmailPreferenceCreateNestedManyWithoutUserInput
+  deviceEndpoints?: Prisma.DeviceEndpointCreateNestedManyWithoutUserInput
+  socials?: Prisma.SocialCreateNestedManyWithoutUserInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutUserInput
+  applications?: Prisma.ApplicationCreateNestedManyWithoutBuyerInput
+  soldApplications?: Prisma.ApplicationCreateNestedManyWithoutSellerInput
+  applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPayerInput
+  assignedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutAssigneeInput
+  stepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutApproverInput
+  uploadedDocs?: Prisma.ApplicationDocumentCreateNestedManyWithoutUploadedByInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutReviewerInput
+  initiatedTerminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutInitiatorInput
+  reviewedTerminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutReviewerInput
+  offerLettersGenerated?: Prisma.OfferLetterCreateNestedManyWithoutGeneratedByInput
+  offerLettersSent?: Prisma.OfferLetterCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestCreateNestedManyWithoutReviewedByInput
+  approvalRequestsSubmitted?: Prisma.ApprovalRequestCreateNestedManyWithoutRequestedByInput
+  approvalRequestsAssigned?: Prisma.ApprovalRequestCreateNestedManyWithoutAssigneeInput
+  approvalRequestsReviewed?: Prisma.ApprovalRequestCreateNestedManyWithoutReviewedByInput
+  requestedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutRequestedByInput
+  approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
+  processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
+}
+
+export type UserUncheckedCreateWithoutGateActedStepsInput = {
+  id?: string
+  email: string
+  password?: string | null
+  phone?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  isActive?: boolean
+  isEmailVerified?: boolean
+  googleId?: string | null
+  avatar?: string | null
+  tenantId?: string | null
+  walletId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  emailVerifiedAt?: Date | string | null
+  emailVerificationToken?: string | null
+  lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
+  userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
+  suspensions?: Prisma.UserSuspensionUncheckedCreateNestedManyWithoutUserInput
+  emailPreferences?: Prisma.EmailPreferenceUncheckedCreateNestedManyWithoutUserInput
+  deviceEndpoints?: Prisma.DeviceEndpointUncheckedCreateNestedManyWithoutUserInput
+  socials?: Prisma.SocialUncheckedCreateNestedManyWithoutUserInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutUserInput
+  applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutBuyerInput
+  soldApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSellerInput
+  applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPayerInput
+  assignedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput
+  stepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutApproverInput
+  uploadedDocs?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
+  initiatedTerminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutInitiatorInput
+  reviewedTerminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutReviewerInput
+  offerLettersGenerated?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutGeneratedByInput
+  offerLettersSent?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  approvalRequestsSubmitted?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  approvalRequestsAssigned?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutAssigneeInput
+  approvalRequestsReviewed?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  requestedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutRequestedByInput
+  approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
+  processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
+}
+
+export type UserCreateOrConnectWithoutGateActedStepsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutGateActedStepsInput, Prisma.UserUncheckedCreateWithoutGateActedStepsInput>
 }
 
 export type UserUpsertWithoutAssignedStepsInput = {
@@ -4740,6 +4930,7 @@ export type UserUpdateWithoutAssignedStepsInput = {
   applications?: Prisma.ApplicationUpdateManyWithoutBuyerNestedInput
   soldApplications?: Prisma.ApplicationUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutPayerNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
@@ -4788,6 +4979,116 @@ export type UserUncheckedUpdateWithoutAssignedStepsInput = {
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutBuyerNestedInput
   soldApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPayerNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutGateActedByNestedInput
+  stepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
+  uploadedDocs?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
+  initiatedTerminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutInitiatorNestedInput
+  reviewedTerminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutReviewerNestedInput
+  offerLettersGenerated?: Prisma.OfferLetterUncheckedUpdateManyWithoutGeneratedByNestedInput
+  offerLettersSent?: Prisma.OfferLetterUncheckedUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  approvalRequestsSubmitted?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  approvalRequestsAssigned?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvalRequestsReviewed?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  requestedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutRequestedByNestedInput
+  approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
+  processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
+}
+
+export type UserUpsertWithoutGateActedStepsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutGateActedStepsInput, Prisma.UserUncheckedUpdateWithoutGateActedStepsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutGateActedStepsInput, Prisma.UserUncheckedCreateWithoutGateActedStepsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutGateActedStepsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutGateActedStepsInput, Prisma.UserUncheckedUpdateWithoutGateActedStepsInput>
+}
+
+export type UserUpdateWithoutGateActedStepsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  tenantMemberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
+  userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  passwordResets?: Prisma.PasswordResetUpdateManyWithoutUserNestedInput
+  suspensions?: Prisma.UserSuspensionUpdateManyWithoutUserNestedInput
+  emailPreferences?: Prisma.EmailPreferenceUpdateManyWithoutUserNestedInput
+  deviceEndpoints?: Prisma.DeviceEndpointUpdateManyWithoutUserNestedInput
+  socials?: Prisma.SocialUpdateManyWithoutUserNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ApplicationUpdateManyWithoutBuyerNestedInput
+  soldApplications?: Prisma.ApplicationUpdateManyWithoutSellerNestedInput
+  applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutPayerNestedInput
+  assignedSteps?: Prisma.DocumentationStepUpdateManyWithoutAssigneeNestedInput
+  stepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutApproverNestedInput
+  uploadedDocs?: Prisma.ApplicationDocumentUpdateManyWithoutUploadedByNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutReviewerNestedInput
+  initiatedTerminations?: Prisma.ApplicationTerminationUpdateManyWithoutInitiatorNestedInput
+  reviewedTerminations?: Prisma.ApplicationTerminationUpdateManyWithoutReviewerNestedInput
+  offerLettersGenerated?: Prisma.OfferLetterUpdateManyWithoutGeneratedByNestedInput
+  offerLettersSent?: Prisma.OfferLetterUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUpdateManyWithoutReviewedByNestedInput
+  approvalRequestsSubmitted?: Prisma.ApprovalRequestUpdateManyWithoutRequestedByNestedInput
+  approvalRequestsAssigned?: Prisma.ApprovalRequestUpdateManyWithoutAssigneeNestedInput
+  approvalRequestsReviewed?: Prisma.ApprovalRequestUpdateManyWithoutReviewedByNestedInput
+  requestedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutRequestedByNestedInput
+  approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
+  processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutGateActedStepsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tenantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  walletId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
+  userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+  suspensions?: Prisma.UserSuspensionUncheckedUpdateManyWithoutUserNestedInput
+  emailPreferences?: Prisma.EmailPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  deviceEndpoints?: Prisma.DeviceEndpointUncheckedUpdateManyWithoutUserNestedInput
+  socials?: Prisma.SocialUncheckedUpdateManyWithoutUserNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ApplicationUncheckedUpdateManyWithoutBuyerNestedInput
+  soldApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSellerNestedInput
+  applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPayerNestedInput
+  assignedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
@@ -4837,6 +5138,7 @@ export type UserCreateWithoutStepApprovalsInput = {
   soldApplications?: Prisma.ApplicationCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutGateActedByInput
   uploadedDocs?: Prisma.ApplicationDocumentCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
   reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutReviewerInput
@@ -4885,6 +5187,7 @@ export type UserUncheckedCreateWithoutStepApprovalsInput = {
   soldApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutGateActedByInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
   reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
@@ -4949,6 +5252,7 @@ export type UserUpdateWithoutStepApprovalsInput = {
   soldApplications?: Prisma.ApplicationUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUpdateManyWithoutGateActedByNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
   reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutReviewerNestedInput
@@ -4997,6 +5301,7 @@ export type UserUncheckedUpdateWithoutStepApprovalsInput = {
   soldApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutGateActedByNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
   reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
@@ -5044,6 +5349,7 @@ export type UserCreateWithoutApplicationPaymentsInput = {
   applications?: Prisma.ApplicationCreateNestedManyWithoutBuyerInput
   soldApplications?: Prisma.ApplicationCreateNestedManyWithoutSellerInput
   assignedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
@@ -5092,6 +5398,7 @@ export type UserUncheckedCreateWithoutApplicationPaymentsInput = {
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutBuyerInput
   soldApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSellerInput
   assignedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
@@ -5156,6 +5463,7 @@ export type UserUpdateWithoutApplicationPaymentsInput = {
   applications?: Prisma.ApplicationUpdateManyWithoutBuyerNestedInput
   soldApplications?: Prisma.ApplicationUpdateManyWithoutSellerNestedInput
   assignedSteps?: Prisma.DocumentationStepUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
@@ -5204,6 +5512,7 @@ export type UserUncheckedUpdateWithoutApplicationPaymentsInput = {
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutBuyerNestedInput
   soldApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSellerNestedInput
   assignedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
@@ -5253,6 +5562,7 @@ export type UserCreateWithoutUploadedDocsInput = {
   soldApplications?: Prisma.ApplicationCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutApproverInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
   reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutReviewerInput
@@ -5301,6 +5611,7 @@ export type UserUncheckedCreateWithoutUploadedDocsInput = {
   soldApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
   reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
@@ -5365,6 +5676,7 @@ export type UserUpdateWithoutUploadedDocsInput = {
   soldApplications?: Prisma.ApplicationUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutApproverNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
   reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutReviewerNestedInput
@@ -5413,6 +5725,7 @@ export type UserUncheckedUpdateWithoutUploadedDocsInput = {
   soldApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
   reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
@@ -5461,6 +5774,7 @@ export type UserCreateWithoutOfferLettersGeneratedInput = {
   soldApplications?: Prisma.ApplicationCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
@@ -5509,6 +5823,7 @@ export type UserUncheckedCreateWithoutOfferLettersGeneratedInput = {
   soldApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
@@ -5562,6 +5877,7 @@ export type UserCreateWithoutOfferLettersSentInput = {
   soldApplications?: Prisma.ApplicationCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
@@ -5610,6 +5926,7 @@ export type UserUncheckedCreateWithoutOfferLettersSentInput = {
   soldApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
@@ -5674,6 +5991,7 @@ export type UserUpdateWithoutOfferLettersGeneratedInput = {
   soldApplications?: Prisma.ApplicationUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
@@ -5722,6 +6040,7 @@ export type UserUncheckedUpdateWithoutOfferLettersGeneratedInput = {
   soldApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
@@ -5781,6 +6100,7 @@ export type UserUpdateWithoutOfferLettersSentInput = {
   soldApplications?: Prisma.ApplicationUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
@@ -5829,6 +6149,7 @@ export type UserUncheckedUpdateWithoutOfferLettersSentInput = {
   soldApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
@@ -5877,6 +6198,7 @@ export type UserCreateWithoutInitiatedTerminationsInput = {
   soldApplications?: Prisma.ApplicationCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
@@ -5925,6 +6247,7 @@ export type UserUncheckedCreateWithoutInitiatedTerminationsInput = {
   soldApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
@@ -5978,6 +6301,7 @@ export type UserCreateWithoutReviewedTerminationsInput = {
   soldApplications?: Prisma.ApplicationCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
@@ -6026,6 +6350,7 @@ export type UserUncheckedCreateWithoutReviewedTerminationsInput = {
   soldApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
@@ -6090,6 +6415,7 @@ export type UserUpdateWithoutInitiatedTerminationsInput = {
   soldApplications?: Prisma.ApplicationUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
@@ -6138,6 +6464,7 @@ export type UserUncheckedUpdateWithoutInitiatedTerminationsInput = {
   soldApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
@@ -6197,6 +6524,7 @@ export type UserUpdateWithoutReviewedTerminationsInput = {
   soldApplications?: Prisma.ApplicationUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
@@ -6245,6 +6573,7 @@ export type UserUncheckedUpdateWithoutReviewedTerminationsInput = {
   soldApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
@@ -6293,6 +6622,7 @@ export type UserCreateWithoutPaymentMethodChangeRequestsInput = {
   soldApplications?: Prisma.ApplicationCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentCreateNestedManyWithoutUploadedByInput
   reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutReviewerInput
@@ -6341,6 +6671,7 @@ export type UserUncheckedCreateWithoutPaymentMethodChangeRequestsInput = {
   soldApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutUploadedByInput
   reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
@@ -6394,6 +6725,7 @@ export type UserCreateWithoutReviewedChangeRequestsInput = {
   soldApplications?: Prisma.ApplicationCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
@@ -6442,6 +6774,7 @@ export type UserUncheckedCreateWithoutReviewedChangeRequestsInput = {
   soldApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
@@ -6506,6 +6839,7 @@ export type UserUpdateWithoutPaymentMethodChangeRequestsInput = {
   soldApplications?: Prisma.ApplicationUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUpdateManyWithoutUploadedByNestedInput
   reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutReviewerNestedInput
@@ -6554,6 +6888,7 @@ export type UserUncheckedUpdateWithoutPaymentMethodChangeRequestsInput = {
   soldApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
@@ -6613,6 +6948,7 @@ export type UserUpdateWithoutReviewedChangeRequestsInput = {
   soldApplications?: Prisma.ApplicationUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
@@ -6661,6 +6997,7 @@ export type UserUncheckedUpdateWithoutReviewedChangeRequestsInput = {
   soldApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
@@ -6709,6 +7046,7 @@ export type UserCreateWithoutTransferRequestsSubmittedInput = {
   soldApplications?: Prisma.ApplicationCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
@@ -6757,6 +7095,7 @@ export type UserUncheckedCreateWithoutTransferRequestsSubmittedInput = {
   soldApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
@@ -6810,6 +7149,7 @@ export type UserCreateWithoutTransferRequestsReviewedInput = {
   soldApplications?: Prisma.ApplicationCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
@@ -6858,6 +7198,7 @@ export type UserUncheckedCreateWithoutTransferRequestsReviewedInput = {
   soldApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
@@ -6922,6 +7263,7 @@ export type UserUpdateWithoutTransferRequestsSubmittedInput = {
   soldApplications?: Prisma.ApplicationUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
@@ -6970,6 +7312,7 @@ export type UserUncheckedUpdateWithoutTransferRequestsSubmittedInput = {
   soldApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
@@ -7029,6 +7372,7 @@ export type UserUpdateWithoutTransferRequestsReviewedInput = {
   soldApplications?: Prisma.ApplicationUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
@@ -7077,6 +7421,7 @@ export type UserUncheckedUpdateWithoutTransferRequestsReviewedInput = {
   soldApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
@@ -7125,6 +7470,7 @@ export type UserCreateWithoutApprovalRequestsSubmittedInput = {
   soldApplications?: Prisma.ApplicationCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
@@ -7173,6 +7519,7 @@ export type UserUncheckedCreateWithoutApprovalRequestsSubmittedInput = {
   soldApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
@@ -7226,6 +7573,7 @@ export type UserCreateWithoutApprovalRequestsAssignedInput = {
   soldApplications?: Prisma.ApplicationCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
@@ -7274,6 +7622,7 @@ export type UserUncheckedCreateWithoutApprovalRequestsAssignedInput = {
   soldApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
@@ -7327,6 +7676,7 @@ export type UserCreateWithoutApprovalRequestsReviewedInput = {
   soldApplications?: Prisma.ApplicationCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
@@ -7375,6 +7725,7 @@ export type UserUncheckedCreateWithoutApprovalRequestsReviewedInput = {
   soldApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSellerInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPayerInput
   assignedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutAssigneeInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutGateActedByInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedCreateNestedManyWithoutApproverInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutUploadedByInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
@@ -7439,6 +7790,7 @@ export type UserUpdateWithoutApprovalRequestsSubmittedInput = {
   soldApplications?: Prisma.ApplicationUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
@@ -7487,6 +7839,7 @@ export type UserUncheckedUpdateWithoutApprovalRequestsSubmittedInput = {
   soldApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
@@ -7546,6 +7899,7 @@ export type UserUpdateWithoutApprovalRequestsAssignedInput = {
   soldApplications?: Prisma.ApplicationUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
@@ -7594,6 +7948,7 @@ export type UserUncheckedUpdateWithoutApprovalRequestsAssignedInput = {
   soldApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
@@ -7653,6 +8008,7 @@ export type UserUpdateWithoutApprovalRequestsReviewedInput = {
   soldApplications?: Prisma.ApplicationUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
@@ -7701,6 +8057,7 @@ export type UserUncheckedUpdateWithoutApprovalRequestsReviewedInput = {
   soldApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
@@ -7767,6 +8124,7 @@ export type UserUpdateWithoutTenantInput = {
   soldApplications?: Prisma.ApplicationUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
@@ -7815,6 +8173,7 @@ export type UserUncheckedUpdateWithoutTenantInput = {
   soldApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSellerNestedInput
   applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPayerNestedInput
   assignedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutAssigneeNestedInput
+  gateActedSteps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutGateActedByNestedInput
   stepApprovals?: Prisma.DocumentationStepApprovalUncheckedUpdateManyWithoutApproverNestedInput
   uploadedDocs?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
   paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
@@ -7871,6 +8230,7 @@ export type UserCountOutputType = {
   soldApplications: number
   applicationPayments: number
   assignedSteps: number
+  gateActedSteps: number
   stepApprovals: number
   uploadedDocs: number
   paymentMethodChangeRequests: number
@@ -7903,6 +8263,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   soldApplications?: boolean | UserCountOutputTypeCountSoldApplicationsArgs
   applicationPayments?: boolean | UserCountOutputTypeCountApplicationPaymentsArgs
   assignedSteps?: boolean | UserCountOutputTypeCountAssignedStepsArgs
+  gateActedSteps?: boolean | UserCountOutputTypeCountGateActedStepsArgs
   stepApprovals?: boolean | UserCountOutputTypeCountStepApprovalsArgs
   uploadedDocs?: boolean | UserCountOutputTypeCountUploadedDocsArgs
   paymentMethodChangeRequests?: boolean | UserCountOutputTypeCountPaymentMethodChangeRequestsArgs
@@ -8019,6 +8380,13 @@ export type UserCountOutputTypeCountApplicationPaymentsArgs<ExtArgs extends runt
  * UserCountOutputType without action
  */
 export type UserCountOutputTypeCountAssignedStepsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DocumentationStepWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountGateActedStepsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.DocumentationStepWhereInput
 }
 
@@ -8168,6 +8536,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   soldApplications?: boolean | Prisma.User$soldApplicationsArgs<ExtArgs>
   applicationPayments?: boolean | Prisma.User$applicationPaymentsArgs<ExtArgs>
   assignedSteps?: boolean | Prisma.User$assignedStepsArgs<ExtArgs>
+  gateActedSteps?: boolean | Prisma.User$gateActedStepsArgs<ExtArgs>
   stepApprovals?: boolean | Prisma.User$stepApprovalsArgs<ExtArgs>
   uploadedDocs?: boolean | Prisma.User$uploadedDocsArgs<ExtArgs>
   paymentMethodChangeRequests?: boolean | Prisma.User$paymentMethodChangeRequestsArgs<ExtArgs>
@@ -8226,6 +8595,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   soldApplications?: boolean | Prisma.User$soldApplicationsArgs<ExtArgs>
   applicationPayments?: boolean | Prisma.User$applicationPaymentsArgs<ExtArgs>
   assignedSteps?: boolean | Prisma.User$assignedStepsArgs<ExtArgs>
+  gateActedSteps?: boolean | Prisma.User$gateActedStepsArgs<ExtArgs>
   stepApprovals?: boolean | Prisma.User$stepApprovalsArgs<ExtArgs>
   uploadedDocs?: boolean | Prisma.User$uploadedDocsArgs<ExtArgs>
   paymentMethodChangeRequests?: boolean | Prisma.User$paymentMethodChangeRequestsArgs<ExtArgs>
@@ -8263,6 +8633,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     soldApplications: Prisma.$ApplicationPayload<ExtArgs>[]
     applicationPayments: Prisma.$ApplicationPaymentPayload<ExtArgs>[]
     assignedSteps: Prisma.$DocumentationStepPayload<ExtArgs>[]
+    gateActedSteps: Prisma.$DocumentationStepPayload<ExtArgs>[]
     stepApprovals: Prisma.$DocumentationStepApprovalPayload<ExtArgs>[]
     uploadedDocs: Prisma.$ApplicationDocumentPayload<ExtArgs>[]
     paymentMethodChangeRequests: Prisma.$PaymentMethodChangeRequestPayload<ExtArgs>[]
@@ -8653,6 +9024,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   soldApplications<T extends Prisma.User$soldApplicationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$soldApplicationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApplicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   applicationPayments<T extends Prisma.User$applicationPaymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$applicationPaymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApplicationPaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   assignedSteps<T extends Prisma.User$assignedStepsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$assignedStepsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentationStepPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  gateActedSteps<T extends Prisma.User$gateActedStepsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$gateActedStepsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentationStepPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   stepApprovals<T extends Prisma.User$stepApprovalsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$stepApprovalsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentationStepApprovalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   uploadedDocs<T extends Prisma.User$uploadedDocsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$uploadedDocsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApplicationDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   paymentMethodChangeRequests<T extends Prisma.User$paymentMethodChangeRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$paymentMethodChangeRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentMethodChangeRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -9387,6 +9759,30 @@ export type User$applicationPaymentsArgs<ExtArgs extends runtime.Types.Extension
  * User.assignedSteps
  */
 export type User$assignedStepsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DocumentationStep
+   */
+  select?: Prisma.DocumentationStepSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DocumentationStep
+   */
+  omit?: Prisma.DocumentationStepOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DocumentationStepInclude<ExtArgs> | null
+  where?: Prisma.DocumentationStepWhereInput
+  orderBy?: Prisma.DocumentationStepOrderByWithRelationInput | Prisma.DocumentationStepOrderByWithRelationInput[]
+  cursor?: Prisma.DocumentationStepWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DocumentationStepScalarFieldEnum | Prisma.DocumentationStepScalarFieldEnum[]
+}
+
+/**
+ * User.gateActedSteps
+ */
+export type User$gateActedStepsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the DocumentationStep
    */

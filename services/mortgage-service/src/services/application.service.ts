@@ -883,6 +883,46 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                 },
             });
 
+            // Auto-activate first phase when application is submitted (DRAFT -> PENDING)
+            if (data.trigger === 'SUBMIT' && toStatus === 'PENDING') {
+                const firstPhase = await tx.applicationPhase.findFirst({
+                    where: { applicationId: id },
+                    orderBy: { order: 'asc' },
+                });
+
+                if (firstPhase && firstPhase.status === 'PENDING') {
+                    await tx.applicationPhase.update({
+                        where: { id: firstPhase.id },
+                        data: {
+                            status: 'IN_PROGRESS',
+                            activatedAt: new Date(),
+                        },
+                    });
+
+                    await tx.application.update({
+                        where: { id },
+                        data: { currentPhaseId: firstPhase.id },
+                    });
+
+                    await tx.domainEvent.create({
+                        data: {
+                            id: uuidv4(),
+                            tenantId: application.tenantId,
+                            eventType: 'PHASE.ACTIVATED',
+                            aggregateType: 'ApplicationPhase',
+                            aggregateId: firstPhase.id,
+                            queueName: 'application-steps',
+                            payload: JSON.stringify({
+                                phaseId: firstPhase.id,
+                                applicationId: id,
+                                phaseType: firstPhase.phaseType,
+                            }),
+                            actorId: userId,
+                        },
+                    });
+                }
+            }
+
             return result;
         });
 
