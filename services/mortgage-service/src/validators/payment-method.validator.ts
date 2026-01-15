@@ -7,7 +7,20 @@ extendZodWithOpenApi(z);
 export const PhaseCategoryEnum = z.enum(['QUESTIONNAIRE', 'DOCUMENTATION', 'PAYMENT']);
 
 // Phase type enum (matches Prisma PhaseType)
-export const PhaseTypeEnum = z.enum(['KYC', 'VERIFICATION', 'DOWNPAYMENT', 'MORTGAGE', 'BALLOON', 'CUSTOM']);
+export const PhaseTypeEnum = z.enum([
+    // QUESTIONNAIRE phases
+    'PRE_APPROVAL',
+    'UNDERWRITING',
+    // DOCUMENTATION phases
+    'KYC',
+    'VERIFICATION',
+    // PAYMENT phases
+    'DOWNPAYMENT',
+    'MORTGAGE',
+    'BALLOON',
+    // Generic
+    'CUSTOM',
+]);
 
 // Step type enum (matches Prisma StepType)
 export const StepTypeEnum = z.enum(['UPLOAD', 'REVIEW', 'SIGNATURE', 'APPROVAL', 'EXTERNAL_CHECK', 'WAIT', 'GENERATE_DOCUMENT']);

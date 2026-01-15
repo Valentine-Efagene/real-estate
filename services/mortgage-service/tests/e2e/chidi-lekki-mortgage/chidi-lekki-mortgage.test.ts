@@ -3,7 +3,7 @@
 import { api, prisma, cleanupTestData } from '../../setup.js';
 import { faker } from '@faker-js/faker';
 import { randomUUID } from 'crypto';
-import { authHeaders, ROLES, CONDITION_OPERATORS, UPLOADED_BY } from '@valentine-efagene/qshelter-common';
+import { authHeaders, ROLES, ConditionOperator, UPLOADED_BY } from '@valentine-efagene/qshelter-common';
 
 // Helper functions for auth headers with proper roles
 function adminHeaders(userId: string, tenantId: string) {
@@ -35,8 +35,9 @@ function idempotencyKey(operation: string): string {
 
 describe("Chidi's Lekki Mortgage Flow", () => {
     // Actors
-    let adaezeId: string; // Admin
-    let chidiId: string;  // Customer
+    let adaezeId: string; // Admin (Developer operations manager)
+    let chidiId: string;  // Customer (First-time homebuyer)
+    let nkechiId: string; // Lender (Bank loan officer)
 
     // QShelter tenant
     let tenantId: string;
@@ -117,6 +118,47 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             },
         });
         chidiId = chidi.id;
+
+        // Create Nkechi (Lender - Bank loan officer from partner bank)
+        const nkechi = await prisma.user.create({
+            data: {
+                id: faker.string.uuid(),
+                tenantId,
+                email: 'nkechi@accessbank.com',
+                firstName: 'Nkechi',
+                lastName: 'Eze',
+            },
+        });
+        nkechiId = nkechi.id;
+
+        // Create Access Bank organization
+        const accessBank = await prisma.organization.create({
+            data: {
+                id: faker.string.uuid(),
+                tenantId,
+                name: 'Access Bank Plc',
+                type: 'BANK',
+                status: 'ACTIVE',
+                bankCode: '044',
+                swiftCode: 'ABORNGLA',
+                email: 'mortgages@accessbankplc.com',
+                phone: '+234-1-280-5628',
+                address: 'Access Tower, 14/15 Onikan, Lagos',
+            },
+        });
+
+        // Link Nkechi as an Access Bank officer
+        await prisma.organizationMember.create({
+            data: {
+                id: faker.string.uuid(),
+                organizationId: accessBank.id,
+                userId: nkechiId,
+                role: 'OFFICER',
+                canApprove: false, // Needs senior approval for large amounts
+                approvalLimit: 5000000, // 5M NGN approval limit
+                isActive: true,
+            },
+        });
 
         // Create Lekki Gardens Estate property
         const property = await prisma.property.create({
@@ -356,7 +398,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                 .set('x-idempotency-key', idempotencyKey('adaeze-create-kyc-documentation-plan'))
                 .send({
                     name: 'Mortgage KYC Documentation',
-                    description: 'Standard KYC documentation workflow with conditional spouse and business documents',
+                    description: 'Standard KYC documentation workflow',
                     isActive: true,
                     requiredDocumentTypes: ['ID_CARD', 'BANK_STATEMENT', 'EMPLOYMENT_LETTER'],
                     steps: [
@@ -371,7 +413,6 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                             maxSizeBytes: 5 * 1024 * 1024,
                             allowedMimeTypes: ['image/jpeg', 'image/png', 'application/pdf'],
                             requiresManualReview: true,
-                            // No condition - always required
                         },
                         {
                             name: 'Upload Bank Statements',
@@ -386,10 +427,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                             requiresManualReview: true,
                             minFiles: 3,
                             maxFiles: 6,
-                            // No condition - always required
                         },
-
-                        // === CONDITIONAL: FOR EMPLOYED APPLICANTS ===
                         {
                             name: 'Upload Employment Letter',
                             stepType: 'UPLOAD',
@@ -400,139 +438,88 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                             maxSizeBytes: 5 * 1024 * 1024,
                             allowedMimeTypes: ['application/pdf'],
                             requiresManualReview: true,
-                            // Only required for employed applicants
-                            condition: { questionKey: 'employment_status', operator: CONDITION_OPERATORS.EQUALS, value: 'EMPLOYED' },
                         },
-
-                        // === CONDITIONAL: FOR SELF-EMPLOYED / BUSINESS OWNERS ===
-                        {
-                            name: 'Upload Business Registration',
-                            stepType: 'UPLOAD',
-                            order: 4,
-                            documentType: 'BUSINESS_REGISTRATION',
-                            isRequired: true,
-                            description: 'CAC registration certificate or business license',
-                            maxSizeBytes: 5 * 1024 * 1024,
-                            allowedMimeTypes: ['application/pdf', 'image/jpeg', 'image/png'],
-                            requiresManualReview: true,
-                            // Only required for self-employed or business owners
-                            condition: { questionKey: 'employment_status', operator: CONDITION_OPERATORS.IN, values: ['SELF_EMPLOYED', 'BUSINESS_OWNER'] },
-                        },
-                        {
-                            name: 'Upload Tax Returns',
-                            stepType: 'UPLOAD',
-                            order: 5,
-                            documentType: 'TAX_RETURNS',
-                            isRequired: true,
-                            description: 'Last 2 years personal/business tax returns',
-                            maxSizeBytes: 10 * 1024 * 1024,
-                            allowedMimeTypes: ['application/pdf'],
-                            expiryDays: 365, // Must be from the last year
-                            requiresManualReview: true,
-                            minFiles: 2,
-                            maxFiles: 4,
-                            // Only required for self-employed or business owners
-                            condition: { questionKey: 'employment_status', operator: CONDITION_OPERATORS.IN, values: ['SELF_EMPLOYED', 'BUSINESS_OWNER'] },
-                        },
-
-                        // === CONDITIONAL: FOR JOINT MORTGAGES ===
+                        // === CONDITIONAL STEPS (based on prequalification answers) ===
                         {
                             name: 'Upload Spouse ID',
                             stepType: 'UPLOAD',
-                            order: 6,
-                            documentType: 'SPOUSE_ID_CARD',
+                            order: 4,
+                            documentType: 'SPOUSE_ID',
                             isRequired: true,
-                            description: 'Valid government-issued ID for your spouse',
+                            description: 'Valid ID for spouse (required for joint mortgage)',
                             maxSizeBytes: 5 * 1024 * 1024,
                             allowedMimeTypes: ['image/jpeg', 'image/png', 'application/pdf'],
                             requiresManualReview: true,
-                            // Only required for joint mortgages
-                            condition: { questionKey: 'mortgage_type', operator: CONDITION_OPERATORS.EQUALS, value: 'JOINT' },
+                            // Only required if mortgage_type is JOINT
+                            condition: {
+                                questionKey: 'mortgage_type',
+                                operator: ConditionOperator.EQUALS,
+                                value: 'JOINT',
+                            },
                         },
                         {
-                            name: 'Upload Marriage Certificate',
+                            name: 'Upload Business Registration',
                             stepType: 'UPLOAD',
-                            order: 7,
-                            documentType: 'MARRIAGE_CERTIFICATE',
+                            order: 5,
+                            documentType: 'BUSINESS_REGISTRATION',
                             isRequired: true,
-                            description: 'Marriage certificate or court affidavit',
-                            maxSizeBytes: 5 * 1024 * 1024,
-                            allowedMimeTypes: ['application/pdf', 'image/jpeg', 'image/png'],
-                            requiresManualReview: true,
-                            // Only required for joint mortgages
-                            condition: { questionKey: 'mortgage_type', operator: CONDITION_OPERATORS.EQUALS, value: 'JOINT' },
-                        },
-                        {
-                            name: 'Upload Spouse Bank Statements',
-                            stepType: 'UPLOAD',
-                            order: 8,
-                            documentType: 'SPOUSE_BANK_STATEMENT',
-                            isRequired: true,
-                            description: 'Last 6 months bank statements for your spouse',
+                            description: 'Business registration certificate (CAC)',
                             maxSizeBytes: 10 * 1024 * 1024,
                             allowedMimeTypes: ['application/pdf'],
-                            expiryDays: 90,
                             requiresManualReview: true,
-                            minFiles: 3,
-                            maxFiles: 6,
-                            // Only required for joint mortgages
-                            condition: { questionKey: 'mortgage_type', operator: CONDITION_OPERATORS.EQUALS, value: 'JOINT' },
+                            // Only required if employment_status is SELF_EMPLOYED
+                            condition: {
+                                questionKey: 'employment_status',
+                                operator: ConditionOperator.EQUALS,
+                                value: 'SELF_EMPLOYED',
+                            },
                         },
-                        {
-                            name: 'Upload Spouse Consent Letter',
-                            stepType: 'UPLOAD',
-                            order: 9,
-                            documentType: 'SPOUSE_CONSENT',
-                            isRequired: true,
-                            description: 'Signed consent letter from spouse agreeing to the mortgage',
-                            maxSizeBytes: 5 * 1024 * 1024,
-                            allowedMimeTypes: ['application/pdf'],
-                            requiresManualReview: true,
-                            // Only required for joint mortgages
-                            condition: { questionKey: 'mortgage_type', operator: CONDITION_OPERATORS.EQUALS, value: 'JOINT' },
-                        },
-
-                        // === WORKFLOW STEPS (always apply) ===
+                        // === WORKFLOW STEPS ===
                         {
                             name: 'Adaeze Reviews Documents',
                             stepType: 'APPROVAL',
-                            order: 10,
+                            order: 6,
                         },
                         {
-                            name: 'Generate Provisional Offer',
-                            stepType: 'GENERATE_DOCUMENT',
-                            order: 11,
+                            name: 'Lender Uploads Preapproval Letter',
+                            stepType: 'UPLOAD',
+                            order: 7,
+                            documentType: 'PREAPPROVAL_LETTER',
+                            isRequired: true,
+                            description: 'Preapproval letter from the partner bank confirming mortgage eligibility',
+                            maxSizeBytes: 10 * 1024 * 1024,
+                            allowedMimeTypes: ['application/pdf'],
+                            // No manual review required - auto-completes when lender uploads
+                            requiresManualReview: false,
                             metadata: {
-                                documentType: 'PROVISIONAL_OFFER',
-                                autoSend: true,
+                                uploadedBy: UPLOADED_BY.LENDER,
                                 expiresInDays: 30,
                             },
                         },
                         {
-                            name: 'Customer Signs Provisional Offer',
+                            name: 'Customer Signs Preapproval Letter',
                             stepType: 'SIGNATURE',
-                            order: 12,
+                            order: 8,
                         },
                     ],
                 });
 
             expect(response.status).toBe(201);
             expect(response.body.data.id).toBeDefined();
-            expect(response.body.data.steps.length).toBe(12);
+            expect(response.body.data.steps.length).toBe(8);
             kycDocumentationPlanId = response.body.data.id;
 
             // Verify the steps have the document validation rules
             const uploadIdStep = response.body.data.steps.find((s: any) => s.documentType === 'ID_CARD');
             expect(uploadIdStep.maxSizeBytes).toBe(5 * 1024 * 1024);
             expect(uploadIdStep.requiresManualReview).toBe(true);
-            expect(uploadIdStep.condition).toBeNull(); // No condition - always required
 
-            // Verify conditional steps have conditions stored
-            const spouseIdStep = response.body.data.steps.find((s: any) => s.documentType === 'SPOUSE_ID_CARD');
-            expect(spouseIdStep.condition).toEqual({ questionKey: 'mortgage_type', operator: 'EQUALS', value: 'JOINT' });
-
-            const businessRegStep = response.body.data.steps.find((s: any) => s.documentType === 'BUSINESS_REGISTRATION');
-            expect(businessRegStep.condition).toEqual({ questionKey: 'employment_status', operator: 'IN', values: ['SELF_EMPLOYED', 'BUSINESS_OWNER'] });
+            // Verify conditional steps have conditions
+            const spouseIdStep = response.body.data.steps.find((s: any) => s.documentType === 'SPOUSE_ID');
+            expect(spouseIdStep.condition).toBeDefined();
+            expect(spouseIdStep.condition.questionKey).toBe('mortgage_type');
+            expect(spouseIdStep.condition.operator).toBe(ConditionOperator.EQUALS);
+            expect(spouseIdStep.condition.value).toBe('JOINT');
         });
 
         it('Adaeze creates a final documentation plan', async () => {
@@ -554,6 +541,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                             description: 'Final offer letter prepared by bank',
                             maxSizeBytes: 10 * 1024 * 1024,
                             allowedMimeTypes: ['application/pdf'],
+                            requiresManualReview: true, // Requires approval before customer can sign
                             metadata: {
                                 uploadedBy: UPLOADED_BY.ADMIN,
                             },
@@ -586,7 +574,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                         {
                             name: 'Prequalification',
                             phaseCategory: 'QUESTIONNAIRE',
-                            phaseType: 'ELIGIBILITY',
+                            phaseType: 'PRE_APPROVAL',
                             order: 1,
                             questionnairePlanId: prequalificationPlanId,
                         },
@@ -695,7 +683,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
             // Extract phase IDs (5 phases: Prequalification → KYC → Downpayment → Final Docs → Mortgage)
             const phases = response.body.data.phases;
-            prequalificationPhaseId = phases.find((p: any) => p.phaseType === 'ELIGIBILITY').id;
+            prequalificationPhaseId = phases.find((p: any) => p.phaseType === 'PRE_APPROVAL').id;
             documentationPhaseId = phases.find((p: any) => p.phaseType === 'KYC').id;
             downpaymentPhaseId = phases.find((p: any) => p.phaseType === 'DOWNPAYMENT').id;
             finalDocumentationPhaseId = phases.find((p: any) => p.phaseType === 'VERIFICATION').id;
@@ -720,7 +708,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             expect(response.status).toBe(200);
             expect(response.body.data.length).toBe(5); // 5 phases now
 
-            const prequalPhase = response.body.data.find((p: any) => p.phaseType === 'ELIGIBILITY');
+            const prequalPhase = response.body.data.find((p: any) => p.phaseType === 'PRE_APPROVAL');
             const docPhase = response.body.data.find((p: any) => p.phaseType === 'KYC');
             const downPhase = response.body.data.find((p: any) => p.phaseType === 'DOWNPAYMENT');
             const finalDocPhase = response.body.data.find((p: any) => p.phaseType === 'VERIFICATION');
@@ -741,8 +729,8 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             });
 
             expect(phase?.questionnairePhase).toBeDefined();
-            expect(phase?.questionnairePhase?.totalFieldsCount).toBe(4);
-            expect(phase?.questionnairePhase?.fields.length).toBe(4);
+            expect(phase?.questionnairePhase?.totalFieldsCount).toBe(6);
+            expect(phase?.questionnairePhase?.fields.length).toBe(6);
 
             // Verify the fields match the questionnaire plan
             // QuestionnaireField uses `name` not `fieldKey`
@@ -811,9 +799,9 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                 .set(customerHeaders(chidiId, tenantId));
 
             expect(response.status).toBe(200);
-            expect(response.body.data.phaseType).toBe('ELIGIBILITY');
+            expect(response.body.data.phaseType).toBe('PRE_APPROVAL');
             expect(response.body.data.questionnairePhase).toBeDefined();
-            expect(response.body.data.questionnairePhase.fields.length).toBe(4);
+            expect(response.body.data.questionnairePhase.fields.length).toBe(6);
 
             const fieldKeys = response.body.data.questionnairePhase.fields.map((f: any) => f.name);
             expect(fieldKeys).toContain('applicant_age');
@@ -825,8 +813,11 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         it('Chidi submits his prequalification answers', async () => {
             // Chidi is 40 years old, earns ₦2.5M/month, spends ₦800K/month on expenses
             // He wants a 20-year mortgage term (well within 60-40=20 years max)
+            // He is single and employed
             const answers = [
                 { fieldName: 'applicant_age', value: '40' },
+                { fieldName: 'mortgage_type', value: 'SINGLE' },
+                { fieldName: 'employment_status', value: 'EMPLOYED' },
                 { fieldName: 'monthly_income', value: String(chidiMonthlyIncome) },
                 { fieldName: 'monthly_expenses', value: String(chidiMonthlyExpenses) },
                 { fieldName: 'desired_term_years', value: '20' },
@@ -842,7 +833,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
             // The response includes the scoring result
             expect(response.body.data.questionnaire.completedAt).toBeDefined();
-            expect(response.body.data.questionnaire.answeredFieldsCount).toBe(4);
+            expect(response.body.data.questionnaire.answeredFieldsCount).toBe(6);
         });
 
         it('Prequalification calculates eligibility correctly', async () => {
@@ -966,33 +957,40 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             expect(approvalStep?.status).toBe('COMPLETED');
         });
 
-        it('GENERATE_DOCUMENT step auto-executes and generates provisional offer', async () => {
-            // After approval step completes, the GENERATE_DOCUMENT step should auto-execute
-            // Check that the provisional offer was generated
-            // DocumentationStep is now linked via DocumentationPhase
+        it('Nkechi (Lender) uploads the preapproval letter', async () => {
+            // After KYC documents are approved, the lender uploads the preapproval letter
+            // This replaces the previous GENERATE_DOCUMENT step
+            const response = await api
+                .post(`/applications/${applicationId}/phases/${documentationPhaseId}/documents`)
+                .set(adminHeaders(nkechiId, tenantId)) // Lender uploads
+                .set('x-idempotency-key', idempotencyKey('nkechi-upload-preapproval'))
+                .send({
+                    documentType: 'PREAPPROVAL_LETTER',
+                    url: 'https://s3.amazonaws.com/qshelter/lender/preapproval-chidi.pdf',
+                    fileName: 'preapproval-letter.pdf',
+                });
+
+            expect(response.status).toBe(201);
+
+            // Verify the UPLOAD step for preapproval letter is now AWAITING_REVIEW or COMPLETED
             const phase = await prisma.applicationPhase.findUnique({
                 where: { id: documentationPhaseId },
-                include: { documentationPhase: true },
+                include: { documentationPhase: { include: { steps: true } } },
             });
 
-            const step = await prisma.documentationStep.findFirst({
-                where: {
-                    documentationPhaseId: phase?.documentationPhase?.id,
-                    name: 'Generate Provisional Offer',
-                },
-            });
-
-            // Step should be completed (auto-executed)
-            expect(step?.status).toBe('COMPLETED');
+            const preapprovalStep = phase?.documentationPhase?.steps.find((s: any) => s.name === 'Lender Uploads Preapproval Letter');
+            expect(preapprovalStep).toBeDefined();
+            // Step should be auto-completed after upload (requiresManualReview: false for lender docs)
+            expect(preapprovalStep?.status).toBe('COMPLETED');
         });
 
-        it('Chidi signs the provisional offer', async () => {
+        it('Chidi signs the preapproval letter', async () => {
             const response = await api
                 .post(`/applications/${applicationId}/phases/${documentationPhaseId}/steps/complete`)
                 .set(customerHeaders(chidiId, tenantId))
-                .set('x-idempotency-key', idempotencyKey('chidi-signs-provisional'))
+                .set('x-idempotency-key', idempotencyKey('chidi-signs-preapproval'))
                 .send({
-                    stepName: 'Customer Signs Provisional Offer',
+                    stepName: 'Customer Signs Preapproval Letter',
                 });
 
             expect(response.status).toBe(200);

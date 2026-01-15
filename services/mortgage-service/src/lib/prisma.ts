@@ -1,14 +1,20 @@
 import { config } from 'dotenv';
-config({ path: '.env.localstack' });
+
+const stage = process.env.NODE_ENV || process.env.STAGE || 'dev';
+
+// Load the appropriate env file based on stage
+if (stage === 'test' || stage === 'localstack') {
+    config({ path: '.env.test' });
+} else {
+    config({ path: '.env' });
+}
 
 import { PrismaMariaDb } from '@prisma/adapter-mariadb';
 import { ConfigService, PrismaClient } from '@valentine-efagene/qshelter-common';
 
-const stage = process.env.NODE_ENV || process.env.STAGE || 'dev';
-
 async function createAdapter() {
-    // For local development (local) and LocalStack (localstack), use env vars directly
-    if (stage === 'local' || stage === 'localstack') {
+    // For local development (local), test, and LocalStack (localstack), use env vars directly
+    if (stage === 'local' || stage === 'localstack' || stage === 'test') {
         return new PrismaMariaDb({
             host: process.env.DB_HOST || '127.0.0.1',
             port: parseInt(process.env.DB_PORT || '3307'),

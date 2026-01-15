@@ -11,6 +11,10 @@ export const UPLOADED_BY = {
     CUSTOMER: 'CUSTOMER',
     /** Document is uploaded by an admin/staff member */
     ADMIN: 'ADMIN',
+    /** Document is uploaded by a lender/bank representative */
+    LENDER: 'LENDER',
+    /** Document is uploaded by the developer */
+    DEVELOPER: 'DEVELOPER',
     /** Document is uploaded by the system (auto-generated) */
     SYSTEM: 'SYSTEM',
 } as const;

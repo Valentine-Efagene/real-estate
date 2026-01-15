@@ -129,6 +129,20 @@ enum StepStatus {
   AWAITING_REVIEW // Submitted, waiting for admin/system review
 }
 
+/// Operators for conditional step evaluation
+enum ConditionOperator {
+  EQUALS // Field value equals expected value
+  NOT_EQUALS // Field value does not equal expected value
+  IN // Field value is in a list of values
+  NOT_IN // Field value is not in a list of values
+  GREATER_THAN // Numeric comparison
+  LESS_THAN // Numeric comparison
+  GREATER_THAN_OR_EQUAL
+  LESS_THAN_OR_EQUAL
+  EXISTS // Field has any value (not null/undefined)
+  NOT_EXISTS // Field is null/undefined
+}
+
 /// When a step event attachment should trigger
 enum StepTrigger {
   ON_COMPLETE // When step is approved/completed
@@ -167,6 +181,32 @@ enum ApprovalDecision {
   APPROVED
   REJECTED
   REQUEST_CHANGES
+}
+
+// =============================================================================
+// ORGANIZATION ENUMS (Banks, Developers, etc.)
+// =============================================================================
+
+/// Type of organization on the platform
+enum OrganizationType {
+  BANK // Financial institution providing mortgages (e.g., Access Bank, GTBank)
+  DEVELOPER // Property developer building and selling properties
+}
+
+/// Status of an organization
+enum OrganizationStatus {
+  PENDING // Awaiting approval to operate on platform
+  ACTIVE // Fully operational
+  SUSPENDED // Temporarily suspended
+  INACTIVE // No longer active
+}
+
+/// Role of a member within an organization
+enum OrganizationRole {
+  ADMIN // Can manage org settings, members, and full operations
+  MANAGER // Can approve transactions within limits (checker)
+  OFFICER // Regular employee, can initiate actions (maker)
+  VIEWER // Read-only access to organization data
 }
 
 // =============================================================================
@@ -408,6 +448,9 @@ model User {
   approvedRefunds  ApplicationRefund[] @relation("RefundApprover")
   processedRefunds ApplicationRefund[] @relation("RefundProcessor")
 
+  // Organization memberships (user can be employee of banks/developers)
+  organizationMemberships OrganizationMember[]
+
   @@index([email])
   @@index([tenantId])
   @@map("users")
@@ -510,6 +553,103 @@ model TenantMembership {
   @@map("tenant_memberships")
 }
 
+// =============================================================================
+// ORGANIZATIONS (Banks, Developers, etc.)
+// =============================================================================
+// Organizations represent external entities that participate in the platform.
+// Banks provide mortgage financing; Developers build and sell properties.
+// Users can be employees (members) of organizations with specific roles.
+// =============================================================================
+
+/// Organization: Banks, Developers, and other partner entities
+model Organization {
+  id       String             @id @default(cuid())
+  tenantId String
+  name     String // e.g., "Access Bank PLC", "Lekki Gardens Ltd"
+  type     OrganizationType // BANK or DEVELOPER
+  status   OrganizationStatus @default(PENDING)
+
+  // Common fields
+  email       String? // Primary contact email
+  phone       String? // Primary contact phone
+  address     String?
+  city        String?
+  state       String?
+  country     String? @default("Nigeria")
+  website     String?
+  logoUrl     String?
+  description String? @db.Text
+
+  // Bank-specific fields
+  bankCode      String? // CBN bank code (e.g., "044" for Access Bank)
+  bankLicenseNo String? // Banking license number
+  swiftCode     String? // SWIFT/BIC code for international transfers
+  sortCode      String? // Sort code for local transfers
+
+  // Developer-specific fields
+  cacNumber         String? // CAC registration number
+  cacCertificateUrl String? // URL to CAC certificate document
+  taxId             String? // Tax Identification Number
+
+  // Approval workflow
+  approvedAt   DateTime?
+  approvedById String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tenant  Tenant               @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  members OrganizationMember[]
+
+  // Properties developed by this organization (for DEVELOPERs)
+  // developedProperties Property[] @relation("PropertyDeveloper")
+
+  @@unique([tenantId, bankCode]) // Bank codes unique within tenant
+  @@unique([tenantId, cacNumber]) // CAC numbers unique within tenant
+  @@index([tenantId])
+  @@index([type])
+  @@index([status])
+  @@map("organizations")
+}
+
+/// OrganizationMember: Links users to organizations with roles and permissions
+/// Supports maker-checker workflows via canApprove and approvalLimit
+model OrganizationMember {
+  id             String           @id @default(cuid())
+  organizationId String
+  userId         String
+  role           OrganizationRole @default(OFFICER)
+
+  // Employee details
+  title      String? // Job title (e.g., "Loan Officer", "Project Manager")
+  department String? // Department within organization
+  employeeId String? // Internal employee ID
+
+  // Status
+  isActive Boolean @default(true)
+
+  // Maker-Checker workflow permissions
+  canApprove    Boolean  @default(false) // Can this member approve transactions?
+  approvalLimit Decimal? // Maximum amount this member can approve (null = unlimited)
+
+  // Invitation/onboarding tracking
+  invitedAt  DateTime?
+  acceptedAt DateTime?
+  invitedBy  String? // User ID who invited this member
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, userId]) // User can only be member once per org
+  @@index([userId])
+  @@index([organizationId])
+  @@index([role])
+  @@map("organization_members")
+}
+
 model Tenant {
   id        String   @id @default(cuid())
   name      String
@@ -595,6 +735,9 @@ model Tenant {
   domainEvents                DomainEvent[]
   workflowBlockers            WorkflowBlocker[]
   questionnairePlans          QuestionnairePlan[]
+
+  // Organizations (Banks, Developers) operating on this tenant
+  organizations Organization[]
 
   @@index([subdomain])
   @@map("tenants")
@@ -1867,6 +2010,9 @@ model QuestionnairePhase {
   // Child records
   fields QuestionnaireField[]
 
+  // Back-relation: Documentation phases that use this questionnaire's answers for conditions
+  dependentDocumentationPhases DocumentationPhase[] @relation("SourceQuestionnaire")
+
   @@index([tenantId])
   @@index([phaseId])
   @@index([questionnairePlanId])
@@ -1889,6 +2035,11 @@ model DocumentationPhase {
   // Documentation plan reference (if created from a plan)
   documentationPlanId String?
   documentationPlan   DocumentationPlan? @relation(fields: [documentationPlanId], references: [id])
+
+  // Source questionnaire for conditional step evaluation
+  // Links to the questionnaire phase whose answers determine which steps apply
+  sourceQuestionnairePhaseId String?
+  sourceQuestionnairePhase   QuestionnairePhase? @relation("SourceQuestionnaire", fields: [sourceQuestionnairePhaseId], references: [id])
 
   // Current step pointer for UX and orchestration
   currentStepId String?
@@ -1917,6 +2068,7 @@ model DocumentationPhase {
   @@index([tenantId])
   @@index([phaseId])
   @@index([currentStepId])
+  @@index([sourceQuestionnairePhaseId])
   @@map("documentation_phases")
 }
 
@@ -2095,6 +2247,15 @@ model DocumentationStep {
 
   // Configuration metadata (for GENERATE_DOCUMENT steps, etc.)
   metadata Json?
+
+  // Document validation rules (copied from plan for UPLOAD steps)
+  requiresManualReview Boolean @default(false)
+
+  // Conditional step logic (copied from plan)
+  // When set, this step is only applicable if the condition evaluates to true
+  // Format: { "questionKey": "mortgage_type", "operator": "EQUALS", "value": "JOINT" }
+  // Or: { "questionKey": "employment_status", "operator": "IN", "values": ["SELF_EMPLOYED", "BUSINESS_OWNER"] }
+  condition Json?
 
   // Assignment
   assigneeId String?

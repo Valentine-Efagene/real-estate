@@ -142,6 +142,22 @@ export const StepStatus = {
 export type StepStatus = (typeof StepStatus)[keyof typeof StepStatus]
 
 
+export const ConditionOperator = {
+  EQUALS: 'EQUALS',
+  NOT_EQUALS: 'NOT_EQUALS',
+  IN: 'IN',
+  NOT_IN: 'NOT_IN',
+  GREATER_THAN: 'GREATER_THAN',
+  LESS_THAN: 'LESS_THAN',
+  GREATER_THAN_OR_EQUAL: 'GREATER_THAN_OR_EQUAL',
+  LESS_THAN_OR_EQUAL: 'LESS_THAN_OR_EQUAL',
+  EXISTS: 'EXISTS',
+  NOT_EXISTS: 'NOT_EXISTS'
+} as const
+
+export type ConditionOperator = (typeof ConditionOperator)[keyof typeof ConditionOperator]
+
+
 export const StepTrigger = {
   ON_COMPLETE: 'ON_COMPLETE',
   ON_REJECT: 'ON_REJECT',
@@ -193,6 +209,34 @@ export const ApprovalDecision = {
 } as const
 
 export type ApprovalDecision = (typeof ApprovalDecision)[keyof typeof ApprovalDecision]
+
+
+export const OrganizationType = {
+  BANK: 'BANK',
+  DEVELOPER: 'DEVELOPER'
+} as const
+
+export type OrganizationType = (typeof OrganizationType)[keyof typeof OrganizationType]
+
+
+export const OrganizationStatus = {
+  PENDING: 'PENDING',
+  ACTIVE: 'ACTIVE',
+  SUSPENDED: 'SUSPENDED',
+  INACTIVE: 'INACTIVE'
+} as const
+
+export type OrganizationStatus = (typeof OrganizationStatus)[keyof typeof OrganizationStatus]
+
+
+export const OrganizationRole = {
+  ADMIN: 'ADMIN',
+  MANAGER: 'MANAGER',
+  OFFICER: 'OFFICER',
+  VIEWER: 'VIEWER'
+} as const
+
+export type OrganizationRole = (typeof OrganizationRole)[keyof typeof OrganizationRole]
 
 
 export const TerminationType = {

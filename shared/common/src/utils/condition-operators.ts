@@ -2,32 +2,15 @@
  * Condition operators for evaluating step conditions against questionnaire answers.
  * Used in DocumentationPlanStep.condition to conditionally require documents
  * based on prequalification answers.
+ *
+ * ConditionOperator is a Prisma enum - this file provides TypeScript interfaces
+ * for building condition objects.
  */
 
-/**
- * Supported condition operators for evaluating document step conditions.
- */
-export const CONDITION_OPERATORS = {
-    /** Value equals the specified value */
-    EQUALS: 'EQUALS',
-    /** Value does not equal the specified value */
-    NOT_EQUALS: 'NOT_EQUALS',
-    /** Value is in the specified array of values */
-    IN: 'IN',
-    /** Value is not in the specified array of values */
-    NOT_IN: 'NOT_IN',
-    /** Numeric value is greater than the specified value */
-    GREATER_THAN: 'GREATER_THAN',
-    /** Numeric value is less than the specified value */
-    LESS_THAN: 'LESS_THAN',
-    /** Value exists (is not null/undefined) */
-    EXISTS: 'EXISTS',
-} as const;
+import { ConditionOperator } from '../../generated/client/enums';
 
-/**
- * Type representing a valid condition operator.
- */
-export type ConditionOperator = keyof typeof CONDITION_OPERATORS;
+// Re-export for convenience (the Prisma enum is the source of truth)
+export { ConditionOperator };
 
 /**
  * Interface for a simple condition that checks a single question answer.

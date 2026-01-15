@@ -101,6 +101,8 @@ function parseStepDefinitions(phaseTemplate: {
         stepType: StepType;
         order: number;
         metadata?: any;
+        requiresManualReview?: boolean;
+        condition?: any;
     }>;
     documentationPlan?: {
         steps: Array<{
@@ -108,6 +110,8 @@ function parseStepDefinitions(phaseTemplate: {
             stepType: string;
             order: number;
             metadata?: any;
+            requiresManualReview?: boolean;
+            condition?: any;
         }>;
     } | null;
     requiredDocuments?: Array<{
@@ -120,28 +124,35 @@ function parseStepDefinitions(phaseTemplate: {
     stepType: StepType;
     order: number;
     metadata?: any;
+    requiresManualReview?: boolean;
+    condition?: any;
     requiredDocuments?: Array<{
         documentType: string;
         isRequired: boolean;
     }>;
 }> {
-    // If we have normalized steps from the phase template, use them first
-    if (phaseTemplate.steps && phaseTemplate.steps.length > 0) {
-        return phaseTemplate.steps.map((step, idx) => ({
-            name: step.name,
-            stepType: step.stepType,
-            order: step.order,
-            metadata: step.metadata, // Include metadata for GENERATE_DOCUMENT steps
-        }));
-    }
-
-    // If we have a documentation plan with steps, use those
+    // PRIORITY: If we have a documentation plan with steps, use those
+    // The plan contains full step configuration including requiresManualReview
     if (phaseTemplate.documentationPlan?.steps && phaseTemplate.documentationPlan.steps.length > 0) {
         return phaseTemplate.documentationPlan.steps.map((step) => ({
             name: step.name,
             stepType: step.stepType as StepType,
             order: step.order,
             metadata: step.metadata,
+            requiresManualReview: step.requiresManualReview ?? false,
+            condition: step.condition, // Copy condition for conditional step evaluation
+        }));
+    }
+
+    // Fallback: Use inline steps from the phase template (legacy/inline definitions)
+    if (phaseTemplate.steps && phaseTemplate.steps.length > 0) {
+        return phaseTemplate.steps.map((step, idx) => ({
+            name: step.name,
+            stepType: step.stepType,
+            order: step.order,
+            metadata: step.metadata,
+            requiresManualReview: step.requiresManualReview ?? false,
+            condition: step.condition, // Copy condition for conditional step evaluation
         }));
     }
 
@@ -152,6 +163,7 @@ function parseStepDefinitions(phaseTemplate: {
         stepType: StepType;
         order: number;
         metadata?: any;
+        requiresManualReview?: boolean;
         requiredDocuments?: Array<{
             documentType: string;
             isRequired: boolean;
@@ -448,6 +460,10 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                 },
             });
 
+            // Track the most recent questionnaire phase for conditional step linking
+            // Documentation phases use the immediately preceding questionnaire's answers
+            let lastQuestionnairePhaseId: string | null = null;
+
             for (const phaseTemplate of method.phases) {
                 let phaseAmount: number | null = null;
                 if (phaseTemplate.percentOfPrice) {
@@ -514,20 +530,24 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                         },
                     });
 
+                    // Track this questionnaire for linking to subsequent documentation phases
+                    lastQuestionnairePhaseId = questionnairePhase.id;
+
                     // Create QuestionnaireField records from plan questions
                     for (const question of questions) {
                         await tx.questionnaireField.create({
                             data: {
                                 tenantId: (data as any).tenantId,
                                 questionnairePhaseId: questionnairePhase.id,
-                                fieldKey: question.questionKey,
+                                name: question.questionKey,
                                 fieldType: question.questionType,
                                 label: question.questionText,
-                                helpText: question.helpText,
+                                description: question.helpText,
                                 order: question.order,
                                 isRequired: question.isRequired ?? true,
-                                validationRules: question.validationRules,
-                                options: question.options,
+                                validation: question.validationRules,
+                                // options stored in validation or defaultValue if needed
+                                defaultValue: question.options ? { options: question.options } : undefined,
                             },
                         });
                     }
@@ -538,6 +558,8 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                             tenantId: (data as any).tenantId,
                             phaseId: phase.id,
                             documentationPlanId: phaseTemplate.documentationPlanId,
+                            // Link to source questionnaire for conditional step evaluation
+                            sourceQuestionnairePhaseId: lastQuestionnairePhaseId,
                             totalStepsCount: steps.length,
                             completedStepsCount: 0,
                             requiredDocumentsCount: requiredDocs.filter((d: any) => d.isRequired).length,
@@ -560,6 +582,8 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                                 order: step.order,
                                 status: 'PENDING' as StepStatus,
                                 metadata: step.metadata ?? null,
+                                requiresManualReview: step.requiresManualReview ?? false,
+                                condition: step.condition ?? null, // Copy condition for evaluation
                             },
                         });
 

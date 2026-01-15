@@ -23,6 +23,8 @@ const GLOBAL_MODELS = [
     // User preferences/devices (linked to user, not tenant)
     "emailPreference",
     "deviceEndpoint",
+    // Organization members (tenant access via organization.tenantId)
+    "organizationMember",
 ] as const;
 
 type GlobalModel = (typeof GLOBAL_MODELS)[number];

@@ -57,6 +57,8 @@ export const ModelName = {
   RolePermission: 'RolePermission',
   UserRole: 'UserRole',
   TenantMembership: 'TenantMembership',
+  Organization: 'Organization',
+  OrganizationMember: 'OrganizationMember',
   Tenant: 'Tenant',
   ApiKey: 'ApiKey',
   RefreshToken: 'RefreshToken',
@@ -220,6 +222,58 @@ export const TenantMembershipScalarFieldEnum = {
 } as const
 
 export type TenantMembershipScalarFieldEnum = (typeof TenantMembershipScalarFieldEnum)[keyof typeof TenantMembershipScalarFieldEnum]
+
+
+export const OrganizationScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  name: 'name',
+  type: 'type',
+  status: 'status',
+  email: 'email',
+  phone: 'phone',
+  address: 'address',
+  city: 'city',
+  state: 'state',
+  country: 'country',
+  website: 'website',
+  logoUrl: 'logoUrl',
+  description: 'description',
+  bankCode: 'bankCode',
+  bankLicenseNo: 'bankLicenseNo',
+  swiftCode: 'swiftCode',
+  sortCode: 'sortCode',
+  cacNumber: 'cacNumber',
+  cacCertificateUrl: 'cacCertificateUrl',
+  taxId: 'taxId',
+  approvedAt: 'approvedAt',
+  approvedById: 'approvedById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OrganizationScalarFieldEnum = (typeof OrganizationScalarFieldEnum)[keyof typeof OrganizationScalarFieldEnum]
+
+
+export const OrganizationMemberScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  userId: 'userId',
+  role: 'role',
+  title: 'title',
+  department: 'department',
+  employeeId: 'employeeId',
+  isActive: 'isActive',
+  canApprove: 'canApprove',
+  approvalLimit: 'approvalLimit',
+  invitedAt: 'invitedAt',
+  acceptedAt: 'acceptedAt',
+  invitedBy: 'invitedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OrganizationMemberScalarFieldEnum = (typeof OrganizationMemberScalarFieldEnum)[keyof typeof OrganizationMemberScalarFieldEnum]
 
 
 export const TenantScalarFieldEnum = {
@@ -893,6 +947,7 @@ export const DocumentationPhaseScalarFieldEnum = {
   tenantId: 'tenantId',
   phaseId: 'phaseId',
   documentationPlanId: 'documentationPlanId',
+  sourceQuestionnairePhaseId: 'sourceQuestionnairePhaseId',
   currentStepId: 'currentStepId',
   approvedDocumentsCount: 'approvedDocumentsCount',
   requiredDocumentsCount: 'requiredDocumentsCount',
@@ -985,6 +1040,8 @@ export const DocumentationStepScalarFieldEnum = {
   submissionCount: 'submissionCount',
   lastSubmittedAt: 'lastSubmittedAt',
   metadata: 'metadata',
+  requiresManualReview: 'requiresManualReview',
+  condition: 'condition',
   assigneeId: 'assigneeId',
   gateActor: 'gateActor',
   gateAction: 'gateAction',
@@ -1557,6 +1614,45 @@ export const TenantMembershipOrderByRelevanceFieldEnum = {
 export type TenantMembershipOrderByRelevanceFieldEnum = (typeof TenantMembershipOrderByRelevanceFieldEnum)[keyof typeof TenantMembershipOrderByRelevanceFieldEnum]
 
 
+export const OrganizationOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  name: 'name',
+  email: 'email',
+  phone: 'phone',
+  address: 'address',
+  city: 'city',
+  state: 'state',
+  country: 'country',
+  website: 'website',
+  logoUrl: 'logoUrl',
+  description: 'description',
+  bankCode: 'bankCode',
+  bankLicenseNo: 'bankLicenseNo',
+  swiftCode: 'swiftCode',
+  sortCode: 'sortCode',
+  cacNumber: 'cacNumber',
+  cacCertificateUrl: 'cacCertificateUrl',
+  taxId: 'taxId',
+  approvedById: 'approvedById'
+} as const
+
+export type OrganizationOrderByRelevanceFieldEnum = (typeof OrganizationOrderByRelevanceFieldEnum)[keyof typeof OrganizationOrderByRelevanceFieldEnum]
+
+
+export const OrganizationMemberOrderByRelevanceFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  userId: 'userId',
+  title: 'title',
+  department: 'department',
+  employeeId: 'employeeId',
+  invitedBy: 'invitedBy'
+} as const
+
+export type OrganizationMemberOrderByRelevanceFieldEnum = (typeof OrganizationMemberOrderByRelevanceFieldEnum)[keyof typeof OrganizationMemberOrderByRelevanceFieldEnum]
+
+
 export const TenantOrderByRelevanceFieldEnum = {
   id: 'id',
   name: 'name',
@@ -2004,6 +2100,7 @@ export const DocumentationPhaseOrderByRelevanceFieldEnum = {
   tenantId: 'tenantId',
   phaseId: 'phaseId',
   documentationPlanId: 'documentationPlanId',
+  sourceQuestionnairePhaseId: 'sourceQuestionnairePhaseId',
   currentStepId: 'currentStepId'
 } as const
 

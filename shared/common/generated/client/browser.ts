@@ -51,6 +51,17 @@ export type UserRole = Prisma.UserRoleModel
  */
 export type TenantMembership = Prisma.TenantMembershipModel
 /**
+ * Model Organization
+ * Organization: Banks, Developers, and other partner entities
+ */
+export type Organization = Prisma.OrganizationModel
+/**
+ * Model OrganizationMember
+ * OrganizationMember: Links users to organizations with roles and permissions
+ * Supports maker-checker workflows via canApprove and approvalLimit
+ */
+export type OrganizationMember = Prisma.OrganizationMemberModel
+/**
  * Model Tenant
  * 
  */

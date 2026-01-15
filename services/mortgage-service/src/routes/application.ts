@@ -80,6 +80,7 @@ async function canAccessApplication(req: Request, res: Response, next: NextFunct
 router.post('/', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { tenantId, userId } = getAuthContext(req);
+        console.log('Creating application with body:', JSON.stringify(req.body, null, 2));
         const data = CreateApplicationSchema.parse(req.body);
         // Use userId from header as buyerId if not provided in body
         const applicationData = { ...data, tenantId, buyerId: data.buyerId || userId };
@@ -89,7 +90,7 @@ router.post('/', requireTenant, async (req: Request, res: Response, next: NextFu
     } catch (error: any) {
         console.error('Application create error:', error.message);
         if (error instanceof z.ZodError) {
-            console.error('Zod validation error:', JSON.stringify(error.issues, null, 2));
+            console.error('Zod validation error paths:', error.issues.map(i => ({ path: i.path.join('.'), message: i.message })));
             res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });
             return;
         }

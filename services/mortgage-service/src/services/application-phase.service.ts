@@ -34,6 +34,7 @@ import {
 } from '../lib/notifications';
 import { createWorkflowBlockerService, type CreateBlockerInput } from './workflow-blocker.service';
 import { unitLockingService } from './unit-locking.service';
+import { createConditionEvaluatorService } from './condition-evaluator.service';
 
 class ApplicationPhaseService {
     async findById(phaseId: string): Promise<any> {
@@ -414,6 +415,25 @@ class ApplicationPhaseService {
         }
 
         const startDate = data.startDate ? new Date(data.startDate) : new Date();
+
+        // Evaluate conditional steps before activation (for DOCUMENTATION phases)
+        // This marks inapplicable steps as SKIPPED based on questionnaire answers
+        if (phase.documentationPhase?.sourceQuestionnairePhaseId) {
+            const conditionEvaluator = createConditionEvaluatorService(prisma);
+            const evaluationResult = await conditionEvaluator.applyConditionEvaluation(
+                phase.documentationPhase.id
+            );
+
+            console.log(
+                `Condition evaluation for phase ${phaseId}: ` +
+                `${evaluationResult.skippedCount} steps skipped, ` +
+                `${evaluationResult.applicableCount} steps applicable`
+            );
+
+            // Refresh the phase to get updated step statuses
+            const refreshedPhase = await this.findById(phaseId);
+            phase.documentationPhase.steps = refreshedPhase.documentationPhase?.steps || [];
+        }
 
         // Determine the first step to set as current (only for DOCUMENTATION phases)
         const steps = phase.documentationPhase?.steps || [];
@@ -1000,17 +1020,37 @@ class ApplicationPhaseService {
                 });
 
                 if (step && step.stepType === 'UPLOAD') {
-                    // For UPLOAD steps: Mark as AWAITING_REVIEW when document is uploaded
-                    // Step will be COMPLETED when the document is approved
                     if (step.status !== 'COMPLETED') {
-                        await tx.documentationStep.update({
-                            where: { id: stepId },
-                            data: {
-                                status: 'AWAITING_REVIEW',
-                                submissionCount: { increment: 1 },
-                                lastSubmittedAt: new Date(),
-                            },
-                        });
+                        // For UPLOAD steps: Check if manual review is required
+                        if (step.requiresManualReview) {
+                            // Manual review required: Mark as AWAITING_REVIEW
+                            // Step will be COMPLETED when the document is approved
+                            await tx.documentationStep.update({
+                                where: { id: stepId },
+                                data: {
+                                    status: 'AWAITING_REVIEW',
+                                    submissionCount: { increment: 1 },
+                                    lastSubmittedAt: new Date(),
+                                },
+                            });
+                        } else {
+                            // No manual review required: Auto-complete the step and auto-approve the document
+                            await tx.documentationStep.update({
+                                where: { id: stepId },
+                                data: {
+                                    status: 'COMPLETED',
+                                    completedAt: new Date(),
+                                    submissionCount: { increment: 1 },
+                                    lastSubmittedAt: new Date(),
+                                },
+                            });
+
+                            // Auto-approve the document as well
+                            await tx.applicationDocument.update({
+                                where: { id: doc.id },
+                                data: { status: 'APPROVED' },
+                            });
+                        }
                     }
                 } else if (step) {
                     // For non-UPLOAD steps: Just track submission
@@ -2239,6 +2279,67 @@ class ApplicationPhaseService {
                     data: {
                         status: 'COMPLETED',
                         completedAt: now,
+                    },
+                });
+
+                // Auto-activate the next phase
+                const nextPhase = await tx.applicationPhase.findFirst({
+                    where: {
+                        applicationId: phase.applicationId,
+                        order: phase.order + 1,
+                    },
+                });
+
+                if (nextPhase) {
+                    await tx.applicationPhase.update({
+                        where: { id: nextPhase.id },
+                        data: {
+                            status: 'IN_PROGRESS',
+                            activatedAt: now,
+                        },
+                    });
+
+                    await tx.application.update({
+                        where: { id: phase.applicationId },
+                        data: { currentPhaseId: nextPhase.id },
+                    });
+
+                    // Write PHASE.ACTIVATED event
+                    await tx.domainEvent.create({
+                        data: {
+                            id: uuidv4(),
+                            tenantId: phase.tenantId,
+                            eventType: 'PHASE.ACTIVATED',
+                            aggregateType: 'ApplicationPhase',
+                            aggregateId: nextPhase.id,
+                            queueName: 'application-steps',
+                            payload: JSON.stringify({
+                                phaseId: nextPhase.id,
+                                applicationId: phase.applicationId,
+                                phaseType: nextPhase.phaseType,
+                                activatedBy: 'AUTO_QUESTIONNAIRE_COMPLETION',
+                            }),
+                            actorId: userId,
+                        },
+                    });
+                }
+
+                // Write PHASE.COMPLETED event
+                await tx.domainEvent.create({
+                    data: {
+                        id: uuidv4(),
+                        tenantId: phase.tenantId,
+                        eventType: 'PHASE.COMPLETED',
+                        aggregateType: 'ApplicationPhase',
+                        aggregateId: phaseId,
+                        queueName: 'application-steps',
+                        payload: JSON.stringify({
+                            phaseId,
+                            applicationId: phase.applicationId,
+                            phaseType: phase.phaseType,
+                            completedBy: 'AUTO_QUESTIONNAIRE',
+                        }),
+                        actorId: userId,
                     },
                 });
             }
