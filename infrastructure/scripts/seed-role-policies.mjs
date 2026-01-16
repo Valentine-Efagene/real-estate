@@ -131,6 +131,53 @@ const rolePolicies = [
         },
         isActive: true,
     },
+    {
+        roleName: 'developer',
+        policy: {
+            version: '1',
+            statements: [
+                {
+                    effect: 'Allow',
+                    resources: [
+                        { path: '/users/:id', methods: ['GET', 'PATCH'] },
+                        { path: '/properties', methods: ['GET', 'POST'] },
+                        { path: '/properties/:id', methods: ['GET', 'PATCH'] },
+                        { path: '/applications', methods: ['GET'] },
+                        { path: '/applications/:id', methods: ['GET'] },
+                        { path: '/applications/:id/phases/:phaseId/documents', methods: ['GET', 'POST'] }, // Upload sales offer
+                        { path: '/documents', methods: ['GET', 'POST'] },
+                        { path: '/documents/:id', methods: ['GET'] },
+                    ],
+                },
+            ],
+        },
+        isActive: true,
+    },
+    {
+        roleName: 'lender',
+        policy: {
+            version: '1',
+            statements: [
+                {
+                    effect: 'Allow',
+                    resources: [
+                        { path: '/users/:id', methods: ['GET', 'PATCH'] },
+                        { path: '/applications', methods: ['GET'] },
+                        { path: '/applications/:id', methods: ['GET'] },
+                        { path: '/applications/:id/phases', methods: ['GET'] },
+                        { path: '/applications/:id/phases/:phaseId', methods: ['GET'] },
+                        { path: '/applications/:id/phases/:phaseId/documents', methods: ['GET', 'POST'] }, // Upload preapproval/mortgage offer
+                        { path: '/applications/:id/documents/:docId/review', methods: ['POST'] },
+                        { path: '/documents', methods: ['GET', 'POST'] },
+                        { path: '/documents/:id', methods: ['GET'] },
+                        { path: '/mortgages', methods: ['GET'] },
+                        { path: '/mortgages/:id', methods: ['GET'] },
+                    ],
+                },
+            ],
+        },
+        isActive: true,
+    },
 ];
 
 async function seedPolicies() {

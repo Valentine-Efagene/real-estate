@@ -11,6 +11,8 @@ export const seedData: { roles: RoleCreateManyInput[], tenants: TenantCreateMany
         { name: 'agent', description: 'Real estate agent role' },
         { name: 'landlord', description: 'Property landlord role' },
         { name: 'tenant', description: 'Property tenant role' },
+        { name: 'developer', description: 'Property developer who lists properties and uploads sales offer letters' },
+        { name: 'lender', description: 'Bank/financial institution representative who uploads preapproval and mortgage offer letters' },
     ],
     tenants: [
         { name: 'Default Tenant', isActive: true, subdomain: 'default' },

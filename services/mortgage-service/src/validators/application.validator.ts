@@ -28,6 +28,12 @@ export const CreateApplicationSchema = z
         }),
         monthlyIncome: z.number().min(0).optional().openapi({ example: 2500000, description: 'Monthly income for DTI calculation' }),
         monthlyExpenses: z.number().min(0).optional().openapi({ example: 800000, description: 'Monthly expenses for DTI calculation' }),
+        // Draft mode: when true, saves as DRAFT regardless of completeness
+        // When false (default), auto-submits if all required fields are present
+        saveDraft: z.boolean().optional().default(false).openapi({
+            example: false,
+            description: 'If true, saves as DRAFT for later completion. If false (default), auto-submits when all required fields are present.'
+        }),
     })
     .openapi('CreateApplication');
 

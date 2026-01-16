@@ -176,7 +176,7 @@ export function getAuthContext(req: Request): AuthContext {
  *     .send({ name: 'John' });
  * ```
  * 
- * @deprecated Use Authorization header directly with JWT token.
+ * @deprecated Use `mockAuthHeaders` for E2E tests or pass Authorization header directly with JWT token.
  * This helper is kept for backward compatibility.
  */
 export function authHeaders(
@@ -200,6 +200,38 @@ export function authHeaders(
 }
 
 /**
+ * Generate mock authorization headers for E2E tests.
+ * 
+ * This is the preferred helper for E2E tests that bypass JWT authentication
+ * and instead use mock headers that simulate what the Lambda authorizer would set.
+ * 
+ * @param userId - The user ID to set in the mock headers
+ * @param tenantId - The tenant ID to set in the mock headers  
+ * @param options - Optional additional header values
+ * @returns Headers object to pass to supertest .set()
+ * 
+ * @example
+ * ```typescript
+ * const response = await api
+ *     .post('/applications')
+ *     .set(mockAuthHeaders(userId, tenantId, { roles: [ROLES.CUSTOMER] }))
+ *     .send({ ... });
+ * ```
+ */
+export function mockAuthHeaders(
+    userId: string,
+    tenantId: string,
+    options?: { email?: string; roles?: string[] }
+): Record<string, string> {
+    return {
+        'x-authorizer-user-id': userId,
+        'x-authorizer-tenant-id': tenantId,
+        ...(options?.email && { 'x-authorizer-email': options.email }),
+        ...(options?.roles && { 'x-authorizer-roles': JSON.stringify(options.roles) }),
+    };
+}
+
+/**
  * Standard role names used across the platform.
  */
 export const ROLES = {
@@ -208,6 +240,10 @@ export const ROLES = {
     LOAN_OFFICER: 'LOAN_OFFICER',
     CUSTOMER: 'CUSTOMER',
     VIEWER: 'VIEWER',
+    /** Property developers who list properties and upload sales offer letters */
+    DEVELOPER: 'DEVELOPER',
+    /** Bank/financial institution representatives who upload preapproval and mortgage offer letters */
+    LENDER: 'LENDER',
 } as const;
 
 export type RoleName = (typeof ROLES)[keyof typeof ROLES];

@@ -695,6 +695,57 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                 },
             });
 
+            // Smart auto-submit: if saveDraft is false (default) and all required fields are present,
+            // automatically transition to PENDING and activate the first phase
+            const shouldAutoSubmit = !data.saveDraft && data.paymentMethodId && data.propertyUnitId;
+
+            if (shouldAutoSubmit) {
+                // Update application status to PENDING
+                await tx.application.update({
+                    where: { id: created.id },
+                    data: { status: 'PENDING' },
+                });
+                created.status = 'PENDING';
+
+                // Activate the first phase
+                const firstPhase = await tx.applicationPhase.findFirst({
+                    where: { applicationId: created.id },
+                    orderBy: { order: 'asc' },
+                });
+
+                if (firstPhase && firstPhase.status === 'PENDING') {
+                    await tx.applicationPhase.update({
+                        where: { id: firstPhase.id },
+                        data: {
+                            status: 'IN_PROGRESS',
+                            activatedAt: new Date(),
+                        },
+                    });
+
+                    await tx.application.update({
+                        where: { id: created.id },
+                        data: { currentPhaseId: firstPhase.id },
+                    });
+
+                    await tx.domainEvent.create({
+                        data: {
+                            id: uuidv4(),
+                            tenantId: created.tenantId,
+                            eventType: 'PHASE.ACTIVATED',
+                            aggregateType: 'ApplicationPhase',
+                            aggregateId: firstPhase.id,
+                            queueName: 'application-steps',
+                            payload: JSON.stringify({
+                                phaseId: firstPhase.id,
+                                applicationId: created.id,
+                                phaseType: firstPhase.phaseType,
+                            }),
+                            actorId: data.buyerId,
+                        },
+                    });
+                }
+            }
+
             return created;
         });
 
