@@ -2370,6 +2370,9 @@ class ApplicationPhaseService {
                         applicationId: phase.applicationId,
                         order: phase.order + 1,
                     },
+                    include: {
+                        documentationPhase: true,
+                    },
                 });
 
                 if (nextPhase) {
@@ -2385,6 +2388,21 @@ class ApplicationPhaseService {
                         where: { id: phase.applicationId },
                         data: { currentPhaseId: nextPhase.id },
                     });
+
+                    // Run condition evaluation for DOCUMENTATION phases with sourceQuestionnairePhaseId
+                    // This marks inapplicable steps as SKIPPED based on questionnaire answers
+                    if (nextPhase.documentationPhase?.sourceQuestionnairePhaseId) {
+                        const conditionEvaluator = createConditionEvaluatorService(tx);
+                        const evaluationResult = await conditionEvaluator.applyConditionEvaluation(
+                            nextPhase.documentationPhase.id
+                        );
+
+                        console.log(
+                            `[Questionnaire auto-complete] Condition evaluation for phase ${nextPhase.id}: ` +
+                            `${evaluationResult.skippedCount} steps skipped, ` +
+                            `${evaluationResult.applicableCount} steps applicable`
+                        );
+                    }
 
                     // Write PHASE.ACTIVATED event
                     await tx.domainEvent.create({

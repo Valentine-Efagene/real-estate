@@ -748,9 +748,9 @@ describe("Amara's Victoria Island Installment Purchase Flow", () => {
                     .set(adminHeaders(adaezeId, tenantId))
                     .set('x-idempotency-key', idempotencyKey(`process-installment-${i + 1}`))
                     .send({
-                        paymentId: paymentResponse.body.data.id,
-                        status: 'SUCCESS',
-                        gatewayReference: `GW-REF-${i + 1}-${Date.now()}`,
+                        reference: paymentResponse.body.data.reference,
+                        status: 'COMPLETED',
+                        gatewayResponse: { transactionId: `GW-REF-${i + 1}-${Date.now()}` },
                     });
 
                 expect(processResponse.status).toBe(200);
@@ -820,13 +820,20 @@ describe("Amara's Victoria Island Installment Purchase Flow", () => {
     // =========================================================================
     describe('Audit trail and notifications', () => {
         it('Complete event trail exists for audit', async () => {
+            // Get payments to include their IDs in the search
+            const payments = await prisma.applicationPayment.findMany({
+                where: { applicationId },
+                select: { id: true },
+            });
+            const paymentIds = payments.map(p => p.id);
+
             const events = await prisma.domainEvent.findMany({
                 where: {
                     OR: [
                         { aggregateId: applicationId },
                         {
                             aggregateId: {
-                                in: [prequalificationPhaseId, documentationPhaseId, paymentPhaseId, finalOfferPhaseId]
+                                in: [prequalificationPhaseId, documentationPhaseId, paymentPhaseId, finalOfferPhaseId, ...paymentIds]
                             }
                         },
                     ],
