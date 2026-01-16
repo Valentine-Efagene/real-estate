@@ -76,7 +76,7 @@ export function evaluateCondition(condition: StepCondition | null | undefined, a
                 return false;
             }
             return answerValue < condition.value;
-        
+
         case ConditionOperator.GREATER_THAN_OR_EQUAL:
             if (typeof answerValue !== 'number' || typeof condition.value !== 'number') {
                 return false;

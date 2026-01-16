@@ -144,6 +144,132 @@
             "value": "handler-001",
             "type": "string",
             "description": "Event handler ID for handler operations"
+        },
+        {
+            "key": "customerId",
+            "value": "customer-001",
+            "type": "string",
+            "description": "Customer user ID (e.g., Chidi in the Lekki flow)"
+        },
+        {
+            "key": "lenderId",
+            "value": "lender-001",
+            "type": "string",
+            "description": "Lender user ID (e.g., Nkechi from Access Bank)"
+        },
+        {
+            "key": "propertyId",
+            "value": "property-001",
+            "type": "string",
+            "description": "Property ID (e.g., Lekki Gardens Estate)"
+        },
+        {
+            "key": "propertyUnitId",
+            "value": "unit-001",
+            "type": "string",
+            "description": "Property unit ID (e.g., Unit 14B)"
+        },
+        {
+            "key": "paymentMethodId",
+            "value": "pm-001",
+            "type": "string",
+            "description": "Payment method ID (e.g., 10/90 Lekki Mortgage)"
+        },
+        {
+            "key": "paymentPlanId",
+            "value": "pp-001",
+            "type": "string",
+            "description": "Payment plan ID for payment plan operations"
+        },
+        {
+            "key": "downpaymentPlanId",
+            "value": "dp-downpay-001",
+            "type": "string",
+            "description": "Downpayment plan ID (10% one-time)"
+        },
+        {
+            "key": "mortgagePlanId",
+            "value": "mp-001",
+            "type": "string",
+            "description": "Mortgage plan ID (flexible term at 9.5%)"
+        },
+        {
+            "key": "prequalificationPlanId",
+            "value": "qp-prequal-001",
+            "type": "string",
+            "description": "Prequalification questionnaire plan ID"
+        },
+        {
+            "key": "kycDocumentationPlanId",
+            "value": "dp-kyc-001",
+            "type": "string",
+            "description": "KYC documentation plan ID"
+        },
+        {
+            "key": "finalDocumentationPlanId",
+            "value": "dp-final-001",
+            "type": "string",
+            "description": "Final documentation plan ID"
+        },
+        {
+            "key": "applicationId",
+            "value": "app-001",
+            "type": "string",
+            "description": "Application ID"
+        },
+        {
+            "key": "prequalificationPhaseId",
+            "value": "phase-prequal-001",
+            "type": "string",
+            "description": "Prequalification phase ID"
+        },
+        {
+            "key": "documentationPhaseId",
+            "value": "phase-doc-001",
+            "type": "string",
+            "description": "KYC documentation phase ID"
+        },
+        {
+            "key": "downpaymentPhaseId",
+            "value": "phase-downpay-001",
+            "type": "string",
+            "description": "Downpayment phase ID"
+        },
+        {
+            "key": "finalDocumentationPhaseId",
+            "value": "phase-finaldoc-001",
+            "type": "string",
+            "description": "Final documentation phase ID"
+        },
+        {
+            "key": "mortgagePhaseId",
+            "value": "phase-mort-001",
+            "type": "string",
+            "description": "Mortgage phase ID"
+        },
+        {
+            "key": "documentId",
+            "value": "doc-001",
+            "type": "string",
+            "description": "Application document ID for review operations"
+        },
+        {
+            "key": "finalOfferDocumentId",
+            "value": "doc-final-001",
+            "type": "string",
+            "description": "Final offer document ID"
+        },
+        {
+            "key": "installmentId",
+            "value": "inst-001",
+            "type": "string",
+            "description": "Payment installment ID"
+        },
+        {
+            "key": "paymentReference",
+            "value": "pay-ref-001",
+            "type": "string",
+            "description": "Payment reference for process confirmation"
         }
     ],
     "item": [
@@ -734,7 +860,103 @@
                             ]
                         },
                         "description": "Create a new payment plan template.\n\n**Payment Frequency Options:**\n- `MONTHLY`\n- `BIWEEKLY`\n- `WEEKLY`\n- `ONE_TIME`\n- `CUSTOM`"
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Chidi Lekki - 10% One-Off Downpayment Plan",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    },
+                                    {
+                                        "key": "x-idempotency-key",
+                                        "value": "adaeze-create-downpayment-plan"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"name\": \"10% One-Off Downpayment\",\n  \"description\": \"Single payment for 10% downpayment\",\n  \"frequency\": \"ONE_TIME\",\n  \"numberOfInstallments\": 1,\n  \"interestRate\": 0,\n  \"gracePeriodDays\": 0\n}"
+                                },
+                                "url": {
+                                    "raw": "{{mortgageServiceUrl}}/payment-plans",
+                                    "host": [
+                                        "{{mortgageServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "payment-plans"
+                                    ]
+                                }
+                            },
+                            "status": "Created",
+                            "code": 201,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"id\": \"plan_downpayment_001\",\n  \"tenantId\": \"tenant_001\",\n  \"name\": \"10% One-Off Downpayment\",\n  \"description\": \"Single payment for 10% downpayment\",\n  \"frequency\": \"ONE_TIME\",\n  \"numberOfInstallments\": 1,\n  \"interestRate\": 0,\n  \"gracePeriodDays\": 0,\n  \"isActive\": true,\n  \"createdAt\": \"2025-01-15T10:00:00.000Z\",\n  \"updatedAt\": \"2025-01-15T10:00:00.000Z\"\n}"
+                        },
+                        {
+                            "name": "Chidi Lekki - Flexible Mortgage Plan (9.5% p.a.)",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    },
+                                    {
+                                        "key": "x-idempotency-key",
+                                        "value": "adaeze-create-mortgage-plan"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"name\": \"Flexible Mortgage at 9.5%\",\n  \"description\": \"Monthly payments at 9.5% annual interest, term selected by applicant\",\n  \"frequency\": \"MONTHLY\",\n  \"allowFlexibleTerm\": true,\n  \"minTermMonths\": 60,\n  \"maxTermMonths\": 360,\n  \"termStepMonths\": 12,\n  \"maxAgeAtMaturity\": 60,\n  \"interestRate\": 9.5,\n  \"gracePeriodDays\": 15\n}"
+                                },
+                                "url": {
+                                    "raw": "{{mortgageServiceUrl}}/payment-plans",
+                                    "host": [
+                                        "{{mortgageServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "payment-plans"
+                                    ]
+                                }
+                            },
+                            "status": "Created",
+                            "code": 201,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"id\": \"plan_mortgage_001\",\n  \"tenantId\": \"tenant_001\",\n  \"name\": \"Flexible Mortgage at 9.5%\",\n  \"description\": \"Monthly payments at 9.5% annual interest, term selected by applicant\",\n  \"frequency\": \"MONTHLY\",\n  \"allowFlexibleTerm\": true,\n  \"minTermMonths\": 60,\n  \"maxTermMonths\": 360,\n  \"termStepMonths\": 12,\n  \"maxAgeAtMaturity\": 60,\n  \"interestRate\": 9.5,\n  \"gracePeriodDays\": 15,\n  \"isActive\": true,\n  \"createdAt\": \"2025-01-15T10:05:00.000Z\",\n  \"updatedAt\": \"2025-01-15T10:05:00.000Z\"\n}"
+                        }
+                    ]
                 },
                 {
                     "name": "Get All Payment Plans",
@@ -927,7 +1149,56 @@
                             ]
                         },
                         "description": "Create a new questionnaire plan template with questions and scoring rules.\n\n**Question Types:**\n- `TEXT` - Free text input\n- `NUMBER` - Numeric input\n- `CURRENCY` - Monetary value\n- `DATE` - Date picker\n- `SELECT` - Single selection dropdown\n- `MULTI_SELECT` - Multiple selection\n- `RADIO` - Radio button selection\n- `CHECKBOX` - Checkbox\n- `FILE_UPLOAD` - File upload\n- `PHONE` - Phone number\n- `EMAIL` - Email address\n- `ADDRESS` - Full address\n- `PERCENTAGE` - Percentage value\n- `YEARS_MONTHS` - Duration in years/months\n\n**Scoring Strategies:**\n- `SUM` - Add up all scores\n- `AVERAGE` - Average of all scores\n- `WEIGHTED_SUM` - Sum with weights (score * weight)\n- `MIN_ALL` - Must meet minimum on all questions\n- `CUSTOM` - Custom scoring logic\n\n**Categories:**\n- `PREQUALIFICATION` - Initial eligibility screening\n- `AFFORDABILITY` - Income/expense assessment\n- `PROPERTY_INTENT` - Property preferences\n- `RISK_ASSESSMENT` - Credit/risk questions\n- `COMPLIANCE` - KYC/AML questions\n- `CUSTOM` - Custom category"
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Chidi Lekki - Prequalification Questionnaire Plan",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    },
+                                    {
+                                        "key": "x-idempotency-key",
+                                        "value": "adaeze-create-prequalification-plan"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"name\": \"Mortgage Prequalification\",\n  \"description\": \"Collects applicant age and income to validate mortgage eligibility\",\n  \"isActive\": true,\n  \"passingScore\": 100,\n  \"scoringStrategy\": \"MIN_ALL\",\n  \"autoDecisionEnabled\": true,\n  \"estimatedMinutes\": 5,\n  \"category\": \"PREQUALIFICATION\",\n  \"questions\": [\n    {\n      \"questionKey\": \"applicant_age\",\n      \"questionText\": \"What is your current age?\",\n      \"helpText\": \"Your age determines the maximum mortgage term (retirement age is 60)\",\n      \"questionType\": \"NUMBER\",\n      \"order\": 1,\n      \"isRequired\": true,\n      \"validationRules\": {\"min\": 18, \"max\": 59},\n      \"scoringRules\": {\"<=55\": 100, \">55\": 0},\n      \"scoreWeight\": 1,\n      \"category\": \"eligibility\"\n    },\n    {\n      \"questionKey\": \"mortgage_type\",\n      \"questionText\": \"What type of mortgage are you applying for?\",\n      \"helpText\": \"Joint mortgages require documentation from both applicants\",\n      \"questionType\": \"SELECT\",\n      \"order\": 2,\n      \"isRequired\": true,\n      \"options\": [\n        {\"value\": \"SINGLE\", \"label\": \"Single (Individual)\", \"score\": 100},\n        {\"value\": \"JOINT\", \"label\": \"Joint (With Spouse)\", \"score\": 100}\n      ],\n      \"scoreWeight\": 0,\n      \"category\": \"application_type\"\n    },\n    {\n      \"questionKey\": \"employment_status\",\n      \"questionText\": \"What is your employment status?\",\n      \"helpText\": \"This determines the income verification documents required\",\n      \"questionType\": \"SELECT\",\n      \"order\": 3,\n      \"isRequired\": true,\n      \"options\": [\n        {\"value\": \"EMPLOYED\", \"label\": \"Employed (Salary/Wage earner)\", \"score\": 100},\n        {\"value\": \"SELF_EMPLOYED\", \"label\": \"Self-Employed\", \"score\": 80},\n        {\"value\": \"BUSINESS_OWNER\", \"label\": \"Business Owner\", \"score\": 80},\n        {\"value\": \"RETIRED\", \"label\": \"Retired\", \"score\": 60}\n      ],\n      \"scoreWeight\": 1,\n      \"category\": \"employment\"\n    },\n    {\n      \"questionKey\": \"monthly_income\",\n      \"questionText\": \"What is your monthly gross income?\",\n      \"helpText\": \"Include salary, bonuses, and other regular income\",\n      \"questionType\": \"CURRENCY\",\n      \"order\": 4,\n      \"isRequired\": true,\n      \"validationRules\": {\"min\": 0},\n      \"scoringRules\": {\">=500000\": 100, \"<500000\": 0},\n      \"scoreWeight\": 1,\n      \"category\": \"affordability\"\n    },\n    {\n      \"questionKey\": \"monthly_expenses\",\n      \"questionText\": \"What are your total monthly expenses?\",\n      \"helpText\": \"Include rent, utilities, loans, and other recurring expenses\",\n      \"questionType\": \"CURRENCY\",\n      \"order\": 5,\n      \"isRequired\": true,\n      \"validationRules\": {\"min\": 0},\n      \"scoreWeight\": 0,\n      \"category\": \"affordability\"\n    },\n    {\n      \"questionKey\": \"desired_term_years\",\n      \"questionText\": \"What mortgage term (in years) would you prefer?\",\n      \"helpText\": \"Maximum term is 30 years, but limited by retirement age (60)\",\n      \"questionType\": \"NUMBER\",\n      \"order\": 6,\n      \"isRequired\": true,\n      \"validationRules\": {\"min\": 5, \"max\": 30},\n      \"scoringRules\": {\">=5\": 100, \"<5\": 0},\n      \"scoreWeight\": 1,\n      \"category\": \"preferences\"\n    }\n  ]\n}"
+                                },
+                                "url": {
+                                    "raw": "{{mortgageServiceUrl}}/questionnaire-plans",
+                                    "host": [
+                                        "{{mortgageServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "questionnaire-plans"
+                                    ]
+                                }
+                            },
+                            "status": "Created",
+                            "code": 201,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"id\": \"qplan_prequalification_001\",\n  \"tenantId\": \"tenant_001\",\n  \"name\": \"Mortgage Prequalification\",\n  \"description\": \"Collects applicant age and income to validate mortgage eligibility\",\n  \"isActive\": true,\n  \"passingScore\": 100,\n  \"scoringStrategy\": \"MIN_ALL\",\n  \"autoDecisionEnabled\": true,\n  \"estimatedMinutes\": 5,\n  \"category\": \"PREQUALIFICATION\",\n  \"questions\": [\n    {\"id\": \"q1\", \"questionKey\": \"applicant_age\", \"questionText\": \"What is your current age?\", \"questionType\": \"NUMBER\", \"order\": 1, \"isRequired\": true},\n    {\"id\": \"q2\", \"questionKey\": \"mortgage_type\", \"questionText\": \"What type of mortgage are you applying for?\", \"questionType\": \"SELECT\", \"order\": 2, \"isRequired\": true},\n    {\"id\": \"q3\", \"questionKey\": \"employment_status\", \"questionText\": \"What is your employment status?\", \"questionType\": \"SELECT\", \"order\": 3, \"isRequired\": true},\n    {\"id\": \"q4\", \"questionKey\": \"monthly_income\", \"questionText\": \"What is your monthly gross income?\", \"questionType\": \"CURRENCY\", \"order\": 4, \"isRequired\": true},\n    {\"id\": \"q5\", \"questionKey\": \"monthly_expenses\", \"questionText\": \"What are your total monthly expenses?\", \"questionType\": \"CURRENCY\", \"order\": 5, \"isRequired\": true},\n    {\"id\": \"q6\", \"questionKey\": \"desired_term_years\", \"questionText\": \"What mortgage term (in years) would you prefer?\", \"questionType\": \"NUMBER\", \"order\": 6, \"isRequired\": true}\n  ],\n  \"createdAt\": \"2025-01-15T10:10:00.000Z\",\n  \"updatedAt\": \"2025-01-15T10:10:00.000Z\"\n}"
+                        }
+                    ]
                 },
                 {
                     "name": "Get All Questionnaire Plans",
@@ -1262,7 +1533,56 @@
                             ]
                         },
                         "description": "Create a complete payment method template with phases.\n\n**Phase Categories:**\n- `DOCUMENTATION` - For KYC, document uploads, reviews\n- `PAYMENT` - For collecting payments\n\n**Phase Types:**\n- `KYC` - Know Your Customer\n- `VERIFICATION` - Document verification\n- `DOWNPAYMENT` - Initial payment\n- `MORTGAGE` - Long-term financing\n- `BALLOON` - Balloon payment\n- `CUSTOM`\n\n**Step Types:**\n- `UPLOAD` - User uploads document\n- `REVIEW` - Admin reviews documents\n- `SIGNATURE` - Requires signature\n- `APPROVAL` - Requires approval\n- `GENERATE_DOCUMENT` - Auto-generate offer letter"
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Chidi Lekki - 5-Phase Payment Method (10/90)",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    },
+                                    {
+                                        "key": "x-idempotency-key",
+                                        "value": "adaeze-create-payment-method"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"name\": \"10/90 Lekki Mortgage\",\n  \"description\": \"Prequalification → Underwriting → Downpayment → Final Documentation → Mortgage\",\n  \"requiresManualApproval\": true,\n  \"phases\": [\n    {\n      \"name\": \"Prequalification\",\n      \"phaseCategory\": \"QUESTIONNAIRE\",\n      \"phaseType\": \"PRE_APPROVAL\",\n      \"order\": 1,\n      \"questionnairePlanId\": \"{{prequalificationPlanId}}\"\n    },\n    {\n      \"name\": \"Underwriting & Documentation\",\n      \"phaseCategory\": \"DOCUMENTATION\",\n      \"phaseType\": \"KYC\",\n      \"order\": 2,\n      \"documentationPlanId\": \"{{kycDocumentationPlanId}}\"\n    },\n    {\n      \"name\": \"10% Downpayment\",\n      \"phaseCategory\": \"PAYMENT\",\n      \"phaseType\": \"DOWNPAYMENT\",\n      \"order\": 3,\n      \"percentOfPrice\": 10,\n      \"paymentPlanId\": \"{{downpaymentPlanId}}\"\n    },\n    {\n      \"name\": \"Final Documentation\",\n      \"phaseCategory\": \"DOCUMENTATION\",\n      \"phaseType\": \"VERIFICATION\",\n      \"order\": 4,\n      \"documentationPlanId\": \"{{finalDocumentationPlanId}}\"\n    },\n    {\n      \"name\": \"20-Year Mortgage\",\n      \"phaseCategory\": \"PAYMENT\",\n      \"phaseType\": \"MORTGAGE\",\n      \"order\": 5,\n      \"percentOfPrice\": 90,\n      \"interestRate\": 9.5,\n      \"paymentPlanId\": \"{{mortgagePlanId}}\"\n    }\n  ]\n}"
+                                },
+                                "url": {
+                                    "raw": "{{mortgageServiceUrl}}/payment-methods",
+                                    "host": [
+                                        "{{mortgageServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "payment-methods"
+                                    ]
+                                }
+                            },
+                            "status": "Created",
+                            "code": 201,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"id\": \"pm_10_90_lekki_001\",\n  \"tenantId\": \"tenant_001\",\n  \"name\": \"10/90 Lekki Mortgage\",\n  \"description\": \"Prequalification → Underwriting → Downpayment → Final Documentation → Mortgage\",\n  \"requiresManualApproval\": true,\n  \"isActive\": true,\n  \"phases\": [\n    {\"id\": \"phase1\", \"name\": \"Prequalification\", \"phaseCategory\": \"QUESTIONNAIRE\", \"phaseType\": \"PRE_APPROVAL\", \"order\": 1},\n    {\"id\": \"phase2\", \"name\": \"Underwriting & Documentation\", \"phaseCategory\": \"DOCUMENTATION\", \"phaseType\": \"KYC\", \"order\": 2},\n    {\"id\": \"phase3\", \"name\": \"10% Downpayment\", \"phaseCategory\": \"PAYMENT\", \"phaseType\": \"DOWNPAYMENT\", \"order\": 3, \"percentOfPrice\": 10},\n    {\"id\": \"phase4\", \"name\": \"Final Documentation\", \"phaseCategory\": \"DOCUMENTATION\", \"phaseType\": \"VERIFICATION\", \"order\": 4},\n    {\"id\": \"phase5\", \"name\": \"20-Year Mortgage\", \"phaseCategory\": \"PAYMENT\", \"phaseType\": \"MORTGAGE\", \"order\": 5, \"percentOfPrice\": 90, \"interestRate\": 9.5}\n  ],\n  \"createdAt\": \"2025-01-15T10:25:00.000Z\",\n  \"updatedAt\": \"2025-01-15T10:25:00.000Z\"\n}"
+                        }
+                    ]
                 },
                 {
                     "name": "Get All Payment Methods",
@@ -2155,7 +2475,103 @@
                             ]
                         },
                         "description": "Create a new documentation plan with predefined steps. Only admins can create plans."
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Chidi Lekki - KYC Documentation Plan (Conditional Steps)",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    },
+                                    {
+                                        "key": "x-idempotency-key",
+                                        "value": "adaeze-create-kyc-documentation-plan"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"name\": \"Mortgage KYC Documentation\",\n  \"description\": \"Standard KYC documentation workflow with conditional steps\",\n  \"isActive\": true,\n  \"requiredDocumentTypes\": [\"ID_CARD\", \"BANK_STATEMENT\", \"EMPLOYMENT_LETTER\"],\n  \"steps\": [\n    {\n      \"name\": \"Upload Valid ID\",\n      \"stepType\": \"UPLOAD\",\n      \"order\": 1,\n      \"documentType\": \"ID_CARD\",\n      \"isRequired\": true,\n      \"description\": \"Valid government-issued ID (NIN, Passport, or Driver License)\",\n      \"maxSizeBytes\": 5242880,\n      \"allowedMimeTypes\": [\"image/jpeg\", \"image/png\", \"application/pdf\"],\n      \"requiresManualReview\": true\n    },\n    {\n      \"name\": \"Upload Bank Statements\",\n      \"stepType\": \"UPLOAD\",\n      \"order\": 2,\n      \"documentType\": \"BANK_STATEMENT\",\n      \"isRequired\": true,\n      \"description\": \"Last 6 months bank statements\",\n      \"maxSizeBytes\": 10485760,\n      \"allowedMimeTypes\": [\"application/pdf\"],\n      \"expiryDays\": 90,\n      \"requiresManualReview\": true,\n      \"minFiles\": 3,\n      \"maxFiles\": 6\n    },\n    {\n      \"name\": \"Upload Employment Letter\",\n      \"stepType\": \"UPLOAD\",\n      \"order\": 3,\n      \"documentType\": \"EMPLOYMENT_LETTER\",\n      \"isRequired\": true,\n      \"description\": \"Employment confirmation letter from your employer\",\n      \"maxSizeBytes\": 5242880,\n      \"allowedMimeTypes\": [\"application/pdf\"],\n      \"requiresManualReview\": true\n    },\n    {\n      \"name\": \"Upload Spouse ID\",\n      \"stepType\": \"UPLOAD\",\n      \"order\": 4,\n      \"documentType\": \"SPOUSE_ID\",\n      \"isRequired\": true,\n      \"description\": \"Valid ID for spouse (required for joint mortgage)\",\n      \"maxSizeBytes\": 5242880,\n      \"allowedMimeTypes\": [\"image/jpeg\", \"image/png\", \"application/pdf\"],\n      \"requiresManualReview\": true,\n      \"condition\": {\"questionKey\": \"mortgage_type\", \"operator\": \"EQUALS\", \"value\": \"JOINT\"}\n    },\n    {\n      \"name\": \"Upload Business Registration\",\n      \"stepType\": \"UPLOAD\",\n      \"order\": 5,\n      \"documentType\": \"BUSINESS_REGISTRATION\",\n      \"isRequired\": true,\n      \"description\": \"Business registration certificate (CAC)\",\n      \"maxSizeBytes\": 10485760,\n      \"allowedMimeTypes\": [\"application/pdf\"],\n      \"requiresManualReview\": true,\n      \"condition\": {\"questionKey\": \"employment_status\", \"operator\": \"EQUALS\", \"value\": \"SELF_EMPLOYED\"}\n    },\n    {\n      \"name\": \"Adaeze Reviews Documents\",\n      \"stepType\": \"APPROVAL\",\n      \"order\": 6\n    },\n    {\n      \"name\": \"Lender Uploads Preapproval Letter\",\n      \"stepType\": \"UPLOAD\",\n      \"order\": 7,\n      \"documentType\": \"PREAPPROVAL_LETTER\",\n      \"isRequired\": true,\n      \"description\": \"Preapproval letter from the partner bank confirming mortgage eligibility\",\n      \"maxSizeBytes\": 10485760,\n      \"allowedMimeTypes\": [\"application/pdf\"],\n      \"requiresManualReview\": false,\n      \"metadata\": {\"uploadedBy\": \"LENDER\", \"expiresInDays\": 30}\n    },\n    {\n      \"name\": \"Customer Signs Preapproval Letter\",\n      \"stepType\": \"SIGNATURE\",\n      \"order\": 8\n    }\n  ]\n}"
+                                },
+                                "url": {
+                                    "raw": "{{mortgageServiceUrl}}/documentation-plans",
+                                    "host": [
+                                        "{{mortgageServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "documentation-plans"
+                                    ]
+                                }
+                            },
+                            "status": "Created",
+                            "code": 201,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"id\": \"docplan_kyc_001\",\n  \"tenantId\": \"tenant_001\",\n  \"name\": \"Mortgage KYC Documentation\",\n  \"description\": \"Standard KYC documentation workflow with conditional steps\",\n  \"isActive\": true,\n  \"requiredDocumentTypes\": [\"ID_CARD\", \"BANK_STATEMENT\", \"EMPLOYMENT_LETTER\"],\n  \"steps\": [\n    {\"id\": \"step1\", \"name\": \"Upload Valid ID\", \"stepType\": \"UPLOAD\", \"order\": 1, \"documentType\": \"ID_CARD\"},\n    {\"id\": \"step2\", \"name\": \"Upload Bank Statements\", \"stepType\": \"UPLOAD\", \"order\": 2, \"documentType\": \"BANK_STATEMENT\"},\n    {\"id\": \"step3\", \"name\": \"Upload Employment Letter\", \"stepType\": \"UPLOAD\", \"order\": 3, \"documentType\": \"EMPLOYMENT_LETTER\"},\n    {\"id\": \"step4\", \"name\": \"Upload Spouse ID\", \"stepType\": \"UPLOAD\", \"order\": 4, \"documentType\": \"SPOUSE_ID\", \"condition\": {\"questionKey\": \"mortgage_type\", \"operator\": \"EQUALS\", \"value\": \"JOINT\"}},\n    {\"id\": \"step5\", \"name\": \"Upload Business Registration\", \"stepType\": \"UPLOAD\", \"order\": 5, \"documentType\": \"BUSINESS_REGISTRATION\", \"condition\": {\"questionKey\": \"employment_status\", \"operator\": \"EQUALS\", \"value\": \"SELF_EMPLOYED\"}},\n    {\"id\": \"step6\", \"name\": \"Adaeze Reviews Documents\", \"stepType\": \"APPROVAL\", \"order\": 6},\n    {\"id\": \"step7\", \"name\": \"Lender Uploads Preapproval Letter\", \"stepType\": \"UPLOAD\", \"order\": 7, \"documentType\": \"PREAPPROVAL_LETTER\"},\n    {\"id\": \"step8\", \"name\": \"Customer Signs Preapproval Letter\", \"stepType\": \"SIGNATURE\", \"order\": 8}\n  ],\n  \"createdAt\": \"2025-01-15T10:15:00.000Z\",\n  \"updatedAt\": \"2025-01-15T10:15:00.000Z\"\n}"
+                        },
+                        {
+                            "name": "Chidi Lekki - Final Documentation Plan",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    },
+                                    {
+                                        "key": "x-idempotency-key",
+                                        "value": "adaeze-create-final-documentation-plan"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"name\": \"Final Offer Documentation\",\n  \"description\": \"Final offer letter upload and signature workflow\",\n  \"isActive\": true,\n  \"steps\": [\n    {\n      \"name\": \"Admin Uploads Final Offer\",\n      \"stepType\": \"UPLOAD\",\n      \"order\": 1,\n      \"documentType\": \"FINAL_OFFER\",\n      \"isRequired\": true,\n      \"description\": \"Final offer letter prepared by bank\",\n      \"maxSizeBytes\": 10485760,\n      \"allowedMimeTypes\": [\"application/pdf\"],\n      \"requiresManualReview\": true,\n      \"metadata\": {\"uploadedBy\": \"ADMIN\"}\n    },\n    {\n      \"name\": \"Customer Signs Final Offer\",\n      \"stepType\": \"SIGNATURE\",\n      \"order\": 2\n    }\n  ]\n}"
+                                },
+                                "url": {
+                                    "raw": "{{mortgageServiceUrl}}/documentation-plans",
+                                    "host": [
+                                        "{{mortgageServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "documentation-plans"
+                                    ]
+                                }
+                            },
+                            "status": "Created",
+                            "code": 201,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"id\": \"docplan_final_001\",\n  \"tenantId\": \"tenant_001\",\n  \"name\": \"Final Offer Documentation\",\n  \"description\": \"Final offer letter upload and signature workflow\",\n  \"isActive\": true,\n  \"steps\": [\n    {\"id\": \"step1\", \"name\": \"Admin Uploads Final Offer\", \"stepType\": \"UPLOAD\", \"order\": 1, \"documentType\": \"FINAL_OFFER\"},\n    {\"id\": \"step2\", \"name\": \"Customer Signs Final Offer\", \"stepType\": \"SIGNATURE\", \"order\": 2}\n  ],\n  \"createdAt\": \"2025-01-15T10:20:00.000Z\",\n  \"updatedAt\": \"2025-01-15T10:20:00.000Z\"\n}"
+                        }
+                    ]
                 },
                 {
                     "name": "Get All Documentation Plans",
@@ -2461,7 +2877,56 @@
                             ]
                         },
                         "description": "Create a new application from a payment method. This instantiates all phases and steps from the payment method template."
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Chidi Lekki - ₦85M Mortgage Application",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{customerId}}"
+                                    },
+                                    {
+                                        "key": "x-idempotency-key",
+                                        "value": "chidi-create-application"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"propertyUnitId\": \"{{propertyUnitId}}\",\n  \"paymentMethodId\": \"{{paymentMethodId}}\",\n  \"title\": \"Purchase Agreement - Lekki Gardens Unit 14B\",\n  \"applicationType\": \"MORTGAGE\",\n  \"totalAmount\": 85000000,\n  \"monthlyIncome\": 2500000,\n  \"monthlyExpenses\": 800000,\n  \"applicantAge\": 40,\n  \"selectedMortgageTermMonths\": 240\n}"
+                                },
+                                "url": {
+                                    "raw": "{{mortgageServiceUrl}}/applications",
+                                    "host": [
+                                        "{{mortgageServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "applications"
+                                    ]
+                                }
+                            },
+                            "status": "Created",
+                            "code": 201,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"id\": \"app_chidi_lekki_001\",\n  \"applicationNumber\": \"APP-2025-00001\",\n  \"tenantId\": \"tenant_001\",\n  \"buyerId\": \"customer_chidi_001\",\n  \"propertyUnitId\": \"unit_14b_001\",\n  \"paymentMethodId\": \"pm_10_90_lekki_001\",\n  \"title\": \"Purchase Agreement - Lekki Gardens Unit 14B\",\n  \"applicationType\": \"MORTGAGE\",\n  \"status\": \"DRAFT\",\n  \"totalAmount\": 85000000,\n  \"selectedMortgageTermMonths\": 240,\n  \"phases\": [\n    {\"id\": \"phase1\", \"name\": \"Prequalification\", \"status\": \"NOT_STARTED\", \"phaseAmount\": 0},\n    {\"id\": \"phase2\", \"name\": \"Underwriting & Documentation\", \"status\": \"NOT_STARTED\", \"phaseAmount\": 0},\n    {\"id\": \"phase3\", \"name\": \"10% Downpayment\", \"status\": \"NOT_STARTED\", \"phaseAmount\": 8500000},\n    {\"id\": \"phase4\", \"name\": \"Final Documentation\", \"status\": \"NOT_STARTED\", \"phaseAmount\": 0},\n    {\"id\": \"phase5\", \"name\": \"20-Year Mortgage\", \"status\": \"NOT_STARTED\", \"phaseAmount\": 76500000}\n  ],\n  \"createdAt\": \"2025-01-15T11:00:00.000Z\",\n  \"updatedAt\": \"2025-01-15T11:00:00.000Z\"\n}"
+                        }
+                    ]
                 },
                 {
                     "name": "Get All Applications",
@@ -2654,7 +3119,58 @@
                             ]
                         },
                         "description": "Trigger a state transition on the application.\n\n**Common triggers:**\n- `SUBMIT` - Submit draft for review\n- `APPROVE` - Approve application\n- `ACTIVATE` - Activate application"
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Chidi Lekki - Submit Application",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{customerId}}"
+                                    },
+                                    {
+                                        "key": "x-idempotency-key",
+                                        "value": "chidi-submit-application"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"action\": \"SUBMIT\",\n  \"note\": \"Submitting for processing\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/transition",
+                                    "host": [
+                                        "{{mortgageServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "applications",
+                                        "{{applicationId}}",
+                                        "transition"
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"id\": \"app_chidi_lekki_001\",\n  \"applicationNumber\": \"APP-2025-00001\",\n  \"status\": \"PENDING\",\n  \"previousStatus\": \"DRAFT\",\n  \"note\": \"Submitting for processing\",\n  \"phases\": [\n    {\"id\": \"phase1\", \"name\": \"Prequalification\", \"status\": \"IN_PROGRESS\"},\n    {\"id\": \"phase2\", \"name\": \"Underwriting & Documentation\", \"status\": \"NOT_STARTED\"},\n    {\"id\": \"phase3\", \"name\": \"10% Downpayment\", \"status\": \"NOT_STARTED\"},\n    {\"id\": \"phase4\", \"name\": \"Final Documentation\", \"status\": \"NOT_STARTED\"},\n    {\"id\": \"phase5\", \"name\": \"20-Year Mortgage\", \"status\": \"NOT_STARTED\"}\n  ],\n  \"transitionedAt\": \"2025-01-15T11:05:00.000Z\"\n}"
+                        }
+                    ]
                 },
                 {
                     "name": "Sign Application",
@@ -2682,7 +3198,50 @@
                             ]
                         },
                         "description": "Sign the application. This activates the application if all requirements are met."
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Chidi Lekki - Sign and Activate Application",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{customerId}}"
+                                    },
+                                    {
+                                        "key": "x-idempotency-key",
+                                        "value": "chidi-signs-application"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/sign",
+                                    "host": [
+                                        "{{mortgageServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "applications",
+                                        "{{applicationId}}",
+                                        "sign"
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"id\": \"app_chidi_lekki_001\",\n  \"applicationNumber\": \"APP-2025-00001\",\n  \"status\": \"ACTIVE\",\n  \"signedAt\": \"2025-01-16T12:00:00.000Z\",\n  \"activatedAt\": \"2025-01-16T12:00:00.000Z\",\n  \"property\": {\n    \"unitId\": \"unit_14b_001\",\n    \"address\": \"Lekki Gardens Estate, Unit 14B, Lagos\"\n  },\n  \"financials\": {\n    \"totalAmount\": 85000000,\n    \"downpayment\": 8500000,\n    \"mortgageAmount\": 76500000,\n    \"interestRate\": 9.5,\n    \"termMonths\": 240,\n    \"monthlyPayment\": 715156.25\n  },\n  \"message\": \"Congratulations Chidi! Your mortgage application is now ACTIVE. Your first mortgage payment of ₦715,156.25 is due on 2026-02-01.\"\n}"
+                        }
+                    ]
                 },
                 {
                     "name": "Cancel Application",
@@ -2881,7 +3440,61 @@
                             ]
                         },
                         "description": "Submit questionnaire answers for a QUESTIONNAIRE phase (prequalification, eligibility, etc.).\n\n**Request Body:**\n- `answers`: Array of field answers with `fieldName` (the field key) and `value`\n\n**Response:**\nReturns the updated phase with scoring results:\n- `questionnaire.completedAt`: When answers were submitted\n- `questionnaire.answeredFieldsCount`: Number of fields answered\n- `questionnaire.totalScore`: Calculated score based on scoring rules\n- `questionnaire.passed`: Whether the applicant passed (based on scoring strategy)\n- `questionnaire.autoCompleted`: Whether the phase was auto-completed\n\n**Scoring Strategies:**\n- `MIN_ALL`: All fields must pass their individual validation\n- `SUM`: Total score must meet passing threshold\n- `AVERAGE`: Average score must meet passing threshold\n- `WEIGHTED_SUM`: Weighted total score must meet threshold"
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Chidi Lekki - Prequalification Answers (Age 40, ₦2.5M Income, 20yr Term)",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{customerId}}"
+                                    },
+                                    {
+                                        "key": "x-idempotency-key",
+                                        "value": "chidi-submit-prequalification"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"answers\": [\n    {\"fieldName\": \"applicant_age\", \"value\": \"40\"},\n    {\"fieldName\": \"mortgage_type\", \"value\": \"SINGLE\"},\n    {\"fieldName\": \"employment_status\", \"value\": \"EMPLOYED\"},\n    {\"fieldName\": \"monthly_income\", \"value\": \"2500000\"},\n    {\"fieldName\": \"monthly_expenses\", \"value\": \"800000\"},\n    {\"fieldName\": \"desired_term_years\", \"value\": \"20\"}\n  ]\n}"
+                                },
+                                "url": {
+                                    "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{prequalificationPhaseId}}/questionnaire/submit",
+                                    "host": [
+                                        "{{mortgageServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "applications",
+                                        "{{applicationId}}",
+                                        "phases",
+                                        "{{prequalificationPhaseId}}",
+                                        "questionnaire",
+                                        "submit"
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"id\": \"phase1\",\n  \"name\": \"Prequalification\",\n  \"status\": \"COMPLETED\",\n  \"phaseCategory\": \"QUESTIONNAIRE\",\n  \"questionnaire\": {\n    \"completedAt\": \"2025-01-15T11:10:00.000Z\",\n    \"answeredFieldsCount\": 6,\n    \"totalScore\": 100,\n    \"passed\": true,\n    \"autoCompleted\": true,\n    \"answers\": {\n      \"applicant_age\": \"40\",\n      \"mortgage_type\": \"SINGLE\",\n      \"employment_status\": \"EMPLOYED\",\n      \"monthly_income\": \"2500000\",\n      \"monthly_expenses\": \"800000\",\n      \"desired_term_years\": \"20\"\n    }\n  },\n  \"message\": \"Prequalification passed. Chidi qualifies for max 20-year term (retirement age 60 - current age 40). KYC phase auto-activated with conditional steps evaluated.\"\n}"
+                        }
+                    ]
                 },
                 {
                     "name": "Generate Installments",
@@ -2919,7 +3532,111 @@
                             ]
                         },
                         "description": "Generate installment schedule for a payment phase."
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Chidi Lekki - Generate Downpayment Installment (₦8.5M)",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{customerId}}"
+                                    },
+                                    {
+                                        "key": "x-idempotency-key",
+                                        "value": "chidi-generate-downpayment"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"startDate\": \"2026-01-16T00:00:00.000Z\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{downpaymentPhaseId}}/installments",
+                                    "host": [
+                                        "{{mortgageServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "applications",
+                                        "{{applicationId}}",
+                                        "phases",
+                                        "{{downpaymentPhaseId}}",
+                                        "installments"
+                                    ]
+                                }
+                            },
+                            "status": "Created",
+                            "code": 201,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"phaseId\": \"phase3\",\n  \"phaseName\": \"10% Downpayment\",\n  \"totalAmount\": 8500000,\n  \"numberOfInstallments\": 1,\n  \"installments\": [\n    {\n      \"id\": \"inst_downpayment_001\",\n      \"number\": 1,\n      \"amount\": 8500000,\n      \"principal\": 8500000,\n      \"interest\": 0,\n      \"dueDate\": \"2026-01-16T00:00:00.000Z\",\n      \"status\": \"PENDING\"\n    }\n  ]\n}"
+                        },
+                        {
+                            "name": "Chidi Lekki - Generate 240 Mortgage Installments (₦76.5M @ 9.5%)",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{customerId}}"
+                                    },
+                                    {
+                                        "key": "x-idempotency-key",
+                                        "value": "chidi-generate-mortgage-installments"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"startDate\": \"2026-02-01T00:00:00.000Z\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{mortgagePhaseId}}/installments",
+                                    "host": [
+                                        "{{mortgageServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "applications",
+                                        "{{applicationId}}",
+                                        "phases",
+                                        "{{mortgagePhaseId}}",
+                                        "installments"
+                                    ]
+                                }
+                            },
+                            "status": "Created",
+                            "code": 201,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"phaseId\": \"phase5\",\n  \"phaseName\": \"20-Year Mortgage\",\n  \"totalAmount\": 76500000,\n  \"numberOfInstallments\": 240,\n  \"interestRate\": 9.5,\n  \"monthlyPayment\": 715156.25,\n  \"totalInterest\": 95137500,\n  \"totalPayable\": 171637500,\n  \"installments\": [\n    {\"id\": \"inst_mortgage_001\", \"number\": 1, \"amount\": 715156.25, \"principal\": 110093.75, \"interest\": 605062.50, \"dueDate\": \"2026-02-01T00:00:00.000Z\", \"status\": \"PENDING\"},\n    {\"id\": \"inst_mortgage_002\", \"number\": 2, \"amount\": 715156.25, \"principal\": 110964.68, \"interest\": 604191.57, \"dueDate\": \"2026-03-01T00:00:00.000Z\", \"status\": \"PENDING\"},\n    \"...238 more installments...\"\n  ],\n  \"message\": \"Generated 240 monthly installments from Feb 2026 to Jan 2046\"\n}"
+                        }
+                    ]
                 },
                 {
                     "name": "Complete Step",
@@ -3074,7 +3791,111 @@
                             ]
                         },
                         "description": "Upload a document for a phase. The URL should be a pre-signed S3 URL where the document was uploaded."
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Chidi Lekki - Upload ID Card",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{customerId}}"
+                                    },
+                                    {
+                                        "key": "x-idempotency-key",
+                                        "value": "chidi-application-doc-ID_CARD"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"documentType\": \"ID_CARD\",\n  \"url\": \"https://s3.amazonaws.com/qshelter/chidi/id.pdf\",\n  \"fileName\": \"id.pdf\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{documentationPhaseId}}/documents",
+                                    "host": [
+                                        "{{mortgageServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "applications",
+                                        "{{applicationId}}",
+                                        "phases",
+                                        "{{documentationPhaseId}}",
+                                        "documents"
+                                    ]
+                                }
+                            },
+                            "status": "Created",
+                            "code": 201,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"id\": \"doc_chidi_id_001\",\n  \"applicationId\": \"app_chidi_lekki_001\",\n  \"phaseId\": \"phase2\",\n  \"stepId\": \"step1\",\n  \"documentType\": \"ID_CARD\",\n  \"fileName\": \"id.pdf\",\n  \"url\": \"https://s3.amazonaws.com/qshelter/chidi/id.pdf\",\n  \"status\": \"PENDING_REVIEW\",\n  \"uploadedAt\": \"2025-01-15T11:15:00.000Z\"\n}"
+                        },
+                        {
+                            "name": "Chidi Lekki - Upload Bank Statement",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{customerId}}"
+                                    },
+                                    {
+                                        "key": "x-idempotency-key",
+                                        "value": "chidi-application-doc-BANK_STATEMENT"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"documentType\": \"BANK_STATEMENT\",\n  \"url\": \"https://s3.amazonaws.com/qshelter/chidi/bank.pdf\",\n  \"fileName\": \"bank.pdf\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{documentationPhaseId}}/documents",
+                                    "host": [
+                                        "{{mortgageServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "applications",
+                                        "{{applicationId}}",
+                                        "phases",
+                                        "{{documentationPhaseId}}",
+                                        "documents"
+                                    ]
+                                }
+                            },
+                            "status": "Created",
+                            "code": 201,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"id\": \"doc_chidi_bank_001\",\n  \"applicationId\": \"app_chidi_lekki_001\",\n  \"phaseId\": \"phase2\",\n  \"stepId\": \"step2\",\n  \"documentType\": \"BANK_STATEMENT\",\n  \"fileName\": \"bank.pdf\",\n  \"url\": \"https://s3.amazonaws.com/qshelter/chidi/bank.pdf\",\n  \"status\": \"PENDING_REVIEW\",\n  \"uploadedAt\": \"2025-01-15T11:16:00.000Z\"\n}"
+                        }
+                    ]
                 },
                 {
                     "name": "Review Document",
@@ -3112,7 +3933,107 @@
                             ]
                         },
                         "description": "Review a document.\n\n**Status options:**\n- `APPROVED`\n- `REJECTED`"
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Chidi Lekki - Adaeze Approves ID Card",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    },
+                                    {
+                                        "key": "x-idempotency-key",
+                                        "value": "adaeze-approve-doc-id"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"status\": \"APPROVED\",\n  \"note\": \"NIN verified against NIMC database\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/documents/{{documentId}}/review",
+                                    "host": [
+                                        "{{mortgageServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "applications",
+                                        "{{applicationId}}",
+                                        "documents",
+                                        "{{documentId}}",
+                                        "review"
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"id\": \"doc_chidi_id_001\",\n  \"documentType\": \"ID_CARD\",\n  \"status\": \"APPROVED\",\n  \"reviewedBy\": \"admin_adaeze_001\",\n  \"reviewNote\": \"NIN verified against NIMC database\",\n  \"reviewedAt\": \"2025-01-15T11:20:00.000Z\"\n}"
+                        },
+                        {
+                            "name": "Chidi Lekki - Document Rejection Example",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{adminUserId}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"status\": \"REJECTED\",\n  \"note\": \"Bank statement is older than 90 days. Please upload recent statements.\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/documents/{{documentId}}/review",
+                                    "host": [
+                                        "{{mortgageServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "applications",
+                                        "{{applicationId}}",
+                                        "documents",
+                                        "{{documentId}}",
+                                        "review"
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"id\": \"doc_example_001\",\n  \"documentType\": \"BANK_STATEMENT\",\n  \"status\": \"REJECTED\",\n  \"reviewedBy\": \"admin_adaeze_001\",\n  \"reviewNote\": \"Bank statement is older than 90 days. Please upload recent statements.\",\n  \"reviewedAt\": \"2025-01-15T11:22:00.000Z\"\n}"
+                        }
+                    ]
                 },
                 {
                     "name": "Complete Phase",
@@ -3220,7 +4141,58 @@
                             ]
                         },
                         "description": "Create a new payment record.\n\n**Payment Methods:**\n- `BANK_TRANSFER`\n- `CREDIT_CARD`\n- `WALLET`\n- `CASH`\n- `CHECK`"
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Chidi Lekki - Record ₦8.5M Downpayment",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{customerId}}"
+                                    },
+                                    {
+                                        "key": "x-idempotency-key",
+                                        "value": "chidi-downpayment"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"phaseId\": \"{{downpaymentPhaseId}}\",\n  \"installmentId\": \"{{installmentId}}\",\n  \"amount\": 8500000,\n  \"paymentMethod\": \"BANK_TRANSFER\",\n  \"externalReference\": \"chidi-downpayment-ref\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{mortgageServiceUrl}}/applications/{{applicationId}}/payments",
+                                    "host": [
+                                        "{{mortgageServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "applications",
+                                        "{{applicationId}}",
+                                        "payments"
+                                    ]
+                                }
+                            },
+                            "status": "Created",
+                            "code": 201,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"id\": \"payment_chidi_downpayment_001\",\n  \"applicationId\": \"app_chidi_lekki_001\",\n  \"phaseId\": \"phase3\",\n  \"installmentId\": \"inst_downpayment_001\",\n  \"amount\": 8500000,\n  \"paymentMethod\": \"BANK_TRANSFER\",\n  \"status\": \"PENDING\",\n  \"reference\": \"PAY-2025-00001\",\n  \"externalReference\": \"chidi-downpayment-ref\",\n  \"createdAt\": \"2025-01-16T09:00:00.000Z\"\n}"
+                        }
+                    ]
                 },
                 {
                     "name": "Get Payments for Application",
@@ -3311,7 +4283,58 @@
                             ]
                         },
                         "description": "Process a payment callback from the payment gateway.\n\n**Status options:**\n- `COMPLETED`\n- `FAILED`"
-                    }
+                    },
+                    "response": [
+                        {
+                            "name": "Chidi Lekki - Confirm Downpayment Completed",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-tenant-id",
+                                        "value": "{{tenantId}}"
+                                    },
+                                    {
+                                        "key": "x-user-id",
+                                        "value": "{{customerId}}"
+                                    },
+                                    {
+                                        "key": "x-idempotency-key",
+                                        "value": "process-chidi-downpayment"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"reference\": \"{{paymentReference}}\",\n  \"status\": \"COMPLETED\",\n  \"gatewayTransactionId\": \"chidi-downpayment-gateway\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{mortgageServiceUrl}}/applications/payments/process",
+                                    "host": [
+                                        "{{mortgageServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "applications",
+                                        "payments",
+                                        "process"
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"id\": \"payment_chidi_downpayment_001\",\n  \"status\": \"COMPLETED\",\n  \"processedAt\": \"2025-01-16T09:05:00.000Z\",\n  \"gatewayTransactionId\": \"chidi-downpayment-gateway\",\n  \"phaseCompleted\": true,\n  \"nextPhase\": {\n    \"id\": \"phase4\",\n    \"name\": \"Final Documentation\",\n    \"status\": \"IN_PROGRESS\"\n  },\n  \"message\": \"Downpayment of ₦8,500,000 confirmed. Final Documentation phase auto-activated.\"\n}"
+                        }
+                    ]
                 },
                 {
                     "name": "Refund Payment",
