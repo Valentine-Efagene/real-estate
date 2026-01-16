@@ -3,6 +3,46 @@ import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
 
 extendZodWithOpenApi(z);
 
+// Condition operator enum for scoring rules (must match Prisma ConditionOperator)
+const ConditionOperatorEnum = z.enum([
+    'EQUALS',
+    'NOT_EQUALS',
+    'IN',
+    'NOT_IN',
+    'GREATER_THAN',
+    'LESS_THAN',
+    'GREATER_THAN_OR_EQUAL',
+    'LESS_THAN_OR_EQUAL',
+    'EXISTS',
+    'NOT_EXISTS',
+]);
+
+// New array-based scoring rule schema
+const ScoringRuleSchema = z.object({
+    operator: ConditionOperatorEnum.openapi({
+        example: 'GREATER_THAN_OR_EQUAL',
+        description: 'The comparison operator',
+    }),
+    value: z.union([z.number(), z.boolean(), z.string()]).openapi({
+        example: 3000000,
+        description: 'The value to compare against (number for numeric comparisons, boolean/string for EQUALS/NOT_EQUALS)',
+    }),
+    score: z.number().openapi({
+        example: 100,
+        description: 'The score to assign if the condition is met',
+    }),
+});
+
+// Scoring rules: array of condition-based rules
+const ScoringRulesSchema = z.array(ScoringRuleSchema).openapi({
+    example: [
+        { operator: 'GREATER_THAN_OR_EQUAL', value: 3000000, score: 100 },
+        { operator: 'EQUALS', value: true, score: 10 },
+        { operator: 'EQUALS', value: 'employed', score: 100 },
+    ],
+    description: 'Scoring rules - array of {operator, value, score}. First matching rule wins. Supports number, boolean, and string values.',
+});
+
 // Enums matching Prisma schema
 export const QuestionTypeEnum = z.enum([
     'TEXT',
@@ -35,6 +75,22 @@ export const QuestionnaireCategoryEnum = z.enum([
     'PROPERTY_INTENT',
     'RISK_ASSESSMENT',
     'COMPLIANCE',
+    'CUSTOM',
+]);
+
+// Category for individual questions within a questionnaire
+export const QuestionCategoryEnum = z.enum([
+    'ELIGIBILITY',
+    'EMPLOYMENT',
+    'INCOME',
+    'AFFORDABILITY',
+    'EXPENSES',
+    'APPLICATION_TYPE',
+    'PERSONAL',
+    'PREFERENCES',
+    'PROPERTY',
+    'CREDIT',
+    'ASSETS',
     'CUSTOM',
 ]);
 
@@ -80,10 +136,7 @@ export const QuestionnairePlanQuestionSchema = z.object({
         example: 2,
         description: 'Weight multiplier for scoring',
     }),
-    scoringRules: z.record(z.string(), z.number()).optional().openapi({
-        example: { employed: 10, self_employed: 7, unemployed: 0 },
-        description: 'Scoring rules mapping answer values to scores',
-    }),
+    scoringRules: ScoringRulesSchema.optional(),
     showIf: z.object({
         questionKey: z.string(),
         equals: z.union([z.string(), z.number(), z.boolean()]).optional(),
@@ -95,9 +148,9 @@ export const QuestionnairePlanQuestionSchema = z.object({
         example: { questionKey: 'employment_status', equals: 'employed' },
         description: 'Conditional logic for showing this question',
     }),
-    category: z.string().optional().openapi({
-        example: 'income',
-        description: 'Category for grouping questions',
+    category: QuestionCategoryEnum.optional().openapi({
+        example: 'INCOME',
+        description: 'Category for grouping questions (e.g., ELIGIBILITY, EMPLOYMENT, INCOME, AFFORDABILITY)',
     }),
 }).openapi('QuestionnairePlanQuestion');
 

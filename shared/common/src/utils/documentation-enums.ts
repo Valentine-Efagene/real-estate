@@ -17,6 +17,8 @@ export const UPLOADED_BY = {
     DEVELOPER: 'DEVELOPER',
     /** Document is uploaded by the system (auto-generated) */
     SYSTEM: 'SYSTEM',
+    /** Document is uploaded by a legal officer */
+    LEGAL: 'LEGAL',
 } as const;
 
 /**

@@ -1,5 +1,5 @@
 import { prisma as defaultPrisma } from '../lib/prisma';
-import { AppError, PrismaClient } from '@valentine-efagene/qshelter-common';
+import { AppError, PrismaClient, ConditionOperator, ScoringRule } from '@valentine-efagene/qshelter-common';
 import type {
     CreateQuestionnairePlanInput,
     UpdateQuestionnairePlanInput,
@@ -366,24 +366,66 @@ export function createQuestionnairePlanService(prisma: AnyPrismaClient = default
             const weight = question.scoreWeight ?? 1;
             let score = 0;
 
-            // Calculate score based on scoring rules
-            if (question.scoringRules && answer !== undefined) {
-                const rules = question.scoringRules as Record<string, number>;
-                const answerKey = String(answer);
+            // Calculate score based on scoring rules (array-based format)
+            if (question.scoringRules && Array.isArray(question.scoringRules) && answer !== undefined) {
+                const rules = question.scoringRules as unknown as ScoringRule[];
 
-                if (rules[answerKey] !== undefined) {
-                    score = rules[answerKey];
-                } else if (typeof answer === 'number') {
-                    // Check for range-based scoring
-                    for (const [key, value] of Object.entries(rules)) {
-                        if (key.startsWith('>=') && answer >= parseFloat(key.slice(2))) {
-                            score = Math.max(score, value);
-                        } else if (key.startsWith('<=') && answer <= parseFloat(key.slice(2))) {
-                            score = Math.max(score, value);
-                        } else if (key.startsWith('>') && answer > parseFloat(key.slice(1))) {
-                            score = Math.max(score, value);
-                        } else if (key.startsWith('<') && answer < parseFloat(key.slice(1))) {
-                            score = Math.max(score, value);
+                // First matching rule wins
+                for (const rule of rules) {
+                    if (rule.operator && rule.value !== undefined && rule.score !== undefined) {
+                        let matches = false;
+                        const ruleValue = rule.value;
+
+                        // For numeric operators, convert to numbers
+                        if (typeof ruleValue === 'number') {
+                            const numericAnswer = Number(answer);
+                            switch (rule.operator) {
+                                case ConditionOperator.GREATER_THAN:
+                                    matches = numericAnswer > ruleValue;
+                                    break;
+                                case ConditionOperator.GREATER_THAN_OR_EQUAL:
+                                    matches = numericAnswer >= ruleValue;
+                                    break;
+                                case ConditionOperator.LESS_THAN:
+                                    matches = numericAnswer < ruleValue;
+                                    break;
+                                case ConditionOperator.LESS_THAN_OR_EQUAL:
+                                    matches = numericAnswer <= ruleValue;
+                                    break;
+                                case ConditionOperator.EQUALS:
+                                    matches = numericAnswer === ruleValue;
+                                    break;
+                                case ConditionOperator.NOT_EQUALS:
+                                    matches = numericAnswer !== ruleValue;
+                                    break;
+                            }
+                        } else if (typeof ruleValue === 'boolean') {
+                            // Boolean comparison
+                            const boolAnswer = answer === true || answer === 'true' || answer === 1;
+                            switch (rule.operator) {
+                                case ConditionOperator.EQUALS:
+                                    matches = boolAnswer === ruleValue;
+                                    break;
+                                case ConditionOperator.NOT_EQUALS:
+                                    matches = boolAnswer !== ruleValue;
+                                    break;
+                            }
+                        } else if (typeof ruleValue === 'string') {
+                            // String comparison
+                            const stringAnswer = String(answer);
+                            switch (rule.operator) {
+                                case ConditionOperator.EQUALS:
+                                    matches = stringAnswer === ruleValue;
+                                    break;
+                                case ConditionOperator.NOT_EQUALS:
+                                    matches = stringAnswer !== ruleValue;
+                                    break;
+                            }
+                        }
+
+                        if (matches) {
+                            score = rule.score;
+                            break; // First match wins
                         }
                     }
                 }
@@ -401,9 +443,9 @@ export function createQuestionnairePlanService(prisma: AnyPrismaClient = default
 
             // Max possible score is the highest score in scoring rules or options
             let maxQuestionScore = 0;
-            if (question.scoringRules) {
-                const rules = question.scoringRules as Record<string, number>;
-                maxQuestionScore = Math.max(...Object.values(rules), 0);
+            if (question.scoringRules && Array.isArray(question.scoringRules)) {
+                const rules = question.scoringRules as unknown as ScoringRule[];
+                maxQuestionScore = Math.max(...rules.map(r => r.score), 0);
             } else if (question.options) {
                 const options = question.options as Array<{ value: string; label: string; score?: number }>;
                 maxQuestionScore = Math.max(...options.map(o => o.score ?? 0), 0);

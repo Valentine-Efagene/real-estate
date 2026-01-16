@@ -6919,8 +6919,7 @@ export const QuestionnairePlanQuestionOrderByRelevanceFieldEnum = {
   questionnairePlanId: 'questionnairePlanId',
   questionKey: 'questionKey',
   questionText: 'questionText',
-  helpText: 'helpText',
-  category: 'category'
+  helpText: 'helpText'
 } as const
 
 export type QuestionnairePlanQuestionOrderByRelevanceFieldEnum = (typeof QuestionnairePlanQuestionOrderByRelevanceFieldEnum)[keyof typeof QuestionnairePlanQuestionOrderByRelevanceFieldEnum]
@@ -7560,6 +7559,13 @@ export type EnumQuestionnaireCategoryFieldRefInput<$PrismaModel> = FieldRefInput
  * Reference to a field of type 'QuestionType'
  */
 export type EnumQuestionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QuestionType'>
+    
+
+
+/**
+ * Reference to a field of type 'QuestionCategory'
+ */
+export type EnumQuestionCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QuestionCategory'>
     
 
 

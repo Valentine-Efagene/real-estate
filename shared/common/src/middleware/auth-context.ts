@@ -244,6 +244,8 @@ export const ROLES = {
     DEVELOPER: 'DEVELOPER',
     /** Bank/financial institution representatives who upload preapproval and mortgage offer letters */
     LENDER: 'LENDER',
+    /** Legal officers who upload final offer letters and handle legal documentation */
+    LEGAL: 'LEGAL',
 } as const;
 
 export type RoleName = (typeof ROLES)[keyof typeof ROLES];

@@ -12,6 +12,8 @@ import {
     StepActionStatus,
     NextActor,
     ActionCategory,
+    ConditionOperator,
+    ScoringRule,
 } from '@valentine-efagene/qshelter-common';
 import { v4 as uuidv4 } from 'uuid';
 import type {
@@ -2215,40 +2217,66 @@ class ApplicationPhaseService {
             let fieldScore = 0;
             let fieldPassed = true;
 
-            if (question?.scoringRules) {
-                const rules = question.scoringRules as Record<string, any>;
+            if (question?.scoringRules && Array.isArray(question.scoringRules)) {
+                const rules = question.scoringRules as unknown as ScoringRule[];
 
-                // Handle different scoring rule types
-                if (typeof rules === 'object') {
-                    // Direct value mapping: { "employed": 10, "unemployed": 0 }
-                    if (rules[String(answer)] !== undefined) {
-                        fieldScore = Number(rules[String(answer)]) || 0;
-                    }
-                    // Range-based scoring: { min: 0, max: 100, minScore: 0, maxScore: 10 }
-                    else if (rules.min !== undefined && rules.max !== undefined && typeof answer === 'number') {
-                        const value = Number(answer);
-                        if (value >= rules.min && value <= rules.max) {
-                            fieldScore = rules.score || 10;
-                        } else {
-                            fieldPassed = false;
+                // First matching rule wins
+                for (const rule of rules) {
+                    if (rule.operator && rule.value !== undefined && rule.score !== undefined) {
+                        let matches = false;
+                        const ruleValue = rule.value;
+
+                        // For numeric operators, convert to numbers
+                        if (typeof ruleValue === 'number') {
+                            const numericAnswer = Number(answer);
+                            switch (rule.operator) {
+                                case ConditionOperator.GREATER_THAN:
+                                    matches = numericAnswer > ruleValue;
+                                    break;
+                                case ConditionOperator.GREATER_THAN_OR_EQUAL:
+                                    matches = numericAnswer >= ruleValue;
+                                    break;
+                                case ConditionOperator.LESS_THAN:
+                                    matches = numericAnswer < ruleValue;
+                                    break;
+                                case ConditionOperator.LESS_THAN_OR_EQUAL:
+                                    matches = numericAnswer <= ruleValue;
+                                    break;
+                                case ConditionOperator.EQUALS:
+                                    matches = numericAnswer === ruleValue;
+                                    break;
+                                case ConditionOperator.NOT_EQUALS:
+                                    matches = numericAnswer !== ruleValue;
+                                    break;
+                            }
+                        } else if (typeof ruleValue === 'boolean') {
+                            // Boolean comparison
+                            const boolAnswer = answer === true || answer === 'true' || answer === 1;
+                            switch (rule.operator) {
+                                case ConditionOperator.EQUALS:
+                                    matches = boolAnswer === ruleValue;
+                                    break;
+                                case ConditionOperator.NOT_EQUALS:
+                                    matches = boolAnswer !== ruleValue;
+                                    break;
+                            }
+                        } else if (typeof ruleValue === 'string') {
+                            // String comparison
+                            const stringAnswer = String(answer);
+                            switch (rule.operator) {
+                                case ConditionOperator.EQUALS:
+                                    matches = stringAnswer === ruleValue;
+                                    break;
+                                case ConditionOperator.NOT_EQUALS:
+                                    matches = stringAnswer !== ruleValue;
+                                    break;
+                            }
                         }
-                    }
-                    // Pass/fail threshold: { minValue: 18, score: 10 }
-                    else if (rules.minValue !== undefined) {
-                        const value = Number(answer);
-                        if (value >= rules.minValue) {
-                            fieldScore = rules.score || 10;
-                        } else {
-                            fieldPassed = false;
-                        }
-                    }
-                    // Max value threshold: { maxValue: 60, score: 10 }
-                    else if (rules.maxValue !== undefined) {
-                        const value = Number(answer);
-                        if (value <= rules.maxValue) {
-                            fieldScore = rules.score || 10;
-                        } else {
-                            fieldPassed = false;
+
+                        if (matches) {
+                            fieldScore = rule.score;
+                            fieldPassed = rule.score > 0;
+                            break; // First match wins
                         }
                     }
                 }

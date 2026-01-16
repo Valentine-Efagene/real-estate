@@ -1357,14 +1357,18 @@ model QuestionnairePlanQuestion {
 
   // Scoring
   scoreWeight  Int   @default(1) // Multiplier for this question's score
-  scoringRules Json? // { "employed": 10, "self_employed": 7, "unemployed": 0 } or ranges
+  // ScoringRules format: Array of { operator: ConditionOperator, value: number, score: number }
+  // First matching rule wins. Example:
+  // [{ operator: "GREATER_THAN_OR_EQUAL", value: 3000000, score: 100 },
+  //  { operator: "GREATER_THAN_OR_EQUAL", value: 2000000, score: 80 }]
+  scoringRules Json?
 
   // Conditional logic (branching)
   // { "questionKey": "employment_status", "equals": "employed" }
   showIf Json?
 
   // Metadata for grouping
-  category String? // Group questions (e.g., "income", "employment", "property")
+  category QuestionCategory? // Group questions by topic
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -1721,6 +1725,23 @@ enum QuestionnaireCategory {
   RISK_ASSESSMENT // Credit/risk questions
   COMPLIANCE // KYC/AML questions
   CUSTOM
+}
+
+/// Category for individual questions within a questionnaire
+/// Used to group questions by topic for UI/UX and scoring
+enum QuestionCategory {
+  ELIGIBILITY // Age, citizenship, legal status
+  EMPLOYMENT // Employment status, employer details
+  INCOME // Salary, bonuses, other income
+  AFFORDABILITY // Income vs expenses, debt-to-income
+  EXPENSES // Monthly expenses, existing debts
+  APPLICATION_TYPE // Type of mortgage/purchase (single, joint)
+  PERSONAL // Marital status, dependents, contact info
+  PREFERENCES // Preferred terms, property type preferences
+  PROPERTY // Property-related questions
+  CREDIT // Credit history, existing loans
+  ASSETS // Savings, investments, other assets
+  CUSTOM // Custom/uncategorized questions
 }
 
 // Questionnaire field template within a QUESTIONNAIRE phase

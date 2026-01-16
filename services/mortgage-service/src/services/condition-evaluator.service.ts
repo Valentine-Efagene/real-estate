@@ -154,9 +154,19 @@ export function createConditionEvaluatorService(prisma: any) {
         const answers: QuestionnaireAnswers = {};
 
         for (const field of questionnairePhase.fields) {
-            // field.name is the questionKey, field.value is the answer
-            if (field.value !== null && field.value !== undefined) {
-                answers[field.name] = field.value;
+            // field.name is the questionKey, field.answer is the user's answer (JSON field)
+            if (field.answer !== null && field.answer !== undefined) {
+                // answer is stored as JSON, which may be a string like '"SINGLE"' or a raw value
+                const answer = field.answer;
+                if (typeof answer === 'string' && answer.startsWith('"') && answer.endsWith('"')) {
+                    try {
+                        answers[field.name] = JSON.parse(answer);
+                    } catch {
+                        answers[field.name] = answer;
+                    }
+                } else {
+                    answers[field.name] = answer;
+                }
             }
         }
 
@@ -199,10 +209,24 @@ export function createConditionEvaluatorService(prisma: any) {
         }
 
         // Build answers map from questionnaire fields
+        // QuestionnaireField uses 'answer' (JSON field) not 'value'
         const answers: QuestionnaireAnswers = {};
         for (const field of docPhase.sourceQuestionnairePhase.fields) {
-            if (field.value !== null && field.value !== undefined) {
-                answers[field.name] = field.value;
+            if (field.answer !== null && field.answer !== undefined) {
+                // answer is stored as JSON, which may be a string like '"SINGLE"' or a raw value
+                // We need to handle both JSON-stringified strings and raw values
+                const answer = field.answer;
+                // If it's a string that looks like a JSON-encoded string (starts/ends with quotes)
+                // we parse it, otherwise use as-is
+                if (typeof answer === 'string' && answer.startsWith('"') && answer.endsWith('"')) {
+                    try {
+                        answers[field.name] = JSON.parse(answer);
+                    } catch {
+                        answers[field.name] = answer;
+                    }
+                } else {
+                    answers[field.name] = answer;
+                }
             }
         }
 

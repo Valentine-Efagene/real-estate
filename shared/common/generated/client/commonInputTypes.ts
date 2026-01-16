@@ -562,6 +562,13 @@ export type EnumQuestionTypeFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumQuestionTypeFilter<$PrismaModel> | $Enums.QuestionType
 }
 
+export type EnumQuestionCategoryNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.QuestionCategory | Prisma.EnumQuestionCategoryFieldRefInput<$PrismaModel> | null
+  in?: $Enums.QuestionCategory[] | null
+  notIn?: $Enums.QuestionCategory[] | null
+  not?: Prisma.NestedEnumQuestionCategoryNullableFilter<$PrismaModel> | $Enums.QuestionCategory | null
+}
+
 export type EnumQuestionTypeWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.QuestionType | Prisma.EnumQuestionTypeFieldRefInput<$PrismaModel>
   in?: $Enums.QuestionType[]
@@ -570,6 +577,16 @@ export type EnumQuestionTypeWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumQuestionTypeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumQuestionTypeFilter<$PrismaModel>
+}
+
+export type EnumQuestionCategoryNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.QuestionCategory | Prisma.EnumQuestionCategoryFieldRefInput<$PrismaModel> | null
+  in?: $Enums.QuestionCategory[] | null
+  notIn?: $Enums.QuestionCategory[] | null
+  not?: Prisma.NestedEnumQuestionCategoryNullableWithAggregatesFilter<$PrismaModel> | $Enums.QuestionCategory | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumQuestionCategoryNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumQuestionCategoryNullableFilter<$PrismaModel>
 }
 
 export type EnumPaymentFrequencyFilter<$PrismaModel = never> = {
@@ -1703,6 +1720,13 @@ export type NestedEnumQuestionTypeFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumQuestionTypeFilter<$PrismaModel> | $Enums.QuestionType
 }
 
+export type NestedEnumQuestionCategoryNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.QuestionCategory | Prisma.EnumQuestionCategoryFieldRefInput<$PrismaModel> | null
+  in?: $Enums.QuestionCategory[] | null
+  notIn?: $Enums.QuestionCategory[] | null
+  not?: Prisma.NestedEnumQuestionCategoryNullableFilter<$PrismaModel> | $Enums.QuestionCategory | null
+}
+
 export type NestedEnumQuestionTypeWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.QuestionType | Prisma.EnumQuestionTypeFieldRefInput<$PrismaModel>
   in?: $Enums.QuestionType[]
@@ -1711,6 +1735,16 @@ export type NestedEnumQuestionTypeWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumQuestionTypeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumQuestionTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumQuestionCategoryNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.QuestionCategory | Prisma.EnumQuestionCategoryFieldRefInput<$PrismaModel> | null
+  in?: $Enums.QuestionCategory[] | null
+  notIn?: $Enums.QuestionCategory[] | null
+  not?: Prisma.NestedEnumQuestionCategoryNullableWithAggregatesFilter<$PrismaModel> | $Enums.QuestionCategory | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumQuestionCategoryNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumQuestionCategoryNullableFilter<$PrismaModel>
 }
 
 export type NestedEnumPaymentFrequencyFilter<$PrismaModel = never> = {

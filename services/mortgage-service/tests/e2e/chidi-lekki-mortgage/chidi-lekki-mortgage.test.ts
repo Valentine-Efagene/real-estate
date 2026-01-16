@@ -3,7 +3,7 @@
 import { api, prisma, cleanupTestData } from '../../setup.js';
 import { faker } from '@faker-js/faker';
 import { randomUUID } from 'crypto';
-import { mockAuthHeaders, ROLES, ConditionOperator, UPLOADED_BY } from '@valentine-efagene/qshelter-common';
+import { mockAuthHeaders, ROLES, ConditionOperator, UPLOADED_BY, QuestionCategory } from '@valentine-efagene/qshelter-common';
 
 // Helper functions for auth headers with proper roles
 function adminHeaders(userId: string, tenantId: string) {
@@ -335,9 +335,12 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                             isRequired: true,
                             validationRules: { min: 18, max: 59 },
                             // Score 100 if age allows at least 5 years mortgage (age <= 55)
-                            scoringRules: { '<=55': 100, '>55': 0 },
+                            scoringRules: [
+                                { operator: ConditionOperator.LESS_THAN_OR_EQUAL, value: 55, score: 100 },
+                                { operator: ConditionOperator.GREATER_THAN, value: 55, score: 0 },
+                            ],
                             scoreWeight: 1,
-                            category: 'eligibility',
+                            category: QuestionCategory.ELIGIBILITY,
                         },
                         {
                             questionKey: 'mortgage_type',
@@ -351,7 +354,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                                 { value: 'JOINT', label: 'Joint (With Spouse)', score: 100 },
                             ],
                             scoreWeight: 0, // No scoring impact, used for document conditions
-                            category: 'application_type',
+                            category: QuestionCategory.APPLICATION_TYPE,
                         },
                         {
                             questionKey: 'employment_status',
@@ -367,7 +370,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                                 { value: 'RETIRED', label: 'Retired', score: 60 },
                             ],
                             scoreWeight: 1,
-                            category: 'employment',
+                            category: QuestionCategory.EMPLOYMENT,
                         },
                         {
                             questionKey: 'monthly_income',
@@ -378,9 +381,12 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                             isRequired: true,
                             validationRules: { min: 0 },
                             // Score 100 if income >= ₦500,000 (reasonable for mortgage)
-                            scoringRules: { '>=500000': 100, '<500000': 0 },
+                            scoringRules: [
+                                { operator: ConditionOperator.GREATER_THAN_OR_EQUAL, value: 500000, score: 100 },
+                                { operator: ConditionOperator.LESS_THAN, value: 500000, score: 0 },
+                            ],
                             scoreWeight: 1,
-                            category: 'affordability',
+                            category: QuestionCategory.AFFORDABILITY,
                         },
                         {
                             questionKey: 'monthly_expenses',
@@ -391,7 +397,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                             isRequired: true,
                             validationRules: { min: 0 },
                             scoreWeight: 0, // Informational, used for DTI calculation
-                            category: 'affordability',
+                            category: QuestionCategory.AFFORDABILITY,
                         },
                         {
                             questionKey: 'desired_term_years',
@@ -401,9 +407,12 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                             order: 6,
                             isRequired: true,
                             validationRules: { min: 5, max: 30 },
-                            scoringRules: { '>=5': 100, '<5': 0 },
+                            scoringRules: [
+                                { operator: ConditionOperator.GREATER_THAN_OR_EQUAL, value: 5, score: 100 },
+                                { operator: ConditionOperator.LESS_THAN, value: 5, score: 0 },
+                            ],
                             scoreWeight: 1,
-                            category: 'preferences',
+                            category: QuestionCategory.PREFERENCES,
                         },
                     ],
                 });

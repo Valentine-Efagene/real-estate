@@ -60,11 +60,12 @@ async function canAccessApplication(req: Request, res: Response, next: NextFunct
             return next();
         }
 
-        // Developers and Lenders can access applications to upload documents
+        // Developers, Lenders, and Legal can access applications to upload documents
         // They're allowed limited access (upload documents, view phases)
         const isDeveloper = roles?.includes(ROLES.DEVELOPER);
         const isLender = roles?.includes(ROLES.LENDER);
-        if (isDeveloper || isLender) {
+        const isLegal = roles?.includes(ROLES.LEGAL);
+        if (isDeveloper || isLender || isLegal) {
             return next();
         }
 

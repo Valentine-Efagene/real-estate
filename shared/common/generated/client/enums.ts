@@ -512,6 +512,24 @@ export const QuestionnaireCategory = {
 export type QuestionnaireCategory = (typeof QuestionnaireCategory)[keyof typeof QuestionnaireCategory]
 
 
+export const QuestionCategory = {
+  ELIGIBILITY: 'ELIGIBILITY',
+  EMPLOYMENT: 'EMPLOYMENT',
+  INCOME: 'INCOME',
+  AFFORDABILITY: 'AFFORDABILITY',
+  EXPENSES: 'EXPENSES',
+  APPLICATION_TYPE: 'APPLICATION_TYPE',
+  PERSONAL: 'PERSONAL',
+  PREFERENCES: 'PREFERENCES',
+  PROPERTY: 'PROPERTY',
+  CREDIT: 'CREDIT',
+  ASSETS: 'ASSETS',
+  CUSTOM: 'CUSTOM'
+} as const
+
+export type QuestionCategory = (typeof QuestionCategory)[keyof typeof QuestionCategory]
+
+
 export const PaymentMethodChangeStatus = {
   PENDING_DOCUMENTS: 'PENDING_DOCUMENTS',
   DOCUMENTS_SUBMITTED: 'DOCUMENTS_SUBMITTED',

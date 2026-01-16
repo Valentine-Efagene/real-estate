@@ -46,7 +46,7 @@ export type QuestionnairePlanQuestionMinAggregateOutputType = {
   order: number | null
   isRequired: boolean | null
   scoreWeight: number | null
-  category: string | null
+  category: $Enums.QuestionCategory | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -61,7 +61,7 @@ export type QuestionnairePlanQuestionMaxAggregateOutputType = {
   order: number | null
   isRequired: boolean | null
   scoreWeight: number | null
-  category: string | null
+  category: $Enums.QuestionCategory | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -247,7 +247,7 @@ export type QuestionnairePlanQuestionGroupByOutputType = {
   scoreWeight: number
   scoringRules: runtime.JsonValue | null
   showIf: runtime.JsonValue | null
-  category: string | null
+  category: $Enums.QuestionCategory | null
   createdAt: Date
   updatedAt: Date
   _count: QuestionnairePlanQuestionCountAggregateOutputType | null
@@ -289,7 +289,7 @@ export type QuestionnairePlanQuestionWhereInput = {
   scoreWeight?: Prisma.IntFilter<"QuestionnairePlanQuestion"> | number
   scoringRules?: Prisma.JsonNullableFilter<"QuestionnairePlanQuestion">
   showIf?: Prisma.JsonNullableFilter<"QuestionnairePlanQuestion">
-  category?: Prisma.StringNullableFilter<"QuestionnairePlanQuestion"> | string | null
+  category?: Prisma.EnumQuestionCategoryNullableFilter<"QuestionnairePlanQuestion"> | $Enums.QuestionCategory | null
   createdAt?: Prisma.DateTimeFilter<"QuestionnairePlanQuestion"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"QuestionnairePlanQuestion"> | Date | string
   questionnairePlan?: Prisma.XOR<Prisma.QuestionnairePlanScalarRelationFilter, Prisma.QuestionnairePlanWhereInput>
@@ -334,7 +334,7 @@ export type QuestionnairePlanQuestionWhereUniqueInput = Prisma.AtLeast<{
   scoreWeight?: Prisma.IntFilter<"QuestionnairePlanQuestion"> | number
   scoringRules?: Prisma.JsonNullableFilter<"QuestionnairePlanQuestion">
   showIf?: Prisma.JsonNullableFilter<"QuestionnairePlanQuestion">
-  category?: Prisma.StringNullableFilter<"QuestionnairePlanQuestion"> | string | null
+  category?: Prisma.EnumQuestionCategoryNullableFilter<"QuestionnairePlanQuestion"> | $Enums.QuestionCategory | null
   createdAt?: Prisma.DateTimeFilter<"QuestionnairePlanQuestion"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"QuestionnairePlanQuestion"> | Date | string
   questionnairePlan?: Prisma.XOR<Prisma.QuestionnairePlanScalarRelationFilter, Prisma.QuestionnairePlanWhereInput>
@@ -381,7 +381,7 @@ export type QuestionnairePlanQuestionScalarWhereWithAggregatesInput = {
   scoreWeight?: Prisma.IntWithAggregatesFilter<"QuestionnairePlanQuestion"> | number
   scoringRules?: Prisma.JsonNullableWithAggregatesFilter<"QuestionnairePlanQuestion">
   showIf?: Prisma.JsonNullableWithAggregatesFilter<"QuestionnairePlanQuestion">
-  category?: Prisma.StringNullableWithAggregatesFilter<"QuestionnairePlanQuestion"> | string | null
+  category?: Prisma.EnumQuestionCategoryNullableWithAggregatesFilter<"QuestionnairePlanQuestion"> | $Enums.QuestionCategory | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"QuestionnairePlanQuestion"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"QuestionnairePlanQuestion"> | Date | string
 }
@@ -399,7 +399,7 @@ export type QuestionnairePlanQuestionCreateInput = {
   scoreWeight?: number
   scoringRules?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   showIf?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  category?: string | null
+  category?: $Enums.QuestionCategory | null
   createdAt?: Date | string
   updatedAt?: Date | string
   questionnairePlan: Prisma.QuestionnairePlanCreateNestedOneWithoutQuestionsInput
@@ -419,7 +419,7 @@ export type QuestionnairePlanQuestionUncheckedCreateInput = {
   scoreWeight?: number
   scoringRules?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   showIf?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  category?: string | null
+  category?: $Enums.QuestionCategory | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -437,7 +437,7 @@ export type QuestionnairePlanQuestionUpdateInput = {
   scoreWeight?: Prisma.IntFieldUpdateOperationsInput | number
   scoringRules?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   showIf?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableEnumQuestionCategoryFieldUpdateOperationsInput | $Enums.QuestionCategory | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   questionnairePlan?: Prisma.QuestionnairePlanUpdateOneRequiredWithoutQuestionsNestedInput
@@ -457,7 +457,7 @@ export type QuestionnairePlanQuestionUncheckedUpdateInput = {
   scoreWeight?: Prisma.IntFieldUpdateOperationsInput | number
   scoringRules?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   showIf?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableEnumQuestionCategoryFieldUpdateOperationsInput | $Enums.QuestionCategory | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -476,7 +476,7 @@ export type QuestionnairePlanQuestionCreateManyInput = {
   scoreWeight?: number
   scoringRules?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   showIf?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  category?: string | null
+  category?: $Enums.QuestionCategory | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -494,7 +494,7 @@ export type QuestionnairePlanQuestionUpdateManyMutationInput = {
   scoreWeight?: Prisma.IntFieldUpdateOperationsInput | number
   scoringRules?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   showIf?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableEnumQuestionCategoryFieldUpdateOperationsInput | $Enums.QuestionCategory | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -513,7 +513,7 @@ export type QuestionnairePlanQuestionUncheckedUpdateManyInput = {
   scoreWeight?: Prisma.IntFieldUpdateOperationsInput | number
   scoringRules?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   showIf?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableEnumQuestionCategoryFieldUpdateOperationsInput | $Enums.QuestionCategory | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -644,6 +644,10 @@ export type EnumQuestionTypeFieldUpdateOperationsInput = {
   set?: $Enums.QuestionType
 }
 
+export type NullableEnumQuestionCategoryFieldUpdateOperationsInput = {
+  set?: $Enums.QuestionCategory | null
+}
+
 export type QuestionnairePlanQuestionCreateWithoutQuestionnairePlanInput = {
   id?: string
   questionKey: string
@@ -657,7 +661,7 @@ export type QuestionnairePlanQuestionCreateWithoutQuestionnairePlanInput = {
   scoreWeight?: number
   scoringRules?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   showIf?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  category?: string | null
+  category?: $Enums.QuestionCategory | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -675,7 +679,7 @@ export type QuestionnairePlanQuestionUncheckedCreateWithoutQuestionnairePlanInpu
   scoreWeight?: number
   scoringRules?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   showIf?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  category?: string | null
+  category?: $Enums.QuestionCategory | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -723,7 +727,7 @@ export type QuestionnairePlanQuestionScalarWhereInput = {
   scoreWeight?: Prisma.IntFilter<"QuestionnairePlanQuestion"> | number
   scoringRules?: Prisma.JsonNullableFilter<"QuestionnairePlanQuestion">
   showIf?: Prisma.JsonNullableFilter<"QuestionnairePlanQuestion">
-  category?: Prisma.StringNullableFilter<"QuestionnairePlanQuestion"> | string | null
+  category?: Prisma.EnumQuestionCategoryNullableFilter<"QuestionnairePlanQuestion"> | $Enums.QuestionCategory | null
   createdAt?: Prisma.DateTimeFilter<"QuestionnairePlanQuestion"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"QuestionnairePlanQuestion"> | Date | string
 }
@@ -741,7 +745,7 @@ export type QuestionnairePlanQuestionCreateManyQuestionnairePlanInput = {
   scoreWeight?: number
   scoringRules?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   showIf?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  category?: string | null
+  category?: $Enums.QuestionCategory | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -759,7 +763,7 @@ export type QuestionnairePlanQuestionUpdateWithoutQuestionnairePlanInput = {
   scoreWeight?: Prisma.IntFieldUpdateOperationsInput | number
   scoringRules?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   showIf?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableEnumQuestionCategoryFieldUpdateOperationsInput | $Enums.QuestionCategory | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -777,7 +781,7 @@ export type QuestionnairePlanQuestionUncheckedUpdateWithoutQuestionnairePlanInpu
   scoreWeight?: Prisma.IntFieldUpdateOperationsInput | number
   scoringRules?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   showIf?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableEnumQuestionCategoryFieldUpdateOperationsInput | $Enums.QuestionCategory | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -795,7 +799,7 @@ export type QuestionnairePlanQuestionUncheckedUpdateManyWithoutQuestionnairePlan
   scoreWeight?: Prisma.IntFieldUpdateOperationsInput | number
   scoringRules?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   showIf?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableEnumQuestionCategoryFieldUpdateOperationsInput | $Enums.QuestionCategory | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -867,7 +871,7 @@ export type $QuestionnairePlanQuestionPayload<ExtArgs extends runtime.Types.Exte
     scoreWeight: number
     scoringRules: runtime.JsonValue | null
     showIf: runtime.JsonValue | null
-    category: string | null
+    category: $Enums.QuestionCategory | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["questionnairePlanQuestion"]>
@@ -1253,7 +1257,7 @@ export interface QuestionnairePlanQuestionFieldRefs {
   readonly scoreWeight: Prisma.FieldRef<"QuestionnairePlanQuestion", 'Int'>
   readonly scoringRules: Prisma.FieldRef<"QuestionnairePlanQuestion", 'Json'>
   readonly showIf: Prisma.FieldRef<"QuestionnairePlanQuestion", 'Json'>
-  readonly category: Prisma.FieldRef<"QuestionnairePlanQuestion", 'String'>
+  readonly category: Prisma.FieldRef<"QuestionnairePlanQuestion", 'QuestionCategory'>
   readonly createdAt: Prisma.FieldRef<"QuestionnairePlanQuestion", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"QuestionnairePlanQuestion", 'DateTime'>
 }

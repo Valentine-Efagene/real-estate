@@ -1926,8 +1926,7 @@ export const QuestionnairePlanQuestionOrderByRelevanceFieldEnum = {
   questionnairePlanId: 'questionnairePlanId',
   questionKey: 'questionKey',
   questionText: 'questionText',
-  helpText: 'helpText',
-  category: 'category'
+  helpText: 'helpText'
 } as const
 
 export type QuestionnairePlanQuestionOrderByRelevanceFieldEnum = (typeof QuestionnairePlanQuestionOrderByRelevanceFieldEnum)[keyof typeof QuestionnairePlanQuestionOrderByRelevanceFieldEnum]
