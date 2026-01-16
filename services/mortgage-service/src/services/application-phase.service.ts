@@ -1050,6 +1050,9 @@ class ApplicationPhaseService {
                                 where: { id: doc.id },
                                 data: { status: 'APPROVED' },
                             });
+
+                            // Check if phase should auto-complete after step completion
+                            await this.evaluatePhaseCompletionInternal(tx, phaseId, userId);
                         }
                     }
                 } else if (step) {
@@ -1894,6 +1897,7 @@ class ApplicationPhaseService {
         const phase = await tx.applicationPhase.findUnique({
             where: { id: phaseId },
             include: {
+                application: true,
                 documentationPhase: {
                     include: { steps: true },
                 },
@@ -1949,6 +1953,9 @@ class ApplicationPhaseService {
                 applicationId: phase.applicationId,
                 order: phase.order + 1,
             },
+            include: {
+                documentationPhase: true,
+            },
         });
 
         if (nextPhase) {
@@ -1961,6 +1968,21 @@ class ApplicationPhaseService {
                 where: { id: phase.applicationId },
                 data: { currentPhaseId: nextPhase.id },
             });
+
+            // Run condition evaluation for DOCUMENTATION phases with sourceQuestionnairePhaseId
+            // This marks inapplicable steps as SKIPPED based on questionnaire answers
+            if (nextPhase.documentationPhase?.sourceQuestionnairePhaseId) {
+                const conditionEvaluator = createConditionEvaluatorService(tx);
+                const evaluationResult = await conditionEvaluator.applyConditionEvaluation(
+                    nextPhase.documentationPhase.id
+                );
+
+                console.log(
+                    `[Auto-activation] Condition evaluation for phase ${nextPhase.id}: ` +
+                    `${evaluationResult.skippedCount} steps skipped, ` +
+                    `${evaluationResult.applicableCount} steps applicable`
+                );
+            }
 
             await tx.domainEvent.create({
                 data: {
@@ -1978,6 +2000,38 @@ class ApplicationPhaseService {
                     actorId: userId,
                 },
             });
+        } else {
+            // No more phases - check if application should be completed
+            const incompletePhasesCount = await tx.applicationPhase.count({
+                where: {
+                    applicationId: phase.applicationId,
+                    status: { notIn: ['COMPLETED', 'SKIPPED'] },
+                    id: { not: phaseId },
+                },
+            });
+
+            if (incompletePhasesCount === 0) {
+                // All phases completed - complete the application
+                await tx.application.update({
+                    where: { id: phase.applicationId },
+                    data: {
+                        status: 'COMPLETED',
+                    },
+                });
+
+                await tx.domainEvent.create({
+                    data: {
+                        id: uuidv4(),
+                        tenantId: phase.application?.tenantId || phase.tenantId,
+                        eventType: 'APPLICATION.COMPLETED',
+                        aggregateType: 'Application',
+                        aggregateId: phase.applicationId,
+                        queueName: 'notifications',
+                        payload: JSON.stringify({ applicationId: phase.applicationId }),
+                        actorId: userId,
+                    },
+                });
+            }
         }
 
         // Handle unit locking if this phase is configured to lock on complete

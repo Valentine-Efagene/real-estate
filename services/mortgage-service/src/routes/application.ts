@@ -10,6 +10,7 @@ import {
     requireRole,
     isAdmin,
     ADMIN_ROLES,
+    ROLES,
 } from '@valentine-efagene/qshelter-common';
 import {
     CreateApplicationSchema,
@@ -47,6 +48,7 @@ function getApplicationService(req: Request) {
  * Middleware to verify user can access an application.
  * Admins can access any application in their tenant.
  * Customers can only access their own applications.
+ * Developers and Lenders can access applications to upload documents.
  */
 async function canAccessApplication(req: Request, res: Response, next: NextFunction) {
     try {
@@ -55,6 +57,14 @@ async function canAccessApplication(req: Request, res: Response, next: NextFunct
 
         // Admins can access any application
         if (isAdmin(roles)) {
+            return next();
+        }
+
+        // Developers and Lenders can access applications to upload documents
+        // They're allowed limited access (upload documents, view phases)
+        const isDeveloper = roles?.includes(ROLES.DEVELOPER);
+        const isLender = roles?.includes(ROLES.LENDER);
+        if (isDeveloper || isLender) {
             return next();
         }
 

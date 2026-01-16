@@ -71,7 +71,6 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
     // Payment configuration
     let downpaymentPlanId: string;
-    let mortgagePlanId: string;
     let paymentMethodId: string;
     let prequalificationPlanId: string; // QuestionnairePlan for prequalification
     let salesOfferDocumentationPlanId: string; // DocumentationPlan for sales offer phase (developer uploads)
@@ -81,24 +80,18 @@ describe("Chidi's Lekki Mortgage Flow", () => {
     // Chidi's application
     let applicationId: string;
     let prequalificationPhaseId: string; // Phase 1: Prequalification questionnaire
-    let salesOfferPhaseId: string; // Phase 2: Sales offer (developer uploads, customer signs)
+    let salesOfferPhaseId: string; // Phase 2: Sales offer (developer uploads)
     let documentationPhaseId: string; // Phase 3: Preapproval documentation (KYC docs)
     let downpaymentPhaseId: string; // Phase 4: Downpayment
     let mortgageDocumentationPhaseId: string; // Phase 5: Mortgage documentation (bank uploads offer letter)
-    let mortgagePhaseId: string; // Phase 6: Mortgage payments
 
     // Realistic Nigerian property pricing
     const propertyPrice = 85_000_000; // ₦85M
     const downpaymentPercent = 10;
-    const mortgagePercent = 90;
-    const mortgageInterestRate = 9.5; // 9.5% per annum
 
-    // Chidi's mortgage term selection (based on his age)
-    // Retirement age is 60, so Chidi (age 40) can get max 20 years
-    // Chidi chooses 20 years (240 months)
+    // Chidi's age for prequalification
     const chidiAge = 40;
     const retirementAge = 60;
-    const chidiSelectedTermMonths = 240; // 20 years
 
     // Chidi's financial situation
     const chidiMonthlyIncome = 2_500_000; // ₦2.5M/month
@@ -312,35 +305,6 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                 },
             });
             expect(event).toBeDefined();
-        });
-
-        it('Adaeze creates a flexible-term mortgage plan at 9.5% p.a.', async () => {
-            // Mortgage plan with flexible term (5-30 years based on applicant's age)
-            // maxAgeAtMaturity: 60 (retirement age) means if Chidi is 40, he can get max 20 years
-            const response = await api
-                .post('/payment-plans')
-                .set(adminHeaders(adaezeId, tenantId))
-                .set('x-idempotency-key', idempotencyKey('adaeze-create-mortgage-plan'))
-                .send({
-                    name: 'Flexible Mortgage at 9.5%',
-                    description: 'Monthly payments at 9.5% annual interest, term selected by applicant',
-                    frequency: 'MONTHLY',
-                    // Flexible term configuration
-                    allowFlexibleTerm: true,
-                    minTermMonths: 60,       // 5 years minimum
-                    maxTermMonths: 360,      // 30 years maximum
-                    termStepMonths: 12,      // Increments of 1 year
-                    maxAgeAtMaturity: retirementAge, // Retirement age - applicant + term cannot exceed 60
-                    interestRate: mortgageInterestRate,
-                    gracePeriodDays: 15,
-                });
-
-            expect(response.status).toBe(201);
-            expect(response.body.data.allowFlexibleTerm).toBe(true);
-            expect(response.body.data.minTermMonths).toBe(60);
-            expect(response.body.data.maxTermMonths).toBe(360);
-            expect(response.body.data.maxAgeAtMaturity).toBe(retirementAge);
-            mortgagePlanId = response.body.data.id;
         });
 
         it('Adaeze creates a prequalification questionnaire plan', async () => {
@@ -557,17 +521,12 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                                 expiresInDays: 30,
                             },
                         },
-                        {
-                            name: 'Customer Signs Preapproval Letter',
-                            stepType: 'SIGNATURE',
-                            order: 8,
-                        },
                     ],
                 });
 
             expect(response.status).toBe(201);
             expect(response.body.data.id).toBeDefined();
-            expect(response.body.data.steps.length).toBe(8);
+            expect(response.body.data.steps.length).toBe(7);
             kycDocumentationPlanId = response.body.data.id;
 
             // Verify the steps have the document validation rules
@@ -584,15 +543,15 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         });
 
         it('Adaeze creates a sales offer documentation plan', async () => {
-            // This plan is for the developer to upload the sales offer letter
-            // which the customer then signs. This comes after prequalification.
+            // This plan is for the developer to upload the sales offer letter.
+            // Phase completes when the developer uploads - no customer signature needed.
             const response = await api
                 .post('/documentation-plans')
                 .set(adminHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('adaeze-create-sales-offer-documentation-plan'))
                 .send({
                     name: 'Sales Offer Documentation',
-                    description: 'Developer uploads sales offer letter for customer signature',
+                    description: 'Developer uploads sales offer letter',
                     isActive: true,
                     steps: [
                         {
@@ -611,17 +570,12 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                                 expiresInDays: 14, // Sales offer typically valid for 14 days
                             },
                         },
-                        {
-                            name: 'Customer Signs Sales Offer Letter',
-                            stepType: 'SIGNATURE',
-                            order: 2,
-                        },
                     ],
                 });
 
             expect(response.status).toBe(201);
             expect(response.body.data.id).toBeDefined();
-            expect(response.body.data.steps.length).toBe(2);
+            expect(response.body.data.steps.length).toBe(1);
             salesOfferDocumentationPlanId = response.body.data.id;
 
             // Verify the sales offer upload step has correct metadata
@@ -631,14 +585,14 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
         it('Adaeze creates a mortgage offer documentation plan', async () => {
             // This plan is for the bank to upload the mortgage offer letter
-            // after the customer pays the downpayment
+            // after the customer pays the downpayment. This completes the application.
             const response = await api
                 .post('/documentation-plans')
                 .set(adminHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('adaeze-create-mortgage-offer-documentation-plan'))
                 .send({
                     name: 'Mortgage Offer Documentation',
-                    description: 'Bank uploads mortgage offer letter for customer signature',
+                    description: 'Bank uploads mortgage offer letter',
                     isActive: true,
                     steps: [
                         {
@@ -657,17 +611,12 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                                 expiresInDays: 30,
                             },
                         },
-                        {
-                            name: 'Customer Signs Mortgage Offer Letter',
-                            stepType: 'SIGNATURE',
-                            order: 2,
-                        },
                     ],
                 });
 
             expect(response.status).toBe(201);
             expect(response.body.data.id).toBeDefined();
-            expect(response.body.data.steps.length).toBe(2);
+            expect(response.body.data.steps.length).toBe(1);
             mortgageDocumentationPlanId = response.body.data.id;
 
             // Verify the mortgage offer upload step has correct metadata
@@ -675,14 +624,14 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             expect(uploadStep.metadata.uploadedBy).toBe(UPLOADED_BY.LENDER);
         });
 
-        it('Adaeze creates a payment method with 6 phases (including prequalification and sales offer)', async () => {
+        it('Adaeze creates a payment method with 5 phases', async () => {
             const response = await api
                 .post('/payment-methods')
                 .set(adminHeaders(adaezeId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('adaeze-create-payment-method'))
                 .send({
                     name: '10/90 Lekki Mortgage',
-                    description: 'Prequalification → Sales Offer → KYC/Preapproval → Downpayment → Mortgage Offer → Mortgage',
+                    description: 'Prequalification → Sales Offer → KYC/Preapproval → Downpayment → Mortgage Offer',
                     requiresManualApproval: true,
                     phases: [
                         // Phase 1: Prequalification Questionnaire
@@ -693,15 +642,15 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                             order: 1,
                             questionnairePlanId: prequalificationPlanId,
                         },
-                        // Phase 2: Sales Offer (Developer uploads, Customer signs)
+                        // Phase 2: Sales Offer (Developer uploads)
                         {
                             name: 'Sales Offer',
                             phaseCategory: 'DOCUMENTATION',
-                            phaseType: 'SALES_OFFER',
+                            phaseType: 'VERIFICATION', // Sales offer is a verification/documentation phase
                             order: 2,
                             documentationPlanId: salesOfferDocumentationPlanId,
                         },
-                        // Phase 3: Preapproval Documentation (KYC docs + sales offer)
+                        // Phase 3: Preapproval Documentation (KYC docs)
                         {
                             name: 'Preapproval Documentation',
                             phaseCategory: 'DOCUMENTATION',
@@ -726,22 +675,12 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                             order: 5,
                             documentationPlanId: mortgageDocumentationPlanId,
                         },
-                        // Phase 6: Mortgage Payments
-                        {
-                            name: '20-Year Mortgage',
-                            phaseCategory: 'PAYMENT',
-                            phaseType: 'MORTGAGE',
-                            order: 6,
-                            percentOfPrice: mortgagePercent,
-                            interestRate: mortgageInterestRate,
-                            paymentPlanId: mortgagePlanId,
-                        },
                     ],
                 });
 
             expect(response.status).toBe(201);
             expect(response.body.data.id).toBeDefined();
-            expect(response.body.data.phases.length).toBe(6);
+            expect(response.body.data.phases.length).toBe(5);
             paymentMethodId = response.body.data.id;
         });
 
@@ -769,17 +708,15 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
     // =========================================================================
     // Step 2: Chidi creates a application for Unit 14B
-    // Flow: Prequalification → Sales Offer → KYC/Preapproval → Downpayment → Mortgage Offer → Mortgage
+    // Flow: Prequalification → Sales Offer → KYC/Preapproval → Downpayment → Mortgage Offer
     //
     // NOTE: Smart auto-submit behavior:
     // When all required fields are provided (propertyUnitId, paymentMethodId, etc.),
     // the application goes directly to PENDING status and the first phase activates.
     // Use saveDraft: true to save as DRAFT for later completion (e.g., frontend autosave).
     // =========================================================================
-    describe("Step 2: Chidi creates and activates a application", () => {
-        it('Chidi creates a application for Unit 14B with his preferred mortgage term', async () => {
-            // Chidi is 40 years old, so with retirement age 60, he can select up to 20 years
-            // Chidi chooses 20 years (240 months)
+    describe("Step 2: Chidi creates an application", () => {
+        it('Chidi creates an application for Unit 14B', async () => {
             const response = await api
                 .post('/applications')
                 .set(customerHeaders(chidiId, tenantId))
@@ -792,9 +729,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                     totalAmount: propertyPrice,
                     monthlyIncome: chidiMonthlyIncome,
                     monthlyExpenses: chidiMonthlyExpenses,
-                    // Chidi selects his preferred mortgage term
                     applicantAge: chidiAge,
-                    selectedMortgageTermMonths: chidiSelectedTermMonths, // 240 months = 20 years
                 });
 
             if (response.status !== 201) {
@@ -806,18 +741,18 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             expect(response.body.data.applicationNumber).toBeDefined();
             // Smart auto-submit: all required fields provided, so application goes directly to PENDING
             expect(response.body.data.status).toBe('PENDING');
-            expect(response.body.data.phases.length).toBe(6); // 6 phases now
+            expect(response.body.data.phases.length).toBe(5); // 5 phases
 
             applicationId = response.body.data.id;
 
-            // Extract phase IDs (6 phases: Prequalification → Sales Offer → KYC → Downpayment → Mortgage Offer → Mortgage)
+            // Extract phase IDs (5 phases: Prequalification → Sales Offer → KYC → Downpayment → Mortgage Offer)
+            // Use order to disambiguate since Sales Offer and Mortgage Offer both use VERIFICATION phaseType
             const phases = response.body.data.phases;
-            prequalificationPhaseId = phases.find((p: any) => p.phaseType === 'PRE_APPROVAL').id;
-            salesOfferPhaseId = phases.find((p: any) => p.phaseType === 'SALES_OFFER').id;
-            documentationPhaseId = phases.find((p: any) => p.phaseType === 'KYC').id;
-            downpaymentPhaseId = phases.find((p: any) => p.phaseType === 'DOWNPAYMENT').id;
-            mortgageDocumentationPhaseId = phases.find((p: any) => p.phaseType === 'VERIFICATION').id;
-            mortgagePhaseId = phases.find((p: any) => p.phaseType === 'MORTGAGE').id;
+            prequalificationPhaseId = phases.find((p: any) => p.order === 1).id;       // PRE_APPROVAL
+            salesOfferPhaseId = phases.find((p: any) => p.order === 2).id;             // VERIFICATION (Sales Offer)
+            documentationPhaseId = phases.find((p: any) => p.order === 3).id;          // KYC
+            downpaymentPhaseId = phases.find((p: any) => p.order === 4).id;            // DOWNPAYMENT
+            mortgageDocumentationPhaseId = phases.find((p: any) => p.order === 5).id;  // VERIFICATION (Mortgage Offer)
 
             // Verify APPLICATION.CREATED event
             const event = await prisma.domainEvent.findFirst({
@@ -830,28 +765,26 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             expect(event).toBeDefined();
         });
 
-        it('Application has correct phase amounts (₦8.5M downpayment, ₦76.5M mortgage)', async () => {
+        it('Application has correct phase amounts (₦8.5M downpayment)', async () => {
             const response = await api
                 .get(`/applications/${applicationId}/phases`)
                 .set(customerHeaders(chidiId, tenantId));
 
             expect(response.status).toBe(200);
-            expect(response.body.data.length).toBe(6); // 6 phases now
+            expect(response.body.data.length).toBe(5); // 5 phases
 
-            const prequalPhase = response.body.data.find((p: any) => p.phaseType === 'PRE_APPROVAL');
-            const salesOfferPhase = response.body.data.find((p: any) => p.phaseType === 'SALES_OFFER');
-            const docPhase = response.body.data.find((p: any) => p.phaseType === 'KYC');
-            const downPhase = response.body.data.find((p: any) => p.phaseType === 'DOWNPAYMENT');
-            const mortgageDocPhase = response.body.data.find((p: any) => p.phaseType === 'VERIFICATION');
-            const mortPhase = response.body.data.find((p: any) => p.phaseType === 'MORTGAGE');
+            // Use order to disambiguate since Sales Offer and Mortgage Offer both use VERIFICATION phaseType
+            const prequalPhase = response.body.data.find((p: any) => p.order === 1);       // PRE_APPROVAL
+            const salesOfferPhase = response.body.data.find((p: any) => p.order === 2);    // VERIFICATION (Sales Offer)
+            const docPhase = response.body.data.find((p: any) => p.order === 3);           // KYC
+            const downPhase = response.body.data.find((p: any) => p.order === 4);          // DOWNPAYMENT
+            const mortgageDocPhase = response.body.data.find((p: any) => p.order === 5);   // VERIFICATION (Mortgage Offer)
 
             expect(prequalPhase.totalAmount).toBe(0);       // Questionnaire phase, no payment
             expect(salesOfferPhase.totalAmount).toBe(0);    // Documentation phase, no payment
             expect(docPhase.totalAmount).toBe(0);           // Documentation phase, no payment
             expect(downPhase.totalAmount).toBe(8_500_000);  // 10% of ₦85M
             expect(mortgageDocPhase.totalAmount).toBe(0);   // Documentation phase, no payment
-            expect(mortPhase.totalAmount).toBe(76_500_000); // 90% of ₦85M
-            expect(mortPhase.interestRate).toBe(mortgageInterestRate);
         });
 
         it('Prequalification phase has questionnaire fields from the plan', async () => {
@@ -871,16 +804,6 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             expect(fieldNames).toContain('monthly_income');
             expect(fieldNames).toContain('monthly_expenses');
             expect(fieldNames).toContain('desired_term_years');
-        });
-
-        it('Mortgage phase has Chidi\'s selected term (20 years / 240 months)', async () => {
-            const phase = await prisma.applicationPhase.findUnique({
-                where: { id: mortgagePhaseId },
-                include: { paymentPhase: true },
-            });
-
-            expect(phase?.paymentPhase?.selectedTermMonths).toBe(chidiSelectedTermMonths);
-            expect(phase?.paymentPhase?.numberOfInstallments).toBe(chidiSelectedTermMonths);
         });
 
         it('Unit 14B is reserved for Chidi', async () => {
@@ -993,8 +916,8 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         // ========================================
         // Step 4: Emeka (Developer) Uploads Sales Offer Letter
         // ========================================
-        // After prequalification passes, the developer issues a sales offer letter
-        // which Chidi must sign before proceeding to KYC documentation
+        // After prequalification passes, the developer issues a sales offer letter.
+        // Once uploaded, the phase completes and KYC documentation begins.
 
         it('Sales Offer phase is auto-activated when prequalification completes', async () => {
             const response = await api
@@ -1007,6 +930,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
         it('Emeka (Developer) uploads the sales offer letter', async () => {
             // Emeka from Lekki Gardens Development Company uploads the sales offer letter
+            // Once uploaded, the phase completes automatically (no customer signature needed)
             const response = await api
                 .post(`/applications/${applicationId}/phases/${salesOfferPhaseId}/documents`)
                 .set(developerHeaders(emekaId, tenantId))
@@ -1027,32 +951,16 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
             const uploadStep = phase?.documentationPhase?.steps.find((s: any) => s.name === 'Developer Uploads Sales Offer Letter');
             expect(uploadStep?.status).toBe('COMPLETED');
-        });
 
-        it('Chidi signs the sales offer letter', async () => {
-            const response = await api
-                .post(`/applications/${applicationId}/phases/${salesOfferPhaseId}/steps/complete`)
-                .set(customerHeaders(chidiId, tenantId))
-                .set('x-idempotency-key', idempotencyKey('chidi-signs-sales-offer'))
-                .send({
-                    stepName: 'Customer Signs Sales Offer Letter',
-                });
-
-            expect(response.status).toBe(200);
-
-            // Verify phase is completed after signature
-            const phase = await prisma.applicationPhase.findUnique({
-                where: { id: salesOfferPhaseId },
-            });
+            // Phase completes automatically after developer uploads (only step in this phase)
             expect(phase?.status).toBe('COMPLETED');
         });
 
         // ========================================
         // Step 5: Chidi Completes Preapproval Documentation (KYC)
         // ========================================
-        // Note: Signed Sales Offer Letter is part of preapproval documentation
 
-        it('Preapproval Documentation phase is auto-activated when sales offer is signed', async () => {
+        it('Preapproval Documentation phase is auto-activated when sales offer is uploaded', async () => {
             // Third phase should be automatically activated when sales offer phase completes
             const response = await api
                 .get(`/applications/${applicationId}/phases/${documentationPhaseId}`)
@@ -1136,10 +1044,10 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
         it('Nkechi (Lender) uploads the preapproval letter', async () => {
             // After KYC documents are approved, the lender uploads the preapproval letter
-            // This replaces the previous GENERATE_DOCUMENT step
+            // Once uploaded, the phase completes automatically (no customer signature needed)
             const response = await api
                 .post(`/applications/${applicationId}/phases/${documentationPhaseId}/documents`)
-                .set(adminHeaders(nkechiId, tenantId)) // Lender uploads
+                .set(lenderHeaders(nkechiId, tenantId))
                 .set('x-idempotency-key', idempotencyKey('nkechi-upload-preapproval'))
                 .send({
                     documentType: 'PREAPPROVAL_LETTER',
@@ -1149,7 +1057,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
             expect(response.status).toBe(201);
 
-            // Verify the UPLOAD step for preapproval letter is now AWAITING_REVIEW or COMPLETED
+            // Verify the UPLOAD step for preapproval letter is auto-completed
             const phase = await prisma.applicationPhase.findUnique({
                 where: { id: documentationPhaseId },
                 include: { documentationPhase: { include: { steps: true } } },
@@ -1157,25 +1065,15 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
             const preapprovalStep = phase?.documentationPhase?.steps.find((s: any) => s.name === 'Lender Uploads Preapproval Letter');
             expect(preapprovalStep).toBeDefined();
-            // Step should be auto-completed after upload (requiresManualReview: false for lender docs)
             expect(preapprovalStep?.status).toBe('COMPLETED');
-        });
 
-        it('Chidi signs the preapproval letter', async () => {
-            const response = await api
-                .post(`/applications/${applicationId}/phases/${documentationPhaseId}/steps/complete`)
-                .set(customerHeaders(chidiId, tenantId))
-                .set('x-idempotency-key', idempotencyKey('chidi-signs-preapproval'))
-                .send({
-                    stepName: 'Customer Signs Preapproval Letter',
-                });
+            // Conditional steps should be SKIPPED (Chidi is single and employed, not joint/self-employed)
+            const spouseIdStep = phase?.documentationPhase?.steps.find((s: any) => s.name === 'Upload Spouse ID');
+            expect(spouseIdStep?.status).toBe('SKIPPED');
+            const businessRegStep = phase?.documentationPhase?.steps.find((s: any) => s.name === 'Upload Business Registration');
+            expect(businessRegStep?.status).toBe('SKIPPED');
 
-            expect(response.status).toBe(200);
-
-            // Verify phase is completed after signature
-            const phase = await prisma.applicationPhase.findUnique({
-                where: { id: documentationPhaseId },
-            });
+            // Phase completes automatically after lender uploads (last applicable step in this phase)
             expect(phase?.status).toBe('COMPLETED');
         });
 
@@ -1266,6 +1164,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         it('Nkechi (Lender) uploads the mortgage offer letter', async () => {
             // After downpayment phase completes, Mortgage Offer Documentation phase activates
             // Nkechi (lender from Access Bank) uploads the mortgage offer letter
+            // Once uploaded, the phase completes automatically (no customer signature needed)
             const uploadResponse = await api
                 .post(`/applications/${applicationId}/phases/${mortgageDocumentationPhaseId}/documents`)
                 .set(lenderHeaders(nkechiId, tenantId))
@@ -1286,62 +1185,26 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
             const uploadStep = phase?.documentationPhase?.steps.find((s: any) => s.name === 'Lender Uploads Mortgage Offer Letter');
             expect(uploadStep?.status).toBe('COMPLETED');
-        });
 
-        it('Chidi signs the mortgage offer letter', async () => {
-            const response = await api
-                .post(`/applications/${applicationId}/phases/${mortgageDocumentationPhaseId}/steps/complete`)
-                .set(customerHeaders(chidiId, tenantId))
-                .set('x-idempotency-key', idempotencyKey('chidi-signs-mortgage-offer'))
-                .send({
-                    stepName: 'Customer Signs Mortgage Offer Letter',
-                });
-
-            expect(response.status).toBe(200);
-
-            // Verify phase is completed after signature
-            const phase = await prisma.applicationPhase.findUnique({
-                where: { id: mortgageDocumentationPhaseId },
-            });
+            // Phase completes automatically after lender uploads (only step in this phase)
             expect(phase?.status).toBe('COMPLETED');
         });
 
-        it('Mortgage phase auto-activates after mortgage offer is signed', async () => {
-            const phase = await prisma.applicationPhase.findUnique({
-                where: { id: mortgagePhaseId },
+        it('Application completes after mortgage offer letter is uploaded', async () => {
+            // Once the lender uploads the mortgage offer letter, the application is complete
+            // The bank handles the actual mortgage payments - that's outside our system
+            const application = await prisma.application.findUnique({
+                where: { id: applicationId },
             });
 
-            expect(phase?.status).toBe('IN_PROGRESS');
-        });
+            expect(application?.status).toBe('COMPLETED');
 
-        it('System generates mortgage installments based on Chidi\'s selected term (240 months)', async () => {
-            const response = await api
-                .post(`/applications/${applicationId}/phases/${mortgagePhaseId}/installments`)
-                .set(customerHeaders(chidiId, tenantId))
-                .set('x-idempotency-key', idempotencyKey('chidi-generate-mortgage-installments'))
-                .send({ startDate: new Date().toISOString() });
-
-            expect(response.status).toBe(200);
-            // Number of installments matches Chidi's selected term
-            expect(response.body.data.installments.length).toBe(chidiSelectedTermMonths);
-        });
-
-        it('Chidi signs and activates the application', async () => {
-            const response = await api
-                .post(`/applications/${applicationId}/sign`)
-                .set(customerHeaders(chidiId, tenantId))
-                .set('x-idempotency-key', idempotencyKey('chidi-signs-application'));
-
-            expect(response.status).toBe(200);
-            expect(response.body.data.status).toBe('ACTIVE');
-            expect(response.body.data.signedAt).toBeDefined();
-
-            // Verify APPLICATION.SIGNED event
+            // Verify APPLICATION.COMPLETED event
             const event = await prisma.domainEvent.findFirst({
                 where: {
                     aggregateType: 'Application',
                     aggregateId: applicationId,
-                    eventType: 'APPLICATION.SIGNED',
+                    eventType: 'APPLICATION.COMPLETED',
                 },
             });
             expect(event).toBeDefined();
@@ -1380,7 +1243,6 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                         { aggregateId: documentationPhaseId },
                         { aggregateId: downpaymentPhaseId },
                         { aggregateId: mortgageDocumentationPhaseId },
-                        { aggregateId: mortgagePhaseId },
                         { aggregateId: { in: paymentIds } },
                     ],
                 },
@@ -1393,7 +1255,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             expect(eventTypes).toContain('PHASE.ACTIVATED');
             expect(eventTypes).toContain('PHASE.COMPLETED');
             expect(eventTypes).toContain('PAYMENT.COMPLETED');
-            expect(eventTypes).toContain('APPLICATION.SIGNED');
+            expect(eventTypes).toContain('APPLICATION.COMPLETED');
 
             // Verify all events have proper structure
             for (const event of events) {

@@ -61,7 +61,7 @@ router.get('/', asyncHandler(async (req: Request, res: Response) => {
  */
 router.get('/:id', asyncHandler(async (req: Request, res: Response) => {
     const tenantId = getTenantId(req);
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     const eventType = await eventTypeService.findById(tenantId, id);
     res.json(createResponse(200, 'Event type retrieved', eventType));
@@ -73,7 +73,7 @@ router.get('/:id', asyncHandler(async (req: Request, res: Response) => {
  */
 router.patch('/:id', asyncHandler(async (req: Request, res: Response) => {
     const tenantId = getTenantId(req);
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     const parsed = UpdateEventTypeSchema.safeParse(req.body);
     if (!parsed.success) {
@@ -91,7 +91,7 @@ router.patch('/:id', asyncHandler(async (req: Request, res: Response) => {
  */
 router.delete('/:id', asyncHandler(async (req: Request, res: Response) => {
     const tenantId = getTenantId(req);
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     await eventTypeService.delete(tenantId, id);
     res.json(createResponse(200, 'Event type deleted'));

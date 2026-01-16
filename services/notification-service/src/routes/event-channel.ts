@@ -56,7 +56,7 @@ router.get('/', asyncHandler(async (req: Request, res: Response) => {
  */
 router.get('/:id', asyncHandler(async (req: Request, res: Response) => {
     const tenantId = getTenantId(req);
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     const channel = await eventChannelService.findById(tenantId, id);
     res.json(createResponse(200, 'Event channel retrieved', channel));
@@ -68,7 +68,7 @@ router.get('/:id', asyncHandler(async (req: Request, res: Response) => {
  */
 router.get('/code/:code', asyncHandler(async (req: Request, res: Response) => {
     const tenantId = getTenantId(req);
-    const { code } = req.params;
+    const code = req.params.code as string;
 
     const channel = await eventChannelService.findByCode(tenantId, code);
     res.json(createResponse(200, 'Event channel retrieved', channel));
@@ -80,7 +80,7 @@ router.get('/code/:code', asyncHandler(async (req: Request, res: Response) => {
  */
 router.patch('/:id', asyncHandler(async (req: Request, res: Response) => {
     const tenantId = getTenantId(req);
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     const parsed = UpdateEventChannelSchema.safeParse(req.body);
     if (!parsed.success) {
@@ -98,7 +98,7 @@ router.patch('/:id', asyncHandler(async (req: Request, res: Response) => {
  */
 router.delete('/:id', asyncHandler(async (req: Request, res: Response) => {
     const tenantId = getTenantId(req);
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     await eventChannelService.delete(tenantId, id);
     res.json(createResponse(200, 'Event channel deleted'));

@@ -62,7 +62,7 @@ router.get('/', asyncHandler(async (req: Request, res: Response) => {
  */
 router.get('/:id', asyncHandler(async (req: Request, res: Response) => {
     const tenantId = getTenantId(req);
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     const handler = await eventHandlerService.findById(tenantId, id);
     res.json(createResponse(200, 'Event handler retrieved', handler));
@@ -74,7 +74,7 @@ router.get('/:id', asyncHandler(async (req: Request, res: Response) => {
  */
 router.patch('/:id', asyncHandler(async (req: Request, res: Response) => {
     const tenantId = getTenantId(req);
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     const parsed = UpdateEventHandlerSchema.safeParse(req.body);
     if (!parsed.success) {
@@ -92,7 +92,7 @@ router.patch('/:id', asyncHandler(async (req: Request, res: Response) => {
  */
 router.delete('/:id', asyncHandler(async (req: Request, res: Response) => {
     const tenantId = getTenantId(req);
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     await eventHandlerService.delete(tenantId, id);
     res.json(createResponse(200, 'Event handler deleted'));
@@ -104,7 +104,7 @@ router.delete('/:id', asyncHandler(async (req: Request, res: Response) => {
  */
 router.post('/:id/toggle', asyncHandler(async (req: Request, res: Response) => {
     const tenantId = getTenantId(req);
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     const handler = await eventHandlerService.toggleEnabled(tenantId, id);
     res.json(createResponse(200, 'Event handler toggled', handler));
