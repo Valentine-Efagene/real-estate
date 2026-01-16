@@ -159,6 +159,34 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         });
         emekaId = emeka.id;
 
+        // Create QShelter as the platform organization
+        const qshelterOrg = await prisma.organization.create({
+            data: {
+                id: faker.string.uuid(),
+                tenantId,
+                name: 'QShelter Real Estate',
+                type: 'PLATFORM',
+                status: 'ACTIVE',
+                isPlatformOrg: true,
+                email: 'support@qshelter.com',
+                phone: '+234-1-234-5678',
+                address: 'Victoria Island, Lagos',
+            },
+        });
+
+        // Link Adaeze as a QShelter operations manager
+        await prisma.organizationMember.create({
+            data: {
+                id: faker.string.uuid(),
+                organizationId: qshelterOrg.id,
+                userId: adaezeId,
+                role: 'MANAGER',
+                title: 'Operations Manager',
+                canApprove: true,
+                isActive: true,
+            },
+        });
+
         // Create Access Bank organization
         const accessBank = await prisma.organization.create({
             data: {

@@ -49,6 +49,7 @@ export type DocumentationStepMinAggregateOutputType = {
   submissionCount: number | null
   lastSubmittedAt: Date | null
   requiresManualReview: boolean | null
+  reviewOrder: string | null
   assigneeId: string | null
   gateActor: $Enums.GateActor | null
   gateAction: $Enums.GateAction | null
@@ -80,6 +81,7 @@ export type DocumentationStepMaxAggregateOutputType = {
   submissionCount: number | null
   lastSubmittedAt: Date | null
   requiresManualReview: boolean | null
+  reviewOrder: string | null
   assigneeId: string | null
   gateActor: $Enums.GateActor | null
   gateAction: $Enums.GateAction | null
@@ -113,6 +115,8 @@ export type DocumentationStepCountAggregateOutputType = {
   metadata: number
   requiresManualReview: number
   condition: number
+  reviewRequirements: number
+  reviewOrder: number
   assigneeId: number
   gateActor: number
   gateAction: number
@@ -156,6 +160,7 @@ export type DocumentationStepMinAggregateInputType = {
   submissionCount?: true
   lastSubmittedAt?: true
   requiresManualReview?: true
+  reviewOrder?: true
   assigneeId?: true
   gateActor?: true
   gateAction?: true
@@ -187,6 +192,7 @@ export type DocumentationStepMaxAggregateInputType = {
   submissionCount?: true
   lastSubmittedAt?: true
   requiresManualReview?: true
+  reviewOrder?: true
   assigneeId?: true
   gateActor?: true
   gateAction?: true
@@ -220,6 +226,8 @@ export type DocumentationStepCountAggregateInputType = {
   metadata?: true
   requiresManualReview?: true
   condition?: true
+  reviewRequirements?: true
+  reviewOrder?: true
   assigneeId?: true
   gateActor?: true
   gateAction?: true
@@ -340,6 +348,8 @@ export type DocumentationStepGroupByOutputType = {
   metadata: runtime.JsonValue | null
   requiresManualReview: boolean
   condition: runtime.JsonValue | null
+  reviewRequirements: runtime.JsonValue | null
+  reviewOrder: string | null
   assigneeId: string | null
   gateActor: $Enums.GateActor | null
   gateAction: $Enums.GateAction | null
@@ -396,6 +406,8 @@ export type DocumentationStepWhereInput = {
   metadata?: Prisma.JsonNullableFilter<"DocumentationStep">
   requiresManualReview?: Prisma.BoolFilter<"DocumentationStep"> | boolean
   condition?: Prisma.JsonNullableFilter<"DocumentationStep">
+  reviewRequirements?: Prisma.JsonNullableFilter<"DocumentationStep">
+  reviewOrder?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
   assigneeId?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
   gateActor?: Prisma.EnumGateActorNullableFilter<"DocumentationStep"> | $Enums.GateActor | null
   gateAction?: Prisma.EnumGateActionNullableFilter<"DocumentationStep"> | $Enums.GateAction | null
@@ -436,6 +448,8 @@ export type DocumentationStepOrderByWithRelationInput = {
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   requiresManualReview?: Prisma.SortOrder
   condition?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewRequirements?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewOrder?: Prisma.SortOrderInput | Prisma.SortOrder
   assigneeId?: Prisma.SortOrderInput | Prisma.SortOrder
   gateActor?: Prisma.SortOrderInput | Prisma.SortOrder
   gateAction?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -480,6 +494,8 @@ export type DocumentationStepWhereUniqueInput = Prisma.AtLeast<{
   metadata?: Prisma.JsonNullableFilter<"DocumentationStep">
   requiresManualReview?: Prisma.BoolFilter<"DocumentationStep"> | boolean
   condition?: Prisma.JsonNullableFilter<"DocumentationStep">
+  reviewRequirements?: Prisma.JsonNullableFilter<"DocumentationStep">
+  reviewOrder?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
   assigneeId?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
   gateActor?: Prisma.EnumGateActorNullableFilter<"DocumentationStep"> | $Enums.GateActor | null
   gateAction?: Prisma.EnumGateActionNullableFilter<"DocumentationStep"> | $Enums.GateAction | null
@@ -520,6 +536,8 @@ export type DocumentationStepOrderByWithAggregationInput = {
   metadata?: Prisma.SortOrderInput | Prisma.SortOrder
   requiresManualReview?: Prisma.SortOrder
   condition?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewRequirements?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewOrder?: Prisma.SortOrderInput | Prisma.SortOrder
   assigneeId?: Prisma.SortOrderInput | Prisma.SortOrder
   gateActor?: Prisma.SortOrderInput | Prisma.SortOrder
   gateAction?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -561,6 +579,8 @@ export type DocumentationStepScalarWhereWithAggregatesInput = {
   metadata?: Prisma.JsonNullableWithAggregatesFilter<"DocumentationStep">
   requiresManualReview?: Prisma.BoolWithAggregatesFilter<"DocumentationStep"> | boolean
   condition?: Prisma.JsonNullableWithAggregatesFilter<"DocumentationStep">
+  reviewRequirements?: Prisma.JsonNullableWithAggregatesFilter<"DocumentationStep">
+  reviewOrder?: Prisma.StringNullableWithAggregatesFilter<"DocumentationStep"> | string | null
   assigneeId?: Prisma.StringNullableWithAggregatesFilter<"DocumentationStep"> | string | null
   gateActor?: Prisma.EnumGateActorNullableWithAggregatesFilter<"DocumentationStep"> | $Enums.GateActor | null
   gateAction?: Prisma.EnumGateActionNullableWithAggregatesFilter<"DocumentationStep"> | $Enums.GateAction | null
@@ -592,6 +612,8 @@ export type DocumentationStepCreateInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: string | null
   gateActor?: $Enums.GateActor | null
   gateAction?: $Enums.GateAction | null
   gateRoleId?: string | null
@@ -630,6 +652,8 @@ export type DocumentationStepUncheckedCreateInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: string | null
   assigneeId?: string | null
   gateActor?: $Enums.GateActor | null
   gateAction?: $Enums.GateAction | null
@@ -664,6 +688,8 @@ export type DocumentationStepUpdateInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: Prisma.BoolFieldUpdateOperationsInput | boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
   gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
   gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -702,6 +728,8 @@ export type DocumentationStepUncheckedUpdateInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: Prisma.BoolFieldUpdateOperationsInput | boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
   gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
@@ -738,6 +766,8 @@ export type DocumentationStepCreateManyInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: string | null
   assigneeId?: string | null
   gateActor?: $Enums.GateActor | null
   gateAction?: $Enums.GateAction | null
@@ -769,6 +799,8 @@ export type DocumentationStepUpdateManyMutationInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: Prisma.BoolFieldUpdateOperationsInput | boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
   gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
   gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -800,6 +832,8 @@ export type DocumentationStepUncheckedUpdateManyInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: Prisma.BoolFieldUpdateOperationsInput | boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
   gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
@@ -854,6 +888,8 @@ export type DocumentationStepCountOrderByAggregateInput = {
   metadata?: Prisma.SortOrder
   requiresManualReview?: Prisma.SortOrder
   condition?: Prisma.SortOrder
+  reviewRequirements?: Prisma.SortOrder
+  reviewOrder?: Prisma.SortOrder
   assigneeId?: Prisma.SortOrder
   gateActor?: Prisma.SortOrder
   gateAction?: Prisma.SortOrder
@@ -890,6 +926,7 @@ export type DocumentationStepMaxOrderByAggregateInput = {
   submissionCount?: Prisma.SortOrder
   lastSubmittedAt?: Prisma.SortOrder
   requiresManualReview?: Prisma.SortOrder
+  reviewOrder?: Prisma.SortOrder
   assigneeId?: Prisma.SortOrder
   gateActor?: Prisma.SortOrder
   gateAction?: Prisma.SortOrder
@@ -921,6 +958,7 @@ export type DocumentationStepMinOrderByAggregateInput = {
   submissionCount?: Prisma.SortOrder
   lastSubmittedAt?: Prisma.SortOrder
   requiresManualReview?: Prisma.SortOrder
+  reviewOrder?: Prisma.SortOrder
   assigneeId?: Prisma.SortOrder
   gateActor?: Prisma.SortOrder
   gateAction?: Prisma.SortOrder
@@ -1178,6 +1216,8 @@ export type DocumentationStepCreateWithoutAssigneeInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: string | null
   gateActor?: $Enums.GateActor | null
   gateAction?: $Enums.GateAction | null
   gateRoleId?: string | null
@@ -1215,6 +1255,8 @@ export type DocumentationStepUncheckedCreateWithoutAssigneeInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: string | null
   gateActor?: $Enums.GateActor | null
   gateAction?: $Enums.GateAction | null
   gateRoleId?: string | null
@@ -1258,6 +1300,8 @@ export type DocumentationStepCreateWithoutGateActedByInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: string | null
   gateActor?: $Enums.GateActor | null
   gateAction?: $Enums.GateAction | null
   gateRoleId?: string | null
@@ -1295,6 +1339,8 @@ export type DocumentationStepUncheckedCreateWithoutGateActedByInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: string | null
   assigneeId?: string | null
   gateActor?: $Enums.GateActor | null
   gateAction?: $Enums.GateAction | null
@@ -1359,6 +1405,8 @@ export type DocumentationStepScalarWhereInput = {
   metadata?: Prisma.JsonNullableFilter<"DocumentationStep">
   requiresManualReview?: Prisma.BoolFilter<"DocumentationStep"> | boolean
   condition?: Prisma.JsonNullableFilter<"DocumentationStep">
+  reviewRequirements?: Prisma.JsonNullableFilter<"DocumentationStep">
+  reviewOrder?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
   assigneeId?: Prisma.StringNullableFilter<"DocumentationStep"> | string | null
   gateActor?: Prisma.EnumGateActorNullableFilter<"DocumentationStep"> | $Enums.GateActor | null
   gateAction?: Prisma.EnumGateActionNullableFilter<"DocumentationStep"> | $Enums.GateAction | null
@@ -1406,6 +1454,8 @@ export type DocumentationStepCreateWithoutTenantInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: string | null
   gateActor?: $Enums.GateActor | null
   gateAction?: $Enums.GateAction | null
   gateRoleId?: string | null
@@ -1442,6 +1492,8 @@ export type DocumentationStepUncheckedCreateWithoutTenantInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: string | null
   assigneeId?: string | null
   gateActor?: $Enums.GateActor | null
   gateAction?: $Enums.GateAction | null
@@ -1502,6 +1554,8 @@ export type DocumentationStepCreateWithoutCurrentForPhaseInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: string | null
   gateActor?: $Enums.GateActor | null
   gateAction?: $Enums.GateAction | null
   gateRoleId?: string | null
@@ -1539,6 +1593,8 @@ export type DocumentationStepUncheckedCreateWithoutCurrentForPhaseInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: string | null
   assigneeId?: string | null
   gateActor?: $Enums.GateActor | null
   gateAction?: $Enums.GateAction | null
@@ -1577,6 +1633,8 @@ export type DocumentationStepCreateWithoutDocumentationPhaseInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: string | null
   gateActor?: $Enums.GateActor | null
   gateAction?: $Enums.GateAction | null
   gateRoleId?: string | null
@@ -1613,6 +1671,8 @@ export type DocumentationStepUncheckedCreateWithoutDocumentationPhaseInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: string | null
   assigneeId?: string | null
   gateActor?: $Enums.GateActor | null
   gateAction?: $Enums.GateAction | null
@@ -1668,6 +1728,8 @@ export type DocumentationStepUpdateWithoutCurrentForPhaseInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: Prisma.BoolFieldUpdateOperationsInput | boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
   gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
   gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1705,6 +1767,8 @@ export type DocumentationStepUncheckedUpdateWithoutCurrentForPhaseInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: Prisma.BoolFieldUpdateOperationsInput | boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
   gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
@@ -1754,6 +1818,8 @@ export type DocumentationStepCreateWithoutRequiredDocumentsInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: string | null
   gateActor?: $Enums.GateActor | null
   gateAction?: $Enums.GateAction | null
   gateRoleId?: string | null
@@ -1791,6 +1857,8 @@ export type DocumentationStepUncheckedCreateWithoutRequiredDocumentsInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: string | null
   assigneeId?: string | null
   gateActor?: $Enums.GateActor | null
   gateAction?: $Enums.GateAction | null
@@ -1840,6 +1908,8 @@ export type DocumentationStepUpdateWithoutRequiredDocumentsInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: Prisma.BoolFieldUpdateOperationsInput | boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
   gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
   gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1877,6 +1947,8 @@ export type DocumentationStepUncheckedUpdateWithoutRequiredDocumentsInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: Prisma.BoolFieldUpdateOperationsInput | boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
   gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
@@ -1910,6 +1982,8 @@ export type DocumentationStepCreateWithoutApprovalsInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: string | null
   gateActor?: $Enums.GateActor | null
   gateAction?: $Enums.GateAction | null
   gateRoleId?: string | null
@@ -1947,6 +2021,8 @@ export type DocumentationStepUncheckedCreateWithoutApprovalsInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: string | null
   assigneeId?: string | null
   gateActor?: $Enums.GateActor | null
   gateAction?: $Enums.GateAction | null
@@ -1996,6 +2072,8 @@ export type DocumentationStepUpdateWithoutApprovalsInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: Prisma.BoolFieldUpdateOperationsInput | boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
   gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
   gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2033,6 +2111,8 @@ export type DocumentationStepUncheckedUpdateWithoutApprovalsInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: Prisma.BoolFieldUpdateOperationsInput | boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
   gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
@@ -2068,6 +2148,8 @@ export type DocumentationStepCreateManyAssigneeInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: string | null
   gateActor?: $Enums.GateActor | null
   gateAction?: $Enums.GateAction | null
   gateRoleId?: string | null
@@ -2100,6 +2182,8 @@ export type DocumentationStepCreateManyGateActedByInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: string | null
   assigneeId?: string | null
   gateActor?: $Enums.GateActor | null
   gateAction?: $Enums.GateAction | null
@@ -2130,6 +2214,8 @@ export type DocumentationStepUpdateWithoutAssigneeInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: Prisma.BoolFieldUpdateOperationsInput | boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
   gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
   gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2167,6 +2253,8 @@ export type DocumentationStepUncheckedUpdateWithoutAssigneeInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: Prisma.BoolFieldUpdateOperationsInput | boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
   gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
   gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2202,6 +2290,8 @@ export type DocumentationStepUncheckedUpdateManyWithoutAssigneeInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: Prisma.BoolFieldUpdateOperationsInput | boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
   gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
   gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2232,6 +2322,8 @@ export type DocumentationStepUpdateWithoutGateActedByInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: Prisma.BoolFieldUpdateOperationsInput | boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
   gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
   gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2269,6 +2361,8 @@ export type DocumentationStepUncheckedUpdateWithoutGateActedByInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: Prisma.BoolFieldUpdateOperationsInput | boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
   gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
@@ -2304,6 +2398,8 @@ export type DocumentationStepUncheckedUpdateManyWithoutGateActedByInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: Prisma.BoolFieldUpdateOperationsInput | boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
   gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
@@ -2335,6 +2431,8 @@ export type DocumentationStepCreateManyTenantInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: string | null
   assigneeId?: string | null
   gateActor?: $Enums.GateActor | null
   gateAction?: $Enums.GateAction | null
@@ -2366,6 +2464,8 @@ export type DocumentationStepUpdateWithoutTenantInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: Prisma.BoolFieldUpdateOperationsInput | boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
   gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
   gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2402,6 +2502,8 @@ export type DocumentationStepUncheckedUpdateWithoutTenantInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: Prisma.BoolFieldUpdateOperationsInput | boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
   gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
@@ -2437,6 +2539,8 @@ export type DocumentationStepUncheckedUpdateManyWithoutTenantInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: Prisma.BoolFieldUpdateOperationsInput | boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
   gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
@@ -2469,6 +2573,8 @@ export type DocumentationStepCreateManyDocumentationPhaseInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: string | null
   assigneeId?: string | null
   gateActor?: $Enums.GateActor | null
   gateAction?: $Enums.GateAction | null
@@ -2500,6 +2606,8 @@ export type DocumentationStepUpdateWithoutDocumentationPhaseInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: Prisma.BoolFieldUpdateOperationsInput | boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
   gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
   gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2536,6 +2644,8 @@ export type DocumentationStepUncheckedUpdateWithoutDocumentationPhaseInput = {
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: Prisma.BoolFieldUpdateOperationsInput | boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
   gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
@@ -2571,6 +2681,8 @@ export type DocumentationStepUncheckedUpdateManyWithoutDocumentationPhaseInput =
   metadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   requiresManualReview?: Prisma.BoolFieldUpdateOperationsInput | boolean
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
   gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
@@ -2653,6 +2765,8 @@ export type DocumentationStepSelect<ExtArgs extends runtime.Types.Extensions.Int
   metadata?: boolean
   requiresManualReview?: boolean
   condition?: boolean
+  reviewRequirements?: boolean
+  reviewOrder?: boolean
   assigneeId?: boolean
   gateActor?: boolean
   gateAction?: boolean
@@ -2696,6 +2810,8 @@ export type DocumentationStepSelectScalar = {
   metadata?: boolean
   requiresManualReview?: boolean
   condition?: boolean
+  reviewRequirements?: boolean
+  reviewOrder?: boolean
   assigneeId?: boolean
   gateActor?: boolean
   gateAction?: boolean
@@ -2714,7 +2830,7 @@ export type DocumentationStepSelectScalar = {
   updatedAt?: boolean
 }
 
-export type DocumentationStepOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "documentationPhaseId" | "name" | "description" | "stepType" | "order" | "status" | "actionReason" | "submissionCount" | "lastSubmittedAt" | "metadata" | "requiresManualReview" | "condition" | "assigneeId" | "gateActor" | "gateAction" | "gateRoleId" | "gateInstructions" | "allowReject" | "rejectBehavior" | "requiresComment" | "gateActedAt" | "gateActedById" | "gateDecision" | "gateComment" | "dueDate" | "completedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["documentationStep"]>
+export type DocumentationStepOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "documentationPhaseId" | "name" | "description" | "stepType" | "order" | "status" | "actionReason" | "submissionCount" | "lastSubmittedAt" | "metadata" | "requiresManualReview" | "condition" | "reviewRequirements" | "reviewOrder" | "assigneeId" | "gateActor" | "gateAction" | "gateRoleId" | "gateInstructions" | "allowReject" | "rejectBehavior" | "requiresComment" | "gateActedAt" | "gateActedById" | "gateDecision" | "gateComment" | "dueDate" | "completedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["documentationStep"]>
 export type DocumentationStepInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   documentationPhase?: boolean | Prisma.DocumentationPhaseDefaultArgs<ExtArgs>
@@ -2752,6 +2868,8 @@ export type $DocumentationStepPayload<ExtArgs extends runtime.Types.Extensions.I
     metadata: runtime.JsonValue | null
     requiresManualReview: boolean
     condition: runtime.JsonValue | null
+    reviewRequirements: runtime.JsonValue | null
+    reviewOrder: string | null
     assigneeId: string | null
     gateActor: $Enums.GateActor | null
     gateAction: $Enums.GateAction | null
@@ -3158,6 +3276,8 @@ export interface DocumentationStepFieldRefs {
   readonly metadata: Prisma.FieldRef<"DocumentationStep", 'Json'>
   readonly requiresManualReview: Prisma.FieldRef<"DocumentationStep", 'Boolean'>
   readonly condition: Prisma.FieldRef<"DocumentationStep", 'Json'>
+  readonly reviewRequirements: Prisma.FieldRef<"DocumentationStep", 'Json'>
+  readonly reviewOrder: Prisma.FieldRef<"DocumentationStep", 'String'>
   readonly assigneeId: Prisma.FieldRef<"DocumentationStep", 'String'>
   readonly gateActor: Prisma.FieldRef<"DocumentationStep", 'GateActor'>
   readonly gateAction: Prisma.FieldRef<"DocumentationStep", 'GateAction'>

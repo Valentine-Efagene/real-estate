@@ -107,6 +107,7 @@ export const ModelName = {
   PaymentInstallment: 'PaymentInstallment',
   ApplicationPayment: 'ApplicationPayment',
   ApplicationDocument: 'ApplicationDocument',
+  DocumentReview: 'DocumentReview',
   DocumentTemplate: 'DocumentTemplate',
   OfferLetter: 'OfferLetter',
   ApplicationTermination: 'ApplicationTermination',
@@ -230,6 +231,7 @@ export const OrganizationScalarFieldEnum = {
   name: 'name',
   type: 'type',
   status: 'status',
+  isPlatformOrg: 'isPlatformOrg',
   email: 'email',
   phone: 'phone',
   address: 'address',
@@ -618,6 +620,8 @@ export const DocumentationPlanStepScalarFieldEnum = {
   minFiles: 'minFiles',
   maxFiles: 'maxFiles',
   condition: 'condition',
+  reviewRequirements: 'reviewRequirements',
+  reviewOrder: 'reviewOrder',
   gateActor: 'gateActor',
   gateAction: 'gateAction',
   gateRoleId: 'gateRoleId',
@@ -1042,6 +1046,8 @@ export const DocumentationStepScalarFieldEnum = {
   metadata: 'metadata',
   requiresManualReview: 'requiresManualReview',
   condition: 'condition',
+  reviewRequirements: 'reviewRequirements',
+  reviewOrder: 'reviewOrder',
   assigneeId: 'assigneeId',
   gateActor: 'gateActor',
   gateAction: 'gateAction',
@@ -1146,11 +1152,36 @@ export const ApplicationDocumentScalarFieldEnum = {
   type: 'type',
   uploadedById: 'uploadedById',
   status: 'status',
+  version: 'version',
+  replacesDocumentId: 'replacesDocumentId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type ApplicationDocumentScalarFieldEnum = (typeof ApplicationDocumentScalarFieldEnum)[keyof typeof ApplicationDocumentScalarFieldEnum]
+
+
+export const DocumentReviewScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  documentId: 'documentId',
+  reviewParty: 'reviewParty',
+  organizationId: 'organizationId',
+  reviewerId: 'reviewerId',
+  reviewerName: 'reviewerName',
+  decision: 'decision',
+  comments: 'comments',
+  concerns: 'concerns',
+  requestedAt: 'requestedAt',
+  dueAt: 'dueAt',
+  reviewedAt: 'reviewedAt',
+  reviewOrder: 'reviewOrder',
+  parentReviewId: 'parentReviewId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DocumentReviewScalarFieldEnum = (typeof DocumentReviewScalarFieldEnum)[keyof typeof DocumentReviewScalarFieldEnum]
 
 
 export const DocumentTemplateScalarFieldEnum = {
@@ -1904,6 +1935,7 @@ export const DocumentationPlanStepOrderByRelevanceFieldEnum = {
   documentType: 'documentType',
   description: 'description',
   allowedMimeTypes: 'allowedMimeTypes',
+  reviewOrder: 'reviewOrder',
   gateRoleId: 'gateRoleId',
   gateInstructions: 'gateInstructions'
 } as const
@@ -2149,6 +2181,7 @@ export const DocumentationStepOrderByRelevanceFieldEnum = {
   name: 'name',
   description: 'description',
   actionReason: 'actionReason',
+  reviewOrder: 'reviewOrder',
   assigneeId: 'assigneeId',
   gateRoleId: 'gateRoleId',
   gateInstructions: 'gateInstructions',
@@ -2214,10 +2247,25 @@ export const ApplicationDocumentOrderByRelevanceFieldEnum = {
   name: 'name',
   url: 'url',
   type: 'type',
-  uploadedById: 'uploadedById'
+  uploadedById: 'uploadedById',
+  replacesDocumentId: 'replacesDocumentId'
 } as const
 
 export type ApplicationDocumentOrderByRelevanceFieldEnum = (typeof ApplicationDocumentOrderByRelevanceFieldEnum)[keyof typeof ApplicationDocumentOrderByRelevanceFieldEnum]
+
+
+export const DocumentReviewOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  documentId: 'documentId',
+  organizationId: 'organizationId',
+  reviewerId: 'reviewerId',
+  reviewerName: 'reviewerName',
+  comments: 'comments',
+  parentReviewId: 'parentReviewId'
+} as const
+
+export type DocumentReviewOrderByRelevanceFieldEnum = (typeof DocumentReviewOrderByRelevanceFieldEnum)[keyof typeof DocumentReviewOrderByRelevanceFieldEnum]
 
 
 export const DocumentTemplateOrderByRelevanceFieldEnum = {

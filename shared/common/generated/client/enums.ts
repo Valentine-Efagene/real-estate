@@ -226,8 +226,12 @@ export type ApprovalDecision = (typeof ApprovalDecision)[keyof typeof ApprovalDe
 
 
 export const OrganizationType = {
+  PLATFORM: 'PLATFORM',
   BANK: 'BANK',
-  DEVELOPER: 'DEVELOPER'
+  DEVELOPER: 'DEVELOPER',
+  LEGAL: 'LEGAL',
+  INSURER: 'INSURER',
+  GOVERNMENT: 'GOVERNMENT'
 } as const
 
 export type OrganizationType = (typeof OrganizationType)[keyof typeof OrganizationType]
@@ -300,6 +304,30 @@ export const CompletionCriterion = {
 } as const
 
 export type CompletionCriterion = (typeof CompletionCriterion)[keyof typeof CompletionCriterion]
+
+
+export const ReviewParty = {
+  INTERNAL: 'INTERNAL',
+  BANK: 'BANK',
+  DEVELOPER: 'DEVELOPER',
+  LEGAL: 'LEGAL',
+  GOVERNMENT: 'GOVERNMENT',
+  INSURER: 'INSURER',
+  CUSTOMER: 'CUSTOMER'
+} as const
+
+export type ReviewParty = (typeof ReviewParty)[keyof typeof ReviewParty]
+
+
+export const ReviewDecision = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  CHANGES_REQUESTED: 'CHANGES_REQUESTED',
+  WAIVED: 'WAIVED'
+} as const
+
+export type ReviewDecision = (typeof ReviewDecision)[keyof typeof ReviewDecision]
 
 
 export const DocumentStatus = {

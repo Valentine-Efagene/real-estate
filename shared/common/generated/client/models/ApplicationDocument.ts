@@ -20,8 +20,18 @@ export type ApplicationDocumentModel = runtime.Types.Result.DefaultSelection<Pri
 
 export type AggregateApplicationDocument = {
   _count: ApplicationDocumentCountAggregateOutputType | null
+  _avg: ApplicationDocumentAvgAggregateOutputType | null
+  _sum: ApplicationDocumentSumAggregateOutputType | null
   _min: ApplicationDocumentMinAggregateOutputType | null
   _max: ApplicationDocumentMaxAggregateOutputType | null
+}
+
+export type ApplicationDocumentAvgAggregateOutputType = {
+  version: number | null
+}
+
+export type ApplicationDocumentSumAggregateOutputType = {
+  version: number | null
 }
 
 export type ApplicationDocumentMinAggregateOutputType = {
@@ -35,6 +45,8 @@ export type ApplicationDocumentMinAggregateOutputType = {
   type: string | null
   uploadedById: string | null
   status: $Enums.DocumentStatus | null
+  version: number | null
+  replacesDocumentId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -50,6 +62,8 @@ export type ApplicationDocumentMaxAggregateOutputType = {
   type: string | null
   uploadedById: string | null
   status: $Enums.DocumentStatus | null
+  version: number | null
+  replacesDocumentId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -65,11 +79,21 @@ export type ApplicationDocumentCountAggregateOutputType = {
   type: number
   uploadedById: number
   status: number
+  version: number
+  replacesDocumentId: number
   createdAt: number
   updatedAt: number
   _all: number
 }
 
+
+export type ApplicationDocumentAvgAggregateInputType = {
+  version?: true
+}
+
+export type ApplicationDocumentSumAggregateInputType = {
+  version?: true
+}
 
 export type ApplicationDocumentMinAggregateInputType = {
   id?: true
@@ -82,6 +106,8 @@ export type ApplicationDocumentMinAggregateInputType = {
   type?: true
   uploadedById?: true
   status?: true
+  version?: true
+  replacesDocumentId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -97,6 +123,8 @@ export type ApplicationDocumentMaxAggregateInputType = {
   type?: true
   uploadedById?: true
   status?: true
+  version?: true
+  replacesDocumentId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -112,6 +140,8 @@ export type ApplicationDocumentCountAggregateInputType = {
   type?: true
   uploadedById?: true
   status?: true
+  version?: true
+  replacesDocumentId?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -155,6 +185,18 @@ export type ApplicationDocumentAggregateArgs<ExtArgs extends runtime.Types.Exten
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: ApplicationDocumentAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: ApplicationDocumentSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: ApplicationDocumentMinAggregateInputType
@@ -185,6 +227,8 @@ export type ApplicationDocumentGroupByArgs<ExtArgs extends runtime.Types.Extensi
   take?: number
   skip?: number
   _count?: ApplicationDocumentCountAggregateInputType | true
+  _avg?: ApplicationDocumentAvgAggregateInputType
+  _sum?: ApplicationDocumentSumAggregateInputType
   _min?: ApplicationDocumentMinAggregateInputType
   _max?: ApplicationDocumentMaxAggregateInputType
 }
@@ -200,9 +244,13 @@ export type ApplicationDocumentGroupByOutputType = {
   type: string
   uploadedById: string | null
   status: $Enums.DocumentStatus
+  version: number
+  replacesDocumentId: string | null
   createdAt: Date
   updatedAt: Date
   _count: ApplicationDocumentCountAggregateOutputType | null
+  _avg: ApplicationDocumentAvgAggregateOutputType | null
+  _sum: ApplicationDocumentSumAggregateOutputType | null
   _min: ApplicationDocumentMinAggregateOutputType | null
   _max: ApplicationDocumentMaxAggregateOutputType | null
 }
@@ -236,11 +284,16 @@ export type ApplicationDocumentWhereInput = {
   type?: Prisma.StringFilter<"ApplicationDocument"> | string
   uploadedById?: Prisma.StringNullableFilter<"ApplicationDocument"> | string | null
   status?: Prisma.EnumDocumentStatusFilter<"ApplicationDocument"> | $Enums.DocumentStatus
+  version?: Prisma.IntFilter<"ApplicationDocument"> | number
+  replacesDocumentId?: Prisma.StringNullableFilter<"ApplicationDocument"> | string | null
   createdAt?: Prisma.DateTimeFilter<"ApplicationDocument"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ApplicationDocument"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   application?: Prisma.XOR<Prisma.ApplicationScalarRelationFilter, Prisma.ApplicationWhereInput>
   uploadedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  replacesDocument?: Prisma.XOR<Prisma.ApplicationDocumentNullableScalarRelationFilter, Prisma.ApplicationDocumentWhereInput> | null
+  revisions?: Prisma.ApplicationDocumentListRelationFilter
+  reviews?: Prisma.DocumentReviewListRelationFilter
 }
 
 export type ApplicationDocumentOrderByWithRelationInput = {
@@ -254,11 +307,16 @@ export type ApplicationDocumentOrderByWithRelationInput = {
   type?: Prisma.SortOrder
   uploadedById?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  version?: Prisma.SortOrder
+  replacesDocumentId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   tenant?: Prisma.TenantOrderByWithRelationInput
   application?: Prisma.ApplicationOrderByWithRelationInput
   uploadedBy?: Prisma.UserOrderByWithRelationInput
+  replacesDocument?: Prisma.ApplicationDocumentOrderByWithRelationInput
+  revisions?: Prisma.ApplicationDocumentOrderByRelationAggregateInput
+  reviews?: Prisma.DocumentReviewOrderByRelationAggregateInput
   _relevance?: Prisma.ApplicationDocumentOrderByRelevanceInput
 }
 
@@ -276,11 +334,16 @@ export type ApplicationDocumentWhereUniqueInput = Prisma.AtLeast<{
   type?: Prisma.StringFilter<"ApplicationDocument"> | string
   uploadedById?: Prisma.StringNullableFilter<"ApplicationDocument"> | string | null
   status?: Prisma.EnumDocumentStatusFilter<"ApplicationDocument"> | $Enums.DocumentStatus
+  version?: Prisma.IntFilter<"ApplicationDocument"> | number
+  replacesDocumentId?: Prisma.StringNullableFilter<"ApplicationDocument"> | string | null
   createdAt?: Prisma.DateTimeFilter<"ApplicationDocument"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ApplicationDocument"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   application?: Prisma.XOR<Prisma.ApplicationScalarRelationFilter, Prisma.ApplicationWhereInput>
   uploadedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  replacesDocument?: Prisma.XOR<Prisma.ApplicationDocumentNullableScalarRelationFilter, Prisma.ApplicationDocumentWhereInput> | null
+  revisions?: Prisma.ApplicationDocumentListRelationFilter
+  reviews?: Prisma.DocumentReviewListRelationFilter
 }, "id">
 
 export type ApplicationDocumentOrderByWithAggregationInput = {
@@ -294,11 +357,15 @@ export type ApplicationDocumentOrderByWithAggregationInput = {
   type?: Prisma.SortOrder
   uploadedById?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  version?: Prisma.SortOrder
+  replacesDocumentId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.ApplicationDocumentCountOrderByAggregateInput
+  _avg?: Prisma.ApplicationDocumentAvgOrderByAggregateInput
   _max?: Prisma.ApplicationDocumentMaxOrderByAggregateInput
   _min?: Prisma.ApplicationDocumentMinOrderByAggregateInput
+  _sum?: Prisma.ApplicationDocumentSumOrderByAggregateInput
 }
 
 export type ApplicationDocumentScalarWhereWithAggregatesInput = {
@@ -315,6 +382,8 @@ export type ApplicationDocumentScalarWhereWithAggregatesInput = {
   type?: Prisma.StringWithAggregatesFilter<"ApplicationDocument"> | string
   uploadedById?: Prisma.StringNullableWithAggregatesFilter<"ApplicationDocument"> | string | null
   status?: Prisma.EnumDocumentStatusWithAggregatesFilter<"ApplicationDocument"> | $Enums.DocumentStatus
+  version?: Prisma.IntWithAggregatesFilter<"ApplicationDocument"> | number
+  replacesDocumentId?: Prisma.StringNullableWithAggregatesFilter<"ApplicationDocument"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ApplicationDocument"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ApplicationDocument"> | Date | string
 }
@@ -327,11 +396,15 @@ export type ApplicationDocumentCreateInput = {
   url: string
   type: string
   status?: $Enums.DocumentStatus
+  version?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutApplicationDocumentsInput
   application: Prisma.ApplicationCreateNestedOneWithoutDocumentsInput
   uploadedBy?: Prisma.UserCreateNestedOneWithoutUploadedDocsInput
+  replacesDocument?: Prisma.ApplicationDocumentCreateNestedOneWithoutRevisionsInput
+  revisions?: Prisma.ApplicationDocumentCreateNestedManyWithoutReplacesDocumentInput
+  reviews?: Prisma.DocumentReviewCreateNestedManyWithoutDocumentInput
 }
 
 export type ApplicationDocumentUncheckedCreateInput = {
@@ -345,8 +418,12 @@ export type ApplicationDocumentUncheckedCreateInput = {
   type: string
   uploadedById?: string | null
   status?: $Enums.DocumentStatus
+  version?: number
+  replacesDocumentId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  revisions?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutReplacesDocumentInput
+  reviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutDocumentInput
 }
 
 export type ApplicationDocumentUpdateInput = {
@@ -357,11 +434,15 @@ export type ApplicationDocumentUpdateInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutApplicationDocumentsNestedInput
   application?: Prisma.ApplicationUpdateOneRequiredWithoutDocumentsNestedInput
   uploadedBy?: Prisma.UserUpdateOneWithoutUploadedDocsNestedInput
+  replacesDocument?: Prisma.ApplicationDocumentUpdateOneWithoutRevisionsNestedInput
+  revisions?: Prisma.ApplicationDocumentUpdateManyWithoutReplacesDocumentNestedInput
+  reviews?: Prisma.DocumentReviewUpdateManyWithoutDocumentNestedInput
 }
 
 export type ApplicationDocumentUncheckedUpdateInput = {
@@ -375,8 +456,12 @@ export type ApplicationDocumentUncheckedUpdateInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  replacesDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revisions?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutReplacesDocumentNestedInput
+  reviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutDocumentNestedInput
 }
 
 export type ApplicationDocumentCreateManyInput = {
@@ -390,6 +475,8 @@ export type ApplicationDocumentCreateManyInput = {
   type: string
   uploadedById?: string | null
   status?: $Enums.DocumentStatus
+  version?: number
+  replacesDocumentId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -402,6 +489,7 @@ export type ApplicationDocumentUpdateManyMutationInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -417,6 +505,8 @@ export type ApplicationDocumentUncheckedUpdateManyInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  replacesDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -429,6 +519,11 @@ export type ApplicationDocumentListRelationFilter = {
 
 export type ApplicationDocumentOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type ApplicationDocumentNullableScalarRelationFilter = {
+  is?: Prisma.ApplicationDocumentWhereInput | null
+  isNot?: Prisma.ApplicationDocumentWhereInput | null
 }
 
 export type ApplicationDocumentOrderByRelevanceInput = {
@@ -448,8 +543,14 @@ export type ApplicationDocumentCountOrderByAggregateInput = {
   type?: Prisma.SortOrder
   uploadedById?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  version?: Prisma.SortOrder
+  replacesDocumentId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type ApplicationDocumentAvgOrderByAggregateInput = {
+  version?: Prisma.SortOrder
 }
 
 export type ApplicationDocumentMaxOrderByAggregateInput = {
@@ -463,6 +564,8 @@ export type ApplicationDocumentMaxOrderByAggregateInput = {
   type?: Prisma.SortOrder
   uploadedById?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  version?: Prisma.SortOrder
+  replacesDocumentId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -478,8 +581,19 @@ export type ApplicationDocumentMinOrderByAggregateInput = {
   type?: Prisma.SortOrder
   uploadedById?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  version?: Prisma.SortOrder
+  replacesDocumentId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type ApplicationDocumentSumOrderByAggregateInput = {
+  version?: Prisma.SortOrder
+}
+
+export type ApplicationDocumentScalarRelationFilter = {
+  is?: Prisma.ApplicationDocumentWhereInput
+  isNot?: Prisma.ApplicationDocumentWhereInput
 }
 
 export type ApplicationDocumentCreateNestedManyWithoutUploadedByInput = {
@@ -608,8 +722,80 @@ export type ApplicationDocumentUncheckedUpdateManyWithoutApplicationNestedInput 
   deleteMany?: Prisma.ApplicationDocumentScalarWhereInput | Prisma.ApplicationDocumentScalarWhereInput[]
 }
 
+export type ApplicationDocumentCreateNestedOneWithoutRevisionsInput = {
+  create?: Prisma.XOR<Prisma.ApplicationDocumentCreateWithoutRevisionsInput, Prisma.ApplicationDocumentUncheckedCreateWithoutRevisionsInput>
+  connectOrCreate?: Prisma.ApplicationDocumentCreateOrConnectWithoutRevisionsInput
+  connect?: Prisma.ApplicationDocumentWhereUniqueInput
+}
+
+export type ApplicationDocumentCreateNestedManyWithoutReplacesDocumentInput = {
+  create?: Prisma.XOR<Prisma.ApplicationDocumentCreateWithoutReplacesDocumentInput, Prisma.ApplicationDocumentUncheckedCreateWithoutReplacesDocumentInput> | Prisma.ApplicationDocumentCreateWithoutReplacesDocumentInput[] | Prisma.ApplicationDocumentUncheckedCreateWithoutReplacesDocumentInput[]
+  connectOrCreate?: Prisma.ApplicationDocumentCreateOrConnectWithoutReplacesDocumentInput | Prisma.ApplicationDocumentCreateOrConnectWithoutReplacesDocumentInput[]
+  createMany?: Prisma.ApplicationDocumentCreateManyReplacesDocumentInputEnvelope
+  connect?: Prisma.ApplicationDocumentWhereUniqueInput | Prisma.ApplicationDocumentWhereUniqueInput[]
+}
+
+export type ApplicationDocumentUncheckedCreateNestedManyWithoutReplacesDocumentInput = {
+  create?: Prisma.XOR<Prisma.ApplicationDocumentCreateWithoutReplacesDocumentInput, Prisma.ApplicationDocumentUncheckedCreateWithoutReplacesDocumentInput> | Prisma.ApplicationDocumentCreateWithoutReplacesDocumentInput[] | Prisma.ApplicationDocumentUncheckedCreateWithoutReplacesDocumentInput[]
+  connectOrCreate?: Prisma.ApplicationDocumentCreateOrConnectWithoutReplacesDocumentInput | Prisma.ApplicationDocumentCreateOrConnectWithoutReplacesDocumentInput[]
+  createMany?: Prisma.ApplicationDocumentCreateManyReplacesDocumentInputEnvelope
+  connect?: Prisma.ApplicationDocumentWhereUniqueInput | Prisma.ApplicationDocumentWhereUniqueInput[]
+}
+
 export type EnumDocumentStatusFieldUpdateOperationsInput = {
   set?: $Enums.DocumentStatus
+}
+
+export type ApplicationDocumentUpdateOneWithoutRevisionsNestedInput = {
+  create?: Prisma.XOR<Prisma.ApplicationDocumentCreateWithoutRevisionsInput, Prisma.ApplicationDocumentUncheckedCreateWithoutRevisionsInput>
+  connectOrCreate?: Prisma.ApplicationDocumentCreateOrConnectWithoutRevisionsInput
+  upsert?: Prisma.ApplicationDocumentUpsertWithoutRevisionsInput
+  disconnect?: Prisma.ApplicationDocumentWhereInput | boolean
+  delete?: Prisma.ApplicationDocumentWhereInput | boolean
+  connect?: Prisma.ApplicationDocumentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ApplicationDocumentUpdateToOneWithWhereWithoutRevisionsInput, Prisma.ApplicationDocumentUpdateWithoutRevisionsInput>, Prisma.ApplicationDocumentUncheckedUpdateWithoutRevisionsInput>
+}
+
+export type ApplicationDocumentUpdateManyWithoutReplacesDocumentNestedInput = {
+  create?: Prisma.XOR<Prisma.ApplicationDocumentCreateWithoutReplacesDocumentInput, Prisma.ApplicationDocumentUncheckedCreateWithoutReplacesDocumentInput> | Prisma.ApplicationDocumentCreateWithoutReplacesDocumentInput[] | Prisma.ApplicationDocumentUncheckedCreateWithoutReplacesDocumentInput[]
+  connectOrCreate?: Prisma.ApplicationDocumentCreateOrConnectWithoutReplacesDocumentInput | Prisma.ApplicationDocumentCreateOrConnectWithoutReplacesDocumentInput[]
+  upsert?: Prisma.ApplicationDocumentUpsertWithWhereUniqueWithoutReplacesDocumentInput | Prisma.ApplicationDocumentUpsertWithWhereUniqueWithoutReplacesDocumentInput[]
+  createMany?: Prisma.ApplicationDocumentCreateManyReplacesDocumentInputEnvelope
+  set?: Prisma.ApplicationDocumentWhereUniqueInput | Prisma.ApplicationDocumentWhereUniqueInput[]
+  disconnect?: Prisma.ApplicationDocumentWhereUniqueInput | Prisma.ApplicationDocumentWhereUniqueInput[]
+  delete?: Prisma.ApplicationDocumentWhereUniqueInput | Prisma.ApplicationDocumentWhereUniqueInput[]
+  connect?: Prisma.ApplicationDocumentWhereUniqueInput | Prisma.ApplicationDocumentWhereUniqueInput[]
+  update?: Prisma.ApplicationDocumentUpdateWithWhereUniqueWithoutReplacesDocumentInput | Prisma.ApplicationDocumentUpdateWithWhereUniqueWithoutReplacesDocumentInput[]
+  updateMany?: Prisma.ApplicationDocumentUpdateManyWithWhereWithoutReplacesDocumentInput | Prisma.ApplicationDocumentUpdateManyWithWhereWithoutReplacesDocumentInput[]
+  deleteMany?: Prisma.ApplicationDocumentScalarWhereInput | Prisma.ApplicationDocumentScalarWhereInput[]
+}
+
+export type ApplicationDocumentUncheckedUpdateManyWithoutReplacesDocumentNestedInput = {
+  create?: Prisma.XOR<Prisma.ApplicationDocumentCreateWithoutReplacesDocumentInput, Prisma.ApplicationDocumentUncheckedCreateWithoutReplacesDocumentInput> | Prisma.ApplicationDocumentCreateWithoutReplacesDocumentInput[] | Prisma.ApplicationDocumentUncheckedCreateWithoutReplacesDocumentInput[]
+  connectOrCreate?: Prisma.ApplicationDocumentCreateOrConnectWithoutReplacesDocumentInput | Prisma.ApplicationDocumentCreateOrConnectWithoutReplacesDocumentInput[]
+  upsert?: Prisma.ApplicationDocumentUpsertWithWhereUniqueWithoutReplacesDocumentInput | Prisma.ApplicationDocumentUpsertWithWhereUniqueWithoutReplacesDocumentInput[]
+  createMany?: Prisma.ApplicationDocumentCreateManyReplacesDocumentInputEnvelope
+  set?: Prisma.ApplicationDocumentWhereUniqueInput | Prisma.ApplicationDocumentWhereUniqueInput[]
+  disconnect?: Prisma.ApplicationDocumentWhereUniqueInput | Prisma.ApplicationDocumentWhereUniqueInput[]
+  delete?: Prisma.ApplicationDocumentWhereUniqueInput | Prisma.ApplicationDocumentWhereUniqueInput[]
+  connect?: Prisma.ApplicationDocumentWhereUniqueInput | Prisma.ApplicationDocumentWhereUniqueInput[]
+  update?: Prisma.ApplicationDocumentUpdateWithWhereUniqueWithoutReplacesDocumentInput | Prisma.ApplicationDocumentUpdateWithWhereUniqueWithoutReplacesDocumentInput[]
+  updateMany?: Prisma.ApplicationDocumentUpdateManyWithWhereWithoutReplacesDocumentInput | Prisma.ApplicationDocumentUpdateManyWithWhereWithoutReplacesDocumentInput[]
+  deleteMany?: Prisma.ApplicationDocumentScalarWhereInput | Prisma.ApplicationDocumentScalarWhereInput[]
+}
+
+export type ApplicationDocumentCreateNestedOneWithoutReviewsInput = {
+  create?: Prisma.XOR<Prisma.ApplicationDocumentCreateWithoutReviewsInput, Prisma.ApplicationDocumentUncheckedCreateWithoutReviewsInput>
+  connectOrCreate?: Prisma.ApplicationDocumentCreateOrConnectWithoutReviewsInput
+  connect?: Prisma.ApplicationDocumentWhereUniqueInput
+}
+
+export type ApplicationDocumentUpdateOneRequiredWithoutReviewsNestedInput = {
+  create?: Prisma.XOR<Prisma.ApplicationDocumentCreateWithoutReviewsInput, Prisma.ApplicationDocumentUncheckedCreateWithoutReviewsInput>
+  connectOrCreate?: Prisma.ApplicationDocumentCreateOrConnectWithoutReviewsInput
+  upsert?: Prisma.ApplicationDocumentUpsertWithoutReviewsInput
+  connect?: Prisma.ApplicationDocumentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ApplicationDocumentUpdateToOneWithWhereWithoutReviewsInput, Prisma.ApplicationDocumentUpdateWithoutReviewsInput>, Prisma.ApplicationDocumentUncheckedUpdateWithoutReviewsInput>
 }
 
 export type ApplicationDocumentCreateWithoutUploadedByInput = {
@@ -620,10 +806,14 @@ export type ApplicationDocumentCreateWithoutUploadedByInput = {
   url: string
   type: string
   status?: $Enums.DocumentStatus
+  version?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutApplicationDocumentsInput
   application: Prisma.ApplicationCreateNestedOneWithoutDocumentsInput
+  replacesDocument?: Prisma.ApplicationDocumentCreateNestedOneWithoutRevisionsInput
+  revisions?: Prisma.ApplicationDocumentCreateNestedManyWithoutReplacesDocumentInput
+  reviews?: Prisma.DocumentReviewCreateNestedManyWithoutDocumentInput
 }
 
 export type ApplicationDocumentUncheckedCreateWithoutUploadedByInput = {
@@ -636,8 +826,12 @@ export type ApplicationDocumentUncheckedCreateWithoutUploadedByInput = {
   url: string
   type: string
   status?: $Enums.DocumentStatus
+  version?: number
+  replacesDocumentId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  revisions?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutReplacesDocumentInput
+  reviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutDocumentInput
 }
 
 export type ApplicationDocumentCreateOrConnectWithoutUploadedByInput = {
@@ -680,6 +874,8 @@ export type ApplicationDocumentScalarWhereInput = {
   type?: Prisma.StringFilter<"ApplicationDocument"> | string
   uploadedById?: Prisma.StringNullableFilter<"ApplicationDocument"> | string | null
   status?: Prisma.EnumDocumentStatusFilter<"ApplicationDocument"> | $Enums.DocumentStatus
+  version?: Prisma.IntFilter<"ApplicationDocument"> | number
+  replacesDocumentId?: Prisma.StringNullableFilter<"ApplicationDocument"> | string | null
   createdAt?: Prisma.DateTimeFilter<"ApplicationDocument"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ApplicationDocument"> | Date | string
 }
@@ -692,10 +888,14 @@ export type ApplicationDocumentCreateWithoutTenantInput = {
   url: string
   type: string
   status?: $Enums.DocumentStatus
+  version?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   application: Prisma.ApplicationCreateNestedOneWithoutDocumentsInput
   uploadedBy?: Prisma.UserCreateNestedOneWithoutUploadedDocsInput
+  replacesDocument?: Prisma.ApplicationDocumentCreateNestedOneWithoutRevisionsInput
+  revisions?: Prisma.ApplicationDocumentCreateNestedManyWithoutReplacesDocumentInput
+  reviews?: Prisma.DocumentReviewCreateNestedManyWithoutDocumentInput
 }
 
 export type ApplicationDocumentUncheckedCreateWithoutTenantInput = {
@@ -708,8 +908,12 @@ export type ApplicationDocumentUncheckedCreateWithoutTenantInput = {
   type: string
   uploadedById?: string | null
   status?: $Enums.DocumentStatus
+  version?: number
+  replacesDocumentId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  revisions?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutReplacesDocumentInput
+  reviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutDocumentInput
 }
 
 export type ApplicationDocumentCreateOrConnectWithoutTenantInput = {
@@ -746,10 +950,14 @@ export type ApplicationDocumentCreateWithoutApplicationInput = {
   url: string
   type: string
   status?: $Enums.DocumentStatus
+  version?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutApplicationDocumentsInput
   uploadedBy?: Prisma.UserCreateNestedOneWithoutUploadedDocsInput
+  replacesDocument?: Prisma.ApplicationDocumentCreateNestedOneWithoutRevisionsInput
+  revisions?: Prisma.ApplicationDocumentCreateNestedManyWithoutReplacesDocumentInput
+  reviews?: Prisma.DocumentReviewCreateNestedManyWithoutDocumentInput
 }
 
 export type ApplicationDocumentUncheckedCreateWithoutApplicationInput = {
@@ -762,8 +970,12 @@ export type ApplicationDocumentUncheckedCreateWithoutApplicationInput = {
   type: string
   uploadedById?: string | null
   status?: $Enums.DocumentStatus
+  version?: number
+  replacesDocumentId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  revisions?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutReplacesDocumentInput
+  reviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutDocumentInput
 }
 
 export type ApplicationDocumentCreateOrConnectWithoutApplicationInput = {
@@ -792,6 +1004,244 @@ export type ApplicationDocumentUpdateManyWithWhereWithoutApplicationInput = {
   data: Prisma.XOR<Prisma.ApplicationDocumentUpdateManyMutationInput, Prisma.ApplicationDocumentUncheckedUpdateManyWithoutApplicationInput>
 }
 
+export type ApplicationDocumentCreateWithoutRevisionsInput = {
+  id?: string
+  phaseId?: string | null
+  stepId?: string | null
+  name: string
+  url: string
+  type: string
+  status?: $Enums.DocumentStatus
+  version?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutApplicationDocumentsInput
+  application: Prisma.ApplicationCreateNestedOneWithoutDocumentsInput
+  uploadedBy?: Prisma.UserCreateNestedOneWithoutUploadedDocsInput
+  replacesDocument?: Prisma.ApplicationDocumentCreateNestedOneWithoutRevisionsInput
+  reviews?: Prisma.DocumentReviewCreateNestedManyWithoutDocumentInput
+}
+
+export type ApplicationDocumentUncheckedCreateWithoutRevisionsInput = {
+  id?: string
+  tenantId: string
+  applicationId: string
+  phaseId?: string | null
+  stepId?: string | null
+  name: string
+  url: string
+  type: string
+  uploadedById?: string | null
+  status?: $Enums.DocumentStatus
+  version?: number
+  replacesDocumentId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  reviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutDocumentInput
+}
+
+export type ApplicationDocumentCreateOrConnectWithoutRevisionsInput = {
+  where: Prisma.ApplicationDocumentWhereUniqueInput
+  create: Prisma.XOR<Prisma.ApplicationDocumentCreateWithoutRevisionsInput, Prisma.ApplicationDocumentUncheckedCreateWithoutRevisionsInput>
+}
+
+export type ApplicationDocumentCreateWithoutReplacesDocumentInput = {
+  id?: string
+  phaseId?: string | null
+  stepId?: string | null
+  name: string
+  url: string
+  type: string
+  status?: $Enums.DocumentStatus
+  version?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutApplicationDocumentsInput
+  application: Prisma.ApplicationCreateNestedOneWithoutDocumentsInput
+  uploadedBy?: Prisma.UserCreateNestedOneWithoutUploadedDocsInput
+  revisions?: Prisma.ApplicationDocumentCreateNestedManyWithoutReplacesDocumentInput
+  reviews?: Prisma.DocumentReviewCreateNestedManyWithoutDocumentInput
+}
+
+export type ApplicationDocumentUncheckedCreateWithoutReplacesDocumentInput = {
+  id?: string
+  tenantId: string
+  applicationId: string
+  phaseId?: string | null
+  stepId?: string | null
+  name: string
+  url: string
+  type: string
+  uploadedById?: string | null
+  status?: $Enums.DocumentStatus
+  version?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  revisions?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutReplacesDocumentInput
+  reviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutDocumentInput
+}
+
+export type ApplicationDocumentCreateOrConnectWithoutReplacesDocumentInput = {
+  where: Prisma.ApplicationDocumentWhereUniqueInput
+  create: Prisma.XOR<Prisma.ApplicationDocumentCreateWithoutReplacesDocumentInput, Prisma.ApplicationDocumentUncheckedCreateWithoutReplacesDocumentInput>
+}
+
+export type ApplicationDocumentCreateManyReplacesDocumentInputEnvelope = {
+  data: Prisma.ApplicationDocumentCreateManyReplacesDocumentInput | Prisma.ApplicationDocumentCreateManyReplacesDocumentInput[]
+  skipDuplicates?: boolean
+}
+
+export type ApplicationDocumentUpsertWithoutRevisionsInput = {
+  update: Prisma.XOR<Prisma.ApplicationDocumentUpdateWithoutRevisionsInput, Prisma.ApplicationDocumentUncheckedUpdateWithoutRevisionsInput>
+  create: Prisma.XOR<Prisma.ApplicationDocumentCreateWithoutRevisionsInput, Prisma.ApplicationDocumentUncheckedCreateWithoutRevisionsInput>
+  where?: Prisma.ApplicationDocumentWhereInput
+}
+
+export type ApplicationDocumentUpdateToOneWithWhereWithoutRevisionsInput = {
+  where?: Prisma.ApplicationDocumentWhereInput
+  data: Prisma.XOR<Prisma.ApplicationDocumentUpdateWithoutRevisionsInput, Prisma.ApplicationDocumentUncheckedUpdateWithoutRevisionsInput>
+}
+
+export type ApplicationDocumentUpdateWithoutRevisionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutApplicationDocumentsNestedInput
+  application?: Prisma.ApplicationUpdateOneRequiredWithoutDocumentsNestedInput
+  uploadedBy?: Prisma.UserUpdateOneWithoutUploadedDocsNestedInput
+  replacesDocument?: Prisma.ApplicationDocumentUpdateOneWithoutRevisionsNestedInput
+  reviews?: Prisma.DocumentReviewUpdateManyWithoutDocumentNestedInput
+}
+
+export type ApplicationDocumentUncheckedUpdateWithoutRevisionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  applicationId?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  replacesDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  reviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutDocumentNestedInput
+}
+
+export type ApplicationDocumentUpsertWithWhereUniqueWithoutReplacesDocumentInput = {
+  where: Prisma.ApplicationDocumentWhereUniqueInput
+  update: Prisma.XOR<Prisma.ApplicationDocumentUpdateWithoutReplacesDocumentInput, Prisma.ApplicationDocumentUncheckedUpdateWithoutReplacesDocumentInput>
+  create: Prisma.XOR<Prisma.ApplicationDocumentCreateWithoutReplacesDocumentInput, Prisma.ApplicationDocumentUncheckedCreateWithoutReplacesDocumentInput>
+}
+
+export type ApplicationDocumentUpdateWithWhereUniqueWithoutReplacesDocumentInput = {
+  where: Prisma.ApplicationDocumentWhereUniqueInput
+  data: Prisma.XOR<Prisma.ApplicationDocumentUpdateWithoutReplacesDocumentInput, Prisma.ApplicationDocumentUncheckedUpdateWithoutReplacesDocumentInput>
+}
+
+export type ApplicationDocumentUpdateManyWithWhereWithoutReplacesDocumentInput = {
+  where: Prisma.ApplicationDocumentScalarWhereInput
+  data: Prisma.XOR<Prisma.ApplicationDocumentUpdateManyMutationInput, Prisma.ApplicationDocumentUncheckedUpdateManyWithoutReplacesDocumentInput>
+}
+
+export type ApplicationDocumentCreateWithoutReviewsInput = {
+  id?: string
+  phaseId?: string | null
+  stepId?: string | null
+  name: string
+  url: string
+  type: string
+  status?: $Enums.DocumentStatus
+  version?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutApplicationDocumentsInput
+  application: Prisma.ApplicationCreateNestedOneWithoutDocumentsInput
+  uploadedBy?: Prisma.UserCreateNestedOneWithoutUploadedDocsInput
+  replacesDocument?: Prisma.ApplicationDocumentCreateNestedOneWithoutRevisionsInput
+  revisions?: Prisma.ApplicationDocumentCreateNestedManyWithoutReplacesDocumentInput
+}
+
+export type ApplicationDocumentUncheckedCreateWithoutReviewsInput = {
+  id?: string
+  tenantId: string
+  applicationId: string
+  phaseId?: string | null
+  stepId?: string | null
+  name: string
+  url: string
+  type: string
+  uploadedById?: string | null
+  status?: $Enums.DocumentStatus
+  version?: number
+  replacesDocumentId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  revisions?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutReplacesDocumentInput
+}
+
+export type ApplicationDocumentCreateOrConnectWithoutReviewsInput = {
+  where: Prisma.ApplicationDocumentWhereUniqueInput
+  create: Prisma.XOR<Prisma.ApplicationDocumentCreateWithoutReviewsInput, Prisma.ApplicationDocumentUncheckedCreateWithoutReviewsInput>
+}
+
+export type ApplicationDocumentUpsertWithoutReviewsInput = {
+  update: Prisma.XOR<Prisma.ApplicationDocumentUpdateWithoutReviewsInput, Prisma.ApplicationDocumentUncheckedUpdateWithoutReviewsInput>
+  create: Prisma.XOR<Prisma.ApplicationDocumentCreateWithoutReviewsInput, Prisma.ApplicationDocumentUncheckedCreateWithoutReviewsInput>
+  where?: Prisma.ApplicationDocumentWhereInput
+}
+
+export type ApplicationDocumentUpdateToOneWithWhereWithoutReviewsInput = {
+  where?: Prisma.ApplicationDocumentWhereInput
+  data: Prisma.XOR<Prisma.ApplicationDocumentUpdateWithoutReviewsInput, Prisma.ApplicationDocumentUncheckedUpdateWithoutReviewsInput>
+}
+
+export type ApplicationDocumentUpdateWithoutReviewsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutApplicationDocumentsNestedInput
+  application?: Prisma.ApplicationUpdateOneRequiredWithoutDocumentsNestedInput
+  uploadedBy?: Prisma.UserUpdateOneWithoutUploadedDocsNestedInput
+  replacesDocument?: Prisma.ApplicationDocumentUpdateOneWithoutRevisionsNestedInput
+  revisions?: Prisma.ApplicationDocumentUpdateManyWithoutReplacesDocumentNestedInput
+}
+
+export type ApplicationDocumentUncheckedUpdateWithoutReviewsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  applicationId?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  replacesDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revisions?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutReplacesDocumentNestedInput
+}
+
 export type ApplicationDocumentCreateManyUploadedByInput = {
   id?: string
   tenantId: string
@@ -802,6 +1252,8 @@ export type ApplicationDocumentCreateManyUploadedByInput = {
   url: string
   type: string
   status?: $Enums.DocumentStatus
+  version?: number
+  replacesDocumentId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -814,10 +1266,14 @@ export type ApplicationDocumentUpdateWithoutUploadedByInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutApplicationDocumentsNestedInput
   application?: Prisma.ApplicationUpdateOneRequiredWithoutDocumentsNestedInput
+  replacesDocument?: Prisma.ApplicationDocumentUpdateOneWithoutRevisionsNestedInput
+  revisions?: Prisma.ApplicationDocumentUpdateManyWithoutReplacesDocumentNestedInput
+  reviews?: Prisma.DocumentReviewUpdateManyWithoutDocumentNestedInput
 }
 
 export type ApplicationDocumentUncheckedUpdateWithoutUploadedByInput = {
@@ -830,8 +1286,12 @@ export type ApplicationDocumentUncheckedUpdateWithoutUploadedByInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  replacesDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revisions?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutReplacesDocumentNestedInput
+  reviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutDocumentNestedInput
 }
 
 export type ApplicationDocumentUncheckedUpdateManyWithoutUploadedByInput = {
@@ -844,6 +1304,8 @@ export type ApplicationDocumentUncheckedUpdateManyWithoutUploadedByInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  replacesDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -858,6 +1320,8 @@ export type ApplicationDocumentCreateManyTenantInput = {
   type: string
   uploadedById?: string | null
   status?: $Enums.DocumentStatus
+  version?: number
+  replacesDocumentId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -870,10 +1334,14 @@ export type ApplicationDocumentUpdateWithoutTenantInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   application?: Prisma.ApplicationUpdateOneRequiredWithoutDocumentsNestedInput
   uploadedBy?: Prisma.UserUpdateOneWithoutUploadedDocsNestedInput
+  replacesDocument?: Prisma.ApplicationDocumentUpdateOneWithoutRevisionsNestedInput
+  revisions?: Prisma.ApplicationDocumentUpdateManyWithoutReplacesDocumentNestedInput
+  reviews?: Prisma.DocumentReviewUpdateManyWithoutDocumentNestedInput
 }
 
 export type ApplicationDocumentUncheckedUpdateWithoutTenantInput = {
@@ -886,8 +1354,12 @@ export type ApplicationDocumentUncheckedUpdateWithoutTenantInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  replacesDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revisions?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutReplacesDocumentNestedInput
+  reviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutDocumentNestedInput
 }
 
 export type ApplicationDocumentUncheckedUpdateManyWithoutTenantInput = {
@@ -900,6 +1372,8 @@ export type ApplicationDocumentUncheckedUpdateManyWithoutTenantInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  replacesDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -914,6 +1388,8 @@ export type ApplicationDocumentCreateManyApplicationInput = {
   type: string
   uploadedById?: string | null
   status?: $Enums.DocumentStatus
+  version?: number
+  replacesDocumentId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -926,10 +1402,14 @@ export type ApplicationDocumentUpdateWithoutApplicationInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutApplicationDocumentsNestedInput
   uploadedBy?: Prisma.UserUpdateOneWithoutUploadedDocsNestedInput
+  replacesDocument?: Prisma.ApplicationDocumentUpdateOneWithoutRevisionsNestedInput
+  revisions?: Prisma.ApplicationDocumentUpdateManyWithoutReplacesDocumentNestedInput
+  reviews?: Prisma.DocumentReviewUpdateManyWithoutDocumentNestedInput
 }
 
 export type ApplicationDocumentUncheckedUpdateWithoutApplicationInput = {
@@ -942,8 +1422,12 @@ export type ApplicationDocumentUncheckedUpdateWithoutApplicationInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  replacesDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revisions?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutReplacesDocumentNestedInput
+  reviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutDocumentNestedInput
 }
 
 export type ApplicationDocumentUncheckedUpdateManyWithoutApplicationInput = {
@@ -956,10 +1440,118 @@ export type ApplicationDocumentUncheckedUpdateManyWithoutApplicationInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  replacesDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type ApplicationDocumentCreateManyReplacesDocumentInput = {
+  id?: string
+  tenantId: string
+  applicationId: string
+  phaseId?: string | null
+  stepId?: string | null
+  name: string
+  url: string
+  type: string
+  uploadedById?: string | null
+  status?: $Enums.DocumentStatus
+  version?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ApplicationDocumentUpdateWithoutReplacesDocumentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutApplicationDocumentsNestedInput
+  application?: Prisma.ApplicationUpdateOneRequiredWithoutDocumentsNestedInput
+  uploadedBy?: Prisma.UserUpdateOneWithoutUploadedDocsNestedInput
+  revisions?: Prisma.ApplicationDocumentUpdateManyWithoutReplacesDocumentNestedInput
+  reviews?: Prisma.DocumentReviewUpdateManyWithoutDocumentNestedInput
+}
+
+export type ApplicationDocumentUncheckedUpdateWithoutReplacesDocumentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  applicationId?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revisions?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutReplacesDocumentNestedInput
+  reviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutDocumentNestedInput
+}
+
+export type ApplicationDocumentUncheckedUpdateManyWithoutReplacesDocumentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  applicationId?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+
+/**
+ * Count Type ApplicationDocumentCountOutputType
+ */
+
+export type ApplicationDocumentCountOutputType = {
+  revisions: number
+  reviews: number
+}
+
+export type ApplicationDocumentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  revisions?: boolean | ApplicationDocumentCountOutputTypeCountRevisionsArgs
+  reviews?: boolean | ApplicationDocumentCountOutputTypeCountReviewsArgs
+}
+
+/**
+ * ApplicationDocumentCountOutputType without action
+ */
+export type ApplicationDocumentCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ApplicationDocumentCountOutputType
+   */
+  select?: Prisma.ApplicationDocumentCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ApplicationDocumentCountOutputType without action
+ */
+export type ApplicationDocumentCountOutputTypeCountRevisionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ApplicationDocumentWhereInput
+}
+
+/**
+ * ApplicationDocumentCountOutputType without action
+ */
+export type ApplicationDocumentCountOutputTypeCountReviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DocumentReviewWhereInput
+}
 
 
 export type ApplicationDocumentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -973,11 +1565,17 @@ export type ApplicationDocumentSelect<ExtArgs extends runtime.Types.Extensions.I
   type?: boolean
   uploadedById?: boolean
   status?: boolean
+  version?: boolean
+  replacesDocumentId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   application?: boolean | Prisma.ApplicationDefaultArgs<ExtArgs>
   uploadedBy?: boolean | Prisma.ApplicationDocument$uploadedByArgs<ExtArgs>
+  replacesDocument?: boolean | Prisma.ApplicationDocument$replacesDocumentArgs<ExtArgs>
+  revisions?: boolean | Prisma.ApplicationDocument$revisionsArgs<ExtArgs>
+  reviews?: boolean | Prisma.ApplicationDocument$reviewsArgs<ExtArgs>
+  _count?: boolean | Prisma.ApplicationDocumentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["applicationDocument"]>
 
 
@@ -993,15 +1591,21 @@ export type ApplicationDocumentSelectScalar = {
   type?: boolean
   uploadedById?: boolean
   status?: boolean
+  version?: boolean
+  replacesDocumentId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ApplicationDocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "applicationId" | "phaseId" | "stepId" | "name" | "url" | "type" | "uploadedById" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["applicationDocument"]>
+export type ApplicationDocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "applicationId" | "phaseId" | "stepId" | "name" | "url" | "type" | "uploadedById" | "status" | "version" | "replacesDocumentId" | "createdAt" | "updatedAt", ExtArgs["result"]["applicationDocument"]>
 export type ApplicationDocumentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   application?: boolean | Prisma.ApplicationDefaultArgs<ExtArgs>
   uploadedBy?: boolean | Prisma.ApplicationDocument$uploadedByArgs<ExtArgs>
+  replacesDocument?: boolean | Prisma.ApplicationDocument$replacesDocumentArgs<ExtArgs>
+  revisions?: boolean | Prisma.ApplicationDocument$revisionsArgs<ExtArgs>
+  reviews?: boolean | Prisma.ApplicationDocument$reviewsArgs<ExtArgs>
+  _count?: boolean | Prisma.ApplicationDocumentCountOutputTypeDefaultArgs<ExtArgs>
 }
 
 export type $ApplicationDocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1010,6 +1614,9 @@ export type $ApplicationDocumentPayload<ExtArgs extends runtime.Types.Extensions
     tenant: Prisma.$TenantPayload<ExtArgs>
     application: Prisma.$ApplicationPayload<ExtArgs>
     uploadedBy: Prisma.$UserPayload<ExtArgs> | null
+    replacesDocument: Prisma.$ApplicationDocumentPayload<ExtArgs> | null
+    revisions: Prisma.$ApplicationDocumentPayload<ExtArgs>[]
+    reviews: Prisma.$DocumentReviewPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1022,6 +1629,8 @@ export type $ApplicationDocumentPayload<ExtArgs extends runtime.Types.Extensions
     type: string
     uploadedById: string | null
     status: $Enums.DocumentStatus
+    version: number
+    replacesDocumentId: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["applicationDocument"]>
@@ -1367,6 +1976,9 @@ export interface Prisma__ApplicationDocumentClient<T, Null = never, ExtArgs exte
   tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   application<T extends Prisma.ApplicationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApplicationDefaultArgs<ExtArgs>>): Prisma.Prisma__ApplicationClient<runtime.Types.Result.GetResult<Prisma.$ApplicationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   uploadedBy<T extends Prisma.ApplicationDocument$uploadedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApplicationDocument$uploadedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  replacesDocument<T extends Prisma.ApplicationDocument$replacesDocumentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApplicationDocument$replacesDocumentArgs<ExtArgs>>): Prisma.Prisma__ApplicationDocumentClient<runtime.Types.Result.GetResult<Prisma.$ApplicationDocumentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  revisions<T extends Prisma.ApplicationDocument$revisionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApplicationDocument$revisionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApplicationDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  reviews<T extends Prisma.ApplicationDocument$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApplicationDocument$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1406,6 +2018,8 @@ export interface ApplicationDocumentFieldRefs {
   readonly type: Prisma.FieldRef<"ApplicationDocument", 'String'>
   readonly uploadedById: Prisma.FieldRef<"ApplicationDocument", 'String'>
   readonly status: Prisma.FieldRef<"ApplicationDocument", 'DocumentStatus'>
+  readonly version: Prisma.FieldRef<"ApplicationDocument", 'Int'>
+  readonly replacesDocumentId: Prisma.FieldRef<"ApplicationDocument", 'String'>
   readonly createdAt: Prisma.FieldRef<"ApplicationDocument", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"ApplicationDocument", 'DateTime'>
 }
@@ -1767,6 +2381,73 @@ export type ApplicationDocument$uploadedByArgs<ExtArgs extends runtime.Types.Ext
    */
   include?: Prisma.UserInclude<ExtArgs> | null
   where?: Prisma.UserWhereInput
+}
+
+/**
+ * ApplicationDocument.replacesDocument
+ */
+export type ApplicationDocument$replacesDocumentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ApplicationDocument
+   */
+  select?: Prisma.ApplicationDocumentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ApplicationDocument
+   */
+  omit?: Prisma.ApplicationDocumentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ApplicationDocumentInclude<ExtArgs> | null
+  where?: Prisma.ApplicationDocumentWhereInput
+}
+
+/**
+ * ApplicationDocument.revisions
+ */
+export type ApplicationDocument$revisionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ApplicationDocument
+   */
+  select?: Prisma.ApplicationDocumentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ApplicationDocument
+   */
+  omit?: Prisma.ApplicationDocumentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ApplicationDocumentInclude<ExtArgs> | null
+  where?: Prisma.ApplicationDocumentWhereInput
+  orderBy?: Prisma.ApplicationDocumentOrderByWithRelationInput | Prisma.ApplicationDocumentOrderByWithRelationInput[]
+  cursor?: Prisma.ApplicationDocumentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ApplicationDocumentScalarFieldEnum | Prisma.ApplicationDocumentScalarFieldEnum[]
+}
+
+/**
+ * ApplicationDocument.reviews
+ */
+export type ApplicationDocument$reviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DocumentReview
+   */
+  select?: Prisma.DocumentReviewSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DocumentReview
+   */
+  omit?: Prisma.DocumentReviewOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DocumentReviewInclude<ExtArgs> | null
+  where?: Prisma.DocumentReviewWhereInput
+  orderBy?: Prisma.DocumentReviewOrderByWithRelationInput | Prisma.DocumentReviewOrderByWithRelationInput[]
+  cursor?: Prisma.DocumentReviewWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DocumentReviewScalarFieldEnum | Prisma.DocumentReviewScalarFieldEnum[]
 }
 
 /**

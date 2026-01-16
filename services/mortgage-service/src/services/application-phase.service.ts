@@ -973,13 +973,14 @@ class ApplicationPhaseService {
         const document = await prisma.$transaction(async (tx) => {
             // Auto-detect stepId if not provided
             let stepId = data.stepId;
+            let matchedStep: any = null;
             if (!stepId && phase.documentationPhase) {
                 // Try to find matching UPLOAD step based on document type
                 const steps = phase.documentationPhase.steps || [];
                 const docType = data.type?.toUpperCase() || '';
 
                 // Match step by name containing the document type (e.g., "Upload Valid ID" for ID_CARD)
-                const matchingStep = steps.find((s: any) => {
+                matchedStep = steps.find((s: any) => {
                     if (s.stepType !== 'UPLOAD' || s.status === 'COMPLETED') return false;
 
                     const stepNameUpper = s.name.toUpperCase();
@@ -994,9 +995,14 @@ class ApplicationPhaseService {
                         stepNameUpper.includes(docType.replace('_', ''));
                 });
 
-                if (matchingStep) {
-                    stepId = matchingStep.id;
+                if (matchedStep) {
+                    stepId = matchedStep.id;
                 }
+            } else if (stepId) {
+                // Fetch the step details if stepId was provided
+                matchedStep = await tx.documentationStep.findUnique({
+                    where: { id: stepId },
+                });
             }
 
             // Create the document with resolved stepId
@@ -1014,6 +1020,35 @@ class ApplicationPhaseService {
                 },
             });
 
+            // Create review records if step has multi-party review requirements
+            if (matchedStep?.reviewRequirements) {
+                const reviewRequirements = matchedStep.reviewRequirements as Array<{
+                    party: string;
+                    required: boolean;
+                    organizationId?: string;
+                }>;
+
+                if (reviewRequirements.length > 0) {
+                    const reviewOrder = (matchedStep.reviewOrder as string) || 'SEQUENTIAL';
+                    const reviews = reviewRequirements.map((req, index) => ({
+                        id: uuidv4(),
+                        tenantId: phase.application.tenantId,
+                        documentId: doc.id,
+                        reviewParty: req.party as any,
+                        organizationId: req.organizationId || null,
+                        decision: 'PENDING' as any,
+                        // For sequential reviews, set order based on array position
+                        reviewOrder: reviewOrder === 'SEQUENTIAL' ? index + 1 : 0,
+                    }));
+
+                    await tx.documentReview.createMany({
+                        data: reviews,
+                    });
+
+                    console.log(`[Upload] Created ${reviews.length} review records for document ${doc.id}`);
+                }
+            }
+
             // If step is identified, evaluate automatic step completion
             if (stepId) {
                 const step = await tx.documentationStep.findUnique({
@@ -1023,10 +1058,15 @@ class ApplicationPhaseService {
 
                 if (step && step.stepType === 'UPLOAD') {
                     if (step.status !== 'COMPLETED') {
+                        // Check if step has multi-party review requirements
+                        const hasMultiPartyReview = step.reviewRequirements &&
+                            Array.isArray(step.reviewRequirements) &&
+                            (step.reviewRequirements as any[]).length > 0;
+
                         // For UPLOAD steps: Check if manual review is required
-                        if (step.requiresManualReview) {
+                        if (step.requiresManualReview || hasMultiPartyReview) {
                             // Manual review required: Mark as AWAITING_REVIEW
-                            // Step will be COMPLETED when the document is approved
+                            // Step will be COMPLETED when the document is approved (by all parties if multi-party)
                             await tx.documentationStep.update({
                                 where: { id: stepId },
                                 data: {
@@ -1561,6 +1601,7 @@ class ApplicationPhaseService {
                         },
                     },
                 },
+                reviews: true, // Include reviews for multi-party check
             },
         });
 
@@ -1568,26 +1609,71 @@ class ApplicationPhaseService {
             throw new AppError(404, 'Document not found');
         }
 
-        // Get step name if stepId is present
+        // Get step name and check for multi-party review config if stepId is present
         let stepName = 'Document Submission';
+        let hasMultiPartyReview = false;
         if (document.stepId) {
             const step = await prisma.documentationStep.findUnique({
                 where: { id: document.stepId },
-                select: { name: true },
+                select: { name: true, reviewRequirements: true },
             });
             if (step) {
                 stepName = step.name;
+                hasMultiPartyReview = !!(step.reviewRequirements &&
+                    Array.isArray(step.reviewRequirements) &&
+                    (step.reviewRequirements as any[]).length > 0);
             }
         }
 
         await prisma.$transaction(async (tx) => {
-            // Update document status
-            await tx.applicationDocument.update({
-                where: { id: documentId },
-                data: {
-                    status: data.status,
-                },
-            });
+            // If document has multi-party review requirements, this is a legacy approval
+            // which should be treated as an INTERNAL party approval
+            if (hasMultiPartyReview && document.reviews && document.reviews.length > 0) {
+                // Find the INTERNAL review record and update it
+                const internalReview = document.reviews.find((r) => r.reviewParty === 'INTERNAL');
+                if (internalReview && internalReview.decision === 'PENDING') {
+                    await tx.documentReview.update({
+                        where: { id: internalReview.id },
+                        data: {
+                            decision: data.status === 'APPROVED' ? 'APPROVED' : 'REJECTED',
+                            comments: data.comment,
+                            reviewerId: userId,
+                            reviewedAt: new Date(),
+                        },
+                    });
+                }
+
+                // Check if ALL reviews are now approved
+                const allReviews = await tx.documentReview.findMany({
+                    where: { documentId },
+                });
+                const allApproved = allReviews.every(
+                    (r) => r.decision === 'APPROVED' || r.decision === 'WAIVED'
+                );
+                const anyRejected = allReviews.some((r) => r.decision === 'REJECTED');
+
+                // Update document status based on all reviews
+                if (anyRejected) {
+                    await tx.applicationDocument.update({
+                        where: { id: documentId },
+                        data: { status: 'REJECTED' },
+                    });
+                } else if (allApproved) {
+                    await tx.applicationDocument.update({
+                        where: { id: documentId },
+                        data: { status: 'APPROVED' },
+                    });
+                }
+                // Otherwise, document stays PENDING waiting for other reviews
+            } else {
+                // No multi-party review - simple approval
+                await tx.applicationDocument.update({
+                    where: { id: documentId },
+                    data: {
+                        status: data.status,
+                    },
+                });
+            }
 
             // If document is rejected and has a stepId, revert the step to NEEDS_RESUBMISSION
             if (data.status === 'REJECTED' && document.stepId) {
@@ -1602,8 +1688,19 @@ class ApplicationPhaseService {
 
             // State Machine: Complete the UPLOAD step for this document and check APPROVAL step
             if (data.status === 'APPROVED') {
+                // For multi-party review, only complete step when ALL parties have approved
+                let shouldCompleteStep = true;
+                if (hasMultiPartyReview) {
+                    const allReviews = await tx.documentReview.findMany({
+                        where: { documentId },
+                    });
+                    shouldCompleteStep = allReviews.every(
+                        (r) => r.decision === 'APPROVED' || r.decision === 'WAIVED'
+                    );
+                }
+
                 // Complete the UPLOAD step for this specific document
-                if (document.stepId) {
+                if (document.stepId && shouldCompleteStep) {
                     const step = await tx.documentationStep.findUnique({
                         where: { id: document.stepId },
                     });

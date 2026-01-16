@@ -595,4 +595,112 @@ router.post('/:id/pay-ahead', requireTenant, canAccessApplication, async (req: R
     }
 });
 
+// ============================================================================
+// MULTI-PARTY DOCUMENT REVIEW ROUTES
+// ============================================================================
+
+// Get all reviews for a document
+router.get('/:id/documents/:documentId/reviews', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { createDocumentReviewService } = await import('../services/document-review.service');
+        const documentReviewService = createDocumentReviewService(getTenantPrisma(req));
+        const summary = await documentReviewService.getReviewSummary(req.params.documentId as string);
+        res.json(successResponse(summary));
+    } catch (error) {
+        next(error);
+    }
+});
+
+// Submit a document review (multi-party)
+router.post('/:id/documents/:documentId/reviews', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { SubmitDocumentReviewSchema } = await import('../validators/document-review.validator');
+        const { createDocumentReviewService } = await import('../services/document-review.service');
+
+        const data = SubmitDocumentReviewSchema.parse(req.body);
+        const { userId } = getAuthContext(req);
+        const documentReviewService = createDocumentReviewService(getTenantPrisma(req));
+
+        const result = await documentReviewService.submitReview(
+            {
+                documentId: req.params.documentId as string,
+                reviewParty: data.reviewParty,
+                decision: data.decision,
+                comments: data.comments,
+                concerns: data.concerns,
+                organizationId: data.organizationId,
+            },
+            userId
+        );
+
+        if (!result.success) {
+            res.status(400).json({ success: false, error: result.error });
+            return;
+        }
+
+        res.json(successResponse(result.review));
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });
+            return;
+        }
+        next(error);
+    }
+});
+
+// Waive a review requirement (admin only)
+router.post('/:id/documents/:documentId/reviews/waive', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { WaiveReviewSchema } = await import('../validators/document-review.validator');
+        const { createDocumentReviewService } = await import('../services/document-review.service');
+
+        const data = WaiveReviewSchema.parse(req.body);
+        const { userId } = getAuthContext(req);
+        const documentReviewService = createDocumentReviewService(getTenantPrisma(req));
+
+        const review = await documentReviewService.waiveReview(
+            req.params.documentId as string,
+            data.reviewParty,
+            data.organizationId ?? null,
+            userId,
+            data.reason
+        );
+
+        res.json(successResponse(review));
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });
+            return;
+        }
+        next(error);
+    }
+});
+
+// Get documents pending review for a party (dashboard endpoint)
+router.get('/reviews/pending', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { GetPendingReviewsQuerySchema } = await import('../validators/document-review.validator');
+        const { createDocumentReviewService } = await import('../services/document-review.service');
+
+        const query = GetPendingReviewsQuerySchema.parse(req.query);
+        const { tenantId } = getAuthContext(req);
+        const documentReviewService = createDocumentReviewService(getTenantPrisma(req));
+
+        const result = await documentReviewService.getDocumentsPendingReview(tenantId, query.reviewParty, {
+            organizationId: query.organizationId,
+            applicationId: query.applicationId,
+            limit: query.limit,
+            offset: query.offset,
+        });
+
+        res.json(successResponse(result));
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });
+            return;
+        }
+        next(error);
+    }
+});
+
 export default router;

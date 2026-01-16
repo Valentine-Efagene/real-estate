@@ -30,6 +30,7 @@ export type OrganizationMinAggregateOutputType = {
   name: string | null
   type: $Enums.OrganizationType | null
   status: $Enums.OrganizationStatus | null
+  isPlatformOrg: boolean | null
   email: string | null
   phone: string | null
   address: string | null
@@ -58,6 +59,7 @@ export type OrganizationMaxAggregateOutputType = {
   name: string | null
   type: $Enums.OrganizationType | null
   status: $Enums.OrganizationStatus | null
+  isPlatformOrg: boolean | null
   email: string | null
   phone: string | null
   address: string | null
@@ -86,6 +88,7 @@ export type OrganizationCountAggregateOutputType = {
   name: number
   type: number
   status: number
+  isPlatformOrg: number
   email: number
   phone: number
   address: number
@@ -116,6 +119,7 @@ export type OrganizationMinAggregateInputType = {
   name?: true
   type?: true
   status?: true
+  isPlatformOrg?: true
   email?: true
   phone?: true
   address?: true
@@ -144,6 +148,7 @@ export type OrganizationMaxAggregateInputType = {
   name?: true
   type?: true
   status?: true
+  isPlatformOrg?: true
   email?: true
   phone?: true
   address?: true
@@ -172,6 +177,7 @@ export type OrganizationCountAggregateInputType = {
   name?: true
   type?: true
   status?: true
+  isPlatformOrg?: true
   email?: true
   phone?: true
   address?: true
@@ -273,6 +279,7 @@ export type OrganizationGroupByOutputType = {
   name: string
   type: $Enums.OrganizationType
   status: $Enums.OrganizationStatus
+  isPlatformOrg: boolean
   email: string | null
   phone: string | null
   address: string | null
@@ -322,6 +329,7 @@ export type OrganizationWhereInput = {
   name?: Prisma.StringFilter<"Organization"> | string
   type?: Prisma.EnumOrganizationTypeFilter<"Organization"> | $Enums.OrganizationType
   status?: Prisma.EnumOrganizationStatusFilter<"Organization"> | $Enums.OrganizationStatus
+  isPlatformOrg?: Prisma.BoolFilter<"Organization"> | boolean
   email?: Prisma.StringNullableFilter<"Organization"> | string | null
   phone?: Prisma.StringNullableFilter<"Organization"> | string | null
   address?: Prisma.StringNullableFilter<"Organization"> | string | null
@@ -352,6 +360,7 @@ export type OrganizationOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   type?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  isPlatformOrg?: Prisma.SortOrder
   email?: Prisma.SortOrderInput | Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   address?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -388,6 +397,7 @@ export type OrganizationWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"Organization"> | string
   type?: Prisma.EnumOrganizationTypeFilter<"Organization"> | $Enums.OrganizationType
   status?: Prisma.EnumOrganizationStatusFilter<"Organization"> | $Enums.OrganizationStatus
+  isPlatformOrg?: Prisma.BoolFilter<"Organization"> | boolean
   email?: Prisma.StringNullableFilter<"Organization"> | string | null
   phone?: Prisma.StringNullableFilter<"Organization"> | string | null
   address?: Prisma.StringNullableFilter<"Organization"> | string | null
@@ -418,6 +428,7 @@ export type OrganizationOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   type?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  isPlatformOrg?: Prisma.SortOrder
   email?: Prisma.SortOrderInput | Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   address?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -452,6 +463,7 @@ export type OrganizationScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"Organization"> | string
   type?: Prisma.EnumOrganizationTypeWithAggregatesFilter<"Organization"> | $Enums.OrganizationType
   status?: Prisma.EnumOrganizationStatusWithAggregatesFilter<"Organization"> | $Enums.OrganizationStatus
+  isPlatformOrg?: Prisma.BoolWithAggregatesFilter<"Organization"> | boolean
   email?: Prisma.StringNullableWithAggregatesFilter<"Organization"> | string | null
   phone?: Prisma.StringNullableWithAggregatesFilter<"Organization"> | string | null
   address?: Prisma.StringNullableWithAggregatesFilter<"Organization"> | string | null
@@ -479,6 +491,7 @@ export type OrganizationCreateInput = {
   name: string
   type: $Enums.OrganizationType
   status?: $Enums.OrganizationStatus
+  isPlatformOrg?: boolean
   email?: string | null
   phone?: string | null
   address?: string | null
@@ -509,6 +522,7 @@ export type OrganizationUncheckedCreateInput = {
   name: string
   type: $Enums.OrganizationType
   status?: $Enums.OrganizationStatus
+  isPlatformOrg?: boolean
   email?: string | null
   phone?: string | null
   address?: string | null
@@ -537,6 +551,7 @@ export type OrganizationUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumOrganizationTypeFieldUpdateOperationsInput | $Enums.OrganizationType
   status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
+  isPlatformOrg?: Prisma.BoolFieldUpdateOperationsInput | boolean
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -567,6 +582,7 @@ export type OrganizationUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumOrganizationTypeFieldUpdateOperationsInput | $Enums.OrganizationType
   status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
+  isPlatformOrg?: Prisma.BoolFieldUpdateOperationsInput | boolean
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -596,6 +612,7 @@ export type OrganizationCreateManyInput = {
   name: string
   type: $Enums.OrganizationType
   status?: $Enums.OrganizationStatus
+  isPlatformOrg?: boolean
   email?: string | null
   phone?: string | null
   address?: string | null
@@ -623,6 +640,7 @@ export type OrganizationUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumOrganizationTypeFieldUpdateOperationsInput | $Enums.OrganizationType
   status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
+  isPlatformOrg?: Prisma.BoolFieldUpdateOperationsInput | boolean
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -651,6 +669,7 @@ export type OrganizationUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumOrganizationTypeFieldUpdateOperationsInput | $Enums.OrganizationType
   status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
+  isPlatformOrg?: Prisma.BoolFieldUpdateOperationsInput | boolean
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -695,6 +714,7 @@ export type OrganizationCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   type?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  isPlatformOrg?: Prisma.SortOrder
   email?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   address?: Prisma.SortOrder
@@ -723,6 +743,7 @@ export type OrganizationMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   type?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  isPlatformOrg?: Prisma.SortOrder
   email?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   address?: Prisma.SortOrder
@@ -751,6 +772,7 @@ export type OrganizationMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   type?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  isPlatformOrg?: Prisma.SortOrder
   email?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   address?: Prisma.SortOrder
@@ -857,6 +879,7 @@ export type OrganizationCreateWithoutMembersInput = {
   name: string
   type: $Enums.OrganizationType
   status?: $Enums.OrganizationStatus
+  isPlatformOrg?: boolean
   email?: string | null
   phone?: string | null
   address?: string | null
@@ -886,6 +909,7 @@ export type OrganizationUncheckedCreateWithoutMembersInput = {
   name: string
   type: $Enums.OrganizationType
   status?: $Enums.OrganizationStatus
+  isPlatformOrg?: boolean
   email?: string | null
   phone?: string | null
   address?: string | null
@@ -929,6 +953,7 @@ export type OrganizationUpdateWithoutMembersInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumOrganizationTypeFieldUpdateOperationsInput | $Enums.OrganizationType
   status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
+  isPlatformOrg?: Prisma.BoolFieldUpdateOperationsInput | boolean
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -958,6 +983,7 @@ export type OrganizationUncheckedUpdateWithoutMembersInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumOrganizationTypeFieldUpdateOperationsInput | $Enums.OrganizationType
   status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
+  isPlatformOrg?: Prisma.BoolFieldUpdateOperationsInput | boolean
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -985,6 +1011,7 @@ export type OrganizationCreateWithoutTenantInput = {
   name: string
   type: $Enums.OrganizationType
   status?: $Enums.OrganizationStatus
+  isPlatformOrg?: boolean
   email?: string | null
   phone?: string | null
   address?: string | null
@@ -1013,6 +1040,7 @@ export type OrganizationUncheckedCreateWithoutTenantInput = {
   name: string
   type: $Enums.OrganizationType
   status?: $Enums.OrganizationStatus
+  isPlatformOrg?: boolean
   email?: string | null
   phone?: string | null
   address?: string | null
@@ -1071,6 +1099,7 @@ export type OrganizationScalarWhereInput = {
   name?: Prisma.StringFilter<"Organization"> | string
   type?: Prisma.EnumOrganizationTypeFilter<"Organization"> | $Enums.OrganizationType
   status?: Prisma.EnumOrganizationStatusFilter<"Organization"> | $Enums.OrganizationStatus
+  isPlatformOrg?: Prisma.BoolFilter<"Organization"> | boolean
   email?: Prisma.StringNullableFilter<"Organization"> | string | null
   phone?: Prisma.StringNullableFilter<"Organization"> | string | null
   address?: Prisma.StringNullableFilter<"Organization"> | string | null
@@ -1098,6 +1127,7 @@ export type OrganizationCreateManyTenantInput = {
   name: string
   type: $Enums.OrganizationType
   status?: $Enums.OrganizationStatus
+  isPlatformOrg?: boolean
   email?: string | null
   phone?: string | null
   address?: string | null
@@ -1125,6 +1155,7 @@ export type OrganizationUpdateWithoutTenantInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumOrganizationTypeFieldUpdateOperationsInput | $Enums.OrganizationType
   status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
+  isPlatformOrg?: Prisma.BoolFieldUpdateOperationsInput | boolean
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1153,6 +1184,7 @@ export type OrganizationUncheckedUpdateWithoutTenantInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumOrganizationTypeFieldUpdateOperationsInput | $Enums.OrganizationType
   status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
+  isPlatformOrg?: Prisma.BoolFieldUpdateOperationsInput | boolean
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1181,6 +1213,7 @@ export type OrganizationUncheckedUpdateManyWithoutTenantInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumOrganizationTypeFieldUpdateOperationsInput | $Enums.OrganizationType
   status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
+  isPlatformOrg?: Prisma.BoolFieldUpdateOperationsInput | boolean
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1240,6 +1273,7 @@ export type OrganizationSelect<ExtArgs extends runtime.Types.Extensions.Internal
   name?: boolean
   type?: boolean
   status?: boolean
+  isPlatformOrg?: boolean
   email?: boolean
   phone?: boolean
   address?: boolean
@@ -1273,6 +1307,7 @@ export type OrganizationSelectScalar = {
   name?: boolean
   type?: boolean
   status?: boolean
+  isPlatformOrg?: boolean
   email?: boolean
   phone?: boolean
   address?: boolean
@@ -1295,7 +1330,7 @@ export type OrganizationSelectScalar = {
   updatedAt?: boolean
 }
 
-export type OrganizationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "name" | "type" | "status" | "email" | "phone" | "address" | "city" | "state" | "country" | "website" | "logoUrl" | "description" | "bankCode" | "bankLicenseNo" | "swiftCode" | "sortCode" | "cacNumber" | "cacCertificateUrl" | "taxId" | "approvedAt" | "approvedById" | "createdAt" | "updatedAt", ExtArgs["result"]["organization"]>
+export type OrganizationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "name" | "type" | "status" | "isPlatformOrg" | "email" | "phone" | "address" | "city" | "state" | "country" | "website" | "logoUrl" | "description" | "bankCode" | "bankLicenseNo" | "swiftCode" | "sortCode" | "cacNumber" | "cacCertificateUrl" | "taxId" | "approvedAt" | "approvedById" | "createdAt" | "updatedAt", ExtArgs["result"]["organization"]>
 export type OrganizationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   members?: boolean | Prisma.Organization$membersArgs<ExtArgs>
@@ -1314,6 +1349,7 @@ export type $OrganizationPayload<ExtArgs extends runtime.Types.Extensions.Intern
     name: string
     type: $Enums.OrganizationType
     status: $Enums.OrganizationStatus
+    isPlatformOrg: boolean
     email: string | null
     phone: string | null
     address: string | null
@@ -1710,6 +1746,7 @@ export interface OrganizationFieldRefs {
   readonly name: Prisma.FieldRef<"Organization", 'String'>
   readonly type: Prisma.FieldRef<"Organization", 'OrganizationType'>
   readonly status: Prisma.FieldRef<"Organization", 'OrganizationStatus'>
+  readonly isPlatformOrg: Prisma.FieldRef<"Organization", 'Boolean'>
   readonly email: Prisma.FieldRef<"Organization", 'String'>
   readonly phone: Prisma.FieldRef<"Organization", 'String'>
   readonly address: Prisma.FieldRef<"Organization", 'String'>

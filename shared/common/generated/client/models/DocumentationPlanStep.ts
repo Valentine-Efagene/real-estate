@@ -57,6 +57,7 @@ export type DocumentationPlanStepMinAggregateOutputType = {
   requiresManualReview: boolean | null
   minFiles: number | null
   maxFiles: number | null
+  reviewOrder: string | null
   gateActor: $Enums.GateActor | null
   gateAction: $Enums.GateAction | null
   gateRoleId: string | null
@@ -83,6 +84,7 @@ export type DocumentationPlanStepMaxAggregateOutputType = {
   requiresManualReview: boolean | null
   minFiles: number | null
   maxFiles: number | null
+  reviewOrder: string | null
   gateActor: $Enums.GateActor | null
   gateAction: $Enums.GateAction | null
   gateRoleId: string | null
@@ -111,6 +113,8 @@ export type DocumentationPlanStepCountAggregateOutputType = {
   minFiles: number
   maxFiles: number
   condition: number
+  reviewRequirements: number
+  reviewOrder: number
   gateActor: number
   gateAction: number
   gateRoleId: number
@@ -155,6 +159,7 @@ export type DocumentationPlanStepMinAggregateInputType = {
   requiresManualReview?: true
   minFiles?: true
   maxFiles?: true
+  reviewOrder?: true
   gateActor?: true
   gateAction?: true
   gateRoleId?: true
@@ -181,6 +186,7 @@ export type DocumentationPlanStepMaxAggregateInputType = {
   requiresManualReview?: true
   minFiles?: true
   maxFiles?: true
+  reviewOrder?: true
   gateActor?: true
   gateAction?: true
   gateRoleId?: true
@@ -209,6 +215,8 @@ export type DocumentationPlanStepCountAggregateInputType = {
   minFiles?: true
   maxFiles?: true
   condition?: true
+  reviewRequirements?: true
+  reviewOrder?: true
   gateActor?: true
   gateAction?: true
   gateRoleId?: true
@@ -324,6 +332,8 @@ export type DocumentationPlanStepGroupByOutputType = {
   minFiles: number
   maxFiles: number
   condition: runtime.JsonValue | null
+  reviewRequirements: runtime.JsonValue | null
+  reviewOrder: string | null
   gateActor: $Enums.GateActor | null
   gateAction: $Enums.GateAction | null
   gateRoleId: string | null
@@ -375,6 +385,8 @@ export type DocumentationPlanStepWhereInput = {
   minFiles?: Prisma.IntFilter<"DocumentationPlanStep"> | number
   maxFiles?: Prisma.IntFilter<"DocumentationPlanStep"> | number
   condition?: Prisma.JsonNullableFilter<"DocumentationPlanStep">
+  reviewRequirements?: Prisma.JsonNullableFilter<"DocumentationPlanStep">
+  reviewOrder?: Prisma.StringNullableFilter<"DocumentationPlanStep"> | string | null
   gateActor?: Prisma.EnumGateActorNullableFilter<"DocumentationPlanStep"> | $Enums.GateActor | null
   gateAction?: Prisma.EnumGateActionNullableFilter<"DocumentationPlanStep"> | $Enums.GateAction | null
   gateRoleId?: Prisma.StringNullableFilter<"DocumentationPlanStep"> | string | null
@@ -404,6 +416,8 @@ export type DocumentationPlanStepOrderByWithRelationInput = {
   minFiles?: Prisma.SortOrder
   maxFiles?: Prisma.SortOrder
   condition?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewRequirements?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewOrder?: Prisma.SortOrderInput | Prisma.SortOrder
   gateActor?: Prisma.SortOrderInput | Prisma.SortOrder
   gateAction?: Prisma.SortOrderInput | Prisma.SortOrder
   gateRoleId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -437,6 +451,8 @@ export type DocumentationPlanStepWhereUniqueInput = Prisma.AtLeast<{
   minFiles?: Prisma.IntFilter<"DocumentationPlanStep"> | number
   maxFiles?: Prisma.IntFilter<"DocumentationPlanStep"> | number
   condition?: Prisma.JsonNullableFilter<"DocumentationPlanStep">
+  reviewRequirements?: Prisma.JsonNullableFilter<"DocumentationPlanStep">
+  reviewOrder?: Prisma.StringNullableFilter<"DocumentationPlanStep"> | string | null
   gateActor?: Prisma.EnumGateActorNullableFilter<"DocumentationPlanStep"> | $Enums.GateActor | null
   gateAction?: Prisma.EnumGateActionNullableFilter<"DocumentationPlanStep"> | $Enums.GateAction | null
   gateRoleId?: Prisma.StringNullableFilter<"DocumentationPlanStep"> | string | null
@@ -466,6 +482,8 @@ export type DocumentationPlanStepOrderByWithAggregationInput = {
   minFiles?: Prisma.SortOrder
   maxFiles?: Prisma.SortOrder
   condition?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewRequirements?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewOrder?: Prisma.SortOrderInput | Prisma.SortOrder
   gateActor?: Prisma.SortOrderInput | Prisma.SortOrder
   gateAction?: Prisma.SortOrderInput | Prisma.SortOrder
   gateRoleId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -502,6 +520,8 @@ export type DocumentationPlanStepScalarWhereWithAggregatesInput = {
   minFiles?: Prisma.IntWithAggregatesFilter<"DocumentationPlanStep"> | number
   maxFiles?: Prisma.IntWithAggregatesFilter<"DocumentationPlanStep"> | number
   condition?: Prisma.JsonNullableWithAggregatesFilter<"DocumentationPlanStep">
+  reviewRequirements?: Prisma.JsonNullableWithAggregatesFilter<"DocumentationPlanStep">
+  reviewOrder?: Prisma.StringNullableWithAggregatesFilter<"DocumentationPlanStep"> | string | null
   gateActor?: Prisma.EnumGateActorNullableWithAggregatesFilter<"DocumentationPlanStep"> | $Enums.GateActor | null
   gateAction?: Prisma.EnumGateActionNullableWithAggregatesFilter<"DocumentationPlanStep"> | $Enums.GateAction | null
   gateRoleId?: Prisma.StringNullableWithAggregatesFilter<"DocumentationPlanStep"> | string | null
@@ -529,6 +549,8 @@ export type DocumentationPlanStepCreateInput = {
   minFiles?: number
   maxFiles?: number
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: string | null
   gateActor?: $Enums.GateActor | null
   gateAction?: $Enums.GateAction | null
   gateRoleId?: string | null
@@ -558,6 +580,8 @@ export type DocumentationPlanStepUncheckedCreateInput = {
   minFiles?: number
   maxFiles?: number
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: string | null
   gateActor?: $Enums.GateActor | null
   gateAction?: $Enums.GateAction | null
   gateRoleId?: string | null
@@ -585,6 +609,8 @@ export type DocumentationPlanStepUpdateInput = {
   minFiles?: Prisma.IntFieldUpdateOperationsInput | number
   maxFiles?: Prisma.IntFieldUpdateOperationsInput | number
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
   gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
   gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -614,6 +640,8 @@ export type DocumentationPlanStepUncheckedUpdateInput = {
   minFiles?: Prisma.IntFieldUpdateOperationsInput | number
   maxFiles?: Prisma.IntFieldUpdateOperationsInput | number
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
   gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
   gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -642,6 +670,8 @@ export type DocumentationPlanStepCreateManyInput = {
   minFiles?: number
   maxFiles?: number
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: string | null
   gateActor?: $Enums.GateActor | null
   gateAction?: $Enums.GateAction | null
   gateRoleId?: string | null
@@ -669,6 +699,8 @@ export type DocumentationPlanStepUpdateManyMutationInput = {
   minFiles?: Prisma.IntFieldUpdateOperationsInput | number
   maxFiles?: Prisma.IntFieldUpdateOperationsInput | number
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
   gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
   gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -697,6 +729,8 @@ export type DocumentationPlanStepUncheckedUpdateManyInput = {
   minFiles?: Prisma.IntFieldUpdateOperationsInput | number
   maxFiles?: Prisma.IntFieldUpdateOperationsInput | number
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
   gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
   gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -741,6 +775,8 @@ export type DocumentationPlanStepCountOrderByAggregateInput = {
   minFiles?: Prisma.SortOrder
   maxFiles?: Prisma.SortOrder
   condition?: Prisma.SortOrder
+  reviewRequirements?: Prisma.SortOrder
+  reviewOrder?: Prisma.SortOrder
   gateActor?: Prisma.SortOrder
   gateAction?: Prisma.SortOrder
   gateRoleId?: Prisma.SortOrder
@@ -775,6 +811,7 @@ export type DocumentationPlanStepMaxOrderByAggregateInput = {
   requiresManualReview?: Prisma.SortOrder
   minFiles?: Prisma.SortOrder
   maxFiles?: Prisma.SortOrder
+  reviewOrder?: Prisma.SortOrder
   gateActor?: Prisma.SortOrder
   gateAction?: Prisma.SortOrder
   gateRoleId?: Prisma.SortOrder
@@ -801,6 +838,7 @@ export type DocumentationPlanStepMinOrderByAggregateInput = {
   requiresManualReview?: Prisma.SortOrder
   minFiles?: Prisma.SortOrder
   maxFiles?: Prisma.SortOrder
+  reviewOrder?: Prisma.SortOrder
   gateActor?: Prisma.SortOrder
   gateAction?: Prisma.SortOrder
   gateRoleId?: Prisma.SortOrder
@@ -894,6 +932,8 @@ export type DocumentationPlanStepCreateWithoutPlanInput = {
   minFiles?: number
   maxFiles?: number
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: string | null
   gateActor?: $Enums.GateActor | null
   gateAction?: $Enums.GateAction | null
   gateRoleId?: string | null
@@ -921,6 +961,8 @@ export type DocumentationPlanStepUncheckedCreateWithoutPlanInput = {
   minFiles?: number
   maxFiles?: number
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: string | null
   gateActor?: $Enums.GateActor | null
   gateAction?: $Enums.GateAction | null
   gateRoleId?: string | null
@@ -978,6 +1020,8 @@ export type DocumentationPlanStepScalarWhereInput = {
   minFiles?: Prisma.IntFilter<"DocumentationPlanStep"> | number
   maxFiles?: Prisma.IntFilter<"DocumentationPlanStep"> | number
   condition?: Prisma.JsonNullableFilter<"DocumentationPlanStep">
+  reviewRequirements?: Prisma.JsonNullableFilter<"DocumentationPlanStep">
+  reviewOrder?: Prisma.StringNullableFilter<"DocumentationPlanStep"> | string | null
   gateActor?: Prisma.EnumGateActorNullableFilter<"DocumentationPlanStep"> | $Enums.GateActor | null
   gateAction?: Prisma.EnumGateActionNullableFilter<"DocumentationPlanStep"> | $Enums.GateAction | null
   gateRoleId?: Prisma.StringNullableFilter<"DocumentationPlanStep"> | string | null
@@ -1005,6 +1049,8 @@ export type DocumentationPlanStepCreateManyPlanInput = {
   minFiles?: number
   maxFiles?: number
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: string | null
   gateActor?: $Enums.GateActor | null
   gateAction?: $Enums.GateAction | null
   gateRoleId?: string | null
@@ -1032,6 +1078,8 @@ export type DocumentationPlanStepUpdateWithoutPlanInput = {
   minFiles?: Prisma.IntFieldUpdateOperationsInput | number
   maxFiles?: Prisma.IntFieldUpdateOperationsInput | number
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
   gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
   gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1059,6 +1107,8 @@ export type DocumentationPlanStepUncheckedUpdateWithoutPlanInput = {
   minFiles?: Prisma.IntFieldUpdateOperationsInput | number
   maxFiles?: Prisma.IntFieldUpdateOperationsInput | number
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
   gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
   gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1086,6 +1136,8 @@ export type DocumentationPlanStepUncheckedUpdateManyWithoutPlanInput = {
   minFiles?: Prisma.IntFieldUpdateOperationsInput | number
   maxFiles?: Prisma.IntFieldUpdateOperationsInput | number
   condition?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewRequirements?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  reviewOrder?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   gateActor?: Prisma.NullableEnumGateActorFieldUpdateOperationsInput | $Enums.GateActor | null
   gateAction?: Prisma.NullableEnumGateActionFieldUpdateOperationsInput | $Enums.GateAction | null
   gateRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1116,6 +1168,8 @@ export type DocumentationPlanStepSelect<ExtArgs extends runtime.Types.Extensions
   minFiles?: boolean
   maxFiles?: boolean
   condition?: boolean
+  reviewRequirements?: boolean
+  reviewOrder?: boolean
   gateActor?: boolean
   gateAction?: boolean
   gateRoleId?: boolean
@@ -1147,6 +1201,8 @@ export type DocumentationPlanStepSelectScalar = {
   minFiles?: boolean
   maxFiles?: boolean
   condition?: boolean
+  reviewRequirements?: boolean
+  reviewOrder?: boolean
   gateActor?: boolean
   gateAction?: boolean
   gateRoleId?: boolean
@@ -1158,7 +1214,7 @@ export type DocumentationPlanStepSelectScalar = {
   updatedAt?: boolean
 }
 
-export type DocumentationPlanStepOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "planId" | "name" | "stepType" | "order" | "documentType" | "metadata" | "isRequired" | "description" | "maxSizeBytes" | "allowedMimeTypes" | "expiryDays" | "requiresManualReview" | "minFiles" | "maxFiles" | "condition" | "gateActor" | "gateAction" | "gateRoleId" | "gateInstructions" | "allowReject" | "rejectBehavior" | "requiresComment" | "createdAt" | "updatedAt", ExtArgs["result"]["documentationPlanStep"]>
+export type DocumentationPlanStepOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "planId" | "name" | "stepType" | "order" | "documentType" | "metadata" | "isRequired" | "description" | "maxSizeBytes" | "allowedMimeTypes" | "expiryDays" | "requiresManualReview" | "minFiles" | "maxFiles" | "condition" | "reviewRequirements" | "reviewOrder" | "gateActor" | "gateAction" | "gateRoleId" | "gateInstructions" | "allowReject" | "rejectBehavior" | "requiresComment" | "createdAt" | "updatedAt", ExtArgs["result"]["documentationPlanStep"]>
 export type DocumentationPlanStepInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   plan?: boolean | Prisma.DocumentationPlanDefaultArgs<ExtArgs>
 }
@@ -1185,6 +1241,8 @@ export type $DocumentationPlanStepPayload<ExtArgs extends runtime.Types.Extensio
     minFiles: number
     maxFiles: number
     condition: runtime.JsonValue | null
+    reviewRequirements: runtime.JsonValue | null
+    reviewOrder: string | null
     gateActor: $Enums.GateActor | null
     gateAction: $Enums.GateAction | null
     gateRoleId: string | null
@@ -1580,6 +1638,8 @@ export interface DocumentationPlanStepFieldRefs {
   readonly minFiles: Prisma.FieldRef<"DocumentationPlanStep", 'Int'>
   readonly maxFiles: Prisma.FieldRef<"DocumentationPlanStep", 'Int'>
   readonly condition: Prisma.FieldRef<"DocumentationPlanStep", 'Json'>
+  readonly reviewRequirements: Prisma.FieldRef<"DocumentationPlanStep", 'Json'>
+  readonly reviewOrder: Prisma.FieldRef<"DocumentationPlanStep", 'String'>
   readonly gateActor: Prisma.FieldRef<"DocumentationPlanStep", 'GateActor'>
   readonly gateAction: Prisma.FieldRef<"DocumentationPlanStep", 'GateAction'>
   readonly gateRoleId: Prisma.FieldRef<"DocumentationPlanStep", 'String'>

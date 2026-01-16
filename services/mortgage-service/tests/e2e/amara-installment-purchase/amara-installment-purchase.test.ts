@@ -133,6 +133,47 @@ describe("Amara's Victoria Island Installment Purchase Flow", () => {
         });
         tundeId = tunde.id;
 
+        // Create QShelter as the platform organization
+        const qshelterOrg = await prisma.organization.create({
+            data: {
+                id: faker.string.uuid(),
+                tenantId,
+                name: 'QShelter Real Estate',
+                type: 'PLATFORM',
+                status: 'ACTIVE',
+                isPlatformOrg: true,
+                email: 'support@qshelter.com',
+                phone: '+234-1-234-5678',
+                address: 'Victoria Island, Lagos',
+            },
+        });
+
+        // Link Adaeze as a QShelter operations manager
+        await prisma.organizationMember.create({
+            data: {
+                id: faker.string.uuid(),
+                organizationId: qshelterOrg.id,
+                userId: adaezeId,
+                role: 'MANAGER',
+                title: 'Operations Manager',
+                canApprove: true,
+                isActive: true,
+            },
+        });
+
+        // Link Tunde as a QShelter legal officer
+        await prisma.organizationMember.create({
+            data: {
+                id: faker.string.uuid(),
+                organizationId: qshelterOrg.id,
+                userId: tundeId,
+                role: 'OFFICER',
+                title: 'Legal Officer',
+                canApprove: true,
+                isActive: true,
+            },
+        });
+
         // Create Victoria Island Luxury Apartments property
         const property = await prisma.property.create({
             data: {

@@ -201,8 +201,12 @@ enum ApprovalDecision {
 
 /// Type of organization on the platform
 enum OrganizationType {
+  PLATFORM // The platform operator (e.g., QShelter) - the tenant's own organization
   BANK // Financial institution providing mortgages (e.g., Access Bank, GTBank)
   DEVELOPER // Property developer building and selling properties
+  LEGAL // Legal firms handling conveyancing and documentation
+  INSURER // Insurance companies providing property or mortgage insurance
+  GOVERNMENT // Government agencies (e.g., land registry, tax authorities)
 }
 
 /// Status of an organization
@@ -260,6 +264,30 @@ enum CompletionCriterion {
   DOCUMENT_APPROVALS
   PAYMENT_AMOUNT
   STEPS_COMPLETED
+}
+
+// =============================================================================
+// MULTI-PARTY DOCUMENT REVIEW ENUMS
+// =============================================================================
+// Enables different organizations to review the same document independently
+// =============================================================================
+
+enum ReviewParty {
+  INTERNAL // Your internal team (compliance, underwriting, etc.)
+  BANK // Partner bank/lender
+  DEVELOPER // Property developer
+  LEGAL // Legal team
+  GOVERNMENT // Government agencies (e.g., land registry)
+  INSURER // Insurance company
+  CUSTOMER // Customer acknowledgment/signature
+}
+
+enum ReviewDecision {
+  PENDING // Review not yet performed
+  APPROVED // Document approved by this party
+  REJECTED // Document rejected (permanent)
+  CHANGES_REQUESTED // Document needs modifications
+  WAIVED // Review not required by this party
 }
 
 enum DocumentStatus {
@@ -460,6 +488,9 @@ model User {
   approvedRefunds  ApplicationRefund[] @relation("RefundApprover")
   processedRefunds ApplicationRefund[] @relation("RefundProcessor")
 
+  // Document reviews by this user
+  documentReviews DocumentReview[] @relation("DocumentReviewer")
+
   // Organization memberships (user can be employee of banks/developers)
   organizationMemberships OrganizationMember[]
 
@@ -578,8 +609,11 @@ model Organization {
   id       String             @id @default(cuid())
   tenantId String
   name     String // e.g., "Access Bank PLC", "Lekki Gardens Ltd"
-  type     OrganizationType // BANK or DEVELOPER
+  type     OrganizationType // PLATFORM, BANK, DEVELOPER, LEGAL, INSURER, GOVERNMENT
   status   OrganizationStatus @default(PENDING)
+
+  // Platform organization flag - marks the tenant's own organization
+  isPlatformOrg Boolean @default(false)
 
   // Common fields
   email       String? // Primary contact email
@@ -747,6 +781,7 @@ model Tenant {
   domainEvents                DomainEvent[]
   workflowBlockers            WorkflowBlocker[]
   questionnairePlans          QuestionnairePlan[]
+  documentReviews             DocumentReview[]
 
   // Organizations (Banks, Developers) operating on this tenant
   organizations Organization[]
@@ -1270,6 +1305,17 @@ model DocumentationPlanStep {
   // { "questionKey": "employment_status", "operator": "IN", "values": ["SELF_EMPLOYED", "BUSINESS_OWNER"] }
   // { "all": [{ "questionKey": "has_spouse", "operator": "EQUALS", "value": "YES" }, { "questionKey": "spouse_employed", "operator": "EQUALS", "value": "YES" }] }
   condition Json?
+
+  // =========================================================================
+  // MULTI-PARTY REVIEW CONFIGURATION (for UPLOAD steps)
+  // =========================================================================
+  // Defines which parties must review documents uploaded in this step
+  // Format: [{ party: "INTERNAL", required: true }, { party: "BANK", required: true }]
+  // If null, defaults to single internal review (backward compatible)
+  reviewRequirements Json?
+
+  // Review order: 'SEQUENTIAL' = parties review in order, 'PARALLEL' = all review simultaneously
+  reviewOrder String? // 'SEQUENTIAL' | 'PARALLEL'
 
   // =========================================================================
   // GATE STEP CONFIGURATION (only applicable when stepType = GATE)
@@ -2290,6 +2336,17 @@ model DocumentationStep {
   // Or: { "questionKey": "employment_status", "operator": "IN", "values": ["SELF_EMPLOYED", "BUSINESS_OWNER"] }
   condition Json?
 
+  // =========================================================================
+  // MULTI-PARTY REVIEW CONFIGURATION (for UPLOAD steps)
+  // =========================================================================
+  // Defines which parties must review documents uploaded in this step
+  // Format: [{ party: "INTERNAL", required: true }, { party: "BANK", required: true }]
+  // If null, defaults to single internal review (backward compatible)
+  reviewRequirements Json?
+
+  // Review order: 'SEQUENTIAL' = parties review in order, 'PARALLEL' = all review simultaneously
+  reviewOrder String? // 'SEQUENTIAL' | 'PARALLEL'
+
   // Assignment
   assigneeId String?
   assignee   User?   @relation("DocumentationStepAssignee", fields: [assigneeId], references: [id])
@@ -2465,8 +2522,17 @@ model ApplicationDocument {
 
   status DocumentStatus @default(PENDING)
 
+  // Document versioning (for re-uploads after changes requested)
+  version            Int                   @default(1)
+  replacesDocumentId String? // If this is a revision, points to original
+  replacesDocument   ApplicationDocument?  @relation("DocumentRevisions", fields: [replacesDocumentId], references: [id])
+  revisions          ApplicationDocument[] @relation("DocumentRevisions")
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // Multi-party reviews for this document
+  reviews DocumentReview[]
 
   @@index([tenantId])
   @@index([applicationId])
@@ -2474,7 +2540,63 @@ model ApplicationDocument {
   @@index([stepId])
   @@index([type])
   @@index([status])
+  @@index([replacesDocumentId])
   @@map("application_documents")
+}
+
+// =============================================================================
+// DOCUMENT REVIEW - Multi-party review tracking
+// =============================================================================
+// Tracks reviews by different organizations for the same document
+// Enables internal approval -> external approval workflows
+// =============================================================================
+
+model DocumentReview {
+  id         String              @id @default(cuid())
+  tenantId   String
+  tenant     Tenant              @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  documentId String
+  document   ApplicationDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  // Who is reviewing
+  reviewParty    ReviewParty // INTERNAL, BANK, DEVELOPER, LEGAL, etc.
+  organizationId String? // External organization ID if applicable
+  reviewerId     String? // User who performed the review
+  reviewer       User?       @relation("DocumentReviewer", fields: [reviewerId], references: [id])
+  reviewerName   String? // Denormalized for audit trail
+
+  // Review state
+  decision ReviewDecision @default(PENDING)
+  comments String?        @db.Text // General comments
+
+  // Structured concerns for change requests
+  // Format: [{ field: "income_period", issue: "Missing months April-June" }]
+  concerns Json?
+
+  // Review timing
+  requestedAt DateTime  @default(now())
+  dueAt       DateTime? // Optional deadline for this party
+  reviewedAt  DateTime? // When decision was made
+
+  // Review sequence (which order should parties review?)
+  reviewOrder Int @default(0) // 0 = parallel, 1/2/3 = sequential
+
+  // For review chains (re-reviews after changes)
+  parentReviewId String? // If this is a re-review after changes
+  parentReview   DocumentReview?  @relation("ReviewChain", fields: [parentReviewId], references: [id])
+  childReviews   DocumentReview[] @relation("ReviewChain")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([documentId, reviewParty, organizationId]) // One review per party per org per doc
+  @@index([tenantId])
+  @@index([documentId])
+  @@index([reviewParty])
+  @@index([decision])
+  @@index([reviewerId])
+  @@index([parentReviewId])
+  @@map("document_reviews")
 }
 
 // =============================================================================

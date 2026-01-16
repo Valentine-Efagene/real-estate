@@ -326,6 +326,11 @@ export type ApplicationPayment = Prisma.ApplicationPaymentModel
  */
 export type ApplicationDocument = Prisma.ApplicationDocumentModel
 /**
+ * Model DocumentReview
+ * 
+ */
+export type DocumentReview = Prisma.DocumentReviewModel
+/**
  * Model DocumentTemplate
  * 
  */
