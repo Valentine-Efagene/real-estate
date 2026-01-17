@@ -264,7 +264,7 @@ export type RoleName = (typeof ROLES)[keyof typeof ROLES];
  */
 export const ADMIN_ROLES: string[] = [
     ROLES.SUPER_ADMIN,
-    ROLES.TENANT_ADMIN, 
+    ROLES.TENANT_ADMIN,
     ROLES.LOAN_OFFICER,
     ROLES.ADMIN,           // Bootstrap 'admin' role
     ROLES.MORTGAGE_OPS,    // Bootstrap 'mortgage_ops' role

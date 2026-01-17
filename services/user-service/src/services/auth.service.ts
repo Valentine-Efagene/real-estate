@@ -41,22 +41,52 @@ class AuthService {
             throw new ConflictError('Email already registered');
         }
 
+        // Validate tenant exists
+        const tenant = await prisma.tenant.findUnique({ where: { id: data.tenantId } });
+        if (!tenant) {
+            throw new ValidationError('Invalid tenant ID');
+        }
+
+        // Get the default customer role for the tenant
+        const customerRole = await prisma.role.findFirst({
+            where: { tenantId: data.tenantId, name: 'customer' },
+        });
+        if (!customerRole) {
+            throw new ValidationError('Tenant is not properly configured (missing customer role)');
+        }
+
         const hashedPassword = await bcrypt.hash(data.password, 10);
         const emailVerificationToken = randomBytes(32).toString('hex');
 
         // Auto-verify in localstack environment for E2E testing
         const isLocalstack = process.env.NODE_ENV === 'localstack';
 
-        const user = await prisma.user.create({
-            data: {
-                email: data.email,
-                password: hashedPassword,
-                firstName: data.firstName,
-                lastName: data.lastName,
-                avatar: data.avatar,
-                emailVerificationToken: isLocalstack ? null : emailVerificationToken,
-                emailVerifiedAt: isLocalstack ? new Date() : null,
-            },
+        // Create user with tenant membership in a transaction
+        const user = await prisma.$transaction(async (tx) => {
+            const newUser = await tx.user.create({
+                data: {
+                    email: data.email,
+                    password: hashedPassword,
+                    firstName: data.firstName,
+                    lastName: data.lastName,
+                    avatar: data.avatar,
+                    emailVerificationToken: isLocalstack ? null : emailVerificationToken,
+                    emailVerifiedAt: isLocalstack ? new Date() : null,
+                },
+            });
+
+            // Create tenant membership with customer role
+            await tx.tenantMembership.create({
+                data: {
+                    userId: newUser.id,
+                    tenantId: data.tenantId,
+                    roleId: customerRole.id,
+                    isDefault: true,
+                    isActive: true,
+                },
+            });
+
+            return newUser;
         });
 
         // Skip email verification in localstack
@@ -82,7 +112,7 @@ class AuthService {
             console.log(`[AuthService] Auto-verified user in localstack: ${user.email}`);
         }
 
-        return this.generateTokens(user.id, user.email, [], null);
+        return this.generateTokens(user.id, user.email, [customerRole.name], data.tenantId);
     }
 
     async login(data: LoginInput): Promise<AuthResponse> {

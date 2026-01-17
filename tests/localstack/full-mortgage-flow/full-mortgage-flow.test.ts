@@ -65,33 +65,23 @@ function idempotencyKey(operation: string): string {
     return `${TEST_RUN_ID}:${operation}`;
 }
 
-// Auth header helpers
+// Auth header helpers - JWT contains all auth info (userId, tenantId, roles)
 function adminHeaders(
     accessToken: string,
-    tenantId: string
+    _tenantId?: string // Kept for backwards compatibility, but not used - comes from JWT
 ): Record<string, string> {
-    // Extract userId from JWT token
-    const tokenPayload = JSON.parse(Buffer.from(accessToken.split('.')[1], 'base64').toString());
     return {
         Authorization: `Bearer ${accessToken}`,
-        'x-tenant-id': tenantId,
-        'x-authorizer-tenant-id': tenantId,
-        'x-authorizer-user-id': tokenPayload.sub,
         'Content-Type': 'application/json',
     };
 }
 
 function customerHeaders(
     accessToken: string,
-    tenantId: string
+    _tenantId?: string // Kept for backwards compatibility, but not used - comes from JWT
 ): Record<string, string> {
-    // Extract userId from JWT token
-    const tokenPayload = JSON.parse(Buffer.from(accessToken.split('.')[1], 'base64').toString());
     return {
         Authorization: `Bearer ${accessToken}`,
-        'x-tenant-id': tenantId,
-        'x-authorizer-tenant-id': tenantId,
-        'x-authorizer-user-id': tokenPayload.sub,
         'Content-Type': 'application/json',
     };
 }
@@ -210,6 +200,7 @@ describe('Full E2E Mortgage Flow', () => {
                     password: 'CustomerPass123!',
                     firstName: 'Chidi',
                     lastName: 'Nnamdi',
+                    tenantId: tenantId, // Required - all users must belong to a tenant
                 });
 
             expect(response.status).toBe(201);
@@ -1258,6 +1249,7 @@ describe('Full E2E Mortgage Flow', () => {
                         password: 'EmekaPass123!',
                         firstName: 'Emeka',
                         lastName: 'Obi',
+                        tenantId: tenantId, // Required - all users must belong to a tenant
                     });
 
                 expect(signupResponse.status).toBe(201);
