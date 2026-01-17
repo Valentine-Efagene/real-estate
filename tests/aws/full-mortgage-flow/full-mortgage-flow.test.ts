@@ -25,6 +25,8 @@
 
 import supertest from 'supertest';
 import { randomUUID } from 'crypto';
+import { PrismaClient } from '@valentine-efagene/qshelter-common';
+import { PrismaMariaDb } from '@prisma/adapter-mariadb';
 
 // Service URLs - MUST be set via environment (no localhost fallbacks)
 const USER_SERVICE_URL = process.env.USER_SERVICE_URL;
@@ -126,13 +128,74 @@ describe('Full E2E Mortgage Flow', () => {
     const mortgageAmount = 76_500_000; // 90% = ₦76.5M
     const mortgageTermMonths = 240; // 20 years
 
+    // Database cleanup - Prisma with MariaDB adapter
+    let prisma: PrismaClient;
+
     beforeAll(async () => {
-        // No direct database cleanup - tests should be idempotent via unique IDs
-        // If cleanup is needed, it should be done via an admin API endpoint
+        // Initialize Prisma with MariaDB adapter
+        const adapter = new PrismaMariaDb({
+            host: process.env.DB_HOST || '127.0.0.1',
+            port: parseInt(process.env.DB_PORT || '3307'),
+            user: process.env.DB_USER || 'root',
+            password: process.env.DB_PASSWORD || 'rootpassword',
+            database: process.env.DB_NAME || 'qshelter_test',
+            connectionLimit: 10,
+            allowPublicKeyRetrieval: true,
+        });
+
+        prisma = new PrismaClient({ adapter });
+
+        // Clean database before running tests
+        console.log('Cleaning database before test run...');
+        await prisma.$executeRawUnsafe('SET FOREIGN_KEY_CHECKS = 0');
+
+        // Delete in dependency order
+        const tables = [
+            'propertyPaymentMethodLink',
+            'propertyPaymentMethod',
+            'paymentPlan',
+            'propertyVariantAmenity',
+            'propertyVariantMedia',
+            'propertyAmenity',
+            'propertyUnit',
+            'propertyVariant',
+            'propertyDocument',
+            'propertyMedia',
+            'amenity',
+            'property',
+            'transaction',
+            'wallet',
+            'deviceEndpoint',
+            'emailPreference',
+            'settings',
+            'social',
+            'oAuthState',
+            'userSuspension',
+            'passwordReset',
+            'refreshToken',
+            'userRole',
+            'rolePermission',
+            'permission',
+            'role',
+            'user',
+            'tenant'
+        ];
+
+        for (const table of tables) {
+            try {
+                await prisma.$executeRawUnsafe(`DELETE FROM \`${table}\``);
+            } catch (error) {
+                // Table might not exist, skip
+                console.warn(`Could not clean table ${table}:`, (error as Error).message);
+            }
+        }
+
+        await prisma.$executeRawUnsafe('SET FOREIGN_KEY_CHECKS = 1');
+        console.log('Database cleaned successfully');
     });
 
     afterAll(async () => {
-        // No cleanup - tests use unique IDs for each run
+        await prisma.$disconnect();
     });
 
     // =========================================================================
@@ -164,6 +227,8 @@ describe('Full E2E Mortgage Flow', () => {
 
             tenantId = response.body.tenant.id;
             adaezeId = response.body.admin.id;
+
+            console.log('Bootstrap response roles:', JSON.stringify(response.body.roles, null, 2));
 
             // Verify roles were created
             expect(response.body.roles.length).toBeGreaterThanOrEqual(5);
@@ -203,6 +268,9 @@ describe('Full E2E Mortgage Flow', () => {
                     tenantId: tenantId, // Required - all users must belong to a tenant
                 });
 
+            if (response.status !== 201) {
+                console.error('Signup failed:', response.status, JSON.stringify(response.body, null, 2));
+            }
             expect(response.status).toBe(201);
             expect(response.body.success).toBe(true);
             expect(response.body.data.accessToken).toBeDefined();

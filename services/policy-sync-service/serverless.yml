@@ -18,14 +18,9 @@ provider:
     NODE_ENV: ${self:provider.stage}
     STAGE: ${self:provider.stage}
     AWS_REGION_NAME: ${self:provider.region}
-    # Database credentials from SSM
-    DB_HOST: ${ssm:/qshelter/${self:provider.stage}/DB_HOST~true}
-    DB_PORT: ${ssm:/qshelter/${self:provider.stage}/DB_PORT~true}
-    DB_USER: ${ssm:/qshelter/${self:provider.stage}/DB_USER~true}
-    DB_PASSWORD: ${ssm:/qshelter/${self:provider.stage}/DB_PASSWORD~true}
-    DB_NAME: ${ssm:/qshelter/${self:provider.stage}/DB_NAME~true}
+    # Database credentials are fetched at runtime via ConfigService from Secrets Manager
     # DynamoDB table name from SSM
-    ROLE_POLICIES_TABLE_NAME: ${ssm:/qshelter/${self:provider.stage}/role-policies-table-name}
+    ROLE_POLICIES_TABLE_NAME: ${ssm:/qshelter/${self:provider.stage}/role-policies-table-name, ''}
     # SNS/SQS config
     POLICY_SYNC_TOPIC_ARN: !Ref PolicySyncTopic
     POLICY_SYNC_QUEUE_URL: !Ref PolicySyncQueue

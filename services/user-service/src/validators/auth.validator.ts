@@ -3,6 +3,9 @@ import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
 
 extendZodWithOpenApi(z);
 
+// CUID regex pattern for Prisma-generated IDs
+const cuidRegex = /^c[a-z0-9]{24}$/;
+
 export const loginSchema = z.object({
     email: z.string().email().openapi({ example: 'user@example.com' }),
     password: z.string().min(8).openapi({ example: 'Password123!' }),
@@ -14,7 +17,7 @@ export const signupSchema = z.object({
     firstName: z.string().min(1).openapi({ example: 'John' }),
     lastName: z.string().min(1).openapi({ example: 'Doe' }),
     avatar: z.string().url().optional().openapi({ example: 'https://example.com/avatar.jpg' }),
-    tenantId: z.string().uuid().openapi({ example: '550e8400-e29b-41d4-a716-446655440000', description: 'The tenant ID the user is signing up for' }),
+    tenantId: z.string().regex(cuidRegex, 'Invalid tenant ID format').openapi({ example: 'clxyz1234567890abcdefgh', description: 'The tenant ID the user is signing up for' }),
 }).openapi('SignupRequest');
 
 export const refreshTokenSchema = z.object({

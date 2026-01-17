@@ -42,9 +42,12 @@ export const createApiKeySchema = z.object({
  * IMPORTANT: The `credential` field contains the secret and is
  * returned ONLY at creation time. Store it securely!
  */
+// CUID regex pattern for Prisma-generated IDs
+const cuidRegex = /^c[a-z0-9]{24}$/;
+
 export const createApiKeyResponseSchema = z.object({
-    id: z.string().uuid().openapi({
-        example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
+    id: z.string().regex(cuidRegex).openapi({
+        example: 'clxyz1234567890abcdefgh',
         description: 'Unique identifier for the API key',
     }),
     credential: z.string().openapi({
@@ -67,8 +70,8 @@ export const createApiKeyResponseSchema = z.object({
  * Note: Never includes the actual secret
  */
 export const apiKeyMetadataSchema = z.object({
-    id: z.string().uuid().openapi({
-        example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
+    id: z.string().regex(cuidRegex).openapi({
+        example: 'clxyz1234567890abcdefgh',
     }),
     name: z.string().openapi({ example: 'CRM Integration' }),
     description: z.string().nullable().openapi({

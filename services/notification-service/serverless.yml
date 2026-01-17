@@ -16,11 +16,10 @@ provider:
 
   environment:
     NODE_ENV: ${self:provider.stage}
+    STAGE: ${self:provider.stage}
     PORT: 3001
-    OFFICE365_CLIENT_ID: ${ssm:/qshelter/${self:provider.stage}/OFFICE365_CLIENT_ID~true}
-    OFFICE365_CLIENT_SECRET: ${ssm:/qshelter/${self:provider.stage}/OFFICE365_CLIENT_SECRET~true}
-    OFFICE365_TENANT_ID: ${ssm:/qshelter/${self:provider.stage}/OFFICE365_TENANT_ID~true}
-    OFFICE365_SENDER_EMAIL: ${ssm:/qshelter/${self:provider.stage}/OFFICE365_SENDER_EMAIL~true}
+    # Office365, SMTP, AWS credentials are fetched at runtime from Secrets Manager
+    # Secret: qshelter/{stage}/notification-config
     FIRST_EMAIL: 'info@mreif.com.ng'
     QSHELTER_INFO_EMAIL: 'mreif@qshelter.ng'
     QSHELTER_EMAIL: 'csupport@qshelter.ng'
@@ -48,15 +47,6 @@ provider:
     QSHELTER_LINK: 'https://qshelter.ng/'
     QSHELTER_LOGO: 'https://www.mreif.com.ng/qshelter-light.png'
     COMPANY_LOGO: 'https://talentindisabilities.com/wp-content/uploads/2025/11/Contribuild.png'
-    SMTP_HOST: ${ssm:/qshelter/${self:provider.stage}/SMTP_HOST~true}
-    SMTP_PORT: ${ssm:/qshelter/${self:provider.stage}/SMTP_PORT~true}
-    SMTP_USERNAME: ${ssm:/qshelter/${self:provider.stage}/SMTP_USERNAME~true}
-    SMTP_PASSWORD: ${ssm:/qshelter/${self:provider.stage}/SMTP_PASSWORD~true}
-    SMTP_ENCRYPTION: ${ssm:/qshelter/${self:provider.stage}/SMTP_ENCRYPTION~true}
-    AWS_ACCESS_KEY_ID: ${ssm:/qshelter/${self:provider.stage}/AWS_ACCESS_KEY_ID~true}
-    AWS_SECRET_ACCESS_KEY: ${ssm:/qshelter/${self:provider.stage}/AWS_SECRET_ACCESS_KEY~true}
-    AWS_REGION: 'us-east-1'
-    SQS_URL: ${ssm:/qshelter/${self:provider.stage}/SQS_URL~true}
     FROM_EMAIL: 'info@mailer.qshelter.ng'
     LOG_EMAIL: 'efagenevalentine@gmail.com'
     REPLY_EMAIL: 'info@mailer.qshelter.ng'
@@ -64,7 +54,6 @@ provider:
     SWAGGER_PASSWORD: '14ml0rd0f7h15c457l3'
     DOMAIN: 'https://api.qshelter.ng'
     BASE_PATH: 'testnotify'
-    PLATFORM_APPLICATION_ARN: ${ssm:/qshelter/${self:provider.stage}/PLATFORM_APPLICATION_ARN~true}
     OFFICE_ADDRESS: '7B, Ondo Street, Osborne Foreshore Estate, Ikoyi, Lagos'
 
   iam:

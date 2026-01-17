@@ -113,9 +113,6 @@ functions:
       - httpApi:
           path: /documents/api-docs
           method: GET
-      - httpApi:
-          path: /documents/api-docs/
-          method: GET
 
 plugins:
   - serverless-localstack

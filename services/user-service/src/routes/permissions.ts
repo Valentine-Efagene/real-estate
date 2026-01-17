@@ -62,10 +62,11 @@ permissionRouter.post('/bulk', async (req, res, next) => {
 // Create CRUD permissions for a resource
 permissionRouter.post('/crud', async (req, res, next) => {
     try {
+        const cuidRegex = /^c[a-z0-9]{24}$/;
         const data = z.object({
             resourcePath: z.string().startsWith('/'),
             resourceName: z.string(),
-            tenantId: z.string().uuid().optional(),
+            tenantId: z.string().regex(cuidRegex).optional(),
         }).parse(req.body);
 
         const result = await permissionService.createCrudPermissions(

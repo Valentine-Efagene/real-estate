@@ -2,6 +2,10 @@
 # Uses REST API (v1) for better LocalStack compatibility
 # Usage: npx sls deploy --config serverless.localstack.yml --stage localstack
 # Requires: LocalStack running with CDK deployed (cd infrastructure && pnpm localstack:deploy)
+#
+# NOTE: LocalStack doesn't fully support cross-service API Gateway authorizers.
+# For LocalStack testing, we pass auth headers manually (x-authorizer-user-id, etc.)
+# and services validate internally. Production uses serverless.yml with proper authorizer.
 
 service: qshelter-user-service
 
@@ -15,7 +19,9 @@ provider:
   memorySize: 512
   timeout: 29
   
-  # REST API (v1) for LocalStack compatibility - no authorizer
+  # REST API (v1) for LocalStack compatibility
+  # NOTE: API Gateway authorizer is configured in production (serverless.yml)
+  # but not in LocalStack due to limitations with cross-service authorizers
   apiGateway:
     shouldStartNameWithService: true
 

@@ -3,8 +3,11 @@ import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
 
 extendZodWithOpenApi(z);
 
+// CUID regex pattern for Prisma-generated IDs
+const cuidRegex = /^c[a-z0-9]{24}$/;
+
 export const TokenRegistrationSchema = z.object({
-    userId: z.string().uuid(),
+    userId: z.string().regex(cuidRegex),
     token: z.string().min(1),
 }).openapi('TokenRegistration');
 

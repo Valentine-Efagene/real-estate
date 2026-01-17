@@ -2,6 +2,10 @@
 # Uses REST API (v1) for better LocalStack compatibility
 # Usage: npx sls deploy --config serverless.localstack.yml --stage localstack
 # Requires: LocalStack running with CDK deployed (cd infrastructure && pnpm localstack:deploy)
+#
+# NOTE: LocalStack Community doesn't enforce API Gateway authorizers.
+# For LocalStack testing, pass auth headers manually (x-authorizer-user-id, etc.)
+# and services validate internally. Production uses serverless.yml with proper authorizer.
 
 service: qshelter-mortgage-service
 
@@ -15,7 +19,7 @@ provider:
   memorySize: 512
   timeout: 30
   
-  # REST API (v1) for LocalStack compatibility - with authorizer
+  # REST API (v1) for LocalStack compatibility
   apiGateway:
     shouldStartNameWithService: true
 
@@ -53,39 +57,35 @@ provider:
 
 package:
   individually: true
-  patterns:
-    # Exclude everything first
-    - '!**'
-    # Include only the bundled Lambda entry
-    - 'dist/**/*.mjs'
-    # Prisma client runtime dependencies
-    - 'node_modules/.prisma/**'
-    - 'node_modules/@prisma/client/**'
-    - 'node_modules/@prisma/adapter-mariadb/**'
-    - 'node_modules/@prisma/client-runtime-utils/**'
-    - 'node_modules/@prisma/driver-adapter-utils/**'
-    - 'node_modules/@prisma/debug/**'
-    - 'node_modules/mariadb/**'
-    # Exclude unused Prisma runtime adapters
-    - '!node_modules/@prisma/client/runtime/*cockroachdb*'
-    - '!node_modules/@prisma/client/runtime/*sqlserver*'
-    - '!node_modules/@prisma/client/runtime/*postgresql*'
-    - '!node_modules/@prisma/client/runtime/*sqlite*'
 
 functions:
   main:
     handler: dist/lambda.handler
+    package:
+      patterns:
+        # Exclude everything first
+        - '!**'
+        # Include only the bundled Lambda entry
+        - 'dist/**/*.mjs'
+        # Prisma client runtime dependencies
+        - 'node_modules/.prisma/**'
+        - 'node_modules/@prisma/client/**'
+        - 'node_modules/@prisma/adapter-mariadb/**'
+        - 'node_modules/@prisma/client-runtime-utils/**'
+        - 'node_modules/@prisma/driver-adapter-utils/**'
+        - 'node_modules/@prisma/debug/**'
+        - 'node_modules/mariadb/**'
+        # Exclude unused Prisma runtime adapters
+        - '!node_modules/@prisma/client/runtime/*cockroachdb*'
+        - '!node_modules/@prisma/client/runtime/*sqlserver*'
+        - '!node_modules/@prisma/client/runtime/*postgresql*'
+        - '!node_modules/@prisma/client/runtime/*sqlite*'
     events:
-      # REST API (v1) events with Lambda authorizer
+      # REST API (v1) events - no authorizer for LocalStack
       - http:
           path: /{proxy+}
           method: ANY
           cors: true
-          authorizer:
-            name: jwtAuthorizer
-            type: TOKEN
-            identitySource: method.request.header.Authorization
-            arn: arn:aws:lambda:us-east-1:000000000000:function:qshelter-authorizer-localstack
       - http:
           path: /health
           method: GET
@@ -102,6 +102,11 @@ functions:
   # FSM event listener (triggered by EventBridge)
   fsmEventHandler:
     handler: dist/fsm-event-handler.handler
+    package:
+      patterns:
+        - '!**'
+        - 'dist/fsm-event-handler.mjs'
+        - 'dist/fsm-event-handler.mjs.map'
 
 plugins:
   - serverless-localstack

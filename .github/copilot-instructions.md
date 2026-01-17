@@ -8,6 +8,8 @@
 - **Local development**: LocalStack for AWS emulation, Docker Compose for MySQL.
 - **Tech stack**: Node.js, TypeScript, Express, Prisma, Zod, AWS (Lambda, API Gateway, S3, SNS, SSM, Secrets Manager).
 
+Note: Please do not manually delete CDKToolkit from the AWS CloudFormation stacks - use the teardown script which handles it properly.
+
 ## Shared Library (`@valentine-efagene/qshelter-common`)
 
 - All entities, enums, types, and utilities must come from this published npm package.
@@ -135,6 +137,68 @@ cd tests/localstack && npm run run:full-e2e
 - New endpoints need both Zod validation and Postman examples.
 
 ## Deployment
+
+### AWS Staging Deployment
+
+Use the deployment script for seamless AWS deployment:
+
+```bash
+# Full deployment (recommended for first time or after teardown)
+./scripts/deploy-staging.sh all
+
+# Individual steps
+./scripts/deploy-staging.sh clean      # Clean orphaned CDK resources
+./scripts/deploy-staging.sh bootstrap  # Bootstrap CDK
+./scripts/deploy-staging.sh infra      # Deploy infrastructure
+./scripts/deploy-staging.sh migrations # Run Prisma migrations
+./scripts/deploy-staging.sh authorizer # Deploy authorizer-service
+./scripts/deploy-staging.sh services   # Deploy all services
+./scripts/deploy-staging.sh seed       # Seed initial data
+./scripts/deploy-staging.sh test       # Run E2E tests
+```
+
+### Teardown
+
+```bash
+./scripts/teardown-staging.sh  # Requires typing "DELETE staging" to confirm
+```
+
+### Critical Deployment Learnings
+
+**CDK Bootstrap Failures:**
+- CDK bootstrap can fail if orphaned resources exist from previous failed deployments
+- Orphaned S3 bucket: `cdk-hnb659fds-assets-{account}-{region}` (versioned, needs special deletion)
+- Orphaned IAM role: `cdk-hnb659fds-cfn-exec-role-{account}-{region}`
+- CDKToolkit stack can get stuck in `REVIEW_IN_PROGRESS` state
+- **Solution**: Run `./scripts/deploy-staging.sh clean` before bootstrap
+
+**CloudFormation Limitations:**
+- CloudFormation does NOT support creating SSM `SecureString` parameters
+- Use Secrets Manager instead for sensitive configuration
+- The CDK stack stores sensitive config in `qshelter/{stage}/notification-config` secret
+
+**Service Deployment Order:**
+1. `authorizer-service` - Must be first, stores ARN in `/qshelter/{stage}/authorizer-arn`
+2. `user-service` - Creates the HTTP API Gateway, stores ID in `/qshelter/{stage}/http-api-id`
+3. All other services attach to the existing HTTP API
+
+**Database Access:**
+- RDS is publicly accessible but protected by security group
+- The deploy script automatically adds your IP to the security group for migrations
+- DATABASE_URL is constructed from Secrets Manager credentials
+
+### SSM Parameters Reference
+
+| Parameter | Created By | Description |
+|-----------|------------|-------------|
+| `/qshelter/{stage}/database-secret-arn` | CDK | Secrets Manager ARN for DB credentials |
+| `/qshelter/{stage}/db-host` | CDK | Aurora MySQL endpoint |
+| `/qshelter/{stage}/db-port` | CDK | Database port (3306) |
+| `/qshelter/{stage}/db-security-group-id` | CDK | RDS security group ID |
+| `/qshelter/{stage}/authorizer-arn` | deploy script | Lambda authorizer ARN |
+| `/qshelter/{stage}/http-api-id` | user-service | HTTP API Gateway ID |
+| `/qshelter/{stage}/role-policies-table` | CDK | DynamoDB table name |
+| `/qshelter/{stage}/s3-bucket-name` | CDK | Uploads S3 bucket |
 
 - Update `DEPLOYMENT_STATUS.md` after every deployment with:
   - Package size

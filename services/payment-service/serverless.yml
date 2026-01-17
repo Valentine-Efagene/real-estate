@@ -16,16 +16,9 @@ provider:
   environment:
     NODE_ENV: ${self:provider.stage}
     STAGE: ${self:provider.stage}
-    # Database credentials from SSM
-    DB_HOST: ${ssm:/qshelter/${self:provider.stage}/DB_HOST~true}
-    DB_PORT: ${ssm:/qshelter/${self:provider.stage}/DB_PORT~true}
-    DB_USER: ${ssm:/qshelter/${self:provider.stage}/DB_USER~true}
-    DB_PASSWORD: ${ssm:/qshelter/${self:provider.stage}/DB_PASSWORD~true}
-    DB_NAME: ${ssm:/qshelter/${self:provider.stage}/DB_NAME~true}
-    # BudPay integration
-    BUDPAY_SECRET_KEY: ${ssm:/qshelter/${self:provider.stage}/BUDPAY_SECRET_KEY~true}
-    # SNS Topic for payment events
-    PAYMENTS_TOPIC_ARN: ${ssm:/qshelter/${self:provider.stage}/PAYMENTS_TOPIC_ARN~true}
+    # Database and secrets are fetched at runtime via ConfigService from Secrets Manager
+    # Paystack credentials stored in qshelter/{stage}/paystack secret
+    PAYMENTS_TOPIC_ARN: ${ssm:/qshelter/${self:provider.stage}/payments-topic-arn, ''}
 
   iam:
     role:
@@ -98,74 +91,10 @@ functions:
     timeout: 30
     events:
       - sqs:
-          arn: !GetAtt PaymentsQueue.Arn
+          arn: ${ssm:/qshelter/${self:provider.stage}/payments-queue-arn, ''}
           batchSize: 10
           functionResponseType: ReportBatchItemFailures
 
-resources:
-  Resources:
-    # SNS Topic for payment events
-    PaymentsTopic:
-      Type: AWS::SNS::Topic
-      Properties:
-        TopicName: qshelter-${self:provider.stage}-payments
-
-    # SQS Queue for payment events
-    PaymentsQueue:
-      Type: AWS::SQS::Queue
-      Properties:
-        QueueName: qshelter-${self:provider.stage}-payments
-        VisibilityTimeout: 60
-        MessageRetentionPeriod: 1209600 # 14 days
-        RedrivePolicy:
-          deadLetterTargetArn: !GetAtt PaymentsDeadLetterQueue.Arn
-          maxReceiveCount: 3
-
-    # Dead letter queue for failed messages
-    PaymentsDeadLetterQueue:
-      Type: AWS::SQS::Queue
-      Properties:
-        QueueName: qshelter-${self:provider.stage}-payments-dlq
-        MessageRetentionPeriod: 1209600 # 14 days
-
-    # SNS -> SQS subscription
-    PaymentsQueueSubscription:
-      Type: AWS::SNS::Subscription
-      Properties:
-        TopicArn: !Ref PaymentsTopic
-        Protocol: sqs
-        Endpoint: !GetAtt PaymentsQueue.Arn
-        RawMessageDelivery: false
-
-    # Allow SNS to send to SQS
-    PaymentsQueuePolicy:
-      Type: AWS::SQS::QueuePolicy
-      Properties:
-        Queues:
-          - !Ref PaymentsQueue
-        PolicyDocument:
-          Statement:
-            - Effect: Allow
-              Principal:
-                Service: sns.amazonaws.com
-              Action: sqs:SendMessage
-              Resource: !GetAtt PaymentsQueue.Arn
-              Condition:
-                ArnEquals:
-                  aws:SourceArn: !Ref PaymentsTopic
-
-  Outputs:
-    PaymentsTopicArn:
-      Value: !Ref PaymentsTopic
-      Export:
-        Name: qshelter-${self:provider.stage}-payments-topic-arn
-
-    PaymentsQueueArn:
-      Value: !GetAtt PaymentsQueue.Arn
-      Export:
-        Name: qshelter-${self:provider.stage}-payments-queue-arn
-
-    PaymentsQueueUrl:
-      Value: !Ref PaymentsQueue
-      Export:
-        Name: qshelter-${self:provider.stage}-payments-queue-url
+# Resources are created by CDK infrastructure stack
+# SNS Topic: qshelter-{stage}-payments (ARN in SSM: /qshelter/{stage}/payments-topic-arn)
+# SQS Queue: qshelter-{stage}-payments (ARN in SSM: /qshelter/{stage}/payments-queue-arn)

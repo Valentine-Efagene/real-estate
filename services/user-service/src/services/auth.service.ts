@@ -47,12 +47,12 @@ class AuthService {
             throw new ValidationError('Invalid tenant ID');
         }
 
-        // Get the default customer role for the tenant
-        const customerRole = await prisma.role.findFirst({
-            where: { tenantId: data.tenantId, name: 'customer' },
+        // Get the default user role for the tenant
+        const userRole = await prisma.role.findFirst({
+            where: { tenantId: data.tenantId, name: 'user' },
         });
-        if (!customerRole) {
-            throw new ValidationError('Tenant is not properly configured (missing customer role)');
+        if (!userRole) {
+            throw new ValidationError('Tenant is not properly configured (missing user role)');
         }
 
         const hashedPassword = await bcrypt.hash(data.password, 10);
@@ -75,12 +75,12 @@ class AuthService {
                 },
             });
 
-            // Create tenant membership with customer role
+            // Create tenant membership with user role
             await tx.tenantMembership.create({
                 data: {
                     userId: newUser.id,
                     tenantId: data.tenantId,
-                    roleId: customerRole.id,
+                    roleId: userRole.id,
                     isDefault: true,
                     isActive: true,
                 },
@@ -112,7 +112,7 @@ class AuthService {
             console.log(`[AuthService] Auto-verified user in localstack: ${user.email}`);
         }
 
-        return this.generateTokens(user.id, user.email, [customerRole.name], data.tenantId);
+        return this.generateTokens(user.id, user.email, [userRole.name], data.tenantId);
     }
 
     async login(data: LoginInput): Promise<AuthResponse> {
