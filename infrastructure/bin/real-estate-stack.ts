@@ -3,7 +3,14 @@ import * as cdk from 'aws-cdk-lib';
 import { RealEstateStack } from '../lib/real-estate-stack';
 
 const app = new cdk.App();
-new RealEstateStack(app, 'RealEstateStack', {
+
+// Get stage from context, defaults to 'dev'
+const stage = app.node.tryGetContext('stage') || 'dev';
+
+// Stack name includes stage for isolation
+const stackName = `RealEstateStack-${stage}`;
+
+new RealEstateStack(app, stackName, {
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,
    * but a single synthesized template can be deployed anywhere. */

@@ -97,6 +97,7 @@ export class RealEstateStack extends cdk.Stack {
       encryption: s3.BucketEncryption.S3_MANAGED,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
       versioned: true,
+      autoDeleteObjects: true, // ⚠️ DEV ONLY: Remove in production
       lifecycleRules: [
         {
           id: 'DeleteOldVersions',
@@ -115,7 +116,8 @@ export class RealEstateStack extends cdk.Stack {
           maxAge: 3000,
         },
       ],
-      removalPolicy: cdk.RemovalPolicy.RETAIN,
+      // ⚠️ DEV ONLY: Change to RETAIN in production to prevent data loss
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
     // === EventBridge Event Bus ===

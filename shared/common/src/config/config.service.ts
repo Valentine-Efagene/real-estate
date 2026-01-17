@@ -97,14 +97,24 @@ export class ConfigService {
         const pathPrefix = `/qshelter/${stage}/`;
 
         try {
-            const command = new GetParametersByPathCommand({
-                Path: pathPrefix,
-                Recursive: true,
-                WithDecryption: false,
-            });
+            // Paginate through all SSM parameters
+            const params: any[] = [];
+            let nextToken: string | undefined;
 
-            const response = await this.ssmClient.send(command);
-            const params = response.Parameters || [];
+            do {
+                const command = new GetParametersByPathCommand({
+                    Path: pathPrefix,
+                    Recursive: true,
+                    WithDecryption: false,
+                    NextToken: nextToken,
+                });
+
+                const response = await this.ssmClient.send(command);
+                if (response.Parameters) {
+                    params.push(...response.Parameters);
+                }
+                nextToken = response.NextToken;
+            } while (nextToken);
 
             const config: InfrastructureConfig = {
                 vpcId: this.getParamValue(params, `${pathPrefix}vpc-id`),
