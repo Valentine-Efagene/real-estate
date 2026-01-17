@@ -128,7 +128,7 @@ router.get('/me/transactions', async (req: Request, res: Response, next: NextFun
  */
 router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { id } = req.params;
+        const id = req.params.id as string;
         const wallet = await walletService.findById(id);
 
         return res.status(200).json({
@@ -146,7 +146,7 @@ router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
  */
 router.get('/user/:userId', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { userId } = req.params;
+        const userId = req.params.userId as string;
         const wallet = await walletService.findByUserId(userId);
 
         return res.status(200).json({
@@ -164,7 +164,7 @@ router.get('/user/:userId', async (req: Request, res: Response, next: NextFuncti
  */
 router.post('/user/:userId', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { userId } = req.params;
+        const userId = req.params.userId as string;
         const { currency } = createWalletSchema.parse(req.body);
         const wallet = await walletService.createForUser(userId, currency);
 
@@ -184,7 +184,7 @@ router.post('/user/:userId', async (req: Request, res: Response, next: NextFunct
  */
 router.post('/:id/credit', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { id: walletId } = req.params;
+        const walletId = req.params.id as string;
         const input = creditWalletSchema.parse(req.body);
 
         const result = await walletService.credit({
@@ -211,7 +211,7 @@ router.post('/:id/credit', async (req: Request, res: Response, next: NextFunctio
  */
 router.post('/:id/debit', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { id: walletId } = req.params;
+        const walletId = req.params.id as string;
         const input = debitWalletSchema.parse(req.body);
 
         const result = await walletService.debit({
@@ -238,7 +238,7 @@ router.post('/:id/debit', async (req: Request, res: Response, next: NextFunction
  */
 router.get('/:id/transactions', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { id: walletId } = req.params;
+        const walletId = req.params.id as string;
         const { limit, offset } = transactionsQuerySchema.parse(req.query);
 
         // Verify wallet exists

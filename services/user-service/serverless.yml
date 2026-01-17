@@ -37,7 +37,9 @@ provider:
           Resource: arn:aws:ssm:${self:provider.region}:*:parameter/qshelter/${self:provider.stage}/*
         - Effect: Allow
           Action: secretsmanager:GetSecretValue
-          Resource: arn:aws:secretsmanager:${self:provider.region}:*:secret:qshelter/${self:provider.stage}/*
+          Resource: 
+            - arn:aws:secretsmanager:${self:provider.region}:*:secret:qshelter/${self:provider.stage}/*
+            - ${ssm:/qshelter/${self:provider.stage}/database-secret-arn}
         - Effect: Allow
           Action:
             - sns:Publish

@@ -42,6 +42,7 @@ provider:
             - secretsmanager:GetSecretValue
           Resource:
             - arn:aws:secretsmanager:${self:provider.region}:*:secret:qshelter/${self:provider.stage}/*
+            - ${ssm:/qshelter/${self:provider.stage}/database-secret-arn}
         # DynamoDB access for role-policies table
         - Effect: Allow
           Action:

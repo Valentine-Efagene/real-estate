@@ -43,6 +43,7 @@ provider:
             - secretsmanager:GetSecretValue
           Resource:
             - arn:aws:secretsmanager:${self:provider.region}:*:secret:qshelter/${self:provider.stage}/*
+            - ${ssm:/qshelter/${self:provider.stage}/database-secret-arn}
         # EventBridge access
         - Effect: Allow
           Action:
