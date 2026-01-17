@@ -1,5 +1,5 @@
 import { Router, type Router as RouterType } from 'express';
-import { successResponse } from '@valentine-efagene/qshelter-common';
+import { successResponse, AppError } from '@valentine-efagene/qshelter-common';
 import { createAmenitySchema, updateAmenitySchema } from '../validators/amenity.validator';
 import { amenityService } from '../services/amenity.service';
 
@@ -8,8 +8,12 @@ export const amenityRouter: RouterType = Router();
 // Amenities CRUD
 amenityRouter.post('/amenities', async (req, res, next) => {
     try {
+        const tenantId = req.tenantContext?.tenantId;
+        if (!tenantId) {
+            throw new AppError(401, 'Tenant context required');
+        }
         const data = createAmenitySchema.parse(req.body);
-        const amenity = await amenityService.createAmenity(data);
+        const amenity = await amenityService.createAmenity(data, tenantId);
         res.status(201).json(successResponse(amenity));
     } catch (error) {
         next(error);

@@ -165,6 +165,7 @@ class BootstrapService {
                     data: {
                         balance: 0,
                         currency: 'NGN',
+                        tenantId: tenant!.id,
                     },
                 });
 
@@ -227,6 +228,7 @@ class BootstrapService {
                             aggregateType: 'Role',
                             aggregateId: role.id,
                             queueName: 'policy-sync',
+                            tenantId: tenant!.id,
                             payload: JSON.stringify({
                                 roleId: role.id,
                                 roleName: role.name,
@@ -247,6 +249,7 @@ class BootstrapService {
                         aggregateType: 'Tenant',
                         aggregateId: tenant!.id,
                         queueName: 'policy-sync',
+                        tenantId: tenant!.id,
                         payload: JSON.stringify({
                             tenantId: tenant!.id,
                             tenantName: tenant!.name,

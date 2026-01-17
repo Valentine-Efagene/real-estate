@@ -1,0 +1,24 @@
+{
+    "name": "qshelter-localstack-tests",
+    "version": "1.0.0",
+    "description": "Integration tests that run against LocalStack-deployed services via API endpoints only",
+    "type": "module",
+    "scripts": {
+        "test": "NODE_OPTIONS='--experimental-vm-modules --no-warnings=ExperimentalWarning' jest --config jest.config.js",
+        "test:full-mortgage": "npm run test -- full-mortgage-flow",
+        "deploy:all": "./scripts/deploy-all.sh",
+        "run:full-e2e": "./scripts/run-full-e2e-localstack.sh"
+    },
+    "devDependencies": {
+        "@types/jest": "^29.5.12",
+        "@types/node": "^20.11.0",
+        "@types/supertest": "^6.0.2",
+        "jest": "^29.7.0",
+        "supertest": "^7.0.0",
+        "ts-jest": "^29.1.2",
+        "typescript": "^5.3.3"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    }
+}

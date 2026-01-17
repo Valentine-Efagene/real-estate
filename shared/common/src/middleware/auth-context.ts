@@ -233,8 +233,10 @@ export function mockAuthHeaders(
 
 /**
  * Standard role names used across the platform.
+ * Supports both legacy names (SUPER_ADMIN) and bootstrap names (admin).
  */
 export const ROLES = {
+    // Legacy role names (uppercase)
     SUPER_ADMIN: 'SUPER_ADMIN',
     TENANT_ADMIN: 'TENANT_ADMIN',
     LOAN_OFFICER: 'LOAN_OFFICER',
@@ -246,14 +248,27 @@ export const ROLES = {
     LENDER: 'LENDER',
     /** Legal officers who upload final offer letters and handle legal documentation */
     LEGAL: 'LEGAL',
+    // Bootstrap role names (lowercase) - created by tenant bootstrap
+    ADMIN: 'admin',
+    USER: 'user',
+    MORTGAGE_OPS: 'mortgage_ops',
+    FINANCE: 'finance',
+    LEGAL_TEAM: 'legal',
 } as const;
 
 export type RoleName = (typeof ROLES)[keyof typeof ROLES];
 
 /**
  * Roles that have admin privileges (can manage resources).
+ * Includes both legacy uppercase names and bootstrap lowercase names.
  */
-export const ADMIN_ROLES: RoleName[] = [ROLES.SUPER_ADMIN, ROLES.TENANT_ADMIN, ROLES.LOAN_OFFICER];
+export const ADMIN_ROLES: string[] = [
+    ROLES.SUPER_ADMIN,
+    ROLES.TENANT_ADMIN, 
+    ROLES.LOAN_OFFICER,
+    ROLES.ADMIN,           // Bootstrap 'admin' role
+    ROLES.MORTGAGE_OPS,    // Bootstrap 'mortgage_ops' role
+];
 
 /**
  * Check if user has any of the specified roles.

@@ -32,6 +32,7 @@ class UnitService {
             const newUnit = await tx.propertyUnit.create({
                 data: {
                     variantId,
+                    tenantId,
                     unitNumber: data.unitNumber,
                     floorNumber: data.floorNumber,
                     blockName: data.blockName,

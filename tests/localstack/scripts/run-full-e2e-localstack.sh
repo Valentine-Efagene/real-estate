@@ -122,9 +122,12 @@ export NOTIFICATION_SERVICE_URL
 export BOOTSTRAP_SECRET="${BOOTSTRAP_SECRET:-local-bootstrap-secret}"
 export NODE_ENV=localstack
 
-# Run the test
+# Run the test from the tests/localstack directory
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR/.."
+
 NODE_OPTIONS='--experimental-vm-modules --no-warnings=ExperimentalWarning' \
-    npx jest --config jest.e2e.config.js --testNamePattern="Full E2E Mortgage Flow" "$@"
+    npx jest --config jest.config.js full-mortgage-flow "$@"
 
 TEST_EXIT_CODE=$?
 

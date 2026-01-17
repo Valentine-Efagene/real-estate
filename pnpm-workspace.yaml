@@ -11,3 +11,4 @@ packages:
   - 'services/authorizer-service'
   - 'infrastructure'
   - 'local-dev'
+  - 'tests/localstack'

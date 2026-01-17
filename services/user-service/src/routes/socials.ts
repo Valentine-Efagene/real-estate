@@ -20,6 +20,7 @@ socialRouter.post('/', async (req, res, next) => {
     try {
         const data = z.object({
             userId: z.string(),
+            tenantId: z.string(),
             provider: z.string(),
             socialId: z.string(),
         }).parse(req.body);

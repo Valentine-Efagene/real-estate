@@ -93,10 +93,30 @@ Phases are configured via `PaymentMethod` linked to properties. Each phase refer
 
 ## Testing
 
-- **Focus on E2E tests only** (no unit tests for now).
-- E2E tests use named actors with realistic Nigerian contexts.
-- Test files: `services/mortgage-service/tests/e2e/`
-- Run tests: `npm run test:e2e:chidi` or `npm run test:e2e:amara`
+There are two types of tests:
+
+### Service E2E Tests (`services/<service>/tests/e2e/`)
+
+- Run directly against the service code (no deployment needed)
+- Can use direct database access via Prisma for setup/verification
+- Use named actors with realistic Nigerian contexts
+- Run with: `npm run test:e2e:chidi` or `npm run test:e2e:amara`
+
+### LocalStack Integration Tests (`tests/localstack/`)
+
+- **True end-to-end tests** that run against deployed services
+- **API-only**: Only call REST endpoints, never import service code
+- Has its own `package.json` - treated as a separate project
+- Requires all services deployed to LocalStack first
+- Tests real auth flow with JWT tokens from the authorizer
+
+```bash
+# Deploy all services to LocalStack
+cd tests/localstack && ./scripts/deploy-all.sh
+
+# Run integration tests
+cd tests/localstack && npm run run:full-e2e
+```
 
 ## Scenario-Based Development
 

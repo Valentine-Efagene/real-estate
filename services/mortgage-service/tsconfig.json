@@ -19,7 +19,8 @@
   },
   "include": [
     "src/**/*",
-    "tests/**/*"
+    "tests/**/*",
+    "../../tests/localstack/full-mortgage-flow"
   ],
   "exclude": [
     "node_modules",

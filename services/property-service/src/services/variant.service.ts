@@ -16,6 +16,7 @@ class VariantService {
         const variant = await prisma.propertyVariant.create({
             data: {
                 propertyId,
+                tenantId,
                 name: data.name,
                 description: data.description,
                 nBedrooms: data.nBedrooms,

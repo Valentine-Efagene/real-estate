@@ -3,6 +3,7 @@ import { NotFoundError } from '@valentine-efagene/qshelter-common';
 
 export interface CreateSocialInput {
     userId: string;
+    tenantId: string;
     provider: string; // google, facebook, twitter, etc
     socialId: string; // ID from the social provider
 }
@@ -17,6 +18,7 @@ class SocialService {
         return prisma.social.create({
             data: {
                 userId: data.userId,
+                tenantId: data.tenantId,
                 provider: data.provider,
                 socialId: data.socialId,
             },

@@ -188,13 +188,13 @@ export function createDocumentReviewService(prismaClient: PrismaClient) {
                     documentId_reviewParty_organizationId: {
                         documentId,
                         reviewParty,
-                        organizationId: organizationId || null,
+                        organizationId: organizationId || '',
                     },
                 },
                 data: {
                     decision,
                     comments,
-                    concerns: concerns ? JSON.stringify(concerns) : null,
+                    concerns: concerns ? JSON.stringify(concerns) : undefined,
                     reviewerId,
                     reviewerName: reviewer ? `${reviewer.firstName || ''} ${reviewer.lastName || ''}`.trim() || reviewer.email : undefined,
                     reviewedAt: new Date(),
@@ -482,7 +482,7 @@ export function createDocumentReviewService(prismaClient: PrismaClient) {
                     documentId_reviewParty_organizationId: {
                         documentId,
                         reviewParty,
-                        organizationId,
+                        organizationId: organizationId || '',
                     },
                 },
                 data: {

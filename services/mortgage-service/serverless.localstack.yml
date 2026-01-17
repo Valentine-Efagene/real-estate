@@ -15,7 +15,7 @@ provider:
   memorySize: 512
   timeout: 30
   
-  # REST API (v1) for LocalStack compatibility - no authorizer
+  # REST API (v1) for LocalStack compatibility - with authorizer
   apiGateway:
     shouldStartNameWithService: true
 
@@ -76,11 +76,16 @@ functions:
   main:
     handler: dist/lambda.handler
     events:
-      # REST API (v1) events - no authorizer for LocalStack simplicity
+      # REST API (v1) events with Lambda authorizer
       - http:
           path: /{proxy+}
           method: ANY
           cors: true
+          authorizer:
+            name: jwtAuthorizer
+            type: TOKEN
+            identitySource: method.request.header.Authorization
+            arn: arn:aws:lambda:us-east-1:000000000000:function:qshelter-authorizer-localstack
       - http:
           path: /health
           method: GET

@@ -3,9 +3,12 @@ import { AppError } from '@valentine-efagene/qshelter-common';
 import type { CreateAmenityInput, UpdateAmenityInput } from '../validators/amenity.validator';
 
 class AmenityService {
-    async createAmenity(data: CreateAmenityInput) {
+    async createAmenity(data: CreateAmenityInput, tenantId: string) {
         const amenity = await prisma.amenity.create({
-            data,
+            data: {
+                ...data,
+                tenantId,
+            },
         });
         return amenity;
     }
