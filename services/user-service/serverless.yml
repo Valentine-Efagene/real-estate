@@ -24,7 +24,7 @@ provider:
     STAGE: ${self:provider.stage}
     LOCALSTACK_ENDPOINT: ${self:custom.localstackEndpoint.${self:provider.stage}, ''}
     NOTIFICATIONS_TOPIC_ARN: ${ssm:/qshelter/${self:provider.stage}/notifications-topic-arn, ''}
-    POLICY_SYNC_TOPIC_ARN: arn:aws:sns:${self:provider.region}:898751738669:qshelter-${self:provider.stage}-policy-sync
+    POLICY_SYNC_TOPIC_ARN: ${ssm:/qshelter/${self:provider.stage}/policy-sync-topic-arn, ''}
     FRONTEND_BASE_URL: ${env:FRONTEND_BASE_URL, 'https://mreif.com.ng'}
     BOOTSTRAP_SECRET: ${ssm:/qshelter/${self:provider.stage}/bootstrap-secret, 'local-bootstrap-secret'}
   

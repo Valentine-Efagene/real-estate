@@ -8,10 +8,8 @@ import * as events from 'aws-cdk-lib/aws-events';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as logs from 'aws-cdk-lib/aws-logs';
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
-import * as apigatewayv2 from 'aws-cdk-lib/aws-apigatewayv2';
 import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
 import * as ssm from 'aws-cdk-lib/aws-ssm';
-import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as sns from 'aws-cdk-lib/aws-sns';
 import * as snsSubscriptions from 'aws-cdk-lib/aws-sns-subscriptions';
@@ -174,6 +172,15 @@ export class RealEstateStack extends cdk.Stack {
       },
     });
 
+    const policySyncQueue = new sqs.Queue(this, 'PolicySyncQueue', {
+      queueName: `${prefix}-policy-sync`,
+      visibilityTimeout: cdk.Duration.seconds(60),
+      deadLetterQueue: {
+        queue: dlq,
+        maxReceiveCount: 3,
+      },
+    });
+
     // === SNS Topics ===
     const notificationsTopic = new sns.Topic(this, 'NotificationsTopic', {
       topicName: `${prefix}-notifications`,
@@ -185,6 +192,10 @@ export class RealEstateStack extends cdk.Stack {
 
     const paymentsTopic = new sns.Topic(this, 'PaymentsTopic', {
       topicName: `${prefix}-payments`,
+    });
+
+    const policySyncTopic = new sns.Topic(this, 'PolicySyncTopic', {
+      topicName: `${prefix}-policy-sync`,
     });
 
     // === SNS Subscriptions ===
@@ -202,6 +213,12 @@ export class RealEstateStack extends cdk.Stack {
 
     paymentsTopic.addSubscription(
       new snsSubscriptions.SqsSubscription(paymentsQueue, {
+        rawMessageDelivery: false,
+      })
+    );
+
+    policySyncTopic.addSubscription(
+      new snsSubscriptions.SqsSubscription(policySyncQueue, {
         rawMessageDelivery: false,
       })
     );
@@ -372,6 +389,24 @@ export class RealEstateStack extends cdk.Stack {
       parameterName: `/qshelter/${stage}/contract-events-queue-url`,
       stringValue: contractEventsQueue.queueUrl,
       description: 'Contract Events SQS Queue URL',
+    });
+
+    new ssm.StringParameter(this, 'PolicySyncTopicArnParameter', {
+      parameterName: `/qshelter/${stage}/policy-sync-topic-arn`,
+      stringValue: policySyncTopic.topicArn,
+      description: 'Policy Sync SNS Topic ARN',
+    });
+
+    new ssm.StringParameter(this, 'PolicySyncQueueArnParameter', {
+      parameterName: `/qshelter/${stage}/policy-sync-queue-arn`,
+      stringValue: policySyncQueue.queueArn,
+      description: 'Policy Sync SQS Queue ARN',
+    });
+
+    new ssm.StringParameter(this, 'PolicySyncQueueUrlParameter', {
+      parameterName: `/qshelter/${stage}/policy-sync-queue-url`,
+      stringValue: policySyncQueue.queueUrl,
+      description: 'Policy Sync SQS Queue URL',
     });
 
     // NOTE: HTTP API ID parameter is created by user-service when it deploys the HTTP API Gateway

@@ -180,6 +180,11 @@ describe('Full E2E Mortgage Flow', () => {
 
             // Verify roles were created
             expect(response.body.roles.length).toBeGreaterThanOrEqual(5);
+
+            // Wait for async policy sync to complete (SNS -> SQS -> Lambda -> DynamoDB)
+            // This ensures role policies are available in the authorizer before protected endpoints are called
+            console.log('Waiting for policy sync to complete...');
+            await new Promise(resolve => setTimeout(resolve, 3000));
         });
 
         it('Step 1.2: Admin logs in', async () => {
