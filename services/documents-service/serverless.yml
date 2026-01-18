@@ -104,9 +104,9 @@ functions:
           method: ANY
           authorizer:
             name: DocumentsServiceAuthorizer
-      # Health and API docs
+      # Health and API docs (health without prefix for consistent health checks)
       - httpApi:
-          path: /documents/health
+          path: /health
           method: GET
       - httpApi:
           path: /documents/openapi.json

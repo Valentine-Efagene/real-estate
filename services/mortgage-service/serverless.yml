@@ -83,6 +83,9 @@ functions:
     handler: dist/lambda.handler
     events:
       - httpApi:
+          path: /health
+          method: GET
+      - httpApi:
           path: /mortgage/mortgages/{proxy+}
           method: ANY
           authorizer:

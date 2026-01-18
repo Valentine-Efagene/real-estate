@@ -7,7 +7,7 @@ import { z } from 'zod';
 // Wallet Routes
 // =============================================================================
 // Authenticated endpoints for wallet management
-// User context comes from API Gateway authorizer via headers
+// User context comes from API Gateway authorizer via tenantContext middleware
 // =============================================================================
 
 const router = Router();
@@ -47,7 +47,7 @@ const transactionsQuerySchema = z.object({
  */
 router.get('/me', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userId = req.headers['x-user-id'] as string;
+        const userId = req.tenantContext?.userId;
         if (!userId) {
             throw new AppError(401, 'Unauthorized');
         }
@@ -69,13 +69,14 @@ router.get('/me', async (req: Request, res: Response, next: NextFunction) => {
  */
 router.post('/me', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userId = req.headers['x-user-id'] as string;
-        if (!userId) {
+        const userId = req.tenantContext?.userId;
+        const tenantId = req.tenantContext?.tenantId;
+        if (!userId || !tenantId) {
             throw new AppError(401, 'Unauthorized');
         }
 
         const { currency } = createWalletSchema.parse(req.body);
-        const wallet = await walletService.createForUser(userId, currency);
+        const wallet = await walletService.createForUser(userId, tenantId, currency);
 
         return res.status(201).json({
             status: 'success',
@@ -93,7 +94,7 @@ router.post('/me', async (req: Request, res: Response, next: NextFunction) => {
  */
 router.get('/me/transactions', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userId = req.headers['x-user-id'] as string;
+        const userId = req.tenantContext?.userId;
         if (!userId) {
             throw new AppError(401, 'Unauthorized');
         }
@@ -161,12 +162,17 @@ router.get('/user/:userId', async (req: Request, res: Response, next: NextFuncti
 /**
  * POST /wallets/user/:userId
  * Create wallet for user (internal use)
+ * Requires tenantId in body since this is an internal API call
  */
 router.post('/user/:userId', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const userId = req.params.userId as string;
+        const tenantId = req.tenantContext?.tenantId || req.body.tenantId;
+        if (!tenantId) {
+            throw new AppError(400, 'tenantId is required');
+        }
         const { currency } = createWalletSchema.parse(req.body);
-        const wallet = await walletService.createForUser(userId, currency);
+        const wallet = await walletService.createForUser(userId, tenantId, currency);
 
         return res.status(201).json({
             status: 'success',

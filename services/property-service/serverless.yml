@@ -88,6 +88,9 @@ functions:
     handler: dist/lambda.handler
     events:
       - httpApi:
+          path: /health
+          method: GET
+      - httpApi:
           path: /property/properties/{proxy+}
           method: ANY
           authorizer:

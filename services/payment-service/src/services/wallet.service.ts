@@ -10,6 +10,9 @@ import { v4 as uuidv4 } from 'uuid';
 // - Virtual account funding (via BudPay webhook)
 // - Transaction history
 // - Publishing events for downstream processing
+// 
+// Multi-tenancy: All tenant-scoped records (Wallet, Transaction, DomainEvent,
+// ApplicationPayment) require tenantId. We get this from the wallet's tenant.
 // =============================================================================
 
 const paymentPublisher = new PaymentEventPublisher('payment-service');
@@ -91,8 +94,11 @@ class WalletService {
 
     /**
      * Create a wallet for a user
+     * @param userId - The user to create wallet for
+     * @param tenantId - The tenant to scope the wallet to
+     * @param currency - The wallet currency (default NGN)
      */
-    async createForUser(userId: string, currency: string = 'NGN') {
+    async createForUser(userId: string, tenantId: string, currency: string = 'NGN') {
         const user = await prisma.user.findUnique({
             where: { id: userId },
             select: { walletId: true },
@@ -105,6 +111,7 @@ class WalletService {
         const wallet = await prisma.$transaction(async (tx) => {
             const newWallet = await tx.wallet.create({
                 data: {
+                    tenantId,
                     balance: 0,
                     currency,
                 },
@@ -147,7 +154,7 @@ class WalletService {
             return { wallet: existingWallet!, transaction: existingTx };
         }
 
-        // Get user ID for the wallet
+        // Get user ID and tenant ID for the wallet
         const walletWithUser = await prisma.wallet.findUnique({
             where: { id: walletId },
             include: { user: { select: { id: true } } },
@@ -158,6 +165,7 @@ class WalletService {
         }
 
         const userId = walletWithUser.user?.id;
+        const tenantId = walletWithUser.tenantId;
 
         const result = await prisma.$transaction(async (tx) => {
             // Update wallet balance
@@ -171,6 +179,7 @@ class WalletService {
             // Create transaction record
             const transaction = await tx.transaction.create({
                 data: {
+                    tenantId,
                     walletId,
                     amount,
                     type: 'CREDIT',
@@ -184,6 +193,7 @@ class WalletService {
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
+                    tenantId,
                     eventType: 'WALLET.CREDITED',
                     aggregateType: 'Wallet',
                     aggregateId: walletId,
@@ -242,6 +252,7 @@ class WalletService {
         }
 
         const wallet = await this.findById(walletId);
+        const tenantId = wallet.tenantId;
 
         if (wallet.balance < amount) {
             throw new AppError(400, `Insufficient balance. Available: ${wallet.balance}, Required: ${amount}`);
@@ -270,6 +281,7 @@ class WalletService {
             // Create transaction record
             const transaction = await tx.transaction.create({
                 data: {
+                    tenantId,
                     walletId,
                     amount,
                     type: 'DEBIT',
@@ -283,6 +295,7 @@ class WalletService {
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
+                    tenantId,
                     eventType: 'WALLET.DEBITED',
                     aggregateType: 'Wallet',
                     aggregateId: walletId,
@@ -328,10 +341,16 @@ class WalletService {
         // BudPay amounts are in kobo (minor units), convert to naira
         const amountInNaira = data.amount / 100;
 
-        // Find user by email
+        // Find user by email with their tenant memberships
         const user = await prisma.user.findUnique({
             where: { email: data.customer.email },
-            select: { id: true, walletId: true },
+            include: {
+                tenantMemberships: {
+                    where: { isDefault: true },
+                    select: { tenantId: true },
+                    take: 1,
+                },
+            },
         });
 
         if (!user) {
@@ -339,10 +358,17 @@ class WalletService {
             throw new AppError(404, `User not found: ${data.customer.email}`);
         }
 
+        // Get user's default tenant
+        const tenantId = user.tenantMemberships[0]?.tenantId;
+        if (!tenantId) {
+            console.error('[BudPay Webhook] User has no primary tenant:', data.customer.email);
+            throw new AppError(400, `User has no tenant membership: ${data.customer.email}`);
+        }
+
         // Ensure user has a wallet
         let walletId = user.walletId;
         if (!walletId) {
-            const wallet = await this.createForUser(user.id, data.currency);
+            const wallet = await this.createForUser(user.id, tenantId, data.currency);
             walletId = wallet.id;
         }
 

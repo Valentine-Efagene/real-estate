@@ -246,9 +246,13 @@ class AllocationService {
                 });
             }
 
+            // Get tenantId from the application phase
+            const tenantId = applicationPhase.tenantId;
+
             // Create payment record
             await tx.applicationPayment.create({
                 data: {
+                    tenantId,
                     applicationId: applicationPhase.applicationId,
                     phaseId: applicationPhase.id,
                     installmentId,
@@ -265,6 +269,7 @@ class AllocationService {
             await tx.domainEvent.create({
                 data: {
                     id: uuidv4(),
+                    tenantId,
                     eventType: 'PAYMENT.COMPLETED',
                     aggregateType: 'ApplicationPayment',
                     aggregateId: installmentId,
