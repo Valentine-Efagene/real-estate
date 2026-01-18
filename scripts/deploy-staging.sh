@@ -18,6 +18,10 @@
 # 8. npm husky errors: Use --ignore-scripts if postinstall fails
 # 9. Health endpoints: Add explicit /health route in serverless.yml (not prefixed with service path)
 # 10. esbuild: Output must match serverless.yml handler exactly (outfile: 'dist/lambda.mjs')
+# 11. Policy sync: SNS topic/queue/subscription created by CDK (not policy-sync-service)
+#     - SSM params: policy-sync-topic-arn, policy-sync-queue-arn, policy-sync-queue-url
+#     - Services reference via SSM, policy-sync-service just subscribes to existing queue
+# 12. Async policy sync: After bootstrap, wait ~3s for SNS->SQS->Lambda->DynamoDB sync
 
 set -e
 
