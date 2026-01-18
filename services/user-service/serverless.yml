@@ -24,6 +24,7 @@ provider:
     STAGE: ${self:provider.stage}
     LOCALSTACK_ENDPOINT: ${self:custom.localstackEndpoint.${self:provider.stage}, ''}
     NOTIFICATIONS_TOPIC_ARN: ${ssm:/qshelter/${self:provider.stage}/notifications-topic-arn, ''}
+    POLICY_SYNC_TOPIC_ARN: arn:aws:sns:${self:provider.region}:898751738669:qshelter-${self:provider.stage}-policy-sync
     FRONTEND_BASE_URL: ${env:FRONTEND_BASE_URL, 'https://mreif.com.ng'}
     BOOTSTRAP_SECRET: ${ssm:/qshelter/${self:provider.stage}/bootstrap-secret, 'local-bootstrap-secret'}
   
@@ -44,7 +45,9 @@ provider:
         - Effect: Allow
           Action:
             - sns:Publish
-          Resource: arn:aws:sns:${self:provider.region}:*:qshelter-${self:provider.stage}-notifications
+          Resource:
+            - arn:aws:sns:${self:provider.region}:*:qshelter-${self:provider.stage}-notifications
+            - arn:aws:sns:${self:provider.region}:*:qshelter-${self:provider.stage}-policy-sync
         # VPC permissions for Lambda to create ENIs
         - Effect: Allow
           Action:
@@ -75,8 +78,21 @@ functions:
           path: /health
           method: GET
       
-      # Catch-all route - Express handles routing internally
-      # Authorizer is applied at the API Gateway level
+      # Public routes (no authorizer)
+      - httpApi:
+          path: /auth/{proxy+}
+          method: ANY
+      - httpApi:
+          path: /admin/{proxy+}
+          method: ANY
+      - httpApi:
+          path: /api-docs
+          method: GET
+      - httpApi:
+          path: /openapi.json
+          method: GET
+      
+      # Protected catch-all route - requires authorization
       - httpApi:
           path: /{proxy+}
           method: ANY

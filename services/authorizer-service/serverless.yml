@@ -10,6 +10,7 @@ provider:
   
   environment:
     NODE_ENV: ${self:provider.stage}
+    ROLE_POLICIES_TABLE_NAME: ${ssm:/qshelter/${self:provider.stage}/role-policies-table-name}
   
   # IAM permissions for authorizer
   iam:

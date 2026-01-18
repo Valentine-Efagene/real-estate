@@ -31,6 +31,9 @@ export class AuthorizerService {
     }
 
     async authorize(event: APIGatewayRequestAuthorizerEvent): Promise<APIGatewayAuthorizerResult> {
+        // HTTP API v2 uses routeArn, REST API uses methodArn
+        const resourceArn = event.methodArn || (event as any).routeArn || '*';
+
         try {
             // 1. Warm cache on cold start
             if (!this.cacheWarmed) {
@@ -63,13 +66,13 @@ export class AuthorizerService {
             });
 
             // 4. Generate Allow policy with policy in context
-            return this.generatePolicy(payload.sub, 'Allow', event.methodArn, payload, policy);
+            return this.generatePolicy(payload.sub, 'Allow', resourceArn, payload, policy);
 
         } catch (error) {
             console.error('[Authorizer] Authorization error:', error);
 
             // Return Deny for any errors (invalid token, etc.)
-            return this.generatePolicy('anonymous', 'Deny', event.methodArn);
+            return this.generatePolicy('anonymous', 'Deny', resourceArn);
         }
     }
 
@@ -118,6 +121,11 @@ export class AuthorizerService {
      * This allows API Gateway to cache the authorizer response
      */
     private getWildcardResource(methodArn: string): string {
+        // Handle undefined or wildcard
+        if (!methodArn || methodArn === '*') {
+            return '*';
+        }
+
         // Format: arn:aws:execute-api:region:account:api-id/stage/METHOD/path
         const parts = methodArn.split('/');
         if (parts.length >= 2) {
