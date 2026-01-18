@@ -25,6 +25,7 @@ provider:
     LOCALSTACK_ENDPOINT: ${self:custom.localstackEndpoint.${self:provider.stage}, ''}
     NOTIFICATIONS_TOPIC_ARN: ${ssm:/qshelter/${self:provider.stage}/notifications-topic-arn, ''}
     FRONTEND_BASE_URL: ${env:FRONTEND_BASE_URL, 'https://mreif.com.ng'}
+    BOOTSTRAP_SECRET: ${ssm:/qshelter/${self:provider.stage}/bootstrap-secret, 'local-bootstrap-secret'}
   
   iam:
     role:
@@ -44,6 +45,23 @@ provider:
           Action:
             - sns:Publish
           Resource: arn:aws:sns:${self:provider.region}:*:qshelter-${self:provider.stage}-notifications
+        # VPC permissions for Lambda to create ENIs
+        - Effect: Allow
+          Action:
+            - ec2:CreateNetworkInterface
+            - ec2:DescribeNetworkInterfaces
+            - ec2:DeleteNetworkInterface
+            - ec2:AssignPrivateIpAddresses
+            - ec2:UnassignPrivateIpAddresses
+          Resource: '*'
+  
+  # VPC configuration for database access
+  vpc:
+    securityGroupIds:
+      - ${ssm:/qshelter/${self:provider.stage}/lambda-security-group-id}
+    subnetIds:
+      - ${ssm:/qshelter/${self:provider.stage}/private-subnet-1-id}
+      - ${ssm:/qshelter/${self:provider.stage}/private-subnet-2-id}
 
 functions:
   api:
@@ -52,157 +70,16 @@ functions:
     memorySize: 512
     runtime: nodejs20.x
     events:
-      # Health and docs (public)
-      - httpApi: 'GET /health'
-      - httpApi: 'GET /api-docs'
-      - httpApi: 'GET /openapi.json'
+      # Health check endpoint (no authorizer)
+      - httpApi:
+          path: /health
+          method: GET
       
-      # Auth routes (public)
-      - httpApi: 'POST /auth/login'
-      - httpApi: 'POST /auth/signup'
-      - httpApi: 'POST /auth/refresh'
-      - httpApi: 'GET /auth/verify-email'
-      - httpApi: 'POST /auth/request-password-reset'
-      - httpApi: 'POST /auth/reset-password'
-      - httpApi: 'POST /auth/google-token-login'
-      
-      # Auth routes (protected)
+      # Catch-all route - Express handles routing internally
+      # Authorizer is applied at the API Gateway level
       - httpApi:
-          path: /auth/me
-          method: GET
-          authorizer:
-            name: UserServiceAuthorizer
-      
-      # User routes (protected)
-      - httpApi:
-          path: /users
-          method: GET
-          authorizer:
-            name: UserServiceAuthorizer
-      - httpApi:
-          path: /users/{id}
-          method: GET
-          authorizer:
-            name: UserServiceAuthorizer
-      - httpApi:
-          path: /users/{id}
-          method: PUT
-          authorizer:
-            name: UserServiceAuthorizer
-      - httpApi:
-          path: /users/{id}
-          method: DELETE
-          authorizer:
-            name: UserServiceAuthorizer
-      - httpApi:
-          path: /users/{id}/avatar
-          method: PUT
-          authorizer:
-            name: UserServiceAuthorizer
-      - httpApi:
-          path: /users/profile
-          method: PATCH
-          authorizer:
-            name: UserServiceAuthorizer
-      - httpApi:
-          path: /users/{id}/suspend
-          method: POST
-          authorizer:
-            name: UserServiceAuthorizer
-      - httpApi:
-          path: /users/{id}/reinstate
-          method: POST
-          authorizer:
-            name: UserServiceAuthorizer
-      - httpApi:
-          path: /users/{id}/roles
-          method: PUT
-          authorizer:
-            name: UserServiceAuthorizer
-      
-      # Role routes (protected)
-      - httpApi:
-          path: /roles
-          method: GET
-          authorizer:
-            name: UserServiceAuthorizer
-      - httpApi:
-          path: /roles
-          method: POST
-          authorizer:
-            name: UserServiceAuthorizer
-      - httpApi:
-          path: /roles/{id}
-          method: GET
-          authorizer:
-            name: UserServiceAuthorizer
-      - httpApi:
-          path: /roles/{id}
-          method: PUT
-          authorizer:
-            name: UserServiceAuthorizer
-      - httpApi:
-          path: /roles/{id}
-          method: DELETE
-          authorizer:
-            name: UserServiceAuthorizer
-      
-      # Tenant routes (protected)
-      - httpApi:
-          path: /tenants
-          method: GET
-          authorizer:
-            name: UserServiceAuthorizer
-      - httpApi:
-          path: /tenants
-          method: POST
-          authorizer:
-            name: UserServiceAuthorizer
-      - httpApi:
-          path: /tenants/{id}
-          method: GET
-          authorizer:
-            name: UserServiceAuthorizer
-      - httpApi:
-          path: /tenants/{id}
-          method: PUT
-          authorizer:
-            name: UserServiceAuthorizer
-      - httpApi:
-          path: /tenants/{id}
-          method: DELETE
-          authorizer:
-            name: UserServiceAuthorizer
-      - httpApi:
-          path: /tenants/subdomain/{subdomain}
-          method: GET
-          authorizer:
-            name: UserServiceAuthorizer
-      
-      # Social routes (protected)
-      - httpApi:
-          path: /socials
-          method: POST
-          authorizer:
-            name: UserServiceAuthorizer
-      - httpApi:
-          path: /socials/{id}
-          method: GET
-          authorizer:
-            name: UserServiceAuthorizer
-      - httpApi:
-          path: /socials/{id}
-          method: PUT
-          authorizer:
-            name: UserServiceAuthorizer
-      - httpApi:
-          path: /socials/{id}
-          method: DELETE
-          authorizer:
-            name: UserServiceAuthorizer
-      - httpApi:
-          path: /socials/user/{userId}
-          method: GET
+          path: /{proxy+}
+          method: ANY
           authorizer:
             name: UserServiceAuthorizer
 

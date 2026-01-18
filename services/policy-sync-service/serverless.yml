@@ -70,6 +70,23 @@ provider:
             - sns:Publish
           Resource:
             - !Ref PolicySyncTopic
+        # VPC permissions for Lambda to create ENIs
+        - Effect: Allow
+          Action:
+            - ec2:CreateNetworkInterface
+            - ec2:DescribeNetworkInterfaces
+            - ec2:DeleteNetworkInterface
+            - ec2:AssignPrivateIpAddresses
+            - ec2:UnassignPrivateIpAddresses
+          Resource: '*'
+  
+  # VPC configuration for database access
+  vpc:
+    securityGroupIds:
+      - ${ssm:/qshelter/${self:provider.stage}/lambda-security-group-id}
+    subnetIds:
+      - ${ssm:/qshelter/${self:provider.stage}/private-subnet-1-id}
+      - ${ssm:/qshelter/${self:provider.stage}/private-subnet-2-id}
 
 package:
   individually: true

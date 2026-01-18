@@ -37,6 +37,15 @@ export class RealEstateStack extends cdk.Stack {
       natGateways: 1,
     });
 
+    // === Lambda Security Group ===
+    // Security group for Lambda functions to access RDS and other VPC resources
+    const lambdaSecurityGroup = new ec2.SecurityGroup(this, 'LambdaSecurityGroup', {
+      vpc,
+      securityGroupName: `${prefix}-lambda-sg`,
+      description: 'Security group for Lambda functions',
+      allowAllOutbound: true,
+    });
+
     // === MySQL RDS ===
     const cluster = new rds.DatabaseCluster(this, "AuroraServerlessDB", {
       engine: rds.DatabaseClusterEngine.auroraMysql({
@@ -56,6 +65,9 @@ export class RealEstateStack extends cdk.Stack {
     });
 
     const dbCredentials = cluster.secret!;
+
+    // Allow Lambda security group to access RDS
+    cluster.connections.allowFrom(lambdaSecurityGroup, ec2.Port.tcp(3306), 'Allow Lambda functions to access Aurora MySQL');
 
     // Redis (Valkey)
     const subnetGroup = new elasticache.CfnSubnetGroup(this, 'ValkeySubnetGroup', {
@@ -232,6 +244,12 @@ export class RealEstateStack extends cdk.Stack {
       description: 'VPC ID',
     });
 
+    new ssm.StringParameter(this, 'LambdaSecurityGroupIdParameter', {
+      parameterName: `/qshelter/${stage}/lambda-security-group-id`,
+      stringValue: lambdaSecurityGroup.securityGroupId,
+      description: 'Lambda Security Group ID for VPC access',
+    });
+
     new ssm.StringParameter(this, 'DbSecurityGroupIdParameter', {
       parameterName: `/qshelter/${stage}/db-security-group-id`,
       stringValue: cluster.connections.securityGroups[0].securityGroupId,
@@ -242,6 +260,15 @@ export class RealEstateStack extends cdk.Stack {
       parameterName: `/qshelter/${stage}/private-subnet-ids`,
       stringValue: vpc.privateSubnets.map(subnet => subnet.subnetId).join(','),
       description: 'Private Subnet IDs (comma-separated)',
+    });
+
+    // Individual subnet IDs for Serverless Framework (which needs array format)
+    vpc.privateSubnets.forEach((subnet, index) => {
+      new ssm.StringParameter(this, `PrivateSubnet${index + 1}IdParameter`, {
+        parameterName: `/qshelter/${stage}/private-subnet-${index + 1}-id`,
+        stringValue: subnet.subnetId,
+        description: `Private Subnet ${index + 1} ID`,
+      });
     });
 
     new ssm.StringParameter(this, 'DbHostParameter', {

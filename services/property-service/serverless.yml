@@ -61,6 +61,23 @@ provider:
           Resource:
             - arn:aws:s3:::*
             - arn:aws:s3:::*/*
+        # VPC permissions for Lambda to create ENIs
+        - Effect: Allow
+          Action:
+            - ec2:CreateNetworkInterface
+            - ec2:DescribeNetworkInterfaces
+            - ec2:DeleteNetworkInterface
+            - ec2:AssignPrivateIpAddresses
+            - ec2:UnassignPrivateIpAddresses
+          Resource: '*'
+  
+  # VPC configuration for database access
+  vpc:
+    securityGroupIds:
+      - ${ssm:/qshelter/${self:provider.stage}/lambda-security-group-id}
+    subnetIds:
+      - ${ssm:/qshelter/${self:provider.stage}/private-subnet-1-id}
+      - ${ssm:/qshelter/${self:provider.stage}/private-subnet-2-id}
 
 package:
   individually: true
@@ -87,40 +104,22 @@ functions:
   main:
     handler: dist/lambda.handler
     events:
+      # Public endpoints (no auth)
       - httpApi:
           path: /health
           method: GET
       - httpApi:
-          path: /property/properties/{proxy+}
-          method: ANY
-          authorizer:
-            name: PropertyServiceAuthorizer
-      - httpApi:
-          path: /property/property-media/{proxy+}
-          method: ANY
-          authorizer:
-            name: PropertyServiceAuthorizer
-      - httpApi:
-          path: /property/property-document/{proxy+}
-          method: ANY
-          authorizer:
-            name: PropertyServiceAuthorizer
-      - httpApi:
-          path: /property/amenities/{proxy+}
-          method: ANY
-          authorizer:
-            name: PropertyServiceAuthorizer
-      - httpApi:
-          path: /property/upload/presigned-url
-          method: POST
-          authorizer:
-            name: PropertyServiceAuthorizer
-      - httpApi:
-          path: /property/api
+          path: /api-docs
           method: GET
       - httpApi:
-          path: /property/api-json
+          path: /openapi.json
           method: GET
+      # All other routes require authorization
+      - httpApi:
+          path: /{proxy+}
+          method: ANY
+          authorizer:
+            name: PropertyServiceAuthorizer
 
 plugins:
   - serverless-localstack

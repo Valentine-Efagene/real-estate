@@ -1,20 +1,18 @@
 /**
- * Full End-to-End Mortgage Flow Test (LocalStack)
+ * Full End-to-End Mortgage Flow Test (AWS Staging)
  *
  * This test implements the complete business scenario defined in SCENARIO.md
  * All operations are performed via REST APIs - nothing is seeded manually.
+ * NO DATABASE ACCESS - purely API-driven tests.
  *
  * Prerequisites:
- * - LocalStack running with all services deployed
- * - user-service, property-service, mortgage-service all deployed
+ * - All services deployed to AWS staging
+ * - Bootstrap secret configured in SSM
  *
  * Run with:
  *   npm run test:full-mortgage
  *   # or directly:
- *   ./scripts/run-full-e2e-localstack.sh
- *
- * The script fetches API Gateway URLs from LocalStack and sets environment variables.
- * DO NOT run this test directly - always use the script to ensure proper URLs.
+ *   ./scripts/run-full-e2e-staging.sh
  *
  * Actors:
  * - Adaeze (Admin): Loan operations manager at QShelter
@@ -25,8 +23,6 @@
 
 import supertest from 'supertest';
 import { randomUUID } from 'crypto';
-import { PrismaClient } from '@valentine-efagene/qshelter-common';
-import { PrismaMariaDb } from '@prisma/adapter-mariadb';
 
 // Service URLs - MUST be set via environment (no localhost fallbacks)
 const USER_SERVICE_URL = process.env.USER_SERVICE_URL;
@@ -43,7 +39,7 @@ function validateEnvVars() {
     if (missing.length > 0) {
         throw new Error(
             `Missing required environment variables: ${missing.join(', ')}\n` +
-            `Run this test using: ./scripts/run-full-e2e.sh`
+            `Run this test using: ./scripts/run-full-e2e-staging.sh`
         );
     }
 }
@@ -128,74 +124,26 @@ describe('Full E2E Mortgage Flow', () => {
     const mortgageAmount = 76_500_000; // 90% = ₦76.5M
     const mortgageTermMonths = 240; // 20 years
 
-    // Database cleanup - Prisma with MariaDB adapter
-    let prisma: PrismaClient;
+    // No database cleanup for AWS staging - tests use unique IDs per run
+    // This makes tests repeatable without needing direct database access
 
     beforeAll(async () => {
-        // Initialize Prisma with MariaDB adapter
-        const adapter = new PrismaMariaDb({
-            host: process.env.DB_HOST || '127.0.0.1',
-            port: parseInt(process.env.DB_PORT || '3307'),
-            user: process.env.DB_USER || 'root',
-            password: process.env.DB_PASSWORD || 'rootpassword',
-            database: process.env.DB_NAME || 'qshelter_test',
-            connectionLimit: 10,
-            allowPublicKeyRetrieval: true,
-        });
-
-        prisma = new PrismaClient({ adapter });
-
-        // Clean database before running tests
-        console.log('Cleaning database before test run...');
-        await prisma.$executeRawUnsafe('SET FOREIGN_KEY_CHECKS = 0');
-
-        // Delete in dependency order
-        const tables = [
-            'propertyPaymentMethodLink',
-            'propertyPaymentMethod',
-            'paymentPlan',
-            'propertyVariantAmenity',
-            'propertyVariantMedia',
-            'propertyAmenity',
-            'propertyUnit',
-            'propertyVariant',
-            'propertyDocument',
-            'propertyMedia',
-            'amenity',
-            'property',
-            'transaction',
-            'wallet',
-            'deviceEndpoint',
-            'emailPreference',
-            'settings',
-            'social',
-            'oAuthState',
-            'userSuspension',
-            'passwordReset',
-            'refreshToken',
-            'userRole',
-            'rolePermission',
-            'permission',
-            'role',
-            'user',
-            'tenant'
-        ];
-
-        for (const table of tables) {
-            try {
-                await prisma.$executeRawUnsafe(`DELETE FROM \`${table}\``);
-            } catch (error) {
-                // Table might not exist, skip
-                console.warn(`Could not clean table ${table}:`, (error as Error).message);
-            }
-        }
-
-        await prisma.$executeRawUnsafe('SET FOREIGN_KEY_CHECKS = 1');
-        console.log('Database cleaned successfully');
+        console.log('=== AWS Staging E2E Test ===');
+        console.log(`Test Run ID: ${TEST_RUN_ID}`);
+        console.log(`User Service: ${USER_SERVICE_URL}`);
+        console.log(`Property Service: ${PROPERTY_SERVICE_URL}`);
+        console.log(`Mortgage Service: ${MORTGAGE_SERVICE_URL}`);
+        console.log('=============================');
     });
 
     afterAll(async () => {
-        await prisma.$disconnect();
+        console.log('=== Test Run Complete ===');
+        console.log(`Test Run ID: ${TEST_RUN_ID}`);
+        if (tenantId) console.log(`Tenant ID: ${tenantId}`);
+        if (adaezeId) console.log(`Admin ID: ${adaezeId}`);
+        if (chidiId) console.log(`Customer ID: ${chidiId}`);
+        if (propertyId) console.log(`Property ID: ${propertyId}`);
+        console.log('==========================');
     });
 
     // =========================================================================

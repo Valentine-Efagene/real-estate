@@ -4,10 +4,11 @@
 #
 # This script sets up the environment variables for AWS staging endpoints
 # and runs the full mortgage flow tests via HTTP APIs only.
+# NO DATABASE ACCESS - purely API-driven tests.
 #
 # Prerequisites:
 # - All services deployed to AWS staging
-# - Database accessible (for cleanup only)
+# - Bootstrap secret configured in SSM
 #
 # Usage:
 #   ./scripts/run-full-e2e-staging.sh
@@ -30,30 +31,17 @@ export PAYMENT_SERVICE_URL="https://eevej2uri9.execute-api.us-east-1.amazonaws.c
 export NOTIFICATION_SERVICE_URL="https://vx2oxgm2ih.execute-api.us-east-1.amazonaws.com"
 export POLICY_SYNC_SERVICE_URL="https://nwqf11e6ta.execute-api.us-east-1.amazonaws.com"
 
-# Get database credentials from AWS Secrets Manager
-echo "Fetching database credentials from Secrets Manager..."
-DB_SECRET_ARN=$(aws ssm get-parameter --name /qshelter/staging/database-secret-arn --query 'Parameter.Value' --output text 2>/dev/null || echo "")
+# Get bootstrap secret from SSM (required for tenant creation)
+echo "Fetching bootstrap secret from SSM..."
+BOOTSTRAP_SECRET_FROM_SSM=$(aws ssm get-parameter --name /qshelter/staging/bootstrap-secret --with-decryption --query 'Parameter.Value' --output text 2>/dev/null || echo "")
 
-if [ -n "$DB_SECRET_ARN" ]; then
-    DB_SECRET=$(aws secretsmanager get-secret-value --secret-id "$DB_SECRET_ARN" --query 'SecretString' --output text)
-    export DB_HOST=$(echo "$DB_SECRET" | jq -r '.host')
-    export DB_PORT=$(echo "$DB_SECRET" | jq -r '.port // "3306"')
-    export DB_USER=$(echo "$DB_SECRET" | jq -r '.username')
-    export DB_PASSWORD=$(echo "$DB_SECRET" | jq -r '.password')
-    export DB_NAME=$(echo "$DB_SECRET" | jq -r '.dbname // "qshelter"')
-    echo "Database credentials loaded from Secrets Manager"
+if [ -n "$BOOTSTRAP_SECRET_FROM_SSM" ]; then
+    export BOOTSTRAP_SECRET="$BOOTSTRAP_SECRET_FROM_SSM"
+    echo "Bootstrap secret loaded from SSM"
 else
-    echo "Warning: Could not fetch database secret. Database cleanup may fail."
-    # Fallback to environment or defaults
-    export DB_HOST=${DB_HOST:-"localhost"}
-    export DB_PORT=${DB_PORT:-"3306"}
-    export DB_USER=${DB_USER:-"admin"}
-    export DB_PASSWORD=${DB_PASSWORD:-""}
-    export DB_NAME=${DB_NAME:-"qshelter"}
+    echo "Warning: Could not fetch bootstrap secret from SSM. Using default."
+    export BOOTSTRAP_SECRET="${BOOTSTRAP_SECRET:-staging-bootstrap-secret}"
 fi
-
-# Bootstrap secret for tenant creation
-export BOOTSTRAP_SECRET="${BOOTSTRAP_SECRET:-staging-bootstrap-secret}"
 
 echo ""
 echo "Service URLs:"
@@ -62,11 +50,6 @@ echo "  PROPERTY_SERVICE_URL:     $PROPERTY_SERVICE_URL"
 echo "  MORTGAGE_SERVICE_URL:     $MORTGAGE_SERVICE_URL"
 echo "  DOCUMENTS_SERVICE_URL:    $DOCUMENTS_SERVICE_URL"
 echo "  PAYMENT_SERVICE_URL:      $PAYMENT_SERVICE_URL"
-echo ""
-echo "Database:"
-echo "  DB_HOST:                  $DB_HOST"
-echo "  DB_PORT:                  $DB_PORT"
-echo "  DB_NAME:                  $DB_NAME"
 echo ""
 
 # Check that services are healthy

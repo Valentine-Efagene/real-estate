@@ -1,21 +1,14 @@
 {
-    "name": "qshelter-localstack-tests",
+    "name": "qshelter-aws-e2e-tests",
     "version": "1.0.0",
-    "description": "Integration tests that run against LocalStack-deployed services via API endpoints only",
+    "description": "Integration tests that run against AWS-deployed services via API endpoints only",
     "type": "module",
     "scripts": {
         "test": "NODE_OPTIONS='--experimental-vm-modules --no-warnings=ExperimentalWarning' jest --config jest.config.js",
         "test:full-mortgage": "npm run test -- full-mortgage-flow",
-        "setup": "./scripts/setup.sh",
-        "setup:deploy": "./scripts/setup.sh --deploy",
-        "setup:verify": "./scripts/setup.sh --verify",
-        "deploy:all": "./scripts/deploy-all.sh",
-        "run:full-e2e": "./scripts/run-full-e2e-localstack.sh"
+        "run:full-e2e": "./scripts/run-full-e2e-staging.sh"
     },
     "dependencies": {
-        "@prisma/adapter-mariadb": "^6.2.0",
-        "@valentine-efagene/qshelter-common": "latest",
-        "mariadb": "^3.4.1",
         "zod": "^3.24.1"
     },
     "devDependencies": {
