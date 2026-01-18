@@ -27,10 +27,18 @@ services/
 ├── mortgage-service/       # Applications, phases, payments, documents
 ├── notification-service/   # Email/SMS notifications via SNS
 ├── payment-service/        # Payment processing
-├── policy-sync-service/    # RBAC policy synchronization
+├── policy-sync-service/    # RBAC policy sync (SQS consumer only, no HTTP API)
 ├── property-service/       # Property listings and units
 └── user-service/           # User management and authentication
 ```
+
+### Policy Sync Service Architecture
+
+The `policy-sync-service` is a pure SQS consumer with **no HTTP API**:
+- Listens to the `qshelter-{stage}-policy-sync` SQS queue
+- Triggered by SNS events when roles/permissions change in RDS (via user-service)
+- Syncs role policies from RDS to DynamoDB for the Lambda authorizer
+- Flow: `user-service → SNS → SQS → policy-sync-service → DynamoDB`
 
 ## Multi-Tenancy
 

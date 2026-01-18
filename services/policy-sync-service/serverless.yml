@@ -10,10 +10,6 @@ provider:
   memorySize: 512
   timeout: 30
 
-  # HTTP API Gateway (v2) for production
-  httpApi:
-    cors: true
-
   environment:
     NODE_ENV: ${self:provider.stage}
     STAGE: ${self:provider.stage}
@@ -110,17 +106,6 @@ package:
     - 'node_modules/mariadb/**'
 
 functions:
-  # HTTP API handler for admin endpoints
-  api:
-    handler: dist/lambda.handler
-    events:
-      - httpApi:
-          path: /{proxy+}
-          method: ANY
-      - httpApi:
-          path: /health
-          method: GET
-
   # SQS consumer for policy sync events
   sqsConsumer:
     handler: dist/lambda.sqsHandler

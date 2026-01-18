@@ -9,6 +9,8 @@
         "run:full-e2e": "./scripts/run-full-e2e-staging.sh"
     },
     "dependencies": {
+        "@aws-sdk/client-dynamodb": "^3.525.0",
+        "@aws-sdk/lib-dynamodb": "^3.525.0",
         "zod": "^3.24.1"
     },
     "devDependencies": {

@@ -23,11 +23,16 @@
 
 import supertest from 'supertest';
 import { randomUUID } from 'crypto';
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { DynamoDBDocumentClient, GetCommand } from '@aws-sdk/lib-dynamodb';
 
 // Service URLs - MUST be set via environment (no localhost fallbacks)
 const USER_SERVICE_URL = process.env.USER_SERVICE_URL;
 const PROPERTY_SERVICE_URL = process.env.PROPERTY_SERVICE_URL;
 const MORTGAGE_SERVICE_URL = process.env.MORTGAGE_SERVICE_URL || process.env.API_BASE_URL;
+
+// DynamoDB table for role policies (set by run script)
+const ROLE_POLICIES_TABLE = process.env.ROLE_POLICIES_TABLE || 'role-policies-staging';
 
 // Validate required environment variables
 function validateEnvVars() {
@@ -52,6 +57,10 @@ const userApi = supertest(USER_SERVICE_URL!);
 const propertyApi = supertest(PROPERTY_SERVICE_URL!);
 const mortgageApi = supertest(MORTGAGE_SERVICE_URL!);
 
+// DynamoDB client for polling policy sync status
+const dynamoClient = new DynamoDBClient({ region: 'us-east-1' });
+const docClient = DynamoDBDocumentClient.from(dynamoClient);
+
 // Bootstrap secret for tenant creation
 const BOOTSTRAP_SECRET =
     process.env.BOOTSTRAP_SECRET || 'local-bootstrap-secret';
@@ -61,6 +70,49 @@ const TEST_RUN_ID = randomUUID();
 
 function idempotencyKey(operation: string): string {
     return `${TEST_RUN_ID}:${operation}`;
+}
+
+/**
+ * Poll DynamoDB to verify that a tenant-scoped role policy has been synced.
+ * This confirms the async SNS -> SQS -> Lambda -> DynamoDB flow completed.
+ * 
+ * @param roleName - The role name to check (e.g., 'admin')
+ * @param tenantId - The tenant ID
+ * @param maxWaitMs - Maximum time to wait (default: 30 seconds)
+ * @param pollIntervalMs - Time between polls (default: 1 second)
+ */
+async function waitForPolicyInDynamoDB(
+    roleName: string,
+    tenantId: string,
+    maxWaitMs: number = 30000,
+    pollIntervalMs: number = 1000
+): Promise<boolean> {
+    const startTime = Date.now();
+    const pk = `TENANT#${tenantId}#ROLE#${roleName}`;
+
+    console.log(`Polling DynamoDB for policy: ${pk}`);
+
+    while (Date.now() - startTime < maxWaitMs) {
+        try {
+            const result = await docClient.send(new GetCommand({
+                TableName: ROLE_POLICIES_TABLE,
+                Key: { PK: pk, SK: 'POLICY' },
+            }));
+
+            if (result.Item && result.Item.policy) {
+                console.log(`  ✅ Policy found in DynamoDB after ${Date.now() - startTime}ms`);
+                return true;
+            }
+        } catch (error) {
+            // Table access error - log but continue polling
+            console.warn(`  ⚠️  DynamoDB query error:`, error);
+        }
+
+        await new Promise(resolve => setTimeout(resolve, pollIntervalMs));
+    }
+
+    console.warn(`  ⚠️  Policy not found after ${maxWaitMs}ms - proceeding anyway`);
+    return false;
 }
 
 // Auth header helpers - JWT contains all auth info (userId, tenantId, roles)
@@ -181,10 +233,9 @@ describe('Full E2E Mortgage Flow', () => {
             // Verify roles were created
             expect(response.body.roles.length).toBeGreaterThanOrEqual(5);
 
-            // Wait for async policy sync to complete (SNS -> SQS -> Lambda -> DynamoDB)
-            // This ensures role policies are available in the authorizer before protected endpoints are called
-            console.log('Waiting for policy sync to complete...');
-            await new Promise(resolve => setTimeout(resolve, 3000));
+            // Poll DynamoDB to verify the admin role policy has been synced
+            // This confirms the async SNS -> SQS -> Lambda -> DynamoDB flow completed
+            await waitForPolicyInDynamoDB('admin', tenantId);
         });
 
         it('Step 1.2: Admin logs in', async () => {

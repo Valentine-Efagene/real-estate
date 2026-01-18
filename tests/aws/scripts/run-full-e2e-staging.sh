@@ -29,7 +29,9 @@ export MORTGAGE_SERVICE_URL="https://laqdfff9h8.execute-api.us-east-1.amazonaws.
 export DOCUMENTS_SERVICE_URL="https://kukogghqcf.execute-api.us-east-1.amazonaws.com"
 export PAYMENT_SERVICE_URL="https://eevej2uri9.execute-api.us-east-1.amazonaws.com"
 export NOTIFICATION_SERVICE_URL="https://vx2oxgm2ih.execute-api.us-east-1.amazonaws.com"
-export POLICY_SYNC_SERVICE_URL="https://nwqf11e6ta.execute-api.us-east-1.amazonaws.com"
+
+# DynamoDB table name for role policies (for sync verification)
+export ROLE_POLICIES_TABLE="role-policies-staging"
 
 # Get bootstrap secret from SSM (required for tenant creation)
 echo "Fetching bootstrap secret from SSM..."
