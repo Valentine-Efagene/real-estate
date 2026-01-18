@@ -5,12 +5,23 @@
 #
 # WARNING: This will delete all resources including the database!
 # Data will be PERMANENTLY LOST.
+#
+# CRITICAL LEARNINGS (from deployment debugging):
+# 1. CDKToolkit stack should NOT be deleted manually - it's shared across CDK apps
+# 2. S3 buckets with versioning need all versions AND delete markers removed
+# 3. Secrets Manager secrets are soft-deleted by default - use --force-delete-without-recovery
+# 4. Security group ingress rules added for your IP should be cleaned up
+# 5. AWS_PROFILE must be consistent between AWS CLI and Serverless Framework
 
 set -e
+
+# CRITICAL: Export AWS_PROFILE to ensure Serverless Framework uses same credentials as AWS CLI
+export AWS_PROFILE="${AWS_PROFILE:-default}"
 
 STAGE="staging"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+REGION="${AWS_REGION:-us-east-1}"
 
 # Colors for output
 RED='\033[0;31m'
@@ -27,12 +38,12 @@ log_step() { echo -e "\n${BLUE}========================================${NC}"; e
 # Check AWS credentials
 check_aws() {
     log_info "Checking AWS credentials..."
+    log_info "Using AWS_PROFILE=$AWS_PROFILE"
     if ! aws sts get-caller-identity > /dev/null 2>&1; then
         log_error "AWS credentials not configured. Run 'aws configure' first."
         exit 1
     fi
     ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
-    REGION=$(aws configure get region || echo "us-east-1")
     log_info "Tearing down from AWS Account: $ACCOUNT_ID (Region: $REGION)"
 }
 
@@ -144,6 +155,15 @@ remove_infra() {
     # Empty S3 buckets first (CDK won't delete non-empty buckets)
     empty_s3_buckets
     
+    # Clean up security group ingress rules added for local IP during migrations
+    log_info "Cleaning up security group ingress rules for local IP..."
+    SG_ID=$(aws ssm get-parameter --name "/qshelter/$STAGE/db-security-group-id" --query "Parameter.Value" --output text 2>/dev/null || echo "")
+    if [ -n "$SG_ID" ] && [ "$SG_ID" != "None" ]; then
+        MY_IP=$(curl -s ifconfig.me)
+        aws ec2 revoke-security-group-ingress --group-id "$SG_ID" --protocol tcp --port 3306 --cidr "${MY_IP}/32" 2>/dev/null || log_warn "Security group rule not found (OK)"
+        log_info "Security group rule for $MY_IP removed"
+    fi
+    
     log_info "Destroying CDK stack..."
     npx cdk destroy --context stage=$STAGE --force 2>/dev/null || log_warn "CDK destroy may have partially failed"
     
@@ -152,9 +172,10 @@ remove_infra() {
     aws ssm get-parameters-by-path --path "/qshelter/$STAGE/" --recursive --query 'Parameters[].Name' --output text 2>/dev/null | \
         xargs -n1 aws ssm delete-parameter --name 2>/dev/null || true
     
-    # Clean up secrets
+    # Clean up secrets (note: CDK-managed secrets have auto-generated names that may not match pattern)
     log_info "Cleaning up Secrets Manager secrets..."
-    SECRETS=$(aws secretsmanager list-secrets --query "SecretList[?contains(Name, 'qshelter/$STAGE')].Name" --output text 2>/dev/null || echo "")
+    # Get both qshelter secrets and Aurora auto-generated secrets
+    SECRETS=$(aws secretsmanager list-secrets --query "SecretList[?contains(Name, 'qshelter') || contains(Name, 'RealEstateStack')].Name" --output text 2>/dev/null || echo "")
     for secret in $SECRETS; do
         if [ -n "$secret" ]; then
             log_info "Deleting secret: $secret"
@@ -199,6 +220,10 @@ show_usage() {
     echo "  $0 all             # Full teardown with confirmation"
     echo "  $0 services        # Remove only Serverless services"
     echo "  $0 all --force     # Full teardown without confirmation"
+    echo ""
+    echo "Environment Variables:"
+    echo "  AWS_PROFILE  - AWS profile to use (default: 'default')"
+    echo "  AWS_REGION   - AWS region (default: 'us-east-1')"
 }
 
 # Parse arguments

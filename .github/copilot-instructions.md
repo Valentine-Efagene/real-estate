@@ -187,6 +187,40 @@ Use the deployment script for seamless AWS deployment:
 - The deploy script automatically adds your IP to the security group for migrations
 - DATABASE_URL is constructed from Secrets Manager credentials
 
+**SSM Parameter Pagination (CRITICAL):**
+- ConfigService MUST paginate through SSM parameters using `do...while (nextToken)` loop
+- Default MaxResults is 10, but we have 20+ parameters
+- Fixed in @valentine-efagene/qshelter-common@2.0.131
+- Without pagination, services fail with missing config errors
+
+**Database Secret IAM Permissions:**
+- CDK auto-generates secret names like `RealEstateStackstagingAuror-HXRnyq4N3o9I`
+- This does NOT match the wildcard `qshelter/{stage}/*` in IAM policies
+- **Solution**: Add explicit permission using SSM reference in serverless.yml:
+  ```yaml
+  - ${ssm:/qshelter/${self:provider.stage}/database-secret-arn}
+  ```
+
+**AWS Profile Conflicts:**
+- Serverless Framework may use different AWS credentials than AWS CLI
+- Always use `AWS_PROFILE=default` when deploying services
+- Check with `aws sts get-caller-identity` to verify correct account
+
+**Health Endpoint Routing:**
+- All services should expose `/health` at the root (not prefixed)
+- Add explicit route in serverless.yml:
+  ```yaml
+  - httpApi:
+      path: /health
+      method: GET
+  ```
+
+**esbuild Configuration:**
+- Output must match serverless.yml handler path exactly
+- Use `outfile: 'dist/lambda.mjs'` with handler `dist/lambda.handler`
+- External dependencies: `@prisma/client`, `@aws-sdk/*`
+- Include banner for CommonJS compatibility in ESM modules
+
 ### SSM Parameters Reference
 
 | Parameter | Created By | Description |

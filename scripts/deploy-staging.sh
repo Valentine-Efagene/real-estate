@@ -12,8 +12,17 @@
 # 3. The http-api-id SSM parameter is created by user-service (not CDK infra)
 # 4. RDS security group needs ingress rule for local IP to run migrations
 # 5. Authorizer ARN must be stored in SSM after deploying authorizer-service
+# 6. SSM pagination: ConfigService MUST paginate (MaxResults default=10, we have 20+ params)
+# 7. AWS_PROFILE conflicts: Serverless Framework may use different credentials than AWS CLI
+#    - Always export AWS_PROFILE to ensure consistent credentials
+# 8. npm husky errors: Use --ignore-scripts if postinstall fails
+# 9. Health endpoints: Add explicit /health route in serverless.yml (not prefixed with service path)
+# 10. esbuild: Output must match serverless.yml handler exactly (outfile: 'dist/lambda.mjs')
 
 set -e
+
+# CRITICAL: Export AWS_PROFILE to ensure Serverless Framework uses same credentials as AWS CLI
+export AWS_PROFILE="${AWS_PROFILE:-default}"
 
 STAGE="staging"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -35,6 +44,7 @@ log_step() { echo -e "\n${BLUE}========================================${NC}"; e
 # Check AWS credentials
 check_aws() {
     log_info "Checking AWS credentials..."
+    log_info "Using AWS_PROFILE=$AWS_PROFILE"
     if ! aws sts get-caller-identity > /dev/null 2>&1; then
         log_error "AWS credentials not configured. Run 'aws configure' first."
         exit 1
@@ -44,12 +54,16 @@ check_aws() {
 }
 
 # Install dependencies for a service
+# Uses --ignore-scripts to avoid husky postinstall errors
 install_deps() {
     local service_path=$1
     if [ -f "$service_path/package.json" ]; then
         log_info "Installing dependencies in $service_path..."
         cd "$service_path"
-        npm install --silent
+        npm install --silent --ignore-scripts || {
+            log_warn "npm install with --ignore-scripts still failed, trying without --silent..."
+            npm install --ignore-scripts
+        }
     fi
 }
 
@@ -201,6 +215,35 @@ run_migrations() {
     npx prisma generate
     
     log_info "✅ Migrations complete!"
+}
+
+# ============================================================================
+# STEP 3.5: Update common package in all services (ensures latest fixes)
+# ============================================================================
+update_common_package() {
+    log_step "Step 3.5: Updating @valentine-efagene/qshelter-common in all services"
+    
+    SERVICES=(
+        "authorizer-service"
+        "user-service"
+        "property-service"
+        "mortgage-service"
+        "documents-service"
+        "notification-service"
+        "payment-service"
+        "policy-sync-service"
+    )
+    
+    for service in "${SERVICES[@]}"; do
+        if [ -d "$ROOT_DIR/services/$service" ]; then
+            log_info "Updating common package in $service..."
+            cd "$ROOT_DIR/services/$service"
+            npm install @valentine-efagene/qshelter-common@latest --ignore-scripts --save 2>/dev/null || \
+                log_warn "$service: Could not update common package (may not use it)"
+        fi
+    done
+    
+    log_info "✅ Common package updated in all services!"
 }
 
 # ============================================================================
@@ -374,22 +417,27 @@ show_usage() {
     echo "Usage: $0 [step]"
     echo ""
     echo "Steps:"
-    echo "  clean      - Clean up orphaned CDK resources from failed deployments"
-    echo "  bootstrap  - Bootstrap CDK in AWS account"
-    echo "  infra      - Deploy CDK infrastructure (VPC, RDS, DynamoDB, etc.)"
-    echo "  migrations - Run Prisma database migrations"
-    echo "  authorizer - Deploy authorizer service"
-    echo "  services   - Deploy all application services"
-    echo "  seed       - Seed initial data (roles, policies)"
-    echo "  test       - Run health checks and E2E tests"
-    echo "  all        - Run all steps in order"
+    echo "  clean         - Clean up orphaned CDK resources from failed deployments"
+    echo "  bootstrap     - Bootstrap CDK in AWS account"
+    echo "  infra         - Deploy CDK infrastructure (VPC, RDS, DynamoDB, etc.)"
+    echo "  migrations    - Run Prisma database migrations"
+    echo "  update-common - Update @valentine-efagene/qshelter-common in all services"
+    echo "  authorizer    - Deploy authorizer service"
+    echo "  services      - Deploy all application services"
+    echo "  seed          - Seed initial data (roles, policies)"
+    echo "  test          - Run health checks and E2E tests"
+    echo "  all           - Run all steps in order"
     echo ""
     echo "Examples:"
-    echo "  $0 all           # Full deployment (recommended for first time)"
-    echo "  $0 services      # Redeploy services only"
-    echo "  $0 test          # Run tests only"
+    echo "  $0 all             # Full deployment (recommended for first time)"
+    echo "  $0 services        # Redeploy services only"
+    echo "  $0 update-common   # Update common package in all services"
+    echo "  $0 test            # Run tests only"
     echo ""
     echo "Note: For first-time deployment or after teardown, always run 'all' or start with 'clean'."
+    echo ""
+    echo "Environment Variables:"
+    echo "  AWS_PROFILE  - AWS profile to use (default: 'default')"
 }
 
 # Main
@@ -411,6 +459,10 @@ case $STEP in
     migrations)
         check_aws
         run_migrations
+        ;;
+    update-common)
+        check_aws
+        update_common_package
         ;;
     authorizer)
         check_aws
@@ -434,6 +486,7 @@ case $STEP in
         bootstrap_cdk
         deploy_infra
         run_migrations
+        update_common_package
         deploy_authorizer
         deploy_services
         seed_data

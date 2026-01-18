@@ -1,8 +1,77 @@
 # Deployment Status
 
-Last Updated: January 11, 2026
+Last Updated: January 18, 2026
+
+## AWS Staging Deployment (staging stage)
+
+All services deployed to AWS staging environment. Account: 898751738669, Region: us-east-1.
+
+### Service Endpoints
+
+| Service               | Package Size | Endpoint URL                                           | Status     |
+| --------------------- | ------------ | ------------------------------------------------------ | ---------- |
+| Authorizer            | ~105 KB      | Lambda authorizer (stored in SSM)                      | ✅ Working |
+| User Service          | 6.1 MB       | https://c6vzj3886d.execute-api.us-east-1.amazonaws.com | ✅ Healthy |
+| Property Service      | 6.5 MB       | https://31ak21t760.execute-api.us-east-1.amazonaws.com | ✅ Healthy |
+| Mortgage Service      | 6.6 MB       | https://laqdfff9h8.execute-api.us-east-1.amazonaws.com | ✅ Healthy |
+| Documents Service     | 6.8 MB       | https://kukogghqcf.execute-api.us-east-1.amazonaws.com | ✅ Healthy |
+| Payment Service       | 4.6 MB       | https://eevej2uri9.execute-api.us-east-1.amazonaws.com | ✅ Healthy |
+| Notifications Service | 8.2 MB       | https://vx2oxgm2ih.execute-api.us-east-1.amazonaws.com | ✅ Healthy |
+| Policy Sync Service   | 5.9 MB       | https://nwqf11e6ta.execute-api.us-east-1.amazonaws.com | ✅ Healthy |
+
+### Health Check Commands
+
+```bash
+curl -s https://c6vzj3886d.execute-api.us-east-1.amazonaws.com/health  # user-service
+curl -s https://31ak21t760.execute-api.us-east-1.amazonaws.com/health  # property-service
+curl -s https://laqdfff9h8.execute-api.us-east-1.amazonaws.com/health  # mortgage-service
+curl -s https://kukogghqcf.execute-api.us-east-1.amazonaws.com/health  # documents-service
+curl -s https://eevej2uri9.execute-api.us-east-1.amazonaws.com/health  # payment-service
+curl -s https://vx2oxgm2ih.execute-api.us-east-1.amazonaws.com/health  # notification-service
+curl -s https://nwqf11e6ta.execute-api.us-east-1.amazonaws.com/health  # policy-sync-service
+```
+
+### CDK Infrastructure
+
+The CDK stack `RealEstateStack-staging` creates:
+
+- VPC with public subnets
+- Aurora MySQL Serverless v2
+- SNS topics and SQS queues for event-driven architecture
+- DynamoDB table for RBAC policies
+- S3 bucket for uploads (configured with DESTROY policy for dev)
+- Secrets Manager for database credentials
+
+### Critical Deployment Learnings (January 2026)
+
+1. **SSM Pagination Bug**: ConfigService needs to paginate through SSM parameters. Fixed in @valentine-efagene/qshelter-common@2.0.131.
+
+2. **Database Secret IAM**: CDK auto-generates secret names like `RealEstateStackstagingAuror-HXRnyq4N3o9I`. Must add explicit IAM permission via SSM reference:
+
+   ```yaml
+   - ${ssm:/qshelter/${self:provider.stage}/database-secret-arn}
+   ```
+
+3. **AWS Profile Conflicts**: Serverless Framework may use different AWS credentials. Use `AWS_PROFILE=default` explicitly.
+
+4. **Health Endpoint Routing**: Services need `/health` endpoint routed in serverless.yml (not prefixed with service path).
+
+5. **esbuild Output Path**: Must match serverless.yml handler path. Use `outfile: 'dist/lambda.mjs'` and handler `dist/lambda.handler`.
+
+---
 
 ## Recent Changes
+
+### AWS Staging Deployment (January 17-18, 2026)
+
+- ✅ CDK infrastructure deployed to AWS staging
+- ✅ 50 Prisma migrations applied
+- ✅ Fixed SSM pagination bug in ConfigService
+- ✅ Fixed IAM permissions for database secret access
+- ✅ All 7 services deployed and healthy
+- ✅ Added /health endpoints to property, mortgage, documents services
+- ✅ Fixed payment-service tenant context issues
+- ✅ Fixed esbuild config for payment-service
 
 ### RBAC Redesign Implementation Complete (January 11, 2026)
 
@@ -117,10 +186,10 @@ npm run test:e2e:deployed
 
 ## E2E Test Coverage
 
-| Service          | Tests | Status     | Notes                                     |
-| ---------------- | ----- | ---------- | ----------------------------------------- |
-| User Service     | 78    | ✅ Passing | Auth, Users, Roles, Tenants, Socials      |
-| Property Service | 21    | ✅ Passing | Properties, Health                        |
+| Service          | Tests | Status     | Notes                                        |
+| ---------------- | ----- | ---------- | -------------------------------------------- |
+| User Service     | 78    | ✅ Passing | Auth, Users, Roles, Tenants, Socials         |
+| Property Service | 21    | ✅ Passing | Properties, Health                           |
 | Mortgage Service | 83    | ✅ Passing | Applications, Payments, Templates, Workflows |
 
 ## Deployment Notes
