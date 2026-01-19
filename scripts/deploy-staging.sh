@@ -409,48 +409,6 @@ wait_for_services() {
     done
 }
 
-# ============================================================================
-# STEP 7: Run E2E tests
-# ============================================================================
-run_tests() {
-    log_step "Step 7: Running E2E Tests"
-    
-    # Get API endpoint
-    API_ID=$(aws ssm get-parameter --name "/qshelter/$STAGE/http-api-id" --query "Parameter.Value" --output text 2>/dev/null || echo "")
-    if [[ -z "$API_ID" || "$API_ID" == "None" ]]; then
-        log_error "HTTP API ID not found in SSM. Cannot run tests."
-        return 1
-    fi
-    
-    API_URL="https://${API_ID}.execute-api.${REGION}.amazonaws.com"
-    log_info "Testing against: $API_URL"
-    
-    # Health check
-    HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$API_URL/health" 2>/dev/null || echo "000")
-    if [ "$HTTP_STATUS" = "200" ]; then
-        log_info "✅ Health check passed (HTTP 200)"
-    else
-        log_warn "⚠️ Health check returned HTTP $HTTP_STATUS"
-    fi
-    
-    # Run full E2E tests if test directory exists
-    if [ -d "$ROOT_DIR/tests/localstack" ]; then
-        log_info "Running full-mortgage-flow E2E tests..."
-        cd "$ROOT_DIR/tests/localstack"
-        npm install --silent
-        
-        # Export API URL for tests
-        export API_URL="$API_URL"
-        export STAGE="$STAGE"
-        
-        npm run test:full-mortgage-flow || log_warn "Some tests may have failed"
-    else
-        log_info "No test directory found. Skipping E2E tests."
-    fi
-    
-    log_info "✅ Testing complete!"
-}
-
 # Print service endpoints
 print_endpoints() {
     echo ""
@@ -497,16 +455,14 @@ show_usage() {
     echo "  authorizer    - Deploy authorizer service"
     echo "  services      - Deploy all application services"
     echo "  seed          - Seed initial data (roles, policies)"
-    echo "  test          - Run health checks and E2E tests"
-    echo "  all           - Run ALL steps sequentially (clean → bootstrap → infra → migrations → authorizer → services → seed → test)"
+    echo "  all           - Run ALL deployment steps (clean → bootstrap → infra → migrations → authorizer → services → seed → health check)"
     echo ""
     echo "Examples:"
-    echo "  $0 all             # Full deployment + tests (recommended for first time)"
+    echo "  $0 all             # Full deployment (recommended for first time)"
     echo "  $0 services        # Redeploy services only"
     echo "  $0 update-common   # Update common package in all services"
-    echo "  $0 test            # Run tests only"
     echo ""
-    echo "Note: 'all' runs everything without user intervention, including tests."
+    echo "Note: Tests are separate. After deployment, run: cd tests/aws && bash scripts/run-full-e2e-staging.sh"
     echo ""
     echo "Environment Variables:"
     echo "  AWS_PROFILE  - AWS profile to use (default: 'default')"
@@ -548,10 +504,6 @@ case $STEP in
         check_aws
         seed_data
         ;;
-    test)
-        check_aws
-        run_tests
-        ;;
     all)
         check_aws
         clean_cdk_orphans
@@ -564,15 +516,21 @@ case $STEP in
         seed_data
         wait_for_services
         print_endpoints
-        run_tests
         
-        log_success "🎉 Full deployment and testing complete!"
+        log_success "🎉 Full deployment complete!"
+        log_info ""
+        log_info "To run E2E tests, execute: cd tests/aws && bash scripts/run-full-e2e-staging.sh"
         ;;
     -h|--help|help)
         show_usage
         exit 0
         ;;
     *)
+        log_error "Unknown step: $STEP"
+        show_usage
+        exit 1
+        ;;
+esac
         log_error "Unknown step: $STEP"
         show_usage
         exit 1

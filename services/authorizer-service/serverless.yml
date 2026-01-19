@@ -31,13 +31,15 @@ provider:
             - secretsmanager:GetSecretValue
           Resource:
             - arn:aws:secretsmanager:${self:provider.region}:*:secret:qshelter/${self:provider.stage}/*
-        # DynamoDB access (table name fetched from SSM)
+        # DynamoDB access - need both table and GSI permissions
         - Effect: Allow
           Action:
             - dynamodb:GetItem
             - dynamodb:Query
+            - dynamodb:Scan
           Resource:
-            - arn:aws:dynamodb:${self:provider.region}:*:table/*
+            - arn:aws:dynamodb:${self:provider.region}:*:table/qshelter-${self:provider.stage}-role-policies
+            - arn:aws:dynamodb:${self:provider.region}:*:table/qshelter-${self:provider.stage}-role-policies/index/*
 
 package:
   individually: true
@@ -47,6 +49,8 @@ functions:
     handler: dist/index.handler
     name: qshelter-authorizer-${self:provider.stage}
     description: Shared JWT authorizer for all QShelter services
+    timeout: 10  # Authorizers have max 30s, 10s should be enough for cold starts + DynamoDB
+    memorySize: 512  # Ensure enough memory for cold start performance
     package:
       patterns:
         - '!**'

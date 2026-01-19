@@ -76,10 +76,20 @@ export class PolicySyncService {
     }
 
     /**
-     * Handle role creation - create an empty policy in DynamoDB
+     * Handle role creation - create an empty policy in DynamoDB ONLY if it doesn't exist.
+     * This prevents race conditions where ROLE_CREATED events processed after 
+     * ROLE_PERMISSION_ASSIGNED would overwrite the permissions with empty statements.
      */
     private async handleRoleCreated(event: RoleCreatedEvent): Promise<void> {
         const { data } = event;
+
+        // Check if policy already exists (could have been created by ROLE_PERMISSION_ASSIGNED)
+        const existingPolicy = await this.dynamoRepo.getRolePolicy(data.name, data.tenantId);
+
+        if (existingPolicy) {
+            console.log(`[PolicySyncService] Policy already exists for role: ${data.name} (tenant: ${data.tenantId || 'global'}), skipping creation`);
+            return;
+        }
 
         // For a new role, start with empty policy
         const emptyPolicy: RolePolicy = {
