@@ -1,5 +1,16 @@
 import { Request, Response, NextFunction } from 'express';
 
+// Try to import getCurrentInvoke from @codegenie/serverless-express
+// This is optional - will fallback to other methods if not available
+let getCurrentInvoke: (() => { event?: any; context?: any }) | null = null;
+try {
+    // Dynamic import to avoid hard dependency
+    const serverlessExpress = require('@codegenie/serverless-express');
+    getCurrentInvoke = serverlessExpress.getCurrentInvoke;
+} catch {
+    // Package not available - will use fallback methods
+}
+
 /**
  * Authentication context injected by API Gateway Lambda Authorizer.
  * Services should NEVER trust client-supplied user IDs directly.
@@ -8,7 +19,7 @@ import { Request, Response, NextFunction } from 'express';
  * - API Gateway calls Lambda Authorizer with JWT
  * - Authorizer validates token and returns context
  * - Gateway injects context into event.requestContext.authorizer
- * - serverless-http makes this available as req.requestContext.authorizer
+ * - @codegenie/serverless-express exposes this via getCurrentInvoke()
  * 
  * In tests:
  * - We simulate the authorizer by setting x-authorizer-* headers
@@ -70,9 +81,10 @@ function decodeJwtPayload(token: string): Record<string, any> | null {
  * Extracts auth context from API Gateway authorizer or JWT token.
  * 
  * Priority:
- * 1. HTTP API v2 simple response: requestContext.authorizer.lambda (enableSimpleResponses=true)
- * 2. REST API / HTTP API: requestContext.authorizer (enableSimpleResponses=false)
- * 3. Fallback: Decode JWT from Authorization header (LocalStack/dev/tests)
+ * 1. getCurrentInvoke() from @codegenie/serverless-express (preferred for Lambda)
+ * 2. HTTP API v2 simple response: requestContext.authorizer.lambda (enableSimpleResponses=true)
+ * 3. REST API / HTTP API: requestContext.authorizer (enableSimpleResponses=false)
+ * 4. Fallback: Decode JWT from Authorization header (LocalStack/dev/tests)
  * 
  * In production, the Lambda Authorizer validates the JWT and injects context.
  * In LocalStack (no authorizer), we decode the JWT directly since it contains
@@ -82,6 +94,37 @@ function decodeJwtPayload(token: string): Record<string, any> | null {
  * @returns AuthContext or null if not authenticated
  */
 export function extractAuthContext(req: Request): AuthContext | null {
+    // Method 1: Use getCurrentInvoke() from @codegenie/serverless-express
+    // This is the most reliable method when running in Lambda with this package
+    if (getCurrentInvoke) {
+        const { event } = getCurrentInvoke();
+        if (event?.requestContext?.authorizer) {
+            const authorizer = event.requestContext.authorizer;
+            
+            // HTTP API v2 with enableSimpleResponses=true: context is under authorizer.lambda
+            const lambdaContext = authorizer.lambda;
+            if (lambdaContext?.userId && lambdaContext?.tenantId) {
+                return {
+                    userId: lambdaContext.userId,
+                    tenantId: lambdaContext.tenantId,
+                    email: lambdaContext.email,
+                    roles: lambdaContext.roles ? JSON.parse(lambdaContext.roles) : [],
+                };
+            }
+            
+            // REST API / HTTP API with enableSimpleResponses=false: context is directly on authorizer
+            if (authorizer.userId && authorizer.tenantId) {
+                return {
+                    userId: authorizer.userId,
+                    tenantId: authorizer.tenantId,
+                    email: authorizer.email,
+                    roles: authorizer.roles ? JSON.parse(authorizer.roles) : [],
+                };
+            }
+        }
+    }
+
+    // Method 2: Try req.requestContext (for packages that populate this)
     const lambdaReq = req as LambdaRequest;
     const authorizer = lambdaReq.requestContext?.authorizer;
 

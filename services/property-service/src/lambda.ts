@@ -10,5 +10,11 @@ export const handler = (
     context: Context,
     callback: Callback,
 ) => {
+    // DEBUG: Log the authorizer context from the event
+    if (event.requestContext?.authorizer) {
+        console.log('DEBUG: Authorizer context:', JSON.stringify(event.requestContext.authorizer, null, 2));
+    } else {
+        console.log('DEBUG: No authorizer context in event.requestContext');
+    }
     return serverlessExpressInstance(event, context, callback);
 };

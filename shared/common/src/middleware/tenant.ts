@@ -7,6 +7,15 @@ import {
     createTenantPrisma,
 } from '../prisma/tenant';
 
+// Try to import getCurrentInvoke from @codegenie/serverless-express
+let getCurrentInvoke: (() => { event?: any; context?: any }) | null = null;
+try {
+    const serverlessExpress = require('@codegenie/serverless-express');
+    getCurrentInvoke = serverlessExpress.getCurrentInvoke;
+} catch {
+    // Package not available - will use fallback methods
+}
+
 /**
  * Extend Express Request to include tenant context and scoped Prisma client
  */
@@ -16,7 +25,13 @@ declare global {
             tenantContext?: TenantContext;
             tenantPrisma?: TenantPrismaClient | PrismaClient;
             /**
-             * API Gateway context added by serverless-express
+             * API Gateway context added by serverless-express.
+             * 
+             * With HTTP API v2 and enableSimpleResponses=true, context is under:
+             *   authorizer.lambda.{field}
+             * 
+             * With REST API or enableSimpleResponses=false, context is under:
+             *   authorizer.{field}
              */
             apiGateway?: {
                 event: {
@@ -26,6 +41,13 @@ declare global {
                             email?: string;
                             roles?: string;
                             tenantId?: string;
+                            // HTTP API v2 with simple responses nests under 'lambda'
+                            lambda?: {
+                                userId?: string;
+                                email?: string;
+                                roles?: string;
+                                tenantId?: string;
+                            };
                         };
                     };
                 };
@@ -86,10 +108,28 @@ export function createTenantMiddleware(options: TenantMiddlewareOptions) {
         next: NextFunction
     ) {
         try {
-            // 1. Try Lambda authorizer context first (production)
-            const authorizerContext = req.apiGateway?.event?.requestContext?.authorizer;
+            let authorizerContext: { tenantId?: string; userId?: string; email?: string; roles?: string } | null = null;
 
-            // 2. Fall back to x-authorizer-* headers (test/development)
+            // 1. Try getCurrentInvoke() from @codegenie/serverless-express (preferred)
+            if (getCurrentInvoke) {
+                const { event } = getCurrentInvoke();
+                if (event?.requestContext?.authorizer) {
+                    const authorizer = event.requestContext.authorizer;
+                    // HTTP API v2 with enableSimpleResponses=true nests context under authorizer.lambda
+                    authorizerContext = authorizer.lambda || authorizer;
+                }
+            }
+
+            // 2. Fall back to req.apiGateway (for packages that populate this)
+            if (!authorizerContext) {
+                const authorizer = req.apiGateway?.event?.requestContext?.authorizer;
+                if (authorizer) {
+                    const lambdaContext = authorizer.lambda;
+                    authorizerContext = lambdaContext || authorizer;
+                }
+            }
+
+            // 3. Fall back to x-authorizer-* headers (test/development)
             const headers = req.headers as unknown as AuthorizerHeaders;
 
             const tenantId = authorizerContext?.tenantId || headers['x-authorizer-tenant-id'];

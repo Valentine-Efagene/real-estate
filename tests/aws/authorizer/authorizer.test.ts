@@ -25,7 +25,7 @@ import {
     InvokeCommand,
     InvocationType,
 } from '@aws-sdk/client-lambda';
-import * as jwt from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import { randomUUID } from 'crypto';
 
 // Lambda function name
