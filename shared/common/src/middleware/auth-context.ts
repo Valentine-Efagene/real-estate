@@ -100,7 +100,7 @@ export function extractAuthContext(req: Request): AuthContext | null {
         const { event } = getCurrentInvoke();
         if (event?.requestContext?.authorizer) {
             const authorizer = event.requestContext.authorizer;
-            
+
             // HTTP API v2 with enableSimpleResponses=true: context is under authorizer.lambda
             const lambdaContext = authorizer.lambda;
             if (lambdaContext?.userId && lambdaContext?.tenantId) {
@@ -111,7 +111,7 @@ export function extractAuthContext(req: Request): AuthContext | null {
                     roles: lambdaContext.roles ? JSON.parse(lambdaContext.roles) : [],
                 };
             }
-            
+
             // REST API / HTTP API with enableSimpleResponses=false: context is directly on authorizer
             if (authorizer.userId && authorizer.tenantId) {
                 return {

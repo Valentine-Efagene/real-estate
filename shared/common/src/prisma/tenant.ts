@@ -49,11 +49,15 @@ const OPTIONAL_TENANT_MODELS = [
 type OptionalTenantModel = (typeof OPTIONAL_TENANT_MODELS)[number];
 
 function isGlobalModel(model: string): model is GlobalModel {
-    return GLOBAL_MODELS.includes(model as GlobalModel);
+    // Prisma extensions pass model name in camelCase
+    const normalizedModel = model.toLowerCase();
+    return GLOBAL_MODELS.includes(normalizedModel as GlobalModel);
 }
 
 function isOptionalTenantModel(model: string): model is OptionalTenantModel {
-    return OPTIONAL_TENANT_MODELS.includes(model as OptionalTenantModel);
+    // Prisma extensions pass model name in camelCase
+    const normalizedModel = model.toLowerCase();
+    return OPTIONAL_TENANT_MODELS.includes(normalizedModel as OptionalTenantModel);
 }
 
 /**

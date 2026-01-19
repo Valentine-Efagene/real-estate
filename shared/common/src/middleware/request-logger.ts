@@ -26,7 +26,7 @@ export function requestLogger(
     if (process.env.DEBUG_AUTH === 'true' || process.env.NODE_ENV !== 'production') {
         let authorizer = null;
         let source = 'none';
-        
+
         // Try getCurrentInvoke first (preferred for @codegenie/serverless-express)
         if (getCurrentInvoke) {
             const { event } = getCurrentInvoke();
@@ -35,7 +35,7 @@ export function requestLogger(
                 source = 'getCurrentInvoke';
             }
         }
-        
+
         // Fallback to req.apiGateway (for other packages)
         if (!authorizer) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -45,7 +45,7 @@ export function requestLogger(
                 source = 'req.apiGateway';
             }
         }
-        
+
         console.log(JSON.stringify({
             type: 'auth_debug',
             path: req.path,
