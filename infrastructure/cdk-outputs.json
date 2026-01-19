@@ -1,0 +1,13 @@
+{
+  "RealEstateStack-staging": {
+    "VpcId": "vpc-0e57d4522d122e185",
+    "ParameterPathPrefix": "/qshelter/staging/",
+    "JwtRefreshSecretArn": "arn:aws:secretsmanager:us-east-1:898751738669:secret:qshelter/staging/jwt-refresh-secret-naZ0aG",
+    "EmailSecretArn": "arn:aws:secretsmanager:us-east-1:898751738669:secret:qshelter/staging/email-2wz5uf",
+    "Stage": "staging",
+    "JwtAccessSecretArn": "arn:aws:secretsmanager:us-east-1:898751738669:secret:qshelter/staging/jwt-access-secret-FSJTR3",
+    "OAuthSecretArn": "arn:aws:secretsmanager:us-east-1:898751738669:secret:qshelter/staging/oauth-vPG4jo",
+    "PaystackSecretArn": "arn:aws:secretsmanager:us-east-1:898751738669:secret:qshelter/staging/paystack-KJXOTm",
+    "SecretsPathPrefix": "qshelter/staging/"
+  }
+}

@@ -22,16 +22,36 @@ echo "=============================================="
 echo " Running E2E Tests Against AWS Staging"
 echo "=============================================="
 
-# AWS Staging endpoints (discovered via serverless info)
-export USER_SERVICE_URL="https://c6vzj3886d.execute-api.us-east-1.amazonaws.com"
-export PROPERTY_SERVICE_URL="https://31ak21t760.execute-api.us-east-1.amazonaws.com"
-export MORTGAGE_SERVICE_URL="https://laqdfff9h8.execute-api.us-east-1.amazonaws.com"
-export DOCUMENTS_SERVICE_URL="https://kukogghqcf.execute-api.us-east-1.amazonaws.com"
-export PAYMENT_SERVICE_URL="https://eevej2uri9.execute-api.us-east-1.amazonaws.com"
-export NOTIFICATION_SERVICE_URL="https://vx2oxgm2ih.execute-api.us-east-1.amazonaws.com"
+# Dynamically discover AWS Staging endpoints
+echo "Discovering service endpoints from CloudFormation..."
+
+get_api_url() {
+    local stack_name="$1"
+    # Get all API Gateway resources from the stack - use awk to get first value
+    local api_id=$(aws cloudformation describe-stack-resources --stack-name "$stack_name" \
+        --query "StackResources[?ResourceType=='AWS::ApiGatewayV2::Api'].PhysicalResourceId | [0]" \
+        --output text 2>/dev/null | awk '{print $1}')
+    if [ -n "$api_id" ] && [ "$api_id" != "None" ]; then
+        echo "https://${api_id}.execute-api.us-east-1.amazonaws.com"
+    fi
+}
+
+echo "Fetching API Gateway endpoints..."
+export USER_SERVICE_URL=$(get_api_url "qshelter-user-service-staging")
+export PROPERTY_SERVICE_URL=$(get_api_url "qshelter-property-service-staging")
+export MORTGAGE_SERVICE_URL=$(get_api_url "qshelter-mortgage-service-staging")
+export DOCUMENTS_SERVICE_URL=$(get_api_url "qshelter-documents-service-staging")
+export PAYMENT_SERVICE_URL=$(get_api_url "qshelter-payment-service-staging")
+export NOTIFICATION_SERVICE_URL=$(get_api_url "qshelter-notifications-staging")
+
+# Validate we got the URLs
+if [ -z "$USER_SERVICE_URL" ]; then
+    echo "ERROR: Could not discover user-service URL. Is the stack deployed?"
+    exit 1
+fi
 
 # DynamoDB table name for role policies (for sync verification)
-export ROLE_POLICIES_TABLE="role-policies-staging"
+export ROLE_POLICIES_TABLE="qshelter-staging-role-policies"
 
 # Get bootstrap secret from SSM (required for tenant creation)
 echo "Fetching bootstrap secret from SSM..."

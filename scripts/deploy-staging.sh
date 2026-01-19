@@ -43,6 +43,7 @@ NC='\033[0m' # No Color
 log_info() { echo -e "${GREEN}[INFO]${NC} $1"; }
 log_warn() { echo -e "${YELLOW}[WARN]${NC} $1"; }
 log_error() { echo -e "${RED}[ERROR]${NC} $1"; }
+log_success() { echo -e "${GREEN}[SUCCESS]${NC} $1"; }
 log_step() { echo -e "\n${BLUE}========================================${NC}"; echo -e "${BLUE}  $1${NC}"; echo -e "${BLUE}========================================${NC}\n"; }
 
 # Check AWS credentials
@@ -146,8 +147,26 @@ bootstrap_cdk() {
     
     ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
     
+    # Check if the CDK assets bucket exists - if not, force a fresh bootstrap
+    CDK_BUCKET="cdk-hnb659fds-assets-${ACCOUNT_ID}-${REGION}"
+    if ! aws s3api head-bucket --bucket "$CDK_BUCKET" 2>/dev/null; then
+        log_warn "CDK assets bucket does not exist. Forcing fresh bootstrap..."
+        # Delete CDKToolkit stack if it exists to force complete re-bootstrap
+        if aws cloudformation describe-stacks --stack-name CDKToolkit &>/dev/null; then
+            log_info "Deleting existing CDKToolkit stack to force fresh bootstrap..."
+            aws cloudformation delete-stack --stack-name CDKToolkit
+            aws cloudformation wait stack-delete-complete --stack-name CDKToolkit 2>/dev/null || true
+        fi
+    fi
+    
     log_info "Bootstrapping CDK for account $ACCOUNT_ID in region $REGION..."
     npx cdk bootstrap "aws://${ACCOUNT_ID}/${REGION}" --context stage=$STAGE
+    
+    # Verify bucket was created
+    if ! aws s3api head-bucket --bucket "$CDK_BUCKET" 2>/dev/null; then
+        log_error "CDK bootstrap failed - assets bucket not created"
+        exit 1
+    fi
     
     log_info "✅ CDK bootstrap complete!"
 }
@@ -333,12 +352,61 @@ seed_data() {
     
     if [ -f "scripts/seed-role-policies.mjs" ]; then
         log_info "Seeding role policies to DynamoDB..."
-        node scripts/seed-role-policies.mjs --stage $STAGE
+        
+        # Get the DynamoDB table name from SSM
+        TABLE_NAME=$(aws ssm get-parameter --name "/qshelter/$STAGE/role-policies-table" --query "Parameter.Value" --output text 2>/dev/null || echo "")
+        if [[ -z "$TABLE_NAME" || "$TABLE_NAME" == "None" ]]; then
+            log_warn "Role policies table name not found in SSM, using default..."
+            TABLE_NAME="qshelter-${STAGE}-role-policies"
+        fi
+        
+        log_info "Using DynamoDB table: $TABLE_NAME"
+        ROLE_POLICIES_TABLE_NAME="$TABLE_NAME" node scripts/seed-role-policies.mjs --stage $STAGE
     else
         log_warn "Seed script not found, skipping..."
     fi
     
     log_info "✅ Data seeded!"
+}
+
+# ============================================================================
+# STEP 6.5: Wait for services to be ready
+# ============================================================================
+wait_for_services() {
+    log_step "Waiting for Services to be Ready"
+    
+    # Get API endpoint
+    API_ID=$(aws ssm get-parameter --name "/qshelter/$STAGE/http-api-id" --query "Parameter.Value" --output text 2>/dev/null || echo "")
+    if [[ -z "$API_ID" || "$API_ID" == "None" ]]; then
+        log_warn "HTTP API ID not found in SSM, skipping health check polling"
+        return 0
+    fi
+    
+    local API_URL="https://${API_ID}.execute-api.${REGION}.amazonaws.com"
+    local MAX_ATTEMPTS=30
+    local WAIT_SECONDS=5
+    local attempt=1
+    
+    log_info "Polling health endpoint: $API_URL/health"
+    log_info "Max attempts: $MAX_ATTEMPTS (${WAIT_SECONDS}s interval)"
+    
+    while [ $attempt -le $MAX_ATTEMPTS ]; do
+        HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$API_URL/health" 2>/dev/null || echo "000")
+        
+        if [ "$HTTP_STATUS" = "200" ]; then
+            log_info "✅ Services are healthy (HTTP 200) after $((attempt * WAIT_SECONDS))s"
+            return 0
+        else
+            if [ $attempt -eq $MAX_ATTEMPTS ]; then
+                log_warn "⚠️ Services not healthy after $((attempt * WAIT_SECONDS))s (HTTP $HTTP_STATUS)"
+                log_warn "Proceeding anyway - tests may fail if services aren't ready"
+                return 1
+            fi
+            echo -n "."
+            sleep $WAIT_SECONDS
+            attempt=$((attempt + 1))
+        fi
+    done
 }
 
 # ============================================================================
@@ -430,15 +498,15 @@ show_usage() {
     echo "  services      - Deploy all application services"
     echo "  seed          - Seed initial data (roles, policies)"
     echo "  test          - Run health checks and E2E tests"
-    echo "  all           - Run all steps in order"
+    echo "  all           - Run ALL steps sequentially (clean → bootstrap → infra → migrations → authorizer → services → seed → test)"
     echo ""
     echo "Examples:"
-    echo "  $0 all             # Full deployment (recommended for first time)"
+    echo "  $0 all             # Full deployment + tests (recommended for first time)"
     echo "  $0 services        # Redeploy services only"
     echo "  $0 update-common   # Update common package in all services"
     echo "  $0 test            # Run tests only"
     echo ""
-    echo "Note: For first-time deployment or after teardown, always run 'all' or start with 'clean'."
+    echo "Note: 'all' runs everything without user intervention, including tests."
     echo ""
     echo "Environment Variables:"
     echo "  AWS_PROFILE  - AWS profile to use (default: 'default')"
@@ -494,8 +562,11 @@ case $STEP in
         deploy_authorizer
         deploy_services
         seed_data
+        wait_for_services
         print_endpoints
-        log_info "Run '$0 test' to execute E2E tests"
+        run_tests
+        
+        log_success "🎉 Full deployment and testing complete!"
         ;;
     -h|--help|help)
         show_usage

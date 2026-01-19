@@ -24,6 +24,8 @@
         "localstack:destroy": "AWS_ENDPOINT_URL=http://localhost:4566 AWS_ACCESS_KEY_ID=test AWS_SECRET_ACCESS_KEY=test cdklocal destroy --app 'npx ts-node bin/localstack-app.ts' --context stage=localstack --force"
     },
     "dependencies": {
+        "@aws-sdk/client-dynamodb": "^3.971.0",
+        "@aws-sdk/lib-dynamodb": "^3.971.0",
         "aws-cdk-lib": "2.211.0",
         "constructs": "^10.0.0",
         "dotenv": "^17.2.3"

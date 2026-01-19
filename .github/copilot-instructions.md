@@ -35,6 +35,7 @@ services/
 ### Policy Sync Service Architecture
 
 The `policy-sync-service` is a pure SQS consumer with **no HTTP API**:
+
 - Listens to the `qshelter-{stage}-policy-sync` SQS queue
 - Triggered by SNS events when roles/permissions change in RDS (via user-service)
 - Syncs role policies from RDS to DynamoDB for the Lambda authorizer
@@ -174,6 +175,7 @@ Use the deployment script for seamless AWS deployment:
 ### Critical Deployment Learnings
 
 **CDK Bootstrap Failures:**
+
 - CDK bootstrap can fail if orphaned resources exist from previous failed deployments
 - Orphaned S3 bucket: `cdk-hnb659fds-assets-{account}-{region}` (versioned, needs special deletion)
 - Orphaned IAM role: `cdk-hnb659fds-cfn-exec-role-{account}-{region}`
@@ -181,27 +183,32 @@ Use the deployment script for seamless AWS deployment:
 - **Solution**: Run `./scripts/deploy-staging.sh clean` before bootstrap
 
 **CloudFormation Limitations:**
+
 - CloudFormation does NOT support creating SSM `SecureString` parameters
 - Use Secrets Manager instead for sensitive configuration
 - The CDK stack stores sensitive config in `qshelter/{stage}/notification-config` secret
 
 **Service Deployment Order:**
+
 1. `authorizer-service` - Must be first, stores ARN in `/qshelter/{stage}/authorizer-arn`
 2. `user-service` - Creates the HTTP API Gateway, stores ID in `/qshelter/{stage}/http-api-id`
 3. All other services attach to the existing HTTP API
 
 **Database Access:**
+
 - RDS is publicly accessible but protected by security group
 - The deploy script automatically adds your IP to the security group for migrations
 - DATABASE_URL is constructed from Secrets Manager credentials
 
 **SSM Parameter Pagination (CRITICAL):**
+
 - ConfigService MUST paginate through SSM parameters using `do...while (nextToken)` loop
 - Default MaxResults is 10, but we have 20+ parameters
 - Fixed in @valentine-efagene/qshelter-common@2.0.131
 - Without pagination, services fail with missing config errors
 
 **Database Secret IAM Permissions:**
+
 - CDK auto-generates secret names like `RealEstateStackstagingAuror-HXRnyq4N3o9I`
 - This does NOT match the wildcard `qshelter/{stage}/*` in IAM policies
 - **Solution**: Add explicit permission using SSM reference in serverless.yml:
@@ -210,11 +217,13 @@ Use the deployment script for seamless AWS deployment:
   ```
 
 **AWS Profile Conflicts:**
+
 - Serverless Framework may use different AWS credentials than AWS CLI
 - Always use `AWS_PROFILE=default` when deploying services
 - Check with `aws sts get-caller-identity` to verify correct account
 
 **Health Endpoint Routing:**
+
 - All services should expose `/health` at the root (not prefixed)
 - Add explicit route in serverless.yml:
   ```yaml
@@ -224,6 +233,7 @@ Use the deployment script for seamless AWS deployment:
   ```
 
 **esbuild Configuration:**
+
 - Output must match serverless.yml handler path exactly
 - Use `outfile: 'dist/lambda.mjs'` with handler `dist/lambda.handler`
 - External dependencies: `@prisma/client`, `@aws-sdk/*`
@@ -231,16 +241,16 @@ Use the deployment script for seamless AWS deployment:
 
 ### SSM Parameters Reference
 
-| Parameter | Created By | Description |
-|-----------|------------|-------------|
-| `/qshelter/{stage}/database-secret-arn` | CDK | Secrets Manager ARN for DB credentials |
-| `/qshelter/{stage}/db-host` | CDK | Aurora MySQL endpoint |
-| `/qshelter/{stage}/db-port` | CDK | Database port (3306) |
-| `/qshelter/{stage}/db-security-group-id` | CDK | RDS security group ID |
-| `/qshelter/{stage}/authorizer-arn` | deploy script | Lambda authorizer ARN |
-| `/qshelter/{stage}/http-api-id` | user-service | HTTP API Gateway ID |
-| `/qshelter/{stage}/role-policies-table` | CDK | DynamoDB table name |
-| `/qshelter/{stage}/s3-bucket-name` | CDK | Uploads S3 bucket |
+| Parameter                                | Created By    | Description                            |
+| ---------------------------------------- | ------------- | -------------------------------------- |
+| `/qshelter/{stage}/database-secret-arn`  | CDK           | Secrets Manager ARN for DB credentials |
+| `/qshelter/{stage}/db-host`              | CDK           | Aurora MySQL endpoint                  |
+| `/qshelter/{stage}/db-port`              | CDK           | Database port (3306)                   |
+| `/qshelter/{stage}/db-security-group-id` | CDK           | RDS security group ID                  |
+| `/qshelter/{stage}/authorizer-arn`       | deploy script | Lambda authorizer ARN                  |
+| `/qshelter/{stage}/http-api-id`          | user-service  | HTTP API Gateway ID                    |
+| `/qshelter/{stage}/role-policies-table`  | CDK           | DynamoDB table name                    |
+| `/qshelter/{stage}/s3-bucket-name`       | CDK           | Uploads S3 bucket                      |
 
 - Update `DEPLOYMENT_STATUS.md` after every deployment with:
   - Package size

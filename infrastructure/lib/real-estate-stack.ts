@@ -336,6 +336,24 @@ export class RealEstateStack extends cdk.Stack {
       description: 'EventBridge Bus Name',
     });
 
+    // Bootstrap Secret - used for tenant creation/bootstrap
+    const bootstrapSecret = new secretsmanager.Secret(this, 'BootstrapSecret', {
+      secretName: `/qshelter/${stage}/bootstrap-secret`,
+      description: 'Bootstrap secret for tenant creation',
+      generateSecretString: {
+        secretStringTemplate: JSON.stringify({ key: 'bootstrap-secret' }),
+        generateStringKey: 'value',
+        excludePunctuation: true,
+        passwordLength: 32,
+      },
+    });
+
+    new ssm.StringParameter(this, 'BootstrapSecretParameter', {
+      parameterName: `/qshelter/${stage}/bootstrap-secret`,
+      stringValue: bootstrapSecret.secretValueFromJson('value').unsafeUnwrap(),
+      description: 'Bootstrap Secret for Tenant Creation',
+    });
+
     // === SNS/SQS SSM Parameters ===
     new ssm.StringParameter(this, 'NotificationsTopicArnParameter', {
       parameterName: `/qshelter/${stage}/notifications-topic-arn`,
@@ -445,9 +463,9 @@ export class RealEstateStack extends cdk.Stack {
     // === Secrets Manager (Sensitive Values) ===
 
     // JWT Secrets - Use from .env or auto-generate
-    const jwtSecret = new secretsmanager.Secret(this, 'JwtSecret', {
-      secretName: `qshelter/${stage}/jwt-secret`,
-      description: 'JWT signing secret for authentication',
+    const jwtAccessSecret = new secretsmanager.Secret(this, 'JwtAccessSecret', {
+      secretName: `qshelter/${stage}/jwt-access-secret`,
+      description: 'JWT access token signing secret for authentication',
       secretStringValue: cdk.SecretValue.unsafePlainText(
         process.env.ACCESS_TOKEN_SECRET ||
         // Fallback to auto-generation if not in .env
@@ -455,9 +473,9 @@ export class RealEstateStack extends cdk.Stack {
       ),
     });
 
-    const refreshTokenSecret = new secretsmanager.Secret(this, 'RefreshTokenSecret', {
-      secretName: `qshelter/${stage}/refresh-token-secret`,
-      description: 'Refresh token signing secret',
+    const jwtRefreshSecret = new secretsmanager.Secret(this, 'JwtRefreshSecret', {
+      secretName: `qshelter/${stage}/jwt-refresh-secret`,
+      description: 'JWT refresh token signing secret',
       secretStringValue: cdk.SecretValue.unsafePlainText(
         process.env.REFRESH_TOKEN_SECRET ||
         require('crypto').randomBytes(32).toString('hex')
@@ -593,8 +611,8 @@ export class RealEstateStack extends cdk.Stack {
         'secretsmanager:GetSecretValue',
       ],
       resources: [
-        jwtSecret.secretArn,
-        refreshTokenSecret.secretArn,
+        jwtAccessSecret.secretArn,
+        jwtRefreshSecret.secretArn,
         encryptionSecret.secretArn,
         oauthSecret.secretArn,
         paystackSecret.secretArn,
@@ -635,9 +653,14 @@ export class RealEstateStack extends cdk.Stack {
       description: 'Secrets Manager path prefix - all sensitive values stored here',
     });
 
-    new cdk.CfnOutput(this, 'JwtSecretArn', {
-      value: jwtSecret.secretArn,
-      description: 'JWT Secret ARN in Secrets Manager (auto-generated)',
+    new cdk.CfnOutput(this, 'JwtAccessSecretArn', {
+      value: jwtAccessSecret.secretArn,
+      description: 'JWT Access Secret ARN in Secrets Manager (auto-generated)',
+    });
+
+    new cdk.CfnOutput(this, 'JwtRefreshSecretArn', {
+      value: jwtRefreshSecret.secretArn,
+      description: 'JWT Refresh Secret ARN in Secrets Manager (auto-generated)',
     });
 
     new cdk.CfnOutput(this, 'OAuthSecretArn', {
