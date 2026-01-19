@@ -129,6 +129,30 @@ cd tests/localstack && ./scripts/deploy-all.sh
 cd tests/localstack && npm run run:full-e2e
 ```
 
+### Authorizer Tests (Benchmarking & Sanity Checks)
+
+Direct Lambda invocation tests for the authorizer service:
+
+**AWS Staging** (`tests/aws/authorizer/`):
+
+- Sanity checks against deployed authorizer Lambda
+- Validates invalid/missing tokens return Deny
+- Performance benchmarking (cold start, warm invocation, P95)
+- Run with: `cd tests/aws && npm run test:authorizer`
+
+**LocalStack** (`local-dev/tests/authorizer.test.ts`):
+
+- Local development benchmarking
+- Tests policy resolution from DynamoDB
+- Run with: `cd local-dev && pnpm run test:authorizer`
+
+**Benchmark Results (AWS Staging):**
+| Metric | Value |
+|--------|-------|
+| Cold start | ~2300ms |
+| Warm invocation | ~220ms |
+| P95 (10 calls) | ~230ms |
+
 ## Scenario-Based Development
 
 - Document features as **scenario flows** in `docs/` folder before coding.

@@ -6,15 +6,19 @@
     "scripts": {
         "test": "NODE_OPTIONS='--experimental-vm-modules --no-warnings=ExperimentalWarning' jest --config jest.config.js",
         "test:full-mortgage": "npm run test -- full-mortgage-flow",
+        "test:authorizer": "./scripts/run-authorizer-tests.sh",
         "run:full-e2e": "./scripts/run-full-e2e-staging.sh"
     },
     "dependencies": {
         "@aws-sdk/client-dynamodb": "^3.971.0",
+        "@aws-sdk/client-lambda": "^3.971.0",
         "@aws-sdk/lib-dynamodb": "^3.971.0",
+        "jsonwebtoken": "^9.0.2",
         "zod": "^3.24.1"
     },
     "devDependencies": {
         "@types/jest": "^29.5.12",
+        "@types/jsonwebtoken": "^9.0.7",
         "@types/node": "^20.11.0",
         "@types/supertest": "^6.0.2",
         "jest": "^29.7.0",

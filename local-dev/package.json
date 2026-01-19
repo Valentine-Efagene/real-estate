@@ -31,7 +31,8 @@
         "test:e2e:localstack:chidi": "pnpm --filter ../services/mortgage-service run test:e2e:localstack:chidi",
         "test:e2e:localstack:payment-change": "pnpm --filter ../services/mortgage-service run test:e2e:localstack:payment-change",
         "test:e2e:localstack:property-transfer": "pnpm --filter ../services/mortgage-service run test:e2e:localstack:property-transfer",
-        "test:e2e:localstack:jinx": "pnpm --filter ../services/mortgage-service run test:e2e:localstack:jinx"
+        "test:e2e:localstack:jinx": "pnpm --filter ../services/mortgage-service run test:e2e:localstack:jinx",
+        "test:authorizer": "AWS_ENDPOINT=http://localhost:4566 jest --config jest.config.js tests/authorizer.test.ts"
     },
     "dependencies": {
         "@aws-sdk/client-cloudwatch-logs": "^3.700.0",
@@ -47,8 +48,11 @@
         "jsonwebtoken": "^9.0.2"
     },
     "devDependencies": {
+        "@types/jest": "^29.5.12",
         "@types/jsonwebtoken": "^9.0.7",
         "@types/node": "^22.10.2",
+        "jest": "^29.7.0",
+        "ts-jest": "^29.1.2",
         "typescript": "^5.7.2"
     }
 }

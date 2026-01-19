@@ -15,7 +15,7 @@ provider:
         type: request
         functionArn: ${ssm:/qshelter/${self:provider.stage}/authorizer-lambda-arn}
         identitySource: $request.header.Authorization
-        enableSimpleResponses: false
+        enableSimpleResponses: true
         resultTtlInSeconds: 300
         payloadVersion: '2.0'
   

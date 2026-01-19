@@ -1,12 +1,18 @@
 import {
     APIGatewayRequestAuthorizerEvent,
-    APIGatewayAuthorizerResult,
-    PolicyDocument,
-    Statement as PolicyStatement
 } from 'aws-lambda';
 import { JwtService } from './jwt-service';
 import { PolicyRepository } from './policy-repository';
 import { AuthorizerContext, JwtPayload, RolePolicy } from './types';
+
+/**
+ * Simple authorizer response for HTTP API
+ * Used with enableSimpleResponses: true
+ */
+export interface SimpleAuthorizerResult {
+    isAuthorized: boolean;
+    context?: AuthorizerContext;
+}
 
 /**
  * Authorizer service that validates JWTs and resolves role-based permissions
@@ -14,7 +20,7 @@ import { AuthorizerContext, JwtPayload, RolePolicy } from './types';
  * Flow:
  * 1. Extract and verify JWT from Authorization header
  * 2. Resolve roles to policies using in-memory cache (DynamoDB-backed)
- * 3. Return IAM policy with policy in context for downstream services
+ * 3. Return simple response with policy in context for downstream services
  * 
  * Tenant-scoped authorization:
  * - Roles are looked up with tenant context (falls back to global roles)
@@ -30,10 +36,7 @@ export class AuthorizerService {
         this.policyRepository = new PolicyRepository();
     }
 
-    async authorize(event: APIGatewayRequestAuthorizerEvent): Promise<APIGatewayAuthorizerResult> {
-        // HTTP API v2 uses routeArn, REST API uses methodArn
-        const resourceArn = event.methodArn || (event as any).routeArn || '*';
-
+    async authorize(event: APIGatewayRequestAuthorizerEvent): Promise<SimpleAuthorizerResult> {
         try {
             // 1. Warm cache on cold start
             if (!this.cacheWarmed) {
@@ -65,73 +68,41 @@ export class AuthorizerService {
                 statementCount: policy.statements?.length || 0,
             });
 
-            // 4. Generate Allow policy with policy in context
-            return this.generatePolicy(payload.sub, 'Allow', resourceArn, payload, policy);
+            // 4. Return simple authorized response with context
+            return this.generateSimpleResponse(true, payload, policy);
 
         } catch (error) {
             console.error('[Authorizer] Authorization error:', error);
 
-            // Return Deny for any errors (invalid token, etc.)
-            return this.generatePolicy('anonymous', 'Deny', resourceArn);
+            // Return unauthorized for any errors (invalid token, etc.)
+            return this.generateSimpleResponse(false);
         }
     }
 
     /**
-     * Generates an IAM policy document for API Gateway
+     * Generates a simple authorizer response for HTTP API
      */
-    private generatePolicy(
-        principalId: string,
-        effect: 'Allow' | 'Deny',
-        resource: string,
+    private generateSimpleResponse(
+        isAuthorized: boolean,
         jwtPayload?: JwtPayload,
         policy?: RolePolicy
-    ): APIGatewayAuthorizerResult {
-        const policyDocument: PolicyDocument = {
-            Version: '2012-10-17',
-            Statement: [
-                {
-                    Action: 'execute-api:Invoke',
-                    Effect: effect,
-                    // Allow all resources for this API so the policy can be cached
-                    Resource: this.getWildcardResource(resource),
-                } as PolicyStatement,
-            ],
-        };
+    ): SimpleAuthorizerResult {
+        if (!isAuthorized || !jwtPayload) {
+            return { isAuthorized: false };
+        }
 
-        const context: AuthorizerContext | undefined = jwtPayload
-            ? {
-                userId: jwtPayload.sub,
-                email: jwtPayload.email || '',
-                roles: JSON.stringify(jwtPayload.roles),
-                tenantId: jwtPayload.tenantId || '',
-                principalType: jwtPayload.principalType || 'user',
-                policy: policy ? JSON.stringify(policy) : undefined,
-            }
-            : undefined;
+        const context: AuthorizerContext = {
+            userId: jwtPayload.sub,
+            email: jwtPayload.email || '',
+            roles: JSON.stringify(jwtPayload.roles),
+            tenantId: jwtPayload.tenantId || '',
+            principalType: jwtPayload.principalType || 'user',
+            policy: policy ? JSON.stringify(policy) : undefined,
+        };
 
         return {
-            principalId,
-            policyDocument,
+            isAuthorized: true,
             context,
         };
-    }
-
-    /**
-     * Convert specific methodArn to wildcard for policy caching
-     * This allows API Gateway to cache the authorizer response
-     */
-    private getWildcardResource(methodArn: string): string {
-        // Handle undefined or wildcard
-        if (!methodArn || methodArn === '*') {
-            return '*';
-        }
-
-        // Format: arn:aws:execute-api:region:account:api-id/stage/METHOD/path
-        const parts = methodArn.split('/');
-        if (parts.length >= 2) {
-            // Keep arn and stage, wildcard the rest
-            return `${parts[0]}/${parts[1]}/*`;
-        }
-        return methodArn;
     }
 }

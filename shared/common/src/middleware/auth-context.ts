@@ -22,15 +22,29 @@ export interface AuthContext {
 }
 
 /**
- * Extended Request type that includes Lambda requestContext
+ * Extended Request type that includes Lambda requestContext.
+ * 
+ * HTTP API v2 with enableSimpleResponses=true places authorizer context under:
+ * - requestContext.authorizer.lambda (for simple responses)
+ * 
+ * REST API and HTTP API with enableSimpleResponses=false places it under:
+ * - requestContext.authorizer (direct)
  */
 interface LambdaRequest extends Request {
     requestContext?: {
         authorizer?: {
+            // Direct context (REST API or enableSimpleResponses=false)
             userId?: string;
             tenantId?: string;
             email?: string;
             roles?: string;
+            // HTTP API v2 with enableSimpleResponses=true nests under 'lambda'
+            lambda?: {
+                userId?: string;
+                tenantId?: string;
+                email?: string;
+                roles?: string;
+            };
         };
     };
     auth?: AuthContext;
@@ -56,8 +70,9 @@ function decodeJwtPayload(token: string): Record<string, any> | null {
  * Extracts auth context from API Gateway authorizer or JWT token.
  * 
  * Priority:
- * 1. Production: requestContext.authorizer (set by API Gateway Lambda Authorizer)
- * 2. Fallback: Decode JWT from Authorization header (LocalStack/dev/tests)
+ * 1. HTTP API v2 simple response: requestContext.authorizer.lambda (enableSimpleResponses=true)
+ * 2. REST API / HTTP API: requestContext.authorizer (enableSimpleResponses=false)
+ * 3. Fallback: Decode JWT from Authorization header (LocalStack/dev/tests)
  * 
  * In production, the Lambda Authorizer validates the JWT and injects context.
  * In LocalStack (no authorizer), we decode the JWT directly since it contains
@@ -68,9 +83,20 @@ function decodeJwtPayload(token: string): Record<string, any> | null {
  */
 export function extractAuthContext(req: Request): AuthContext | null {
     const lambdaReq = req as LambdaRequest;
-
-    // Production: API Gateway Lambda integration populates requestContext
     const authorizer = lambdaReq.requestContext?.authorizer;
+
+    // HTTP API v2 with enableSimpleResponses=true: context is under authorizer.lambda
+    const lambdaContext = authorizer?.lambda;
+    if (lambdaContext?.userId && lambdaContext?.tenantId) {
+        return {
+            userId: lambdaContext.userId,
+            tenantId: lambdaContext.tenantId,
+            email: lambdaContext.email,
+            roles: lambdaContext.roles ? JSON.parse(lambdaContext.roles) : [],
+        };
+    }
+
+    // REST API / HTTP API with enableSimpleResponses=false: context is directly on authorizer
     if (authorizer?.userId && authorizer?.tenantId) {
         return {
             userId: authorizer.userId,
