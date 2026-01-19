@@ -153,6 +153,20 @@ Direct Lambda invocation tests for the authorizer service:
 | Warm invocation | ~220ms |
 | P95 (10 calls) | ~230ms |
 
+### AWS Staging Full E2E Tests (`tests/aws/full-mortgage-flow/`)
+
+- **True end-to-end tests** against deployed AWS staging services
+- **API-only**: Only calls REST endpoints via HTTP, no direct database access
+- Tests the complete Lekki Gardens + Chidi mortgage flow scenario
+- Run with: `cd tests/aws && ./scripts/run-full-e2e-staging.sh`
+
+**IMPORTANT**: This test is the **production-equivalent version** of the Lekki-Chidi scenario test (`services/mortgage-service/tests/e2e/lekki-chidi-mortgage.e2e-spec.ts`). When making changes to either test, ensure they remain synchronized:
+
+- Same business flow and phases
+- Same actor names (Adaeze as admin, Chidi as customer)
+- Same property details (Lekki Gardens, ₦85M, 10% down, 90% mortgage)
+- AWS test uses HTTP APIs only; service test can use direct Prisma access
+
 ## Scenario-Based Development
 
 - Document features as **scenario flows** in `docs/` folder before coding.
