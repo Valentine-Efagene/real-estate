@@ -88,6 +88,32 @@ const DEFAULT_ROLES: BootstrapRole[] = [
             { name: 'Manage Offer Letters', path: '/offer-letters', methods: ['GET', 'POST', 'PATCH'], effect: 'ALLOW' },
         ],
     },
+    {
+        name: 'DEVELOPER',
+        description: 'Property developer - upload sales offer letters and manage property documentation',
+        isSystem: true,
+        permissions: [
+            { name: 'View Properties', path: '/properties', methods: ['GET'], effect: 'ALLOW' },
+            { name: 'View Property Details', path: '/properties/:id', methods: ['GET'], effect: 'ALLOW' },
+            { name: 'View Applications', path: '/applications', methods: ['GET'], effect: 'ALLOW' },
+            { name: 'View Application Details', path: '/applications/:id', methods: ['GET'], effect: 'ALLOW' },
+            { name: 'Upload Phase Documents', path: '/applications/:id/phases/:phaseId/documents', methods: ['GET', 'POST'], effect: 'ALLOW' },
+            { name: 'View Phase Details', path: '/applications/:id/phases/:phaseId', methods: ['GET'], effect: 'ALLOW' },
+        ],
+    },
+    {
+        name: 'LENDER',
+        description: 'Bank/lender representative - upload preapproval and mortgage offer letters',
+        isSystem: true,
+        permissions: [
+            { name: 'View Applications', path: '/applications', methods: ['GET'], effect: 'ALLOW' },
+            { name: 'View Application Details', path: '/applications/:id', methods: ['GET'], effect: 'ALLOW' },
+            { name: 'Upload Phase Documents', path: '/applications/:id/phases/:phaseId/documents', methods: ['GET', 'POST'], effect: 'ALLOW' },
+            { name: 'View Phase Details', path: '/applications/:id/phases/:phaseId', methods: ['GET'], effect: 'ALLOW' },
+            { name: 'Review Documents', path: '/applications/:id/documents/:docId/review', methods: ['POST'], effect: 'ALLOW' },
+            { name: 'View Payment Plans', path: '/payment-plans', methods: ['GET'], effect: 'ALLOW' },
+        ],
+    },
 ];
 
 interface RoleResult {

@@ -43,28 +43,14 @@ app.get('/openapi.json', (req, res) => {
 });
 
 // CDN-based Swagger UI - works in Lambda without static file issues
-app.get('/api-docs', (req, res) => {
-  // Redirect to ensure trailing slash for relative paths
-  if (!req.originalUrl.endsWith('/')) {
-    return res.redirect(301, req.originalUrl + '/');
-  }
-  res.send(getSwaggerHtml());
-});
-
-app.get('/api-docs/', (req, res) => {
-  res.send(getSwaggerHtml());
-});
-
 function getSwaggerHtml(): string {
-  // Generate spec with placeholder for client-side URL replacement
-  const spec = generateOpenAPIDocument('__BASE_URL__');
-  const specString = JSON.stringify(spec).replace(/"/g, '\\"');
-
+  const spec = generateOpenAPIDocument();
+  const specJson = JSON.stringify(spec);
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>API Documentation - QShelter application Service</title>
+    <title>API Documentation - QShelter Mortgage Service</title>
     <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@5/swagger-ui.css" />
 </head>
 <body>
@@ -78,7 +64,7 @@ function getSwaggerHtml(): string {
             const currentPath = url.origin + basePath;
             
             // Parse the spec from JSON string
-            const specString = "${specString}";
+            const specString = ${JSON.stringify(specJson)};
             const spec = JSON.parse(specString);
             
             if (spec.servers && spec.servers[0]) {
@@ -96,6 +82,14 @@ function getSwaggerHtml(): string {
 </body>
 </html>`;
 }
+
+app.get('/api-docs', (req, res) => {
+  res.send(getSwaggerHtml());
+});
+
+app.get('/api-docs/', (req, res) => {
+  res.send(getSwaggerHtml());
+});
 
 // New unified routes
 app.use('/payment-plans', paymentPlanRouter);
