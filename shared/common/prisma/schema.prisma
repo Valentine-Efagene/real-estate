@@ -2182,8 +2182,8 @@ model QuestionnairePhaseReview {
   notes      String?        @db.Text
 
   // Snapshot of scores at time of review (for audit)
-  scoreAtReview   Int? // The totalScore when this review was made
-  passedAtReview  Boolean? // The passed flag when this review was made
+  scoreAtReview  Int? // The totalScore when this review was made
+  passedAtReview Boolean? // The passed flag when this review was made
 
   createdAt DateTime @default(now())
 

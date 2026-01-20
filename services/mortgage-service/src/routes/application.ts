@@ -338,15 +338,15 @@ router.post('/:id/phases/:phaseId/questionnaire/submit', requireTenant, canAcces
 router.post('/:id/phases/:phaseId/questionnaire/review', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { decision, notes } = req.body;
-        
+
         if (!decision || !['APPROVE', 'REJECT'].includes(decision)) {
-            res.status(400).json({ 
-                success: false, 
-                error: 'Invalid decision. Must be APPROVE or REJECT.' 
+            res.status(400).json({
+                success: false,
+                error: 'Invalid decision. Must be APPROVE or REJECT.'
             });
             return;
         }
-        
+
         const { userId } = getAuthContext(req);
         const result = await applicationPhaseService.reviewQuestionnairePhase(
             req.params.phaseId as string,
