@@ -195,6 +195,60 @@ Direct Lambda invocation tests for the authorizer service:
 - Keep Postman collection (`postman/QShelter-API.postman_collection.json`) up to date.
 - New endpoints need both Zod validation and Postman examples.
 
+### Swagger UI in Serverless
+
+**Do NOT use `swagger-ui-express` package** - it requires bundling large static assets that don't work well in Lambda.
+
+Instead, use the CDN-based approach that serves HTML loading Swagger UI from unpkg:
+
+```typescript
+// Serve Swagger UI using CDN (works in serverless)
+app.get('/api-docs', (_req, res) => {
+    const openApiDocument = generateOpenAPIDocument();
+    const specJson = JSON.stringify(openApiDocument);
+
+    const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>API Documentation - Service Name</title>
+    <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@5/swagger-ui.css" />
+</head>
+<body>
+    <div id="swagger-ui"></div>
+    <script src="https://unpkg.com/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
+    <script>
+        window.onload = () => {
+            const url = new URL(window.location.href);
+            const basePath = url.pathname.replace(/\\/api-docs\\/?$/, '');
+            const currentPath = url.origin + basePath;
+            
+            const specString = ${JSON.stringify(specJson)};
+            const spec = JSON.parse(specString);
+            
+            if (spec.servers && spec.servers[0]) {
+                spec.servers[0].url = currentPath;
+            }
+            
+            window.ui = SwaggerUIBundle({
+                spec: spec,
+                dom_id: '#swagger-ui',
+                deepLinking: true,
+                presets: [SwaggerUIBundle.presets.apis]
+            });
+        };
+    </script>
+</body>
+</html>`;
+    res.send(html);
+});
+```
+
+This approach:
+- Loads CSS/JS from unpkg CDN (no bundling needed)
+- Embeds the OpenAPI spec directly in the HTML
+- Dynamically sets the server URL based on the current origin
+
 ## Deployment
 
 ### AWS Staging Deployment
