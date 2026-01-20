@@ -250,6 +250,27 @@ This approach:
 - Embeds the OpenAPI spec directly in the HTML
 - Dynamically sets the server URL based on the current origin
 
+**CRITICAL Implementation Notes:**
+
+1. **Regex escaping**: The regex `/\\/api-docs\\/?$/` uses double backslashes because it's inside a template literal. Single backslashes will break the JavaScript in the browser (blank page).
+
+2. **JSON embedding**: Use `${JSON.stringify(specJson)}` to safely embed the JSON string. Do NOT use `.replace(/"/g, '\\"')` - this causes double-escaping and breaks JSON.parse.
+
+3. **No redirects**: Do NOT add redirect logic like `if (!req.originalUrl.endsWith('/')) return res.redirect(...)`. The redirected URL with trailing slash will hit the `/{proxy+}` route which requires authorization.
+
+4. **Both routes**: Define handlers for both `/api-docs` and `/api-docs/` to handle both cases:
+   ```typescript
+   app.get('/api-docs', (req, res) => res.send(getSwaggerHtml()));
+   app.get('/api-docs/', (req, res) => res.send(getSwaggerHtml()));
+   ```
+
+5. **serverless.yml**: List `/api-docs` as a public route WITHOUT an authorizer:
+   ```yaml
+   - httpApi:
+       path: /api-docs
+       method: GET
+   ```
+
 ## Deployment
 
 ### AWS Staging Deployment
