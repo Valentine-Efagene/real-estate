@@ -146,6 +146,44 @@ function lenderHeaders(accessToken: string): Record<string, string> {
     };
 }
 
+/**
+ * Verify a user's email for E2E testing.
+ * Gets the verification token from admin endpoint and calls verify-email.
+ */
+async function verifyUserEmail(userId: string): Promise<void> {
+    // Get user details including verification token
+    const userResponse = await userApi
+        .get(`/admin/users/${userId}`)
+        .set('x-bootstrap-secret', BOOTSTRAP_SECRET);
+
+    if (userResponse.status !== 200) {
+        throw new Error(`Failed to get user details: ${userResponse.status} ${JSON.stringify(userResponse.body)}`);
+    }
+
+    const { emailVerificationToken, emailVerifiedAt } = userResponse.body.data;
+
+    // Skip if already verified
+    if (emailVerifiedAt) {
+        console.log(`  User ${userId} already verified`);
+        return;
+    }
+
+    if (!emailVerificationToken) {
+        throw new Error(`No verification token for user ${userId}`);
+    }
+
+    // Call verify-email endpoint
+    const verifyResponse = await userApi
+        .get(`/auth/verify-email`)
+        .query({ token: emailVerificationToken });
+
+    if (verifyResponse.status !== 200) {
+        throw new Error(`Failed to verify email: ${verifyResponse.status} ${JSON.stringify(verifyResponse.body)}`);
+    }
+
+    console.log(`  ✅ Email verified for user ${userId}`);
+}
+
 describe('Full E2E Mortgage Flow', () => {
     // Tenant & Auth
     let tenantId: string;
@@ -385,6 +423,9 @@ describe('Full E2E Mortgage Flow', () => {
         });
 
         it('Step 2.5.4: Emeka re-authenticates to get new token with developer role', async () => {
+            // Verify email first (required before login in non-localstack environments)
+            await verifyUserEmail(emekaId);
+
             const response = await userApi
                 .post('/auth/login')
                 .set('Content-Type', 'application/json')
@@ -480,6 +521,9 @@ describe('Full E2E Mortgage Flow', () => {
         });
 
         it('Step 2.5.8: Nkechi re-authenticates to get new token with lender role', async () => {
+            // Verify email first (required before login in non-localstack environments)
+            await verifyUserEmail(nkechiId);
+
             const response = await userApi
                 .post('/auth/login')
                 .set('Content-Type', 'application/json')

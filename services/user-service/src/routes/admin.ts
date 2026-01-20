@@ -189,4 +189,58 @@ router.get(
     }
 );
 
+/**
+ * GET /admin/users/:userId
+ * 
+ * Get user details by ID (for E2E testing).
+ * Returns user info including verification token for testing email verification flow.
+ * 
+ * Security: Requires x-bootstrap-secret header
+ */
+router.get(
+    '/users/:userId',
+    verifyBootstrapSecret,
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const userId = req.params.userId as string;
+
+            const user = await prisma.user.findUnique({
+                where: { id: userId },
+                select: {
+                    id: true,
+                    email: true,
+                    firstName: true,
+                    lastName: true,
+                    emailVerificationToken: true,
+                    emailVerifiedAt: true,
+                    isActive: true,
+                    tenantMemberships: {
+                        select: {
+                            tenantId: true,
+                            role: {
+                                select: { name: true },
+                            },
+                        },
+                    },
+                },
+            });
+
+            if (!user) {
+                res.status(404).json({
+                    success: false,
+                    error: { message: 'User not found' },
+                });
+                return;
+            }
+
+            res.json({
+                success: true,
+                data: user,
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
 export const adminRouter = router;
