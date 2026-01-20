@@ -87,25 +87,15 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                     let stepDefinitionsToUse = phase.stepDefinitions;
                     const requiredDocumentTypesToUse = phase.requiredDocuments;
 
-                    // If documentationPlanId is provided, fetch the plan and use its steps
+                    // If documentationPlanId is provided, just validate the plan exists
+                    // The stage-based workflow uses documentDefinitions and approvalStages directly at runtime
                     if (phase.phaseCategory === 'DOCUMENTATION' && phase.documentationPlanId) {
                         const docPlan = await tx.documentationPlan.findUnique({
                             where: { id: phase.documentationPlanId },
-                            include: { steps: { orderBy: { order: 'asc' } } },
                         });
 
                         if (!docPlan) {
                             throw new AppError(404, `Documentation plan "${phase.documentationPlanId}" not found`);
-                        }
-
-                        // Use steps from documentation plan if not overridden
-                        if (!stepDefinitionsToUse || stepDefinitionsToUse.length === 0) {
-                            stepDefinitionsToUse = docPlan.steps.map((s: any) => ({
-                                name: s.name,
-                                stepType: s.stepType,
-                                order: s.order,
-                                metadata: s.metadata,
-                            }));
                         }
                     }
 

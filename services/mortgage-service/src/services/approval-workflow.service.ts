@@ -179,6 +179,9 @@ export function createApprovalWorkflowService() {
         /**
          * Upload a document for review
          * Documents are uploaded to the documentation phase, not to a specific step
+         * 
+         * If the current approval stage has autoTransition=true and the document's
+         * uploadedBy matches the stage's reviewParty, the document is auto-approved.
          */
         async uploadDocument(input: UploadDocumentInput): Promise<any> {
             const {
@@ -192,14 +195,15 @@ export function createApprovalWorkflowService() {
                 uploadedById,
             } = input;
 
-            // Get the documentation phase to verify it exists and get the phase ID
+            // Get the documentation phase with stage progress and document definitions
             const docPhase = await prisma.documentationPhase.findUnique({
                 where: { id: documentationPhaseId },
-                select: {
-                    id: true,
-                    phaseId: true,
+                include: {
                     phase: {
-                        select: { status: true },
+                        select: { status: true, applicationId: true },
+                    },
+                    stageProgress: {
+                        orderBy: { order: 'asc' },
                     },
                 },
             });
@@ -212,6 +216,10 @@ export function createApprovalWorkflowService() {
                 throw new AppError(400, 'Cannot upload documents to an inactive phase');
             }
 
+            // Get document definition from snapshot
+            const documentDefinitions = (docPhase.documentDefinitionsSnapshot as unknown as DocumentDefinitionSnapshot[]) || [];
+            const docDef = documentDefinitions.find(d => d.documentType === documentType);
+
             // Check if document already exists for this type
             const existingDoc = await prisma.applicationDocument.findFirst({
                 where: {
@@ -221,9 +229,11 @@ export function createApprovalWorkflowService() {
                 },
             });
 
+            let document: any;
+
             if (existingDoc) {
                 // Update existing document (re-upload)
-                return prisma.applicationDocument.update({
+                document = await prisma.applicationDocument.update({
                     where: { id: existingDoc.id },
                     data: {
                         name: fileName,
@@ -234,24 +244,86 @@ export function createApprovalWorkflowService() {
                         updatedAt: new Date(),
                     },
                 });
+            } else {
+                // Create new document
+                document = await prisma.applicationDocument.create({
+                    data: {
+                        id: uuidv4(),
+                        tenantId,
+                        applicationId,
+                        phaseId: docPhase.phaseId,
+                        documentType,
+                        documentName,
+                        name: fileName,
+                        url: fileUrl,
+                        type: documentType, // Legacy field
+                        uploadedById,
+                        status: 'PENDING',
+                    },
+                });
             }
 
-            // Create new document
-            return prisma.applicationDocument.create({
-                data: {
-                    id: uuidv4(),
-                    tenantId,
-                    applicationId,
-                    phaseId: docPhase.phaseId,
-                    documentType,
-                    documentName,
-                    name: fileName,
-                    url: fileUrl,
-                    type: documentType, // Legacy field
-                    uploadedById,
-                    status: 'PENDING',
-                },
-            });
+            // Check for auto-approval: if current stage reviewParty matches document uploadedBy
+            const currentStage = docPhase.stageProgress.find(
+                (s: any) => s.order === docPhase.currentStageOrder
+            );
+
+            if (currentStage && docDef) {
+                // Map uploadedBy to reviewParty (DEVELOPER -> DEVELOPER, LENDER -> BANK, etc.)
+                const uploadedByToReviewParty: Record<string, string> = {
+                    'DEVELOPER': 'DEVELOPER',
+                    'LENDER': 'BANK',
+                    'LEGAL': 'LEGAL',
+                    'INSURER': 'INSURER',
+                    'PLATFORM': 'INTERNAL',
+                    'CUSTOMER': 'CUSTOMER',
+                };
+
+                const expectedReviewParty = uploadedByToReviewParty[docDef.uploadedBy] || docDef.uploadedBy;
+
+                // Auto-approve if uploader matches reviewer (they don't need to review their own work)
+                if (currentStage.reviewParty === expectedReviewParty) {
+                    // Auto-approve the document and check for stage completion
+                    await prisma.$transaction(async (tx: any) => {
+                        // Create auto-approval record
+                        await tx.documentApproval.create({
+                            data: {
+                                id: uuidv4(),
+                                tenantId,
+                                documentId: document.id,
+                                stageProgressId: currentStage.id,
+                                reviewerId: uploadedById,
+                                reviewParty: currentStage.reviewParty,
+                                decision: 'APPROVED',
+                                comment: 'Auto-approved: uploaded by authorized party',
+                                reviewedAt: new Date(),
+                            },
+                        });
+
+                        // Update document status to APPROVED
+                        await tx.applicationDocument.update({
+                            where: { id: document.id },
+                            data: { status: 'APPROVED' },
+                        });
+
+                        // Update approvedDocumentsCount
+                        await tx.documentationPhase.update({
+                            where: { id: documentationPhaseId },
+                            data: { approvedDocumentsCount: { increment: 1 } },
+                        });
+
+                        // Evaluate stage completion
+                        await this.evaluateStageCompletion(tx, documentationPhaseId, currentStage.id);
+                    });
+
+                    // Refetch document with updated status
+                    return prisma.applicationDocument.findUnique({
+                        where: { id: document.id },
+                    });
+                }
+            }
+
+            return document;
         },
 
         /**
@@ -261,41 +333,38 @@ export function createApprovalWorkflowService() {
         async reviewDocument(input: ReviewDocumentInput): Promise<any> {
             const { tenantId, documentId, reviewerId, reviewParty, decision, comment } = input;
 
-            // Get the document and its phase
+            // Get the document
             const document = await prisma.applicationDocument.findUnique({
                 where: { id: documentId },
-                include: {
-                    application: {
-                        select: {
-                            phases: {
-                                where: { phaseCategory: 'DOCUMENTATION' },
-                                include: {
-                                    documentationPhase: {
-                                        include: {
-                                            stageProgress: {
-                                                orderBy: { order: 'asc' },
-                                            },
-                                        },
-                                    },
-                                },
-                            },
-                        },
-                    },
-                },
             });
 
             if (!document) {
                 throw new AppError(404, 'Document not found');
             }
 
-            // Find the documentation phase for this document
-            const docPhase = document.application?.phases.find(
-                p => p.documentationPhase !== null
-            )?.documentationPhase;
+            if (!document.phaseId) {
+                throw new AppError(400, 'Document is not linked to a phase');
+            }
 
-            if (!docPhase) {
+            // Get the documentation phase for this specific document's phaseId
+            const phase = await prisma.applicationPhase.findUnique({
+                where: { id: document.phaseId },
+                include: {
+                    documentationPhase: {
+                        include: {
+                            stageProgress: {
+                                orderBy: { order: 'asc' },
+                            },
+                        },
+                    },
+                },
+            });
+
+            if (!phase || !phase.documentationPhase) {
                 throw new AppError(404, 'Documentation phase not found for this document');
             }
+
+            const docPhase = phase.documentationPhase;
 
             // Get the current active stage
             const currentStage = docPhase.stageProgress.find(
@@ -351,32 +420,26 @@ export function createApprovalWorkflowService() {
         /**
          * Evaluate if the current stage should be completed
          * Called after each document review
+         * 
+         * Each stage is only responsible for reviewing documents that match its reviewParty.
+         * For example:
+         * - INTERNAL stage reviews documents uploaded by CUSTOMER or PLATFORM
+         * - BANK stage reviews documents uploaded by LENDER
+         * - DEVELOPER stage reviews documents uploaded by DEVELOPER
          */
         async evaluateStageCompletion(
             tx: any,
             documentationPhaseId: string,
             stageProgressId: string
         ): Promise<void> {
-            // Get the stage and its documents
+            // Get the stage and documentation phase with snapshots
             const stage = await tx.approvalStageProgress.findUnique({
                 where: { id: stageProgressId },
                 include: {
                     documentApprovals: true,
                     documentationPhase: {
                         include: {
-                            phase: {
-                                include: {
-                                    application: {
-                                        include: {
-                                            documents: {
-                                                where: {
-                                                    phaseId: undefined, // Will be set properly
-                                                },
-                                            },
-                                        },
-                                    },
-                                },
-                            },
+                            phase: true,
                         },
                     },
                 },
@@ -384,19 +447,48 @@ export function createApprovalWorkflowService() {
 
             if (!stage) return;
 
-            // Get documents for this phase
-            const phaseDocuments = await tx.applicationDocument.findMany({
+            const docPhase = stage.documentationPhase;
+
+            // Map reviewParty back to uploadedBy values that this stage is responsible for
+            const reviewPartyToUploadedBy: Record<string, string[]> = {
+                'INTERNAL': ['CUSTOMER', 'PLATFORM'],  // Internal team reviews customer and platform uploads
+                'BANK': ['LENDER'],                     // Bank stage reviews lender uploads
+                'DEVELOPER': ['DEVELOPER'],
+                'LEGAL': ['LEGAL'],
+                'INSURER': ['INSURER'],
+                'CUSTOMER': ['CUSTOMER'],
+                'GOVERNMENT': ['GOVERNMENT'],
+            };
+
+            const uploadedByValues = reviewPartyToUploadedBy[stage.reviewParty] || [];
+
+            // Get document definitions from snapshot to find which document types this stage reviews
+            const documentDefinitions = (docPhase.documentDefinitionsSnapshot as unknown as DocumentDefinitionSnapshot[]) || [];
+            const stageDocumentTypes = documentDefinitions
+                .filter(def => uploadedByValues.includes(def.uploadedBy))
+                .map(def => def.documentType);
+
+            // Get documents for this phase that this stage is responsible for
+            const stageDocuments = await tx.applicationDocument.findMany({
                 where: {
-                    applicationId: stage.documentationPhase.phase.applicationId,
-                    phaseId: stage.documentationPhase.phaseId,
+                    applicationId: docPhase.phase.applicationId,
+                    phaseId: docPhase.phaseId,
+                    documentType: { in: stageDocumentTypes },
                 },
             });
 
-            // Check if all documents have been reviewed in this stage
-            const approvedDocs = stage.documentApprovals.filter(
+            // Get all approvals for this stage (including the one just created)
+            const stageApprovals = await tx.documentApproval.findMany({
+                where: {
+                    stageProgressId: stageProgressId,
+                },
+            });
+
+            // Check if all documents for this stage have been reviewed
+            const approvedDocs = stageApprovals.filter(
                 (a: any) => a.decision === 'APPROVED'
             );
-            const rejectedDocs = stage.documentApprovals.filter(
+            const rejectedDocs = stageApprovals.filter(
                 (a: any) => a.decision === 'REJECTED' || a.decision === 'CHANGES_REQUESTED'
             );
 
@@ -406,20 +498,13 @@ export function createApprovalWorkflowService() {
                 return;
             }
 
-            // If waiting for all documents and not all are approved, don't transition
-            if (stage.waitForAllDocuments && approvedDocs.length < phaseDocuments.length) {
+            // If waiting for all documents and not all stage documents are approved, don't transition
+            if (stage.waitForAllDocuments && approvedDocs.length < stageDocuments.length) {
                 return;
             }
 
-            // All documents approved - check if auto-transition or mark as awaiting
-            if (stage.autoTransition) {
-                await this.transitionToNextStage(tx, documentationPhaseId, null, null);
-            } else {
-                await tx.approvalStageProgress.update({
-                    where: { id: stageProgressId },
-                    data: { status: 'AWAITING_TRANSITION' },
-                });
-            }
+            // All stage documents approved - transition to next stage
+            await this.transitionToNextStage(tx, documentationPhaseId, null, null);
         },
 
         /**
@@ -588,6 +673,72 @@ export function createApprovalWorkflowService() {
                         completedAt: new Date(),
                     },
                 });
+
+                // Auto-activate next application phase
+                const nextApplicationPhase = await tx.applicationPhase.findFirst({
+                    where: {
+                        applicationId: docPhase.phase.applicationId,
+                        order: docPhase.phase.order + 1,
+                    },
+                });
+
+                if (nextApplicationPhase) {
+                    await tx.applicationPhase.update({
+                        where: { id: nextApplicationPhase.id },
+                        data: {
+                            status: 'IN_PROGRESS',
+                            activatedAt: new Date(),
+                        },
+                    });
+
+                    // Update application's current phase
+                    await tx.application.update({
+                        where: { id: docPhase.phase.applicationId },
+                        data: { currentPhaseId: nextApplicationPhase.id },
+                    });
+
+                    // Create domain event for phase activation
+                    await tx.domainEvent.create({
+                        data: {
+                            id: uuidv4(),
+                            tenantId: docPhase.tenantId,
+                            eventType: 'PHASE.ACTIVATED',
+                            aggregateType: 'ApplicationPhase',
+                            aggregateId: nextApplicationPhase.id,
+                            queueName: 'notifications',
+                            payload: JSON.stringify({
+                                applicationId: docPhase.phase.applicationId,
+                                phaseId: nextApplicationPhase.id,
+                                phaseName: nextApplicationPhase.name,
+                                phaseType: nextApplicationPhase.phaseType,
+                            }),
+                        },
+                    });
+                } else {
+                    // No more phases - mark application as COMPLETED
+                    await tx.application.update({
+                        where: { id: docPhase.phase.applicationId },
+                        data: {
+                            status: 'COMPLETED',
+                            endDate: new Date(),
+                        },
+                    });
+
+                    // Create domain event for application completion
+                    await tx.domainEvent.create({
+                        data: {
+                            id: uuidv4(),
+                            tenantId: docPhase.tenantId,
+                            eventType: 'APPLICATION.COMPLETED',
+                            aggregateType: 'Application',
+                            aggregateId: docPhase.phase.applicationId,
+                            queueName: 'notifications',
+                            payload: JSON.stringify({
+                                applicationId: docPhase.phase.applicationId,
+                            }),
+                        },
+                    });
+                }
 
                 return { completed: true, nextStage: null };
             }

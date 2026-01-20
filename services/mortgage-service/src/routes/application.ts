@@ -12,6 +12,7 @@ import {
     ADMIN_ROLES,
     ROLES,
 } from '@valentine-efagene/qshelter-common';
+import { prisma } from '../lib/prisma';
 import {
     CreateApplicationSchema,
     UpdateApplicationSchema,
@@ -498,10 +499,25 @@ router.post('/:id/phases/:phaseId/documents', requireTenant, canAccessApplicatio
 router.post('/:id/documents/:documentId/review', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = ApproveDocumentSchema.parse(req.body);
-        const { userId } = getAuthContext(req);
+        const { userId, tenantId } = getAuthContext(req);
         const decision = data.status === 'APPROVED' ? 'APPROVED' : 'REJECTED';
+
+        // Look up the document to get the phaseId
+        const document = await prisma.applicationDocument.findFirst({
+            where: {
+                id: req.params.documentId,
+                tenantId,
+                applicationId: req.params.id,
+            },
+        });
+
+        if (!document || !document.phaseId) {
+            res.status(404).json({ success: false, error: 'Document not found or not linked to a phase' });
+            return;
+        }
+
         const result = await applicationPhaseService.reviewDocument(
-            req.params.id as string, // phaseId
+            document.phaseId, // phaseId from the document
             req.params.documentId as string,
             decision as any,
             'INTERNAL', // reviewer party

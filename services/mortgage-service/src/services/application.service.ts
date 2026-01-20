@@ -92,106 +92,6 @@ function getMortgagePaymentInfo(application: any): { termMonths: number; monthly
     return { termMonths: 0, monthlyPayment: 0 };
 }
 
-/**
- * Parse step definitions from phase template
- * Now reads from the child table `steps` or from `documentationPlan.steps`
- */
-function parseStepDefinitions(phaseTemplate: {
-    steps?: Array<{
-        name: string;
-        stepType: StepType;
-        order: number;
-        metadata?: any;
-        requiresManualReview?: boolean;
-        condition?: any;
-    }>;
-    documentationPlan?: {
-        steps: Array<{
-            name: string;
-            stepType: string;
-            order: number;
-            metadata?: any;
-            requiresManualReview?: boolean;
-            condition?: any;
-        }>;
-    } | null;
-    requiredDocuments?: Array<{
-        documentType: string;
-        isRequired: boolean;
-    }>;
-}): Array<{
-    name: string;
-    description?: string;
-    stepType: StepType;
-    order: number;
-    metadata?: any;
-    requiresManualReview?: boolean;
-    condition?: any;
-    requiredDocuments?: Array<{
-        documentType: string;
-        isRequired: boolean;
-    }>;
-}> {
-    // PRIORITY: If we have a documentation plan with steps, use those
-    // The plan contains full step configuration including requiresManualReview
-    if (phaseTemplate.documentationPlan?.steps && phaseTemplate.documentationPlan.steps.length > 0) {
-        return phaseTemplate.documentationPlan.steps.map((step) => ({
-            name: step.name,
-            stepType: step.stepType as StepType,
-            order: step.order,
-            metadata: step.metadata,
-            requiresManualReview: step.requiresManualReview ?? false,
-            condition: step.condition, // Copy condition for conditional step evaluation
-        }));
-    }
-
-    // Fallback: Use inline steps from the phase template (legacy/inline definitions)
-    if (phaseTemplate.steps && phaseTemplate.steps.length > 0) {
-        return phaseTemplate.steps.map((step, idx) => ({
-            name: step.name,
-            stepType: step.stepType,
-            order: step.order,
-            metadata: step.metadata,
-            requiresManualReview: step.requiresManualReview ?? false,
-            condition: step.condition, // Copy condition for conditional step evaluation
-        }));
-    }
-
-    // Generate default steps if we have required documents but no explicit steps
-    const steps: Array<{
-        name: string;
-        description?: string;
-        stepType: StepType;
-        order: number;
-        metadata?: any;
-        requiresManualReview?: boolean;
-        requiredDocuments?: Array<{
-            documentType: string;
-            isRequired: boolean;
-        }>;
-    }> = [];
-
-    if (phaseTemplate.requiredDocuments && phaseTemplate.requiredDocuments.length > 0) {
-        steps.push({
-            name: 'Document Upload',
-            stepType: 'UPLOAD' as StepType,
-            order: 0,
-            requiredDocuments: phaseTemplate.requiredDocuments,
-        });
-        steps.push({
-            name: 'Document Review',
-            stepType: 'REVIEW' as StepType,
-            order: 1,
-        });
-        steps.push({
-            name: 'Final Approval',
-            stepType: 'APPROVAL' as StepType,
-            order: 2,
-        });
-    }
-
-    return steps;
-}
 
 /**
  * Simple state machine for application states
@@ -473,10 +373,6 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                     phaseAmount = 0; // Non-payment phases have no monetary amount
                 }
 
-                // Get step definitions and required documents from child tables
-                const steps = parseStepDefinitions(phaseTemplate);
-                const requiredDocs = phaseTemplate.requiredDocuments || [];
-
                 // Create base ApplicationPhase (shared fields only)
                 const phase = await tx.applicationPhase.create({
                     data: {
@@ -553,54 +449,76 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                         });
                     }
                 } else if (phaseTemplate.phaseCategory === 'DOCUMENTATION') {
-                    // Create DocumentationPhase extension
+                    // Get document definitions and approval stages from the plan
+                    const documentationPlan = phaseTemplate.documentationPlan;
+                    const documentDefinitions = documentationPlan?.documentDefinitions || [];
+                    const approvalStages = documentationPlan?.approvalStages || [];
+
+                    // Calculate required documents count
+                    const requiredDocsCount = documentDefinitions.filter((d: any) => d.isRequired).length;
+
+                    // Create DocumentationPhase extension with stage-based workflow
                     const documentationPhase = await tx.documentationPhase.create({
                         data: {
                             tenantId: (data as any).tenantId,
                             phaseId: phase.id,
                             documentationPlanId: phaseTemplate.documentationPlanId,
-                            // Link to source questionnaire for conditional step evaluation
+                            // Link to source questionnaire for conditional document evaluation
                             sourceQuestionnairePhaseId: lastQuestionnairePhaseId,
-                            totalStepsCount: steps.length,
-                            completedStepsCount: 0,
-                            requiredDocumentsCount: requiredDocs.filter((d: any) => d.isRequired).length,
+                            // Stage-based workflow: start at stage 1
+                            currentStageOrder: 1,
+                            requiredDocumentsCount: requiredDocsCount,
                             approvedDocumentsCount: 0,
-                            minimumCompletionPercentage: phaseTemplate.minimumCompletionPercentage,
-                            stepDefinitionsSnapshot: phaseTemplate.stepDefinitionsSnapshot,
-                            requiredDocumentSnapshot: phaseTemplate.requiredDocumentSnapshot,
+                            // Snapshots for audit
+                            documentDefinitionsSnapshot: documentDefinitions.length > 0 ? documentDefinitions.map((d: any) => ({
+                                documentType: d.documentType,
+                                documentName: d.documentName,
+                                uploadedBy: d.uploadedBy,
+                                order: d.order,
+                                isRequired: d.isRequired,
+                                description: d.description,
+                                maxSizeBytes: d.maxSizeBytes,
+                                allowedMimeTypes: d.allowedMimeTypes,
+                                expiryDays: d.expiryDays,
+                                minFiles: d.minFiles,
+                                maxFiles: d.maxFiles,
+                                condition: d.condition,
+                            })) : null,
+                            approvalStagesSnapshot: approvalStages.length > 0 ? approvalStages.map((s: any) => ({
+                                name: s.name,
+                                order: s.order,
+                                reviewParty: s.reviewParty,
+                                autoTransition: s.autoTransition,
+                                waitForAllDocuments: s.waitForAllDocuments,
+                                allowEarlyVisibility: s.allowEarlyVisibility,
+                                onRejection: s.onRejection,
+                                restartFromStageOrder: s.restartFromStageOrder,
+                                slaHours: s.slaHours,
+                                description: s.description,
+                            })) : null,
                         },
                     });
 
-                    // Create DocumentationStep records
-                    for (const step of steps) {
-                        const createdStep = await tx.documentationStep.create({
+                    // Create ApprovalStageProgress records for each approval stage
+                    for (const stage of approvalStages) {
+                        await tx.approvalStageProgress.create({
                             data: {
                                 tenantId: (data as any).tenantId,
                                 documentationPhaseId: documentationPhase.id,
-                                name: step.name,
-                                description: step.description,
-                                stepType: step.stepType as StepType,
-                                order: step.order,
-                                status: 'PENDING' as StepStatus,
-                                metadata: step.metadata ?? null,
-                                requiresManualReview: step.requiresManualReview ?? false,
-                                condition: step.condition ?? null, // Copy condition for evaluation
+                                approvalStageId: stage.id,
+                                name: stage.name,
+                                order: stage.order,
+                                reviewParty: stage.reviewParty,
+                                autoTransition: stage.autoTransition ?? false,
+                                waitForAllDocuments: stage.waitForAllDocuments ?? true,
+                                allowEarlyVisibility: stage.allowEarlyVisibility ?? false,
+                                onRejection: stage.onRejection || 'CASCADE_BACK',
+                                restartFromStageOrder: stage.restartFromStageOrder,
+                                // First stage is IN_PROGRESS, others are PENDING
+                                status: stage.order === 1 ? 'IN_PROGRESS' : 'PENDING',
+                                activatedAt: stage.order === 1 ? new Date() : null,
                             },
                         });
-
-                        // Create required document records for this step (if any)
-                        if (step.requiredDocuments && step.requiredDocuments.length > 0) {
-                            for (const doc of step.requiredDocuments) {
-                                await tx.documentationStepDocument.create({
-                                    data: {
-                                        tenantId: (data as any).tenantId,
-                                        stepId: createdStep.id,
-                                        documentType: doc.documentType,
-                                        isRequired: doc.isRequired ?? true,
-                                    },
-                                });
-                            }
-                        }
                     }
                 } else if (phaseTemplate.phaseCategory === 'PAYMENT') {
                     // For flexible-term plans (like mortgages), use user's selected term

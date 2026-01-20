@@ -1,13 +1,13 @@
 /**
  * Condition Evaluator Service
  *
- * Evaluates step conditions against questionnaire answers to determine
- * which documentation steps apply to a specific application.
+ * Evaluates document conditions against questionnaire answers to determine
+ * which documents are required for a specific application.
  *
  * This service is used when a documentation phase is activated to:
  * 1. Load answers from the source questionnaire phase
- * 2. Evaluate each step's condition against those answers
- * 3. Mark inapplicable steps as SKIPPED
+ * 2. Evaluate each document definition's condition against those answers
+ * 3. Determine which documents are actually required
  *
  * Condition format examples:
  * - Simple: { "questionKey": "mortgage_type", "operator": "EQUALS", "value": "JOINT" }
@@ -16,7 +16,7 @@
  * - OR logic: { "any": [{ ... }, { ... }] }
  */
 
-import { ConditionOperator, StepStatus } from '@valentine-efagene/qshelter-common';
+import { ConditionOperator } from '@valentine-efagene/qshelter-common';
 
 // Type definitions for conditions
 export interface SimpleCondition {
@@ -121,13 +121,14 @@ export function evaluateCondition(
 }
 
 /**
- * Result of step condition evaluation
+ * Result of document condition evaluation
  */
-export interface StepEvaluationResult {
-    stepId: string;
-    stepName: string;
+export interface DocumentEvaluationResult {
+    documentType: string;
+    documentName: string;
     condition: Condition | null;
     isApplicable: boolean;
+    isRequired: boolean; // Original required status from definition
 }
 
 /**
@@ -174,17 +175,22 @@ export function createConditionEvaluatorService(prisma: any) {
     }
 
     /**
-     * Evaluate all steps in a documentation phase and determine applicability
-     * Returns list of step IDs that should be skipped
+     * Evaluate all document definitions in a documentation phase and determine applicability
+     * Uses documentDefinitionsSnapshot or the linked documentationPlan's definitions
+     * Returns list of documents with their applicability status
      */
-    async function evaluateStepsForPhase(
+    async function evaluateDocumentsForPhase(
         documentationPhaseId: string
-    ): Promise<StepEvaluationResult[]> {
+    ): Promise<DocumentEvaluationResult[]> {
         const docPhase = await prisma.documentationPhase.findUnique({
             where: { id: documentationPhaseId },
             include: {
-                steps: {
-                    orderBy: { order: 'asc' },
+                documentationPlan: {
+                    include: {
+                        documentDefinitions: {
+                            orderBy: { order: 'asc' },
+                        },
+                    },
                 },
                 sourceQuestionnairePhase: {
                     include: {
@@ -198,26 +204,35 @@ export function createConditionEvaluatorService(prisma: any) {
             throw new Error(`Documentation phase not found: ${documentationPhaseId}`);
         }
 
-        // If no source questionnaire, all steps are applicable (unconditional)
+        // Get document definitions from snapshot or plan
+        let documentDefinitions: any[] = [];
+        if (docPhase.documentDefinitionsSnapshot && Array.isArray(docPhase.documentDefinitionsSnapshot)) {
+            documentDefinitions = docPhase.documentDefinitionsSnapshot as any[];
+        } else if (docPhase.documentationPlan?.documentDefinitions) {
+            documentDefinitions = docPhase.documentationPlan.documentDefinitions;
+        }
+
+        // If no document definitions, return empty results
+        if (documentDefinitions.length === 0) {
+            return [];
+        }
+
+        // If no source questionnaire, all documents are applicable (unconditional)
         if (!docPhase.sourceQuestionnairePhase) {
-            return docPhase.steps.map((step: any) => ({
-                stepId: step.id,
-                stepName: step.name,
-                condition: step.condition,
+            return documentDefinitions.map((doc: any) => ({
+                documentType: doc.documentType,
+                documentName: doc.documentName,
+                condition: doc.condition,
                 isApplicable: true,
+                isRequired: doc.isRequired ?? true,
             }));
         }
 
         // Build answers map from questionnaire fields
-        // QuestionnaireField uses 'answer' (JSON field) not 'value'
         const answers: QuestionnaireAnswers = {};
         for (const field of docPhase.sourceQuestionnairePhase.fields) {
             if (field.answer !== null && field.answer !== undefined) {
-                // answer is stored as JSON, which may be a string like '"SINGLE"' or a raw value
-                // We need to handle both JSON-stringified strings and raw values
                 const answer = field.answer;
-                // If it's a string that looks like a JSON-encoded string (starts/ends with quotes)
-                // we parse it, otherwise use as-is
                 if (typeof answer === 'string' && answer.startsWith('"') && answer.endsWith('"')) {
                     try {
                         answers[field.name] = JSON.parse(answer);
@@ -230,77 +245,67 @@ export function createConditionEvaluatorService(prisma: any) {
             }
         }
 
-        // Evaluate each step's condition
-        return docPhase.steps.map((step: any) => {
-            // Steps without conditions are always applicable
-            if (!step.condition) {
+        // Evaluate each document's condition
+        return documentDefinitions.map((doc: any) => {
+            // Documents without conditions are always applicable
+            if (!doc.condition) {
                 return {
-                    stepId: step.id,
-                    stepName: step.name,
+                    documentType: doc.documentType,
+                    documentName: doc.documentName,
                     condition: null,
                     isApplicable: true,
+                    isRequired: doc.isRequired ?? true,
                 };
             }
 
-            const isApplicable = evaluateCondition(step.condition as Condition, answers);
+            const isApplicable = evaluateCondition(doc.condition as Condition, answers);
 
             return {
-                stepId: step.id,
-                stepName: step.name,
-                condition: step.condition as Condition,
+                documentType: doc.documentType,
+                documentName: doc.documentName,
+                condition: doc.condition as Condition,
                 isApplicable,
+                isRequired: doc.isRequired ?? true,
             };
         });
     }
 
     /**
      * Apply condition evaluation results to a documentation phase
-     * Marks inapplicable steps as SKIPPED and updates counters
+     * Updates the required documents count based on applicable documents
      */
     async function applyConditionEvaluation(
         documentationPhaseId: string
     ): Promise<{
         skippedCount: number;
         applicableCount: number;
-        results: StepEvaluationResult[];
+        results: DocumentEvaluationResult[];
     }> {
-        const results = await evaluateStepsForPhase(documentationPhaseId);
+        const results = await evaluateDocumentsForPhase(documentationPhaseId);
 
-        const stepsToSkip = results.filter((r) => !r.isApplicable);
-        const applicableSteps = results.filter((r) => r.isApplicable);
+        const skippedDocs = results.filter((r) => !r.isApplicable);
+        const applicableDocs = results.filter((r) => r.isApplicable);
+        const requiredApplicableDocs = applicableDocs.filter((r) => r.isRequired);
 
-        // Mark inapplicable steps as SKIPPED
-        if (stepsToSkip.length > 0) {
-            await prisma.documentationStep.updateMany({
-                where: {
-                    id: { in: stepsToSkip.map((s) => s.stepId) },
-                },
-                data: {
-                    status: 'SKIPPED' as StepStatus,
-                },
-            });
-
-            // Update the documentation phase counters
-            // Skipped steps count as completed for progress tracking
-            await prisma.documentationPhase.update({
-                where: { id: documentationPhaseId },
-                data: {
-                    completedStepsCount: { increment: stepsToSkip.length },
-                    totalStepsCount: applicableSteps.length, // Only applicable steps count toward total
-                },
-            });
-        }
+        // Update the documentation phase with correct required documents count
+        // Only count applicable + required documents
+        await prisma.documentationPhase.update({
+            where: { id: documentationPhaseId },
+            data: {
+                requiredDocumentsCount: requiredApplicableDocs.length,
+            },
+        });
 
         return {
-            skippedCount: stepsToSkip.length,
-            applicableCount: applicableSteps.length,
+            skippedCount: skippedDocs.length,
+            applicableCount: applicableDocs.length,
             results,
         };
     }
 
     return {
         getQuestionnaireAnswers,
-        evaluateStepsForPhase,
+        evaluateDocumentsForPhase,
         applyConditionEvaluation,
         evaluateCondition, // Expose for testing
     };

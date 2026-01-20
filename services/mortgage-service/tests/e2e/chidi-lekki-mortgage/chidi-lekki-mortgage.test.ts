@@ -350,7 +350,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                     isActive: true,
                     passingScore: 100, // Must score 100 to pass (all checks must pass)
                     scoringStrategy: 'MIN_ALL', // All questions must pass
-                    autoDecisionEnabled: true,
+                    autoDecisionEnabled: false, // Scoring guides reviewer, manual approval required
                     estimatedMinutes: 5,
                     category: 'PREQUALIFICATION',
                     questions: [
@@ -965,15 +965,50 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             expect(phase?.questionnairePhase?.totalScore).toBeGreaterThan(0);
         });
 
-        it('Prequalification phase completes after successful scoring', async () => {
-            // Phase should auto-complete after questionnaire is submitted and scored
+        it('Prequalification phase awaits approval after scoring', async () => {
+            // With autoDecisionEnabled: false, phase should go to AWAITING_APPROVAL
+            // The scoring serves as guidance for the reviewer
             const response = await api
                 .get(`/applications/${applicationId}/phases/${prequalificationPhaseId}`)
                 .set(customerHeaders(chidiId, tenantId));
 
             expect(response.status).toBe(200);
+            expect(response.body.data.status).toBe('AWAITING_APPROVAL');
+            // Phase is not completed yet - awaiting manual review
+            expect(response.body.data.completedAt).toBeNull();
+        });
+
+        it('Adaeze reviews the questionnaire scoring and approves Chidi', async () => {
+            // Adaeze sees Chidi's score (100 - all checks passed) and approves the application
+            // The scoring is advisory - Adaeze makes the final decision
+            const response = await api
+                .post(`/applications/${applicationId}/phases/${prequalificationPhaseId}/questionnaire/review`)
+                .set(adminHeaders(adaezeId, tenantId))
+                .set('x-idempotency-key', idempotencyKey('adaeze-approve-prequalification'))
+                .send({
+                    decision: 'APPROVE',
+                    notes: 'Chidi meets all eligibility criteria. Score: 100. Approved for mortgage.',
+                });
+
+            expect(response.status).toBe(200);
             expect(response.body.data.status).toBe('COMPLETED');
             expect(response.body.data.completedAt).toBeDefined();
+
+            // Verify review audit record was created
+            const reviews = await prisma.questionnairePhaseReview.findMany({
+                where: {
+                    questionnairePhase: {
+                        phase: { id: prequalificationPhaseId },
+                    },
+                },
+            });
+            expect(reviews.length).toBe(1);
+            expect(reviews[0].decision).toBe('APPROVED');
+            expect(reviews[0].reviewerId).toBe(adaezeId);
+            // Score is sum of all weighted question scores (MIN_ALL still sums, just checks all > 0)
+            // 4 questions with scoreWeight > 0: applicant_age(100) + employment_status(100) + monthly_income(100) + desired_term_years(100) = ~300+
+            expect(reviews[0].scoreAtReview).toBeGreaterThanOrEqual(100);
+            expect(reviews[0].passedAtReview).toBe(true);
         });
 
         // ========================================
@@ -1089,9 +1124,13 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                 include: { documentationPhase: { include: { stageProgress: { orderBy: { order: 'asc' } } } } },
             });
 
-            // First stage (QShelter Review) should be completed or awaiting transition
+            // First stage (QShelter Review) should be completed after all docs approved
             const firstStage = phase?.documentationPhase?.stageProgress?.[0];
-            expect(['AWAITING_TRANSITION', 'COMPLETED']).toContain(firstStage?.status);
+            expect(firstStage?.status).toBe('COMPLETED');
+
+            // Second stage (Bank Review) should be IN_PROGRESS, ready for lender upload
+            const secondStage = phase?.documentationPhase?.stageProgress?.[1];
+            expect(secondStage?.status).toBe('IN_PROGRESS');
         });
 
         it('Nkechi (Lender) uploads the preapproval letter', async () => {
