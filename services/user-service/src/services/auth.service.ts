@@ -58,8 +58,8 @@ class AuthService {
         const hashedPassword = await bcrypt.hash(data.password, 10);
         const emailVerificationToken = randomBytes(32).toString('hex');
 
-        // Auto-verify in localstack environment for E2E testing
-        const isLocalstack = process.env.NODE_ENV === 'localstack';
+        // Auto-verify in localstack and staging environments for E2E testing
+        const isTestEnvironment = ['localstack', 'staging'].includes(process.env.NODE_ENV || '');
 
         // Create user with tenant membership in a transaction
         const user = await prisma.$transaction(async (tx) => {
@@ -70,8 +70,8 @@ class AuthService {
                     firstName: data.firstName,
                     lastName: data.lastName,
                     avatar: data.avatar,
-                    emailVerificationToken: isLocalstack ? null : emailVerificationToken,
-                    emailVerifiedAt: isLocalstack ? new Date() : null,
+                    emailVerificationToken: isTestEnvironment ? null : emailVerificationToken,
+                    emailVerifiedAt: isTestEnvironment ? new Date() : null,
                 },
             });
 
@@ -89,8 +89,8 @@ class AuthService {
             return newUser;
         });
 
-        // Skip email verification in localstack
-        if (!isLocalstack) {
+        // Skip email verification in test environments
+        if (!isTestEnvironment) {
             // Publish verify email event to SNS
             const verificationLink = `${process.env.FRONTEND_BASE_URL}/auth/verify-email?token=${emailVerificationToken}`;
             try {
@@ -109,7 +109,7 @@ class AuthService {
                 console.error(`[AuthService] Failed to publish verification email event:`, error);
             }
         } else {
-            console.log(`[AuthService] Auto-verified user in localstack: ${user.email}`);
+            console.log(`[AuthService] Auto-verified user in test environment: ${user.email}`);
         }
 
         return this.generateTokens(user.id, user.email, [userRole.name], data.tenantId);

@@ -259,9 +259,10 @@ This approach:
 3. **No redirects**: Do NOT add redirect logic like `if (!req.originalUrl.endsWith('/')) return res.redirect(...)`. The redirected URL with trailing slash will hit the `/{proxy+}` route which requires authorization.
 
 4. **Both routes**: Define handlers for both `/api-docs` and `/api-docs/` to handle both cases:
+
    ```typescript
-   app.get('/api-docs', (req, res) => res.send(getSwaggerHtml()));
-   app.get('/api-docs/', (req, res) => res.send(getSwaggerHtml()));
+   app.get("/api-docs", (req, res) => res.send(getSwaggerHtml()));
+   app.get("/api-docs/", (req, res) => res.send(getSwaggerHtml()));
    ```
 
 5. **serverless.yml**: List `/api-docs` as a public route WITHOUT an authorizer:

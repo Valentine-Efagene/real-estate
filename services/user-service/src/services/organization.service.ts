@@ -273,9 +273,15 @@ class OrganizationService {
     async addMember(tenantId: string, organizationId: string, data: AddMemberInput) {
         const org = await this.findById(tenantId, organizationId);
 
-        // Verify user exists and belongs to the tenant
+        // Verify user exists and has a TenantMembership for this tenant
+        // Note: Users don't have tenantId directly set on User model - they have TenantMemberships
         const user = await prisma.user.findFirst({
-            where: { id: data.userId, tenantId },
+            where: {
+                id: data.userId,
+                tenantMemberships: {
+                    some: { tenantId },
+                },
+            },
         });
         if (!user) {
             throw new NotFoundError('User not found in this tenant');
