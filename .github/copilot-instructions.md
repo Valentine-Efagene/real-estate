@@ -203,11 +203,11 @@ Instead, use the CDN-based approach that serves HTML loading Swagger UI from unp
 
 ```typescript
 // Serve Swagger UI using CDN (works in serverless)
-app.get('/api-docs', (_req, res) => {
-    const openApiDocument = generateOpenAPIDocument();
-    const specJson = JSON.stringify(openApiDocument);
+app.get("/api-docs", (_req, res) => {
+  const openApiDocument = generateOpenAPIDocument();
+  const specJson = JSON.stringify(openApiDocument);
 
-    const html = `<!DOCTYPE html>
+  const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -240,11 +240,12 @@ app.get('/api-docs', (_req, res) => {
     </script>
 </body>
 </html>`;
-    res.send(html);
+  res.send(html);
 });
 ```
 
 This approach:
+
 - Loads CSS/JS from unpkg CDN (no bundling needed)
 - Embeds the OpenAPI spec directly in the HTML
 - Dynamically sets the server URL based on the current origin
