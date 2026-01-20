@@ -414,7 +414,8 @@ export const ModelName = {
   PropertyUnit: 'PropertyUnit',
   PropertyAmenity: 'PropertyAmenity',
   DocumentationPlan: 'DocumentationPlan',
-  DocumentationPlanStep: 'DocumentationPlanStep',
+  DocumentDefinition: 'DocumentDefinition',
+  ApprovalStage: 'ApprovalStage',
   QuestionnairePlan: 'QuestionnairePlan',
   QuestionnairePlanQuestion: 'QuestionnairePlanQuestion',
   PaymentPlan: 'PaymentPlan',
@@ -434,13 +435,12 @@ export const ModelName = {
   PaymentPhase: 'PaymentPhase',
   QuestionnaireField: 'QuestionnaireField',
   ApplicationEvent: 'ApplicationEvent',
-  DocumentationStep: 'DocumentationStep',
-  DocumentationStepDocument: 'DocumentationStepDocument',
-  DocumentationStepApproval: 'DocumentationStepApproval',
   PaymentInstallment: 'PaymentInstallment',
   ApplicationPayment: 'ApplicationPayment',
   ApplicationDocument: 'ApplicationDocument',
   DocumentReview: 'DocumentReview',
+  ApprovalStageProgress: 'ApprovalStageProgress',
+  DocumentApproval: 'DocumentApproval',
   DocumentTemplate: 'DocumentTemplate',
   OfferLetter: 'OfferLetter',
   ApplicationTermination: 'ApplicationTermination',
@@ -470,7 +470,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenantMembership" | "organization" | "organizationMember" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "documentationPlan" | "documentationPlanStep" | "questionnairePlan" | "questionnairePlanQuestion" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "phaseEventAttachment" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "paymentMethodPhaseField" | "application" | "applicationRefund" | "applicationPhase" | "questionnairePhase" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "applicationEvent" | "documentationStep" | "documentationStepDocument" | "documentationStepApproval" | "paymentInstallment" | "applicationPayment" | "applicationDocument" | "documentReview" | "documentTemplate" | "offerLetter" | "applicationTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "workflowEvent" | "eventHandlerExecution" | "domainEvent" | "propertyTransferRequest" | "approvalRequest" | "workflowBlocker"
+    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenantMembership" | "organization" | "organizationMember" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "documentationPlan" | "documentDefinition" | "approvalStage" | "questionnairePlan" | "questionnairePlanQuestion" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "phaseEventAttachment" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "paymentMethodPhaseField" | "application" | "applicationRefund" | "applicationPhase" | "questionnairePhase" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "applicationEvent" | "paymentInstallment" | "applicationPayment" | "applicationDocument" | "documentReview" | "approvalStageProgress" | "documentApproval" | "documentTemplate" | "offerLetter" | "applicationTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "workflowEvent" | "eventHandlerExecution" | "domainEvent" | "propertyTransferRequest" | "approvalRequest" | "workflowBlocker"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2454,69 +2454,135 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    DocumentationPlanStep: {
-      payload: Prisma.$DocumentationPlanStepPayload<ExtArgs>
-      fields: Prisma.DocumentationPlanStepFieldRefs
+    DocumentDefinition: {
+      payload: Prisma.$DocumentDefinitionPayload<ExtArgs>
+      fields: Prisma.DocumentDefinitionFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.DocumentationPlanStepFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPlanStepPayload> | null
+          args: Prisma.DocumentDefinitionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentDefinitionPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.DocumentationPlanStepFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPlanStepPayload>
+          args: Prisma.DocumentDefinitionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentDefinitionPayload>
         }
         findFirst: {
-          args: Prisma.DocumentationPlanStepFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPlanStepPayload> | null
+          args: Prisma.DocumentDefinitionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentDefinitionPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.DocumentationPlanStepFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPlanStepPayload>
+          args: Prisma.DocumentDefinitionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentDefinitionPayload>
         }
         findMany: {
-          args: Prisma.DocumentationPlanStepFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPlanStepPayload>[]
+          args: Prisma.DocumentDefinitionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentDefinitionPayload>[]
         }
         create: {
-          args: Prisma.DocumentationPlanStepCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPlanStepPayload>
+          args: Prisma.DocumentDefinitionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentDefinitionPayload>
         }
         createMany: {
-          args: Prisma.DocumentationPlanStepCreateManyArgs<ExtArgs>
+          args: Prisma.DocumentDefinitionCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         delete: {
-          args: Prisma.DocumentationPlanStepDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPlanStepPayload>
+          args: Prisma.DocumentDefinitionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentDefinitionPayload>
         }
         update: {
-          args: Prisma.DocumentationPlanStepUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPlanStepPayload>
+          args: Prisma.DocumentDefinitionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentDefinitionPayload>
         }
         deleteMany: {
-          args: Prisma.DocumentationPlanStepDeleteManyArgs<ExtArgs>
+          args: Prisma.DocumentDefinitionDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.DocumentationPlanStepUpdateManyArgs<ExtArgs>
+          args: Prisma.DocumentDefinitionUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         upsert: {
-          args: Prisma.DocumentationPlanStepUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationPlanStepPayload>
+          args: Prisma.DocumentDefinitionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentDefinitionPayload>
         }
         aggregate: {
-          args: Prisma.DocumentationPlanStepAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateDocumentationPlanStep>
+          args: Prisma.DocumentDefinitionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDocumentDefinition>
         }
         groupBy: {
-          args: Prisma.DocumentationPlanStepGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.DocumentationPlanStepGroupByOutputType>[]
+          args: Prisma.DocumentDefinitionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentDefinitionGroupByOutputType>[]
         }
         count: {
-          args: Prisma.DocumentationPlanStepCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.DocumentationPlanStepCountAggregateOutputType> | number
+          args: Prisma.DocumentDefinitionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentDefinitionCountAggregateOutputType> | number
+        }
+      }
+    }
+    ApprovalStage: {
+      payload: Prisma.$ApprovalStagePayload<ExtArgs>
+      fields: Prisma.ApprovalStageFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ApprovalStageFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalStagePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ApprovalStageFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalStagePayload>
+        }
+        findFirst: {
+          args: Prisma.ApprovalStageFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalStagePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ApprovalStageFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalStagePayload>
+        }
+        findMany: {
+          args: Prisma.ApprovalStageFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalStagePayload>[]
+        }
+        create: {
+          args: Prisma.ApprovalStageCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalStagePayload>
+        }
+        createMany: {
+          args: Prisma.ApprovalStageCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.ApprovalStageDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalStagePayload>
+        }
+        update: {
+          args: Prisma.ApprovalStageUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalStagePayload>
+        }
+        deleteMany: {
+          args: Prisma.ApprovalStageDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ApprovalStageUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.ApprovalStageUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalStagePayload>
+        }
+        aggregate: {
+          args: Prisma.ApprovalStageAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateApprovalStage>
+        }
+        groupBy: {
+          args: Prisma.ApprovalStageGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApprovalStageGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ApprovalStageCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApprovalStageCountAggregateOutputType> | number
         }
       }
     }
@@ -3774,204 +3840,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    DocumentationStep: {
-      payload: Prisma.$DocumentationStepPayload<ExtArgs>
-      fields: Prisma.DocumentationStepFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.DocumentationStepFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.DocumentationStepFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepPayload>
-        }
-        findFirst: {
-          args: Prisma.DocumentationStepFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.DocumentationStepFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepPayload>
-        }
-        findMany: {
-          args: Prisma.DocumentationStepFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepPayload>[]
-        }
-        create: {
-          args: Prisma.DocumentationStepCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepPayload>
-        }
-        createMany: {
-          args: Prisma.DocumentationStepCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        delete: {
-          args: Prisma.DocumentationStepDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepPayload>
-        }
-        update: {
-          args: Prisma.DocumentationStepUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepPayload>
-        }
-        deleteMany: {
-          args: Prisma.DocumentationStepDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.DocumentationStepUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        upsert: {
-          args: Prisma.DocumentationStepUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepPayload>
-        }
-        aggregate: {
-          args: Prisma.DocumentationStepAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateDocumentationStep>
-        }
-        groupBy: {
-          args: Prisma.DocumentationStepGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.DocumentationStepGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.DocumentationStepCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.DocumentationStepCountAggregateOutputType> | number
-        }
-      }
-    }
-    DocumentationStepDocument: {
-      payload: Prisma.$DocumentationStepDocumentPayload<ExtArgs>
-      fields: Prisma.DocumentationStepDocumentFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.DocumentationStepDocumentFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepDocumentPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.DocumentationStepDocumentFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepDocumentPayload>
-        }
-        findFirst: {
-          args: Prisma.DocumentationStepDocumentFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepDocumentPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.DocumentationStepDocumentFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepDocumentPayload>
-        }
-        findMany: {
-          args: Prisma.DocumentationStepDocumentFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepDocumentPayload>[]
-        }
-        create: {
-          args: Prisma.DocumentationStepDocumentCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepDocumentPayload>
-        }
-        createMany: {
-          args: Prisma.DocumentationStepDocumentCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        delete: {
-          args: Prisma.DocumentationStepDocumentDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepDocumentPayload>
-        }
-        update: {
-          args: Prisma.DocumentationStepDocumentUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepDocumentPayload>
-        }
-        deleteMany: {
-          args: Prisma.DocumentationStepDocumentDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.DocumentationStepDocumentUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        upsert: {
-          args: Prisma.DocumentationStepDocumentUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepDocumentPayload>
-        }
-        aggregate: {
-          args: Prisma.DocumentationStepDocumentAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateDocumentationStepDocument>
-        }
-        groupBy: {
-          args: Prisma.DocumentationStepDocumentGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.DocumentationStepDocumentGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.DocumentationStepDocumentCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.DocumentationStepDocumentCountAggregateOutputType> | number
-        }
-      }
-    }
-    DocumentationStepApproval: {
-      payload: Prisma.$DocumentationStepApprovalPayload<ExtArgs>
-      fields: Prisma.DocumentationStepApprovalFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.DocumentationStepApprovalFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepApprovalPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.DocumentationStepApprovalFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepApprovalPayload>
-        }
-        findFirst: {
-          args: Prisma.DocumentationStepApprovalFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepApprovalPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.DocumentationStepApprovalFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepApprovalPayload>
-        }
-        findMany: {
-          args: Prisma.DocumentationStepApprovalFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepApprovalPayload>[]
-        }
-        create: {
-          args: Prisma.DocumentationStepApprovalCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepApprovalPayload>
-        }
-        createMany: {
-          args: Prisma.DocumentationStepApprovalCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        delete: {
-          args: Prisma.DocumentationStepApprovalDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepApprovalPayload>
-        }
-        update: {
-          args: Prisma.DocumentationStepApprovalUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepApprovalPayload>
-        }
-        deleteMany: {
-          args: Prisma.DocumentationStepApprovalDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.DocumentationStepApprovalUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        upsert: {
-          args: Prisma.DocumentationStepApprovalUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentationStepApprovalPayload>
-        }
-        aggregate: {
-          args: Prisma.DocumentationStepApprovalAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateDocumentationStepApproval>
-        }
-        groupBy: {
-          args: Prisma.DocumentationStepApprovalGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.DocumentationStepApprovalGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.DocumentationStepApprovalCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.DocumentationStepApprovalCountAggregateOutputType> | number
-        }
-      }
-    }
     PaymentInstallment: {
       payload: Prisma.$PaymentInstallmentPayload<ExtArgs>
       fields: Prisma.PaymentInstallmentFieldRefs
@@ -4233,6 +4101,138 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.DocumentReviewCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.DocumentReviewCountAggregateOutputType> | number
+        }
+      }
+    }
+    ApprovalStageProgress: {
+      payload: Prisma.$ApprovalStageProgressPayload<ExtArgs>
+      fields: Prisma.ApprovalStageProgressFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ApprovalStageProgressFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalStageProgressPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ApprovalStageProgressFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalStageProgressPayload>
+        }
+        findFirst: {
+          args: Prisma.ApprovalStageProgressFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalStageProgressPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ApprovalStageProgressFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalStageProgressPayload>
+        }
+        findMany: {
+          args: Prisma.ApprovalStageProgressFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalStageProgressPayload>[]
+        }
+        create: {
+          args: Prisma.ApprovalStageProgressCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalStageProgressPayload>
+        }
+        createMany: {
+          args: Prisma.ApprovalStageProgressCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.ApprovalStageProgressDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalStageProgressPayload>
+        }
+        update: {
+          args: Prisma.ApprovalStageProgressUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalStageProgressPayload>
+        }
+        deleteMany: {
+          args: Prisma.ApprovalStageProgressDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ApprovalStageProgressUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.ApprovalStageProgressUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApprovalStageProgressPayload>
+        }
+        aggregate: {
+          args: Prisma.ApprovalStageProgressAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateApprovalStageProgress>
+        }
+        groupBy: {
+          args: Prisma.ApprovalStageProgressGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApprovalStageProgressGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ApprovalStageProgressCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApprovalStageProgressCountAggregateOutputType> | number
+        }
+      }
+    }
+    DocumentApproval: {
+      payload: Prisma.$DocumentApprovalPayload<ExtArgs>
+      fields: Prisma.DocumentApprovalFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DocumentApprovalFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentApprovalPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DocumentApprovalFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentApprovalPayload>
+        }
+        findFirst: {
+          args: Prisma.DocumentApprovalFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentApprovalPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DocumentApprovalFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentApprovalPayload>
+        }
+        findMany: {
+          args: Prisma.DocumentApprovalFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentApprovalPayload>[]
+        }
+        create: {
+          args: Prisma.DocumentApprovalCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentApprovalPayload>
+        }
+        createMany: {
+          args: Prisma.DocumentApprovalCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.DocumentApprovalDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentApprovalPayload>
+        }
+        update: {
+          args: Prisma.DocumentApprovalUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentApprovalPayload>
+        }
+        deleteMany: {
+          args: Prisma.DocumentApprovalDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DocumentApprovalUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.DocumentApprovalUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentApprovalPayload>
+        }
+        aggregate: {
+          args: Prisma.DocumentApprovalAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDocumentApproval>
+        }
+        groupBy: {
+          args: Prisma.DocumentApprovalGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentApprovalGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DocumentApprovalCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentApprovalCountAggregateOutputType> | number
         }
       }
     }
@@ -5654,7 +5654,6 @@ export const DocumentationPlanScalarFieldEnum = {
   name: 'name',
   description: 'description',
   isActive: 'isActive',
-  requiredDocumentTypes: 'requiredDocumentTypes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -5662,37 +5661,47 @@ export const DocumentationPlanScalarFieldEnum = {
 export type DocumentationPlanScalarFieldEnum = (typeof DocumentationPlanScalarFieldEnum)[keyof typeof DocumentationPlanScalarFieldEnum]
 
 
-export const DocumentationPlanStepScalarFieldEnum = {
+export const DocumentDefinitionScalarFieldEnum = {
   id: 'id',
   planId: 'planId',
-  name: 'name',
-  stepType: 'stepType',
-  order: 'order',
   documentType: 'documentType',
-  metadata: 'metadata',
+  documentName: 'documentName',
+  uploadedBy: 'uploadedBy',
+  order: 'order',
   isRequired: 'isRequired',
   description: 'description',
   maxSizeBytes: 'maxSizeBytes',
   allowedMimeTypes: 'allowedMimeTypes',
   expiryDays: 'expiryDays',
-  requiresManualReview: 'requiresManualReview',
   minFiles: 'minFiles',
   maxFiles: 'maxFiles',
   condition: 'condition',
-  reviewRequirements: 'reviewRequirements',
-  reviewOrder: 'reviewOrder',
-  gateActor: 'gateActor',
-  gateAction: 'gateAction',
-  gateRoleId: 'gateRoleId',
-  gateInstructions: 'gateInstructions',
-  allowReject: 'allowReject',
-  rejectBehavior: 'rejectBehavior',
-  requiresComment: 'requiresComment',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type DocumentationPlanStepScalarFieldEnum = (typeof DocumentationPlanStepScalarFieldEnum)[keyof typeof DocumentationPlanStepScalarFieldEnum]
+export type DocumentDefinitionScalarFieldEnum = (typeof DocumentDefinitionScalarFieldEnum)[keyof typeof DocumentDefinitionScalarFieldEnum]
+
+
+export const ApprovalStageScalarFieldEnum = {
+  id: 'id',
+  planId: 'planId',
+  name: 'name',
+  order: 'order',
+  reviewParty: 'reviewParty',
+  autoTransition: 'autoTransition',
+  waitForAllDocuments: 'waitForAllDocuments',
+  allowEarlyVisibility: 'allowEarlyVisibility',
+  onRejection: 'onRejection',
+  restartFromStageOrder: 'restartFromStageOrder',
+  organizationId: 'organizationId',
+  slaHours: 'slaHours',
+  description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ApprovalStageScalarFieldEnum = (typeof ApprovalStageScalarFieldEnum)[keyof typeof ApprovalStageScalarFieldEnum]
 
 
 export const QuestionnairePlanScalarFieldEnum = {
@@ -6011,15 +6020,11 @@ export const DocumentationPhaseScalarFieldEnum = {
   phaseId: 'phaseId',
   documentationPlanId: 'documentationPlanId',
   sourceQuestionnairePhaseId: 'sourceQuestionnairePhaseId',
-  currentStepId: 'currentStepId',
+  currentStageOrder: 'currentStageOrder',
   approvedDocumentsCount: 'approvedDocumentsCount',
   requiredDocumentsCount: 'requiredDocumentsCount',
-  completedStepsCount: 'completedStepsCount',
-  totalStepsCount: 'totalStepsCount',
-  minimumCompletionPercentage: 'minimumCompletionPercentage',
-  completionCriterion: 'completionCriterion',
-  stepDefinitionsSnapshot: 'stepDefinitionsSnapshot',
-  requiredDocumentSnapshot: 'requiredDocumentSnapshot',
+  documentDefinitionsSnapshot: 'documentDefinitionsSnapshot',
+  approvalStagesSnapshot: 'approvalStagesSnapshot',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -6090,70 +6095,6 @@ export const ApplicationEventScalarFieldEnum = {
 export type ApplicationEventScalarFieldEnum = (typeof ApplicationEventScalarFieldEnum)[keyof typeof ApplicationEventScalarFieldEnum]
 
 
-export const DocumentationStepScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  documentationPhaseId: 'documentationPhaseId',
-  name: 'name',
-  description: 'description',
-  stepType: 'stepType',
-  order: 'order',
-  status: 'status',
-  actionReason: 'actionReason',
-  submissionCount: 'submissionCount',
-  lastSubmittedAt: 'lastSubmittedAt',
-  metadata: 'metadata',
-  requiresManualReview: 'requiresManualReview',
-  condition: 'condition',
-  reviewRequirements: 'reviewRequirements',
-  reviewOrder: 'reviewOrder',
-  assigneeId: 'assigneeId',
-  gateActor: 'gateActor',
-  gateAction: 'gateAction',
-  gateRoleId: 'gateRoleId',
-  gateInstructions: 'gateInstructions',
-  allowReject: 'allowReject',
-  rejectBehavior: 'rejectBehavior',
-  requiresComment: 'requiresComment',
-  gateActedAt: 'gateActedAt',
-  gateActedById: 'gateActedById',
-  gateDecision: 'gateDecision',
-  gateComment: 'gateComment',
-  dueDate: 'dueDate',
-  completedAt: 'completedAt',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type DocumentationStepScalarFieldEnum = (typeof DocumentationStepScalarFieldEnum)[keyof typeof DocumentationStepScalarFieldEnum]
-
-
-export const DocumentationStepDocumentScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  stepId: 'stepId',
-  documentType: 'documentType',
-  isRequired: 'isRequired',
-  createdAt: 'createdAt'
-} as const
-
-export type DocumentationStepDocumentScalarFieldEnum = (typeof DocumentationStepDocumentScalarFieldEnum)[keyof typeof DocumentationStepDocumentScalarFieldEnum]
-
-
-export const DocumentationStepApprovalScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  stepId: 'stepId',
-  approverId: 'approverId',
-  decision: 'decision',
-  comment: 'comment',
-  decidedAt: 'decidedAt',
-  createdAt: 'createdAt'
-} as const
-
-export type DocumentationStepApprovalScalarFieldEnum = (typeof DocumentationStepApprovalScalarFieldEnum)[keyof typeof DocumentationStepApprovalScalarFieldEnum]
-
-
 export const PaymentInstallmentScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -6206,6 +6147,8 @@ export const ApplicationDocumentScalarFieldEnum = {
   applicationId: 'applicationId',
   phaseId: 'phaseId',
   stepId: 'stepId',
+  documentType: 'documentType',
+  documentName: 'documentName',
   name: 'name',
   url: 'url',
   type: 'type',
@@ -6241,6 +6184,47 @@ export const DocumentReviewScalarFieldEnum = {
 } as const
 
 export type DocumentReviewScalarFieldEnum = (typeof DocumentReviewScalarFieldEnum)[keyof typeof DocumentReviewScalarFieldEnum]
+
+
+export const ApprovalStageProgressScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  documentationPhaseId: 'documentationPhaseId',
+  approvalStageId: 'approvalStageId',
+  name: 'name',
+  order: 'order',
+  reviewParty: 'reviewParty',
+  autoTransition: 'autoTransition',
+  waitForAllDocuments: 'waitForAllDocuments',
+  allowEarlyVisibility: 'allowEarlyVisibility',
+  onRejection: 'onRejection',
+  restartFromStageOrder: 'restartFromStageOrder',
+  status: 'status',
+  activatedAt: 'activatedAt',
+  completedAt: 'completedAt',
+  completedById: 'completedById',
+  transitionComment: 'transitionComment',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ApprovalStageProgressScalarFieldEnum = (typeof ApprovalStageProgressScalarFieldEnum)[keyof typeof ApprovalStageProgressScalarFieldEnum]
+
+
+export const DocumentApprovalScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  documentId: 'documentId',
+  stageProgressId: 'stageProgressId',
+  reviewerId: 'reviewerId',
+  reviewParty: 'reviewParty',
+  decision: 'decision',
+  comment: 'comment',
+  reviewedAt: 'reviewedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type DocumentApprovalScalarFieldEnum = (typeof DocumentApprovalScalarFieldEnum)[keyof typeof DocumentApprovalScalarFieldEnum]
 
 
 export const DocumentTemplateScalarFieldEnum = {
@@ -6987,19 +6971,27 @@ export const DocumentationPlanOrderByRelevanceFieldEnum = {
 export type DocumentationPlanOrderByRelevanceFieldEnum = (typeof DocumentationPlanOrderByRelevanceFieldEnum)[keyof typeof DocumentationPlanOrderByRelevanceFieldEnum]
 
 
-export const DocumentationPlanStepOrderByRelevanceFieldEnum = {
+export const DocumentDefinitionOrderByRelevanceFieldEnum = {
+  id: 'id',
+  planId: 'planId',
+  documentType: 'documentType',
+  documentName: 'documentName',
+  description: 'description',
+  allowedMimeTypes: 'allowedMimeTypes'
+} as const
+
+export type DocumentDefinitionOrderByRelevanceFieldEnum = (typeof DocumentDefinitionOrderByRelevanceFieldEnum)[keyof typeof DocumentDefinitionOrderByRelevanceFieldEnum]
+
+
+export const ApprovalStageOrderByRelevanceFieldEnum = {
   id: 'id',
   planId: 'planId',
   name: 'name',
-  documentType: 'documentType',
-  description: 'description',
-  allowedMimeTypes: 'allowedMimeTypes',
-  reviewOrder: 'reviewOrder',
-  gateRoleId: 'gateRoleId',
-  gateInstructions: 'gateInstructions'
+  organizationId: 'organizationId',
+  description: 'description'
 } as const
 
-export type DocumentationPlanStepOrderByRelevanceFieldEnum = (typeof DocumentationPlanStepOrderByRelevanceFieldEnum)[keyof typeof DocumentationPlanStepOrderByRelevanceFieldEnum]
+export type ApprovalStageOrderByRelevanceFieldEnum = (typeof ApprovalStageOrderByRelevanceFieldEnum)[keyof typeof ApprovalStageOrderByRelevanceFieldEnum]
 
 
 export const QuestionnairePlanOrderByRelevanceFieldEnum = {
@@ -7190,8 +7182,7 @@ export const DocumentationPhaseOrderByRelevanceFieldEnum = {
   tenantId: 'tenantId',
   phaseId: 'phaseId',
   documentationPlanId: 'documentationPlanId',
-  sourceQuestionnairePhaseId: 'sourceQuestionnairePhaseId',
-  currentStepId: 'currentStepId'
+  sourceQuestionnairePhaseId: 'sourceQuestionnairePhaseId'
 } as const
 
 export type DocumentationPhaseOrderByRelevanceFieldEnum = (typeof DocumentationPhaseOrderByRelevanceFieldEnum)[keyof typeof DocumentationPhaseOrderByRelevanceFieldEnum]
@@ -7233,46 +7224,6 @@ export const ApplicationEventOrderByRelevanceFieldEnum = {
 export type ApplicationEventOrderByRelevanceFieldEnum = (typeof ApplicationEventOrderByRelevanceFieldEnum)[keyof typeof ApplicationEventOrderByRelevanceFieldEnum]
 
 
-export const DocumentationStepOrderByRelevanceFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  documentationPhaseId: 'documentationPhaseId',
-  name: 'name',
-  description: 'description',
-  actionReason: 'actionReason',
-  reviewOrder: 'reviewOrder',
-  assigneeId: 'assigneeId',
-  gateRoleId: 'gateRoleId',
-  gateInstructions: 'gateInstructions',
-  gateActedById: 'gateActedById',
-  gateDecision: 'gateDecision',
-  gateComment: 'gateComment'
-} as const
-
-export type DocumentationStepOrderByRelevanceFieldEnum = (typeof DocumentationStepOrderByRelevanceFieldEnum)[keyof typeof DocumentationStepOrderByRelevanceFieldEnum]
-
-
-export const DocumentationStepDocumentOrderByRelevanceFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  stepId: 'stepId',
-  documentType: 'documentType'
-} as const
-
-export type DocumentationStepDocumentOrderByRelevanceFieldEnum = (typeof DocumentationStepDocumentOrderByRelevanceFieldEnum)[keyof typeof DocumentationStepDocumentOrderByRelevanceFieldEnum]
-
-
-export const DocumentationStepApprovalOrderByRelevanceFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  stepId: 'stepId',
-  approverId: 'approverId',
-  comment: 'comment'
-} as const
-
-export type DocumentationStepApprovalOrderByRelevanceFieldEnum = (typeof DocumentationStepApprovalOrderByRelevanceFieldEnum)[keyof typeof DocumentationStepApprovalOrderByRelevanceFieldEnum]
-
-
 export const PaymentInstallmentOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -7303,6 +7254,8 @@ export const ApplicationDocumentOrderByRelevanceFieldEnum = {
   applicationId: 'applicationId',
   phaseId: 'phaseId',
   stepId: 'stepId',
+  documentType: 'documentType',
+  documentName: 'documentName',
   name: 'name',
   url: 'url',
   type: 'type',
@@ -7325,6 +7278,31 @@ export const DocumentReviewOrderByRelevanceFieldEnum = {
 } as const
 
 export type DocumentReviewOrderByRelevanceFieldEnum = (typeof DocumentReviewOrderByRelevanceFieldEnum)[keyof typeof DocumentReviewOrderByRelevanceFieldEnum]
+
+
+export const ApprovalStageProgressOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  documentationPhaseId: 'documentationPhaseId',
+  approvalStageId: 'approvalStageId',
+  name: 'name',
+  completedById: 'completedById',
+  transitionComment: 'transitionComment'
+} as const
+
+export type ApprovalStageProgressOrderByRelevanceFieldEnum = (typeof ApprovalStageProgressOrderByRelevanceFieldEnum)[keyof typeof ApprovalStageProgressOrderByRelevanceFieldEnum]
+
+
+export const DocumentApprovalOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  documentId: 'documentId',
+  stageProgressId: 'stageProgressId',
+  reviewerId: 'reviewerId',
+  comment: 'comment'
+} as const
+
+export type DocumentApprovalOrderByRelevanceFieldEnum = (typeof DocumentApprovalOrderByRelevanceFieldEnum)[keyof typeof DocumentApprovalOrderByRelevanceFieldEnum]
 
 
 export const DocumentTemplateOrderByRelevanceFieldEnum = {
@@ -7628,30 +7606,23 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
 
 
 /**
- * Reference to a field of type 'StepType'
+ * Reference to a field of type 'UploadedBy'
  */
-export type EnumStepTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StepType'>
+export type EnumUploadedByFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UploadedBy'>
     
 
 
 /**
- * Reference to a field of type 'GateActor'
+ * Reference to a field of type 'ReviewParty'
  */
-export type EnumGateActorFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GateActor'>
+export type EnumReviewPartyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReviewParty'>
     
 
 
 /**
- * Reference to a field of type 'GateAction'
+ * Reference to a field of type 'RejectionBehavior'
  */
-export type EnumGateActionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GateAction'>
-    
-
-
-/**
- * Reference to a field of type 'GateRejectBehavior'
- */
-export type EnumGateRejectBehaviorFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GateRejectBehavior'>
+export type EnumRejectionBehaviorFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RejectionBehavior'>
     
 
 
@@ -7719,6 +7690,13 @@ export type EnumPhaseTriggerFieldRefInput<$PrismaModel> = FieldRefInputType<$Pri
 
 
 /**
+ * Reference to a field of type 'StepType'
+ */
+export type EnumStepTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StepType'>
+    
+
+
+/**
  * Reference to a field of type 'StepTrigger'
  */
 export type EnumStepTriggerFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StepTrigger'>
@@ -7775,20 +7753,6 @@ export type EnumEventActorTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$P
 
 
 /**
- * Reference to a field of type 'StepStatus'
- */
-export type EnumStepStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StepStatus'>
-    
-
-
-/**
- * Reference to a field of type 'ApprovalDecision'
- */
-export type EnumApprovalDecisionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ApprovalDecision'>
-    
-
-
-/**
  * Reference to a field of type 'InstallmentStatus'
  */
 export type EnumInstallmentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InstallmentStatus'>
@@ -7810,16 +7774,16 @@ export type EnumDocumentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$P
 
 
 /**
- * Reference to a field of type 'ReviewParty'
+ * Reference to a field of type 'ReviewDecision'
  */
-export type EnumReviewPartyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReviewParty'>
+export type EnumReviewDecisionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReviewDecision'>
     
 
 
 /**
- * Reference to a field of type 'ReviewDecision'
+ * Reference to a field of type 'StageStatus'
  */
-export type EnumReviewDecisionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReviewDecision'>
+export type EnumStageStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StageStatus'>
     
 
 
@@ -7925,6 +7889,13 @@ export type EnumApprovalRequestStatusFieldRefInput<$PrismaModel> = FieldRefInput
  * Reference to a field of type 'ApprovalRequestPriority'
  */
 export type EnumApprovalRequestPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ApprovalRequestPriority'>
+    
+
+
+/**
+ * Reference to a field of type 'ApprovalDecision'
+ */
+export type EnumApprovalDecisionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ApprovalDecision'>
     
 
 
@@ -8073,7 +8044,8 @@ export type GlobalOmitConfig = {
   propertyUnit?: Prisma.PropertyUnitOmit
   propertyAmenity?: Prisma.PropertyAmenityOmit
   documentationPlan?: Prisma.DocumentationPlanOmit
-  documentationPlanStep?: Prisma.DocumentationPlanStepOmit
+  documentDefinition?: Prisma.DocumentDefinitionOmit
+  approvalStage?: Prisma.ApprovalStageOmit
   questionnairePlan?: Prisma.QuestionnairePlanOmit
   questionnairePlanQuestion?: Prisma.QuestionnairePlanQuestionOmit
   paymentPlan?: Prisma.PaymentPlanOmit
@@ -8093,13 +8065,12 @@ export type GlobalOmitConfig = {
   paymentPhase?: Prisma.PaymentPhaseOmit
   questionnaireField?: Prisma.QuestionnaireFieldOmit
   applicationEvent?: Prisma.ApplicationEventOmit
-  documentationStep?: Prisma.DocumentationStepOmit
-  documentationStepDocument?: Prisma.DocumentationStepDocumentOmit
-  documentationStepApproval?: Prisma.DocumentationStepApprovalOmit
   paymentInstallment?: Prisma.PaymentInstallmentOmit
   applicationPayment?: Prisma.ApplicationPaymentOmit
   applicationDocument?: Prisma.ApplicationDocumentOmit
   documentReview?: Prisma.DocumentReviewOmit
+  approvalStageProgress?: Prisma.ApprovalStageProgressOmit
+  documentApproval?: Prisma.DocumentApprovalOmit
   documentTemplate?: Prisma.DocumentTemplateOmit
   offerLetter?: Prisma.OfferLetterOmit
   applicationTermination?: Prisma.ApplicationTerminationOmit

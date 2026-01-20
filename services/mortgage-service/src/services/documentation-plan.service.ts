@@ -1,6 +1,11 @@
 import { prisma as defaultPrisma } from '../lib/prisma';
 import { AppError, PrismaClient } from '@valentine-efagene/qshelter-common';
-import type { CreateDocumentationPlanInput, UpdateDocumentationPlanInput, AddStepToPlanInput } from '../validators/documentation-plan.validator';
+import type {
+    CreateDocumentationPlanInput,
+    UpdateDocumentationPlanInput,
+    AddDocumentDefinitionInput,
+    AddApprovalStageInput
+} from '../validators/documentation-plan.validator';
 
 type AnyPrismaClient = PrismaClient;
 
@@ -15,9 +20,12 @@ export interface DocumentationPlanService {
     update(id: string, data: UpdateDocumentationPlanInput): Promise<any>;
     delete(id: string): Promise<{ success: boolean }>;
     clone(id: string, newName: string): Promise<any>;
-    addStep(planId: string, data: AddStepToPlanInput): Promise<any>;
-    removeStep(planId: string, stepId: string): Promise<{ success: boolean }>;
-    updateStep(planId: string, stepId: string, data: Partial<AddStepToPlanInput>): Promise<any>;
+    addDocumentDefinition(planId: string, data: AddDocumentDefinitionInput): Promise<any>;
+    removeDocumentDefinition(planId: string, definitionId: string): Promise<{ success: boolean }>;
+    updateDocumentDefinition(planId: string, definitionId: string, data: Partial<AddDocumentDefinitionInput>): Promise<any>;
+    addApprovalStage(planId: string, data: AddApprovalStageInput): Promise<any>;
+    removeApprovalStage(planId: string, stageId: string): Promise<{ success: boolean }>;
+    updateApprovalStage(planId: string, stageId: string, data: Partial<AddApprovalStageInput>): Promise<any>;
 }
 
 /**
@@ -25,11 +33,26 @@ export interface DocumentationPlanService {
  * Use this for tenant-scoped operations.
  */
 export function createDocumentationPlanService(prisma: AnyPrismaClient = defaultPrisma): DocumentationPlanService {
+    const includeRelations = {
+        documentDefinitions: {
+            orderBy: { order: 'asc' as const },
+        },
+        approvalStages: {
+            orderBy: { order: 'asc' as const },
+        },
+    };
+
     async function create(tenantId: string, data: CreateDocumentationPlanInput) {
-        // Validate steps have unique orders
-        const orders = data.steps.map(s => s.order);
-        if (new Set(orders).size !== orders.length) {
-            throw new AppError(400, 'Step orders must be unique');
+        // Validate document definitions have unique orders
+        const docOrders = data.documentDefinitions.map(d => d.order);
+        if (new Set(docOrders).size !== docOrders.length) {
+            throw new AppError(400, 'Document definition orders must be unique');
+        }
+
+        // Validate approval stages have unique orders
+        const stageOrders = data.approvalStages.map(s => s.order);
+        if (new Set(stageOrders).size !== stageOrders.length) {
+            throw new AppError(400, 'Approval stage orders must be unique');
         }
 
         const plan = await prisma.documentationPlan.create({
@@ -38,32 +61,39 @@ export function createDocumentationPlanService(prisma: AnyPrismaClient = default
                 name: data.name,
                 description: data.description,
                 isActive: data.isActive ?? true,
-                requiredDocumentTypes: data.requiredDocumentTypes ?? [],
-                steps: {
-                    create: data.steps.map(step => ({
-                        name: step.name,
-                        stepType: step.stepType,
-                        order: step.order,
-                        documentType: step.documentType,
-                        metadata: step.metadata,
-                        // Document validation rules
-                        isRequired: step.isRequired ?? true,
-                        description: step.description,
-                        maxSizeBytes: step.maxSizeBytes,
-                        allowedMimeTypes: step.allowedMimeTypes?.join(','),
-                        expiryDays: step.expiryDays,
-                        requiresManualReview: step.requiresManualReview ?? false,
-                        minFiles: step.minFiles ?? 1,
-                        maxFiles: step.maxFiles ?? 1,
-                        condition: step.condition,
+                documentDefinitions: {
+                    create: data.documentDefinitions.map(doc => ({
+                        documentType: doc.documentType,
+                        documentName: doc.documentName,
+                        uploadedBy: doc.uploadedBy ?? 'CUSTOMER',
+                        order: doc.order,
+                        isRequired: doc.isRequired ?? true,
+                        description: doc.description,
+                        maxSizeBytes: doc.maxSizeBytes,
+                        allowedMimeTypes: doc.allowedMimeTypes?.join(','),
+                        expiryDays: doc.expiryDays,
+                        minFiles: doc.minFiles ?? 1,
+                        maxFiles: doc.maxFiles ?? 1,
+                        condition: doc.condition,
+                    })),
+                },
+                approvalStages: {
+                    create: data.approvalStages.map(stage => ({
+                        name: stage.name,
+                        order: stage.order,
+                        reviewParty: stage.reviewParty,
+                        autoTransition: stage.autoTransition ?? false,
+                        waitForAllDocuments: stage.waitForAllDocuments ?? true,
+                        allowEarlyVisibility: stage.allowEarlyVisibility ?? false,
+                        onRejection: stage.onRejection ?? 'CASCADE_BACK',
+                        restartFromStageOrder: stage.restartFromStageOrder,
+                        organizationId: stage.organizationId,
+                        slaHours: stage.slaHours,
+                        description: stage.description,
                     })),
                 },
             },
-            include: {
-                steps: {
-                    orderBy: { order: 'asc' },
-                },
-            },
+            include: includeRelations,
         });
 
         return plan;
@@ -72,11 +102,7 @@ export function createDocumentationPlanService(prisma: AnyPrismaClient = default
     async function findAll(filters?: { isActive?: boolean }) {
         const plans = await prisma.documentationPlan.findMany({
             where: filters,
-            include: {
-                steps: {
-                    orderBy: { order: 'asc' },
-                },
-            },
+            include: includeRelations,
             orderBy: { name: 'asc' },
         });
         return plans;
@@ -85,11 +111,7 @@ export function createDocumentationPlanService(prisma: AnyPrismaClient = default
     async function findById(id: string) {
         const plan = await prisma.documentationPlan.findUnique({
             where: { id },
-            include: {
-                steps: {
-                    orderBy: { order: 'asc' },
-                },
-            },
+            include: includeRelations,
         });
 
         if (!plan) {
@@ -103,22 +125,14 @@ export function createDocumentationPlanService(prisma: AnyPrismaClient = default
         if (!tenantId) {
             const plan = await prisma.documentationPlan.findFirst({
                 where: { name, tenantId: null },
-                include: {
-                    steps: {
-                        orderBy: { order: 'asc' },
-                    },
-                },
+                include: includeRelations,
             });
             return plan;
         }
 
         const plan = await prisma.documentationPlan.findUnique({
             where: { tenantId_name: { tenantId, name } },
-            include: {
-                steps: {
-                    orderBy: { order: 'asc' },
-                },
-            },
+            include: includeRelations,
         });
 
         return plan;
@@ -133,13 +147,8 @@ export function createDocumentationPlanService(prisma: AnyPrismaClient = default
                 name: data.name,
                 description: data.description,
                 isActive: data.isActive,
-                requiredDocumentTypes: data.requiredDocumentTypes,
             },
-            include: {
-                steps: {
-                    orderBy: { order: 'asc' },
-                },
-            },
+            include: includeRelations,
         });
 
         return updated;
@@ -173,111 +182,192 @@ export function createDocumentationPlanService(prisma: AnyPrismaClient = default
                 name: newName,
                 description: source.description,
                 isActive: source.isActive,
-                requiredDocumentTypes: source.requiredDocumentTypes ?? undefined,
-                steps: {
-                    create: source.steps.map((step: any) => ({
-                        name: step.name,
-                        stepType: step.stepType,
-                        order: step.order,
-                        documentType: step.documentType,
-                        metadata: step.metadata,
-                        // Document validation rules
-                        isRequired: step.isRequired,
-                        description: step.description,
-                        maxSizeBytes: step.maxSizeBytes,
-                        allowedMimeTypes: step.allowedMimeTypes,
-                        expiryDays: step.expiryDays,
-                        requiresManualReview: step.requiresManualReview,
-                        minFiles: step.minFiles,
-                        maxFiles: step.maxFiles,
-                        condition: step.condition,
+                documentDefinitions: {
+                    create: source.documentDefinitions.map((doc: any) => ({
+                        documentType: doc.documentType,
+                        documentName: doc.documentName,
+                        uploadedBy: doc.uploadedBy,
+                        order: doc.order,
+                        isRequired: doc.isRequired,
+                        description: doc.description,
+                        maxSizeBytes: doc.maxSizeBytes,
+                        allowedMimeTypes: doc.allowedMimeTypes,
+                        expiryDays: doc.expiryDays,
+                        minFiles: doc.minFiles,
+                        maxFiles: doc.maxFiles,
+                        condition: doc.condition,
+                    })),
+                },
+                approvalStages: {
+                    create: source.approvalStages.map((stage: any) => ({
+                        name: stage.name,
+                        order: stage.order,
+                        reviewParty: stage.reviewParty,
+                        autoTransition: stage.autoTransition,
+                        waitForAllDocuments: stage.waitForAllDocuments,
+                        allowEarlyVisibility: stage.allowEarlyVisibility,
+                        onRejection: stage.onRejection,
+                        restartFromStageOrder: stage.restartFromStageOrder,
+                        organizationId: stage.organizationId,
+                        slaHours: stage.slaHours,
+                        description: stage.description,
                     })),
                 },
             },
-            include: {
-                steps: {
-                    orderBy: { order: 'asc' },
-                },
-            },
+            include: includeRelations,
         });
 
         return cloned;
     }
 
-    async function addStep(planId: string, data: AddStepToPlanInput) {
+    // =========================================================================
+    // DOCUMENT DEFINITION OPERATIONS
+    // =========================================================================
+
+    async function addDocumentDefinition(planId: string, data: AddDocumentDefinitionInput) {
         await findById(planId);
 
-        const step = await prisma.documentationPlanStep.create({
+        const definition = await prisma.documentDefinition.create({
             data: {
                 planId,
-                name: data.name,
-                stepType: data.stepType,
-                order: data.order,
                 documentType: data.documentType,
-                metadata: data.metadata,
-                // Document validation rules
+                documentName: data.documentName,
+                uploadedBy: data.uploadedBy ?? 'CUSTOMER',
+                order: data.order,
                 isRequired: data.isRequired ?? true,
                 description: data.description,
                 maxSizeBytes: data.maxSizeBytes,
                 allowedMimeTypes: data.allowedMimeTypes?.join(','),
                 expiryDays: data.expiryDays,
-                requiresManualReview: data.requiresManualReview ?? false,
                 minFiles: data.minFiles ?? 1,
                 maxFiles: data.maxFiles ?? 1,
                 condition: data.condition,
             },
         });
 
-        return step;
+        return definition;
     }
 
-    async function removeStep(planId: string, stepId: string) {
+    async function removeDocumentDefinition(planId: string, definitionId: string) {
         await findById(planId);
 
-        const step = await prisma.documentationPlanStep.findUnique({
-            where: { id: stepId },
+        const definition = await prisma.documentDefinition.findUnique({
+            where: { id: definitionId },
         });
 
-        if (!step || step.planId !== planId) {
-            throw new AppError(404, 'Step not found in this plan');
+        if (!definition || definition.planId !== planId) {
+            throw new AppError(404, 'Document definition not found in this plan');
         }
 
-        await prisma.documentationPlanStep.delete({
-            where: { id: stepId },
+        await prisma.documentDefinition.delete({
+            where: { id: definitionId },
         });
 
         return { success: true };
     }
 
-    async function updateStep(planId: string, stepId: string, data: Partial<AddStepToPlanInput>) {
+    async function updateDocumentDefinition(planId: string, definitionId: string, data: Partial<AddDocumentDefinitionInput>) {
         await findById(planId);
 
-        const step = await prisma.documentationPlanStep.findUnique({
-            where: { id: stepId },
+        const definition = await prisma.documentDefinition.findUnique({
+            where: { id: definitionId },
         });
 
-        if (!step || step.planId !== planId) {
-            throw new AppError(404, 'Step not found in this plan');
+        if (!definition || definition.planId !== planId) {
+            throw new AppError(404, 'Document definition not found in this plan');
         }
 
-        const updated = await prisma.documentationPlanStep.update({
-            where: { id: stepId },
+        const updated = await prisma.documentDefinition.update({
+            where: { id: definitionId },
             data: {
-                name: data.name,
-                stepType: data.stepType,
-                order: data.order,
                 documentType: data.documentType,
-                metadata: data.metadata,
-                // Document validation rules
+                documentName: data.documentName,
+                uploadedBy: data.uploadedBy,
+                order: data.order,
                 isRequired: data.isRequired,
                 description: data.description,
                 maxSizeBytes: data.maxSizeBytes,
                 allowedMimeTypes: data.allowedMimeTypes?.join(','),
                 expiryDays: data.expiryDays,
-                requiresManualReview: data.requiresManualReview,
                 minFiles: data.minFiles,
                 maxFiles: data.maxFiles,
                 condition: data.condition,
+            },
+        });
+
+        return updated;
+    }
+
+    // =========================================================================
+    // APPROVAL STAGE OPERATIONS
+    // =========================================================================
+
+    async function addApprovalStage(planId: string, data: AddApprovalStageInput) {
+        await findById(planId);
+
+        const stage = await prisma.approvalStage.create({
+            data: {
+                planId,
+                name: data.name,
+                order: data.order,
+                reviewParty: data.reviewParty,
+                autoTransition: data.autoTransition ?? false,
+                waitForAllDocuments: data.waitForAllDocuments ?? true,
+                allowEarlyVisibility: data.allowEarlyVisibility ?? false,
+                onRejection: data.onRejection ?? 'CASCADE_BACK',
+                restartFromStageOrder: data.restartFromStageOrder,
+                organizationId: data.organizationId,
+                slaHours: data.slaHours,
+                description: data.description,
+            },
+        });
+
+        return stage;
+    }
+
+    async function removeApprovalStage(planId: string, stageId: string) {
+        await findById(planId);
+
+        const stage = await prisma.approvalStage.findUnique({
+            where: { id: stageId },
+        });
+
+        if (!stage || stage.planId !== planId) {
+            throw new AppError(404, 'Approval stage not found in this plan');
+        }
+
+        await prisma.approvalStage.delete({
+            where: { id: stageId },
+        });
+
+        return { success: true };
+    }
+
+    async function updateApprovalStage(planId: string, stageId: string, data: Partial<AddApprovalStageInput>) {
+        await findById(planId);
+
+        const stage = await prisma.approvalStage.findUnique({
+            where: { id: stageId },
+        });
+
+        if (!stage || stage.planId !== planId) {
+            throw new AppError(404, 'Approval stage not found in this plan');
+        }
+
+        const updated = await prisma.approvalStage.update({
+            where: { id: stageId },
+            data: {
+                name: data.name,
+                order: data.order,
+                reviewParty: data.reviewParty,
+                autoTransition: data.autoTransition,
+                waitForAllDocuments: data.waitForAllDocuments,
+                allowEarlyVisibility: data.allowEarlyVisibility,
+                onRejection: data.onRejection,
+                restartFromStageOrder: data.restartFromStageOrder,
+                organizationId: data.organizationId,
+                slaHours: data.slaHours,
+                description: data.description,
             },
         });
 
@@ -292,8 +382,11 @@ export function createDocumentationPlanService(prisma: AnyPrismaClient = default
         update,
         delete: deleteById,
         clone,
-        addStep,
-        removeStep,
-        updateStep,
+        addDocumentDefinition,
+        removeDocumentDefinition,
+        updateDocumentDefinition,
+        addApprovalStage,
+        removeApprovalStage,
+        updateApprovalStage,
     };
 }

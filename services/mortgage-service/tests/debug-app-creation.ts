@@ -55,10 +55,12 @@ async function debug() {
         const property = await prisma.property.create({
             data: {
                 tenantId: tenant.id,
-                developerId: user.id,
-                name: 'Test Property',
-                propertyType: 'RESIDENTIAL',
+                userId: user.id,
+                title: 'Test Property',
+                category: 'RESIDENTIAL',
+                propertyType: 'APARTMENT',
                 country: 'Nigeria',
+                city: 'Lagos',
                 currency: 'NGN',
                 status: 'PUBLISHED',
                 isPublished: true,

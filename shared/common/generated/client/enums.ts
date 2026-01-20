@@ -340,10 +340,42 @@ export const DocumentStatus = {
   APPROVED: 'APPROVED',
   REJECTED: 'REJECTED',
   EXPIRED: 'EXPIRED',
-  CANCELLED: 'CANCELLED'
+  CANCELLED: 'CANCELLED',
+  NEEDS_REUPLOAD: 'NEEDS_REUPLOAD'
 } as const
 
 export type DocumentStatus = (typeof DocumentStatus)[keyof typeof DocumentStatus]
+
+
+export const StageStatus = {
+  PENDING: 'PENDING',
+  IN_PROGRESS: 'IN_PROGRESS',
+  AWAITING_TRANSITION: 'AWAITING_TRANSITION',
+  COMPLETED: 'COMPLETED'
+} as const
+
+export type StageStatus = (typeof StageStatus)[keyof typeof StageStatus]
+
+
+export const UploadedBy = {
+  CUSTOMER: 'CUSTOMER',
+  LENDER: 'LENDER',
+  DEVELOPER: 'DEVELOPER',
+  LEGAL: 'LEGAL',
+  INSURER: 'INSURER',
+  PLATFORM: 'PLATFORM'
+} as const
+
+export type UploadedBy = (typeof UploadedBy)[keyof typeof UploadedBy]
+
+
+export const RejectionBehavior = {
+  CASCADE_BACK: 'CASCADE_BACK',
+  RESTART_CURRENT: 'RESTART_CURRENT',
+  RESTART_FROM_STAGE: 'RESTART_FROM_STAGE'
+} as const
+
+export type RejectionBehavior = (typeof RejectionBehavior)[keyof typeof RejectionBehavior]
 
 
 export const OfferLetterType = {

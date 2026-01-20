@@ -40,6 +40,8 @@ export type ApplicationDocumentMinAggregateOutputType = {
   applicationId: string | null
   phaseId: string | null
   stepId: string | null
+  documentType: string | null
+  documentName: string | null
   name: string | null
   url: string | null
   type: string | null
@@ -57,6 +59,8 @@ export type ApplicationDocumentMaxAggregateOutputType = {
   applicationId: string | null
   phaseId: string | null
   stepId: string | null
+  documentType: string | null
+  documentName: string | null
   name: string | null
   url: string | null
   type: string | null
@@ -74,6 +78,8 @@ export type ApplicationDocumentCountAggregateOutputType = {
   applicationId: number
   phaseId: number
   stepId: number
+  documentType: number
+  documentName: number
   name: number
   url: number
   type: number
@@ -101,6 +107,8 @@ export type ApplicationDocumentMinAggregateInputType = {
   applicationId?: true
   phaseId?: true
   stepId?: true
+  documentType?: true
+  documentName?: true
   name?: true
   url?: true
   type?: true
@@ -118,6 +126,8 @@ export type ApplicationDocumentMaxAggregateInputType = {
   applicationId?: true
   phaseId?: true
   stepId?: true
+  documentType?: true
+  documentName?: true
   name?: true
   url?: true
   type?: true
@@ -135,6 +145,8 @@ export type ApplicationDocumentCountAggregateInputType = {
   applicationId?: true
   phaseId?: true
   stepId?: true
+  documentType?: true
+  documentName?: true
   name?: true
   url?: true
   type?: true
@@ -239,6 +251,8 @@ export type ApplicationDocumentGroupByOutputType = {
   applicationId: string
   phaseId: string | null
   stepId: string | null
+  documentType: string | null
+  documentName: string | null
   name: string
   url: string
   type: string
@@ -279,6 +293,8 @@ export type ApplicationDocumentWhereInput = {
   applicationId?: Prisma.StringFilter<"ApplicationDocument"> | string
   phaseId?: Prisma.StringNullableFilter<"ApplicationDocument"> | string | null
   stepId?: Prisma.StringNullableFilter<"ApplicationDocument"> | string | null
+  documentType?: Prisma.StringNullableFilter<"ApplicationDocument"> | string | null
+  documentName?: Prisma.StringNullableFilter<"ApplicationDocument"> | string | null
   name?: Prisma.StringFilter<"ApplicationDocument"> | string
   url?: Prisma.StringFilter<"ApplicationDocument"> | string
   type?: Prisma.StringFilter<"ApplicationDocument"> | string
@@ -294,6 +310,7 @@ export type ApplicationDocumentWhereInput = {
   replacesDocument?: Prisma.XOR<Prisma.ApplicationDocumentNullableScalarRelationFilter, Prisma.ApplicationDocumentWhereInput> | null
   revisions?: Prisma.ApplicationDocumentListRelationFilter
   reviews?: Prisma.DocumentReviewListRelationFilter
+  approvalTrail?: Prisma.DocumentApprovalListRelationFilter
 }
 
 export type ApplicationDocumentOrderByWithRelationInput = {
@@ -302,6 +319,8 @@ export type ApplicationDocumentOrderByWithRelationInput = {
   applicationId?: Prisma.SortOrder
   phaseId?: Prisma.SortOrderInput | Prisma.SortOrder
   stepId?: Prisma.SortOrderInput | Prisma.SortOrder
+  documentType?: Prisma.SortOrderInput | Prisma.SortOrder
+  documentName?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
   url?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -317,6 +336,7 @@ export type ApplicationDocumentOrderByWithRelationInput = {
   replacesDocument?: Prisma.ApplicationDocumentOrderByWithRelationInput
   revisions?: Prisma.ApplicationDocumentOrderByRelationAggregateInput
   reviews?: Prisma.DocumentReviewOrderByRelationAggregateInput
+  approvalTrail?: Prisma.DocumentApprovalOrderByRelationAggregateInput
   _relevance?: Prisma.ApplicationDocumentOrderByRelevanceInput
 }
 
@@ -329,6 +349,8 @@ export type ApplicationDocumentWhereUniqueInput = Prisma.AtLeast<{
   applicationId?: Prisma.StringFilter<"ApplicationDocument"> | string
   phaseId?: Prisma.StringNullableFilter<"ApplicationDocument"> | string | null
   stepId?: Prisma.StringNullableFilter<"ApplicationDocument"> | string | null
+  documentType?: Prisma.StringNullableFilter<"ApplicationDocument"> | string | null
+  documentName?: Prisma.StringNullableFilter<"ApplicationDocument"> | string | null
   name?: Prisma.StringFilter<"ApplicationDocument"> | string
   url?: Prisma.StringFilter<"ApplicationDocument"> | string
   type?: Prisma.StringFilter<"ApplicationDocument"> | string
@@ -344,6 +366,7 @@ export type ApplicationDocumentWhereUniqueInput = Prisma.AtLeast<{
   replacesDocument?: Prisma.XOR<Prisma.ApplicationDocumentNullableScalarRelationFilter, Prisma.ApplicationDocumentWhereInput> | null
   revisions?: Prisma.ApplicationDocumentListRelationFilter
   reviews?: Prisma.DocumentReviewListRelationFilter
+  approvalTrail?: Prisma.DocumentApprovalListRelationFilter
 }, "id">
 
 export type ApplicationDocumentOrderByWithAggregationInput = {
@@ -352,6 +375,8 @@ export type ApplicationDocumentOrderByWithAggregationInput = {
   applicationId?: Prisma.SortOrder
   phaseId?: Prisma.SortOrderInput | Prisma.SortOrder
   stepId?: Prisma.SortOrderInput | Prisma.SortOrder
+  documentType?: Prisma.SortOrderInput | Prisma.SortOrder
+  documentName?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
   url?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -377,6 +402,8 @@ export type ApplicationDocumentScalarWhereWithAggregatesInput = {
   applicationId?: Prisma.StringWithAggregatesFilter<"ApplicationDocument"> | string
   phaseId?: Prisma.StringNullableWithAggregatesFilter<"ApplicationDocument"> | string | null
   stepId?: Prisma.StringNullableWithAggregatesFilter<"ApplicationDocument"> | string | null
+  documentType?: Prisma.StringNullableWithAggregatesFilter<"ApplicationDocument"> | string | null
+  documentName?: Prisma.StringNullableWithAggregatesFilter<"ApplicationDocument"> | string | null
   name?: Prisma.StringWithAggregatesFilter<"ApplicationDocument"> | string
   url?: Prisma.StringWithAggregatesFilter<"ApplicationDocument"> | string
   type?: Prisma.StringWithAggregatesFilter<"ApplicationDocument"> | string
@@ -392,6 +419,8 @@ export type ApplicationDocumentCreateInput = {
   id?: string
   phaseId?: string | null
   stepId?: string | null
+  documentType?: string | null
+  documentName?: string | null
   name: string
   url: string
   type: string
@@ -405,6 +434,7 @@ export type ApplicationDocumentCreateInput = {
   replacesDocument?: Prisma.ApplicationDocumentCreateNestedOneWithoutRevisionsInput
   revisions?: Prisma.ApplicationDocumentCreateNestedManyWithoutReplacesDocumentInput
   reviews?: Prisma.DocumentReviewCreateNestedManyWithoutDocumentInput
+  approvalTrail?: Prisma.DocumentApprovalCreateNestedManyWithoutDocumentInput
 }
 
 export type ApplicationDocumentUncheckedCreateInput = {
@@ -413,6 +443,8 @@ export type ApplicationDocumentUncheckedCreateInput = {
   applicationId: string
   phaseId?: string | null
   stepId?: string | null
+  documentType?: string | null
+  documentName?: string | null
   name: string
   url: string
   type: string
@@ -424,12 +456,15 @@ export type ApplicationDocumentUncheckedCreateInput = {
   updatedAt?: Date | string
   revisions?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutReplacesDocumentInput
   reviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutDocumentInput
+  approvalTrail?: Prisma.DocumentApprovalUncheckedCreateNestedManyWithoutDocumentInput
 }
 
 export type ApplicationDocumentUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -443,6 +478,7 @@ export type ApplicationDocumentUpdateInput = {
   replacesDocument?: Prisma.ApplicationDocumentUpdateOneWithoutRevisionsNestedInput
   revisions?: Prisma.ApplicationDocumentUpdateManyWithoutReplacesDocumentNestedInput
   reviews?: Prisma.DocumentReviewUpdateManyWithoutDocumentNestedInput
+  approvalTrail?: Prisma.DocumentApprovalUpdateManyWithoutDocumentNestedInput
 }
 
 export type ApplicationDocumentUncheckedUpdateInput = {
@@ -451,6 +487,8 @@ export type ApplicationDocumentUncheckedUpdateInput = {
   applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -462,6 +500,7 @@ export type ApplicationDocumentUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revisions?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutReplacesDocumentNestedInput
   reviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutDocumentNestedInput
+  approvalTrail?: Prisma.DocumentApprovalUncheckedUpdateManyWithoutDocumentNestedInput
 }
 
 export type ApplicationDocumentCreateManyInput = {
@@ -470,6 +509,8 @@ export type ApplicationDocumentCreateManyInput = {
   applicationId: string
   phaseId?: string | null
   stepId?: string | null
+  documentType?: string | null
+  documentName?: string | null
   name: string
   url: string
   type: string
@@ -485,6 +526,8 @@ export type ApplicationDocumentUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -500,6 +543,8 @@ export type ApplicationDocumentUncheckedUpdateManyInput = {
   applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -538,6 +583,8 @@ export type ApplicationDocumentCountOrderByAggregateInput = {
   applicationId?: Prisma.SortOrder
   phaseId?: Prisma.SortOrder
   stepId?: Prisma.SortOrder
+  documentType?: Prisma.SortOrder
+  documentName?: Prisma.SortOrder
   name?: Prisma.SortOrder
   url?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -559,6 +606,8 @@ export type ApplicationDocumentMaxOrderByAggregateInput = {
   applicationId?: Prisma.SortOrder
   phaseId?: Prisma.SortOrder
   stepId?: Prisma.SortOrder
+  documentType?: Prisma.SortOrder
+  documentName?: Prisma.SortOrder
   name?: Prisma.SortOrder
   url?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -576,6 +625,8 @@ export type ApplicationDocumentMinOrderByAggregateInput = {
   applicationId?: Prisma.SortOrder
   phaseId?: Prisma.SortOrder
   stepId?: Prisma.SortOrder
+  documentType?: Prisma.SortOrder
+  documentName?: Prisma.SortOrder
   name?: Prisma.SortOrder
   url?: Prisma.SortOrder
   type?: Prisma.SortOrder
@@ -798,10 +849,26 @@ export type ApplicationDocumentUpdateOneRequiredWithoutReviewsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ApplicationDocumentUpdateToOneWithWhereWithoutReviewsInput, Prisma.ApplicationDocumentUpdateWithoutReviewsInput>, Prisma.ApplicationDocumentUncheckedUpdateWithoutReviewsInput>
 }
 
+export type ApplicationDocumentCreateNestedOneWithoutApprovalTrailInput = {
+  create?: Prisma.XOR<Prisma.ApplicationDocumentCreateWithoutApprovalTrailInput, Prisma.ApplicationDocumentUncheckedCreateWithoutApprovalTrailInput>
+  connectOrCreate?: Prisma.ApplicationDocumentCreateOrConnectWithoutApprovalTrailInput
+  connect?: Prisma.ApplicationDocumentWhereUniqueInput
+}
+
+export type ApplicationDocumentUpdateOneRequiredWithoutApprovalTrailNestedInput = {
+  create?: Prisma.XOR<Prisma.ApplicationDocumentCreateWithoutApprovalTrailInput, Prisma.ApplicationDocumentUncheckedCreateWithoutApprovalTrailInput>
+  connectOrCreate?: Prisma.ApplicationDocumentCreateOrConnectWithoutApprovalTrailInput
+  upsert?: Prisma.ApplicationDocumentUpsertWithoutApprovalTrailInput
+  connect?: Prisma.ApplicationDocumentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ApplicationDocumentUpdateToOneWithWhereWithoutApprovalTrailInput, Prisma.ApplicationDocumentUpdateWithoutApprovalTrailInput>, Prisma.ApplicationDocumentUncheckedUpdateWithoutApprovalTrailInput>
+}
+
 export type ApplicationDocumentCreateWithoutUploadedByInput = {
   id?: string
   phaseId?: string | null
   stepId?: string | null
+  documentType?: string | null
+  documentName?: string | null
   name: string
   url: string
   type: string
@@ -814,6 +881,7 @@ export type ApplicationDocumentCreateWithoutUploadedByInput = {
   replacesDocument?: Prisma.ApplicationDocumentCreateNestedOneWithoutRevisionsInput
   revisions?: Prisma.ApplicationDocumentCreateNestedManyWithoutReplacesDocumentInput
   reviews?: Prisma.DocumentReviewCreateNestedManyWithoutDocumentInput
+  approvalTrail?: Prisma.DocumentApprovalCreateNestedManyWithoutDocumentInput
 }
 
 export type ApplicationDocumentUncheckedCreateWithoutUploadedByInput = {
@@ -822,6 +890,8 @@ export type ApplicationDocumentUncheckedCreateWithoutUploadedByInput = {
   applicationId: string
   phaseId?: string | null
   stepId?: string | null
+  documentType?: string | null
+  documentName?: string | null
   name: string
   url: string
   type: string
@@ -832,6 +902,7 @@ export type ApplicationDocumentUncheckedCreateWithoutUploadedByInput = {
   updatedAt?: Date | string
   revisions?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutReplacesDocumentInput
   reviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutDocumentInput
+  approvalTrail?: Prisma.DocumentApprovalUncheckedCreateNestedManyWithoutDocumentInput
 }
 
 export type ApplicationDocumentCreateOrConnectWithoutUploadedByInput = {
@@ -869,6 +940,8 @@ export type ApplicationDocumentScalarWhereInput = {
   applicationId?: Prisma.StringFilter<"ApplicationDocument"> | string
   phaseId?: Prisma.StringNullableFilter<"ApplicationDocument"> | string | null
   stepId?: Prisma.StringNullableFilter<"ApplicationDocument"> | string | null
+  documentType?: Prisma.StringNullableFilter<"ApplicationDocument"> | string | null
+  documentName?: Prisma.StringNullableFilter<"ApplicationDocument"> | string | null
   name?: Prisma.StringFilter<"ApplicationDocument"> | string
   url?: Prisma.StringFilter<"ApplicationDocument"> | string
   type?: Prisma.StringFilter<"ApplicationDocument"> | string
@@ -884,6 +957,8 @@ export type ApplicationDocumentCreateWithoutTenantInput = {
   id?: string
   phaseId?: string | null
   stepId?: string | null
+  documentType?: string | null
+  documentName?: string | null
   name: string
   url: string
   type: string
@@ -896,6 +971,7 @@ export type ApplicationDocumentCreateWithoutTenantInput = {
   replacesDocument?: Prisma.ApplicationDocumentCreateNestedOneWithoutRevisionsInput
   revisions?: Prisma.ApplicationDocumentCreateNestedManyWithoutReplacesDocumentInput
   reviews?: Prisma.DocumentReviewCreateNestedManyWithoutDocumentInput
+  approvalTrail?: Prisma.DocumentApprovalCreateNestedManyWithoutDocumentInput
 }
 
 export type ApplicationDocumentUncheckedCreateWithoutTenantInput = {
@@ -903,6 +979,8 @@ export type ApplicationDocumentUncheckedCreateWithoutTenantInput = {
   applicationId: string
   phaseId?: string | null
   stepId?: string | null
+  documentType?: string | null
+  documentName?: string | null
   name: string
   url: string
   type: string
@@ -914,6 +992,7 @@ export type ApplicationDocumentUncheckedCreateWithoutTenantInput = {
   updatedAt?: Date | string
   revisions?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutReplacesDocumentInput
   reviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutDocumentInput
+  approvalTrail?: Prisma.DocumentApprovalUncheckedCreateNestedManyWithoutDocumentInput
 }
 
 export type ApplicationDocumentCreateOrConnectWithoutTenantInput = {
@@ -946,6 +1025,8 @@ export type ApplicationDocumentCreateWithoutApplicationInput = {
   id?: string
   phaseId?: string | null
   stepId?: string | null
+  documentType?: string | null
+  documentName?: string | null
   name: string
   url: string
   type: string
@@ -958,6 +1039,7 @@ export type ApplicationDocumentCreateWithoutApplicationInput = {
   replacesDocument?: Prisma.ApplicationDocumentCreateNestedOneWithoutRevisionsInput
   revisions?: Prisma.ApplicationDocumentCreateNestedManyWithoutReplacesDocumentInput
   reviews?: Prisma.DocumentReviewCreateNestedManyWithoutDocumentInput
+  approvalTrail?: Prisma.DocumentApprovalCreateNestedManyWithoutDocumentInput
 }
 
 export type ApplicationDocumentUncheckedCreateWithoutApplicationInput = {
@@ -965,6 +1047,8 @@ export type ApplicationDocumentUncheckedCreateWithoutApplicationInput = {
   tenantId: string
   phaseId?: string | null
   stepId?: string | null
+  documentType?: string | null
+  documentName?: string | null
   name: string
   url: string
   type: string
@@ -976,6 +1060,7 @@ export type ApplicationDocumentUncheckedCreateWithoutApplicationInput = {
   updatedAt?: Date | string
   revisions?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutReplacesDocumentInput
   reviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutDocumentInput
+  approvalTrail?: Prisma.DocumentApprovalUncheckedCreateNestedManyWithoutDocumentInput
 }
 
 export type ApplicationDocumentCreateOrConnectWithoutApplicationInput = {
@@ -1008,6 +1093,8 @@ export type ApplicationDocumentCreateWithoutRevisionsInput = {
   id?: string
   phaseId?: string | null
   stepId?: string | null
+  documentType?: string | null
+  documentName?: string | null
   name: string
   url: string
   type: string
@@ -1020,6 +1107,7 @@ export type ApplicationDocumentCreateWithoutRevisionsInput = {
   uploadedBy?: Prisma.UserCreateNestedOneWithoutUploadedDocsInput
   replacesDocument?: Prisma.ApplicationDocumentCreateNestedOneWithoutRevisionsInput
   reviews?: Prisma.DocumentReviewCreateNestedManyWithoutDocumentInput
+  approvalTrail?: Prisma.DocumentApprovalCreateNestedManyWithoutDocumentInput
 }
 
 export type ApplicationDocumentUncheckedCreateWithoutRevisionsInput = {
@@ -1028,6 +1116,8 @@ export type ApplicationDocumentUncheckedCreateWithoutRevisionsInput = {
   applicationId: string
   phaseId?: string | null
   stepId?: string | null
+  documentType?: string | null
+  documentName?: string | null
   name: string
   url: string
   type: string
@@ -1038,6 +1128,7 @@ export type ApplicationDocumentUncheckedCreateWithoutRevisionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutDocumentInput
+  approvalTrail?: Prisma.DocumentApprovalUncheckedCreateNestedManyWithoutDocumentInput
 }
 
 export type ApplicationDocumentCreateOrConnectWithoutRevisionsInput = {
@@ -1049,6 +1140,8 @@ export type ApplicationDocumentCreateWithoutReplacesDocumentInput = {
   id?: string
   phaseId?: string | null
   stepId?: string | null
+  documentType?: string | null
+  documentName?: string | null
   name: string
   url: string
   type: string
@@ -1061,6 +1154,7 @@ export type ApplicationDocumentCreateWithoutReplacesDocumentInput = {
   uploadedBy?: Prisma.UserCreateNestedOneWithoutUploadedDocsInput
   revisions?: Prisma.ApplicationDocumentCreateNestedManyWithoutReplacesDocumentInput
   reviews?: Prisma.DocumentReviewCreateNestedManyWithoutDocumentInput
+  approvalTrail?: Prisma.DocumentApprovalCreateNestedManyWithoutDocumentInput
 }
 
 export type ApplicationDocumentUncheckedCreateWithoutReplacesDocumentInput = {
@@ -1069,6 +1163,8 @@ export type ApplicationDocumentUncheckedCreateWithoutReplacesDocumentInput = {
   applicationId: string
   phaseId?: string | null
   stepId?: string | null
+  documentType?: string | null
+  documentName?: string | null
   name: string
   url: string
   type: string
@@ -1079,6 +1175,7 @@ export type ApplicationDocumentUncheckedCreateWithoutReplacesDocumentInput = {
   updatedAt?: Date | string
   revisions?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutReplacesDocumentInput
   reviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutDocumentInput
+  approvalTrail?: Prisma.DocumentApprovalUncheckedCreateNestedManyWithoutDocumentInput
 }
 
 export type ApplicationDocumentCreateOrConnectWithoutReplacesDocumentInput = {
@@ -1106,6 +1203,8 @@ export type ApplicationDocumentUpdateWithoutRevisionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1118,6 +1217,7 @@ export type ApplicationDocumentUpdateWithoutRevisionsInput = {
   uploadedBy?: Prisma.UserUpdateOneWithoutUploadedDocsNestedInput
   replacesDocument?: Prisma.ApplicationDocumentUpdateOneWithoutRevisionsNestedInput
   reviews?: Prisma.DocumentReviewUpdateManyWithoutDocumentNestedInput
+  approvalTrail?: Prisma.DocumentApprovalUpdateManyWithoutDocumentNestedInput
 }
 
 export type ApplicationDocumentUncheckedUpdateWithoutRevisionsInput = {
@@ -1126,6 +1226,8 @@ export type ApplicationDocumentUncheckedUpdateWithoutRevisionsInput = {
   applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1136,6 +1238,7 @@ export type ApplicationDocumentUncheckedUpdateWithoutRevisionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutDocumentNestedInput
+  approvalTrail?: Prisma.DocumentApprovalUncheckedUpdateManyWithoutDocumentNestedInput
 }
 
 export type ApplicationDocumentUpsertWithWhereUniqueWithoutReplacesDocumentInput = {
@@ -1158,6 +1261,8 @@ export type ApplicationDocumentCreateWithoutReviewsInput = {
   id?: string
   phaseId?: string | null
   stepId?: string | null
+  documentType?: string | null
+  documentName?: string | null
   name: string
   url: string
   type: string
@@ -1170,6 +1275,7 @@ export type ApplicationDocumentCreateWithoutReviewsInput = {
   uploadedBy?: Prisma.UserCreateNestedOneWithoutUploadedDocsInput
   replacesDocument?: Prisma.ApplicationDocumentCreateNestedOneWithoutRevisionsInput
   revisions?: Prisma.ApplicationDocumentCreateNestedManyWithoutReplacesDocumentInput
+  approvalTrail?: Prisma.DocumentApprovalCreateNestedManyWithoutDocumentInput
 }
 
 export type ApplicationDocumentUncheckedCreateWithoutReviewsInput = {
@@ -1178,6 +1284,8 @@ export type ApplicationDocumentUncheckedCreateWithoutReviewsInput = {
   applicationId: string
   phaseId?: string | null
   stepId?: string | null
+  documentType?: string | null
+  documentName?: string | null
   name: string
   url: string
   type: string
@@ -1188,6 +1296,7 @@ export type ApplicationDocumentUncheckedCreateWithoutReviewsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   revisions?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutReplacesDocumentInput
+  approvalTrail?: Prisma.DocumentApprovalUncheckedCreateNestedManyWithoutDocumentInput
 }
 
 export type ApplicationDocumentCreateOrConnectWithoutReviewsInput = {
@@ -1210,6 +1319,8 @@ export type ApplicationDocumentUpdateWithoutReviewsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1222,6 +1333,7 @@ export type ApplicationDocumentUpdateWithoutReviewsInput = {
   uploadedBy?: Prisma.UserUpdateOneWithoutUploadedDocsNestedInput
   replacesDocument?: Prisma.ApplicationDocumentUpdateOneWithoutRevisionsNestedInput
   revisions?: Prisma.ApplicationDocumentUpdateManyWithoutReplacesDocumentNestedInput
+  approvalTrail?: Prisma.DocumentApprovalUpdateManyWithoutDocumentNestedInput
 }
 
 export type ApplicationDocumentUncheckedUpdateWithoutReviewsInput = {
@@ -1230,6 +1342,8 @@ export type ApplicationDocumentUncheckedUpdateWithoutReviewsInput = {
   applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1240,6 +1354,107 @@ export type ApplicationDocumentUncheckedUpdateWithoutReviewsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revisions?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutReplacesDocumentNestedInput
+  approvalTrail?: Prisma.DocumentApprovalUncheckedUpdateManyWithoutDocumentNestedInput
+}
+
+export type ApplicationDocumentCreateWithoutApprovalTrailInput = {
+  id?: string
+  phaseId?: string | null
+  stepId?: string | null
+  documentType?: string | null
+  documentName?: string | null
+  name: string
+  url: string
+  type: string
+  status?: $Enums.DocumentStatus
+  version?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutApplicationDocumentsInput
+  application: Prisma.ApplicationCreateNestedOneWithoutDocumentsInput
+  uploadedBy?: Prisma.UserCreateNestedOneWithoutUploadedDocsInput
+  replacesDocument?: Prisma.ApplicationDocumentCreateNestedOneWithoutRevisionsInput
+  revisions?: Prisma.ApplicationDocumentCreateNestedManyWithoutReplacesDocumentInput
+  reviews?: Prisma.DocumentReviewCreateNestedManyWithoutDocumentInput
+}
+
+export type ApplicationDocumentUncheckedCreateWithoutApprovalTrailInput = {
+  id?: string
+  tenantId: string
+  applicationId: string
+  phaseId?: string | null
+  stepId?: string | null
+  documentType?: string | null
+  documentName?: string | null
+  name: string
+  url: string
+  type: string
+  uploadedById?: string | null
+  status?: $Enums.DocumentStatus
+  version?: number
+  replacesDocumentId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  revisions?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutReplacesDocumentInput
+  reviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutDocumentInput
+}
+
+export type ApplicationDocumentCreateOrConnectWithoutApprovalTrailInput = {
+  where: Prisma.ApplicationDocumentWhereUniqueInput
+  create: Prisma.XOR<Prisma.ApplicationDocumentCreateWithoutApprovalTrailInput, Prisma.ApplicationDocumentUncheckedCreateWithoutApprovalTrailInput>
+}
+
+export type ApplicationDocumentUpsertWithoutApprovalTrailInput = {
+  update: Prisma.XOR<Prisma.ApplicationDocumentUpdateWithoutApprovalTrailInput, Prisma.ApplicationDocumentUncheckedUpdateWithoutApprovalTrailInput>
+  create: Prisma.XOR<Prisma.ApplicationDocumentCreateWithoutApprovalTrailInput, Prisma.ApplicationDocumentUncheckedCreateWithoutApprovalTrailInput>
+  where?: Prisma.ApplicationDocumentWhereInput
+}
+
+export type ApplicationDocumentUpdateToOneWithWhereWithoutApprovalTrailInput = {
+  where?: Prisma.ApplicationDocumentWhereInput
+  data: Prisma.XOR<Prisma.ApplicationDocumentUpdateWithoutApprovalTrailInput, Prisma.ApplicationDocumentUncheckedUpdateWithoutApprovalTrailInput>
+}
+
+export type ApplicationDocumentUpdateWithoutApprovalTrailInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutApplicationDocumentsNestedInput
+  application?: Prisma.ApplicationUpdateOneRequiredWithoutDocumentsNestedInput
+  uploadedBy?: Prisma.UserUpdateOneWithoutUploadedDocsNestedInput
+  replacesDocument?: Prisma.ApplicationDocumentUpdateOneWithoutRevisionsNestedInput
+  revisions?: Prisma.ApplicationDocumentUpdateManyWithoutReplacesDocumentNestedInput
+  reviews?: Prisma.DocumentReviewUpdateManyWithoutDocumentNestedInput
+}
+
+export type ApplicationDocumentUncheckedUpdateWithoutApprovalTrailInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  applicationId?: Prisma.StringFieldUpdateOperationsInput | string
+  phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  replacesDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  revisions?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutReplacesDocumentNestedInput
+  reviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutDocumentNestedInput
 }
 
 export type ApplicationDocumentCreateManyUploadedByInput = {
@@ -1248,6 +1463,8 @@ export type ApplicationDocumentCreateManyUploadedByInput = {
   applicationId: string
   phaseId?: string | null
   stepId?: string | null
+  documentType?: string | null
+  documentName?: string | null
   name: string
   url: string
   type: string
@@ -1262,6 +1479,8 @@ export type ApplicationDocumentUpdateWithoutUploadedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1274,6 +1493,7 @@ export type ApplicationDocumentUpdateWithoutUploadedByInput = {
   replacesDocument?: Prisma.ApplicationDocumentUpdateOneWithoutRevisionsNestedInput
   revisions?: Prisma.ApplicationDocumentUpdateManyWithoutReplacesDocumentNestedInput
   reviews?: Prisma.DocumentReviewUpdateManyWithoutDocumentNestedInput
+  approvalTrail?: Prisma.DocumentApprovalUpdateManyWithoutDocumentNestedInput
 }
 
 export type ApplicationDocumentUncheckedUpdateWithoutUploadedByInput = {
@@ -1282,6 +1502,8 @@ export type ApplicationDocumentUncheckedUpdateWithoutUploadedByInput = {
   applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1292,6 +1514,7 @@ export type ApplicationDocumentUncheckedUpdateWithoutUploadedByInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revisions?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutReplacesDocumentNestedInput
   reviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutDocumentNestedInput
+  approvalTrail?: Prisma.DocumentApprovalUncheckedUpdateManyWithoutDocumentNestedInput
 }
 
 export type ApplicationDocumentUncheckedUpdateManyWithoutUploadedByInput = {
@@ -1300,6 +1523,8 @@ export type ApplicationDocumentUncheckedUpdateManyWithoutUploadedByInput = {
   applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1315,6 +1540,8 @@ export type ApplicationDocumentCreateManyTenantInput = {
   applicationId: string
   phaseId?: string | null
   stepId?: string | null
+  documentType?: string | null
+  documentName?: string | null
   name: string
   url: string
   type: string
@@ -1330,6 +1557,8 @@ export type ApplicationDocumentUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1342,6 +1571,7 @@ export type ApplicationDocumentUpdateWithoutTenantInput = {
   replacesDocument?: Prisma.ApplicationDocumentUpdateOneWithoutRevisionsNestedInput
   revisions?: Prisma.ApplicationDocumentUpdateManyWithoutReplacesDocumentNestedInput
   reviews?: Prisma.DocumentReviewUpdateManyWithoutDocumentNestedInput
+  approvalTrail?: Prisma.DocumentApprovalUpdateManyWithoutDocumentNestedInput
 }
 
 export type ApplicationDocumentUncheckedUpdateWithoutTenantInput = {
@@ -1349,6 +1579,8 @@ export type ApplicationDocumentUncheckedUpdateWithoutTenantInput = {
   applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1360,6 +1592,7 @@ export type ApplicationDocumentUncheckedUpdateWithoutTenantInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revisions?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutReplacesDocumentNestedInput
   reviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutDocumentNestedInput
+  approvalTrail?: Prisma.DocumentApprovalUncheckedUpdateManyWithoutDocumentNestedInput
 }
 
 export type ApplicationDocumentUncheckedUpdateManyWithoutTenantInput = {
@@ -1367,6 +1600,8 @@ export type ApplicationDocumentUncheckedUpdateManyWithoutTenantInput = {
   applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1383,6 +1618,8 @@ export type ApplicationDocumentCreateManyApplicationInput = {
   tenantId: string
   phaseId?: string | null
   stepId?: string | null
+  documentType?: string | null
+  documentName?: string | null
   name: string
   url: string
   type: string
@@ -1398,6 +1635,8 @@ export type ApplicationDocumentUpdateWithoutApplicationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1410,6 +1649,7 @@ export type ApplicationDocumentUpdateWithoutApplicationInput = {
   replacesDocument?: Prisma.ApplicationDocumentUpdateOneWithoutRevisionsNestedInput
   revisions?: Prisma.ApplicationDocumentUpdateManyWithoutReplacesDocumentNestedInput
   reviews?: Prisma.DocumentReviewUpdateManyWithoutDocumentNestedInput
+  approvalTrail?: Prisma.DocumentApprovalUpdateManyWithoutDocumentNestedInput
 }
 
 export type ApplicationDocumentUncheckedUpdateWithoutApplicationInput = {
@@ -1417,6 +1657,8 @@ export type ApplicationDocumentUncheckedUpdateWithoutApplicationInput = {
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1428,6 +1670,7 @@ export type ApplicationDocumentUncheckedUpdateWithoutApplicationInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revisions?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutReplacesDocumentNestedInput
   reviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutDocumentNestedInput
+  approvalTrail?: Prisma.DocumentApprovalUncheckedUpdateManyWithoutDocumentNestedInput
 }
 
 export type ApplicationDocumentUncheckedUpdateManyWithoutApplicationInput = {
@@ -1435,6 +1678,8 @@ export type ApplicationDocumentUncheckedUpdateManyWithoutApplicationInput = {
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1452,6 +1697,8 @@ export type ApplicationDocumentCreateManyReplacesDocumentInput = {
   applicationId: string
   phaseId?: string | null
   stepId?: string | null
+  documentType?: string | null
+  documentName?: string | null
   name: string
   url: string
   type: string
@@ -1466,6 +1713,8 @@ export type ApplicationDocumentUpdateWithoutReplacesDocumentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1478,6 +1727,7 @@ export type ApplicationDocumentUpdateWithoutReplacesDocumentInput = {
   uploadedBy?: Prisma.UserUpdateOneWithoutUploadedDocsNestedInput
   revisions?: Prisma.ApplicationDocumentUpdateManyWithoutReplacesDocumentNestedInput
   reviews?: Prisma.DocumentReviewUpdateManyWithoutDocumentNestedInput
+  approvalTrail?: Prisma.DocumentApprovalUpdateManyWithoutDocumentNestedInput
 }
 
 export type ApplicationDocumentUncheckedUpdateWithoutReplacesDocumentInput = {
@@ -1486,6 +1736,8 @@ export type ApplicationDocumentUncheckedUpdateWithoutReplacesDocumentInput = {
   applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1496,6 +1748,7 @@ export type ApplicationDocumentUncheckedUpdateWithoutReplacesDocumentInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   revisions?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutReplacesDocumentNestedInput
   reviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutDocumentNestedInput
+  approvalTrail?: Prisma.DocumentApprovalUncheckedUpdateManyWithoutDocumentNestedInput
 }
 
 export type ApplicationDocumentUncheckedUpdateManyWithoutReplacesDocumentInput = {
@@ -1504,6 +1757,8 @@ export type ApplicationDocumentUncheckedUpdateManyWithoutReplacesDocumentInput =
   applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1522,11 +1777,13 @@ export type ApplicationDocumentUncheckedUpdateManyWithoutReplacesDocumentInput =
 export type ApplicationDocumentCountOutputType = {
   revisions: number
   reviews: number
+  approvalTrail: number
 }
 
 export type ApplicationDocumentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   revisions?: boolean | ApplicationDocumentCountOutputTypeCountRevisionsArgs
   reviews?: boolean | ApplicationDocumentCountOutputTypeCountReviewsArgs
+  approvalTrail?: boolean | ApplicationDocumentCountOutputTypeCountApprovalTrailArgs
 }
 
 /**
@@ -1553,6 +1810,13 @@ export type ApplicationDocumentCountOutputTypeCountReviewsArgs<ExtArgs extends r
   where?: Prisma.DocumentReviewWhereInput
 }
 
+/**
+ * ApplicationDocumentCountOutputType without action
+ */
+export type ApplicationDocumentCountOutputTypeCountApprovalTrailArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DocumentApprovalWhereInput
+}
+
 
 export type ApplicationDocumentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1560,6 +1824,8 @@ export type ApplicationDocumentSelect<ExtArgs extends runtime.Types.Extensions.I
   applicationId?: boolean
   phaseId?: boolean
   stepId?: boolean
+  documentType?: boolean
+  documentName?: boolean
   name?: boolean
   url?: boolean
   type?: boolean
@@ -1575,6 +1841,7 @@ export type ApplicationDocumentSelect<ExtArgs extends runtime.Types.Extensions.I
   replacesDocument?: boolean | Prisma.ApplicationDocument$replacesDocumentArgs<ExtArgs>
   revisions?: boolean | Prisma.ApplicationDocument$revisionsArgs<ExtArgs>
   reviews?: boolean | Prisma.ApplicationDocument$reviewsArgs<ExtArgs>
+  approvalTrail?: boolean | Prisma.ApplicationDocument$approvalTrailArgs<ExtArgs>
   _count?: boolean | Prisma.ApplicationDocumentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["applicationDocument"]>
 
@@ -1586,6 +1853,8 @@ export type ApplicationDocumentSelectScalar = {
   applicationId?: boolean
   phaseId?: boolean
   stepId?: boolean
+  documentType?: boolean
+  documentName?: boolean
   name?: boolean
   url?: boolean
   type?: boolean
@@ -1597,7 +1866,7 @@ export type ApplicationDocumentSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ApplicationDocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "applicationId" | "phaseId" | "stepId" | "name" | "url" | "type" | "uploadedById" | "status" | "version" | "replacesDocumentId" | "createdAt" | "updatedAt", ExtArgs["result"]["applicationDocument"]>
+export type ApplicationDocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "applicationId" | "phaseId" | "stepId" | "documentType" | "documentName" | "name" | "url" | "type" | "uploadedById" | "status" | "version" | "replacesDocumentId" | "createdAt" | "updatedAt", ExtArgs["result"]["applicationDocument"]>
 export type ApplicationDocumentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   application?: boolean | Prisma.ApplicationDefaultArgs<ExtArgs>
@@ -1605,6 +1874,7 @@ export type ApplicationDocumentInclude<ExtArgs extends runtime.Types.Extensions.
   replacesDocument?: boolean | Prisma.ApplicationDocument$replacesDocumentArgs<ExtArgs>
   revisions?: boolean | Prisma.ApplicationDocument$revisionsArgs<ExtArgs>
   reviews?: boolean | Prisma.ApplicationDocument$reviewsArgs<ExtArgs>
+  approvalTrail?: boolean | Prisma.ApplicationDocument$approvalTrailArgs<ExtArgs>
   _count?: boolean | Prisma.ApplicationDocumentCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -1617,6 +1887,7 @@ export type $ApplicationDocumentPayload<ExtArgs extends runtime.Types.Extensions
     replacesDocument: Prisma.$ApplicationDocumentPayload<ExtArgs> | null
     revisions: Prisma.$ApplicationDocumentPayload<ExtArgs>[]
     reviews: Prisma.$DocumentReviewPayload<ExtArgs>[]
+    approvalTrail: Prisma.$DocumentApprovalPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1624,6 +1895,8 @@ export type $ApplicationDocumentPayload<ExtArgs extends runtime.Types.Extensions
     applicationId: string
     phaseId: string | null
     stepId: string | null
+    documentType: string | null
+    documentName: string | null
     name: string
     url: string
     type: string
@@ -1979,6 +2252,7 @@ export interface Prisma__ApplicationDocumentClient<T, Null = never, ExtArgs exte
   replacesDocument<T extends Prisma.ApplicationDocument$replacesDocumentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApplicationDocument$replacesDocumentArgs<ExtArgs>>): Prisma.Prisma__ApplicationDocumentClient<runtime.Types.Result.GetResult<Prisma.$ApplicationDocumentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   revisions<T extends Prisma.ApplicationDocument$revisionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApplicationDocument$revisionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApplicationDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reviews<T extends Prisma.ApplicationDocument$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApplicationDocument$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  approvalTrail<T extends Prisma.ApplicationDocument$approvalTrailArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApplicationDocument$approvalTrailArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentApprovalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2013,6 +2287,8 @@ export interface ApplicationDocumentFieldRefs {
   readonly applicationId: Prisma.FieldRef<"ApplicationDocument", 'String'>
   readonly phaseId: Prisma.FieldRef<"ApplicationDocument", 'String'>
   readonly stepId: Prisma.FieldRef<"ApplicationDocument", 'String'>
+  readonly documentType: Prisma.FieldRef<"ApplicationDocument", 'String'>
+  readonly documentName: Prisma.FieldRef<"ApplicationDocument", 'String'>
   readonly name: Prisma.FieldRef<"ApplicationDocument", 'String'>
   readonly url: Prisma.FieldRef<"ApplicationDocument", 'String'>
   readonly type: Prisma.FieldRef<"ApplicationDocument", 'String'>
@@ -2448,6 +2724,30 @@ export type ApplicationDocument$reviewsArgs<ExtArgs extends runtime.Types.Extens
   take?: number
   skip?: number
   distinct?: Prisma.DocumentReviewScalarFieldEnum | Prisma.DocumentReviewScalarFieldEnum[]
+}
+
+/**
+ * ApplicationDocument.approvalTrail
+ */
+export type ApplicationDocument$approvalTrailArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DocumentApproval
+   */
+  select?: Prisma.DocumentApprovalSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DocumentApproval
+   */
+  omit?: Prisma.DocumentApprovalOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DocumentApprovalInclude<ExtArgs> | null
+  where?: Prisma.DocumentApprovalWhereInput
+  orderBy?: Prisma.DocumentApprovalOrderByWithRelationInput | Prisma.DocumentApprovalOrderByWithRelationInput[]
+  cursor?: Prisma.DocumentApprovalWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DocumentApprovalScalarFieldEnum | Prisma.DocumentApprovalScalarFieldEnum[]
 }
 
 /**

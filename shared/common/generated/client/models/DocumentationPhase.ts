@@ -27,19 +27,15 @@ export type AggregateDocumentationPhase = {
 }
 
 export type DocumentationPhaseAvgAggregateOutputType = {
+  currentStageOrder: number | null
   approvedDocumentsCount: number | null
   requiredDocumentsCount: number | null
-  completedStepsCount: number | null
-  totalStepsCount: number | null
-  minimumCompletionPercentage: number | null
 }
 
 export type DocumentationPhaseSumAggregateOutputType = {
+  currentStageOrder: number | null
   approvedDocumentsCount: number | null
   requiredDocumentsCount: number | null
-  completedStepsCount: number | null
-  totalStepsCount: number | null
-  minimumCompletionPercentage: number | null
 }
 
 export type DocumentationPhaseMinAggregateOutputType = {
@@ -48,13 +44,9 @@ export type DocumentationPhaseMinAggregateOutputType = {
   phaseId: string | null
   documentationPlanId: string | null
   sourceQuestionnairePhaseId: string | null
-  currentStepId: string | null
+  currentStageOrder: number | null
   approvedDocumentsCount: number | null
   requiredDocumentsCount: number | null
-  completedStepsCount: number | null
-  totalStepsCount: number | null
-  minimumCompletionPercentage: number | null
-  completionCriterion: $Enums.CompletionCriterion | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -65,13 +57,9 @@ export type DocumentationPhaseMaxAggregateOutputType = {
   phaseId: string | null
   documentationPlanId: string | null
   sourceQuestionnairePhaseId: string | null
-  currentStepId: string | null
+  currentStageOrder: number | null
   approvedDocumentsCount: number | null
   requiredDocumentsCount: number | null
-  completedStepsCount: number | null
-  totalStepsCount: number | null
-  minimumCompletionPercentage: number | null
-  completionCriterion: $Enums.CompletionCriterion | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -82,15 +70,11 @@ export type DocumentationPhaseCountAggregateOutputType = {
   phaseId: number
   documentationPlanId: number
   sourceQuestionnairePhaseId: number
-  currentStepId: number
+  currentStageOrder: number
   approvedDocumentsCount: number
   requiredDocumentsCount: number
-  completedStepsCount: number
-  totalStepsCount: number
-  minimumCompletionPercentage: number
-  completionCriterion: number
-  stepDefinitionsSnapshot: number
-  requiredDocumentSnapshot: number
+  documentDefinitionsSnapshot: number
+  approvalStagesSnapshot: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -98,19 +82,15 @@ export type DocumentationPhaseCountAggregateOutputType = {
 
 
 export type DocumentationPhaseAvgAggregateInputType = {
+  currentStageOrder?: true
   approvedDocumentsCount?: true
   requiredDocumentsCount?: true
-  completedStepsCount?: true
-  totalStepsCount?: true
-  minimumCompletionPercentage?: true
 }
 
 export type DocumentationPhaseSumAggregateInputType = {
+  currentStageOrder?: true
   approvedDocumentsCount?: true
   requiredDocumentsCount?: true
-  completedStepsCount?: true
-  totalStepsCount?: true
-  minimumCompletionPercentage?: true
 }
 
 export type DocumentationPhaseMinAggregateInputType = {
@@ -119,13 +99,9 @@ export type DocumentationPhaseMinAggregateInputType = {
   phaseId?: true
   documentationPlanId?: true
   sourceQuestionnairePhaseId?: true
-  currentStepId?: true
+  currentStageOrder?: true
   approvedDocumentsCount?: true
   requiredDocumentsCount?: true
-  completedStepsCount?: true
-  totalStepsCount?: true
-  minimumCompletionPercentage?: true
-  completionCriterion?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -136,13 +112,9 @@ export type DocumentationPhaseMaxAggregateInputType = {
   phaseId?: true
   documentationPlanId?: true
   sourceQuestionnairePhaseId?: true
-  currentStepId?: true
+  currentStageOrder?: true
   approvedDocumentsCount?: true
   requiredDocumentsCount?: true
-  completedStepsCount?: true
-  totalStepsCount?: true
-  minimumCompletionPercentage?: true
-  completionCriterion?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -153,15 +125,11 @@ export type DocumentationPhaseCountAggregateInputType = {
   phaseId?: true
   documentationPlanId?: true
   sourceQuestionnairePhaseId?: true
-  currentStepId?: true
+  currentStageOrder?: true
   approvedDocumentsCount?: true
   requiredDocumentsCount?: true
-  completedStepsCount?: true
-  totalStepsCount?: true
-  minimumCompletionPercentage?: true
-  completionCriterion?: true
-  stepDefinitionsSnapshot?: true
-  requiredDocumentSnapshot?: true
+  documentDefinitionsSnapshot?: true
+  approvalStagesSnapshot?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -259,15 +227,11 @@ export type DocumentationPhaseGroupByOutputType = {
   phaseId: string
   documentationPlanId: string | null
   sourceQuestionnairePhaseId: string | null
-  currentStepId: string | null
+  currentStageOrder: number
   approvedDocumentsCount: number
   requiredDocumentsCount: number
-  completedStepsCount: number
-  totalStepsCount: number
-  minimumCompletionPercentage: number | null
-  completionCriterion: $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot: runtime.JsonValue | null
-  requiredDocumentSnapshot: runtime.JsonValue | null
+  documentDefinitionsSnapshot: runtime.JsonValue | null
+  approvalStagesSnapshot: runtime.JsonValue | null
   createdAt: Date
   updatedAt: Date
   _count: DocumentationPhaseCountAggregateOutputType | null
@@ -301,23 +265,18 @@ export type DocumentationPhaseWhereInput = {
   phaseId?: Prisma.StringFilter<"DocumentationPhase"> | string
   documentationPlanId?: Prisma.StringNullableFilter<"DocumentationPhase"> | string | null
   sourceQuestionnairePhaseId?: Prisma.StringNullableFilter<"DocumentationPhase"> | string | null
-  currentStepId?: Prisma.StringNullableFilter<"DocumentationPhase"> | string | null
+  currentStageOrder?: Prisma.IntFilter<"DocumentationPhase"> | number
   approvedDocumentsCount?: Prisma.IntFilter<"DocumentationPhase"> | number
   requiredDocumentsCount?: Prisma.IntFilter<"DocumentationPhase"> | number
-  completedStepsCount?: Prisma.IntFilter<"DocumentationPhase"> | number
-  totalStepsCount?: Prisma.IntFilter<"DocumentationPhase"> | number
-  minimumCompletionPercentage?: Prisma.FloatNullableFilter<"DocumentationPhase"> | number | null
-  completionCriterion?: Prisma.EnumCompletionCriterionNullableFilter<"DocumentationPhase"> | $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.JsonNullableFilter<"DocumentationPhase">
-  requiredDocumentSnapshot?: Prisma.JsonNullableFilter<"DocumentationPhase">
+  documentDefinitionsSnapshot?: Prisma.JsonNullableFilter<"DocumentationPhase">
+  approvalStagesSnapshot?: Prisma.JsonNullableFilter<"DocumentationPhase">
   createdAt?: Prisma.DateTimeFilter<"DocumentationPhase"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"DocumentationPhase"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   phase?: Prisma.XOR<Prisma.ApplicationPhaseScalarRelationFilter, Prisma.ApplicationPhaseWhereInput>
   documentationPlan?: Prisma.XOR<Prisma.DocumentationPlanNullableScalarRelationFilter, Prisma.DocumentationPlanWhereInput> | null
   sourceQuestionnairePhase?: Prisma.XOR<Prisma.QuestionnairePhaseNullableScalarRelationFilter, Prisma.QuestionnairePhaseWhereInput> | null
-  currentStep?: Prisma.XOR<Prisma.DocumentationStepNullableScalarRelationFilter, Prisma.DocumentationStepWhereInput> | null
-  steps?: Prisma.DocumentationStepListRelationFilter
+  stageProgress?: Prisma.ApprovalStageProgressListRelationFilter
 }
 
 export type DocumentationPhaseOrderByWithRelationInput = {
@@ -326,23 +285,18 @@ export type DocumentationPhaseOrderByWithRelationInput = {
   phaseId?: Prisma.SortOrder
   documentationPlanId?: Prisma.SortOrderInput | Prisma.SortOrder
   sourceQuestionnairePhaseId?: Prisma.SortOrderInput | Prisma.SortOrder
-  currentStepId?: Prisma.SortOrderInput | Prisma.SortOrder
+  currentStageOrder?: Prisma.SortOrder
   approvedDocumentsCount?: Prisma.SortOrder
   requiredDocumentsCount?: Prisma.SortOrder
-  completedStepsCount?: Prisma.SortOrder
-  totalStepsCount?: Prisma.SortOrder
-  minimumCompletionPercentage?: Prisma.SortOrderInput | Prisma.SortOrder
-  completionCriterion?: Prisma.SortOrderInput | Prisma.SortOrder
-  stepDefinitionsSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
-  requiredDocumentSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
+  documentDefinitionsSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
+  approvalStagesSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   tenant?: Prisma.TenantOrderByWithRelationInput
   phase?: Prisma.ApplicationPhaseOrderByWithRelationInput
   documentationPlan?: Prisma.DocumentationPlanOrderByWithRelationInput
   sourceQuestionnairePhase?: Prisma.QuestionnairePhaseOrderByWithRelationInput
-  currentStep?: Prisma.DocumentationStepOrderByWithRelationInput
-  steps?: Prisma.DocumentationStepOrderByRelationAggregateInput
+  stageProgress?: Prisma.ApprovalStageProgressOrderByRelationAggregateInput
   _relevance?: Prisma.DocumentationPhaseOrderByRelevanceInput
 }
 
@@ -355,23 +309,18 @@ export type DocumentationPhaseWhereUniqueInput = Prisma.AtLeast<{
   tenantId?: Prisma.StringFilter<"DocumentationPhase"> | string
   documentationPlanId?: Prisma.StringNullableFilter<"DocumentationPhase"> | string | null
   sourceQuestionnairePhaseId?: Prisma.StringNullableFilter<"DocumentationPhase"> | string | null
-  currentStepId?: Prisma.StringNullableFilter<"DocumentationPhase"> | string | null
+  currentStageOrder?: Prisma.IntFilter<"DocumentationPhase"> | number
   approvedDocumentsCount?: Prisma.IntFilter<"DocumentationPhase"> | number
   requiredDocumentsCount?: Prisma.IntFilter<"DocumentationPhase"> | number
-  completedStepsCount?: Prisma.IntFilter<"DocumentationPhase"> | number
-  totalStepsCount?: Prisma.IntFilter<"DocumentationPhase"> | number
-  minimumCompletionPercentage?: Prisma.FloatNullableFilter<"DocumentationPhase"> | number | null
-  completionCriterion?: Prisma.EnumCompletionCriterionNullableFilter<"DocumentationPhase"> | $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.JsonNullableFilter<"DocumentationPhase">
-  requiredDocumentSnapshot?: Prisma.JsonNullableFilter<"DocumentationPhase">
+  documentDefinitionsSnapshot?: Prisma.JsonNullableFilter<"DocumentationPhase">
+  approvalStagesSnapshot?: Prisma.JsonNullableFilter<"DocumentationPhase">
   createdAt?: Prisma.DateTimeFilter<"DocumentationPhase"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"DocumentationPhase"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   phase?: Prisma.XOR<Prisma.ApplicationPhaseScalarRelationFilter, Prisma.ApplicationPhaseWhereInput>
   documentationPlan?: Prisma.XOR<Prisma.DocumentationPlanNullableScalarRelationFilter, Prisma.DocumentationPlanWhereInput> | null
   sourceQuestionnairePhase?: Prisma.XOR<Prisma.QuestionnairePhaseNullableScalarRelationFilter, Prisma.QuestionnairePhaseWhereInput> | null
-  currentStep?: Prisma.XOR<Prisma.DocumentationStepNullableScalarRelationFilter, Prisma.DocumentationStepWhereInput> | null
-  steps?: Prisma.DocumentationStepListRelationFilter
+  stageProgress?: Prisma.ApprovalStageProgressListRelationFilter
 }, "id" | "phaseId">
 
 export type DocumentationPhaseOrderByWithAggregationInput = {
@@ -380,15 +329,11 @@ export type DocumentationPhaseOrderByWithAggregationInput = {
   phaseId?: Prisma.SortOrder
   documentationPlanId?: Prisma.SortOrderInput | Prisma.SortOrder
   sourceQuestionnairePhaseId?: Prisma.SortOrderInput | Prisma.SortOrder
-  currentStepId?: Prisma.SortOrderInput | Prisma.SortOrder
+  currentStageOrder?: Prisma.SortOrder
   approvedDocumentsCount?: Prisma.SortOrder
   requiredDocumentsCount?: Prisma.SortOrder
-  completedStepsCount?: Prisma.SortOrder
-  totalStepsCount?: Prisma.SortOrder
-  minimumCompletionPercentage?: Prisma.SortOrderInput | Prisma.SortOrder
-  completionCriterion?: Prisma.SortOrderInput | Prisma.SortOrder
-  stepDefinitionsSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
-  requiredDocumentSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
+  documentDefinitionsSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
+  approvalStagesSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.DocumentationPhaseCountOrderByAggregateInput
@@ -407,37 +352,29 @@ export type DocumentationPhaseScalarWhereWithAggregatesInput = {
   phaseId?: Prisma.StringWithAggregatesFilter<"DocumentationPhase"> | string
   documentationPlanId?: Prisma.StringNullableWithAggregatesFilter<"DocumentationPhase"> | string | null
   sourceQuestionnairePhaseId?: Prisma.StringNullableWithAggregatesFilter<"DocumentationPhase"> | string | null
-  currentStepId?: Prisma.StringNullableWithAggregatesFilter<"DocumentationPhase"> | string | null
+  currentStageOrder?: Prisma.IntWithAggregatesFilter<"DocumentationPhase"> | number
   approvedDocumentsCount?: Prisma.IntWithAggregatesFilter<"DocumentationPhase"> | number
   requiredDocumentsCount?: Prisma.IntWithAggregatesFilter<"DocumentationPhase"> | number
-  completedStepsCount?: Prisma.IntWithAggregatesFilter<"DocumentationPhase"> | number
-  totalStepsCount?: Prisma.IntWithAggregatesFilter<"DocumentationPhase"> | number
-  minimumCompletionPercentage?: Prisma.FloatNullableWithAggregatesFilter<"DocumentationPhase"> | number | null
-  completionCriterion?: Prisma.EnumCompletionCriterionNullableWithAggregatesFilter<"DocumentationPhase"> | $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.JsonNullableWithAggregatesFilter<"DocumentationPhase">
-  requiredDocumentSnapshot?: Prisma.JsonNullableWithAggregatesFilter<"DocumentationPhase">
+  documentDefinitionsSnapshot?: Prisma.JsonNullableWithAggregatesFilter<"DocumentationPhase">
+  approvalStagesSnapshot?: Prisma.JsonNullableWithAggregatesFilter<"DocumentationPhase">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"DocumentationPhase"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"DocumentationPhase"> | Date | string
 }
 
 export type DocumentationPhaseCreateInput = {
   id?: string
+  currentStageOrder?: number
   approvedDocumentsCount?: number
   requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documentDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStagesSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutDocumentationPhasesInput
   phase: Prisma.ApplicationPhaseCreateNestedOneWithoutDocumentationPhaseInput
   documentationPlan?: Prisma.DocumentationPlanCreateNestedOneWithoutDocumentationPhasesInput
   sourceQuestionnairePhase?: Prisma.QuestionnairePhaseCreateNestedOneWithoutDependentDocumentationPhasesInput
-  currentStep?: Prisma.DocumentationStepCreateNestedOneWithoutCurrentForPhaseInput
-  steps?: Prisma.DocumentationStepCreateNestedManyWithoutDocumentationPhaseInput
+  stageProgress?: Prisma.ApprovalStageProgressCreateNestedManyWithoutDocumentationPhaseInput
 }
 
 export type DocumentationPhaseUncheckedCreateInput = {
@@ -446,38 +383,30 @@ export type DocumentationPhaseUncheckedCreateInput = {
   phaseId: string
   documentationPlanId?: string | null
   sourceQuestionnairePhaseId?: string | null
-  currentStepId?: string | null
+  currentStageOrder?: number
   approvedDocumentsCount?: number
   requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documentDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStagesSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  steps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutDocumentationPhaseInput
+  stageProgress?: Prisma.ApprovalStageProgressUncheckedCreateNestedManyWithoutDocumentationPhaseInput
 }
 
 export type DocumentationPhaseUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  currentStageOrder?: Prisma.IntFieldUpdateOperationsInput | number
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documentDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStagesSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutDocumentationPhasesNestedInput
   phase?: Prisma.ApplicationPhaseUpdateOneRequiredWithoutDocumentationPhaseNestedInput
   documentationPlan?: Prisma.DocumentationPlanUpdateOneWithoutDocumentationPhasesNestedInput
   sourceQuestionnairePhase?: Prisma.QuestionnairePhaseUpdateOneWithoutDependentDocumentationPhasesNestedInput
-  currentStep?: Prisma.DocumentationStepUpdateOneWithoutCurrentForPhaseNestedInput
-  steps?: Prisma.DocumentationStepUpdateManyWithoutDocumentationPhaseNestedInput
+  stageProgress?: Prisma.ApprovalStageProgressUpdateManyWithoutDocumentationPhaseNestedInput
 }
 
 export type DocumentationPhaseUncheckedUpdateInput = {
@@ -486,18 +415,14 @@ export type DocumentationPhaseUncheckedUpdateInput = {
   phaseId?: Prisma.StringFieldUpdateOperationsInput | string
   documentationPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceQuestionnairePhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  currentStepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currentStageOrder?: Prisma.IntFieldUpdateOperationsInput | number
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documentDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStagesSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  steps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutDocumentationPhaseNestedInput
+  stageProgress?: Prisma.ApprovalStageProgressUncheckedUpdateManyWithoutDocumentationPhaseNestedInput
 }
 
 export type DocumentationPhaseCreateManyInput = {
@@ -506,29 +431,22 @@ export type DocumentationPhaseCreateManyInput = {
   phaseId: string
   documentationPlanId?: string | null
   sourceQuestionnairePhaseId?: string | null
-  currentStepId?: string | null
+  currentStageOrder?: number
   approvedDocumentsCount?: number
   requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documentDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStagesSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type DocumentationPhaseUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  currentStageOrder?: Prisma.IntFieldUpdateOperationsInput | number
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documentDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStagesSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -539,15 +457,11 @@ export type DocumentationPhaseUncheckedUpdateManyInput = {
   phaseId?: Prisma.StringFieldUpdateOperationsInput | string
   documentationPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceQuestionnairePhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  currentStepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currentStageOrder?: Prisma.IntFieldUpdateOperationsInput | number
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documentDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStagesSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -579,25 +493,19 @@ export type DocumentationPhaseCountOrderByAggregateInput = {
   phaseId?: Prisma.SortOrder
   documentationPlanId?: Prisma.SortOrder
   sourceQuestionnairePhaseId?: Prisma.SortOrder
-  currentStepId?: Prisma.SortOrder
+  currentStageOrder?: Prisma.SortOrder
   approvedDocumentsCount?: Prisma.SortOrder
   requiredDocumentsCount?: Prisma.SortOrder
-  completedStepsCount?: Prisma.SortOrder
-  totalStepsCount?: Prisma.SortOrder
-  minimumCompletionPercentage?: Prisma.SortOrder
-  completionCriterion?: Prisma.SortOrder
-  stepDefinitionsSnapshot?: Prisma.SortOrder
-  requiredDocumentSnapshot?: Prisma.SortOrder
+  documentDefinitionsSnapshot?: Prisma.SortOrder
+  approvalStagesSnapshot?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type DocumentationPhaseAvgOrderByAggregateInput = {
+  currentStageOrder?: Prisma.SortOrder
   approvedDocumentsCount?: Prisma.SortOrder
   requiredDocumentsCount?: Prisma.SortOrder
-  completedStepsCount?: Prisma.SortOrder
-  totalStepsCount?: Prisma.SortOrder
-  minimumCompletionPercentage?: Prisma.SortOrder
 }
 
 export type DocumentationPhaseMaxOrderByAggregateInput = {
@@ -606,13 +514,9 @@ export type DocumentationPhaseMaxOrderByAggregateInput = {
   phaseId?: Prisma.SortOrder
   documentationPlanId?: Prisma.SortOrder
   sourceQuestionnairePhaseId?: Prisma.SortOrder
-  currentStepId?: Prisma.SortOrder
+  currentStageOrder?: Prisma.SortOrder
   approvedDocumentsCount?: Prisma.SortOrder
   requiredDocumentsCount?: Prisma.SortOrder
-  completedStepsCount?: Prisma.SortOrder
-  totalStepsCount?: Prisma.SortOrder
-  minimumCompletionPercentage?: Prisma.SortOrder
-  completionCriterion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -623,23 +527,17 @@ export type DocumentationPhaseMinOrderByAggregateInput = {
   phaseId?: Prisma.SortOrder
   documentationPlanId?: Prisma.SortOrder
   sourceQuestionnairePhaseId?: Prisma.SortOrder
-  currentStepId?: Prisma.SortOrder
+  currentStageOrder?: Prisma.SortOrder
   approvedDocumentsCount?: Prisma.SortOrder
   requiredDocumentsCount?: Prisma.SortOrder
-  completedStepsCount?: Prisma.SortOrder
-  totalStepsCount?: Prisma.SortOrder
-  minimumCompletionPercentage?: Prisma.SortOrder
-  completionCriterion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type DocumentationPhaseSumOrderByAggregateInput = {
+  currentStageOrder?: Prisma.SortOrder
   approvedDocumentsCount?: Prisma.SortOrder
   requiredDocumentsCount?: Prisma.SortOrder
-  completedStepsCount?: Prisma.SortOrder
-  totalStepsCount?: Prisma.SortOrder
-  minimumCompletionPercentage?: Prisma.SortOrder
 }
 
 export type DocumentationPhaseScalarRelationFilter = {
@@ -805,79 +703,33 @@ export type DocumentationPhaseUncheckedUpdateManyWithoutSourceQuestionnairePhase
   deleteMany?: Prisma.DocumentationPhaseScalarWhereInput | Prisma.DocumentationPhaseScalarWhereInput[]
 }
 
-export type DocumentationPhaseCreateNestedOneWithoutStepsInput = {
-  create?: Prisma.XOR<Prisma.DocumentationPhaseCreateWithoutStepsInput, Prisma.DocumentationPhaseUncheckedCreateWithoutStepsInput>
-  connectOrCreate?: Prisma.DocumentationPhaseCreateOrConnectWithoutStepsInput
+export type DocumentationPhaseCreateNestedOneWithoutStageProgressInput = {
+  create?: Prisma.XOR<Prisma.DocumentationPhaseCreateWithoutStageProgressInput, Prisma.DocumentationPhaseUncheckedCreateWithoutStageProgressInput>
+  connectOrCreate?: Prisma.DocumentationPhaseCreateOrConnectWithoutStageProgressInput
   connect?: Prisma.DocumentationPhaseWhereUniqueInput
 }
 
-export type DocumentationPhaseCreateNestedManyWithoutCurrentStepInput = {
-  create?: Prisma.XOR<Prisma.DocumentationPhaseCreateWithoutCurrentStepInput, Prisma.DocumentationPhaseUncheckedCreateWithoutCurrentStepInput> | Prisma.DocumentationPhaseCreateWithoutCurrentStepInput[] | Prisma.DocumentationPhaseUncheckedCreateWithoutCurrentStepInput[]
-  connectOrCreate?: Prisma.DocumentationPhaseCreateOrConnectWithoutCurrentStepInput | Prisma.DocumentationPhaseCreateOrConnectWithoutCurrentStepInput[]
-  createMany?: Prisma.DocumentationPhaseCreateManyCurrentStepInputEnvelope
-  connect?: Prisma.DocumentationPhaseWhereUniqueInput | Prisma.DocumentationPhaseWhereUniqueInput[]
-}
-
-export type DocumentationPhaseUncheckedCreateNestedManyWithoutCurrentStepInput = {
-  create?: Prisma.XOR<Prisma.DocumentationPhaseCreateWithoutCurrentStepInput, Prisma.DocumentationPhaseUncheckedCreateWithoutCurrentStepInput> | Prisma.DocumentationPhaseCreateWithoutCurrentStepInput[] | Prisma.DocumentationPhaseUncheckedCreateWithoutCurrentStepInput[]
-  connectOrCreate?: Prisma.DocumentationPhaseCreateOrConnectWithoutCurrentStepInput | Prisma.DocumentationPhaseCreateOrConnectWithoutCurrentStepInput[]
-  createMany?: Prisma.DocumentationPhaseCreateManyCurrentStepInputEnvelope
-  connect?: Prisma.DocumentationPhaseWhereUniqueInput | Prisma.DocumentationPhaseWhereUniqueInput[]
-}
-
-export type DocumentationPhaseUpdateOneRequiredWithoutStepsNestedInput = {
-  create?: Prisma.XOR<Prisma.DocumentationPhaseCreateWithoutStepsInput, Prisma.DocumentationPhaseUncheckedCreateWithoutStepsInput>
-  connectOrCreate?: Prisma.DocumentationPhaseCreateOrConnectWithoutStepsInput
-  upsert?: Prisma.DocumentationPhaseUpsertWithoutStepsInput
+export type DocumentationPhaseUpdateOneRequiredWithoutStageProgressNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentationPhaseCreateWithoutStageProgressInput, Prisma.DocumentationPhaseUncheckedCreateWithoutStageProgressInput>
+  connectOrCreate?: Prisma.DocumentationPhaseCreateOrConnectWithoutStageProgressInput
+  upsert?: Prisma.DocumentationPhaseUpsertWithoutStageProgressInput
   connect?: Prisma.DocumentationPhaseWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentationPhaseUpdateToOneWithWhereWithoutStepsInput, Prisma.DocumentationPhaseUpdateWithoutStepsInput>, Prisma.DocumentationPhaseUncheckedUpdateWithoutStepsInput>
-}
-
-export type DocumentationPhaseUpdateManyWithoutCurrentStepNestedInput = {
-  create?: Prisma.XOR<Prisma.DocumentationPhaseCreateWithoutCurrentStepInput, Prisma.DocumentationPhaseUncheckedCreateWithoutCurrentStepInput> | Prisma.DocumentationPhaseCreateWithoutCurrentStepInput[] | Prisma.DocumentationPhaseUncheckedCreateWithoutCurrentStepInput[]
-  connectOrCreate?: Prisma.DocumentationPhaseCreateOrConnectWithoutCurrentStepInput | Prisma.DocumentationPhaseCreateOrConnectWithoutCurrentStepInput[]
-  upsert?: Prisma.DocumentationPhaseUpsertWithWhereUniqueWithoutCurrentStepInput | Prisma.DocumentationPhaseUpsertWithWhereUniqueWithoutCurrentStepInput[]
-  createMany?: Prisma.DocumentationPhaseCreateManyCurrentStepInputEnvelope
-  set?: Prisma.DocumentationPhaseWhereUniqueInput | Prisma.DocumentationPhaseWhereUniqueInput[]
-  disconnect?: Prisma.DocumentationPhaseWhereUniqueInput | Prisma.DocumentationPhaseWhereUniqueInput[]
-  delete?: Prisma.DocumentationPhaseWhereUniqueInput | Prisma.DocumentationPhaseWhereUniqueInput[]
-  connect?: Prisma.DocumentationPhaseWhereUniqueInput | Prisma.DocumentationPhaseWhereUniqueInput[]
-  update?: Prisma.DocumentationPhaseUpdateWithWhereUniqueWithoutCurrentStepInput | Prisma.DocumentationPhaseUpdateWithWhereUniqueWithoutCurrentStepInput[]
-  updateMany?: Prisma.DocumentationPhaseUpdateManyWithWhereWithoutCurrentStepInput | Prisma.DocumentationPhaseUpdateManyWithWhereWithoutCurrentStepInput[]
-  deleteMany?: Prisma.DocumentationPhaseScalarWhereInput | Prisma.DocumentationPhaseScalarWhereInput[]
-}
-
-export type DocumentationPhaseUncheckedUpdateManyWithoutCurrentStepNestedInput = {
-  create?: Prisma.XOR<Prisma.DocumentationPhaseCreateWithoutCurrentStepInput, Prisma.DocumentationPhaseUncheckedCreateWithoutCurrentStepInput> | Prisma.DocumentationPhaseCreateWithoutCurrentStepInput[] | Prisma.DocumentationPhaseUncheckedCreateWithoutCurrentStepInput[]
-  connectOrCreate?: Prisma.DocumentationPhaseCreateOrConnectWithoutCurrentStepInput | Prisma.DocumentationPhaseCreateOrConnectWithoutCurrentStepInput[]
-  upsert?: Prisma.DocumentationPhaseUpsertWithWhereUniqueWithoutCurrentStepInput | Prisma.DocumentationPhaseUpsertWithWhereUniqueWithoutCurrentStepInput[]
-  createMany?: Prisma.DocumentationPhaseCreateManyCurrentStepInputEnvelope
-  set?: Prisma.DocumentationPhaseWhereUniqueInput | Prisma.DocumentationPhaseWhereUniqueInput[]
-  disconnect?: Prisma.DocumentationPhaseWhereUniqueInput | Prisma.DocumentationPhaseWhereUniqueInput[]
-  delete?: Prisma.DocumentationPhaseWhereUniqueInput | Prisma.DocumentationPhaseWhereUniqueInput[]
-  connect?: Prisma.DocumentationPhaseWhereUniqueInput | Prisma.DocumentationPhaseWhereUniqueInput[]
-  update?: Prisma.DocumentationPhaseUpdateWithWhereUniqueWithoutCurrentStepInput | Prisma.DocumentationPhaseUpdateWithWhereUniqueWithoutCurrentStepInput[]
-  updateMany?: Prisma.DocumentationPhaseUpdateManyWithWhereWithoutCurrentStepInput | Prisma.DocumentationPhaseUpdateManyWithWhereWithoutCurrentStepInput[]
-  deleteMany?: Prisma.DocumentationPhaseScalarWhereInput | Prisma.DocumentationPhaseScalarWhereInput[]
+  update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentationPhaseUpdateToOneWithWhereWithoutStageProgressInput, Prisma.DocumentationPhaseUpdateWithoutStageProgressInput>, Prisma.DocumentationPhaseUncheckedUpdateWithoutStageProgressInput>
 }
 
 export type DocumentationPhaseCreateWithoutTenantInput = {
   id?: string
+  currentStageOrder?: number
   approvedDocumentsCount?: number
   requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documentDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStagesSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   phase: Prisma.ApplicationPhaseCreateNestedOneWithoutDocumentationPhaseInput
   documentationPlan?: Prisma.DocumentationPlanCreateNestedOneWithoutDocumentationPhasesInput
   sourceQuestionnairePhase?: Prisma.QuestionnairePhaseCreateNestedOneWithoutDependentDocumentationPhasesInput
-  currentStep?: Prisma.DocumentationStepCreateNestedOneWithoutCurrentForPhaseInput
-  steps?: Prisma.DocumentationStepCreateNestedManyWithoutDocumentationPhaseInput
+  stageProgress?: Prisma.ApprovalStageProgressCreateNestedManyWithoutDocumentationPhaseInput
 }
 
 export type DocumentationPhaseUncheckedCreateWithoutTenantInput = {
@@ -885,18 +737,14 @@ export type DocumentationPhaseUncheckedCreateWithoutTenantInput = {
   phaseId: string
   documentationPlanId?: string | null
   sourceQuestionnairePhaseId?: string | null
-  currentStepId?: string | null
+  currentStageOrder?: number
   approvedDocumentsCount?: number
   requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documentDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStagesSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  steps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutDocumentationPhaseInput
+  stageProgress?: Prisma.ApprovalStageProgressUncheckedCreateNestedManyWithoutDocumentationPhaseInput
 }
 
 export type DocumentationPhaseCreateOrConnectWithoutTenantInput = {
@@ -934,36 +782,28 @@ export type DocumentationPhaseScalarWhereInput = {
   phaseId?: Prisma.StringFilter<"DocumentationPhase"> | string
   documentationPlanId?: Prisma.StringNullableFilter<"DocumentationPhase"> | string | null
   sourceQuestionnairePhaseId?: Prisma.StringNullableFilter<"DocumentationPhase"> | string | null
-  currentStepId?: Prisma.StringNullableFilter<"DocumentationPhase"> | string | null
+  currentStageOrder?: Prisma.IntFilter<"DocumentationPhase"> | number
   approvedDocumentsCount?: Prisma.IntFilter<"DocumentationPhase"> | number
   requiredDocumentsCount?: Prisma.IntFilter<"DocumentationPhase"> | number
-  completedStepsCount?: Prisma.IntFilter<"DocumentationPhase"> | number
-  totalStepsCount?: Prisma.IntFilter<"DocumentationPhase"> | number
-  minimumCompletionPercentage?: Prisma.FloatNullableFilter<"DocumentationPhase"> | number | null
-  completionCriterion?: Prisma.EnumCompletionCriterionNullableFilter<"DocumentationPhase"> | $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.JsonNullableFilter<"DocumentationPhase">
-  requiredDocumentSnapshot?: Prisma.JsonNullableFilter<"DocumentationPhase">
+  documentDefinitionsSnapshot?: Prisma.JsonNullableFilter<"DocumentationPhase">
+  approvalStagesSnapshot?: Prisma.JsonNullableFilter<"DocumentationPhase">
   createdAt?: Prisma.DateTimeFilter<"DocumentationPhase"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"DocumentationPhase"> | Date | string
 }
 
 export type DocumentationPhaseCreateWithoutDocumentationPlanInput = {
   id?: string
+  currentStageOrder?: number
   approvedDocumentsCount?: number
   requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documentDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStagesSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutDocumentationPhasesInput
   phase: Prisma.ApplicationPhaseCreateNestedOneWithoutDocumentationPhaseInput
   sourceQuestionnairePhase?: Prisma.QuestionnairePhaseCreateNestedOneWithoutDependentDocumentationPhasesInput
-  currentStep?: Prisma.DocumentationStepCreateNestedOneWithoutCurrentForPhaseInput
-  steps?: Prisma.DocumentationStepCreateNestedManyWithoutDocumentationPhaseInput
+  stageProgress?: Prisma.ApprovalStageProgressCreateNestedManyWithoutDocumentationPhaseInput
 }
 
 export type DocumentationPhaseUncheckedCreateWithoutDocumentationPlanInput = {
@@ -971,18 +811,14 @@ export type DocumentationPhaseUncheckedCreateWithoutDocumentationPlanInput = {
   tenantId: string
   phaseId: string
   sourceQuestionnairePhaseId?: string | null
-  currentStepId?: string | null
+  currentStageOrder?: number
   approvedDocumentsCount?: number
   requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documentDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStagesSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  steps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutDocumentationPhaseInput
+  stageProgress?: Prisma.ApprovalStageProgressUncheckedCreateNestedManyWithoutDocumentationPhaseInput
 }
 
 export type DocumentationPhaseCreateOrConnectWithoutDocumentationPlanInput = {
@@ -1013,21 +849,17 @@ export type DocumentationPhaseUpdateManyWithWhereWithoutDocumentationPlanInput =
 
 export type DocumentationPhaseCreateWithoutPhaseInput = {
   id?: string
+  currentStageOrder?: number
   approvedDocumentsCount?: number
   requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documentDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStagesSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutDocumentationPhasesInput
   documentationPlan?: Prisma.DocumentationPlanCreateNestedOneWithoutDocumentationPhasesInput
   sourceQuestionnairePhase?: Prisma.QuestionnairePhaseCreateNestedOneWithoutDependentDocumentationPhasesInput
-  currentStep?: Prisma.DocumentationStepCreateNestedOneWithoutCurrentForPhaseInput
-  steps?: Prisma.DocumentationStepCreateNestedManyWithoutDocumentationPhaseInput
+  stageProgress?: Prisma.ApprovalStageProgressCreateNestedManyWithoutDocumentationPhaseInput
 }
 
 export type DocumentationPhaseUncheckedCreateWithoutPhaseInput = {
@@ -1035,18 +867,14 @@ export type DocumentationPhaseUncheckedCreateWithoutPhaseInput = {
   tenantId: string
   documentationPlanId?: string | null
   sourceQuestionnairePhaseId?: string | null
-  currentStepId?: string | null
+  currentStageOrder?: number
   approvedDocumentsCount?: number
   requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documentDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStagesSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  steps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutDocumentationPhaseInput
+  stageProgress?: Prisma.ApprovalStageProgressUncheckedCreateNestedManyWithoutDocumentationPhaseInput
 }
 
 export type DocumentationPhaseCreateOrConnectWithoutPhaseInput = {
@@ -1067,21 +895,17 @@ export type DocumentationPhaseUpdateToOneWithWhereWithoutPhaseInput = {
 
 export type DocumentationPhaseUpdateWithoutPhaseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  currentStageOrder?: Prisma.IntFieldUpdateOperationsInput | number
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documentDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStagesSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutDocumentationPhasesNestedInput
   documentationPlan?: Prisma.DocumentationPlanUpdateOneWithoutDocumentationPhasesNestedInput
   sourceQuestionnairePhase?: Prisma.QuestionnairePhaseUpdateOneWithoutDependentDocumentationPhasesNestedInput
-  currentStep?: Prisma.DocumentationStepUpdateOneWithoutCurrentForPhaseNestedInput
-  steps?: Prisma.DocumentationStepUpdateManyWithoutDocumentationPhaseNestedInput
+  stageProgress?: Prisma.ApprovalStageProgressUpdateManyWithoutDocumentationPhaseNestedInput
 }
 
 export type DocumentationPhaseUncheckedUpdateWithoutPhaseInput = {
@@ -1089,37 +913,29 @@ export type DocumentationPhaseUncheckedUpdateWithoutPhaseInput = {
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   documentationPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceQuestionnairePhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  currentStepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currentStageOrder?: Prisma.IntFieldUpdateOperationsInput | number
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documentDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStagesSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  steps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutDocumentationPhaseNestedInput
+  stageProgress?: Prisma.ApprovalStageProgressUncheckedUpdateManyWithoutDocumentationPhaseNestedInput
 }
 
 export type DocumentationPhaseCreateWithoutSourceQuestionnairePhaseInput = {
   id?: string
+  currentStageOrder?: number
   approvedDocumentsCount?: number
   requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documentDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStagesSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutDocumentationPhasesInput
   phase: Prisma.ApplicationPhaseCreateNestedOneWithoutDocumentationPhaseInput
   documentationPlan?: Prisma.DocumentationPlanCreateNestedOneWithoutDocumentationPhasesInput
-  currentStep?: Prisma.DocumentationStepCreateNestedOneWithoutCurrentForPhaseInput
-  steps?: Prisma.DocumentationStepCreateNestedManyWithoutDocumentationPhaseInput
+  stageProgress?: Prisma.ApprovalStageProgressCreateNestedManyWithoutDocumentationPhaseInput
 }
 
 export type DocumentationPhaseUncheckedCreateWithoutSourceQuestionnairePhaseInput = {
@@ -1127,18 +943,14 @@ export type DocumentationPhaseUncheckedCreateWithoutSourceQuestionnairePhaseInpu
   tenantId: string
   phaseId: string
   documentationPlanId?: string | null
-  currentStepId?: string | null
+  currentStageOrder?: number
   approvedDocumentsCount?: number
   requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documentDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStagesSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
-  steps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutDocumentationPhaseInput
+  stageProgress?: Prisma.ApprovalStageProgressUncheckedCreateNestedManyWithoutDocumentationPhaseInput
 }
 
 export type DocumentationPhaseCreateOrConnectWithoutSourceQuestionnairePhaseInput = {
@@ -1167,160 +979,80 @@ export type DocumentationPhaseUpdateManyWithWhereWithoutSourceQuestionnairePhase
   data: Prisma.XOR<Prisma.DocumentationPhaseUpdateManyMutationInput, Prisma.DocumentationPhaseUncheckedUpdateManyWithoutSourceQuestionnairePhaseInput>
 }
 
-export type DocumentationPhaseCreateWithoutStepsInput = {
+export type DocumentationPhaseCreateWithoutStageProgressInput = {
   id?: string
+  currentStageOrder?: number
   approvedDocumentsCount?: number
   requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documentDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStagesSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutDocumentationPhasesInput
   phase: Prisma.ApplicationPhaseCreateNestedOneWithoutDocumentationPhaseInput
   documentationPlan?: Prisma.DocumentationPlanCreateNestedOneWithoutDocumentationPhasesInput
   sourceQuestionnairePhase?: Prisma.QuestionnairePhaseCreateNestedOneWithoutDependentDocumentationPhasesInput
-  currentStep?: Prisma.DocumentationStepCreateNestedOneWithoutCurrentForPhaseInput
 }
 
-export type DocumentationPhaseUncheckedCreateWithoutStepsInput = {
+export type DocumentationPhaseUncheckedCreateWithoutStageProgressInput = {
   id?: string
   tenantId: string
   phaseId: string
   documentationPlanId?: string | null
   sourceQuestionnairePhaseId?: string | null
-  currentStepId?: string | null
+  currentStageOrder?: number
   approvedDocumentsCount?: number
   requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documentDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStagesSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
-export type DocumentationPhaseCreateOrConnectWithoutStepsInput = {
+export type DocumentationPhaseCreateOrConnectWithoutStageProgressInput = {
   where: Prisma.DocumentationPhaseWhereUniqueInput
-  create: Prisma.XOR<Prisma.DocumentationPhaseCreateWithoutStepsInput, Prisma.DocumentationPhaseUncheckedCreateWithoutStepsInput>
+  create: Prisma.XOR<Prisma.DocumentationPhaseCreateWithoutStageProgressInput, Prisma.DocumentationPhaseUncheckedCreateWithoutStageProgressInput>
 }
 
-export type DocumentationPhaseCreateWithoutCurrentStepInput = {
-  id?: string
-  approvedDocumentsCount?: number
-  requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  tenant: Prisma.TenantCreateNestedOneWithoutDocumentationPhasesInput
-  phase: Prisma.ApplicationPhaseCreateNestedOneWithoutDocumentationPhaseInput
-  documentationPlan?: Prisma.DocumentationPlanCreateNestedOneWithoutDocumentationPhasesInput
-  sourceQuestionnairePhase?: Prisma.QuestionnairePhaseCreateNestedOneWithoutDependentDocumentationPhasesInput
-  steps?: Prisma.DocumentationStepCreateNestedManyWithoutDocumentationPhaseInput
-}
-
-export type DocumentationPhaseUncheckedCreateWithoutCurrentStepInput = {
-  id?: string
-  tenantId: string
-  phaseId: string
-  documentationPlanId?: string | null
-  sourceQuestionnairePhaseId?: string | null
-  approvedDocumentsCount?: number
-  requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  steps?: Prisma.DocumentationStepUncheckedCreateNestedManyWithoutDocumentationPhaseInput
-}
-
-export type DocumentationPhaseCreateOrConnectWithoutCurrentStepInput = {
-  where: Prisma.DocumentationPhaseWhereUniqueInput
-  create: Prisma.XOR<Prisma.DocumentationPhaseCreateWithoutCurrentStepInput, Prisma.DocumentationPhaseUncheckedCreateWithoutCurrentStepInput>
-}
-
-export type DocumentationPhaseCreateManyCurrentStepInputEnvelope = {
-  data: Prisma.DocumentationPhaseCreateManyCurrentStepInput | Prisma.DocumentationPhaseCreateManyCurrentStepInput[]
-  skipDuplicates?: boolean
-}
-
-export type DocumentationPhaseUpsertWithoutStepsInput = {
-  update: Prisma.XOR<Prisma.DocumentationPhaseUpdateWithoutStepsInput, Prisma.DocumentationPhaseUncheckedUpdateWithoutStepsInput>
-  create: Prisma.XOR<Prisma.DocumentationPhaseCreateWithoutStepsInput, Prisma.DocumentationPhaseUncheckedCreateWithoutStepsInput>
+export type DocumentationPhaseUpsertWithoutStageProgressInput = {
+  update: Prisma.XOR<Prisma.DocumentationPhaseUpdateWithoutStageProgressInput, Prisma.DocumentationPhaseUncheckedUpdateWithoutStageProgressInput>
+  create: Prisma.XOR<Prisma.DocumentationPhaseCreateWithoutStageProgressInput, Prisma.DocumentationPhaseUncheckedCreateWithoutStageProgressInput>
   where?: Prisma.DocumentationPhaseWhereInput
 }
 
-export type DocumentationPhaseUpdateToOneWithWhereWithoutStepsInput = {
+export type DocumentationPhaseUpdateToOneWithWhereWithoutStageProgressInput = {
   where?: Prisma.DocumentationPhaseWhereInput
-  data: Prisma.XOR<Prisma.DocumentationPhaseUpdateWithoutStepsInput, Prisma.DocumentationPhaseUncheckedUpdateWithoutStepsInput>
+  data: Prisma.XOR<Prisma.DocumentationPhaseUpdateWithoutStageProgressInput, Prisma.DocumentationPhaseUncheckedUpdateWithoutStageProgressInput>
 }
 
-export type DocumentationPhaseUpdateWithoutStepsInput = {
+export type DocumentationPhaseUpdateWithoutStageProgressInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  currentStageOrder?: Prisma.IntFieldUpdateOperationsInput | number
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documentDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStagesSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutDocumentationPhasesNestedInput
   phase?: Prisma.ApplicationPhaseUpdateOneRequiredWithoutDocumentationPhaseNestedInput
   documentationPlan?: Prisma.DocumentationPlanUpdateOneWithoutDocumentationPhasesNestedInput
   sourceQuestionnairePhase?: Prisma.QuestionnairePhaseUpdateOneWithoutDependentDocumentationPhasesNestedInput
-  currentStep?: Prisma.DocumentationStepUpdateOneWithoutCurrentForPhaseNestedInput
 }
 
-export type DocumentationPhaseUncheckedUpdateWithoutStepsInput = {
+export type DocumentationPhaseUncheckedUpdateWithoutStageProgressInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.StringFieldUpdateOperationsInput | string
   documentationPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceQuestionnairePhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  currentStepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currentStageOrder?: Prisma.IntFieldUpdateOperationsInput | number
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documentDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStagesSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type DocumentationPhaseUpsertWithWhereUniqueWithoutCurrentStepInput = {
-  where: Prisma.DocumentationPhaseWhereUniqueInput
-  update: Prisma.XOR<Prisma.DocumentationPhaseUpdateWithoutCurrentStepInput, Prisma.DocumentationPhaseUncheckedUpdateWithoutCurrentStepInput>
-  create: Prisma.XOR<Prisma.DocumentationPhaseCreateWithoutCurrentStepInput, Prisma.DocumentationPhaseUncheckedCreateWithoutCurrentStepInput>
-}
-
-export type DocumentationPhaseUpdateWithWhereUniqueWithoutCurrentStepInput = {
-  where: Prisma.DocumentationPhaseWhereUniqueInput
-  data: Prisma.XOR<Prisma.DocumentationPhaseUpdateWithoutCurrentStepInput, Prisma.DocumentationPhaseUncheckedUpdateWithoutCurrentStepInput>
-}
-
-export type DocumentationPhaseUpdateManyWithWhereWithoutCurrentStepInput = {
-  where: Prisma.DocumentationPhaseScalarWhereInput
-  data: Prisma.XOR<Prisma.DocumentationPhaseUpdateManyMutationInput, Prisma.DocumentationPhaseUncheckedUpdateManyWithoutCurrentStepInput>
 }
 
 export type DocumentationPhaseCreateManyTenantInput = {
@@ -1328,36 +1060,28 @@ export type DocumentationPhaseCreateManyTenantInput = {
   phaseId: string
   documentationPlanId?: string | null
   sourceQuestionnairePhaseId?: string | null
-  currentStepId?: string | null
+  currentStageOrder?: number
   approvedDocumentsCount?: number
   requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documentDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStagesSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type DocumentationPhaseUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  currentStageOrder?: Prisma.IntFieldUpdateOperationsInput | number
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documentDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStagesSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   phase?: Prisma.ApplicationPhaseUpdateOneRequiredWithoutDocumentationPhaseNestedInput
   documentationPlan?: Prisma.DocumentationPlanUpdateOneWithoutDocumentationPhasesNestedInput
   sourceQuestionnairePhase?: Prisma.QuestionnairePhaseUpdateOneWithoutDependentDocumentationPhasesNestedInput
-  currentStep?: Prisma.DocumentationStepUpdateOneWithoutCurrentForPhaseNestedInput
-  steps?: Prisma.DocumentationStepUpdateManyWithoutDocumentationPhaseNestedInput
+  stageProgress?: Prisma.ApprovalStageProgressUpdateManyWithoutDocumentationPhaseNestedInput
 }
 
 export type DocumentationPhaseUncheckedUpdateWithoutTenantInput = {
@@ -1365,18 +1089,14 @@ export type DocumentationPhaseUncheckedUpdateWithoutTenantInput = {
   phaseId?: Prisma.StringFieldUpdateOperationsInput | string
   documentationPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceQuestionnairePhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  currentStepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currentStageOrder?: Prisma.IntFieldUpdateOperationsInput | number
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documentDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStagesSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  steps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutDocumentationPhaseNestedInput
+  stageProgress?: Prisma.ApprovalStageProgressUncheckedUpdateManyWithoutDocumentationPhaseNestedInput
 }
 
 export type DocumentationPhaseUncheckedUpdateManyWithoutTenantInput = {
@@ -1384,15 +1104,11 @@ export type DocumentationPhaseUncheckedUpdateManyWithoutTenantInput = {
   phaseId?: Prisma.StringFieldUpdateOperationsInput | string
   documentationPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sourceQuestionnairePhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  currentStepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currentStageOrder?: Prisma.IntFieldUpdateOperationsInput | number
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documentDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStagesSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1402,36 +1118,28 @@ export type DocumentationPhaseCreateManyDocumentationPlanInput = {
   tenantId: string
   phaseId: string
   sourceQuestionnairePhaseId?: string | null
-  currentStepId?: string | null
+  currentStageOrder?: number
   approvedDocumentsCount?: number
   requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documentDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStagesSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type DocumentationPhaseUpdateWithoutDocumentationPlanInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  currentStageOrder?: Prisma.IntFieldUpdateOperationsInput | number
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documentDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStagesSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutDocumentationPhasesNestedInput
   phase?: Prisma.ApplicationPhaseUpdateOneRequiredWithoutDocumentationPhaseNestedInput
   sourceQuestionnairePhase?: Prisma.QuestionnairePhaseUpdateOneWithoutDependentDocumentationPhasesNestedInput
-  currentStep?: Prisma.DocumentationStepUpdateOneWithoutCurrentForPhaseNestedInput
-  steps?: Prisma.DocumentationStepUpdateManyWithoutDocumentationPhaseNestedInput
+  stageProgress?: Prisma.ApprovalStageProgressUpdateManyWithoutDocumentationPhaseNestedInput
 }
 
 export type DocumentationPhaseUncheckedUpdateWithoutDocumentationPlanInput = {
@@ -1439,18 +1147,14 @@ export type DocumentationPhaseUncheckedUpdateWithoutDocumentationPlanInput = {
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.StringFieldUpdateOperationsInput | string
   sourceQuestionnairePhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  currentStepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currentStageOrder?: Prisma.IntFieldUpdateOperationsInput | number
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documentDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStagesSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  steps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutDocumentationPhaseNestedInput
+  stageProgress?: Prisma.ApprovalStageProgressUncheckedUpdateManyWithoutDocumentationPhaseNestedInput
 }
 
 export type DocumentationPhaseUncheckedUpdateManyWithoutDocumentationPlanInput = {
@@ -1458,15 +1162,11 @@ export type DocumentationPhaseUncheckedUpdateManyWithoutDocumentationPlanInput =
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.StringFieldUpdateOperationsInput | string
   sourceQuestionnairePhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  currentStepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currentStageOrder?: Prisma.IntFieldUpdateOperationsInput | number
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documentDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStagesSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1476,36 +1176,28 @@ export type DocumentationPhaseCreateManySourceQuestionnairePhaseInput = {
   tenantId: string
   phaseId: string
   documentationPlanId?: string | null
-  currentStepId?: string | null
+  currentStageOrder?: number
   approvedDocumentsCount?: number
   requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documentDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStagesSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type DocumentationPhaseUpdateWithoutSourceQuestionnairePhaseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  currentStageOrder?: Prisma.IntFieldUpdateOperationsInput | number
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documentDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStagesSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutDocumentationPhasesNestedInput
   phase?: Prisma.ApplicationPhaseUpdateOneRequiredWithoutDocumentationPhaseNestedInput
   documentationPlan?: Prisma.DocumentationPlanUpdateOneWithoutDocumentationPhasesNestedInput
-  currentStep?: Prisma.DocumentationStepUpdateOneWithoutCurrentForPhaseNestedInput
-  steps?: Prisma.DocumentationStepUpdateManyWithoutDocumentationPhaseNestedInput
+  stageProgress?: Prisma.ApprovalStageProgressUpdateManyWithoutDocumentationPhaseNestedInput
 }
 
 export type DocumentationPhaseUncheckedUpdateWithoutSourceQuestionnairePhaseInput = {
@@ -1513,18 +1205,14 @@ export type DocumentationPhaseUncheckedUpdateWithoutSourceQuestionnairePhaseInpu
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.StringFieldUpdateOperationsInput | string
   documentationPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  currentStepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currentStageOrder?: Prisma.IntFieldUpdateOperationsInput | number
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documentDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStagesSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  steps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutDocumentationPhaseNestedInput
+  stageProgress?: Prisma.ApprovalStageProgressUncheckedUpdateManyWithoutDocumentationPhaseNestedInput
 }
 
 export type DocumentationPhaseUncheckedUpdateManyWithoutSourceQuestionnairePhaseInput = {
@@ -1532,89 +1220,11 @@ export type DocumentationPhaseUncheckedUpdateManyWithoutSourceQuestionnairePhase
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   phaseId?: Prisma.StringFieldUpdateOperationsInput | string
   documentationPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  currentStepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currentStageOrder?: Prisma.IntFieldUpdateOperationsInput | number
   approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
   requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type DocumentationPhaseCreateManyCurrentStepInput = {
-  id?: string
-  tenantId: string
-  phaseId: string
-  documentationPlanId?: string | null
-  sourceQuestionnairePhaseId?: string | null
-  approvedDocumentsCount?: number
-  requiredDocumentsCount?: number
-  completedStepsCount?: number
-  totalStepsCount?: number
-  minimumCompletionPercentage?: number | null
-  completionCriterion?: $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Date | string
-  updatedAt?: Date | string
-}
-
-export type DocumentationPhaseUpdateWithoutCurrentStepInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  tenant?: Prisma.TenantUpdateOneRequiredWithoutDocumentationPhasesNestedInput
-  phase?: Prisma.ApplicationPhaseUpdateOneRequiredWithoutDocumentationPhaseNestedInput
-  documentationPlan?: Prisma.DocumentationPlanUpdateOneWithoutDocumentationPhasesNestedInput
-  sourceQuestionnairePhase?: Prisma.QuestionnairePhaseUpdateOneWithoutDependentDocumentationPhasesNestedInput
-  steps?: Prisma.DocumentationStepUpdateManyWithoutDocumentationPhaseNestedInput
-}
-
-export type DocumentationPhaseUncheckedUpdateWithoutCurrentStepInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  phaseId?: Prisma.StringFieldUpdateOperationsInput | string
-  documentationPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sourceQuestionnairePhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  steps?: Prisma.DocumentationStepUncheckedUpdateManyWithoutDocumentationPhaseNestedInput
-}
-
-export type DocumentationPhaseUncheckedUpdateManyWithoutCurrentStepInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  phaseId?: Prisma.StringFieldUpdateOperationsInput | string
-  documentationPlanId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sourceQuestionnairePhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  approvedDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  requiredDocumentsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  completedStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalStepsCount?: Prisma.IntFieldUpdateOperationsInput | number
-  minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  completionCriterion?: Prisma.NullableEnumCompletionCriterionFieldUpdateOperationsInput | $Enums.CompletionCriterion | null
-  stepDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  requiredDocumentSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  documentDefinitionsSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  approvalStagesSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1625,11 +1235,11 @@ export type DocumentationPhaseUncheckedUpdateManyWithoutCurrentStepInput = {
  */
 
 export type DocumentationPhaseCountOutputType = {
-  steps: number
+  stageProgress: number
 }
 
 export type DocumentationPhaseCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  steps?: boolean | DocumentationPhaseCountOutputTypeCountStepsArgs
+  stageProgress?: boolean | DocumentationPhaseCountOutputTypeCountStageProgressArgs
 }
 
 /**
@@ -1645,8 +1255,8 @@ export type DocumentationPhaseCountOutputTypeDefaultArgs<ExtArgs extends runtime
 /**
  * DocumentationPhaseCountOutputType without action
  */
-export type DocumentationPhaseCountOutputTypeCountStepsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.DocumentationStepWhereInput
+export type DocumentationPhaseCountOutputTypeCountStageProgressArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ApprovalStageProgressWhereInput
 }
 
 
@@ -1656,23 +1266,18 @@ export type DocumentationPhaseSelect<ExtArgs extends runtime.Types.Extensions.In
   phaseId?: boolean
   documentationPlanId?: boolean
   sourceQuestionnairePhaseId?: boolean
-  currentStepId?: boolean
+  currentStageOrder?: boolean
   approvedDocumentsCount?: boolean
   requiredDocumentsCount?: boolean
-  completedStepsCount?: boolean
-  totalStepsCount?: boolean
-  minimumCompletionPercentage?: boolean
-  completionCriterion?: boolean
-  stepDefinitionsSnapshot?: boolean
-  requiredDocumentSnapshot?: boolean
+  documentDefinitionsSnapshot?: boolean
+  approvalStagesSnapshot?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   phase?: boolean | Prisma.ApplicationPhaseDefaultArgs<ExtArgs>
   documentationPlan?: boolean | Prisma.DocumentationPhase$documentationPlanArgs<ExtArgs>
   sourceQuestionnairePhase?: boolean | Prisma.DocumentationPhase$sourceQuestionnairePhaseArgs<ExtArgs>
-  currentStep?: boolean | Prisma.DocumentationPhase$currentStepArgs<ExtArgs>
-  steps?: boolean | Prisma.DocumentationPhase$stepsArgs<ExtArgs>
+  stageProgress?: boolean | Prisma.DocumentationPhase$stageProgressArgs<ExtArgs>
   _count?: boolean | Prisma.DocumentationPhaseCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["documentationPhase"]>
 
@@ -1684,27 +1289,22 @@ export type DocumentationPhaseSelectScalar = {
   phaseId?: boolean
   documentationPlanId?: boolean
   sourceQuestionnairePhaseId?: boolean
-  currentStepId?: boolean
+  currentStageOrder?: boolean
   approvedDocumentsCount?: boolean
   requiredDocumentsCount?: boolean
-  completedStepsCount?: boolean
-  totalStepsCount?: boolean
-  minimumCompletionPercentage?: boolean
-  completionCriterion?: boolean
-  stepDefinitionsSnapshot?: boolean
-  requiredDocumentSnapshot?: boolean
+  documentDefinitionsSnapshot?: boolean
+  approvalStagesSnapshot?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type DocumentationPhaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "phaseId" | "documentationPlanId" | "sourceQuestionnairePhaseId" | "currentStepId" | "approvedDocumentsCount" | "requiredDocumentsCount" | "completedStepsCount" | "totalStepsCount" | "minimumCompletionPercentage" | "completionCriterion" | "stepDefinitionsSnapshot" | "requiredDocumentSnapshot" | "createdAt" | "updatedAt", ExtArgs["result"]["documentationPhase"]>
+export type DocumentationPhaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "phaseId" | "documentationPlanId" | "sourceQuestionnairePhaseId" | "currentStageOrder" | "approvedDocumentsCount" | "requiredDocumentsCount" | "documentDefinitionsSnapshot" | "approvalStagesSnapshot" | "createdAt" | "updatedAt", ExtArgs["result"]["documentationPhase"]>
 export type DocumentationPhaseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   phase?: boolean | Prisma.ApplicationPhaseDefaultArgs<ExtArgs>
   documentationPlan?: boolean | Prisma.DocumentationPhase$documentationPlanArgs<ExtArgs>
   sourceQuestionnairePhase?: boolean | Prisma.DocumentationPhase$sourceQuestionnairePhaseArgs<ExtArgs>
-  currentStep?: boolean | Prisma.DocumentationPhase$currentStepArgs<ExtArgs>
-  steps?: boolean | Prisma.DocumentationPhase$stepsArgs<ExtArgs>
+  stageProgress?: boolean | Prisma.DocumentationPhase$stageProgressArgs<ExtArgs>
   _count?: boolean | Prisma.DocumentationPhaseCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -1715,8 +1315,7 @@ export type $DocumentationPhasePayload<ExtArgs extends runtime.Types.Extensions.
     phase: Prisma.$ApplicationPhasePayload<ExtArgs>
     documentationPlan: Prisma.$DocumentationPlanPayload<ExtArgs> | null
     sourceQuestionnairePhase: Prisma.$QuestionnairePhasePayload<ExtArgs> | null
-    currentStep: Prisma.$DocumentationStepPayload<ExtArgs> | null
-    steps: Prisma.$DocumentationStepPayload<ExtArgs>[]
+    stageProgress: Prisma.$ApprovalStageProgressPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1724,15 +1323,11 @@ export type $DocumentationPhasePayload<ExtArgs extends runtime.Types.Extensions.
     phaseId: string
     documentationPlanId: string | null
     sourceQuestionnairePhaseId: string | null
-    currentStepId: string | null
+    currentStageOrder: number
     approvedDocumentsCount: number
     requiredDocumentsCount: number
-    completedStepsCount: number
-    totalStepsCount: number
-    minimumCompletionPercentage: number | null
-    completionCriterion: $Enums.CompletionCriterion | null
-    stepDefinitionsSnapshot: runtime.JsonValue | null
-    requiredDocumentSnapshot: runtime.JsonValue | null
+    documentDefinitionsSnapshot: runtime.JsonValue | null
+    approvalStagesSnapshot: runtime.JsonValue | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["documentationPhase"]>
@@ -2079,8 +1674,7 @@ export interface Prisma__DocumentationPhaseClient<T, Null = never, ExtArgs exten
   phase<T extends Prisma.ApplicationPhaseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApplicationPhaseDefaultArgs<ExtArgs>>): Prisma.Prisma__ApplicationPhaseClient<runtime.Types.Result.GetResult<Prisma.$ApplicationPhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   documentationPlan<T extends Prisma.DocumentationPhase$documentationPlanArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentationPhase$documentationPlanArgs<ExtArgs>>): Prisma.Prisma__DocumentationPlanClient<runtime.Types.Result.GetResult<Prisma.$DocumentationPlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   sourceQuestionnairePhase<T extends Prisma.DocumentationPhase$sourceQuestionnairePhaseArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentationPhase$sourceQuestionnairePhaseArgs<ExtArgs>>): Prisma.Prisma__QuestionnairePhaseClient<runtime.Types.Result.GetResult<Prisma.$QuestionnairePhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  currentStep<T extends Prisma.DocumentationPhase$currentStepArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentationPhase$currentStepArgs<ExtArgs>>): Prisma.Prisma__DocumentationStepClient<runtime.Types.Result.GetResult<Prisma.$DocumentationStepPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  steps<T extends Prisma.DocumentationPhase$stepsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentationPhase$stepsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentationStepPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  stageProgress<T extends Prisma.DocumentationPhase$stageProgressArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentationPhase$stageProgressArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApprovalStageProgressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2115,15 +1709,11 @@ export interface DocumentationPhaseFieldRefs {
   readonly phaseId: Prisma.FieldRef<"DocumentationPhase", 'String'>
   readonly documentationPlanId: Prisma.FieldRef<"DocumentationPhase", 'String'>
   readonly sourceQuestionnairePhaseId: Prisma.FieldRef<"DocumentationPhase", 'String'>
-  readonly currentStepId: Prisma.FieldRef<"DocumentationPhase", 'String'>
+  readonly currentStageOrder: Prisma.FieldRef<"DocumentationPhase", 'Int'>
   readonly approvedDocumentsCount: Prisma.FieldRef<"DocumentationPhase", 'Int'>
   readonly requiredDocumentsCount: Prisma.FieldRef<"DocumentationPhase", 'Int'>
-  readonly completedStepsCount: Prisma.FieldRef<"DocumentationPhase", 'Int'>
-  readonly totalStepsCount: Prisma.FieldRef<"DocumentationPhase", 'Int'>
-  readonly minimumCompletionPercentage: Prisma.FieldRef<"DocumentationPhase", 'Float'>
-  readonly completionCriterion: Prisma.FieldRef<"DocumentationPhase", 'CompletionCriterion'>
-  readonly stepDefinitionsSnapshot: Prisma.FieldRef<"DocumentationPhase", 'Json'>
-  readonly requiredDocumentSnapshot: Prisma.FieldRef<"DocumentationPhase", 'Json'>
+  readonly documentDefinitionsSnapshot: Prisma.FieldRef<"DocumentationPhase", 'Json'>
+  readonly approvalStagesSnapshot: Prisma.FieldRef<"DocumentationPhase", 'Json'>
   readonly createdAt: Prisma.FieldRef<"DocumentationPhase", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"DocumentationPhase", 'DateTime'>
 }
@@ -2507,46 +2097,27 @@ export type DocumentationPhase$sourceQuestionnairePhaseArgs<ExtArgs extends runt
 }
 
 /**
- * DocumentationPhase.currentStep
+ * DocumentationPhase.stageProgress
  */
-export type DocumentationPhase$currentStepArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type DocumentationPhase$stageProgressArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the DocumentationStep
+   * Select specific fields to fetch from the ApprovalStageProgress
    */
-  select?: Prisma.DocumentationStepSelect<ExtArgs> | null
+  select?: Prisma.ApprovalStageProgressSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the DocumentationStep
+   * Omit specific fields from the ApprovalStageProgress
    */
-  omit?: Prisma.DocumentationStepOmit<ExtArgs> | null
+  omit?: Prisma.ApprovalStageProgressOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.DocumentationStepInclude<ExtArgs> | null
-  where?: Prisma.DocumentationStepWhereInput
-}
-
-/**
- * DocumentationPhase.steps
- */
-export type DocumentationPhase$stepsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the DocumentationStep
-   */
-  select?: Prisma.DocumentationStepSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the DocumentationStep
-   */
-  omit?: Prisma.DocumentationStepOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.DocumentationStepInclude<ExtArgs> | null
-  where?: Prisma.DocumentationStepWhereInput
-  orderBy?: Prisma.DocumentationStepOrderByWithRelationInput | Prisma.DocumentationStepOrderByWithRelationInput[]
-  cursor?: Prisma.DocumentationStepWhereUniqueInput
+  include?: Prisma.ApprovalStageProgressInclude<ExtArgs> | null
+  where?: Prisma.ApprovalStageProgressWhereInput
+  orderBy?: Prisma.ApprovalStageProgressOrderByWithRelationInput | Prisma.ApprovalStageProgressOrderByWithRelationInput[]
+  cursor?: Prisma.ApprovalStageProgressWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.DocumentationStepScalarFieldEnum | Prisma.DocumentationStepScalarFieldEnum[]
+  distinct?: Prisma.ApprovalStageProgressScalarFieldEnum | Prisma.ApprovalStageProgressScalarFieldEnum[]
 }
 
 /**

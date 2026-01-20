@@ -854,14 +854,13 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                         },
                         documentationPhase: {
                             include: {
-                                steps: {
+                                stageProgress: {
                                     orderBy: { order: 'asc' },
+                                },
+                                documentationPlan: {
                                     include: {
-                                        requiredDocuments: true,
-                                        approvals: {
-                                            orderBy: { decidedAt: 'desc' },
-                                            take: 1,
-                                        },
+                                        documentDefinitions: true,
+                                        approvalStages: true,
                                     },
                                 },
                             },
@@ -1231,15 +1230,8 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                     include: {
                         documentationPhase: {
                             include: {
-                                steps: {
+                                stageProgress: {
                                     orderBy: { order: 'asc' },
-                                    include: {
-                                        requiredDocuments: true,
-                                        approvals: {
-                                            orderBy: { decidedAt: 'desc' },
-                                            take: 1,
-                                        },
-                                    },
                                 },
                             },
                         },

@@ -2,29 +2,26 @@ import { prisma } from '../lib/prisma';
 import {
     AppError,
     PhaseStatus,
-    StepStatus,
+    StageStatus,
     InstallmentStatus,
     PaymentStatus,
     DocumentStatus,
     computePhaseActionStatus,
-    computeStepActionStatus,
-    PhaseActionStatus,
-    StepActionStatus,
+    ReviewParty,
+    ReviewDecision,
+    RejectionBehavior,
     NextActor,
-    ActionCategory,
     ConditionOperator,
-    ScoringRule,
 } from '@valentine-efagene/qshelter-common';
 import { v4 as uuidv4 } from 'uuid';
 import type {
     ActivatePhaseInput,
-    CompleteStepInput,
     UploadDocumentInput,
     ApproveDocumentInput,
     GenerateInstallmentsInput,
     SubmitQuestionnaireInput,
 } from '../validators/application-phase.validator';
-import { handleGenerateDocumentStep } from './step-handlers';
+import { createConditionEvaluatorService } from './condition-evaluator.service';
 import { paymentPlanService } from './payment-plan.service';
 import {
     sendDocumentApprovedNotification,
@@ -36,7 +33,14 @@ import {
 } from '../lib/notifications';
 import { createWorkflowBlockerService, type CreateBlockerInput } from './workflow-blocker.service';
 import { unitLockingService } from './unit-locking.service';
-import { createConditionEvaluatorService } from './condition-evaluator.service';
+import { approvalWorkflowService, type ApprovalStageSnapshot } from './approval-workflow.service';
+
+// Type for scoring rules
+interface ScoringRule {
+    operator: ConditionOperator;
+    value: number | boolean | string;
+    score: number;
+}
 
 class ApplicationPhaseService {
     async findById(phaseId: string): Promise<any> {
@@ -55,6 +59,14 @@ class ApplicationPhaseService {
                                 },
                             },
                         },
+                        documents: {
+                            orderBy: { createdAt: 'desc' },
+                            include: {
+                                approvalTrail: {
+                                    orderBy: { createdAt: 'desc' },
+                                },
+                            },
+                        },
                     },
                 },
                 // Include polymorphic extensions
@@ -65,14 +77,27 @@ class ApplicationPhaseService {
                 },
                 documentationPhase: {
                     include: {
-                        currentStep: true,
-                        steps: {
+                        documentationPlan: {
+                            include: {
+                                documentDefinitions: {
+                                    orderBy: { order: 'asc' },
+                                },
+                                approvalStages: {
+                                    orderBy: { order: 'asc' },
+                                },
+                            },
+                        },
+                        stageProgress: {
                             orderBy: { order: 'asc' },
                             include: {
-                                approvals: {
-                                    orderBy: { decidedAt: 'desc' },
+                                documentApprovals: {
+                                    orderBy: { createdAt: 'desc' },
+                                    include: {
+                                        reviewer: {
+                                            select: { id: true, email: true, firstName: true, lastName: true },
+                                        },
+                                    },
                                 },
-                                requiredDocuments: true,
                             },
                         },
                     },
@@ -99,22 +124,24 @@ class ApplicationPhaseService {
     }
 
     /**
-     * Enrich a step with action status information
+     * Enrich a stage progress with action status information
      */
-    enrichStepWithActionStatus(step: any): any {
-        const actionStatus = computeStepActionStatus({
-            id: step.id,
-            name: step.name,
-            stepType: step.stepType,
-            order: step.order,
-            status: step.status,
-            actionReason: step.actionReason,
-            dueDate: step.dueDate,
-        });
+    enrichStageWithActionStatus(stage: any): any {
+        // Compute action status based on stage state
+        const isActive = stage.status === 'IN_PROGRESS';
+        const isAwaitingTransition = stage.status === 'AWAITING_TRANSITION';
+        const isCompleted = stage.status === 'COMPLETED';
 
         return {
-            ...step,
-            actionStatus,
+            ...stage,
+            actionStatus: {
+                isActive,
+                isAwaitingTransition,
+                isCompleted,
+                nextActor: isActive ? stage.reviewParty : null,
+                actionRequired: isActive ? `${stage.reviewParty} review required` :
+                    isAwaitingTransition ? 'Stage transition required' : null,
+            },
         };
     }
 
@@ -122,10 +149,10 @@ class ApplicationPhaseService {
      * Enrich a phase with action status information
      */
     enrichPhaseWithActionStatus(phase: any): any {
-        // Enrich all steps with action status
-        if (phase.documentationPhase?.steps) {
-            phase.documentationPhase.steps = phase.documentationPhase.steps.map(
-                (step: any) => this.enrichStepWithActionStatus(step)
+        // Enrich all stage progress with action status
+        if (phase.documentationPhase?.stageProgress) {
+            phase.documentationPhase.stageProgress = phase.documentationPhase.stageProgress.map(
+                (stage: any) => this.enrichStageWithActionStatus(stage)
             );
         }
 
@@ -182,17 +209,20 @@ class ApplicationPhaseService {
 
         const blockerService = createWorkflowBlockerService(tenantId);
 
-        // Determine step ID if applicable
-        let stepId: string | undefined;
-        if (phase.documentationPhase?.currentStepId) {
-            stepId = phase.documentationPhase.currentStepId;
+        // Determine current stage ID if applicable
+        let stageId: string | undefined;
+        if (phase.documentationPhase?.currentStageOrder) {
+            const currentStage = phase.documentationPhase.stageProgress?.find(
+                (sp: any) => sp.stageOrder === phase.documentationPhase.currentStageOrder
+            );
+            stageId = currentStage?.id;
         }
 
         await blockerService.createBlocker({
             tenantId,
             applicationId: phase.applicationId,
             phaseId: phase.id,
-            stepId,
+            stepId: stageId, // Using stageId in place of stepId for now
             nextActor: actionStatus.nextActor,
             actionCategory: actionStatus.actionCategory,
             actionRequired: actionStatus.actionRequired,
@@ -200,17 +230,17 @@ class ApplicationPhaseService {
                 phaseName: phase.name,
                 phaseType: phase.phaseType,
                 phaseCategory: phase.phaseCategory,
-                stepName: stepId ? this.getStepNameById(phase, stepId) : undefined,
+                stageName: stageId ? this.getStageNameById(phase, stageId) : undefined,
             },
         });
     }
 
     /**
-     * Resolve step-level blockers when a step action is completed
+     * Resolve stage-level blockers when a stage action is completed
      */
-    private async resolveStepBlockers(
+    private async resolveStageBlockers(
         phase: any,
-        stepId: string,
+        stageId: string,
         trigger: string,
         userId: string
     ): Promise<void> {
@@ -218,7 +248,7 @@ class ApplicationPhaseService {
         if (!tenantId) return;
 
         const blockerService = createWorkflowBlockerService(tenantId);
-        await blockerService.resolveStepBlockers(phase.applicationId, stepId, {
+        await blockerService.resolveStepBlockers(phase.applicationId, stageId, {
             resolvedByActor: userId,
             resolutionTrigger: trigger,
         });
@@ -243,12 +273,12 @@ class ApplicationPhaseService {
     }
 
     /**
-     * Helper to get step name by ID
+     * Helper to get stage name by ID
      */
-    private getStepNameById(phase: any, stepId: string): string | undefined {
-        const steps = phase.documentationPhase?.steps || [];
-        const step = steps.find((s: any) => s.id === stepId);
-        return step?.name;
+    private getStageNameById(phase: any, stageId: string): string | undefined {
+        const stageProgress = phase.documentationPhase?.stageProgress || [];
+        const stage = stageProgress.find((s: any) => s.id === stageId);
+        return stage?.stageName;
     }
 
     /**
@@ -263,9 +293,9 @@ class ApplicationPhaseService {
         stepId?: string
     ): Promise<void> {
         try {
-            // Resolve existing blockers for the step or phase
+            // Resolve existing blockers for the stage or phase
             if (stepId) {
-                await this.resolveStepBlockers(phase, stepId, trigger, userId);
+                await this.resolveStageBlockers(phase, stepId, trigger, userId);
             }
 
             // Create new blocker if phase still needs action
@@ -286,34 +316,6 @@ class ApplicationPhaseService {
      * 1. NEEDS_RESUBMISSION / ACTION_REQUIRED (user must fix)
      * 2. PENDING / IN_PROGRESS steps in order
      */
-    private getNextActionableStep(steps: any[]): any | null {
-        // First check for steps needing user action (rejections)
-        const needsAction = steps.find(
-            (s: any) => s.status === 'NEEDS_RESUBMISSION' || s.status === 'ACTION_REQUIRED'
-        );
-        if (needsAction) return needsAction;
-
-        // Then find next pending/in-progress step in order
-        return steps.find(
-            (s: any) => s.status === 'PENDING' || s.status === 'IN_PROGRESS' || s.status === 'AWAITING_REVIEW'
-        ) || null;
-    }
-
-    /**
-     * Update the currentStepId pointer on the DocumentationPhase
-     */
-    private async updateCurrentStepPointer(
-        tx: any,
-        documentationPhaseId: string,
-        steps: any[]
-    ): Promise<void> {
-        const nextStep = this.getNextActionableStep(steps);
-        await tx.documentationPhase.update({
-            where: { id: documentationPhaseId },
-            data: { currentStepId: nextStep?.id ?? null },
-        });
-    }
-
     async getPhasesByApplication(applicationId: string): Promise<any[]> {
         const phases = await prisma.applicationPhase.findMany({
             where: { applicationId },
@@ -322,7 +324,7 @@ class ApplicationPhaseService {
                 questionnairePhase: true,
                 documentationPhase: {
                     include: {
-                        steps: {
+                        stageProgress: {
                             orderBy: { order: 'asc' },
                         },
                     },
@@ -418,29 +420,6 @@ class ApplicationPhaseService {
 
         const startDate = data.startDate ? new Date(data.startDate) : new Date();
 
-        // Evaluate conditional steps before activation (for DOCUMENTATION phases)
-        // This marks inapplicable steps as SKIPPED based on questionnaire answers
-        if (phase.documentationPhase?.sourceQuestionnairePhaseId) {
-            const conditionEvaluator = createConditionEvaluatorService(prisma);
-            const evaluationResult = await conditionEvaluator.applyConditionEvaluation(
-                phase.documentationPhase.id
-            );
-
-            console.log(
-                `Condition evaluation for phase ${phaseId}: ` +
-                `${evaluationResult.skippedCount} steps skipped, ` +
-                `${evaluationResult.applicableCount} steps applicable`
-            );
-
-            // Refresh the phase to get updated step statuses
-            const refreshedPhase = await this.findById(phaseId);
-            phase.documentationPhase.steps = refreshedPhase.documentationPhase?.steps || [];
-        }
-
-        // Determine the first step to set as current (only for DOCUMENTATION phases)
-        const steps = phase.documentationPhase?.steps || [];
-        const firstStep = this.getNextActionableStep(steps);
-
         const updated = await prisma.$transaction(async (tx) => {
             // Update phase status
             const result = await tx.applicationPhase.update({
@@ -452,20 +431,25 @@ class ApplicationPhaseService {
                 },
             });
 
-            // Update DocumentationPhase currentStepId if this is a documentation phase
-            if (phase.documentationPhase && firstStep) {
+            // Initialize approval stage progress for DOCUMENTATION phases
+            if (phase.documentationPhase) {
+                const approvalStages = (phase.documentationPhase.approvalStagesSnapshot as ApprovalStageSnapshot[]) ||
+                    phase.documentationPhase.documentationPlan?.approvalStages || [];
+
+                if (approvalStages.length > 0) {
+                    await approvalWorkflowService.initializeStageProgress(
+                        tx,
+                        phase.documentationPhase.id,
+                        phase.application?.tenantId || phase.tenantId,
+                        approvalStages
+                    );
+                }
+
+                // Set current stage to 1
                 await tx.documentationPhase.update({
                     where: { id: phase.documentationPhase.id },
-                    data: { currentStepId: firstStep.id },
+                    data: { currentStageOrder: 1 },
                 });
-
-                // Mark first step as IN_PROGRESS
-                if (firstStep.status === 'PENDING') {
-                    await tx.documentationStep.update({
-                        where: { id: firstStep.id },
-                        data: { status: 'IN_PROGRESS' },
-                    });
-                }
             }
 
             // Update application's current phase
@@ -496,80 +480,10 @@ class ApplicationPhaseService {
             return result;
         });
 
-        // After activation, auto-execute any GENERATE_DOCUMENT steps that are ready
-        await this.processAutoExecutableSteps(phaseId, userId);
-
         // Get enriched phase with action status
         const enrichedPhase = await this.findByIdWithActionStatus(updated.id);
 
-        // Create blocker for the newly activated phase
-        await this.updateBlockersAfterTransition(
-            phase,
-            enrichedPhase,
-            'PHASE_ACTIVATED',
-            userId,
-            firstStep?.id
-        );
-
         return enrichedPhase;
-    }
-
-    /**
-     * Process any steps that can be auto-executed (GENERATE_DOCUMENT steps)
-     * These steps don't require user action - they execute automatically when their turn comes
-     */
-    async processAutoExecutableSteps(phaseId: string, userId: string): Promise<void> {
-        const phase = await this.findById(phaseId);
-
-        if (phase.phaseCategory !== 'DOCUMENTATION' || !phase.documentationPhase) {
-            return; // Only documentation phases have steps
-        }
-
-        const steps = phase.documentationPhase.steps || [];
-
-        // Find the next actionable step - either PENDING or IN_PROGRESS (for auto-executable types)
-        // We check IN_PROGRESS because activate() marks the first step as IN_PROGRESS
-        const nextStep = steps.find(
-            (s: any) => s.status === 'PENDING' || (s.status === 'IN_PROGRESS' && s.stepType === 'GENERATE_DOCUMENT')
-        );
-        if (!nextStep) {
-            return; // No actionable steps
-        }
-
-        // Check if previous steps are completed
-        const previousSteps = steps.filter((s: any) => s.order < nextStep.order);
-        const allPreviousCompleted = previousSteps.every((s: any) => s.status === 'COMPLETED');
-
-        if (!allPreviousCompleted) {
-            return; // Not ready to execute this step
-        }
-
-        // If this is a GENERATE_DOCUMENT step, execute it automatically
-        if (nextStep.stepType === 'GENERATE_DOCUMENT') {
-            console.info('[ApplicationPhaseService] Auto-executing GENERATE_DOCUMENT step', {
-                stepId: nextStep.id,
-                stepName: nextStep.name,
-                phaseId,
-            });
-
-            try {
-                await handleGenerateDocumentStep(
-                    nextStep.id,
-                    phaseId,
-                    phase.applicationId,
-                    userId
-                );
-
-                // Recursively check for more auto-executable steps
-                await this.processAutoExecutableSteps(phaseId, userId);
-            } catch (error: any) {
-                console.error('[ApplicationPhaseService] GENERATE_DOCUMENT step failed', {
-                    stepId: nextStep.id,
-                    error: error.message,
-                });
-                // Don't throw - allow manual retry
-            }
-        }
     }
 
     /**
@@ -759,1071 +673,272 @@ class ApplicationPhaseService {
     }
 
     /**
-     * Complete a documentation step
-     */
-    async completeStep(phaseId: string, data: CompleteStepInput, userId: string): Promise<any> {
-        const phase = await this.findById(phaseId);
-
-        if (phase.phaseCategory !== 'DOCUMENTATION' || !phase.documentationPhase) {
-            throw new AppError(400, 'Can only complete steps for DOCUMENTATION phases');
-        }
-
-        const steps = phase.documentationPhase.steps || [];
-        const documentationPhaseId = phase.documentationPhase.id;
-
-        // Find step by ID or by name
-        let step = data.stepId
-            ? steps.find((s: any) => s.id === data.stepId)
-            : steps.find((s: any) => s.name === (data as any).stepName);
-
-        if (!step) {
-            throw new AppError(404, 'Step not found in this phase');
-        }
-
-        const stepId = step.id;
-
-        // Check if step requires admin approval
-        if (step.stepType === 'APPROVAL') {
-            // APPROVAL steps can only be completed by the seller (property owner/admin)
-            // The buyer cannot complete their own approval
-            if (phase.application.buyerId === userId) {
-                throw new AppError(403, 'This step requires admin approval');
-            }
-        }
-
-        if (step.status === 'COMPLETED') {
-            throw new AppError(400, 'Step already completed');
-        }
-
-        const tenantId = phase.application.tenantId;
-
-        await prisma.$transaction(async (tx) => {
-            // Update step status
-            await tx.documentationStep.update({
-                where: { id: stepId },
-                data: {
-                    status: 'COMPLETED',
-                    completedAt: new Date(),
-                },
-            });
-
-            // Create approval record if decision provided
-            if (data.decision) {
-                await tx.documentationStepApproval.create({
-                    data: {
-                        tenantId,
-                        stepId: stepId,
-                        approverId: userId,
-                        decision: data.decision,
-                        comment: data.comment,
-                    },
-                });
-            }
-
-            // Check if all steps are completed
-            const remainingSteps = await tx.documentationStep.findMany({
-                where: {
-                    documentationPhaseId,
-                    status: { notIn: ['COMPLETED', 'SKIPPED'] },
-                    id: { not: stepId },
-                },
-                orderBy: { order: 'asc' },
-            });
-
-            if (remainingSteps.length === 0) {
-                // All steps completed - complete the phase and clear currentStepId
-                await tx.applicationPhase.update({
-                    where: { id: phaseId },
-                    data: {
-                        status: 'COMPLETED',
-                        completedAt: new Date(),
-                    },
-                });
-
-                // Clear the currentStepId on DocumentationPhase
-                if (phase.documentationPhase) {
-                    await tx.documentationPhase.update({
-                        where: { id: phase.documentationPhase.id },
-                        data: { currentStepId: null },
-                    });
-                }
-
-                // Write phase completed event
-                await tx.domainEvent.create({
-                    data: {
-                        id: uuidv4(),
-                        tenantId: phase.application?.tenantId || phase.tenantId,
-                        eventType: 'PHASE.COMPLETED',
-                        aggregateType: 'ApplicationPhase',
-                        aggregateId: phaseId,
-                        queueName: 'application-steps',
-                        payload: JSON.stringify({
-                            phaseId,
-                            applicationId: phase.applicationId,
-                            phaseType: phase.phaseType,
-                        }),
-                        actorId: userId,
-                    },
-                });
-
-                // Auto-activate next phase
-                const nextPhase = await tx.applicationPhase.findFirst({
-                    where: {
-                        applicationId: phase.applicationId,
-                        order: phase.order + 1,
-                    },
-                });
-
-                if (nextPhase) {
-                    await tx.applicationPhase.update({
-                        where: { id: nextPhase.id },
-                        data: {
-                            status: 'IN_PROGRESS',
-                        },
-                    });
-
-                    // Update application's current phase
-                    await tx.application.update({
-                        where: { id: phase.applicationId },
-                        data: { currentPhaseId: nextPhase.id },
-                    });
-
-                    // Write phase activated event
-                    await tx.domainEvent.create({
-                        data: {
-                            id: uuidv4(),
-                            tenantId: phase.application?.tenantId || phase.tenantId,
-                            eventType: 'PHASE.ACTIVATED',
-                            aggregateType: 'ApplicationPhase',
-                            aggregateId: nextPhase.id,
-                            queueName: 'application-steps',
-                            payload: JSON.stringify({
-                                phaseId: nextPhase.id,
-                                applicationId: phase.applicationId,
-                                phaseType: nextPhase.phaseType,
-                            }),
-                            actorId: userId,
-                        },
-                    });
-                }
-
-                // Handle unit locking if this phase is configured to lock on complete
-                await this.handleUnitLockingOnPhaseComplete(tx, phaseId, userId);
-
-                // Send phase completion notification (fire and forget, outside tx)
-                this.sendPhaseCompletionNotification(phaseId);
-            } else {
-                // Advance currentStepId to the next actionable step
-                const nextStep = remainingSteps[0];
-
-                // Update currentStepId on DocumentationPhase
-                if (phase.documentationPhase) {
-                    await tx.documentationPhase.update({
-                        where: { id: phase.documentationPhase.id },
-                        data: { currentStepId: nextStep.id },
-                    });
-                }
-
-                // Mark the next step as IN_PROGRESS if it's PENDING
-                if (nextStep.status === 'PENDING') {
-                    await tx.documentationStep.update({
-                        where: { id: nextStep.id },
-                        data: { status: 'IN_PROGRESS' },
-                    });
-                }
-            }
-
-            // Write step completed event
-            await tx.domainEvent.create({
-                data: {
-                    id: uuidv4(),
-                    tenantId: phase.application?.tenantId || phase.tenantId,
-                    eventType: 'PHASE.STEP.COMPLETED',
-                    aggregateType: 'DocumentationStep',
-                    aggregateId: stepId,
-                    queueName: 'notifications',
-                    payload: JSON.stringify({
-                        stepId: stepId,
-                        phaseId,
-                        applicationId: phase.applicationId,
-                        decision: data.decision,
-                    }),
-                    actorId: userId,
-                },
-            });
-        });
-
-        // After completing a step, check for auto-executable next steps
-        await this.processAutoExecutableSteps(phaseId, userId);
-
-        return this.findByIdWithActionStatus(phaseId);
-    }
-
-    /**
-     * Upload a document for a phase/step
+     * Upload document for a documentation phase
      * 
-     * State Machine Logic:
-     * - Auto-detect matching UPLOAD step based on document type or step name
-     * - If step is UPLOAD type, auto-complete step when document is uploaded
-     * - Check for phase completion after step completion
+     * New Stage-Based Logic:
+     * - Documents are uploaded to the documentation phase (not tied to steps)
+     * - Documents match against DocumentDefinition by type
+     * - Documents enter the approval workflow for the current stage
      */
     async uploadDocument(phaseId: string, data: UploadDocumentInput, userId: string) {
         const phase = await this.findById(phaseId);
 
-        const document = await prisma.$transaction(async (tx) => {
-            // Auto-detect stepId if not provided
-            let stepId = data.stepId;
-            let matchedStep: any = null;
-            if (!stepId && phase.documentationPhase) {
-                // Try to find matching UPLOAD step based on document type
-                const steps = phase.documentationPhase.steps || [];
-                const docType = data.type?.toUpperCase() || '';
+        if (!phase.documentationPhase) {
+            throw new AppError(400, 'Can only upload documents to DOCUMENTATION phases');
+        }
 
-                // Match step by name containing the document type (e.g., "Upload Valid ID" for ID_CARD)
-                matchedStep = steps.find((s: any) => {
-                    if (s.stepType !== 'UPLOAD' || s.status === 'COMPLETED') return false;
-
-                    const stepNameUpper = s.name.toUpperCase();
-                    // Common mappings
-                    if (docType.includes('ID') && (stepNameUpper.includes('ID') || stepNameUpper.includes('IDENTIFICATION'))) return true;
-                    if (docType.includes('BANK') && stepNameUpper.includes('BANK')) return true;
-                    if (docType.includes('EMPLOYMENT') && stepNameUpper.includes('EMPLOYMENT')) return true;
-                    if (docType.includes('OFFER') && stepNameUpper.includes('OFFER')) return true;
-
-                    // Fallback: check if step name contains doc type
-                    return stepNameUpper.includes(docType.replace('_', ' ')) ||
-                        stepNameUpper.includes(docType.replace('_', ''));
-                });
-
-                if (matchedStep) {
-                    stepId = matchedStep.id;
-                }
-            } else if (stepId) {
-                // Fetch the step details if stepId was provided
-                matchedStep = await tx.documentationStep.findUnique({
-                    where: { id: stepId },
-                });
-            }
-
-            // Create the document with resolved stepId
-            const doc = await tx.applicationDocument.create({
-                data: {
-                    tenantId: phase.application.tenantId,
-                    applicationId: phase.applicationId,
-                    phaseId,
-                    stepId,
-                    name: data.name,
-                    url: data.url,
-                    type: data.type,
-                    uploadedById: userId,
-                    status: 'PENDING',
-                },
-            });
-
-            // Create review records if step has multi-party review requirements
-            if (matchedStep?.reviewRequirements) {
-                const reviewRequirements = matchedStep.reviewRequirements as Array<{
-                    party: string;
-                    required: boolean;
-                    organizationId?: string;
-                }>;
-
-                if (reviewRequirements.length > 0) {
-                    const reviewOrder = (matchedStep.reviewOrder as string) || 'SEQUENTIAL';
-                    const reviews = reviewRequirements.map((req, index) => ({
-                        id: uuidv4(),
-                        tenantId: phase.application.tenantId,
-                        documentId: doc.id,
-                        reviewParty: req.party as any,
-                        organizationId: req.organizationId || null,
-                        decision: 'PENDING' as any,
-                        // For sequential reviews, set order based on array position
-                        reviewOrder: reviewOrder === 'SEQUENTIAL' ? index + 1 : 0,
-                    }));
-
-                    await tx.documentReview.createMany({
-                        data: reviews,
-                    });
-
-                    console.log(`[Upload] Created ${reviews.length} review records for document ${doc.id}`);
-                }
-            }
-
-            // If step is identified, evaluate automatic step completion
-            if (stepId) {
-                const step = await tx.documentationStep.findUnique({
-                    where: { id: stepId },
-                    include: { requiredDocuments: true },
-                });
-
-                if (step && step.stepType === 'UPLOAD') {
-                    if (step.status !== 'COMPLETED') {
-                        // Check if step has multi-party review requirements
-                        const hasMultiPartyReview = step.reviewRequirements &&
-                            Array.isArray(step.reviewRequirements) &&
-                            (step.reviewRequirements as any[]).length > 0;
-
-                        // For UPLOAD steps: Check if manual review is required
-                        if (step.requiresManualReview || hasMultiPartyReview) {
-                            // Manual review required: Mark as AWAITING_REVIEW
-                            // Step will be COMPLETED when the document is approved (by all parties if multi-party)
-                            await tx.documentationStep.update({
-                                where: { id: stepId },
-                                data: {
-                                    status: 'AWAITING_REVIEW',
-                                    submissionCount: { increment: 1 },
-                                    lastSubmittedAt: new Date(),
-                                },
-                            });
-                        } else {
-                            // No manual review required: Auto-complete the step and auto-approve the document
-                            await tx.documentationStep.update({
-                                where: { id: stepId },
-                                data: {
-                                    status: 'COMPLETED',
-                                    completedAt: new Date(),
-                                    submissionCount: { increment: 1 },
-                                    lastSubmittedAt: new Date(),
-                                },
-                            });
-
-                            // Auto-approve the document as well
-                            await tx.applicationDocument.update({
-                                where: { id: doc.id },
-                                data: { status: 'APPROVED' },
-                            });
-
-                            // Check if phase should auto-complete after step completion
-                            await this.evaluatePhaseCompletionInternal(tx, phaseId, userId);
-                        }
-                    }
-                } else if (step) {
-                    // For non-UPLOAD steps: Just track submission
-                    const newStatus = step.status === 'NEEDS_RESUBMISSION' ? 'AWAITING_REVIEW' : 'IN_PROGRESS';
-                    await tx.documentationStep.update({
-                        where: { id: stepId },
-                        data: {
-                            status: newStatus,
-                            submissionCount: { increment: 1 },
-                            lastSubmittedAt: new Date(),
-                            actionReason: step.status === 'NEEDS_RESUBMISSION' ? null : step.actionReason,
-                        },
-                    });
-                }
-            }
-
-            return doc;
+        // Use the approval workflow service to handle upload
+        const result = await approvalWorkflowService.uploadDocument({
+            tenantId: phase.application.tenantId,
+            applicationId: phase.applicationId,
+            documentationPhaseId: phase.documentationPhase.id,
+            documentType: data.type || 'OTHER',
+            documentName: data.name,
+            fileName: data.name,
+            fileUrl: data.url,
+            uploadedById: userId,
         });
-
-        // After transaction, check for auto-executable steps (like GENERATE_DOCUMENT)
-        await this.processAutoExecutableSteps(phaseId, userId);
 
         // Return document with current phase action status
         const updatedPhase = await this.findByIdWithActionStatus(phaseId);
 
-        // Track blocker transition (upload completed, may now await review)
-        const resolvedStepId = document.stepId;
-        if (resolvedStepId) {
-            await this.updateBlockersAfterTransition(
-                phase,
-                updatedPhase,
-                'DOCUMENT_UPLOADED',
-                userId,
-                resolvedStepId
-            );
-        }
-
         return {
-            document,
+            document: result.document,
             phaseActionStatus: updatedPhase.actionStatus,
         };
     }
 
     /**
-     * Reject a step - marks it as NEEDS_RESUBMISSION with reason
-     * Used when admin reviews and finds issues with submitted documents
+     * Review a document - approve, reject, or request changes
+     * This is the new stage-based approval method
      */
-    async rejectStep(
+    async reviewDocument(
         phaseId: string,
-        stepId: string,
-        reason: string,
-        userId: string
-    ): Promise<any> {
-        const phase = await this.findById(phaseId);
-
-        if (!phase.documentationPhase) {
-            throw new AppError(400, 'Can only reject steps for DOCUMENTATION phases');
-        }
-
-        const steps = phase.documentationPhase.steps || [];
-        const step = steps.find((s: any) => s.id === stepId);
-        if (!step) {
-            throw new AppError(404, 'Step not found in this phase');
-        }
-
-        if (step.status === 'COMPLETED') {
-            throw new AppError(400, 'Cannot reject a completed step');
-        }
-
-        const tenantId = phase.application.tenantId;
-
-        await prisma.$transaction(async (tx) => {
-            // Update step to NEEDS_RESUBMISSION with reason
-            await tx.documentationStep.update({
-                where: { id: stepId },
-                data: {
-                    status: 'NEEDS_RESUBMISSION',
-                    actionReason: reason,
-                },
-            });
-
-            // Create approval record with REJECTED decision
-            await tx.documentationStepApproval.create({
-                data: {
-                    tenantId,
-                    stepId,
-                    approverId: userId,
-                    decision: 'REJECTED',
-                    comment: reason,
-                },
-            });
-
-            // Set currentStepId on DocumentationPhase (user needs to fix it)
-            await tx.documentationPhase.update({
-                where: { id: phase.documentationPhase.id },
-                data: { currentStepId: stepId },
-            });
-
-            // Write domain event
-            await tx.domainEvent.create({
-                data: {
-                    id: uuidv4(),
-                    tenantId: phase.application?.tenantId || phase.tenantId,
-                    eventType: 'PHASE.STEP.REJECTED',
-                    aggregateType: 'DocumentationStep',
-                    aggregateId: stepId,
-                    queueName: 'notifications',
-                    payload: JSON.stringify({
-                        stepId,
-                        phaseId,
-                        applicationId: phase.applicationId,
-                        reason,
-                    }),
-                    actorId: userId,
-                },
-            });
-        });
-
-        // Send rejection notification to the buyer
-        const buyer = phase.application?.buyer;
-        const propertyName = phase.application?.propertyUnit?.variant?.property?.title;
-        if (buyer?.email) {
-            const dashboardUrl = process.env.DASHBOARD_URL || 'https://app.qshelter.com';
-            await sendDocumentRejectedNotification({
-                email: buyer.email,
-                userName: buyer.firstName || buyer.email,
-                documentName: step.name,
-                stepName: step.name,
-                applicationNumber: phase.application?.applicationNumber || '',
-                propertyName,
-                reason: reason,
-                dashboardUrl: `${dashboardUrl}/applications/${phase.applicationId}`,
-            }).catch((err) => {
-                console.error('[ApplicationPhaseService] Failed to send step rejected notification', err);
-            });
-        }
-
-        // Track blocker transition (step rejected, customer must resubmit)
-        const enrichedPhase = await this.findByIdWithActionStatus(phaseId);
-        await this.updateBlockersAfterTransition(
-            phase,
-            enrichedPhase,
-            'STEP_REJECTED',
-            userId,
-            stepId
-        );
-
-        return enrichedPhase;
-    }
-
-    /**
-     * Request changes on a step - marks it as ACTION_REQUIRED
-     * Similar to reject but with REQUEST_CHANGES decision
-     */
-    async requestStepChanges(
-        phaseId: string,
-        stepId: string,
-        reason: string,
-        userId: string
-    ): Promise<any> {
-        const phase = await this.findById(phaseId);
-
-        if (!phase.documentationPhase) {
-            throw new AppError(400, 'Can only request changes for DOCUMENTATION phases');
-        }
-
-        const steps = phase.documentationPhase.steps || [];
-        const step = steps.find((s: any) => s.id === stepId);
-        if (!step) {
-            throw new AppError(404, 'Step not found in this phase');
-        }
-
-        if (step.status === 'COMPLETED') {
-            throw new AppError(400, 'Cannot request changes on a completed step');
-        }
-
-        const tenantId = phase.application.tenantId;
-
-        await prisma.$transaction(async (tx) => {
-            // Update step to ACTION_REQUIRED with reason
-            await tx.documentationStep.update({
-                where: { id: stepId },
-                data: {
-                    status: 'ACTION_REQUIRED',
-                    actionReason: reason,
-                },
-            });
-
-            // Create approval record with REQUEST_CHANGES decision
-            await tx.documentationStepApproval.create({
-                data: {
-                    tenantId,
-                    stepId,
-                    approverId: userId,
-                    decision: 'REQUEST_CHANGES',
-                    comment: reason,
-                },
-            });
-
-            // Set currentStepId on DocumentationPhase (user needs to address it)
-            await tx.documentationPhase.update({
-                where: { id: phase.documentationPhase.id },
-                data: { currentStepId: stepId },
-            });
-
-            // Write domain event
-            await tx.domainEvent.create({
-                data: {
-                    id: uuidv4(),
-                    tenantId: phase.application?.tenantId || phase.tenantId,
-                    eventType: 'PHASE.STEP.CHANGES_REQUESTED',
-                    aggregateType: 'DocumentationStep',
-                    aggregateId: stepId,
-                    queueName: 'notifications',
-                    payload: JSON.stringify({
-                        stepId,
-                        phaseId,
-                        applicationId: phase.applicationId,
-                        reason,
-                    }),
-                    actorId: userId,
-                },
-            });
-        });
-
-        return this.findByIdWithActionStatus(phaseId);
-    }
-
-    /**
-     * Perform a gate action on a GATE step.
-     * 
-     * GATE steps are explicit human gates that require action (approve, acknowledge, etc.)
-     * They can be configured for ADMIN, CUSTOMER, or a SPECIFIC_ROLE.
-     * 
-     * @param phaseId - The phase containing the step
-     * @param stepId - The GATE step ID
-     * @param data - The action and optional comment
-     * @param userId - The actor performing the action
-     * @param userRoles - The actor's roles (for authorization)
-     */
-    async performGateAction(
-        phaseId: string,
-        stepId: string,
-        data: { action: string; comment?: string },
+        documentId: string,
+        decision: ReviewDecision,
+        reviewerParty: ReviewParty,
         userId: string,
-        userRoles: string[]
+        comment?: string
     ): Promise<any> {
         const phase = await this.findById(phaseId);
 
         if (!phase.documentationPhase) {
-            throw new AppError(400, 'Gate actions are only for DOCUMENTATION phases');
+            throw new AppError(400, 'Can only review documents in DOCUMENTATION phases');
         }
 
-        const steps = phase.documentationPhase.steps || [];
-        const step = steps.find((s: any) => s.id === stepId);
-        if (!step) {
-            throw new AppError(404, 'Step not found in this phase');
-        }
-
-        if (step.stepType !== 'GATE') {
-            throw new AppError(400, 'This action is only for GATE steps');
-        }
-
-        if (step.status === 'COMPLETED') {
-            throw new AppError(400, 'Gate step already completed');
-        }
-
-        if (step.status !== 'IN_PROGRESS' && step.status !== 'PENDING') {
-            throw new AppError(400, `Cannot perform gate action on step with status ${step.status}`);
-        }
-
-        // Validate actor authorization
-        const isAdmin = userRoles.some(role =>
-            ['TENANT_ADMIN', 'SUPER_ADMIN', 'ADMIN'].includes(role)
-        );
-        const isCustomer = phase.application?.buyerId === userId;
-
-        switch (step.gateActor) {
-            case 'ADMIN':
-                if (!isAdmin) {
-                    throw new AppError(403, 'Only admins can perform this gate action');
-                }
-                break;
-            case 'CUSTOMER':
-                if (!isCustomer) {
-                    throw new AppError(403, 'Only the application buyer can perform this gate action');
-                }
-                break;
-            case 'SPECIFIC_ROLE':
-                if (step.gateRoleId && !userRoles.includes(step.gateRoleId)) {
-                    throw new AppError(403, `Requires role: ${step.gateRoleId}`);
-                }
-                break;
-        }
-
-        // Validate action
-        const isRejection = data.action === 'REJECT';
-
-        if (isRejection && !step.allowReject) {
-            throw new AppError(400, 'This gate does not allow rejection');
-        }
-
-        if (step.requiresComment && !data.comment) {
-            throw new AppError(400, 'A comment is required for this gate action');
-        }
-
-        const tenantId = phase.application.tenantId;
-
-        if (isRejection) {
-            // Handle rejection based on rejectBehavior
-            return this.handleGateRejection(phase, step, data.comment || '', userId, tenantId);
-        }
-
-        // Handle approval/acknowledgment/confirmation/consent
-        await prisma.$transaction(async (tx) => {
-            // Update the step to COMPLETED
-            await tx.documentationStep.update({
-                where: { id: stepId },
-                data: {
-                    status: 'COMPLETED',
-                    completedAt: new Date(),
-                    gateActedAt: new Date(),
-                    gateActedById: userId,
-                    gateDecision: data.action,
-                    gateComment: data.comment,
-                },
-            });
-
-            // Write domain event
-            await tx.domainEvent.create({
-                data: {
-                    id: uuidv4(),
-                    tenantId,
-                    eventType: 'PHASE.STEP.GATE_COMPLETED',
-                    aggregateType: 'DocumentationStep',
-                    aggregateId: stepId,
-                    queueName: 'notifications',
-                    payload: JSON.stringify({
-                        stepId,
-                        phaseId,
-                        applicationId: phase.applicationId,
-                        action: data.action,
-                        actorType: step.gateActor,
-                    }),
-                    actorId: userId,
-                },
-            });
-
-            // Check for phase completion
-            await this.evaluatePhaseCompletionInternal(tx, phaseId, userId);
+        // Use approval workflow service
+        const result = await approvalWorkflowService.reviewDocument({
+            tenantId: phase.application.tenantId,
+            documentId,
+            reviewerId: userId,
+            reviewParty: reviewerParty,
+            decision,
+            comment,
         });
 
-        return this.findByIdWithActionStatus(phaseId);
-    }
+        // Check if we need to complete the phase
+        if (result.stageCompleted) {
+            const currentStage = await approvalWorkflowService.getCurrentStage(
+                phase.documentationPhase.id
+            );
 
-    /**
-     * Handle rejection of a GATE step based on rejectBehavior configuration
-     */
-    private async handleGateRejection(
-        phase: any,
-        step: any,
-        reason: string,
-        userId: string,
-        tenantId: string
-    ): Promise<any> {
-        const rejectBehavior = step.rejectBehavior || 'BLOCK';
-
-        await prisma.$transaction(async (tx) => {
-            // Record the rejection
-            await tx.documentationStep.update({
-                where: { id: step.id },
-                data: {
-                    gateActedAt: new Date(),
-                    gateActedById: userId,
-                    gateDecision: 'REJECTED',
-                    gateComment: reason,
-                },
-            });
-
-            // Write domain event
-            await tx.domainEvent.create({
-                data: {
-                    id: uuidv4(),
-                    tenantId,
-                    eventType: 'PHASE.STEP.GATE_REJECTED',
-                    aggregateType: 'DocumentationStep',
-                    aggregateId: step.id,
-                    queueName: 'notifications',
-                    payload: JSON.stringify({
-                        stepId: step.id,
-                        phaseId: phase.id,
-                        applicationId: phase.applicationId,
-                        reason,
-                        rejectBehavior,
-                    }),
-                    actorId: userId,
-                },
-            });
-
-            switch (rejectBehavior) {
-                case 'BLOCK':
-                    // Mark step as ACTION_REQUIRED - admin must resolve
-                    await tx.documentationStep.update({
-                        where: { id: step.id },
-                        data: {
-                            status: 'ACTION_REQUIRED',
-                            actionReason: `Gate rejected: ${reason}`,
-                        },
-                    });
-                    break;
-
-                case 'RESTART_STEP':
-                    // Reset this step to PENDING
-                    await tx.documentationStep.update({
-                        where: { id: step.id },
-                        data: {
-                            status: 'PENDING',
-                            gateActedAt: null,
-                            gateActedById: null,
-                            gateDecision: null,
-                            gateComment: null,
-                            actionReason: null,
-                        },
-                    });
-                    break;
-
-                case 'RESTART_PHASE':
-                    // Reset entire phase - all steps to PENDING
-                    await tx.documentationStep.updateMany({
-                        where: { documentationPhaseId: phase.documentationPhase.id },
-                        data: {
-                            status: 'PENDING',
-                            completedAt: null,
-                            gateActedAt: null,
-                            gateActedById: null,
-                            gateDecision: null,
-                            gateComment: null,
-                            actionReason: null,
-                        },
-                    });
-                    // Reset phase status
-                    await tx.applicationPhase.update({
-                        where: { id: phase.id },
-                        data: {
-                            status: 'IN_PROGRESS',
-                            completedAt: null,
-                        },
-                    });
-                    break;
-
-                case 'TERMINATE':
-                    // Terminate the application
-                    await tx.application.update({
-                        where: { id: phase.applicationId },
-                        data: { status: 'CANCELLED' },
-                    });
-                    await tx.domainEvent.create({
-                        data: {
-                            id: uuidv4(),
-                            tenantId,
-                            eventType: 'APPLICATION.TERMINATED',
-                            aggregateType: 'Application',
-                            aggregateId: phase.applicationId,
-                            queueName: 'notifications',
-                            payload: JSON.stringify({
-                                applicationId: phase.applicationId,
-                                reason: `Gate rejection: ${reason}`,
-                                rejectedStepId: step.id,
-                            }),
-                            actorId: userId,
-                        },
-                    });
-                    break;
-            }
-        });
-
-        return this.findByIdWithActionStatus(phase.id);
-    }
-
-    /**
-     * Approve or reject a document
-     * 
-     * State Machine Logic:
-     * - When all documents in a phase are APPROVED, auto-complete the APPROVAL step
-     * - Check for phase completion after step completion
-     */
-    async approveDocument(documentId: string, data: ApproveDocumentInput, userId: string) {
-        // Get document with full context for notifications
-        const document = await prisma.applicationDocument.findUnique({
-            where: { id: documentId },
-            include: {
-                application: {
-                    include: {
-                        buyer: true,
-                        propertyUnit: {
-                            include: {
-                                variant: {
-                                    include: {
-                                        property: true,
-                                    },
-                                },
-                            },
-                        },
-                    },
-                },
-                reviews: true, // Include reviews for multi-party check
-            },
-        });
-
-        if (!document) {
-            throw new AppError(404, 'Document not found');
-        }
-
-        // Get step name and check for multi-party review config if stepId is present
-        let stepName = 'Document Submission';
-        let hasMultiPartyReview = false;
-        if (document.stepId) {
-            const step = await prisma.documentationStep.findUnique({
-                where: { id: document.stepId },
-                select: { name: true, reviewRequirements: true },
-            });
-            if (step) {
-                stepName = step.name;
-                hasMultiPartyReview = !!(step.reviewRequirements &&
-                    Array.isArray(step.reviewRequirements) &&
-                    (step.reviewRequirements as any[]).length > 0);
+            // If no more stages, complete the phase
+            if (!currentStage) {
+                await this.completeDocumentationPhase(phaseId, userId);
             }
         }
 
-        await prisma.$transaction(async (tx) => {
-            // If document has multi-party review requirements, this is a legacy approval
-            // which should be treated as an INTERNAL party approval
-            if (hasMultiPartyReview && document.reviews && document.reviews.length > 0) {
-                // Find the INTERNAL review record and update it
-                const internalReview = document.reviews.find((r) => r.reviewParty === 'INTERNAL');
-                if (internalReview && internalReview.decision === 'PENDING') {
-                    await tx.documentReview.update({
-                        where: { id: internalReview.id },
-                        data: {
-                            decision: data.status === 'APPROVED' ? 'APPROVED' : 'REJECTED',
-                            comments: data.comment,
-                            reviewerId: userId,
-                            reviewedAt: new Date(),
-                        },
-                    });
-                }
-
-                // Check if ALL reviews are now approved
-                const allReviews = await tx.documentReview.findMany({
-                    where: { documentId },
-                });
-                const allApproved = allReviews.every(
-                    (r) => r.decision === 'APPROVED' || r.decision === 'WAIVED'
-                );
-                const anyRejected = allReviews.some((r) => r.decision === 'REJECTED');
-
-                // Update document status based on all reviews
-                if (anyRejected) {
-                    await tx.applicationDocument.update({
-                        where: { id: documentId },
-                        data: { status: 'REJECTED' },
-                    });
-                } else if (allApproved) {
-                    await tx.applicationDocument.update({
-                        where: { id: documentId },
-                        data: { status: 'APPROVED' },
-                    });
-                }
-                // Otherwise, document stays PENDING waiting for other reviews
-            } else {
-                // No multi-party review - simple approval
-                await tx.applicationDocument.update({
-                    where: { id: documentId },
-                    data: {
-                        status: data.status,
-                    },
-                });
-            }
-
-            // If document is rejected and has a stepId, revert the step to NEEDS_RESUBMISSION
-            if (data.status === 'REJECTED' && document.stepId) {
-                await tx.documentationStep.update({
-                    where: { id: document.stepId },
-                    data: {
-                        status: 'NEEDS_RESUBMISSION',
-                        actionReason: data.comment || 'Document was rejected. Please resubmit.',
-                    },
-                });
-            }
-
-            // State Machine: Complete the UPLOAD step for this document and check APPROVAL step
-            if (data.status === 'APPROVED') {
-                // For multi-party review, only complete step when ALL parties have approved
-                let shouldCompleteStep = true;
-                if (hasMultiPartyReview) {
-                    const allReviews = await tx.documentReview.findMany({
-                        where: { documentId },
-                    });
-                    shouldCompleteStep = allReviews.every(
-                        (r) => r.decision === 'APPROVED' || r.decision === 'WAIVED'
-                    );
-                }
-
-                // Complete the UPLOAD step for this specific document
-                if (document.stepId && shouldCompleteStep) {
-                    const step = await tx.documentationStep.findUnique({
-                        where: { id: document.stepId },
-                    });
-                    if (step && step.stepType === 'UPLOAD' && step.status !== 'COMPLETED') {
-                        await tx.documentationStep.update({
-                            where: { id: document.stepId },
-                            data: {
-                                status: 'COMPLETED',
-                                completedAt: new Date(),
-                            },
-                        });
-                    }
-                }
-                // Check if all documents approved → auto-complete APPROVAL step
-                if (document.phaseId) {
-                    await this.evaluateApprovalStepCompletion(tx, document.phaseId, userId);
-                }
-            }
-        });
-
-        // Send notification to the buyer (outside transaction)
-        const buyer = document.application?.buyer;
-        const propertyName = document.application?.propertyUnit?.variant?.property?.title;
-        if (buyer?.email) {
-            const dashboardUrl = process.env.DASHBOARD_URL || 'https://app.qshelter.com';
-
-            if (data.status === 'APPROVED') {
-                await sendDocumentApprovedNotification({
-                    email: buyer.email,
-                    userName: buyer.firstName || buyer.email,
-                    documentName: document.name,
-                    stepName,
-                    applicationNumber: document.application?.applicationNumber || '',
-                    propertyName,
-                    approvedDate: formatDate(new Date()),
-                    dashboardUrl: `${dashboardUrl}/applications/${document.applicationId}`,
-                }).catch((err) => {
-                    console.error('[ApplicationPhaseService] Failed to send document approved notification', err);
-                });
-            } else if (data.status === 'REJECTED') {
+        // Send notifications based on decision
+        if (decision === 'REJECTED' || decision === 'CHANGES_REQUESTED') {
+            const buyer = phase.application?.buyer;
+            const propertyName = phase.application?.propertyUnit?.variant?.property?.title;
+            if (buyer?.email) {
+                const dashboardUrl = process.env.DASHBOARD_URL || 'https://app.qshelter.com';
                 await sendDocumentRejectedNotification({
                     email: buyer.email,
                     userName: buyer.firstName || buyer.email,
-                    documentName: document.name,
-                    stepName,
-                    applicationNumber: document.application?.applicationNumber || '',
+                    documentName: result.document.name,
+                    stepName: result.document.type || 'Document',
+                    applicationNumber: phase.application?.applicationNumber || '',
                     propertyName,
-                    reason: data.comment || 'Please resubmit with the correct document.',
-                    dashboardUrl: `${dashboardUrl}/applications/${document.applicationId}`,
+                    reason: comment || 'No reason provided',
+                    dashboardUrl: `${dashboardUrl}/applications/${phase.applicationId}`,
                 }).catch((err) => {
-                    console.error('[ApplicationPhaseService] Failed to send document rejected notification', err);
+                    console.error('[ApplicationPhaseService] Failed to send rejection notification', err);
                 });
             }
         }
 
-        // After approval, check for auto-executable steps (like GENERATE_DOCUMENT)
-        if (data.status === 'APPROVED' && document.phaseId) {
-            await this.processAutoExecutableSteps(document.phaseId, userId);
-        }
-
-        // Return updated document with phase action status
-        const updatedDocument = await prisma.applicationDocument.findUnique({
-            where: { id: documentId },
-        });
-
-        // Get phase action status if document has phaseId
-        let phaseActionStatus = null;
-        if (document.phaseId) {
-            const phase = await this.findByIdWithActionStatus(document.phaseId);
-            phaseActionStatus = phase.actionStatus;
-        }
-
-        return {
-            ...updatedDocument,
-            phaseActionStatus,
-        };
+        return this.findByIdWithActionStatus(phaseId);
     }
 
     /**
-     * Evaluate if APPROVAL step should auto-complete
-     * Criteria: All documents in the phase are APPROVED
+     * Complete a documentation phase (all documents approved through all stages)
      */
-    private async evaluateApprovalStepCompletion(tx: any, phaseId: string, userId: string) {
-        // Get all documents in this phase
-        const documents = await tx.applicationDocument.findMany({
-            where: { phaseId },
-        });
+    private async completeDocumentationPhase(phaseId: string, userId: string): Promise<void> {
+        const phase = await this.findById(phaseId);
 
-        // Check if all documents are approved
-        const allApproved = documents.length > 0 && documents.every((d: any) => d.status === 'APPROVED');
-
-        if (!allApproved) return;
-
-        // Find the APPROVAL step in this phase
-        const phase = await tx.applicationPhase.findUnique({
-            where: { id: phaseId },
-            include: {
-                documentationPhase: {
-                    include: {
-                        steps: true,
-                    },
-                },
-            },
-        });
-
-        if (!phase?.documentationPhase) return;
-
-        const approvalStep = phase.documentationPhase.steps.find(
-            (s: any) => s.stepType === 'APPROVAL' && s.status !== 'COMPLETED'
-        );
-
-        if (approvalStep) {
-            await tx.documentationStep.update({
-                where: { id: approvalStep.id },
+        await prisma.$transaction(async (tx) => {
+            // Complete the phase
+            await tx.applicationPhase.update({
+                where: { id: phaseId },
                 data: {
                     status: 'COMPLETED',
                     completedAt: new Date(),
                 },
             });
 
-            // Check for phase completion
-            await this.evaluatePhaseCompletionInternal(tx, phaseId, userId);
+            // Clear currentStageOrder on DocumentationPhase
+            if (phase.documentationPhase) {
+                await tx.documentationPhase.update({
+                    where: { id: phase.documentationPhase.id },
+                    data: { currentStageOrder: undefined },
+                });
+            }
+
+            // Write phase completed event
+            await tx.domainEvent.create({
+                data: {
+                    id: uuidv4(),
+                    tenantId: phase.application?.tenantId || phase.tenantId,
+                    eventType: 'PHASE.COMPLETED',
+                    aggregateType: 'ApplicationPhase',
+                    aggregateId: phaseId,
+                    queueName: 'application-steps',
+                    payload: JSON.stringify({
+                        phaseId,
+                        applicationId: phase.applicationId,
+                        phaseType: phase.phaseType,
+                    }),
+                    actorId: userId,
+                },
+            });
+
+            // Auto-activate next phase
+            const nextPhase = await tx.applicationPhase.findFirst({
+                where: {
+                    applicationId: phase.applicationId,
+                    order: phase.order + 1,
+                },
+            });
+
+            if (nextPhase) {
+                await tx.applicationPhase.update({
+                    where: { id: nextPhase.id },
+                    data: { status: 'IN_PROGRESS' },
+                });
+
+                await tx.application.update({
+                    where: { id: phase.applicationId },
+                    data: { currentPhaseId: nextPhase.id },
+                });
+            }
+
+            // Handle unit locking if configured
+            await this.handleUnitLockingOnPhaseComplete(tx, phaseId, userId);
+        });
+
+        // Send phase completion notification
+        this.sendPhaseCompletionNotification(phaseId);
+    }
+
+    /**
+     * Approve a document (legacy compatibility - delegates to reviewDocument)
+     * @deprecated Use reviewDocument instead
+     */
+    async approveDocument(
+        phaseId: string,
+        documentId: string,
+        userId: string,
+        comment?: string
+    ): Promise<any> {
+        return this.reviewDocument(
+            phaseId,
+            documentId,
+            'APPROVED',
+            'INTERNAL', // Default to internal review
+            userId,
+            comment
+        );
+    }
+
+    /**
+     * Reject a document (legacy compatibility - delegates to reviewDocument)
+     * @deprecated Use reviewDocument with REJECTED decision instead
+     */
+    async rejectDocument(
+        phaseId: string,
+        documentId: string,
+        reason: string,
+        userId: string
+    ): Promise<any> {
+        return this.reviewDocument(
+            phaseId,
+            documentId,
+            'REJECTED',
+            'INTERNAL',
+            userId,
+            reason
+        );
+    }
+
+    /**
+     * Get document checklist for a documentation phase
+     */
+    async getDocumentChecklist(phaseId: string): Promise<any[]> {
+        const phase = await this.findById(phaseId);
+
+        if (!phase.documentationPhase) {
+            throw new AppError(400, 'Can only get checklist for DOCUMENTATION phases');
         }
+
+        return approvalWorkflowService.getDocumentChecklist(
+            phase.documentationPhase.id
+        );
+    }
+
+    /**
+     * @deprecated Steps have been replaced with stages. Use reviewDocument instead.
+     */
+    async rejectStep(
+        _phaseId: string,
+        _stepId: string,
+        _reason: string,
+        _userId: string
+    ): Promise<any> {
+        throw new AppError(400, 'rejectStep is deprecated. Use reviewDocument with REJECTED decision instead.');
+    }
+
+    /**
+     * @deprecated Steps have been replaced with stages. Use reviewDocument instead.
+     */
+    async requestStepChanges(
+        _phaseId: string,
+        _stepId: string,
+        _reason: string,
+        _userId: string
+    ): Promise<any> {
+        throw new AppError(400, 'requestStepChanges is deprecated. Use reviewDocument with CHANGES_REQUESTED decision instead.');
+    }
+
+    /**
+     * @deprecated Steps have been replaced with stages.
+     */
+    async performGateAction(
+        _phaseId: string,
+        _stepId: string,
+        _data: { action: string; comment?: string },
+        _userId: string,
+        _userRoles: string[]
+    ): Promise<any> {
+        throw new AppError(400, 'performGateAction is deprecated. Gate steps have been replaced with approval stages.');
+    }
+
+    /**
+     * @deprecated Steps have been replaced with stages. This method is no longer used.
+     */
+    async completeStep(_phaseId: string, _data: any, _userId: string): Promise<any> {
+        throw new AppError(400, 'completeStep is deprecated. Use reviewDocument to approve documents.');
     }
 
     /**
@@ -1920,7 +1035,7 @@ class ApplicationPhaseService {
                     },
                     questionnairePhase: true,
                     documentationPhase: {
-                        include: { steps: true },
+                        include: { stageProgress: true },
                     },
                     paymentPhase: {
                         include: { installments: true },
@@ -1959,10 +1074,10 @@ class ApplicationPhaseService {
                     break;
 
                 case 'DOCUMENTATION':
-                    const stepsCount = phase.documentationPhase?.steps?.length ?? 0;
+                    const stagesCount = phase.documentationPhase?.stageProgress?.length ?? 0;
                     await sendDocumentationPhaseCompletedNotification({
                         ...basePayload,
-                        stepsCompleted: stepsCount,
+                        stepsCompleted: stagesCount, // Note: using stagesCount but keeping param name for API compatibility
                     });
                     break;
 
@@ -1990,7 +1105,7 @@ class ApplicationPhaseService {
 
     /**
      * Evaluate phase completion within a transaction
-     * Criteria: All steps are COMPLETED or SKIPPED
+     * Criteria: All stages are COMPLETED
      */
     private async evaluatePhaseCompletionInternal(tx: any, phaseId: string, userId: string) {
         const phase = await tx.applicationPhase.findUnique({
@@ -1998,7 +1113,7 @@ class ApplicationPhaseService {
             include: {
                 application: true,
                 documentationPhase: {
-                    include: { steps: true },
+                    include: { stageProgress: true },
                 },
             },
         });
@@ -2006,14 +1121,14 @@ class ApplicationPhaseService {
         if (!phase?.documentationPhase) return;
         if (phase.status === 'COMPLETED') return;
 
-        const steps = phase.documentationPhase.steps || [];
-        const incompleteSteps = steps.filter(
-            (s: any) => s.status !== 'COMPLETED' && s.status !== 'SKIPPED'
+        const stageProgress = phase.documentationPhase.stageProgress || [];
+        const incompleteStages = stageProgress.filter(
+            (s: any) => s.status !== 'COMPLETED'
         );
 
-        if (incompleteSteps.length > 0) return;
+        if (incompleteStages.length > 0) return;
 
-        // All steps completed → complete phase and auto-activate next
+        // All stages completed → complete phase and auto-activate next
         await tx.applicationPhase.update({
             where: { id: phaseId },
             data: {
@@ -2022,10 +1137,10 @@ class ApplicationPhaseService {
             },
         });
 
-        // Clear currentStepId
+        // Clear currentStageOrder
         await tx.documentationPhase.update({
             where: { id: phase.documentationPhase.id },
-            data: { currentStepId: null },
+            data: { currentStageOrder: undefined },
         });
 
         // Write phase completed event
@@ -2161,14 +1276,14 @@ class ApplicationPhaseService {
             }
         }
 
-        // For DOCUMENTATION phases, check if all steps are completed
+        // For DOCUMENTATION phases, check if all stages are completed
         if (phase.phaseCategory === 'DOCUMENTATION' && phase.documentationPhase) {
-            const steps = phase.documentationPhase.steps || [];
-            const incompleteSteps = steps.filter(
-                (s: any) => s.status !== 'COMPLETED' && s.status !== 'SKIPPED'
+            const stageProgress = phase.documentationPhase.stageProgress || [];
+            const incompleteStages = stageProgress.filter(
+                (s: any) => s.status !== 'COMPLETED'
             );
-            if (incompleteSteps.length > 0) {
-                throw new AppError(400, `${incompleteSteps.length} steps still incomplete`);
+            if (incompleteStages.length > 0) {
+                throw new AppError(400, `${incompleteStages.length} stages still incomplete`);
             }
         }
 

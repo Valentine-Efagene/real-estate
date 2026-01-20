@@ -301,6 +301,36 @@ enum DocumentStatus {
   REJECTED
   EXPIRED
   CANCELLED
+  NEEDS_REUPLOAD // Document rejected, customer must re-upload
+}
+
+// =============================================================================
+// APPROVAL STAGE ENUMS (Multi-stage document workflow)
+// =============================================================================
+
+/// Status of an approval stage in a documentation phase
+enum StageStatus {
+  PENDING // Not yet activated
+  IN_PROGRESS // Activated, documents being reviewed
+  AWAITING_TRANSITION // All docs approved, waiting for explicit stage completion
+  COMPLETED // Stage completed, next stage can activate
+}
+
+/// Who uploads a document
+enum UploadedBy {
+  CUSTOMER
+  LENDER
+  DEVELOPER
+  LEGAL
+  INSURER
+  PLATFORM // QShelter staff
+}
+
+/// What happens when a later stage rejects a document
+enum RejectionBehavior {
+  CASCADE_BACK // Restart from Stage 1 (default - full re-vetting)
+  RESTART_CURRENT // Only current stage re-reviews after re-upload
+  RESTART_FROM_STAGE // Restart from specific stage (uses restartFromStageOrder)
 }
 
 enum OfferLetterType {
@@ -456,11 +486,10 @@ model User {
   soldApplications    Application[]        @relation("ApplicationSeller")
   applicationPayments ApplicationPayment[] @relation("ApplicationPayer")
 
-  // Documentation step assignments and approvals
-  assignedSteps  DocumentationStep[]         @relation("DocumentationStepAssignee")
-  gateActedSteps DocumentationStep[]         @relation("GateActedBy")
-  stepApprovals  DocumentationStepApproval[] @relation("DocumentationStepApprover")
-  uploadedDocs   ApplicationDocument[]       @relation("DocumentUploader")
+  // Documentation (new model)
+  uploadedDocs      ApplicationDocument[]   @relation("DocumentUploader")
+  documentApprovals DocumentApproval[]      @relation("DocumentApprovalReviewer")
+  completedStages   ApprovalStageProgress[] @relation("StageCompletedBy")
 
   // Payment method changes
   paymentMethodChangeRequests PaymentMethodChangeRequest[] @relation("ChangeRequestor")
@@ -759,12 +788,11 @@ model Tenant {
   paymentPhases               PaymentPhase[]
   questionnaireFields         QuestionnaireField[]
   applicationEvents           ApplicationEvent[]
-  documentationSteps          DocumentationStep[]
-  documentationStepDocuments  DocumentationStepDocument[]
-  documentationStepApprovals  DocumentationStepApproval[]
   paymentInstallments         PaymentInstallment[]
   applicationPayments         ApplicationPayment[]
   applicationDocuments        ApplicationDocument[]
+  documentApprovals           DocumentApproval[]
+  approvalStageProgress       ApprovalStageProgress[]
   propertyMedia               PropertyMedia[]
   propertyDocuments           PropertyDocument[]
   propertyVariants            PropertyVariant[]
@@ -1256,14 +1284,15 @@ model DocumentationPlan {
   description String? @db.Text
   isActive    Boolean @default(true)
 
-  // Document requirements for this plan
-  requiredDocumentTypes Json? // Array of document type strings, e.g., ["ID_CARD", "BANK_STATEMENT"]
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // Steps that make up this plan
-  steps               DocumentationPlanStep[]
+  // Document definitions (what documents to collect)
+  documentDefinitions DocumentDefinition[]
+
+  // Approval stages (sequential workflow for reviewing documents)
+  approvalStages ApprovalStage[]
+
   // Used by property payment method phases (templates)
   methodPhases        PropertyPaymentMethodPhase[]
   // Used by instantiated documentation phases
@@ -1274,65 +1303,91 @@ model DocumentationPlan {
   @@map("documentation_plans")
 }
 
-// Step template within a DocumentationPlan
-model DocumentationPlanStep {
+// =============================================================================
+// DOCUMENT DEFINITION - What documents to collect (template)
+// =============================================================================
+// Defines a document requirement within a documentation plan.
+// This is separate from approval workflow - just defines WHAT to collect.
+// =============================================================================
+
+model DocumentDefinition {
   id     String            @id @default(cuid())
   planId String
   plan   DocumentationPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
 
-  name     String
-  stepType StepType
-  order    Int
+  // Document identification
+  documentType String // ID_CARD, BANK_STATEMENT, EMPLOYMENT_LETTER, etc.
+  documentName String // Human-readable: "Valid ID Card", "6 Months Bank Statement"
 
-  // Optional: which document type this step handles (for UPLOAD steps)
-  documentType String?
-  metadata     Json?
+  // Who uploads this document
+  uploadedBy UploadedBy @default(CUSTOMER)
 
-  // Document validation rules (for UPLOAD steps)
-  isRequired           Boolean @default(true)
-  description          String? @db.Text // Instructions for the user
-  maxSizeBytes         Int? // Max file size allowed (e.g., 5242880 for 5MB)
-  allowedMimeTypes     String? // CSV: application/pdf,image/jpeg,image/png
-  expiryDays           Int? // Document must not be older than X days
-  requiresManualReview Boolean @default(false)
-  minFiles             Int     @default(1) // Minimum number of files required
-  maxFiles             Int     @default(1) // Maximum number of files allowed
+  // Display order
+  order Int
 
-  // Conditional logic - when is this step required?
-  // NULL = always required (unconditional)
-  // Examples:
-  // { "questionKey": "mortgage_type", "operator": "EQUALS", "value": "JOINT" }
-  // { "questionKey": "employment_status", "operator": "IN", "values": ["SELF_EMPLOYED", "BUSINESS_OWNER"] }
-  // { "all": [{ "questionKey": "has_spouse", "operator": "EQUALS", "value": "YES" }, { "questionKey": "spouse_employed", "operator": "EQUALS", "value": "YES" }] }
+  // Validation rules
+  isRequired       Boolean @default(true)
+  description      String? @db.Text // Instructions for the uploader
+  maxSizeBytes     Int? // Max file size allowed (e.g., 5242880 for 5MB)
+  allowedMimeTypes String? // CSV: application/pdf,image/jpeg,image/png
+  expiryDays       Int? // Document must not be older than X days
+  minFiles         Int     @default(1)
+  maxFiles         Int     @default(1)
+
+  // Conditional logic (based on questionnaire answers)
+  // NULL = always required
+  // Example: { "questionKey": "mortgage_type", "operator": "EQUALS", "value": "JOINT" }
   condition Json?
-
-  // =========================================================================
-  // MULTI-PARTY REVIEW CONFIGURATION (for UPLOAD steps)
-  // =========================================================================
-  // Defines which parties must review documents uploaded in this step
-  // Format: [{ party: "INTERNAL", required: true }, { party: "BANK", required: true }]
-  // If null, defaults to single internal review (backward compatible)
-  reviewRequirements Json?
-
-  // Review order: 'SEQUENTIAL' = parties review in order, 'PARALLEL' = all review simultaneously
-  reviewOrder String? // 'SEQUENTIAL' | 'PARALLEL'
-
-  // =========================================================================
-  // GATE STEP CONFIGURATION (only applicable when stepType = GATE)
-  // =========================================================================
-  gateActor        GateActor? // Who must perform the action
-  gateAction       GateAction? // What action is required
-  gateRoleId       String? // If gateActor = SPECIFIC_ROLE, which role
-  gateInstructions String?             @db.Text // Instructions shown to actor
-  allowReject      Boolean             @default(true) // Can the actor reject?
-  rejectBehavior   GateRejectBehavior? // What happens on reject
-  requiresComment  Boolean             @default(false) // Must actor provide a comment?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([planId])
-  @@map("documentation_plan_steps")
+  @@map("document_definitions")
+}
+
+// =============================================================================
+// APPROVAL STAGE - Sequential workflow stages for document review (template)
+// =============================================================================
+// Defines a stage in the approval workflow. Documents flow through stages
+// sequentially. Each stage can have different reviewers (INTERNAL, BANK, etc.)
+// =============================================================================
+
+model ApprovalStage {
+  id     String            @id @default(cuid())
+  planId String
+  plan   DocumentationPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  name        String // "QShelter Staff Review", "Bank Review"
+  order       Int // 1, 2, 3 - sequential order
+  reviewParty ReviewParty // INTERNAL, BANK, DEVELOPER, LEGAL, etc.
+
+  // Stage behavior flags
+  autoTransition       Boolean @default(false) // Auto-complete when all docs approved? Default: require explicit approval
+  waitForAllDocuments  Boolean @default(true) // Wait for all docs approved before allowing transition
+  allowEarlyVisibility Boolean @default(false) // Allow read-only view before stage activates
+
+  // Rejection behavior - what happens when this stage rejects a document
+  onRejection           RejectionBehavior @default(CASCADE_BACK)
+  restartFromStageOrder Int? // If onRejection = RESTART_FROM_STAGE, which stage order to restart from
+
+  // Optional: specific organization (e.g., which bank)
+  organizationId String?
+
+  // SLA (optional)
+  slaHours Int? // Escalate if not completed within X hours
+
+  description String? @db.Text // Instructions for reviewers at this stage
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Runtime instances
+  stageProgress ApprovalStageProgress[]
+
+  @@unique([planId, order])
+  @@index([planId])
+  @@map("approval_stages")
 }
 
 // =============================================================================
@@ -2101,7 +2156,7 @@ model QuestionnairePhase {
 // =============================================================================
 // DOCUMENTATION PHASE DATA - Extension for DOCUMENTATION phases
 // =============================================================================
-// Manages document upload/approval workflow with FSM steps
+// Manages document upload/approval workflow with sequential approval stages
 // =============================================================================
 
 model DocumentationPhase {
@@ -2115,38 +2170,30 @@ model DocumentationPhase {
   documentationPlanId String?
   documentationPlan   DocumentationPlan? @relation(fields: [documentationPlanId], references: [id])
 
-  // Source questionnaire for conditional step evaluation
-  // Links to the questionnaire phase whose answers determine which steps apply
+  // Source questionnaire for conditional document evaluation
+  // Links to the questionnaire phase whose answers determine which documents are required
   sourceQuestionnairePhaseId String?
   sourceQuestionnairePhase   QuestionnairePhase? @relation("SourceQuestionnaire", fields: [sourceQuestionnairePhaseId], references: [id])
 
-  // Current step pointer for UX and orchestration
-  currentStepId String?
-  currentStep   DocumentationStep? @relation("CurrentStep", fields: [currentStepId], references: [id])
+  // Current approval stage pointer for UX and orchestration
+  currentStageOrder Int @default(1)
 
   // Progress counters
   approvedDocumentsCount Int @default(0)
   requiredDocumentsCount Int @default(0)
-  completedStepsCount    Int @default(0)
-  totalStepsCount        Int @default(0)
-
-  // Completion criteria
-  minimumCompletionPercentage Float?
-  completionCriterion         CompletionCriterion?
 
   // Snapshots for audit
-  stepDefinitionsSnapshot  Json?
-  requiredDocumentSnapshot Json?
+  documentDefinitionsSnapshot Json?
+  approvalStagesSnapshot      Json?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // Child records
-  steps DocumentationStep[]
+  // Approval stage progress (tracks which stages are completed)
+  stageProgress ApprovalStageProgress[]
 
   @@index([tenantId])
   @@index([phaseId])
-  @@index([currentStepId])
   @@index([sourceQuestionnairePhaseId])
   @@map("documentation_phases")
 }
@@ -2296,138 +2343,6 @@ model ApplicationEvent {
   @@map("application_events")
 }
 
-// Steps within a DOCUMENTATION phase (FSM for document collection/approval)
-model DocumentationStep {
-  id                   String             @id @default(cuid())
-  tenantId             String
-  tenant               Tenant             @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  documentationPhaseId String
-  documentationPhase   DocumentationPhase @relation(fields: [documentationPhaseId], references: [id], onDelete: Cascade)
-
-  name        String
-  description String?  @db.Text
-  stepType    StepType
-  order       Int
-
-  status StepStatus @default(PENDING)
-
-  // =========================================================================
-  // USER ACTION TRACKING - For rejection/resubmission flows
-  // =========================================================================
-  // When status is NEEDS_RESUBMISSION or ACTION_REQUIRED, this explains why.
-  // Populated from DocumentationStepApproval.comment on rejection.
-  actionReason String? @db.Text
-
-  // Number of times this step has been submitted (for tracking resubmissions)
-  submissionCount Int @default(0)
-
-  // Last submission timestamp (for tracking resubmission timing)
-  lastSubmittedAt DateTime?
-
-  // Configuration metadata (for GENERATE_DOCUMENT steps, etc.)
-  metadata Json?
-
-  // Document validation rules (copied from plan for UPLOAD steps)
-  requiresManualReview Boolean @default(false)
-
-  // Conditional step logic (copied from plan)
-  // When set, this step is only applicable if the condition evaluates to true
-  // Format: { "questionKey": "mortgage_type", "operator": "EQUALS", "value": "JOINT" }
-  // Or: { "questionKey": "employment_status", "operator": "IN", "values": ["SELF_EMPLOYED", "BUSINESS_OWNER"] }
-  condition Json?
-
-  // =========================================================================
-  // MULTI-PARTY REVIEW CONFIGURATION (for UPLOAD steps)
-  // =========================================================================
-  // Defines which parties must review documents uploaded in this step
-  // Format: [{ party: "INTERNAL", required: true }, { party: "BANK", required: true }]
-  // If null, defaults to single internal review (backward compatible)
-  reviewRequirements Json?
-
-  // Review order: 'SEQUENTIAL' = parties review in order, 'PARALLEL' = all review simultaneously
-  reviewOrder String? // 'SEQUENTIAL' | 'PARALLEL'
-
-  // Assignment
-  assigneeId String?
-  assignee   User?   @relation("DocumentationStepAssignee", fields: [assigneeId], references: [id])
-
-  // Required document types for UPLOAD steps (normalized)
-  requiredDocuments DocumentationStepDocument[]
-
-  // =========================================================================
-  // GATE STEP CONFIGURATION (only applicable when stepType = GATE)
-  // =========================================================================
-  gateActor        GateActor? // Who must perform the action
-  gateAction       GateAction? // What action is required
-  gateRoleId       String? // If gateActor = SPECIFIC_ROLE, which role
-  gateInstructions String?             @db.Text // Instructions shown to actor
-  allowReject      Boolean             @default(true) // Can the actor reject?
-  rejectBehavior   GateRejectBehavior? // What happens on reject
-  requiresComment  Boolean             @default(false) // Must actor provide a comment?
-
-  // Gate action tracking
-  gateActedAt   DateTime? // When the gate action was performed
-  gateActedById String? // Who performed the gate action
-  gateActedBy   User?     @relation("GateActedBy", fields: [gateActedById], references: [id])
-  gateDecision  String? // APPROVED, REJECTED, ACKNOWLEDGED, etc.
-  gateComment   String?   @db.Text // Comment from actor
-
-  // Timing
-  dueDate     DateTime?
-  completedAt DateTime?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  approvals       DocumentationStepApproval[]
-  currentForPhase DocumentationPhase[]        @relation("CurrentStep")
-
-  @@index([tenantId])
-  @@index([documentationPhaseId])
-  @@index([status])
-  @@index([order])
-  @@map("documentation_steps")
-}
-
-// Required documents for a step (normalized from CSV)
-model DocumentationStepDocument {
-  id       String            @id @default(cuid())
-  tenantId String
-  tenant   Tenant            @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  stepId   String
-  step     DocumentationStep @relation(fields: [stepId], references: [id], onDelete: Cascade)
-
-  documentType String
-  isRequired   Boolean @default(true)
-
-  createdAt DateTime @default(now())
-
-  @@index([tenantId])
-  @@index([stepId, documentType])
-  @@map("documentation_step_documents")
-}
-
-// Approvals for documentation steps
-model DocumentationStepApproval {
-  id         String            @id @default(cuid())
-  tenantId   String
-  tenant     Tenant            @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  stepId     String
-  step       DocumentationStep @relation(fields: [stepId], references: [id], onDelete: Cascade)
-  approverId String?
-  approver   User?             @relation("DocumentationStepApprover", fields: [approverId], references: [id])
-
-  decision  ApprovalDecision
-  comment   String?          @db.Text
-  decidedAt DateTime         @default(now())
-
-  createdAt DateTime @default(now())
-
-  @@index([tenantId])
-  @@index([stepId])
-  @@map("documentation_step_approvals")
-}
-
 // Installments within a PAYMENT phase
 model PaymentInstallment {
   id             String       @id @default(cuid())
@@ -2514,15 +2429,19 @@ model ApplicationDocument {
   phaseId       String? // Optional link to specific phase
   stepId        String? // Optional link to specific step
 
-  name         String
+  // Document info
+  documentType String? // ID_CARD, BANK_STATEMENT, etc. (matches DocumentDefinition.documentType)
+  documentName String? // Human-readable name (copied from DocumentDefinition.documentName)
+  name         String // File name
   url          String
-  type         String // ID, BANK_STATEMENT, INCOME_PROOF, TITLE_DEED, SIGNATURE, etc.
+  type         String // ID, BANK_STATEMENT, INCOME_PROOF, TITLE_DEED, SIGNATURE, etc. (legacy, use documentType)
   uploadedById String?
   uploadedBy   User?   @relation("DocumentUploader", fields: [uploadedById], references: [id])
 
   status DocumentStatus @default(PENDING)
 
-  // Document versioning (for re-uploads after changes requested)
+  // NO versioning - document is replaced on re-upload (url is updated)
+  // Keep these fields for backward compatibility but don't use for new code
   version            Int                   @default(1)
   replacesDocumentId String? // If this is a revision, points to original
   replacesDocument   ApplicationDocument?  @relation("DocumentRevisions", fields: [replacesDocumentId], references: [id])
@@ -2531,14 +2450,18 @@ model ApplicationDocument {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // Multi-party reviews for this document
+  // OLD: Multi-party reviews (deprecated, use approvalTrail)
   reviews DocumentReview[]
+
+  // NEW: Full approval trail across all stages
+  approvalTrail DocumentApproval[]
 
   @@index([tenantId])
   @@index([applicationId])
   @@index([phaseId])
   @@index([stepId])
   @@index([type])
+  @@index([documentType])
   @@index([status])
   @@index([replacesDocumentId])
   @@map("application_documents")
@@ -2597,6 +2520,100 @@ model DocumentReview {
   @@index([reviewerId])
   @@index([parentReviewId])
   @@map("document_reviews")
+}
+
+// =============================================================================
+// APPROVAL STAGE PROGRESS - Runtime tracking of stage completion per phase
+// =============================================================================
+// Tracks the progress of each approval stage within a documentation phase.
+// Created when a documentation phase is instantiated from a plan.
+// =============================================================================
+
+model ApprovalStageProgress {
+  id                   String             @id @default(cuid())
+  tenantId             String
+  tenant               Tenant             @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  documentationPhaseId String
+  documentationPhase   DocumentationPhase @relation(fields: [documentationPhaseId], references: [id], onDelete: Cascade)
+
+  // Link to template
+  approvalStageId String
+  approvalStage   ApprovalStage @relation(fields: [approvalStageId], references: [id])
+
+  // Stage info (denormalized for convenience)
+  name        String
+  order       Int
+  reviewParty ReviewParty
+
+  // Behavior flags (copied from template)
+  autoTransition       Boolean @default(false)
+  waitForAllDocuments  Boolean @default(true)
+  allowEarlyVisibility Boolean @default(false)
+
+  // Rejection behavior (copied from template)
+  onRejection           RejectionBehavior @default(CASCADE_BACK)
+  restartFromStageOrder Int?
+
+  // Status tracking
+  status      StageStatus @default(PENDING)
+  activatedAt DateTime?
+  completedAt DateTime?
+
+  // Who completed this stage (when autoTransition = false)
+  completedById     String?
+  completedBy       User?   @relation("StageCompletedBy", fields: [completedById], references: [id])
+  transitionComment String? @db.Text // Optional comment when completing stage
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Document approvals made during this stage
+  documentApprovals DocumentApproval[]
+
+  @@unique([documentationPhaseId, order])
+  @@index([tenantId])
+  @@index([documentationPhaseId])
+  @@index([approvalStageId])
+  @@index([status])
+  @@map("approval_stage_progress")
+}
+
+// =============================================================================
+// DOCUMENT APPROVAL - Audit trail for document reviews per stage
+// =============================================================================
+// Records every review action taken on a document within a specific stage.
+// Provides full audit trail: who reviewed, what decision, when, with comments.
+// =============================================================================
+
+model DocumentApproval {
+  id         String              @id @default(cuid())
+  tenantId   String
+  tenant     Tenant              @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  documentId String
+  document   ApplicationDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  // Which stage this approval belongs to
+  stageProgressId String
+  stageProgress   ApprovalStageProgress @relation(fields: [stageProgressId], references: [id], onDelete: Cascade)
+
+  // Reviewer info
+  reviewerId  String
+  reviewer    User        @relation("DocumentApprovalReviewer", fields: [reviewerId], references: [id])
+  reviewParty ReviewParty // INTERNAL, BANK, etc.
+
+  // Decision
+  decision ReviewDecision // APPROVED, REJECTED, CHANGES_REQUESTED
+  comment  String?        @db.Text // Required on rejection
+
+  reviewedAt DateTime @default(now())
+  createdAt  DateTime @default(now())
+
+  @@index([tenantId])
+  @@index([documentId])
+  @@index([stageProgressId])
+  @@index([reviewerId])
+  @@index([decision])
+  @@map("document_approvals")
 }
 
 // =============================================================================

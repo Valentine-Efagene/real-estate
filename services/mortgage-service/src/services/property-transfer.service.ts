@@ -5,6 +5,7 @@ import {
     ApprovalRequestType,
     ApprovalRequestPriority,
     PhaseCategory,
+    StageStatus,
 } from '@valentine-efagene/qshelter-common';
 import { approvalRequestService } from './approval-request.service';
 import { v4 as uuidv4 } from 'uuid';
@@ -64,10 +65,8 @@ class PropertyTransferService {
                         },
                         documentationPhase: {
                             include: {
-                                steps: {
-                                    include: {
-                                        requiredDocuments: true,
-                                    },
+                                stageProgress: {
+                                    orderBy: { order: 'asc' },
                                 },
                             },
                         },
@@ -223,7 +222,9 @@ class PropertyTransferService {
                                 },
                                 documentationPhase: {
                                     include: {
-                                        steps: true,
+                                        stageProgress: {
+                                            orderBy: { order: 'asc' },
+                                        },
                                     },
                                 },
                                 paymentPhase: {
@@ -350,10 +351,12 @@ class PropertyTransferService {
                             include: {
                                 phases: {
                                     include: {
-                                        steps: true,
                                         questionnaireFields: true,
                                         documentationPlan: {
-                                            include: { steps: { orderBy: { order: 'asc' } } },
+                                            include: {
+                                                documentDefinitions: { orderBy: { order: 'asc' } },
+                                                approvalStages: { orderBy: { order: 'asc' } },
+                                            },
                                         },
                                     },
                                     orderBy: { order: 'asc' },
@@ -367,10 +370,8 @@ class PropertyTransferService {
                                 },
                                 documentationPhase: {
                                     include: {
-                                        steps: {
-                                            include: {
-                                                requiredDocuments: true,
-                                            },
+                                        stageProgress: {
+                                            orderBy: { order: 'asc' },
                                         },
                                     },
                                 },
@@ -527,36 +528,47 @@ class PropertyTransferService {
                         break;
 
                     case PhaseCategory.DOCUMENTATION:
+                        // Get document definitions and approval stages from documentation plan
+                        const docPlan = templatePhase.documentationPlan;
+                        const documentDefinitions = docPlan?.documentDefinitions || [];
+                        const approvalStages = docPlan?.approvalStages || [];
+
+                        // Snapshot the document definitions for the phase
+                        const documentDefinitionsSnapshot = documentDefinitions.map((def: any) => ({
+                            id: def.id,
+                            name: def.name,
+                            documentType: def.documentType,
+                            isRequired: def.isRequired,
+                            order: def.order,
+                            description: def.description,
+                        }));
+
                         const docPhase = await tx.documentationPhase.create({
                             data: {
                                 tenantId,
                                 phaseId: newPhase.id,
                                 documentationPlanId: templatePhase.documentationPlanId,
-                                totalStepsCount: templatePhase.steps?.length || templatePhase.documentationPlan?.steps?.length || 0,
-                                completedStepsCount: 0,
-                                requiredDocumentsCount: 0,
+                                requiredDocumentsCount: documentDefinitions.filter((d: any) => d.isRequired).length,
                                 approvedDocumentsCount: 0,
-                                minimumCompletionPercentage: templatePhase.minimumCompletionPercentage,
-                                completionCriterion: templatePhase.completionCriterion,
-                                stepDefinitionsSnapshot: templatePhase.stepDefinitionsSnapshot || undefined,
+                                currentStageOrder: approvalStages.length > 0 ? 1 : undefined,
+                                documentDefinitionsSnapshot: documentDefinitionsSnapshot.length > 0
+                                    ? documentDefinitionsSnapshot
+                                    : undefined,
                             },
                         });
 
-                        // Get steps from template or documentation plan
-                        const stepsToCreate = templatePhase.steps?.length > 0
-                            ? templatePhase.steps
-                            : templatePhase.documentationPlan?.steps || [];
-
-                        // Create documentation steps from template
-                        for (const stepTemplate of stepsToCreate) {
-                            await tx.documentationStep.create({
+                        // Create approval stage progress records
+                        for (const stage of approvalStages) {
+                            await tx.approvalStageProgress.create({
                                 data: {
                                     tenantId,
                                     documentationPhaseId: docPhase.id,
-                                    name: stepTemplate.name,
-                                    stepType: stepTemplate.stepType,
-                                    order: stepTemplate.order,
-                                    status: 'PENDING',
+                                    approvalStageId: stage.id,
+                                    name: stage.name,
+                                    order: stage.order,
+                                    reviewParty: stage.reviewParty,
+                                    status: StageStatus.PENDING,
+                                    onRejection: stage.onRejection || 'BLOCK',
                                 },
                             });
                         }

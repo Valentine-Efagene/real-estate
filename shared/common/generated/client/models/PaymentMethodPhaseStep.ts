@@ -548,6 +548,10 @@ export type PaymentMethodPhaseStepUncheckedUpdateManyWithoutPhaseNestedInput = {
   deleteMany?: Prisma.PaymentMethodPhaseStepScalarWhereInput | Prisma.PaymentMethodPhaseStepScalarWhereInput[]
 }
 
+export type EnumStepTypeFieldUpdateOperationsInput = {
+  set?: $Enums.StepType
+}
+
 export type PaymentMethodPhaseStepCreateNestedOneWithoutEventAttachmentsInput = {
   create?: Prisma.XOR<Prisma.PaymentMethodPhaseStepCreateWithoutEventAttachmentsInput, Prisma.PaymentMethodPhaseStepUncheckedCreateWithoutEventAttachmentsInput>
   connectOrCreate?: Prisma.PaymentMethodPhaseStepCreateOrConnectWithoutEventAttachmentsInput

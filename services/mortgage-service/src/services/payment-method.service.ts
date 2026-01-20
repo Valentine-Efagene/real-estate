@@ -85,9 +85,9 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
 
                     // For DOCUMENTATION phases, either documentationPlanId or inline stepDefinitions should be provided
                     let stepDefinitionsToUse = phase.stepDefinitions;
-                    let requiredDocumentTypesToUse = phase.requiredDocuments;
+                    const requiredDocumentTypesToUse = phase.requiredDocuments;
 
-                    // If documentationPlanId is provided, fetch the plan and use its steps/documents
+                    // If documentationPlanId is provided, fetch the plan and use its steps
                     if (phase.phaseCategory === 'DOCUMENTATION' && phase.documentationPlanId) {
                         const docPlan = await tx.documentationPlan.findUnique({
                             where: { id: phase.documentationPlanId },
@@ -105,15 +105,6 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                                 stepType: s.stepType,
                                 order: s.order,
                                 metadata: s.metadata,
-                            }));
-                        }
-
-                        // Use required documents from documentation plan if not overridden
-                        if ((!requiredDocumentTypesToUse || requiredDocumentTypesToUse.length === 0) && docPlan.requiredDocumentTypes) {
-                            const docTypes = docPlan.requiredDocumentTypes as string[];
-                            requiredDocumentTypesToUse = docTypes.map((docType: string) => ({
-                                documentType: docType,
-                                isRequired: true,
                             }));
                         }
                     }
@@ -207,15 +198,14 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                     include: {
                         paymentPlan: true,
                         documentationPlan: {
-                            include: { steps: { orderBy: { order: 'asc' } } },
+                            include: {
+                                documentDefinitions: { orderBy: { order: 'asc' } },
+                                approvalStages: { orderBy: { order: 'asc' } },
+                            },
                         },
                         questionnairePlan: {
                             include: { questions: { orderBy: { order: 'asc' } } },
                         },
-                        steps: {
-                            orderBy: { order: 'asc' },
-                        },
-                        requiredDocuments: true,
                     },
                 },
             },
@@ -232,15 +222,14 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                     include: {
                         paymentPlan: true,
                         documentationPlan: {
-                            include: { steps: { orderBy: { order: 'asc' } } },
+                            include: {
+                                documentDefinitions: { orderBy: { order: 'asc' } },
+                                approvalStages: { orderBy: { order: 'asc' } },
+                            },
                         },
                         questionnairePlan: {
                             include: { questions: { orderBy: { order: 'asc' } } },
                         },
-                        steps: {
-                            orderBy: { order: 'asc' },
-                        },
-                        requiredDocuments: true,
                     },
                 },
                 properties: {
@@ -310,39 +299,26 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
         let stepDefinitionsToUse = data.stepDefinitions;
         let requiredDocumentTypesToUse = data.requiredDocuments;
 
-        // If documentationPlanId is provided, fetch the plan and use its steps/documents
+        // If documentationPlanId is provided, fetch the plan and use its document definitions
         if (data.phaseCategory === 'DOCUMENTATION' && data.documentationPlanId) {
             const docPlan = await prisma.documentationPlan.findUnique({
                 where: { id: data.documentationPlanId },
-                include: { steps: { orderBy: { order: 'asc' } } },
+                include: {
+                    documentDefinitions: { orderBy: { order: 'asc' } },
+                    approvalStages: { orderBy: { order: 'asc' } },
+                },
             });
 
             if (!docPlan) {
                 throw new AppError(404, `Documentation plan "${data.documentationPlanId}" not found`);
             }
 
-            // Use steps from documentation plan if not overridden
-            if (!stepDefinitionsToUse || stepDefinitionsToUse.length === 0) {
-                stepDefinitionsToUse = docPlan.steps.map((s: any) => ({
-                    name: s.name,
-                    stepType: s.stepType,
-                    order: s.order,
-                    metadata: s.metadata,
-                }));
-            }
-
-            // Use required documents from documentation plan if not overridden
-            if ((!requiredDocumentTypesToUse || requiredDocumentTypesToUse.length === 0) && docPlan.requiredDocumentTypes) {
-                const docTypes = docPlan.requiredDocumentTypes as string[];
-                requiredDocumentTypesToUse = docTypes.map((docType: string) => ({
-                    documentType: docType,
-                    isRequired: true,
-                }));
-            }
+            // Document definitions are now used instead of steps
+            // The ApprovalWorkflowService will use these at runtime
         }
 
-        // Store snapshots for audit
-        const stepDefinitionsSnapshot = stepDefinitionsToUse ? stepDefinitionsToUse : null;
+        // Store snapshots for audit (now using document definitions instead of step definitions)
+        const stepDefinitionsSnapshot = null; // Steps are deprecated
         const requiredDocumentSnapshot = requiredDocumentTypesToUse ? requiredDocumentTypesToUse : null;
 
         const phase = await prisma.$transaction(async (tx: any) => {
@@ -409,12 +385,11 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
             include: {
                 paymentPlan: true,
                 documentationPlan: {
-                    include: { steps: { orderBy: { order: 'asc' } } },
+                    include: {
+                        documentDefinitions: { orderBy: { order: 'asc' } },
+                        approvalStages: { orderBy: { order: 'asc' } },
+                    },
                 },
-                steps: {
-                    orderBy: { order: 'asc' },
-                },
-                requiredDocuments: true,
             },
         });
     }
@@ -802,35 +777,8 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                     },
                 });
 
-                // Clone steps
-                for (const step of phase.steps) {
-                    await tx.paymentMethodPhaseStep.create({
-                        data: {
-                            tenantId,
-                            phaseId: newPhase.id,
-                            name: step.name,
-                            stepType: step.stepType,
-                            order: step.order,
-                            metadata: step.metadata,
-                        },
-                    });
-                }
-
-                // Clone document requirements
-                for (const doc of phase.requiredDocuments) {
-                    await tx.paymentMethodPhaseDocument.create({
-                        data: {
-                            tenantId,
-                            phaseId: newPhase.id,
-                            documentType: doc.documentType,
-                            isRequired: doc.isRequired,
-                            description: doc.description,
-                            allowedMimeTypes: doc.allowedMimeTypes,
-                            maxSizeBytes: doc.maxSizeBytes,
-                            metadata: doc.metadata,
-                        },
-                    });
-                }
+                // Note: Steps and requiredDocuments are deprecated
+                // Document definitions are now stored in DocumentationPlan
             }
 
             return newMethod;

@@ -172,10 +172,15 @@ export type PropertyAmenity = Prisma.PropertyAmenityModel
  */
 export type DocumentationPlan = Prisma.DocumentationPlanModel
 /**
- * Model DocumentationPlanStep
+ * Model DocumentDefinition
  * 
  */
-export type DocumentationPlanStep = Prisma.DocumentationPlanStepModel
+export type DocumentDefinition = Prisma.DocumentDefinitionModel
+/**
+ * Model ApprovalStage
+ * 
+ */
+export type ApprovalStage = Prisma.ApprovalStageModel
 /**
  * Model QuestionnairePlan
  * 
@@ -274,21 +279,6 @@ export type QuestionnaireField = Prisma.QuestionnaireFieldModel
  */
 export type ApplicationEvent = Prisma.ApplicationEventModel
 /**
- * Model DocumentationStep
- * 
- */
-export type DocumentationStep = Prisma.DocumentationStepModel
-/**
- * Model DocumentationStepDocument
- * 
- */
-export type DocumentationStepDocument = Prisma.DocumentationStepDocumentModel
-/**
- * Model DocumentationStepApproval
- * 
- */
-export type DocumentationStepApproval = Prisma.DocumentationStepApprovalModel
-/**
  * Model PaymentInstallment
  * 
  */
@@ -308,6 +298,16 @@ export type ApplicationDocument = Prisma.ApplicationDocumentModel
  * 
  */
 export type DocumentReview = Prisma.DocumentReviewModel
+/**
+ * Model ApprovalStageProgress
+ * 
+ */
+export type ApprovalStageProgress = Prisma.ApprovalStageProgressModel
+/**
+ * Model DocumentApproval
+ * 
+ */
+export type DocumentApproval = Prisma.DocumentApprovalModel
 /**
  * Model DocumentTemplate
  * 

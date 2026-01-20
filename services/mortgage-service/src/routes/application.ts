@@ -471,8 +471,16 @@ router.post('/:id/documents/:documentId/review', requireTenant, requireRole(ADMI
     try {
         const data = ApproveDocumentSchema.parse(req.body);
         const { userId } = getAuthContext(req);
-        const document = await applicationPhaseService.approveDocument(req.params.documentId as string, data, userId);
-        res.json(successResponse(document));
+        const decision = data.status === 'APPROVED' ? 'APPROVED' : 'REJECTED';
+        const result = await applicationPhaseService.reviewDocument(
+            req.params.id as string, // phaseId
+            req.params.documentId as string,
+            decision as any,
+            'INTERNAL', // reviewer party
+            userId,
+            data.comment
+        );
+        res.json(successResponse(result));
     } catch (error) {
         if (error instanceof z.ZodError) {
             res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });

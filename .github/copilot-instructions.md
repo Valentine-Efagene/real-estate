@@ -10,6 +10,18 @@
 
 Note: Please do not manually delete CDKToolkit from the AWS CloudFormation stacks - use the teardown script which handles it properly.
 
+## Development Philosophy
+
+### No Backward Compatibility
+
+We are in active development - **delete unused code, don't deprecate it**:
+
+- When replacing a model or feature, **remove the old code entirely**
+- Don't add `@deprecated` markers - just delete
+- Don't retain old models/types/functions to "keep tests passing" - update the tests
+- If tests fail after schema changes, fix the tests to use the new architecture
+- The goal is a clean codebase, not a museum of old approaches
+
 ## Shared Library (`@valentine-efagene/qshelter-common`)
 
 - All entities, enums, types, and utilities must come from this published npm package.

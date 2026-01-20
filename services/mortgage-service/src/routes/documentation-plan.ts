@@ -3,7 +3,8 @@ import { createDocumentationPlanService } from '../services/documentation-plan.s
 import {
     CreateDocumentationPlanSchema,
     UpdateDocumentationPlanSchema,
-    AddStepToPlanSchema,
+    AddDocumentDefinitionSchema,
+    AddApprovalStageSchema,
 } from '../validators/documentation-plan.validator';
 import { z } from 'zod';
 import {
@@ -107,13 +108,17 @@ router.post('/:id/clone', requireTenant, requireRole(ADMIN_ROLES), async (req: R
     }
 });
 
-// Add step to plan (admin only)
-router.post('/:id/steps', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
+// =========================================================================
+// DOCUMENT DEFINITION ROUTES
+// =========================================================================
+
+// Add document definition to plan (admin only)
+router.post('/:id/document-definitions', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const data = AddStepToPlanSchema.parse(req.body);
+        const data = AddDocumentDefinitionSchema.parse(req.body);
         const documentationPlanService = getDocumentationPlanService(req);
-        const step = await documentationPlanService.addStep(req.params.id as string, data);
-        res.status(201).json(successResponse(step));
+        const definition = await documentationPlanService.addDocumentDefinition(req.params.id as string, data);
+        res.status(201).json(successResponse(definition));
     } catch (error) {
         if (error instanceof z.ZodError) {
             res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });
@@ -123,13 +128,13 @@ router.post('/:id/steps', requireTenant, requireRole(ADMIN_ROLES), async (req: R
     }
 });
 
-// Update step in plan (admin only)
-router.patch('/:id/steps/:stepId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
+// Update document definition in plan (admin only)
+router.patch('/:id/document-definitions/:definitionId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const data = AddStepToPlanSchema.partial().parse(req.body);
+        const data = AddDocumentDefinitionSchema.partial().parse(req.body);
         const documentationPlanService = getDocumentationPlanService(req);
-        const step = await documentationPlanService.updateStep(req.params.id as string, req.params.stepId as string, data);
-        res.json(successResponse(step));
+        const definition = await documentationPlanService.updateDocumentDefinition(req.params.id as string, req.params.definitionId as string, data);
+        res.json(successResponse(definition));
     } catch (error) {
         if (error instanceof z.ZodError) {
             res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });
@@ -139,11 +144,58 @@ router.patch('/:id/steps/:stepId', requireTenant, requireRole(ADMIN_ROLES), asyn
     }
 });
 
-// Remove step from plan (admin only)
-router.delete('/:id/steps/:stepId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
+// Remove document definition from plan (admin only)
+router.delete('/:id/document-definitions/:definitionId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const documentationPlanService = getDocumentationPlanService(req);
-        const result = await documentationPlanService.removeStep(req.params.id as string, req.params.stepId as string);
+        const result = await documentationPlanService.removeDocumentDefinition(req.params.id as string, req.params.definitionId as string);
+        res.json(successResponse(result));
+    } catch (error) {
+        next(error);
+    }
+});
+
+// =========================================================================
+// APPROVAL STAGE ROUTES
+// =========================================================================
+
+// Add approval stage to plan (admin only)
+router.post('/:id/approval-stages', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const data = AddApprovalStageSchema.parse(req.body);
+        const documentationPlanService = getDocumentationPlanService(req);
+        const stage = await documentationPlanService.addApprovalStage(req.params.id as string, data);
+        res.status(201).json(successResponse(stage));
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });
+            return;
+        }
+        next(error);
+    }
+});
+
+// Update approval stage in plan (admin only)
+router.patch('/:id/approval-stages/:stageId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const data = AddApprovalStageSchema.partial().parse(req.body);
+        const documentationPlanService = getDocumentationPlanService(req);
+        const stage = await documentationPlanService.updateApprovalStage(req.params.id as string, req.params.stageId as string, data);
+        res.json(successResponse(stage));
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });
+            return;
+        }
+        next(error);
+    }
+});
+
+// Remove approval stage from plan (admin only)
+router.delete('/:id/approval-stages/:stageId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const documentationPlanService = getDocumentationPlanService(req);
+        const result = await documentationPlanService.removeApprovalStage(req.params.id as string, req.params.stageId as string);
         res.json(successResponse(result));
     } catch (error) {
         next(error);

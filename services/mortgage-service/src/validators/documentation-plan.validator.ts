@@ -1,12 +1,13 @@
 import { z } from 'zod';
 import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
+import { ReviewParty, UploadedBy, RejectionBehavior } from '@valentine-efagene/qshelter-common';
 
 extendZodWithOpenApi(z);
 
-// Step type enum (matches Prisma StepType)
-export const StepTypeEnum = z.enum(['UPLOAD', 'REVIEW', 'SIGNATURE', 'APPROVAL', 'EXTERNAL_CHECK', 'WAIT', 'GENERATE_DOCUMENT']);
+// =============================================================================
+// CONDITION SCHEMA - For conditional document requirements
+// =============================================================================
 
-// Condition operator enum for conditional document requirements
 export const ConditionOperatorEnum = z.enum([
     'EQUALS',
     'NOT_EQUALS',
@@ -18,7 +19,6 @@ export const ConditionOperatorEnum = z.enum([
 ]);
 export type ConditionOperator = z.infer<typeof ConditionOperatorEnum>;
 
-// Condition schema for conditional document requirements
 export const StepConditionSchema: z.ZodType<StepCondition> = z.object({
     questionKey: z.string().optional().openapi({ example: 'mortgage_type', description: 'The questionnaire question key to evaluate' }),
     operator: ConditionOperatorEnum.optional().openapi({ example: 'EQUALS', description: 'Comparison operator' }),
@@ -28,7 +28,6 @@ export const StepConditionSchema: z.ZodType<StepCondition> = z.object({
     any: z.array(z.lazy(() => StepConditionSchema)).optional().openapi({ description: 'Any condition must be true (OR logic)' }),
 }).openapi('StepCondition');
 
-// Define the type before the schema to enable proper typing
 export type StepCondition = {
     questionKey?: string;
     operator?: ConditionOperator;
@@ -38,57 +37,108 @@ export type StepCondition = {
     any?: StepCondition[];
 };
 
-// Step definition schema for documentation plans
-export const DocumentationPlanStepSchema = z.object({
-    name: z.string().min(1).openapi({ example: 'Upload Valid ID' }),
-    stepType: StepTypeEnum.openapi({ example: 'UPLOAD' }),
-    order: z.number().int().min(1).openapi({ example: 1 }),
-    documentType: z.string().optional().openapi({ example: 'ID_CARD', description: 'Document type this step handles (for UPLOAD steps)' }),
-    metadata: z.record(z.string(), z.any()).optional(),
+// =============================================================================
+// DOCUMENT DEFINITION SCHEMA - What documents to collect
+// =============================================================================
 
-    // Document validation rules (for UPLOAD steps)
+export const UploadedByEnum = z.nativeEnum(UploadedBy);
+export const ReviewPartyEnum = z.nativeEnum(ReviewParty);
+export const RejectionBehaviorEnum = z.nativeEnum(RejectionBehavior);
+
+export const DocumentDefinitionSchema = z.object({
+    documentType: z.string().min(1).openapi({ example: 'ID_CARD', description: 'Document type identifier' }),
+    documentName: z.string().min(1).openapi({ example: 'Valid ID Card', description: 'Human-readable name' }),
+    uploadedBy: UploadedByEnum.default('CUSTOMER').openapi({ example: 'CUSTOMER', description: 'Who uploads this document' }),
+    order: z.number().int().min(1).openapi({ example: 1, description: 'Display order' }),
+
+    // Validation rules
     isRequired: z.boolean().default(true).openapi({ description: 'Whether this document is required' }),
-    description: z.string().optional().openapi({ example: 'Valid government-issued ID (NIN, Passport, or Driver License)', description: 'Instructions for the user' }),
-    maxSizeBytes: z.number().int().positive().optional().openapi({ example: 5242880, description: 'Max file size allowed in bytes (e.g., 5242880 for 5MB)' }),
-    allowedMimeTypes: z.array(z.string()).optional().openapi({ example: ['application/pdf', 'image/jpeg', 'image/png'], description: 'Allowed MIME types for uploads' }),
+    description: z.string().optional().openapi({ example: 'Valid government-issued ID', description: 'Instructions for uploader' }),
+    maxSizeBytes: z.number().int().positive().optional().openapi({ example: 5242880, description: 'Max file size in bytes' }),
+    allowedMimeTypes: z.array(z.string()).optional().openapi({ example: ['application/pdf', 'image/jpeg'], description: 'Allowed MIME types' }),
     expiryDays: z.number().int().positive().optional().openapi({ example: 90, description: 'Document must not be older than X days' }),
-    requiresManualReview: z.boolean().default(false).openapi({ description: 'Whether admin must manually review this document' }),
-    minFiles: z.number().int().min(1).default(1).openapi({ example: 1, description: 'Minimum number of files required' }),
-    maxFiles: z.number().int().min(1).default(1).openapi({ example: 3, description: 'Maximum number of files allowed' }),
+    minFiles: z.number().int().min(1).default(1).openapi({ example: 1, description: 'Minimum number of files' }),
+    maxFiles: z.number().int().min(1).default(1).openapi({ example: 3, description: 'Maximum number of files' }),
 
-    // Conditional logic - when is this step required based on questionnaire answers?
-    // NULL = always required (unconditional)
+    // Conditional logic
     condition: StepConditionSchema.optional().openapi({
-        description: 'Condition that determines when this step is required. If null, step is always required. Evaluated against questionnaire answers.',
+        description: 'When is this document required? NULL = always required.',
         example: { questionKey: 'mortgage_type', operator: 'EQUALS', value: 'JOINT' }
     }),
-}).openapi('DocumentationPlanStep');
+}).openapi('DocumentDefinition');
 
-// Create documentation plan input schema
+export type DocumentDefinitionInput = z.infer<typeof DocumentDefinitionSchema>;
+
+// =============================================================================
+// APPROVAL STAGE SCHEMA - Sequential approval workflow
+// =============================================================================
+
+export const ApprovalStageSchema = z.object({
+    name: z.string().min(1).openapi({ example: 'QShelter Staff Review', description: 'Stage name' }),
+    order: z.number().int().min(1).openapi({ example: 1, description: 'Sequential order (1, 2, 3...)' }),
+    reviewParty: ReviewPartyEnum.openapi({ example: 'INTERNAL', description: 'Who reviews at this stage' }),
+
+    // Behavior flags
+    autoTransition: z.boolean().default(false).openapi({ description: 'Auto-complete when all docs approved? Default: require explicit approval' }),
+    waitForAllDocuments: z.boolean().default(true).openapi({ description: 'Wait for all docs approved before allowing transition' }),
+    allowEarlyVisibility: z.boolean().default(false).openapi({ description: 'Allow read-only view before stage activates' }),
+
+    // Rejection behavior
+    onRejection: RejectionBehaviorEnum.default('CASCADE_BACK').openapi({ example: 'CASCADE_BACK', description: 'What happens when this stage rejects' }),
+    restartFromStageOrder: z.number().int().min(1).optional().openapi({ description: 'If onRejection=RESTART_FROM_STAGE, which stage to restart from' }),
+
+    // Optional specific organization
+    organizationId: z.string().optional().openapi({ description: 'Specific organization for this review (e.g., which bank)' }),
+
+    // SLA
+    slaHours: z.number().int().positive().optional().openapi({ example: 48, description: 'Escalate if not completed within X hours' }),
+
+    description: z.string().optional().openapi({ description: 'Instructions for reviewers' }),
+}).openapi('ApprovalStage');
+
+export type ApprovalStageInput = z.infer<typeof ApprovalStageSchema>;
+
+// =============================================================================
+// CREATE/UPDATE DOCUMENTATION PLAN SCHEMAS
+// =============================================================================
+
 export const CreateDocumentationPlanSchema = z.object({
-    name: z.string().min(1).max(100).openapi({ example: 'Standard KYC' }),
-    description: z.string().optional().openapi({ example: 'Standard KYC workflow with ID, bank statement, and employment letter' }),
+    name: z.string().min(1).max(100).openapi({ example: 'Mortgage KYC Documentation' }),
+    description: z.string().optional().openapi({ example: 'Standard KYC workflow for mortgage applications' }),
     isActive: z.boolean().default(true),
-    requiredDocumentTypes: z.array(z.string()).optional().openapi({
-        example: ['ID_CARD', 'BANK_STATEMENT', 'EMPLOYMENT_LETTER'],
-        description: 'Document types required for this plan'
+
+    // Document definitions (what documents to collect)
+    documentDefinitions: z.array(DocumentDefinitionSchema).min(1).openapi({
+        description: 'Documents to collect in this plan'
     }),
-    steps: z.array(DocumentationPlanStepSchema).min(1).openapi({ description: 'Steps in this documentation workflow' }),
+
+    // Approval stages (sequential review workflow)
+    approvalStages: z.array(ApprovalStageSchema).min(1).openapi({
+        description: 'Sequential approval stages (e.g., QShelter Review → Bank Review)'
+    }),
 }).openapi('CreateDocumentationPlanInput');
 
 export type CreateDocumentationPlanInput = z.infer<typeof CreateDocumentationPlanSchema>;
 
-// Update documentation plan input schema
 export const UpdateDocumentationPlanSchema = z.object({
     name: z.string().min(1).max(100).optional(),
     description: z.string().optional(),
     isActive: z.boolean().optional(),
-    requiredDocumentTypes: z.array(z.string()).optional(),
 }).openapi('UpdateDocumentationPlanInput');
 
 export type UpdateDocumentationPlanInput = z.infer<typeof UpdateDocumentationPlanSchema>;
 
-// Add step to plan schema
-export const AddStepToPlanSchema = DocumentationPlanStepSchema.openapi('AddStepToPlanInput');
+// =============================================================================
+// ADD/UPDATE DOCUMENT DEFINITION SCHEMAS
+// =============================================================================
 
-export type AddStepToPlanInput = z.infer<typeof AddStepToPlanSchema>;
+export const AddDocumentDefinitionSchema = DocumentDefinitionSchema.openapi('AddDocumentDefinitionInput');
+export type AddDocumentDefinitionInput = z.infer<typeof AddDocumentDefinitionSchema>;
+
+// =============================================================================
+// ADD/UPDATE APPROVAL STAGE SCHEMAS
+// =============================================================================
+
+export const AddApprovalStageSchema = ApprovalStageSchema.openapi('AddApprovalStageInput');
+export type AddApprovalStageInput = z.infer<typeof AddApprovalStageSchema>;
+

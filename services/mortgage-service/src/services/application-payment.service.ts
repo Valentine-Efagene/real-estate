@@ -524,22 +524,7 @@ class ApplicationPaymentService {
             }
         }
 
-        // If a new phase was activated, process any auto-executable steps (e.g., GENERATE_DOCUMENT)
-        if (activatedNextPhaseId) {
-            try {
-                // Use the application's buyer ID for auto-generated documents
-                const userId = payment.application?.buyerId || payment.payerId;
-                if (userId) {
-                    await applicationPhaseService.processAutoExecutableSteps(activatedNextPhaseId, userId);
-                }
-            } catch (error) {
-                console.error('[ApplicationPaymentService] Failed to process auto-executable steps for activated phase', {
-                    phaseId: activatedNextPhaseId,
-                    error: error instanceof Error ? error.message : String(error),
-                });
-                // Don't throw - the phase is still activated, just auto-steps failed
-            }
-        }
+        // Phase activation is now handled by the workflow - no auto-executable steps needed
 
         const completedPayment = await this.findById(updated.id);
 

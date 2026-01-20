@@ -797,10 +797,6 @@ export type DocumentReviewUncheckedCreateNestedManyWithoutParentReviewInput = {
   connect?: Prisma.DocumentReviewWhereUniqueInput | Prisma.DocumentReviewWhereUniqueInput[]
 }
 
-export type EnumReviewPartyFieldUpdateOperationsInput = {
-  set?: $Enums.ReviewParty
-}
-
 export type EnumReviewDecisionFieldUpdateOperationsInput = {
   set?: $Enums.ReviewDecision
 }

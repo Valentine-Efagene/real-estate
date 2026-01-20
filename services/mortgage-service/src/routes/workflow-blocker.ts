@@ -236,18 +236,18 @@ router.post("/:id/reminder-sent", requireTenant, requireRole(ADMIN_ROLES), async
 });
 
 /**
- * POST /workflow-blockers/step/:stepId/resolve
- * Resolve all blockers for a step
+ * POST /workflow-blockers/stage/:stageId/resolve
+ * Resolve all blockers for a stage
  */
-router.post("/step/:stepId/resolve", requireTenant, async (req: Request, res: Response) => {
+router.post("/stage/:stageId/resolve", requireTenant, async (req: Request, res: Response) => {
     try {
         const { tenantId } = getAuthContext(req);
-        const stepId = req.params.stepId as string;
+        const stageId = req.params.stageId as string;
         const body = resolveBlockerSchema.parse(req.body);
 
-        // Get applicationId from step
-        const step = await prisma.documentationStep.findUnique({
-            where: { id: stepId },
+        // Get applicationId from stage progress
+        const stageProgress = await prisma.approvalStageProgress.findUnique({
+            where: { id: stageId },
             include: {
                 documentationPhase: {
                     include: {
@@ -257,22 +257,36 @@ router.post("/step/:stepId/resolve", requireTenant, async (req: Request, res: Re
             }
         });
 
-        if (!step) {
-            return res.status(404).json({ error: "Step not found" });
+        if (!stageProgress) {
+            return res.status(404).json({ error: "Stage not found" });
         }
 
-        const applicationId = step.documentationPhase.phase.applicationId;
-        const service = getBlockerService(tenantId);
-        const count = await service.resolveStepBlockers(applicationId, stepId, body);
+        const applicationId = stageProgress.documentationPhase.phase?.applicationId;
+        if (!applicationId) {
+            return res.status(404).json({ error: "Application not found for this stage" });
+        }
 
-        return res.json({ message: `Resolved ${count} blocker(s) for step`, count });
+        const service = getBlockerService(tenantId);
+        const count = await service.resolveStepBlockers(applicationId, stageId, body);
+
+        return res.json({ message: `Resolved ${count} blocker(s) for stage`, count });
     } catch (error: any) {
-        console.error("Error resolving step blockers:", error);
+        console.error("Error resolving stage blockers:", error);
         if (error.name === "ZodError") {
             return res.status(400).json({ error: "Invalid request body", details: error.errors });
         }
         return res.status(500).json({ error: error.message || "Failed to resolve blockers" });
     }
+});
+
+/**
+ * POST /workflow-blockers/step/:stepId/resolve
+ * @deprecated Use /stage/:stageId/resolve instead
+ */
+router.post("/step/:stepId/resolve", requireTenant, async (_req: Request, res: Response) => {
+    return res.status(400).json({
+        error: "Step endpoints are deprecated. Use /stage/:stageId/resolve instead"
+    });
 });
 
 /**

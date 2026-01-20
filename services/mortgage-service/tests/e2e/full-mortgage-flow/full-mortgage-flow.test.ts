@@ -24,7 +24,7 @@
  */
 
 import supertest from 'supertest';
-import { prisma, cleanupTestData } from '../tests/setup.js';
+import { prisma, cleanupTestData } from '../../setup.js';
 import { randomUUID } from 'crypto';
 
 // Service URLs - MUST be set via environment (no localhost fallbacks)

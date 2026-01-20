@@ -234,18 +234,30 @@ export class UnderwritingService {
 
     /**
      * Evaluate a application's underwriting step.
-     * Called when an UNDERWRITING step is being completed.
+     * 
+     * @deprecated Steps have been removed. Use evaluateForApplication instead.
+     */
+    async evaluateForStep(
+        _applicationId: string,
+        _stepId: string,
+        _actorId?: string
+    ): Promise<UnderwritingResponse> {
+        throw new Error(
+            'evaluateForStep is deprecated. Steps have been removed. Use evaluateForApplication instead.'
+        );
+    }
+
+    /**
+     * Evaluate underwriting for an application.
      * 
      * Underwriting data comes from QuestionnairePhase fields.
      * Results are stored in the QuestionnairePhase.
      * 
      * @param applicationId - The application to evaluate
-     * @param stepId - The UNDERWRITING step being completed
      * @param actorId - The user triggering the evaluation
      */
-    async evaluateForStep(
+    async evaluateForApplication(
         applicationId: string,
-        stepId: string,
         actorId?: string
     ): Promise<UnderwritingResponse> {
         // Fetch application with related data including questionnaire phases
@@ -275,21 +287,6 @@ export class UnderwritingService {
 
         if (!application) {
             throw new Error(`application ${applicationId} not found`);
-        }
-
-        const step = await this.prisma.documentationStep.findUnique({
-            where: { id: stepId },
-            include: {
-                documentationPhase: true,
-            },
-        });
-
-        if (!step) {
-            throw new Error(`Step ${stepId} not found`);
-        }
-
-        if (step.stepType !== 'UNDERWRITING') {
-            throw new Error(`Step ${stepId} is not an UNDERWRITING step`);
         }
 
         // Find the most recent questionnaire phase with underwriting data
@@ -346,17 +343,8 @@ export class UnderwritingService {
             calculatedDti = ((monthlyExpenses ?? 0) + monthlyPayment) / monthlyIncome;
         }
 
-        // Update step and questionnaire phase in transaction
+        // Update questionnaire phase in transaction
         const result = await this.prisma.$transaction(async (tx: any) => {
-            // Mark the UNDERWRITING step as completed
-            await tx.documentationStep.update({
-                where: { id: stepId },
-                data: {
-                    status: 'COMPLETED',
-                    completedAt: new Date(),
-                },
-            });
-
             // Store underwriting results in the QuestionnairePhase
             if (questionnairePhase) {
                 await tx.questionnairePhase.update({
@@ -366,7 +354,7 @@ export class UnderwritingService {
                         debtToIncomeRatio: calculatedDti,
                         underwritingDecision: decision,
                         underwritingNotes: JSON.stringify({
-                            stepId,
+                            applicationId,
                             reasons,
                             conditions,
                             ruleResults: results,
@@ -394,7 +382,6 @@ export class UnderwritingService {
                 queueName: 'qshelter-notifications',
                 payload: {
                     applicationId,
-                    stepId,
                     decision,
                     score,
                     reasons,
@@ -422,7 +409,7 @@ export class UnderwritingService {
         await publishAfterCommit(this.prisma, result.outboxId);
 
         return {
-            decisionId: stepId, // Use step ID as decision ID
+            decisionId: applicationId, // Use application ID as decision ID
             applicationId,
             decision,
             score,
@@ -437,50 +424,12 @@ export class UnderwritingService {
     /**
      * Get underwriting results for a application step
      * 
-     * Note: Underwriting results are stored in QuestionnairePhase, but we look up
-     * by step ID since the step was the trigger for the evaluation.
+     * @deprecated Steps have been removed. Use getByApplicationId instead.
      */
-    async getByStepId(stepId: string): Promise<UnderwritingResponse | null> {
-        // First get the step to find the application
-        const step = await this.prisma.documentationStep.findUnique({
-            where: { id: stepId },
-            include: {
-                documentationPhase: {
-                    include: { phase: true },
-                },
-            },
-        });
-
-        if (!step || step.stepType !== 'UNDERWRITING') return null;
-
-        const applicationId = step.documentationPhase.phase.applicationId;
-
-        // Find the QuestionnairePhase with underwriting results
-        const questionnairePhase = await this.prisma.questionnairePhase.findFirst({
-            where: {
-                phase: { applicationId },
-                underwritingScore: { not: null },
-            },
-            orderBy: { updatedAt: 'desc' },
-        });
-
-        if (!questionnairePhase) return null;
-
-        const notes = questionnairePhase.underwritingNotes
-            ? JSON.parse(questionnairePhase.underwritingNotes)
-            : {};
-
-        return {
-            decisionId: stepId,
-            applicationId,
-            decision: (questionnairePhase.underwritingDecision as 'APPROVED' | 'DECLINED' | 'CONDITIONAL') || 'CONDITIONAL',
-            score: questionnairePhase.underwritingScore ?? 0,
-            reasons: notes.reasons || [],
-            conditions: notes.conditions || [],
-            rulesVersion: notes.rulesVersion || RULES_VERSION,
-            ruleResults: notes.ruleResults || [],
-            evaluatedAt: notes.evaluatedAt || questionnairePhase.updatedAt.toISOString(),
-        };
+    async getByStepId(_stepId: string): Promise<UnderwritingResponse | null> {
+        throw new Error(
+            'getByStepId is deprecated. Steps have been removed. Use getByApplicationId instead.'
+        );
     }
 
     /**

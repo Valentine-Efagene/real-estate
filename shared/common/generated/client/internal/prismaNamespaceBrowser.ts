@@ -81,7 +81,8 @@ export const ModelName = {
   PropertyUnit: 'PropertyUnit',
   PropertyAmenity: 'PropertyAmenity',
   DocumentationPlan: 'DocumentationPlan',
-  DocumentationPlanStep: 'DocumentationPlanStep',
+  DocumentDefinition: 'DocumentDefinition',
+  ApprovalStage: 'ApprovalStage',
   QuestionnairePlan: 'QuestionnairePlan',
   QuestionnairePlanQuestion: 'QuestionnairePlanQuestion',
   PaymentPlan: 'PaymentPlan',
@@ -101,13 +102,12 @@ export const ModelName = {
   PaymentPhase: 'PaymentPhase',
   QuestionnaireField: 'QuestionnaireField',
   ApplicationEvent: 'ApplicationEvent',
-  DocumentationStep: 'DocumentationStep',
-  DocumentationStepDocument: 'DocumentationStepDocument',
-  DocumentationStepApproval: 'DocumentationStepApproval',
   PaymentInstallment: 'PaymentInstallment',
   ApplicationPayment: 'ApplicationPayment',
   ApplicationDocument: 'ApplicationDocument',
   DocumentReview: 'DocumentReview',
+  ApprovalStageProgress: 'ApprovalStageProgress',
+  DocumentApproval: 'DocumentApproval',
   DocumentTemplate: 'DocumentTemplate',
   OfferLetter: 'OfferLetter',
   ApplicationTermination: 'ApplicationTermination',
@@ -595,7 +595,6 @@ export const DocumentationPlanScalarFieldEnum = {
   name: 'name',
   description: 'description',
   isActive: 'isActive',
-  requiredDocumentTypes: 'requiredDocumentTypes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -603,37 +602,47 @@ export const DocumentationPlanScalarFieldEnum = {
 export type DocumentationPlanScalarFieldEnum = (typeof DocumentationPlanScalarFieldEnum)[keyof typeof DocumentationPlanScalarFieldEnum]
 
 
-export const DocumentationPlanStepScalarFieldEnum = {
+export const DocumentDefinitionScalarFieldEnum = {
   id: 'id',
   planId: 'planId',
-  name: 'name',
-  stepType: 'stepType',
-  order: 'order',
   documentType: 'documentType',
-  metadata: 'metadata',
+  documentName: 'documentName',
+  uploadedBy: 'uploadedBy',
+  order: 'order',
   isRequired: 'isRequired',
   description: 'description',
   maxSizeBytes: 'maxSizeBytes',
   allowedMimeTypes: 'allowedMimeTypes',
   expiryDays: 'expiryDays',
-  requiresManualReview: 'requiresManualReview',
   minFiles: 'minFiles',
   maxFiles: 'maxFiles',
   condition: 'condition',
-  reviewRequirements: 'reviewRequirements',
-  reviewOrder: 'reviewOrder',
-  gateActor: 'gateActor',
-  gateAction: 'gateAction',
-  gateRoleId: 'gateRoleId',
-  gateInstructions: 'gateInstructions',
-  allowReject: 'allowReject',
-  rejectBehavior: 'rejectBehavior',
-  requiresComment: 'requiresComment',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type DocumentationPlanStepScalarFieldEnum = (typeof DocumentationPlanStepScalarFieldEnum)[keyof typeof DocumentationPlanStepScalarFieldEnum]
+export type DocumentDefinitionScalarFieldEnum = (typeof DocumentDefinitionScalarFieldEnum)[keyof typeof DocumentDefinitionScalarFieldEnum]
+
+
+export const ApprovalStageScalarFieldEnum = {
+  id: 'id',
+  planId: 'planId',
+  name: 'name',
+  order: 'order',
+  reviewParty: 'reviewParty',
+  autoTransition: 'autoTransition',
+  waitForAllDocuments: 'waitForAllDocuments',
+  allowEarlyVisibility: 'allowEarlyVisibility',
+  onRejection: 'onRejection',
+  restartFromStageOrder: 'restartFromStageOrder',
+  organizationId: 'organizationId',
+  slaHours: 'slaHours',
+  description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ApprovalStageScalarFieldEnum = (typeof ApprovalStageScalarFieldEnum)[keyof typeof ApprovalStageScalarFieldEnum]
 
 
 export const QuestionnairePlanScalarFieldEnum = {
@@ -952,15 +961,11 @@ export const DocumentationPhaseScalarFieldEnum = {
   phaseId: 'phaseId',
   documentationPlanId: 'documentationPlanId',
   sourceQuestionnairePhaseId: 'sourceQuestionnairePhaseId',
-  currentStepId: 'currentStepId',
+  currentStageOrder: 'currentStageOrder',
   approvedDocumentsCount: 'approvedDocumentsCount',
   requiredDocumentsCount: 'requiredDocumentsCount',
-  completedStepsCount: 'completedStepsCount',
-  totalStepsCount: 'totalStepsCount',
-  minimumCompletionPercentage: 'minimumCompletionPercentage',
-  completionCriterion: 'completionCriterion',
-  stepDefinitionsSnapshot: 'stepDefinitionsSnapshot',
-  requiredDocumentSnapshot: 'requiredDocumentSnapshot',
+  documentDefinitionsSnapshot: 'documentDefinitionsSnapshot',
+  approvalStagesSnapshot: 'approvalStagesSnapshot',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1031,70 +1036,6 @@ export const ApplicationEventScalarFieldEnum = {
 export type ApplicationEventScalarFieldEnum = (typeof ApplicationEventScalarFieldEnum)[keyof typeof ApplicationEventScalarFieldEnum]
 
 
-export const DocumentationStepScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  documentationPhaseId: 'documentationPhaseId',
-  name: 'name',
-  description: 'description',
-  stepType: 'stepType',
-  order: 'order',
-  status: 'status',
-  actionReason: 'actionReason',
-  submissionCount: 'submissionCount',
-  lastSubmittedAt: 'lastSubmittedAt',
-  metadata: 'metadata',
-  requiresManualReview: 'requiresManualReview',
-  condition: 'condition',
-  reviewRequirements: 'reviewRequirements',
-  reviewOrder: 'reviewOrder',
-  assigneeId: 'assigneeId',
-  gateActor: 'gateActor',
-  gateAction: 'gateAction',
-  gateRoleId: 'gateRoleId',
-  gateInstructions: 'gateInstructions',
-  allowReject: 'allowReject',
-  rejectBehavior: 'rejectBehavior',
-  requiresComment: 'requiresComment',
-  gateActedAt: 'gateActedAt',
-  gateActedById: 'gateActedById',
-  gateDecision: 'gateDecision',
-  gateComment: 'gateComment',
-  dueDate: 'dueDate',
-  completedAt: 'completedAt',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type DocumentationStepScalarFieldEnum = (typeof DocumentationStepScalarFieldEnum)[keyof typeof DocumentationStepScalarFieldEnum]
-
-
-export const DocumentationStepDocumentScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  stepId: 'stepId',
-  documentType: 'documentType',
-  isRequired: 'isRequired',
-  createdAt: 'createdAt'
-} as const
-
-export type DocumentationStepDocumentScalarFieldEnum = (typeof DocumentationStepDocumentScalarFieldEnum)[keyof typeof DocumentationStepDocumentScalarFieldEnum]
-
-
-export const DocumentationStepApprovalScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  stepId: 'stepId',
-  approverId: 'approverId',
-  decision: 'decision',
-  comment: 'comment',
-  decidedAt: 'decidedAt',
-  createdAt: 'createdAt'
-} as const
-
-export type DocumentationStepApprovalScalarFieldEnum = (typeof DocumentationStepApprovalScalarFieldEnum)[keyof typeof DocumentationStepApprovalScalarFieldEnum]
-
-
 export const PaymentInstallmentScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -1147,6 +1088,8 @@ export const ApplicationDocumentScalarFieldEnum = {
   applicationId: 'applicationId',
   phaseId: 'phaseId',
   stepId: 'stepId',
+  documentType: 'documentType',
+  documentName: 'documentName',
   name: 'name',
   url: 'url',
   type: 'type',
@@ -1182,6 +1125,47 @@ export const DocumentReviewScalarFieldEnum = {
 } as const
 
 export type DocumentReviewScalarFieldEnum = (typeof DocumentReviewScalarFieldEnum)[keyof typeof DocumentReviewScalarFieldEnum]
+
+
+export const ApprovalStageProgressScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  documentationPhaseId: 'documentationPhaseId',
+  approvalStageId: 'approvalStageId',
+  name: 'name',
+  order: 'order',
+  reviewParty: 'reviewParty',
+  autoTransition: 'autoTransition',
+  waitForAllDocuments: 'waitForAllDocuments',
+  allowEarlyVisibility: 'allowEarlyVisibility',
+  onRejection: 'onRejection',
+  restartFromStageOrder: 'restartFromStageOrder',
+  status: 'status',
+  activatedAt: 'activatedAt',
+  completedAt: 'completedAt',
+  completedById: 'completedById',
+  transitionComment: 'transitionComment',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ApprovalStageProgressScalarFieldEnum = (typeof ApprovalStageProgressScalarFieldEnum)[keyof typeof ApprovalStageProgressScalarFieldEnum]
+
+
+export const DocumentApprovalScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  documentId: 'documentId',
+  stageProgressId: 'stageProgressId',
+  reviewerId: 'reviewerId',
+  reviewParty: 'reviewParty',
+  decision: 'decision',
+  comment: 'comment',
+  reviewedAt: 'reviewedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type DocumentApprovalScalarFieldEnum = (typeof DocumentApprovalScalarFieldEnum)[keyof typeof DocumentApprovalScalarFieldEnum]
 
 
 export const DocumentTemplateScalarFieldEnum = {
@@ -1928,19 +1912,27 @@ export const DocumentationPlanOrderByRelevanceFieldEnum = {
 export type DocumentationPlanOrderByRelevanceFieldEnum = (typeof DocumentationPlanOrderByRelevanceFieldEnum)[keyof typeof DocumentationPlanOrderByRelevanceFieldEnum]
 
 
-export const DocumentationPlanStepOrderByRelevanceFieldEnum = {
+export const DocumentDefinitionOrderByRelevanceFieldEnum = {
+  id: 'id',
+  planId: 'planId',
+  documentType: 'documentType',
+  documentName: 'documentName',
+  description: 'description',
+  allowedMimeTypes: 'allowedMimeTypes'
+} as const
+
+export type DocumentDefinitionOrderByRelevanceFieldEnum = (typeof DocumentDefinitionOrderByRelevanceFieldEnum)[keyof typeof DocumentDefinitionOrderByRelevanceFieldEnum]
+
+
+export const ApprovalStageOrderByRelevanceFieldEnum = {
   id: 'id',
   planId: 'planId',
   name: 'name',
-  documentType: 'documentType',
-  description: 'description',
-  allowedMimeTypes: 'allowedMimeTypes',
-  reviewOrder: 'reviewOrder',
-  gateRoleId: 'gateRoleId',
-  gateInstructions: 'gateInstructions'
+  organizationId: 'organizationId',
+  description: 'description'
 } as const
 
-export type DocumentationPlanStepOrderByRelevanceFieldEnum = (typeof DocumentationPlanStepOrderByRelevanceFieldEnum)[keyof typeof DocumentationPlanStepOrderByRelevanceFieldEnum]
+export type ApprovalStageOrderByRelevanceFieldEnum = (typeof ApprovalStageOrderByRelevanceFieldEnum)[keyof typeof ApprovalStageOrderByRelevanceFieldEnum]
 
 
 export const QuestionnairePlanOrderByRelevanceFieldEnum = {
@@ -2131,8 +2123,7 @@ export const DocumentationPhaseOrderByRelevanceFieldEnum = {
   tenantId: 'tenantId',
   phaseId: 'phaseId',
   documentationPlanId: 'documentationPlanId',
-  sourceQuestionnairePhaseId: 'sourceQuestionnairePhaseId',
-  currentStepId: 'currentStepId'
+  sourceQuestionnairePhaseId: 'sourceQuestionnairePhaseId'
 } as const
 
 export type DocumentationPhaseOrderByRelevanceFieldEnum = (typeof DocumentationPhaseOrderByRelevanceFieldEnum)[keyof typeof DocumentationPhaseOrderByRelevanceFieldEnum]
@@ -2174,46 +2165,6 @@ export const ApplicationEventOrderByRelevanceFieldEnum = {
 export type ApplicationEventOrderByRelevanceFieldEnum = (typeof ApplicationEventOrderByRelevanceFieldEnum)[keyof typeof ApplicationEventOrderByRelevanceFieldEnum]
 
 
-export const DocumentationStepOrderByRelevanceFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  documentationPhaseId: 'documentationPhaseId',
-  name: 'name',
-  description: 'description',
-  actionReason: 'actionReason',
-  reviewOrder: 'reviewOrder',
-  assigneeId: 'assigneeId',
-  gateRoleId: 'gateRoleId',
-  gateInstructions: 'gateInstructions',
-  gateActedById: 'gateActedById',
-  gateDecision: 'gateDecision',
-  gateComment: 'gateComment'
-} as const
-
-export type DocumentationStepOrderByRelevanceFieldEnum = (typeof DocumentationStepOrderByRelevanceFieldEnum)[keyof typeof DocumentationStepOrderByRelevanceFieldEnum]
-
-
-export const DocumentationStepDocumentOrderByRelevanceFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  stepId: 'stepId',
-  documentType: 'documentType'
-} as const
-
-export type DocumentationStepDocumentOrderByRelevanceFieldEnum = (typeof DocumentationStepDocumentOrderByRelevanceFieldEnum)[keyof typeof DocumentationStepDocumentOrderByRelevanceFieldEnum]
-
-
-export const DocumentationStepApprovalOrderByRelevanceFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  stepId: 'stepId',
-  approverId: 'approverId',
-  comment: 'comment'
-} as const
-
-export type DocumentationStepApprovalOrderByRelevanceFieldEnum = (typeof DocumentationStepApprovalOrderByRelevanceFieldEnum)[keyof typeof DocumentationStepApprovalOrderByRelevanceFieldEnum]
-
-
 export const PaymentInstallmentOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -2244,6 +2195,8 @@ export const ApplicationDocumentOrderByRelevanceFieldEnum = {
   applicationId: 'applicationId',
   phaseId: 'phaseId',
   stepId: 'stepId',
+  documentType: 'documentType',
+  documentName: 'documentName',
   name: 'name',
   url: 'url',
   type: 'type',
@@ -2266,6 +2219,31 @@ export const DocumentReviewOrderByRelevanceFieldEnum = {
 } as const
 
 export type DocumentReviewOrderByRelevanceFieldEnum = (typeof DocumentReviewOrderByRelevanceFieldEnum)[keyof typeof DocumentReviewOrderByRelevanceFieldEnum]
+
+
+export const ApprovalStageProgressOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  documentationPhaseId: 'documentationPhaseId',
+  approvalStageId: 'approvalStageId',
+  name: 'name',
+  completedById: 'completedById',
+  transitionComment: 'transitionComment'
+} as const
+
+export type ApprovalStageProgressOrderByRelevanceFieldEnum = (typeof ApprovalStageProgressOrderByRelevanceFieldEnum)[keyof typeof ApprovalStageProgressOrderByRelevanceFieldEnum]
+
+
+export const DocumentApprovalOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  documentId: 'documentId',
+  stageProgressId: 'stageProgressId',
+  reviewerId: 'reviewerId',
+  comment: 'comment'
+} as const
+
+export type DocumentApprovalOrderByRelevanceFieldEnum = (typeof DocumentApprovalOrderByRelevanceFieldEnum)[keyof typeof DocumentApprovalOrderByRelevanceFieldEnum]
 
 
 export const DocumentTemplateOrderByRelevanceFieldEnum = {

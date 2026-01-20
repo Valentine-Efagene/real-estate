@@ -242,16 +242,7 @@ export function createDocumentReviewService(prismaClient: PrismaClient) {
                     data: { status: 'REJECTED' },
                 });
 
-                // If step exists, mark as NEEDS_RESUBMISSION
-                if (document.stepId) {
-                    await prismaClient.documentationStep.update({
-                        where: { id: document.stepId },
-                        data: {
-                            status: 'NEEDS_RESUBMISSION',
-                            actionReason: 'Document was rejected by a reviewer. Please resubmit.',
-                        },
-                    });
-                }
+                // Note: Step-based logic removed - now using stage-based approval workflow
 
                 return 'REJECTED';
             }
@@ -260,17 +251,7 @@ export function createDocumentReviewService(prismaClient: PrismaClient) {
             const hasChangesRequested = reviews.some((r) => r.decision === 'CHANGES_REQUESTED');
             if (hasChangesRequested) {
                 // Document stays PENDING, waiting for re-upload
-                // Update step to NEEDS_RESUBMISSION
-                if (document.stepId) {
-                    const changesReview = reviews.find((r) => r.decision === 'CHANGES_REQUESTED');
-                    await prismaClient.documentationStep.update({
-                        where: { id: document.stepId },
-                        data: {
-                            status: 'NEEDS_RESUBMISSION',
-                            actionReason: changesReview?.comments || 'Changes requested by reviewer.',
-                        },
-                    });
-                }
+                // Note: Step-based logic removed - now using stage-based approval workflow
                 return 'PENDING';
             }
 
@@ -285,24 +266,8 @@ export function createDocumentReviewService(prismaClient: PrismaClient) {
                     data: { status: 'APPROVED' },
                 });
 
-                // Complete the step if all reviews are approved
-                if (document.stepId) {
-                    const step = await prismaClient.documentationStep.findUnique({
-                        where: { id: document.stepId },
-                    });
-
-                    if (step && step.stepType === 'UPLOAD' && step.status !== 'COMPLETED') {
-                        await prismaClient.documentationStep.update({
-                            where: { id: document.stepId },
-                            data: {
-                                status: 'COMPLETED',
-                                completedAt: new Date(),
-                            },
-                        });
-
-                        console.log(`[DocumentReview] Step ${document.stepId} completed - all parties approved`);
-                    }
-                }
+                // Note: Step-based completion logic removed - now handled by ApprovalWorkflowService
+                console.log(`[DocumentReview] Document ${documentId} approved - all parties approved`);
 
                 return 'APPROVED';
             }
