@@ -520,6 +520,9 @@ model User {
   // Document reviews by this user
   documentReviews DocumentReview[] @relation("DocumentReviewer")
 
+  // Questionnaire phase reviews by this user
+  questionnaireReviews QuestionnairePhaseReview[] @relation("QuestionnaireReviewer")
+
   // Organization memberships (user can be employee of banks/developers)
   organizationMemberships OrganizationMember[]
 
@@ -809,6 +812,7 @@ model Tenant {
   domainEvents                DomainEvent[]
   workflowBlockers            WorkflowBlocker[]
   questionnairePlans          QuestionnairePlan[]
+  questionnairePhaseReviews   QuestionnairePhaseReview[]
   documentReviews             DocumentReview[]
 
   // Organizations (Banks, Developers) operating on this tenant
@@ -2144,6 +2148,9 @@ model QuestionnairePhase {
   // Child records
   fields QuestionnaireField[]
 
+  // Review audit trail
+  reviews QuestionnairePhaseReview[]
+
   // Back-relation: Documentation phases that use this questionnaire's answers for conditions
   dependentDocumentationPhases DocumentationPhase[] @relation("SourceQuestionnaire")
 
@@ -2151,6 +2158,39 @@ model QuestionnairePhase {
   @@index([phaseId])
   @@index([questionnairePlanId])
   @@map("questionnaire_phases")
+}
+
+// =============================================================================
+// QUESTIONNAIRE PHASE REVIEW - Audit trail for questionnaire reviews
+// =============================================================================
+// Captures every review decision made on a questionnaire phase.
+// Supports workflows where questionnaire may be rejected → resubmitted → approved.
+// The scoring serves as guidance; reviewer makes the final decision.
+// =============================================================================
+
+model QuestionnairePhaseReview {
+  id                   String             @id @default(cuid())
+  tenantId             String
+  tenant               Tenant             @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  questionnairePhaseId String
+  questionnairePhase   QuestionnairePhase @relation(fields: [questionnairePhaseId], references: [id], onDelete: Cascade)
+
+  // Review details
+  reviewerId String
+  reviewer   User           @relation("QuestionnaireReviewer", fields: [reviewerId], references: [id])
+  decision   ReviewDecision
+  notes      String?        @db.Text
+
+  // Snapshot of scores at time of review (for audit)
+  scoreAtReview   Int? // The totalScore when this review was made
+  passedAtReview  Boolean? // The passed flag when this review was made
+
+  createdAt DateTime @default(now())
+
+  @@index([tenantId])
+  @@index([questionnairePhaseId])
+  @@index([reviewerId])
+  @@map("questionnaire_phase_reviews")
 }
 
 // =============================================================================

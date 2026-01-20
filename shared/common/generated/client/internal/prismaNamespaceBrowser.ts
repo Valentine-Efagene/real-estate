@@ -98,6 +98,7 @@ export const ModelName = {
   ApplicationRefund: 'ApplicationRefund',
   ApplicationPhase: 'ApplicationPhase',
   QuestionnairePhase: 'QuestionnairePhase',
+  QuestionnairePhaseReview: 'QuestionnairePhaseReview',
   DocumentationPhase: 'DocumentationPhase',
   PaymentPhase: 'PaymentPhase',
   QuestionnaireField: 'QuestionnaireField',
@@ -953,6 +954,21 @@ export const QuestionnairePhaseScalarFieldEnum = {
 } as const
 
 export type QuestionnairePhaseScalarFieldEnum = (typeof QuestionnairePhaseScalarFieldEnum)[keyof typeof QuestionnairePhaseScalarFieldEnum]
+
+
+export const QuestionnairePhaseReviewScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  questionnairePhaseId: 'questionnairePhaseId',
+  reviewerId: 'reviewerId',
+  decision: 'decision',
+  notes: 'notes',
+  scoreAtReview: 'scoreAtReview',
+  passedAtReview: 'passedAtReview',
+  createdAt: 'createdAt'
+} as const
+
+export type QuestionnairePhaseReviewScalarFieldEnum = (typeof QuestionnairePhaseReviewScalarFieldEnum)[keyof typeof QuestionnairePhaseReviewScalarFieldEnum]
 
 
 export const DocumentationPhaseScalarFieldEnum = {
@@ -2116,6 +2132,17 @@ export const QuestionnairePhaseOrderByRelevanceFieldEnum = {
 } as const
 
 export type QuestionnairePhaseOrderByRelevanceFieldEnum = (typeof QuestionnairePhaseOrderByRelevanceFieldEnum)[keyof typeof QuestionnairePhaseOrderByRelevanceFieldEnum]
+
+
+export const QuestionnairePhaseReviewOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  questionnairePhaseId: 'questionnairePhaseId',
+  reviewerId: 'reviewerId',
+  notes: 'notes'
+} as const
+
+export type QuestionnairePhaseReviewOrderByRelevanceFieldEnum = (typeof QuestionnairePhaseReviewOrderByRelevanceFieldEnum)[keyof typeof QuestionnairePhaseReviewOrderByRelevanceFieldEnum]
 
 
 export const DocumentationPhaseOrderByRelevanceFieldEnum = {

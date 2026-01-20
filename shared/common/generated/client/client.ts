@@ -281,6 +281,11 @@ export type ApplicationPhase = Prisma.ApplicationPhaseModel
  */
 export type QuestionnairePhase = Prisma.QuestionnairePhaseModel
 /**
+ * Model QuestionnairePhaseReview
+ * 
+ */
+export type QuestionnairePhaseReview = Prisma.QuestionnairePhaseReviewModel
+/**
  * Model DocumentationPhase
  * 
  */

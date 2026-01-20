@@ -310,6 +310,7 @@ export type UserWhereInput = {
   approvedRefunds?: Prisma.ApplicationRefundListRelationFilter
   processedRefunds?: Prisma.ApplicationRefundListRelationFilter
   documentReviews?: Prisma.DocumentReviewListRelationFilter
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewListRelationFilter
   organizationMemberships?: Prisma.OrganizationMemberListRelationFilter
 }
 
@@ -363,6 +364,7 @@ export type UserOrderByWithRelationInput = {
   approvedRefunds?: Prisma.ApplicationRefundOrderByRelationAggregateInput
   processedRefunds?: Prisma.ApplicationRefundOrderByRelationAggregateInput
   documentReviews?: Prisma.DocumentReviewOrderByRelationAggregateInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewOrderByRelationAggregateInput
   organizationMemberships?: Prisma.OrganizationMemberOrderByRelationAggregateInput
   _relevance?: Prisma.UserOrderByRelevanceInput
 }
@@ -420,6 +422,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   approvedRefunds?: Prisma.ApplicationRefundListRelationFilter
   processedRefunds?: Prisma.ApplicationRefundListRelationFilter
   documentReviews?: Prisma.DocumentReviewListRelationFilter
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewListRelationFilter
   organizationMemberships?: Prisma.OrganizationMemberListRelationFilter
 }, "id" | "email" | "phone" | "walletId">
 
@@ -517,6 +520,7 @@ export type UserCreateInput = {
   approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
 }
 
@@ -568,6 +572,7 @@ export type UserUncheckedCreateInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -619,6 +624,7 @@ export type UserUpdateInput = {
   approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -670,6 +676,7 @@ export type UserUncheckedUpdateInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -1127,6 +1134,20 @@ export type UserUpdateOneWithoutProcessedRefundsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutProcessedRefundsInput, Prisma.UserUpdateWithoutProcessedRefundsInput>, Prisma.UserUncheckedUpdateWithoutProcessedRefundsInput>
 }
 
+export type UserCreateNestedOneWithoutQuestionnaireReviewsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutQuestionnaireReviewsInput, Prisma.UserUncheckedCreateWithoutQuestionnaireReviewsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutQuestionnaireReviewsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutQuestionnaireReviewsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutQuestionnaireReviewsInput, Prisma.UserUncheckedCreateWithoutQuestionnaireReviewsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutQuestionnaireReviewsInput
+  upsert?: Prisma.UserUpsertWithoutQuestionnaireReviewsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutQuestionnaireReviewsInput, Prisma.UserUpdateWithoutQuestionnaireReviewsInput>, Prisma.UserUncheckedUpdateWithoutQuestionnaireReviewsInput>
+}
+
 export type UserCreateNestedOneWithoutApplicationPaymentsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutApplicationPaymentsInput, Prisma.UserUncheckedCreateWithoutApplicationPaymentsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutApplicationPaymentsInput
@@ -1422,6 +1443,7 @@ export type UserCreateWithoutUserRolesInput = {
   approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
 }
 
@@ -1472,6 +1494,7 @@ export type UserUncheckedCreateWithoutUserRolesInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -1538,6 +1561,7 @@ export type UserUpdateWithoutUserRolesInput = {
   approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -1588,6 +1612,7 @@ export type UserUncheckedUpdateWithoutUserRolesInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -1638,6 +1663,7 @@ export type UserCreateWithoutTenantMembershipsInput = {
   approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
 }
 
@@ -1688,6 +1714,7 @@ export type UserUncheckedCreateWithoutTenantMembershipsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -1754,6 +1781,7 @@ export type UserUpdateWithoutTenantMembershipsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -1804,6 +1832,7 @@ export type UserUncheckedUpdateWithoutTenantMembershipsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -1855,6 +1884,7 @@ export type UserCreateWithoutOrganizationMembershipsInput = {
   approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
 }
 
 export type UserUncheckedCreateWithoutOrganizationMembershipsInput = {
@@ -1905,6 +1935,7 @@ export type UserUncheckedCreateWithoutOrganizationMembershipsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
 }
 
 export type UserCreateOrConnectWithoutOrganizationMembershipsInput = {
@@ -1971,6 +2002,7 @@ export type UserUpdateWithoutOrganizationMembershipsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOrganizationMembershipsInput = {
@@ -2021,6 +2053,7 @@ export type UserUncheckedUpdateWithoutOrganizationMembershipsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
 }
 
 export type UserCreateWithoutTenantInput = {
@@ -2070,6 +2103,7 @@ export type UserCreateWithoutTenantInput = {
   approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
 }
 
@@ -2120,6 +2154,7 @@ export type UserUncheckedCreateWithoutTenantInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -2219,6 +2254,7 @@ export type UserCreateWithoutRefreshTokensInput = {
   approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
 }
 
@@ -2269,6 +2305,7 @@ export type UserUncheckedCreateWithoutRefreshTokensInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -2335,6 +2372,7 @@ export type UserUpdateWithoutRefreshTokensInput = {
   approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -2385,6 +2423,7 @@ export type UserUncheckedUpdateWithoutRefreshTokensInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -2435,6 +2474,7 @@ export type UserCreateWithoutPasswordResetsInput = {
   approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
 }
 
@@ -2485,6 +2525,7 @@ export type UserUncheckedCreateWithoutPasswordResetsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -2551,6 +2592,7 @@ export type UserUpdateWithoutPasswordResetsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -2601,6 +2643,7 @@ export type UserUncheckedUpdateWithoutPasswordResetsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -2651,6 +2694,7 @@ export type UserCreateWithoutSuspensionsInput = {
   approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
 }
 
@@ -2701,6 +2745,7 @@ export type UserUncheckedCreateWithoutSuspensionsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -2767,6 +2812,7 @@ export type UserUpdateWithoutSuspensionsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -2817,6 +2863,7 @@ export type UserUncheckedUpdateWithoutSuspensionsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -2867,6 +2914,7 @@ export type UserCreateWithoutEmailPreferencesInput = {
   approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
 }
 
@@ -2917,6 +2965,7 @@ export type UserUncheckedCreateWithoutEmailPreferencesInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -2983,6 +3032,7 @@ export type UserUpdateWithoutEmailPreferencesInput = {
   approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -3033,6 +3083,7 @@ export type UserUncheckedUpdateWithoutEmailPreferencesInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -3083,6 +3134,7 @@ export type UserCreateWithoutDeviceEndpointsInput = {
   approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
 }
 
@@ -3133,6 +3185,7 @@ export type UserUncheckedCreateWithoutDeviceEndpointsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -3199,6 +3252,7 @@ export type UserUpdateWithoutDeviceEndpointsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -3249,6 +3303,7 @@ export type UserUncheckedUpdateWithoutDeviceEndpointsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -3299,6 +3354,7 @@ export type UserCreateWithoutSocialsInput = {
   approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
 }
 
@@ -3349,6 +3405,7 @@ export type UserUncheckedCreateWithoutSocialsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -3415,6 +3472,7 @@ export type UserUpdateWithoutSocialsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -3465,6 +3523,7 @@ export type UserUncheckedUpdateWithoutSocialsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -3515,6 +3574,7 @@ export type UserCreateWithoutWalletInput = {
   approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
 }
 
@@ -3565,6 +3625,7 @@ export type UserUncheckedCreateWithoutWalletInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -3631,6 +3692,7 @@ export type UserUpdateWithoutWalletInput = {
   approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -3681,6 +3743,7 @@ export type UserUncheckedUpdateWithoutWalletInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -3731,6 +3794,7 @@ export type UserCreateWithoutPropertiesInput = {
   approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
 }
 
@@ -3781,6 +3845,7 @@ export type UserUncheckedCreateWithoutPropertiesInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -3847,6 +3912,7 @@ export type UserUpdateWithoutPropertiesInput = {
   approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -3897,6 +3963,7 @@ export type UserUncheckedUpdateWithoutPropertiesInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -3947,6 +4014,7 @@ export type UserCreateWithoutApplicationsInput = {
   approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
 }
 
@@ -3997,6 +4065,7 @@ export type UserUncheckedCreateWithoutApplicationsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -4052,6 +4121,7 @@ export type UserCreateWithoutSoldApplicationsInput = {
   approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
 }
 
@@ -4102,6 +4172,7 @@ export type UserUncheckedCreateWithoutSoldApplicationsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -4168,6 +4239,7 @@ export type UserUpdateWithoutApplicationsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -4218,6 +4290,7 @@ export type UserUncheckedUpdateWithoutApplicationsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -4279,6 +4352,7 @@ export type UserUpdateWithoutSoldApplicationsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -4329,6 +4403,7 @@ export type UserUncheckedUpdateWithoutSoldApplicationsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -4379,6 +4454,7 @@ export type UserCreateWithoutRequestedRefundsInput = {
   approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
 }
 
@@ -4429,6 +4505,7 @@ export type UserUncheckedCreateWithoutRequestedRefundsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -4484,6 +4561,7 @@ export type UserCreateWithoutApprovedRefundsInput = {
   requestedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutRequestedByInput
   processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
 }
 
@@ -4534,6 +4612,7 @@ export type UserUncheckedCreateWithoutApprovedRefundsInput = {
   requestedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutRequestedByInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -4589,6 +4668,7 @@ export type UserCreateWithoutProcessedRefundsInput = {
   requestedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutRequestedByInput
   approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
 }
 
@@ -4639,6 +4719,7 @@ export type UserUncheckedCreateWithoutProcessedRefundsInput = {
   requestedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutRequestedByInput
   approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -4705,6 +4786,7 @@ export type UserUpdateWithoutRequestedRefundsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -4755,6 +4837,7 @@ export type UserUncheckedUpdateWithoutRequestedRefundsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -4816,6 +4899,7 @@ export type UserUpdateWithoutApprovedRefundsInput = {
   requestedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutRequestedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -4866,6 +4950,7 @@ export type UserUncheckedUpdateWithoutApprovedRefundsInput = {
   requestedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutRequestedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -4927,6 +5012,7 @@ export type UserUpdateWithoutProcessedRefundsInput = {
   requestedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutRequestedByNestedInput
   approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -4976,6 +5062,227 @@ export type UserUncheckedUpdateWithoutProcessedRefundsInput = {
   approvalRequestsReviewed?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutReviewedByNestedInput
   requestedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutRequestedByNestedInput
   approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
+  documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutQuestionnaireReviewsInput = {
+  id?: string
+  email: string
+  password?: string | null
+  phone?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  isActive?: boolean
+  isEmailVerified?: boolean
+  googleId?: string | null
+  avatar?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  emailVerifiedAt?: Date | string | null
+  emailVerificationToken?: string | null
+  lastLoginAt?: Date | string | null
+  tenant?: Prisma.TenantCreateNestedOneWithoutUsersInput
+  tenantMemberships?: Prisma.TenantMembershipCreateNestedManyWithoutUserInput
+  userRoles?: Prisma.UserRoleCreateNestedManyWithoutUserInput
+  wallet?: Prisma.WalletCreateNestedOneWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
+  passwordResets?: Prisma.PasswordResetCreateNestedManyWithoutUserInput
+  suspensions?: Prisma.UserSuspensionCreateNestedManyWithoutUserInput
+  emailPreferences?: Prisma.EmailPreferenceCreateNestedManyWithoutUserInput
+  deviceEndpoints?: Prisma.DeviceEndpointCreateNestedManyWithoutUserInput
+  socials?: Prisma.SocialCreateNestedManyWithoutUserInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutUserInput
+  applications?: Prisma.ApplicationCreateNestedManyWithoutBuyerInput
+  soldApplications?: Prisma.ApplicationCreateNestedManyWithoutSellerInput
+  applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutPayerInput
+  uploadedDocs?: Prisma.ApplicationDocumentCreateNestedManyWithoutUploadedByInput
+  documentApprovals?: Prisma.DocumentApprovalCreateNestedManyWithoutReviewerInput
+  completedStages?: Prisma.ApprovalStageProgressCreateNestedManyWithoutCompletedByInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutReviewerInput
+  initiatedTerminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutInitiatorInput
+  reviewedTerminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutReviewerInput
+  offerLettersGenerated?: Prisma.OfferLetterCreateNestedManyWithoutGeneratedByInput
+  offerLettersSent?: Prisma.OfferLetterCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestCreateNestedManyWithoutReviewedByInput
+  approvalRequestsSubmitted?: Prisma.ApprovalRequestCreateNestedManyWithoutRequestedByInput
+  approvalRequestsAssigned?: Prisma.ApprovalRequestCreateNestedManyWithoutAssigneeInput
+  approvalRequestsReviewed?: Prisma.ApprovalRequestCreateNestedManyWithoutReviewedByInput
+  requestedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutRequestedByInput
+  approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
+  processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
+  documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutQuestionnaireReviewsInput = {
+  id?: string
+  email: string
+  password?: string | null
+  phone?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  isActive?: boolean
+  isEmailVerified?: boolean
+  googleId?: string | null
+  avatar?: string | null
+  tenantId?: string | null
+  walletId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  emailVerifiedAt?: Date | string | null
+  emailVerificationToken?: string | null
+  lastLoginAt?: Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutUserInput
+  userRoles?: Prisma.UserRoleUncheckedCreateNestedManyWithoutUserInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
+  passwordResets?: Prisma.PasswordResetUncheckedCreateNestedManyWithoutUserInput
+  suspensions?: Prisma.UserSuspensionUncheckedCreateNestedManyWithoutUserInput
+  emailPreferences?: Prisma.EmailPreferenceUncheckedCreateNestedManyWithoutUserInput
+  deviceEndpoints?: Prisma.DeviceEndpointUncheckedCreateNestedManyWithoutUserInput
+  socials?: Prisma.SocialUncheckedCreateNestedManyWithoutUserInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutUserInput
+  applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutBuyerInput
+  soldApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSellerInput
+  applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutPayerInput
+  uploadedDocs?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  documentApprovals?: Prisma.DocumentApprovalUncheckedCreateNestedManyWithoutReviewerInput
+  completedStages?: Prisma.ApprovalStageProgressUncheckedCreateNestedManyWithoutCompletedByInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutRequestorInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutReviewerInput
+  initiatedTerminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutInitiatorInput
+  reviewedTerminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutReviewerInput
+  offerLettersGenerated?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutGeneratedByInput
+  offerLettersSent?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutSentByInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  approvalRequestsSubmitted?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutRequestedByInput
+  approvalRequestsAssigned?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutAssigneeInput
+  approvalRequestsReviewed?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutReviewedByInput
+  requestedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutRequestedByInput
+  approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
+  processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
+  documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutQuestionnaireReviewsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutQuestionnaireReviewsInput, Prisma.UserUncheckedCreateWithoutQuestionnaireReviewsInput>
+}
+
+export type UserUpsertWithoutQuestionnaireReviewsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutQuestionnaireReviewsInput, Prisma.UserUncheckedUpdateWithoutQuestionnaireReviewsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutQuestionnaireReviewsInput, Prisma.UserUncheckedCreateWithoutQuestionnaireReviewsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutQuestionnaireReviewsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutQuestionnaireReviewsInput, Prisma.UserUncheckedUpdateWithoutQuestionnaireReviewsInput>
+}
+
+export type UserUpdateWithoutQuestionnaireReviewsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenant?: Prisma.TenantUpdateOneWithoutUsersNestedInput
+  tenantMemberships?: Prisma.TenantMembershipUpdateManyWithoutUserNestedInput
+  userRoles?: Prisma.UserRoleUpdateManyWithoutUserNestedInput
+  wallet?: Prisma.WalletUpdateOneWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
+  passwordResets?: Prisma.PasswordResetUpdateManyWithoutUserNestedInput
+  suspensions?: Prisma.UserSuspensionUpdateManyWithoutUserNestedInput
+  emailPreferences?: Prisma.EmailPreferenceUpdateManyWithoutUserNestedInput
+  deviceEndpoints?: Prisma.DeviceEndpointUpdateManyWithoutUserNestedInput
+  socials?: Prisma.SocialUpdateManyWithoutUserNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ApplicationUpdateManyWithoutBuyerNestedInput
+  soldApplications?: Prisma.ApplicationUpdateManyWithoutSellerNestedInput
+  applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutPayerNestedInput
+  uploadedDocs?: Prisma.ApplicationDocumentUpdateManyWithoutUploadedByNestedInput
+  documentApprovals?: Prisma.DocumentApprovalUpdateManyWithoutReviewerNestedInput
+  completedStages?: Prisma.ApprovalStageProgressUpdateManyWithoutCompletedByNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutReviewerNestedInput
+  initiatedTerminations?: Prisma.ApplicationTerminationUpdateManyWithoutInitiatorNestedInput
+  reviewedTerminations?: Prisma.ApplicationTerminationUpdateManyWithoutReviewerNestedInput
+  offerLettersGenerated?: Prisma.OfferLetterUpdateManyWithoutGeneratedByNestedInput
+  offerLettersSent?: Prisma.OfferLetterUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUpdateManyWithoutReviewedByNestedInput
+  approvalRequestsSubmitted?: Prisma.ApprovalRequestUpdateManyWithoutRequestedByNestedInput
+  approvalRequestsAssigned?: Prisma.ApprovalRequestUpdateManyWithoutAssigneeNestedInput
+  approvalRequestsReviewed?: Prisma.ApprovalRequestUpdateManyWithoutReviewedByNestedInput
+  requestedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutRequestedByNestedInput
+  approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
+  processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
+  documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutQuestionnaireReviewsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isEmailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tenantId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  walletId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  emailVerificationToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenantMemberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutUserNestedInput
+  userRoles?: Prisma.UserRoleUncheckedUpdateManyWithoutUserNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
+  passwordResets?: Prisma.PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+  suspensions?: Prisma.UserSuspensionUncheckedUpdateManyWithoutUserNestedInput
+  emailPreferences?: Prisma.EmailPreferenceUncheckedUpdateManyWithoutUserNestedInput
+  deviceEndpoints?: Prisma.DeviceEndpointUncheckedUpdateManyWithoutUserNestedInput
+  socials?: Prisma.SocialUncheckedUpdateManyWithoutUserNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutUserNestedInput
+  applications?: Prisma.ApplicationUncheckedUpdateManyWithoutBuyerNestedInput
+  soldApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSellerNestedInput
+  applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutPayerNestedInput
+  uploadedDocs?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  documentApprovals?: Prisma.DocumentApprovalUncheckedUpdateManyWithoutReviewerNestedInput
+  completedStages?: Prisma.ApprovalStageProgressUncheckedUpdateManyWithoutCompletedByNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutRequestorNestedInput
+  reviewedChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutReviewerNestedInput
+  initiatedTerminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutInitiatorNestedInput
+  reviewedTerminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutReviewerNestedInput
+  offerLettersGenerated?: Prisma.OfferLetterUncheckedUpdateManyWithoutGeneratedByNestedInput
+  offerLettersSent?: Prisma.OfferLetterUncheckedUpdateManyWithoutSentByNestedInput
+  transferRequestsSubmitted?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  transferRequestsReviewed?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  approvalRequestsSubmitted?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutRequestedByNestedInput
+  approvalRequestsAssigned?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutAssigneeNestedInput
+  approvalRequestsReviewed?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutReviewedByNestedInput
+  requestedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutRequestedByNestedInput
+  approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
+  processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -5027,6 +5334,7 @@ export type UserCreateWithoutApplicationPaymentsInput = {
   approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
 }
 
@@ -5077,6 +5385,7 @@ export type UserUncheckedCreateWithoutApplicationPaymentsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -5143,6 +5452,7 @@ export type UserUpdateWithoutApplicationPaymentsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -5193,6 +5503,7 @@ export type UserUncheckedUpdateWithoutApplicationPaymentsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -5243,6 +5554,7 @@ export type UserCreateWithoutUploadedDocsInput = {
   approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
 }
 
@@ -5293,6 +5605,7 @@ export type UserUncheckedCreateWithoutUploadedDocsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -5359,6 +5672,7 @@ export type UserUpdateWithoutUploadedDocsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -5409,6 +5723,7 @@ export type UserUncheckedUpdateWithoutUploadedDocsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -5459,6 +5774,7 @@ export type UserCreateWithoutDocumentReviewsInput = {
   requestedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutRequestedByInput
   approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
 }
 
@@ -5509,6 +5825,7 @@ export type UserUncheckedCreateWithoutDocumentReviewsInput = {
   requestedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutRequestedByInput
   approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -5575,6 +5892,7 @@ export type UserUpdateWithoutDocumentReviewsInput = {
   requestedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutRequestedByNestedInput
   approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -5625,6 +5943,7 @@ export type UserUncheckedUpdateWithoutDocumentReviewsInput = {
   requestedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutRequestedByNestedInput
   approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -5675,6 +5994,7 @@ export type UserCreateWithoutCompletedStagesInput = {
   approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
 }
 
@@ -5725,6 +6045,7 @@ export type UserUncheckedCreateWithoutCompletedStagesInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -5791,6 +6112,7 @@ export type UserUpdateWithoutCompletedStagesInput = {
   approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -5841,6 +6163,7 @@ export type UserUncheckedUpdateWithoutCompletedStagesInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -5891,6 +6214,7 @@ export type UserCreateWithoutDocumentApprovalsInput = {
   approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
 }
 
@@ -5941,6 +6265,7 @@ export type UserUncheckedCreateWithoutDocumentApprovalsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -6007,6 +6332,7 @@ export type UserUpdateWithoutDocumentApprovalsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -6057,6 +6383,7 @@ export type UserUncheckedUpdateWithoutDocumentApprovalsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -6107,6 +6434,7 @@ export type UserCreateWithoutOfferLettersGeneratedInput = {
   approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
 }
 
@@ -6157,6 +6485,7 @@ export type UserUncheckedCreateWithoutOfferLettersGeneratedInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -6212,6 +6541,7 @@ export type UserCreateWithoutOfferLettersSentInput = {
   approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
 }
 
@@ -6262,6 +6592,7 @@ export type UserUncheckedCreateWithoutOfferLettersSentInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -6328,6 +6659,7 @@ export type UserUpdateWithoutOfferLettersGeneratedInput = {
   approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -6378,6 +6710,7 @@ export type UserUncheckedUpdateWithoutOfferLettersGeneratedInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -6439,6 +6772,7 @@ export type UserUpdateWithoutOfferLettersSentInput = {
   approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -6489,6 +6823,7 @@ export type UserUncheckedUpdateWithoutOfferLettersSentInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -6539,6 +6874,7 @@ export type UserCreateWithoutInitiatedTerminationsInput = {
   approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
 }
 
@@ -6589,6 +6925,7 @@ export type UserUncheckedCreateWithoutInitiatedTerminationsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -6644,6 +6981,7 @@ export type UserCreateWithoutReviewedTerminationsInput = {
   approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
 }
 
@@ -6694,6 +7032,7 @@ export type UserUncheckedCreateWithoutReviewedTerminationsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -6760,6 +7099,7 @@ export type UserUpdateWithoutInitiatedTerminationsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -6810,6 +7150,7 @@ export type UserUncheckedUpdateWithoutInitiatedTerminationsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -6871,6 +7212,7 @@ export type UserUpdateWithoutReviewedTerminationsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -6921,6 +7263,7 @@ export type UserUncheckedUpdateWithoutReviewedTerminationsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -6971,6 +7314,7 @@ export type UserCreateWithoutPaymentMethodChangeRequestsInput = {
   approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
 }
 
@@ -7021,6 +7365,7 @@ export type UserUncheckedCreateWithoutPaymentMethodChangeRequestsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -7076,6 +7421,7 @@ export type UserCreateWithoutReviewedChangeRequestsInput = {
   approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
 }
 
@@ -7126,6 +7472,7 @@ export type UserUncheckedCreateWithoutReviewedChangeRequestsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -7192,6 +7539,7 @@ export type UserUpdateWithoutPaymentMethodChangeRequestsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -7242,6 +7590,7 @@ export type UserUncheckedUpdateWithoutPaymentMethodChangeRequestsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -7303,6 +7652,7 @@ export type UserUpdateWithoutReviewedChangeRequestsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -7353,6 +7703,7 @@ export type UserUncheckedUpdateWithoutReviewedChangeRequestsInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -7403,6 +7754,7 @@ export type UserCreateWithoutTransferRequestsSubmittedInput = {
   approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
 }
 
@@ -7453,6 +7805,7 @@ export type UserUncheckedCreateWithoutTransferRequestsSubmittedInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -7508,6 +7861,7 @@ export type UserCreateWithoutTransferRequestsReviewedInput = {
   approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
 }
 
@@ -7558,6 +7912,7 @@ export type UserUncheckedCreateWithoutTransferRequestsReviewedInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -7624,6 +7979,7 @@ export type UserUpdateWithoutTransferRequestsSubmittedInput = {
   approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -7674,6 +8030,7 @@ export type UserUncheckedUpdateWithoutTransferRequestsSubmittedInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -7735,6 +8092,7 @@ export type UserUpdateWithoutTransferRequestsReviewedInput = {
   approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -7785,6 +8143,7 @@ export type UserUncheckedUpdateWithoutTransferRequestsReviewedInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -7835,6 +8194,7 @@ export type UserCreateWithoutApprovalRequestsSubmittedInput = {
   approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
 }
 
@@ -7885,6 +8245,7 @@ export type UserUncheckedCreateWithoutApprovalRequestsSubmittedInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -7940,6 +8301,7 @@ export type UserCreateWithoutApprovalRequestsAssignedInput = {
   approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
 }
 
@@ -7990,6 +8352,7 @@ export type UserUncheckedCreateWithoutApprovalRequestsAssignedInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -8045,6 +8408,7 @@ export type UserCreateWithoutApprovalRequestsReviewedInput = {
   approvedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberCreateNestedManyWithoutUserInput
 }
 
@@ -8095,6 +8459,7 @@ export type UserUncheckedCreateWithoutApprovalRequestsReviewedInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApprovedByInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutProcessedByInput
   documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutReviewerInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutReviewerInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -8161,6 +8526,7 @@ export type UserUpdateWithoutApprovalRequestsSubmittedInput = {
   approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -8211,6 +8577,7 @@ export type UserUncheckedUpdateWithoutApprovalRequestsSubmittedInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -8272,6 +8639,7 @@ export type UserUpdateWithoutApprovalRequestsAssignedInput = {
   approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -8322,6 +8690,7 @@ export type UserUncheckedUpdateWithoutApprovalRequestsAssignedInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -8383,6 +8752,7 @@ export type UserUpdateWithoutApprovalRequestsReviewedInput = {
   approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -8433,6 +8803,7 @@ export type UserUncheckedUpdateWithoutApprovalRequestsReviewedInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -8502,6 +8873,7 @@ export type UserUpdateWithoutTenantInput = {
   approvedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUpdateManyWithoutUserNestedInput
 }
 
@@ -8552,6 +8924,7 @@ export type UserUncheckedUpdateWithoutTenantInput = {
   approvedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApprovedByNestedInput
   processedRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutProcessedByNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  questionnaireReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutReviewerNestedInput
   organizationMemberships?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -8610,6 +8983,7 @@ export type UserCountOutputType = {
   approvedRefunds: number
   processedRefunds: number
   documentReviews: number
+  questionnaireReviews: number
   organizationMemberships: number
 }
 
@@ -8644,6 +9018,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   approvedRefunds?: boolean | UserCountOutputTypeCountApprovedRefundsArgs
   processedRefunds?: boolean | UserCountOutputTypeCountProcessedRefundsArgs
   documentReviews?: boolean | UserCountOutputTypeCountDocumentReviewsArgs
+  questionnaireReviews?: boolean | UserCountOutputTypeCountQuestionnaireReviewsArgs
   organizationMemberships?: boolean | UserCountOutputTypeCountOrganizationMembershipsArgs
 }
 
@@ -8870,6 +9245,13 @@ export type UserCountOutputTypeCountDocumentReviewsArgs<ExtArgs extends runtime.
 /**
  * UserCountOutputType without action
  */
+export type UserCountOutputTypeCountQuestionnaireReviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.QuestionnairePhaseReviewWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
 export type UserCountOutputTypeCountOrganizationMembershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.OrganizationMemberWhereInput
 }
@@ -8925,6 +9307,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   approvedRefunds?: boolean | Prisma.User$approvedRefundsArgs<ExtArgs>
   processedRefunds?: boolean | Prisma.User$processedRefundsArgs<ExtArgs>
   documentReviews?: boolean | Prisma.User$documentReviewsArgs<ExtArgs>
+  questionnaireReviews?: boolean | Prisma.User$questionnaireReviewsArgs<ExtArgs>
   organizationMemberships?: boolean | Prisma.User$organizationMembershipsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
@@ -8985,6 +9368,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   approvedRefunds?: boolean | Prisma.User$approvedRefundsArgs<ExtArgs>
   processedRefunds?: boolean | Prisma.User$processedRefundsArgs<ExtArgs>
   documentReviews?: boolean | Prisma.User$documentReviewsArgs<ExtArgs>
+  questionnaireReviews?: boolean | Prisma.User$questionnaireReviewsArgs<ExtArgs>
   organizationMemberships?: boolean | Prisma.User$organizationMembershipsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -9024,6 +9408,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     approvedRefunds: Prisma.$ApplicationRefundPayload<ExtArgs>[]
     processedRefunds: Prisma.$ApplicationRefundPayload<ExtArgs>[]
     documentReviews: Prisma.$DocumentReviewPayload<ExtArgs>[]
+    questionnaireReviews: Prisma.$QuestionnairePhaseReviewPayload<ExtArgs>[]
     organizationMemberships: Prisma.$OrganizationMemberPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -9416,6 +9801,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   approvedRefunds<T extends Prisma.User$approvedRefundsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$approvedRefundsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApplicationRefundPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   processedRefunds<T extends Prisma.User$processedRefundsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$processedRefundsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApplicationRefundPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   documentReviews<T extends Prisma.User$documentReviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$documentReviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  questionnaireReviews<T extends Prisma.User$questionnaireReviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$questionnaireReviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QuestionnairePhaseReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   organizationMemberships<T extends Prisma.User$organizationMembershipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$organizationMembershipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -10561,6 +10947,30 @@ export type User$documentReviewsArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.DocumentReviewScalarFieldEnum | Prisma.DocumentReviewScalarFieldEnum[]
+}
+
+/**
+ * User.questionnaireReviews
+ */
+export type User$questionnaireReviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the QuestionnairePhaseReview
+   */
+  select?: Prisma.QuestionnairePhaseReviewSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the QuestionnairePhaseReview
+   */
+  omit?: Prisma.QuestionnairePhaseReviewOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.QuestionnairePhaseReviewInclude<ExtArgs> | null
+  where?: Prisma.QuestionnairePhaseReviewWhereInput
+  orderBy?: Prisma.QuestionnairePhaseReviewOrderByWithRelationInput | Prisma.QuestionnairePhaseReviewOrderByWithRelationInput[]
+  cursor?: Prisma.QuestionnairePhaseReviewWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.QuestionnairePhaseReviewScalarFieldEnum | Prisma.QuestionnairePhaseReviewScalarFieldEnum[]
 }
 
 /**

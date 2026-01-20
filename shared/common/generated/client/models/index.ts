@@ -52,6 +52,7 @@ export * from './PropertyVariantAmenity';
 export * from './PropertyVariantMedia';
 export * from './QuestionnaireField';
 export * from './QuestionnairePhase';
+export * from './QuestionnairePhaseReview';
 export * from './QuestionnairePlan';
 export * from './QuestionnairePlanQuestion';
 export * from './RefreshToken';

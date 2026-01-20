@@ -1654,6 +1654,36 @@ class ApplicationPhaseService {
                         actorId: userId,
                     },
                 });
+            } else {
+                // Not auto-completing - set phase to AWAITING_APPROVAL for manual review
+                // The scoring is an indicator to guide the reviewer's decision
+                await tx.applicationPhase.update({
+                    where: { id: phaseId },
+                    data: {
+                        status: 'AWAITING_APPROVAL',
+                    },
+                });
+
+                // Create AWAITING_REVIEW event for notification
+                await tx.domainEvent.create({
+                    data: {
+                        id: uuidv4(),
+                        tenantId: phase.tenantId,
+                        eventType: 'QUESTIONNAIRE.AWAITING_REVIEW',
+                        aggregateType: 'ApplicationPhase',
+                        aggregateId: phaseId,
+                        queueName: 'application-steps',
+                        payload: JSON.stringify({
+                            phaseId,
+                            applicationId: phase.applicationId,
+                            totalScore,
+                            passed,
+                            passingScore,
+                            scoringStrategy,
+                        }),
+                        actorId: userId,
+                    },
+                });
             }
 
             // Create domain event
@@ -1737,6 +1767,190 @@ class ApplicationPhaseService {
         });
 
         return this.findByIdWithActionStatus(updated.id);
+    }
+
+    /**
+     * Review and approve/reject a questionnaire phase that is AWAITING_APPROVAL.
+     * 
+     * When autoDecisionEnabled is false (the default), the questionnaire scoring
+     * serves as guidance for the reviewer. The reviewer makes the final decision
+     * on whether to approve or reject the application at this stage.
+     * 
+     * @param phaseId - The questionnaire phase to review
+     * @param decision - 'APPROVE' or 'REJECT'
+     * @param reviewerId - The admin/reviewer performing the action
+     * @param notes - Optional notes explaining the decision
+     */
+    async reviewQuestionnairePhase(
+        phaseId: string,
+        decision: 'APPROVE' | 'REJECT',
+        reviewerId: string,
+        notes?: string
+    ): Promise<any> {
+        const phase = await prisma.applicationPhase.findUnique({
+            where: { id: phaseId },
+            include: {
+                questionnairePhase: {
+                    include: {
+                        questionnairePlan: true,
+                    },
+                },
+                application: true,
+            },
+        });
+
+        if (!phase) {
+            throw new AppError(404, 'Phase not found');
+        }
+
+        if (phase.phaseCategory !== 'QUESTIONNAIRE') {
+            throw new AppError(400, 'This method only applies to questionnaire phases');
+        }
+
+        if (phase.status !== 'AWAITING_APPROVAL') {
+            throw new AppError(400, `Cannot review phase with status ${phase.status}. Phase must be AWAITING_APPROVAL.`);
+        }
+
+        const now = new Date();
+
+        const result = await prisma.$transaction(async (tx) => {
+            // Create review audit record
+            await tx.questionnairePhaseReview.create({
+                data: {
+                    tenantId: phase.tenantId,
+                    questionnairePhaseId: phase.questionnairePhase!.id,
+                    reviewerId,
+                    decision: decision === 'APPROVE' ? 'APPROVED' : 'REJECTED',
+                    notes,
+                    scoreAtReview: phase.questionnairePhase?.totalScore,
+                    passedAtReview: phase.questionnairePhase?.passed,
+                },
+            });
+
+            if (decision === 'APPROVE') {
+                // Complete the phase
+                await tx.applicationPhase.update({
+                    where: { id: phaseId },
+                    data: {
+                        status: 'COMPLETED',
+                        completedAt: now,
+                    },
+                });
+
+                // Auto-activate the next phase
+                const nextPhase = await tx.applicationPhase.findFirst({
+                    where: {
+                        applicationId: phase.applicationId,
+                        order: phase.order + 1,
+                    },
+                    include: {
+                        documentationPhase: true,
+                    },
+                });
+
+                if (nextPhase) {
+                    await tx.applicationPhase.update({
+                        where: { id: nextPhase.id },
+                        data: {
+                            status: 'IN_PROGRESS',
+                            activatedAt: now,
+                        },
+                    });
+
+                    await tx.application.update({
+                        where: { id: phase.applicationId },
+                        data: { currentPhaseId: nextPhase.id },
+                    });
+
+                    // Run condition evaluation for DOCUMENTATION phases
+                    if (nextPhase.documentationPhase?.sourceQuestionnairePhaseId) {
+                        const conditionEvaluator = createConditionEvaluatorService(tx);
+                        await conditionEvaluator.applyConditionEvaluation(
+                            nextPhase.documentationPhase.id
+                        );
+                    }
+
+                    // Write PHASE.ACTIVATED event
+                    await tx.domainEvent.create({
+                        data: {
+                            id: uuidv4(),
+                            tenantId: phase.tenantId,
+                            eventType: 'PHASE.ACTIVATED',
+                            aggregateType: 'ApplicationPhase',
+                            aggregateId: nextPhase.id,
+                            queueName: 'application-steps',
+                            payload: JSON.stringify({
+                                phaseId: nextPhase.id,
+                                applicationId: phase.applicationId,
+                                phaseType: nextPhase.phaseType,
+                                activatedBy: 'QUESTIONNAIRE_REVIEW_APPROVED',
+                            }),
+                            actorId: reviewerId,
+                        },
+                    });
+                }
+
+                // Write PHASE.COMPLETED event
+                await tx.domainEvent.create({
+                    data: {
+                        id: uuidv4(),
+                        tenantId: phase.tenantId,
+                        eventType: 'PHASE.COMPLETED',
+                        aggregateType: 'ApplicationPhase',
+                        aggregateId: phaseId,
+                        queueName: 'application-steps',
+                        payload: JSON.stringify({
+                            phaseId,
+                            applicationId: phase.applicationId,
+                            phaseType: phase.phaseType,
+                            completedBy: 'REVIEWER',
+                            reviewerId,
+                            notes,
+                        }),
+                        actorId: reviewerId,
+                    },
+                });
+            } else {
+                // REJECT - mark phase as FAILED
+                await tx.applicationPhase.update({
+                    where: { id: phaseId },
+                    data: {
+                        status: 'FAILED',
+                        completedAt: now,
+                    },
+                });
+
+                // Write PHASE.FAILED event
+                await tx.domainEvent.create({
+                    data: {
+                        id: uuidv4(),
+                        tenantId: phase.tenantId,
+                        eventType: 'PHASE.FAILED',
+                        aggregateType: 'ApplicationPhase',
+                        aggregateId: phaseId,
+                        queueName: 'application-steps',
+                        payload: JSON.stringify({
+                            phaseId,
+                            applicationId: phase.applicationId,
+                            phaseType: phase.phaseType,
+                            reason: 'REJECTED_BY_REVIEWER',
+                            reviewerId,
+                            notes,
+                        }),
+                        actorId: reviewerId,
+                    },
+                });
+            }
+
+            return { decision };
+        });
+
+        // Send notification after transaction completes (for APPROVE only)
+        if (result.decision === 'APPROVE') {
+            await this.sendPhaseCompletionNotification(phaseId);
+        }
+
+        return this.findByIdWithActionStatus(phaseId);
     }
 }
 

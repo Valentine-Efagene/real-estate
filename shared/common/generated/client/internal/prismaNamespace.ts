@@ -431,6 +431,7 @@ export const ModelName = {
   ApplicationRefund: 'ApplicationRefund',
   ApplicationPhase: 'ApplicationPhase',
   QuestionnairePhase: 'QuestionnairePhase',
+  QuestionnairePhaseReview: 'QuestionnairePhaseReview',
   DocumentationPhase: 'DocumentationPhase',
   PaymentPhase: 'PaymentPhase',
   QuestionnaireField: 'QuestionnaireField',
@@ -470,7 +471,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenantMembership" | "organization" | "organizationMember" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "documentationPlan" | "documentDefinition" | "approvalStage" | "questionnairePlan" | "questionnairePlanQuestion" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "phaseEventAttachment" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "paymentMethodPhaseField" | "application" | "applicationRefund" | "applicationPhase" | "questionnairePhase" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "applicationEvent" | "paymentInstallment" | "applicationPayment" | "applicationDocument" | "documentReview" | "approvalStageProgress" | "documentApproval" | "documentTemplate" | "offerLetter" | "applicationTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "workflowEvent" | "eventHandlerExecution" | "domainEvent" | "propertyTransferRequest" | "approvalRequest" | "workflowBlocker"
+    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenantMembership" | "organization" | "organizationMember" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "documentationPlan" | "documentDefinition" | "approvalStage" | "questionnairePlan" | "questionnairePlanQuestion" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "phaseEventAttachment" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "paymentMethodPhaseField" | "application" | "applicationRefund" | "applicationPhase" | "questionnairePhase" | "questionnairePhaseReview" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "applicationEvent" | "paymentInstallment" | "applicationPayment" | "applicationDocument" | "documentReview" | "approvalStageProgress" | "documentApproval" | "documentTemplate" | "offerLetter" | "applicationTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "workflowEvent" | "eventHandlerExecution" | "domainEvent" | "propertyTransferRequest" | "approvalRequest" | "workflowBlocker"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -3576,6 +3577,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    QuestionnairePhaseReview: {
+      payload: Prisma.$QuestionnairePhaseReviewPayload<ExtArgs>
+      fields: Prisma.QuestionnairePhaseReviewFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.QuestionnairePhaseReviewFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePhaseReviewPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.QuestionnairePhaseReviewFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePhaseReviewPayload>
+        }
+        findFirst: {
+          args: Prisma.QuestionnairePhaseReviewFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePhaseReviewPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.QuestionnairePhaseReviewFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePhaseReviewPayload>
+        }
+        findMany: {
+          args: Prisma.QuestionnairePhaseReviewFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePhaseReviewPayload>[]
+        }
+        create: {
+          args: Prisma.QuestionnairePhaseReviewCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePhaseReviewPayload>
+        }
+        createMany: {
+          args: Prisma.QuestionnairePhaseReviewCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.QuestionnairePhaseReviewDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePhaseReviewPayload>
+        }
+        update: {
+          args: Prisma.QuestionnairePhaseReviewUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePhaseReviewPayload>
+        }
+        deleteMany: {
+          args: Prisma.QuestionnairePhaseReviewDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.QuestionnairePhaseReviewUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.QuestionnairePhaseReviewUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$QuestionnairePhaseReviewPayload>
+        }
+        aggregate: {
+          args: Prisma.QuestionnairePhaseReviewAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateQuestionnairePhaseReview>
+        }
+        groupBy: {
+          args: Prisma.QuestionnairePhaseReviewGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.QuestionnairePhaseReviewGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.QuestionnairePhaseReviewCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.QuestionnairePhaseReviewCountAggregateOutputType> | number
+        }
+      }
+    }
     DocumentationPhase: {
       payload: Prisma.$DocumentationPhasePayload<ExtArgs>
       fields: Prisma.DocumentationPhaseFieldRefs
@@ -6014,6 +6081,21 @@ export const QuestionnairePhaseScalarFieldEnum = {
 export type QuestionnairePhaseScalarFieldEnum = (typeof QuestionnairePhaseScalarFieldEnum)[keyof typeof QuestionnairePhaseScalarFieldEnum]
 
 
+export const QuestionnairePhaseReviewScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  questionnairePhaseId: 'questionnairePhaseId',
+  reviewerId: 'reviewerId',
+  decision: 'decision',
+  notes: 'notes',
+  scoreAtReview: 'scoreAtReview',
+  passedAtReview: 'passedAtReview',
+  createdAt: 'createdAt'
+} as const
+
+export type QuestionnairePhaseReviewScalarFieldEnum = (typeof QuestionnairePhaseReviewScalarFieldEnum)[keyof typeof QuestionnairePhaseReviewScalarFieldEnum]
+
+
 export const DocumentationPhaseScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -7177,6 +7259,17 @@ export const QuestionnairePhaseOrderByRelevanceFieldEnum = {
 export type QuestionnairePhaseOrderByRelevanceFieldEnum = (typeof QuestionnairePhaseOrderByRelevanceFieldEnum)[keyof typeof QuestionnairePhaseOrderByRelevanceFieldEnum]
 
 
+export const QuestionnairePhaseReviewOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  questionnairePhaseId: 'questionnairePhaseId',
+  reviewerId: 'reviewerId',
+  notes: 'notes'
+} as const
+
+export type QuestionnairePhaseReviewOrderByRelevanceFieldEnum = (typeof QuestionnairePhaseReviewOrderByRelevanceFieldEnum)[keyof typeof QuestionnairePhaseReviewOrderByRelevanceFieldEnum]
+
+
 export const DocumentationPhaseOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -7732,6 +7825,13 @@ export type EnumPhaseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pris
 
 
 /**
+ * Reference to a field of type 'ReviewDecision'
+ */
+export type EnumReviewDecisionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReviewDecision'>
+    
+
+
+/**
  * Reference to a field of type 'ApplicationEventType'
  */
 export type EnumApplicationEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ApplicationEventType'>
@@ -7770,13 +7870,6 @@ export type EnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pr
  * Reference to a field of type 'DocumentStatus'
  */
 export type EnumDocumentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentStatus'>
-    
-
-
-/**
- * Reference to a field of type 'ReviewDecision'
- */
-export type EnumReviewDecisionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReviewDecision'>
     
 
 
@@ -8061,6 +8154,7 @@ export type GlobalOmitConfig = {
   applicationRefund?: Prisma.ApplicationRefundOmit
   applicationPhase?: Prisma.ApplicationPhaseOmit
   questionnairePhase?: Prisma.QuestionnairePhaseOmit
+  questionnairePhaseReview?: Prisma.QuestionnairePhaseReviewOmit
   documentationPhase?: Prisma.DocumentationPhaseOmit
   paymentPhase?: Prisma.PaymentPhaseOmit
   questionnaireField?: Prisma.QuestionnaireFieldOmit

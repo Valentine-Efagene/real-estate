@@ -332,6 +332,34 @@ router.post('/:id/phases/:phaseId/questionnaire/submit', requireTenant, canAcces
     }
 });
 
+// Review a questionnaire phase (approve/reject) - admin action
+// When autoDecisionEnabled is false (default), questionnaire phases require manual review
+// after submission. The scoring serves as guidance for the reviewer's decision.
+router.post('/:id/phases/:phaseId/questionnaire/review', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { decision, notes } = req.body;
+        
+        if (!decision || !['APPROVE', 'REJECT'].includes(decision)) {
+            res.status(400).json({ 
+                success: false, 
+                error: 'Invalid decision. Must be APPROVE or REJECT.' 
+            });
+            return;
+        }
+        
+        const { userId } = getAuthContext(req);
+        const result = await applicationPhaseService.reviewQuestionnairePhase(
+            req.params.phaseId as string,
+            decision,
+            userId,
+            notes
+        );
+        res.json(successResponse(result));
+    } catch (error) {
+        next(error);
+    }
+});
+
 // Generate installments for phase
 router.post('/:id/phases/:phaseId/installments', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
     try {
