@@ -1,0 +1,97 @@
+service: qshelter-uploader-service
+
+frameworkVersion: '4'
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+  stage: ${opt:stage, 'dev'}
+  memorySize: 512
+  timeout: 60  # Increased for bundling operations
+
+  # Create own HTTP API Gateway for this service
+  httpApi:
+    cors: true
+    authorizers:
+      UploaderServiceAuthorizer:
+        type: request
+        functionArn: ${ssm:/qshelter/${self:provider.stage}/authorizer-lambda-arn}
+        enableSimpleResponses: true
+        payloadVersion: '2.0'
+        identitySource:
+          - $request.header.Authorization
+
+  environment:
+    NODE_ENV: ${self:provider.stage}
+    LOCALSTACK_ENDPOINT: ${self:custom.localstackEndpoint.${self:provider.stage}, ''}
+    S3_BUCKET_NAME: ${ssm:/qshelter/${self:provider.stage}/s3-bucket-name}
+    PRESIGNED_URL_TTL: '3600'
+
+  iam:
+    role:
+      statements:
+        # SSM Parameter Store access
+        - Effect: Allow
+          Action:
+            - ssm:GetParameter
+            - ssm:GetParameters
+            - ssm:GetParametersByPath
+          Resource:
+            - arn:aws:ssm:${self:provider.region}:*:parameter/qshelter/${self:provider.stage}/*
+        # S3 access for file operations
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+            - s3:DeleteObject
+            - s3:ListBucket
+          Resource:
+            - arn:aws:s3:::${ssm:/qshelter/${self:provider.stage}/s3-bucket-name}
+            - arn:aws:s3:::${ssm:/qshelter/${self:provider.stage}/s3-bucket-name}/*
+
+package:
+  individually: true
+  patterns:
+    - '!**'
+    - 'dist/**/*.mjs'
+    - 'dist/**/*.map'
+
+functions:
+  main:
+    handler: dist/lambda.handler
+    events:
+      # Public endpoints (no auth)
+      - httpApi:
+          path: /health
+          method: GET
+      - httpApi:
+          path: /api-docs
+          method: GET
+      - httpApi:
+          path: /api-docs/
+          method: GET
+      - httpApi:
+          path: /openapi.json
+          method: GET
+      # All other routes require authorization
+      - httpApi:
+          path: /{proxy+}
+          method: ANY
+          authorizer:
+            name: UploaderServiceAuthorizer
+
+plugins:
+  - serverless-localstack
+
+custom:
+  localstackEndpoint:
+    test: http://host.docker.internal:4566
+    localstack: http://host.docker.internal:4566
+  localstack:
+    stages:
+      - test
+      - localstack
+    host: http://localhost
+    edgePort: 4566
+    autostart: false

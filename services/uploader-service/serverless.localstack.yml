@@ -1,0 +1,57 @@
+service: qshelter-uploader-service
+
+frameworkVersion: '4'
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+  stage: localstack
+  memorySize: 512
+  timeout: 60
+
+  httpApi:
+    cors: true
+
+  environment:
+    NODE_ENV: localstack
+    LOCALSTACK_ENDPOINT: http://host.docker.internal:4566
+    S3_BUCKET_NAME: qshelter-uploads-localstack
+    PRESIGNED_URL_TTL: '3600'
+
+package:
+  individually: true
+  patterns:
+    - '!**'
+    - 'dist/**/*.mjs'
+
+functions:
+  main:
+    handler: dist/lambda.handler
+    events:
+      - httpApi:
+          path: /health
+          method: GET
+      - httpApi:
+          path: /api-docs
+          method: GET
+      - httpApi:
+          path: /api-docs/
+          method: GET
+      - httpApi:
+          path: /openapi.json
+          method: GET
+      - httpApi:
+          path: /{proxy+}
+          method: ANY
+
+plugins:
+  - serverless-localstack
+
+custom:
+  localstack:
+    stages:
+      - localstack
+    host: http://localhost
+    edgePort: 4566
+    autostart: false
