@@ -323,6 +323,29 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
             throw new AppError(404, 'Buyer not found');
         }
 
+        // Prevent duplicate active applications for the same unit/buyer combination
+        const existingApplication = await prisma.application.findFirst({
+            where: {
+                propertyUnitId: data.propertyUnitId,
+                buyerId: data.buyerId,
+                status: {
+                    in: ['DRAFT', 'ACTIVE', 'PENDING'],
+                },
+            },
+            select: {
+                id: true,
+                applicationNumber: true,
+                status: true,
+            },
+        });
+
+        if (existingApplication) {
+            throw new AppError(
+                409,
+                `Buyer already has an active application (${existingApplication.applicationNumber}) for this unit`
+            );
+        }
+
         const unitPrice = propertyUnit.priceOverride ?? propertyUnit.variant.price;
         const totalAmount = data.totalAmount ?? unitPrice;
 

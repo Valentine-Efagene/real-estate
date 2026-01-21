@@ -5856,6 +5856,7 @@ export const PropertyUnitScalarFieldEnum = {
   reservedUntil: 'reservedUntil',
   reservedById: 'reservedById',
   ownerId: 'ownerId',
+  version: 'version',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -6323,6 +6324,7 @@ export const PaymentPhaseScalarFieldEnum = {
   collectFunds: 'collectFunds',
   minimumCompletionPercentage: 'minimumCompletionPercentage',
   paymentPlanSnapshot: 'paymentPlanSnapshot',
+  version: 'version',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -6389,6 +6391,7 @@ export const PaymentInstallmentScalarFieldEnum = {
   lateFeeWaived: 'lateFeeWaived',
   gracePeriodDays: 'gracePeriodDays',
   gracePeriodEndDate: 'gracePeriodEndDate',
+  version: 'version',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

@@ -1306,6 +1306,9 @@ model PropertyUnit {
   // Ownership tracking (once sold)
   ownerId String?
 
+  // Optimistic locking for unit reservation race condition
+  version Int @default(0)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -1721,6 +1724,7 @@ model PropertyPaymentMethodPhase {
   // Application phases created from this template
   applicationPhases   ApplicationPhase[]
 
+  @@unique([paymentMethodId, order]) // Enforce unique, sequential ordering
   @@index([tenantId])
   @@index([paymentMethodId])
   @@index([paymentPlanId])
@@ -1781,6 +1785,7 @@ model PaymentMethodPhaseStep {
   // Event attachments - handlers that fire on step transitions
   eventAttachments StepEventAttachment[]
 
+  @@unique([phaseId, order]) // Enforce unique, sequential ordering within phase
   @@index([tenantId])
   @@index([phaseId])
   @@map("payment_method_phase_steps")
@@ -1971,7 +1976,7 @@ model Application {
   tenant          Tenant                 @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   // Link to specific unit being purchased/rented
   propertyUnitId  String
-  propertyUnit    PropertyUnit           @relation(fields: [propertyUnitId], references: [id], onDelete: Cascade)
+  propertyUnit    PropertyUnit           @relation(fields: [propertyUnitId], references: [id], onDelete: Restrict)
   buyerId         String
   buyer           User                   @relation("ApplicationBuyer", fields: [buyerId], references: [id], onDelete: Cascade)
   sellerId        String?
@@ -2453,6 +2458,9 @@ model PaymentPhase {
   // Snapshot for audit
   paymentPlanSnapshot Json?
 
+  // Optimistic locking for concurrent payment protection
+  version Int @default(0)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -2584,6 +2592,9 @@ model PaymentInstallment {
   lateFeeWaived      Boolean   @default(false)
   gracePeriodDays    Int       @default(0)
   gracePeriodEndDate DateTime?
+
+  // Optimistic locking for concurrent payment protection
+  version Int @default(0)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

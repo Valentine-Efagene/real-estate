@@ -828,6 +828,95 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             expect(taxReq?.modifier).toBe('REQUIRED');
         });
 
+        it('Adaeze configures an event handler for downpayment phase completion', async () => {
+            // The Event Execution Engine allows admins to configure handlers that fire
+            // when phases complete. This enables:
+            // - LOCK_UNIT: Lock the property unit when downpayment is received
+            // - SEND_EMAIL: Send custom notifications to parties
+            // - CALL_WEBHOOK: Notify external systems (bank APIs, CRM, etc.)
+            //
+            // For the downpayment phase, we attach a LOCK_UNIT handler that:
+            // 1. Locks the property unit for Chidi
+            // 2. Supersedes any competing applications
+            // 3. Notifies superseded buyers
+
+            // Get the downpayment phase template ID
+            const paymentMethod = await prisma.propertyPaymentMethod.findUnique({
+                where: { id: paymentMethodId },
+                include: { phases: { orderBy: { order: 'asc' } } },
+            });
+
+            const downpaymentPhaseTemplate = paymentMethod?.phases.find(
+                (p: any) => p.phaseType === 'DOWNPAYMENT'
+            );
+            expect(downpaymentPhaseTemplate).toBeDefined();
+
+            // Create an event channel for contract events
+            const eventChannel = await prisma.eventChannel.create({
+                data: {
+                    id: faker.string.uuid(),
+                    tenantId,
+                    code: 'CONTRACTS',
+                    name: 'Contract Events',
+                    description: 'Events related to application lifecycle',
+                    enabled: true,
+                },
+            });
+
+            // Create an event type for phase completion
+            const eventType = await prisma.eventType.create({
+                data: {
+                    id: faker.string.uuid(),
+                    tenantId,
+                    channelId: eventChannel.id,
+                    code: 'PHASE_COMPLETED',
+                    name: 'Phase Completed',
+                    description: 'Fired when an application phase is completed',
+                    enabled: true,
+                },
+            });
+
+            // Create a LOCK_UNIT handler
+            const lockUnitHandler = await prisma.eventHandler.create({
+                data: {
+                    id: faker.string.uuid(),
+                    tenantId,
+                    eventTypeId: eventType.id,
+                    name: 'Lock Unit on Downpayment',
+                    description: 'Lock property unit and supersede competing applications when downpayment is received',
+                    handlerType: 'LOCK_UNIT',
+                    config: {
+                        supersedeBehavior: 'SUPERSEDE_ALL',
+                        notifySuperseded: true,
+                    },
+                    priority: 100,
+                    enabled: true,
+                    maxRetries: 3,
+                    retryDelayMs: 1000,
+                },
+            });
+
+            // Attach the handler to the downpayment phase template
+            await prisma.phaseEventAttachment.create({
+                data: {
+                    id: faker.string.uuid(),
+                    tenantId,
+                    phaseId: downpaymentPhaseTemplate!.id,
+                    trigger: 'ON_COMPLETE',
+                    handlerId: lockUnitHandler.id,
+                    priority: 100,
+                    enabled: true,
+                },
+            });
+
+            // Verify the attachment was created
+            const attachments = await prisma.phaseEventAttachment.findMany({
+                where: { phaseId: downpaymentPhaseTemplate!.id },
+            });
+            expect(attachments.length).toBe(1);
+            expect(attachments[0].trigger).toBe('ON_COMPLETE');
+        });
+
         // NOTE: Document requirement rules are now defined in the DocumentationPlan steps
         // Bank-specific overlays are in BankDocumentRequirement (see test above)
 
@@ -1412,6 +1501,38 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             // The notification is sent automatically by the mortgage service
             // via sendPaymentPhaseCompletedNotification() when the phase completes.
             // No manual event handler configuration is required.
+        });
+
+        it('Event handler (LOCK_UNIT) was executed after downpayment phase completed', async () => {
+            // When the downpayment phase completed, the Event Execution Engine should have:
+            // 1. Found the PhaseEventAttachment for the downpayment phase template
+            // 2. Executed the LOCK_UNIT handler we configured earlier
+            // 3. Logged the execution to ApplicationEvent with eventType: HANDLER_EXECUTED
+
+            // Verify the handler execution was logged
+            const handlerExecution = await prisma.applicationEvent.findFirst({
+                where: {
+                    applicationId,
+                    eventType: 'HANDLER_EXECUTED',
+                },
+            });
+
+            expect(handlerExecution).toBeDefined();
+            expect(handlerExecution?.eventGroup).toBe('AUTOMATION');
+
+            // Verify execution details in the data payload
+            const data = handlerExecution?.data as Record<string, unknown>;
+            console.log('[TEST] Handler execution data:', JSON.stringify(data, null, 2));
+            expect(data?.handlerType).toBe('LOCK_UNIT');
+            expect(data?.trigger).toBe('ON_COMPLETE');
+            expect(data?.success).toBe(true);
+
+            // Verify the unit is locked
+            const unit = await prisma.propertyUnit.findUnique({
+                where: { id: unit14BId },
+            });
+            expect(unit?.status).toBe('RESERVED');
+            expect(unit?.reservedById).toBe(chidiId);
         });
 
         it('Nkechi (Lender) uploads the mortgage offer letter', async () => {

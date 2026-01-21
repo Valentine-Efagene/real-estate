@@ -33,6 +33,7 @@ export type PaymentPhaseAvgAggregateOutputType = {
   selectedTermMonths: number | null
   numberOfInstallments: number | null
   minimumCompletionPercentage: number | null
+  version: number | null
 }
 
 export type PaymentPhaseSumAggregateOutputType = {
@@ -42,6 +43,7 @@ export type PaymentPhaseSumAggregateOutputType = {
   selectedTermMonths: number | null
   numberOfInstallments: number | null
   minimumCompletionPercentage: number | null
+  version: number | null
 }
 
 export type PaymentPhaseMinAggregateOutputType = {
@@ -56,6 +58,7 @@ export type PaymentPhaseMinAggregateOutputType = {
   numberOfInstallments: number | null
   collectFunds: boolean | null
   minimumCompletionPercentage: number | null
+  version: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -72,6 +75,7 @@ export type PaymentPhaseMaxAggregateOutputType = {
   numberOfInstallments: number | null
   collectFunds: boolean | null
   minimumCompletionPercentage: number | null
+  version: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -89,6 +93,7 @@ export type PaymentPhaseCountAggregateOutputType = {
   collectFunds: number
   minimumCompletionPercentage: number
   paymentPlanSnapshot: number
+  version: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -102,6 +107,7 @@ export type PaymentPhaseAvgAggregateInputType = {
   selectedTermMonths?: true
   numberOfInstallments?: true
   minimumCompletionPercentage?: true
+  version?: true
 }
 
 export type PaymentPhaseSumAggregateInputType = {
@@ -111,6 +117,7 @@ export type PaymentPhaseSumAggregateInputType = {
   selectedTermMonths?: true
   numberOfInstallments?: true
   minimumCompletionPercentage?: true
+  version?: true
 }
 
 export type PaymentPhaseMinAggregateInputType = {
@@ -125,6 +132,7 @@ export type PaymentPhaseMinAggregateInputType = {
   numberOfInstallments?: true
   collectFunds?: true
   minimumCompletionPercentage?: true
+  version?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -141,6 +149,7 @@ export type PaymentPhaseMaxAggregateInputType = {
   numberOfInstallments?: true
   collectFunds?: true
   minimumCompletionPercentage?: true
+  version?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -158,6 +167,7 @@ export type PaymentPhaseCountAggregateInputType = {
   collectFunds?: true
   minimumCompletionPercentage?: true
   paymentPlanSnapshot?: true
+  version?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -262,6 +272,7 @@ export type PaymentPhaseGroupByOutputType = {
   collectFunds: boolean
   minimumCompletionPercentage: number | null
   paymentPlanSnapshot: runtime.JsonValue | null
+  version: number
   createdAt: Date
   updatedAt: Date
   _count: PaymentPhaseCountAggregateOutputType | null
@@ -302,6 +313,7 @@ export type PaymentPhaseWhereInput = {
   collectFunds?: Prisma.BoolFilter<"PaymentPhase"> | boolean
   minimumCompletionPercentage?: Prisma.FloatNullableFilter<"PaymentPhase"> | number | null
   paymentPlanSnapshot?: Prisma.JsonNullableFilter<"PaymentPhase">
+  version?: Prisma.IntFilter<"PaymentPhase"> | number
   createdAt?: Prisma.DateTimeFilter<"PaymentPhase"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PaymentPhase"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
@@ -323,6 +335,7 @@ export type PaymentPhaseOrderByWithRelationInput = {
   collectFunds?: Prisma.SortOrder
   minimumCompletionPercentage?: Prisma.SortOrderInput | Prisma.SortOrder
   paymentPlanSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
+  version?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   tenant?: Prisma.TenantOrderByWithRelationInput
@@ -348,6 +361,7 @@ export type PaymentPhaseWhereUniqueInput = Prisma.AtLeast<{
   collectFunds?: Prisma.BoolFilter<"PaymentPhase"> | boolean
   minimumCompletionPercentage?: Prisma.FloatNullableFilter<"PaymentPhase"> | number | null
   paymentPlanSnapshot?: Prisma.JsonNullableFilter<"PaymentPhase">
+  version?: Prisma.IntFilter<"PaymentPhase"> | number
   createdAt?: Prisma.DateTimeFilter<"PaymentPhase"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PaymentPhase"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
@@ -369,6 +383,7 @@ export type PaymentPhaseOrderByWithAggregationInput = {
   collectFunds?: Prisma.SortOrder
   minimumCompletionPercentage?: Prisma.SortOrderInput | Prisma.SortOrder
   paymentPlanSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
+  version?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.PaymentPhaseCountOrderByAggregateInput
@@ -394,6 +409,7 @@ export type PaymentPhaseScalarWhereWithAggregatesInput = {
   collectFunds?: Prisma.BoolWithAggregatesFilter<"PaymentPhase"> | boolean
   minimumCompletionPercentage?: Prisma.FloatNullableWithAggregatesFilter<"PaymentPhase"> | number | null
   paymentPlanSnapshot?: Prisma.JsonNullableWithAggregatesFilter<"PaymentPhase">
+  version?: Prisma.IntWithAggregatesFilter<"PaymentPhase"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"PaymentPhase"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"PaymentPhase"> | Date | string
 }
@@ -408,6 +424,7 @@ export type PaymentPhaseCreateInput = {
   collectFunds?: boolean
   minimumCompletionPercentage?: number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  version?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutPaymentPhasesInput
@@ -429,6 +446,7 @@ export type PaymentPhaseUncheckedCreateInput = {
   collectFunds?: boolean
   minimumCompletionPercentage?: number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  version?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   installments?: Prisma.PaymentInstallmentUncheckedCreateNestedManyWithoutPaymentPhaseInput
@@ -444,6 +462,7 @@ export type PaymentPhaseUpdateInput = {
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutPaymentPhasesNestedInput
@@ -465,6 +484,7 @@ export type PaymentPhaseUncheckedUpdateInput = {
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   installments?: Prisma.PaymentInstallmentUncheckedUpdateManyWithoutPaymentPhaseNestedInput
@@ -483,6 +503,7 @@ export type PaymentPhaseCreateManyInput = {
   collectFunds?: boolean
   minimumCompletionPercentage?: number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  version?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -497,6 +518,7 @@ export type PaymentPhaseUpdateManyMutationInput = {
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -514,6 +536,7 @@ export type PaymentPhaseUncheckedUpdateManyInput = {
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -552,6 +575,7 @@ export type PaymentPhaseCountOrderByAggregateInput = {
   collectFunds?: Prisma.SortOrder
   minimumCompletionPercentage?: Prisma.SortOrder
   paymentPlanSnapshot?: Prisma.SortOrder
+  version?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -563,6 +587,7 @@ export type PaymentPhaseAvgOrderByAggregateInput = {
   selectedTermMonths?: Prisma.SortOrder
   numberOfInstallments?: Prisma.SortOrder
   minimumCompletionPercentage?: Prisma.SortOrder
+  version?: Prisma.SortOrder
 }
 
 export type PaymentPhaseMaxOrderByAggregateInput = {
@@ -577,6 +602,7 @@ export type PaymentPhaseMaxOrderByAggregateInput = {
   numberOfInstallments?: Prisma.SortOrder
   collectFunds?: Prisma.SortOrder
   minimumCompletionPercentage?: Prisma.SortOrder
+  version?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -593,6 +619,7 @@ export type PaymentPhaseMinOrderByAggregateInput = {
   numberOfInstallments?: Prisma.SortOrder
   collectFunds?: Prisma.SortOrder
   minimumCompletionPercentage?: Prisma.SortOrder
+  version?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -604,6 +631,7 @@ export type PaymentPhaseSumOrderByAggregateInput = {
   selectedTermMonths?: Prisma.SortOrder
   numberOfInstallments?: Prisma.SortOrder
   minimumCompletionPercentage?: Prisma.SortOrder
+  version?: Prisma.SortOrder
 }
 
 export type PaymentPhaseScalarRelationFilter = {
@@ -751,6 +779,7 @@ export type PaymentPhaseCreateWithoutTenantInput = {
   collectFunds?: boolean
   minimumCompletionPercentage?: number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  version?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   phase: Prisma.ApplicationPhaseCreateNestedOneWithoutPaymentPhaseInput
@@ -770,6 +799,7 @@ export type PaymentPhaseUncheckedCreateWithoutTenantInput = {
   collectFunds?: boolean
   minimumCompletionPercentage?: number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  version?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   installments?: Prisma.PaymentInstallmentUncheckedCreateNestedManyWithoutPaymentPhaseInput
@@ -817,6 +847,7 @@ export type PaymentPhaseScalarWhereInput = {
   collectFunds?: Prisma.BoolFilter<"PaymentPhase"> | boolean
   minimumCompletionPercentage?: Prisma.FloatNullableFilter<"PaymentPhase"> | number | null
   paymentPlanSnapshot?: Prisma.JsonNullableFilter<"PaymentPhase">
+  version?: Prisma.IntFilter<"PaymentPhase"> | number
   createdAt?: Prisma.DateTimeFilter<"PaymentPhase"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PaymentPhase"> | Date | string
 }
@@ -831,6 +862,7 @@ export type PaymentPhaseCreateWithoutPaymentPlanInput = {
   collectFunds?: boolean
   minimumCompletionPercentage?: number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  version?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutPaymentPhasesInput
@@ -850,6 +882,7 @@ export type PaymentPhaseUncheckedCreateWithoutPaymentPlanInput = {
   collectFunds?: boolean
   minimumCompletionPercentage?: number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  version?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   installments?: Prisma.PaymentInstallmentUncheckedCreateNestedManyWithoutPaymentPhaseInput
@@ -891,6 +924,7 @@ export type PaymentPhaseCreateWithoutPhaseInput = {
   collectFunds?: boolean
   minimumCompletionPercentage?: number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  version?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutPaymentPhasesInput
@@ -910,6 +944,7 @@ export type PaymentPhaseUncheckedCreateWithoutPhaseInput = {
   collectFunds?: boolean
   minimumCompletionPercentage?: number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  version?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   installments?: Prisma.PaymentInstallmentUncheckedCreateNestedManyWithoutPaymentPhaseInput
@@ -941,6 +976,7 @@ export type PaymentPhaseUpdateWithoutPhaseInput = {
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutPaymentPhasesNestedInput
@@ -960,6 +996,7 @@ export type PaymentPhaseUncheckedUpdateWithoutPhaseInput = {
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   installments?: Prisma.PaymentInstallmentUncheckedUpdateManyWithoutPaymentPhaseNestedInput
@@ -975,6 +1012,7 @@ export type PaymentPhaseCreateWithoutInstallmentsInput = {
   collectFunds?: boolean
   minimumCompletionPercentage?: number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  version?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutPaymentPhasesInput
@@ -995,6 +1033,7 @@ export type PaymentPhaseUncheckedCreateWithoutInstallmentsInput = {
   collectFunds?: boolean
   minimumCompletionPercentage?: number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  version?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1025,6 +1064,7 @@ export type PaymentPhaseUpdateWithoutInstallmentsInput = {
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutPaymentPhasesNestedInput
@@ -1045,6 +1085,7 @@ export type PaymentPhaseUncheckedUpdateWithoutInstallmentsInput = {
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1061,6 +1102,7 @@ export type PaymentPhaseCreateManyTenantInput = {
   collectFunds?: boolean
   minimumCompletionPercentage?: number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  version?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1075,6 +1117,7 @@ export type PaymentPhaseUpdateWithoutTenantInput = {
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   phase?: Prisma.ApplicationPhaseUpdateOneRequiredWithoutPaymentPhaseNestedInput
@@ -1094,6 +1137,7 @@ export type PaymentPhaseUncheckedUpdateWithoutTenantInput = {
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   installments?: Prisma.PaymentInstallmentUncheckedUpdateManyWithoutPaymentPhaseNestedInput
@@ -1111,6 +1155,7 @@ export type PaymentPhaseUncheckedUpdateManyWithoutTenantInput = {
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1127,6 +1172,7 @@ export type PaymentPhaseCreateManyPaymentPlanInput = {
   collectFunds?: boolean
   minimumCompletionPercentage?: number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  version?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1141,6 +1187,7 @@ export type PaymentPhaseUpdateWithoutPaymentPlanInput = {
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutPaymentPhasesNestedInput
@@ -1160,6 +1207,7 @@ export type PaymentPhaseUncheckedUpdateWithoutPaymentPlanInput = {
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   installments?: Prisma.PaymentInstallmentUncheckedUpdateManyWithoutPaymentPhaseNestedInput
@@ -1177,6 +1225,7 @@ export type PaymentPhaseUncheckedUpdateManyWithoutPaymentPlanInput = {
   collectFunds?: Prisma.BoolFieldUpdateOperationsInput | boolean
   minimumCompletionPercentage?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   paymentPlanSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1225,6 +1274,7 @@ export type PaymentPhaseSelect<ExtArgs extends runtime.Types.Extensions.Internal
   collectFunds?: boolean
   minimumCompletionPercentage?: boolean
   paymentPlanSnapshot?: boolean
+  version?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
@@ -1249,11 +1299,12 @@ export type PaymentPhaseSelectScalar = {
   collectFunds?: boolean
   minimumCompletionPercentage?: boolean
   paymentPlanSnapshot?: boolean
+  version?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type PaymentPhaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "phaseId" | "paymentPlanId" | "totalAmount" | "paidAmount" | "interestRate" | "selectedTermMonths" | "numberOfInstallments" | "collectFunds" | "minimumCompletionPercentage" | "paymentPlanSnapshot" | "createdAt" | "updatedAt", ExtArgs["result"]["paymentPhase"]>
+export type PaymentPhaseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "phaseId" | "paymentPlanId" | "totalAmount" | "paidAmount" | "interestRate" | "selectedTermMonths" | "numberOfInstallments" | "collectFunds" | "minimumCompletionPercentage" | "paymentPlanSnapshot" | "version" | "createdAt" | "updatedAt", ExtArgs["result"]["paymentPhase"]>
 export type PaymentPhaseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   phase?: boolean | Prisma.ApplicationPhaseDefaultArgs<ExtArgs>
@@ -1283,6 +1334,7 @@ export type $PaymentPhasePayload<ExtArgs extends runtime.Types.Extensions.Intern
     collectFunds: boolean
     minimumCompletionPercentage: number | null
     paymentPlanSnapshot: runtime.JsonValue | null
+    version: number
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["paymentPhase"]>
@@ -1670,6 +1722,7 @@ export interface PaymentPhaseFieldRefs {
   readonly collectFunds: Prisma.FieldRef<"PaymentPhase", 'Boolean'>
   readonly minimumCompletionPercentage: Prisma.FieldRef<"PaymentPhase", 'Float'>
   readonly paymentPlanSnapshot: Prisma.FieldRef<"PaymentPhase", 'Json'>
+  readonly version: Prisma.FieldRef<"PaymentPhase", 'Int'>
   readonly createdAt: Prisma.FieldRef<"PaymentPhase", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"PaymentPhase", 'DateTime'>
 }

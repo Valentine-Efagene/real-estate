@@ -267,6 +267,7 @@ export type PaymentMethodPhaseStepOrderByWithRelationInput = {
 
 export type PaymentMethodPhaseStepWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  phaseId_order?: Prisma.PaymentMethodPhaseStepPhaseIdOrderCompoundUniqueInput
   AND?: Prisma.PaymentMethodPhaseStepWhereInput | Prisma.PaymentMethodPhaseStepWhereInput[]
   OR?: Prisma.PaymentMethodPhaseStepWhereInput[]
   NOT?: Prisma.PaymentMethodPhaseStepWhereInput | Prisma.PaymentMethodPhaseStepWhereInput[]
@@ -281,7 +282,7 @@ export type PaymentMethodPhaseStepWhereUniqueInput = Prisma.AtLeast<{
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   phase?: Prisma.XOR<Prisma.PropertyPaymentMethodPhaseScalarRelationFilter, Prisma.PropertyPaymentMethodPhaseWhereInput>
   eventAttachments?: Prisma.StepEventAttachmentListRelationFilter
-}, "id">
+}, "id" | "phaseId_order">
 
 export type PaymentMethodPhaseStepOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -415,6 +416,11 @@ export type PaymentMethodPhaseStepOrderByRelevanceInput = {
   fields: Prisma.PaymentMethodPhaseStepOrderByRelevanceFieldEnum | Prisma.PaymentMethodPhaseStepOrderByRelevanceFieldEnum[]
   sort: Prisma.SortOrder
   search: string
+}
+
+export type PaymentMethodPhaseStepPhaseIdOrderCompoundUniqueInput = {
+  phaseId: string
+  order: number
 }
 
 export type PaymentMethodPhaseStepCountOrderByAggregateInput = {

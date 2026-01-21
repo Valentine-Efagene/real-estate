@@ -47,7 +47,7 @@ class UnitLockingService {
             throw new AppError(404, 'Application not found');
         }
 
-        if (application.status !== 'ACTIVE') {
+        if (application.status !== 'ACTIVE' && application.status !== 'PENDING') {
             throw new AppError(400, `Cannot lock unit for application in ${application.status} status`);
         }
 
@@ -70,17 +70,40 @@ class UnitLockingService {
             };
         }
 
-        // Execute the lock in a transaction
+        // Execute the lock in a transaction with optimistic locking
         const result = await prisma.$transaction(async (tx) => {
-            // 1. Lock the unit
-            const lockedUnit = await tx.propertyUnit.update({
-                where: { id: unit.id },
+            // 1. Lock the unit using optimistic locking to prevent race conditions
+            // Only update if version matches and reservedById is still null
+            const updateResult = await tx.propertyUnit.updateMany({
+                where: {
+                    id: unit.id,
+                    version: unit.version, // Optimistic lock check
+                    reservedById: null,    // Must still be available
+                },
                 data: {
                     status: 'RESERVED',
                     reservedById: application.buyerId,
                     reservedAt: new Date(),
+                    version: { increment: 1 },
                 },
             });
+
+            if (updateResult.count === 0) {
+                // Race condition: another process locked the unit first
+                throw new AppError(
+                    409,
+                    'Unit was locked by another buyer. Please try a different unit.'
+                );
+            }
+
+            // Fetch the updated unit
+            const lockedUnit = await tx.propertyUnit.findUnique({
+                where: { id: unit.id },
+            });
+
+            if (!lockedUnit) {
+                throw new AppError(500, 'Failed to retrieve locked unit');
+            }
 
             // 2. Find all competing applications (same unit, active status, different application)
             const competingApplications = await tx.application.findMany({

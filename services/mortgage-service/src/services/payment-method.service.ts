@@ -285,6 +285,28 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
             throw new AppError(400, 'PAYMENT phases require paymentPlanId');
         }
 
+        // Get existing phases to determine order
+        const existingPhases = await prisma.propertyPaymentMethodPhase.findMany({
+            where: { paymentMethodId: methodId },
+            select: { order: true },
+            orderBy: { order: 'desc' },
+        });
+
+        // Auto-assign next order if not provided
+        let phaseOrder = data.order;
+        if (phaseOrder === undefined || phaseOrder === null) {
+            phaseOrder = existingPhases.length > 0 ? existingPhases[0].order + 1 : 1;
+        } else {
+            // Validate that the order is the next sequential number
+            const maxOrder = existingPhases.length > 0 ? existingPhases[0].order : 0;
+            if (phaseOrder !== maxOrder + 1) {
+                throw new AppError(
+                    400,
+                    `Phase order must be ${maxOrder + 1} (next sequential). Got: ${phaseOrder}`
+                );
+            }
+        }
+
         // For DOCUMENTATION phases, either documentationPlanId or inline stepDefinitions should be provided
         let stepDefinitionsToUse = data.stepDefinitions;
         let requiredDocumentTypesToUse = data.requiredDocuments;
@@ -322,7 +344,7 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
                     description: data.description,
                     phaseCategory: data.phaseCategory,
                     phaseType: data.phaseType as PhaseType,
-                    order: data.order,
+                    order: phaseOrder,
                     interestRate: data.interestRate,
                     percentOfPrice: data.percentOfPrice,
                     requiresPreviousPhaseCompletion: data.requiresPreviousPhaseCompletion ?? true,
@@ -480,17 +502,81 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
             throw new AppError(404, 'Phase not found');
         }
 
-        await prisma.propertyPaymentMethodPhase.delete({
-            where: { id: phaseId },
+        await prisma.$transaction(async (tx: any) => {
+            // Delete the phase
+            await tx.propertyPaymentMethodPhase.delete({
+                where: { id: phaseId },
+            });
+
+            // Get remaining phases and reorder to close the gap
+            const remainingPhases = await tx.propertyPaymentMethodPhase.findMany({
+                where: { paymentMethodId: phase.paymentMethodId },
+                orderBy: { order: 'asc' },
+                select: { id: true, order: true },
+            });
+
+            // Reorder remaining phases to be sequential starting from 1
+            for (let i = 0; i < remainingPhases.length; i++) {
+                const newOrder = i + 1;
+                if (remainingPhases[i].order !== newOrder) {
+                    await tx.propertyPaymentMethodPhase.update({
+                        where: { id: remainingPhases[i].id },
+                        data: { order: newOrder },
+                    });
+                }
+            }
         });
 
         return { success: true };
     }
 
     async function reorderPhases(methodId: string, phaseOrders: { phaseId: string; order: number }[]) {
-        await findById(methodId);
+        const method = await findById(methodId);
+
+        // Get all phases for this payment method
+        const existingPhases = await prisma.propertyPaymentMethodPhase.findMany({
+            where: { paymentMethodId: methodId },
+            select: { id: true },
+        });
+
+        // Validate all phases are included
+        const existingPhaseIds = new Set(existingPhases.map(p => p.id));
+        const providedPhaseIds = new Set(phaseOrders.map(p => p.phaseId));
+
+        if (existingPhaseIds.size !== providedPhaseIds.size) {
+            throw new AppError(400, `All ${existingPhaseIds.size} phases must be included in reorder request`);
+        }
+
+        for (const phaseId of providedPhaseIds) {
+            if (!existingPhaseIds.has(phaseId)) {
+                throw new AppError(400, `Phase ${phaseId} does not belong to this payment method`);
+            }
+        }
+
+        // Validate orders are sequential starting from 1
+        const orders = phaseOrders.map(p => p.order).sort((a, b) => a - b);
+        for (let i = 0; i < orders.length; i++) {
+            if (orders[i] !== i + 1) {
+                throw new AppError(400, `Phase orders must be sequential starting from 1 (got: ${orders.join(', ')})`);
+            }
+        }
+
+        // Check for duplicate orders
+        const orderSet = new Set(orders);
+        if (orderSet.size !== orders.length) {
+            throw new AppError(400, 'Duplicate phase orders are not allowed');
+        }
 
         await prisma.$transaction(async (tx: any) => {
+            // Temporarily set all orders to negative to avoid unique constraint conflicts during reorder
+            for (let i = 0; i < phaseOrders.length; i++) {
+                await tx.propertyPaymentMethodPhase.update({
+                    where: { id: phaseOrders[i].phaseId },
+                    data: { order: -(i + 1) },
+                });
+            }
+
+            // Now set the actual orders
             for (const { phaseId, order } of phaseOrders) {
                 await tx.propertyPaymentMethodPhase.update({
                     where: { id: phaseId },
@@ -515,13 +601,35 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
             throw new AppError(404, 'Phase not found');
         }
 
+        // Get existing steps to determine order
+        const existingSteps = await prisma.paymentMethodPhaseStep.findMany({
+            where: { phaseId },
+            select: { order: true },
+            orderBy: { order: 'desc' },
+        });
+
+        // Auto-assign next order if not provided
+        let stepOrder = data.order;
+        if (stepOrder === undefined || stepOrder === null) {
+            stepOrder = existingSteps.length > 0 ? existingSteps[0].order + 1 : 1;
+        } else {
+            // Validate that the order is the next sequential number
+            const maxOrder = existingSteps.length > 0 ? existingSteps[0].order : 0;
+            if (stepOrder !== maxOrder + 1) {
+                throw new AppError(
+                    400,
+                    `Step order must be ${maxOrder + 1} (next sequential). Got: ${stepOrder}`
+                );
+            }
+        }
+
         const step = await prisma.paymentMethodPhaseStep.create({
             data: {
                 tenantId: phase.tenantId,
                 phaseId,
                 name: data.name,
                 stepType: data.stepType as StepType,
-                order: data.order,
+                order: stepOrder,
                 metadata: data.metadata,
             },
         });
@@ -567,12 +675,35 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
             throw new AppError(404, 'Step not found');
         }
 
-        await prisma.paymentMethodPhaseStep.delete({
-            where: { id: stepId },
+        const phaseId = step.phaseId;
+
+        await prisma.$transaction(async (tx: any) => {
+            // Delete the step
+            await tx.paymentMethodPhaseStep.delete({
+                where: { id: stepId },
+            });
+
+            // Get remaining steps and reorder to close the gap
+            const remainingSteps = await tx.paymentMethodPhaseStep.findMany({
+                where: { phaseId },
+                orderBy: { order: 'asc' },
+                select: { id: true, order: true },
+            });
+
+            // Reorder remaining steps to be sequential starting from 1
+            for (let i = 0; i < remainingSteps.length; i++) {
+                const newOrder = i + 1;
+                if (remainingSteps[i].order !== newOrder) {
+                    await tx.paymentMethodPhaseStep.update({
+                        where: { id: remainingSteps[i].id },
+                        data: { order: newOrder },
+                    });
+                }
+            }
         });
 
         // Update the phase snapshot for audit
-        await updatePhaseStepSnapshot(step.phaseId);
+        await updatePhaseStepSnapshot(phaseId);
 
         return { success: true };
     }
@@ -586,7 +717,50 @@ export function createPaymentMethodService(prisma: AnyPrismaClient = defaultPris
             throw new AppError(404, 'Phase not found');
         }
 
+        // Get all steps for this phase
+        const existingSteps = await prisma.paymentMethodPhaseStep.findMany({
+            where: { phaseId },
+            select: { id: true },
+        });
+
+        // Validate all steps are included
+        const existingStepIds = new Set(existingSteps.map(s => s.id));
+        const providedStepIds = new Set(stepOrders.map(s => s.stepId));
+
+        if (existingStepIds.size !== providedStepIds.size) {
+            throw new AppError(400, `All ${existingStepIds.size} steps must be included in reorder request`);
+        }
+
+        for (const stepId of providedStepIds) {
+            if (!existingStepIds.has(stepId)) {
+                throw new AppError(400, `Step ${stepId} does not belong to this phase`);
+            }
+        }
+
+        // Validate orders are sequential starting from 1
+        const orders = stepOrders.map(s => s.order).sort((a, b) => a - b);
+        for (let i = 0; i < orders.length; i++) {
+            if (orders[i] !== i + 1) {
+                throw new AppError(400, `Step orders must be sequential starting from 1 (got: ${orders.join(', ')})`);
+            }
+        }
+
+        // Check for duplicate orders
+        const orderSet = new Set(orders);
+        if (orderSet.size !== orders.length) {
+            throw new AppError(400, 'Duplicate step orders are not allowed');
+        }
+
         await prisma.$transaction(async (tx: any) => {
+            // Temporarily set all orders to negative to avoid unique constraint conflicts
+            for (let i = 0; i < stepOrders.length; i++) {
+                await tx.paymentMethodPhaseStep.update({
+                    where: { id: stepOrders[i].stepId },
+                    data: { order: -(i + 1) },
+                });
+            }
+
+            // Now set the actual orders
             for (const { stepId, order } of stepOrders) {
                 await tx.paymentMethodPhaseStep.update({
                     where: { id: stepId },

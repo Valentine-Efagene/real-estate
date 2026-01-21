@@ -34,6 +34,7 @@ export type PaymentInstallmentAvgAggregateOutputType = {
   paidAmount: number | null
   lateFee: number | null
   gracePeriodDays: number | null
+  version: number | null
 }
 
 export type PaymentInstallmentSumAggregateOutputType = {
@@ -44,6 +45,7 @@ export type PaymentInstallmentSumAggregateOutputType = {
   paidAmount: number | null
   lateFee: number | null
   gracePeriodDays: number | null
+  version: number | null
 }
 
 export type PaymentInstallmentMinAggregateOutputType = {
@@ -62,6 +64,7 @@ export type PaymentInstallmentMinAggregateOutputType = {
   lateFeeWaived: boolean | null
   gracePeriodDays: number | null
   gracePeriodEndDate: Date | null
+  version: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -82,6 +85,7 @@ export type PaymentInstallmentMaxAggregateOutputType = {
   lateFeeWaived: boolean | null
   gracePeriodDays: number | null
   gracePeriodEndDate: Date | null
+  version: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -102,6 +106,7 @@ export type PaymentInstallmentCountAggregateOutputType = {
   lateFeeWaived: number
   gracePeriodDays: number
   gracePeriodEndDate: number
+  version: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -116,6 +121,7 @@ export type PaymentInstallmentAvgAggregateInputType = {
   paidAmount?: true
   lateFee?: true
   gracePeriodDays?: true
+  version?: true
 }
 
 export type PaymentInstallmentSumAggregateInputType = {
@@ -126,6 +132,7 @@ export type PaymentInstallmentSumAggregateInputType = {
   paidAmount?: true
   lateFee?: true
   gracePeriodDays?: true
+  version?: true
 }
 
 export type PaymentInstallmentMinAggregateInputType = {
@@ -144,6 +151,7 @@ export type PaymentInstallmentMinAggregateInputType = {
   lateFeeWaived?: true
   gracePeriodDays?: true
   gracePeriodEndDate?: true
+  version?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -164,6 +172,7 @@ export type PaymentInstallmentMaxAggregateInputType = {
   lateFeeWaived?: true
   gracePeriodDays?: true
   gracePeriodEndDate?: true
+  version?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -184,6 +193,7 @@ export type PaymentInstallmentCountAggregateInputType = {
   lateFeeWaived?: true
   gracePeriodDays?: true
   gracePeriodEndDate?: true
+  version?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -291,6 +301,7 @@ export type PaymentInstallmentGroupByOutputType = {
   lateFeeWaived: boolean
   gracePeriodDays: number
   gracePeriodEndDate: Date | null
+  version: number
   createdAt: Date
   updatedAt: Date
   _count: PaymentInstallmentCountAggregateOutputType | null
@@ -334,6 +345,7 @@ export type PaymentInstallmentWhereInput = {
   lateFeeWaived?: Prisma.BoolFilter<"PaymentInstallment"> | boolean
   gracePeriodDays?: Prisma.IntFilter<"PaymentInstallment"> | number
   gracePeriodEndDate?: Prisma.DateTimeNullableFilter<"PaymentInstallment"> | Date | string | null
+  version?: Prisma.IntFilter<"PaymentInstallment"> | number
   createdAt?: Prisma.DateTimeFilter<"PaymentInstallment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PaymentInstallment"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
@@ -357,6 +369,7 @@ export type PaymentInstallmentOrderByWithRelationInput = {
   lateFeeWaived?: Prisma.SortOrder
   gracePeriodDays?: Prisma.SortOrder
   gracePeriodEndDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  version?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   tenant?: Prisma.TenantOrderByWithRelationInput
@@ -384,6 +397,7 @@ export type PaymentInstallmentWhereUniqueInput = Prisma.AtLeast<{
   lateFeeWaived?: Prisma.BoolFilter<"PaymentInstallment"> | boolean
   gracePeriodDays?: Prisma.IntFilter<"PaymentInstallment"> | number
   gracePeriodEndDate?: Prisma.DateTimeNullableFilter<"PaymentInstallment"> | Date | string | null
+  version?: Prisma.IntFilter<"PaymentInstallment"> | number
   createdAt?: Prisma.DateTimeFilter<"PaymentInstallment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PaymentInstallment"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
@@ -407,6 +421,7 @@ export type PaymentInstallmentOrderByWithAggregationInput = {
   lateFeeWaived?: Prisma.SortOrder
   gracePeriodDays?: Prisma.SortOrder
   gracePeriodEndDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  version?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.PaymentInstallmentCountOrderByAggregateInput
@@ -435,6 +450,7 @@ export type PaymentInstallmentScalarWhereWithAggregatesInput = {
   lateFeeWaived?: Prisma.BoolWithAggregatesFilter<"PaymentInstallment"> | boolean
   gracePeriodDays?: Prisma.IntWithAggregatesFilter<"PaymentInstallment"> | number
   gracePeriodEndDate?: Prisma.DateTimeNullableWithAggregatesFilter<"PaymentInstallment"> | Date | string | null
+  version?: Prisma.IntWithAggregatesFilter<"PaymentInstallment"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"PaymentInstallment"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"PaymentInstallment"> | Date | string
 }
@@ -453,6 +469,7 @@ export type PaymentInstallmentCreateInput = {
   lateFeeWaived?: boolean
   gracePeriodDays?: number
   gracePeriodEndDate?: Date | string | null
+  version?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutPaymentInstallmentsInput
@@ -476,6 +493,7 @@ export type PaymentInstallmentUncheckedCreateInput = {
   lateFeeWaived?: boolean
   gracePeriodDays?: number
   gracePeriodEndDate?: Date | string | null
+  version?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutInstallmentInput
@@ -495,6 +513,7 @@ export type PaymentInstallmentUpdateInput = {
   lateFeeWaived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
   gracePeriodEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutPaymentInstallmentsNestedInput
@@ -518,6 +537,7 @@ export type PaymentInstallmentUncheckedUpdateInput = {
   lateFeeWaived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
   gracePeriodEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutInstallmentNestedInput
@@ -539,6 +559,7 @@ export type PaymentInstallmentCreateManyInput = {
   lateFeeWaived?: boolean
   gracePeriodDays?: number
   gracePeriodEndDate?: Date | string | null
+  version?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -557,6 +578,7 @@ export type PaymentInstallmentUpdateManyMutationInput = {
   lateFeeWaived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
   gracePeriodEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -577,6 +599,7 @@ export type PaymentInstallmentUncheckedUpdateManyInput = {
   lateFeeWaived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
   gracePeriodEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -613,6 +636,7 @@ export type PaymentInstallmentCountOrderByAggregateInput = {
   lateFeeWaived?: Prisma.SortOrder
   gracePeriodDays?: Prisma.SortOrder
   gracePeriodEndDate?: Prisma.SortOrder
+  version?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -625,6 +649,7 @@ export type PaymentInstallmentAvgOrderByAggregateInput = {
   paidAmount?: Prisma.SortOrder
   lateFee?: Prisma.SortOrder
   gracePeriodDays?: Prisma.SortOrder
+  version?: Prisma.SortOrder
 }
 
 export type PaymentInstallmentMaxOrderByAggregateInput = {
@@ -643,6 +668,7 @@ export type PaymentInstallmentMaxOrderByAggregateInput = {
   lateFeeWaived?: Prisma.SortOrder
   gracePeriodDays?: Prisma.SortOrder
   gracePeriodEndDate?: Prisma.SortOrder
+  version?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -663,6 +689,7 @@ export type PaymentInstallmentMinOrderByAggregateInput = {
   lateFeeWaived?: Prisma.SortOrder
   gracePeriodDays?: Prisma.SortOrder
   gracePeriodEndDate?: Prisma.SortOrder
+  version?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -675,6 +702,7 @@ export type PaymentInstallmentSumOrderByAggregateInput = {
   paidAmount?: Prisma.SortOrder
   lateFee?: Prisma.SortOrder
   gracePeriodDays?: Prisma.SortOrder
+  version?: Prisma.SortOrder
 }
 
 export type PaymentInstallmentNullableScalarRelationFilter = {
@@ -800,6 +828,7 @@ export type PaymentInstallmentCreateWithoutTenantInput = {
   lateFeeWaived?: boolean
   gracePeriodDays?: number
   gracePeriodEndDate?: Date | string | null
+  version?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   paymentPhase: Prisma.PaymentPhaseCreateNestedOneWithoutInstallmentsInput
@@ -821,6 +850,7 @@ export type PaymentInstallmentUncheckedCreateWithoutTenantInput = {
   lateFeeWaived?: boolean
   gracePeriodDays?: number
   gracePeriodEndDate?: Date | string | null
+  version?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutInstallmentInput
@@ -871,6 +901,7 @@ export type PaymentInstallmentScalarWhereInput = {
   lateFeeWaived?: Prisma.BoolFilter<"PaymentInstallment"> | boolean
   gracePeriodDays?: Prisma.IntFilter<"PaymentInstallment"> | number
   gracePeriodEndDate?: Prisma.DateTimeNullableFilter<"PaymentInstallment"> | Date | string | null
+  version?: Prisma.IntFilter<"PaymentInstallment"> | number
   createdAt?: Prisma.DateTimeFilter<"PaymentInstallment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PaymentInstallment"> | Date | string
 }
@@ -889,6 +920,7 @@ export type PaymentInstallmentCreateWithoutPaymentPhaseInput = {
   lateFeeWaived?: boolean
   gracePeriodDays?: number
   gracePeriodEndDate?: Date | string | null
+  version?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutPaymentInstallmentsInput
@@ -910,6 +942,7 @@ export type PaymentInstallmentUncheckedCreateWithoutPaymentPhaseInput = {
   lateFeeWaived?: boolean
   gracePeriodDays?: number
   gracePeriodEndDate?: Date | string | null
+  version?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutInstallmentInput
@@ -955,6 +988,7 @@ export type PaymentInstallmentCreateWithoutPaymentsInput = {
   lateFeeWaived?: boolean
   gracePeriodDays?: number
   gracePeriodEndDate?: Date | string | null
+  version?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutPaymentInstallmentsInput
@@ -977,6 +1011,7 @@ export type PaymentInstallmentUncheckedCreateWithoutPaymentsInput = {
   lateFeeWaived?: boolean
   gracePeriodDays?: number
   gracePeriodEndDate?: Date | string | null
+  version?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1011,6 +1046,7 @@ export type PaymentInstallmentUpdateWithoutPaymentsInput = {
   lateFeeWaived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
   gracePeriodEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutPaymentInstallmentsNestedInput
@@ -1033,6 +1069,7 @@ export type PaymentInstallmentUncheckedUpdateWithoutPaymentsInput = {
   lateFeeWaived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
   gracePeriodEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1052,6 +1089,7 @@ export type PaymentInstallmentCreateManyTenantInput = {
   lateFeeWaived?: boolean
   gracePeriodDays?: number
   gracePeriodEndDate?: Date | string | null
+  version?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1070,6 +1108,7 @@ export type PaymentInstallmentUpdateWithoutTenantInput = {
   lateFeeWaived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
   gracePeriodEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   paymentPhase?: Prisma.PaymentPhaseUpdateOneRequiredWithoutInstallmentsNestedInput
@@ -1091,6 +1130,7 @@ export type PaymentInstallmentUncheckedUpdateWithoutTenantInput = {
   lateFeeWaived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
   gracePeriodEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutInstallmentNestedInput
@@ -1111,6 +1151,7 @@ export type PaymentInstallmentUncheckedUpdateManyWithoutTenantInput = {
   lateFeeWaived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
   gracePeriodEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1130,6 +1171,7 @@ export type PaymentInstallmentCreateManyPaymentPhaseInput = {
   lateFeeWaived?: boolean
   gracePeriodDays?: number
   gracePeriodEndDate?: Date | string | null
+  version?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1148,6 +1190,7 @@ export type PaymentInstallmentUpdateWithoutPaymentPhaseInput = {
   lateFeeWaived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
   gracePeriodEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutPaymentInstallmentsNestedInput
@@ -1169,6 +1212,7 @@ export type PaymentInstallmentUncheckedUpdateWithoutPaymentPhaseInput = {
   lateFeeWaived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
   gracePeriodEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutInstallmentNestedInput
@@ -1189,6 +1233,7 @@ export type PaymentInstallmentUncheckedUpdateManyWithoutPaymentPhaseInput = {
   lateFeeWaived?: Prisma.BoolFieldUpdateOperationsInput | boolean
   gracePeriodDays?: Prisma.IntFieldUpdateOperationsInput | number
   gracePeriodEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1240,6 +1285,7 @@ export type PaymentInstallmentSelect<ExtArgs extends runtime.Types.Extensions.In
   lateFeeWaived?: boolean
   gracePeriodDays?: boolean
   gracePeriodEndDate?: boolean
+  version?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
@@ -1266,11 +1312,12 @@ export type PaymentInstallmentSelectScalar = {
   lateFeeWaived?: boolean
   gracePeriodDays?: boolean
   gracePeriodEndDate?: boolean
+  version?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type PaymentInstallmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "paymentPhaseId" | "installmentNumber" | "amount" | "principalAmount" | "interestAmount" | "dueDate" | "status" | "paidAmount" | "paidDate" | "lateFee" | "lateFeeWaived" | "gracePeriodDays" | "gracePeriodEndDate" | "createdAt" | "updatedAt", ExtArgs["result"]["paymentInstallment"]>
+export type PaymentInstallmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "paymentPhaseId" | "installmentNumber" | "amount" | "principalAmount" | "interestAmount" | "dueDate" | "status" | "paidAmount" | "paidDate" | "lateFee" | "lateFeeWaived" | "gracePeriodDays" | "gracePeriodEndDate" | "version" | "createdAt" | "updatedAt", ExtArgs["result"]["paymentInstallment"]>
 export type PaymentInstallmentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   paymentPhase?: boolean | Prisma.PaymentPhaseDefaultArgs<ExtArgs>
@@ -1301,6 +1348,7 @@ export type $PaymentInstallmentPayload<ExtArgs extends runtime.Types.Extensions.
     lateFeeWaived: boolean
     gracePeriodDays: number
     gracePeriodEndDate: Date | null
+    version: number
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["paymentInstallment"]>
@@ -1690,6 +1738,7 @@ export interface PaymentInstallmentFieldRefs {
   readonly lateFeeWaived: Prisma.FieldRef<"PaymentInstallment", 'Boolean'>
   readonly gracePeriodDays: Prisma.FieldRef<"PaymentInstallment", 'Int'>
   readonly gracePeriodEndDate: Prisma.FieldRef<"PaymentInstallment", 'DateTime'>
+  readonly version: Prisma.FieldRef<"PaymentInstallment", 'Int'>
   readonly createdAt: Prisma.FieldRef<"PaymentInstallment", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"PaymentInstallment", 'DateTime'>
 }

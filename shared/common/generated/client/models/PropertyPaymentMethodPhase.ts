@@ -406,6 +406,7 @@ export type PropertyPaymentMethodPhaseOrderByWithRelationInput = {
 
 export type PropertyPaymentMethodPhaseWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  paymentMethodId_order?: Prisma.PropertyPaymentMethodPhasePaymentMethodIdOrderCompoundUniqueInput
   AND?: Prisma.PropertyPaymentMethodPhaseWhereInput | Prisma.PropertyPaymentMethodPhaseWhereInput[]
   OR?: Prisma.PropertyPaymentMethodPhaseWhereInput[]
   NOT?: Prisma.PropertyPaymentMethodPhaseWhereInput | Prisma.PropertyPaymentMethodPhaseWhereInput[]
@@ -440,7 +441,7 @@ export type PropertyPaymentMethodPhaseWhereUniqueInput = Prisma.AtLeast<{
   questionnaireFields?: Prisma.PaymentMethodPhaseFieldListRelationFilter
   eventAttachments?: Prisma.PhaseEventAttachmentListRelationFilter
   applicationPhases?: Prisma.ApplicationPhaseListRelationFilter
-}, "id">
+}, "id" | "paymentMethodId_order">
 
 export type PropertyPaymentMethodPhaseOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -704,6 +705,11 @@ export type PropertyPaymentMethodPhaseOrderByRelevanceInput = {
   fields: Prisma.PropertyPaymentMethodPhaseOrderByRelevanceFieldEnum | Prisma.PropertyPaymentMethodPhaseOrderByRelevanceFieldEnum[]
   sort: Prisma.SortOrder
   search: string
+}
+
+export type PropertyPaymentMethodPhasePaymentMethodIdOrderCompoundUniqueInput = {
+  paymentMethodId: string
+  order: number
 }
 
 export type PropertyPaymentMethodPhaseCountOrderByAggregateInput = {

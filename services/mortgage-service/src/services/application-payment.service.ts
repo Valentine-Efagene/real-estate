@@ -313,7 +313,7 @@ class ApplicationPaymentService {
                 },
             });
 
-            // Update installment if linked
+            // Update installment if linked (with optimistic locking)
             if (payment.installmentId) {
                 const installment = await tx.paymentInstallment.findUnique({
                     where: { id: payment.installmentId },
@@ -323,18 +323,27 @@ class ApplicationPaymentService {
                     const newPaidAmount = installment.paidAmount + payment.amount;
                     const isPaid = newPaidAmount >= installment.amount;
 
-                    await tx.paymentInstallment.update({
-                        where: { id: payment.installmentId },
+                    // Optimistic lock: update only if version matches
+                    const updateResult = await tx.paymentInstallment.updateMany({
+                        where: {
+                            id: payment.installmentId,
+                            version: installment.version, // Optimistic lock check
+                        },
                         data: {
                             paidAmount: newPaidAmount,
                             status: isPaid ? 'PAID' : 'PARTIALLY_PAID',
                             paidDate: isPaid ? new Date() : null,
+                            version: { increment: 1 },
                         },
                     });
+
+                    if (updateResult.count === 0) {
+                        throw new AppError(409, 'Concurrent payment detected. Please retry.');
+                    }
                 }
             }
 
-            // Update phase totals (via PaymentPhase extension)
+            // Update phase totals (via PaymentPhase extension) with optimistic locking
             if (payment.phaseId) {
                 const phase = await tx.applicationPhase.findUnique({
                     where: { id: payment.phaseId },
@@ -349,13 +358,21 @@ class ApplicationPaymentService {
                     const newRemainingAmount = (paymentPhase.totalAmount ?? 0) - newPaidAmount;
                     const isFullyPaid = newRemainingAmount <= 0;
 
-                    // Update PaymentPhase extension
-                    await tx.paymentPhase.update({
-                        where: { id: paymentPhase.id },
+                    // Optimistic lock: update only if version matches
+                    const updateResult = await tx.paymentPhase.updateMany({
+                        where: {
+                            id: paymentPhase.id,
+                            version: paymentPhase.version, // Optimistic lock check
+                        },
                         data: {
                             paidAmount: newPaidAmount,
+                            version: { increment: 1 },
                         },
                     });
+
+                    if (updateResult.count === 0) {
+                        throw new AppError(409, 'Concurrent payment detected. Please retry.');
+                    }
 
                     // Update ApplicationPhase status
                     if (isFullyPaid) {
