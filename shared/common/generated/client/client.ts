@@ -84,6 +84,11 @@ export type Organization = Prisma.OrganizationModel
  */
 export type OrganizationMember = Prisma.OrganizationMemberModel
 /**
+ * Model BankDocumentRequirement
+ * Bank Document Requirement - Bank-specific document rules
+ */
+export type BankDocumentRequirement = Prisma.BankDocumentRequirementModel
+/**
  * Model Tenant
  * 
  */
@@ -266,6 +271,11 @@ export type PaymentMethodPhaseField = Prisma.PaymentMethodPhaseFieldModel
  */
 export type Application = Prisma.ApplicationModel
 /**
+ * Model ApplicationOrganization
+ * 
+ */
+export type ApplicationOrganization = Prisma.ApplicationOrganizationModel
+/**
  * Model ApplicationRefund
  * 
  */
@@ -379,17 +389,6 @@ export type EventType = Prisma.EventTypeModel
  */
 export type EventHandler = Prisma.EventHandlerModel
 /**
- * Model WorkflowEvent
- * Workflow Event - An actual event instance that occurred
- * This is the audit log of all events in the system
- */
-export type WorkflowEvent = Prisma.WorkflowEventModel
-/**
- * Model EventHandlerExecution
- * Event Handler Execution - Log of a handler processing an event
- */
-export type EventHandlerExecution = Prisma.EventHandlerExecutionModel
-/**
  * Model DomainEvent
  * 
  */
@@ -409,3 +408,13 @@ export type ApprovalRequest = Prisma.ApprovalRequestModel
  * Workflow Blocker - Records who is blocking workflow and for how long
  */
 export type WorkflowBlocker = Prisma.WorkflowBlockerModel
+/**
+ * Model ScheduledJob
+ * Scheduled Job - Tracks execution of background jobs
+ */
+export type ScheduledJob = Prisma.ScheduledJobModel
+/**
+ * Model DocumentExpiryWarning
+ * Document Expiry Warning - Track warnings sent for expiring documents
+ */
+export type DocumentExpiryWarning = Prisma.DocumentExpiryWarningModel

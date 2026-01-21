@@ -27,10 +27,12 @@ export type AggregateApplicationDocument = {
 }
 
 export type ApplicationDocumentAvgAggregateOutputType = {
+  expiryDays: number | null
   version: number | null
 }
 
 export type ApplicationDocumentSumAggregateOutputType = {
+  expiryDays: number | null
   version: number | null
 }
 
@@ -46,6 +48,15 @@ export type ApplicationDocumentMinAggregateOutputType = {
   url: string | null
   type: string | null
   uploadedById: string | null
+  expectedUploader: $Enums.UploadedBy | null
+  expectedOrganizationId: string | null
+  documentDate: Date | null
+  expiresAt: Date | null
+  expiryDays: number | null
+  isExpired: boolean | null
+  expiredAt: Date | null
+  expiryWarningAt: Date | null
+  revalidatedAt: Date | null
   status: $Enums.DocumentStatus | null
   version: number | null
   replacesDocumentId: string | null
@@ -65,6 +76,15 @@ export type ApplicationDocumentMaxAggregateOutputType = {
   url: string | null
   type: string | null
   uploadedById: string | null
+  expectedUploader: $Enums.UploadedBy | null
+  expectedOrganizationId: string | null
+  documentDate: Date | null
+  expiresAt: Date | null
+  expiryDays: number | null
+  isExpired: boolean | null
+  expiredAt: Date | null
+  expiryWarningAt: Date | null
+  revalidatedAt: Date | null
   status: $Enums.DocumentStatus | null
   version: number | null
   replacesDocumentId: string | null
@@ -84,6 +104,15 @@ export type ApplicationDocumentCountAggregateOutputType = {
   url: number
   type: number
   uploadedById: number
+  expectedUploader: number
+  expectedOrganizationId: number
+  documentDate: number
+  expiresAt: number
+  expiryDays: number
+  isExpired: number
+  expiredAt: number
+  expiryWarningAt: number
+  revalidatedAt: number
   status: number
   version: number
   replacesDocumentId: number
@@ -94,10 +123,12 @@ export type ApplicationDocumentCountAggregateOutputType = {
 
 
 export type ApplicationDocumentAvgAggregateInputType = {
+  expiryDays?: true
   version?: true
 }
 
 export type ApplicationDocumentSumAggregateInputType = {
+  expiryDays?: true
   version?: true
 }
 
@@ -113,6 +144,15 @@ export type ApplicationDocumentMinAggregateInputType = {
   url?: true
   type?: true
   uploadedById?: true
+  expectedUploader?: true
+  expectedOrganizationId?: true
+  documentDate?: true
+  expiresAt?: true
+  expiryDays?: true
+  isExpired?: true
+  expiredAt?: true
+  expiryWarningAt?: true
+  revalidatedAt?: true
   status?: true
   version?: true
   replacesDocumentId?: true
@@ -132,6 +172,15 @@ export type ApplicationDocumentMaxAggregateInputType = {
   url?: true
   type?: true
   uploadedById?: true
+  expectedUploader?: true
+  expectedOrganizationId?: true
+  documentDate?: true
+  expiresAt?: true
+  expiryDays?: true
+  isExpired?: true
+  expiredAt?: true
+  expiryWarningAt?: true
+  revalidatedAt?: true
   status?: true
   version?: true
   replacesDocumentId?: true
@@ -151,6 +200,15 @@ export type ApplicationDocumentCountAggregateInputType = {
   url?: true
   type?: true
   uploadedById?: true
+  expectedUploader?: true
+  expectedOrganizationId?: true
+  documentDate?: true
+  expiresAt?: true
+  expiryDays?: true
+  isExpired?: true
+  expiredAt?: true
+  expiryWarningAt?: true
+  revalidatedAt?: true
   status?: true
   version?: true
   replacesDocumentId?: true
@@ -257,6 +315,15 @@ export type ApplicationDocumentGroupByOutputType = {
   url: string
   type: string
   uploadedById: string | null
+  expectedUploader: $Enums.UploadedBy | null
+  expectedOrganizationId: string | null
+  documentDate: Date | null
+  expiresAt: Date | null
+  expiryDays: number | null
+  isExpired: boolean
+  expiredAt: Date | null
+  expiryWarningAt: Date | null
+  revalidatedAt: Date | null
   status: $Enums.DocumentStatus
   version: number
   replacesDocumentId: string | null
@@ -299,6 +366,15 @@ export type ApplicationDocumentWhereInput = {
   url?: Prisma.StringFilter<"ApplicationDocument"> | string
   type?: Prisma.StringFilter<"ApplicationDocument"> | string
   uploadedById?: Prisma.StringNullableFilter<"ApplicationDocument"> | string | null
+  expectedUploader?: Prisma.EnumUploadedByNullableFilter<"ApplicationDocument"> | $Enums.UploadedBy | null
+  expectedOrganizationId?: Prisma.StringNullableFilter<"ApplicationDocument"> | string | null
+  documentDate?: Prisma.DateTimeNullableFilter<"ApplicationDocument"> | Date | string | null
+  expiresAt?: Prisma.DateTimeNullableFilter<"ApplicationDocument"> | Date | string | null
+  expiryDays?: Prisma.IntNullableFilter<"ApplicationDocument"> | number | null
+  isExpired?: Prisma.BoolFilter<"ApplicationDocument"> | boolean
+  expiredAt?: Prisma.DateTimeNullableFilter<"ApplicationDocument"> | Date | string | null
+  expiryWarningAt?: Prisma.DateTimeNullableFilter<"ApplicationDocument"> | Date | string | null
+  revalidatedAt?: Prisma.DateTimeNullableFilter<"ApplicationDocument"> | Date | string | null
   status?: Prisma.EnumDocumentStatusFilter<"ApplicationDocument"> | $Enums.DocumentStatus
   version?: Prisma.IntFilter<"ApplicationDocument"> | number
   replacesDocumentId?: Prisma.StringNullableFilter<"ApplicationDocument"> | string | null
@@ -325,6 +401,15 @@ export type ApplicationDocumentOrderByWithRelationInput = {
   url?: Prisma.SortOrder
   type?: Prisma.SortOrder
   uploadedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  expectedUploader?: Prisma.SortOrderInput | Prisma.SortOrder
+  expectedOrganizationId?: Prisma.SortOrderInput | Prisma.SortOrder
+  documentDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  expiryDays?: Prisma.SortOrderInput | Prisma.SortOrder
+  isExpired?: Prisma.SortOrder
+  expiredAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  expiryWarningAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  revalidatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   version?: Prisma.SortOrder
   replacesDocumentId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -355,6 +440,15 @@ export type ApplicationDocumentWhereUniqueInput = Prisma.AtLeast<{
   url?: Prisma.StringFilter<"ApplicationDocument"> | string
   type?: Prisma.StringFilter<"ApplicationDocument"> | string
   uploadedById?: Prisma.StringNullableFilter<"ApplicationDocument"> | string | null
+  expectedUploader?: Prisma.EnumUploadedByNullableFilter<"ApplicationDocument"> | $Enums.UploadedBy | null
+  expectedOrganizationId?: Prisma.StringNullableFilter<"ApplicationDocument"> | string | null
+  documentDate?: Prisma.DateTimeNullableFilter<"ApplicationDocument"> | Date | string | null
+  expiresAt?: Prisma.DateTimeNullableFilter<"ApplicationDocument"> | Date | string | null
+  expiryDays?: Prisma.IntNullableFilter<"ApplicationDocument"> | number | null
+  isExpired?: Prisma.BoolFilter<"ApplicationDocument"> | boolean
+  expiredAt?: Prisma.DateTimeNullableFilter<"ApplicationDocument"> | Date | string | null
+  expiryWarningAt?: Prisma.DateTimeNullableFilter<"ApplicationDocument"> | Date | string | null
+  revalidatedAt?: Prisma.DateTimeNullableFilter<"ApplicationDocument"> | Date | string | null
   status?: Prisma.EnumDocumentStatusFilter<"ApplicationDocument"> | $Enums.DocumentStatus
   version?: Prisma.IntFilter<"ApplicationDocument"> | number
   replacesDocumentId?: Prisma.StringNullableFilter<"ApplicationDocument"> | string | null
@@ -381,6 +475,15 @@ export type ApplicationDocumentOrderByWithAggregationInput = {
   url?: Prisma.SortOrder
   type?: Prisma.SortOrder
   uploadedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  expectedUploader?: Prisma.SortOrderInput | Prisma.SortOrder
+  expectedOrganizationId?: Prisma.SortOrderInput | Prisma.SortOrder
+  documentDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  expiryDays?: Prisma.SortOrderInput | Prisma.SortOrder
+  isExpired?: Prisma.SortOrder
+  expiredAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  expiryWarningAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  revalidatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   version?: Prisma.SortOrder
   replacesDocumentId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -408,6 +511,15 @@ export type ApplicationDocumentScalarWhereWithAggregatesInput = {
   url?: Prisma.StringWithAggregatesFilter<"ApplicationDocument"> | string
   type?: Prisma.StringWithAggregatesFilter<"ApplicationDocument"> | string
   uploadedById?: Prisma.StringNullableWithAggregatesFilter<"ApplicationDocument"> | string | null
+  expectedUploader?: Prisma.EnumUploadedByNullableWithAggregatesFilter<"ApplicationDocument"> | $Enums.UploadedBy | null
+  expectedOrganizationId?: Prisma.StringNullableWithAggregatesFilter<"ApplicationDocument"> | string | null
+  documentDate?: Prisma.DateTimeNullableWithAggregatesFilter<"ApplicationDocument"> | Date | string | null
+  expiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ApplicationDocument"> | Date | string | null
+  expiryDays?: Prisma.IntNullableWithAggregatesFilter<"ApplicationDocument"> | number | null
+  isExpired?: Prisma.BoolWithAggregatesFilter<"ApplicationDocument"> | boolean
+  expiredAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ApplicationDocument"> | Date | string | null
+  expiryWarningAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ApplicationDocument"> | Date | string | null
+  revalidatedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ApplicationDocument"> | Date | string | null
   status?: Prisma.EnumDocumentStatusWithAggregatesFilter<"ApplicationDocument"> | $Enums.DocumentStatus
   version?: Prisma.IntWithAggregatesFilter<"ApplicationDocument"> | number
   replacesDocumentId?: Prisma.StringNullableWithAggregatesFilter<"ApplicationDocument"> | string | null
@@ -424,6 +536,15 @@ export type ApplicationDocumentCreateInput = {
   name: string
   url: string
   type: string
+  expectedUploader?: $Enums.UploadedBy | null
+  expectedOrganizationId?: string | null
+  documentDate?: Date | string | null
+  expiresAt?: Date | string | null
+  expiryDays?: number | null
+  isExpired?: boolean
+  expiredAt?: Date | string | null
+  expiryWarningAt?: Date | string | null
+  revalidatedAt?: Date | string | null
   status?: $Enums.DocumentStatus
   version?: number
   createdAt?: Date | string
@@ -449,6 +570,15 @@ export type ApplicationDocumentUncheckedCreateInput = {
   url: string
   type: string
   uploadedById?: string | null
+  expectedUploader?: $Enums.UploadedBy | null
+  expectedOrganizationId?: string | null
+  documentDate?: Date | string | null
+  expiresAt?: Date | string | null
+  expiryDays?: number | null
+  isExpired?: boolean
+  expiredAt?: Date | string | null
+  expiryWarningAt?: Date | string | null
+  revalidatedAt?: Date | string | null
   status?: $Enums.DocumentStatus
   version?: number
   replacesDocumentId?: string | null
@@ -468,6 +598,15 @@ export type ApplicationDocumentUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  expectedUploader?: Prisma.NullableEnumUploadedByFieldUpdateOperationsInput | $Enums.UploadedBy | null
+  expectedOrganizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isExpired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryWarningAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revalidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -493,6 +632,15 @@ export type ApplicationDocumentUncheckedUpdateInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expectedUploader?: Prisma.NullableEnumUploadedByFieldUpdateOperationsInput | $Enums.UploadedBy | null
+  expectedOrganizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isExpired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryWarningAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revalidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   replacesDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -515,6 +663,15 @@ export type ApplicationDocumentCreateManyInput = {
   url: string
   type: string
   uploadedById?: string | null
+  expectedUploader?: $Enums.UploadedBy | null
+  expectedOrganizationId?: string | null
+  documentDate?: Date | string | null
+  expiresAt?: Date | string | null
+  expiryDays?: number | null
+  isExpired?: boolean
+  expiredAt?: Date | string | null
+  expiryWarningAt?: Date | string | null
+  revalidatedAt?: Date | string | null
   status?: $Enums.DocumentStatus
   version?: number
   replacesDocumentId?: string | null
@@ -531,6 +688,15 @@ export type ApplicationDocumentUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  expectedUploader?: Prisma.NullableEnumUploadedByFieldUpdateOperationsInput | $Enums.UploadedBy | null
+  expectedOrganizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isExpired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryWarningAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revalidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -549,6 +715,15 @@ export type ApplicationDocumentUncheckedUpdateManyInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expectedUploader?: Prisma.NullableEnumUploadedByFieldUpdateOperationsInput | $Enums.UploadedBy | null
+  expectedOrganizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isExpired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryWarningAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revalidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   replacesDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -589,6 +764,15 @@ export type ApplicationDocumentCountOrderByAggregateInput = {
   url?: Prisma.SortOrder
   type?: Prisma.SortOrder
   uploadedById?: Prisma.SortOrder
+  expectedUploader?: Prisma.SortOrder
+  expectedOrganizationId?: Prisma.SortOrder
+  documentDate?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrder
+  expiryDays?: Prisma.SortOrder
+  isExpired?: Prisma.SortOrder
+  expiredAt?: Prisma.SortOrder
+  expiryWarningAt?: Prisma.SortOrder
+  revalidatedAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
   version?: Prisma.SortOrder
   replacesDocumentId?: Prisma.SortOrder
@@ -597,6 +781,7 @@ export type ApplicationDocumentCountOrderByAggregateInput = {
 }
 
 export type ApplicationDocumentAvgOrderByAggregateInput = {
+  expiryDays?: Prisma.SortOrder
   version?: Prisma.SortOrder
 }
 
@@ -612,6 +797,15 @@ export type ApplicationDocumentMaxOrderByAggregateInput = {
   url?: Prisma.SortOrder
   type?: Prisma.SortOrder
   uploadedById?: Prisma.SortOrder
+  expectedUploader?: Prisma.SortOrder
+  expectedOrganizationId?: Prisma.SortOrder
+  documentDate?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrder
+  expiryDays?: Prisma.SortOrder
+  isExpired?: Prisma.SortOrder
+  expiredAt?: Prisma.SortOrder
+  expiryWarningAt?: Prisma.SortOrder
+  revalidatedAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
   version?: Prisma.SortOrder
   replacesDocumentId?: Prisma.SortOrder
@@ -631,6 +825,15 @@ export type ApplicationDocumentMinOrderByAggregateInput = {
   url?: Prisma.SortOrder
   type?: Prisma.SortOrder
   uploadedById?: Prisma.SortOrder
+  expectedUploader?: Prisma.SortOrder
+  expectedOrganizationId?: Prisma.SortOrder
+  documentDate?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrder
+  expiryDays?: Prisma.SortOrder
+  isExpired?: Prisma.SortOrder
+  expiredAt?: Prisma.SortOrder
+  expiryWarningAt?: Prisma.SortOrder
+  revalidatedAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
   version?: Prisma.SortOrder
   replacesDocumentId?: Prisma.SortOrder
@@ -639,6 +842,7 @@ export type ApplicationDocumentMinOrderByAggregateInput = {
 }
 
 export type ApplicationDocumentSumOrderByAggregateInput = {
+  expiryDays?: Prisma.SortOrder
   version?: Prisma.SortOrder
 }
 
@@ -793,6 +997,10 @@ export type ApplicationDocumentUncheckedCreateNestedManyWithoutReplacesDocumentI
   connect?: Prisma.ApplicationDocumentWhereUniqueInput | Prisma.ApplicationDocumentWhereUniqueInput[]
 }
 
+export type NullableEnumUploadedByFieldUpdateOperationsInput = {
+  set?: $Enums.UploadedBy | null
+}
+
 export type EnumDocumentStatusFieldUpdateOperationsInput = {
   set?: $Enums.DocumentStatus
 }
@@ -872,6 +1080,15 @@ export type ApplicationDocumentCreateWithoutUploadedByInput = {
   name: string
   url: string
   type: string
+  expectedUploader?: $Enums.UploadedBy | null
+  expectedOrganizationId?: string | null
+  documentDate?: Date | string | null
+  expiresAt?: Date | string | null
+  expiryDays?: number | null
+  isExpired?: boolean
+  expiredAt?: Date | string | null
+  expiryWarningAt?: Date | string | null
+  revalidatedAt?: Date | string | null
   status?: $Enums.DocumentStatus
   version?: number
   createdAt?: Date | string
@@ -895,6 +1112,15 @@ export type ApplicationDocumentUncheckedCreateWithoutUploadedByInput = {
   name: string
   url: string
   type: string
+  expectedUploader?: $Enums.UploadedBy | null
+  expectedOrganizationId?: string | null
+  documentDate?: Date | string | null
+  expiresAt?: Date | string | null
+  expiryDays?: number | null
+  isExpired?: boolean
+  expiredAt?: Date | string | null
+  expiryWarningAt?: Date | string | null
+  revalidatedAt?: Date | string | null
   status?: $Enums.DocumentStatus
   version?: number
   replacesDocumentId?: string | null
@@ -946,6 +1172,15 @@ export type ApplicationDocumentScalarWhereInput = {
   url?: Prisma.StringFilter<"ApplicationDocument"> | string
   type?: Prisma.StringFilter<"ApplicationDocument"> | string
   uploadedById?: Prisma.StringNullableFilter<"ApplicationDocument"> | string | null
+  expectedUploader?: Prisma.EnumUploadedByNullableFilter<"ApplicationDocument"> | $Enums.UploadedBy | null
+  expectedOrganizationId?: Prisma.StringNullableFilter<"ApplicationDocument"> | string | null
+  documentDate?: Prisma.DateTimeNullableFilter<"ApplicationDocument"> | Date | string | null
+  expiresAt?: Prisma.DateTimeNullableFilter<"ApplicationDocument"> | Date | string | null
+  expiryDays?: Prisma.IntNullableFilter<"ApplicationDocument"> | number | null
+  isExpired?: Prisma.BoolFilter<"ApplicationDocument"> | boolean
+  expiredAt?: Prisma.DateTimeNullableFilter<"ApplicationDocument"> | Date | string | null
+  expiryWarningAt?: Prisma.DateTimeNullableFilter<"ApplicationDocument"> | Date | string | null
+  revalidatedAt?: Prisma.DateTimeNullableFilter<"ApplicationDocument"> | Date | string | null
   status?: Prisma.EnumDocumentStatusFilter<"ApplicationDocument"> | $Enums.DocumentStatus
   version?: Prisma.IntFilter<"ApplicationDocument"> | number
   replacesDocumentId?: Prisma.StringNullableFilter<"ApplicationDocument"> | string | null
@@ -962,6 +1197,15 @@ export type ApplicationDocumentCreateWithoutTenantInput = {
   name: string
   url: string
   type: string
+  expectedUploader?: $Enums.UploadedBy | null
+  expectedOrganizationId?: string | null
+  documentDate?: Date | string | null
+  expiresAt?: Date | string | null
+  expiryDays?: number | null
+  isExpired?: boolean
+  expiredAt?: Date | string | null
+  expiryWarningAt?: Date | string | null
+  revalidatedAt?: Date | string | null
   status?: $Enums.DocumentStatus
   version?: number
   createdAt?: Date | string
@@ -985,6 +1229,15 @@ export type ApplicationDocumentUncheckedCreateWithoutTenantInput = {
   url: string
   type: string
   uploadedById?: string | null
+  expectedUploader?: $Enums.UploadedBy | null
+  expectedOrganizationId?: string | null
+  documentDate?: Date | string | null
+  expiresAt?: Date | string | null
+  expiryDays?: number | null
+  isExpired?: boolean
+  expiredAt?: Date | string | null
+  expiryWarningAt?: Date | string | null
+  revalidatedAt?: Date | string | null
   status?: $Enums.DocumentStatus
   version?: number
   replacesDocumentId?: string | null
@@ -1030,6 +1283,15 @@ export type ApplicationDocumentCreateWithoutApplicationInput = {
   name: string
   url: string
   type: string
+  expectedUploader?: $Enums.UploadedBy | null
+  expectedOrganizationId?: string | null
+  documentDate?: Date | string | null
+  expiresAt?: Date | string | null
+  expiryDays?: number | null
+  isExpired?: boolean
+  expiredAt?: Date | string | null
+  expiryWarningAt?: Date | string | null
+  revalidatedAt?: Date | string | null
   status?: $Enums.DocumentStatus
   version?: number
   createdAt?: Date | string
@@ -1053,6 +1315,15 @@ export type ApplicationDocumentUncheckedCreateWithoutApplicationInput = {
   url: string
   type: string
   uploadedById?: string | null
+  expectedUploader?: $Enums.UploadedBy | null
+  expectedOrganizationId?: string | null
+  documentDate?: Date | string | null
+  expiresAt?: Date | string | null
+  expiryDays?: number | null
+  isExpired?: boolean
+  expiredAt?: Date | string | null
+  expiryWarningAt?: Date | string | null
+  revalidatedAt?: Date | string | null
   status?: $Enums.DocumentStatus
   version?: number
   replacesDocumentId?: string | null
@@ -1098,6 +1369,15 @@ export type ApplicationDocumentCreateWithoutRevisionsInput = {
   name: string
   url: string
   type: string
+  expectedUploader?: $Enums.UploadedBy | null
+  expectedOrganizationId?: string | null
+  documentDate?: Date | string | null
+  expiresAt?: Date | string | null
+  expiryDays?: number | null
+  isExpired?: boolean
+  expiredAt?: Date | string | null
+  expiryWarningAt?: Date | string | null
+  revalidatedAt?: Date | string | null
   status?: $Enums.DocumentStatus
   version?: number
   createdAt?: Date | string
@@ -1122,6 +1402,15 @@ export type ApplicationDocumentUncheckedCreateWithoutRevisionsInput = {
   url: string
   type: string
   uploadedById?: string | null
+  expectedUploader?: $Enums.UploadedBy | null
+  expectedOrganizationId?: string | null
+  documentDate?: Date | string | null
+  expiresAt?: Date | string | null
+  expiryDays?: number | null
+  isExpired?: boolean
+  expiredAt?: Date | string | null
+  expiryWarningAt?: Date | string | null
+  revalidatedAt?: Date | string | null
   status?: $Enums.DocumentStatus
   version?: number
   replacesDocumentId?: string | null
@@ -1145,6 +1434,15 @@ export type ApplicationDocumentCreateWithoutReplacesDocumentInput = {
   name: string
   url: string
   type: string
+  expectedUploader?: $Enums.UploadedBy | null
+  expectedOrganizationId?: string | null
+  documentDate?: Date | string | null
+  expiresAt?: Date | string | null
+  expiryDays?: number | null
+  isExpired?: boolean
+  expiredAt?: Date | string | null
+  expiryWarningAt?: Date | string | null
+  revalidatedAt?: Date | string | null
   status?: $Enums.DocumentStatus
   version?: number
   createdAt?: Date | string
@@ -1169,6 +1467,15 @@ export type ApplicationDocumentUncheckedCreateWithoutReplacesDocumentInput = {
   url: string
   type: string
   uploadedById?: string | null
+  expectedUploader?: $Enums.UploadedBy | null
+  expectedOrganizationId?: string | null
+  documentDate?: Date | string | null
+  expiresAt?: Date | string | null
+  expiryDays?: number | null
+  isExpired?: boolean
+  expiredAt?: Date | string | null
+  expiryWarningAt?: Date | string | null
+  revalidatedAt?: Date | string | null
   status?: $Enums.DocumentStatus
   version?: number
   createdAt?: Date | string
@@ -1208,6 +1515,15 @@ export type ApplicationDocumentUpdateWithoutRevisionsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  expectedUploader?: Prisma.NullableEnumUploadedByFieldUpdateOperationsInput | $Enums.UploadedBy | null
+  expectedOrganizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isExpired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryWarningAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revalidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1232,6 +1548,15 @@ export type ApplicationDocumentUncheckedUpdateWithoutRevisionsInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expectedUploader?: Prisma.NullableEnumUploadedByFieldUpdateOperationsInput | $Enums.UploadedBy | null
+  expectedOrganizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isExpired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryWarningAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revalidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   replacesDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1266,6 +1591,15 @@ export type ApplicationDocumentCreateWithoutReviewsInput = {
   name: string
   url: string
   type: string
+  expectedUploader?: $Enums.UploadedBy | null
+  expectedOrganizationId?: string | null
+  documentDate?: Date | string | null
+  expiresAt?: Date | string | null
+  expiryDays?: number | null
+  isExpired?: boolean
+  expiredAt?: Date | string | null
+  expiryWarningAt?: Date | string | null
+  revalidatedAt?: Date | string | null
   status?: $Enums.DocumentStatus
   version?: number
   createdAt?: Date | string
@@ -1290,6 +1624,15 @@ export type ApplicationDocumentUncheckedCreateWithoutReviewsInput = {
   url: string
   type: string
   uploadedById?: string | null
+  expectedUploader?: $Enums.UploadedBy | null
+  expectedOrganizationId?: string | null
+  documentDate?: Date | string | null
+  expiresAt?: Date | string | null
+  expiryDays?: number | null
+  isExpired?: boolean
+  expiredAt?: Date | string | null
+  expiryWarningAt?: Date | string | null
+  revalidatedAt?: Date | string | null
   status?: $Enums.DocumentStatus
   version?: number
   replacesDocumentId?: string | null
@@ -1324,6 +1667,15 @@ export type ApplicationDocumentUpdateWithoutReviewsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  expectedUploader?: Prisma.NullableEnumUploadedByFieldUpdateOperationsInput | $Enums.UploadedBy | null
+  expectedOrganizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isExpired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryWarningAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revalidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1348,6 +1700,15 @@ export type ApplicationDocumentUncheckedUpdateWithoutReviewsInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expectedUploader?: Prisma.NullableEnumUploadedByFieldUpdateOperationsInput | $Enums.UploadedBy | null
+  expectedOrganizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isExpired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryWarningAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revalidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   replacesDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1366,6 +1727,15 @@ export type ApplicationDocumentCreateWithoutApprovalTrailInput = {
   name: string
   url: string
   type: string
+  expectedUploader?: $Enums.UploadedBy | null
+  expectedOrganizationId?: string | null
+  documentDate?: Date | string | null
+  expiresAt?: Date | string | null
+  expiryDays?: number | null
+  isExpired?: boolean
+  expiredAt?: Date | string | null
+  expiryWarningAt?: Date | string | null
+  revalidatedAt?: Date | string | null
   status?: $Enums.DocumentStatus
   version?: number
   createdAt?: Date | string
@@ -1390,6 +1760,15 @@ export type ApplicationDocumentUncheckedCreateWithoutApprovalTrailInput = {
   url: string
   type: string
   uploadedById?: string | null
+  expectedUploader?: $Enums.UploadedBy | null
+  expectedOrganizationId?: string | null
+  documentDate?: Date | string | null
+  expiresAt?: Date | string | null
+  expiryDays?: number | null
+  isExpired?: boolean
+  expiredAt?: Date | string | null
+  expiryWarningAt?: Date | string | null
+  revalidatedAt?: Date | string | null
   status?: $Enums.DocumentStatus
   version?: number
   replacesDocumentId?: string | null
@@ -1424,6 +1803,15 @@ export type ApplicationDocumentUpdateWithoutApprovalTrailInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  expectedUploader?: Prisma.NullableEnumUploadedByFieldUpdateOperationsInput | $Enums.UploadedBy | null
+  expectedOrganizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isExpired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryWarningAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revalidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1448,6 +1836,15 @@ export type ApplicationDocumentUncheckedUpdateWithoutApprovalTrailInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expectedUploader?: Prisma.NullableEnumUploadedByFieldUpdateOperationsInput | $Enums.UploadedBy | null
+  expectedOrganizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isExpired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryWarningAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revalidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   replacesDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1468,6 +1865,15 @@ export type ApplicationDocumentCreateManyUploadedByInput = {
   name: string
   url: string
   type: string
+  expectedUploader?: $Enums.UploadedBy | null
+  expectedOrganizationId?: string | null
+  documentDate?: Date | string | null
+  expiresAt?: Date | string | null
+  expiryDays?: number | null
+  isExpired?: boolean
+  expiredAt?: Date | string | null
+  expiryWarningAt?: Date | string | null
+  revalidatedAt?: Date | string | null
   status?: $Enums.DocumentStatus
   version?: number
   replacesDocumentId?: string | null
@@ -1484,6 +1890,15 @@ export type ApplicationDocumentUpdateWithoutUploadedByInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  expectedUploader?: Prisma.NullableEnumUploadedByFieldUpdateOperationsInput | $Enums.UploadedBy | null
+  expectedOrganizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isExpired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryWarningAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revalidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1507,6 +1922,15 @@ export type ApplicationDocumentUncheckedUpdateWithoutUploadedByInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  expectedUploader?: Prisma.NullableEnumUploadedByFieldUpdateOperationsInput | $Enums.UploadedBy | null
+  expectedOrganizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isExpired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryWarningAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revalidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   replacesDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1528,6 +1952,15 @@ export type ApplicationDocumentUncheckedUpdateManyWithoutUploadedByInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  expectedUploader?: Prisma.NullableEnumUploadedByFieldUpdateOperationsInput | $Enums.UploadedBy | null
+  expectedOrganizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isExpired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryWarningAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revalidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   replacesDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1546,6 +1979,15 @@ export type ApplicationDocumentCreateManyTenantInput = {
   url: string
   type: string
   uploadedById?: string | null
+  expectedUploader?: $Enums.UploadedBy | null
+  expectedOrganizationId?: string | null
+  documentDate?: Date | string | null
+  expiresAt?: Date | string | null
+  expiryDays?: number | null
+  isExpired?: boolean
+  expiredAt?: Date | string | null
+  expiryWarningAt?: Date | string | null
+  revalidatedAt?: Date | string | null
   status?: $Enums.DocumentStatus
   version?: number
   replacesDocumentId?: string | null
@@ -1562,6 +2004,15 @@ export type ApplicationDocumentUpdateWithoutTenantInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  expectedUploader?: Prisma.NullableEnumUploadedByFieldUpdateOperationsInput | $Enums.UploadedBy | null
+  expectedOrganizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isExpired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryWarningAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revalidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1585,6 +2036,15 @@ export type ApplicationDocumentUncheckedUpdateWithoutTenantInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expectedUploader?: Prisma.NullableEnumUploadedByFieldUpdateOperationsInput | $Enums.UploadedBy | null
+  expectedOrganizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isExpired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryWarningAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revalidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   replacesDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1606,6 +2066,15 @@ export type ApplicationDocumentUncheckedUpdateManyWithoutTenantInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expectedUploader?: Prisma.NullableEnumUploadedByFieldUpdateOperationsInput | $Enums.UploadedBy | null
+  expectedOrganizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isExpired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryWarningAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revalidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   replacesDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1624,6 +2093,15 @@ export type ApplicationDocumentCreateManyApplicationInput = {
   url: string
   type: string
   uploadedById?: string | null
+  expectedUploader?: $Enums.UploadedBy | null
+  expectedOrganizationId?: string | null
+  documentDate?: Date | string | null
+  expiresAt?: Date | string | null
+  expiryDays?: number | null
+  isExpired?: boolean
+  expiredAt?: Date | string | null
+  expiryWarningAt?: Date | string | null
+  revalidatedAt?: Date | string | null
   status?: $Enums.DocumentStatus
   version?: number
   replacesDocumentId?: string | null
@@ -1640,6 +2118,15 @@ export type ApplicationDocumentUpdateWithoutApplicationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  expectedUploader?: Prisma.NullableEnumUploadedByFieldUpdateOperationsInput | $Enums.UploadedBy | null
+  expectedOrganizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isExpired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryWarningAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revalidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1663,6 +2150,15 @@ export type ApplicationDocumentUncheckedUpdateWithoutApplicationInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expectedUploader?: Prisma.NullableEnumUploadedByFieldUpdateOperationsInput | $Enums.UploadedBy | null
+  expectedOrganizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isExpired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryWarningAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revalidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   replacesDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1684,6 +2180,15 @@ export type ApplicationDocumentUncheckedUpdateManyWithoutApplicationInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expectedUploader?: Prisma.NullableEnumUploadedByFieldUpdateOperationsInput | $Enums.UploadedBy | null
+  expectedOrganizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isExpired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryWarningAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revalidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   replacesDocumentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1703,6 +2208,15 @@ export type ApplicationDocumentCreateManyReplacesDocumentInput = {
   url: string
   type: string
   uploadedById?: string | null
+  expectedUploader?: $Enums.UploadedBy | null
+  expectedOrganizationId?: string | null
+  documentDate?: Date | string | null
+  expiresAt?: Date | string | null
+  expiryDays?: number | null
+  isExpired?: boolean
+  expiredAt?: Date | string | null
+  expiryWarningAt?: Date | string | null
+  revalidatedAt?: Date | string | null
   status?: $Enums.DocumentStatus
   version?: number
   createdAt?: Date | string
@@ -1718,6 +2232,15 @@ export type ApplicationDocumentUpdateWithoutReplacesDocumentInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
+  expectedUploader?: Prisma.NullableEnumUploadedByFieldUpdateOperationsInput | $Enums.UploadedBy | null
+  expectedOrganizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isExpired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryWarningAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revalidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1742,6 +2265,15 @@ export type ApplicationDocumentUncheckedUpdateWithoutReplacesDocumentInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expectedUploader?: Prisma.NullableEnumUploadedByFieldUpdateOperationsInput | $Enums.UploadedBy | null
+  expectedOrganizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isExpired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryWarningAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revalidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1763,6 +2295,15 @@ export type ApplicationDocumentUncheckedUpdateManyWithoutReplacesDocumentInput =
   url?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expectedUploader?: Prisma.NullableEnumUploadedByFieldUpdateOperationsInput | $Enums.UploadedBy | null
+  expectedOrganizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryDays?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isExpired?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  expiredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryWarningAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  revalidatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
   version?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1830,6 +2371,15 @@ export type ApplicationDocumentSelect<ExtArgs extends runtime.Types.Extensions.I
   url?: boolean
   type?: boolean
   uploadedById?: boolean
+  expectedUploader?: boolean
+  expectedOrganizationId?: boolean
+  documentDate?: boolean
+  expiresAt?: boolean
+  expiryDays?: boolean
+  isExpired?: boolean
+  expiredAt?: boolean
+  expiryWarningAt?: boolean
+  revalidatedAt?: boolean
   status?: boolean
   version?: boolean
   replacesDocumentId?: boolean
@@ -1859,6 +2409,15 @@ export type ApplicationDocumentSelectScalar = {
   url?: boolean
   type?: boolean
   uploadedById?: boolean
+  expectedUploader?: boolean
+  expectedOrganizationId?: boolean
+  documentDate?: boolean
+  expiresAt?: boolean
+  expiryDays?: boolean
+  isExpired?: boolean
+  expiredAt?: boolean
+  expiryWarningAt?: boolean
+  revalidatedAt?: boolean
   status?: boolean
   version?: boolean
   replacesDocumentId?: boolean
@@ -1866,7 +2425,7 @@ export type ApplicationDocumentSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ApplicationDocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "applicationId" | "phaseId" | "stepId" | "documentType" | "documentName" | "name" | "url" | "type" | "uploadedById" | "status" | "version" | "replacesDocumentId" | "createdAt" | "updatedAt", ExtArgs["result"]["applicationDocument"]>
+export type ApplicationDocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "applicationId" | "phaseId" | "stepId" | "documentType" | "documentName" | "name" | "url" | "type" | "uploadedById" | "expectedUploader" | "expectedOrganizationId" | "documentDate" | "expiresAt" | "expiryDays" | "isExpired" | "expiredAt" | "expiryWarningAt" | "revalidatedAt" | "status" | "version" | "replacesDocumentId" | "createdAt" | "updatedAt", ExtArgs["result"]["applicationDocument"]>
 export type ApplicationDocumentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   application?: boolean | Prisma.ApplicationDefaultArgs<ExtArgs>
@@ -1901,6 +2460,15 @@ export type $ApplicationDocumentPayload<ExtArgs extends runtime.Types.Extensions
     url: string
     type: string
     uploadedById: string | null
+    expectedUploader: $Enums.UploadedBy | null
+    expectedOrganizationId: string | null
+    documentDate: Date | null
+    expiresAt: Date | null
+    expiryDays: number | null
+    isExpired: boolean
+    expiredAt: Date | null
+    expiryWarningAt: Date | null
+    revalidatedAt: Date | null
     status: $Enums.DocumentStatus
     version: number
     replacesDocumentId: string | null
@@ -2293,6 +2861,15 @@ export interface ApplicationDocumentFieldRefs {
   readonly url: Prisma.FieldRef<"ApplicationDocument", 'String'>
   readonly type: Prisma.FieldRef<"ApplicationDocument", 'String'>
   readonly uploadedById: Prisma.FieldRef<"ApplicationDocument", 'String'>
+  readonly expectedUploader: Prisma.FieldRef<"ApplicationDocument", 'UploadedBy'>
+  readonly expectedOrganizationId: Prisma.FieldRef<"ApplicationDocument", 'String'>
+  readonly documentDate: Prisma.FieldRef<"ApplicationDocument", 'DateTime'>
+  readonly expiresAt: Prisma.FieldRef<"ApplicationDocument", 'DateTime'>
+  readonly expiryDays: Prisma.FieldRef<"ApplicationDocument", 'Int'>
+  readonly isExpired: Prisma.FieldRef<"ApplicationDocument", 'Boolean'>
+  readonly expiredAt: Prisma.FieldRef<"ApplicationDocument", 'DateTime'>
+  readonly expiryWarningAt: Prisma.FieldRef<"ApplicationDocument", 'DateTime'>
+  readonly revalidatedAt: Prisma.FieldRef<"ApplicationDocument", 'DateTime'>
   readonly status: Prisma.FieldRef<"ApplicationDocument", 'DocumentStatus'>
   readonly version: Prisma.FieldRef<"ApplicationDocument", 'Int'>
   readonly replacesDocumentId: Prisma.FieldRef<"ApplicationDocument", 'String'>

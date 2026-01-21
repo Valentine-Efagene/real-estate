@@ -44,6 +44,8 @@ const OPTIONAL_TENANT_MODELS = [
     "role",
     // Permission can be global template or tenant-specific
     "permission",
+    // ScheduledJob can be system-wide or tenant-specific
+    "scheduledJob",
 ] as const;
 
 type OptionalTenantModel = (typeof OPTIONAL_TENANT_MODELS)[number];

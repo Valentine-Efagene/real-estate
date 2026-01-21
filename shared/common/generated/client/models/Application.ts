@@ -41,6 +41,8 @@ export type ApplicationMinAggregateOutputType = {
   buyerId: string | null
   sellerId: string | null
   paymentMethodId: string | null
+  paymentMethodSnapshotAt: Date | null
+  paymentMethodSnapshotHash: string | null
   applicationNumber: string | null
   title: string | null
   description: string | null
@@ -68,6 +70,8 @@ export type ApplicationMaxAggregateOutputType = {
   buyerId: string | null
   sellerId: string | null
   paymentMethodId: string | null
+  paymentMethodSnapshotAt: Date | null
+  paymentMethodSnapshotHash: string | null
   applicationNumber: string | null
   title: string | null
   description: string | null
@@ -95,6 +99,9 @@ export type ApplicationCountAggregateOutputType = {
   buyerId: number
   sellerId: number
   paymentMethodId: number
+  paymentMethodSnapshot: number
+  paymentMethodSnapshotAt: number
+  paymentMethodSnapshotHash: number
   applicationNumber: number
   title: number
   description: number
@@ -132,6 +139,8 @@ export type ApplicationMinAggregateInputType = {
   buyerId?: true
   sellerId?: true
   paymentMethodId?: true
+  paymentMethodSnapshotAt?: true
+  paymentMethodSnapshotHash?: true
   applicationNumber?: true
   title?: true
   description?: true
@@ -159,6 +168,8 @@ export type ApplicationMaxAggregateInputType = {
   buyerId?: true
   sellerId?: true
   paymentMethodId?: true
+  paymentMethodSnapshotAt?: true
+  paymentMethodSnapshotHash?: true
   applicationNumber?: true
   title?: true
   description?: true
@@ -186,6 +197,9 @@ export type ApplicationCountAggregateInputType = {
   buyerId?: true
   sellerId?: true
   paymentMethodId?: true
+  paymentMethodSnapshot?: true
+  paymentMethodSnapshotAt?: true
+  paymentMethodSnapshotHash?: true
   applicationNumber?: true
   title?: true
   description?: true
@@ -300,6 +314,9 @@ export type ApplicationGroupByOutputType = {
   buyerId: string
   sellerId: string | null
   paymentMethodId: string | null
+  paymentMethodSnapshot: runtime.JsonValue | null
+  paymentMethodSnapshotAt: Date | null
+  paymentMethodSnapshotHash: string | null
   applicationNumber: string
   title: string
   description: string | null
@@ -350,6 +367,9 @@ export type ApplicationWhereInput = {
   buyerId?: Prisma.StringFilter<"Application"> | string
   sellerId?: Prisma.StringNullableFilter<"Application"> | string | null
   paymentMethodId?: Prisma.StringNullableFilter<"Application"> | string | null
+  paymentMethodSnapshot?: Prisma.JsonNullableFilter<"Application">
+  paymentMethodSnapshotAt?: Prisma.DateTimeNullableFilter<"Application"> | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.StringNullableFilter<"Application"> | string | null
   applicationNumber?: Prisma.StringFilter<"Application"> | string
   title?: Prisma.StringFilter<"Application"> | string
   description?: Prisma.StringNullableFilter<"Application"> | string | null
@@ -388,6 +408,7 @@ export type ApplicationWhereInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestListRelationFilter
   events?: Prisma.ApplicationEventListRelationFilter
   refunds?: Prisma.ApplicationRefundListRelationFilter
+  organizations?: Prisma.ApplicationOrganizationListRelationFilter
 }
 
 export type ApplicationOrderByWithRelationInput = {
@@ -397,6 +418,9 @@ export type ApplicationOrderByWithRelationInput = {
   buyerId?: Prisma.SortOrder
   sellerId?: Prisma.SortOrderInput | Prisma.SortOrder
   paymentMethodId?: Prisma.SortOrderInput | Prisma.SortOrder
+  paymentMethodSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
+  paymentMethodSnapshotAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  paymentMethodSnapshotHash?: Prisma.SortOrderInput | Prisma.SortOrder
   applicationNumber?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -435,6 +459,7 @@ export type ApplicationOrderByWithRelationInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestOrderByRelationAggregateInput
   events?: Prisma.ApplicationEventOrderByRelationAggregateInput
   refunds?: Prisma.ApplicationRefundOrderByRelationAggregateInput
+  organizations?: Prisma.ApplicationOrganizationOrderByRelationAggregateInput
   _relevance?: Prisma.ApplicationOrderByRelevanceInput
 }
 
@@ -450,6 +475,9 @@ export type ApplicationWhereUniqueInput = Prisma.AtLeast<{
   buyerId?: Prisma.StringFilter<"Application"> | string
   sellerId?: Prisma.StringNullableFilter<"Application"> | string | null
   paymentMethodId?: Prisma.StringNullableFilter<"Application"> | string | null
+  paymentMethodSnapshot?: Prisma.JsonNullableFilter<"Application">
+  paymentMethodSnapshotAt?: Prisma.DateTimeNullableFilter<"Application"> | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.StringNullableFilter<"Application"> | string | null
   title?: Prisma.StringFilter<"Application"> | string
   description?: Prisma.StringNullableFilter<"Application"> | string | null
   applicationType?: Prisma.StringFilter<"Application"> | string
@@ -486,6 +514,7 @@ export type ApplicationWhereUniqueInput = Prisma.AtLeast<{
   incomingTransferRequests?: Prisma.PropertyTransferRequestListRelationFilter
   events?: Prisma.ApplicationEventListRelationFilter
   refunds?: Prisma.ApplicationRefundListRelationFilter
+  organizations?: Prisma.ApplicationOrganizationListRelationFilter
 }, "id" | "applicationNumber" | "transferredFromId">
 
 export type ApplicationOrderByWithAggregationInput = {
@@ -495,6 +524,9 @@ export type ApplicationOrderByWithAggregationInput = {
   buyerId?: Prisma.SortOrder
   sellerId?: Prisma.SortOrderInput | Prisma.SortOrder
   paymentMethodId?: Prisma.SortOrderInput | Prisma.SortOrder
+  paymentMethodSnapshot?: Prisma.SortOrderInput | Prisma.SortOrder
+  paymentMethodSnapshotAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  paymentMethodSnapshotHash?: Prisma.SortOrderInput | Prisma.SortOrder
   applicationNumber?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -530,6 +562,9 @@ export type ApplicationScalarWhereWithAggregatesInput = {
   buyerId?: Prisma.StringWithAggregatesFilter<"Application"> | string
   sellerId?: Prisma.StringNullableWithAggregatesFilter<"Application"> | string | null
   paymentMethodId?: Prisma.StringNullableWithAggregatesFilter<"Application"> | string | null
+  paymentMethodSnapshot?: Prisma.JsonNullableWithAggregatesFilter<"Application">
+  paymentMethodSnapshotAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Application"> | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.StringNullableWithAggregatesFilter<"Application"> | string | null
   applicationNumber?: Prisma.StringWithAggregatesFilter<"Application"> | string
   title?: Prisma.StringWithAggregatesFilter<"Application"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"Application"> | string | null
@@ -552,6 +587,9 @@ export type ApplicationScalarWhereWithAggregatesInput = {
 
 export type ApplicationCreateInput = {
   id?: string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -587,6 +625,7 @@ export type ApplicationCreateInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateInput = {
@@ -596,6 +635,9 @@ export type ApplicationUncheckedCreateInput = {
   buyerId: string
   sellerId?: string | null
   paymentMethodId?: string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -626,10 +668,14 @@ export type ApplicationUncheckedCreateInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -665,6 +711,7 @@ export type ApplicationUpdateInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateInput = {
@@ -674,6 +721,9 @@ export type ApplicationUncheckedUpdateInput = {
   buyerId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -704,6 +754,7 @@ export type ApplicationUncheckedUpdateInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationCreateManyInput = {
@@ -713,6 +764,9 @@ export type ApplicationCreateManyInput = {
   buyerId: string
   sellerId?: string | null
   paymentMethodId?: string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -735,6 +789,9 @@ export type ApplicationCreateManyInput = {
 
 export type ApplicationUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -759,6 +816,9 @@ export type ApplicationUncheckedUpdateManyInput = {
   buyerId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -807,6 +867,9 @@ export type ApplicationCountOrderByAggregateInput = {
   buyerId?: Prisma.SortOrder
   sellerId?: Prisma.SortOrder
   paymentMethodId?: Prisma.SortOrder
+  paymentMethodSnapshot?: Prisma.SortOrder
+  paymentMethodSnapshotAt?: Prisma.SortOrder
+  paymentMethodSnapshotHash?: Prisma.SortOrder
   applicationNumber?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -838,6 +901,8 @@ export type ApplicationMaxOrderByAggregateInput = {
   buyerId?: Prisma.SortOrder
   sellerId?: Prisma.SortOrder
   paymentMethodId?: Prisma.SortOrder
+  paymentMethodSnapshotAt?: Prisma.SortOrder
+  paymentMethodSnapshotHash?: Prisma.SortOrder
   applicationNumber?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -865,6 +930,8 @@ export type ApplicationMinOrderByAggregateInput = {
   buyerId?: Prisma.SortOrder
   sellerId?: Prisma.SortOrder
   paymentMethodId?: Prisma.SortOrder
+  paymentMethodSnapshotAt?: Prisma.SortOrder
+  paymentMethodSnapshotHash?: Prisma.SortOrder
   applicationNumber?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
@@ -1214,6 +1281,20 @@ export type ApplicationUncheckedUpdateManyWithoutSupersededByNestedInput = {
   deleteMany?: Prisma.ApplicationScalarWhereInput | Prisma.ApplicationScalarWhereInput[]
 }
 
+export type ApplicationCreateNestedOneWithoutOrganizationsInput = {
+  create?: Prisma.XOR<Prisma.ApplicationCreateWithoutOrganizationsInput, Prisma.ApplicationUncheckedCreateWithoutOrganizationsInput>
+  connectOrCreate?: Prisma.ApplicationCreateOrConnectWithoutOrganizationsInput
+  connect?: Prisma.ApplicationWhereUniqueInput
+}
+
+export type ApplicationUpdateOneRequiredWithoutOrganizationsNestedInput = {
+  create?: Prisma.XOR<Prisma.ApplicationCreateWithoutOrganizationsInput, Prisma.ApplicationUncheckedCreateWithoutOrganizationsInput>
+  connectOrCreate?: Prisma.ApplicationCreateOrConnectWithoutOrganizationsInput
+  upsert?: Prisma.ApplicationUpsertWithoutOrganizationsInput
+  connect?: Prisma.ApplicationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ApplicationUpdateToOneWithWhereWithoutOrganizationsInput, Prisma.ApplicationUpdateWithoutOrganizationsInput>, Prisma.ApplicationUncheckedUpdateWithoutOrganizationsInput>
+}
+
 export type ApplicationCreateNestedOneWithoutRefundsInput = {
   create?: Prisma.XOR<Prisma.ApplicationCreateWithoutRefundsInput, Prisma.ApplicationUncheckedCreateWithoutRefundsInput>
   connectOrCreate?: Prisma.ApplicationCreateOrConnectWithoutRefundsInput
@@ -1400,6 +1481,9 @@ export type ApplicationUpdateOneWithoutIncomingTransferRequestsNestedInput = {
 
 export type ApplicationCreateWithoutBuyerInput = {
   id?: string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -1434,6 +1518,7 @@ export type ApplicationCreateWithoutBuyerInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutBuyerInput = {
@@ -1442,6 +1527,9 @@ export type ApplicationUncheckedCreateWithoutBuyerInput = {
   propertyUnitId: string
   sellerId?: string | null
   paymentMethodId?: string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -1472,6 +1560,7 @@ export type ApplicationUncheckedCreateWithoutBuyerInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutBuyerInput = {
@@ -1486,6 +1575,9 @@ export type ApplicationCreateManyBuyerInputEnvelope = {
 
 export type ApplicationCreateWithoutSellerInput = {
   id?: string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -1520,6 +1612,7 @@ export type ApplicationCreateWithoutSellerInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutSellerInput = {
@@ -1528,6 +1621,9 @@ export type ApplicationUncheckedCreateWithoutSellerInput = {
   propertyUnitId: string
   buyerId: string
   paymentMethodId?: string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -1558,6 +1654,7 @@ export type ApplicationUncheckedCreateWithoutSellerInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutSellerInput = {
@@ -1596,6 +1693,9 @@ export type ApplicationScalarWhereInput = {
   buyerId?: Prisma.StringFilter<"Application"> | string
   sellerId?: Prisma.StringNullableFilter<"Application"> | string | null
   paymentMethodId?: Prisma.StringNullableFilter<"Application"> | string | null
+  paymentMethodSnapshot?: Prisma.JsonNullableFilter<"Application">
+  paymentMethodSnapshotAt?: Prisma.DateTimeNullableFilter<"Application"> | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.StringNullableFilter<"Application"> | string | null
   applicationNumber?: Prisma.StringFilter<"Application"> | string
   title?: Prisma.StringFilter<"Application"> | string
   description?: Prisma.StringNullableFilter<"Application"> | string | null
@@ -1634,6 +1734,9 @@ export type ApplicationUpdateManyWithWhereWithoutSellerInput = {
 
 export type ApplicationCreateWithoutTenantInput = {
   id?: string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -1668,6 +1771,7 @@ export type ApplicationCreateWithoutTenantInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutTenantInput = {
@@ -1676,6 +1780,9 @@ export type ApplicationUncheckedCreateWithoutTenantInput = {
   buyerId: string
   sellerId?: string | null
   paymentMethodId?: string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -1706,6 +1813,7 @@ export type ApplicationUncheckedCreateWithoutTenantInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutTenantInput = {
@@ -1736,6 +1844,9 @@ export type ApplicationUpdateManyWithWhereWithoutTenantInput = {
 
 export type ApplicationCreateWithoutPropertyUnitInput = {
   id?: string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -1770,6 +1881,7 @@ export type ApplicationCreateWithoutPropertyUnitInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutPropertyUnitInput = {
@@ -1778,6 +1890,9 @@ export type ApplicationUncheckedCreateWithoutPropertyUnitInput = {
   buyerId: string
   sellerId?: string | null
   paymentMethodId?: string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -1808,6 +1923,7 @@ export type ApplicationUncheckedCreateWithoutPropertyUnitInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutPropertyUnitInput = {
@@ -1838,6 +1954,9 @@ export type ApplicationUpdateManyWithWhereWithoutPropertyUnitInput = {
 
 export type ApplicationCreateWithoutPaymentMethodInput = {
   id?: string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -1872,6 +1991,7 @@ export type ApplicationCreateWithoutPaymentMethodInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutPaymentMethodInput = {
@@ -1880,6 +2000,9 @@ export type ApplicationUncheckedCreateWithoutPaymentMethodInput = {
   propertyUnitId: string
   buyerId: string
   sellerId?: string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -1910,6 +2033,7 @@ export type ApplicationUncheckedCreateWithoutPaymentMethodInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutPaymentMethodInput = {
@@ -1940,6 +2064,9 @@ export type ApplicationUpdateManyWithWhereWithoutPaymentMethodInput = {
 
 export type ApplicationCreateWithoutTransferredToInput = {
   id?: string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -1974,6 +2101,7 @@ export type ApplicationCreateWithoutTransferredToInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutTransferredToInput = {
@@ -1983,6 +2111,9 @@ export type ApplicationUncheckedCreateWithoutTransferredToInput = {
   buyerId: string
   sellerId?: string | null
   paymentMethodId?: string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -2012,6 +2143,7 @@ export type ApplicationUncheckedCreateWithoutTransferredToInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutTransferredToInput = {
@@ -2021,6 +2153,9 @@ export type ApplicationCreateOrConnectWithoutTransferredToInput = {
 
 export type ApplicationCreateWithoutTransferredFromInput = {
   id?: string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -2055,6 +2190,7 @@ export type ApplicationCreateWithoutTransferredFromInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutTransferredFromInput = {
@@ -2064,6 +2200,9 @@ export type ApplicationUncheckedCreateWithoutTransferredFromInput = {
   buyerId: string
   sellerId?: string | null
   paymentMethodId?: string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -2093,6 +2232,7 @@ export type ApplicationUncheckedCreateWithoutTransferredFromInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutTransferredFromInput = {
@@ -2102,6 +2242,9 @@ export type ApplicationCreateOrConnectWithoutTransferredFromInput = {
 
 export type ApplicationCreateWithoutSupersededApplicationsInput = {
   id?: string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -2136,6 +2279,7 @@ export type ApplicationCreateWithoutSupersededApplicationsInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutSupersededApplicationsInput = {
@@ -2145,6 +2289,9 @@ export type ApplicationUncheckedCreateWithoutSupersededApplicationsInput = {
   buyerId: string
   sellerId?: string | null
   paymentMethodId?: string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -2174,6 +2321,7 @@ export type ApplicationUncheckedCreateWithoutSupersededApplicationsInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutSupersededApplicationsInput = {
@@ -2183,6 +2331,9 @@ export type ApplicationCreateOrConnectWithoutSupersededApplicationsInput = {
 
 export type ApplicationCreateWithoutSupersededByInput = {
   id?: string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -2217,6 +2368,7 @@ export type ApplicationCreateWithoutSupersededByInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutSupersededByInput = {
@@ -2226,6 +2378,9 @@ export type ApplicationUncheckedCreateWithoutSupersededByInput = {
   buyerId: string
   sellerId?: string | null
   paymentMethodId?: string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -2255,6 +2410,7 @@ export type ApplicationUncheckedCreateWithoutSupersededByInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutSupersededByInput = {
@@ -2280,6 +2436,9 @@ export type ApplicationUpdateToOneWithWhereWithoutTransferredToInput = {
 
 export type ApplicationUpdateWithoutTransferredToInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2314,6 +2473,7 @@ export type ApplicationUpdateWithoutTransferredToInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutTransferredToInput = {
@@ -2323,6 +2483,9 @@ export type ApplicationUncheckedUpdateWithoutTransferredToInput = {
   buyerId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2352,6 +2515,7 @@ export type ApplicationUncheckedUpdateWithoutTransferredToInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUpsertWithoutTransferredFromInput = {
@@ -2367,6 +2531,9 @@ export type ApplicationUpdateToOneWithWhereWithoutTransferredFromInput = {
 
 export type ApplicationUpdateWithoutTransferredFromInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2401,6 +2568,7 @@ export type ApplicationUpdateWithoutTransferredFromInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutTransferredFromInput = {
@@ -2410,6 +2578,9 @@ export type ApplicationUncheckedUpdateWithoutTransferredFromInput = {
   buyerId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2439,6 +2610,7 @@ export type ApplicationUncheckedUpdateWithoutTransferredFromInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUpsertWithoutSupersededApplicationsInput = {
@@ -2454,6 +2626,9 @@ export type ApplicationUpdateToOneWithWhereWithoutSupersededApplicationsInput = 
 
 export type ApplicationUpdateWithoutSupersededApplicationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2488,6 +2663,7 @@ export type ApplicationUpdateWithoutSupersededApplicationsInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutSupersededApplicationsInput = {
@@ -2497,6 +2673,9 @@ export type ApplicationUncheckedUpdateWithoutSupersededApplicationsInput = {
   buyerId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2526,6 +2705,7 @@ export type ApplicationUncheckedUpdateWithoutSupersededApplicationsInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUpsertWithWhereUniqueWithoutSupersededByInput = {
@@ -2544,8 +2724,11 @@ export type ApplicationUpdateManyWithWhereWithoutSupersededByInput = {
   data: Prisma.XOR<Prisma.ApplicationUpdateManyMutationInput, Prisma.ApplicationUncheckedUpdateManyWithoutSupersededByInput>
 }
 
-export type ApplicationCreateWithoutRefundsInput = {
+export type ApplicationCreateWithoutOrganizationsInput = {
   id?: string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -2580,15 +2763,19 @@ export type ApplicationCreateWithoutRefundsInput = {
   outgoingTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutSourceApplicationInput
   incomingTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
+  refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
 }
 
-export type ApplicationUncheckedCreateWithoutRefundsInput = {
+export type ApplicationUncheckedCreateWithoutOrganizationsInput = {
   id?: string
   tenantId: string
   propertyUnitId: string
   buyerId: string
   sellerId?: string | null
   paymentMethodId?: string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -2618,6 +2805,191 @@ export type ApplicationUncheckedCreateWithoutRefundsInput = {
   outgoingTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutSourceApplicationInput
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
+  refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
+}
+
+export type ApplicationCreateOrConnectWithoutOrganizationsInput = {
+  where: Prisma.ApplicationWhereUniqueInput
+  create: Prisma.XOR<Prisma.ApplicationCreateWithoutOrganizationsInput, Prisma.ApplicationUncheckedCreateWithoutOrganizationsInput>
+}
+
+export type ApplicationUpsertWithoutOrganizationsInput = {
+  update: Prisma.XOR<Prisma.ApplicationUpdateWithoutOrganizationsInput, Prisma.ApplicationUncheckedUpdateWithoutOrganizationsInput>
+  create: Prisma.XOR<Prisma.ApplicationCreateWithoutOrganizationsInput, Prisma.ApplicationUncheckedCreateWithoutOrganizationsInput>
+  where?: Prisma.ApplicationWhereInput
+}
+
+export type ApplicationUpdateToOneWithWhereWithoutOrganizationsInput = {
+  where?: Prisma.ApplicationWhereInput
+  data: Prisma.XOR<Prisma.ApplicationUpdateWithoutOrganizationsInput, Prisma.ApplicationUncheckedUpdateWithoutOrganizationsInput>
+}
+
+export type ApplicationUpdateWithoutOrganizationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  supersededAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutApplicationsNestedInput
+  propertyUnit?: Prisma.PropertyUnitUpdateOneRequiredWithoutApplicationsNestedInput
+  buyer?: Prisma.UserUpdateOneRequiredWithoutApplicationsNestedInput
+  seller?: Prisma.UserUpdateOneWithoutSoldApplicationsNestedInput
+  paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneWithoutApplicationsNestedInput
+  currentPhase?: Prisma.ApplicationPhaseUpdateOneWithoutCurrentForApplicationsNestedInput
+  phases?: Prisma.ApplicationPhaseUpdateManyWithoutApplicationNestedInput
+  documents?: Prisma.ApplicationDocumentUpdateManyWithoutApplicationNestedInput
+  payments?: Prisma.ApplicationPaymentUpdateManyWithoutApplicationNestedInput
+  terminations?: Prisma.ApplicationTerminationUpdateManyWithoutApplicationNestedInput
+  offerLetters?: Prisma.OfferLetterUpdateManyWithoutApplicationNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutApplicationNestedInput
+  transferredFrom?: Prisma.ApplicationUpdateOneWithoutTransferredToNestedInput
+  transferredTo?: Prisma.ApplicationUpdateOneWithoutTransferredFromNestedInput
+  supersededBy?: Prisma.ApplicationUpdateOneWithoutSupersededApplicationsNestedInput
+  supersededApplications?: Prisma.ApplicationUpdateManyWithoutSupersededByNestedInput
+  outgoingTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutSourceApplicationNestedInput
+  incomingTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTargetApplicationNestedInput
+  events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
+  refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
+}
+
+export type ApplicationUncheckedUpdateWithoutOrganizationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  propertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
+  buyerId?: Prisma.StringFieldUpdateOperationsInput | string
+  sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  applicationType?: Prisma.StringFieldUpdateOperationsInput | string
+  totalAmount?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+  currentPhaseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextPaymentDueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  terminatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  transferredFromId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supersededById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  supersededAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phases?: Prisma.ApplicationPhaseUncheckedUpdateManyWithoutApplicationNestedInput
+  documents?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutApplicationNestedInput
+  payments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutApplicationNestedInput
+  terminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutApplicationNestedInput
+  offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutApplicationNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutApplicationNestedInput
+  transferredTo?: Prisma.ApplicationUncheckedUpdateOneWithoutTransferredFromNestedInput
+  supersededApplications?: Prisma.ApplicationUncheckedUpdateManyWithoutSupersededByNestedInput
+  outgoingTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutSourceApplicationNestedInput
+  incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTargetApplicationNestedInput
+  events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
+  refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
+}
+
+export type ApplicationCreateWithoutRefundsInput = {
+  id?: string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
+  applicationNumber: string
+  title: string
+  description?: string | null
+  applicationType: string
+  totalAmount: number
+  status?: $Enums.ApplicationStatus
+  nextPaymentDueDate?: Date | string | null
+  lastReminderSentAt?: Date | string | null
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  signedAt?: Date | string | null
+  terminatedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  supersededAt?: Date | string | null
+  tenant: Prisma.TenantCreateNestedOneWithoutApplicationsInput
+  propertyUnit: Prisma.PropertyUnitCreateNestedOneWithoutApplicationsInput
+  buyer: Prisma.UserCreateNestedOneWithoutApplicationsInput
+  seller?: Prisma.UserCreateNestedOneWithoutSoldApplicationsInput
+  paymentMethod?: Prisma.PropertyPaymentMethodCreateNestedOneWithoutApplicationsInput
+  currentPhase?: Prisma.ApplicationPhaseCreateNestedOneWithoutCurrentForApplicationsInput
+  phases?: Prisma.ApplicationPhaseCreateNestedManyWithoutApplicationInput
+  documents?: Prisma.ApplicationDocumentCreateNestedManyWithoutApplicationInput
+  payments?: Prisma.ApplicationPaymentCreateNestedManyWithoutApplicationInput
+  terminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutApplicationInput
+  offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutApplicationInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutApplicationInput
+  transferredFrom?: Prisma.ApplicationCreateNestedOneWithoutTransferredToInput
+  transferredTo?: Prisma.ApplicationCreateNestedOneWithoutTransferredFromInput
+  supersededBy?: Prisma.ApplicationCreateNestedOneWithoutSupersededApplicationsInput
+  supersededApplications?: Prisma.ApplicationCreateNestedManyWithoutSupersededByInput
+  outgoingTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutSourceApplicationInput
+  incomingTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTargetApplicationInput
+  events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
+}
+
+export type ApplicationUncheckedCreateWithoutRefundsInput = {
+  id?: string
+  tenantId: string
+  propertyUnitId: string
+  buyerId: string
+  sellerId?: string | null
+  paymentMethodId?: string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
+  applicationNumber: string
+  title: string
+  description?: string | null
+  applicationType: string
+  totalAmount: number
+  status?: $Enums.ApplicationStatus
+  currentPhaseId?: string | null
+  nextPaymentDueDate?: Date | string | null
+  lastReminderSentAt?: Date | string | null
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  signedAt?: Date | string | null
+  terminatedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  transferredFromId?: string | null
+  supersededById?: string | null
+  supersededAt?: Date | string | null
+  phases?: Prisma.ApplicationPhaseUncheckedCreateNestedManyWithoutApplicationInput
+  documents?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutApplicationInput
+  payments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutApplicationInput
+  terminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutApplicationInput
+  offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutApplicationInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutApplicationInput
+  transferredTo?: Prisma.ApplicationUncheckedCreateNestedOneWithoutTransferredFromInput
+  supersededApplications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutSupersededByInput
+  outgoingTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutSourceApplicationInput
+  incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTargetApplicationInput
+  events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutRefundsInput = {
@@ -2638,6 +3010,9 @@ export type ApplicationUpdateToOneWithWhereWithoutRefundsInput = {
 
 export type ApplicationUpdateWithoutRefundsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2672,6 +3047,7 @@ export type ApplicationUpdateWithoutRefundsInput = {
   outgoingTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutSourceApplicationNestedInput
   incomingTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutRefundsInput = {
@@ -2681,6 +3057,9 @@ export type ApplicationUncheckedUpdateWithoutRefundsInput = {
   buyerId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2710,10 +3089,14 @@ export type ApplicationUncheckedUpdateWithoutRefundsInput = {
   outgoingTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutSourceApplicationNestedInput
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationCreateWithoutPhasesInput = {
   id?: string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -2748,6 +3131,7 @@ export type ApplicationCreateWithoutPhasesInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutPhasesInput = {
@@ -2757,6 +3141,9 @@ export type ApplicationUncheckedCreateWithoutPhasesInput = {
   buyerId: string
   sellerId?: string | null
   paymentMethodId?: string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -2786,6 +3173,7 @@ export type ApplicationUncheckedCreateWithoutPhasesInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutPhasesInput = {
@@ -2795,6 +3183,9 @@ export type ApplicationCreateOrConnectWithoutPhasesInput = {
 
 export type ApplicationCreateWithoutCurrentPhaseInput = {
   id?: string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -2829,6 +3220,7 @@ export type ApplicationCreateWithoutCurrentPhaseInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutCurrentPhaseInput = {
@@ -2838,6 +3230,9 @@ export type ApplicationUncheckedCreateWithoutCurrentPhaseInput = {
   buyerId: string
   sellerId?: string | null
   paymentMethodId?: string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -2867,6 +3262,7 @@ export type ApplicationUncheckedCreateWithoutCurrentPhaseInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutCurrentPhaseInput = {
@@ -2892,6 +3288,9 @@ export type ApplicationUpdateToOneWithWhereWithoutPhasesInput = {
 
 export type ApplicationUpdateWithoutPhasesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2926,6 +3325,7 @@ export type ApplicationUpdateWithoutPhasesInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutPhasesInput = {
@@ -2935,6 +3335,9 @@ export type ApplicationUncheckedUpdateWithoutPhasesInput = {
   buyerId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2964,6 +3367,7 @@ export type ApplicationUncheckedUpdateWithoutPhasesInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUpsertWithWhereUniqueWithoutCurrentPhaseInput = {
@@ -2984,6 +3388,9 @@ export type ApplicationUpdateManyWithWhereWithoutCurrentPhaseInput = {
 
 export type ApplicationCreateWithoutEventsInput = {
   id?: string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -3018,6 +3425,7 @@ export type ApplicationCreateWithoutEventsInput = {
   outgoingTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutSourceApplicationInput
   incomingTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTargetApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutEventsInput = {
@@ -3027,6 +3435,9 @@ export type ApplicationUncheckedCreateWithoutEventsInput = {
   buyerId: string
   sellerId?: string | null
   paymentMethodId?: string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -3056,6 +3467,7 @@ export type ApplicationUncheckedCreateWithoutEventsInput = {
   outgoingTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutSourceApplicationInput
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTargetApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutEventsInput = {
@@ -3076,6 +3488,9 @@ export type ApplicationUpdateToOneWithWhereWithoutEventsInput = {
 
 export type ApplicationUpdateWithoutEventsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3110,6 +3525,7 @@ export type ApplicationUpdateWithoutEventsInput = {
   outgoingTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutSourceApplicationNestedInput
   incomingTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTargetApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutEventsInput = {
@@ -3119,6 +3535,9 @@ export type ApplicationUncheckedUpdateWithoutEventsInput = {
   buyerId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3148,10 +3567,14 @@ export type ApplicationUncheckedUpdateWithoutEventsInput = {
   outgoingTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutSourceApplicationNestedInput
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTargetApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationCreateWithoutPaymentsInput = {
   id?: string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -3186,6 +3609,7 @@ export type ApplicationCreateWithoutPaymentsInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutPaymentsInput = {
@@ -3195,6 +3619,9 @@ export type ApplicationUncheckedCreateWithoutPaymentsInput = {
   buyerId: string
   sellerId?: string | null
   paymentMethodId?: string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -3224,6 +3651,7 @@ export type ApplicationUncheckedCreateWithoutPaymentsInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutPaymentsInput = {
@@ -3244,6 +3672,9 @@ export type ApplicationUpdateToOneWithWhereWithoutPaymentsInput = {
 
 export type ApplicationUpdateWithoutPaymentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3278,6 +3709,7 @@ export type ApplicationUpdateWithoutPaymentsInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutPaymentsInput = {
@@ -3287,6 +3719,9 @@ export type ApplicationUncheckedUpdateWithoutPaymentsInput = {
   buyerId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3316,10 +3751,14 @@ export type ApplicationUncheckedUpdateWithoutPaymentsInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationCreateWithoutDocumentsInput = {
   id?: string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -3354,6 +3793,7 @@ export type ApplicationCreateWithoutDocumentsInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutDocumentsInput = {
@@ -3363,6 +3803,9 @@ export type ApplicationUncheckedCreateWithoutDocumentsInput = {
   buyerId: string
   sellerId?: string | null
   paymentMethodId?: string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -3392,6 +3835,7 @@ export type ApplicationUncheckedCreateWithoutDocumentsInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutDocumentsInput = {
@@ -3412,6 +3856,9 @@ export type ApplicationUpdateToOneWithWhereWithoutDocumentsInput = {
 
 export type ApplicationUpdateWithoutDocumentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3446,6 +3893,7 @@ export type ApplicationUpdateWithoutDocumentsInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutDocumentsInput = {
@@ -3455,6 +3903,9 @@ export type ApplicationUncheckedUpdateWithoutDocumentsInput = {
   buyerId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3484,10 +3935,14 @@ export type ApplicationUncheckedUpdateWithoutDocumentsInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationCreateWithoutOfferLettersInput = {
   id?: string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -3522,6 +3977,7 @@ export type ApplicationCreateWithoutOfferLettersInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutOfferLettersInput = {
@@ -3531,6 +3987,9 @@ export type ApplicationUncheckedCreateWithoutOfferLettersInput = {
   buyerId: string
   sellerId?: string | null
   paymentMethodId?: string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -3560,6 +4019,7 @@ export type ApplicationUncheckedCreateWithoutOfferLettersInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutOfferLettersInput = {
@@ -3580,6 +4040,9 @@ export type ApplicationUpdateToOneWithWhereWithoutOfferLettersInput = {
 
 export type ApplicationUpdateWithoutOfferLettersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3614,6 +4077,7 @@ export type ApplicationUpdateWithoutOfferLettersInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutOfferLettersInput = {
@@ -3623,6 +4087,9 @@ export type ApplicationUncheckedUpdateWithoutOfferLettersInput = {
   buyerId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3652,10 +4119,14 @@ export type ApplicationUncheckedUpdateWithoutOfferLettersInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationCreateWithoutTerminationsInput = {
   id?: string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -3690,6 +4161,7 @@ export type ApplicationCreateWithoutTerminationsInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutTerminationsInput = {
@@ -3699,6 +4171,9 @@ export type ApplicationUncheckedCreateWithoutTerminationsInput = {
   buyerId: string
   sellerId?: string | null
   paymentMethodId?: string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -3728,6 +4203,7 @@ export type ApplicationUncheckedCreateWithoutTerminationsInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutTerminationsInput = {
@@ -3748,6 +4224,9 @@ export type ApplicationUpdateToOneWithWhereWithoutTerminationsInput = {
 
 export type ApplicationUpdateWithoutTerminationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3782,6 +4261,7 @@ export type ApplicationUpdateWithoutTerminationsInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutTerminationsInput = {
@@ -3791,6 +4271,9 @@ export type ApplicationUncheckedUpdateWithoutTerminationsInput = {
   buyerId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3820,10 +4303,14 @@ export type ApplicationUncheckedUpdateWithoutTerminationsInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationCreateWithoutPaymentMethodChangeRequestsInput = {
   id?: string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -3858,6 +4345,7 @@ export type ApplicationCreateWithoutPaymentMethodChangeRequestsInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutPaymentMethodChangeRequestsInput = {
@@ -3867,6 +4355,9 @@ export type ApplicationUncheckedCreateWithoutPaymentMethodChangeRequestsInput = 
   buyerId: string
   sellerId?: string | null
   paymentMethodId?: string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -3896,6 +4387,7 @@ export type ApplicationUncheckedCreateWithoutPaymentMethodChangeRequestsInput = 
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutPaymentMethodChangeRequestsInput = {
@@ -3916,6 +4408,9 @@ export type ApplicationUpdateToOneWithWhereWithoutPaymentMethodChangeRequestsInp
 
 export type ApplicationUpdateWithoutPaymentMethodChangeRequestsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3950,6 +4445,7 @@ export type ApplicationUpdateWithoutPaymentMethodChangeRequestsInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutPaymentMethodChangeRequestsInput = {
@@ -3959,6 +4455,9 @@ export type ApplicationUncheckedUpdateWithoutPaymentMethodChangeRequestsInput = 
   buyerId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3988,10 +4487,14 @@ export type ApplicationUncheckedUpdateWithoutPaymentMethodChangeRequestsInput = 
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationCreateWithoutOutgoingTransferRequestsInput = {
   id?: string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -4026,6 +4529,7 @@ export type ApplicationCreateWithoutOutgoingTransferRequestsInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutOutgoingTransferRequestsInput = {
@@ -4035,6 +4539,9 @@ export type ApplicationUncheckedCreateWithoutOutgoingTransferRequestsInput = {
   buyerId: string
   sellerId?: string | null
   paymentMethodId?: string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -4064,6 +4571,7 @@ export type ApplicationUncheckedCreateWithoutOutgoingTransferRequestsInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTargetApplicationInput
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutOutgoingTransferRequestsInput = {
@@ -4073,6 +4581,9 @@ export type ApplicationCreateOrConnectWithoutOutgoingTransferRequestsInput = {
 
 export type ApplicationCreateWithoutIncomingTransferRequestsInput = {
   id?: string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -4107,6 +4618,7 @@ export type ApplicationCreateWithoutIncomingTransferRequestsInput = {
   outgoingTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutSourceApplicationInput
   events?: Prisma.ApplicationEventCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutIncomingTransferRequestsInput = {
@@ -4116,6 +4628,9 @@ export type ApplicationUncheckedCreateWithoutIncomingTransferRequestsInput = {
   buyerId: string
   sellerId?: string | null
   paymentMethodId?: string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -4145,6 +4660,7 @@ export type ApplicationUncheckedCreateWithoutIncomingTransferRequestsInput = {
   outgoingTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutSourceApplicationInput
   events?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutApplicationInput
   refunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutApplicationInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutIncomingTransferRequestsInput = {
@@ -4165,6 +4681,9 @@ export type ApplicationUpdateToOneWithWhereWithoutOutgoingTransferRequestsInput 
 
 export type ApplicationUpdateWithoutOutgoingTransferRequestsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4199,6 +4718,7 @@ export type ApplicationUpdateWithoutOutgoingTransferRequestsInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutOutgoingTransferRequestsInput = {
@@ -4208,6 +4728,9 @@ export type ApplicationUncheckedUpdateWithoutOutgoingTransferRequestsInput = {
   buyerId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4237,6 +4760,7 @@ export type ApplicationUncheckedUpdateWithoutOutgoingTransferRequestsInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUpsertWithoutIncomingTransferRequestsInput = {
@@ -4252,6 +4776,9 @@ export type ApplicationUpdateToOneWithWhereWithoutIncomingTransferRequestsInput 
 
 export type ApplicationUpdateWithoutIncomingTransferRequestsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4286,6 +4813,7 @@ export type ApplicationUpdateWithoutIncomingTransferRequestsInput = {
   outgoingTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutSourceApplicationNestedInput
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutIncomingTransferRequestsInput = {
@@ -4295,6 +4823,9 @@ export type ApplicationUncheckedUpdateWithoutIncomingTransferRequestsInput = {
   buyerId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4324,6 +4855,7 @@ export type ApplicationUncheckedUpdateWithoutIncomingTransferRequestsInput = {
   outgoingTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutSourceApplicationNestedInput
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationCreateManyBuyerInput = {
@@ -4332,6 +4864,9 @@ export type ApplicationCreateManyBuyerInput = {
   propertyUnitId: string
   sellerId?: string | null
   paymentMethodId?: string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -4358,6 +4893,9 @@ export type ApplicationCreateManySellerInput = {
   propertyUnitId: string
   buyerId: string
   paymentMethodId?: string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -4380,6 +4918,9 @@ export type ApplicationCreateManySellerInput = {
 
 export type ApplicationUpdateWithoutBuyerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4414,6 +4955,7 @@ export type ApplicationUpdateWithoutBuyerInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutBuyerInput = {
@@ -4422,6 +4964,9 @@ export type ApplicationUncheckedUpdateWithoutBuyerInput = {
   propertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4452,6 +4997,7 @@ export type ApplicationUncheckedUpdateWithoutBuyerInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateManyWithoutBuyerInput = {
@@ -4460,6 +5006,9 @@ export type ApplicationUncheckedUpdateManyWithoutBuyerInput = {
   propertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4482,6 +5031,9 @@ export type ApplicationUncheckedUpdateManyWithoutBuyerInput = {
 
 export type ApplicationUpdateWithoutSellerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4516,6 +5068,7 @@ export type ApplicationUpdateWithoutSellerInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutSellerInput = {
@@ -4524,6 +5077,9 @@ export type ApplicationUncheckedUpdateWithoutSellerInput = {
   propertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
   buyerId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4554,6 +5110,7 @@ export type ApplicationUncheckedUpdateWithoutSellerInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateManyWithoutSellerInput = {
@@ -4562,6 +5119,9 @@ export type ApplicationUncheckedUpdateManyWithoutSellerInput = {
   propertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
   buyerId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4588,6 +5148,9 @@ export type ApplicationCreateManyTenantInput = {
   buyerId: string
   sellerId?: string | null
   paymentMethodId?: string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -4610,6 +5173,9 @@ export type ApplicationCreateManyTenantInput = {
 
 export type ApplicationUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4644,6 +5210,7 @@ export type ApplicationUpdateWithoutTenantInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutTenantInput = {
@@ -4652,6 +5219,9 @@ export type ApplicationUncheckedUpdateWithoutTenantInput = {
   buyerId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4682,6 +5252,7 @@ export type ApplicationUncheckedUpdateWithoutTenantInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateManyWithoutTenantInput = {
@@ -4690,6 +5261,9 @@ export type ApplicationUncheckedUpdateManyWithoutTenantInput = {
   buyerId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4716,6 +5290,9 @@ export type ApplicationCreateManyPropertyUnitInput = {
   buyerId: string
   sellerId?: string | null
   paymentMethodId?: string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -4738,6 +5315,9 @@ export type ApplicationCreateManyPropertyUnitInput = {
 
 export type ApplicationUpdateWithoutPropertyUnitInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4772,6 +5352,7 @@ export type ApplicationUpdateWithoutPropertyUnitInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutPropertyUnitInput = {
@@ -4780,6 +5361,9 @@ export type ApplicationUncheckedUpdateWithoutPropertyUnitInput = {
   buyerId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4810,6 +5394,7 @@ export type ApplicationUncheckedUpdateWithoutPropertyUnitInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateManyWithoutPropertyUnitInput = {
@@ -4818,6 +5403,9 @@ export type ApplicationUncheckedUpdateManyWithoutPropertyUnitInput = {
   buyerId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4844,6 +5432,9 @@ export type ApplicationCreateManyPaymentMethodInput = {
   propertyUnitId: string
   buyerId: string
   sellerId?: string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -4866,6 +5457,9 @@ export type ApplicationCreateManyPaymentMethodInput = {
 
 export type ApplicationUpdateWithoutPaymentMethodInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4900,6 +5494,7 @@ export type ApplicationUpdateWithoutPaymentMethodInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutPaymentMethodInput = {
@@ -4908,6 +5503,9 @@ export type ApplicationUncheckedUpdateWithoutPaymentMethodInput = {
   propertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
   buyerId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4938,6 +5536,7 @@ export type ApplicationUncheckedUpdateWithoutPaymentMethodInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateManyWithoutPaymentMethodInput = {
@@ -4946,6 +5545,9 @@ export type ApplicationUncheckedUpdateManyWithoutPaymentMethodInput = {
   propertyUnitId?: Prisma.StringFieldUpdateOperationsInput | string
   buyerId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4973,6 +5575,9 @@ export type ApplicationCreateManySupersededByInput = {
   buyerId: string
   sellerId?: string | null
   paymentMethodId?: string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -4994,6 +5599,9 @@ export type ApplicationCreateManySupersededByInput = {
 
 export type ApplicationUpdateWithoutSupersededByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5028,6 +5636,7 @@ export type ApplicationUpdateWithoutSupersededByInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutSupersededByInput = {
@@ -5037,6 +5646,9 @@ export type ApplicationUncheckedUpdateWithoutSupersededByInput = {
   buyerId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5066,6 +5678,7 @@ export type ApplicationUncheckedUpdateWithoutSupersededByInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateManyWithoutSupersededByInput = {
@@ -5075,6 +5688,9 @@ export type ApplicationUncheckedUpdateManyWithoutSupersededByInput = {
   buyerId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5101,6 +5717,9 @@ export type ApplicationCreateManyCurrentPhaseInput = {
   buyerId: string
   sellerId?: string | null
   paymentMethodId?: string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Date | string | null
+  paymentMethodSnapshotHash?: string | null
   applicationNumber: string
   title: string
   description?: string | null
@@ -5122,6 +5741,9 @@ export type ApplicationCreateManyCurrentPhaseInput = {
 
 export type ApplicationUpdateWithoutCurrentPhaseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5156,6 +5778,7 @@ export type ApplicationUpdateWithoutCurrentPhaseInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutCurrentPhaseInput = {
@@ -5165,6 +5788,9 @@ export type ApplicationUncheckedUpdateWithoutCurrentPhaseInput = {
   buyerId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5194,6 +5820,7 @@ export type ApplicationUncheckedUpdateWithoutCurrentPhaseInput = {
   incomingTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTargetApplicationNestedInput
   events?: Prisma.ApplicationEventUncheckedUpdateManyWithoutApplicationNestedInput
   refunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutApplicationNestedInput
+  organizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateManyWithoutCurrentPhaseInput = {
@@ -5203,6 +5830,9 @@ export type ApplicationUncheckedUpdateManyWithoutCurrentPhaseInput = {
   buyerId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentMethodSnapshot?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  paymentMethodSnapshotAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentMethodSnapshotHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   applicationNumber?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -5239,6 +5869,7 @@ export type ApplicationCountOutputType = {
   incomingTransferRequests: number
   events: number
   refunds: number
+  organizations: number
 }
 
 export type ApplicationCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -5253,6 +5884,7 @@ export type ApplicationCountOutputTypeSelect<ExtArgs extends runtime.Types.Exten
   incomingTransferRequests?: boolean | ApplicationCountOutputTypeCountIncomingTransferRequestsArgs
   events?: boolean | ApplicationCountOutputTypeCountEventsArgs
   refunds?: boolean | ApplicationCountOutputTypeCountRefundsArgs
+  organizations?: boolean | ApplicationCountOutputTypeCountOrganizationsArgs
 }
 
 /**
@@ -5342,6 +5974,13 @@ export type ApplicationCountOutputTypeCountRefundsArgs<ExtArgs extends runtime.T
   where?: Prisma.ApplicationRefundWhereInput
 }
 
+/**
+ * ApplicationCountOutputType without action
+ */
+export type ApplicationCountOutputTypeCountOrganizationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ApplicationOrganizationWhereInput
+}
+
 
 export type ApplicationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -5350,6 +5989,9 @@ export type ApplicationSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   buyerId?: boolean
   sellerId?: boolean
   paymentMethodId?: boolean
+  paymentMethodSnapshot?: boolean
+  paymentMethodSnapshotAt?: boolean
+  paymentMethodSnapshotHash?: boolean
   applicationNumber?: boolean
   title?: boolean
   description?: boolean
@@ -5388,6 +6030,7 @@ export type ApplicationSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   incomingTransferRequests?: boolean | Prisma.Application$incomingTransferRequestsArgs<ExtArgs>
   events?: boolean | Prisma.Application$eventsArgs<ExtArgs>
   refunds?: boolean | Prisma.Application$refundsArgs<ExtArgs>
+  organizations?: boolean | Prisma.Application$organizationsArgs<ExtArgs>
   _count?: boolean | Prisma.ApplicationCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["application"]>
 
@@ -5400,6 +6043,9 @@ export type ApplicationSelectScalar = {
   buyerId?: boolean
   sellerId?: boolean
   paymentMethodId?: boolean
+  paymentMethodSnapshot?: boolean
+  paymentMethodSnapshotAt?: boolean
+  paymentMethodSnapshotHash?: boolean
   applicationNumber?: boolean
   title?: boolean
   description?: boolean
@@ -5420,7 +6066,7 @@ export type ApplicationSelectScalar = {
   supersededAt?: boolean
 }
 
-export type ApplicationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "propertyUnitId" | "buyerId" | "sellerId" | "paymentMethodId" | "applicationNumber" | "title" | "description" | "applicationType" | "totalAmount" | "status" | "currentPhaseId" | "nextPaymentDueDate" | "lastReminderSentAt" | "startDate" | "endDate" | "signedAt" | "terminatedAt" | "createdAt" | "updatedAt" | "transferredFromId" | "supersededById" | "supersededAt", ExtArgs["result"]["application"]>
+export type ApplicationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "propertyUnitId" | "buyerId" | "sellerId" | "paymentMethodId" | "paymentMethodSnapshot" | "paymentMethodSnapshotAt" | "paymentMethodSnapshotHash" | "applicationNumber" | "title" | "description" | "applicationType" | "totalAmount" | "status" | "currentPhaseId" | "nextPaymentDueDate" | "lastReminderSentAt" | "startDate" | "endDate" | "signedAt" | "terminatedAt" | "createdAt" | "updatedAt" | "transferredFromId" | "supersededById" | "supersededAt", ExtArgs["result"]["application"]>
 export type ApplicationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   propertyUnit?: boolean | Prisma.PropertyUnitDefaultArgs<ExtArgs>
@@ -5442,6 +6088,7 @@ export type ApplicationInclude<ExtArgs extends runtime.Types.Extensions.Internal
   incomingTransferRequests?: boolean | Prisma.Application$incomingTransferRequestsArgs<ExtArgs>
   events?: boolean | Prisma.Application$eventsArgs<ExtArgs>
   refunds?: boolean | Prisma.Application$refundsArgs<ExtArgs>
+  organizations?: boolean | Prisma.Application$organizationsArgs<ExtArgs>
   _count?: boolean | Prisma.ApplicationCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -5468,6 +6115,7 @@ export type $ApplicationPayload<ExtArgs extends runtime.Types.Extensions.Interna
     incomingTransferRequests: Prisma.$PropertyTransferRequestPayload<ExtArgs>[]
     events: Prisma.$ApplicationEventPayload<ExtArgs>[]
     refunds: Prisma.$ApplicationRefundPayload<ExtArgs>[]
+    organizations: Prisma.$ApplicationOrganizationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -5476,6 +6124,9 @@ export type $ApplicationPayload<ExtArgs extends runtime.Types.Extensions.Interna
     buyerId: string
     sellerId: string | null
     paymentMethodId: string | null
+    paymentMethodSnapshot: runtime.JsonValue | null
+    paymentMethodSnapshotAt: Date | null
+    paymentMethodSnapshotHash: string | null
     applicationNumber: string
     title: string
     description: string | null
@@ -5854,6 +6505,7 @@ export interface Prisma__ApplicationClient<T, Null = never, ExtArgs extends runt
   incomingTransferRequests<T extends Prisma.Application$incomingTransferRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Application$incomingTransferRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PropertyTransferRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   events<T extends Prisma.Application$eventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Application$eventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApplicationEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   refunds<T extends Prisma.Application$refundsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Application$refundsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApplicationRefundPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  organizations<T extends Prisma.Application$organizationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Application$organizationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApplicationOrganizationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5889,6 +6541,9 @@ export interface ApplicationFieldRefs {
   readonly buyerId: Prisma.FieldRef<"Application", 'String'>
   readonly sellerId: Prisma.FieldRef<"Application", 'String'>
   readonly paymentMethodId: Prisma.FieldRef<"Application", 'String'>
+  readonly paymentMethodSnapshot: Prisma.FieldRef<"Application", 'Json'>
+  readonly paymentMethodSnapshotAt: Prisma.FieldRef<"Application", 'DateTime'>
+  readonly paymentMethodSnapshotHash: Prisma.FieldRef<"Application", 'String'>
   readonly applicationNumber: Prisma.FieldRef<"Application", 'String'>
   readonly title: Prisma.FieldRef<"Application", 'String'>
   readonly description: Prisma.FieldRef<"Application", 'String'>
@@ -6625,6 +7280,30 @@ export type Application$refundsArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.ApplicationRefundScalarFieldEnum | Prisma.ApplicationRefundScalarFieldEnum[]
+}
+
+/**
+ * Application.organizations
+ */
+export type Application$organizationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ApplicationOrganization
+   */
+  select?: Prisma.ApplicationOrganizationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ApplicationOrganization
+   */
+  omit?: Prisma.ApplicationOrganizationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ApplicationOrganizationInclude<ExtArgs> | null
+  where?: Prisma.ApplicationOrganizationWhereInput
+  orderBy?: Prisma.ApplicationOrganizationOrderByWithRelationInput | Prisma.ApplicationOrganizationOrderByWithRelationInput[]
+  cursor?: Prisma.ApplicationOrganizationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ApplicationOrganizationScalarFieldEnum | Prisma.ApplicationOrganizationScalarFieldEnum[]
 }
 
 /**

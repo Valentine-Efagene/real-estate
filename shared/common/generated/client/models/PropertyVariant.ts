@@ -842,14 +842,6 @@ export type PropertyVariantUncheckedUpdateManyWithoutPropertyNestedInput = {
   deleteMany?: Prisma.PropertyVariantScalarWhereInput | Prisma.PropertyVariantScalarWhereInput[]
 }
 
-export type NullableIntFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type PropertyVariantCreateNestedOneWithoutAmenitiesInput = {
   create?: Prisma.XOR<Prisma.PropertyVariantCreateWithoutAmenitiesInput, Prisma.PropertyVariantUncheckedCreateWithoutAmenitiesInput>
   connectOrCreate?: Prisma.PropertyVariantCreateOrConnectWithoutAmenitiesInput

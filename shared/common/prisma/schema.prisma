@@ -367,6 +367,7 @@ enum ApplicationEventType {
   APPLICATION_TRANSFERRED
   UNDERWRITING_COMPLETED
   OFFER_LETTER_GENERATED
+  HANDLER_EXECUTED // Event handler was executed
 }
 
 enum ApplicationEventGroup {
@@ -375,6 +376,7 @@ enum ApplicationEventGroup {
   DOCUMENT
   NOTIFICATION
   WORKFLOW
+  AUTOMATION // Automated handler executions
 }
 
 enum EventActorType {
@@ -408,33 +410,6 @@ enum EventHandlerType {
   ADVANCE_WORKFLOW // Advance or complete a workflow step
   RUN_AUTOMATION // Execute internal business logic
   LOCK_UNIT // Lock the property unit for the applicant, supersede competing applications
-}
-
-/// Actor Type - Who triggered an event
-enum ActorType {
-  USER
-  API_KEY
-  SYSTEM
-  WEBHOOK
-}
-
-/// Workflow Event Status
-enum WorkflowEventStatus {
-  PENDING
-  PROCESSING
-  COMPLETED
-  FAILED
-  SKIPPED
-}
-
-/// Handler Execution Status
-enum ExecutionStatus {
-  PENDING
-  RUNNING
-  COMPLETED
-  FAILED
-  RETRYING
-  SKIPPED
 }
 
 /// Permission effect (Allow/Deny)
@@ -679,6 +654,12 @@ model Organization {
   tenant  Tenant               @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   members OrganizationMember[]
 
+  // Applications where this organization is involved
+  applicationAssignments ApplicationOrganization[]
+
+  // Bank-specific document requirements (for BANK type organizations)
+  documentRequirements BankDocumentRequirement[]
+
   // Properties developed by this organization (for DEVELOPERs)
   // developedProperties Property[] @relation("PropertyDeveloper")
 
@@ -728,6 +709,83 @@ model OrganizationMember {
   @@map("organization_members")
 }
 
+// =============================================================================
+// BANK DOCUMENT REQUIREMENTS - Bank-specific document overlays
+// =============================================================================
+// Banks have different risk appetites and compliance requirements.
+// For a standardized product (e.g., NHF Mortgage), the payment structure is fixed
+// but document requirements vary by bank.
+//
+// This model defines OVERLAY rules:
+// - Base documents come from DocumentationPlan
+// - Bank adds/modifies requirements via BankDocumentRequirement
+//
+// When switching banks mid-application:
+// 1. Keep all existing approved documents
+// 2. Query new bank's requirements
+// 3. Calculate delta (what's missing)
+// 4. Customer uploads only the delta
+// =============================================================================
+
+/// How the bank's requirement modifies the base requirement
+enum BankDocumentModifier {
+  REQUIRED // Bank requires this document (add if not in base)
+  OPTIONAL // Bank makes this optional (override base if required)
+  NOT_REQUIRED // Bank doesn't need this (skip even if in base)
+  STRICTER // Bank has stricter version (e.g., 12 months instead of 6)
+}
+
+/// Bank Document Requirement - Bank-specific document rules
+model BankDocumentRequirement {
+  id       String @id @default(cuid())
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  // Which bank this applies to
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // Which phase type this applies to (e.g., KYC, VERIFICATION)
+  phaseType String
+
+  // Optional: specific payment method (NULL = applies to all)
+  paymentMethodId String?
+  paymentMethod   PropertyPaymentMethod? @relation(fields: [paymentMethodId], references: [id])
+
+  // Document identification
+  documentType String // ID_CARD, BANK_STATEMENT, EMPLOYMENT_LETTER, etc.
+  documentName String // Human-readable override (e.g., "12 Months Bank Statement")
+
+  // How this modifies the base requirement
+  modifier BankDocumentModifier @default(REQUIRED)
+
+  // Bank-specific rules
+  description      String? @db.Text // Bank's specific instructions
+  expiryDays       Int? // Bank's validity period (may be stricter than base)
+  minFiles         Int? // Bank may require more files
+  maxFiles         Int?
+  allowedMimeTypes String? // Bank may restrict file types
+
+  // Bank-specific validation (JSON schema)
+  // Example: { "bankStatementMonths": 12, "minimumBalance": 500000 }
+  validationRules Json?
+
+  // Priority for conflict resolution (higher = takes precedence)
+  priority Int @default(100)
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([organizationId, phaseType, documentType, paymentMethodId])
+  @@index([tenantId])
+  @@index([organizationId])
+  @@index([phaseType])
+  @@index([documentType])
+  @@index([paymentMethodId])
+  @@map("bank_document_requirements")
+}
+
 model Tenant {
   id        String   @id @default(cuid())
   name      String
@@ -765,10 +823,9 @@ model Tenant {
   apiKeys ApiKey[]
 
   // Event-driven workflow
-  eventChannels  EventChannel[]
-  eventTypes     EventType[]
-  eventHandlers  EventHandler[]
-  workflowEvents WorkflowEvent[]
+  eventChannels EventChannel[]
+  eventTypes    EventType[]
+  eventHandlers EventHandler[]
 
   // Property transfer requests
   propertyTransferRequests PropertyTransferRequest[]
@@ -803,7 +860,6 @@ model Tenant {
   propertyVariantMedia        PropertyVariantMedia[]
   propertyUnits               PropertyUnit[]
   propertyAmenities           PropertyAmenity[]
-  eventHandlerExecutions      EventHandlerExecution[]
   amenities                   Amenity[]
   socials                     Social[]
   wallets                     Wallet[]
@@ -815,8 +871,14 @@ model Tenant {
   questionnairePhaseReviews   QuestionnairePhaseReview[]
   documentReviews             DocumentReview[]
 
+  // Bank-specific document requirements
+  bankDocumentRequirements BankDocumentRequirement[]
+
   // Organizations (Banks, Developers) operating on this tenant
   organizations Organization[]
+
+  // Application organization assignments
+  applicationOrganizations ApplicationOrganization[]
 
   @@index([subdomain])
   @@map("tenants")
@@ -1570,6 +1632,9 @@ model PropertyPaymentMethod {
   changeRulesFrom DocumentRequirementRule[] @relation("RuleFromMethod")
   changeRulesTo   DocumentRequirementRule[] @relation("RuleToMethod")
 
+  // Bank-specific document requirements for this payment method
+  bankDocumentRequirements BankDocumentRequirement[]
+
   @@unique([tenantId, name]) // Unique per tenant
   @@index([tenantId])
   @@map("property_payment_methods")
@@ -1914,6 +1979,17 @@ model Application {
   paymentMethodId String? // PropertyPaymentMethod used to create this contract
   paymentMethod   PropertyPaymentMethod? @relation(fields: [paymentMethodId], references: [id])
 
+  // =========================================================================
+  // PAYMENT METHOD VERSION SNAPSHOT
+  // =========================================================================
+  // Captures the payment method configuration at application creation time.
+  // This ensures existing applications continue with original terms even if
+  // the payment method template is later modified.
+  // =========================================================================
+  paymentMethodSnapshot     Json? // Full snapshot of PropertyPaymentMethod + phases at creation
+  paymentMethodSnapshotAt   DateTime? // When the snapshot was taken
+  paymentMethodSnapshotHash String? // Hash to detect if template changed since snapshot
+
   // Contract identification
   applicationNumber String  @unique
   title             String
@@ -1971,6 +2047,9 @@ model Application {
   // Refund requests
   refunds ApplicationRefund[]
 
+  // Organization assignments - which orgs are involved in this application
+  organizations ApplicationOrganization[]
+
   @@index([tenantId])
   @@index([propertyUnitId])
   @@index([buyerId])
@@ -1980,6 +2059,104 @@ model Application {
   @@index([currentPhaseId])
   @@index([supersededById])
   @@map("applications")
+}
+
+// =============================================================================
+// APPLICATION ORGANIZATION - Binds organizations to specific applications
+// =============================================================================
+// Tracks which organizations (banks, developers, legal firms) are involved
+// in a specific application. This enables:
+// 1. Validation that only assigned developers can upload sales offers
+// 2. Only assigned banks can upload preapproval/mortgage offer letters
+// 3. Multi-bank application support (future: apply to multiple banks)
+// =============================================================================
+
+/// Role that an organization plays in an application
+enum ApplicationOrganizationRole {
+  DEVELOPER // Property developer - uploads sales offer letters
+  LENDER // Bank/financial institution - provides mortgage
+  LEGAL // Legal firm - handles conveyancing
+  INSURER // Insurance company
+  GOVERNMENT // Government agency (land registry, etc.)
+}
+
+/// Status of organization's involvement in the application
+enum ApplicationOrganizationStatus {
+  PENDING // Awaiting organization's response/engagement
+  ACTIVE // Organization is actively participating
+  COMPLETED // Organization's role is complete
+  DECLINED // Organization declined to participate
+  WITHDRAWN // Organization withdrew from the application
+}
+
+model ApplicationOrganization {
+  id            String      @id @default(cuid())
+  tenantId      String
+  tenant        Tenant      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  // Which organization is involved
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // What role does this organization play
+  role   ApplicationOrganizationRole
+  status ApplicationOrganizationStatus @default(PENDING)
+
+  // Who assigned this organization (admin or system)
+  assignedById String?
+  assignedAt   DateTime @default(now())
+
+  // For multi-bank applications: track if this is the selected lender
+  // Multiple banks can be PENDING, but only one should be ACTIVE for LENDER role
+  isPrimary Boolean @default(false)
+
+  // Organization-specific terms (e.g., bank's offered interest rate)
+  offeredTerms    Json? // { interestRate, termMonths, conditions, etc. }
+  termsOfferedAt  DateTime?
+  termsAcceptedAt DateTime?
+  termsDeclinedAt DateTime?
+  declineReason   String?   @db.Text
+
+  // Tracking
+  activatedAt DateTime?
+  completedAt DateTime?
+  withdrawnAt DateTime?
+
+  // =========================================================================
+  // SLA TRACKING - Monitor bank responsiveness
+  // =========================================================================
+  // When documentation is complete, clock starts for bank to respond.
+  // If they're slow, admin can reassign to another bank.
+  // =========================================================================
+  slaHours          Int? // Expected response time (e.g., 48 hours)
+  slaStartedAt      DateTime? // When clock started (e.g., when docs were complete)
+  slaBreachedAt     DateTime? // When SLA was breached (set by cron job)
+  slaBreachNotified Boolean   @default(false) // Was admin notified of breach?
+
+  // Reminder tracking
+  reminderCount      Int       @default(0)
+  lastReminderSentAt DateTime?
+  nextReminderAt     DateTime?
+
+  // Escalation
+  escalatedAt       DateTime?
+  escalatedToUserId String? // Admin handling the escalation
+  escalationNotes   String?   @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([applicationId, organizationId, role]) // One org per role per application
+  @@index([tenantId])
+  @@index([applicationId])
+  @@index([organizationId])
+  @@index([role])
+  @@index([status])
+  @@index([isPrimary])
+  @@index([slaBreachedAt])
+  @@map("application_organizations")
 }
 
 // =============================================================================
@@ -2478,6 +2655,29 @@ model ApplicationDocument {
   uploadedById String?
   uploadedBy   User?   @relation("DocumentUploader", fields: [uploadedById], references: [id])
 
+  // =========================================================================
+  // UPLOADER VALIDATION - Enforces who can upload this document
+  // =========================================================================
+  // expectedUploader is set from DocumentDefinition.uploadedBy at phase creation
+  // Allows validation that correct party is uploading (e.g., developer uploads sales offer)
+  expectedUploader       UploadedBy? // CUSTOMER, LENDER, DEVELOPER, LEGAL, PLATFORM, etc.
+  // If expectedUploader is LENDER/DEVELOPER, track which org should upload
+  expectedOrganizationId String?
+
+  // =========================================================================
+  // DOCUMENT EXPIRY - Time-sensitive document tracking
+  // =========================================================================
+  // Documents like bank statements have a shelf life. If application takes too long,
+  // documents may need to be re-uploaded.
+  // =========================================================================
+  documentDate    DateTime? // When the document was issued/created (e.g., bank statement date)
+  expiresAt       DateTime? // When this document expires (computed from documentDate + expiryDays)
+  expiryDays      Int? // Number of days this document type is valid (copied from DocumentDefinition)
+  isExpired       Boolean   @default(false) // Denormalized flag, updated by cron job
+  expiredAt       DateTime? // When the document was marked expired
+  expiryWarningAt DateTime? // When expiry warning was sent
+  revalidatedAt   DateTime? // If document was re-uploaded after expiry
+
   status DocumentStatus @default(PENDING)
 
   // NO versioning - document is replaced on re-upload (url is updated)
@@ -2504,6 +2704,8 @@ model ApplicationDocument {
   @@index([documentType])
   @@index([status])
   @@index([replacesDocumentId])
+  @@index([isExpired])
+  @@index([expiresAt])
   @@map("application_documents")
 }
 
@@ -3033,9 +3235,6 @@ model EventType {
   /// Handlers subscribed to this event type
   handlers EventHandler[]
 
-  /// Actual event instances of this type
-  events WorkflowEvent[]
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -3086,9 +3285,6 @@ model EventHandler {
   /// e.g., "$.payload.status == 'approved'"
   filterCondition String? @db.Text
 
-  /// Handler execution logs
-  executions EventHandlerExecution[]
-
   /// Step attachments - steps that have attached this handler
   stepAttachments StepEventAttachment[]
 
@@ -3102,100 +3298,6 @@ model EventHandler {
   @@index([eventTypeId])
   @@index([handlerType])
   @@map("event_handlers")
-}
-
-/// Workflow Event - An actual event instance that occurred
-/// This is the audit log of all events in the system
-model WorkflowEvent {
-  id       String @id @default(cuid())
-  tenantId String
-  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-
-  /// The type of this event
-  eventTypeId String
-  eventType   EventType @relation(fields: [eventTypeId], references: [id], onDelete: Cascade)
-
-  /// The event payload (actual data)
-  payload Json
-
-  /// Optional correlation ID to link related events
-  correlationId String?
-
-  /// Optional causation ID (which event caused this one)
-  causationId String?
-
-  /// Source of the event (service name, user action, etc.)
-  source String
-
-  /// Actor who triggered the event (user ID, API key ID, "system")
-  actorId   String?
-  actorType ActorType @default(SYSTEM)
-
-  /// Event status
-  status WorkflowEventStatus @default(PENDING)
-
-  /// Error message if processing failed
-  error String? @db.Text
-
-  /// When the event was processed
-  processedAt DateTime?
-
-  /// Handler executions for this event
-  executions EventHandlerExecution[]
-
-  createdAt DateTime @default(now())
-
-  @@index([tenantId])
-  @@index([eventTypeId])
-  @@index([correlationId])
-  @@index([causationId])
-  @@index([status])
-  @@index([createdAt])
-  @@map("workflow_events")
-}
-
-/// Event Handler Execution - Log of a handler processing an event
-model EventHandlerExecution {
-  id       String @id @default(cuid())
-  tenantId String
-  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-
-  /// The event being processed
-  eventId String
-  event   WorkflowEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
-
-  /// The handler that processed this event
-  handlerId String
-  handler   EventHandler @relation(fields: [handlerId], references: [id], onDelete: Cascade)
-
-  /// Execution status
-  status ExecutionStatus @default(PENDING)
-
-  /// Attempt number (1 for first try, increments on retry)
-  attempt Int @default(1)
-
-  /// Input to the handler (may be transformed payload)
-  input Json?
-
-  /// Output from the handler
-  output Json?
-
-  /// Error details if failed
-  error     String? @db.Text
-  errorCode String?
-
-  /// Timing
-  startedAt   DateTime?
-  completedAt DateTime?
-  durationMs  Int?
-
-  createdAt DateTime @default(now())
-
-  @@index([tenantId])
-  @@index([eventId])
-  @@index([handlerId])
-  @@index([status])
-  @@map("event_handler_executions")
 }
 
 // =============================================================================
@@ -3503,4 +3605,103 @@ model WorkflowBlocker {
   @@index([tenantId, blockerCategory, resolvedAt]) // For "open blockers by category" queries
   @@index([tenantId, isOverdue, blockerActor]) // For SLA violation queries
   @@map("workflow_blockers")
+}
+
+// =============================================================================
+// DOCUMENT EXPIRY JOB - Scheduled job tracking for document expiration checks
+// =============================================================================
+// Tracks scheduled jobs for checking document expiration across applications.
+// This supports a cron-based approach where a Lambda runs periodically to:
+// 1. Find documents nearing expiry (warning)
+// 2. Mark expired documents
+// 3. Notify customers to re-upload
+// 4. Optionally block phase progression if critical documents expired
+// =============================================================================
+
+/// Job status for scheduled background jobs
+enum ScheduledJobStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+/// Type of scheduled job
+enum ScheduledJobType {
+  DOCUMENT_EXPIRY_CHECK // Check for expired documents
+  SLA_BREACH_CHECK // Check for SLA breaches
+  PAYMENT_REMINDER // Send payment reminders
+  DOCUMENT_EXPIRY_WARNING // Warn about documents nearing expiry
+}
+
+/// Scheduled Job - Tracks execution of background jobs
+model ScheduledJob {
+  id       String  @id @default(cuid())
+  tenantId String? // NULL = system-wide job, set = tenant-specific
+
+  jobType ScheduledJobType
+  status  ScheduledJobStatus @default(PENDING)
+
+  // Scheduling
+  scheduledAt DateTime // When the job should run
+  startedAt   DateTime? // When job started executing
+  completedAt DateTime? // When job finished
+  durationMs  Int? // Execution time
+
+  // Job parameters
+  parameters Json? // Job-specific configuration
+
+  // Results
+  itemsProcessed Int     @default(0)
+  itemsAffected  Int     @default(0) // Documents expired, SLAs breached, etc.
+  errorCount     Int     @default(0)
+  errors         Json? // Array of error details
+  summary        String? @db.Text // Human-readable summary
+
+  // Retry handling
+  attemptNumber Int       @default(1)
+  maxAttempts   Int       @default(3)
+  nextRetryAt   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tenantId])
+  @@index([jobType])
+  @@index([status])
+  @@index([scheduledAt])
+  @@index([jobType, status, scheduledAt])
+  @@map("scheduled_jobs")
+}
+
+/// Document Expiry Warning - Track warnings sent for expiring documents
+model DocumentExpiryWarning {
+  id         String @id @default(cuid())
+  tenantId   String
+  documentId String
+
+  // Warning details
+  expiresAt   DateTime // When document will expire
+  daysUntil   Int // Days until expiry at time of warning
+  warningSent DateTime @default(now())
+
+  // Customer notification tracking
+  notificationSent Boolean @default(false)
+  notificationId   String? // Reference to notification service
+
+  // Resolution tracking
+  resolved      Boolean   @default(false)
+  resolvedAt    DateTime?
+  resolvedBy    String? // User who resolved (re-uploaded document)
+  newDocumentId String? // ID of the replacement document
+
+  createdAt DateTime @default(now())
+
+  @@unique([documentId, daysUntil]) // One warning per document per threshold
+  @@index([tenantId])
+  @@index([documentId])
+  @@index([expiresAt])
+  @@index([resolved])
+  @@map("document_expiry_warnings")
 }

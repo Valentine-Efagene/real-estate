@@ -15,6 +15,8 @@ import {
 } from '../lib/notifications';
 import { applicationPhaseService } from './application-phase.service';
 import { unitLockingService } from './unit-locking.service';
+import { eventExecutionService } from './event-execution.service';
+import { PhaseTrigger } from '@valentine-efagene/qshelter-common';
 
 // Dashboard URL base
 const DASHBOARD_URL = process.env.DASHBOARD_URL || 'https://app.contribuild.com';
@@ -521,6 +523,16 @@ class ApplicationPaymentService {
                     phaseId: completedPhaseId,
                     error: error instanceof Error ? error.message : String(error),
                 });
+            }
+
+            // Execute attached event handlers for ON_COMPLETE trigger
+            try {
+                await eventExecutionService.executePhaseHandlers(
+                    completedPhaseId,
+                    'ON_COMPLETE' as PhaseTrigger
+                );
+            } catch (handlerError) {
+                console.error('[ApplicationPaymentService] Error executing ON_COMPLETE handlers:', handlerError);
             }
         }
 

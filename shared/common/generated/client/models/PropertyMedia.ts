@@ -570,14 +570,6 @@ export type PropertyMediaUncheckedUpdateManyWithoutPropertyNestedInput = {
   deleteMany?: Prisma.PropertyMediaScalarWhereInput | Prisma.PropertyMediaScalarWhereInput[]
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type PropertyMediaCreateWithoutTenantInput = {
   id?: string
   url: string

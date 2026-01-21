@@ -34,6 +34,8 @@ import {
 import { createWorkflowBlockerService, type CreateBlockerInput } from './workflow-blocker.service';
 import { unitLockingService } from './unit-locking.service';
 import { approvalWorkflowService, type ApprovalStageSnapshot } from './approval-workflow.service';
+import { eventExecutionService } from './event-execution.service';
+import { PhaseTrigger } from '@valentine-efagene/qshelter-common';
 
 // Type for scoring rules
 interface ScoringRule {
@@ -480,6 +482,18 @@ class ApplicationPhaseService {
             return result;
         });
 
+        // Execute attached event handlers for ON_ACTIVATE trigger
+        try {
+            await eventExecutionService.executePhaseHandlers(
+                phaseId,
+                'ON_ACTIVATE' as PhaseTrigger,
+                userId
+            );
+        } catch (error) {
+            console.error('[ApplicationPhaseService] Error executing ON_ACTIVATE handlers:', error);
+            // Don't fail the phase activation if handlers fail
+        }
+
         // Get enriched phase with action status
         const enrichedPhase = await this.findByIdWithActionStatus(updated.id);
 
@@ -834,9 +848,21 @@ class ApplicationPhaseService {
                 });
             }
 
-            // Handle unit locking if configured
+            // Handle unit locking if configured (legacy - will be replaced by handlers)
             await this.handleUnitLockingOnPhaseComplete(tx, phaseId, userId);
         });
+
+        // Execute attached event handlers for ON_COMPLETE trigger
+        try {
+            await eventExecutionService.executePhaseHandlers(
+                phaseId,
+                'ON_COMPLETE' as PhaseTrigger,
+                userId
+            );
+        } catch (error) {
+            console.error('[ApplicationPhaseService] Error executing ON_COMPLETE handlers:', error);
+            // Don't fail the phase completion if handlers fail
+        }
 
         // Send phase completion notification
         this.sendPhaseCompletionNotification(phaseId);
@@ -1364,6 +1390,17 @@ class ApplicationPhaseService {
         // Send phase completion notification (fire and forget, outside tx)
         this.sendPhaseCompletionNotification(phaseId);
 
+        // Execute attached event handlers for ON_COMPLETE trigger
+        try {
+            await eventExecutionService.executePhaseHandlers(
+                phaseId,
+                'ON_COMPLETE' as PhaseTrigger,
+                userId
+            );
+        } catch (error) {
+            console.error('[ApplicationPhaseService] Error executing ON_COMPLETE handlers:', error);
+        }
+
         return this.findByIdWithActionStatus(updated.id);
     }
 
@@ -1710,6 +1747,19 @@ class ApplicationPhaseService {
 
             return { autoComplete };
         });
+
+        // If auto-completed, execute ON_COMPLETE handlers
+        if (updated.autoComplete) {
+            try {
+                await eventExecutionService.executePhaseHandlers(
+                    phaseId,
+                    'ON_COMPLETE' as PhaseTrigger,
+                    userId
+                );
+            } catch (error) {
+                console.error('[ApplicationPhaseService] Error executing ON_COMPLETE handlers for questionnaire:', error);
+            }
+        }
 
         // Return the updated phase with questionnaire data
         const result = await this.findById(phaseId);

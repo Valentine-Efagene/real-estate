@@ -392,6 +392,7 @@ export const ModelName = {
   TenantMembership: 'TenantMembership',
   Organization: 'Organization',
   OrganizationMember: 'OrganizationMember',
+  BankDocumentRequirement: 'BankDocumentRequirement',
   Tenant: 'Tenant',
   ApiKey: 'ApiKey',
   RefreshToken: 'RefreshToken',
@@ -428,6 +429,7 @@ export const ModelName = {
   PaymentMethodPhaseDocument: 'PaymentMethodPhaseDocument',
   PaymentMethodPhaseField: 'PaymentMethodPhaseField',
   Application: 'Application',
+  ApplicationOrganization: 'ApplicationOrganization',
   ApplicationRefund: 'ApplicationRefund',
   ApplicationPhase: 'ApplicationPhase',
   QuestionnairePhase: 'QuestionnairePhase',
@@ -450,12 +452,12 @@ export const ModelName = {
   EventChannel: 'EventChannel',
   EventType: 'EventType',
   EventHandler: 'EventHandler',
-  WorkflowEvent: 'WorkflowEvent',
-  EventHandlerExecution: 'EventHandlerExecution',
   DomainEvent: 'DomainEvent',
   PropertyTransferRequest: 'PropertyTransferRequest',
   ApprovalRequest: 'ApprovalRequest',
-  WorkflowBlocker: 'WorkflowBlocker'
+  WorkflowBlocker: 'WorkflowBlocker',
+  ScheduledJob: 'ScheduledJob',
+  DocumentExpiryWarning: 'DocumentExpiryWarning'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -471,7 +473,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenantMembership" | "organization" | "organizationMember" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "documentationPlan" | "documentDefinition" | "approvalStage" | "questionnairePlan" | "questionnairePlanQuestion" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "phaseEventAttachment" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "paymentMethodPhaseField" | "application" | "applicationRefund" | "applicationPhase" | "questionnairePhase" | "questionnairePhaseReview" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "applicationEvent" | "paymentInstallment" | "applicationPayment" | "applicationDocument" | "documentReview" | "approvalStageProgress" | "documentApproval" | "documentTemplate" | "offerLetter" | "applicationTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "workflowEvent" | "eventHandlerExecution" | "domainEvent" | "propertyTransferRequest" | "approvalRequest" | "workflowBlocker"
+    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenantMembership" | "organization" | "organizationMember" | "bankDocumentRequirement" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "documentationPlan" | "documentDefinition" | "approvalStage" | "questionnairePlan" | "questionnairePlanQuestion" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "phaseEventAttachment" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "paymentMethodPhaseField" | "application" | "applicationOrganization" | "applicationRefund" | "applicationPhase" | "questionnairePhase" | "questionnairePhaseReview" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "applicationEvent" | "paymentInstallment" | "applicationPayment" | "applicationDocument" | "documentReview" | "approvalStageProgress" | "documentApproval" | "documentTemplate" | "offerLetter" | "applicationTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "domainEvent" | "propertyTransferRequest" | "approvalRequest" | "workflowBlocker" | "scheduledJob" | "documentExpiryWarning"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1000,6 +1002,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.OrganizationMemberCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.OrganizationMemberCountAggregateOutputType> | number
+        }
+      }
+    }
+    BankDocumentRequirement: {
+      payload: Prisma.$BankDocumentRequirementPayload<ExtArgs>
+      fields: Prisma.BankDocumentRequirementFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.BankDocumentRequirementFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BankDocumentRequirementPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.BankDocumentRequirementFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BankDocumentRequirementPayload>
+        }
+        findFirst: {
+          args: Prisma.BankDocumentRequirementFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BankDocumentRequirementPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.BankDocumentRequirementFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BankDocumentRequirementPayload>
+        }
+        findMany: {
+          args: Prisma.BankDocumentRequirementFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BankDocumentRequirementPayload>[]
+        }
+        create: {
+          args: Prisma.BankDocumentRequirementCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BankDocumentRequirementPayload>
+        }
+        createMany: {
+          args: Prisma.BankDocumentRequirementCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.BankDocumentRequirementDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BankDocumentRequirementPayload>
+        }
+        update: {
+          args: Prisma.BankDocumentRequirementUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BankDocumentRequirementPayload>
+        }
+        deleteMany: {
+          args: Prisma.BankDocumentRequirementDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.BankDocumentRequirementUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.BankDocumentRequirementUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BankDocumentRequirementPayload>
+        }
+        aggregate: {
+          args: Prisma.BankDocumentRequirementAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBankDocumentRequirement>
+        }
+        groupBy: {
+          args: Prisma.BankDocumentRequirementGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BankDocumentRequirementGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.BankDocumentRequirementCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BankDocumentRequirementCountAggregateOutputType> | number
         }
       }
     }
@@ -3379,6 +3447,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ApplicationOrganization: {
+      payload: Prisma.$ApplicationOrganizationPayload<ExtArgs>
+      fields: Prisma.ApplicationOrganizationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ApplicationOrganizationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationOrganizationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ApplicationOrganizationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationOrganizationPayload>
+        }
+        findFirst: {
+          args: Prisma.ApplicationOrganizationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationOrganizationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ApplicationOrganizationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationOrganizationPayload>
+        }
+        findMany: {
+          args: Prisma.ApplicationOrganizationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationOrganizationPayload>[]
+        }
+        create: {
+          args: Prisma.ApplicationOrganizationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationOrganizationPayload>
+        }
+        createMany: {
+          args: Prisma.ApplicationOrganizationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.ApplicationOrganizationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationOrganizationPayload>
+        }
+        update: {
+          args: Prisma.ApplicationOrganizationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationOrganizationPayload>
+        }
+        deleteMany: {
+          args: Prisma.ApplicationOrganizationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ApplicationOrganizationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.ApplicationOrganizationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApplicationOrganizationPayload>
+        }
+        aggregate: {
+          args: Prisma.ApplicationOrganizationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateApplicationOrganization>
+        }
+        groupBy: {
+          args: Prisma.ApplicationOrganizationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApplicationOrganizationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ApplicationOrganizationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApplicationOrganizationCountAggregateOutputType> | number
+        }
+      }
+    }
     ApplicationRefund: {
       payload: Prisma.$ApplicationRefundPayload<ExtArgs>
       fields: Prisma.ApplicationRefundFieldRefs
@@ -4831,138 +4965,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    WorkflowEvent: {
-      payload: Prisma.$WorkflowEventPayload<ExtArgs>
-      fields: Prisma.WorkflowEventFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.WorkflowEventFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowEventPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.WorkflowEventFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowEventPayload>
-        }
-        findFirst: {
-          args: Prisma.WorkflowEventFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowEventPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.WorkflowEventFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowEventPayload>
-        }
-        findMany: {
-          args: Prisma.WorkflowEventFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowEventPayload>[]
-        }
-        create: {
-          args: Prisma.WorkflowEventCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowEventPayload>
-        }
-        createMany: {
-          args: Prisma.WorkflowEventCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        delete: {
-          args: Prisma.WorkflowEventDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowEventPayload>
-        }
-        update: {
-          args: Prisma.WorkflowEventUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowEventPayload>
-        }
-        deleteMany: {
-          args: Prisma.WorkflowEventDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.WorkflowEventUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        upsert: {
-          args: Prisma.WorkflowEventUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowEventPayload>
-        }
-        aggregate: {
-          args: Prisma.WorkflowEventAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateWorkflowEvent>
-        }
-        groupBy: {
-          args: Prisma.WorkflowEventGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.WorkflowEventGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.WorkflowEventCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.WorkflowEventCountAggregateOutputType> | number
-        }
-      }
-    }
-    EventHandlerExecution: {
-      payload: Prisma.$EventHandlerExecutionPayload<ExtArgs>
-      fields: Prisma.EventHandlerExecutionFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.EventHandlerExecutionFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventHandlerExecutionPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.EventHandlerExecutionFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventHandlerExecutionPayload>
-        }
-        findFirst: {
-          args: Prisma.EventHandlerExecutionFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventHandlerExecutionPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.EventHandlerExecutionFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventHandlerExecutionPayload>
-        }
-        findMany: {
-          args: Prisma.EventHandlerExecutionFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventHandlerExecutionPayload>[]
-        }
-        create: {
-          args: Prisma.EventHandlerExecutionCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventHandlerExecutionPayload>
-        }
-        createMany: {
-          args: Prisma.EventHandlerExecutionCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        delete: {
-          args: Prisma.EventHandlerExecutionDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventHandlerExecutionPayload>
-        }
-        update: {
-          args: Prisma.EventHandlerExecutionUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventHandlerExecutionPayload>
-        }
-        deleteMany: {
-          args: Prisma.EventHandlerExecutionDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.EventHandlerExecutionUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        upsert: {
-          args: Prisma.EventHandlerExecutionUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventHandlerExecutionPayload>
-        }
-        aggregate: {
-          args: Prisma.EventHandlerExecutionAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateEventHandlerExecution>
-        }
-        groupBy: {
-          args: Prisma.EventHandlerExecutionGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.EventHandlerExecutionGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.EventHandlerExecutionCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.EventHandlerExecutionCountAggregateOutputType> | number
-        }
-      }
-    }
     DomainEvent: {
       payload: Prisma.$DomainEventPayload<ExtArgs>
       fields: Prisma.DomainEventFieldRefs
@@ -5227,6 +5229,138 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ScheduledJob: {
+      payload: Prisma.$ScheduledJobPayload<ExtArgs>
+      fields: Prisma.ScheduledJobFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ScheduledJobFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduledJobPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ScheduledJobFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduledJobPayload>
+        }
+        findFirst: {
+          args: Prisma.ScheduledJobFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduledJobPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ScheduledJobFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduledJobPayload>
+        }
+        findMany: {
+          args: Prisma.ScheduledJobFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduledJobPayload>[]
+        }
+        create: {
+          args: Prisma.ScheduledJobCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduledJobPayload>
+        }
+        createMany: {
+          args: Prisma.ScheduledJobCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.ScheduledJobDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduledJobPayload>
+        }
+        update: {
+          args: Prisma.ScheduledJobUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduledJobPayload>
+        }
+        deleteMany: {
+          args: Prisma.ScheduledJobDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ScheduledJobUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.ScheduledJobUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduledJobPayload>
+        }
+        aggregate: {
+          args: Prisma.ScheduledJobAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateScheduledJob>
+        }
+        groupBy: {
+          args: Prisma.ScheduledJobGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ScheduledJobGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ScheduledJobCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ScheduledJobCountAggregateOutputType> | number
+        }
+      }
+    }
+    DocumentExpiryWarning: {
+      payload: Prisma.$DocumentExpiryWarningPayload<ExtArgs>
+      fields: Prisma.DocumentExpiryWarningFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DocumentExpiryWarningFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentExpiryWarningPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DocumentExpiryWarningFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentExpiryWarningPayload>
+        }
+        findFirst: {
+          args: Prisma.DocumentExpiryWarningFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentExpiryWarningPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DocumentExpiryWarningFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentExpiryWarningPayload>
+        }
+        findMany: {
+          args: Prisma.DocumentExpiryWarningFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentExpiryWarningPayload>[]
+        }
+        create: {
+          args: Prisma.DocumentExpiryWarningCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentExpiryWarningPayload>
+        }
+        createMany: {
+          args: Prisma.DocumentExpiryWarningCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.DocumentExpiryWarningDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentExpiryWarningPayload>
+        }
+        update: {
+          args: Prisma.DocumentExpiryWarningUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentExpiryWarningPayload>
+        }
+        deleteMany: {
+          args: Prisma.DocumentExpiryWarningDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DocumentExpiryWarningUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.DocumentExpiryWarningUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentExpiryWarningPayload>
+        }
+        aggregate: {
+          args: Prisma.DocumentExpiryWarningAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDocumentExpiryWarning>
+        }
+        groupBy: {
+          args: Prisma.DocumentExpiryWarningGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentExpiryWarningGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DocumentExpiryWarningCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentExpiryWarningCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -5402,6 +5536,30 @@ export const OrganizationMemberScalarFieldEnum = {
 } as const
 
 export type OrganizationMemberScalarFieldEnum = (typeof OrganizationMemberScalarFieldEnum)[keyof typeof OrganizationMemberScalarFieldEnum]
+
+
+export const BankDocumentRequirementScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  organizationId: 'organizationId',
+  phaseType: 'phaseType',
+  paymentMethodId: 'paymentMethodId',
+  documentType: 'documentType',
+  documentName: 'documentName',
+  modifier: 'modifier',
+  description: 'description',
+  expiryDays: 'expiryDays',
+  minFiles: 'minFiles',
+  maxFiles: 'maxFiles',
+  allowedMimeTypes: 'allowedMimeTypes',
+  validationRules: 'validationRules',
+  priority: 'priority',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BankDocumentRequirementScalarFieldEnum = (typeof BankDocumentRequirementScalarFieldEnum)[keyof typeof BankDocumentRequirementScalarFieldEnum]
 
 
 export const TenantScalarFieldEnum = {
@@ -5982,6 +6140,9 @@ export const ApplicationScalarFieldEnum = {
   buyerId: 'buyerId',
   sellerId: 'sellerId',
   paymentMethodId: 'paymentMethodId',
+  paymentMethodSnapshot: 'paymentMethodSnapshot',
+  paymentMethodSnapshotAt: 'paymentMethodSnapshotAt',
+  paymentMethodSnapshotHash: 'paymentMethodSnapshotHash',
   applicationNumber: 'applicationNumber',
   title: 'title',
   description: 'description',
@@ -6003,6 +6164,41 @@ export const ApplicationScalarFieldEnum = {
 } as const
 
 export type ApplicationScalarFieldEnum = (typeof ApplicationScalarFieldEnum)[keyof typeof ApplicationScalarFieldEnum]
+
+
+export const ApplicationOrganizationScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  applicationId: 'applicationId',
+  organizationId: 'organizationId',
+  role: 'role',
+  status: 'status',
+  assignedById: 'assignedById',
+  assignedAt: 'assignedAt',
+  isPrimary: 'isPrimary',
+  offeredTerms: 'offeredTerms',
+  termsOfferedAt: 'termsOfferedAt',
+  termsAcceptedAt: 'termsAcceptedAt',
+  termsDeclinedAt: 'termsDeclinedAt',
+  declineReason: 'declineReason',
+  activatedAt: 'activatedAt',
+  completedAt: 'completedAt',
+  withdrawnAt: 'withdrawnAt',
+  slaHours: 'slaHours',
+  slaStartedAt: 'slaStartedAt',
+  slaBreachedAt: 'slaBreachedAt',
+  slaBreachNotified: 'slaBreachNotified',
+  reminderCount: 'reminderCount',
+  lastReminderSentAt: 'lastReminderSentAt',
+  nextReminderAt: 'nextReminderAt',
+  escalatedAt: 'escalatedAt',
+  escalatedToUserId: 'escalatedToUserId',
+  escalationNotes: 'escalationNotes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ApplicationOrganizationScalarFieldEnum = (typeof ApplicationOrganizationScalarFieldEnum)[keyof typeof ApplicationOrganizationScalarFieldEnum]
 
 
 export const ApplicationRefundScalarFieldEnum = {
@@ -6235,6 +6431,15 @@ export const ApplicationDocumentScalarFieldEnum = {
   url: 'url',
   type: 'type',
   uploadedById: 'uploadedById',
+  expectedUploader: 'expectedUploader',
+  expectedOrganizationId: 'expectedOrganizationId',
+  documentDate: 'documentDate',
+  expiresAt: 'expiresAt',
+  expiryDays: 'expiryDays',
+  isExpired: 'isExpired',
+  expiredAt: 'expiredAt',
+  expiryWarningAt: 'expiryWarningAt',
+  revalidatedAt: 'revalidatedAt',
   status: 'status',
   version: 'version',
   replacesDocumentId: 'replacesDocumentId',
@@ -6511,45 +6716,6 @@ export const EventHandlerScalarFieldEnum = {
 export type EventHandlerScalarFieldEnum = (typeof EventHandlerScalarFieldEnum)[keyof typeof EventHandlerScalarFieldEnum]
 
 
-export const WorkflowEventScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  eventTypeId: 'eventTypeId',
-  payload: 'payload',
-  correlationId: 'correlationId',
-  causationId: 'causationId',
-  source: 'source',
-  actorId: 'actorId',
-  actorType: 'actorType',
-  status: 'status',
-  error: 'error',
-  processedAt: 'processedAt',
-  createdAt: 'createdAt'
-} as const
-
-export type WorkflowEventScalarFieldEnum = (typeof WorkflowEventScalarFieldEnum)[keyof typeof WorkflowEventScalarFieldEnum]
-
-
-export const EventHandlerExecutionScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  eventId: 'eventId',
-  handlerId: 'handlerId',
-  status: 'status',
-  attempt: 'attempt',
-  input: 'input',
-  output: 'output',
-  error: 'error',
-  errorCode: 'errorCode',
-  startedAt: 'startedAt',
-  completedAt: 'completedAt',
-  durationMs: 'durationMs',
-  createdAt: 'createdAt'
-} as const
-
-export type EventHandlerExecutionScalarFieldEnum = (typeof EventHandlerExecutionScalarFieldEnum)[keyof typeof EventHandlerExecutionScalarFieldEnum]
-
-
 export const DomainEventScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -6656,6 +6822,50 @@ export const WorkflowBlockerScalarFieldEnum = {
 } as const
 
 export type WorkflowBlockerScalarFieldEnum = (typeof WorkflowBlockerScalarFieldEnum)[keyof typeof WorkflowBlockerScalarFieldEnum]
+
+
+export const ScheduledJobScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  jobType: 'jobType',
+  status: 'status',
+  scheduledAt: 'scheduledAt',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  durationMs: 'durationMs',
+  parameters: 'parameters',
+  itemsProcessed: 'itemsProcessed',
+  itemsAffected: 'itemsAffected',
+  errorCount: 'errorCount',
+  errors: 'errors',
+  summary: 'summary',
+  attemptNumber: 'attemptNumber',
+  maxAttempts: 'maxAttempts',
+  nextRetryAt: 'nextRetryAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ScheduledJobScalarFieldEnum = (typeof ScheduledJobScalarFieldEnum)[keyof typeof ScheduledJobScalarFieldEnum]
+
+
+export const DocumentExpiryWarningScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  documentId: 'documentId',
+  expiresAt: 'expiresAt',
+  daysUntil: 'daysUntil',
+  warningSent: 'warningSent',
+  notificationSent: 'notificationSent',
+  notificationId: 'notificationId',
+  resolved: 'resolved',
+  resolvedAt: 'resolvedAt',
+  resolvedBy: 'resolvedBy',
+  newDocumentId: 'newDocumentId',
+  createdAt: 'createdAt'
+} as const
+
+export type DocumentExpiryWarningScalarFieldEnum = (typeof DocumentExpiryWarningScalarFieldEnum)[keyof typeof DocumentExpiryWarningScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -6807,6 +7017,21 @@ export const OrganizationMemberOrderByRelevanceFieldEnum = {
 } as const
 
 export type OrganizationMemberOrderByRelevanceFieldEnum = (typeof OrganizationMemberOrderByRelevanceFieldEnum)[keyof typeof OrganizationMemberOrderByRelevanceFieldEnum]
+
+
+export const BankDocumentRequirementOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  organizationId: 'organizationId',
+  phaseType: 'phaseType',
+  paymentMethodId: 'paymentMethodId',
+  documentType: 'documentType',
+  documentName: 'documentName',
+  description: 'description',
+  allowedMimeTypes: 'allowedMimeTypes'
+} as const
+
+export type BankDocumentRequirementOrderByRelevanceFieldEnum = (typeof BankDocumentRequirementOrderByRelevanceFieldEnum)[keyof typeof BankDocumentRequirementOrderByRelevanceFieldEnum]
 
 
 export const TenantOrderByRelevanceFieldEnum = {
@@ -7202,6 +7427,7 @@ export const ApplicationOrderByRelevanceFieldEnum = {
   buyerId: 'buyerId',
   sellerId: 'sellerId',
   paymentMethodId: 'paymentMethodId',
+  paymentMethodSnapshotHash: 'paymentMethodSnapshotHash',
   applicationNumber: 'applicationNumber',
   title: 'title',
   description: 'description',
@@ -7212,6 +7438,20 @@ export const ApplicationOrderByRelevanceFieldEnum = {
 } as const
 
 export type ApplicationOrderByRelevanceFieldEnum = (typeof ApplicationOrderByRelevanceFieldEnum)[keyof typeof ApplicationOrderByRelevanceFieldEnum]
+
+
+export const ApplicationOrganizationOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  applicationId: 'applicationId',
+  organizationId: 'organizationId',
+  assignedById: 'assignedById',
+  declineReason: 'declineReason',
+  escalatedToUserId: 'escalatedToUserId',
+  escalationNotes: 'escalationNotes'
+} as const
+
+export type ApplicationOrganizationOrderByRelevanceFieldEnum = (typeof ApplicationOrganizationOrderByRelevanceFieldEnum)[keyof typeof ApplicationOrganizationOrderByRelevanceFieldEnum]
 
 
 export const ApplicationRefundOrderByRelevanceFieldEnum = {
@@ -7353,6 +7593,7 @@ export const ApplicationDocumentOrderByRelevanceFieldEnum = {
   url: 'url',
   type: 'type',
   uploadedById: 'uploadedById',
+  expectedOrganizationId: 'expectedOrganizationId',
   replacesDocumentId: 'replacesDocumentId'
 } as const
 
@@ -7517,32 +7758,6 @@ export const EventHandlerOrderByRelevanceFieldEnum = {
 export type EventHandlerOrderByRelevanceFieldEnum = (typeof EventHandlerOrderByRelevanceFieldEnum)[keyof typeof EventHandlerOrderByRelevanceFieldEnum]
 
 
-export const WorkflowEventOrderByRelevanceFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  eventTypeId: 'eventTypeId',
-  correlationId: 'correlationId',
-  causationId: 'causationId',
-  source: 'source',
-  actorId: 'actorId',
-  error: 'error'
-} as const
-
-export type WorkflowEventOrderByRelevanceFieldEnum = (typeof WorkflowEventOrderByRelevanceFieldEnum)[keyof typeof WorkflowEventOrderByRelevanceFieldEnum]
-
-
-export const EventHandlerExecutionOrderByRelevanceFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  eventId: 'eventId',
-  handlerId: 'handlerId',
-  error: 'error',
-  errorCode: 'errorCode'
-} as const
-
-export type EventHandlerExecutionOrderByRelevanceFieldEnum = (typeof EventHandlerExecutionOrderByRelevanceFieldEnum)[keyof typeof EventHandlerExecutionOrderByRelevanceFieldEnum]
-
-
 export const DomainEventOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -7606,6 +7821,27 @@ export const WorkflowBlockerOrderByRelevanceFieldEnum = {
 } as const
 
 export type WorkflowBlockerOrderByRelevanceFieldEnum = (typeof WorkflowBlockerOrderByRelevanceFieldEnum)[keyof typeof WorkflowBlockerOrderByRelevanceFieldEnum]
+
+
+export const ScheduledJobOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  summary: 'summary'
+} as const
+
+export type ScheduledJobOrderByRelevanceFieldEnum = (typeof ScheduledJobOrderByRelevanceFieldEnum)[keyof typeof ScheduledJobOrderByRelevanceFieldEnum]
+
+
+export const DocumentExpiryWarningOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  documentId: 'documentId',
+  notificationId: 'notificationId',
+  resolvedBy: 'resolvedBy',
+  newDocumentId: 'newDocumentId'
+} as const
+
+export type DocumentExpiryWarningOrderByRelevanceFieldEnum = (typeof DocumentExpiryWarningOrderByRelevanceFieldEnum)[keyof typeof DocumentExpiryWarningOrderByRelevanceFieldEnum]
 
 
 
@@ -7685,9 +7921,9 @@ export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 
 
 /**
- * Reference to a field of type 'Float'
+ * Reference to a field of type 'BankDocumentModifier'
  */
-export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+export type EnumBankDocumentModifierFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BankDocumentModifier'>
     
 
 
@@ -7695,6 +7931,13 @@ export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, '
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+/**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
     
 
 
@@ -7807,6 +8050,20 @@ export type EnumFieldTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
  * Reference to a field of type 'ApplicationStatus'
  */
 export type EnumApplicationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ApplicationStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'ApplicationOrganizationRole'
+ */
+export type EnumApplicationOrganizationRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ApplicationOrganizationRole'>
+    
+
+
+/**
+ * Reference to a field of type 'ApplicationOrganizationStatus'
+ */
+export type EnumApplicationOrganizationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ApplicationOrganizationStatus'>
     
 
 
@@ -7937,27 +8194,6 @@ export type EnumEventHandlerTypeFieldRefInput<$PrismaModel> = FieldRefInputType<
 
 
 /**
- * Reference to a field of type 'ActorType'
- */
-export type EnumActorTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ActorType'>
-    
-
-
-/**
- * Reference to a field of type 'WorkflowEventStatus'
- */
-export type EnumWorkflowEventStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WorkflowEventStatus'>
-    
-
-
-/**
- * Reference to a field of type 'ExecutionStatus'
- */
-export type EnumExecutionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExecutionStatus'>
-    
-
-
-/**
  * Reference to a field of type 'TransferRequestStatus'
  */
 export type EnumTransferRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransferRequestStatus'>
@@ -8010,6 +8246,20 @@ export type EnumBlockerCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$
  * Reference to a field of type 'BlockerUrgency'
  */
 export type EnumBlockerUrgencyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BlockerUrgency'>
+    
+
+
+/**
+ * Reference to a field of type 'ScheduledJobType'
+ */
+export type EnumScheduledJobTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ScheduledJobType'>
+    
+
+
+/**
+ * Reference to a field of type 'ScheduledJobStatus'
+ */
+export type EnumScheduledJobStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ScheduledJobStatus'>
     
 
 /**
@@ -8115,6 +8365,7 @@ export type GlobalOmitConfig = {
   tenantMembership?: Prisma.TenantMembershipOmit
   organization?: Prisma.OrganizationOmit
   organizationMember?: Prisma.OrganizationMemberOmit
+  bankDocumentRequirement?: Prisma.BankDocumentRequirementOmit
   tenant?: Prisma.TenantOmit
   apiKey?: Prisma.ApiKeyOmit
   refreshToken?: Prisma.RefreshTokenOmit
@@ -8151,6 +8402,7 @@ export type GlobalOmitConfig = {
   paymentMethodPhaseDocument?: Prisma.PaymentMethodPhaseDocumentOmit
   paymentMethodPhaseField?: Prisma.PaymentMethodPhaseFieldOmit
   application?: Prisma.ApplicationOmit
+  applicationOrganization?: Prisma.ApplicationOrganizationOmit
   applicationRefund?: Prisma.ApplicationRefundOmit
   applicationPhase?: Prisma.ApplicationPhaseOmit
   questionnairePhase?: Prisma.QuestionnairePhaseOmit
@@ -8173,12 +8425,12 @@ export type GlobalOmitConfig = {
   eventChannel?: Prisma.EventChannelOmit
   eventType?: Prisma.EventTypeOmit
   eventHandler?: Prisma.EventHandlerOmit
-  workflowEvent?: Prisma.WorkflowEventOmit
-  eventHandlerExecution?: Prisma.EventHandlerExecutionOmit
   domainEvent?: Prisma.DomainEventOmit
   propertyTransferRequest?: Prisma.PropertyTransferRequestOmit
   approvalRequest?: Prisma.ApprovalRequestOmit
   workflowBlocker?: Prisma.WorkflowBlockerOmit
+  scheduledJob?: Prisma.ScheduledJobOmit
+  documentExpiryWarning?: Prisma.DocumentExpiryWarningOmit
 }
 
 /* Types for Logging */

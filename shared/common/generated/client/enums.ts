@@ -417,7 +417,8 @@ export const ApplicationEventType = {
   APPLICATION_TERMINATED: 'APPLICATION_TERMINATED',
   APPLICATION_TRANSFERRED: 'APPLICATION_TRANSFERRED',
   UNDERWRITING_COMPLETED: 'UNDERWRITING_COMPLETED',
-  OFFER_LETTER_GENERATED: 'OFFER_LETTER_GENERATED'
+  OFFER_LETTER_GENERATED: 'OFFER_LETTER_GENERATED',
+  HANDLER_EXECUTED: 'HANDLER_EXECUTED'
 } as const
 
 export type ApplicationEventType = (typeof ApplicationEventType)[keyof typeof ApplicationEventType]
@@ -428,7 +429,8 @@ export const ApplicationEventGroup = {
   PAYMENT: 'PAYMENT',
   DOCUMENT: 'DOCUMENT',
   NOTIFICATION: 'NOTIFICATION',
-  WORKFLOW: 'WORKFLOW'
+  WORKFLOW: 'WORKFLOW',
+  AUTOMATION: 'AUTOMATION'
 } as const
 
 export type ApplicationEventGroup = (typeof ApplicationEventGroup)[keyof typeof ApplicationEventGroup]
@@ -470,45 +472,22 @@ export const EventHandlerType = {
 export type EventHandlerType = (typeof EventHandlerType)[keyof typeof EventHandlerType]
 
 
-export const ActorType = {
-  USER: 'USER',
-  API_KEY: 'API_KEY',
-  SYSTEM: 'SYSTEM',
-  WEBHOOK: 'WEBHOOK'
-} as const
-
-export type ActorType = (typeof ActorType)[keyof typeof ActorType]
-
-
-export const WorkflowEventStatus = {
-  PENDING: 'PENDING',
-  PROCESSING: 'PROCESSING',
-  COMPLETED: 'COMPLETED',
-  FAILED: 'FAILED',
-  SKIPPED: 'SKIPPED'
-} as const
-
-export type WorkflowEventStatus = (typeof WorkflowEventStatus)[keyof typeof WorkflowEventStatus]
-
-
-export const ExecutionStatus = {
-  PENDING: 'PENDING',
-  RUNNING: 'RUNNING',
-  COMPLETED: 'COMPLETED',
-  FAILED: 'FAILED',
-  RETRYING: 'RETRYING',
-  SKIPPED: 'SKIPPED'
-} as const
-
-export type ExecutionStatus = (typeof ExecutionStatus)[keyof typeof ExecutionStatus]
-
-
 export const PermissionEffect = {
   ALLOW: 'ALLOW',
   DENY: 'DENY'
 } as const
 
 export type PermissionEffect = (typeof PermissionEffect)[keyof typeof PermissionEffect]
+
+
+export const BankDocumentModifier = {
+  REQUIRED: 'REQUIRED',
+  OPTIONAL: 'OPTIONAL',
+  NOT_REQUIRED: 'NOT_REQUIRED',
+  STRICTER: 'STRICTER'
+} as const
+
+export type BankDocumentModifier = (typeof BankDocumentModifier)[keyof typeof BankDocumentModifier]
 
 
 export const FieldType = {
@@ -588,6 +567,28 @@ export const QuestionCategory = {
 } as const
 
 export type QuestionCategory = (typeof QuestionCategory)[keyof typeof QuestionCategory]
+
+
+export const ApplicationOrganizationRole = {
+  DEVELOPER: 'DEVELOPER',
+  LENDER: 'LENDER',
+  LEGAL: 'LEGAL',
+  INSURER: 'INSURER',
+  GOVERNMENT: 'GOVERNMENT'
+} as const
+
+export type ApplicationOrganizationRole = (typeof ApplicationOrganizationRole)[keyof typeof ApplicationOrganizationRole]
+
+
+export const ApplicationOrganizationStatus = {
+  PENDING: 'PENDING',
+  ACTIVE: 'ACTIVE',
+  COMPLETED: 'COMPLETED',
+  DECLINED: 'DECLINED',
+  WITHDRAWN: 'WITHDRAWN'
+} as const
+
+export type ApplicationOrganizationStatus = (typeof ApplicationOrganizationStatus)[keyof typeof ApplicationOrganizationStatus]
 
 
 export const PaymentMethodChangeStatus = {
@@ -678,3 +679,24 @@ export const BlockerUrgency = {
 } as const
 
 export type BlockerUrgency = (typeof BlockerUrgency)[keyof typeof BlockerUrgency]
+
+
+export const ScheduledJobStatus = {
+  PENDING: 'PENDING',
+  RUNNING: 'RUNNING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type ScheduledJobStatus = (typeof ScheduledJobStatus)[keyof typeof ScheduledJobStatus]
+
+
+export const ScheduledJobType = {
+  DOCUMENT_EXPIRY_CHECK: 'DOCUMENT_EXPIRY_CHECK',
+  SLA_BREACH_CHECK: 'SLA_BREACH_CHECK',
+  PAYMENT_REMINDER: 'PAYMENT_REMINDER',
+  DOCUMENT_EXPIRY_WARNING: 'DOCUMENT_EXPIRY_WARNING'
+} as const
+
+export type ScheduledJobType = (typeof ScheduledJobType)[keyof typeof ScheduledJobType]

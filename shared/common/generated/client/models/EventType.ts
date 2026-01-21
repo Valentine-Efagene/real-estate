@@ -222,7 +222,6 @@ export type EventTypeWhereInput = {
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   channel?: Prisma.XOR<Prisma.EventChannelScalarRelationFilter, Prisma.EventChannelWhereInput>
   handlers?: Prisma.EventHandlerListRelationFilter
-  events?: Prisma.WorkflowEventListRelationFilter
 }
 
 export type EventTypeOrderByWithRelationInput = {
@@ -239,7 +238,6 @@ export type EventTypeOrderByWithRelationInput = {
   tenant?: Prisma.TenantOrderByWithRelationInput
   channel?: Prisma.EventChannelOrderByWithRelationInput
   handlers?: Prisma.EventHandlerOrderByRelationAggregateInput
-  events?: Prisma.WorkflowEventOrderByRelationAggregateInput
   _relevance?: Prisma.EventTypeOrderByRelevanceInput
 }
 
@@ -262,7 +260,6 @@ export type EventTypeWhereUniqueInput = Prisma.AtLeast<{
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   channel?: Prisma.XOR<Prisma.EventChannelScalarRelationFilter, Prisma.EventChannelWhereInput>
   handlers?: Prisma.EventHandlerListRelationFilter
-  events?: Prisma.WorkflowEventListRelationFilter
 }, "id" | "tenantId_code" | "channelId_code">
 
 export type EventTypeOrderByWithAggregationInput = {
@@ -309,7 +306,6 @@ export type EventTypeCreateInput = {
   tenant: Prisma.TenantCreateNestedOneWithoutEventTypesInput
   channel: Prisma.EventChannelCreateNestedOneWithoutEventTypesInput
   handlers?: Prisma.EventHandlerCreateNestedManyWithoutEventTypeInput
-  events?: Prisma.WorkflowEventCreateNestedManyWithoutEventTypeInput
 }
 
 export type EventTypeUncheckedCreateInput = {
@@ -324,7 +320,6 @@ export type EventTypeUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   handlers?: Prisma.EventHandlerUncheckedCreateNestedManyWithoutEventTypeInput
-  events?: Prisma.WorkflowEventUncheckedCreateNestedManyWithoutEventTypeInput
 }
 
 export type EventTypeUpdateInput = {
@@ -339,7 +334,6 @@ export type EventTypeUpdateInput = {
   tenant?: Prisma.TenantUpdateOneRequiredWithoutEventTypesNestedInput
   channel?: Prisma.EventChannelUpdateOneRequiredWithoutEventTypesNestedInput
   handlers?: Prisma.EventHandlerUpdateManyWithoutEventTypeNestedInput
-  events?: Prisma.WorkflowEventUpdateManyWithoutEventTypeNestedInput
 }
 
 export type EventTypeUncheckedUpdateInput = {
@@ -354,7 +348,6 @@ export type EventTypeUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   handlers?: Prisma.EventHandlerUncheckedUpdateManyWithoutEventTypeNestedInput
-  events?: Prisma.WorkflowEventUncheckedUpdateManyWithoutEventTypeNestedInput
 }
 
 export type EventTypeCreateManyInput = {
@@ -560,20 +553,6 @@ export type EventTypeUpdateOneRequiredWithoutHandlersNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.EventTypeUpdateToOneWithWhereWithoutHandlersInput, Prisma.EventTypeUpdateWithoutHandlersInput>, Prisma.EventTypeUncheckedUpdateWithoutHandlersInput>
 }
 
-export type EventTypeCreateNestedOneWithoutEventsInput = {
-  create?: Prisma.XOR<Prisma.EventTypeCreateWithoutEventsInput, Prisma.EventTypeUncheckedCreateWithoutEventsInput>
-  connectOrCreate?: Prisma.EventTypeCreateOrConnectWithoutEventsInput
-  connect?: Prisma.EventTypeWhereUniqueInput
-}
-
-export type EventTypeUpdateOneRequiredWithoutEventsNestedInput = {
-  create?: Prisma.XOR<Prisma.EventTypeCreateWithoutEventsInput, Prisma.EventTypeUncheckedCreateWithoutEventsInput>
-  connectOrCreate?: Prisma.EventTypeCreateOrConnectWithoutEventsInput
-  upsert?: Prisma.EventTypeUpsertWithoutEventsInput
-  connect?: Prisma.EventTypeWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.EventTypeUpdateToOneWithWhereWithoutEventsInput, Prisma.EventTypeUpdateWithoutEventsInput>, Prisma.EventTypeUncheckedUpdateWithoutEventsInput>
-}
-
 export type EventTypeCreateWithoutTenantInput = {
   id?: string
   code: string
@@ -585,7 +564,6 @@ export type EventTypeCreateWithoutTenantInput = {
   updatedAt?: Date | string
   channel: Prisma.EventChannelCreateNestedOneWithoutEventTypesInput
   handlers?: Prisma.EventHandlerCreateNestedManyWithoutEventTypeInput
-  events?: Prisma.WorkflowEventCreateNestedManyWithoutEventTypeInput
 }
 
 export type EventTypeUncheckedCreateWithoutTenantInput = {
@@ -599,7 +577,6 @@ export type EventTypeUncheckedCreateWithoutTenantInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   handlers?: Prisma.EventHandlerUncheckedCreateNestedManyWithoutEventTypeInput
-  events?: Prisma.WorkflowEventUncheckedCreateNestedManyWithoutEventTypeInput
 }
 
 export type EventTypeCreateOrConnectWithoutTenantInput = {
@@ -655,7 +632,6 @@ export type EventTypeCreateWithoutChannelInput = {
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutEventTypesInput
   handlers?: Prisma.EventHandlerCreateNestedManyWithoutEventTypeInput
-  events?: Prisma.WorkflowEventCreateNestedManyWithoutEventTypeInput
 }
 
 export type EventTypeUncheckedCreateWithoutChannelInput = {
@@ -669,7 +645,6 @@ export type EventTypeUncheckedCreateWithoutChannelInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   handlers?: Prisma.EventHandlerUncheckedCreateNestedManyWithoutEventTypeInput
-  events?: Prisma.WorkflowEventUncheckedCreateNestedManyWithoutEventTypeInput
 }
 
 export type EventTypeCreateOrConnectWithoutChannelInput = {
@@ -709,7 +684,6 @@ export type EventTypeCreateWithoutHandlersInput = {
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutEventTypesInput
   channel: Prisma.EventChannelCreateNestedOneWithoutEventTypesInput
-  events?: Prisma.WorkflowEventCreateNestedManyWithoutEventTypeInput
 }
 
 export type EventTypeUncheckedCreateWithoutHandlersInput = {
@@ -723,7 +697,6 @@ export type EventTypeUncheckedCreateWithoutHandlersInput = {
   enabled?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  events?: Prisma.WorkflowEventUncheckedCreateNestedManyWithoutEventTypeInput
 }
 
 export type EventTypeCreateOrConnectWithoutHandlersInput = {
@@ -753,7 +726,6 @@ export type EventTypeUpdateWithoutHandlersInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutEventTypesNestedInput
   channel?: Prisma.EventChannelUpdateOneRequiredWithoutEventTypesNestedInput
-  events?: Prisma.WorkflowEventUpdateManyWithoutEventTypeNestedInput
 }
 
 export type EventTypeUncheckedUpdateWithoutHandlersInput = {
@@ -767,79 +739,6 @@ export type EventTypeUncheckedUpdateWithoutHandlersInput = {
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  events?: Prisma.WorkflowEventUncheckedUpdateManyWithoutEventTypeNestedInput
-}
-
-export type EventTypeCreateWithoutEventsInput = {
-  id?: string
-  code: string
-  name: string
-  description?: string | null
-  payloadSchema?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  enabled?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  tenant: Prisma.TenantCreateNestedOneWithoutEventTypesInput
-  channel: Prisma.EventChannelCreateNestedOneWithoutEventTypesInput
-  handlers?: Prisma.EventHandlerCreateNestedManyWithoutEventTypeInput
-}
-
-export type EventTypeUncheckedCreateWithoutEventsInput = {
-  id?: string
-  tenantId: string
-  channelId: string
-  code: string
-  name: string
-  description?: string | null
-  payloadSchema?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  enabled?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  handlers?: Prisma.EventHandlerUncheckedCreateNestedManyWithoutEventTypeInput
-}
-
-export type EventTypeCreateOrConnectWithoutEventsInput = {
-  where: Prisma.EventTypeWhereUniqueInput
-  create: Prisma.XOR<Prisma.EventTypeCreateWithoutEventsInput, Prisma.EventTypeUncheckedCreateWithoutEventsInput>
-}
-
-export type EventTypeUpsertWithoutEventsInput = {
-  update: Prisma.XOR<Prisma.EventTypeUpdateWithoutEventsInput, Prisma.EventTypeUncheckedUpdateWithoutEventsInput>
-  create: Prisma.XOR<Prisma.EventTypeCreateWithoutEventsInput, Prisma.EventTypeUncheckedCreateWithoutEventsInput>
-  where?: Prisma.EventTypeWhereInput
-}
-
-export type EventTypeUpdateToOneWithWhereWithoutEventsInput = {
-  where?: Prisma.EventTypeWhereInput
-  data: Prisma.XOR<Prisma.EventTypeUpdateWithoutEventsInput, Prisma.EventTypeUncheckedUpdateWithoutEventsInput>
-}
-
-export type EventTypeUpdateWithoutEventsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  payloadSchema?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  tenant?: Prisma.TenantUpdateOneRequiredWithoutEventTypesNestedInput
-  channel?: Prisma.EventChannelUpdateOneRequiredWithoutEventTypesNestedInput
-  handlers?: Prisma.EventHandlerUpdateManyWithoutEventTypeNestedInput
-}
-
-export type EventTypeUncheckedUpdateWithoutEventsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  channelId?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  payloadSchema?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  handlers?: Prisma.EventHandlerUncheckedUpdateManyWithoutEventTypeNestedInput
 }
 
 export type EventTypeCreateManyTenantInput = {
@@ -865,7 +764,6 @@ export type EventTypeUpdateWithoutTenantInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   channel?: Prisma.EventChannelUpdateOneRequiredWithoutEventTypesNestedInput
   handlers?: Prisma.EventHandlerUpdateManyWithoutEventTypeNestedInput
-  events?: Prisma.WorkflowEventUpdateManyWithoutEventTypeNestedInput
 }
 
 export type EventTypeUncheckedUpdateWithoutTenantInput = {
@@ -879,7 +777,6 @@ export type EventTypeUncheckedUpdateWithoutTenantInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   handlers?: Prisma.EventHandlerUncheckedUpdateManyWithoutEventTypeNestedInput
-  events?: Prisma.WorkflowEventUncheckedUpdateManyWithoutEventTypeNestedInput
 }
 
 export type EventTypeUncheckedUpdateManyWithoutTenantInput = {
@@ -917,7 +814,6 @@ export type EventTypeUpdateWithoutChannelInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutEventTypesNestedInput
   handlers?: Prisma.EventHandlerUpdateManyWithoutEventTypeNestedInput
-  events?: Prisma.WorkflowEventUpdateManyWithoutEventTypeNestedInput
 }
 
 export type EventTypeUncheckedUpdateWithoutChannelInput = {
@@ -931,7 +827,6 @@ export type EventTypeUncheckedUpdateWithoutChannelInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   handlers?: Prisma.EventHandlerUncheckedUpdateManyWithoutEventTypeNestedInput
-  events?: Prisma.WorkflowEventUncheckedUpdateManyWithoutEventTypeNestedInput
 }
 
 export type EventTypeUncheckedUpdateManyWithoutChannelInput = {
@@ -953,12 +848,10 @@ export type EventTypeUncheckedUpdateManyWithoutChannelInput = {
 
 export type EventTypeCountOutputType = {
   handlers: number
-  events: number
 }
 
 export type EventTypeCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   handlers?: boolean | EventTypeCountOutputTypeCountHandlersArgs
-  events?: boolean | EventTypeCountOutputTypeCountEventsArgs
 }
 
 /**
@@ -978,13 +871,6 @@ export type EventTypeCountOutputTypeCountHandlersArgs<ExtArgs extends runtime.Ty
   where?: Prisma.EventHandlerWhereInput
 }
 
-/**
- * EventTypeCountOutputType without action
- */
-export type EventTypeCountOutputTypeCountEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.WorkflowEventWhereInput
-}
-
 
 export type EventTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1000,7 +886,6 @@ export type EventTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   channel?: boolean | Prisma.EventChannelDefaultArgs<ExtArgs>
   handlers?: boolean | Prisma.EventType$handlersArgs<ExtArgs>
-  events?: boolean | Prisma.EventType$eventsArgs<ExtArgs>
   _count?: boolean | Prisma.EventTypeCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["eventType"]>
 
@@ -1024,7 +909,6 @@ export type EventTypeInclude<ExtArgs extends runtime.Types.Extensions.InternalAr
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   channel?: boolean | Prisma.EventChannelDefaultArgs<ExtArgs>
   handlers?: boolean | Prisma.EventType$handlersArgs<ExtArgs>
-  events?: boolean | Prisma.EventType$eventsArgs<ExtArgs>
   _count?: boolean | Prisma.EventTypeCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -1037,10 +921,6 @@ export type $EventTypePayload<ExtArgs extends runtime.Types.Extensions.InternalA
      * Handlers subscribed to this event type
      */
     handlers: Prisma.$EventHandlerPayload<ExtArgs>[]
-    /**
-     * Actual event instances of this type
-     */
-    events: Prisma.$WorkflowEventPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1414,7 +1294,6 @@ export interface Prisma__EventTypeClient<T, Null = never, ExtArgs extends runtim
   tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   channel<T extends Prisma.EventChannelDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EventChannelDefaultArgs<ExtArgs>>): Prisma.Prisma__EventChannelClient<runtime.Types.Result.GetResult<Prisma.$EventChannelPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   handlers<T extends Prisma.EventType$handlersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EventType$handlersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EventHandlerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  events<T extends Prisma.EventType$eventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EventType$eventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkflowEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1818,30 +1697,6 @@ export type EventType$handlersArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.EventHandlerScalarFieldEnum | Prisma.EventHandlerScalarFieldEnum[]
-}
-
-/**
- * EventType.events
- */
-export type EventType$eventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the WorkflowEvent
-   */
-  select?: Prisma.WorkflowEventSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the WorkflowEvent
-   */
-  omit?: Prisma.WorkflowEventOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.WorkflowEventInclude<ExtArgs> | null
-  where?: Prisma.WorkflowEventWhereInput
-  orderBy?: Prisma.WorkflowEventOrderByWithRelationInput | Prisma.WorkflowEventOrderByWithRelationInput[]
-  cursor?: Prisma.WorkflowEventWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.WorkflowEventScalarFieldEnum | Prisma.WorkflowEventScalarFieldEnum[]
 }
 
 /**

@@ -59,6 +59,7 @@ export const ModelName = {
   TenantMembership: 'TenantMembership',
   Organization: 'Organization',
   OrganizationMember: 'OrganizationMember',
+  BankDocumentRequirement: 'BankDocumentRequirement',
   Tenant: 'Tenant',
   ApiKey: 'ApiKey',
   RefreshToken: 'RefreshToken',
@@ -95,6 +96,7 @@ export const ModelName = {
   PaymentMethodPhaseDocument: 'PaymentMethodPhaseDocument',
   PaymentMethodPhaseField: 'PaymentMethodPhaseField',
   Application: 'Application',
+  ApplicationOrganization: 'ApplicationOrganization',
   ApplicationRefund: 'ApplicationRefund',
   ApplicationPhase: 'ApplicationPhase',
   QuestionnairePhase: 'QuestionnairePhase',
@@ -117,12 +119,12 @@ export const ModelName = {
   EventChannel: 'EventChannel',
   EventType: 'EventType',
   EventHandler: 'EventHandler',
-  WorkflowEvent: 'WorkflowEvent',
-  EventHandlerExecution: 'EventHandlerExecution',
   DomainEvent: 'DomainEvent',
   PropertyTransferRequest: 'PropertyTransferRequest',
   ApprovalRequest: 'ApprovalRequest',
-  WorkflowBlocker: 'WorkflowBlocker'
+  WorkflowBlocker: 'WorkflowBlocker',
+  ScheduledJob: 'ScheduledJob',
+  DocumentExpiryWarning: 'DocumentExpiryWarning'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -277,6 +279,30 @@ export const OrganizationMemberScalarFieldEnum = {
 } as const
 
 export type OrganizationMemberScalarFieldEnum = (typeof OrganizationMemberScalarFieldEnum)[keyof typeof OrganizationMemberScalarFieldEnum]
+
+
+export const BankDocumentRequirementScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  organizationId: 'organizationId',
+  phaseType: 'phaseType',
+  paymentMethodId: 'paymentMethodId',
+  documentType: 'documentType',
+  documentName: 'documentName',
+  modifier: 'modifier',
+  description: 'description',
+  expiryDays: 'expiryDays',
+  minFiles: 'minFiles',
+  maxFiles: 'maxFiles',
+  allowedMimeTypes: 'allowedMimeTypes',
+  validationRules: 'validationRules',
+  priority: 'priority',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BankDocumentRequirementScalarFieldEnum = (typeof BankDocumentRequirementScalarFieldEnum)[keyof typeof BankDocumentRequirementScalarFieldEnum]
 
 
 export const TenantScalarFieldEnum = {
@@ -857,6 +883,9 @@ export const ApplicationScalarFieldEnum = {
   buyerId: 'buyerId',
   sellerId: 'sellerId',
   paymentMethodId: 'paymentMethodId',
+  paymentMethodSnapshot: 'paymentMethodSnapshot',
+  paymentMethodSnapshotAt: 'paymentMethodSnapshotAt',
+  paymentMethodSnapshotHash: 'paymentMethodSnapshotHash',
   applicationNumber: 'applicationNumber',
   title: 'title',
   description: 'description',
@@ -878,6 +907,41 @@ export const ApplicationScalarFieldEnum = {
 } as const
 
 export type ApplicationScalarFieldEnum = (typeof ApplicationScalarFieldEnum)[keyof typeof ApplicationScalarFieldEnum]
+
+
+export const ApplicationOrganizationScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  applicationId: 'applicationId',
+  organizationId: 'organizationId',
+  role: 'role',
+  status: 'status',
+  assignedById: 'assignedById',
+  assignedAt: 'assignedAt',
+  isPrimary: 'isPrimary',
+  offeredTerms: 'offeredTerms',
+  termsOfferedAt: 'termsOfferedAt',
+  termsAcceptedAt: 'termsAcceptedAt',
+  termsDeclinedAt: 'termsDeclinedAt',
+  declineReason: 'declineReason',
+  activatedAt: 'activatedAt',
+  completedAt: 'completedAt',
+  withdrawnAt: 'withdrawnAt',
+  slaHours: 'slaHours',
+  slaStartedAt: 'slaStartedAt',
+  slaBreachedAt: 'slaBreachedAt',
+  slaBreachNotified: 'slaBreachNotified',
+  reminderCount: 'reminderCount',
+  lastReminderSentAt: 'lastReminderSentAt',
+  nextReminderAt: 'nextReminderAt',
+  escalatedAt: 'escalatedAt',
+  escalatedToUserId: 'escalatedToUserId',
+  escalationNotes: 'escalationNotes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ApplicationOrganizationScalarFieldEnum = (typeof ApplicationOrganizationScalarFieldEnum)[keyof typeof ApplicationOrganizationScalarFieldEnum]
 
 
 export const ApplicationRefundScalarFieldEnum = {
@@ -1110,6 +1174,15 @@ export const ApplicationDocumentScalarFieldEnum = {
   url: 'url',
   type: 'type',
   uploadedById: 'uploadedById',
+  expectedUploader: 'expectedUploader',
+  expectedOrganizationId: 'expectedOrganizationId',
+  documentDate: 'documentDate',
+  expiresAt: 'expiresAt',
+  expiryDays: 'expiryDays',
+  isExpired: 'isExpired',
+  expiredAt: 'expiredAt',
+  expiryWarningAt: 'expiryWarningAt',
+  revalidatedAt: 'revalidatedAt',
   status: 'status',
   version: 'version',
   replacesDocumentId: 'replacesDocumentId',
@@ -1386,45 +1459,6 @@ export const EventHandlerScalarFieldEnum = {
 export type EventHandlerScalarFieldEnum = (typeof EventHandlerScalarFieldEnum)[keyof typeof EventHandlerScalarFieldEnum]
 
 
-export const WorkflowEventScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  eventTypeId: 'eventTypeId',
-  payload: 'payload',
-  correlationId: 'correlationId',
-  causationId: 'causationId',
-  source: 'source',
-  actorId: 'actorId',
-  actorType: 'actorType',
-  status: 'status',
-  error: 'error',
-  processedAt: 'processedAt',
-  createdAt: 'createdAt'
-} as const
-
-export type WorkflowEventScalarFieldEnum = (typeof WorkflowEventScalarFieldEnum)[keyof typeof WorkflowEventScalarFieldEnum]
-
-
-export const EventHandlerExecutionScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  eventId: 'eventId',
-  handlerId: 'handlerId',
-  status: 'status',
-  attempt: 'attempt',
-  input: 'input',
-  output: 'output',
-  error: 'error',
-  errorCode: 'errorCode',
-  startedAt: 'startedAt',
-  completedAt: 'completedAt',
-  durationMs: 'durationMs',
-  createdAt: 'createdAt'
-} as const
-
-export type EventHandlerExecutionScalarFieldEnum = (typeof EventHandlerExecutionScalarFieldEnum)[keyof typeof EventHandlerExecutionScalarFieldEnum]
-
-
 export const DomainEventScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -1531,6 +1565,50 @@ export const WorkflowBlockerScalarFieldEnum = {
 } as const
 
 export type WorkflowBlockerScalarFieldEnum = (typeof WorkflowBlockerScalarFieldEnum)[keyof typeof WorkflowBlockerScalarFieldEnum]
+
+
+export const ScheduledJobScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  jobType: 'jobType',
+  status: 'status',
+  scheduledAt: 'scheduledAt',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  durationMs: 'durationMs',
+  parameters: 'parameters',
+  itemsProcessed: 'itemsProcessed',
+  itemsAffected: 'itemsAffected',
+  errorCount: 'errorCount',
+  errors: 'errors',
+  summary: 'summary',
+  attemptNumber: 'attemptNumber',
+  maxAttempts: 'maxAttempts',
+  nextRetryAt: 'nextRetryAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ScheduledJobScalarFieldEnum = (typeof ScheduledJobScalarFieldEnum)[keyof typeof ScheduledJobScalarFieldEnum]
+
+
+export const DocumentExpiryWarningScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  documentId: 'documentId',
+  expiresAt: 'expiresAt',
+  daysUntil: 'daysUntil',
+  warningSent: 'warningSent',
+  notificationSent: 'notificationSent',
+  notificationId: 'notificationId',
+  resolved: 'resolved',
+  resolvedAt: 'resolvedAt',
+  resolvedBy: 'resolvedBy',
+  newDocumentId: 'newDocumentId',
+  createdAt: 'createdAt'
+} as const
+
+export type DocumentExpiryWarningScalarFieldEnum = (typeof DocumentExpiryWarningScalarFieldEnum)[keyof typeof DocumentExpiryWarningScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1682,6 +1760,21 @@ export const OrganizationMemberOrderByRelevanceFieldEnum = {
 } as const
 
 export type OrganizationMemberOrderByRelevanceFieldEnum = (typeof OrganizationMemberOrderByRelevanceFieldEnum)[keyof typeof OrganizationMemberOrderByRelevanceFieldEnum]
+
+
+export const BankDocumentRequirementOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  organizationId: 'organizationId',
+  phaseType: 'phaseType',
+  paymentMethodId: 'paymentMethodId',
+  documentType: 'documentType',
+  documentName: 'documentName',
+  description: 'description',
+  allowedMimeTypes: 'allowedMimeTypes'
+} as const
+
+export type BankDocumentRequirementOrderByRelevanceFieldEnum = (typeof BankDocumentRequirementOrderByRelevanceFieldEnum)[keyof typeof BankDocumentRequirementOrderByRelevanceFieldEnum]
 
 
 export const TenantOrderByRelevanceFieldEnum = {
@@ -2077,6 +2170,7 @@ export const ApplicationOrderByRelevanceFieldEnum = {
   buyerId: 'buyerId',
   sellerId: 'sellerId',
   paymentMethodId: 'paymentMethodId',
+  paymentMethodSnapshotHash: 'paymentMethodSnapshotHash',
   applicationNumber: 'applicationNumber',
   title: 'title',
   description: 'description',
@@ -2087,6 +2181,20 @@ export const ApplicationOrderByRelevanceFieldEnum = {
 } as const
 
 export type ApplicationOrderByRelevanceFieldEnum = (typeof ApplicationOrderByRelevanceFieldEnum)[keyof typeof ApplicationOrderByRelevanceFieldEnum]
+
+
+export const ApplicationOrganizationOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  applicationId: 'applicationId',
+  organizationId: 'organizationId',
+  assignedById: 'assignedById',
+  declineReason: 'declineReason',
+  escalatedToUserId: 'escalatedToUserId',
+  escalationNotes: 'escalationNotes'
+} as const
+
+export type ApplicationOrganizationOrderByRelevanceFieldEnum = (typeof ApplicationOrganizationOrderByRelevanceFieldEnum)[keyof typeof ApplicationOrganizationOrderByRelevanceFieldEnum]
 
 
 export const ApplicationRefundOrderByRelevanceFieldEnum = {
@@ -2228,6 +2336,7 @@ export const ApplicationDocumentOrderByRelevanceFieldEnum = {
   url: 'url',
   type: 'type',
   uploadedById: 'uploadedById',
+  expectedOrganizationId: 'expectedOrganizationId',
   replacesDocumentId: 'replacesDocumentId'
 } as const
 
@@ -2392,32 +2501,6 @@ export const EventHandlerOrderByRelevanceFieldEnum = {
 export type EventHandlerOrderByRelevanceFieldEnum = (typeof EventHandlerOrderByRelevanceFieldEnum)[keyof typeof EventHandlerOrderByRelevanceFieldEnum]
 
 
-export const WorkflowEventOrderByRelevanceFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  eventTypeId: 'eventTypeId',
-  correlationId: 'correlationId',
-  causationId: 'causationId',
-  source: 'source',
-  actorId: 'actorId',
-  error: 'error'
-} as const
-
-export type WorkflowEventOrderByRelevanceFieldEnum = (typeof WorkflowEventOrderByRelevanceFieldEnum)[keyof typeof WorkflowEventOrderByRelevanceFieldEnum]
-
-
-export const EventHandlerExecutionOrderByRelevanceFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  eventId: 'eventId',
-  handlerId: 'handlerId',
-  error: 'error',
-  errorCode: 'errorCode'
-} as const
-
-export type EventHandlerExecutionOrderByRelevanceFieldEnum = (typeof EventHandlerExecutionOrderByRelevanceFieldEnum)[keyof typeof EventHandlerExecutionOrderByRelevanceFieldEnum]
-
-
 export const DomainEventOrderByRelevanceFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
@@ -2481,4 +2564,25 @@ export const WorkflowBlockerOrderByRelevanceFieldEnum = {
 } as const
 
 export type WorkflowBlockerOrderByRelevanceFieldEnum = (typeof WorkflowBlockerOrderByRelevanceFieldEnum)[keyof typeof WorkflowBlockerOrderByRelevanceFieldEnum]
+
+
+export const ScheduledJobOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  summary: 'summary'
+} as const
+
+export type ScheduledJobOrderByRelevanceFieldEnum = (typeof ScheduledJobOrderByRelevanceFieldEnum)[keyof typeof ScheduledJobOrderByRelevanceFieldEnum]
+
+
+export const DocumentExpiryWarningOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  documentId: 'documentId',
+  notificationId: 'notificationId',
+  resolvedBy: 'resolvedBy',
+  newDocumentId: 'newDocumentId'
+} as const
+
+export type DocumentExpiryWarningOrderByRelevanceFieldEnum = (typeof DocumentExpiryWarningOrderByRelevanceFieldEnum)[keyof typeof DocumentExpiryWarningOrderByRelevanceFieldEnum]
 

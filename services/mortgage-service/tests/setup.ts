@@ -224,7 +224,6 @@ export async function cleanupTestData() {
     await prisma.approvalStage.deleteMany();
     await prisma.documentationPlan.deleteMany();
     // Clean up event system (handler -> type -> channel)
-    await prisma.eventHandlerExecution.deleteMany();
     await prisma.eventHandler.deleteMany();
     await prisma.eventType.deleteMany();
     await prisma.eventChannel.deleteMany();

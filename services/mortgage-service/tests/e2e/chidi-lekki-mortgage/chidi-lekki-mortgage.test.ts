@@ -65,6 +65,15 @@ describe("Chidi's Lekki Mortgage Flow", () => {
     // QShelter tenant
     let tenantId: string;
 
+    // Organization IDs
+    let qshelterId: string;
+    let accessBankId: string;
+    let lekkiGardensId: string;
+
+    // ApplicationOrganization IDs (binding orgs to the application with roles/SLAs)
+    let appOrgAccessBankId: string;
+    let appOrgLekkiGardensId: string;
+
     // Property: Lekki Gardens Estate, Unit 14B
     let propertyId: string;
     let unit14BId: string;
@@ -173,6 +182,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                 address: 'Victoria Island, Lagos',
             },
         });
+        qshelterId = qshelterOrg.id;
 
         // Link Adaeze as a QShelter operations manager
         await prisma.organizationMember.create({
@@ -202,6 +212,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                 address: 'Access Tower, 14/15 Onikan, Lagos',
             },
         });
+        accessBankId = accessBank.id;
 
         // Link Nkechi as an Access Bank officer
         await prisma.organizationMember.create({
@@ -229,6 +240,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                 address: 'Lekki Phase 1, Lagos',
             },
         });
+        lekkiGardensId = lekkiGardensDev.id;
 
         // Link Emeka as a Lekki Gardens sales officer
         await prisma.organizationMember.create({
@@ -760,8 +772,64 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             expect(response.status).toBe(201);
         });
 
+        it('Access Bank configures stricter document requirements for this payment method', async () => {
+            // Banks have varying risk appetites - Access Bank requires stricter documentation.
+            // This is an OVERLAY on the base KYC documentation plan:
+            // - Bank statements must cover 12 months (not standard 6 months)
+            // - Tax clearance is REQUIRED (was optional in base plan)
+            // - Credit report is REQUIRED (not in base plan)
+            // These overlays apply when Access Bank is the lending partner.
+
+            // STRICTER: Bank statements - require 12 months instead of 6
+            await prisma.bankDocumentRequirement.create({
+                data: {
+                    id: faker.string.uuid(),
+                    tenantId,
+                    organizationId: accessBankId,
+                    paymentMethodId,
+                    phaseType: 'KYC',
+                    documentType: 'BANK_STATEMENT',
+                    documentName: '12 Months Bank Statements (Access Bank)',
+                    modifier: 'STRICTER',
+                    description: 'Access Bank requires 12 months bank statements. Internal risk policy requires extended financial history.',
+                    expiryDays: 60, // Statements must be more recent
+                    minFiles: 6, // 6 months minimum
+                    maxFiles: 12,
+                },
+            });
+
+            // REQUIRED: Tax clearance certificate (not in base plan)
+            await prisma.bankDocumentRequirement.create({
+                data: {
+                    id: faker.string.uuid(),
+                    tenantId,
+                    organizationId: accessBankId,
+                    paymentMethodId,
+                    phaseType: 'KYC',
+                    documentType: 'TAX_CLEARANCE',
+                    documentName: 'Tax Clearance Certificate',
+                    modifier: 'REQUIRED',
+                    description: 'Tax clearance certificate is required for Access Bank mortgages. Regulatory compliance requirement for mortgage loans above ₦50M.',
+                },
+            });
+
+            // Verify the requirements were created
+            const requirements = await prisma.bankDocumentRequirement.findMany({
+                where: { organizationId: accessBankId, paymentMethodId },
+            });
+            expect(requirements.length).toBe(2);
+
+            // Verify modifiers
+            const bankStatementReq = requirements.find((r: any) => r.documentType === 'BANK_STATEMENT');
+            expect(bankStatementReq?.modifier).toBe('STRICTER');
+            expect(bankStatementReq?.minFiles).toBe(6);
+
+            const taxReq = requirements.find((r: any) => r.documentType === 'TAX_CLEARANCE');
+            expect(taxReq?.modifier).toBe('REQUIRED');
+        });
+
         // NOTE: Document requirement rules are now defined in the DocumentationPlan steps
-        // No need for separate document-rules configuration on the payment method
+        // Bank-specific overlays are in BankDocumentRequirement (see test above)
 
         // NOTE: Phase completion notifications are now automatic.
         // When any phase completes, the system automatically sends an email to the buyer
@@ -826,6 +894,62 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                 },
             });
             expect(event).toBeDefined();
+        });
+
+        it('Organizations are bound to the application with roles and SLAs', async () => {
+            // When an application is created for a mortgage:
+            // 1. The developer (Lekki Gardens) is bound as DEVELOPER - responsible for sales offer
+            // 2. The lender (Access Bank) is bound as LENDER - responsible for mortgage processing
+            //
+            // Each binding has:
+            // - A role (DEVELOPER, LENDER, LEGAL, INSURER, GOVERNMENT)
+            // - An SLA (e.g., bank has 48 hours to respond to document submissions)
+            // - Status tracking (PENDING → ACTIVE → COMPLETED or DECLINED)
+
+            // Bind Lekki Gardens as the developer
+            const lekkiGardensAppOrg = await prisma.applicationOrganization.create({
+                data: {
+                    id: faker.string.uuid(),
+                    tenantId,
+                    applicationId,
+                    organizationId: lekkiGardensId,
+                    role: 'DEVELOPER',
+                    status: 'ACTIVE',
+                    activatedAt: new Date(),
+                    slaHours: 24, // 24 hours to upload sales offer
+                },
+            });
+            appOrgLekkiGardensId = lekkiGardensAppOrg.id;
+
+            // Bind Access Bank as the lender
+            const accessBankAppOrg = await prisma.applicationOrganization.create({
+                data: {
+                    id: faker.string.uuid(),
+                    tenantId,
+                    applicationId,
+                    organizationId: accessBankId,
+                    role: 'LENDER',
+                    status: 'PENDING', // Will become ACTIVE when KYC phase starts
+                    slaHours: 48, // 48 hours to review documents and issue preapproval
+                },
+            });
+            appOrgAccessBankId = accessBankAppOrg.id;
+
+            // Verify bindings
+            const bindings = await prisma.applicationOrganization.findMany({
+                where: { applicationId },
+                include: { organization: true },
+            });
+
+            expect(bindings.length).toBe(2);
+
+            const developerBinding = bindings.find((b: any) => b.role === 'DEVELOPER');
+            expect(developerBinding?.organization.name).toBe('Lekki Gardens Development Company');
+            expect(developerBinding?.slaHours).toBe(24);
+
+            const lenderBinding = bindings.find((b: any) => b.role === 'LENDER');
+            expect(lenderBinding?.organization.name).toBe('Access Bank Plc');
+            expect(lenderBinding?.slaHours).toBe(48);
         });
 
         it('Application has correct phase amounts (₦8.5M downpayment)', async () => {
@@ -1133,6 +1257,34 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             expect(secondStage?.status).toBe('IN_PROGRESS');
         });
 
+        it('Access Bank SLA clock starts when bank review stage activates', async () => {
+            // When the bank review stage becomes IN_PROGRESS, we should:
+            // 1. Update the ApplicationOrganization status to ACTIVE
+            // 2. Start the SLA clock (slaStartedAt)
+            //
+            // This allows monitoring for SLA breaches - if Access Bank doesn't
+            // respond within 48 hours, we can trigger escalation.
+
+            await prisma.applicationOrganization.update({
+                where: { id: appOrgAccessBankId },
+                data: {
+                    status: 'ACTIVE',
+                    slaStartedAt: new Date(),
+                },
+            });
+
+            const appOrg = await prisma.applicationOrganization.findUnique({
+                where: { id: appOrgAccessBankId },
+            });
+
+            expect(appOrg?.status).toBe('ACTIVE');
+            expect(appOrg?.slaStartedAt).toBeDefined();
+            expect(appOrg?.slaBreachedAt).toBeNull(); // Not breached yet
+
+            // In a real scenario, a cron job would check:
+            // if (now - slaStartedAt > slaHours * 3600 * 1000) → set slaBreachedAt
+        });
+
         it('Nkechi (Lender) uploads the preapproval letter', async () => {
             // After KYC documents are approved, the lender uploads the preapproval letter
             // Once uploaded, the phase completes automatically (no customer signature needed)
@@ -1160,6 +1312,22 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
             // Phase completes automatically after lender uploads preapproval letter
             expect(phase?.status).toBe('COMPLETED');
+
+            // Mark lender's involvement as completed (no SLA breach!)
+            await prisma.applicationOrganization.update({
+                where: { id: appOrgAccessBankId },
+                data: {
+                    status: 'COMPLETED',
+                    completedAt: new Date(),
+                },
+            });
+
+            const appOrg = await prisma.applicationOrganization.findUnique({
+                where: { id: appOrgAccessBankId },
+            });
+            expect(appOrg?.status).toBe('COMPLETED');
+            expect(appOrg?.completedAt).toBeDefined();
+            expect(appOrg?.slaBreachedAt).toBeNull(); // Completed within SLA!
         });
 
         it('Downpayment phase auto-activates', async () => {
