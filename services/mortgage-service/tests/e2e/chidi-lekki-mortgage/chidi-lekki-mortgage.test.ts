@@ -1522,7 +1522,6 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
             // Verify execution details in the data payload
             const data = handlerExecution?.data as Record<string, unknown>;
-            console.log('[TEST] Handler execution data:', JSON.stringify(data, null, 2));
             expect(data?.handlerType).toBe('LOCK_UNIT');
             expect(data?.trigger).toBe('ON_COMPLETE');
             expect(data?.success).toBe(true);
