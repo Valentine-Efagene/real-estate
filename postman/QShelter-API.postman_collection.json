@@ -705,7 +705,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"eventTypeId\": \"{{eventTypeId}}\",\n  \"name\": \"Notify Admin: Upload Final Offer\",\n  \"description\": \"Sends email to admin when downpayment phase completes\",\n  \"handlerType\": \"SEND_EMAIL\",\n  \"config\": {\n    \"template\": \"admin_upload_final_offer\",\n    \"recipients\": [\"admin@example.com\"],\n    \"subject\": \"Action Required: Upload Final Offer Letter\"\n  },\n  \"priority\": 100,\n  \"enabled\": true\n}"
+                            "raw": "{\n  \"eventTypeId\": \"{{eventTypeId}}\",\n  \"name\": \"Notify Admin: Upload Final Offer\",\n  \"description\": \"Sends email to admin when downpayment phase completes\",\n  \"handlerType\": \"SEND_EMAIL\",\n  \"config\": {\n    \"template\": \"admin_upload_final_offer\",\n    \"recipients\": [\"admin@mailsac.com\"],\n    \"subject\": \"Action Required: Upload Final Offer Letter\"\n  },\n  \"priority\": 100,\n  \"enabled\": true\n}"
                         },
                         "url": {
                             "raw": "{{notificationServiceUrl}}/event-handlers",
@@ -2913,7 +2913,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"propertyUnitId\": \"{{propertyUnitId}}\",\n  \"paymentMethodId\": \"{{paymentMethodId}}\",\n  \"title\": \"Purchase Agreement - Unit A1\",\n  \"description\": \"Application for Lekki Gardens Unit A1\",\n  \"applicationType\": \"MORTGAGE\",\n  \"totalAmount\": 10000000\n}"
+                            "raw": "{\n  \"propertyUnitId\": \"{{propertyUnitId}}\",\n  \"paymentMethodId\": \"{{paymentMethodId}}\",\n  \"title\": \"{{applicationTitle}}\",\n  \"applicationType\": {{applicationType}},\n  \"totalAmount\": {{totalAmount}},\n  \"monthlyIncome\": {{monthlyIncome}},\n  \"monthlyExpenses\": {{monthlyExpenses}},\n  \"applicantAge\": {{applicantAge}},\n  \"selectedMortgageTermMonths\": {{selectedMortgageTermMonths}}\n}"
                         },
                         "url": {
                             "raw": "{{mortgageServiceUrl}}/applications",
@@ -5356,7 +5356,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n  \"email\": \"newuser@example.com\",\n  \"password\": \"SecurePass123!\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\"\n}"
+                                    "raw": "{\n  \"email\": \"{{signupEmail}}\",\n  \"password\": \"{{signupPassword}}\",\n  \"firstName\": \"{{signupFirstName}}\",\n  \"lastName\": \"{{signupLastName}}\"\n}"
                                 },
                                 "url": {
                                     "raw": "{{userServiceUrl}}/auth/signup",
@@ -5383,7 +5383,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"Password123!\"\n}"
+                                    "raw": "{\n  \"email\": \"{{loginEmail}}\",\n  \"password\": \"{{loginPassword}}\"\n}"
                                 },
                                 "url": {
                                     "raw": "{{userServiceUrl}}/auth/login",
@@ -5461,7 +5461,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n  \"email\": \"user@example.com\"\n}"
+                                    "raw": "{\n  \"email\": \"adaeze@mailsac.com\"\n}"
                                 },
                                 "url": {
                                     "raw": "{{userServiceUrl}}/auth/request-password-reset",
@@ -5681,7 +5681,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"phone\": \"+1234567890\"\n}"
+                                    "raw": "{\n  \"firstName\": \"Chidi\",\n  \"lastName\": \"Nnamdi\",\n  \"phone\": \"+2348012345678\"\n}"
                                 },
                                 "url": {
                                     "raw": "{{userServiceUrl}}/users/profile",
@@ -6724,7 +6724,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n  \"name\": \"Access Bank PLC\",\n  \"type\": \"BANK\",\n  \"email\": \"mortgages@accessbankplc.com\",\n  \"phone\": \"+2341234567890\",\n  \"address\": \"999C Danmole Street\",\n  \"city\": \"Victoria Island\",\n  \"state\": \"Lagos\",\n  \"country\": \"Nigeria\",\n  \"website\": \"https://accessbankplc.com\",\n  \"bankCode\": \"044\",\n  \"swiftCode\": \"ABNGNGLA\",\n  \"description\": \"Leading Nigerian commercial bank\"\n}",
+                                    "raw": "{\n  \"name\": \"{{organizationName}}\",\n  \"type\": {{organizationType}},\n  \"email\": \"{{organizationEmail}}\",\n  \"phone\": \"{{organizationPhone}}\",\n  \"address\": \"{{organizationAddress}}\",\n  \"city\": \"{{organizationCity}}\",\n  \"state\": \"{{organizationState}}\",\n  \"country\": \"{{organizationCountry}}\",\n  \"website\": \"{{organizationWebsite}}\",\n  \"description\": \"{{organizationDescription}}\"\n}",
                                     "options": {
                                         "raw": {
                                             "language": "json"
@@ -6759,7 +6759,7 @@
                                         ],
                                         "body": {
                                             "mode": "raw",
-                                            "raw": "{\n  \"name\": \"Access Bank PLC\",\n  \"type\": \"BANK\",\n  \"email\": \"mortgages@accessbankplc.com\",\n  \"phone\": \"+2341234567890\",\n  \"address\": \"999C Danmole Street\",\n  \"city\": \"Victoria Island\",\n  \"state\": \"Lagos\",\n  \"country\": \"Nigeria\",\n  \"website\": \"https://accessbankplc.com\",\n  \"bankCode\": \"044\",\n  \"swiftCode\": \"ABNGNGLA\",\n  \"description\": \"Leading Nigerian commercial bank\"\n}"
+                                            "raw": "{\n  \"name\": \"Access Bank PLC\",\n  \"type\": \"BANK\",\n  \"email\": \"mortgages@mailsac.com\",\n  \"phone\": \"+2341234567890\",\n  \"address\": \"999C Danmole Street\",\n  \"city\": \"Victoria Island\",\n  \"state\": \"Lagos\",\n  \"country\": \"Nigeria\",\n  \"website\": \"https://accessbankplc.com\",\n  \"bankCode\": \"044\",\n  \"swiftCode\": \"ABNGNGLA\",\n  \"description\": \"Leading Nigerian commercial bank\"\n}"
                                         },
                                         "url": {
                                             "raw": "{{userServiceUrl}}/organizations",
@@ -6791,7 +6791,7 @@
                                         ],
                                         "body": {
                                             "mode": "raw",
-                                            "raw": "{\n  \"name\": \"Lekki Gardens Development Company\",\n  \"type\": \"DEVELOPER\",\n  \"email\": \"info@lekkigardens.com\",\n  \"phone\": \"+2348012345678\",\n  \"address\": \"15 Admiralty Way\",\n  \"city\": \"Lekki\",\n  \"state\": \"Lagos\",\n  \"country\": \"Nigeria\",\n  \"website\": \"https://lekkigardens.com\",\n  \"cacNumber\": \"RC-123456\",\n  \"description\": \"Premium property developer in Lagos\"\n}"
+                                            "raw": "{\n  \"name\": \"Lekki Gardens Development Company\",\n  \"type\": \"DEVELOPER\",\n  \"email\": \"lekkigardens@mailsac.com\",\n  \"phone\": \"+2348012345678\",\n  \"address\": \"15 Admiralty Way\",\n  \"city\": \"Lekki\",\n  \"state\": \"Lagos\",\n  \"country\": \"Nigeria\",\n  \"website\": \"https://lekkigardens.com\",\n  \"cacNumber\": \"RC-123456\",\n  \"description\": \"Premium property developer in Lagos\"\n}"
                                         },
                                         "url": {
                                             "raw": "{{userServiceUrl}}/organizations",
@@ -6936,7 +6936,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n  \"userId\": \"{{targetUserId}}\",\n  \"role\": \"OFFICER\",\n  \"title\": \"Mortgage Loan Officer\",\n  \"department\": \"Retail Banking\",\n  \"canApprove\": true,\n  \"approvalLimit\": 500000000\n}",
+                                    "raw": "{\n  \"userId\": \"{{targetUserId}}\",\n  \"role\": {{memberRole}},\n  \"title\": \"{{memberTitle}}\",\n  \"department\": \"{{memberDepartment}}\",\n  \"canApprove\": {{canApprove}},\n  \"approvalLimit\": {{approvalLimit}}\n}",
                                     "options": {
                                         "raw": {
                                             "language": "json"
@@ -7251,7 +7251,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"tenant\": {\n    \"name\": \"QShelter Demo\",\n    \"subdomain\": \"qshelter-demo\"\n  },\n  \"admin\": {\n    \"email\": \"adaeze@qshelter.com\",\n    \"firstName\": \"Adaeze\",\n    \"lastName\": \"Okonkwo\",\n    \"password\": \"SecureP@ssw0rd123!\"\n  }\n}"
+                            "raw": "{\n  \"tenant\": {\n    \"name\": \"{{tenantName}}\",\n    \"subdomain\": \"{{tenantSubdomain}}\"\n  },\n  \"admin\": {\n    \"email\": \"{{adminEmail}}\",\n    \"firstName\": \"{{adminFirstName}}\",\n    \"lastName\": \"{{adminLastName}}\",\n    \"password\": \"{{adminPassword}}\"\n  }\n}"
                         },
                         "url": {
                             "raw": "{{userServiceUrl}}/admin/bootstrap-tenant",
@@ -7282,7 +7282,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n  \"tenant\": {\n    \"name\": \"QShelter Demo\",\n    \"subdomain\": \"qshelter-demo\"\n  },\n  \"admin\": {\n    \"email\": \"adaeze@qshelter.com\",\n    \"firstName\": \"Adaeze\",\n    \"lastName\": \"Okonkwo\",\n    \"password\": \"SecureP@ssw0rd123!\"\n  }\n}"
+                                    "raw": "{\n  \"tenant\": {\n    \"name\": \"QShelter Demo\",\n    \"subdomain\": \"qshelter-demo\"\n  },\n  \"admin\": {\n    \"email\": \"adaeze@mailsac.com\",\n    \"firstName\": \"Adaeze\",\n    \"lastName\": \"Okonkwo\",\n    \"password\": \"SecureP@ssw0rd123!\"\n  }\n}"
                                 },
                                 "url": {
                                     "raw": "{{userServiceUrl}}/admin/bootstrap-tenant",
@@ -7356,7 +7356,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n  \"title\": \"Luxury 3-Bedroom Apartment in Lekki\",\n  \"description\": \"Beautiful modern apartment with ocean views\",\n  \"price\": 85000000,\n  \"category\": \"SALE\",\n  \"propertyType\": \"APARTMENT\",\n  \"country\": \"Nigeria\",\n  \"currency\": \"NGN\",\n  \"city\": \"Lagos\",\n  \"district\": \"Lekki Phase 1\",\n  \"streetAddress\": \"123 Admiralty Way\",\n  \"nBedrooms\": \"3\",\n  \"nBathrooms\": \"3\",\n  \"nParkingSpots\": \"2\",\n  \"area\": 250\n}"
+                                    "raw": "{\n  \"title\": \"{{propertyTitle}}\",\n  \"description\": \"{{propertyDescription}}\",\n  \"category\": {{propertyCategory}},\n  \"propertyType\": {{propertyType}},\n  \"country\": \"{{propertyCountry}}\",\n  \"currency\": \"{{propertyCurrency}}\",\n  \"city\": \"{{propertyCity}}\",\n  \"district\": \"{{propertyDistrict}}\",\n  \"streetAddress\": \"{{propertyStreetAddress}}\"\n}"
                                 },
                                 "url": {
                                     "raw": "{{propertyServiceUrl}}/properties",
@@ -7579,7 +7579,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n  \"name\": \"3-Bedroom Deluxe\",\n  \"nBedrooms\": 3,\n  \"nBathrooms\": 3,\n  \"nParkingSpots\": 2,\n  \"area\": 180,\n  \"price\": 85000000,\n  \"totalUnits\": 20,\n  \"availableUnits\": 20\n}",
+                                    "raw": "{\n  \"name\": \"{{variantName}}\",\n  \"nBedrooms\": {{nBedrooms}},\n  \"nBathrooms\": {{nBathrooms}},\n  \"nParkingSpots\": {{nParkingSpots}},\n  \"area\": {{variantArea}},\n  \"price\": {{variantPrice}},\n  \"totalUnits\": {{totalUnits}},\n  \"availableUnits\": {{availableUnits}}\n}",
                                     "options": {
                                         "raw": {
                                             "language": "json"
@@ -7601,7 +7601,7 @@
                             },
                             "response": [
                                 {
-                                    "name": "Create 3-Bedroom Variant",
+                                    "name": "Create 3-Bedroom Flat Variant",
                                     "originalRequest": {
                                         "method": "POST",
                                         "header": [
@@ -7616,7 +7616,7 @@
                                         ],
                                         "body": {
                                             "mode": "raw",
-                                            "raw": "{\n  \"name\": \"3-Bedroom Deluxe\",\n  \"nBedrooms\": 3,\n  \"nBathrooms\": 3,\n  \"nParkingSpots\": 2,\n  \"area\": 180,\n  \"price\": 85000000,\n  \"totalUnits\": 20,\n  \"availableUnits\": 20\n}"
+                                            "raw": "{\n  \"name\": \"3-Bedroom Flat\",\n  \"nBedrooms\": 3,\n  \"nBathrooms\": 3,\n  \"nParkingSpots\": 1,\n  \"area\": 150,\n  \"price\": 85000000,\n  \"totalUnits\": 20,\n  \"availableUnits\": 15\n}"
                                         },
                                         "url": {
                                             "raw": "{{propertyServiceUrl}}/properties/{{propertyId}}/variants",
@@ -7799,7 +7799,7 @@
                                 ],
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n  \"unitNumber\": \"A1\",\n  \"floorNumber\": 3,\n  \"blockName\": \"Block A\"\n}",
+                                    "raw": "{\n  \"unitNumber\": \"{{unitNumber}}\",\n  \"floorNumber\": {{floorNumber}},\n  \"blockName\": \"{{blockName}}\"\n}",
                                     "options": {
                                         "raw": {
                                             "language": "json"
@@ -7823,7 +7823,7 @@
                             },
                             "response": [
                                 {
-                                    "name": "Create Unit A1 (Chidi's unit)",
+                                    "name": "Create Unit 14B (Chidi's unit)",
                                     "originalRequest": {
                                         "method": "POST",
                                         "header": [
@@ -7838,7 +7838,7 @@
                                         ],
                                         "body": {
                                             "mode": "raw",
-                                            "raw": "{\n  \"unitNumber\": \"A1\",\n  \"floorNumber\": 3,\n  \"blockName\": \"Block A\"\n}"
+                                            "raw": "{\n  \"unitNumber\": \"14B\",\n  \"floorNumber\": 14,\n  \"blockName\": \"Block B\"\n}"
                                         },
                                         "url": {
                                             "raw": "{{propertyServiceUrl}}/properties/{{propertyId}}/variants/{{variantId}}/units",

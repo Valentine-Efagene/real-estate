@@ -198,6 +198,65 @@ Direct Lambda invocation tests for the authorizer service:
   - `postman/QShelter-AWS-Staging.postman_environment.json` - AWS staging URLs
 - New endpoints need both Zod validation and Postman examples.
 
+### Postman Examples - Chidi-Lekki Mortgage Scenario
+
+**All Postman request examples must align with the Chidi-Lekki mortgage E2E test scenario** defined in:
+
+- `docs/FULL_E2E_MORTGAGE_FLOW.md` - Complete scenario documentation
+- `services/mortgage-service/tests/e2e/chidi-lekki-mortgage/` - Implementation
+
+**Actors (use these in all examples):**
+
+| Actor      | Role      | Email                | Description                  |
+| ---------- | --------- | -------------------- | ---------------------------- |
+| **Adaeze** | Admin     | `adaeze@mailsac.com` | QShelter operations manager  |
+| **Chidi**  | Customer  | `chidi@mailsac.com`  | First-time homebuyer, age 40 |
+| **Nkechi** | Lender    | `nkechi@mailsac.com` | Access Bank loan officer     |
+| **Emeka**  | Developer | `emeka@mailsac.com`  | Lekki Gardens developer rep  |
+
+**Property Details:**
+
+- **Property**: Lekki Gardens Estate
+- **Unit**: 14B (Block B, Floor 14)
+- **Price**: ₦85,000,000 (NGN)
+- **Variant**: 3-Bedroom Flat, 150 sqm, 3 bath, 1 parking
+
+**Payment Structure:**
+
+- 10% downpayment (₦8,500,000) - ONE_TIME payment
+- 90% mortgage (₦76,500,000) - 9.5% p.a. over 20 years
+
+**Organizations:**
+
+| Name          | Type      | Email                      |
+| ------------- | --------- | -------------------------- |
+| QShelter      | PLATFORM  | `support@mailsac.com`      |
+| Access Bank   | BANK      | `mortgages@mailsac.com`    |
+| Lekki Gardens | DEVELOPER | `lekkigardens@mailsac.com` |
+
+**All email addresses must use `@mailsac.com` domain** for testable email verification.
+
+### Postman Variable Format
+
+**Main request bodies should use `{{variableName}}` format** for configurable values:
+
+```json
+{
+  "name": "Access Bank PLC",
+  "type": {{organizationType}},
+  "email": "{{organizationEmail}}",
+  "propertyUnitId": "{{propertyUnitId}}",
+  "totalAmount": {{totalAmount}}
+}
+```
+
+**Rules:**
+
+- Use `{{variable}}` (no quotes) for non-string values (numbers, enums, booleans)
+- Use `"{{variable}}"` (with quotes) for string values
+- Main requests use variables; saved example responses use hardcoded scenario values
+- Variable names should be descriptive: `{{organizationType}}` not `{{type}}`
+
 ### Swagger UI in Serverless
 
 **Do NOT use `swagger-ui-express` package** - it requires bundling large static assets that don't work well in Lambda.
