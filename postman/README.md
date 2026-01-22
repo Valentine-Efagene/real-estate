@@ -1,17 +1,55 @@
 # QShelter API - Postman Collection
 
-This folder contains the Postman collection and environment for testing the QShelter Real Estate Platform APIs.
+This folder contains the Postman collection and environments for testing the QShelter Real Estate Platform APIs.
 
 ## Files
 
-| File                                                | Description                                          |
-| --------------------------------------------------- | ---------------------------------------------------- |
-| `QShelter-API.postman_collection.json`              | Complete API reference (all endpoints)               |
-| `QShelter-E2E-Flow.postman_collection.json`         | End-to-end Chidi mortgage scenario                   |
-| `QShelter-User-Service.postman_collection.json`     | User service only (auth, users, invites)             |
-| `QShelter-Property-Service.postman_collection.json` | Property service only (properties, variants, units)  |
-| `QShelter-Mortgage-Service.postman_collection.json` | Mortgage service only (plans, methods, applications) |
-| `QShelter-Local.postman_environment.json`           | Environment variables for local dev                  |
+| File                                                | Description                              |
+| --------------------------------------------------- | ---------------------------------------- |
+| `QShelter-API.postman_collection.json`              | Complete API reference (all endpoints)   |
+| `QShelter-E2E-Flow.postman_collection.json`         | End-to-end Chidi mortgage scenario       |
+| `QShelter-User-Service.postman_collection.json`     | User service only (auth, users, invites) |
+| `QShelter-Property-Service.postman_collection.json` | Property service only                    |
+| `QShelter-Mortgage-Service.postman_collection.json` | Mortgage service only                    |
+| `QShelter-Local.postman_environment.json`           | Environment variables for LocalStack     |
+| `QShelter-AWS-Staging.postman_environment.json`     | Environment variables for AWS staging    |
+
+## Environments
+
+### LocalStack (Local Development)
+
+Use `QShelter-Local.postman_environment.json` for local testing with LocalStack.
+
+```bash
+# Start LocalStack
+cd local-dev && ./scripts/start.sh
+```
+
+### AWS Staging
+
+Use `QShelter-AWS-Staging.postman_environment.json` for testing against deployed AWS services.
+
+**Setup Steps:**
+
+1. Import the environment into Postman
+2. Get the bootstrap secret:
+   ```bash
+   aws ssm get-parameter --name /qshelter/staging/bootstrap-secret --with-decryption --query "Parameter.Value" --output text
+   ```
+3. Bootstrap a tenant (run "Bootstrap Tenant" in Admin Bootstrap folder)
+4. Login to get access token (run "Login" in Authentication folder)
+5. **IMPORTANT**: Access tokens expire in 15 minutes - refresh via login when needed
+
+**Current AWS Staging Endpoints:**
+
+| Service       | URL                                                    |
+| ------------- | ------------------------------------------------------ |
+| User          | https://90wc5do2hf.execute-api.us-east-1.amazonaws.com |
+| Property      | https://mknu68wfp4.execute-api.us-east-1.amazonaws.com |
+| Mortgage      | https://znfftqvky9.execute-api.us-east-1.amazonaws.com |
+| Documents     | https://ibt80hnb5c.execute-api.us-east-1.amazonaws.com |
+| Notifications | https://gccen9bc1j.execute-api.us-east-1.amazonaws.com |
+| Payments      | https://0xty8vn1xb.execute-api.us-east-1.amazonaws.com |
 
 ## Services Included
 
@@ -216,7 +254,6 @@ Initial setup of payment plans and methods:
 2. **Auto-populate Variables**: Responses automatically save IDs to variables for subsequent requests
 
 3. **Step Auto-Completion**:
-
    - **UPLOAD steps**: Upload → `AWAITING_REVIEW` → Document Approved → `COMPLETED`
    - **APPROVAL steps**: Auto-complete when all phase documents are approved
    - **SIGNATURE steps**: Require explicit completion via `/steps/complete`
@@ -225,7 +262,6 @@ Initial setup of payment plans and methods:
 4. **Check Phase Progress**: Use `GET /applications/:id/phases` to see current step statuses
 
 5. **Phase Categories**:
-
    - `DOCUMENTATION` - For KYC, document uploads, reviews
    - `PAYMENT` - For collecting payments
 

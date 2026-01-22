@@ -2,7 +2,7 @@
     "info": {
         "_postman_id": "qshelter-api-v1",
         "name": "QShelter API",
-        "description": "Complete API collection for QShelter Real Estate Platform.\n\n## Services\n- **User Service**: Authentication, users, roles, tenants, API keys\n- **Property Service**: Properties, amenities, media\n- **Mortgage Service**: Payment plans, payment methods, applications, phases, payments\n- **Documents Service**: Document upload and management\n\n## Authentication\nAll requests require the following headers:\n- `x-tenant-id`: Your tenant ID\n- `x-user-id`: The authenticated user ID\n\n## Base URLs\nSet the service URL variables to your environment:\n- LocalStack Mortgage: `http://localhost:4566/restapis/{apiId}/localstack/_user_request_`\n- LocalStack User: `http://localhost:4566/restapis/{apiId}/localstack/_user_request_`\n- LocalStack Property: `http://localhost:4566/restapis/{apiId}/localstack/_user_request_`",
+        "description": "Complete API collection for QShelter Real Estate Platform.\n\n## Services\n- **User Service**: Authentication, users, roles, tenants, organizations, API keys\n- **Property Service**: Properties, variants, units, amenities, media\n- **Mortgage Service**: Payment plans, payment methods, applications, phases, payments, organization reviews\n- **Documents Service**: Document upload and management\n\n## Organizations\nExternal parties (banks, developers, legal) are modeled as Organizations. Their members get special roles (LENDER, DEVELOPER) for multi-party document review workflows.\n\n## Authentication\nAll requests require the following headers:\n- `x-tenant-id`: Your tenant ID\n- `x-user-id`: The authenticated user ID\n\n## Base URLs\nSet the service URL variables to your environment:\n- LocalStack Mortgage: `http://localhost:4566/restapis/{apiId}/localstack/_user_request_`\n- LocalStack User: `http://localhost:4566/restapis/{apiId}/localstack/_user_request_`\n- LocalStack Property: `http://localhost:4566/restapis/{apiId}/localstack/_user_request_`",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
     "auth": {
@@ -270,6 +270,54 @@
             "value": "pay-ref-001",
             "type": "string",
             "description": "Payment reference for process confirmation"
+        },
+        {
+            "key": "organizationId",
+            "value": "org-001",
+            "type": "string",
+            "description": "Organization ID (e.g., Access Bank, Lekki Gardens)"
+        },
+        {
+            "key": "memberId",
+            "value": "member-001",
+            "type": "string",
+            "description": "Organization member ID"
+        },
+        {
+            "key": "accessBankOrgId",
+            "value": "org-access-bank",
+            "type": "string",
+            "description": "Access Bank organization ID (BANK type)"
+        },
+        {
+            "key": "lekkiGardensOrgId",
+            "value": "org-lekki-gardens",
+            "type": "string",
+            "description": "Lekki Gardens organization ID (DEVELOPER type)"
+        },
+        {
+            "key": "nkechiUserId",
+            "value": "user-nkechi",
+            "type": "string",
+            "description": "Nkechi's user ID (Access Bank mortgage officer)"
+        },
+        {
+            "key": "emekaUserId",
+            "value": "user-emeka",
+            "type": "string",
+            "description": "Emeka's user ID (Lekki Gardens sales manager)"
+        },
+        {
+            "key": "variantId",
+            "value": "variant-001",
+            "type": "string",
+            "description": "Property variant ID (e.g., 3-Bedroom Deluxe)"
+        },
+        {
+            "key": "unitId",
+            "value": "unit-001",
+            "type": "string",
+            "description": "Property unit ID (e.g., Unit A1)"
         }
     ],
     "item": [
@@ -3304,6 +3352,90 @@
                         },
                         "description": "Delete a application. Only works for DRAFT applications."
                     }
+                }
+            ]
+        },
+        {
+            "name": "Organization Reviews",
+            "description": "Organization members (bank officers, developer reps) can view applications pending their review.",
+            "item": [
+                {
+                    "name": "Get Pending Reviews for Organization",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{accessToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{mortgageServiceUrl}}/organizations/{{organizationId}}/pending-reviews",
+                            "host": [
+                                "{{mortgageServiceUrl}}"
+                            ],
+                            "path": [
+                                "organizations",
+                                "{{organizationId}}",
+                                "pending-reviews"
+                            ]
+                        },
+                        "description": "Get all applications that have documents pending review by this organization. Used by bank officers, developer reps, and other external parties to see their review queue.\n\n**Who uses this:**\n- Bank officers (Access Bank) reviewing mortgage applications\n- Developer reps (Lekki Gardens) confirming property details\n- Legal/Insurance reviewers\n\n**Returns:** Applications with pending documentation steps that require review from this organization, grouped by phase."
+                    },
+                    "response": [
+                        {
+                            "name": "Nkechi's pending reviews at Access Bank",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{nkechiAccessToken}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{mortgageServiceUrl}}/organizations/{{accessBankOrgId}}/pending-reviews",
+                                    "host": [
+                                        "{{mortgageServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "organizations",
+                                        "{{accessBankOrgId}}",
+                                        "pending-reviews"
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json"
+                        },
+                        {
+                            "name": "Emeka's pending reviews at Lekki Gardens",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{emekaAccessToken}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{mortgageServiceUrl}}/organizations/{{lekkiGardensOrgId}}/pending-reviews",
+                                    "host": [
+                                        "{{mortgageServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "organizations",
+                                        "{{lekkiGardensOrgId}}",
+                                        "pending-reviews"
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json"
+                        }
+                    ]
                 }
             ]
         },
@@ -6571,6 +6703,413 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "Organizations",
+                    "description": "Organizations represent external parties (banks, developers, legal firms) participating in property transactions. Organization members get special roles (LENDER, DEVELOPER) for multi-party workflows.",
+                    "item": [
+                        {
+                            "name": "Create Organization",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{accessToken}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"name\": \"Access Bank PLC\",\n  \"type\": \"BANK\",\n  \"email\": \"mortgages@accessbankplc.com\",\n  \"phone\": \"+2341234567890\",\n  \"address\": \"999C Danmole Street\",\n  \"city\": \"Victoria Island\",\n  \"state\": \"Lagos\",\n  \"country\": \"Nigeria\",\n  \"website\": \"https://accessbankplc.com\",\n  \"bankCode\": \"044\",\n  \"swiftCode\": \"ABNGNGLA\",\n  \"description\": \"Leading Nigerian commercial bank\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/organizations",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "organizations"
+                                    ]
+                                },
+                                "description": "Create a new organization (BANK, DEVELOPER, LEGAL, INSURER, GOVERNMENT). Admin only.\n\n**Organization Types:**\n- BANK: Financial institutions providing mortgages\n- DEVELOPER: Property developers\n- LEGAL: Legal firms for conveyancing\n- INSURER: Insurance companies\n- GOVERNMENT: Government agencies (land registry)"
+                            },
+                            "response": [
+                                {
+                                    "name": "Create Bank Organization",
+                                    "originalRequest": {
+                                        "method": "POST",
+                                        "header": [
+                                            {
+                                                "key": "Content-Type",
+                                                "value": "application/json"
+                                            },
+                                            {
+                                                "key": "Authorization",
+                                                "value": "Bearer {{accessToken}}"
+                                            }
+                                        ],
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\n  \"name\": \"Access Bank PLC\",\n  \"type\": \"BANK\",\n  \"email\": \"mortgages@accessbankplc.com\",\n  \"phone\": \"+2341234567890\",\n  \"address\": \"999C Danmole Street\",\n  \"city\": \"Victoria Island\",\n  \"state\": \"Lagos\",\n  \"country\": \"Nigeria\",\n  \"website\": \"https://accessbankplc.com\",\n  \"bankCode\": \"044\",\n  \"swiftCode\": \"ABNGNGLA\",\n  \"description\": \"Leading Nigerian commercial bank\"\n}"
+                                        },
+                                        "url": {
+                                            "raw": "{{userServiceUrl}}/organizations",
+                                            "host": [
+                                                "{{userServiceUrl}}"
+                                            ],
+                                            "path": [
+                                                "organizations"
+                                            ]
+                                        }
+                                    },
+                                    "status": "Created",
+                                    "code": 201,
+                                    "_postman_previewlanguage": "json"
+                                },
+                                {
+                                    "name": "Create Developer Organization",
+                                    "originalRequest": {
+                                        "method": "POST",
+                                        "header": [
+                                            {
+                                                "key": "Content-Type",
+                                                "value": "application/json"
+                                            },
+                                            {
+                                                "key": "Authorization",
+                                                "value": "Bearer {{accessToken}}"
+                                            }
+                                        ],
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\n  \"name\": \"Lekki Gardens Development Company\",\n  \"type\": \"DEVELOPER\",\n  \"email\": \"info@lekkigardens.com\",\n  \"phone\": \"+2348012345678\",\n  \"address\": \"15 Admiralty Way\",\n  \"city\": \"Lekki\",\n  \"state\": \"Lagos\",\n  \"country\": \"Nigeria\",\n  \"website\": \"https://lekkigardens.com\",\n  \"cacNumber\": \"RC-123456\",\n  \"description\": \"Premium property developer in Lagos\"\n}"
+                                        },
+                                        "url": {
+                                            "raw": "{{userServiceUrl}}/organizations",
+                                            "host": [
+                                                "{{userServiceUrl}}"
+                                            ],
+                                            "path": [
+                                                "organizations"
+                                            ]
+                                        }
+                                    },
+                                    "status": "Created",
+                                    "code": 201,
+                                    "_postman_previewlanguage": "json"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "List Organizations",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{accessToken}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/organizations?type=BANK&status=ACTIVE",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "organizations"
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "type",
+                                            "value": "BANK",
+                                            "description": "Filter by type: PLATFORM, BANK, DEVELOPER, LEGAL, INSURER, GOVERNMENT"
+                                        },
+                                        {
+                                            "key": "status",
+                                            "value": "ACTIVE",
+                                            "description": "Filter by status: PENDING, ACTIVE, SUSPENDED, INACTIVE"
+                                        }
+                                    ]
+                                },
+                                "description": "List all organizations with optional filtering by type and status."
+                            }
+                        },
+                        {
+                            "name": "Get Organization by ID",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{accessToken}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/organizations/{{organizationId}}",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "organizations",
+                                        "{{organizationId}}"
+                                    ]
+                                },
+                                "description": "Get organization details by ID."
+                            }
+                        },
+                        {
+                            "name": "Update Organization",
+                            "request": {
+                                "method": "PATCH",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{accessToken}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"status\": \"ACTIVE\",\n  \"description\": \"Updated description\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/organizations/{{organizationId}}",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "organizations",
+                                        "{{organizationId}}"
+                                    ]
+                                },
+                                "description": "Update organization details. Admin only."
+                            }
+                        },
+                        {
+                            "name": "Delete Organization",
+                            "request": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{accessToken}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/organizations/{{organizationId}}",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "organizations",
+                                        "{{organizationId}}"
+                                    ]
+                                },
+                                "description": "Soft delete an organization. Admin only."
+                            }
+                        },
+                        {
+                            "name": "Add Member to Organization",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{accessToken}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"userId\": \"{{targetUserId}}\",\n  \"role\": \"OFFICER\",\n  \"title\": \"Mortgage Loan Officer\",\n  \"department\": \"Retail Banking\",\n  \"canApprove\": true,\n  \"approvalLimit\": 500000000\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/organizations/{{organizationId}}/members",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "organizations",
+                                        "{{organizationId}}",
+                                        "members"
+                                    ]
+                                },
+                                "description": "Add a user as a member of an organization. This assigns them the organization's role (LENDER for banks, DEVELOPER for developers). Admin only.\n\n**Member Roles:**\n- ADMIN: Full organization access\n- MANAGER: Can approve within limits\n- OFFICER: Standard operations\n- VIEWER: Read-only access"
+                            },
+                            "response": [
+                                {
+                                    "name": "Add Nkechi to Access Bank",
+                                    "originalRequest": {
+                                        "method": "POST",
+                                        "header": [
+                                            {
+                                                "key": "Content-Type",
+                                                "value": "application/json"
+                                            },
+                                            {
+                                                "key": "Authorization",
+                                                "value": "Bearer {{accessToken}}"
+                                            }
+                                        ],
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\n  \"userId\": \"{{nkechiUserId}}\",\n  \"role\": \"MANAGER\",\n  \"title\": \"Mortgage Loan Officer\",\n  \"department\": \"Retail Banking\",\n  \"canApprove\": true,\n  \"approvalLimit\": 500000000\n}"
+                                        },
+                                        "url": {
+                                            "raw": "{{userServiceUrl}}/organizations/{{accessBankOrgId}}/members",
+                                            "host": [
+                                                "{{userServiceUrl}}"
+                                            ],
+                                            "path": [
+                                                "organizations",
+                                                "{{accessBankOrgId}}",
+                                                "members"
+                                            ]
+                                        }
+                                    },
+                                    "status": "Created",
+                                    "code": 201,
+                                    "_postman_previewlanguage": "json"
+                                },
+                                {
+                                    "name": "Add Emeka to Lekki Gardens",
+                                    "originalRequest": {
+                                        "method": "POST",
+                                        "header": [
+                                            {
+                                                "key": "Content-Type",
+                                                "value": "application/json"
+                                            },
+                                            {
+                                                "key": "Authorization",
+                                                "value": "Bearer {{accessToken}}"
+                                            }
+                                        ],
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\n  \"userId\": \"{{emekaUserId}}\",\n  \"role\": \"OFFICER\",\n  \"title\": \"Sales Manager\",\n  \"department\": \"Sales\",\n  \"canApprove\": true\n}"
+                                        },
+                                        "url": {
+                                            "raw": "{{userServiceUrl}}/organizations/{{lekkiGardensOrgId}}/members",
+                                            "host": [
+                                                "{{userServiceUrl}}"
+                                            ],
+                                            "path": [
+                                                "organizations",
+                                                "{{lekkiGardensOrgId}}",
+                                                "members"
+                                            ]
+                                        }
+                                    },
+                                    "status": "Created",
+                                    "code": 201,
+                                    "_postman_previewlanguage": "json"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Get Organization Members",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{accessToken}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/organizations/{{organizationId}}/members",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "organizations",
+                                        "{{organizationId}}",
+                                        "members"
+                                    ]
+                                },
+                                "description": "List all members of an organization."
+                            }
+                        },
+                        {
+                            "name": "Update Organization Member",
+                            "request": {
+                                "method": "PATCH",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{accessToken}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"role\": \"MANAGER\",\n  \"canApprove\": true,\n  \"approvalLimit\": 1000000000\n}"
+                                },
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/organizations/{{organizationId}}/members/{{memberId}}",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "organizations",
+                                        "{{organizationId}}",
+                                        "members",
+                                        "{{memberId}}"
+                                    ]
+                                },
+                                "description": "Update a member's role, approval limits, or status. Admin only."
+                            }
+                        },
+                        {
+                            "name": "Remove Organization Member",
+                            "request": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{accessToken}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/organizations/{{organizationId}}/members/{{memberId}}",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "organizations",
+                                        "{{organizationId}}",
+                                        "members",
+                                        "{{memberId}}"
+                                    ]
+                                },
+                                "description": "Remove a member from an organization. Admin only."
+                            }
+                        }
+                    ]
                 }
             ]
         },
@@ -6712,7 +7251,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"tenant\": {\n    \"name\": \"Acme Real Estate\",\n    \"subdomain\": \"acme\"\n  },\n  \"admin\": {\n    \"email\": \"admin@acme.com\",\n    \"firstName\": \"Admin\",\n    \"lastName\": \"User\"\n  }\n}"
+                            "raw": "{\n  \"tenant\": {\n    \"name\": \"QShelter Demo\",\n    \"subdomain\": \"qshelter-demo\"\n  },\n  \"admin\": {\n    \"email\": \"adaeze@qshelter.com\",\n    \"firstName\": \"Adaeze\",\n    \"lastName\": \"Okonkwo\",\n    \"password\": \"SecureP@ssw0rd123!\"\n  }\n}"
                         },
                         "url": {
                             "raw": "{{userServiceUrl}}/admin/bootstrap-tenant",
@@ -6724,8 +7263,43 @@
                                 "bootstrap-tenant"
                             ]
                         },
-                        "description": "Bootstrap a new tenant with default roles (admin, user, mortgage_ops, finance, legal), permissions, and first admin user. Idempotent - safe to call multiple times with same subdomain."
-                    }
+                        "description": "Bootstrap a new tenant with default roles and first admin user. Creates 7 roles:\n- **admin**: Full platform access\n- **user**: Basic customer access\n- **mortgage_ops**: Mortgage operations\n- **finance**: Financial operations\n- **legal**: Legal/conveyancing\n- **DEVELOPER**: Property developer access (assigned to developer org members)\n- **LENDER**: Bank/lender access (assigned to bank org members)\n\nIdempotent - safe to call multiple times with same subdomain."
+                    },
+                    "response": [
+                        {
+                            "name": "Bootstrap QShelter Demo Tenant",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "x-bootstrap-secret",
+                                        "value": "{{bootstrapSecret}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"tenant\": {\n    \"name\": \"QShelter Demo\",\n    \"subdomain\": \"qshelter-demo\"\n  },\n  \"admin\": {\n    \"email\": \"adaeze@qshelter.com\",\n    \"firstName\": \"Adaeze\",\n    \"lastName\": \"Okonkwo\",\n    \"password\": \"SecureP@ssw0rd123!\"\n  }\n}"
+                                },
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/admin/bootstrap-tenant",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "admin",
+                                        "bootstrap-tenant"
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json"
+                        }
+                    ]
                 },
                 {
                     "name": "Check Bootstrap Status",
@@ -6981,6 +7555,424 @@
                                     ]
                                 },
                                 "description": "Check database connectivity."
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Property Variants",
+                    "description": "Property variants represent different unit types within a property (e.g., 2-bedroom, 3-bedroom, penthouse).",
+                    "item": [
+                        {
+                            "name": "Create Property Variant",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{accessToken}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"name\": \"3-Bedroom Deluxe\",\n  \"nBedrooms\": 3,\n  \"nBathrooms\": 3,\n  \"nParkingSpots\": 2,\n  \"area\": 180,\n  \"price\": 85000000,\n  \"totalUnits\": 20,\n  \"availableUnits\": 20\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{propertyServiceUrl}}/properties/{{propertyId}}/variants",
+                                    "host": [
+                                        "{{propertyServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "properties",
+                                        "{{propertyId}}",
+                                        "variants"
+                                    ]
+                                },
+                                "description": "Create a new variant for a property. Variants represent different unit configurations."
+                            },
+                            "response": [
+                                {
+                                    "name": "Create 3-Bedroom Variant",
+                                    "originalRequest": {
+                                        "method": "POST",
+                                        "header": [
+                                            {
+                                                "key": "Content-Type",
+                                                "value": "application/json"
+                                            },
+                                            {
+                                                "key": "Authorization",
+                                                "value": "Bearer {{accessToken}}"
+                                            }
+                                        ],
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\n  \"name\": \"3-Bedroom Deluxe\",\n  \"nBedrooms\": 3,\n  \"nBathrooms\": 3,\n  \"nParkingSpots\": 2,\n  \"area\": 180,\n  \"price\": 85000000,\n  \"totalUnits\": 20,\n  \"availableUnits\": 20\n}"
+                                        },
+                                        "url": {
+                                            "raw": "{{propertyServiceUrl}}/properties/{{propertyId}}/variants",
+                                            "host": [
+                                                "{{propertyServiceUrl}}"
+                                            ],
+                                            "path": [
+                                                "properties",
+                                                "{{propertyId}}",
+                                                "variants"
+                                            ]
+                                        }
+                                    },
+                                    "status": "Created",
+                                    "code": 201,
+                                    "_postman_previewlanguage": "json"
+                                },
+                                {
+                                    "name": "Create Penthouse Variant",
+                                    "originalRequest": {
+                                        "method": "POST",
+                                        "header": [
+                                            {
+                                                "key": "Content-Type",
+                                                "value": "application/json"
+                                            },
+                                            {
+                                                "key": "Authorization",
+                                                "value": "Bearer {{accessToken}}"
+                                            }
+                                        ],
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\n  \"name\": \"Penthouse Suite\",\n  \"nBedrooms\": 4,\n  \"nBathrooms\": 5,\n  \"nParkingSpots\": 3,\n  \"area\": 350,\n  \"price\": 250000000,\n  \"totalUnits\": 4,\n  \"availableUnits\": 4\n}"
+                                        },
+                                        "url": {
+                                            "raw": "{{propertyServiceUrl}}/properties/{{propertyId}}/variants",
+                                            "host": [
+                                                "{{propertyServiceUrl}}"
+                                            ],
+                                            "path": [
+                                                "properties",
+                                                "{{propertyId}}",
+                                                "variants"
+                                            ]
+                                        }
+                                    },
+                                    "status": "Created",
+                                    "code": 201,
+                                    "_postman_previewlanguage": "json"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "List Property Variants",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{accessToken}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{propertyServiceUrl}}/properties/{{propertyId}}/variants",
+                                    "host": [
+                                        "{{propertyServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "properties",
+                                        "{{propertyId}}",
+                                        "variants"
+                                    ]
+                                },
+                                "description": "List all variants for a property."
+                            }
+                        },
+                        {
+                            "name": "Get Variant by ID",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{accessToken}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{propertyServiceUrl}}/properties/{{propertyId}}/variants/{{variantId}}",
+                                    "host": [
+                                        "{{propertyServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "properties",
+                                        "{{propertyId}}",
+                                        "variants",
+                                        "{{variantId}}"
+                                    ]
+                                },
+                                "description": "Get a specific variant by ID."
+                            }
+                        },
+                        {
+                            "name": "Update Variant",
+                            "request": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{accessToken}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"price\": 90000000,\n  \"availableUnits\": 18\n}"
+                                },
+                                "url": {
+                                    "raw": "{{propertyServiceUrl}}/properties/{{propertyId}}/variants/{{variantId}}",
+                                    "host": [
+                                        "{{propertyServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "properties",
+                                        "{{propertyId}}",
+                                        "variants",
+                                        "{{variantId}}"
+                                    ]
+                                },
+                                "description": "Update a property variant."
+                            }
+                        },
+                        {
+                            "name": "Delete Variant",
+                            "request": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{accessToken}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{propertyServiceUrl}}/properties/{{propertyId}}/variants/{{variantId}}",
+                                    "host": [
+                                        "{{propertyServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "properties",
+                                        "{{propertyId}}",
+                                        "variants",
+                                        "{{variantId}}"
+                                    ]
+                                },
+                                "description": "Delete a property variant. Only allowed if no units exist."
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Property Units",
+                    "description": "Individual units within property variants (e.g., Unit A1, Unit B3).",
+                    "item": [
+                        {
+                            "name": "Create Unit",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{accessToken}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"unitNumber\": \"A1\",\n  \"floorNumber\": 3,\n  \"blockName\": \"Block A\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{propertyServiceUrl}}/properties/{{propertyId}}/variants/{{variantId}}/units",
+                                    "host": [
+                                        "{{propertyServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "properties",
+                                        "{{propertyId}}",
+                                        "variants",
+                                        "{{variantId}}",
+                                        "units"
+                                    ]
+                                },
+                                "description": "Create a new unit within a property variant."
+                            },
+                            "response": [
+                                {
+                                    "name": "Create Unit A1 (Chidi's unit)",
+                                    "originalRequest": {
+                                        "method": "POST",
+                                        "header": [
+                                            {
+                                                "key": "Content-Type",
+                                                "value": "application/json"
+                                            },
+                                            {
+                                                "key": "Authorization",
+                                                "value": "Bearer {{accessToken}}"
+                                            }
+                                        ],
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\n  \"unitNumber\": \"A1\",\n  \"floorNumber\": 3,\n  \"blockName\": \"Block A\"\n}"
+                                        },
+                                        "url": {
+                                            "raw": "{{propertyServiceUrl}}/properties/{{propertyId}}/variants/{{variantId}}/units",
+                                            "host": [
+                                                "{{propertyServiceUrl}}"
+                                            ],
+                                            "path": [
+                                                "properties",
+                                                "{{propertyId}}",
+                                                "variants",
+                                                "{{variantId}}",
+                                                "units"
+                                            ]
+                                        }
+                                    },
+                                    "status": "Created",
+                                    "code": 201,
+                                    "_postman_previewlanguage": "json"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "List Units",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{accessToken}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{propertyServiceUrl}}/properties/{{propertyId}}/variants/{{variantId}}/units",
+                                    "host": [
+                                        "{{propertyServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "properties",
+                                        "{{propertyId}}",
+                                        "variants",
+                                        "{{variantId}}",
+                                        "units"
+                                    ]
+                                },
+                                "description": "List all units for a property variant."
+                            }
+                        },
+                        {
+                            "name": "Get Unit by ID",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{accessToken}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{propertyServiceUrl}}/properties/{{propertyId}}/variants/{{variantId}}/units/{{unitId}}",
+                                    "host": [
+                                        "{{propertyServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "properties",
+                                        "{{propertyId}}",
+                                        "variants",
+                                        "{{variantId}}",
+                                        "units",
+                                        "{{unitId}}"
+                                    ]
+                                },
+                                "description": "Get a specific unit by ID."
+                            }
+                        },
+                        {
+                            "name": "Update Unit",
+                            "request": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{accessToken}}"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"unitNumber\": \"A1-Updated\"\n}"
+                                },
+                                "url": {
+                                    "raw": "{{propertyServiceUrl}}/properties/{{propertyId}}/variants/{{variantId}}/units/{{unitId}}",
+                                    "host": [
+                                        "{{propertyServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "properties",
+                                        "{{propertyId}}",
+                                        "variants",
+                                        "{{variantId}}",
+                                        "units",
+                                        "{{unitId}}"
+                                    ]
+                                },
+                                "description": "Update a unit's details."
+                            }
+                        },
+                        {
+                            "name": "Delete Unit",
+                            "request": {
+                                "method": "DELETE",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "Bearer {{accessToken}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{propertyServiceUrl}}/properties/{{propertyId}}/variants/{{variantId}}/units/{{unitId}}",
+                                    "host": [
+                                        "{{propertyServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "properties",
+                                        "{{propertyId}}",
+                                        "variants",
+                                        "{{variantId}}",
+                                        "units",
+                                        "{{unitId}}"
+                                    ]
+                                },
+                                "description": "Delete a unit. Only allowed if not reserved or sold."
                             }
                         }
                     ]

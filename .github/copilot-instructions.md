@@ -193,6 +193,9 @@ Direct Lambda invocation tests for the authorizer service:
 
 - Zod schemas generate OpenAPI/Swagger docs automatically.
 - Keep Postman collection (`postman/QShelter-API.postman_collection.json`) up to date.
+- Keep Postman environments updated:
+  - `postman/QShelter-Local.postman_environment.json` - LocalStack URLs
+  - `postman/QShelter-AWS-Staging.postman_environment.json` - AWS staging URLs
 - New endpoints need both Zod validation and Postman examples.
 
 ### Swagger UI in Serverless
@@ -379,10 +382,52 @@ Use the deployment script for seamless AWS deployment:
 | `/qshelter/{stage}/role-policies-table`  | CDK           | DynamoDB table name                    |
 | `/qshelter/{stage}/s3-bucket-name`       | CDK           | Uploads S3 bucket                      |
 
-- Update `DEPLOYMENT_STATUS.md` after every deployment with:
-  - Package size
-  - Health check status
-  - Deployment date
+### Post-Deployment Checklist
+
+After every AWS deployment, you MUST:
+
+1. **Update Postman environment file** (`postman/QShelter-AWS-Staging.postman_environment.json`):
+   - Update all service URLs from CloudFormation outputs
+   - Get bootstrap secret from SSM if changed
+2. **Update `DEPLOYMENT_STATUS.md`**:
+   - New endpoint URLs
+   - Package sizes
+   - Health check status
+   - Deployment date
+
+3. **Verify health endpoints**:
+   ```bash
+   curl -s https://<user-service-url>/health
+   curl -s https://<property-service-url>/health
+   # ... all services
+   ```
+
+### Postman Environments
+
+Two environment files exist:
+
+| Environment | File                                                    | Purpose             |
+| ----------- | ------------------------------------------------------- | ------------------- |
+| LocalStack  | `postman/QShelter-Local.postman_environment.json`       | Local development   |
+| AWS Staging | `postman/QShelter-AWS-Staging.postman_environment.json` | AWS staging testing |
+
+**After deployment**, update the AWS Staging environment with new URLs:
+
+```bash
+# Get all service endpoints from CloudFormation
+aws cloudformation describe-stacks --stack-name qshelter-user-service-staging \
+  --query "Stacks[0].Outputs[?contains(OutputKey, 'HttpApiUrl')].OutputValue" --output text
+
+# Or use serverless info
+cd services/user-service && npx serverless info --stage staging
+```
+
+**Variables to populate after bootstrap**:
+
+- `tenantId` - From bootstrap response
+- `adminUserId` - From bootstrap response
+- `accessToken` - From /auth/login response
+- `bootstrapSecret` - From SSM: `aws ssm get-parameter --name /qshelter/staging/bootstrap-secret --with-decryption`
 
 ## Code Style
 

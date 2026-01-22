@@ -1,6 +1,6 @@
 # Deployment Status
 
-Last Updated: January 18, 2026
+Last Updated: January 22, 2026
 
 ## AWS Staging Deployment (staging stage)
 
@@ -10,25 +10,24 @@ All services deployed to AWS staging environment. Account: 898751738669, Region:
 
 | Service               | Package Size | Endpoint URL                                           | Status     |
 | --------------------- | ------------ | ------------------------------------------------------ | ---------- |
-| Authorizer            | ~105 KB      | Lambda authorizer (stored in SSM)                      | ✅ Working |
-| User Service          | 6.1 MB       | https://c6vzj3886d.execute-api.us-east-1.amazonaws.com | ✅ Healthy |
-| Property Service      | 6.5 MB       | https://31ak21t760.execute-api.us-east-1.amazonaws.com | ✅ Healthy |
-| Mortgage Service      | 6.6 MB       | https://laqdfff9h8.execute-api.us-east-1.amazonaws.com | ✅ Healthy |
-| Documents Service     | 6.8 MB       | https://kukogghqcf.execute-api.us-east-1.amazonaws.com | ✅ Healthy |
-| Payment Service       | 4.6 MB       | https://eevej2uri9.execute-api.us-east-1.amazonaws.com | ✅ Healthy |
-| Notifications Service | 8.2 MB       | https://vx2oxgm2ih.execute-api.us-east-1.amazonaws.com | ✅ Healthy |
-| Policy Sync Service   | 5.9 MB       | https://nwqf11e6ta.execute-api.us-east-1.amazonaws.com | ✅ Healthy |
+| Authorizer            | 2.8 MB       | Lambda authorizer (stored in SSM)                      | ✅ Working |
+| User Service          | 6.1 MB       | https://90wc5do2hf.execute-api.us-east-1.amazonaws.com | ✅ Healthy |
+| Property Service      | 6.5 MB       | https://mknu68wfp4.execute-api.us-east-1.amazonaws.com | ✅ Healthy |
+| Mortgage Service      | 6.6 MB       | https://znfftqvky9.execute-api.us-east-1.amazonaws.com | ✅ Healthy |
+| Documents Service     | 6.8 MB       | https://ibt80hnb5c.execute-api.us-east-1.amazonaws.com | ✅ Healthy |
+| Payment Service       | 4.6 MB       | https://0xty8vn1xb.execute-api.us-east-1.amazonaws.com | ✅ Healthy |
+| Notifications Service | 8.2 MB       | https://gccen9bc1j.execute-api.us-east-1.amazonaws.com | ✅ Healthy |
+| Policy Sync Service   | 5.9 MB       | SQS consumer only (no HTTP API)                        | ✅ Working |
 
 ### Health Check Commands
 
 ```bash
-curl -s https://c6vzj3886d.execute-api.us-east-1.amazonaws.com/health  # user-service
-curl -s https://31ak21t760.execute-api.us-east-1.amazonaws.com/health  # property-service
-curl -s https://laqdfff9h8.execute-api.us-east-1.amazonaws.com/health  # mortgage-service
-curl -s https://kukogghqcf.execute-api.us-east-1.amazonaws.com/health  # documents-service
-curl -s https://eevej2uri9.execute-api.us-east-1.amazonaws.com/health  # payment-service
-curl -s https://vx2oxgm2ih.execute-api.us-east-1.amazonaws.com/health  # notification-service
-curl -s https://nwqf11e6ta.execute-api.us-east-1.amazonaws.com/health  # policy-sync-service
+curl -s https://90wc5do2hf.execute-api.us-east-1.amazonaws.com/health  # user-service
+curl -s https://mknu68wfp4.execute-api.us-east-1.amazonaws.com/health  # property-service
+curl -s https://znfftqvky9.execute-api.us-east-1.amazonaws.com/health  # mortgage-service
+curl -s https://ibt80hnb5c.execute-api.us-east-1.amazonaws.com/health  # documents-service
+curl -s https://0xty8vn1xb.execute-api.us-east-1.amazonaws.com/health  # payment-service
+curl -s https://gccen9bc1j.execute-api.us-east-1.amazonaws.com/health  # notification-service
 ```
 
 ### CDK Infrastructure
@@ -61,6 +60,22 @@ The CDK stack `RealEstateStack-staging` creates:
 ---
 
 ## Recent Changes
+
+### AWS Staging Redeployment (January 22, 2026)
+
+- ✅ Infrastructure redeployed (104 resources including ValkeyCluster)
+- ✅ 54 Prisma migrations applied (including optimistic locking)
+- ✅ All 8 services deployed and healthy
+- ✅ New endpoint URLs generated (previous deployment was torn down)
+
+### Postman Collection Updated (January 22, 2026)
+
+- ✅ Added Organizations folder with 9 endpoints (CRUD + member management)
+- ✅ Added Property Variants folder with 5 endpoints
+- ✅ Added Property Units folder with 5 endpoints
+- ✅ Added Organization Reviews endpoint for multi-party document review
+- ✅ Updated Bootstrap Tenant to include password field and list all 7 roles
+- ✅ Added new variables: organizationId, memberId, variantId, unitId, etc.
 
 ### AWS Staging Deployment (January 17-18, 2026)
 
