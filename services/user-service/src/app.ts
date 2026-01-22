@@ -10,7 +10,7 @@ import { apiKeyRouter } from './routes/api-keys';
 import { adminRouter } from './routes/admin';
 import { organizationRouter } from './routes/organizations';
 import { errorHandler } from './middleware/error-handler';
-import { requestLogger } from './middleware/request-logger';
+import { requestLogger } from '@valentine-efagene/qshelter-common';
 import { generateOpenAPIDocument } from './config/swagger';
 
 export const app = express();
