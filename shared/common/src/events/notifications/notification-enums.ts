@@ -59,6 +59,12 @@ export enum NotificationType {
     DOCUMENT_APPROVED = 'documentApproved',
     DOCUMENT_REJECTED = 'documentRejected',
 
+    // Approval Stages (Bank/Organization Reviews)
+    BANK_REVIEW_REQUIRED = 'bankReviewRequired',
+    STAGE_COMPLETED = 'stageCompleted',
+    SLA_WARNING = 'slaWarning',
+    SLA_BREACHED = 'slaBreached',
+
     // Admin
     ADMIN_CONTRIBUTION_RECEIVED = 'adminContributionReceived',
     ADMIN_PROPERTY_ALLOCATION = 'adminPropertyAllocation',

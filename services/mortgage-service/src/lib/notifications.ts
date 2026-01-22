@@ -674,3 +674,89 @@ export async function sendPaymentPhaseCompletedNotification(
         { correlationId },
     );
 }
+
+// ============== Bank/Organization Review Notifications ==============
+
+export interface BankReviewRequiredPayload {
+    email: string;
+    reviewerName: string;
+    organizationName: string;
+    applicationNumber: string;
+    customerName: string;
+    propertyName: string;
+    unitNumber: string;
+    stageName: string;
+    documentsCount: number;
+    slaHours?: number;
+    slaDeadline?: string;
+    dashboardUrl: string;
+}
+
+/**
+ * Send notification to bank/organization when their review stage activates.
+ * This is an AUTOMATIC notification - no manual event configuration needed.
+ */
+export async function sendBankReviewRequiredNotification(
+    payload: BankReviewRequiredPayload,
+    correlationId?: string,
+): Promise<void> {
+    const publisher = getPublisher();
+    await publisher.publishEmail(
+        NotificationType.BANK_REVIEW_REQUIRED,
+        {
+            to_email: payload.email,
+            reviewerName: payload.reviewerName,
+            organizationName: payload.organizationName,
+            applicationNumber: payload.applicationNumber,
+            customerName: payload.customerName,
+            propertyName: payload.propertyName,
+            unitNumber: payload.unitNumber,
+            stageName: payload.stageName,
+            documentsCount: payload.documentsCount,
+            slaHours: payload.slaHours,
+            slaDeadline: payload.slaDeadline,
+            dashboardLink: payload.dashboardUrl,
+        },
+        { correlationId },
+    );
+}
+
+export interface StageCompletedNotificationPayload {
+    email: string;
+    userName: string;
+    applicationNumber: string;
+    propertyName: string;
+    unitNumber: string;
+    stageName: string;
+    completedBy: string;
+    nextStageName?: string;
+    isPhaseComplete: boolean;
+    dashboardUrl: string;
+}
+
+/**
+ * Send notification when an approval stage is completed.
+ * Notifies customer and relevant parties of progress.
+ */
+export async function sendStageCompletedNotification(
+    payload: StageCompletedNotificationPayload,
+    correlationId?: string,
+): Promise<void> {
+    const publisher = getPublisher();
+    await publisher.publishEmail(
+        NotificationType.STAGE_COMPLETED,
+        {
+            to_email: payload.email,
+            homeBuyerName: payload.userName,
+            applicationNumber: payload.applicationNumber,
+            propertyName: payload.propertyName,
+            unitNumber: payload.unitNumber,
+            stageName: payload.stageName,
+            completedBy: payload.completedBy,
+            nextStageName: payload.nextStageName,
+            isPhaseComplete: payload.isPhaseComplete,
+            dashboardLink: payload.dashboardUrl,
+        },
+        { correlationId },
+    );
+}

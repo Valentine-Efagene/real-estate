@@ -9,6 +9,14 @@ import {
     PhaseStatus,
 } from '@valentine-efagene/qshelter-common';
 import { v4 as uuidv4 } from 'uuid';
+import {
+    sendBankReviewRequiredNotification,
+    sendStageCompletedNotification,
+    formatDate,
+} from '../lib/notifications';
+
+// Dashboard URL base
+const DASHBOARD_URL = process.env.DASHBOARD_URL || 'https://app.contribuild.com';
 
 /**
  * Document definition from snapshot (JSON)
@@ -649,11 +657,12 @@ export function createApprovalWorkflowService() {
 
             if (nextStage) {
                 // Activate next stage
+                const activatedAt = new Date();
                 await tx.approvalStageProgress.update({
                     where: { id: nextStage.id },
                     data: {
                         status: 'IN_PROGRESS',
-                        activatedAt: new Date(),
+                        activatedAt,
                     },
                 });
 
@@ -662,6 +671,15 @@ export function createApprovalWorkflowService() {
                     where: { id: documentationPhaseId },
                     data: { currentStageOrder: nextStage.order },
                 });
+
+                // AUTOMATIC: Notify organization when their review stage activates
+                // This is CORE functionality - not configurable via event handlers
+                await this.notifyOrganizationOfReviewStage(
+                    tx,
+                    docPhase,
+                    nextStage,
+                    activatedAt
+                );
 
                 return { completed: false, nextStage };
             } else {
@@ -803,6 +821,140 @@ export function createApprovalWorkflowService() {
                     approvals: doc?.approvalTrail || [],
                 };
             });
+        },
+
+        /**
+         * AUTOMATIC: Notify organization members when their review stage activates.
+         * This is CORE functionality - not manually configurable.
+         * 
+         * When a stage with reviewParty BANK, DEVELOPER, LEGAL, etc. activates:
+         * 1. Find the ApplicationOrganization binding for that party
+         * 2. Start SLA clock on the ApplicationOrganization
+         * 3. Notify all organization members with reviewer role
+         */
+        async notifyOrganizationOfReviewStage(
+            tx: any,
+            docPhase: any,
+            stage: any,
+            activatedAt: Date
+        ): Promise<void> {
+            try {
+                // Map reviewParty to organization types
+                const reviewPartyToOrgType: Record<string, string> = {
+                    'BANK': 'BANK',
+                    'DEVELOPER': 'DEVELOPER',
+                    'LEGAL': 'LEGAL',
+                    'INSURER': 'INSURER',
+                    'GOVERNMENT': 'GOVERNMENT',
+                };
+
+                const orgType = reviewPartyToOrgType[stage.reviewParty];
+                if (!orgType) {
+                    // INTERNAL or CUSTOMER stages don't map to organizations
+                    return;
+                }
+
+                // Get application with property details
+                const application = await tx.application.findUnique({
+                    where: { id: docPhase.phase.applicationId },
+                    include: {
+                        buyer: true,
+                        propertyUnit: {
+                            include: {
+                                variant: {
+                                    include: {
+                                        property: true,
+                                    },
+                                },
+                            },
+                        },
+                    },
+                });
+
+                if (!application) return;
+
+                // Find ApplicationOrganization binding for this org type
+                const appOrgs = await tx.applicationOrganization.findMany({
+                    where: {
+                        applicationId: application.id,
+                    },
+                    include: {
+                        organization: {
+                            include: {
+                                members: {
+                                    include: {
+                                        user: true,
+                                    },
+                                },
+                            },
+                        },
+                    },
+                });
+
+                // Find the org of the right type
+                const appOrg = appOrgs.find(
+                    (ao: any) => ao.organization.type === orgType
+                );
+
+                if (!appOrg) {
+                    console.log(`[ApprovalWorkflow] No ${orgType} organization bound to application ${application.id}`);
+                    return;
+                }
+
+                // Start SLA clock on ApplicationOrganization
+                const slaDeadline = appOrg.slaHours
+                    ? new Date(activatedAt.getTime() + appOrg.slaHours * 60 * 60 * 1000)
+                    : null;
+
+                await tx.applicationOrganization.update({
+                    where: { id: appOrg.id },
+                    data: {
+                        status: 'ACTIVE',
+                        activatedAt,
+                    },
+                });
+
+                // Get pending documents count for this stage
+                const pendingDocs = await tx.applicationDocument.count({
+                    where: {
+                        applicationId: application.id,
+                        phaseId: docPhase.phaseId,
+                        status: 'PENDING',
+                    },
+                });
+
+                // Notify all organization members with appropriate roles
+                const reviewerRoles = ['REVIEWER', 'LOAN_OFFICER', 'MANAGER', 'ADMIN'];
+                const reviewers = appOrg.organization.members.filter(
+                    (m: any) => reviewerRoles.includes(m.role) && m.user?.email
+                );
+
+                for (const member of reviewers) {
+                    try {
+                        await sendBankReviewRequiredNotification({
+                            email: member.user.email,
+                            reviewerName: member.user.firstName || member.user.email,
+                            organizationName: appOrg.organization.name,
+                            applicationNumber: application.applicationNumber || application.id,
+                            customerName: `${application.buyer.firstName || ''} ${application.buyer.lastName || ''}`.trim() || application.buyer.email,
+                            propertyName: application.propertyUnit?.variant?.property?.title || 'Property',
+                            unitNumber: application.propertyUnit?.unitNumber || '',
+                            stageName: stage.name,
+                            documentsCount: pendingDocs,
+                            slaHours: appOrg.slaHours,
+                            slaDeadline: slaDeadline ? formatDate(slaDeadline) : undefined,
+                            dashboardUrl: `${DASHBOARD_URL}/reviews/${application.id}`,
+                        });
+                    } catch (notifyError) {
+                        console.error(`[ApprovalWorkflow] Failed to notify ${member.user.email}:`, notifyError);
+                    }
+                }
+
+                console.log(`[ApprovalWorkflow] Notified ${reviewers.length} reviewers at ${appOrg.organization.name} for stage ${stage.name}`);
+            } catch (error) {
+                // Notification failures should not break the main flow
+                console.error('[ApprovalWorkflow] Error notifying organization:', error);
+            }
         },
     };
 }
