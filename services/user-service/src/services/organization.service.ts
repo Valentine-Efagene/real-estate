@@ -101,29 +101,41 @@ class OrganizationService {
      * Create a new organization within a tenant.
      */
     async create(tenantId: string, data: CreateOrganizationInput) {
+        // Normalize empty strings to undefined (so they become null in DB)
+        // This prevents unique constraint issues with empty strings
+        const normalizedData = {
+            ...data,
+            bankCode: data.bankCode?.trim() || undefined,
+            bankLicenseNo: data.bankLicenseNo?.trim() || undefined,
+            swiftCode: data.swiftCode?.trim() || undefined,
+            sortCode: data.sortCode?.trim() || undefined,
+            cacNumber: data.cacNumber?.trim() || undefined,
+            taxId: data.taxId?.trim() || undefined,
+        };
+
         // Check for duplicate bank code or CAC number within tenant
-        if (data.bankCode) {
+        if (normalizedData.bankCode) {
             const existing = await prisma.organization.findUnique({
-                where: { tenantId_bankCode: { tenantId, bankCode: data.bankCode } },
+                where: { tenantId_bankCode: { tenantId, bankCode: normalizedData.bankCode } },
             });
             if (existing) {
-                throw new ConflictError(`Organization with bank code ${data.bankCode} already exists`);
+                throw new ConflictError(`Organization with bank code ${normalizedData.bankCode} already exists`);
             }
         }
 
-        if (data.cacNumber) {
+        if (normalizedData.cacNumber) {
             const existing = await prisma.organization.findUnique({
-                where: { tenantId_cacNumber: { tenantId, cacNumber: data.cacNumber } },
+                where: { tenantId_cacNumber: { tenantId, cacNumber: normalizedData.cacNumber } },
             });
             if (existing) {
-                throw new ConflictError(`Organization with CAC number ${data.cacNumber} already exists`);
+                throw new ConflictError(`Organization with CAC number ${normalizedData.cacNumber} already exists`);
             }
         }
 
         return prisma.organization.create({
             data: {
                 tenantId,
-                ...data,
+                ...normalizedData,
                 status: 'ACTIVE', // Auto-activate for now
             },
             include: {

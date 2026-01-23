@@ -7235,6 +7235,58 @@
             "description": "Admin endpoints for tenant bootstrapping. Protected by bootstrap secret.",
             "item": [
                 {
+                    "name": "Reset Database",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "x-bootstrap-secret",
+                                "value": "{{bootstrapSecret}}",
+                                "description": "Bootstrap secret from SSM or environment"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{userServiceUrl}}/admin/reset",
+                            "host": [
+                                "{{userServiceUrl}}"
+                            ],
+                            "path": [
+                                "admin",
+                                "reset"
+                            ]
+                        },
+                        "description": "Reset the database by deleting all data. Call this before bootstrap to start fresh.\n\n**Requires**: `x-bootstrap-secret` header"
+                    },
+                    "response": [
+                        {
+                            "name": "Reset Staging Database",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "x-bootstrap-secret",
+                                        "value": "{{bootstrapSecret}}"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{userServiceUrl}}/admin/reset",
+                                    "host": [
+                                        "{{userServiceUrl}}"
+                                    ],
+                                    "path": [
+                                        "admin",
+                                        "reset"
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "body": "{\n  \"success\": true,\n  \"message\": \"Database reset complete\",\n  \"stage\": \"staging\",\n  \"totalDeleted\": 156,\n  \"deleted\": {\n    \"tenant\": 1,\n    \"user\": 5,\n    \"application\": 3\n  }\n}"
+                        }
+                    ]
+                },
+                {
                     "name": "Bootstrap Tenant",
                     "request": {
                         "method": "POST",

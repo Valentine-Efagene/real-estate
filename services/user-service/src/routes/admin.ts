@@ -243,4 +243,246 @@ router.get(
     }
 );
 
+/**
+ * POST /admin/reset
+ * 
+ * Reset the database by deleting all data.
+ * Call this before bootstrap to start fresh.
+ * 
+ * Security: Requires x-bootstrap-secret header
+ * 
+ * Response:
+ * {
+ *   "success": true,
+ *   "message": "Database reset complete",
+ *   "deleted": { "tenants": 1, "users": 5, ... }
+ * }
+ */
+router.post(
+    '/reset',
+    verifyBootstrapSecret,
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const stage = process.env.STAGE || process.env.NODE_ENV || 'dev';
+
+            console.log(`[Admin Reset] Starting database reset for stage: ${stage}`);
+
+            // Delete in order respecting foreign key constraints
+            // Child tables first, then parent tables
+            const deleted: Record<string, number> = {};
+
+            // Level 1: Deepest children (no dependencies on them)
+            const level1Tables = [
+                'documentReview',
+                'documentApproval',
+                'approvalStageProgress',
+                'questionnairePhaseReview',
+                'questionnaireField',
+                'applicationEvent',
+                'paymentInstallment',
+                'applicationPayment',
+                'applicationDocument',
+                'phaseEventAttachment',
+                'stepEventAttachment',
+                'offerLetter',
+                'applicationTermination',
+                'applicationRefund',
+                'approvalRequest',
+                'workflowBlocker',
+                'domainEvent',
+            ];
+
+            for (const table of level1Tables) {
+                try {
+                    const result = await (prisma as any)[table].deleteMany({});
+                    deleted[table] = result.count;
+                } catch (e) {
+                    console.log(`[Admin Reset] Skipping ${table}: ${(e as Error).message}`);
+                }
+            }
+
+            // Level 2: Phase-related tables
+            const level2Tables = [
+                'questionnairePhase',
+                'documentationPhase',
+                'paymentPhase',
+                'applicationPhase',
+                'applicationOrganization',
+            ];
+
+            for (const table of level2Tables) {
+                try {
+                    const result = await (prisma as any)[table].deleteMany({});
+                    deleted[table] = result.count;
+                } catch (e) {
+                    console.log(`[Admin Reset] Skipping ${table}: ${(e as Error).message}`);
+                }
+            }
+
+            // Level 3: Applications and related
+            const level3Tables = [
+                'application',
+                'paymentMethodChangeRequest',
+                'propertyTransferRequest',
+            ];
+
+            for (const table of level3Tables) {
+                try {
+                    const result = await (prisma as any)[table].deleteMany({});
+                    deleted[table] = result.count;
+                } catch (e) {
+                    console.log(`[Admin Reset] Skipping ${table}: ${(e as Error).message}`);
+                }
+            }
+
+            // Level 4: Property and payment method config
+            const level4Tables = [
+                'paymentMethodPhaseStep',
+                'paymentMethodPhaseDocument',
+                'paymentMethodPhaseField',
+                'propertyPaymentMethodPhase',
+                'propertyPaymentMethodLink',
+                'documentRequirementRule',
+                'propertyUnit',
+                'propertyVariantAmenity',
+                'propertyVariantMedia',
+                'propertyVariant',
+                'propertyAmenity',
+                'propertyMedia',
+                'propertyDocument',
+            ];
+
+            for (const table of level4Tables) {
+                try {
+                    const result = await (prisma as any)[table].deleteMany({});
+                    deleted[table] = result.count;
+                } catch (e) {
+                    console.log(`[Admin Reset] Skipping ${table}: ${(e as Error).message}`);
+                }
+            }
+
+            // Level 5: Property and payment methods
+            const level5Tables = [
+                'property',
+                'propertyPaymentMethod',
+                'paymentPlan',
+                'documentDefinition',
+                'approvalStage',
+                'documentationPlan',
+                'questionnairePlanQuestion',
+                'questionnairePlan',
+                'documentTemplate',
+                'amenity',
+            ];
+
+            for (const table of level5Tables) {
+                try {
+                    const result = await (prisma as any)[table].deleteMany({});
+                    deleted[table] = result.count;
+                } catch (e) {
+                    console.log(`[Admin Reset] Skipping ${table}: ${(e as Error).message}`);
+                }
+            }
+
+            // Level 6: Organizations
+            const level6Tables = [
+                'bankDocumentRequirement',
+                'organizationMember',
+                'organization',
+            ];
+
+            for (const table of level6Tables) {
+                try {
+                    const result = await (prisma as any)[table].deleteMany({});
+                    deleted[table] = result.count;
+                } catch (e) {
+                    console.log(`[Admin Reset] Skipping ${table}: ${(e as Error).message}`);
+                }
+            }
+
+            // Level 7: Events and handlers
+            const level7Tables = [
+                'eventHandler',
+                'eventType',
+                'eventChannel',
+                'apiKey',
+            ];
+
+            for (const table of level7Tables) {
+                try {
+                    const result = await (prisma as any)[table].deleteMany({});
+                    deleted[table] = result.count;
+                } catch (e) {
+                    console.log(`[Admin Reset] Skipping ${table}: ${(e as Error).message}`);
+                }
+            }
+
+            // Level 8: User-related
+            const level8Tables = [
+                'refreshToken',
+                'passwordReset',
+                'userSuspension',
+                'emailPreference',
+                'deviceEndpoint',
+                'social',
+                'rolePermission',
+                'userRole',
+                'tenantMembership',
+                'transaction',
+                'wallet',
+            ];
+
+            for (const table of level8Tables) {
+                try {
+                    const result = await (prisma as any)[table].deleteMany({});
+                    deleted[table] = result.count;
+                } catch (e) {
+                    console.log(`[Admin Reset] Skipping ${table}: ${(e as Error).message}`);
+                }
+            }
+
+            // Level 9: Core entities
+            const level9Tables = [
+                'user',
+                'permission',
+                'role',
+                'settings',
+                'oAuthState',
+            ];
+
+            for (const table of level9Tables) {
+                try {
+                    const result = await (prisma as any)[table].deleteMany({});
+                    deleted[table] = result.count;
+                } catch (e) {
+                    console.log(`[Admin Reset] Skipping ${table}: ${(e as Error).message}`);
+                }
+            }
+
+            // Level 10: Tenants (last)
+            try {
+                const result = await prisma.tenant.deleteMany({});
+                deleted['tenant'] = result.count;
+            } catch (e) {
+                console.log(`[Admin Reset] Skipping tenant: ${(e as Error).message}`);
+            }
+
+            // Calculate totals
+            const totalDeleted = Object.values(deleted).reduce((sum, count) => sum + count, 0);
+
+            console.log(`[Admin Reset] Database reset complete. Total records deleted: ${totalDeleted}`);
+
+            res.json({
+                success: true,
+                message: 'Database reset complete',
+                stage,
+                totalDeleted,
+                deleted,
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
 export const adminRouter = router;
