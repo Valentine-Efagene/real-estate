@@ -21,11 +21,22 @@ This scenario walks through the complete lifecycle of a 10/90 mortgage applicati
 
 ## Actors
 
-| Actor            | Role               | Description                                                             |
-| ---------------- | ------------------ | ----------------------------------------------------------------------- |
-| **System Admin** | Bootstrap Operator | Uses bootstrap secret to initialize tenant                              |
-| **Adaeze**       | Tenant Admin       | Loan operations manager, configures payment methods, approves documents |
-| **Chidi**        | Customer           | First-time homebuyer, age 40                                            |
+| Actor            | Role                        | Organization  | Description                                                       |
+| ---------------- | --------------------------- | ------------- | ----------------------------------------------------------------- |
+| **System Admin** | Bootstrap Operator          | -             | Uses bootstrap secret to initialize tenant                        |
+| **Adaeze**       | Mortgage Operations Officer | QShelter      | Reviews documents (Stage 1: Internal), configures payment methods |
+| **Nkechi**       | Loan Officer                | Access Bank   | Reviews documents (Stage 2: Bank), uploads preapproval letter     |
+| **Emeka**        | Developer Representative    | Lekki Gardens | Reviews property-related documents                                |
+| **Chidi**        | Customer                    | -             | First-time homebuyer, age 40                                      |
+
+### Two-Stage Document Approval
+
+Documents requiring bank approval go through a two-stage process:
+
+1. **Stage 1 (INTERNAL)**: Adaeze (QShelter's Mortgage Operations Officer) reviews documents first
+2. **Stage 2 (BANK)**: Nkechi (Access Bank's Loan Officer) reviews after internal approval
+
+Only after BOTH stages approve can the documentation phase complete.
 
 ---
 
@@ -140,6 +151,169 @@ Content-Type: application/json
 **Store Variables**:
 
 - `adaezeAccessToken` → for Authorization header
+
+### Step 1.3: Create QShelter Platform Organization
+
+```http
+POST {{userServiceUrl}}/organizations
+Authorization: Bearer {{adaezeAccessToken}}
+x-tenant-id: {{tenantId}}
+Content-Type: application/json
+
+{
+  "name": "QShelter",
+  "type": "PLATFORM",
+  "email": "support@qshelter.com",
+  "isPlatformOrg": true
+}
+```
+
+**Expected Response** (201 Created):
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": "{{qshelterOrgId}}",
+    "name": "QShelter",
+    "type": "PLATFORM",
+    "isPlatformOrg": true
+  }
+}
+```
+
+**Store Variables**:
+
+- `qshelterOrgId` → for platform organization reference
+
+### Step 1.4: Add Adaeze as Mortgage Operations Officer
+
+```http
+POST {{userServiceUrl}}/organizations/{{qshelterOrgId}}/members
+Authorization: Bearer {{adaezeAccessToken}}
+x-tenant-id: {{tenantId}}
+Content-Type: application/json
+
+{
+  "userId": "{{adaezeId}}",
+  "role": "MANAGER",
+  "title": "Mortgage Operations Officer"
+}
+```
+
+**Expected Response** (201 Created):
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": "...",
+    "userId": "{{adaezeId}}",
+    "organizationId": "{{qshelterOrgId}}",
+    "role": "MANAGER",
+    "title": "Mortgage Operations Officer"
+  }
+}
+```
+
+### Step 1.5: Create Access Bank Organization
+
+```http
+POST {{userServiceUrl}}/organizations
+Authorization: Bearer {{adaezeAccessToken}}
+x-tenant-id: {{tenantId}}
+Content-Type: application/json
+
+{
+  "name": "Access Bank PLC",
+  "type": "BANK",
+  "email": "mortgages@accessbank.com"
+}
+```
+
+**Expected Response** (201 Created):
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": "{{accessBankOrgId}}",
+    "name": "Access Bank PLC",
+    "type": "BANK"
+  }
+}
+```
+
+**Store Variables**:
+
+- `accessBankOrgId` → for bank organization reference
+
+### Step 1.6: Register Nkechi (Bank Loan Officer)
+
+```http
+POST {{userServiceUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "email": "nkechi@accessbank.com",
+  "password": "BankOfficer123!",
+  "firstName": "Nkechi",
+  "lastName": "Okonkwo"
+}
+```
+
+**Expected Response** (201 Created):
+
+```json
+{
+  "success": true,
+  "data": {
+    "accessToken": "{{nkechiAccessToken}}",
+    "refreshToken": "...",
+    "user": {
+      "id": "{{nkechiId}}",
+      "email": "nkechi@accessbank.com",
+      "firstName": "Nkechi",
+      "lastName": "Okonkwo"
+    }
+  }
+}
+```
+
+**Store Variables**:
+
+- `nkechiId` → from response
+- `nkechiAccessToken` → for Authorization header
+
+### Step 1.7: Add Nkechi to Access Bank
+
+```http
+POST {{userServiceUrl}}/organizations/{{accessBankOrgId}}/members
+Authorization: Bearer {{adaezeAccessToken}}
+x-tenant-id: {{tenantId}}
+Content-Type: application/json
+
+{
+  "userId": "{{nkechiId}}",
+  "role": "MANAGER",
+  "title": "Loan Officer"
+}
+```
+
+**Expected Response** (201 Created):
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": "...",
+    "userId": "{{nkechiId}}",
+    "organizationId": "{{accessBankOrgId}}",
+    "role": "MANAGER",
+    "title": "Loan Officer"
+  }
+}
+```
 
 ---
 
@@ -299,7 +473,6 @@ x-tenant-id: {{tenantId}}
   "data": {
     "id": "{{propertyId}}",
     "status": "PUBLISHED",
-    "isPublished": true,
     "publishedAt": "2025-01-XX..."
   }
 }
@@ -398,22 +571,26 @@ Content-Type: application/json
       "phaseType": "KYC",
       "order": 1,
       "requiredDocumentTypes": ["ID_CARD", "BANK_STATEMENT", "EMPLOYMENT_LETTER"],
+      "reviewRequirements": [
+        { "party": "INTERNAL", "required": true },
+        { "party": "BANK", "required": true }
+      ],
+      "reviewOrder": "SEQUENTIAL",
       "stepDefinitions": [
         { "name": "Upload Valid ID", "stepType": "UPLOAD", "order": 1 },
         { "name": "Upload Bank Statements", "stepType": "UPLOAD", "order": 2 },
         { "name": "Upload Employment Letter", "stepType": "UPLOAD", "order": 3 },
-        { "name": "Admin Reviews Documents", "stepType": "APPROVAL", "order": 4 },
+        { "name": "Internal Review", "stepType": "APPROVAL", "order": 4, "reviewParty": "INTERNAL" },
+        { "name": "Bank Review", "stepType": "APPROVAL", "order": 5, "reviewParty": "BANK" },
         {
-          "name": "Generate Provisional Offer",
-          "stepType": "GENERATE_DOCUMENT",
-          "order": 5,
+          "name": "Bank Uploads Preapproval Letter",
+          "stepType": "UPLOAD",
+          "order": 6,
           "metadata": {
-            "documentType": "PROVISIONAL_OFFER",
-            "autoSend": true,
-            "expiresInDays": 30
+            "documentType": "PREAPPROVAL_LETTER",
+            "uploadedBy": "BANK"
           }
-        },
-        { "name": "Customer Signs Provisional Offer", "stepType": "SIGNATURE", "order": 6 }
+        }
       ]
     },
     {
@@ -431,12 +608,12 @@ Content-Type: application/json
       "order": 3,
       "stepDefinitions": [
         {
-          "name": "Admin Uploads Final Offer",
+          "name": "Mortgage Operations Officer Uploads Final Offer",
           "stepType": "UPLOAD",
           "order": 1,
           "metadata": {
             "documentType": "FINAL_OFFER",
-            "uploadedBy": "ADMIN"
+            "uploadedBy": "INTERNAL"
           }
         },
         { "name": "Customer Signs Final Offer", "stepType": "SIGNATURE", "order": 2 }
@@ -772,7 +949,9 @@ Content-Type: application/json
 { "stepName": "Upload Employment Letter" }
 ```
 
-### Step 6.3: Admin Retrieves Documents for Review
+### Step 6.3: Mortgage Operations Officer Retrieves Documents for Review (Stage 1: Internal)
+
+Adaeze (QShelter's Mortgage Operations Officer) reviews documents first before they go to the bank.
 
 ```http
 GET {{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{kycPhaseId}}/documents
@@ -801,7 +980,9 @@ x-tenant-id: {{tenantId}}
 }
 ```
 
-### Step 6.4: Admin Approves Each Document
+### Step 6.4: Mortgage Operations Officer Approves Each Document (Stage 1: Internal)
+
+Adaeze performs the internal (Stage 1) review with `reviewParty: "INTERNAL"`:
 
 ```http
 POST {{mortgageServiceUrl}}/applications/{{applicationId}}/documents/{{docId1}}/review
@@ -812,44 +993,54 @@ Content-Type: application/json
 
 {
   "status": "APPROVED",
-  "note": "ID verified successfully"
+  "reviewParty": "INTERNAL",
+  "note": "ID verified successfully - internal review"
 }
 ```
 
 (Repeat for docId2 and docId3)
 
-### Step 6.5: Admin Completes Review Step
+### Step 6.5: Bank Loan Officer Reviews Documents (Stage 2: Bank)
+
+After internal approval, Nkechi (Access Bank's Loan Officer) performs the bank (Stage 2) review:
 
 ```http
-POST {{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{kycPhaseId}}/steps/complete
-Authorization: Bearer {{adaezeAccessToken}}
+POST {{mortgageServiceUrl}}/applications/{{applicationId}}/documents/{{docId1}}/review
+Authorization: Bearer {{nkechiAccessToken}}
 x-tenant-id: {{tenantId}}
-x-idempotency-key: adaeze-review-complete-{{$timestamp}}
+x-idempotency-key: nkechi-approve-doc-1-{{$timestamp}}
 Content-Type: application/json
 
 {
-  "stepName": "Admin Reviews Documents",
-  "note": "All documents verified and approved"
+  "status": "APPROVED",
+  "reviewParty": "BANK",
+  "note": "ID verified - bank approval"
 }
 ```
 
-### Step 6.6: Generate Provisional Offer (Auto-Executes)
+(Repeat for docId2 and docId3)
 
-The "Generate Provisional Offer" step auto-executes after approval.
+### Step 6.6: Bank Uploads Preapproval Letter
 
-### Step 6.7: Customer Signs Provisional Offer
+After approving documents, Nkechi uploads the bank's preapproval letter:
 
 ```http
-POST {{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{kycPhaseId}}/steps/complete
-Authorization: Bearer {{chidiAccessToken}}
+POST {{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{kycPhaseId}}/documents
+Authorization: Bearer {{nkechiAccessToken}}
 x-tenant-id: {{tenantId}}
-x-idempotency-key: chidi-sign-provisional-{{$timestamp}}
+x-idempotency-key: nkechi-upload-preapproval-{{$timestamp}}
 Content-Type: application/json
 
-{ "stepName": "Customer Signs Provisional Offer" }
+{
+  "documentType": "PREAPPROVAL_LETTER",
+  "url": "https://s3.amazonaws.com/qshelter/applications/chidi-preapproval.pdf",
+  "fileName": "chidi-preapproval.pdf"
+}
 ```
 
-KYC phase should now be COMPLETED, and Downpayment phase should auto-activate.
+### Step 6.7: KYC Phase Completes
+
+After both INTERNAL (Adaeze) and BANK (Nkechi) reviews are approved, the KYC documentation phase completes.
 
 ---
 
@@ -941,7 +1132,7 @@ Content-Type: application/json
 
 ## Phase 8: Final Documentation
 
-### Step 8.1: Admin Uploads Final Offer Letter
+### Step 8.1: Mortgage Operations Officer Uploads Final Offer Letter
 
 ```http
 POST {{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{verificationPhaseId}}/documents
@@ -957,7 +1148,7 @@ Content-Type: application/json
 }
 ```
 
-### Step 8.2: Admin Completes Upload Step
+### Step 8.2: Mortgage Operations Officer Completes Upload Step
 
 ```http
 POST {{mortgageServiceUrl}}/applications/{{applicationId}}/phases/{{verificationPhaseId}}/steps/complete
@@ -966,7 +1157,7 @@ x-tenant-id: {{tenantId}}
 x-idempotency-key: adaeze-step-final-offer-{{$timestamp}}
 Content-Type: application/json
 
-{ "stepName": "Admin Uploads Final Offer" }
+{ "stepName": "Mortgage Operations Officer Uploads Final Offer" }
 ```
 
 ### Step 8.3: Customer Signs Final Offer

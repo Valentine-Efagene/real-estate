@@ -1,13 +1,13 @@
 {
   "RealEstateStack-staging": {
-    "VpcId": "vpc-02eabf970790766ec",
+    "VpcId": "vpc-01da612fa9909e540",
     "ParameterPathPrefix": "/qshelter/staging/",
-    "JwtRefreshSecretArn": "arn:aws:secretsmanager:us-east-1:898751738669:secret:qshelter/staging/jwt-refresh-secret-IZHlvt",
-    "EmailSecretArn": "arn:aws:secretsmanager:us-east-1:898751738669:secret:qshelter/staging/email-ENEIro",
+    "JwtRefreshSecretArn": "arn:aws:secretsmanager:us-east-1:898751738669:secret:qshelter/staging/jwt-refresh-secret-9oT21g",
+    "EmailSecretArn": "arn:aws:secretsmanager:us-east-1:898751738669:secret:qshelter/staging/email-cTEqC1",
     "Stage": "staging",
-    "JwtAccessSecretArn": "arn:aws:secretsmanager:us-east-1:898751738669:secret:qshelter/staging/jwt-access-secret-Fo3y0c",
-    "OAuthSecretArn": "arn:aws:secretsmanager:us-east-1:898751738669:secret:qshelter/staging/oauth-WF9nWO",
-    "PaystackSecretArn": "arn:aws:secretsmanager:us-east-1:898751738669:secret:qshelter/staging/paystack-34sQ0x",
+    "JwtAccessSecretArn": "arn:aws:secretsmanager:us-east-1:898751738669:secret:qshelter/staging/jwt-access-secret-R7AFEE",
+    "OAuthSecretArn": "arn:aws:secretsmanager:us-east-1:898751738669:secret:qshelter/staging/oauth-kV8aPw",
+    "PaystackSecretArn": "arn:aws:secretsmanager:us-east-1:898751738669:secret:qshelter/staging/paystack-AyO7bl",
     "SecretsPathPrefix": "qshelter/staging/"
   }
 }

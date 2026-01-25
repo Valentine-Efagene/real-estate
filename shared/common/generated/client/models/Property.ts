@@ -51,10 +51,9 @@ export type PropertyMinAggregateOutputType = {
   streetAddress: string | null
   longitude: number | null
   latitude: number | null
-  status: string | null
+  status: $Enums.PropertyStatus | null
   description: string | null
   displayImageId: string | null
-  isPublished: boolean | null
   publishedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -75,10 +74,9 @@ export type PropertyMaxAggregateOutputType = {
   streetAddress: string | null
   longitude: number | null
   latitude: number | null
-  status: string | null
+  status: $Enums.PropertyStatus | null
   description: string | null
   displayImageId: string | null
-  isPublished: boolean | null
   publishedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -102,7 +100,6 @@ export type PropertyCountAggregateOutputType = {
   status: number
   description: number
   displayImageId: number
-  isPublished: number
   publishedAt: number
   createdAt: number
   updatedAt: number
@@ -138,7 +135,6 @@ export type PropertyMinAggregateInputType = {
   status?: true
   description?: true
   displayImageId?: true
-  isPublished?: true
   publishedAt?: true
   createdAt?: true
   updatedAt?: true
@@ -162,7 +158,6 @@ export type PropertyMaxAggregateInputType = {
   status?: true
   description?: true
   displayImageId?: true
-  isPublished?: true
   publishedAt?: true
   createdAt?: true
   updatedAt?: true
@@ -186,7 +181,6 @@ export type PropertyCountAggregateInputType = {
   status?: true
   description?: true
   displayImageId?: true
-  isPublished?: true
   publishedAt?: true
   createdAt?: true
   updatedAt?: true
@@ -294,10 +288,9 @@ export type PropertyGroupByOutputType = {
   streetAddress: string | null
   longitude: number | null
   latitude: number | null
-  status: string
+  status: $Enums.PropertyStatus
   description: string | null
   displayImageId: string | null
-  isPublished: boolean
   publishedAt: Date | null
   createdAt: Date
   updatedAt: Date
@@ -341,10 +334,9 @@ export type PropertyWhereInput = {
   streetAddress?: Prisma.StringNullableFilter<"Property"> | string | null
   longitude?: Prisma.FloatNullableFilter<"Property"> | number | null
   latitude?: Prisma.FloatNullableFilter<"Property"> | number | null
-  status?: Prisma.StringFilter<"Property"> | string
+  status?: Prisma.EnumPropertyStatusFilter<"Property"> | $Enums.PropertyStatus
   description?: Prisma.StringNullableFilter<"Property"> | string | null
   displayImageId?: Prisma.StringNullableFilter<"Property"> | string | null
-  isPublished?: Prisma.BoolFilter<"Property"> | boolean
   publishedAt?: Prisma.DateTimeNullableFilter<"Property"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Property"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Property"> | Date | string
@@ -376,7 +368,6 @@ export type PropertyOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   displayImageId?: Prisma.SortOrderInput | Prisma.SortOrder
-  isPublished?: Prisma.SortOrder
   publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -409,10 +400,9 @@ export type PropertyWhereUniqueInput = Prisma.AtLeast<{
   streetAddress?: Prisma.StringNullableFilter<"Property"> | string | null
   longitude?: Prisma.FloatNullableFilter<"Property"> | number | null
   latitude?: Prisma.FloatNullableFilter<"Property"> | number | null
-  status?: Prisma.StringFilter<"Property"> | string
+  status?: Prisma.EnumPropertyStatusFilter<"Property"> | $Enums.PropertyStatus
   description?: Prisma.StringNullableFilter<"Property"> | string | null
   displayImageId?: Prisma.StringNullableFilter<"Property"> | string | null
-  isPublished?: Prisma.BoolFilter<"Property"> | boolean
   publishedAt?: Prisma.DateTimeNullableFilter<"Property"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Property"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Property"> | Date | string
@@ -444,7 +434,6 @@ export type PropertyOrderByWithAggregationInput = {
   status?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   displayImageId?: Prisma.SortOrderInput | Prisma.SortOrder
-  isPublished?: Prisma.SortOrder
   publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -473,10 +462,9 @@ export type PropertyScalarWhereWithAggregatesInput = {
   streetAddress?: Prisma.StringNullableWithAggregatesFilter<"Property"> | string | null
   longitude?: Prisma.FloatNullableWithAggregatesFilter<"Property"> | number | null
   latitude?: Prisma.FloatNullableWithAggregatesFilter<"Property"> | number | null
-  status?: Prisma.StringWithAggregatesFilter<"Property"> | string
+  status?: Prisma.EnumPropertyStatusWithAggregatesFilter<"Property"> | $Enums.PropertyStatus
   description?: Prisma.StringNullableWithAggregatesFilter<"Property"> | string | null
   displayImageId?: Prisma.StringNullableWithAggregatesFilter<"Property"> | string | null
-  isPublished?: Prisma.BoolWithAggregatesFilter<"Property"> | boolean
   publishedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Property"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Property"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Property"> | Date | string
@@ -495,9 +483,8 @@ export type PropertyCreateInput = {
   streetAddress?: string | null
   longitude?: number | null
   latitude?: number | null
-  status?: string
+  status?: $Enums.PropertyStatus
   description?: string | null
-  isPublished?: boolean
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -526,10 +513,9 @@ export type PropertyUncheckedCreateInput = {
   streetAddress?: string | null
   longitude?: number | null
   latitude?: number | null
-  status?: string
+  status?: $Enums.PropertyStatus
   description?: string | null
   displayImageId?: string | null
-  isPublished?: boolean
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -553,9 +539,8 @@ export type PropertyUpdateInput = {
   streetAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPropertyStatusFieldUpdateOperationsInput | $Enums.PropertyStatus
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -584,10 +569,9 @@ export type PropertyUncheckedUpdateInput = {
   streetAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPropertyStatusFieldUpdateOperationsInput | $Enums.PropertyStatus
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   displayImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -613,10 +597,9 @@ export type PropertyCreateManyInput = {
   streetAddress?: string | null
   longitude?: number | null
   latitude?: number | null
-  status?: string
+  status?: $Enums.PropertyStatus
   description?: string | null
   displayImageId?: string | null
-  isPublished?: boolean
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -635,9 +618,8 @@ export type PropertyUpdateManyMutationInput = {
   streetAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPropertyStatusFieldUpdateOperationsInput | $Enums.PropertyStatus
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -658,10 +640,9 @@ export type PropertyUncheckedUpdateManyInput = {
   streetAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPropertyStatusFieldUpdateOperationsInput | $Enums.PropertyStatus
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   displayImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -701,7 +682,6 @@ export type PropertyCountOrderByAggregateInput = {
   status?: Prisma.SortOrder
   description?: Prisma.SortOrder
   displayImageId?: Prisma.SortOrder
-  isPublished?: Prisma.SortOrder
   publishedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -730,7 +710,6 @@ export type PropertyMaxOrderByAggregateInput = {
   status?: Prisma.SortOrder
   description?: Prisma.SortOrder
   displayImageId?: Prisma.SortOrder
-  isPublished?: Prisma.SortOrder
   publishedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -754,7 +733,6 @@ export type PropertyMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
   description?: Prisma.SortOrder
   displayImageId?: Prisma.SortOrder
-  isPublished?: Prisma.SortOrder
   publishedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -860,6 +838,10 @@ export type NullableFloatFieldUpdateOperationsInput = {
   decrement?: number
   multiply?: number
   divide?: number
+}
+
+export type EnumPropertyStatusFieldUpdateOperationsInput = {
+  set?: $Enums.PropertyStatus
 }
 
 export type PropertyCreateNestedOneWithoutMediaInput = {
@@ -987,9 +969,8 @@ export type PropertyCreateWithoutUserInput = {
   streetAddress?: string | null
   longitude?: number | null
   latitude?: number | null
-  status?: string
+  status?: $Enums.PropertyStatus
   description?: string | null
-  isPublished?: boolean
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1016,10 +997,9 @@ export type PropertyUncheckedCreateWithoutUserInput = {
   streetAddress?: string | null
   longitude?: number | null
   latitude?: number | null
-  status?: string
+  status?: $Enums.PropertyStatus
   description?: string | null
   displayImageId?: string | null
-  isPublished?: boolean
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1074,10 +1054,9 @@ export type PropertyScalarWhereInput = {
   streetAddress?: Prisma.StringNullableFilter<"Property"> | string | null
   longitude?: Prisma.FloatNullableFilter<"Property"> | number | null
   latitude?: Prisma.FloatNullableFilter<"Property"> | number | null
-  status?: Prisma.StringFilter<"Property"> | string
+  status?: Prisma.EnumPropertyStatusFilter<"Property"> | $Enums.PropertyStatus
   description?: Prisma.StringNullableFilter<"Property"> | string | null
   displayImageId?: Prisma.StringNullableFilter<"Property"> | string | null
-  isPublished?: Prisma.BoolFilter<"Property"> | boolean
   publishedAt?: Prisma.DateTimeNullableFilter<"Property"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Property"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Property"> | Date | string
@@ -1096,9 +1075,8 @@ export type PropertyCreateWithoutTenantInput = {
   streetAddress?: string | null
   longitude?: number | null
   latitude?: number | null
-  status?: string
+  status?: $Enums.PropertyStatus
   description?: string | null
-  isPublished?: boolean
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1125,10 +1103,9 @@ export type PropertyUncheckedCreateWithoutTenantInput = {
   streetAddress?: string | null
   longitude?: number | null
   latitude?: number | null
-  status?: string
+  status?: $Enums.PropertyStatus
   description?: string | null
   displayImageId?: string | null
-  isPublished?: boolean
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1178,9 +1155,8 @@ export type PropertyCreateWithoutMediaInput = {
   streetAddress?: string | null
   longitude?: number | null
   latitude?: number | null
-  status?: string
+  status?: $Enums.PropertyStatus
   description?: string | null
-  isPublished?: boolean
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1208,10 +1184,9 @@ export type PropertyUncheckedCreateWithoutMediaInput = {
   streetAddress?: string | null
   longitude?: number | null
   latitude?: number | null
-  status?: string
+  status?: $Enums.PropertyStatus
   description?: string | null
   displayImageId?: string | null
-  isPublished?: boolean
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1239,9 +1214,8 @@ export type PropertyCreateWithoutDisplayImageInput = {
   streetAddress?: string | null
   longitude?: number | null
   latitude?: number | null
-  status?: string
+  status?: $Enums.PropertyStatus
   description?: string | null
-  isPublished?: boolean
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1269,9 +1243,8 @@ export type PropertyUncheckedCreateWithoutDisplayImageInput = {
   streetAddress?: string | null
   longitude?: number | null
   latitude?: number | null
-  status?: string
+  status?: $Enums.PropertyStatus
   description?: string | null
-  isPublished?: boolean
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1316,9 +1289,8 @@ export type PropertyUpdateWithoutMediaInput = {
   streetAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPropertyStatusFieldUpdateOperationsInput | $Enums.PropertyStatus
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1346,10 +1318,9 @@ export type PropertyUncheckedUpdateWithoutMediaInput = {
   streetAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPropertyStatusFieldUpdateOperationsInput | $Enums.PropertyStatus
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   displayImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1388,9 +1359,8 @@ export type PropertyCreateWithoutDocumentsInput = {
   streetAddress?: string | null
   longitude?: number | null
   latitude?: number | null
-  status?: string
+  status?: $Enums.PropertyStatus
   description?: string | null
-  isPublished?: boolean
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1418,10 +1388,9 @@ export type PropertyUncheckedCreateWithoutDocumentsInput = {
   streetAddress?: string | null
   longitude?: number | null
   latitude?: number | null
-  status?: string
+  status?: $Enums.PropertyStatus
   description?: string | null
   displayImageId?: string | null
-  isPublished?: boolean
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1460,9 +1429,8 @@ export type PropertyUpdateWithoutDocumentsInput = {
   streetAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPropertyStatusFieldUpdateOperationsInput | $Enums.PropertyStatus
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1490,10 +1458,9 @@ export type PropertyUncheckedUpdateWithoutDocumentsInput = {
   streetAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPropertyStatusFieldUpdateOperationsInput | $Enums.PropertyStatus
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   displayImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1516,9 +1483,8 @@ export type PropertyCreateWithoutVariantsInput = {
   streetAddress?: string | null
   longitude?: number | null
   latitude?: number | null
-  status?: string
+  status?: $Enums.PropertyStatus
   description?: string | null
-  isPublished?: boolean
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1546,10 +1512,9 @@ export type PropertyUncheckedCreateWithoutVariantsInput = {
   streetAddress?: string | null
   longitude?: number | null
   latitude?: number | null
-  status?: string
+  status?: $Enums.PropertyStatus
   description?: string | null
   displayImageId?: string | null
-  isPublished?: boolean
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1588,9 +1553,8 @@ export type PropertyUpdateWithoutVariantsInput = {
   streetAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPropertyStatusFieldUpdateOperationsInput | $Enums.PropertyStatus
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1618,10 +1582,9 @@ export type PropertyUncheckedUpdateWithoutVariantsInput = {
   streetAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPropertyStatusFieldUpdateOperationsInput | $Enums.PropertyStatus
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   displayImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1644,9 +1607,8 @@ export type PropertyCreateWithoutAmenitiesInput = {
   streetAddress?: string | null
   longitude?: number | null
   latitude?: number | null
-  status?: string
+  status?: $Enums.PropertyStatus
   description?: string | null
-  isPublished?: boolean
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1674,10 +1636,9 @@ export type PropertyUncheckedCreateWithoutAmenitiesInput = {
   streetAddress?: string | null
   longitude?: number | null
   latitude?: number | null
-  status?: string
+  status?: $Enums.PropertyStatus
   description?: string | null
   displayImageId?: string | null
-  isPublished?: boolean
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1716,9 +1677,8 @@ export type PropertyUpdateWithoutAmenitiesInput = {
   streetAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPropertyStatusFieldUpdateOperationsInput | $Enums.PropertyStatus
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1746,10 +1706,9 @@ export type PropertyUncheckedUpdateWithoutAmenitiesInput = {
   streetAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPropertyStatusFieldUpdateOperationsInput | $Enums.PropertyStatus
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   displayImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1772,9 +1731,8 @@ export type PropertyCreateWithoutPaymentMethodsInput = {
   streetAddress?: string | null
   longitude?: number | null
   latitude?: number | null
-  status?: string
+  status?: $Enums.PropertyStatus
   description?: string | null
-  isPublished?: boolean
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1802,10 +1760,9 @@ export type PropertyUncheckedCreateWithoutPaymentMethodsInput = {
   streetAddress?: string | null
   longitude?: number | null
   latitude?: number | null
-  status?: string
+  status?: $Enums.PropertyStatus
   description?: string | null
   displayImageId?: string | null
-  isPublished?: boolean
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1844,9 +1801,8 @@ export type PropertyUpdateWithoutPaymentMethodsInput = {
   streetAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPropertyStatusFieldUpdateOperationsInput | $Enums.PropertyStatus
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1874,10 +1830,9 @@ export type PropertyUncheckedUpdateWithoutPaymentMethodsInput = {
   streetAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPropertyStatusFieldUpdateOperationsInput | $Enums.PropertyStatus
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   displayImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1901,10 +1856,9 @@ export type PropertyCreateManyUserInput = {
   streetAddress?: string | null
   longitude?: number | null
   latitude?: number | null
-  status?: string
+  status?: $Enums.PropertyStatus
   description?: string | null
   displayImageId?: string | null
-  isPublished?: boolean
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1923,9 +1877,8 @@ export type PropertyUpdateWithoutUserInput = {
   streetAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPropertyStatusFieldUpdateOperationsInput | $Enums.PropertyStatus
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1952,10 +1905,9 @@ export type PropertyUncheckedUpdateWithoutUserInput = {
   streetAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPropertyStatusFieldUpdateOperationsInput | $Enums.PropertyStatus
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   displayImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1980,10 +1932,9 @@ export type PropertyUncheckedUpdateManyWithoutUserInput = {
   streetAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPropertyStatusFieldUpdateOperationsInput | $Enums.PropertyStatus
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   displayImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2003,10 +1954,9 @@ export type PropertyCreateManyTenantInput = {
   streetAddress?: string | null
   longitude?: number | null
   latitude?: number | null
-  status?: string
+  status?: $Enums.PropertyStatus
   description?: string | null
   displayImageId?: string | null
-  isPublished?: boolean
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2025,9 +1975,8 @@ export type PropertyUpdateWithoutTenantInput = {
   streetAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPropertyStatusFieldUpdateOperationsInput | $Enums.PropertyStatus
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2054,10 +2003,9 @@ export type PropertyUncheckedUpdateWithoutTenantInput = {
   streetAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPropertyStatusFieldUpdateOperationsInput | $Enums.PropertyStatus
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   displayImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2082,10 +2030,9 @@ export type PropertyUncheckedUpdateManyWithoutTenantInput = {
   streetAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPropertyStatusFieldUpdateOperationsInput | $Enums.PropertyStatus
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   displayImageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2106,9 +2053,8 @@ export type PropertyCreateManyDisplayImageInput = {
   streetAddress?: string | null
   longitude?: number | null
   latitude?: number | null
-  status?: string
+  status?: $Enums.PropertyStatus
   description?: string | null
-  isPublished?: boolean
   publishedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2127,9 +2073,8 @@ export type PropertyUpdateWithoutDisplayImageInput = {
   streetAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPropertyStatusFieldUpdateOperationsInput | $Enums.PropertyStatus
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2157,9 +2102,8 @@ export type PropertyUncheckedUpdateWithoutDisplayImageInput = {
   streetAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPropertyStatusFieldUpdateOperationsInput | $Enums.PropertyStatus
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2185,9 +2129,8 @@ export type PropertyUncheckedUpdateManyWithoutDisplayImageInput = {
   streetAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPropertyStatusFieldUpdateOperationsInput | $Enums.PropertyStatus
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2278,7 +2221,6 @@ export type PropertySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   status?: boolean
   description?: boolean
   displayImageId?: boolean
-  isPublished?: boolean
   publishedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -2313,13 +2255,12 @@ export type PropertySelectScalar = {
   status?: boolean
   description?: boolean
   displayImageId?: boolean
-  isPublished?: boolean
   publishedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type PropertyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "userId" | "title" | "category" | "propertyType" | "country" | "currency" | "city" | "district" | "zipCode" | "streetAddress" | "longitude" | "latitude" | "status" | "description" | "displayImageId" | "isPublished" | "publishedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["property"]>
+export type PropertyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "userId" | "title" | "category" | "propertyType" | "country" | "currency" | "city" | "district" | "zipCode" | "streetAddress" | "longitude" | "latitude" | "status" | "description" | "displayImageId" | "publishedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["property"]>
 export type PropertyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -2359,10 +2300,9 @@ export type $PropertyPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     streetAddress: string | null
     longitude: number | null
     latitude: number | null
-    status: string
+    status: $Enums.PropertyStatus
     description: string | null
     displayImageId: string | null
-    isPublished: boolean
     publishedAt: Date | null
     createdAt: Date
     updatedAt: Date
@@ -2757,10 +2697,9 @@ export interface PropertyFieldRefs {
   readonly streetAddress: Prisma.FieldRef<"Property", 'String'>
   readonly longitude: Prisma.FieldRef<"Property", 'Float'>
   readonly latitude: Prisma.FieldRef<"Property", 'Float'>
-  readonly status: Prisma.FieldRef<"Property", 'String'>
+  readonly status: Prisma.FieldRef<"Property", 'PropertyStatus'>
   readonly description: Prisma.FieldRef<"Property", 'String'>
   readonly displayImageId: Prisma.FieldRef<"Property", 'String'>
-  readonly isPublished: Prisma.FieldRef<"Property", 'Boolean'>
   readonly publishedAt: Prisma.FieldRef<"Property", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Property", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Property", 'DateTime'>

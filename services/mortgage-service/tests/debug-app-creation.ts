@@ -63,7 +63,6 @@ async function debug() {
                 city: 'Lagos',
                 currency: 'NGN',
                 status: 'PUBLISHED',
-                isPublished: true,
                 publishedAt: new Date(),
             },
         });

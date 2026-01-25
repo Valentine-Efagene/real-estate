@@ -5740,7 +5740,6 @@ export const PropertyScalarFieldEnum = {
   status: 'status',
   description: 'description',
   displayImageId: 'displayImageId',
-  isPublished: 'isPublished',
   publishedAt: 'publishedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -7171,7 +7170,6 @@ export const PropertyOrderByRelevanceFieldEnum = {
   district: 'district',
   zipCode: 'zipCode',
   streetAddress: 'streetAddress',
-  status: 'status',
   description: 'description',
   displayImageId: 'displayImageId'
 } as const
@@ -7941,6 +7939,13 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'PropertyStatus'
+ */
+export type EnumPropertyStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PropertyStatus'>
     
 
 

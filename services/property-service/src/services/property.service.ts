@@ -111,14 +111,13 @@ class PropertyService {
             throw new AppError(404, 'Property not found');
         }
 
-        if (property.isPublished) {
+        if (property.status === 'PUBLISHED') {
             return property; // Idempotent - already published
         }
 
         const updated = await prisma.property.update({
             where: { id },
             data: {
-                isPublished: true,
                 status: 'PUBLISHED',
                 publishedAt: new Date(),
             },
@@ -136,14 +135,13 @@ class PropertyService {
             throw new AppError(404, 'Property not found');
         }
 
-        if (!property.isPublished) {
+        if (property.status !== 'PUBLISHED') {
             return property; // Idempotent - already unpublished
         }
 
         const updated = await prisma.property.update({
             where: { id },
             data: {
-                isPublished: false,
                 status: 'DRAFT',
             },
         });

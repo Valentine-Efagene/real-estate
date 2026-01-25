@@ -172,12 +172,81 @@ Direct Lambda invocation tests for the authorizer service:
 - Tests the complete Lekki Gardens + Chidi mortgage flow scenario
 - Run with: `cd tests/aws && ./scripts/run-full-e2e-staging.sh`
 
+**API Documentation:**
+
+- **PDF**: `tests/aws/full-mortgage-flow/MORTGAGE_FLOW_API_DOCUMENTATION.pdf`
+- **Markdown**: `tests/aws/full-mortgage-flow/MORTGAGE_FLOW_API_DOCUMENTATION.md`
+
+This documentation describes the complete API flow with endpoints, payloads, and responses for each step of the mortgage journey. Share the PDF with the team for onboarding.
+
+To regenerate the PDF after changes:
+
+```bash
+cd tests/aws/full-mortgage-flow
+npx md-to-pdf MORTGAGE_FLOW_API_DOCUMENTATION.md
+```
+
 **IMPORTANT**: This test is the **production-equivalent version** of the Lekki-Chidi scenario test (`services/mortgage-service/tests/e2e/lekki-chidi-mortgage.e2e-spec.ts`). When making changes to either test, ensure they remain synchronized:
 
 - Same business flow and phases
 - Same actor names (Adaeze as admin, Chidi as customer)
 - Same property details (Lekki Gardens, ₦85M, 10% down, 90% mortgage)
 - AWS test uses HTTP APIs only; service test can use direct Prisma access
+
+### Incremental Debug Tests (`tests/aws/incremental-debug/`)
+
+- **Step-by-step debugging tests** that mirror the Postman collection flow
+- Useful for debugging API issues before running in Postman
+- Each step can be run in isolation using Jest test patterns
+
+```bash
+# Run all steps
+cd tests/aws && ./scripts/run-incremental-debug.sh
+
+# Run specific steps
+./scripts/run-incremental-debug.sh "Step 1"           # Reset & Bootstrap
+./scripts/run-incremental-debug.sh "Step 1|Step 2"    # Multiple steps
+./scripts/run-incremental-debug.sh "Step 3"           # Organizations
+```
+
+### Generating PDF Documentation from Tests
+
+We use `md-to-pdf` to generate beautiful PDF documentation from Markdown files. The PDF documents serve as the **official API documentation** for the team.
+
+**Prerequisites:**
+
+```bash
+# md-to-pdf is installed automatically via npx (no global install needed)
+```
+
+**Regenerating PDFs:**
+
+| Test Suite         | Command                                                                               |
+| ------------------ | ------------------------------------------------------------------------------------- |
+| Full Mortgage Flow | `cd tests/aws/full-mortgage-flow && npx md-to-pdf MORTGAGE_FLOW_API_DOCUMENTATION.md` |
+
+**When to regenerate:**
+
+- After modifying test steps or adding new phases
+- After changing endpoint paths or request/response formats
+- Before sharing documentation with new team members
+- After any API schema changes
+
+**Documentation files location:**
+
+```
+tests/aws/full-mortgage-flow/
+├── MORTGAGE_FLOW_API_DOCUMENTATION.md    # Source (edit this)
+├── MORTGAGE_FLOW_API_DOCUMENTATION.pdf   # Generated PDF (share this)
+└── MORTGAGE_FLOW_API_DOCUMENTATION.html  # HTML version (optional)
+```
+
+**Tips for maintaining documentation:**
+
+1. Always edit the `.md` file, never the PDF directly
+2. Regenerate PDF after any changes to the Markdown
+3. Commit both `.md` and `.pdf` files to the repository
+4. The PDF should match the actual test implementation
 
 ## Scenario-Based Development
 

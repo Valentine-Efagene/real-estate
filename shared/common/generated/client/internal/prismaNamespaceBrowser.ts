@@ -483,7 +483,6 @@ export const PropertyScalarFieldEnum = {
   status: 'status',
   description: 'description',
   displayImageId: 'displayImageId',
-  isPublished: 'isPublished',
   publishedAt: 'publishedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -1914,7 +1913,6 @@ export const PropertyOrderByRelevanceFieldEnum = {
   district: 'district',
   zipCode: 'zipCode',
   streetAddress: 'streetAddress',
-  status: 'status',
   description: 'description',
   displayImageId: 'displayImageId'
 } as const

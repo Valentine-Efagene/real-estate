@@ -119,7 +119,6 @@ describe('Property Transfer with Progress Preservation', () => {
                 city: 'Lagos',
                 district: 'Lekki',
                 status: 'PUBLISHED',
-                isPublished: true,
                 publishedAt: new Date(),
             },
         });
@@ -169,7 +168,6 @@ describe('Property Transfer with Progress Preservation', () => {
                 city: 'Lagos',
                 district: 'Victoria Island',
                 status: 'PUBLISHED',
-                isPublished: true,
                 publishedAt: new Date(),
             },
         });

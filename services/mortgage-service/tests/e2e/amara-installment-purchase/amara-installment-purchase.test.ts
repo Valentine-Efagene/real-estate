@@ -188,7 +188,6 @@ describe("Amara's Victoria Island Installment Purchase Flow", () => {
                 city: 'Lagos',
                 district: 'Victoria Island',
                 status: 'PUBLISHED',
-                isPublished: true,
                 publishedAt: new Date(),
             },
         });

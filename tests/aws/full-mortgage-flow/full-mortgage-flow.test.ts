@@ -18,14 +18,15 @@
  * 1. Prequalification questionnaire by customer
  * 2. Sales offer letter by developer (Emeka from Lekki Gardens)
  * 3. Preapproval documentation (KYC) by customer + preapproval letter by lender (Nkechi from Access Bank)
+ *    - Documents reviewed in TWO STAGES: Internal (Adaeze) then Bank (Nkechi)
  * 4. Customer pays downpayment
  * 5. Mortgage offer letter by lender (Nkechi from Access Bank)
  *
  * Actors:
- * - Adaeze (Admin): QShelter operations manager
+ * - Adaeze (Mortgage Operations Officer): QShelter staff who performs internal document review (Stage 1)
  * - Chidi (Customer): First-time homebuyer purchasing a 3-bedroom flat in Lekki
  * - Emeka (Developer): Lekki Gardens developer who uploads sales offer letters
- * - Nkechi (Lender): Access Bank loan officer who uploads preapproval and mortgage offer letters
+ * - Nkechi (Lender): Access Bank loan officer who performs bank document review (Stage 2) and uploads letters
  * - Property: Lekki Gardens Estate, Unit 14B, ₦85,000,000
  * - Payment Plan: 10% downpayment, 90% mortgage
  */
@@ -187,8 +188,10 @@ async function verifyUserEmail(userId: string): Promise<void> {
 describe('Full E2E Mortgage Flow', () => {
     // Tenant & Auth
     let tenantId: string;
+    // Mortgage Operations Officer (Adaeze from QShelter)
     let adaezeId: string;
     let adaezeAccessToken: string;
+    let qshelterOrgId: string; // Platform organization
     let chidiId: string;
     let chidiAccessToken: string;
 
@@ -307,6 +310,58 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.body.data.accessToken).toBeDefined();
 
             adaezeAccessToken = response.body.data.accessToken;
+        });
+
+        it('Step 1.3: Admin creates QShelter platform organization', async () => {
+            const response = await userApi
+                .post('/organizations')
+                .set(adminHeaders(adaezeAccessToken))
+                .set('x-idempotency-key', idempotencyKey('create-qshelter-org'))
+                .send({
+                    name: 'QShelter Real Estate',
+                    type: 'PLATFORM',
+                    isPlatformOrg: true,
+                    email: 'support@qshelter.com',
+                    phone: '+2348001234567',
+                    address: '123 Victoria Island',
+                    city: 'Lagos',
+                    state: 'Lagos',
+                    country: 'Nigeria',
+                    website: 'https://qshelter.com',
+                    description: 'Real estate platform for property transactions',
+                });
+
+            if (response.status !== 201) {
+                console.log('QShelter org creation failed:', JSON.stringify(response.body, null, 2));
+            }
+            expect(response.status).toBe(201);
+            expect(response.body.success).toBe(true);
+
+            qshelterOrgId = response.body.data.id;
+        });
+
+        it('Step 1.4: Admin adds herself to QShelter as Mortgage Operations Officer', async () => {
+            // Get Adaeze's user ID from token
+            const tokenPayload = JSON.parse(Buffer.from(adaezeAccessToken.split('.')[1], 'base64').toString());
+            adaezeId = tokenPayload.sub;
+
+            const response = await userApi
+                .post(`/organizations/${qshelterOrgId}/members`)
+                .set(adminHeaders(adaezeAccessToken))
+                .set('x-idempotency-key', idempotencyKey('add-adaeze-to-qshelter'))
+                .send({
+                    userId: adaezeId,
+                    role: 'MANAGER',
+                    title: 'Mortgage Operations Officer',
+                    department: 'Mortgage Operations',
+                    canApprove: true,
+                });
+
+            if (response.status !== 201) {
+                console.log('Add Adaeze to QShelter failed:', JSON.stringify(response.body, null, 2));
+            }
+            expect(response.status).toBe(201);
+            expect(response.body.success).toBe(true);
         });
     });
 
@@ -612,7 +667,7 @@ describe('Full E2E Mortgage Flow', () => {
 
             expect(response.status).toBe(200);
             expect(response.body.success).toBe(true);
-            expect(response.body.data.isPublished).toBe(true);
+            expect(response.body.data.status).toBe('PUBLISHED');
         });
     });
 
@@ -1156,7 +1211,9 @@ describe('Full E2E Mortgage Flow', () => {
     });
 
     // =========================================================================
-    // Phase 8: KYC Documentation
+    // Phase 8: KYC Documentation (Two-Stage Review)
+    // Stage 1: Internal Review (Adaeze - QShelter Mortgage Operations Officer)
+    // Stage 2: Bank Review (Nkechi - Access Bank Loan Officer)
     // =========================================================================
     describe('Phase 8: KYC Documentation', () => {
         it('Step 8.1: KYC phase is auto-activated', async () => {
@@ -1186,7 +1243,8 @@ describe('Full E2E Mortgage Flow', () => {
             }
         });
 
-        it('Step 8.3: Admin retrieves and approves documents', async () => {
+        it('Step 8.3: Adaeze (Internal - Stage 1) reviews and approves documents', async () => {
+            // Stage 1: QShelter Mortgage Operations Officer performs internal review
             const docsResponse = await mortgageApi
                 .get(`/applications/${applicationId}/phases/${kycPhaseId}/documents`)
                 .set(adminHeaders(adaezeAccessToken));
@@ -1201,17 +1259,45 @@ describe('Full E2E Mortgage Flow', () => {
                 const response = await mortgageApi
                     .post(`/applications/${applicationId}/documents/${doc.id}/review`)
                     .set(adminHeaders(adaezeAccessToken))
-                    .set('x-idempotency-key', idempotencyKey(`approve-${doc.documentType}`))
+                    .set('x-idempotency-key', idempotencyKey(`internal-approve-${doc.documentType}`))
                     .send({
                         status: 'APPROVED',
-                        note: 'Document verified',
+                        note: 'Internal review: Document verified by QShelter Mortgage Operations',
+                        reviewParty: 'INTERNAL',
                     });
 
                 expect(response.status).toBe(200);
             }
         });
 
-        it('Step 8.4: Lender (Nkechi) uploads preapproval letter', async () => {
+        it('Step 8.4: Nkechi (Bank - Stage 2) reviews and approves documents', async () => {
+            // Stage 2: Bank (Access Bank) reviews documents after internal approval
+            const docsResponse = await mortgageApi
+                .get(`/applications/${applicationId}/phases/${kycPhaseId}/documents`)
+                .set(lenderHeaders(nkechiAccessToken));
+
+            expect(docsResponse.status).toBe(200);
+
+            const customerDocs = docsResponse.body.data.filter(
+                (d: any) => ['ID_CARD', 'BANK_STATEMENT', 'EMPLOYMENT_LETTER'].includes(d.documentType)
+            );
+
+            for (const doc of customerDocs) {
+                const response = await mortgageApi
+                    .post(`/applications/${applicationId}/documents/${doc.id}/review`)
+                    .set(lenderHeaders(nkechiAccessToken))
+                    .set('x-idempotency-key', idempotencyKey(`bank-approve-${doc.documentType}`))
+                    .send({
+                        status: 'APPROVED',
+                        note: 'Bank review: Document approved by Access Bank lending team',
+                        reviewParty: 'BANK',
+                    });
+
+                expect(response.status).toBe(200);
+            }
+        });
+
+        it('Step 8.5: Nkechi (Lender) uploads preapproval letter', async () => {
             const response = await mortgageApi
                 .post(`/applications/${applicationId}/phases/${kycPhaseId}/documents`)
                 .set(lenderHeaders(nkechiAccessToken))
@@ -1225,7 +1311,7 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.status).toBe(201);
         });
 
-        it('Step 8.5: KYC phase completes', async () => {
+        it('Step 8.6: KYC phase completes after both stages approved', async () => {
             const response = await mortgageApi
                 .get(`/applications/${applicationId}/phases/${kycPhaseId}`)
                 .set(customerHeaders(chidiAccessToken));

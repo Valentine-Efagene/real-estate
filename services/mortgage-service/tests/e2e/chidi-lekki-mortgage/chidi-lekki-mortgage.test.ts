@@ -268,7 +268,6 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                 city: 'Lagos',
                 district: 'Lekki',
                 status: 'PUBLISHED',
-                isPublished: true,
                 publishedAt: new Date(),
             },
         });

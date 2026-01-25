@@ -96,7 +96,6 @@ export const testData = {
                 city: faker.location.city(),
                 description: faker.lorem.paragraph(),
                 status: 'PUBLISHED',
-                isPublished: true,
                 publishedAt: new Date(),
             },
         });

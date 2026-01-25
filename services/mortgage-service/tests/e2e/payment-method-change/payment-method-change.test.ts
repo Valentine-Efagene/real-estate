@@ -120,7 +120,6 @@ describe('Payment Method Change Flow', () => {
                 city: 'Lagos',
                 district: 'Victoria Island',
                 status: 'PUBLISHED',
-                isPublished: true,
                 publishedAt: new Date(),
             },
         });
@@ -718,7 +717,6 @@ describe('Payment Method Change - Alternative Flows', () => {
                 currency: 'NGN',
                 city: 'Lagos',
                 status: 'PUBLISHED',
-                isPublished: true,
             },
         });
         propertyId = property.id;

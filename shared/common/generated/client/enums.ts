@@ -43,6 +43,16 @@ export const PaymentFrequency = {
 export type PaymentFrequency = (typeof PaymentFrequency)[keyof typeof PaymentFrequency]
 
 
+export const PropertyStatus = {
+  DRAFT: 'DRAFT',
+  PUBLISHED: 'PUBLISHED',
+  SOLD_OUT: 'SOLD_OUT',
+  ARCHIVED: 'ARCHIVED'
+} as const
+
+export type PropertyStatus = (typeof PropertyStatus)[keyof typeof PropertyStatus]
+
+
 export const ApplicationStatus = {
   DRAFT: 'DRAFT',
   PENDING: 'PENDING',
