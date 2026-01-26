@@ -4,9 +4,7 @@ import {
     getAuthContext,
     hasAnyRole,
     ADMIN_ROLES,
-    OrganizationType,
     OrganizationStatus,
-    OrganizationRole,
 } from '@valentine-efagene/qshelter-common';
 import { organizationService } from '../services/organization.service';
 import { z } from 'zod';
@@ -19,7 +17,10 @@ export const organizationRouter = Router();
 
 const CreateOrganizationSchema = z.object({
     name: z.string().min(2).max(200),
-    type: z.enum(['PLATFORM', 'BANK', 'DEVELOPER', 'LEGAL', 'INSURER', 'GOVERNMENT']),
+    // Array of organization type codes (e.g., ['PLATFORM', 'DEVELOPER'])
+    typeCodes: z.array(z.string()).min(1, 'At least one organization type is required'),
+    // The primary type code (must be in typeCodes)
+    primaryTypeCode: z.string().optional(),
     email: z.string().email().optional(),
     phone: z.string().optional(),
     address: z.string().optional(),
@@ -61,22 +62,16 @@ const UpdateOrganizationSchema = z.object({
 
 const AddMemberSchema = z.object({
     userId: z.string().min(1),
-    role: z.enum(['ADMIN', 'MANAGER', 'OFFICER', 'VIEWER']).optional(),
     title: z.string().optional(),
     department: z.string().optional(),
     employeeId: z.string().optional(),
-    canApprove: z.boolean().optional(),
-    approvalLimit: z.number().positive().optional(),
 });
 
 const UpdateMemberSchema = z.object({
-    role: z.enum(['ADMIN', 'MANAGER', 'OFFICER', 'VIEWER']).optional(),
     title: z.string().optional(),
     department: z.string().optional(),
     employeeId: z.string().optional(),
     isActive: z.boolean().optional(),
-    canApprove: z.boolean().optional(),
-    approvalLimit: z.number().positive().optional(),
 });
 
 // =============================================================================
@@ -116,7 +111,7 @@ organizationRouter.get('/', async (req, res, next) => {
             limit: req.query.limit ? Number(req.query.limit) : undefined,
             sortBy: req.query.sortBy as string | undefined,
             sortOrder: req.query.sortOrder as 'asc' | 'desc' | undefined,
-            type: req.query.type as OrganizationType | undefined,
+            typeCode: req.query.typeCode as string | undefined,
             status: req.query.status as OrganizationStatus | undefined,
             search: req.query.search as string | undefined,
         };

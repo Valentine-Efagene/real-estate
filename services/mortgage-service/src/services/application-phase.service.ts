@@ -7,7 +7,6 @@ import {
     PaymentStatus,
     DocumentStatus,
     computePhaseActionStatus,
-    ReviewParty,
     ReviewDecision,
     RejectionBehavior,
     NextActor,
@@ -134,14 +133,17 @@ class ApplicationPhaseService {
         const isAwaitingTransition = stage.status === 'AWAITING_TRANSITION';
         const isCompleted = stage.status === 'COMPLETED';
 
+        // Get organization type name for display (from included relation or fallback)
+        const orgTypeName = stage.organizationType?.name || stage.organizationType?.code || 'Reviewer';
+
         return {
             ...stage,
             actionStatus: {
                 isActive,
                 isAwaitingTransition,
                 isCompleted,
-                nextActor: isActive ? stage.reviewParty : null,
-                actionRequired: isActive ? `${stage.reviewParty} review required` :
+                nextActor: isActive ? stage.organizationTypeId : null,
+                actionRequired: isActive ? `${orgTypeName} review required` :
                     isAwaitingTransition ? 'Stage transition required' : null,
             },
         };
@@ -730,7 +732,7 @@ class ApplicationPhaseService {
         phaseId: string,
         documentId: string,
         decision: ReviewDecision,
-        reviewerParty: ReviewParty,
+        organizationTypeId: string,
         userId: string,
         comment?: string
     ): Promise<any> {
@@ -745,7 +747,7 @@ class ApplicationPhaseService {
             tenantId: phase.application.tenantId,
             documentId,
             reviewerId: userId,
-            reviewParty: reviewerParty,
+            organizationTypeId,
             decision,
             comment,
         });

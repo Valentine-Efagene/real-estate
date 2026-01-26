@@ -373,7 +373,7 @@ describe('Incremental Debug Flow', () => {
                 .set(authHeaders(state.adminAccessToken!))
                 .send({
                     name: 'Access Bank PLC',
-                    type: 'BANK',
+                    typeCodes: ['BANK'],
                     email: 'mortgages@mailsac.com',
                     phone: '+234-1-280-2800',
                     address: '999c Danmole Street, Victoria Island, Lagos',
@@ -404,7 +404,7 @@ describe('Incremental Debug Flow', () => {
                 .set(authHeaders(state.adminAccessToken!))
                 .send({
                     name: 'Lekki Gardens Estate Limited',
-                    type: 'DEVELOPER',
+                    typeCodes: ['DEVELOPER'],
                     email: 'lekkigardens@mailsac.com',
                     phone: '+234-1-453-0000',
                     address: 'Lekki-Epe Expressway, Lekki, Lagos',

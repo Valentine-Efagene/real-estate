@@ -168,13 +168,44 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         });
         emekaId = emeka.id;
 
+        // Create organization types (lookup table)
+        const platformType = await prisma.organizationType.create({
+            data: {
+                id: faker.string.uuid(),
+                tenantId,
+                code: 'PLATFORM',
+                name: 'Platform',
+                description: 'Platform organization',
+                isSystemType: true,
+            },
+        });
+        const bankType = await prisma.organizationType.create({
+            data: {
+                id: faker.string.uuid(),
+                tenantId,
+                code: 'BANK',
+                name: 'Bank',
+                description: 'Financial institution',
+                isSystemType: true,
+            },
+        });
+        const developerType = await prisma.organizationType.create({
+            data: {
+                id: faker.string.uuid(),
+                tenantId,
+                code: 'DEVELOPER',
+                name: 'Developer',
+                description: 'Property developer',
+                isSystemType: true,
+            },
+        });
+
         // Create QShelter as the platform organization
         const qshelterOrg = await prisma.organization.create({
             data: {
                 id: faker.string.uuid(),
                 tenantId,
                 name: 'QShelter Real Estate',
-                type: 'PLATFORM',
                 status: 'ACTIVE',
                 isPlatformOrg: true,
                 email: 'support@qshelter.com',
@@ -184,16 +215,24 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         });
         qshelterId = qshelterOrg.id;
 
+        // Link QShelter to PLATFORM type
+        await prisma.organizationTypeAssignment.create({
+            data: {
+                organizationId: qshelterOrg.id,
+                typeId: platformType.id,
+                isPrimary: true,
+            },
+        });
+
         // Link Adaeze as a QShelter operations manager
         await prisma.organizationMember.create({
             data: {
                 id: faker.string.uuid(),
                 organizationId: qshelterOrg.id,
                 userId: adaezeId,
-                role: 'MANAGER',
                 title: 'Operations Manager',
-                canApprove: true,
                 isActive: true,
+                joinedAt: new Date(),
             },
         });
 
@@ -203,7 +242,6 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                 id: faker.string.uuid(),
                 tenantId,
                 name: 'Access Bank Plc',
-                type: 'BANK',
                 status: 'ACTIVE',
                 bankCode: '044',
                 swiftCode: 'ABORNGLA',
@@ -214,16 +252,23 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         });
         accessBankId = accessBank.id;
 
+        // Link Access Bank to BANK type
+        await prisma.organizationTypeAssignment.create({
+            data: {
+                organizationId: accessBank.id,
+                typeId: bankType.id,
+                isPrimary: true,
+            },
+        });
+
         // Link Nkechi as an Access Bank officer
         await prisma.organizationMember.create({
             data: {
                 id: faker.string.uuid(),
                 organizationId: accessBank.id,
                 userId: nkechiId,
-                role: 'OFFICER',
-                canApprove: false, // Needs senior approval for large amounts
-                approvalLimit: 5000000, // 5M NGN approval limit
                 isActive: true,
+                joinedAt: new Date(),
             },
         });
 
@@ -233,7 +278,6 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                 id: faker.string.uuid(),
                 tenantId,
                 name: 'Lekki Gardens Development Company',
-                type: 'DEVELOPER',
                 status: 'ACTIVE',
                 email: 'sales@lekkigardens.com',
                 phone: '+234-1-456-7890',
@@ -242,15 +286,23 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         });
         lekkiGardensId = lekkiGardensDev.id;
 
+        // Link Lekki Gardens to DEVELOPER type
+        await prisma.organizationTypeAssignment.create({
+            data: {
+                organizationId: lekkiGardensDev.id,
+                typeId: developerType.id,
+                isPrimary: true,
+            },
+        });
+
         // Link Emeka as a Lekki Gardens sales officer
         await prisma.organizationMember.create({
             data: {
                 id: faker.string.uuid(),
                 organizationId: lekkiGardensDev.id,
                 userId: emekaId,
-                role: 'OFFICER',
-                canApprove: true, // Can issue sales offer letters
                 isActive: true,
+                joinedAt: new Date(),
             },
         });
 
@@ -560,7 +612,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                         {
                             name: 'QShelter Staff Review',
                             order: 1,
-                            reviewParty: 'INTERNAL',
+                            organizationTypeCode: 'PLATFORM',
                             autoTransition: false, // Require explicit approval
                             waitForAllDocuments: true,
                             onRejection: 'CASCADE_BACK',
@@ -570,7 +622,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                         {
                             name: 'Bank Review',
                             order: 2,
-                            reviewParty: 'BANK',
+                            organizationTypeCode: 'BANK',
                             autoTransition: false,
                             waitForAllDocuments: true,
                             onRejection: 'CASCADE_BACK', // If bank rejects, restart from Stage 1
@@ -597,11 +649,11 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             expect(spouseIdDoc.condition.operator).toBe(ConditionOperator.EQUALS);
             expect(spouseIdDoc.condition.value).toBe('JOINT');
 
-            // Verify approval stages
+            // Verify approval stages return organizationType info
             const stage1 = response.body.data.approvalStages.find((s: any) => s.order === 1);
-            expect(stage1.reviewParty).toBe('INTERNAL');
+            expect(stage1.organizationType.code).toBe('PLATFORM');
             const stage2 = response.body.data.approvalStages.find((s: any) => s.order === 2);
-            expect(stage2.reviewParty).toBe('BANK');
+            expect(stage2.organizationType.code).toBe('BANK');
         });
 
         it('Adaeze creates a sales offer documentation plan', async () => {
@@ -632,7 +684,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                         {
                             name: 'Developer Document Verification',
                             order: 1,
-                            reviewParty: 'DEVELOPER',
+                            organizationTypeCode: 'DEVELOPER',
                             autoTransition: true, // Auto-complete when developer uploads
                             waitForAllDocuments: true,
                             onRejection: 'CASCADE_BACK',
@@ -679,7 +731,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                         {
                             name: 'Bank Document Verification',
                             order: 1,
-                            reviewParty: 'BANK',
+                            organizationTypeCode: 'BANK',
                             autoTransition: true, // Auto-complete when lender uploads
                             waitForAllDocuments: true,
                             onRejection: 'CASCADE_BACK',
@@ -986,13 +1038,20 @@ describe("Chidi's Lekki Mortgage Flow", () => {
 
         it('Organizations are bound to the application with roles and SLAs', async () => {
             // When an application is created for a mortgage:
-            // 1. The developer (Lekki Gardens) is bound as DEVELOPER - responsible for sales offer
-            // 2. The lender (Access Bank) is bound as LENDER - responsible for mortgage processing
+            // 1. The developer (Lekki Gardens) is bound to the application - responsible for sales offer
+            // 2. The lender (Access Bank) is bound to the application - responsible for mortgage processing
             //
             // Each binding has:
-            // - A role (DEVELOPER, LENDER, LEGAL, INSURER, GOVERNMENT)
             // - An SLA (e.g., bank has 48 hours to respond to document submissions)
             // - Status tracking (PENDING → ACTIVE → COMPLETED or DECLINED)
+
+            // Look up organization types for binding
+            const developerType = await prisma.organizationType.findFirst({
+                where: { tenantId, code: 'DEVELOPER' },
+            });
+            const bankType = await prisma.organizationType.findFirst({
+                where: { tenantId, code: 'BANK' },
+            });
 
             // Bind Lekki Gardens as the developer
             const lekkiGardensAppOrg = await prisma.applicationOrganization.create({
@@ -1001,7 +1060,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                     tenantId,
                     applicationId,
                     organizationId: lekkiGardensId,
-                    role: 'DEVELOPER',
+                    assignedAsTypeId: developerType!.id,
                     status: 'ACTIVE',
                     activatedAt: new Date(),
                     slaHours: 24, // 24 hours to upload sales offer
@@ -1016,7 +1075,7 @@ describe("Chidi's Lekki Mortgage Flow", () => {
                     tenantId,
                     applicationId,
                     organizationId: accessBankId,
-                    role: 'LENDER',
+                    assignedAsTypeId: bankType!.id,
                     status: 'PENDING', // Will become ACTIVE when KYC phase starts
                     slaHours: 48, // 48 hours to review documents and issue preapproval
                 },
@@ -1026,16 +1085,19 @@ describe("Chidi's Lekki Mortgage Flow", () => {
             // Verify bindings
             const bindings = await prisma.applicationOrganization.findMany({
                 where: { applicationId },
-                include: { organization: true },
+                include: {
+                    organization: true,
+                    assignedAsType: true,
+                },
             });
 
             expect(bindings.length).toBe(2);
 
-            const developerBinding = bindings.find((b: any) => b.role === 'DEVELOPER');
+            const developerBinding = bindings.find((b: any) => b.assignedAsType?.code === 'DEVELOPER');
             expect(developerBinding?.organization.name).toBe('Lekki Gardens Development Company');
             expect(developerBinding?.slaHours).toBe(24);
 
-            const lenderBinding = bindings.find((b: any) => b.role === 'LENDER');
+            const lenderBinding = bindings.find((b: any) => b.assignedAsType?.code === 'BANK');
             expect(lenderBinding?.organization.name).toBe('Access Bank Plc');
             expect(lenderBinding?.slaHours).toBe(48);
         });

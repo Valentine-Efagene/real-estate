@@ -510,7 +510,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                             approvalStagesSnapshot: approvalStages.length > 0 ? approvalStages.map((s: any) => ({
                                 name: s.name,
                                 order: s.order,
-                                reviewParty: s.reviewParty,
+                                organizationTypeId: s.organizationTypeId,
                                 autoTransition: s.autoTransition,
                                 waitForAllDocuments: s.waitForAllDocuments,
                                 allowEarlyVisibility: s.allowEarlyVisibility,
@@ -531,7 +531,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                                 approvalStageId: stage.id,
                                 name: stage.name,
                                 order: stage.order,
-                                reviewParty: stage.reviewParty,
+                                organizationTypeId: stage.organizationTypeId,
                                 autoTransition: stage.autoTransition ?? false,
                                 waitForAllDocuments: stage.waitForAllDocuments ?? true,
                                 allowEarlyVisibility: stage.allowEarlyVisibility ?? false,

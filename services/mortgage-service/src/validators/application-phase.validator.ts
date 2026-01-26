@@ -37,16 +37,21 @@ export const UploadDocumentSchema = z
     }))
     .openapi('UploadDocument');
 
-// Approve document
+// Approve document (stage-based review)
 export const ApproveDocumentSchema = z
     .object({
-        status: z.enum(['APPROVED', 'REJECTED']),
+        status: z.enum(['APPROVED', 'REJECTED', 'CHANGES_REQUESTED']),
         comment: z.string().optional(),
         note: z.string().optional(),
+        organizationTypeCode: z.string().optional().openapi({
+            description: 'Organization type code of the reviewer (e.g., PLATFORM, BANK, DEVELOPER). Required for stage-based reviews.',
+            example: 'PLATFORM',
+        }),
     })
     .transform((data) => ({
         status: data.status,
         comment: data.comment || data.note,
+        organizationTypeCode: data.organizationTypeCode,
     }))
     .openapi('ApproveDocument');
 

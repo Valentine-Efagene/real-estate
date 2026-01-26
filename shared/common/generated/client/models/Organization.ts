@@ -28,7 +28,6 @@ export type OrganizationMinAggregateOutputType = {
   id: string | null
   tenantId: string | null
   name: string | null
-  type: $Enums.OrganizationType | null
   status: $Enums.OrganizationStatus | null
   isPlatformOrg: boolean | null
   email: string | null
@@ -57,7 +56,6 @@ export type OrganizationMaxAggregateOutputType = {
   id: string | null
   tenantId: string | null
   name: string | null
-  type: $Enums.OrganizationType | null
   status: $Enums.OrganizationStatus | null
   isPlatformOrg: boolean | null
   email: string | null
@@ -86,7 +84,6 @@ export type OrganizationCountAggregateOutputType = {
   id: number
   tenantId: number
   name: number
-  type: number
   status: number
   isPlatformOrg: number
   email: number
@@ -117,7 +114,6 @@ export type OrganizationMinAggregateInputType = {
   id?: true
   tenantId?: true
   name?: true
-  type?: true
   status?: true
   isPlatformOrg?: true
   email?: true
@@ -146,7 +142,6 @@ export type OrganizationMaxAggregateInputType = {
   id?: true
   tenantId?: true
   name?: true
-  type?: true
   status?: true
   isPlatformOrg?: true
   email?: true
@@ -175,7 +170,6 @@ export type OrganizationCountAggregateInputType = {
   id?: true
   tenantId?: true
   name?: true
-  type?: true
   status?: true
   isPlatformOrg?: true
   email?: true
@@ -277,7 +271,6 @@ export type OrganizationGroupByOutputType = {
   id: string
   tenantId: string
   name: string
-  type: $Enums.OrganizationType
   status: $Enums.OrganizationStatus
   isPlatformOrg: boolean
   email: string | null
@@ -327,7 +320,6 @@ export type OrganizationWhereInput = {
   id?: Prisma.StringFilter<"Organization"> | string
   tenantId?: Prisma.StringFilter<"Organization"> | string
   name?: Prisma.StringFilter<"Organization"> | string
-  type?: Prisma.EnumOrganizationTypeFilter<"Organization"> | $Enums.OrganizationType
   status?: Prisma.EnumOrganizationStatusFilter<"Organization"> | $Enums.OrganizationStatus
   isPlatformOrg?: Prisma.BoolFilter<"Organization"> | boolean
   email?: Prisma.StringNullableFilter<"Organization"> | string | null
@@ -350,17 +342,18 @@ export type OrganizationWhereInput = {
   approvedById?: Prisma.StringNullableFilter<"Organization"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Organization"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Organization"> | Date | string
+  types?: Prisma.OrganizationTypeAssignmentListRelationFilter
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   members?: Prisma.OrganizationMemberListRelationFilter
   applicationAssignments?: Prisma.ApplicationOrganizationListRelationFilter
   documentRequirements?: Prisma.BankDocumentRequirementListRelationFilter
+  documentReviews?: Prisma.DocumentReviewListRelationFilter
 }
 
 export type OrganizationOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  type?: Prisma.SortOrder
   status?: Prisma.SortOrder
   isPlatformOrg?: Prisma.SortOrder
   email?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -383,10 +376,12 @@ export type OrganizationOrderByWithRelationInput = {
   approvedById?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  types?: Prisma.OrganizationTypeAssignmentOrderByRelationAggregateInput
   tenant?: Prisma.TenantOrderByWithRelationInput
   members?: Prisma.OrganizationMemberOrderByRelationAggregateInput
   applicationAssignments?: Prisma.ApplicationOrganizationOrderByRelationAggregateInput
   documentRequirements?: Prisma.BankDocumentRequirementOrderByRelationAggregateInput
+  documentReviews?: Prisma.DocumentReviewOrderByRelationAggregateInput
   _relevance?: Prisma.OrganizationOrderByRelevanceInput
 }
 
@@ -399,7 +394,6 @@ export type OrganizationWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.OrganizationWhereInput | Prisma.OrganizationWhereInput[]
   tenantId?: Prisma.StringFilter<"Organization"> | string
   name?: Prisma.StringFilter<"Organization"> | string
-  type?: Prisma.EnumOrganizationTypeFilter<"Organization"> | $Enums.OrganizationType
   status?: Prisma.EnumOrganizationStatusFilter<"Organization"> | $Enums.OrganizationStatus
   isPlatformOrg?: Prisma.BoolFilter<"Organization"> | boolean
   email?: Prisma.StringNullableFilter<"Organization"> | string | null
@@ -422,17 +416,18 @@ export type OrganizationWhereUniqueInput = Prisma.AtLeast<{
   approvedById?: Prisma.StringNullableFilter<"Organization"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Organization"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Organization"> | Date | string
+  types?: Prisma.OrganizationTypeAssignmentListRelationFilter
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   members?: Prisma.OrganizationMemberListRelationFilter
   applicationAssignments?: Prisma.ApplicationOrganizationListRelationFilter
   documentRequirements?: Prisma.BankDocumentRequirementListRelationFilter
+  documentReviews?: Prisma.DocumentReviewListRelationFilter
 }, "id" | "tenantId_bankCode" | "tenantId_cacNumber">
 
 export type OrganizationOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  type?: Prisma.SortOrder
   status?: Prisma.SortOrder
   isPlatformOrg?: Prisma.SortOrder
   email?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -467,7 +462,6 @@ export type OrganizationScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Organization"> | string
   tenantId?: Prisma.StringWithAggregatesFilter<"Organization"> | string
   name?: Prisma.StringWithAggregatesFilter<"Organization"> | string
-  type?: Prisma.EnumOrganizationTypeWithAggregatesFilter<"Organization"> | $Enums.OrganizationType
   status?: Prisma.EnumOrganizationStatusWithAggregatesFilter<"Organization"> | $Enums.OrganizationStatus
   isPlatformOrg?: Prisma.BoolWithAggregatesFilter<"Organization"> | boolean
   email?: Prisma.StringNullableWithAggregatesFilter<"Organization"> | string | null
@@ -495,7 +489,6 @@ export type OrganizationScalarWhereWithAggregatesInput = {
 export type OrganizationCreateInput = {
   id?: string
   name: string
-  type: $Enums.OrganizationType
   status?: $Enums.OrganizationStatus
   isPlatformOrg?: boolean
   email?: string | null
@@ -518,17 +511,18 @@ export type OrganizationCreateInput = {
   approvedById?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  types?: Prisma.OrganizationTypeAssignmentCreateNestedManyWithoutOrganizationInput
   tenant: Prisma.TenantCreateNestedOneWithoutOrganizationsInput
   members?: Prisma.OrganizationMemberCreateNestedManyWithoutOrganizationInput
   applicationAssignments?: Prisma.ApplicationOrganizationCreateNestedManyWithoutOrganizationInput
   documentRequirements?: Prisma.BankDocumentRequirementCreateNestedManyWithoutOrganizationInput
+  documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateInput = {
   id?: string
   tenantId: string
   name: string
-  type: $Enums.OrganizationType
   status?: $Enums.OrganizationStatus
   isPlatformOrg?: boolean
   email?: string | null
@@ -551,15 +545,16 @@ export type OrganizationUncheckedCreateInput = {
   approvedById?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  types?: Prisma.OrganizationTypeAssignmentUncheckedCreateNestedManyWithoutOrganizationInput
   members?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutOrganizationInput
   applicationAssignments?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutOrganizationInput
   documentRequirements?: Prisma.BankDocumentRequirementUncheckedCreateNestedManyWithoutOrganizationInput
+  documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumOrganizationTypeFieldUpdateOperationsInput | $Enums.OrganizationType
   status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
   isPlatformOrg?: Prisma.BoolFieldUpdateOperationsInput | boolean
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -582,17 +577,18 @@ export type OrganizationUpdateInput = {
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  types?: Prisma.OrganizationTypeAssignmentUpdateManyWithoutOrganizationNestedInput
   tenant?: Prisma.TenantUpdateOneRequiredWithoutOrganizationsNestedInput
   members?: Prisma.OrganizationMemberUpdateManyWithoutOrganizationNestedInput
   applicationAssignments?: Prisma.ApplicationOrganizationUpdateManyWithoutOrganizationNestedInput
   documentRequirements?: Prisma.BankDocumentRequirementUpdateManyWithoutOrganizationNestedInput
+  documentReviews?: Prisma.DocumentReviewUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumOrganizationTypeFieldUpdateOperationsInput | $Enums.OrganizationType
   status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
   isPlatformOrg?: Prisma.BoolFieldUpdateOperationsInput | boolean
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -615,16 +611,17 @@ export type OrganizationUncheckedUpdateInput = {
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  types?: Prisma.OrganizationTypeAssignmentUncheckedUpdateManyWithoutOrganizationNestedInput
   members?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutOrganizationNestedInput
   applicationAssignments?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutOrganizationNestedInput
   documentRequirements?: Prisma.BankDocumentRequirementUncheckedUpdateManyWithoutOrganizationNestedInput
+  documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateManyInput = {
   id?: string
   tenantId: string
   name: string
-  type: $Enums.OrganizationType
   status?: $Enums.OrganizationStatus
   isPlatformOrg?: boolean
   email?: string | null
@@ -652,7 +649,6 @@ export type OrganizationCreateManyInput = {
 export type OrganizationUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumOrganizationTypeFieldUpdateOperationsInput | $Enums.OrganizationType
   status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
   isPlatformOrg?: Prisma.BoolFieldUpdateOperationsInput | boolean
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -681,7 +677,6 @@ export type OrganizationUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumOrganizationTypeFieldUpdateOperationsInput | $Enums.OrganizationType
   status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
   isPlatformOrg?: Prisma.BoolFieldUpdateOperationsInput | boolean
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -706,6 +701,11 @@ export type OrganizationUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type OrganizationScalarRelationFilter = {
+  is?: Prisma.OrganizationWhereInput
+  isNot?: Prisma.OrganizationWhereInput
+}
+
 export type OrganizationOrderByRelevanceInput = {
   fields: Prisma.OrganizationOrderByRelevanceFieldEnum | Prisma.OrganizationOrderByRelevanceFieldEnum[]
   sort: Prisma.SortOrder
@@ -726,7 +726,6 @@ export type OrganizationCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  type?: Prisma.SortOrder
   status?: Prisma.SortOrder
   isPlatformOrg?: Prisma.SortOrder
   email?: Prisma.SortOrder
@@ -755,7 +754,6 @@ export type OrganizationMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  type?: Prisma.SortOrder
   status?: Prisma.SortOrder
   isPlatformOrg?: Prisma.SortOrder
   email?: Prisma.SortOrder
@@ -784,7 +782,6 @@ export type OrganizationMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  type?: Prisma.SortOrder
   status?: Prisma.SortOrder
   isPlatformOrg?: Prisma.SortOrder
   email?: Prisma.SortOrder
@@ -809,11 +806,6 @@ export type OrganizationMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
-export type OrganizationScalarRelationFilter = {
-  is?: Prisma.OrganizationWhereInput
-  isNot?: Prisma.OrganizationWhereInput
-}
-
 export type OrganizationListRelationFilter = {
   every?: Prisma.OrganizationWhereInput
   some?: Prisma.OrganizationWhereInput
@@ -824,8 +816,23 @@ export type OrganizationOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type EnumOrganizationTypeFieldUpdateOperationsInput = {
-  set?: $Enums.OrganizationType
+export type OrganizationNullableScalarRelationFilter = {
+  is?: Prisma.OrganizationWhereInput | null
+  isNot?: Prisma.OrganizationWhereInput | null
+}
+
+export type OrganizationCreateNestedOneWithoutTypesInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutTypesInput, Prisma.OrganizationUncheckedCreateWithoutTypesInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutTypesInput
+  connect?: Prisma.OrganizationWhereUniqueInput
+}
+
+export type OrganizationUpdateOneRequiredWithoutTypesNestedInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutTypesInput, Prisma.OrganizationUncheckedCreateWithoutTypesInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutTypesInput
+  upsert?: Prisma.OrganizationUpsertWithoutTypesInput
+  connect?: Prisma.OrganizationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OrganizationUpdateToOneWithWhereWithoutTypesInput, Prisma.OrganizationUpdateWithoutTypesInput>, Prisma.OrganizationUncheckedUpdateWithoutTypesInput>
 }
 
 export type EnumOrganizationStatusFieldUpdateOperationsInput = {
@@ -916,150 +923,25 @@ export type OrganizationUpdateOneRequiredWithoutApplicationAssignmentsNestedInpu
   update?: Prisma.XOR<Prisma.XOR<Prisma.OrganizationUpdateToOneWithWhereWithoutApplicationAssignmentsInput, Prisma.OrganizationUpdateWithoutApplicationAssignmentsInput>, Prisma.OrganizationUncheckedUpdateWithoutApplicationAssignmentsInput>
 }
 
-export type OrganizationCreateWithoutMembersInput = {
+export type OrganizationCreateNestedOneWithoutDocumentReviewsInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutDocumentReviewsInput, Prisma.OrganizationUncheckedCreateWithoutDocumentReviewsInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutDocumentReviewsInput
+  connect?: Prisma.OrganizationWhereUniqueInput
+}
+
+export type OrganizationUpdateOneWithoutDocumentReviewsNestedInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutDocumentReviewsInput, Prisma.OrganizationUncheckedCreateWithoutDocumentReviewsInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutDocumentReviewsInput
+  upsert?: Prisma.OrganizationUpsertWithoutDocumentReviewsInput
+  disconnect?: Prisma.OrganizationWhereInput | boolean
+  delete?: Prisma.OrganizationWhereInput | boolean
+  connect?: Prisma.OrganizationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OrganizationUpdateToOneWithWhereWithoutDocumentReviewsInput, Prisma.OrganizationUpdateWithoutDocumentReviewsInput>, Prisma.OrganizationUncheckedUpdateWithoutDocumentReviewsInput>
+}
+
+export type OrganizationCreateWithoutTypesInput = {
   id?: string
   name: string
-  type: $Enums.OrganizationType
-  status?: $Enums.OrganizationStatus
-  isPlatformOrg?: boolean
-  email?: string | null
-  phone?: string | null
-  address?: string | null
-  city?: string | null
-  state?: string | null
-  country?: string | null
-  website?: string | null
-  logoUrl?: string | null
-  description?: string | null
-  bankCode?: string | null
-  bankLicenseNo?: string | null
-  swiftCode?: string | null
-  sortCode?: string | null
-  cacNumber?: string | null
-  cacCertificateUrl?: string | null
-  taxId?: string | null
-  approvedAt?: Date | string | null
-  approvedById?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  tenant: Prisma.TenantCreateNestedOneWithoutOrganizationsInput
-  applicationAssignments?: Prisma.ApplicationOrganizationCreateNestedManyWithoutOrganizationInput
-  documentRequirements?: Prisma.BankDocumentRequirementCreateNestedManyWithoutOrganizationInput
-}
-
-export type OrganizationUncheckedCreateWithoutMembersInput = {
-  id?: string
-  tenantId: string
-  name: string
-  type: $Enums.OrganizationType
-  status?: $Enums.OrganizationStatus
-  isPlatformOrg?: boolean
-  email?: string | null
-  phone?: string | null
-  address?: string | null
-  city?: string | null
-  state?: string | null
-  country?: string | null
-  website?: string | null
-  logoUrl?: string | null
-  description?: string | null
-  bankCode?: string | null
-  bankLicenseNo?: string | null
-  swiftCode?: string | null
-  sortCode?: string | null
-  cacNumber?: string | null
-  cacCertificateUrl?: string | null
-  taxId?: string | null
-  approvedAt?: Date | string | null
-  approvedById?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  applicationAssignments?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutOrganizationInput
-  documentRequirements?: Prisma.BankDocumentRequirementUncheckedCreateNestedManyWithoutOrganizationInput
-}
-
-export type OrganizationCreateOrConnectWithoutMembersInput = {
-  where: Prisma.OrganizationWhereUniqueInput
-  create: Prisma.XOR<Prisma.OrganizationCreateWithoutMembersInput, Prisma.OrganizationUncheckedCreateWithoutMembersInput>
-}
-
-export type OrganizationUpsertWithoutMembersInput = {
-  update: Prisma.XOR<Prisma.OrganizationUpdateWithoutMembersInput, Prisma.OrganizationUncheckedUpdateWithoutMembersInput>
-  create: Prisma.XOR<Prisma.OrganizationCreateWithoutMembersInput, Prisma.OrganizationUncheckedCreateWithoutMembersInput>
-  where?: Prisma.OrganizationWhereInput
-}
-
-export type OrganizationUpdateToOneWithWhereWithoutMembersInput = {
-  where?: Prisma.OrganizationWhereInput
-  data: Prisma.XOR<Prisma.OrganizationUpdateWithoutMembersInput, Prisma.OrganizationUncheckedUpdateWithoutMembersInput>
-}
-
-export type OrganizationUpdateWithoutMembersInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumOrganizationTypeFieldUpdateOperationsInput | $Enums.OrganizationType
-  status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
-  isPlatformOrg?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bankLicenseNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  swiftCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sortCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  cacNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  cacCertificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  taxId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  tenant?: Prisma.TenantUpdateOneRequiredWithoutOrganizationsNestedInput
-  applicationAssignments?: Prisma.ApplicationOrganizationUpdateManyWithoutOrganizationNestedInput
-  documentRequirements?: Prisma.BankDocumentRequirementUpdateManyWithoutOrganizationNestedInput
-}
-
-export type OrganizationUncheckedUpdateWithoutMembersInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumOrganizationTypeFieldUpdateOperationsInput | $Enums.OrganizationType
-  status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
-  isPlatformOrg?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bankLicenseNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  swiftCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sortCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  cacNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  cacCertificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  taxId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  applicationAssignments?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutOrganizationNestedInput
-  documentRequirements?: Prisma.BankDocumentRequirementUncheckedUpdateManyWithoutOrganizationNestedInput
-}
-
-export type OrganizationCreateWithoutDocumentRequirementsInput = {
-  id?: string
-  name: string
-  type: $Enums.OrganizationType
   status?: $Enums.OrganizationStatus
   isPlatformOrg?: boolean
   email?: string | null
@@ -1085,13 +967,14 @@ export type OrganizationCreateWithoutDocumentRequirementsInput = {
   tenant: Prisma.TenantCreateNestedOneWithoutOrganizationsInput
   members?: Prisma.OrganizationMemberCreateNestedManyWithoutOrganizationInput
   applicationAssignments?: Prisma.ApplicationOrganizationCreateNestedManyWithoutOrganizationInput
+  documentRequirements?: Prisma.BankDocumentRequirementCreateNestedManyWithoutOrganizationInput
+  documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutOrganizationInput
 }
 
-export type OrganizationUncheckedCreateWithoutDocumentRequirementsInput = {
+export type OrganizationUncheckedCreateWithoutTypesInput = {
   id?: string
   tenantId: string
   name: string
-  type: $Enums.OrganizationType
   status?: $Enums.OrganizationStatus
   isPlatformOrg?: boolean
   email?: string | null
@@ -1116,28 +999,29 @@ export type OrganizationUncheckedCreateWithoutDocumentRequirementsInput = {
   updatedAt?: Date | string
   members?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutOrganizationInput
   applicationAssignments?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutOrganizationInput
+  documentRequirements?: Prisma.BankDocumentRequirementUncheckedCreateNestedManyWithoutOrganizationInput
+  documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
-export type OrganizationCreateOrConnectWithoutDocumentRequirementsInput = {
+export type OrganizationCreateOrConnectWithoutTypesInput = {
   where: Prisma.OrganizationWhereUniqueInput
-  create: Prisma.XOR<Prisma.OrganizationCreateWithoutDocumentRequirementsInput, Prisma.OrganizationUncheckedCreateWithoutDocumentRequirementsInput>
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutTypesInput, Prisma.OrganizationUncheckedCreateWithoutTypesInput>
 }
 
-export type OrganizationUpsertWithoutDocumentRequirementsInput = {
-  update: Prisma.XOR<Prisma.OrganizationUpdateWithoutDocumentRequirementsInput, Prisma.OrganizationUncheckedUpdateWithoutDocumentRequirementsInput>
-  create: Prisma.XOR<Prisma.OrganizationCreateWithoutDocumentRequirementsInput, Prisma.OrganizationUncheckedCreateWithoutDocumentRequirementsInput>
+export type OrganizationUpsertWithoutTypesInput = {
+  update: Prisma.XOR<Prisma.OrganizationUpdateWithoutTypesInput, Prisma.OrganizationUncheckedUpdateWithoutTypesInput>
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutTypesInput, Prisma.OrganizationUncheckedCreateWithoutTypesInput>
   where?: Prisma.OrganizationWhereInput
 }
 
-export type OrganizationUpdateToOneWithWhereWithoutDocumentRequirementsInput = {
+export type OrganizationUpdateToOneWithWhereWithoutTypesInput = {
   where?: Prisma.OrganizationWhereInput
-  data: Prisma.XOR<Prisma.OrganizationUpdateWithoutDocumentRequirementsInput, Prisma.OrganizationUncheckedUpdateWithoutDocumentRequirementsInput>
+  data: Prisma.XOR<Prisma.OrganizationUpdateWithoutTypesInput, Prisma.OrganizationUncheckedUpdateWithoutTypesInput>
 }
 
-export type OrganizationUpdateWithoutDocumentRequirementsInput = {
+export type OrganizationUpdateWithoutTypesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumOrganizationTypeFieldUpdateOperationsInput | $Enums.OrganizationType
   status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
   isPlatformOrg?: Prisma.BoolFieldUpdateOperationsInput | boolean
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1163,13 +1047,14 @@ export type OrganizationUpdateWithoutDocumentRequirementsInput = {
   tenant?: Prisma.TenantUpdateOneRequiredWithoutOrganizationsNestedInput
   members?: Prisma.OrganizationMemberUpdateManyWithoutOrganizationNestedInput
   applicationAssignments?: Prisma.ApplicationOrganizationUpdateManyWithoutOrganizationNestedInput
+  documentRequirements?: Prisma.BankDocumentRequirementUpdateManyWithoutOrganizationNestedInput
+  documentReviews?: Prisma.DocumentReviewUpdateManyWithoutOrganizationNestedInput
 }
 
-export type OrganizationUncheckedUpdateWithoutDocumentRequirementsInput = {
+export type OrganizationUncheckedUpdateWithoutTypesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumOrganizationTypeFieldUpdateOperationsInput | $Enums.OrganizationType
   status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
   isPlatformOrg?: Prisma.BoolFieldUpdateOperationsInput | boolean
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1194,12 +1079,301 @@ export type OrganizationUncheckedUpdateWithoutDocumentRequirementsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   members?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutOrganizationNestedInput
   applicationAssignments?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutOrganizationNestedInput
+  documentRequirements?: Prisma.BankDocumentRequirementUncheckedUpdateManyWithoutOrganizationNestedInput
+  documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationCreateWithoutMembersInput = {
+  id?: string
+  name: string
+  status?: $Enums.OrganizationStatus
+  isPlatformOrg?: boolean
+  email?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  website?: string | null
+  logoUrl?: string | null
+  description?: string | null
+  bankCode?: string | null
+  bankLicenseNo?: string | null
+  swiftCode?: string | null
+  sortCode?: string | null
+  cacNumber?: string | null
+  cacCertificateUrl?: string | null
+  taxId?: string | null
+  approvedAt?: Date | string | null
+  approvedById?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  types?: Prisma.OrganizationTypeAssignmentCreateNestedManyWithoutOrganizationInput
+  tenant: Prisma.TenantCreateNestedOneWithoutOrganizationsInput
+  applicationAssignments?: Prisma.ApplicationOrganizationCreateNestedManyWithoutOrganizationInput
+  documentRequirements?: Prisma.BankDocumentRequirementCreateNestedManyWithoutOrganizationInput
+  documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationUncheckedCreateWithoutMembersInput = {
+  id?: string
+  tenantId: string
+  name: string
+  status?: $Enums.OrganizationStatus
+  isPlatformOrg?: boolean
+  email?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  website?: string | null
+  logoUrl?: string | null
+  description?: string | null
+  bankCode?: string | null
+  bankLicenseNo?: string | null
+  swiftCode?: string | null
+  sortCode?: string | null
+  cacNumber?: string | null
+  cacCertificateUrl?: string | null
+  taxId?: string | null
+  approvedAt?: Date | string | null
+  approvedById?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  types?: Prisma.OrganizationTypeAssignmentUncheckedCreateNestedManyWithoutOrganizationInput
+  applicationAssignments?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutOrganizationInput
+  documentRequirements?: Prisma.BankDocumentRequirementUncheckedCreateNestedManyWithoutOrganizationInput
+  documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationCreateOrConnectWithoutMembersInput = {
+  where: Prisma.OrganizationWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutMembersInput, Prisma.OrganizationUncheckedCreateWithoutMembersInput>
+}
+
+export type OrganizationUpsertWithoutMembersInput = {
+  update: Prisma.XOR<Prisma.OrganizationUpdateWithoutMembersInput, Prisma.OrganizationUncheckedUpdateWithoutMembersInput>
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutMembersInput, Prisma.OrganizationUncheckedCreateWithoutMembersInput>
+  where?: Prisma.OrganizationWhereInput
+}
+
+export type OrganizationUpdateToOneWithWhereWithoutMembersInput = {
+  where?: Prisma.OrganizationWhereInput
+  data: Prisma.XOR<Prisma.OrganizationUpdateWithoutMembersInput, Prisma.OrganizationUncheckedUpdateWithoutMembersInput>
+}
+
+export type OrganizationUpdateWithoutMembersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
+  isPlatformOrg?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankLicenseNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  swiftCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cacNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cacCertificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  taxId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  types?: Prisma.OrganizationTypeAssignmentUpdateManyWithoutOrganizationNestedInput
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutOrganizationsNestedInput
+  applicationAssignments?: Prisma.ApplicationOrganizationUpdateManyWithoutOrganizationNestedInput
+  documentRequirements?: Prisma.BankDocumentRequirementUpdateManyWithoutOrganizationNestedInput
+  documentReviews?: Prisma.DocumentReviewUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationUncheckedUpdateWithoutMembersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
+  isPlatformOrg?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankLicenseNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  swiftCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cacNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cacCertificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  taxId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  types?: Prisma.OrganizationTypeAssignmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  applicationAssignments?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutOrganizationNestedInput
+  documentRequirements?: Prisma.BankDocumentRequirementUncheckedUpdateManyWithoutOrganizationNestedInput
+  documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationCreateWithoutDocumentRequirementsInput = {
+  id?: string
+  name: string
+  status?: $Enums.OrganizationStatus
+  isPlatformOrg?: boolean
+  email?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  website?: string | null
+  logoUrl?: string | null
+  description?: string | null
+  bankCode?: string | null
+  bankLicenseNo?: string | null
+  swiftCode?: string | null
+  sortCode?: string | null
+  cacNumber?: string | null
+  cacCertificateUrl?: string | null
+  taxId?: string | null
+  approvedAt?: Date | string | null
+  approvedById?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  types?: Prisma.OrganizationTypeAssignmentCreateNestedManyWithoutOrganizationInput
+  tenant: Prisma.TenantCreateNestedOneWithoutOrganizationsInput
+  members?: Prisma.OrganizationMemberCreateNestedManyWithoutOrganizationInput
+  applicationAssignments?: Prisma.ApplicationOrganizationCreateNestedManyWithoutOrganizationInput
+  documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationUncheckedCreateWithoutDocumentRequirementsInput = {
+  id?: string
+  tenantId: string
+  name: string
+  status?: $Enums.OrganizationStatus
+  isPlatformOrg?: boolean
+  email?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  website?: string | null
+  logoUrl?: string | null
+  description?: string | null
+  bankCode?: string | null
+  bankLicenseNo?: string | null
+  swiftCode?: string | null
+  sortCode?: string | null
+  cacNumber?: string | null
+  cacCertificateUrl?: string | null
+  taxId?: string | null
+  approvedAt?: Date | string | null
+  approvedById?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  types?: Prisma.OrganizationTypeAssignmentUncheckedCreateNestedManyWithoutOrganizationInput
+  members?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutOrganizationInput
+  applicationAssignments?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutOrganizationInput
+  documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationCreateOrConnectWithoutDocumentRequirementsInput = {
+  where: Prisma.OrganizationWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutDocumentRequirementsInput, Prisma.OrganizationUncheckedCreateWithoutDocumentRequirementsInput>
+}
+
+export type OrganizationUpsertWithoutDocumentRequirementsInput = {
+  update: Prisma.XOR<Prisma.OrganizationUpdateWithoutDocumentRequirementsInput, Prisma.OrganizationUncheckedUpdateWithoutDocumentRequirementsInput>
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutDocumentRequirementsInput, Prisma.OrganizationUncheckedCreateWithoutDocumentRequirementsInput>
+  where?: Prisma.OrganizationWhereInput
+}
+
+export type OrganizationUpdateToOneWithWhereWithoutDocumentRequirementsInput = {
+  where?: Prisma.OrganizationWhereInput
+  data: Prisma.XOR<Prisma.OrganizationUpdateWithoutDocumentRequirementsInput, Prisma.OrganizationUncheckedUpdateWithoutDocumentRequirementsInput>
+}
+
+export type OrganizationUpdateWithoutDocumentRequirementsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
+  isPlatformOrg?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankLicenseNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  swiftCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cacNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cacCertificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  taxId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  types?: Prisma.OrganizationTypeAssignmentUpdateManyWithoutOrganizationNestedInput
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutOrganizationsNestedInput
+  members?: Prisma.OrganizationMemberUpdateManyWithoutOrganizationNestedInput
+  applicationAssignments?: Prisma.ApplicationOrganizationUpdateManyWithoutOrganizationNestedInput
+  documentReviews?: Prisma.DocumentReviewUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationUncheckedUpdateWithoutDocumentRequirementsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
+  isPlatformOrg?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankLicenseNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  swiftCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cacNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cacCertificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  taxId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  types?: Prisma.OrganizationTypeAssignmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  members?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutOrganizationNestedInput
+  applicationAssignments?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutOrganizationNestedInput
+  documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutTenantInput = {
   id?: string
   name: string
-  type: $Enums.OrganizationType
   status?: $Enums.OrganizationStatus
   isPlatformOrg?: boolean
   email?: string | null
@@ -1222,15 +1396,16 @@ export type OrganizationCreateWithoutTenantInput = {
   approvedById?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  types?: Prisma.OrganizationTypeAssignmentCreateNestedManyWithoutOrganizationInput
   members?: Prisma.OrganizationMemberCreateNestedManyWithoutOrganizationInput
   applicationAssignments?: Prisma.ApplicationOrganizationCreateNestedManyWithoutOrganizationInput
   documentRequirements?: Prisma.BankDocumentRequirementCreateNestedManyWithoutOrganizationInput
+  documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutTenantInput = {
   id?: string
   name: string
-  type: $Enums.OrganizationType
   status?: $Enums.OrganizationStatus
   isPlatformOrg?: boolean
   email?: string | null
@@ -1253,9 +1428,11 @@ export type OrganizationUncheckedCreateWithoutTenantInput = {
   approvedById?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  types?: Prisma.OrganizationTypeAssignmentUncheckedCreateNestedManyWithoutOrganizationInput
   members?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutOrganizationInput
   applicationAssignments?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutOrganizationInput
   documentRequirements?: Prisma.BankDocumentRequirementUncheckedCreateNestedManyWithoutOrganizationInput
+  documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutTenantInput = {
@@ -1291,7 +1468,6 @@ export type OrganizationScalarWhereInput = {
   id?: Prisma.StringFilter<"Organization"> | string
   tenantId?: Prisma.StringFilter<"Organization"> | string
   name?: Prisma.StringFilter<"Organization"> | string
-  type?: Prisma.EnumOrganizationTypeFilter<"Organization"> | $Enums.OrganizationType
   status?: Prisma.EnumOrganizationStatusFilter<"Organization"> | $Enums.OrganizationStatus
   isPlatformOrg?: Prisma.BoolFilter<"Organization"> | boolean
   email?: Prisma.StringNullableFilter<"Organization"> | string | null
@@ -1319,7 +1495,6 @@ export type OrganizationScalarWhereInput = {
 export type OrganizationCreateWithoutApplicationAssignmentsInput = {
   id?: string
   name: string
-  type: $Enums.OrganizationType
   status?: $Enums.OrganizationStatus
   isPlatformOrg?: boolean
   email?: string | null
@@ -1342,16 +1517,17 @@ export type OrganizationCreateWithoutApplicationAssignmentsInput = {
   approvedById?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  types?: Prisma.OrganizationTypeAssignmentCreateNestedManyWithoutOrganizationInput
   tenant: Prisma.TenantCreateNestedOneWithoutOrganizationsInput
   members?: Prisma.OrganizationMemberCreateNestedManyWithoutOrganizationInput
   documentRequirements?: Prisma.BankDocumentRequirementCreateNestedManyWithoutOrganizationInput
+  documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutApplicationAssignmentsInput = {
   id?: string
   tenantId: string
   name: string
-  type: $Enums.OrganizationType
   status?: $Enums.OrganizationStatus
   isPlatformOrg?: boolean
   email?: string | null
@@ -1374,8 +1550,10 @@ export type OrganizationUncheckedCreateWithoutApplicationAssignmentsInput = {
   approvedById?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  types?: Prisma.OrganizationTypeAssignmentUncheckedCreateNestedManyWithoutOrganizationInput
   members?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutOrganizationInput
   documentRequirements?: Prisma.BankDocumentRequirementUncheckedCreateNestedManyWithoutOrganizationInput
+  documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutApplicationAssignmentsInput = {
@@ -1397,7 +1575,6 @@ export type OrganizationUpdateToOneWithWhereWithoutApplicationAssignmentsInput =
 export type OrganizationUpdateWithoutApplicationAssignmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumOrganizationTypeFieldUpdateOperationsInput | $Enums.OrganizationType
   status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
   isPlatformOrg?: Prisma.BoolFieldUpdateOperationsInput | boolean
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1420,16 +1597,17 @@ export type OrganizationUpdateWithoutApplicationAssignmentsInput = {
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  types?: Prisma.OrganizationTypeAssignmentUpdateManyWithoutOrganizationNestedInput
   tenant?: Prisma.TenantUpdateOneRequiredWithoutOrganizationsNestedInput
   members?: Prisma.OrganizationMemberUpdateManyWithoutOrganizationNestedInput
   documentRequirements?: Prisma.BankDocumentRequirementUpdateManyWithoutOrganizationNestedInput
+  documentReviews?: Prisma.DocumentReviewUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutApplicationAssignmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumOrganizationTypeFieldUpdateOperationsInput | $Enums.OrganizationType
   status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
   isPlatformOrg?: Prisma.BoolFieldUpdateOperationsInput | boolean
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1452,14 +1630,159 @@ export type OrganizationUncheckedUpdateWithoutApplicationAssignmentsInput = {
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  types?: Prisma.OrganizationTypeAssignmentUncheckedUpdateManyWithoutOrganizationNestedInput
   members?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutOrganizationNestedInput
+  documentRequirements?: Prisma.BankDocumentRequirementUncheckedUpdateManyWithoutOrganizationNestedInput
+  documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationCreateWithoutDocumentReviewsInput = {
+  id?: string
+  name: string
+  status?: $Enums.OrganizationStatus
+  isPlatformOrg?: boolean
+  email?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  website?: string | null
+  logoUrl?: string | null
+  description?: string | null
+  bankCode?: string | null
+  bankLicenseNo?: string | null
+  swiftCode?: string | null
+  sortCode?: string | null
+  cacNumber?: string | null
+  cacCertificateUrl?: string | null
+  taxId?: string | null
+  approvedAt?: Date | string | null
+  approvedById?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  types?: Prisma.OrganizationTypeAssignmentCreateNestedManyWithoutOrganizationInput
+  tenant: Prisma.TenantCreateNestedOneWithoutOrganizationsInput
+  members?: Prisma.OrganizationMemberCreateNestedManyWithoutOrganizationInput
+  applicationAssignments?: Prisma.ApplicationOrganizationCreateNestedManyWithoutOrganizationInput
+  documentRequirements?: Prisma.BankDocumentRequirementCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationUncheckedCreateWithoutDocumentReviewsInput = {
+  id?: string
+  tenantId: string
+  name: string
+  status?: $Enums.OrganizationStatus
+  isPlatformOrg?: boolean
+  email?: string | null
+  phone?: string | null
+  address?: string | null
+  city?: string | null
+  state?: string | null
+  country?: string | null
+  website?: string | null
+  logoUrl?: string | null
+  description?: string | null
+  bankCode?: string | null
+  bankLicenseNo?: string | null
+  swiftCode?: string | null
+  sortCode?: string | null
+  cacNumber?: string | null
+  cacCertificateUrl?: string | null
+  taxId?: string | null
+  approvedAt?: Date | string | null
+  approvedById?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  types?: Prisma.OrganizationTypeAssignmentUncheckedCreateNestedManyWithoutOrganizationInput
+  members?: Prisma.OrganizationMemberUncheckedCreateNestedManyWithoutOrganizationInput
+  applicationAssignments?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutOrganizationInput
+  documentRequirements?: Prisma.BankDocumentRequirementUncheckedCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationCreateOrConnectWithoutDocumentReviewsInput = {
+  where: Prisma.OrganizationWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutDocumentReviewsInput, Prisma.OrganizationUncheckedCreateWithoutDocumentReviewsInput>
+}
+
+export type OrganizationUpsertWithoutDocumentReviewsInput = {
+  update: Prisma.XOR<Prisma.OrganizationUpdateWithoutDocumentReviewsInput, Prisma.OrganizationUncheckedUpdateWithoutDocumentReviewsInput>
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutDocumentReviewsInput, Prisma.OrganizationUncheckedCreateWithoutDocumentReviewsInput>
+  where?: Prisma.OrganizationWhereInput
+}
+
+export type OrganizationUpdateToOneWithWhereWithoutDocumentReviewsInput = {
+  where?: Prisma.OrganizationWhereInput
+  data: Prisma.XOR<Prisma.OrganizationUpdateWithoutDocumentReviewsInput, Prisma.OrganizationUncheckedUpdateWithoutDocumentReviewsInput>
+}
+
+export type OrganizationUpdateWithoutDocumentReviewsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
+  isPlatformOrg?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankLicenseNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  swiftCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cacNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cacCertificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  taxId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  types?: Prisma.OrganizationTypeAssignmentUpdateManyWithoutOrganizationNestedInput
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutOrganizationsNestedInput
+  members?: Prisma.OrganizationMemberUpdateManyWithoutOrganizationNestedInput
+  applicationAssignments?: Prisma.ApplicationOrganizationUpdateManyWithoutOrganizationNestedInput
+  documentRequirements?: Prisma.BankDocumentRequirementUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationUncheckedUpdateWithoutDocumentReviewsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
+  isPlatformOrg?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bankLicenseNo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  swiftCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cacNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cacCertificateUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  taxId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  types?: Prisma.OrganizationTypeAssignmentUncheckedUpdateManyWithoutOrganizationNestedInput
+  members?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutOrganizationNestedInput
+  applicationAssignments?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutOrganizationNestedInput
   documentRequirements?: Prisma.BankDocumentRequirementUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateManyTenantInput = {
   id?: string
   name: string
-  type: $Enums.OrganizationType
   status?: $Enums.OrganizationStatus
   isPlatformOrg?: boolean
   email?: string | null
@@ -1487,7 +1810,6 @@ export type OrganizationCreateManyTenantInput = {
 export type OrganizationUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumOrganizationTypeFieldUpdateOperationsInput | $Enums.OrganizationType
   status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
   isPlatformOrg?: Prisma.BoolFieldUpdateOperationsInput | boolean
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1510,15 +1832,16 @@ export type OrganizationUpdateWithoutTenantInput = {
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  types?: Prisma.OrganizationTypeAssignmentUpdateManyWithoutOrganizationNestedInput
   members?: Prisma.OrganizationMemberUpdateManyWithoutOrganizationNestedInput
   applicationAssignments?: Prisma.ApplicationOrganizationUpdateManyWithoutOrganizationNestedInput
   documentRequirements?: Prisma.BankDocumentRequirementUpdateManyWithoutOrganizationNestedInput
+  documentReviews?: Prisma.DocumentReviewUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumOrganizationTypeFieldUpdateOperationsInput | $Enums.OrganizationType
   status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
   isPlatformOrg?: Prisma.BoolFieldUpdateOperationsInput | boolean
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1541,15 +1864,16 @@ export type OrganizationUncheckedUpdateWithoutTenantInput = {
   approvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  types?: Prisma.OrganizationTypeAssignmentUncheckedUpdateManyWithoutOrganizationNestedInput
   members?: Prisma.OrganizationMemberUncheckedUpdateManyWithoutOrganizationNestedInput
   applicationAssignments?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutOrganizationNestedInput
   documentRequirements?: Prisma.BankDocumentRequirementUncheckedUpdateManyWithoutOrganizationNestedInput
+  documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateManyWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumOrganizationTypeFieldUpdateOperationsInput | $Enums.OrganizationType
   status?: Prisma.EnumOrganizationStatusFieldUpdateOperationsInput | $Enums.OrganizationStatus
   isPlatformOrg?: Prisma.BoolFieldUpdateOperationsInput | boolean
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1580,15 +1904,19 @@ export type OrganizationUncheckedUpdateManyWithoutTenantInput = {
  */
 
 export type OrganizationCountOutputType = {
+  types: number
   members: number
   applicationAssignments: number
   documentRequirements: number
+  documentReviews: number
 }
 
 export type OrganizationCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  types?: boolean | OrganizationCountOutputTypeCountTypesArgs
   members?: boolean | OrganizationCountOutputTypeCountMembersArgs
   applicationAssignments?: boolean | OrganizationCountOutputTypeCountApplicationAssignmentsArgs
   documentRequirements?: boolean | OrganizationCountOutputTypeCountDocumentRequirementsArgs
+  documentReviews?: boolean | OrganizationCountOutputTypeCountDocumentReviewsArgs
 }
 
 /**
@@ -1599,6 +1927,13 @@ export type OrganizationCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types
    * Select specific fields to fetch from the OrganizationCountOutputType
    */
   select?: Prisma.OrganizationCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * OrganizationCountOutputType without action
+ */
+export type OrganizationCountOutputTypeCountTypesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OrganizationTypeAssignmentWhereInput
 }
 
 /**
@@ -1622,12 +1957,18 @@ export type OrganizationCountOutputTypeCountDocumentRequirementsArgs<ExtArgs ext
   where?: Prisma.BankDocumentRequirementWhereInput
 }
 
+/**
+ * OrganizationCountOutputType without action
+ */
+export type OrganizationCountOutputTypeCountDocumentReviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DocumentReviewWhereInput
+}
+
 
 export type OrganizationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   tenantId?: boolean
   name?: boolean
-  type?: boolean
   status?: boolean
   isPlatformOrg?: boolean
   email?: boolean
@@ -1650,10 +1991,12 @@ export type OrganizationSelect<ExtArgs extends runtime.Types.Extensions.Internal
   approvedById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  types?: boolean | Prisma.Organization$typesArgs<ExtArgs>
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   members?: boolean | Prisma.Organization$membersArgs<ExtArgs>
   applicationAssignments?: boolean | Prisma.Organization$applicationAssignmentsArgs<ExtArgs>
   documentRequirements?: boolean | Prisma.Organization$documentRequirementsArgs<ExtArgs>
+  documentReviews?: boolean | Prisma.Organization$documentReviewsArgs<ExtArgs>
   _count?: boolean | Prisma.OrganizationCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["organization"]>
 
@@ -1663,7 +2006,6 @@ export type OrganizationSelectScalar = {
   id?: boolean
   tenantId?: boolean
   name?: boolean
-  type?: boolean
   status?: boolean
   isPlatformOrg?: boolean
   email?: boolean
@@ -1688,28 +2030,31 @@ export type OrganizationSelectScalar = {
   updatedAt?: boolean
 }
 
-export type OrganizationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "name" | "type" | "status" | "isPlatformOrg" | "email" | "phone" | "address" | "city" | "state" | "country" | "website" | "logoUrl" | "description" | "bankCode" | "bankLicenseNo" | "swiftCode" | "sortCode" | "cacNumber" | "cacCertificateUrl" | "taxId" | "approvedAt" | "approvedById" | "createdAt" | "updatedAt", ExtArgs["result"]["organization"]>
+export type OrganizationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "name" | "status" | "isPlatformOrg" | "email" | "phone" | "address" | "city" | "state" | "country" | "website" | "logoUrl" | "description" | "bankCode" | "bankLicenseNo" | "swiftCode" | "sortCode" | "cacNumber" | "cacCertificateUrl" | "taxId" | "approvedAt" | "approvedById" | "createdAt" | "updatedAt", ExtArgs["result"]["organization"]>
 export type OrganizationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  types?: boolean | Prisma.Organization$typesArgs<ExtArgs>
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   members?: boolean | Prisma.Organization$membersArgs<ExtArgs>
   applicationAssignments?: boolean | Prisma.Organization$applicationAssignmentsArgs<ExtArgs>
   documentRequirements?: boolean | Prisma.Organization$documentRequirementsArgs<ExtArgs>
+  documentReviews?: boolean | Prisma.Organization$documentReviewsArgs<ExtArgs>
   _count?: boolean | Prisma.OrganizationCountOutputTypeDefaultArgs<ExtArgs>
 }
 
 export type $OrganizationPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Organization"
   objects: {
+    types: Prisma.$OrganizationTypeAssignmentPayload<ExtArgs>[]
     tenant: Prisma.$TenantPayload<ExtArgs>
     members: Prisma.$OrganizationMemberPayload<ExtArgs>[]
     applicationAssignments: Prisma.$ApplicationOrganizationPayload<ExtArgs>[]
     documentRequirements: Prisma.$BankDocumentRequirementPayload<ExtArgs>[]
+    documentReviews: Prisma.$DocumentReviewPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     tenantId: string
     name: string
-    type: $Enums.OrganizationType
     status: $Enums.OrganizationStatus
     isPlatformOrg: boolean
     email: string | null
@@ -2072,10 +2417,12 @@ readonly fields: OrganizationFieldRefs;
  */
 export interface Prisma__OrganizationClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  types<T extends Prisma.Organization$typesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$typesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrganizationTypeAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   members<T extends Prisma.Organization$membersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$membersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrganizationMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   applicationAssignments<T extends Prisma.Organization$applicationAssignmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$applicationAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApplicationOrganizationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   documentRequirements<T extends Prisma.Organization$documentRequirementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$documentRequirementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BankDocumentRequirementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  documentReviews<T extends Prisma.Organization$documentReviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$documentReviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2108,7 +2455,6 @@ export interface OrganizationFieldRefs {
   readonly id: Prisma.FieldRef<"Organization", 'String'>
   readonly tenantId: Prisma.FieldRef<"Organization", 'String'>
   readonly name: Prisma.FieldRef<"Organization", 'String'>
-  readonly type: Prisma.FieldRef<"Organization", 'OrganizationType'>
   readonly status: Prisma.FieldRef<"Organization", 'OrganizationStatus'>
   readonly isPlatformOrg: Prisma.FieldRef<"Organization", 'Boolean'>
   readonly email: Prisma.FieldRef<"Organization", 'String'>
@@ -2474,6 +2820,30 @@ export type OrganizationDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
 }
 
 /**
+ * Organization.types
+ */
+export type Organization$typesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OrganizationTypeAssignment
+   */
+  select?: Prisma.OrganizationTypeAssignmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OrganizationTypeAssignment
+   */
+  omit?: Prisma.OrganizationTypeAssignmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrganizationTypeAssignmentInclude<ExtArgs> | null
+  where?: Prisma.OrganizationTypeAssignmentWhereInput
+  orderBy?: Prisma.OrganizationTypeAssignmentOrderByWithRelationInput | Prisma.OrganizationTypeAssignmentOrderByWithRelationInput[]
+  cursor?: Prisma.OrganizationTypeAssignmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OrganizationTypeAssignmentScalarFieldEnum | Prisma.OrganizationTypeAssignmentScalarFieldEnum[]
+}
+
+/**
  * Organization.members
  */
 export type Organization$membersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2543,6 +2913,30 @@ export type Organization$documentRequirementsArgs<ExtArgs extends runtime.Types.
   take?: number
   skip?: number
   distinct?: Prisma.BankDocumentRequirementScalarFieldEnum | Prisma.BankDocumentRequirementScalarFieldEnum[]
+}
+
+/**
+ * Organization.documentReviews
+ */
+export type Organization$documentReviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DocumentReview
+   */
+  select?: Prisma.DocumentReviewSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DocumentReview
+   */
+  omit?: Prisma.DocumentReviewOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DocumentReviewInclude<ExtArgs> | null
+  where?: Prisma.DocumentReviewWhereInput
+  orderBy?: Prisma.DocumentReviewOrderByWithRelationInput | Prisma.DocumentReviewOrderByWithRelationInput[]
+  cursor?: Prisma.DocumentReviewWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DocumentReviewScalarFieldEnum | Prisma.DocumentReviewScalarFieldEnum[]
 }
 
 /**

@@ -29,8 +29,8 @@ export * from "./enums.js"
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Users
- * const users = await prisma.user.findMany()
+ * // Fetch zero or more OrganizationTypes
+ * const organizationTypes = await prisma.organizationType.findMany()
  * ```
  * 
  * Read more in our [docs](https://pris.ly/d/client).
@@ -39,6 +39,17 @@ export const PrismaClient = $Class.getPrismaClientClass()
 export type PrismaClient<LogOpts extends Prisma.LogLevel = never, OmitOpts extends Prisma.PrismaClientOptions["omit"] = Prisma.PrismaClientOptions["omit"], ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = $Class.PrismaClient<LogOpts, OmitOpts, ExtArgs>
 export { Prisma }
 
+/**
+ * Model OrganizationType
+ * 
+ */
+export type OrganizationType = Prisma.OrganizationTypeModel
+/**
+ * Model OrganizationTypeAssignment
+ * Links organizations to their types (many-to-many)
+ * An organization can have multiple types (e.g., QShelter is PLATFORM + DEVELOPER)
+ */
+export type OrganizationTypeAssignment = Prisma.OrganizationTypeAssignmentModel
 /**
  * Model User
  * 
@@ -79,8 +90,8 @@ export type TenantMembership = Prisma.TenantMembershipModel
 export type Organization = Prisma.OrganizationModel
 /**
  * Model OrganizationMember
- * OrganizationMember: Links users to organizations with roles and permissions
- * Supports maker-checker workflows via canApprove and approvalLimit
+ * OrganizationMember: Links users to organizations
+ * User's own roles (via UserRole) determine their abilities within the org
  */
 export type OrganizationMember = Prisma.OrganizationMemberModel
 /**

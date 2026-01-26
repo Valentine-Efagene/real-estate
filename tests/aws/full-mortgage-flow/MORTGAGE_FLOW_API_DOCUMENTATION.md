@@ -1,7 +1,7 @@
 # QShelter Mortgage Flow - Complete API Documentation
 
-**Version:** 1.0  
-**Last Updated:** January 25, 2026  
+**Version:** 2.0  
+**Last Updated:** January 26, 2026  
 **Environment:** AWS Staging
 
 ---
@@ -9,6 +9,12 @@
 ## Executive Summary
 
 This document describes the complete end-to-end mortgage application flow for the QShelter platform. It follows the journey of **Chidi Nnamdi**, a 40-year-old first-time homebuyer purchasing a ₦85,000,000 3-bedroom flat at **Lekki Gardens Estate** in Lagos, Nigeria.
+
+### Key Changes in v2.0
+
+- **Organization Types:** Replaced hardcoded `reviewParty` enum with dynamic `organizationTypeCode` (PLATFORM, BANK, DEVELOPER, etc.)
+- **Stage-Based Reviews:** Each approval stage is responsible for reviewing documents from specific uploaders
+- **Auto-Approval:** Documents uploaded by the party responsible for that stage are automatically approved
 
 ### Key Actors
 
@@ -566,6 +572,8 @@ x-idempotency-key: create-lekki-gardens
 **Service:** Mortgage Service  
 **Authentication:** Bearer Token (Admin)
 
+> **Note:** Approval stages now use `organizationTypeCode` instead of `reviewParty`. The organization type codes are dynamically created at bootstrap and include: `PLATFORM`, `BANK`, `DEVELOPER`, `LEGAL`, `INSURER`, `GOVERNMENT`.
+
 #### Request Body
 
 ```json
@@ -607,18 +615,28 @@ x-idempotency-key: create-lekki-gardens
     {
       "name": "QShelter Staff Review",
       "order": 1,
-      "reviewParty": "INTERNAL",
+      "organizationTypeCode": "PLATFORM",
+      "autoTransition": false,
+      "waitForAllDocuments": true,
+      "onRejection": "CASCADE_BACK",
       "slaHours": 24
     },
     {
       "name": "Bank Review",
       "order": 2,
-      "reviewParty": "BANK",
+      "organizationTypeCode": "BANK",
+      "autoTransition": true,
+      "waitForAllDocuments": true,
+      "onRejection": "CASCADE_BACK",
       "slaHours": 48
     }
   ]
 }
 ```
+
+> **Stage Responsibilities:**
+> - **PLATFORM stage** reviews documents with `uploadedBy: CUSTOMER` or `uploadedBy: PLATFORM`
+> - **BANK stage** reviews documents with `uploadedBy: LENDER` (auto-approved when lender uploads)
 
 ---
 
@@ -648,8 +666,9 @@ x-idempotency-key: create-lekki-gardens
     {
       "name": "Bank Document Upload",
       "order": 1,
-      "reviewParty": "BANK",
-      "autoTransition": true
+      "organizationTypeCode": "BANK",
+      "autoTransition": true,
+      "waitForAllDocuments": true
     }
   ]
 }
@@ -900,14 +919,18 @@ x-idempotency-key: create-lekki-gardens
 
 > **Important:** KYC documents go through a **two-stage approval workflow**:
 >
-> 1. **Stage 1 (Internal):** Adaeze (QShelter Mortgage Operations Officer) reviews documents first
-> 2. **Stage 2 (Bank):** Nkechi (Access Bank Loan Officer) reviews documents after internal approval
+> 1. **Stage 1 (PLATFORM):** Adaeze (Mortgage Operations Officer) reviews documents uploaded by CUSTOMER
+> 2. **Stage 2 (BANK):** Lender documents (preapproval letter) are **auto-approved** when uploaded by the lender
 >
-> The phase only completes when both stages have approved all documents.
+> Each stage is responsible for reviewing documents from specific uploaders:
+> - **PLATFORM stage** → reviews CUSTOMER and PLATFORM uploads
+> - **BANK stage** → reviews LENDER uploads (auto-approved when lender uploads their own documents)
+>
+> The phase completes when both stages have approved all their respective documents.
 
 ### Step 8.1: Chidi Uploads KYC Documents
 
-Customer uploads three documents:
+Customer uploads three documents.
 
 **Endpoint:** `POST /applications/{{applicationId}}/phases/{{kycPhaseId}}/documents`  
 **Service:** Mortgage Service  
@@ -945,47 +968,44 @@ Customer uploads three documents:
 
 ---
 
-### Step 8.2: Stage 1 - Adaeze (Internal) Reviews Documents
+### Step 8.2: Stage 1 - Adaeze (QShelter) Reviews Documents
 
-QShelter Mortgage Operations Officer performs internal verification.
+QShelter Mortgage Operations Officer performs platform verification of CUSTOMER-uploaded documents.
 
 **Endpoint:** `POST /applications/{{applicationId}}/documents/{{documentId}}/review`  
 **Service:** Mortgage Service  
 **Authentication:** Bearer Token (Adaeze - Mortgage Operations Officer)
 
-#### Request Body (for each document)
+#### Request Body (for each customer document)
 
 ```json
 {
   "status": "APPROVED",
-  "note": "Internal review: Document verified by QShelter Mortgage Operations",
-  "reviewParty": "INTERNAL"
+  "organizationTypeCode": "PLATFORM",
+  "comment": "QShelter review: Document verified by Mortgage Operations"
 }
 ```
 
----
-
-### Step 8.3: Stage 2 - Nkechi (Bank) Reviews Documents
-
-After internal approval, Access Bank Loan Officer performs bank-level verification.
-
-**Endpoint:** `POST /applications/{{applicationId}}/documents/{{documentId}}/review`  
-**Service:** Mortgage Service  
-**Authentication:** Bearer Token (Nkechi - Access Bank Loan Officer)
-
-#### Request Body (for each document)
+#### Response (200 OK)
 
 ```json
 {
-  "status": "APPROVED",
-  "note": "Bank review: Document approved by Access Bank lending team",
-  "reviewParty": "BANK"
+  "success": true,
+  "data": {
+    "id": "...",
+    "decision": "APPROVED",
+    "stageProgressId": "..."
+  }
 }
 ```
 
+> **Note:** After all 3 customer documents are approved by PLATFORM, Stage 1 automatically completes and Stage 2 (BANK) activates.
+
 ---
 
-### Step 8.4: Nkechi Uploads Preapproval Letter
+### Step 8.3: Stage 2 - Nkechi (Bank) Uploads Preapproval Letter (Auto-Approved)
+
+When the lender uploads their preapproval letter during Stage 2 (BANK), the document is **automatically approved** because the uploader matches the stage's organization type. This is by design: uploaders don't need to review their own documents.
 
 **Endpoint:** `POST /applications/{{applicationId}}/phases/{{kycPhaseId}}/documents`  
 **Service:** Mortgage Service  
@@ -1001,7 +1021,49 @@ After internal approval, Access Bank Loan Officer performs bank-level verificati
 }
 ```
 
-> **Note:** Phase completes when all documents are uploaded AND approved by both stages (Internal + Bank).
+#### Response (201 Created)
+
+```json
+{
+  "success": true,
+  "data": {
+    "document": {
+      "id": "...",
+      "documentType": "PREAPPROVAL_LETTER",
+      "status": "APPROVED"
+    }
+  }
+}
+```
+
+> **Important:** The document status is immediately `APPROVED` because:
+> 1. Current stage is BANK (Stage 2)
+> 2. PREAPPROVAL_LETTER is defined with `uploadedBy: LENDER`
+> 3. LENDER maps to BANK organization type
+> 4. Uploaders don't review their own documents - they are auto-approved
+>
+> After the auto-approval, Stage 2 completes and the entire KYC phase becomes COMPLETED.
+
+---
+
+### Step 8.4: Verify KYC Phase Completed
+
+**Endpoint:** `GET /applications/{{applicationId}}/phases/{{kycPhaseId}}`  
+**Service:** Mortgage Service  
+**Authentication:** Bearer Token (Customer - Chidi)
+
+#### Response (200 OK)
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": "...",
+    "status": "COMPLETED",
+    "type": "DOCUMENTATION"
+  }
+}
+```
 
 ---
 

@@ -16,7 +16,7 @@
     "dependencies": {
         "@aws-sdk/client-dynamodb": "^3.529.0",
         "@aws-sdk/lib-dynamodb": "^3.529.0",
-        "@valentine-efagene/qshelter-common": "^2.0.150",
+        "@valentine-efagene/qshelter-common": "^2.0.153",
         "jsonwebtoken": "^9.0.2",
         "zod": "^4.3.5"
     },

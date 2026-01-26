@@ -4,9 +4,7 @@ import {
     ConflictError,
     ValidationError,
     PolicyEventPublisher,
-    OrganizationType,
     OrganizationStatus,
-    OrganizationRole,
 } from '@valentine-efagene/qshelter-common';
 
 // Initialize policy event publisher for DynamoDB sync (when org members get roles)
@@ -22,7 +20,10 @@ const policyPublisher = new PolicyEventPublisher('user-service', {
 
 export interface CreateOrganizationInput {
     name: string;
-    type: OrganizationType;
+    /** Organization type codes (e.g., ['PLATFORM', 'DEVELOPER']) */
+    typeCodes: string[];
+    /** Which type is primary for display purposes */
+    primaryTypeCode?: string;
     email?: string;
     phone?: string;
     address?: string;
@@ -64,22 +65,16 @@ export interface UpdateOrganizationInput {
 
 export interface AddMemberInput {
     userId: string;
-    role?: OrganizationRole;
     title?: string;
     department?: string;
     employeeId?: string;
-    canApprove?: boolean;
-    approvalLimit?: number;
 }
 
 export interface UpdateMemberInput {
-    role?: OrganizationRole;
     title?: string;
     department?: string;
     employeeId?: string;
     isActive?: boolean;
-    canApprove?: boolean;
-    approvalLimit?: number;
 }
 
 export interface PaginationParams {
@@ -87,7 +82,7 @@ export interface PaginationParams {
     limit?: number;
     sortBy?: string;
     sortOrder?: 'asc' | 'desc';
-    type?: OrganizationType;
+    typeCode?: string; // Filter by organization type code
     status?: OrganizationStatus;
     search?: string;
 }
@@ -101,10 +96,45 @@ class OrganizationService {
      * Create a new organization within a tenant.
      */
     async create(tenantId: string, data: CreateOrganizationInput) {
+        // Validate type codes exist
+        if (!data.typeCodes || data.typeCodes.length === 0) {
+            throw new ValidationError('At least one organization type code is required');
+        }
+
+        // Resolve type codes to IDs
+        const orgTypes = await prisma.organizationType.findMany({
+            where: {
+                tenantId,
+                code: { in: data.typeCodes },
+            },
+        });
+
+        const missingCodes = data.typeCodes.filter(
+            (code) => !orgTypes.some((t) => t.code === code)
+        );
+        if (missingCodes.length > 0) {
+            throw new ValidationError(`Unknown organization type codes: ${missingCodes.join(', ')}`);
+        }
+
+        // Determine primary type
+        const primaryCode = data.primaryTypeCode || data.typeCodes[0];
+        const primaryType = orgTypes.find((t) => t.code === primaryCode);
+        if (!primaryType) {
+            throw new ValidationError(`Primary type code ${primaryCode} not found in type codes`);
+        }
+
         // Normalize empty strings to undefined (so they become null in DB)
         // This prevents unique constraint issues with empty strings
         const normalizedData = {
-            ...data,
+            name: data.name,
+            email: data.email,
+            phone: data.phone,
+            address: data.address,
+            city: data.city,
+            state: data.state,
+            country: data.country,
+            website: data.website,
+            description: data.description,
             bankCode: data.bankCode?.trim() || undefined,
             bankLicenseNo: data.bankLicenseNo?.trim() || undefined,
             swiftCode: data.swiftCode?.trim() || undefined,
@@ -132,21 +162,43 @@ class OrganizationService {
             }
         }
 
-        return prisma.organization.create({
-            data: {
-                tenantId,
-                ...normalizedData,
-                status: 'ACTIVE', // Auto-activate for now
-            },
-            include: {
-                members: {
-                    include: {
-                        user: {
-                            select: { id: true, email: true, firstName: true, lastName: true },
+        // Create organization with type assignments in a transaction
+        return prisma.$transaction(async (tx) => {
+            const org = await tx.organization.create({
+                data: {
+                    tenantId,
+                    ...normalizedData,
+                    status: 'ACTIVE', // Auto-activate for now
+                },
+            });
+
+            // Create type assignments
+            await tx.organizationTypeAssignment.createMany({
+                data: orgTypes.map((type) => ({
+                    organizationId: org.id,
+                    typeId: type.id,
+                    isPrimary: type.id === primaryType.id,
+                })),
+            });
+
+            // Return with relations
+            return tx.organization.findUnique({
+                where: { id: org.id },
+                include: {
+                    types: {
+                        include: {
+                            orgType: { select: { id: true, code: true, name: true } },
+                        },
+                    },
+                    members: {
+                        include: {
+                            user: {
+                                select: { id: true, email: true, firstName: true, lastName: true },
+                            },
                         },
                     },
                 },
-            },
+            });
         });
     }
 
@@ -157,6 +209,11 @@ class OrganizationService {
         const org = await prisma.organization.findFirst({
             where: { id, tenantId },
             include: {
+                types: {
+                    include: {
+                        orgType: { select: { id: true, code: true, name: true } },
+                    },
+                },
                 members: {
                     include: {
                         user: {
@@ -183,13 +240,20 @@ class OrganizationService {
             limit = 20,
             sortBy = 'createdAt',
             sortOrder = 'desc',
-            type,
+            typeCode,
             status,
             search,
         } = params;
 
         const where: any = { tenantId };
-        if (type) where.type = type;
+        // Filter by organization type code via the types relation
+        if (typeCode) {
+            where.types = {
+                some: {
+                    type: { code: typeCode },
+                },
+            };
+        }
         if (status) where.status = status;
         if (search) {
             where.OR = [
@@ -205,6 +269,11 @@ class OrganizationService {
                 skip: (page - 1) * limit,
                 take: limit,
                 include: {
+                    types: {
+                        include: {
+                            orgType: { select: { id: true, code: true, name: true } },
+                        },
+                    },
                     _count: { select: { members: true } },
                 },
             }),
@@ -251,6 +320,11 @@ class OrganizationService {
             where: { id },
             data,
             include: {
+                types: {
+                    include: {
+                        orgType: { select: { id: true, code: true, name: true } },
+                    },
+                },
                 members: {
                     include: {
                         user: {
@@ -283,7 +357,7 @@ class OrganizationService {
      * Also assigns the appropriate role based on organization type.
      */
     async addMember(tenantId: string, organizationId: string, data: AddMemberInput) {
-        const org = await this.findById(tenantId, organizationId);
+        await this.findById(tenantId, organizationId);
 
         // Verify user exists and has a TenantMembership for this tenant
         // Note: Users don't have tenantId directly set on User model - they have TenantMemberships
@@ -307,8 +381,9 @@ class OrganizationService {
             throw new ConflictError('User is already a member of this organization');
         }
 
-        // Determine the role name based on organization type
-        const roleName = this.getRoleNameForOrgType(org.type);
+        // Determine the role name based on organization's primary type
+        const primaryTypeCode = await this.getPrimaryTypeCode(organizationId);
+        const roleName = primaryTypeCode ? this.getRoleNameForOrgTypeCode(primaryTypeCode) : 'user';
 
         // Create member and assign role in a transaction
         const result = await prisma.$transaction(async (tx) => {
@@ -317,21 +392,17 @@ class OrganizationService {
                 data: {
                     organizationId,
                     userId: data.userId,
-                    role: data.role || 'OFFICER',
                     title: data.title,
                     department: data.department,
                     employeeId: data.employeeId,
-                    canApprove: data.canApprove || false,
-                    approvalLimit: data.approvalLimit,
-                    invitedAt: new Date(),
-                    acceptedAt: new Date(), // Auto-accept for now
+                    joinedAt: new Date(),
                 },
                 include: {
                     user: {
                         select: { id: true, email: true, firstName: true, lastName: true },
                     },
                     organization: {
-                        select: { id: true, name: true, type: true },
+                        select: { id: true, name: true },
                     },
                 },
             });
@@ -346,7 +417,7 @@ class OrganizationService {
                 role = await tx.role.create({
                     data: {
                         name: roleName,
-                        description: `${roleName} role for ${org.type} organization members`,
+                        description: `${roleName} role for organization members`,
                         tenantId,
                         isSystem: false,
                     },
@@ -442,10 +513,11 @@ class OrganizationService {
     // =========================================================================
 
     /**
-     * Map organization type to role name.
+     * Map organization type code to role name.
+     * Uses the primary type of the organization to determine the appropriate role.
      */
-    private getRoleNameForOrgType(type: OrganizationType): string {
-        switch (type) {
+    private getRoleNameForOrgTypeCode(typeCode: string): string {
+        switch (typeCode) {
             case 'BANK':
                 return 'LENDER';
             case 'DEVELOPER':
@@ -461,6 +533,17 @@ class OrganizationService {
             default:
                 return 'user';
         }
+    }
+
+    /**
+     * Get the primary type code of an organization.
+     */
+    private async getPrimaryTypeCode(organizationId: string): Promise<string | null> {
+        const primaryAssignment = await prisma.organizationTypeAssignment.findFirst({
+            where: { organizationId, isPrimary: true },
+            include: { orgType: { select: { code: true } } },
+        });
+        return primaryAssignment?.orgType.code ?? null;
     }
 
     /**

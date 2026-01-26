@@ -21,15 +21,48 @@ const router = Router();
 // =============================================================================
 
 /**
- * Map organization type to review party
+ * Organization types that participate in document reviews
+ * Uses OrganizationType.code values from the database
  */
-const ORG_TYPE_TO_REVIEW_PARTY: Record<string, string> = {
-    'BANK': 'BANK',
-    'DEVELOPER': 'DEVELOPER',
-    'LEGAL': 'LEGAL',
-    'INSURER': 'INSURER',
-    'GOVERNMENT': 'GOVERNMENT',
-};
+const REVIEW_ORG_TYPES = ['PLATFORM', 'BANK', 'DEVELOPER', 'LEGAL', 'INSURER', 'GOVERNMENT'];
+
+/**
+ * Helper to get the primary type code of an organization.
+ * Organizations can have multiple types - this returns the primary one.
+ */
+async function getPrimaryTypeCode(
+    tenantPrisma: ReturnType<typeof getTenantPrisma>,
+    organizationId: string
+): Promise<string | null> {
+    const org = await tenantPrisma.organization.findUnique({
+        where: { id: organizationId },
+        include: {
+            types: {
+                where: { isPrimary: true },
+                include: { orgType: { select: { code: true } } },
+                take: 1,
+            },
+        },
+    });
+    return org?.types[0]?.orgType?.code ?? null;
+}
+
+/**
+ * Helper to check if an organization has a specific type.
+ */
+async function hasOrgType(
+    tenantPrisma: ReturnType<typeof getTenantPrisma>,
+    organizationId: string,
+    typeCode: string
+): Promise<boolean> {
+    const assignment = await tenantPrisma.organizationTypeAssignment.findFirst({
+        where: {
+            organizationId,
+            orgType: { code: typeCode },
+        },
+    });
+    return assignment !== null;
+}
 
 /**
  * GET /organizations/:orgId/pending-reviews
@@ -61,27 +94,61 @@ router.get(
             }
         }
 
-        // Get organization details
+        // Get organization details with its types
         const organization = await tenantPrisma.organization.findUnique({
             where: { id: orgId },
+            include: {
+                types: {
+                    include: {
+                        orgType: { select: { id: true, code: true, name: true } },
+                    },
+                },
+            },
         });
 
         if (!organization) {
             throw new AppError(404, 'Organization not found');
         }
 
-        const reviewParty = ORG_TYPE_TO_REVIEW_PARTY[organization.type];
-        if (!reviewParty) {
+        // Get organization type codes
+        const orgTypeCodes = organization.types.map(t => t.orgType.code);
+        const primaryTypeCode = organization.types.find(t => t.isPrimary)?.orgType?.code || orgTypeCodes[0];
+
+        // Check if any of this organization's types participate in reviews
+        const participatingTypes = orgTypeCodes.filter(code => REVIEW_ORG_TYPES.includes(code));
+        if (participatingTypes.length === 0) {
             return res.json(successResponse({
                 organization: {
                     id: organization.id,
                     name: organization.name,
-                    type: organization.type,
+                    types: orgTypeCodes,
                 },
                 pendingReviews: [],
                 message: 'This organization type does not participate in document reviews',
             }));
         }
+
+        // Look up the OrganizationType records for this organization's types
+        const orgTypes = await tenantPrisma.organizationType.findMany({
+            where: {
+                tenantId,
+                code: { in: participatingTypes },
+            },
+        });
+
+        if (orgTypes.length === 0) {
+            return res.json(successResponse({
+                organization: {
+                    id: organization.id,
+                    name: organization.name,
+                    types: orgTypeCodes,
+                },
+                pendingReviews: [],
+                message: 'Organization type not configured for this tenant',
+            }));
+        }
+
+        const orgTypeIds = orgTypes.map(t => t.id);
 
         // Find applications where this organization is bound
         const applicationBindings = await tenantPrisma.applicationOrganization.findMany({
@@ -123,7 +190,7 @@ router.get(
         const pendingReviews = [];
 
         for (const binding of applicationBindings) {
-            // Find approval stages in progress for this review party
+            // Find approval stages in progress for any of this organization's types
             const stages = await tenantPrisma.approvalStageProgress.findMany({
                 where: {
                     documentationPhase: {
@@ -131,13 +198,20 @@ router.get(
                             applicationId: binding.applicationId,
                         },
                     },
-                    reviewParty: reviewParty as any,
+                    organizationTypeId: { in: orgTypeIds },
                     status: 'IN_PROGRESS',
                 },
                 include: {
                     documentationPhase: {
                         include: {
                             phase: true,
+                        },
+                    },
+                    organizationType: {
+                        select: {
+                            id: true,
+                            code: true,
+                            name: true,
                         },
                     },
                     documentApprovals: {
@@ -200,7 +274,6 @@ router.get(
                     },
                     binding: {
                         id: binding.id,
-                        role: binding.role,
                         status: binding.status,
                         assignedAt: binding.assignedAt,
                     },
@@ -219,7 +292,8 @@ router.get(
             organization: {
                 id: organization.id,
                 name: organization.name,
-                type: organization.type,
+                types: orgTypeCodes,
+                primaryType: primaryTypeCode,
             },
             pendingReviews,
             totalCount: pendingReviews.length,
@@ -311,7 +385,6 @@ router.get(
         res.json(successResponse({
             applications: bindings.map(b => ({
                 bindingId: b.id,
-                role: b.role,
                 status: b.status,
                 isPrimary: b.isPrimary,
                 assignedAt: b.assignedAt,
@@ -384,7 +457,7 @@ router.get(
         const { orgId } = req.params;
         const tenantPrisma = getTenantPrisma(req);
 
-        // Verify organization exists and is a bank
+        // Verify organization exists
         const organization = await tenantPrisma.organization.findUnique({
             where: { id: orgId },
         });
@@ -393,7 +466,9 @@ router.get(
             throw new AppError(404, 'Organization not found');
         }
 
-        if (organization.type !== 'BANK') {
+        // Check if organization is a bank
+        const isBank = await hasOrgType(tenantPrisma, orgId, 'BANK');
+        if (!isBank) {
             throw new AppError(400, 'Document requirements are only applicable to bank organizations');
         }
 
@@ -442,7 +517,7 @@ router.post(
 
         const data = BankDocumentRequirementSchema.parse(req.body);
 
-        // Verify organization exists and is a bank
+        // Verify organization exists
         const organization = await tenantPrisma.organization.findUnique({
             where: { id: orgId },
         });
@@ -451,22 +526,23 @@ router.post(
             throw new AppError(404, 'Organization not found');
         }
 
-        if (organization.type !== 'BANK') {
+        // Check if organization is a bank
+        const isBank = await hasOrgType(tenantPrisma, orgId, 'BANK');
+        if (!isBank) {
             throw new AppError(400, 'Document requirements are only applicable to bank organizations');
         }
 
-        // Verify membership with appropriate role (or admin)
+        // Verify membership (or admin) - roles are now managed via RBAC, not org member role
         const isAdmin = roles?.some(r => r.includes('ADMIN'));
         if (!isAdmin) {
             const membership = await tenantPrisma.organizationMember.findFirst({
                 where: {
                     organizationId: orgId,
                     userId,
-                    role: { in: ['ADMIN', 'MANAGER'] },
                 },
             });
             if (!membership) {
-                throw new AppError(403, 'You need admin or manager role to manage document requirements');
+                throw new AppError(403, 'You must be a member of this organization to manage document requirements');
             }
         }
 
@@ -534,18 +610,17 @@ router.put(
             throw new AppError(404, 'Document requirement not found');
         }
 
-        // Verify membership with appropriate role (or admin)
+        // Verify membership (or admin) - roles are now managed via RBAC
         const isAdmin = roles?.some(r => r.includes('ADMIN'));
         if (!isAdmin) {
             const membership = await tenantPrisma.organizationMember.findFirst({
                 where: {
                     organizationId: orgId,
                     userId,
-                    role: { in: ['ADMIN', 'MANAGER'] },
                 },
             });
             if (!membership) {
-                throw new AppError(403, 'You need admin or manager role to manage document requirements');
+                throw new AppError(403, 'You must be a member of this organization to manage document requirements');
             }
         }
 
@@ -597,18 +672,17 @@ router.delete(
             throw new AppError(404, 'Document requirement not found');
         }
 
-        // Verify membership with appropriate role (or admin)
+        // Verify membership (or admin) - roles are now managed via RBAC
         const isAdmin = roles?.some(r => r.includes('ADMIN'));
         if (!isAdmin) {
             const membership = await tenantPrisma.organizationMember.findFirst({
                 where: {
                     organizationId: orgId,
                     userId,
-                    role: { in: ['ADMIN', 'MANAGER'] },
                 },
             });
             if (!membership) {
-                throw new AppError(403, 'You need admin or manager role to manage document requirements');
+                throw new AppError(403, 'You must be a member of this organization to manage document requirements');
             }
         }
 

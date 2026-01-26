@@ -4,17 +4,13 @@ import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
 extendZodWithOpenApi(z);
 
 /**
- * Review Party enum
+ * Organization type codes for review parties
+ * These match OrganizationType.code values in the database
+ * Common values: 'PLATFORM', 'BANK', 'DEVELOPER', 'LEGAL', 'INSURER', 'GOVERNMENT', 'CUSTOMER'
  */
-export const ReviewPartyEnum = z.enum([
-    'INTERNAL',
-    'BANK',
-    'DEVELOPER',
-    'LEGAL',
-    'GOVERNMENT',
-    'INSURER',
-    'CUSTOMER',
-]);
+export const OrganizationTypeCodeSchema = z.string().min(1).describe(
+    'The organization type code (e.g., PLATFORM, BANK, DEVELOPER, LEGAL, INSURER, GOVERNMENT, CUSTOMER)'
+);
 
 /**
  * Review Decision enum
@@ -32,7 +28,7 @@ export const ReviewDecisionEnum = z.enum([
  */
 export const ReviewRequirementSchema = z
     .object({
-        party: ReviewPartyEnum,
+        organizationTypeCode: OrganizationTypeCodeSchema,
         required: z.boolean().default(true),
         organizationId: z.string().optional(),
     })
@@ -43,7 +39,7 @@ export const ReviewRequirementSchema = z
  */
 export const SubmitDocumentReviewSchema = z
     .object({
-        reviewParty: ReviewPartyEnum.describe('The party submitting the review'),
+        organizationTypeCode: OrganizationTypeCodeSchema.describe('The organization type code of the reviewing party'),
         decision: ReviewDecisionEnum.exclude(['PENDING', 'WAIVED']).describe(
             'The review decision'
         ),
@@ -71,7 +67,7 @@ export type SubmitDocumentReviewInput = z.infer<typeof SubmitDocumentReviewSchem
  */
 export const WaiveReviewSchema = z
     .object({
-        reviewParty: ReviewPartyEnum.describe('The party whose review is being waived'),
+        organizationTypeCode: OrganizationTypeCodeSchema.describe('The organization type code of the party whose review is being waived'),
         organizationId: z.string().nullable().optional().describe('Organization ID if applicable'),
         reason: z.string().min(10).describe('Reason for waiving the review (min 10 chars)'),
     })
@@ -83,7 +79,7 @@ export type WaiveReviewInput = z.infer<typeof WaiveReviewSchema>;
  * Get pending reviews query params
  */
 export const GetPendingReviewsQuerySchema = z.object({
-    reviewParty: ReviewPartyEnum.describe('Filter by review party'),
+    organizationTypeCode: OrganizationTypeCodeSchema.describe('Filter by organization type code'),
     organizationId: z.string().optional().describe('Filter by organization'),
     applicationId: z.string().optional().describe('Filter by application'),
     limit: z.coerce.number().int().positive().default(50).optional(),

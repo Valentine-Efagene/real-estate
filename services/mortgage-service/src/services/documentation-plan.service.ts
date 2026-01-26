@@ -39,8 +39,38 @@ export function createDocumentationPlanService(prisma: AnyPrismaClient = default
         },
         approvalStages: {
             orderBy: { order: 'asc' as const },
+            include: {
+                organizationType: {
+                    select: { id: true, code: true, name: true },
+                },
+            },
         },
     };
+
+    /**
+     * Resolve organization type code to ID
+     * For global templates (tenantId = null), we look for system-level organization types
+     */
+    async function resolveOrganizationTypeId(tenantId: string | null, code: string): Promise<string> {
+        if (!tenantId) {
+            // For global templates, look for system types (isSystemType = true)
+            const orgType = await prisma.organizationType.findFirst({
+                where: { code, isSystemType: true },
+            });
+            if (!orgType) {
+                throw new AppError(400, `System organization type '${code}' not found`);
+            }
+            return orgType.id;
+        }
+        
+        const orgType = await prisma.organizationType.findUnique({
+            where: { tenantId_code: { tenantId, code } },
+        });
+        if (!orgType) {
+            throw new AppError(400, `Organization type '${code}' not found for tenant`);
+        }
+        return orgType.id;
+    }
 
     async function create(tenantId: string, data: CreateDocumentationPlanInput) {
         // Validate document definitions have unique orders
@@ -54,6 +84,14 @@ export function createDocumentationPlanService(prisma: AnyPrismaClient = default
         if (new Set(stageOrders).size !== stageOrders.length) {
             throw new AppError(400, 'Approval stage orders must be unique');
         }
+
+        // Resolve organization type codes to IDs
+        const resolvedStages = await Promise.all(
+            data.approvalStages.map(async (stage) => ({
+                ...stage,
+                organizationTypeId: await resolveOrganizationTypeId(tenantId, stage.organizationTypeCode),
+            }))
+        );
 
         const plan = await prisma.documentationPlan.create({
             data: {
@@ -78,16 +116,15 @@ export function createDocumentationPlanService(prisma: AnyPrismaClient = default
                     })),
                 },
                 approvalStages: {
-                    create: data.approvalStages.map(stage => ({
+                    create: resolvedStages.map(stage => ({
                         name: stage.name,
                         order: stage.order,
-                        reviewParty: stage.reviewParty,
+                        organizationTypeId: stage.organizationTypeId,
                         autoTransition: stage.autoTransition ?? false,
                         waitForAllDocuments: stage.waitForAllDocuments ?? true,
                         allowEarlyVisibility: stage.allowEarlyVisibility ?? false,
                         onRejection: stage.onRejection ?? 'CASCADE_BACK',
                         restartFromStageOrder: stage.restartFromStageOrder,
-                        organizationId: stage.organizationId,
                         slaHours: stage.slaHours,
                         description: stage.description,
                     })),
@@ -202,13 +239,12 @@ export function createDocumentationPlanService(prisma: AnyPrismaClient = default
                     create: source.approvalStages.map((stage: any) => ({
                         name: stage.name,
                         order: stage.order,
-                        reviewParty: stage.reviewParty,
+                        organizationTypeId: stage.organizationTypeId,
                         autoTransition: stage.autoTransition,
                         waitForAllDocuments: stage.waitForAllDocuments,
                         allowEarlyVisibility: stage.allowEarlyVisibility,
                         onRejection: stage.onRejection,
                         restartFromStageOrder: stage.restartFromStageOrder,
-                        organizationId: stage.organizationId,
                         slaHours: stage.slaHours,
                         description: stage.description,
                     })),
@@ -303,22 +339,29 @@ export function createDocumentationPlanService(prisma: AnyPrismaClient = default
     // =========================================================================
 
     async function addApprovalStage(planId: string, data: AddApprovalStageInput) {
-        await findById(planId);
+        const plan = await findById(planId);
+
+        // Resolve organization type code to ID
+        const organizationTypeId = await resolveOrganizationTypeId(plan.tenantId, data.organizationTypeCode);
 
         const stage = await prisma.approvalStage.create({
             data: {
                 planId,
                 name: data.name,
                 order: data.order,
-                reviewParty: data.reviewParty,
+                organizationTypeId,
                 autoTransition: data.autoTransition ?? false,
                 waitForAllDocuments: data.waitForAllDocuments ?? true,
                 allowEarlyVisibility: data.allowEarlyVisibility ?? false,
                 onRejection: data.onRejection ?? 'CASCADE_BACK',
                 restartFromStageOrder: data.restartFromStageOrder,
-                organizationId: data.organizationId,
                 slaHours: data.slaHours,
                 description: data.description,
+            },
+            include: {
+                organizationType: {
+                    select: { id: true, code: true, name: true },
+                },
             },
         });
 
@@ -344,7 +387,7 @@ export function createDocumentationPlanService(prisma: AnyPrismaClient = default
     }
 
     async function updateApprovalStage(planId: string, stageId: string, data: Partial<AddApprovalStageInput>) {
-        await findById(planId);
+        const plan = await findById(planId);
 
         const stage = await prisma.approvalStage.findUnique({
             where: { id: stageId },
@@ -354,20 +397,30 @@ export function createDocumentationPlanService(prisma: AnyPrismaClient = default
             throw new AppError(404, 'Approval stage not found in this plan');
         }
 
+        // Resolve organization type code to ID if provided
+        let organizationTypeId: string | undefined;
+        if (data.organizationTypeCode) {
+            organizationTypeId = await resolveOrganizationTypeId(plan.tenantId, data.organizationTypeCode);
+        }
+
         const updated = await prisma.approvalStage.update({
             where: { id: stageId },
             data: {
                 name: data.name,
                 order: data.order,
-                reviewParty: data.reviewParty,
+                organizationTypeId,
                 autoTransition: data.autoTransition,
                 waitForAllDocuments: data.waitForAllDocuments,
                 allowEarlyVisibility: data.allowEarlyVisibility,
                 onRejection: data.onRejection,
                 restartFromStageOrder: data.restartFromStageOrder,
-                organizationId: data.organizationId,
                 slaHours: data.slaHours,
                 description: data.description,
+            },
+            include: {
+                organizationType: {
+                    select: { id: true, code: true, name: true },
+                },
             },
         });
 

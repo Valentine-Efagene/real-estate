@@ -1,6 +1,5 @@
 import {
     PrismaClient,
-    ReviewParty,
     ReviewDecision,
     DocumentStatus,
 } from '@valentine-efagene/qshelter-common';
@@ -8,22 +7,30 @@ import { v4 as uuidv4 } from 'uuid';
 
 /**
  * Review requirement configuration
+ * Uses organization type (e.g., 'PLATFORM', 'BANK', 'DEVELOPER') instead of enum
+ * organizationId is optional - if null, any org of that type can review
  */
 export interface ReviewRequirement {
-    party: ReviewParty;
+    /** The organization type code (e.g., 'PLATFORM', 'BANK', 'DEVELOPER') */
+    organizationTypeCode: string;
+    /** Whether this review is required */
     required: boolean;
+    /** Specific organization ID (optional - if null, any org of that type can review) */
     organizationId?: string;
 }
 
 /**
  * Input for submitting a document review
+ * Customer reviews have organizationId = null and use 'CUSTOMER' as organizationTypeCode
  */
 export interface SubmitReviewInput {
     documentId: string;
-    reviewParty: ReviewParty;
+    /** The organization type code (looked up and stored as organizationTypeId) */
+    organizationTypeCode: string;
     decision: ReviewDecision;
     comments?: string;
     concerns?: Array<{ field: string; issue: string }>;
+    /** The reviewing organization (null for customer self-reviews) */
     organizationId?: string;
 }
 
@@ -40,8 +47,26 @@ export interface CreateReviewsInput {
 /**
  * Document Review Service
  * Manages multi-party review workflows for documents
+ * 
+ * Key concepts:
+ * - organizationTypeId: The type of organization doing the review (e.g., PLATFORM, BANK)
+ * - organizationId: The specific organization (null for customer self-reviews)
+ * - Customer reviews: organizationId = null, organizationTypeCode = 'CUSTOMER'
  */
 export function createDocumentReviewService(prismaClient: PrismaClient) {
+    /**
+     * Helper to resolve organization type code to ID
+     */
+    async function resolveOrganizationTypeId(tenantId: string, code: string): Promise<string> {
+        const orgType = await prismaClient.organizationType.findUnique({
+            where: { tenantId_code: { tenantId, code } },
+        });
+        if (!orgType) {
+            throw new Error(`Organization type '${code}' not found for tenant`);
+        }
+        return orgType.id;
+    }
+
     return {
         /**
          * Create review records for a newly uploaded document
@@ -50,17 +75,22 @@ export function createDocumentReviewService(prismaClient: PrismaClient) {
         async createReviewsForDocument(input: CreateReviewsInput): Promise<void> {
             const { documentId, tenantId, reviewRequirements, reviewOrder = 'SEQUENTIAL' } = input;
 
-            // Create a review record for each required party
-            const reviews = reviewRequirements.map((req, index) => ({
-                id: uuidv4(),
-                tenantId,
-                documentId,
-                reviewParty: req.party,
-                organizationId: req.organizationId || null,
-                decision: 'PENDING' as ReviewDecision,
-                // For sequential reviews, set order based on array position
-                reviewOrder: reviewOrder === 'SEQUENTIAL' ? index + 1 : 0,
-            }));
+            // Resolve all organization type codes to IDs
+            const reviews = await Promise.all(
+                reviewRequirements.map(async (req, index) => {
+                    const organizationTypeId = await resolveOrganizationTypeId(tenantId, req.organizationTypeCode);
+                    return {
+                        id: uuidv4(),
+                        tenantId,
+                        documentId,
+                        organizationTypeId,
+                        organizationId: req.organizationId || null,
+                        decision: 'PENDING' as ReviewDecision,
+                        // For sequential reviews, set order based on array position
+                        reviewOrder: reviewOrder === 'SEQUENTIAL' ? index + 1 : 0,
+                    };
+                })
+            );
 
             await prismaClient.documentReview.createMany({
                 data: reviews,
@@ -82,6 +112,19 @@ export function createDocumentReviewService(prismaClient: PrismaClient) {
                             lastName: true,
                         },
                     },
+                    organization: {
+                        select: {
+                            id: true,
+                            name: true,
+                        },
+                    },
+                    organizationType: {
+                        select: {
+                            id: true,
+                            code: true,
+                            name: true,
+                        },
+                    },
                     childReviews: true,
                 },
                 orderBy: { reviewOrder: 'asc' },
@@ -89,17 +132,19 @@ export function createDocumentReviewService(prismaClient: PrismaClient) {
         },
 
         /**
-         * Get pending reviews for a specific party
+         * Get pending reviews for a specific organization type
          */
         async getPendingReviewsForParty(
             tenantId: string,
-            reviewParty: ReviewParty,
+            organizationTypeCode: string,
             organizationId?: string
         ) {
+            const organizationTypeId = await resolveOrganizationTypeId(tenantId, organizationTypeCode);
+
             return prismaClient.documentReview.findMany({
                 where: {
                     tenantId,
-                    reviewParty,
+                    organizationTypeId,
                     organizationId: organizationId || null,
                     decision: 'PENDING',
                 },
@@ -114,26 +159,41 @@ export function createDocumentReviewService(prismaClient: PrismaClient) {
                             },
                         },
                     },
+                    organizationType: {
+                        select: {
+                            id: true,
+                            code: true,
+                            name: true,
+                        },
+                    },
                 },
                 orderBy: { requestedAt: 'asc' },
             });
         },
 
         /**
-         * Check if a party can review (for sequential review order)
+         * Check if an organization type can review (for sequential review order)
          */
         async canPartyReview(
             documentId: string,
-            reviewParty: ReviewParty,
+            tenantId: string,
+            organizationTypeCode: string,
             organizationId?: string
         ): Promise<{ canReview: boolean; reason?: string }> {
+            const organizationTypeId = await resolveOrganizationTypeId(tenantId, organizationTypeCode);
+
             const reviews = await prismaClient.documentReview.findMany({
                 where: { documentId },
+                include: {
+                    organizationType: {
+                        select: { code: true, name: true },
+                    },
+                },
                 orderBy: { reviewOrder: 'asc' },
             });
 
             const targetReview = reviews.find(
-                (r) => r.reviewParty === reviewParty && r.organizationId === (organizationId || null)
+                (r) => r.organizationTypeId === organizationTypeId && r.organizationId === (organizationId || null)
             );
 
             if (!targetReview) {
@@ -151,9 +211,10 @@ export function createDocumentReviewService(prismaClient: PrismaClient) {
                 );
 
                 if (previousPending) {
+                    const waitingFor = previousPending.organizationType?.name || previousPending.organizationType?.code || 'previous party';
                     return {
                         canReview: false,
-                        reason: `Waiting for ${previousPending.reviewParty} review`,
+                        reason: `Waiting for ${waitingFor} review`,
                     };
                 }
             }
@@ -166,15 +227,19 @@ export function createDocumentReviewService(prismaClient: PrismaClient) {
          */
         async submitReview(
             input: SubmitReviewInput,
-            reviewerId: string
+            reviewerId: string,
+            tenantId: string
         ): Promise<{ success: boolean; review?: any; error?: string }> {
-            const { documentId, reviewParty, decision, comments, concerns, organizationId } = input;
+            const { documentId, organizationTypeCode, decision, comments, concerns, organizationId } = input;
 
             // Check if party can review
-            const canReviewResult = await this.canPartyReview(documentId, reviewParty, organizationId);
+            const canReviewResult = await this.canPartyReview(documentId, tenantId, organizationTypeCode, organizationId);
             if (!canReviewResult.canReview) {
                 return { success: false, error: canReviewResult.reason };
             }
+
+            // Resolve organization type
+            const organizationTypeId = await resolveOrganizationTypeId(tenantId, organizationTypeCode);
 
             // Get reviewer info
             const reviewer = await prismaClient.user.findUnique({
@@ -182,12 +247,11 @@ export function createDocumentReviewService(prismaClient: PrismaClient) {
                 select: { firstName: true, lastName: true, email: true },
             });
 
-            // Update the review
+            // Update the review using composite key
             const review = await prismaClient.documentReview.update({
                 where: {
-                    documentId_reviewParty_organizationId: {
+                    documentId_organizationId: {
                         documentId,
-                        reviewParty,
                         organizationId: organizationId || '',
                     },
                 },
@@ -295,7 +359,7 @@ export function createDocumentReviewService(prismaClient: PrismaClient) {
                 id: uuidv4(),
                 tenantId,
                 documentId: newDocumentId,
-                reviewParty: orig.reviewParty,
+                organizationTypeId: orig.organizationTypeId,
                 organizationId: orig.organizationId,
                 decision: 'PENDING' as ReviewDecision,
                 reviewOrder: orig.reviewOrder,
@@ -322,6 +386,19 @@ export function createDocumentReviewService(prismaClient: PrismaClient) {
                             email: true,
                         },
                     },
+                    organizationType: {
+                        select: {
+                            id: true,
+                            code: true,
+                            name: true,
+                        },
+                    },
+                    organization: {
+                        select: {
+                            id: true,
+                            name: true,
+                        },
+                    },
                 },
                 orderBy: { reviewOrder: 'asc' },
             });
@@ -337,8 +414,9 @@ export function createDocumentReviewService(prismaClient: PrismaClient) {
                 hasIssues: reviews.some((r) => r.decision === 'REJECTED' || r.decision === 'CHANGES_REQUESTED'),
                 reviews: reviews.map((r) => ({
                     id: r.id,
-                    party: r.reviewParty,
+                    organizationType: r.organizationType,
                     organizationId: r.organizationId,
+                    organization: r.organization,
                     decision: r.decision,
                     comments: r.comments,
                     concerns: r.concerns,
@@ -353,11 +431,11 @@ export function createDocumentReviewService(prismaClient: PrismaClient) {
         },
 
         /**
-         * Get all documents pending review for a party (dashboard view)
+         * Get all documents pending review for an organization type (dashboard view)
          */
         async getDocumentsPendingReview(
             tenantId: string,
-            reviewParty: ReviewParty,
+            organizationTypeCode: string,
             options?: {
                 organizationId?: string;
                 applicationId?: string;
@@ -365,11 +443,12 @@ export function createDocumentReviewService(prismaClient: PrismaClient) {
                 offset?: number;
             }
         ) {
+            const organizationTypeId = await resolveOrganizationTypeId(tenantId, organizationTypeCode);
             const { organizationId, applicationId, limit = 50, offset = 0 } = options || {};
 
             const where: any = {
                 tenantId,
-                reviewParty,
+                organizationTypeId,
                 decision: 'PENDING',
             };
 
@@ -432,11 +511,14 @@ export function createDocumentReviewService(prismaClient: PrismaClient) {
          */
         async waiveReview(
             documentId: string,
-            reviewParty: ReviewParty,
+            tenantId: string,
+            organizationTypeCode: string,
             organizationId: string | null,
             waiverId: string,
             reason: string
         ) {
+            const organizationTypeId = await resolveOrganizationTypeId(tenantId, organizationTypeCode);
+
             const waiver = await prismaClient.user.findUnique({
                 where: { id: waiverId },
                 select: { firstName: true, lastName: true, email: true },
@@ -444,9 +526,8 @@ export function createDocumentReviewService(prismaClient: PrismaClient) {
 
             const review = await prismaClient.documentReview.update({
                 where: {
-                    documentId_reviewParty_organizationId: {
+                    documentId_organizationId: {
                         documentId,
-                        reviewParty,
                         organizationId: organizationId || '',
                     },
                 },

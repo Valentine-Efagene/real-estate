@@ -18,12 +18,12 @@
  * 1. Prequalification questionnaire by customer
  * 2. Sales offer letter by developer (Emeka from Lekki Gardens)
  * 3. Preapproval documentation (KYC) by customer + preapproval letter by lender (Nkechi from Access Bank)
- *    - Documents reviewed in TWO STAGES: Internal (Adaeze) then Bank (Nkechi)
+ *    - Documents reviewed in TWO STAGES: QShelter (Adaeze) then Bank (Nkechi)
  * 4. Customer pays downpayment
  * 5. Mortgage offer letter by lender (Nkechi from Access Bank)
  *
  * Actors:
- * - Adaeze (Mortgage Operations Officer): QShelter staff who performs internal document review (Stage 1)
+ * - Adaeze (Mortgage Operations Officer): QShelter staff who performs QShelter document review (Stage 1)
  * - Chidi (Customer): First-time homebuyer purchasing a 3-bedroom flat in Lekki
  * - Emeka (Developer): Lekki Gardens developer who uploads sales offer letters
  * - Nkechi (Lender): Access Bank loan officer who performs bank document review (Stage 2) and uploads letters
@@ -319,7 +319,7 @@ describe('Full E2E Mortgage Flow', () => {
                 .set('x-idempotency-key', idempotencyKey('create-qshelter-org'))
                 .send({
                     name: 'QShelter Real Estate',
-                    type: 'PLATFORM',
+                    typeCodes: ['PLATFORM'],
                     isPlatformOrg: true,
                     email: 'support@qshelter.com',
                     phone: '+2348001234567',
@@ -351,10 +351,8 @@ describe('Full E2E Mortgage Flow', () => {
                 .set('x-idempotency-key', idempotencyKey('add-adaeze-to-qshelter'))
                 .send({
                     userId: adaezeId,
-                    role: 'MANAGER',
                     title: 'Mortgage Operations Officer',
                     department: 'Mortgage Operations',
-                    canApprove: true,
                 });
 
             if (response.status !== 201) {
@@ -407,7 +405,7 @@ describe('Full E2E Mortgage Flow', () => {
                 .set('x-idempotency-key', idempotencyKey('create-lekki-gardens'))
                 .send({
                     name: 'Lekki Gardens Development Company',
-                    type: 'DEVELOPER',
+                    typeCodes: ['DEVELOPER'],
                     email: 'info@lekkigardens.com',
                     phone: '+2348012345678',
                     address: '15 Admiralty Way',
@@ -461,10 +459,8 @@ describe('Full E2E Mortgage Flow', () => {
                 .set('x-idempotency-key', idempotencyKey('add-emeka-to-lekki-gardens'))
                 .send({
                     userId: emekaId,
-                    role: 'OFFICER',
                     title: 'Sales Manager',
                     department: 'Sales',
-                    canApprove: true,
                 });
 
             if (response.status !== 201) {
@@ -503,7 +499,7 @@ describe('Full E2E Mortgage Flow', () => {
                 .set('x-idempotency-key', idempotencyKey('create-access-bank'))
                 .send({
                     name: 'Access Bank PLC',
-                    type: 'BANK',
+                    typeCodes: ['BANK'],
                     email: 'mortgages@accessbankplc.com',
                     phone: '+2341234567890',
                     address: '999C Danmole Street',
@@ -558,11 +554,8 @@ describe('Full E2E Mortgage Flow', () => {
                 .set('x-idempotency-key', idempotencyKey('add-nkechi-to-access-bank'))
                 .send({
                     userId: nkechiId,
-                    role: 'MANAGER',
                     title: 'Mortgage Loan Officer',
                     department: 'Retail Banking',
-                    canApprove: true,
-                    approvalLimit: 500000000, // ₦500M approval limit
                 });
 
             if (response.status !== 201) {
@@ -828,7 +821,7 @@ describe('Full E2E Mortgage Flow', () => {
                         {
                             name: 'Developer Document Verification',
                             order: 1,
-                            reviewParty: 'DEVELOPER',
+                            organizationTypeCode: 'DEVELOPER',
                             autoTransition: true,
                             waitForAllDocuments: true,
                             onRejection: 'CASCADE_BACK',
@@ -901,7 +894,7 @@ describe('Full E2E Mortgage Flow', () => {
                         {
                             name: 'QShelter Staff Review',
                             order: 1,
-                            reviewParty: 'INTERNAL',
+                            organizationTypeCode: 'PLATFORM',
                             autoTransition: false,
                             waitForAllDocuments: true,
                             onRejection: 'CASCADE_BACK',
@@ -910,7 +903,7 @@ describe('Full E2E Mortgage Flow', () => {
                         {
                             name: 'Bank Review',
                             order: 2,
-                            reviewParty: 'BANK',
+                            organizationTypeCode: 'BANK',
                             autoTransition: true,
                             waitForAllDocuments: true,
                             onRejection: 'CASCADE_BACK',
@@ -954,7 +947,7 @@ describe('Full E2E Mortgage Flow', () => {
                         {
                             name: 'Bank Document Upload',
                             order: 1,
-                            reviewParty: 'BANK',
+                            organizationTypeCode: 'BANK',
                             autoTransition: true,
                             waitForAllDocuments: true,
                             onRejection: 'CASCADE_BACK',
@@ -1212,7 +1205,7 @@ describe('Full E2E Mortgage Flow', () => {
 
     // =========================================================================
     // Phase 8: KYC Documentation (Two-Stage Review)
-    // Stage 1: Internal Review (Adaeze - QShelter Mortgage Operations Officer)
+    // Stage 1: QShelter Review (Adaeze - Mortgage Operations Officer)
     // Stage 2: Bank Review (Nkechi - Access Bank Loan Officer)
     // =========================================================================
     describe('Phase 8: KYC Documentation', () => {
@@ -1243,8 +1236,8 @@ describe('Full E2E Mortgage Flow', () => {
             }
         });
 
-        it('Step 8.3: Adaeze (Internal - Stage 1) reviews and approves documents', async () => {
-            // Stage 1: QShelter Mortgage Operations Officer performs internal review
+        it('Step 8.3: Adaeze (QShelter - Stage 1) reviews and approves documents', async () => {
+            // Stage 1: QShelter Mortgage Operations Officer performs platform review
             const docsResponse = await mortgageApi
                 .get(`/applications/${applicationId}/phases/${kycPhaseId}/documents`)
                 .set(adminHeaders(adaezeAccessToken));
@@ -1259,56 +1252,67 @@ describe('Full E2E Mortgage Flow', () => {
                 const response = await mortgageApi
                     .post(`/applications/${applicationId}/documents/${doc.id}/review`)
                     .set(adminHeaders(adaezeAccessToken))
-                    .set('x-idempotency-key', idempotencyKey(`internal-approve-${doc.documentType}`))
+                    .set('x-idempotency-key', idempotencyKey(`qshelter-approve-${doc.documentType}`))
                     .send({
                         status: 'APPROVED',
-                        note: 'Internal review: Document verified by QShelter Mortgage Operations',
-                        reviewParty: 'INTERNAL',
+                        organizationTypeCode: 'PLATFORM',
+                        comment: 'QShelter review: Document verified by Mortgage Operations',
                     });
 
+                if (response.status !== 200) {
+                    console.log(`Doc review failed for ${doc.documentType}:`, JSON.stringify(response.body, null, 2));
+                }
                 expect(response.status).toBe(200);
             }
         });
 
-        it('Step 8.4: Nkechi (Bank - Stage 2) reviews and approves documents', async () => {
-            // Stage 2: Bank (Access Bank) reviews documents after internal approval
-            const docsResponse = await mortgageApi
-                .get(`/applications/${applicationId}/phases/${kycPhaseId}/documents`)
-                .set(lenderHeaders(nkechiAccessToken));
-
-            expect(docsResponse.status).toBe(200);
-
-            const customerDocs = docsResponse.body.data.filter(
-                (d: any) => ['ID_CARD', 'BANK_STATEMENT', 'EMPLOYMENT_LETTER'].includes(d.documentType)
-            );
-
-            for (const doc of customerDocs) {
-                const response = await mortgageApi
-                    .post(`/applications/${applicationId}/documents/${doc.id}/review`)
-                    .set(lenderHeaders(nkechiAccessToken))
-                    .set('x-idempotency-key', idempotencyKey(`bank-approve-${doc.documentType}`))
-                    .send({
-                        status: 'APPROVED',
-                        note: 'Bank review: Document approved by Access Bank lending team',
-                        reviewParty: 'BANK',
-                    });
-
-                expect(response.status).toBe(200);
-            }
-        });
-
-        it('Step 8.5: Nkechi (Lender) uploads preapproval letter', async () => {
-            const response = await mortgageApi
+        it('Step 8.4: Nkechi (Bank) uploads preapproval letter (auto-approved)', async () => {
+            // Stage 2: Bank (Access Bank) is responsible for LENDER-uploaded documents
+            // When the lender uploads the preapproval letter during the BANK stage,
+            // it is AUTO-APPROVED because the uploader matches the stage's organization type.
+            // This is the design: uploaders don't need to review their own documents.
+            
+            const uploadResponse = await mortgageApi
                 .post(`/applications/${applicationId}/phases/${kycPhaseId}/documents`)
                 .set(lenderHeaders(nkechiAccessToken))
-                .set('x-idempotency-key', idempotencyKey('upload-preapproval'))
+                .set('x-idempotency-key', idempotencyKey('upload-preapproval-for-bank-review'))
                 .send({
                     documentType: 'PREAPPROVAL_LETTER',
                     url: 'https://s3.amazonaws.com/qshelter/lender/preapproval-chidi.pdf',
                     fileName: 'preapproval-letter.pdf',
                 });
 
-            expect(response.status).toBe(201);
+            if (uploadResponse.status !== 201) {
+                console.log('Preapproval upload failed:', JSON.stringify(uploadResponse.body, null, 2));
+            }
+            expect(uploadResponse.status).toBe(201);
+
+            // Verify the document was auto-approved
+            const docsResponse = await mortgageApi
+                .get(`/applications/${applicationId}/phases/${kycPhaseId}/documents`)
+                .set(lenderHeaders(nkechiAccessToken));
+
+            expect(docsResponse.status).toBe(200);
+
+            const preapprovalDoc = docsResponse.body.data.find(
+                (d: any) => d.documentType === 'PREAPPROVAL_LETTER'
+            );
+
+            expect(preapprovalDoc).toBeDefined();
+            expect(preapprovalDoc.status).toBe('APPROVED');
+        });
+
+        it('Step 8.5: Verify KYC phase is now complete', async () => {
+            // After both stages complete:
+            // - Stage 1 (PLATFORM) approved customer docs
+            // - Stage 2 (BANK) auto-approved lender preapproval upload
+            // The phase should now be complete
+            const response = await mortgageApi
+                .get(`/applications/${applicationId}/phases/${kycPhaseId}`)
+                .set(customerHeaders(chidiAccessToken));
+
+            expect(response.status).toBe(200);
+            expect(response.body.data.status).toBe('COMPLETED');
         });
 
         it('Step 8.6: KYC phase completes after both stages approved', async () => {

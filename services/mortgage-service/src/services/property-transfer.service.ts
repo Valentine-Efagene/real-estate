@@ -566,7 +566,7 @@ class PropertyTransferService {
                                     approvalStageId: stage.id,
                                     name: stage.name,
                                     order: stage.order,
-                                    reviewParty: stage.reviewParty,
+                                    organizationTypeId: stage.organizationTypeId,
                                     status: StageStatus.PENDING,
                                     onRejection: stage.onRejection || 'BLOCK',
                                 },

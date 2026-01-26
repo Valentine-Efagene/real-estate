@@ -14,41 +14,29 @@ import type * as Prisma from "../internal/prismaNamespace.js"
 
 /**
  * Model OrganizationMember
- * OrganizationMember: Links users to organizations with roles and permissions
- * Supports maker-checker workflows via canApprove and approvalLimit
+ * OrganizationMember: Links users to organizations
+ * User's own roles (via UserRole) determine their abilities within the org
  */
 export type OrganizationMemberModel = runtime.Types.Result.DefaultSelection<Prisma.$OrganizationMemberPayload>
 
 export type AggregateOrganizationMember = {
   _count: OrganizationMemberCountAggregateOutputType | null
-  _avg: OrganizationMemberAvgAggregateOutputType | null
-  _sum: OrganizationMemberSumAggregateOutputType | null
   _min: OrganizationMemberMinAggregateOutputType | null
   _max: OrganizationMemberMaxAggregateOutputType | null
-}
-
-export type OrganizationMemberAvgAggregateOutputType = {
-  approvalLimit: runtime.Decimal | null
-}
-
-export type OrganizationMemberSumAggregateOutputType = {
-  approvalLimit: runtime.Decimal | null
 }
 
 export type OrganizationMemberMinAggregateOutputType = {
   id: string | null
   organizationId: string | null
   userId: string | null
-  role: $Enums.OrganizationRole | null
   title: string | null
   department: string | null
   employeeId: string | null
   isActive: boolean | null
-  canApprove: boolean | null
-  approvalLimit: runtime.Decimal | null
   invitedAt: Date | null
   acceptedAt: Date | null
   invitedBy: string | null
+  joinedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -57,16 +45,14 @@ export type OrganizationMemberMaxAggregateOutputType = {
   id: string | null
   organizationId: string | null
   userId: string | null
-  role: $Enums.OrganizationRole | null
   title: string | null
   department: string | null
   employeeId: string | null
   isActive: boolean | null
-  canApprove: boolean | null
-  approvalLimit: runtime.Decimal | null
   invitedAt: Date | null
   acceptedAt: Date | null
   invitedBy: string | null
+  joinedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -75,44 +61,32 @@ export type OrganizationMemberCountAggregateOutputType = {
   id: number
   organizationId: number
   userId: number
-  role: number
   title: number
   department: number
   employeeId: number
   isActive: number
-  canApprove: number
-  approvalLimit: number
   invitedAt: number
   acceptedAt: number
   invitedBy: number
+  joinedAt: number
   createdAt: number
   updatedAt: number
   _all: number
 }
 
 
-export type OrganizationMemberAvgAggregateInputType = {
-  approvalLimit?: true
-}
-
-export type OrganizationMemberSumAggregateInputType = {
-  approvalLimit?: true
-}
-
 export type OrganizationMemberMinAggregateInputType = {
   id?: true
   organizationId?: true
   userId?: true
-  role?: true
   title?: true
   department?: true
   employeeId?: true
   isActive?: true
-  canApprove?: true
-  approvalLimit?: true
   invitedAt?: true
   acceptedAt?: true
   invitedBy?: true
+  joinedAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -121,16 +95,14 @@ export type OrganizationMemberMaxAggregateInputType = {
   id?: true
   organizationId?: true
   userId?: true
-  role?: true
   title?: true
   department?: true
   employeeId?: true
   isActive?: true
-  canApprove?: true
-  approvalLimit?: true
   invitedAt?: true
   acceptedAt?: true
   invitedBy?: true
+  joinedAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -139,16 +111,14 @@ export type OrganizationMemberCountAggregateInputType = {
   id?: true
   organizationId?: true
   userId?: true
-  role?: true
   title?: true
   department?: true
   employeeId?: true
   isActive?: true
-  canApprove?: true
-  approvalLimit?: true
   invitedAt?: true
   acceptedAt?: true
   invitedBy?: true
+  joinedAt?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -192,18 +162,6 @@ export type OrganizationMemberAggregateArgs<ExtArgs extends runtime.Types.Extens
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: OrganizationMemberAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: OrganizationMemberSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: OrganizationMemberMinAggregateInputType
@@ -234,8 +192,6 @@ export type OrganizationMemberGroupByArgs<ExtArgs extends runtime.Types.Extensio
   take?: number
   skip?: number
   _count?: OrganizationMemberCountAggregateInputType | true
-  _avg?: OrganizationMemberAvgAggregateInputType
-  _sum?: OrganizationMemberSumAggregateInputType
   _min?: OrganizationMemberMinAggregateInputType
   _max?: OrganizationMemberMaxAggregateInputType
 }
@@ -244,21 +200,17 @@ export type OrganizationMemberGroupByOutputType = {
   id: string
   organizationId: string
   userId: string
-  role: $Enums.OrganizationRole
   title: string | null
   department: string | null
   employeeId: string | null
   isActive: boolean
-  canApprove: boolean
-  approvalLimit: runtime.Decimal | null
   invitedAt: Date | null
   acceptedAt: Date | null
   invitedBy: string | null
+  joinedAt: Date
   createdAt: Date
   updatedAt: Date
   _count: OrganizationMemberCountAggregateOutputType | null
-  _avg: OrganizationMemberAvgAggregateOutputType | null
-  _sum: OrganizationMemberSumAggregateOutputType | null
   _min: OrganizationMemberMinAggregateOutputType | null
   _max: OrganizationMemberMaxAggregateOutputType | null
 }
@@ -285,16 +237,14 @@ export type OrganizationMemberWhereInput = {
   id?: Prisma.StringFilter<"OrganizationMember"> | string
   organizationId?: Prisma.StringFilter<"OrganizationMember"> | string
   userId?: Prisma.StringFilter<"OrganizationMember"> | string
-  role?: Prisma.EnumOrganizationRoleFilter<"OrganizationMember"> | $Enums.OrganizationRole
   title?: Prisma.StringNullableFilter<"OrganizationMember"> | string | null
   department?: Prisma.StringNullableFilter<"OrganizationMember"> | string | null
   employeeId?: Prisma.StringNullableFilter<"OrganizationMember"> | string | null
   isActive?: Prisma.BoolFilter<"OrganizationMember"> | boolean
-  canApprove?: Prisma.BoolFilter<"OrganizationMember"> | boolean
-  approvalLimit?: Prisma.DecimalNullableFilter<"OrganizationMember"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   invitedAt?: Prisma.DateTimeNullableFilter<"OrganizationMember"> | Date | string | null
   acceptedAt?: Prisma.DateTimeNullableFilter<"OrganizationMember"> | Date | string | null
   invitedBy?: Prisma.StringNullableFilter<"OrganizationMember"> | string | null
+  joinedAt?: Prisma.DateTimeFilter<"OrganizationMember"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"OrganizationMember"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"OrganizationMember"> | Date | string
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
@@ -305,16 +255,14 @@ export type OrganizationMemberOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  role?: Prisma.SortOrder
   title?: Prisma.SortOrderInput | Prisma.SortOrder
   department?: Prisma.SortOrderInput | Prisma.SortOrder
   employeeId?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
-  canApprove?: Prisma.SortOrder
-  approvalLimit?: Prisma.SortOrderInput | Prisma.SortOrder
   invitedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   acceptedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   invitedBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  joinedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   organization?: Prisma.OrganizationOrderByWithRelationInput
@@ -330,16 +278,14 @@ export type OrganizationMemberWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.OrganizationMemberWhereInput | Prisma.OrganizationMemberWhereInput[]
   organizationId?: Prisma.StringFilter<"OrganizationMember"> | string
   userId?: Prisma.StringFilter<"OrganizationMember"> | string
-  role?: Prisma.EnumOrganizationRoleFilter<"OrganizationMember"> | $Enums.OrganizationRole
   title?: Prisma.StringNullableFilter<"OrganizationMember"> | string | null
   department?: Prisma.StringNullableFilter<"OrganizationMember"> | string | null
   employeeId?: Prisma.StringNullableFilter<"OrganizationMember"> | string | null
   isActive?: Prisma.BoolFilter<"OrganizationMember"> | boolean
-  canApprove?: Prisma.BoolFilter<"OrganizationMember"> | boolean
-  approvalLimit?: Prisma.DecimalNullableFilter<"OrganizationMember"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   invitedAt?: Prisma.DateTimeNullableFilter<"OrganizationMember"> | Date | string | null
   acceptedAt?: Prisma.DateTimeNullableFilter<"OrganizationMember"> | Date | string | null
   invitedBy?: Prisma.StringNullableFilter<"OrganizationMember"> | string | null
+  joinedAt?: Prisma.DateTimeFilter<"OrganizationMember"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"OrganizationMember"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"OrganizationMember"> | Date | string
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
@@ -350,23 +296,19 @@ export type OrganizationMemberOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  role?: Prisma.SortOrder
   title?: Prisma.SortOrderInput | Prisma.SortOrder
   department?: Prisma.SortOrderInput | Prisma.SortOrder
   employeeId?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
-  canApprove?: Prisma.SortOrder
-  approvalLimit?: Prisma.SortOrderInput | Prisma.SortOrder
   invitedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   acceptedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   invitedBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  joinedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.OrganizationMemberCountOrderByAggregateInput
-  _avg?: Prisma.OrganizationMemberAvgOrderByAggregateInput
   _max?: Prisma.OrganizationMemberMaxOrderByAggregateInput
   _min?: Prisma.OrganizationMemberMinOrderByAggregateInput
-  _sum?: Prisma.OrganizationMemberSumOrderByAggregateInput
 }
 
 export type OrganizationMemberScalarWhereWithAggregatesInput = {
@@ -376,32 +318,28 @@ export type OrganizationMemberScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"OrganizationMember"> | string
   organizationId?: Prisma.StringWithAggregatesFilter<"OrganizationMember"> | string
   userId?: Prisma.StringWithAggregatesFilter<"OrganizationMember"> | string
-  role?: Prisma.EnumOrganizationRoleWithAggregatesFilter<"OrganizationMember"> | $Enums.OrganizationRole
   title?: Prisma.StringNullableWithAggregatesFilter<"OrganizationMember"> | string | null
   department?: Prisma.StringNullableWithAggregatesFilter<"OrganizationMember"> | string | null
   employeeId?: Prisma.StringNullableWithAggregatesFilter<"OrganizationMember"> | string | null
   isActive?: Prisma.BoolWithAggregatesFilter<"OrganizationMember"> | boolean
-  canApprove?: Prisma.BoolWithAggregatesFilter<"OrganizationMember"> | boolean
-  approvalLimit?: Prisma.DecimalNullableWithAggregatesFilter<"OrganizationMember"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   invitedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"OrganizationMember"> | Date | string | null
   acceptedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"OrganizationMember"> | Date | string | null
   invitedBy?: Prisma.StringNullableWithAggregatesFilter<"OrganizationMember"> | string | null
+  joinedAt?: Prisma.DateTimeWithAggregatesFilter<"OrganizationMember"> | Date | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"OrganizationMember"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"OrganizationMember"> | Date | string
 }
 
 export type OrganizationMemberCreateInput = {
   id?: string
-  role?: $Enums.OrganizationRole
   title?: string | null
   department?: string | null
   employeeId?: string | null
   isActive?: boolean
-  canApprove?: boolean
-  approvalLimit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   invitedAt?: Date | string | null
   acceptedAt?: Date | string | null
   invitedBy?: string | null
+  joinedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutMembersInput
@@ -412,32 +350,28 @@ export type OrganizationMemberUncheckedCreateInput = {
   id?: string
   organizationId: string
   userId: string
-  role?: $Enums.OrganizationRole
   title?: string | null
   department?: string | null
   employeeId?: string | null
   isActive?: boolean
-  canApprove?: boolean
-  approvalLimit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   invitedAt?: Date | string | null
   acceptedAt?: Date | string | null
   invitedBy?: string | null
+  joinedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type OrganizationMemberUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumOrganizationRoleFieldUpdateOperationsInput | $Enums.OrganizationRole
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  canApprove?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  approvalLimit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   invitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutMembersNestedInput
@@ -448,16 +382,14 @@ export type OrganizationMemberUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumOrganizationRoleFieldUpdateOperationsInput | $Enums.OrganizationRole
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  canApprove?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  approvalLimit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   invitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -466,32 +398,28 @@ export type OrganizationMemberCreateManyInput = {
   id?: string
   organizationId: string
   userId: string
-  role?: $Enums.OrganizationRole
   title?: string | null
   department?: string | null
   employeeId?: string | null
   isActive?: boolean
-  canApprove?: boolean
-  approvalLimit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   invitedAt?: Date | string | null
   acceptedAt?: Date | string | null
   invitedBy?: string | null
+  joinedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type OrganizationMemberUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumOrganizationRoleFieldUpdateOperationsInput | $Enums.OrganizationRole
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  canApprove?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  approvalLimit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   invitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -500,16 +428,14 @@ export type OrganizationMemberUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumOrganizationRoleFieldUpdateOperationsInput | $Enums.OrganizationRole
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  canApprove?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  approvalLimit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   invitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -539,38 +465,30 @@ export type OrganizationMemberCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  role?: Prisma.SortOrder
   title?: Prisma.SortOrder
   department?: Prisma.SortOrder
   employeeId?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
-  canApprove?: Prisma.SortOrder
-  approvalLimit?: Prisma.SortOrder
   invitedAt?: Prisma.SortOrder
   acceptedAt?: Prisma.SortOrder
   invitedBy?: Prisma.SortOrder
+  joinedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-}
-
-export type OrganizationMemberAvgOrderByAggregateInput = {
-  approvalLimit?: Prisma.SortOrder
 }
 
 export type OrganizationMemberMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  role?: Prisma.SortOrder
   title?: Prisma.SortOrder
   department?: Prisma.SortOrder
   employeeId?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
-  canApprove?: Prisma.SortOrder
-  approvalLimit?: Prisma.SortOrder
   invitedAt?: Prisma.SortOrder
   acceptedAt?: Prisma.SortOrder
   invitedBy?: Prisma.SortOrder
+  joinedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -579,22 +497,16 @@ export type OrganizationMemberMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  role?: Prisma.SortOrder
   title?: Prisma.SortOrder
   department?: Prisma.SortOrder
   employeeId?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
-  canApprove?: Prisma.SortOrder
-  approvalLimit?: Prisma.SortOrder
   invitedAt?: Prisma.SortOrder
   acceptedAt?: Prisma.SortOrder
   invitedBy?: Prisma.SortOrder
+  joinedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-}
-
-export type OrganizationMemberSumOrderByAggregateInput = {
-  approvalLimit?: Prisma.SortOrder
 }
 
 export type OrganizationMemberCreateNestedManyWithoutUserInput = {
@@ -681,30 +593,16 @@ export type OrganizationMemberUncheckedUpdateManyWithoutOrganizationNestedInput 
   deleteMany?: Prisma.OrganizationMemberScalarWhereInput | Prisma.OrganizationMemberScalarWhereInput[]
 }
 
-export type EnumOrganizationRoleFieldUpdateOperationsInput = {
-  set?: $Enums.OrganizationRole
-}
-
-export type NullableDecimalFieldUpdateOperationsInput = {
-  set?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
-}
-
 export type OrganizationMemberCreateWithoutUserInput = {
   id?: string
-  role?: $Enums.OrganizationRole
   title?: string | null
   department?: string | null
   employeeId?: string | null
   isActive?: boolean
-  canApprove?: boolean
-  approvalLimit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   invitedAt?: Date | string | null
   acceptedAt?: Date | string | null
   invitedBy?: string | null
+  joinedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutMembersInput
@@ -713,16 +611,14 @@ export type OrganizationMemberCreateWithoutUserInput = {
 export type OrganizationMemberUncheckedCreateWithoutUserInput = {
   id?: string
   organizationId: string
-  role?: $Enums.OrganizationRole
   title?: string | null
   department?: string | null
   employeeId?: string | null
   isActive?: boolean
-  canApprove?: boolean
-  approvalLimit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   invitedAt?: Date | string | null
   acceptedAt?: Date | string | null
   invitedBy?: string | null
+  joinedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -760,32 +656,28 @@ export type OrganizationMemberScalarWhereInput = {
   id?: Prisma.StringFilter<"OrganizationMember"> | string
   organizationId?: Prisma.StringFilter<"OrganizationMember"> | string
   userId?: Prisma.StringFilter<"OrganizationMember"> | string
-  role?: Prisma.EnumOrganizationRoleFilter<"OrganizationMember"> | $Enums.OrganizationRole
   title?: Prisma.StringNullableFilter<"OrganizationMember"> | string | null
   department?: Prisma.StringNullableFilter<"OrganizationMember"> | string | null
   employeeId?: Prisma.StringNullableFilter<"OrganizationMember"> | string | null
   isActive?: Prisma.BoolFilter<"OrganizationMember"> | boolean
-  canApprove?: Prisma.BoolFilter<"OrganizationMember"> | boolean
-  approvalLimit?: Prisma.DecimalNullableFilter<"OrganizationMember"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   invitedAt?: Prisma.DateTimeNullableFilter<"OrganizationMember"> | Date | string | null
   acceptedAt?: Prisma.DateTimeNullableFilter<"OrganizationMember"> | Date | string | null
   invitedBy?: Prisma.StringNullableFilter<"OrganizationMember"> | string | null
+  joinedAt?: Prisma.DateTimeFilter<"OrganizationMember"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"OrganizationMember"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"OrganizationMember"> | Date | string
 }
 
 export type OrganizationMemberCreateWithoutOrganizationInput = {
   id?: string
-  role?: $Enums.OrganizationRole
   title?: string | null
   department?: string | null
   employeeId?: string | null
   isActive?: boolean
-  canApprove?: boolean
-  approvalLimit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   invitedAt?: Date | string | null
   acceptedAt?: Date | string | null
   invitedBy?: string | null
+  joinedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutOrganizationMembershipsInput
@@ -794,16 +686,14 @@ export type OrganizationMemberCreateWithoutOrganizationInput = {
 export type OrganizationMemberUncheckedCreateWithoutOrganizationInput = {
   id?: string
   userId: string
-  role?: $Enums.OrganizationRole
   title?: string | null
   department?: string | null
   employeeId?: string | null
   isActive?: boolean
-  canApprove?: boolean
-  approvalLimit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   invitedAt?: Date | string | null
   acceptedAt?: Date | string | null
   invitedBy?: string | null
+  joinedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -837,32 +727,28 @@ export type OrganizationMemberUpdateManyWithWhereWithoutOrganizationInput = {
 export type OrganizationMemberCreateManyUserInput = {
   id?: string
   organizationId: string
-  role?: $Enums.OrganizationRole
   title?: string | null
   department?: string | null
   employeeId?: string | null
   isActive?: boolean
-  canApprove?: boolean
-  approvalLimit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   invitedAt?: Date | string | null
   acceptedAt?: Date | string | null
   invitedBy?: string | null
+  joinedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type OrganizationMemberUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumOrganizationRoleFieldUpdateOperationsInput | $Enums.OrganizationRole
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  canApprove?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  approvalLimit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   invitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutMembersNestedInput
@@ -871,16 +757,14 @@ export type OrganizationMemberUpdateWithoutUserInput = {
 export type OrganizationMemberUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumOrganizationRoleFieldUpdateOperationsInput | $Enums.OrganizationRole
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  canApprove?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  approvalLimit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   invitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -888,16 +772,14 @@ export type OrganizationMemberUncheckedUpdateWithoutUserInput = {
 export type OrganizationMemberUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumOrganizationRoleFieldUpdateOperationsInput | $Enums.OrganizationRole
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  canApprove?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  approvalLimit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   invitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -905,32 +787,28 @@ export type OrganizationMemberUncheckedUpdateManyWithoutUserInput = {
 export type OrganizationMemberCreateManyOrganizationInput = {
   id?: string
   userId: string
-  role?: $Enums.OrganizationRole
   title?: string | null
   department?: string | null
   employeeId?: string | null
   isActive?: boolean
-  canApprove?: boolean
-  approvalLimit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   invitedAt?: Date | string | null
   acceptedAt?: Date | string | null
   invitedBy?: string | null
+  joinedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type OrganizationMemberUpdateWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumOrganizationRoleFieldUpdateOperationsInput | $Enums.OrganizationRole
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  canApprove?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  approvalLimit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   invitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutOrganizationMembershipsNestedInput
@@ -939,16 +817,14 @@ export type OrganizationMemberUpdateWithoutOrganizationInput = {
 export type OrganizationMemberUncheckedUpdateWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumOrganizationRoleFieldUpdateOperationsInput | $Enums.OrganizationRole
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  canApprove?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  approvalLimit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   invitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -956,16 +832,14 @@ export type OrganizationMemberUncheckedUpdateWithoutOrganizationInput = {
 export type OrganizationMemberUncheckedUpdateManyWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.EnumOrganizationRoleFieldUpdateOperationsInput | $Enums.OrganizationRole
   title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   employeeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  canApprove?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  approvalLimit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   invitedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   acceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -976,16 +850,14 @@ export type OrganizationMemberSelect<ExtArgs extends runtime.Types.Extensions.In
   id?: boolean
   organizationId?: boolean
   userId?: boolean
-  role?: boolean
   title?: boolean
   department?: boolean
   employeeId?: boolean
   isActive?: boolean
-  canApprove?: boolean
-  approvalLimit?: boolean
   invitedAt?: boolean
   acceptedAt?: boolean
   invitedBy?: boolean
+  joinedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
@@ -998,21 +870,19 @@ export type OrganizationMemberSelectScalar = {
   id?: boolean
   organizationId?: boolean
   userId?: boolean
-  role?: boolean
   title?: boolean
   department?: boolean
   employeeId?: boolean
   isActive?: boolean
-  canApprove?: boolean
-  approvalLimit?: boolean
   invitedAt?: boolean
   acceptedAt?: boolean
   invitedBy?: boolean
+  joinedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type OrganizationMemberOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "userId" | "role" | "title" | "department" | "employeeId" | "isActive" | "canApprove" | "approvalLimit" | "invitedAt" | "acceptedAt" | "invitedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["organizationMember"]>
+export type OrganizationMemberOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "userId" | "title" | "department" | "employeeId" | "isActive" | "invitedAt" | "acceptedAt" | "invitedBy" | "joinedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["organizationMember"]>
 export type OrganizationMemberInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1028,16 +898,14 @@ export type $OrganizationMemberPayload<ExtArgs extends runtime.Types.Extensions.
     id: string
     organizationId: string
     userId: string
-    role: $Enums.OrganizationRole
     title: string | null
     department: string | null
     employeeId: string | null
     isActive: boolean
-    canApprove: boolean
-    approvalLimit: runtime.Decimal | null
     invitedAt: Date | null
     acceptedAt: Date | null
     invitedBy: string | null
+    joinedAt: Date
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["organizationMember"]>
@@ -1414,16 +1282,14 @@ export interface OrganizationMemberFieldRefs {
   readonly id: Prisma.FieldRef<"OrganizationMember", 'String'>
   readonly organizationId: Prisma.FieldRef<"OrganizationMember", 'String'>
   readonly userId: Prisma.FieldRef<"OrganizationMember", 'String'>
-  readonly role: Prisma.FieldRef<"OrganizationMember", 'OrganizationRole'>
   readonly title: Prisma.FieldRef<"OrganizationMember", 'String'>
   readonly department: Prisma.FieldRef<"OrganizationMember", 'String'>
   readonly employeeId: Prisma.FieldRef<"OrganizationMember", 'String'>
   readonly isActive: Prisma.FieldRef<"OrganizationMember", 'Boolean'>
-  readonly canApprove: Prisma.FieldRef<"OrganizationMember", 'Boolean'>
-  readonly approvalLimit: Prisma.FieldRef<"OrganizationMember", 'Decimal'>
   readonly invitedAt: Prisma.FieldRef<"OrganizationMember", 'DateTime'>
   readonly acceptedAt: Prisma.FieldRef<"OrganizationMember", 'DateTime'>
   readonly invitedBy: Prisma.FieldRef<"OrganizationMember", 'String'>
+  readonly joinedAt: Prisma.FieldRef<"OrganizationMember", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"OrganizationMember", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"OrganizationMember", 'DateTime'>
 }

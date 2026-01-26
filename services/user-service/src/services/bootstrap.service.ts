@@ -26,6 +26,27 @@ const policyPublisher = new PolicyEventPublisher('user-service', {
     topicArn: process.env.POLICY_SYNC_TOPIC_ARN,
 });
 
+// =============================================================================
+// SYSTEM ORGANIZATION TYPES
+// =============================================================================
+// These are seeded during tenant bootstrap and cannot be deleted.
+// Organizations can have multiple types via OrganizationTypeAssignment.
+// =============================================================================
+interface SystemOrganizationType {
+    code: string;
+    name: string;
+    description: string;
+}
+
+const SYSTEM_ORGANIZATION_TYPES: SystemOrganizationType[] = [
+    { code: 'PLATFORM', name: 'Platform Operator', description: 'The platform operator (e.g., QShelter) - the tenant\'s own organization' },
+    { code: 'BANK', name: 'Bank/Lender', description: 'Financial institution providing mortgages' },
+    { code: 'DEVELOPER', name: 'Property Developer', description: 'Property developer building and selling properties' },
+    { code: 'LEGAL', name: 'Legal Firm', description: 'Legal firms handling conveyancing and documentation' },
+    { code: 'INSURER', name: 'Insurance Company', description: 'Insurance companies providing property or mortgage insurance' },
+    { code: 'GOVERNMENT', name: 'Government Agency', description: 'Government agencies (e.g., land registry, tax authorities)' },
+];
+
 // Default roles with their permissions
 const DEFAULT_ROLES: BootstrapRole[] = [
     {
@@ -162,13 +183,38 @@ class BootstrapService {
                 console.log(`[Bootstrap] Created tenant: ${tenant.name} (${tenant.subdomain})`);
             }
 
-            // 2. Create roles and permissions
+            // 2. Seed system organization types (idempotent - uses upsert)
+            for (const orgType of SYSTEM_ORGANIZATION_TYPES) {
+                await tx.organizationType.upsert({
+                    where: {
+                        tenantId_code: {
+                            tenantId: tenant!.id,
+                            code: orgType.code,
+                        },
+                    },
+                    update: {
+                        // Update name/description if changed
+                        name: orgType.name,
+                        description: orgType.description,
+                    },
+                    create: {
+                        tenantId: tenant!.id,
+                        code: orgType.code,
+                        name: orgType.name,
+                        description: orgType.description,
+                        isSystemType: true,
+                    },
+                });
+            }
+            console.log(`[Bootstrap] Seeded ${SYSTEM_ORGANIZATION_TYPES.length} system organization types`);
+
+            // 4. Create roles and permissions
             for (const roleInput of rolesToCreate) {
                 const roleResult = await this.createOrGetRole(tx, tenant!.id, roleInput);
                 roleResults.push(roleResult);
             }
 
-            // 3. Create admin user and membership
+            // 5. Create admin user and membership
             const adminRole = roleResults.find((r) => r.name === 'admin');
             if (!adminRole) {
                 throw new Error('Admin role must be created for bootstrap');
@@ -244,7 +290,7 @@ class BootstrapService {
                 temporaryPassword: isNewAdmin ? temporaryPassword : undefined,
             };
 
-            // 4. Write domain events to outbox for policy sync
+            // 6. Write domain events to outbox for policy sync
             for (const role of roleResults) {
                 if (role.isNew) {
                     await tx.domainEvent.create({
@@ -287,7 +333,7 @@ class BootstrapService {
             }
         });
 
-        // 5. Trigger immediate sync for new roles (outside transaction)
+        // 7. Trigger immediate sync for new roles (outside transaction)
         let syncTriggered = false;
         for (const role of roleResults) {
             if (role.isNew) {

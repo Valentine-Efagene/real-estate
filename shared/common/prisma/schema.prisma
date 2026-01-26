@@ -203,17 +203,69 @@ enum ApprovalDecision {
 }
 
 // =============================================================================
-// ORGANIZATION ENUMS (Banks, Developers, etc.)
+// ORGANIZATION TYPE - Lookup table for organization types (replaces enum)
+// =============================================================================
+// Organizations can have multiple types via OrganizationTypeAssignment.
+// Example: QShelter can be both PLATFORM and DEVELOPER.
+// System types are seeded during tenant bootstrap and cannot be deleted.
 // =============================================================================
 
-/// Type of organization on the platform
-enum OrganizationType {
-  PLATFORM // The platform operator (e.g., QShelter) - the tenant's own organization
-  BANK // Financial institution providing mortgages (e.g., Access Bank, GTBank)
-  DEVELOPER // Property developer building and selling properties
-  LEGAL // Legal firms handling conveyancing and documentation
-  INSURER // Insurance companies providing property or mortgage insurance
-  GOVERNMENT // Government agencies (e.g., land registry, tax authorities)
+model OrganizationType {
+  id          String  @id @default(cuid())
+  tenantId    String
+  tenant      Tenant  @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  code        String // "PLATFORM", "BANK", "DEVELOPER", "LEGAL", "INSURER", "GOVERNMENT"
+  name        String // Human-readable: "Platform Operator", "Bank/Lender", etc.
+  description String? @db.Text
+
+  // System types are seeded during bootstrap and cannot be deleted
+  isSystemType Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Organizations with this type
+  organizations OrganizationTypeAssignment[]
+
+  // Applications assigned to orgs acting as this type
+  applicationOrganizations ApplicationOrganization[]
+
+  // Approval stages that require this type of organization
+  approvalStages ApprovalStage[]
+
+  // Document reviews performed by orgs acting as this type (audit snapshot)
+  documentReviews DocumentReview[]
+
+  // Approval stage progress instances
+  approvalStageProgress ApprovalStageProgress[]
+
+  // Document approvals
+  documentApprovals DocumentApproval[]
+
+  @@unique([tenantId, code])
+  @@index([tenantId])
+  @@index([code])
+  @@map("organization_types")
+}
+
+/// Links organizations to their types (many-to-many)
+/// An organization can have multiple types (e.g., QShelter is PLATFORM + DEVELOPER)
+model OrganizationTypeAssignment {
+  id             String           @id @default(cuid())
+  organizationId String
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  typeId         String
+  orgType        OrganizationType @relation(fields: [typeId], references: [id], onDelete: Cascade)
+
+  // Which type is the primary one for display purposes
+  isPrimary Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  @@unique([organizationId, typeId])
+  @@index([organizationId])
+  @@index([typeId])
+  @@map("organization_type_assignments")
 }
 
 /// Status of an organization
@@ -222,14 +274,6 @@ enum OrganizationStatus {
   ACTIVE // Fully operational
   SUSPENDED // Temporarily suspended
   INACTIVE // No longer active
-}
-
-/// Role of a member within an organization
-enum OrganizationRole {
-  ADMIN // Can manage org settings, members, and full operations
-  MANAGER // Can approve transactions within limits (checker)
-  OFFICER // Regular employee, can initiate actions (maker)
-  VIEWER // Read-only access to organization data
 }
 
 // =============================================================================
@@ -274,20 +318,8 @@ enum CompletionCriterion {
 }
 
 // =============================================================================
-// MULTI-PARTY DOCUMENT REVIEW ENUMS
+// DOCUMENT REVIEW ENUMS
 // =============================================================================
-// Enables different organizations to review the same document independently
-// =============================================================================
-
-enum ReviewParty {
-  INTERNAL // Your internal team (compliance, underwriting, etc.)
-  BANK // Partner bank/lender
-  DEVELOPER // Property developer
-  LEGAL // Legal team
-  GOVERNMENT // Government agencies (e.g., land registry)
-  INSURER // Insurance company
-  CUSTOMER // Customer acknowledgment/signature
-}
 
 enum ReviewDecision {
   PENDING // Review not yet performed
@@ -623,8 +655,11 @@ model Organization {
   id       String             @id @default(cuid())
   tenantId String
   name     String // e.g., "Access Bank PLC", "Lekki Gardens Ltd"
-  type     OrganizationType // PLATFORM, BANK, DEVELOPER, LEGAL, INSURER, GOVERNMENT
   status   OrganizationStatus @default(PENDING)
+
+  // Organization types (many-to-many via OrganizationTypeAssignment)
+  // An org can have multiple types (e.g., QShelter is PLATFORM + DEVELOPER)
+  types OrganizationTypeAssignment[]
 
   // Platform organization flag - marks the tenant's own organization
   isPlatformOrg Boolean @default(false)
@@ -667,41 +702,39 @@ model Organization {
   // Bank-specific document requirements (for BANK type organizations)
   documentRequirements BankDocumentRequirement[]
 
+  // Document reviews performed by this organization
+  documentReviews DocumentReview[]
+
   // Properties developed by this organization (for DEVELOPERs)
   // developedProperties Property[] @relation("PropertyDeveloper")
 
   @@unique([tenantId, bankCode]) // Bank codes unique within tenant
   @@unique([tenantId, cacNumber]) // CAC numbers unique within tenant
   @@index([tenantId])
-  @@index([type])
   @@index([status])
   @@map("organizations")
 }
 
-/// OrganizationMember: Links users to organizations with roles and permissions
-/// Supports maker-checker workflows via canApprove and approvalLimit
+/// OrganizationMember: Links users to organizations
+/// User's own roles (via UserRole) determine their abilities within the org
 model OrganizationMember {
-  id             String           @id @default(cuid())
+  id             String @id @default(cuid())
   organizationId String
   userId         String
-  role           OrganizationRole @default(OFFICER)
 
   // Employee details
-  title      String? // Job title (e.g., "Loan Officer", "Project Manager")
+  title      String? // Job title (e.g., "Loan Officer", "Mortgage Operations Officer")
   department String? // Department within organization
   employeeId String? // Internal employee ID
 
   // Status
   isActive Boolean @default(true)
 
-  // Maker-Checker workflow permissions
-  canApprove    Boolean  @default(false) // Can this member approve transactions?
-  approvalLimit Decimal? // Maximum amount this member can approve (null = unlimited)
-
   // Invitation/onboarding tracking
   invitedAt  DateTime?
   acceptedAt DateTime?
   invitedBy  String? // User ID who invited this member
+  joinedAt   DateTime  @default(now())
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -712,7 +745,6 @@ model OrganizationMember {
   @@unique([organizationId, userId]) // User can only be member once per org
   @@index([userId])
   @@index([organizationId])
-  @@index([role])
   @@map("organization_members")
 }
 
@@ -886,6 +918,7 @@ model Tenant {
 
   // Application organization assignments
   applicationOrganizations ApplicationOrganization[]
+  organizationTypes        OrganizationType[]
 
   @@index([subdomain])
   @@map("tenants")
@@ -1425,7 +1458,7 @@ model DocumentDefinition {
 // APPROVAL STAGE - Sequential workflow stages for document review (template)
 // =============================================================================
 // Defines a stage in the approval workflow. Documents flow through stages
-// sequentially. Each stage can have different reviewers (INTERNAL, BANK, etc.)
+// sequentially. Each stage requires a specific organization type to review.
 // =============================================================================
 
 model ApprovalStage {
@@ -1433,9 +1466,10 @@ model ApprovalStage {
   planId String
   plan   DocumentationPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
 
-  name        String // "QShelter Staff Review", "Bank Review"
-  order       Int // 1, 2, 3 - sequential order
-  reviewParty ReviewParty // INTERNAL, BANK, DEVELOPER, LEGAL, etc.
+  name               String // "QShelter Review", "Bank Review"
+  order              Int // 1, 2, 3 - sequential order
+  organizationTypeId String // Which type of org should review at this stage
+  organizationType   OrganizationType @relation(fields: [organizationTypeId], references: [id])
 
   // Stage behavior flags
   autoTransition       Boolean @default(false) // Auto-complete when all docs approved? Default: require explicit approval
@@ -1445,9 +1479,6 @@ model ApprovalStage {
   // Rejection behavior - what happens when this stage rejects a document
   onRejection           RejectionBehavior @default(CASCADE_BACK)
   restartFromStageOrder Int? // If onRejection = RESTART_FROM_STAGE, which stage order to restart from
-
-  // Optional: specific organization (e.g., which bank)
-  organizationId String?
 
   // SLA (optional)
   slaHours Int? // Escalate if not completed within X hours
@@ -1462,6 +1493,7 @@ model ApprovalStage {
 
   @@unique([planId, order])
   @@index([planId])
+  @@index([organizationTypeId])
   @@map("approval_stages")
 }
 
@@ -2079,17 +2111,8 @@ model Application {
 // in a specific application. This enables:
 // 1. Validation that only assigned developers can upload sales offers
 // 2. Only assigned banks can upload preapproval/mortgage offer letters
-// 3. Multi-bank application support (future: apply to multiple banks)
+// 3. Flexible type-based assignment (org assigned acting as specific type)
 // =============================================================================
-
-/// Role that an organization plays in an application
-enum ApplicationOrganizationRole {
-  DEVELOPER // Property developer - uploads sales offer letters
-  LENDER // Bank/financial institution - provides mortgage
-  LEGAL // Legal firm - handles conveyancing
-  INSURER // Insurance company
-  GOVERNMENT // Government agency (land registry, etc.)
-}
 
 /// Status of organization's involvement in the application
 enum ApplicationOrganizationStatus {
@@ -2111,8 +2134,11 @@ model ApplicationOrganization {
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
-  // What role does this organization play
-  role   ApplicationOrganizationRole
+  // Which type the org is acting as on this application
+  // (org must have this type in their OrganizationTypeAssignment)
+  assignedAsTypeId String
+  assignedAsType   OrganizationType @relation(fields: [assignedAsTypeId], references: [id])
+
   status ApplicationOrganizationStatus @default(PENDING)
 
   // Who assigned this organization (admin or system)
@@ -2159,11 +2185,11 @@ model ApplicationOrganization {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([applicationId, organizationId, role]) // One org per role per application
+  @@unique([applicationId, assignedAsTypeId]) // One org per type per application
   @@index([tenantId])
   @@index([applicationId])
   @@index([organizationId])
-  @@index([role])
+  @@index([assignedAsTypeId])
   @@index([status])
   @@index([isPrimary])
   @@index([slaBreachedAt])
@@ -2729,8 +2755,9 @@ model ApplicationDocument {
 // =============================================================================
 // DOCUMENT REVIEW - Multi-party review tracking
 // =============================================================================
-// Tracks reviews by different organizations for the same document
-// Enables internal approval -> external approval workflows
+// Tracks reviews by different organizations for the same document.
+// organizationId is NULL for customer self-attestations/signatures.
+// For org reviews, organizationTypeId captures which type the org was acting as.
 // =============================================================================
 
 model DocumentReview {
@@ -2740,12 +2767,14 @@ model DocumentReview {
   documentId String
   document   ApplicationDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
 
-  // Who is reviewing
-  reviewParty    ReviewParty // INTERNAL, BANK, DEVELOPER, LEGAL, etc.
-  organizationId String? // External organization ID if applicable
-  reviewerId     String? // User who performed the review
-  reviewer       User?       @relation("DocumentReviewer", fields: [reviewerId], references: [id])
-  reviewerName   String? // Denormalized for audit trail
+  // Who is reviewing - NULL organizationId means customer self-review
+  organizationId     String? // Organization performing the review (null = customer)
+  organization       Organization?     @relation(fields: [organizationId], references: [id])
+  organizationTypeId String? // Which type the org was acting as (audit snapshot)
+  organizationType   OrganizationType? @relation(fields: [organizationTypeId], references: [id])
+  reviewerId         String? // User who performed the review
+  reviewer           User?             @relation("DocumentReviewer", fields: [reviewerId], references: [id])
+  reviewerName       String? // Denormalized for audit trail
 
   // Review state
   decision ReviewDecision @default(PENDING)
@@ -2771,10 +2800,12 @@ model DocumentReview {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([documentId, reviewParty, organizationId]) // One review per party per org per doc
+  // Unique: one review per org per doc (null org = customer review)
+  @@unique([documentId, organizationId])
   @@index([tenantId])
   @@index([documentId])
-  @@index([reviewParty])
+  @@index([organizationId])
+  @@index([organizationTypeId])
   @@index([decision])
   @@index([reviewerId])
   @@index([parentReviewId])
@@ -2800,9 +2831,10 @@ model ApprovalStageProgress {
   approvalStage   ApprovalStage @relation(fields: [approvalStageId], references: [id])
 
   // Stage info (denormalized for convenience)
-  name        String
-  order       Int
-  reviewParty ReviewParty
+  name               String
+  order              Int
+  organizationTypeId String // Which type of org should review at this stage
+  organizationType   OrganizationType @relation(fields: [organizationTypeId], references: [id])
 
   // Behavior flags (copied from template)
   autoTransition       Boolean @default(false)
@@ -2856,9 +2888,10 @@ model DocumentApproval {
   stageProgress   ApprovalStageProgress @relation(fields: [stageProgressId], references: [id], onDelete: Cascade)
 
   // Reviewer info
-  reviewerId  String
-  reviewer    User        @relation("DocumentApprovalReviewer", fields: [reviewerId], references: [id])
-  reviewParty ReviewParty // INTERNAL, BANK, etc.
+  reviewerId         String
+  reviewer           User             @relation("DocumentApprovalReviewer", fields: [reviewerId], references: [id])
+  organizationTypeId String // Which type the reviewer's org was acting as
+  organizationType   OrganizationType @relation(fields: [organizationTypeId], references: [id])
 
   // Decision
   decision ReviewDecision // APPROVED, REJECTED, CHANGES_REQUESTED
@@ -2871,6 +2904,7 @@ model DocumentApproval {
   @@index([documentId])
   @@index([stageProgressId])
   @@index([reviewerId])
+  @@index([organizationTypeId])
   @@index([decision])
   @@map("document_approvals")
 }

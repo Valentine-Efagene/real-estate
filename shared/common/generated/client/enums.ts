@@ -235,18 +235,6 @@ export const ApprovalDecision = {
 export type ApprovalDecision = (typeof ApprovalDecision)[keyof typeof ApprovalDecision]
 
 
-export const OrganizationType = {
-  PLATFORM: 'PLATFORM',
-  BANK: 'BANK',
-  DEVELOPER: 'DEVELOPER',
-  LEGAL: 'LEGAL',
-  INSURER: 'INSURER',
-  GOVERNMENT: 'GOVERNMENT'
-} as const
-
-export type OrganizationType = (typeof OrganizationType)[keyof typeof OrganizationType]
-
-
 export const OrganizationStatus = {
   PENDING: 'PENDING',
   ACTIVE: 'ACTIVE',
@@ -255,16 +243,6 @@ export const OrganizationStatus = {
 } as const
 
 export type OrganizationStatus = (typeof OrganizationStatus)[keyof typeof OrganizationStatus]
-
-
-export const OrganizationRole = {
-  ADMIN: 'ADMIN',
-  MANAGER: 'MANAGER',
-  OFFICER: 'OFFICER',
-  VIEWER: 'VIEWER'
-} as const
-
-export type OrganizationRole = (typeof OrganizationRole)[keyof typeof OrganizationRole]
 
 
 export const TerminationType = {
@@ -314,19 +292,6 @@ export const CompletionCriterion = {
 } as const
 
 export type CompletionCriterion = (typeof CompletionCriterion)[keyof typeof CompletionCriterion]
-
-
-export const ReviewParty = {
-  INTERNAL: 'INTERNAL',
-  BANK: 'BANK',
-  DEVELOPER: 'DEVELOPER',
-  LEGAL: 'LEGAL',
-  GOVERNMENT: 'GOVERNMENT',
-  INSURER: 'INSURER',
-  CUSTOMER: 'CUSTOMER'
-} as const
-
-export type ReviewParty = (typeof ReviewParty)[keyof typeof ReviewParty]
 
 
 export const ReviewDecision = {
@@ -577,17 +542,6 @@ export const QuestionCategory = {
 } as const
 
 export type QuestionCategory = (typeof QuestionCategory)[keyof typeof QuestionCategory]
-
-
-export const ApplicationOrganizationRole = {
-  DEVELOPER: 'DEVELOPER',
-  LENDER: 'LENDER',
-  LEGAL: 'LEGAL',
-  INSURER: 'INSURER',
-  GOVERNMENT: 'GOVERNMENT'
-} as const
-
-export type ApplicationOrganizationRole = (typeof ApplicationOrganizationRole)[keyof typeof ApplicationOrganizationRole]
 
 
 export const ApplicationOrganizationStatus = {

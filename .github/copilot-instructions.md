@@ -63,9 +63,13 @@ The `policy-sync-service` is a pure SQS consumer with **no HTTP API**:
 
 ## Organizations
 
-Each tenant has organizations representing different parties in property transactions:
+Each tenant has organizations representing different parties in property transactions.
 
-| Type         | Description                                                       | Example             |
+### Organization Types (Dynamic Lookup Table)
+
+Organization types are stored in the `OrganizationType` model (tenant-scoped):
+
+| Code         | Description                                                       | Example             |
 | ------------ | ----------------------------------------------------------------- | ------------------- |
 | `PLATFORM`   | The tenant's own organization (marked with `isPlatformOrg: true`) | QShelter            |
 | `BANK`       | Financial institutions providing mortgages                        | Access Bank         |
@@ -74,31 +78,95 @@ Each tenant has organizations representing different parties in property transac
 | `INSURER`    | Insurance companies                                               | AIICO               |
 | `GOVERNMENT` | Government agencies                                               | Lagos Land Registry |
 
+**Many-to-Many Relationship**: Organizations can have multiple types via `OrganizationTypeAssignment`:
+
+- QShelter can be both `PLATFORM` and `DEVELOPER`
+- Each assignment has an `isPrimary` flag for the primary type
+
+**System Organization Types**: Seeded at bootstrap via `SYSTEM_ORGANIZATION_TYPES` constant in bootstrap.service.ts.
+
+### Key Design Decisions
+
+- **No role on OrganizationMember**: Abilities are defined via RBAC roles, not organization membership
+- **No canApprove/approvalLimit on OrganizationMember**: Authorization handled by RBAC permissions
+- **organizationTypeCode in API payloads**: Resolved to `organizationTypeId` (FK) for storage
+- **Customer reviews**: Use `organizationId = null` with `organizationTypeId` still set for type context
+
+### Organization Endpoints
+
+```
+POST /organizations
+  Body: { name, typeCodes: ['PLATFORM', 'DEVELOPER'], primaryTypeCode?, ... }
+
+GET /organizations?typeCode=BANK
+  Filter by organization type code
+```
+
 - Platform organization employees (like Adaeze, the operations manager) are linked via `OrganizationMember`.
 - External partners (banks, developers) are also organizations with their own members.
 
-## Multi-Party Document Review
+## Stage-Based Document Review
 
-Documents can require approval from multiple parties (internal team, bank, developer, etc.):
+Documents go through sequential approval stages, where each stage is responsible for reviewing documents from specific uploaders:
 
 ```typescript
-// Configure review requirements on documentation plan steps
+// Configure approval stages in documentation plans
 {
-    name: 'Upload Bank Statements',
-    stepType: 'UPLOAD',
-    documentType: 'BANK_STATEMENT',
-    requiresManualReview: true,
-    reviewRequirements: [
-        { party: 'INTERNAL', required: true },
-        { party: 'BANK', required: true },
+    name: 'Mortgage KYC Documentation',
+    approvalStages: [
+        {
+            name: 'QShelter Staff Review',
+            order: 1,
+            organizationTypeCode: 'PLATFORM',  // Reviews CUSTOMER and PLATFORM uploads
+            autoTransition: false,
+            waitForAllDocuments: true,
+            onRejection: 'CASCADE_BACK',
+            slaHours: 24,
+        },
+        {
+            name: 'Bank Review',
+            order: 2,
+            organizationTypeCode: 'BANK',  // Reviews LENDER uploads (auto-approved)
+            autoTransition: true,
+            waitForAllDocuments: true,
+            slaHours: 48,
+        },
     ],
-    reviewOrder: 'SEQUENTIAL', // or 'PARALLEL'
 }
 ```
 
-- `ReviewParty`: INTERNAL, BANK, DEVELOPER, LEGAL, GOVERNMENT, INSURER, CUSTOMER
+### Stage Organization Type to Uploader Mapping
+
+| Stage Organization Type | Reviews Documents Uploaded By |
+|-------------------------|-------------------------------|
+| PLATFORM                | CUSTOMER, PLATFORM            |
+| BANK                    | LENDER                        |
+| DEVELOPER               | DEVELOPER                     |
+| LEGAL                   | LEGAL                         |
+| INSURER                 | INSURER                       |
+| GOVERNMENT              | GOVERNMENT                    |
+
+### Auto-Approval Behavior
+
+When a document is uploaded by a party that matches the current stage's organization type, the document is **automatically approved**. This is by design: uploaders don't need to review their own documents.
+
+Example: When a lender uploads a preapproval letter during the BANK stage, it's auto-approved.
+
+### Review API
+
+**Endpoint:** `POST /applications/:id/documents/:documentId/review`
+
+```json
+{
+  "status": "APPROVED",
+  "organizationTypeCode": "PLATFORM",
+  "comment": "Document verified"
+}
+```
+
+- `status`: APPROVED, REJECTED, or CHANGES_REQUESTED
+- `organizationTypeCode`: Must match the current active stage's organization type
 - `ReviewDecision`: PENDING, APPROVED, REJECTED, CHANGES_REQUESTED, WAIVED
-- Step completes only when ALL required parties approve.
 
 ## Application Flow (Loan Origination System)
 

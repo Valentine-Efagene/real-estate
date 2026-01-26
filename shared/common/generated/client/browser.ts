@@ -18,6 +18,17 @@ export { Prisma }
 export * as $Enums from './enums.js'
 export * from './enums.js';
 /**
+ * Model OrganizationType
+ * 
+ */
+export type OrganizationType = Prisma.OrganizationTypeModel
+/**
+ * Model OrganizationTypeAssignment
+ * Links organizations to their types (many-to-many)
+ * An organization can have multiple types (e.g., QShelter is PLATFORM + DEVELOPER)
+ */
+export type OrganizationTypeAssignment = Prisma.OrganizationTypeAssignmentModel
+/**
  * Model User
  * 
  */
@@ -57,8 +68,8 @@ export type TenantMembership = Prisma.TenantMembershipModel
 export type Organization = Prisma.OrganizationModel
 /**
  * Model OrganizationMember
- * OrganizationMember: Links users to organizations with roles and permissions
- * Supports maker-checker workflows via canApprove and approvalLimit
+ * OrganizationMember: Links users to organizations
+ * User's own roles (via UserRole) determine their abilities within the org
  */
 export type OrganizationMember = Prisma.OrganizationMemberModel
 /**

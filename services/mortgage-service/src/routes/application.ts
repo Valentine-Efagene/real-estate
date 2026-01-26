@@ -495,12 +495,20 @@ router.post('/:id/phases/:phaseId/documents', requireTenant, canAccessApplicatio
     }
 });
 
-// Review/approve a document (admin only)
-router.post('/:id/documents/:documentId/review', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
+// Review/approve a document (stage-based approval)
+// Allows organization members to review documents at their designated stage
+router.post('/:id/documents/:documentId/review', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = ApproveDocumentSchema.parse(req.body);
-        const { userId, tenantId } = getAuthContext(req);
-        const decision = data.status === 'APPROVED' ? 'APPROVED' : 'REJECTED';
+        const { userId, tenantId, roles } = getAuthContext(req);
+        
+        // Map status to ReviewDecision
+        const decisionMap: Record<string, string> = {
+            'APPROVED': 'APPROVED',
+            'REJECTED': 'REJECTED', 
+            'CHANGES_REQUESTED': 'CHANGES_REQUESTED',
+        };
+        const decision = decisionMap[data.status] || 'REJECTED';
 
         // Look up the document to get the phaseId
         const document = await prisma.applicationDocument.findFirst({
@@ -516,11 +524,37 @@ router.post('/:id/documents/:documentId/review', requireTenant, requireRole(ADMI
             return;
         }
 
+        // Resolve organization type code to ID
+        // Default to 'PLATFORM' for admins if not specified
+        let organizationTypeId: string;
+        const orgTypeCode = data.organizationTypeCode || (isAdmin(roles) ? 'PLATFORM' : null);
+        
+        if (!orgTypeCode) {
+            res.status(400).json({ 
+                success: false, 
+                error: 'organizationTypeCode is required for non-admin reviewers' 
+            });
+            return;
+        }
+
+        const orgType = await prisma.organizationType.findUnique({
+            where: { tenantId_code: { tenantId: tenantId as string, code: orgTypeCode } },
+        });
+
+        if (!orgType) {
+            res.status(400).json({ 
+                success: false, 
+                error: `Organization type '${orgTypeCode}' not found` 
+            });
+            return;
+        }
+        organizationTypeId = orgType.id;
+
         const result = await applicationPhaseService.reviewDocument(
-            document.phaseId, // phaseId from the document
+            document.phaseId,
             req.params.documentId as string,
             decision as any,
-            'INTERNAL', // reviewer party
+            organizationTypeId,
             userId,
             data.comment
         );
@@ -670,19 +704,20 @@ router.post('/:id/documents/:documentId/reviews', requireTenant, canAccessApplic
         const { createDocumentReviewService } = await import('../services/document-review.service');
 
         const data = SubmitDocumentReviewSchema.parse(req.body);
-        const { userId } = getAuthContext(req);
+        const { userId, tenantId } = getAuthContext(req);
         const documentReviewService = createDocumentReviewService(getTenantPrisma(req));
 
         const result = await documentReviewService.submitReview(
             {
                 documentId: req.params.documentId as string,
-                reviewParty: data.reviewParty,
+                organizationTypeCode: data.organizationTypeCode,
                 decision: data.decision,
                 comments: data.comments,
                 concerns: data.concerns,
                 organizationId: data.organizationId,
             },
-            userId
+            userId,
+            tenantId as string
         );
 
         if (!result.success) {
@@ -707,12 +742,13 @@ router.post('/:id/documents/:documentId/reviews/waive', requireTenant, requireRo
         const { createDocumentReviewService } = await import('../services/document-review.service');
 
         const data = WaiveReviewSchema.parse(req.body);
-        const { userId } = getAuthContext(req);
+        const { userId, tenantId } = getAuthContext(req);
         const documentReviewService = createDocumentReviewService(getTenantPrisma(req));
 
         const review = await documentReviewService.waiveReview(
             req.params.documentId as string,
-            data.reviewParty,
+            tenantId as string,
+            data.organizationTypeCode,
             data.organizationId ?? null,
             userId,
             data.reason
@@ -738,7 +774,7 @@ router.get('/reviews/pending', requireTenant, async (req: Request, res: Response
         const { tenantId } = getAuthContext(req);
         const documentReviewService = createDocumentReviewService(getTenantPrisma(req));
 
-        const result = await documentReviewService.getDocumentsPendingReview(tenantId, query.reviewParty, {
+        const result = await documentReviewService.getDocumentsPendingReview(tenantId, query.organizationTypeCode, {
             organizationId: query.organizationId,
             applicationId: query.applicationId,
             limit: query.limit,

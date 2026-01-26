@@ -43,13 +43,12 @@ export type ApprovalStageMinAggregateOutputType = {
   planId: string | null
   name: string | null
   order: number | null
-  reviewParty: $Enums.ReviewParty | null
+  organizationTypeId: string | null
   autoTransition: boolean | null
   waitForAllDocuments: boolean | null
   allowEarlyVisibility: boolean | null
   onRejection: $Enums.RejectionBehavior | null
   restartFromStageOrder: number | null
-  organizationId: string | null
   slaHours: number | null
   description: string | null
   createdAt: Date | null
@@ -61,13 +60,12 @@ export type ApprovalStageMaxAggregateOutputType = {
   planId: string | null
   name: string | null
   order: number | null
-  reviewParty: $Enums.ReviewParty | null
+  organizationTypeId: string | null
   autoTransition: boolean | null
   waitForAllDocuments: boolean | null
   allowEarlyVisibility: boolean | null
   onRejection: $Enums.RejectionBehavior | null
   restartFromStageOrder: number | null
-  organizationId: string | null
   slaHours: number | null
   description: string | null
   createdAt: Date | null
@@ -79,13 +77,12 @@ export type ApprovalStageCountAggregateOutputType = {
   planId: number
   name: number
   order: number
-  reviewParty: number
+  organizationTypeId: number
   autoTransition: number
   waitForAllDocuments: number
   allowEarlyVisibility: number
   onRejection: number
   restartFromStageOrder: number
-  organizationId: number
   slaHours: number
   description: number
   createdAt: number
@@ -111,13 +108,12 @@ export type ApprovalStageMinAggregateInputType = {
   planId?: true
   name?: true
   order?: true
-  reviewParty?: true
+  organizationTypeId?: true
   autoTransition?: true
   waitForAllDocuments?: true
   allowEarlyVisibility?: true
   onRejection?: true
   restartFromStageOrder?: true
-  organizationId?: true
   slaHours?: true
   description?: true
   createdAt?: true
@@ -129,13 +125,12 @@ export type ApprovalStageMaxAggregateInputType = {
   planId?: true
   name?: true
   order?: true
-  reviewParty?: true
+  organizationTypeId?: true
   autoTransition?: true
   waitForAllDocuments?: true
   allowEarlyVisibility?: true
   onRejection?: true
   restartFromStageOrder?: true
-  organizationId?: true
   slaHours?: true
   description?: true
   createdAt?: true
@@ -147,13 +142,12 @@ export type ApprovalStageCountAggregateInputType = {
   planId?: true
   name?: true
   order?: true
-  reviewParty?: true
+  organizationTypeId?: true
   autoTransition?: true
   waitForAllDocuments?: true
   allowEarlyVisibility?: true
   onRejection?: true
   restartFromStageOrder?: true
-  organizationId?: true
   slaHours?: true
   description?: true
   createdAt?: true
@@ -252,13 +246,12 @@ export type ApprovalStageGroupByOutputType = {
   planId: string
   name: string
   order: number
-  reviewParty: $Enums.ReviewParty
+  organizationTypeId: string
   autoTransition: boolean
   waitForAllDocuments: boolean
   allowEarlyVisibility: boolean
   onRejection: $Enums.RejectionBehavior
   restartFromStageOrder: number | null
-  organizationId: string | null
   slaHours: number | null
   description: string | null
   createdAt: Date
@@ -293,18 +286,18 @@ export type ApprovalStageWhereInput = {
   planId?: Prisma.StringFilter<"ApprovalStage"> | string
   name?: Prisma.StringFilter<"ApprovalStage"> | string
   order?: Prisma.IntFilter<"ApprovalStage"> | number
-  reviewParty?: Prisma.EnumReviewPartyFilter<"ApprovalStage"> | $Enums.ReviewParty
+  organizationTypeId?: Prisma.StringFilter<"ApprovalStage"> | string
   autoTransition?: Prisma.BoolFilter<"ApprovalStage"> | boolean
   waitForAllDocuments?: Prisma.BoolFilter<"ApprovalStage"> | boolean
   allowEarlyVisibility?: Prisma.BoolFilter<"ApprovalStage"> | boolean
   onRejection?: Prisma.EnumRejectionBehaviorFilter<"ApprovalStage"> | $Enums.RejectionBehavior
   restartFromStageOrder?: Prisma.IntNullableFilter<"ApprovalStage"> | number | null
-  organizationId?: Prisma.StringNullableFilter<"ApprovalStage"> | string | null
   slaHours?: Prisma.IntNullableFilter<"ApprovalStage"> | number | null
   description?: Prisma.StringNullableFilter<"ApprovalStage"> | string | null
   createdAt?: Prisma.DateTimeFilter<"ApprovalStage"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ApprovalStage"> | Date | string
   plan?: Prisma.XOR<Prisma.DocumentationPlanScalarRelationFilter, Prisma.DocumentationPlanWhereInput>
+  organizationType?: Prisma.XOR<Prisma.OrganizationTypeScalarRelationFilter, Prisma.OrganizationTypeWhereInput>
   stageProgress?: Prisma.ApprovalStageProgressListRelationFilter
 }
 
@@ -313,18 +306,18 @@ export type ApprovalStageOrderByWithRelationInput = {
   planId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   order?: Prisma.SortOrder
-  reviewParty?: Prisma.SortOrder
+  organizationTypeId?: Prisma.SortOrder
   autoTransition?: Prisma.SortOrder
   waitForAllDocuments?: Prisma.SortOrder
   allowEarlyVisibility?: Prisma.SortOrder
   onRejection?: Prisma.SortOrder
   restartFromStageOrder?: Prisma.SortOrderInput | Prisma.SortOrder
-  organizationId?: Prisma.SortOrderInput | Prisma.SortOrder
   slaHours?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   plan?: Prisma.DocumentationPlanOrderByWithRelationInput
+  organizationType?: Prisma.OrganizationTypeOrderByWithRelationInput
   stageProgress?: Prisma.ApprovalStageProgressOrderByRelationAggregateInput
   _relevance?: Prisma.ApprovalStageOrderByRelevanceInput
 }
@@ -338,18 +331,18 @@ export type ApprovalStageWhereUniqueInput = Prisma.AtLeast<{
   planId?: Prisma.StringFilter<"ApprovalStage"> | string
   name?: Prisma.StringFilter<"ApprovalStage"> | string
   order?: Prisma.IntFilter<"ApprovalStage"> | number
-  reviewParty?: Prisma.EnumReviewPartyFilter<"ApprovalStage"> | $Enums.ReviewParty
+  organizationTypeId?: Prisma.StringFilter<"ApprovalStage"> | string
   autoTransition?: Prisma.BoolFilter<"ApprovalStage"> | boolean
   waitForAllDocuments?: Prisma.BoolFilter<"ApprovalStage"> | boolean
   allowEarlyVisibility?: Prisma.BoolFilter<"ApprovalStage"> | boolean
   onRejection?: Prisma.EnumRejectionBehaviorFilter<"ApprovalStage"> | $Enums.RejectionBehavior
   restartFromStageOrder?: Prisma.IntNullableFilter<"ApprovalStage"> | number | null
-  organizationId?: Prisma.StringNullableFilter<"ApprovalStage"> | string | null
   slaHours?: Prisma.IntNullableFilter<"ApprovalStage"> | number | null
   description?: Prisma.StringNullableFilter<"ApprovalStage"> | string | null
   createdAt?: Prisma.DateTimeFilter<"ApprovalStage"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ApprovalStage"> | Date | string
   plan?: Prisma.XOR<Prisma.DocumentationPlanScalarRelationFilter, Prisma.DocumentationPlanWhereInput>
+  organizationType?: Prisma.XOR<Prisma.OrganizationTypeScalarRelationFilter, Prisma.OrganizationTypeWhereInput>
   stageProgress?: Prisma.ApprovalStageProgressListRelationFilter
 }, "id" | "planId_order">
 
@@ -358,13 +351,12 @@ export type ApprovalStageOrderByWithAggregationInput = {
   planId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   order?: Prisma.SortOrder
-  reviewParty?: Prisma.SortOrder
+  organizationTypeId?: Prisma.SortOrder
   autoTransition?: Prisma.SortOrder
   waitForAllDocuments?: Prisma.SortOrder
   allowEarlyVisibility?: Prisma.SortOrder
   onRejection?: Prisma.SortOrder
   restartFromStageOrder?: Prisma.SortOrderInput | Prisma.SortOrder
-  organizationId?: Prisma.SortOrderInput | Prisma.SortOrder
   slaHours?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -384,13 +376,12 @@ export type ApprovalStageScalarWhereWithAggregatesInput = {
   planId?: Prisma.StringWithAggregatesFilter<"ApprovalStage"> | string
   name?: Prisma.StringWithAggregatesFilter<"ApprovalStage"> | string
   order?: Prisma.IntWithAggregatesFilter<"ApprovalStage"> | number
-  reviewParty?: Prisma.EnumReviewPartyWithAggregatesFilter<"ApprovalStage"> | $Enums.ReviewParty
+  organizationTypeId?: Prisma.StringWithAggregatesFilter<"ApprovalStage"> | string
   autoTransition?: Prisma.BoolWithAggregatesFilter<"ApprovalStage"> | boolean
   waitForAllDocuments?: Prisma.BoolWithAggregatesFilter<"ApprovalStage"> | boolean
   allowEarlyVisibility?: Prisma.BoolWithAggregatesFilter<"ApprovalStage"> | boolean
   onRejection?: Prisma.EnumRejectionBehaviorWithAggregatesFilter<"ApprovalStage"> | $Enums.RejectionBehavior
   restartFromStageOrder?: Prisma.IntNullableWithAggregatesFilter<"ApprovalStage"> | number | null
-  organizationId?: Prisma.StringNullableWithAggregatesFilter<"ApprovalStage"> | string | null
   slaHours?: Prisma.IntNullableWithAggregatesFilter<"ApprovalStage"> | number | null
   description?: Prisma.StringNullableWithAggregatesFilter<"ApprovalStage"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ApprovalStage"> | Date | string
@@ -401,18 +392,17 @@ export type ApprovalStageCreateInput = {
   id?: string
   name: string
   order: number
-  reviewParty: $Enums.ReviewParty
   autoTransition?: boolean
   waitForAllDocuments?: boolean
   allowEarlyVisibility?: boolean
   onRejection?: $Enums.RejectionBehavior
   restartFromStageOrder?: number | null
-  organizationId?: string | null
   slaHours?: number | null
   description?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   plan: Prisma.DocumentationPlanCreateNestedOneWithoutApprovalStagesInput
+  organizationType: Prisma.OrganizationTypeCreateNestedOneWithoutApprovalStagesInput
   stageProgress?: Prisma.ApprovalStageProgressCreateNestedManyWithoutApprovalStageInput
 }
 
@@ -421,13 +411,12 @@ export type ApprovalStageUncheckedCreateInput = {
   planId: string
   name: string
   order: number
-  reviewParty: $Enums.ReviewParty
+  organizationTypeId: string
   autoTransition?: boolean
   waitForAllDocuments?: boolean
   allowEarlyVisibility?: boolean
   onRejection?: $Enums.RejectionBehavior
   restartFromStageOrder?: number | null
-  organizationId?: string | null
   slaHours?: number | null
   description?: string | null
   createdAt?: Date | string
@@ -439,18 +428,17 @@ export type ApprovalStageUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
-  reviewParty?: Prisma.EnumReviewPartyFieldUpdateOperationsInput | $Enums.ReviewParty
   autoTransition?: Prisma.BoolFieldUpdateOperationsInput | boolean
   waitForAllDocuments?: Prisma.BoolFieldUpdateOperationsInput | boolean
   allowEarlyVisibility?: Prisma.BoolFieldUpdateOperationsInput | boolean
   onRejection?: Prisma.EnumRejectionBehaviorFieldUpdateOperationsInput | $Enums.RejectionBehavior
   restartFromStageOrder?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   plan?: Prisma.DocumentationPlanUpdateOneRequiredWithoutApprovalStagesNestedInput
+  organizationType?: Prisma.OrganizationTypeUpdateOneRequiredWithoutApprovalStagesNestedInput
   stageProgress?: Prisma.ApprovalStageProgressUpdateManyWithoutApprovalStageNestedInput
 }
 
@@ -459,13 +447,12 @@ export type ApprovalStageUncheckedUpdateInput = {
   planId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
-  reviewParty?: Prisma.EnumReviewPartyFieldUpdateOperationsInput | $Enums.ReviewParty
+  organizationTypeId?: Prisma.StringFieldUpdateOperationsInput | string
   autoTransition?: Prisma.BoolFieldUpdateOperationsInput | boolean
   waitForAllDocuments?: Prisma.BoolFieldUpdateOperationsInput | boolean
   allowEarlyVisibility?: Prisma.BoolFieldUpdateOperationsInput | boolean
   onRejection?: Prisma.EnumRejectionBehaviorFieldUpdateOperationsInput | $Enums.RejectionBehavior
   restartFromStageOrder?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -478,13 +465,12 @@ export type ApprovalStageCreateManyInput = {
   planId: string
   name: string
   order: number
-  reviewParty: $Enums.ReviewParty
+  organizationTypeId: string
   autoTransition?: boolean
   waitForAllDocuments?: boolean
   allowEarlyVisibility?: boolean
   onRejection?: $Enums.RejectionBehavior
   restartFromStageOrder?: number | null
-  organizationId?: string | null
   slaHours?: number | null
   description?: string | null
   createdAt?: Date | string
@@ -495,13 +481,11 @@ export type ApprovalStageUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
-  reviewParty?: Prisma.EnumReviewPartyFieldUpdateOperationsInput | $Enums.ReviewParty
   autoTransition?: Prisma.BoolFieldUpdateOperationsInput | boolean
   waitForAllDocuments?: Prisma.BoolFieldUpdateOperationsInput | boolean
   allowEarlyVisibility?: Prisma.BoolFieldUpdateOperationsInput | boolean
   onRejection?: Prisma.EnumRejectionBehaviorFieldUpdateOperationsInput | $Enums.RejectionBehavior
   restartFromStageOrder?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -513,13 +497,12 @@ export type ApprovalStageUncheckedUpdateManyInput = {
   planId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
-  reviewParty?: Prisma.EnumReviewPartyFieldUpdateOperationsInput | $Enums.ReviewParty
+  organizationTypeId?: Prisma.StringFieldUpdateOperationsInput | string
   autoTransition?: Prisma.BoolFieldUpdateOperationsInput | boolean
   waitForAllDocuments?: Prisma.BoolFieldUpdateOperationsInput | boolean
   allowEarlyVisibility?: Prisma.BoolFieldUpdateOperationsInput | boolean
   onRejection?: Prisma.EnumRejectionBehaviorFieldUpdateOperationsInput | $Enums.RejectionBehavior
   restartFromStageOrder?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -552,13 +535,12 @@ export type ApprovalStageCountOrderByAggregateInput = {
   planId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   order?: Prisma.SortOrder
-  reviewParty?: Prisma.SortOrder
+  organizationTypeId?: Prisma.SortOrder
   autoTransition?: Prisma.SortOrder
   waitForAllDocuments?: Prisma.SortOrder
   allowEarlyVisibility?: Prisma.SortOrder
   onRejection?: Prisma.SortOrder
   restartFromStageOrder?: Prisma.SortOrder
-  organizationId?: Prisma.SortOrder
   slaHours?: Prisma.SortOrder
   description?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -576,13 +558,12 @@ export type ApprovalStageMaxOrderByAggregateInput = {
   planId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   order?: Prisma.SortOrder
-  reviewParty?: Prisma.SortOrder
+  organizationTypeId?: Prisma.SortOrder
   autoTransition?: Prisma.SortOrder
   waitForAllDocuments?: Prisma.SortOrder
   allowEarlyVisibility?: Prisma.SortOrder
   onRejection?: Prisma.SortOrder
   restartFromStageOrder?: Prisma.SortOrder
-  organizationId?: Prisma.SortOrder
   slaHours?: Prisma.SortOrder
   description?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -594,13 +575,12 @@ export type ApprovalStageMinOrderByAggregateInput = {
   planId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   order?: Prisma.SortOrder
-  reviewParty?: Prisma.SortOrder
+  organizationTypeId?: Prisma.SortOrder
   autoTransition?: Prisma.SortOrder
   waitForAllDocuments?: Prisma.SortOrder
   allowEarlyVisibility?: Prisma.SortOrder
   onRejection?: Prisma.SortOrder
   restartFromStageOrder?: Prisma.SortOrder
-  organizationId?: Prisma.SortOrder
   slaHours?: Prisma.SortOrder
   description?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -616,6 +596,48 @@ export type ApprovalStageSumOrderByAggregateInput = {
 export type ApprovalStageScalarRelationFilter = {
   is?: Prisma.ApprovalStageWhereInput
   isNot?: Prisma.ApprovalStageWhereInput
+}
+
+export type ApprovalStageCreateNestedManyWithoutOrganizationTypeInput = {
+  create?: Prisma.XOR<Prisma.ApprovalStageCreateWithoutOrganizationTypeInput, Prisma.ApprovalStageUncheckedCreateWithoutOrganizationTypeInput> | Prisma.ApprovalStageCreateWithoutOrganizationTypeInput[] | Prisma.ApprovalStageUncheckedCreateWithoutOrganizationTypeInput[]
+  connectOrCreate?: Prisma.ApprovalStageCreateOrConnectWithoutOrganizationTypeInput | Prisma.ApprovalStageCreateOrConnectWithoutOrganizationTypeInput[]
+  createMany?: Prisma.ApprovalStageCreateManyOrganizationTypeInputEnvelope
+  connect?: Prisma.ApprovalStageWhereUniqueInput | Prisma.ApprovalStageWhereUniqueInput[]
+}
+
+export type ApprovalStageUncheckedCreateNestedManyWithoutOrganizationTypeInput = {
+  create?: Prisma.XOR<Prisma.ApprovalStageCreateWithoutOrganizationTypeInput, Prisma.ApprovalStageUncheckedCreateWithoutOrganizationTypeInput> | Prisma.ApprovalStageCreateWithoutOrganizationTypeInput[] | Prisma.ApprovalStageUncheckedCreateWithoutOrganizationTypeInput[]
+  connectOrCreate?: Prisma.ApprovalStageCreateOrConnectWithoutOrganizationTypeInput | Prisma.ApprovalStageCreateOrConnectWithoutOrganizationTypeInput[]
+  createMany?: Prisma.ApprovalStageCreateManyOrganizationTypeInputEnvelope
+  connect?: Prisma.ApprovalStageWhereUniqueInput | Prisma.ApprovalStageWhereUniqueInput[]
+}
+
+export type ApprovalStageUpdateManyWithoutOrganizationTypeNestedInput = {
+  create?: Prisma.XOR<Prisma.ApprovalStageCreateWithoutOrganizationTypeInput, Prisma.ApprovalStageUncheckedCreateWithoutOrganizationTypeInput> | Prisma.ApprovalStageCreateWithoutOrganizationTypeInput[] | Prisma.ApprovalStageUncheckedCreateWithoutOrganizationTypeInput[]
+  connectOrCreate?: Prisma.ApprovalStageCreateOrConnectWithoutOrganizationTypeInput | Prisma.ApprovalStageCreateOrConnectWithoutOrganizationTypeInput[]
+  upsert?: Prisma.ApprovalStageUpsertWithWhereUniqueWithoutOrganizationTypeInput | Prisma.ApprovalStageUpsertWithWhereUniqueWithoutOrganizationTypeInput[]
+  createMany?: Prisma.ApprovalStageCreateManyOrganizationTypeInputEnvelope
+  set?: Prisma.ApprovalStageWhereUniqueInput | Prisma.ApprovalStageWhereUniqueInput[]
+  disconnect?: Prisma.ApprovalStageWhereUniqueInput | Prisma.ApprovalStageWhereUniqueInput[]
+  delete?: Prisma.ApprovalStageWhereUniqueInput | Prisma.ApprovalStageWhereUniqueInput[]
+  connect?: Prisma.ApprovalStageWhereUniqueInput | Prisma.ApprovalStageWhereUniqueInput[]
+  update?: Prisma.ApprovalStageUpdateWithWhereUniqueWithoutOrganizationTypeInput | Prisma.ApprovalStageUpdateWithWhereUniqueWithoutOrganizationTypeInput[]
+  updateMany?: Prisma.ApprovalStageUpdateManyWithWhereWithoutOrganizationTypeInput | Prisma.ApprovalStageUpdateManyWithWhereWithoutOrganizationTypeInput[]
+  deleteMany?: Prisma.ApprovalStageScalarWhereInput | Prisma.ApprovalStageScalarWhereInput[]
+}
+
+export type ApprovalStageUncheckedUpdateManyWithoutOrganizationTypeNestedInput = {
+  create?: Prisma.XOR<Prisma.ApprovalStageCreateWithoutOrganizationTypeInput, Prisma.ApprovalStageUncheckedCreateWithoutOrganizationTypeInput> | Prisma.ApprovalStageCreateWithoutOrganizationTypeInput[] | Prisma.ApprovalStageUncheckedCreateWithoutOrganizationTypeInput[]
+  connectOrCreate?: Prisma.ApprovalStageCreateOrConnectWithoutOrganizationTypeInput | Prisma.ApprovalStageCreateOrConnectWithoutOrganizationTypeInput[]
+  upsert?: Prisma.ApprovalStageUpsertWithWhereUniqueWithoutOrganizationTypeInput | Prisma.ApprovalStageUpsertWithWhereUniqueWithoutOrganizationTypeInput[]
+  createMany?: Prisma.ApprovalStageCreateManyOrganizationTypeInputEnvelope
+  set?: Prisma.ApprovalStageWhereUniqueInput | Prisma.ApprovalStageWhereUniqueInput[]
+  disconnect?: Prisma.ApprovalStageWhereUniqueInput | Prisma.ApprovalStageWhereUniqueInput[]
+  delete?: Prisma.ApprovalStageWhereUniqueInput | Prisma.ApprovalStageWhereUniqueInput[]
+  connect?: Prisma.ApprovalStageWhereUniqueInput | Prisma.ApprovalStageWhereUniqueInput[]
+  update?: Prisma.ApprovalStageUpdateWithWhereUniqueWithoutOrganizationTypeInput | Prisma.ApprovalStageUpdateWithWhereUniqueWithoutOrganizationTypeInput[]
+  updateMany?: Prisma.ApprovalStageUpdateManyWithWhereWithoutOrganizationTypeInput | Prisma.ApprovalStageUpdateManyWithWhereWithoutOrganizationTypeInput[]
+  deleteMany?: Prisma.ApprovalStageScalarWhereInput | Prisma.ApprovalStageScalarWhereInput[]
 }
 
 export type ApprovalStageCreateNestedManyWithoutPlanInput = {
@@ -660,10 +682,6 @@ export type ApprovalStageUncheckedUpdateManyWithoutPlanNestedInput = {
   deleteMany?: Prisma.ApprovalStageScalarWhereInput | Prisma.ApprovalStageScalarWhereInput[]
 }
 
-export type EnumReviewPartyFieldUpdateOperationsInput = {
-  set?: $Enums.ReviewParty
-}
-
 export type EnumRejectionBehaviorFieldUpdateOperationsInput = {
   set?: $Enums.RejectionBehavior
 }
@@ -682,21 +700,100 @@ export type ApprovalStageUpdateOneRequiredWithoutStageProgressNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ApprovalStageUpdateToOneWithWhereWithoutStageProgressInput, Prisma.ApprovalStageUpdateWithoutStageProgressInput>, Prisma.ApprovalStageUncheckedUpdateWithoutStageProgressInput>
 }
 
-export type ApprovalStageCreateWithoutPlanInput = {
+export type ApprovalStageCreateWithoutOrganizationTypeInput = {
   id?: string
   name: string
   order: number
-  reviewParty: $Enums.ReviewParty
   autoTransition?: boolean
   waitForAllDocuments?: boolean
   allowEarlyVisibility?: boolean
   onRejection?: $Enums.RejectionBehavior
   restartFromStageOrder?: number | null
-  organizationId?: string | null
   slaHours?: number | null
   description?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  plan: Prisma.DocumentationPlanCreateNestedOneWithoutApprovalStagesInput
+  stageProgress?: Prisma.ApprovalStageProgressCreateNestedManyWithoutApprovalStageInput
+}
+
+export type ApprovalStageUncheckedCreateWithoutOrganizationTypeInput = {
+  id?: string
+  planId: string
+  name: string
+  order: number
+  autoTransition?: boolean
+  waitForAllDocuments?: boolean
+  allowEarlyVisibility?: boolean
+  onRejection?: $Enums.RejectionBehavior
+  restartFromStageOrder?: number | null
+  slaHours?: number | null
+  description?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  stageProgress?: Prisma.ApprovalStageProgressUncheckedCreateNestedManyWithoutApprovalStageInput
+}
+
+export type ApprovalStageCreateOrConnectWithoutOrganizationTypeInput = {
+  where: Prisma.ApprovalStageWhereUniqueInput
+  create: Prisma.XOR<Prisma.ApprovalStageCreateWithoutOrganizationTypeInput, Prisma.ApprovalStageUncheckedCreateWithoutOrganizationTypeInput>
+}
+
+export type ApprovalStageCreateManyOrganizationTypeInputEnvelope = {
+  data: Prisma.ApprovalStageCreateManyOrganizationTypeInput | Prisma.ApprovalStageCreateManyOrganizationTypeInput[]
+  skipDuplicates?: boolean
+}
+
+export type ApprovalStageUpsertWithWhereUniqueWithoutOrganizationTypeInput = {
+  where: Prisma.ApprovalStageWhereUniqueInput
+  update: Prisma.XOR<Prisma.ApprovalStageUpdateWithoutOrganizationTypeInput, Prisma.ApprovalStageUncheckedUpdateWithoutOrganizationTypeInput>
+  create: Prisma.XOR<Prisma.ApprovalStageCreateWithoutOrganizationTypeInput, Prisma.ApprovalStageUncheckedCreateWithoutOrganizationTypeInput>
+}
+
+export type ApprovalStageUpdateWithWhereUniqueWithoutOrganizationTypeInput = {
+  where: Prisma.ApprovalStageWhereUniqueInput
+  data: Prisma.XOR<Prisma.ApprovalStageUpdateWithoutOrganizationTypeInput, Prisma.ApprovalStageUncheckedUpdateWithoutOrganizationTypeInput>
+}
+
+export type ApprovalStageUpdateManyWithWhereWithoutOrganizationTypeInput = {
+  where: Prisma.ApprovalStageScalarWhereInput
+  data: Prisma.XOR<Prisma.ApprovalStageUpdateManyMutationInput, Prisma.ApprovalStageUncheckedUpdateManyWithoutOrganizationTypeInput>
+}
+
+export type ApprovalStageScalarWhereInput = {
+  AND?: Prisma.ApprovalStageScalarWhereInput | Prisma.ApprovalStageScalarWhereInput[]
+  OR?: Prisma.ApprovalStageScalarWhereInput[]
+  NOT?: Prisma.ApprovalStageScalarWhereInput | Prisma.ApprovalStageScalarWhereInput[]
+  id?: Prisma.StringFilter<"ApprovalStage"> | string
+  planId?: Prisma.StringFilter<"ApprovalStage"> | string
+  name?: Prisma.StringFilter<"ApprovalStage"> | string
+  order?: Prisma.IntFilter<"ApprovalStage"> | number
+  organizationTypeId?: Prisma.StringFilter<"ApprovalStage"> | string
+  autoTransition?: Prisma.BoolFilter<"ApprovalStage"> | boolean
+  waitForAllDocuments?: Prisma.BoolFilter<"ApprovalStage"> | boolean
+  allowEarlyVisibility?: Prisma.BoolFilter<"ApprovalStage"> | boolean
+  onRejection?: Prisma.EnumRejectionBehaviorFilter<"ApprovalStage"> | $Enums.RejectionBehavior
+  restartFromStageOrder?: Prisma.IntNullableFilter<"ApprovalStage"> | number | null
+  slaHours?: Prisma.IntNullableFilter<"ApprovalStage"> | number | null
+  description?: Prisma.StringNullableFilter<"ApprovalStage"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"ApprovalStage"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ApprovalStage"> | Date | string
+}
+
+export type ApprovalStageCreateWithoutPlanInput = {
+  id?: string
+  name: string
+  order: number
+  autoTransition?: boolean
+  waitForAllDocuments?: boolean
+  allowEarlyVisibility?: boolean
+  onRejection?: $Enums.RejectionBehavior
+  restartFromStageOrder?: number | null
+  slaHours?: number | null
+  description?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organizationType: Prisma.OrganizationTypeCreateNestedOneWithoutApprovalStagesInput
   stageProgress?: Prisma.ApprovalStageProgressCreateNestedManyWithoutApprovalStageInput
 }
 
@@ -704,13 +801,12 @@ export type ApprovalStageUncheckedCreateWithoutPlanInput = {
   id?: string
   name: string
   order: number
-  reviewParty: $Enums.ReviewParty
+  organizationTypeId: string
   autoTransition?: boolean
   waitForAllDocuments?: boolean
   allowEarlyVisibility?: boolean
   onRejection?: $Enums.RejectionBehavior
   restartFromStageOrder?: number | null
-  organizationId?: string | null
   slaHours?: number | null
   description?: string | null
   createdAt?: Date | string
@@ -744,43 +840,21 @@ export type ApprovalStageUpdateManyWithWhereWithoutPlanInput = {
   data: Prisma.XOR<Prisma.ApprovalStageUpdateManyMutationInput, Prisma.ApprovalStageUncheckedUpdateManyWithoutPlanInput>
 }
 
-export type ApprovalStageScalarWhereInput = {
-  AND?: Prisma.ApprovalStageScalarWhereInput | Prisma.ApprovalStageScalarWhereInput[]
-  OR?: Prisma.ApprovalStageScalarWhereInput[]
-  NOT?: Prisma.ApprovalStageScalarWhereInput | Prisma.ApprovalStageScalarWhereInput[]
-  id?: Prisma.StringFilter<"ApprovalStage"> | string
-  planId?: Prisma.StringFilter<"ApprovalStage"> | string
-  name?: Prisma.StringFilter<"ApprovalStage"> | string
-  order?: Prisma.IntFilter<"ApprovalStage"> | number
-  reviewParty?: Prisma.EnumReviewPartyFilter<"ApprovalStage"> | $Enums.ReviewParty
-  autoTransition?: Prisma.BoolFilter<"ApprovalStage"> | boolean
-  waitForAllDocuments?: Prisma.BoolFilter<"ApprovalStage"> | boolean
-  allowEarlyVisibility?: Prisma.BoolFilter<"ApprovalStage"> | boolean
-  onRejection?: Prisma.EnumRejectionBehaviorFilter<"ApprovalStage"> | $Enums.RejectionBehavior
-  restartFromStageOrder?: Prisma.IntNullableFilter<"ApprovalStage"> | number | null
-  organizationId?: Prisma.StringNullableFilter<"ApprovalStage"> | string | null
-  slaHours?: Prisma.IntNullableFilter<"ApprovalStage"> | number | null
-  description?: Prisma.StringNullableFilter<"ApprovalStage"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"ApprovalStage"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"ApprovalStage"> | Date | string
-}
-
 export type ApprovalStageCreateWithoutStageProgressInput = {
   id?: string
   name: string
   order: number
-  reviewParty: $Enums.ReviewParty
   autoTransition?: boolean
   waitForAllDocuments?: boolean
   allowEarlyVisibility?: boolean
   onRejection?: $Enums.RejectionBehavior
   restartFromStageOrder?: number | null
-  organizationId?: string | null
   slaHours?: number | null
   description?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   plan: Prisma.DocumentationPlanCreateNestedOneWithoutApprovalStagesInput
+  organizationType: Prisma.OrganizationTypeCreateNestedOneWithoutApprovalStagesInput
 }
 
 export type ApprovalStageUncheckedCreateWithoutStageProgressInput = {
@@ -788,13 +862,12 @@ export type ApprovalStageUncheckedCreateWithoutStageProgressInput = {
   planId: string
   name: string
   order: number
-  reviewParty: $Enums.ReviewParty
+  organizationTypeId: string
   autoTransition?: boolean
   waitForAllDocuments?: boolean
   allowEarlyVisibility?: boolean
   onRejection?: $Enums.RejectionBehavior
   restartFromStageOrder?: number | null
-  organizationId?: string | null
   slaHours?: number | null
   description?: string | null
   createdAt?: Date | string
@@ -821,18 +894,17 @@ export type ApprovalStageUpdateWithoutStageProgressInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
-  reviewParty?: Prisma.EnumReviewPartyFieldUpdateOperationsInput | $Enums.ReviewParty
   autoTransition?: Prisma.BoolFieldUpdateOperationsInput | boolean
   waitForAllDocuments?: Prisma.BoolFieldUpdateOperationsInput | boolean
   allowEarlyVisibility?: Prisma.BoolFieldUpdateOperationsInput | boolean
   onRejection?: Prisma.EnumRejectionBehaviorFieldUpdateOperationsInput | $Enums.RejectionBehavior
   restartFromStageOrder?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   plan?: Prisma.DocumentationPlanUpdateOneRequiredWithoutApprovalStagesNestedInput
+  organizationType?: Prisma.OrganizationTypeUpdateOneRequiredWithoutApprovalStagesNestedInput
 }
 
 export type ApprovalStageUncheckedUpdateWithoutStageProgressInput = {
@@ -840,13 +912,78 @@ export type ApprovalStageUncheckedUpdateWithoutStageProgressInput = {
   planId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
-  reviewParty?: Prisma.EnumReviewPartyFieldUpdateOperationsInput | $Enums.ReviewParty
+  organizationTypeId?: Prisma.StringFieldUpdateOperationsInput | string
   autoTransition?: Prisma.BoolFieldUpdateOperationsInput | boolean
   waitForAllDocuments?: Prisma.BoolFieldUpdateOperationsInput | boolean
   allowEarlyVisibility?: Prisma.BoolFieldUpdateOperationsInput | boolean
   onRejection?: Prisma.EnumRejectionBehaviorFieldUpdateOperationsInput | $Enums.RejectionBehavior
   restartFromStageOrder?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  slaHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ApprovalStageCreateManyOrganizationTypeInput = {
+  id?: string
+  planId: string
+  name: string
+  order: number
+  autoTransition?: boolean
+  waitForAllDocuments?: boolean
+  allowEarlyVisibility?: boolean
+  onRejection?: $Enums.RejectionBehavior
+  restartFromStageOrder?: number | null
+  slaHours?: number | null
+  description?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ApprovalStageUpdateWithoutOrganizationTypeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  autoTransition?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  waitForAllDocuments?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowEarlyVisibility?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onRejection?: Prisma.EnumRejectionBehaviorFieldUpdateOperationsInput | $Enums.RejectionBehavior
+  restartFromStageOrder?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  slaHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  plan?: Prisma.DocumentationPlanUpdateOneRequiredWithoutApprovalStagesNestedInput
+  stageProgress?: Prisma.ApprovalStageProgressUpdateManyWithoutApprovalStageNestedInput
+}
+
+export type ApprovalStageUncheckedUpdateWithoutOrganizationTypeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  planId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  autoTransition?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  waitForAllDocuments?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowEarlyVisibility?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onRejection?: Prisma.EnumRejectionBehaviorFieldUpdateOperationsInput | $Enums.RejectionBehavior
+  restartFromStageOrder?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  slaHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stageProgress?: Prisma.ApprovalStageProgressUncheckedUpdateManyWithoutApprovalStageNestedInput
+}
+
+export type ApprovalStageUncheckedUpdateManyWithoutOrganizationTypeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  planId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  autoTransition?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  waitForAllDocuments?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowEarlyVisibility?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onRejection?: Prisma.EnumRejectionBehaviorFieldUpdateOperationsInput | $Enums.RejectionBehavior
+  restartFromStageOrder?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   slaHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -857,13 +994,12 @@ export type ApprovalStageCreateManyPlanInput = {
   id?: string
   name: string
   order: number
-  reviewParty: $Enums.ReviewParty
+  organizationTypeId: string
   autoTransition?: boolean
   waitForAllDocuments?: boolean
   allowEarlyVisibility?: boolean
   onRejection?: $Enums.RejectionBehavior
   restartFromStageOrder?: number | null
-  organizationId?: string | null
   slaHours?: number | null
   description?: string | null
   createdAt?: Date | string
@@ -874,17 +1010,16 @@ export type ApprovalStageUpdateWithoutPlanInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
-  reviewParty?: Prisma.EnumReviewPartyFieldUpdateOperationsInput | $Enums.ReviewParty
   autoTransition?: Prisma.BoolFieldUpdateOperationsInput | boolean
   waitForAllDocuments?: Prisma.BoolFieldUpdateOperationsInput | boolean
   allowEarlyVisibility?: Prisma.BoolFieldUpdateOperationsInput | boolean
   onRejection?: Prisma.EnumRejectionBehaviorFieldUpdateOperationsInput | $Enums.RejectionBehavior
   restartFromStageOrder?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organizationType?: Prisma.OrganizationTypeUpdateOneRequiredWithoutApprovalStagesNestedInput
   stageProgress?: Prisma.ApprovalStageProgressUpdateManyWithoutApprovalStageNestedInput
 }
 
@@ -892,13 +1027,12 @@ export type ApprovalStageUncheckedUpdateWithoutPlanInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
-  reviewParty?: Prisma.EnumReviewPartyFieldUpdateOperationsInput | $Enums.ReviewParty
+  organizationTypeId?: Prisma.StringFieldUpdateOperationsInput | string
   autoTransition?: Prisma.BoolFieldUpdateOperationsInput | boolean
   waitForAllDocuments?: Prisma.BoolFieldUpdateOperationsInput | boolean
   allowEarlyVisibility?: Prisma.BoolFieldUpdateOperationsInput | boolean
   onRejection?: Prisma.EnumRejectionBehaviorFieldUpdateOperationsInput | $Enums.RejectionBehavior
   restartFromStageOrder?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -910,13 +1044,12 @@ export type ApprovalStageUncheckedUpdateManyWithoutPlanInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
-  reviewParty?: Prisma.EnumReviewPartyFieldUpdateOperationsInput | $Enums.ReviewParty
+  organizationTypeId?: Prisma.StringFieldUpdateOperationsInput | string
   autoTransition?: Prisma.BoolFieldUpdateOperationsInput | boolean
   waitForAllDocuments?: Prisma.BoolFieldUpdateOperationsInput | boolean
   allowEarlyVisibility?: Prisma.BoolFieldUpdateOperationsInput | boolean
   onRejection?: Prisma.EnumRejectionBehaviorFieldUpdateOperationsInput | $Enums.RejectionBehavior
   restartFromStageOrder?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slaHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -959,18 +1092,18 @@ export type ApprovalStageSelect<ExtArgs extends runtime.Types.Extensions.Interna
   planId?: boolean
   name?: boolean
   order?: boolean
-  reviewParty?: boolean
+  organizationTypeId?: boolean
   autoTransition?: boolean
   waitForAllDocuments?: boolean
   allowEarlyVisibility?: boolean
   onRejection?: boolean
   restartFromStageOrder?: boolean
-  organizationId?: boolean
   slaHours?: boolean
   description?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   plan?: boolean | Prisma.DocumentationPlanDefaultArgs<ExtArgs>
+  organizationType?: boolean | Prisma.OrganizationTypeDefaultArgs<ExtArgs>
   stageProgress?: boolean | Prisma.ApprovalStage$stageProgressArgs<ExtArgs>
   _count?: boolean | Prisma.ApprovalStageCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["approvalStage"]>
@@ -982,22 +1115,22 @@ export type ApprovalStageSelectScalar = {
   planId?: boolean
   name?: boolean
   order?: boolean
-  reviewParty?: boolean
+  organizationTypeId?: boolean
   autoTransition?: boolean
   waitForAllDocuments?: boolean
   allowEarlyVisibility?: boolean
   onRejection?: boolean
   restartFromStageOrder?: boolean
-  organizationId?: boolean
   slaHours?: boolean
   description?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ApprovalStageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "planId" | "name" | "order" | "reviewParty" | "autoTransition" | "waitForAllDocuments" | "allowEarlyVisibility" | "onRejection" | "restartFromStageOrder" | "organizationId" | "slaHours" | "description" | "createdAt" | "updatedAt", ExtArgs["result"]["approvalStage"]>
+export type ApprovalStageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "planId" | "name" | "order" | "organizationTypeId" | "autoTransition" | "waitForAllDocuments" | "allowEarlyVisibility" | "onRejection" | "restartFromStageOrder" | "slaHours" | "description" | "createdAt" | "updatedAt", ExtArgs["result"]["approvalStage"]>
 export type ApprovalStageInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   plan?: boolean | Prisma.DocumentationPlanDefaultArgs<ExtArgs>
+  organizationType?: boolean | Prisma.OrganizationTypeDefaultArgs<ExtArgs>
   stageProgress?: boolean | Prisma.ApprovalStage$stageProgressArgs<ExtArgs>
   _count?: boolean | Prisma.ApprovalStageCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -1006,6 +1139,7 @@ export type $ApprovalStagePayload<ExtArgs extends runtime.Types.Extensions.Inter
   name: "ApprovalStage"
   objects: {
     plan: Prisma.$DocumentationPlanPayload<ExtArgs>
+    organizationType: Prisma.$OrganizationTypePayload<ExtArgs>
     stageProgress: Prisma.$ApprovalStageProgressPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1013,13 +1147,12 @@ export type $ApprovalStagePayload<ExtArgs extends runtime.Types.Extensions.Inter
     planId: string
     name: string
     order: number
-    reviewParty: $Enums.ReviewParty
+    organizationTypeId: string
     autoTransition: boolean
     waitForAllDocuments: boolean
     allowEarlyVisibility: boolean
     onRejection: $Enums.RejectionBehavior
     restartFromStageOrder: number | null
-    organizationId: string | null
     slaHours: number | null
     description: string | null
     createdAt: Date
@@ -1365,6 +1498,7 @@ readonly fields: ApprovalStageFieldRefs;
 export interface Prisma__ApprovalStageClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   plan<T extends Prisma.DocumentationPlanDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentationPlanDefaultArgs<ExtArgs>>): Prisma.Prisma__DocumentationPlanClient<runtime.Types.Result.GetResult<Prisma.$DocumentationPlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  organizationType<T extends Prisma.OrganizationTypeDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationTypeDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationTypeClient<runtime.Types.Result.GetResult<Prisma.$OrganizationTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   stageProgress<T extends Prisma.ApprovalStage$stageProgressArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApprovalStage$stageProgressArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApprovalStageProgressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1399,13 +1533,12 @@ export interface ApprovalStageFieldRefs {
   readonly planId: Prisma.FieldRef<"ApprovalStage", 'String'>
   readonly name: Prisma.FieldRef<"ApprovalStage", 'String'>
   readonly order: Prisma.FieldRef<"ApprovalStage", 'Int'>
-  readonly reviewParty: Prisma.FieldRef<"ApprovalStage", 'ReviewParty'>
+  readonly organizationTypeId: Prisma.FieldRef<"ApprovalStage", 'String'>
   readonly autoTransition: Prisma.FieldRef<"ApprovalStage", 'Boolean'>
   readonly waitForAllDocuments: Prisma.FieldRef<"ApprovalStage", 'Boolean'>
   readonly allowEarlyVisibility: Prisma.FieldRef<"ApprovalStage", 'Boolean'>
   readonly onRejection: Prisma.FieldRef<"ApprovalStage", 'RejectionBehavior'>
   readonly restartFromStageOrder: Prisma.FieldRef<"ApprovalStage", 'Int'>
-  readonly organizationId: Prisma.FieldRef<"ApprovalStage", 'String'>
   readonly slaHours: Prisma.FieldRef<"ApprovalStage", 'Int'>
   readonly description: Prisma.FieldRef<"ApprovalStage", 'String'>
   readonly createdAt: Prisma.FieldRef<"ApprovalStage", 'DateTime'>

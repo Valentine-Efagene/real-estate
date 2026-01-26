@@ -51,6 +51,8 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  OrganizationType: 'OrganizationType',
+  OrganizationTypeAssignment: 'OrganizationTypeAssignment',
   User: 'User',
   Role: 'Role',
   Permission: 'Permission',
@@ -143,6 +145,31 @@ export const TransactionIsolationLevel = {
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const OrganizationTypeScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  code: 'code',
+  name: 'name',
+  description: 'description',
+  isSystemType: 'isSystemType',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OrganizationTypeScalarFieldEnum = (typeof OrganizationTypeScalarFieldEnum)[keyof typeof OrganizationTypeScalarFieldEnum]
+
+
+export const OrganizationTypeAssignmentScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  typeId: 'typeId',
+  isPrimary: 'isPrimary',
+  createdAt: 'createdAt'
+} as const
+
+export type OrganizationTypeAssignmentScalarFieldEnum = (typeof OrganizationTypeAssignmentScalarFieldEnum)[keyof typeof OrganizationTypeAssignmentScalarFieldEnum]
+
+
 export const UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
@@ -232,7 +259,6 @@ export const OrganizationScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   name: 'name',
-  type: 'type',
   status: 'status',
   isPlatformOrg: 'isPlatformOrg',
   email: 'email',
@@ -264,16 +290,14 @@ export const OrganizationMemberScalarFieldEnum = {
   id: 'id',
   organizationId: 'organizationId',
   userId: 'userId',
-  role: 'role',
   title: 'title',
   department: 'department',
   employeeId: 'employeeId',
   isActive: 'isActive',
-  canApprove: 'canApprove',
-  approvalLimit: 'approvalLimit',
   invitedAt: 'invitedAt',
   acceptedAt: 'acceptedAt',
   invitedBy: 'invitedBy',
+  joinedAt: 'joinedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -656,13 +680,12 @@ export const ApprovalStageScalarFieldEnum = {
   planId: 'planId',
   name: 'name',
   order: 'order',
-  reviewParty: 'reviewParty',
+  organizationTypeId: 'organizationTypeId',
   autoTransition: 'autoTransition',
   waitForAllDocuments: 'waitForAllDocuments',
   allowEarlyVisibility: 'allowEarlyVisibility',
   onRejection: 'onRejection',
   restartFromStageOrder: 'restartFromStageOrder',
-  organizationId: 'organizationId',
   slaHours: 'slaHours',
   description: 'description',
   createdAt: 'createdAt',
@@ -914,7 +937,7 @@ export const ApplicationOrganizationScalarFieldEnum = {
   tenantId: 'tenantId',
   applicationId: 'applicationId',
   organizationId: 'organizationId',
-  role: 'role',
+  assignedAsTypeId: 'assignedAsTypeId',
   status: 'status',
   assignedById: 'assignedById',
   assignedAt: 'assignedAt',
@@ -1199,8 +1222,8 @@ export const DocumentReviewScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   documentId: 'documentId',
-  reviewParty: 'reviewParty',
   organizationId: 'organizationId',
+  organizationTypeId: 'organizationTypeId',
   reviewerId: 'reviewerId',
   reviewerName: 'reviewerName',
   decision: 'decision',
@@ -1225,7 +1248,7 @@ export const ApprovalStageProgressScalarFieldEnum = {
   approvalStageId: 'approvalStageId',
   name: 'name',
   order: 'order',
-  reviewParty: 'reviewParty',
+  organizationTypeId: 'organizationTypeId',
   autoTransition: 'autoTransition',
   waitForAllDocuments: 'waitForAllDocuments',
   allowEarlyVisibility: 'allowEarlyVisibility',
@@ -1249,7 +1272,7 @@ export const DocumentApprovalScalarFieldEnum = {
   documentId: 'documentId',
   stageProgressId: 'stageProgressId',
   reviewerId: 'reviewerId',
-  reviewParty: 'reviewParty',
+  organizationTypeId: 'organizationTypeId',
   decision: 'decision',
   comment: 'comment',
   reviewedAt: 'reviewedAt',
@@ -1642,6 +1665,26 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const OrganizationTypeOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  code: 'code',
+  name: 'name',
+  description: 'description'
+} as const
+
+export type OrganizationTypeOrderByRelevanceFieldEnum = (typeof OrganizationTypeOrderByRelevanceFieldEnum)[keyof typeof OrganizationTypeOrderByRelevanceFieldEnum]
+
+
+export const OrganizationTypeAssignmentOrderByRelevanceFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  typeId: 'typeId'
+} as const
+
+export type OrganizationTypeAssignmentOrderByRelevanceFieldEnum = (typeof OrganizationTypeAssignmentOrderByRelevanceFieldEnum)[keyof typeof OrganizationTypeAssignmentOrderByRelevanceFieldEnum]
 
 
 export const UserOrderByRelevanceFieldEnum = {
@@ -2038,7 +2081,7 @@ export const ApprovalStageOrderByRelevanceFieldEnum = {
   id: 'id',
   planId: 'planId',
   name: 'name',
-  organizationId: 'organizationId',
+  organizationTypeId: 'organizationTypeId',
   description: 'description'
 } as const
 
@@ -2189,6 +2232,7 @@ export const ApplicationOrganizationOrderByRelevanceFieldEnum = {
   tenantId: 'tenantId',
   applicationId: 'applicationId',
   organizationId: 'organizationId',
+  assignedAsTypeId: 'assignedAsTypeId',
   assignedById: 'assignedById',
   declineReason: 'declineReason',
   escalatedToUserId: 'escalatedToUserId',
@@ -2349,6 +2393,7 @@ export const DocumentReviewOrderByRelevanceFieldEnum = {
   tenantId: 'tenantId',
   documentId: 'documentId',
   organizationId: 'organizationId',
+  organizationTypeId: 'organizationTypeId',
   reviewerId: 'reviewerId',
   reviewerName: 'reviewerName',
   comments: 'comments',
@@ -2364,6 +2409,7 @@ export const ApprovalStageProgressOrderByRelevanceFieldEnum = {
   documentationPhaseId: 'documentationPhaseId',
   approvalStageId: 'approvalStageId',
   name: 'name',
+  organizationTypeId: 'organizationTypeId',
   completedById: 'completedById',
   transitionComment: 'transitionComment'
 } as const
@@ -2377,6 +2423,7 @@ export const DocumentApprovalOrderByRelevanceFieldEnum = {
   documentId: 'documentId',
   stageProgressId: 'stageProgressId',
   reviewerId: 'reviewerId',
+  organizationTypeId: 'organizationTypeId',
   comment: 'comment'
 } as const
 

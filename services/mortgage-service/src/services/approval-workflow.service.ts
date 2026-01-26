@@ -3,7 +3,6 @@ import {
     AppError,
     StageStatus,
     ReviewDecision,
-    ReviewParty,
     DocumentStatus,
     RejectionBehavior,
     PhaseStatus,
@@ -39,12 +38,13 @@ export interface DocumentDefinitionSnapshot {
 
 /**
  * Approval stage from snapshot (JSON)
+ * Stores organizationTypeId (resolved at plan creation time) for audit trail
  */
 export interface ApprovalStageSnapshot {
     id: string;
     name: string;
     order: number;
-    reviewParty: ReviewParty;
+    organizationTypeId: string; // Resolved org type ID (e.g., id of PLATFORM, BANK, etc.)
     autoTransition: boolean;
     waitForAllDocuments: boolean;
     allowEarlyVisibility: boolean;
@@ -76,7 +76,7 @@ export interface ReviewDocumentInput {
     tenantId: string;
     documentId: string;
     reviewerId: string;
-    reviewParty: ReviewParty;
+    organizationTypeId: string; // Resolved org type ID
     decision: ReviewDecision;
     comment?: string;
 }
@@ -118,7 +118,7 @@ export function createApprovalWorkflowService() {
                 approvalStageId: stage.id,
                 name: stage.name,
                 order: stage.order,
-                reviewParty: stage.reviewParty,
+                organizationTypeId: stage.organizationTypeId,
                 autoTransition: stage.autoTransition,
                 waitForAllDocuments: stage.waitForAllDocuments,
                 allowEarlyVisibility: stage.allowEarlyVisibility,
@@ -189,7 +189,7 @@ export function createApprovalWorkflowService() {
          * Documents are uploaded to the documentation phase, not to a specific step
          * 
          * If the current approval stage has autoTransition=true and the document's
-         * uploadedBy matches the stage's reviewParty, the document is auto-approved.
+         * uploadedBy matches the stage's organization type, the document is auto-approved.
          */
         async uploadDocument(input: UploadDocumentInput): Promise<any> {
             const {
@@ -271,26 +271,32 @@ export function createApprovalWorkflowService() {
                 });
             }
 
-            // Check for auto-approval: if current stage reviewParty matches document uploadedBy
+            // Check for auto-approval: if current stage's organization type matches document uploadedBy
             const currentStage = docPhase.stageProgress.find(
                 (s: any) => s.order === docPhase.currentStageOrder
             );
 
-            if (currentStage && docDef) {
-                // Map uploadedBy to reviewParty (DEVELOPER -> DEVELOPER, LENDER -> BANK, etc.)
-                const uploadedByToReviewParty: Record<string, string> = {
+            if (currentStage && docDef && currentStage.organizationTypeId) {
+                // Map uploadedBy to organization type code (LENDER -> BANK, etc.)
+                const uploadedByToOrgTypeCode: Record<string, string> = {
                     'DEVELOPER': 'DEVELOPER',
                     'LENDER': 'BANK',
                     'LEGAL': 'LEGAL',
                     'INSURER': 'INSURER',
-                    'PLATFORM': 'INTERNAL',
+                    'PLATFORM': 'PLATFORM',
                     'CUSTOMER': 'CUSTOMER',
                 };
 
-                const expectedReviewParty = uploadedByToReviewParty[docDef.uploadedBy] || docDef.uploadedBy;
+                const expectedOrgTypeCode = uploadedByToOrgTypeCode[docDef.uploadedBy] || docDef.uploadedBy;
+
+                // Fetch the organization type to check code
+                const stageOrgType = await prisma.organizationType.findUnique({
+                    where: { id: currentStage.organizationTypeId },
+                    select: { code: true },
+                });
 
                 // Auto-approve if uploader matches reviewer (they don't need to review their own work)
-                if (currentStage.reviewParty === expectedReviewParty) {
+                if (stageOrgType && stageOrgType.code === expectedOrgTypeCode) {
                     // Auto-approve the document and check for stage completion
                     await prisma.$transaction(async (tx: any) => {
                         // Create auto-approval record
@@ -301,7 +307,7 @@ export function createApprovalWorkflowService() {
                                 documentId: document.id,
                                 stageProgressId: currentStage.id,
                                 reviewerId: uploadedById,
-                                reviewParty: currentStage.reviewParty,
+                                organizationTypeId: currentStage.organizationTypeId,
                                 decision: 'APPROVED',
                                 comment: 'Auto-approved: uploaded by authorized party',
                                 reviewedAt: new Date(),
@@ -339,7 +345,7 @@ export function createApprovalWorkflowService() {
          * Creates a DocumentApproval record and updates document status
          */
         async reviewDocument(input: ReviewDocumentInput): Promise<any> {
-            const { tenantId, documentId, reviewerId, reviewParty, decision, comment } = input;
+            const { tenantId, documentId, reviewerId, organizationTypeId, decision, comment } = input;
 
             // Get the document
             const document = await prisma.applicationDocument.findUnique({
@@ -362,6 +368,11 @@ export function createApprovalWorkflowService() {
                         include: {
                             stageProgress: {
                                 orderBy: { order: 'asc' },
+                                include: {
+                                    organizationType: {
+                                        select: { id: true, code: true, name: true },
+                                    },
+                                },
                             },
                         },
                     },
@@ -376,16 +387,17 @@ export function createApprovalWorkflowService() {
 
             // Get the current active stage
             const currentStage = docPhase.stageProgress.find(
-                s => s.status === 'IN_PROGRESS'
+                (s: any) => s.status === 'IN_PROGRESS'
             );
 
             if (!currentStage) {
                 throw new AppError(400, 'No active approval stage found');
             }
 
-            // Verify reviewer's party matches the current stage
-            if (currentStage.reviewParty !== reviewParty) {
-                throw new AppError(403, `Current stage requires ${currentStage.reviewParty} review, not ${reviewParty}`);
+            // Verify reviewer's organization type matches the current stage
+            if (currentStage.organizationTypeId !== organizationTypeId) {
+                const stageName = currentStage.organizationType?.name || currentStage.organizationType?.code || 'unknown';
+                throw new AppError(403, `Current stage requires ${stageName} review`);
             }
 
             return prisma.$transaction(async (tx) => {
@@ -397,7 +409,7 @@ export function createApprovalWorkflowService() {
                         documentId,
                         stageProgressId: currentStage.id,
                         reviewerId,
-                        reviewParty,
+                        organizationTypeId,
                         decision,
                         comment,
                     },
@@ -429,9 +441,9 @@ export function createApprovalWorkflowService() {
          * Evaluate if the current stage should be completed
          * Called after each document review
          * 
-         * Each stage is only responsible for reviewing documents that match its reviewParty.
+         * Each stage is only responsible for reviewing documents that match its organization type.
          * For example:
-         * - INTERNAL stage reviews documents uploaded by CUSTOMER or PLATFORM
+         * - PLATFORM stage reviews documents uploaded by CUSTOMER or PLATFORM
          * - BANK stage reviews documents uploaded by LENDER
          * - DEVELOPER stage reviews documents uploaded by DEVELOPER
          */
@@ -445,6 +457,7 @@ export function createApprovalWorkflowService() {
                 where: { id: stageProgressId },
                 include: {
                     documentApprovals: true,
+                    organizationType: { select: { code: true } },
                     documentationPhase: {
                         include: {
                             phase: true,
@@ -457,9 +470,9 @@ export function createApprovalWorkflowService() {
 
             const docPhase = stage.documentationPhase;
 
-            // Map reviewParty back to uploadedBy values that this stage is responsible for
-            const reviewPartyToUploadedBy: Record<string, string[]> = {
-                'INTERNAL': ['CUSTOMER', 'PLATFORM'],  // Internal team reviews customer and platform uploads
+            // Map organization type code back to uploadedBy values that this stage is responsible for
+            const orgTypeCodeToUploadedBy: Record<string, string[]> = {
+                'PLATFORM': ['CUSTOMER', 'PLATFORM'],  // Platform team reviews customer and platform uploads
                 'BANK': ['LENDER'],                     // Bank stage reviews lender uploads
                 'DEVELOPER': ['DEVELOPER'],
                 'LEGAL': ['LEGAL'],
@@ -468,7 +481,8 @@ export function createApprovalWorkflowService() {
                 'GOVERNMENT': ['GOVERNMENT'],
             };
 
-            const uploadedByValues = reviewPartyToUploadedBy[stage.reviewParty] || [];
+            const orgTypeCode = stage.organizationType?.code || '';
+            const uploadedByValues = orgTypeCodeToUploadedBy[orgTypeCode] || [];
 
             // Get document definitions from snapshot to find which document types this stage reviews
             const documentDefinitions = (docPhase.documentDefinitionsSnapshot as unknown as DocumentDefinitionSnapshot[]) || [];
@@ -827,8 +841,8 @@ export function createApprovalWorkflowService() {
          * AUTOMATIC: Notify organization members when their review stage activates.
          * This is CORE functionality - not manually configurable.
          * 
-         * When a stage with reviewParty BANK, DEVELOPER, LEGAL, etc. activates:
-         * 1. Find the ApplicationOrganization binding for that party
+         * When a stage for BANK, DEVELOPER, LEGAL, etc. organization type activates:
+         * 1. Find the ApplicationOrganization binding for that organization type
          * 2. Start SLA clock on the ApplicationOrganization
          * 3. Notify all organization members with reviewer role
          */
@@ -839,18 +853,15 @@ export function createApprovalWorkflowService() {
             activatedAt: Date
         ): Promise<void> {
             try {
-                // Map reviewParty to organization types
-                const reviewPartyToOrgType: Record<string, string> = {
-                    'BANK': 'BANK',
-                    'DEVELOPER': 'DEVELOPER',
-                    'LEGAL': 'LEGAL',
-                    'INSURER': 'INSURER',
-                    'GOVERNMENT': 'GOVERNMENT',
-                };
+                // Stage must have an organizationType - skip if missing or if it's PLATFORM/CUSTOMER
+                // (PLATFORM and CUSTOMER stages don't need external organization notifications)
+                if (!stage.organizationType?.code) {
+                    return;
+                }
 
-                const orgType = reviewPartyToOrgType[stage.reviewParty];
-                if (!orgType) {
-                    // INTERNAL or CUSTOMER stages don't map to organizations
+                const orgTypeCode = stage.organizationType.code;
+                if (orgTypeCode === 'PLATFORM' || orgTypeCode === 'CUSTOMER') {
+                    // Internal/customer stages don't map to external organizations
                     return;
                 }
 
@@ -881,6 +892,11 @@ export function createApprovalWorkflowService() {
                     include: {
                         organization: {
                             include: {
+                                types: {
+                                    include: {
+                                        type: true,
+                                    },
+                                },
                                 members: {
                                     include: {
                                         user: true,
@@ -891,13 +907,13 @@ export function createApprovalWorkflowService() {
                     },
                 });
 
-                // Find the org of the right type
+                // Find the org that has the matching type
                 const appOrg = appOrgs.find(
-                    (ao: any) => ao.organization.type === orgType
+                    (ao: any) => ao.organization.types.some((t: any) => t.type.code === orgTypeCode)
                 );
 
                 if (!appOrg) {
-                    console.log(`[ApprovalWorkflow] No ${orgType} organization bound to application ${application.id}`);
+                    console.log(`[ApprovalWorkflow] No ${orgTypeCode} organization bound to application ${application.id}`);
                     return;
                 }
 
@@ -923,13 +939,12 @@ export function createApprovalWorkflowService() {
                     },
                 });
 
-                // Notify all organization members with appropriate roles
-                const reviewerRoles = ['REVIEWER', 'LOAN_OFFICER', 'MANAGER', 'ADMIN'];
-                const reviewers = appOrg.organization.members.filter(
-                    (m: any) => reviewerRoles.includes(m.role) && m.user?.email
+                // Notify all organization members (role-based filtering removed - use RBAC permissions instead)
+                const members = appOrg.organization.members.filter(
+                    (m: any) => m.user?.email
                 );
 
-                for (const member of reviewers) {
+                for (const member of members) {
                     try {
                         await sendBankReviewRequiredNotification({
                             email: member.user.email,
@@ -950,7 +965,7 @@ export function createApprovalWorkflowService() {
                     }
                 }
 
-                console.log(`[ApprovalWorkflow] Notified ${reviewers.length} reviewers at ${appOrg.organization.name} for stage ${stage.name}`);
+                console.log(`[ApprovalWorkflow] Notified ${members.length} reviewers at ${appOrg.organization.name} for stage ${stage.name}`);
             } catch (error) {
                 // Notification failures should not break the main flow
                 console.error('[ApprovalWorkflow] Error notifying organization:', error);

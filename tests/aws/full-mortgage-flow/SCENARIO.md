@@ -24,7 +24,7 @@ This scenario walks through the complete lifecycle of a 10/90 mortgage applicati
 | Actor            | Role                        | Organization  | Description                                                       |
 | ---------------- | --------------------------- | ------------- | ----------------------------------------------------------------- |
 | **System Admin** | Bootstrap Operator          | -             | Uses bootstrap secret to initialize tenant                        |
-| **Adaeze**       | Mortgage Operations Officer | QShelter      | Reviews documents (Stage 1: Internal), configures payment methods |
+| **Adaeze**       | Mortgage Operations Officer | QShelter      | Reviews documents (Stage 1: QShelter), configures payment methods |
 | **Nkechi**       | Loan Officer                | Access Bank   | Reviews documents (Stage 2: Bank), uploads preapproval letter     |
 | **Emeka**        | Developer Representative    | Lekki Gardens | Reviews property-related documents                                |
 | **Chidi**        | Customer                    | -             | First-time homebuyer, age 40                                      |
@@ -33,8 +33,8 @@ This scenario walks through the complete lifecycle of a 10/90 mortgage applicati
 
 Documents requiring bank approval go through a two-stage process:
 
-1. **Stage 1 (INTERNAL)**: Adaeze (QShelter's Mortgage Operations Officer) reviews documents first
-2. **Stage 2 (BANK)**: Nkechi (Access Bank's Loan Officer) reviews after internal approval
+1. **Stage 1 (QSHELTER)**: Adaeze (QShelter's Mortgage Operations Officer) reviews documents first
+2. **Stage 2 (BANK)**: Nkechi (Access Bank's Loan Officer) reviews after QShelter approval
 
 Only after BOTH stages approve can the documentation phase complete.
 
@@ -572,7 +572,7 @@ Content-Type: application/json
       "order": 1,
       "requiredDocumentTypes": ["ID_CARD", "BANK_STATEMENT", "EMPLOYMENT_LETTER"],
       "reviewRequirements": [
-        { "party": "INTERNAL", "required": true },
+        { "party": "QSHELTER", "required": true },
         { "party": "BANK", "required": true }
       ],
       "reviewOrder": "SEQUENTIAL",
@@ -580,7 +580,7 @@ Content-Type: application/json
         { "name": "Upload Valid ID", "stepType": "UPLOAD", "order": 1 },
         { "name": "Upload Bank Statements", "stepType": "UPLOAD", "order": 2 },
         { "name": "Upload Employment Letter", "stepType": "UPLOAD", "order": 3 },
-        { "name": "Internal Review", "stepType": "APPROVAL", "order": 4, "reviewParty": "INTERNAL" },
+        { "name": "QShelter Review", "stepType": "APPROVAL", "order": 4, "reviewParty": "QSHELTER" },
         { "name": "Bank Review", "stepType": "APPROVAL", "order": 5, "reviewParty": "BANK" },
         {
           "name": "Bank Uploads Preapproval Letter",
@@ -613,7 +613,7 @@ Content-Type: application/json
           "order": 1,
           "metadata": {
             "documentType": "FINAL_OFFER",
-            "uploadedBy": "INTERNAL"
+            "uploadedBy": "QSHELTER"
           }
         },
         { "name": "Customer Signs Final Offer", "stepType": "SIGNATURE", "order": 2 }
@@ -949,7 +949,7 @@ Content-Type: application/json
 { "stepName": "Upload Employment Letter" }
 ```
 
-### Step 6.3: Mortgage Operations Officer Retrieves Documents for Review (Stage 1: Internal)
+### Step 6.3: Mortgage Operations Officer Retrieves Documents for Review (Stage 1: QShelter)
 
 Adaeze (QShelter's Mortgage Operations Officer) reviews documents first before they go to the bank.
 
@@ -980,9 +980,9 @@ x-tenant-id: {{tenantId}}
 }
 ```
 
-### Step 6.4: Mortgage Operations Officer Approves Each Document (Stage 1: Internal)
+### Step 6.4: Mortgage Operations Officer Approves Each Document (Stage 1: QShelter)
 
-Adaeze performs the internal (Stage 1) review with `reviewParty: "INTERNAL"`:
+Adaeze performs the QShelter (Stage 1) review with `reviewParty: "QSHELTER"`:
 
 ```http
 POST {{mortgageServiceUrl}}/applications/{{applicationId}}/documents/{{docId1}}/review
@@ -993,8 +993,8 @@ Content-Type: application/json
 
 {
   "status": "APPROVED",
-  "reviewParty": "INTERNAL",
-  "note": "ID verified successfully - internal review"
+  "reviewParty": "QSHELTER",
+  "note": "ID verified successfully - QShelter review"
 }
 ```
 
@@ -1002,7 +1002,7 @@ Content-Type: application/json
 
 ### Step 6.5: Bank Loan Officer Reviews Documents (Stage 2: Bank)
 
-After internal approval, Nkechi (Access Bank's Loan Officer) performs the bank (Stage 2) review:
+After QShelter approval, Nkechi (Access Bank's Loan Officer) performs the bank (Stage 2) review:
 
 ```http
 POST {{mortgageServiceUrl}}/applications/{{applicationId}}/documents/{{docId1}}/review
@@ -1040,7 +1040,7 @@ Content-Type: application/json
 
 ### Step 6.7: KYC Phase Completes
 
-After both INTERNAL (Adaeze) and BANK (Nkechi) reviews are approved, the KYC documentation phase completes.
+After both QSHELTER (Adaeze) and BANK (Nkechi) reviews are approved, the KYC documentation phase completes.
 
 ---
 

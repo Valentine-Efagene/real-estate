@@ -68,21 +68,21 @@ export class RealEstateStack extends cdk.Stack {
     cluster.connections.allowFrom(lambdaSecurityGroup, ec2.Port.tcp(3306), 'Allow Lambda functions to access Aurora MySQL');
 
     // Redis (Valkey)
-    const subnetGroup = new elasticache.CfnSubnetGroup(this, 'ValkeySubnetGroup', {
-      description: 'Valkey subnet group',
-      subnetIds: vpc.privateSubnets.map(subnet => subnet.subnetId),
-      cacheSubnetGroupName: `${prefix}-valkey-subnet-group`,
-    });
+    // const subnetGroup = new elasticache.CfnSubnetGroup(this, 'ValkeySubnetGroup', {
+    //   description: 'Valkey subnet group',
+    //   subnetIds: vpc.privateSubnets.map(subnet => subnet.subnetId),
+    //   cacheSubnetGroupName: `${prefix}-valkey-subnet-group`,
+    // });
 
-    const valkeyCluster = new elasticache.CfnCacheCluster(this, 'ValkeyCluster', {
-      cacheNodeType: 'cache.t4g.micro',
-      engine: 'redis',
-      numCacheNodes: 1,
-      clusterName: `${prefix}-valkey-cluster`,
-      vpcSecurityGroupIds: [vpc.vpcDefaultSecurityGroup],
-      cacheSubnetGroupName: subnetGroup.cacheSubnetGroupName!,
-    });
-    valkeyCluster.addDependency(subnetGroup);
+    // const valkeyCluster = new elasticache.CfnCacheCluster(this, 'ValkeyCluster', {
+    //   cacheNodeType: 'cache.t4g.micro',
+    //   engine: 'redis',
+    //   numCacheNodes: 1,
+    //   clusterName: `${prefix}-valkey-cluster`,
+    //   vpcSecurityGroupIds: [vpc.vpcDefaultSecurityGroup],
+    //   cacheSubnetGroupName: subnetGroup.cacheSubnetGroupName!,
+    // });
+    // valkeyCluster.addDependency(subnetGroup);
 
     // === DynamoDB for Role Policies ===
     const rolePoliciesTable = new dynamodb.Table(this, 'RolePoliciesTable', {
@@ -306,11 +306,11 @@ export class RealEstateStack extends cdk.Stack {
       description: 'Database Secret ARN',
     });
 
-    new ssm.StringParameter(this, 'RedisHostParameter', {
-      parameterName: `/qshelter/${stage}/redis-host`,
-      stringValue: valkeyCluster.attrRedisEndpointAddress,
-      description: 'Redis/Valkey Host',
-    });
+    // new ssm.StringParameter(this, 'RedisHostParameter', {
+    //   parameterName: `/qshelter/${stage}/redis-host`,
+    //   stringValue: valkeyCluster.attrRedisEndpointAddress,
+    //   description: 'Redis/Valkey Host',
+    // });
 
     new ssm.StringParameter(this, 'RedisPortParameter', {
       parameterName: `/qshelter/${stage}/redis-port`,

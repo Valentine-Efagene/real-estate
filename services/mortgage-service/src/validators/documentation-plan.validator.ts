@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
-import { ReviewParty, UploadedBy, RejectionBehavior } from '@valentine-efagene/qshelter-common';
+import { UploadedBy, RejectionBehavior } from '@valentine-efagene/qshelter-common';
 
 extendZodWithOpenApi(z);
 
@@ -42,7 +42,6 @@ export type StepCondition = {
 // =============================================================================
 
 export const UploadedByEnum = z.nativeEnum(UploadedBy);
-export const ReviewPartyEnum = z.nativeEnum(ReviewParty);
 export const RejectionBehaviorEnum = z.nativeEnum(RejectionBehavior);
 
 export const DocumentDefinitionSchema = z.object({
@@ -76,7 +75,7 @@ export type DocumentDefinitionInput = z.infer<typeof DocumentDefinitionSchema>;
 export const ApprovalStageSchema = z.object({
     name: z.string().min(1).openapi({ example: 'QShelter Staff Review', description: 'Stage name' }),
     order: z.number().int().min(1).openapi({ example: 1, description: 'Sequential order (1, 2, 3...)' }),
-    reviewParty: ReviewPartyEnum.openapi({ example: 'INTERNAL', description: 'Who reviews at this stage' }),
+    organizationTypeCode: z.string().min(1).openapi({ example: 'PLATFORM', description: 'Organization type code (PLATFORM, BANK, DEVELOPER, etc.)' }),
 
     // Behavior flags
     autoTransition: z.boolean().default(false).openapi({ description: 'Auto-complete when all docs approved? Default: require explicit approval' }),

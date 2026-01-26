@@ -38,8 +38,8 @@ export type DocumentReviewMinAggregateOutputType = {
   id: string | null
   tenantId: string | null
   documentId: string | null
-  reviewParty: $Enums.ReviewParty | null
   organizationId: string | null
+  organizationTypeId: string | null
   reviewerId: string | null
   reviewerName: string | null
   decision: $Enums.ReviewDecision | null
@@ -57,8 +57,8 @@ export type DocumentReviewMaxAggregateOutputType = {
   id: string | null
   tenantId: string | null
   documentId: string | null
-  reviewParty: $Enums.ReviewParty | null
   organizationId: string | null
+  organizationTypeId: string | null
   reviewerId: string | null
   reviewerName: string | null
   decision: $Enums.ReviewDecision | null
@@ -76,8 +76,8 @@ export type DocumentReviewCountAggregateOutputType = {
   id: number
   tenantId: number
   documentId: number
-  reviewParty: number
   organizationId: number
+  organizationTypeId: number
   reviewerId: number
   reviewerName: number
   decision: number
@@ -106,8 +106,8 @@ export type DocumentReviewMinAggregateInputType = {
   id?: true
   tenantId?: true
   documentId?: true
-  reviewParty?: true
   organizationId?: true
+  organizationTypeId?: true
   reviewerId?: true
   reviewerName?: true
   decision?: true
@@ -125,8 +125,8 @@ export type DocumentReviewMaxAggregateInputType = {
   id?: true
   tenantId?: true
   documentId?: true
-  reviewParty?: true
   organizationId?: true
+  organizationTypeId?: true
   reviewerId?: true
   reviewerName?: true
   decision?: true
@@ -144,8 +144,8 @@ export type DocumentReviewCountAggregateInputType = {
   id?: true
   tenantId?: true
   documentId?: true
-  reviewParty?: true
   organizationId?: true
+  organizationTypeId?: true
   reviewerId?: true
   reviewerName?: true
   decision?: true
@@ -251,8 +251,8 @@ export type DocumentReviewGroupByOutputType = {
   id: string
   tenantId: string
   documentId: string
-  reviewParty: $Enums.ReviewParty
   organizationId: string | null
+  organizationTypeId: string | null
   reviewerId: string | null
   reviewerName: string | null
   decision: $Enums.ReviewDecision
@@ -294,8 +294,8 @@ export type DocumentReviewWhereInput = {
   id?: Prisma.StringFilter<"DocumentReview"> | string
   tenantId?: Prisma.StringFilter<"DocumentReview"> | string
   documentId?: Prisma.StringFilter<"DocumentReview"> | string
-  reviewParty?: Prisma.EnumReviewPartyFilter<"DocumentReview"> | $Enums.ReviewParty
   organizationId?: Prisma.StringNullableFilter<"DocumentReview"> | string | null
+  organizationTypeId?: Prisma.StringNullableFilter<"DocumentReview"> | string | null
   reviewerId?: Prisma.StringNullableFilter<"DocumentReview"> | string | null
   reviewerName?: Prisma.StringNullableFilter<"DocumentReview"> | string | null
   decision?: Prisma.EnumReviewDecisionFilter<"DocumentReview"> | $Enums.ReviewDecision
@@ -310,6 +310,8 @@ export type DocumentReviewWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"DocumentReview"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   document?: Prisma.XOR<Prisma.ApplicationDocumentScalarRelationFilter, Prisma.ApplicationDocumentWhereInput>
+  organization?: Prisma.XOR<Prisma.OrganizationNullableScalarRelationFilter, Prisma.OrganizationWhereInput> | null
+  organizationType?: Prisma.XOR<Prisma.OrganizationTypeNullableScalarRelationFilter, Prisma.OrganizationTypeWhereInput> | null
   reviewer?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   parentReview?: Prisma.XOR<Prisma.DocumentReviewNullableScalarRelationFilter, Prisma.DocumentReviewWhereInput> | null
   childReviews?: Prisma.DocumentReviewListRelationFilter
@@ -319,8 +321,8 @@ export type DocumentReviewOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   documentId?: Prisma.SortOrder
-  reviewParty?: Prisma.SortOrder
   organizationId?: Prisma.SortOrderInput | Prisma.SortOrder
+  organizationTypeId?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewerId?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewerName?: Prisma.SortOrderInput | Prisma.SortOrder
   decision?: Prisma.SortOrder
@@ -335,6 +337,8 @@ export type DocumentReviewOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   tenant?: Prisma.TenantOrderByWithRelationInput
   document?: Prisma.ApplicationDocumentOrderByWithRelationInput
+  organization?: Prisma.OrganizationOrderByWithRelationInput
+  organizationType?: Prisma.OrganizationTypeOrderByWithRelationInput
   reviewer?: Prisma.UserOrderByWithRelationInput
   parentReview?: Prisma.DocumentReviewOrderByWithRelationInput
   childReviews?: Prisma.DocumentReviewOrderByRelationAggregateInput
@@ -343,14 +347,14 @@ export type DocumentReviewOrderByWithRelationInput = {
 
 export type DocumentReviewWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  documentId_reviewParty_organizationId?: Prisma.DocumentReviewDocumentIdReviewPartyOrganizationIdCompoundUniqueInput
+  documentId_organizationId?: Prisma.DocumentReviewDocumentIdOrganizationIdCompoundUniqueInput
   AND?: Prisma.DocumentReviewWhereInput | Prisma.DocumentReviewWhereInput[]
   OR?: Prisma.DocumentReviewWhereInput[]
   NOT?: Prisma.DocumentReviewWhereInput | Prisma.DocumentReviewWhereInput[]
   tenantId?: Prisma.StringFilter<"DocumentReview"> | string
   documentId?: Prisma.StringFilter<"DocumentReview"> | string
-  reviewParty?: Prisma.EnumReviewPartyFilter<"DocumentReview"> | $Enums.ReviewParty
   organizationId?: Prisma.StringNullableFilter<"DocumentReview"> | string | null
+  organizationTypeId?: Prisma.StringNullableFilter<"DocumentReview"> | string | null
   reviewerId?: Prisma.StringNullableFilter<"DocumentReview"> | string | null
   reviewerName?: Prisma.StringNullableFilter<"DocumentReview"> | string | null
   decision?: Prisma.EnumReviewDecisionFilter<"DocumentReview"> | $Enums.ReviewDecision
@@ -365,17 +369,19 @@ export type DocumentReviewWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"DocumentReview"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   document?: Prisma.XOR<Prisma.ApplicationDocumentScalarRelationFilter, Prisma.ApplicationDocumentWhereInput>
+  organization?: Prisma.XOR<Prisma.OrganizationNullableScalarRelationFilter, Prisma.OrganizationWhereInput> | null
+  organizationType?: Prisma.XOR<Prisma.OrganizationTypeNullableScalarRelationFilter, Prisma.OrganizationTypeWhereInput> | null
   reviewer?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   parentReview?: Prisma.XOR<Prisma.DocumentReviewNullableScalarRelationFilter, Prisma.DocumentReviewWhereInput> | null
   childReviews?: Prisma.DocumentReviewListRelationFilter
-}, "id" | "documentId_reviewParty_organizationId">
+}, "id" | "documentId_organizationId">
 
 export type DocumentReviewOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   documentId?: Prisma.SortOrder
-  reviewParty?: Prisma.SortOrder
   organizationId?: Prisma.SortOrderInput | Prisma.SortOrder
+  organizationTypeId?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewerId?: Prisma.SortOrderInput | Prisma.SortOrder
   reviewerName?: Prisma.SortOrderInput | Prisma.SortOrder
   decision?: Prisma.SortOrder
@@ -402,8 +408,8 @@ export type DocumentReviewScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"DocumentReview"> | string
   tenantId?: Prisma.StringWithAggregatesFilter<"DocumentReview"> | string
   documentId?: Prisma.StringWithAggregatesFilter<"DocumentReview"> | string
-  reviewParty?: Prisma.EnumReviewPartyWithAggregatesFilter<"DocumentReview"> | $Enums.ReviewParty
   organizationId?: Prisma.StringNullableWithAggregatesFilter<"DocumentReview"> | string | null
+  organizationTypeId?: Prisma.StringNullableWithAggregatesFilter<"DocumentReview"> | string | null
   reviewerId?: Prisma.StringNullableWithAggregatesFilter<"DocumentReview"> | string | null
   reviewerName?: Prisma.StringNullableWithAggregatesFilter<"DocumentReview"> | string | null
   decision?: Prisma.EnumReviewDecisionWithAggregatesFilter<"DocumentReview"> | $Enums.ReviewDecision
@@ -420,8 +426,6 @@ export type DocumentReviewScalarWhereWithAggregatesInput = {
 
 export type DocumentReviewCreateInput = {
   id?: string
-  reviewParty: $Enums.ReviewParty
-  organizationId?: string | null
   reviewerName?: string | null
   decision?: $Enums.ReviewDecision
   comments?: string | null
@@ -434,6 +438,8 @@ export type DocumentReviewCreateInput = {
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutDocumentReviewsInput
   document: Prisma.ApplicationDocumentCreateNestedOneWithoutReviewsInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutDocumentReviewsInput
+  organizationType?: Prisma.OrganizationTypeCreateNestedOneWithoutDocumentReviewsInput
   reviewer?: Prisma.UserCreateNestedOneWithoutDocumentReviewsInput
   parentReview?: Prisma.DocumentReviewCreateNestedOneWithoutChildReviewsInput
   childReviews?: Prisma.DocumentReviewCreateNestedManyWithoutParentReviewInput
@@ -443,8 +449,8 @@ export type DocumentReviewUncheckedCreateInput = {
   id?: string
   tenantId: string
   documentId: string
-  reviewParty: $Enums.ReviewParty
   organizationId?: string | null
+  organizationTypeId?: string | null
   reviewerId?: string | null
   reviewerName?: string | null
   decision?: $Enums.ReviewDecision
@@ -462,8 +468,6 @@ export type DocumentReviewUncheckedCreateInput = {
 
 export type DocumentReviewUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  reviewParty?: Prisma.EnumReviewPartyFieldUpdateOperationsInput | $Enums.ReviewParty
-  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decision?: Prisma.EnumReviewDecisionFieldUpdateOperationsInput | $Enums.ReviewDecision
   comments?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -476,6 +480,8 @@ export type DocumentReviewUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutDocumentReviewsNestedInput
   document?: Prisma.ApplicationDocumentUpdateOneRequiredWithoutReviewsNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutDocumentReviewsNestedInput
+  organizationType?: Prisma.OrganizationTypeUpdateOneWithoutDocumentReviewsNestedInput
   reviewer?: Prisma.UserUpdateOneWithoutDocumentReviewsNestedInput
   parentReview?: Prisma.DocumentReviewUpdateOneWithoutChildReviewsNestedInput
   childReviews?: Prisma.DocumentReviewUpdateManyWithoutParentReviewNestedInput
@@ -485,8 +491,8 @@ export type DocumentReviewUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   documentId?: Prisma.StringFieldUpdateOperationsInput | string
-  reviewParty?: Prisma.EnumReviewPartyFieldUpdateOperationsInput | $Enums.ReviewParty
   organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  organizationTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decision?: Prisma.EnumReviewDecisionFieldUpdateOperationsInput | $Enums.ReviewDecision
@@ -506,8 +512,8 @@ export type DocumentReviewCreateManyInput = {
   id?: string
   tenantId: string
   documentId: string
-  reviewParty: $Enums.ReviewParty
   organizationId?: string | null
+  organizationTypeId?: string | null
   reviewerId?: string | null
   reviewerName?: string | null
   decision?: $Enums.ReviewDecision
@@ -524,8 +530,6 @@ export type DocumentReviewCreateManyInput = {
 
 export type DocumentReviewUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  reviewParty?: Prisma.EnumReviewPartyFieldUpdateOperationsInput | $Enums.ReviewParty
-  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decision?: Prisma.EnumReviewDecisionFieldUpdateOperationsInput | $Enums.ReviewDecision
   comments?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -542,8 +546,8 @@ export type DocumentReviewUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   documentId?: Prisma.StringFieldUpdateOperationsInput | string
-  reviewParty?: Prisma.EnumReviewPartyFieldUpdateOperationsInput | $Enums.ReviewParty
   organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  organizationTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decision?: Prisma.EnumReviewDecisionFieldUpdateOperationsInput | $Enums.ReviewDecision
@@ -579,9 +583,8 @@ export type DocumentReviewOrderByRelevanceInput = {
   search: string
 }
 
-export type DocumentReviewDocumentIdReviewPartyOrganizationIdCompoundUniqueInput = {
+export type DocumentReviewDocumentIdOrganizationIdCompoundUniqueInput = {
   documentId: string
-  reviewParty: $Enums.ReviewParty
   organizationId: string
 }
 
@@ -589,8 +592,8 @@ export type DocumentReviewCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   documentId?: Prisma.SortOrder
-  reviewParty?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
+  organizationTypeId?: Prisma.SortOrder
   reviewerId?: Prisma.SortOrder
   reviewerName?: Prisma.SortOrder
   decision?: Prisma.SortOrder
@@ -613,8 +616,8 @@ export type DocumentReviewMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   documentId?: Prisma.SortOrder
-  reviewParty?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
+  organizationTypeId?: Prisma.SortOrder
   reviewerId?: Prisma.SortOrder
   reviewerName?: Prisma.SortOrder
   decision?: Prisma.SortOrder
@@ -632,8 +635,8 @@ export type DocumentReviewMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   documentId?: Prisma.SortOrder
-  reviewParty?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
+  organizationTypeId?: Prisma.SortOrder
   reviewerId?: Prisma.SortOrder
   reviewerName?: Prisma.SortOrder
   decision?: Prisma.SortOrder
@@ -649,6 +652,48 @@ export type DocumentReviewMinOrderByAggregateInput = {
 
 export type DocumentReviewSumOrderByAggregateInput = {
   reviewOrder?: Prisma.SortOrder
+}
+
+export type DocumentReviewCreateNestedManyWithoutOrganizationTypeInput = {
+  create?: Prisma.XOR<Prisma.DocumentReviewCreateWithoutOrganizationTypeInput, Prisma.DocumentReviewUncheckedCreateWithoutOrganizationTypeInput> | Prisma.DocumentReviewCreateWithoutOrganizationTypeInput[] | Prisma.DocumentReviewUncheckedCreateWithoutOrganizationTypeInput[]
+  connectOrCreate?: Prisma.DocumentReviewCreateOrConnectWithoutOrganizationTypeInput | Prisma.DocumentReviewCreateOrConnectWithoutOrganizationTypeInput[]
+  createMany?: Prisma.DocumentReviewCreateManyOrganizationTypeInputEnvelope
+  connect?: Prisma.DocumentReviewWhereUniqueInput | Prisma.DocumentReviewWhereUniqueInput[]
+}
+
+export type DocumentReviewUncheckedCreateNestedManyWithoutOrganizationTypeInput = {
+  create?: Prisma.XOR<Prisma.DocumentReviewCreateWithoutOrganizationTypeInput, Prisma.DocumentReviewUncheckedCreateWithoutOrganizationTypeInput> | Prisma.DocumentReviewCreateWithoutOrganizationTypeInput[] | Prisma.DocumentReviewUncheckedCreateWithoutOrganizationTypeInput[]
+  connectOrCreate?: Prisma.DocumentReviewCreateOrConnectWithoutOrganizationTypeInput | Prisma.DocumentReviewCreateOrConnectWithoutOrganizationTypeInput[]
+  createMany?: Prisma.DocumentReviewCreateManyOrganizationTypeInputEnvelope
+  connect?: Prisma.DocumentReviewWhereUniqueInput | Prisma.DocumentReviewWhereUniqueInput[]
+}
+
+export type DocumentReviewUpdateManyWithoutOrganizationTypeNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentReviewCreateWithoutOrganizationTypeInput, Prisma.DocumentReviewUncheckedCreateWithoutOrganizationTypeInput> | Prisma.DocumentReviewCreateWithoutOrganizationTypeInput[] | Prisma.DocumentReviewUncheckedCreateWithoutOrganizationTypeInput[]
+  connectOrCreate?: Prisma.DocumentReviewCreateOrConnectWithoutOrganizationTypeInput | Prisma.DocumentReviewCreateOrConnectWithoutOrganizationTypeInput[]
+  upsert?: Prisma.DocumentReviewUpsertWithWhereUniqueWithoutOrganizationTypeInput | Prisma.DocumentReviewUpsertWithWhereUniqueWithoutOrganizationTypeInput[]
+  createMany?: Prisma.DocumentReviewCreateManyOrganizationTypeInputEnvelope
+  set?: Prisma.DocumentReviewWhereUniqueInput | Prisma.DocumentReviewWhereUniqueInput[]
+  disconnect?: Prisma.DocumentReviewWhereUniqueInput | Prisma.DocumentReviewWhereUniqueInput[]
+  delete?: Prisma.DocumentReviewWhereUniqueInput | Prisma.DocumentReviewWhereUniqueInput[]
+  connect?: Prisma.DocumentReviewWhereUniqueInput | Prisma.DocumentReviewWhereUniqueInput[]
+  update?: Prisma.DocumentReviewUpdateWithWhereUniqueWithoutOrganizationTypeInput | Prisma.DocumentReviewUpdateWithWhereUniqueWithoutOrganizationTypeInput[]
+  updateMany?: Prisma.DocumentReviewUpdateManyWithWhereWithoutOrganizationTypeInput | Prisma.DocumentReviewUpdateManyWithWhereWithoutOrganizationTypeInput[]
+  deleteMany?: Prisma.DocumentReviewScalarWhereInput | Prisma.DocumentReviewScalarWhereInput[]
+}
+
+export type DocumentReviewUncheckedUpdateManyWithoutOrganizationTypeNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentReviewCreateWithoutOrganizationTypeInput, Prisma.DocumentReviewUncheckedCreateWithoutOrganizationTypeInput> | Prisma.DocumentReviewCreateWithoutOrganizationTypeInput[] | Prisma.DocumentReviewUncheckedCreateWithoutOrganizationTypeInput[]
+  connectOrCreate?: Prisma.DocumentReviewCreateOrConnectWithoutOrganizationTypeInput | Prisma.DocumentReviewCreateOrConnectWithoutOrganizationTypeInput[]
+  upsert?: Prisma.DocumentReviewUpsertWithWhereUniqueWithoutOrganizationTypeInput | Prisma.DocumentReviewUpsertWithWhereUniqueWithoutOrganizationTypeInput[]
+  createMany?: Prisma.DocumentReviewCreateManyOrganizationTypeInputEnvelope
+  set?: Prisma.DocumentReviewWhereUniqueInput | Prisma.DocumentReviewWhereUniqueInput[]
+  disconnect?: Prisma.DocumentReviewWhereUniqueInput | Prisma.DocumentReviewWhereUniqueInput[]
+  delete?: Prisma.DocumentReviewWhereUniqueInput | Prisma.DocumentReviewWhereUniqueInput[]
+  connect?: Prisma.DocumentReviewWhereUniqueInput | Prisma.DocumentReviewWhereUniqueInput[]
+  update?: Prisma.DocumentReviewUpdateWithWhereUniqueWithoutOrganizationTypeInput | Prisma.DocumentReviewUpdateWithWhereUniqueWithoutOrganizationTypeInput[]
+  updateMany?: Prisma.DocumentReviewUpdateManyWithWhereWithoutOrganizationTypeInput | Prisma.DocumentReviewUpdateManyWithWhereWithoutOrganizationTypeInput[]
+  deleteMany?: Prisma.DocumentReviewScalarWhereInput | Prisma.DocumentReviewScalarWhereInput[]
 }
 
 export type DocumentReviewCreateNestedManyWithoutReviewerInput = {
@@ -690,6 +735,48 @@ export type DocumentReviewUncheckedUpdateManyWithoutReviewerNestedInput = {
   connect?: Prisma.DocumentReviewWhereUniqueInput | Prisma.DocumentReviewWhereUniqueInput[]
   update?: Prisma.DocumentReviewUpdateWithWhereUniqueWithoutReviewerInput | Prisma.DocumentReviewUpdateWithWhereUniqueWithoutReviewerInput[]
   updateMany?: Prisma.DocumentReviewUpdateManyWithWhereWithoutReviewerInput | Prisma.DocumentReviewUpdateManyWithWhereWithoutReviewerInput[]
+  deleteMany?: Prisma.DocumentReviewScalarWhereInput | Prisma.DocumentReviewScalarWhereInput[]
+}
+
+export type DocumentReviewCreateNestedManyWithoutOrganizationInput = {
+  create?: Prisma.XOR<Prisma.DocumentReviewCreateWithoutOrganizationInput, Prisma.DocumentReviewUncheckedCreateWithoutOrganizationInput> | Prisma.DocumentReviewCreateWithoutOrganizationInput[] | Prisma.DocumentReviewUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.DocumentReviewCreateOrConnectWithoutOrganizationInput | Prisma.DocumentReviewCreateOrConnectWithoutOrganizationInput[]
+  createMany?: Prisma.DocumentReviewCreateManyOrganizationInputEnvelope
+  connect?: Prisma.DocumentReviewWhereUniqueInput | Prisma.DocumentReviewWhereUniqueInput[]
+}
+
+export type DocumentReviewUncheckedCreateNestedManyWithoutOrganizationInput = {
+  create?: Prisma.XOR<Prisma.DocumentReviewCreateWithoutOrganizationInput, Prisma.DocumentReviewUncheckedCreateWithoutOrganizationInput> | Prisma.DocumentReviewCreateWithoutOrganizationInput[] | Prisma.DocumentReviewUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.DocumentReviewCreateOrConnectWithoutOrganizationInput | Prisma.DocumentReviewCreateOrConnectWithoutOrganizationInput[]
+  createMany?: Prisma.DocumentReviewCreateManyOrganizationInputEnvelope
+  connect?: Prisma.DocumentReviewWhereUniqueInput | Prisma.DocumentReviewWhereUniqueInput[]
+}
+
+export type DocumentReviewUpdateManyWithoutOrganizationNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentReviewCreateWithoutOrganizationInput, Prisma.DocumentReviewUncheckedCreateWithoutOrganizationInput> | Prisma.DocumentReviewCreateWithoutOrganizationInput[] | Prisma.DocumentReviewUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.DocumentReviewCreateOrConnectWithoutOrganizationInput | Prisma.DocumentReviewCreateOrConnectWithoutOrganizationInput[]
+  upsert?: Prisma.DocumentReviewUpsertWithWhereUniqueWithoutOrganizationInput | Prisma.DocumentReviewUpsertWithWhereUniqueWithoutOrganizationInput[]
+  createMany?: Prisma.DocumentReviewCreateManyOrganizationInputEnvelope
+  set?: Prisma.DocumentReviewWhereUniqueInput | Prisma.DocumentReviewWhereUniqueInput[]
+  disconnect?: Prisma.DocumentReviewWhereUniqueInput | Prisma.DocumentReviewWhereUniqueInput[]
+  delete?: Prisma.DocumentReviewWhereUniqueInput | Prisma.DocumentReviewWhereUniqueInput[]
+  connect?: Prisma.DocumentReviewWhereUniqueInput | Prisma.DocumentReviewWhereUniqueInput[]
+  update?: Prisma.DocumentReviewUpdateWithWhereUniqueWithoutOrganizationInput | Prisma.DocumentReviewUpdateWithWhereUniqueWithoutOrganizationInput[]
+  updateMany?: Prisma.DocumentReviewUpdateManyWithWhereWithoutOrganizationInput | Prisma.DocumentReviewUpdateManyWithWhereWithoutOrganizationInput[]
+  deleteMany?: Prisma.DocumentReviewScalarWhereInput | Prisma.DocumentReviewScalarWhereInput[]
+}
+
+export type DocumentReviewUncheckedUpdateManyWithoutOrganizationNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentReviewCreateWithoutOrganizationInput, Prisma.DocumentReviewUncheckedCreateWithoutOrganizationInput> | Prisma.DocumentReviewCreateWithoutOrganizationInput[] | Prisma.DocumentReviewUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.DocumentReviewCreateOrConnectWithoutOrganizationInput | Prisma.DocumentReviewCreateOrConnectWithoutOrganizationInput[]
+  upsert?: Prisma.DocumentReviewUpsertWithWhereUniqueWithoutOrganizationInput | Prisma.DocumentReviewUpsertWithWhereUniqueWithoutOrganizationInput[]
+  createMany?: Prisma.DocumentReviewCreateManyOrganizationInputEnvelope
+  set?: Prisma.DocumentReviewWhereUniqueInput | Prisma.DocumentReviewWhereUniqueInput[]
+  disconnect?: Prisma.DocumentReviewWhereUniqueInput | Prisma.DocumentReviewWhereUniqueInput[]
+  delete?: Prisma.DocumentReviewWhereUniqueInput | Prisma.DocumentReviewWhereUniqueInput[]
+  connect?: Prisma.DocumentReviewWhereUniqueInput | Prisma.DocumentReviewWhereUniqueInput[]
+  update?: Prisma.DocumentReviewUpdateWithWhereUniqueWithoutOrganizationInput | Prisma.DocumentReviewUpdateWithWhereUniqueWithoutOrganizationInput[]
+  updateMany?: Prisma.DocumentReviewUpdateManyWithWhereWithoutOrganizationInput | Prisma.DocumentReviewUpdateManyWithWhereWithoutOrganizationInput[]
   deleteMany?: Prisma.DocumentReviewScalarWhereInput | Prisma.DocumentReviewScalarWhereInput[]
 }
 
@@ -835,10 +922,8 @@ export type DocumentReviewUncheckedUpdateManyWithoutParentReviewNestedInput = {
   deleteMany?: Prisma.DocumentReviewScalarWhereInput | Prisma.DocumentReviewScalarWhereInput[]
 }
 
-export type DocumentReviewCreateWithoutReviewerInput = {
+export type DocumentReviewCreateWithoutOrganizationTypeInput = {
   id?: string
-  reviewParty: $Enums.ReviewParty
-  organizationId?: string | null
   reviewerName?: string | null
   decision?: $Enums.ReviewDecision
   comments?: string | null
@@ -851,6 +936,97 @@ export type DocumentReviewCreateWithoutReviewerInput = {
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutDocumentReviewsInput
   document: Prisma.ApplicationDocumentCreateNestedOneWithoutReviewsInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutDocumentReviewsInput
+  reviewer?: Prisma.UserCreateNestedOneWithoutDocumentReviewsInput
+  parentReview?: Prisma.DocumentReviewCreateNestedOneWithoutChildReviewsInput
+  childReviews?: Prisma.DocumentReviewCreateNestedManyWithoutParentReviewInput
+}
+
+export type DocumentReviewUncheckedCreateWithoutOrganizationTypeInput = {
+  id?: string
+  tenantId: string
+  documentId: string
+  organizationId?: string | null
+  reviewerId?: string | null
+  reviewerName?: string | null
+  decision?: $Enums.ReviewDecision
+  comments?: string | null
+  concerns?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requestedAt?: Date | string
+  dueAt?: Date | string | null
+  reviewedAt?: Date | string | null
+  reviewOrder?: number
+  parentReviewId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  childReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutParentReviewInput
+}
+
+export type DocumentReviewCreateOrConnectWithoutOrganizationTypeInput = {
+  where: Prisma.DocumentReviewWhereUniqueInput
+  create: Prisma.XOR<Prisma.DocumentReviewCreateWithoutOrganizationTypeInput, Prisma.DocumentReviewUncheckedCreateWithoutOrganizationTypeInput>
+}
+
+export type DocumentReviewCreateManyOrganizationTypeInputEnvelope = {
+  data: Prisma.DocumentReviewCreateManyOrganizationTypeInput | Prisma.DocumentReviewCreateManyOrganizationTypeInput[]
+  skipDuplicates?: boolean
+}
+
+export type DocumentReviewUpsertWithWhereUniqueWithoutOrganizationTypeInput = {
+  where: Prisma.DocumentReviewWhereUniqueInput
+  update: Prisma.XOR<Prisma.DocumentReviewUpdateWithoutOrganizationTypeInput, Prisma.DocumentReviewUncheckedUpdateWithoutOrganizationTypeInput>
+  create: Prisma.XOR<Prisma.DocumentReviewCreateWithoutOrganizationTypeInput, Prisma.DocumentReviewUncheckedCreateWithoutOrganizationTypeInput>
+}
+
+export type DocumentReviewUpdateWithWhereUniqueWithoutOrganizationTypeInput = {
+  where: Prisma.DocumentReviewWhereUniqueInput
+  data: Prisma.XOR<Prisma.DocumentReviewUpdateWithoutOrganizationTypeInput, Prisma.DocumentReviewUncheckedUpdateWithoutOrganizationTypeInput>
+}
+
+export type DocumentReviewUpdateManyWithWhereWithoutOrganizationTypeInput = {
+  where: Prisma.DocumentReviewScalarWhereInput
+  data: Prisma.XOR<Prisma.DocumentReviewUpdateManyMutationInput, Prisma.DocumentReviewUncheckedUpdateManyWithoutOrganizationTypeInput>
+}
+
+export type DocumentReviewScalarWhereInput = {
+  AND?: Prisma.DocumentReviewScalarWhereInput | Prisma.DocumentReviewScalarWhereInput[]
+  OR?: Prisma.DocumentReviewScalarWhereInput[]
+  NOT?: Prisma.DocumentReviewScalarWhereInput | Prisma.DocumentReviewScalarWhereInput[]
+  id?: Prisma.StringFilter<"DocumentReview"> | string
+  tenantId?: Prisma.StringFilter<"DocumentReview"> | string
+  documentId?: Prisma.StringFilter<"DocumentReview"> | string
+  organizationId?: Prisma.StringNullableFilter<"DocumentReview"> | string | null
+  organizationTypeId?: Prisma.StringNullableFilter<"DocumentReview"> | string | null
+  reviewerId?: Prisma.StringNullableFilter<"DocumentReview"> | string | null
+  reviewerName?: Prisma.StringNullableFilter<"DocumentReview"> | string | null
+  decision?: Prisma.EnumReviewDecisionFilter<"DocumentReview"> | $Enums.ReviewDecision
+  comments?: Prisma.StringNullableFilter<"DocumentReview"> | string | null
+  concerns?: Prisma.JsonNullableFilter<"DocumentReview">
+  requestedAt?: Prisma.DateTimeFilter<"DocumentReview"> | Date | string
+  dueAt?: Prisma.DateTimeNullableFilter<"DocumentReview"> | Date | string | null
+  reviewedAt?: Prisma.DateTimeNullableFilter<"DocumentReview"> | Date | string | null
+  reviewOrder?: Prisma.IntFilter<"DocumentReview"> | number
+  parentReviewId?: Prisma.StringNullableFilter<"DocumentReview"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"DocumentReview"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"DocumentReview"> | Date | string
+}
+
+export type DocumentReviewCreateWithoutReviewerInput = {
+  id?: string
+  reviewerName?: string | null
+  decision?: $Enums.ReviewDecision
+  comments?: string | null
+  concerns?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requestedAt?: Date | string
+  dueAt?: Date | string | null
+  reviewedAt?: Date | string | null
+  reviewOrder?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutDocumentReviewsInput
+  document: Prisma.ApplicationDocumentCreateNestedOneWithoutReviewsInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutDocumentReviewsInput
+  organizationType?: Prisma.OrganizationTypeCreateNestedOneWithoutDocumentReviewsInput
   parentReview?: Prisma.DocumentReviewCreateNestedOneWithoutChildReviewsInput
   childReviews?: Prisma.DocumentReviewCreateNestedManyWithoutParentReviewInput
 }
@@ -859,8 +1035,8 @@ export type DocumentReviewUncheckedCreateWithoutReviewerInput = {
   id?: string
   tenantId: string
   documentId: string
-  reviewParty: $Enums.ReviewParty
   organizationId?: string | null
+  organizationTypeId?: string | null
   reviewerName?: string | null
   decision?: $Enums.ReviewDecision
   comments?: string | null
@@ -901,33 +1077,74 @@ export type DocumentReviewUpdateManyWithWhereWithoutReviewerInput = {
   data: Prisma.XOR<Prisma.DocumentReviewUpdateManyMutationInput, Prisma.DocumentReviewUncheckedUpdateManyWithoutReviewerInput>
 }
 
-export type DocumentReviewScalarWhereInput = {
-  AND?: Prisma.DocumentReviewScalarWhereInput | Prisma.DocumentReviewScalarWhereInput[]
-  OR?: Prisma.DocumentReviewScalarWhereInput[]
-  NOT?: Prisma.DocumentReviewScalarWhereInput | Prisma.DocumentReviewScalarWhereInput[]
-  id?: Prisma.StringFilter<"DocumentReview"> | string
-  tenantId?: Prisma.StringFilter<"DocumentReview"> | string
-  documentId?: Prisma.StringFilter<"DocumentReview"> | string
-  reviewParty?: Prisma.EnumReviewPartyFilter<"DocumentReview"> | $Enums.ReviewParty
-  organizationId?: Prisma.StringNullableFilter<"DocumentReview"> | string | null
-  reviewerId?: Prisma.StringNullableFilter<"DocumentReview"> | string | null
-  reviewerName?: Prisma.StringNullableFilter<"DocumentReview"> | string | null
-  decision?: Prisma.EnumReviewDecisionFilter<"DocumentReview"> | $Enums.ReviewDecision
-  comments?: Prisma.StringNullableFilter<"DocumentReview"> | string | null
-  concerns?: Prisma.JsonNullableFilter<"DocumentReview">
-  requestedAt?: Prisma.DateTimeFilter<"DocumentReview"> | Date | string
-  dueAt?: Prisma.DateTimeNullableFilter<"DocumentReview"> | Date | string | null
-  reviewedAt?: Prisma.DateTimeNullableFilter<"DocumentReview"> | Date | string | null
-  reviewOrder?: Prisma.IntFilter<"DocumentReview"> | number
-  parentReviewId?: Prisma.StringNullableFilter<"DocumentReview"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"DocumentReview"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"DocumentReview"> | Date | string
+export type DocumentReviewCreateWithoutOrganizationInput = {
+  id?: string
+  reviewerName?: string | null
+  decision?: $Enums.ReviewDecision
+  comments?: string | null
+  concerns?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requestedAt?: Date | string
+  dueAt?: Date | string | null
+  reviewedAt?: Date | string | null
+  reviewOrder?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutDocumentReviewsInput
+  document: Prisma.ApplicationDocumentCreateNestedOneWithoutReviewsInput
+  organizationType?: Prisma.OrganizationTypeCreateNestedOneWithoutDocumentReviewsInput
+  reviewer?: Prisma.UserCreateNestedOneWithoutDocumentReviewsInput
+  parentReview?: Prisma.DocumentReviewCreateNestedOneWithoutChildReviewsInput
+  childReviews?: Prisma.DocumentReviewCreateNestedManyWithoutParentReviewInput
+}
+
+export type DocumentReviewUncheckedCreateWithoutOrganizationInput = {
+  id?: string
+  tenantId: string
+  documentId: string
+  organizationTypeId?: string | null
+  reviewerId?: string | null
+  reviewerName?: string | null
+  decision?: $Enums.ReviewDecision
+  comments?: string | null
+  concerns?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requestedAt?: Date | string
+  dueAt?: Date | string | null
+  reviewedAt?: Date | string | null
+  reviewOrder?: number
+  parentReviewId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  childReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutParentReviewInput
+}
+
+export type DocumentReviewCreateOrConnectWithoutOrganizationInput = {
+  where: Prisma.DocumentReviewWhereUniqueInput
+  create: Prisma.XOR<Prisma.DocumentReviewCreateWithoutOrganizationInput, Prisma.DocumentReviewUncheckedCreateWithoutOrganizationInput>
+}
+
+export type DocumentReviewCreateManyOrganizationInputEnvelope = {
+  data: Prisma.DocumentReviewCreateManyOrganizationInput | Prisma.DocumentReviewCreateManyOrganizationInput[]
+  skipDuplicates?: boolean
+}
+
+export type DocumentReviewUpsertWithWhereUniqueWithoutOrganizationInput = {
+  where: Prisma.DocumentReviewWhereUniqueInput
+  update: Prisma.XOR<Prisma.DocumentReviewUpdateWithoutOrganizationInput, Prisma.DocumentReviewUncheckedUpdateWithoutOrganizationInput>
+  create: Prisma.XOR<Prisma.DocumentReviewCreateWithoutOrganizationInput, Prisma.DocumentReviewUncheckedCreateWithoutOrganizationInput>
+}
+
+export type DocumentReviewUpdateWithWhereUniqueWithoutOrganizationInput = {
+  where: Prisma.DocumentReviewWhereUniqueInput
+  data: Prisma.XOR<Prisma.DocumentReviewUpdateWithoutOrganizationInput, Prisma.DocumentReviewUncheckedUpdateWithoutOrganizationInput>
+}
+
+export type DocumentReviewUpdateManyWithWhereWithoutOrganizationInput = {
+  where: Prisma.DocumentReviewScalarWhereInput
+  data: Prisma.XOR<Prisma.DocumentReviewUpdateManyMutationInput, Prisma.DocumentReviewUncheckedUpdateManyWithoutOrganizationInput>
 }
 
 export type DocumentReviewCreateWithoutTenantInput = {
   id?: string
-  reviewParty: $Enums.ReviewParty
-  organizationId?: string | null
   reviewerName?: string | null
   decision?: $Enums.ReviewDecision
   comments?: string | null
@@ -939,6 +1156,8 @@ export type DocumentReviewCreateWithoutTenantInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   document: Prisma.ApplicationDocumentCreateNestedOneWithoutReviewsInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutDocumentReviewsInput
+  organizationType?: Prisma.OrganizationTypeCreateNestedOneWithoutDocumentReviewsInput
   reviewer?: Prisma.UserCreateNestedOneWithoutDocumentReviewsInput
   parentReview?: Prisma.DocumentReviewCreateNestedOneWithoutChildReviewsInput
   childReviews?: Prisma.DocumentReviewCreateNestedManyWithoutParentReviewInput
@@ -947,8 +1166,8 @@ export type DocumentReviewCreateWithoutTenantInput = {
 export type DocumentReviewUncheckedCreateWithoutTenantInput = {
   id?: string
   documentId: string
-  reviewParty: $Enums.ReviewParty
   organizationId?: string | null
+  organizationTypeId?: string | null
   reviewerId?: string | null
   reviewerName?: string | null
   decision?: $Enums.ReviewDecision
@@ -992,8 +1211,6 @@ export type DocumentReviewUpdateManyWithWhereWithoutTenantInput = {
 
 export type DocumentReviewCreateWithoutDocumentInput = {
   id?: string
-  reviewParty: $Enums.ReviewParty
-  organizationId?: string | null
   reviewerName?: string | null
   decision?: $Enums.ReviewDecision
   comments?: string | null
@@ -1005,6 +1222,8 @@ export type DocumentReviewCreateWithoutDocumentInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutDocumentReviewsInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutDocumentReviewsInput
+  organizationType?: Prisma.OrganizationTypeCreateNestedOneWithoutDocumentReviewsInput
   reviewer?: Prisma.UserCreateNestedOneWithoutDocumentReviewsInput
   parentReview?: Prisma.DocumentReviewCreateNestedOneWithoutChildReviewsInput
   childReviews?: Prisma.DocumentReviewCreateNestedManyWithoutParentReviewInput
@@ -1013,8 +1232,8 @@ export type DocumentReviewCreateWithoutDocumentInput = {
 export type DocumentReviewUncheckedCreateWithoutDocumentInput = {
   id?: string
   tenantId: string
-  reviewParty: $Enums.ReviewParty
   organizationId?: string | null
+  organizationTypeId?: string | null
   reviewerId?: string | null
   reviewerName?: string | null
   decision?: $Enums.ReviewDecision
@@ -1058,8 +1277,6 @@ export type DocumentReviewUpdateManyWithWhereWithoutDocumentInput = {
 
 export type DocumentReviewCreateWithoutChildReviewsInput = {
   id?: string
-  reviewParty: $Enums.ReviewParty
-  organizationId?: string | null
   reviewerName?: string | null
   decision?: $Enums.ReviewDecision
   comments?: string | null
@@ -1072,6 +1289,8 @@ export type DocumentReviewCreateWithoutChildReviewsInput = {
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutDocumentReviewsInput
   document: Prisma.ApplicationDocumentCreateNestedOneWithoutReviewsInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutDocumentReviewsInput
+  organizationType?: Prisma.OrganizationTypeCreateNestedOneWithoutDocumentReviewsInput
   reviewer?: Prisma.UserCreateNestedOneWithoutDocumentReviewsInput
   parentReview?: Prisma.DocumentReviewCreateNestedOneWithoutChildReviewsInput
 }
@@ -1080,8 +1299,8 @@ export type DocumentReviewUncheckedCreateWithoutChildReviewsInput = {
   id?: string
   tenantId: string
   documentId: string
-  reviewParty: $Enums.ReviewParty
   organizationId?: string | null
+  organizationTypeId?: string | null
   reviewerId?: string | null
   reviewerName?: string | null
   decision?: $Enums.ReviewDecision
@@ -1103,8 +1322,6 @@ export type DocumentReviewCreateOrConnectWithoutChildReviewsInput = {
 
 export type DocumentReviewCreateWithoutParentReviewInput = {
   id?: string
-  reviewParty: $Enums.ReviewParty
-  organizationId?: string | null
   reviewerName?: string | null
   decision?: $Enums.ReviewDecision
   comments?: string | null
@@ -1117,6 +1334,8 @@ export type DocumentReviewCreateWithoutParentReviewInput = {
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutDocumentReviewsInput
   document: Prisma.ApplicationDocumentCreateNestedOneWithoutReviewsInput
+  organization?: Prisma.OrganizationCreateNestedOneWithoutDocumentReviewsInput
+  organizationType?: Prisma.OrganizationTypeCreateNestedOneWithoutDocumentReviewsInput
   reviewer?: Prisma.UserCreateNestedOneWithoutDocumentReviewsInput
   childReviews?: Prisma.DocumentReviewCreateNestedManyWithoutParentReviewInput
 }
@@ -1125,8 +1344,8 @@ export type DocumentReviewUncheckedCreateWithoutParentReviewInput = {
   id?: string
   tenantId: string
   documentId: string
-  reviewParty: $Enums.ReviewParty
   organizationId?: string | null
+  organizationTypeId?: string | null
   reviewerId?: string | null
   reviewerName?: string | null
   decision?: $Enums.ReviewDecision
@@ -1164,8 +1383,6 @@ export type DocumentReviewUpdateToOneWithWhereWithoutChildReviewsInput = {
 
 export type DocumentReviewUpdateWithoutChildReviewsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  reviewParty?: Prisma.EnumReviewPartyFieldUpdateOperationsInput | $Enums.ReviewParty
-  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decision?: Prisma.EnumReviewDecisionFieldUpdateOperationsInput | $Enums.ReviewDecision
   comments?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1178,6 +1395,8 @@ export type DocumentReviewUpdateWithoutChildReviewsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutDocumentReviewsNestedInput
   document?: Prisma.ApplicationDocumentUpdateOneRequiredWithoutReviewsNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutDocumentReviewsNestedInput
+  organizationType?: Prisma.OrganizationTypeUpdateOneWithoutDocumentReviewsNestedInput
   reviewer?: Prisma.UserUpdateOneWithoutDocumentReviewsNestedInput
   parentReview?: Prisma.DocumentReviewUpdateOneWithoutChildReviewsNestedInput
 }
@@ -1186,8 +1405,8 @@ export type DocumentReviewUncheckedUpdateWithoutChildReviewsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   documentId?: Prisma.StringFieldUpdateOperationsInput | string
-  reviewParty?: Prisma.EnumReviewPartyFieldUpdateOperationsInput | $Enums.ReviewParty
   organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  organizationTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decision?: Prisma.EnumReviewDecisionFieldUpdateOperationsInput | $Enums.ReviewDecision
@@ -1218,12 +1437,90 @@ export type DocumentReviewUpdateManyWithWhereWithoutParentReviewInput = {
   data: Prisma.XOR<Prisma.DocumentReviewUpdateManyMutationInput, Prisma.DocumentReviewUncheckedUpdateManyWithoutParentReviewInput>
 }
 
+export type DocumentReviewCreateManyOrganizationTypeInput = {
+  id?: string
+  tenantId: string
+  documentId: string
+  organizationId?: string | null
+  reviewerId?: string | null
+  reviewerName?: string | null
+  decision?: $Enums.ReviewDecision
+  comments?: string | null
+  concerns?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requestedAt?: Date | string
+  dueAt?: Date | string | null
+  reviewedAt?: Date | string | null
+  reviewOrder?: number
+  parentReviewId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type DocumentReviewUpdateWithoutOrganizationTypeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  decision?: Prisma.EnumReviewDecisionFieldUpdateOperationsInput | $Enums.ReviewDecision
+  comments?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  concerns?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requestedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutDocumentReviewsNestedInput
+  document?: Prisma.ApplicationDocumentUpdateOneRequiredWithoutReviewsNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutDocumentReviewsNestedInput
+  reviewer?: Prisma.UserUpdateOneWithoutDocumentReviewsNestedInput
+  parentReview?: Prisma.DocumentReviewUpdateOneWithoutChildReviewsNestedInput
+  childReviews?: Prisma.DocumentReviewUpdateManyWithoutParentReviewNestedInput
+}
+
+export type DocumentReviewUncheckedUpdateWithoutOrganizationTypeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  documentId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  decision?: Prisma.EnumReviewDecisionFieldUpdateOperationsInput | $Enums.ReviewDecision
+  comments?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  concerns?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requestedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  parentReviewId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  childReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutParentReviewNestedInput
+}
+
+export type DocumentReviewUncheckedUpdateManyWithoutOrganizationTypeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  documentId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  decision?: Prisma.EnumReviewDecisionFieldUpdateOperationsInput | $Enums.ReviewDecision
+  comments?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  concerns?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requestedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  parentReviewId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type DocumentReviewCreateManyReviewerInput = {
   id?: string
   tenantId: string
   documentId: string
-  reviewParty: $Enums.ReviewParty
   organizationId?: string | null
+  organizationTypeId?: string | null
   reviewerName?: string | null
   decision?: $Enums.ReviewDecision
   comments?: string | null
@@ -1239,8 +1536,6 @@ export type DocumentReviewCreateManyReviewerInput = {
 
 export type DocumentReviewUpdateWithoutReviewerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  reviewParty?: Prisma.EnumReviewPartyFieldUpdateOperationsInput | $Enums.ReviewParty
-  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decision?: Prisma.EnumReviewDecisionFieldUpdateOperationsInput | $Enums.ReviewDecision
   comments?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1253,6 +1548,8 @@ export type DocumentReviewUpdateWithoutReviewerInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutDocumentReviewsNestedInput
   document?: Prisma.ApplicationDocumentUpdateOneRequiredWithoutReviewsNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutDocumentReviewsNestedInput
+  organizationType?: Prisma.OrganizationTypeUpdateOneWithoutDocumentReviewsNestedInput
   parentReview?: Prisma.DocumentReviewUpdateOneWithoutChildReviewsNestedInput
   childReviews?: Prisma.DocumentReviewUpdateManyWithoutParentReviewNestedInput
 }
@@ -1261,8 +1558,8 @@ export type DocumentReviewUncheckedUpdateWithoutReviewerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   documentId?: Prisma.StringFieldUpdateOperationsInput | string
-  reviewParty?: Prisma.EnumReviewPartyFieldUpdateOperationsInput | $Enums.ReviewParty
   organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  organizationTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decision?: Prisma.EnumReviewDecisionFieldUpdateOperationsInput | $Enums.ReviewDecision
   comments?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1281,8 +1578,86 @@ export type DocumentReviewUncheckedUpdateManyWithoutReviewerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   documentId?: Prisma.StringFieldUpdateOperationsInput | string
-  reviewParty?: Prisma.EnumReviewPartyFieldUpdateOperationsInput | $Enums.ReviewParty
   organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  organizationTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  decision?: Prisma.EnumReviewDecisionFieldUpdateOperationsInput | $Enums.ReviewDecision
+  comments?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  concerns?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requestedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  parentReviewId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type DocumentReviewCreateManyOrganizationInput = {
+  id?: string
+  tenantId: string
+  documentId: string
+  organizationTypeId?: string | null
+  reviewerId?: string | null
+  reviewerName?: string | null
+  decision?: $Enums.ReviewDecision
+  comments?: string | null
+  concerns?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requestedAt?: Date | string
+  dueAt?: Date | string | null
+  reviewedAt?: Date | string | null
+  reviewOrder?: number
+  parentReviewId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type DocumentReviewUpdateWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  reviewerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  decision?: Prisma.EnumReviewDecisionFieldUpdateOperationsInput | $Enums.ReviewDecision
+  comments?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  concerns?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requestedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutDocumentReviewsNestedInput
+  document?: Prisma.ApplicationDocumentUpdateOneRequiredWithoutReviewsNestedInput
+  organizationType?: Prisma.OrganizationTypeUpdateOneWithoutDocumentReviewsNestedInput
+  reviewer?: Prisma.UserUpdateOneWithoutDocumentReviewsNestedInput
+  parentReview?: Prisma.DocumentReviewUpdateOneWithoutChildReviewsNestedInput
+  childReviews?: Prisma.DocumentReviewUpdateManyWithoutParentReviewNestedInput
+}
+
+export type DocumentReviewUncheckedUpdateWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  documentId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  decision?: Prisma.EnumReviewDecisionFieldUpdateOperationsInput | $Enums.ReviewDecision
+  comments?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  concerns?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  requestedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dueAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reviewOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  parentReviewId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  childReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutParentReviewNestedInput
+}
+
+export type DocumentReviewUncheckedUpdateManyWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  documentId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decision?: Prisma.EnumReviewDecisionFieldUpdateOperationsInput | $Enums.ReviewDecision
   comments?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1299,8 +1674,8 @@ export type DocumentReviewUncheckedUpdateManyWithoutReviewerInput = {
 export type DocumentReviewCreateManyTenantInput = {
   id?: string
   documentId: string
-  reviewParty: $Enums.ReviewParty
   organizationId?: string | null
+  organizationTypeId?: string | null
   reviewerId?: string | null
   reviewerName?: string | null
   decision?: $Enums.ReviewDecision
@@ -1317,8 +1692,6 @@ export type DocumentReviewCreateManyTenantInput = {
 
 export type DocumentReviewUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  reviewParty?: Prisma.EnumReviewPartyFieldUpdateOperationsInput | $Enums.ReviewParty
-  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decision?: Prisma.EnumReviewDecisionFieldUpdateOperationsInput | $Enums.ReviewDecision
   comments?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1330,6 +1703,8 @@ export type DocumentReviewUpdateWithoutTenantInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   document?: Prisma.ApplicationDocumentUpdateOneRequiredWithoutReviewsNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutDocumentReviewsNestedInput
+  organizationType?: Prisma.OrganizationTypeUpdateOneWithoutDocumentReviewsNestedInput
   reviewer?: Prisma.UserUpdateOneWithoutDocumentReviewsNestedInput
   parentReview?: Prisma.DocumentReviewUpdateOneWithoutChildReviewsNestedInput
   childReviews?: Prisma.DocumentReviewUpdateManyWithoutParentReviewNestedInput
@@ -1338,8 +1713,8 @@ export type DocumentReviewUpdateWithoutTenantInput = {
 export type DocumentReviewUncheckedUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   documentId?: Prisma.StringFieldUpdateOperationsInput | string
-  reviewParty?: Prisma.EnumReviewPartyFieldUpdateOperationsInput | $Enums.ReviewParty
   organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  organizationTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decision?: Prisma.EnumReviewDecisionFieldUpdateOperationsInput | $Enums.ReviewDecision
@@ -1358,8 +1733,8 @@ export type DocumentReviewUncheckedUpdateWithoutTenantInput = {
 export type DocumentReviewUncheckedUpdateManyWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   documentId?: Prisma.StringFieldUpdateOperationsInput | string
-  reviewParty?: Prisma.EnumReviewPartyFieldUpdateOperationsInput | $Enums.ReviewParty
   organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  organizationTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decision?: Prisma.EnumReviewDecisionFieldUpdateOperationsInput | $Enums.ReviewDecision
@@ -1377,8 +1752,8 @@ export type DocumentReviewUncheckedUpdateManyWithoutTenantInput = {
 export type DocumentReviewCreateManyDocumentInput = {
   id?: string
   tenantId: string
-  reviewParty: $Enums.ReviewParty
   organizationId?: string | null
+  organizationTypeId?: string | null
   reviewerId?: string | null
   reviewerName?: string | null
   decision?: $Enums.ReviewDecision
@@ -1395,8 +1770,6 @@ export type DocumentReviewCreateManyDocumentInput = {
 
 export type DocumentReviewUpdateWithoutDocumentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  reviewParty?: Prisma.EnumReviewPartyFieldUpdateOperationsInput | $Enums.ReviewParty
-  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decision?: Prisma.EnumReviewDecisionFieldUpdateOperationsInput | $Enums.ReviewDecision
   comments?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1408,6 +1781,8 @@ export type DocumentReviewUpdateWithoutDocumentInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutDocumentReviewsNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutDocumentReviewsNestedInput
+  organizationType?: Prisma.OrganizationTypeUpdateOneWithoutDocumentReviewsNestedInput
   reviewer?: Prisma.UserUpdateOneWithoutDocumentReviewsNestedInput
   parentReview?: Prisma.DocumentReviewUpdateOneWithoutChildReviewsNestedInput
   childReviews?: Prisma.DocumentReviewUpdateManyWithoutParentReviewNestedInput
@@ -1416,8 +1791,8 @@ export type DocumentReviewUpdateWithoutDocumentInput = {
 export type DocumentReviewUncheckedUpdateWithoutDocumentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  reviewParty?: Prisma.EnumReviewPartyFieldUpdateOperationsInput | $Enums.ReviewParty
   organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  organizationTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decision?: Prisma.EnumReviewDecisionFieldUpdateOperationsInput | $Enums.ReviewDecision
@@ -1436,8 +1811,8 @@ export type DocumentReviewUncheckedUpdateWithoutDocumentInput = {
 export type DocumentReviewUncheckedUpdateManyWithoutDocumentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  reviewParty?: Prisma.EnumReviewPartyFieldUpdateOperationsInput | $Enums.ReviewParty
   organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  organizationTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decision?: Prisma.EnumReviewDecisionFieldUpdateOperationsInput | $Enums.ReviewDecision
@@ -1456,8 +1831,8 @@ export type DocumentReviewCreateManyParentReviewInput = {
   id?: string
   tenantId: string
   documentId: string
-  reviewParty: $Enums.ReviewParty
   organizationId?: string | null
+  organizationTypeId?: string | null
   reviewerId?: string | null
   reviewerName?: string | null
   decision?: $Enums.ReviewDecision
@@ -1473,8 +1848,6 @@ export type DocumentReviewCreateManyParentReviewInput = {
 
 export type DocumentReviewUpdateWithoutParentReviewInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  reviewParty?: Prisma.EnumReviewPartyFieldUpdateOperationsInput | $Enums.ReviewParty
-  organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decision?: Prisma.EnumReviewDecisionFieldUpdateOperationsInput | $Enums.ReviewDecision
   comments?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1487,6 +1860,8 @@ export type DocumentReviewUpdateWithoutParentReviewInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutDocumentReviewsNestedInput
   document?: Prisma.ApplicationDocumentUpdateOneRequiredWithoutReviewsNestedInput
+  organization?: Prisma.OrganizationUpdateOneWithoutDocumentReviewsNestedInput
+  organizationType?: Prisma.OrganizationTypeUpdateOneWithoutDocumentReviewsNestedInput
   reviewer?: Prisma.UserUpdateOneWithoutDocumentReviewsNestedInput
   childReviews?: Prisma.DocumentReviewUpdateManyWithoutParentReviewNestedInput
 }
@@ -1495,8 +1870,8 @@ export type DocumentReviewUncheckedUpdateWithoutParentReviewInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   documentId?: Prisma.StringFieldUpdateOperationsInput | string
-  reviewParty?: Prisma.EnumReviewPartyFieldUpdateOperationsInput | $Enums.ReviewParty
   organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  organizationTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decision?: Prisma.EnumReviewDecisionFieldUpdateOperationsInput | $Enums.ReviewDecision
@@ -1515,8 +1890,8 @@ export type DocumentReviewUncheckedUpdateManyWithoutParentReviewInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   documentId?: Prisma.StringFieldUpdateOperationsInput | string
-  reviewParty?: Prisma.EnumReviewPartyFieldUpdateOperationsInput | $Enums.ReviewParty
   organizationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  organizationTypeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviewerName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   decision?: Prisma.EnumReviewDecisionFieldUpdateOperationsInput | $Enums.ReviewDecision
@@ -1565,8 +1940,8 @@ export type DocumentReviewSelect<ExtArgs extends runtime.Types.Extensions.Intern
   id?: boolean
   tenantId?: boolean
   documentId?: boolean
-  reviewParty?: boolean
   organizationId?: boolean
+  organizationTypeId?: boolean
   reviewerId?: boolean
   reviewerName?: boolean
   decision?: boolean
@@ -1581,6 +1956,8 @@ export type DocumentReviewSelect<ExtArgs extends runtime.Types.Extensions.Intern
   updatedAt?: boolean
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   document?: boolean | Prisma.ApplicationDocumentDefaultArgs<ExtArgs>
+  organization?: boolean | Prisma.DocumentReview$organizationArgs<ExtArgs>
+  organizationType?: boolean | Prisma.DocumentReview$organizationTypeArgs<ExtArgs>
   reviewer?: boolean | Prisma.DocumentReview$reviewerArgs<ExtArgs>
   parentReview?: boolean | Prisma.DocumentReview$parentReviewArgs<ExtArgs>
   childReviews?: boolean | Prisma.DocumentReview$childReviewsArgs<ExtArgs>
@@ -1593,8 +1970,8 @@ export type DocumentReviewSelectScalar = {
   id?: boolean
   tenantId?: boolean
   documentId?: boolean
-  reviewParty?: boolean
   organizationId?: boolean
+  organizationTypeId?: boolean
   reviewerId?: boolean
   reviewerName?: boolean
   decision?: boolean
@@ -1609,10 +1986,12 @@ export type DocumentReviewSelectScalar = {
   updatedAt?: boolean
 }
 
-export type DocumentReviewOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "documentId" | "reviewParty" | "organizationId" | "reviewerId" | "reviewerName" | "decision" | "comments" | "concerns" | "requestedAt" | "dueAt" | "reviewedAt" | "reviewOrder" | "parentReviewId" | "createdAt" | "updatedAt", ExtArgs["result"]["documentReview"]>
+export type DocumentReviewOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "documentId" | "organizationId" | "organizationTypeId" | "reviewerId" | "reviewerName" | "decision" | "comments" | "concerns" | "requestedAt" | "dueAt" | "reviewedAt" | "reviewOrder" | "parentReviewId" | "createdAt" | "updatedAt", ExtArgs["result"]["documentReview"]>
 export type DocumentReviewInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   document?: boolean | Prisma.ApplicationDocumentDefaultArgs<ExtArgs>
+  organization?: boolean | Prisma.DocumentReview$organizationArgs<ExtArgs>
+  organizationType?: boolean | Prisma.DocumentReview$organizationTypeArgs<ExtArgs>
   reviewer?: boolean | Prisma.DocumentReview$reviewerArgs<ExtArgs>
   parentReview?: boolean | Prisma.DocumentReview$parentReviewArgs<ExtArgs>
   childReviews?: boolean | Prisma.DocumentReview$childReviewsArgs<ExtArgs>
@@ -1624,6 +2003,8 @@ export type $DocumentReviewPayload<ExtArgs extends runtime.Types.Extensions.Inte
   objects: {
     tenant: Prisma.$TenantPayload<ExtArgs>
     document: Prisma.$ApplicationDocumentPayload<ExtArgs>
+    organization: Prisma.$OrganizationPayload<ExtArgs> | null
+    organizationType: Prisma.$OrganizationTypePayload<ExtArgs> | null
     reviewer: Prisma.$UserPayload<ExtArgs> | null
     parentReview: Prisma.$DocumentReviewPayload<ExtArgs> | null
     childReviews: Prisma.$DocumentReviewPayload<ExtArgs>[]
@@ -1632,8 +2013,8 @@ export type $DocumentReviewPayload<ExtArgs extends runtime.Types.Extensions.Inte
     id: string
     tenantId: string
     documentId: string
-    reviewParty: $Enums.ReviewParty
     organizationId: string | null
+    organizationTypeId: string | null
     reviewerId: string | null
     reviewerName: string | null
     decision: $Enums.ReviewDecision
@@ -1988,6 +2369,8 @@ export interface Prisma__DocumentReviewClient<T, Null = never, ExtArgs extends r
   readonly [Symbol.toStringTag]: "PrismaPromise"
   tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   document<T extends Prisma.ApplicationDocumentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApplicationDocumentDefaultArgs<ExtArgs>>): Prisma.Prisma__ApplicationDocumentClient<runtime.Types.Result.GetResult<Prisma.$ApplicationDocumentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  organization<T extends Prisma.DocumentReview$organizationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentReview$organizationArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  organizationType<T extends Prisma.DocumentReview$organizationTypeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentReview$organizationTypeArgs<ExtArgs>>): Prisma.Prisma__OrganizationTypeClient<runtime.Types.Result.GetResult<Prisma.$OrganizationTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   reviewer<T extends Prisma.DocumentReview$reviewerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentReview$reviewerArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   parentReview<T extends Prisma.DocumentReview$parentReviewArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentReview$parentReviewArgs<ExtArgs>>): Prisma.Prisma__DocumentReviewClient<runtime.Types.Result.GetResult<Prisma.$DocumentReviewPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   childReviews<T extends Prisma.DocumentReview$childReviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DocumentReview$childReviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2023,8 +2406,8 @@ export interface DocumentReviewFieldRefs {
   readonly id: Prisma.FieldRef<"DocumentReview", 'String'>
   readonly tenantId: Prisma.FieldRef<"DocumentReview", 'String'>
   readonly documentId: Prisma.FieldRef<"DocumentReview", 'String'>
-  readonly reviewParty: Prisma.FieldRef<"DocumentReview", 'ReviewParty'>
   readonly organizationId: Prisma.FieldRef<"DocumentReview", 'String'>
+  readonly organizationTypeId: Prisma.FieldRef<"DocumentReview", 'String'>
   readonly reviewerId: Prisma.FieldRef<"DocumentReview", 'String'>
   readonly reviewerName: Prisma.FieldRef<"DocumentReview", 'String'>
   readonly decision: Prisma.FieldRef<"DocumentReview", 'ReviewDecision'>
@@ -2377,6 +2760,44 @@ export type DocumentReviewDeleteManyArgs<ExtArgs extends runtime.Types.Extension
    * Limit how many DocumentReviews to delete.
    */
   limit?: number
+}
+
+/**
+ * DocumentReview.organization
+ */
+export type DocumentReview$organizationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Organization
+   */
+  select?: Prisma.OrganizationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Organization
+   */
+  omit?: Prisma.OrganizationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrganizationInclude<ExtArgs> | null
+  where?: Prisma.OrganizationWhereInput
+}
+
+/**
+ * DocumentReview.organizationType
+ */
+export type DocumentReview$organizationTypeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OrganizationType
+   */
+  select?: Prisma.OrganizationTypeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OrganizationType
+   */
+  omit?: Prisma.OrganizationTypeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrganizationTypeInclude<ExtArgs> | null
+  where?: Prisma.OrganizationTypeWhereInput
 }
 
 /**

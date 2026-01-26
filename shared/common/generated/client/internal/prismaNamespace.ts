@@ -384,6 +384,8 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 
 export const ModelName = {
+  OrganizationType: 'OrganizationType',
+  OrganizationTypeAssignment: 'OrganizationTypeAssignment',
   User: 'User',
   Role: 'Role',
   Permission: 'Permission',
@@ -473,10 +475,142 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenantMembership" | "organization" | "organizationMember" | "bankDocumentRequirement" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "documentationPlan" | "documentDefinition" | "approvalStage" | "questionnairePlan" | "questionnairePlanQuestion" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "phaseEventAttachment" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "paymentMethodPhaseField" | "application" | "applicationOrganization" | "applicationRefund" | "applicationPhase" | "questionnairePhase" | "questionnairePhaseReview" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "applicationEvent" | "paymentInstallment" | "applicationPayment" | "applicationDocument" | "documentReview" | "approvalStageProgress" | "documentApproval" | "documentTemplate" | "offerLetter" | "applicationTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "domainEvent" | "propertyTransferRequest" | "approvalRequest" | "workflowBlocker" | "scheduledJob" | "documentExpiryWarning"
+    modelProps: "organizationType" | "organizationTypeAssignment" | "user" | "role" | "permission" | "rolePermission" | "userRole" | "tenantMembership" | "organization" | "organizationMember" | "bankDocumentRequirement" | "tenant" | "apiKey" | "refreshToken" | "passwordReset" | "userSuspension" | "emailPreference" | "deviceEndpoint" | "social" | "oAuthState" | "wallet" | "transaction" | "settings" | "property" | "propertyMedia" | "propertyDocument" | "amenity" | "propertyVariant" | "propertyVariantAmenity" | "propertyVariantMedia" | "propertyUnit" | "propertyAmenity" | "documentationPlan" | "documentDefinition" | "approvalStage" | "questionnairePlan" | "questionnairePlanQuestion" | "paymentPlan" | "propertyPaymentMethod" | "propertyPaymentMethodLink" | "propertyPaymentMethodPhase" | "phaseEventAttachment" | "paymentMethodPhaseStep" | "stepEventAttachment" | "paymentMethodPhaseDocument" | "paymentMethodPhaseField" | "application" | "applicationOrganization" | "applicationRefund" | "applicationPhase" | "questionnairePhase" | "questionnairePhaseReview" | "documentationPhase" | "paymentPhase" | "questionnaireField" | "applicationEvent" | "paymentInstallment" | "applicationPayment" | "applicationDocument" | "documentReview" | "approvalStageProgress" | "documentApproval" | "documentTemplate" | "offerLetter" | "applicationTermination" | "paymentMethodChangeRequest" | "documentRequirementRule" | "eventChannel" | "eventType" | "eventHandler" | "domainEvent" | "propertyTransferRequest" | "approvalRequest" | "workflowBlocker" | "scheduledJob" | "documentExpiryWarning"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
+    OrganizationType: {
+      payload: Prisma.$OrganizationTypePayload<ExtArgs>
+      fields: Prisma.OrganizationTypeFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OrganizationTypeFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationTypePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OrganizationTypeFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationTypePayload>
+        }
+        findFirst: {
+          args: Prisma.OrganizationTypeFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationTypePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OrganizationTypeFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationTypePayload>
+        }
+        findMany: {
+          args: Prisma.OrganizationTypeFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationTypePayload>[]
+        }
+        create: {
+          args: Prisma.OrganizationTypeCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationTypePayload>
+        }
+        createMany: {
+          args: Prisma.OrganizationTypeCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.OrganizationTypeDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationTypePayload>
+        }
+        update: {
+          args: Prisma.OrganizationTypeUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationTypePayload>
+        }
+        deleteMany: {
+          args: Prisma.OrganizationTypeDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OrganizationTypeUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.OrganizationTypeUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationTypePayload>
+        }
+        aggregate: {
+          args: Prisma.OrganizationTypeAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOrganizationType>
+        }
+        groupBy: {
+          args: Prisma.OrganizationTypeGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OrganizationTypeGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OrganizationTypeCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OrganizationTypeCountAggregateOutputType> | number
+        }
+      }
+    }
+    OrganizationTypeAssignment: {
+      payload: Prisma.$OrganizationTypeAssignmentPayload<ExtArgs>
+      fields: Prisma.OrganizationTypeAssignmentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OrganizationTypeAssignmentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationTypeAssignmentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OrganizationTypeAssignmentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationTypeAssignmentPayload>
+        }
+        findFirst: {
+          args: Prisma.OrganizationTypeAssignmentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationTypeAssignmentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OrganizationTypeAssignmentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationTypeAssignmentPayload>
+        }
+        findMany: {
+          args: Prisma.OrganizationTypeAssignmentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationTypeAssignmentPayload>[]
+        }
+        create: {
+          args: Prisma.OrganizationTypeAssignmentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationTypeAssignmentPayload>
+        }
+        createMany: {
+          args: Prisma.OrganizationTypeAssignmentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.OrganizationTypeAssignmentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationTypeAssignmentPayload>
+        }
+        update: {
+          args: Prisma.OrganizationTypeAssignmentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationTypeAssignmentPayload>
+        }
+        deleteMany: {
+          args: Prisma.OrganizationTypeAssignmentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OrganizationTypeAssignmentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.OrganizationTypeAssignmentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OrganizationTypeAssignmentPayload>
+        }
+        aggregate: {
+          args: Prisma.OrganizationTypeAssignmentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOrganizationTypeAssignment>
+        }
+        groupBy: {
+          args: Prisma.OrganizationTypeAssignmentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OrganizationTypeAssignmentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OrganizationTypeAssignmentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OrganizationTypeAssignmentCountAggregateOutputType> | number
+        }
+      }
+    }
     User: {
       payload: Prisma.$UserPayload<ExtArgs>
       fields: Prisma.UserFieldRefs
@@ -5400,6 +5534,31 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const OrganizationTypeScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  code: 'code',
+  name: 'name',
+  description: 'description',
+  isSystemType: 'isSystemType',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OrganizationTypeScalarFieldEnum = (typeof OrganizationTypeScalarFieldEnum)[keyof typeof OrganizationTypeScalarFieldEnum]
+
+
+export const OrganizationTypeAssignmentScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  typeId: 'typeId',
+  isPrimary: 'isPrimary',
+  createdAt: 'createdAt'
+} as const
+
+export type OrganizationTypeAssignmentScalarFieldEnum = (typeof OrganizationTypeAssignmentScalarFieldEnum)[keyof typeof OrganizationTypeAssignmentScalarFieldEnum]
+
+
 export const UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
@@ -5489,7 +5648,6 @@ export const OrganizationScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   name: 'name',
-  type: 'type',
   status: 'status',
   isPlatformOrg: 'isPlatformOrg',
   email: 'email',
@@ -5521,16 +5679,14 @@ export const OrganizationMemberScalarFieldEnum = {
   id: 'id',
   organizationId: 'organizationId',
   userId: 'userId',
-  role: 'role',
   title: 'title',
   department: 'department',
   employeeId: 'employeeId',
   isActive: 'isActive',
-  canApprove: 'canApprove',
-  approvalLimit: 'approvalLimit',
   invitedAt: 'invitedAt',
   acceptedAt: 'acceptedAt',
   invitedBy: 'invitedBy',
+  joinedAt: 'joinedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -5913,13 +6069,12 @@ export const ApprovalStageScalarFieldEnum = {
   planId: 'planId',
   name: 'name',
   order: 'order',
-  reviewParty: 'reviewParty',
+  organizationTypeId: 'organizationTypeId',
   autoTransition: 'autoTransition',
   waitForAllDocuments: 'waitForAllDocuments',
   allowEarlyVisibility: 'allowEarlyVisibility',
   onRejection: 'onRejection',
   restartFromStageOrder: 'restartFromStageOrder',
-  organizationId: 'organizationId',
   slaHours: 'slaHours',
   description: 'description',
   createdAt: 'createdAt',
@@ -6171,7 +6326,7 @@ export const ApplicationOrganizationScalarFieldEnum = {
   tenantId: 'tenantId',
   applicationId: 'applicationId',
   organizationId: 'organizationId',
-  role: 'role',
+  assignedAsTypeId: 'assignedAsTypeId',
   status: 'status',
   assignedById: 'assignedById',
   assignedAt: 'assignedAt',
@@ -6456,8 +6611,8 @@ export const DocumentReviewScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   documentId: 'documentId',
-  reviewParty: 'reviewParty',
   organizationId: 'organizationId',
+  organizationTypeId: 'organizationTypeId',
   reviewerId: 'reviewerId',
   reviewerName: 'reviewerName',
   decision: 'decision',
@@ -6482,7 +6637,7 @@ export const ApprovalStageProgressScalarFieldEnum = {
   approvalStageId: 'approvalStageId',
   name: 'name',
   order: 'order',
-  reviewParty: 'reviewParty',
+  organizationTypeId: 'organizationTypeId',
   autoTransition: 'autoTransition',
   waitForAllDocuments: 'waitForAllDocuments',
   allowEarlyVisibility: 'allowEarlyVisibility',
@@ -6506,7 +6661,7 @@ export const DocumentApprovalScalarFieldEnum = {
   documentId: 'documentId',
   stageProgressId: 'stageProgressId',
   reviewerId: 'reviewerId',
-  reviewParty: 'reviewParty',
+  organizationTypeId: 'organizationTypeId',
   decision: 'decision',
   comment: 'comment',
   reviewedAt: 'reviewedAt',
@@ -6899,6 +7054,26 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const OrganizationTypeOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  code: 'code',
+  name: 'name',
+  description: 'description'
+} as const
+
+export type OrganizationTypeOrderByRelevanceFieldEnum = (typeof OrganizationTypeOrderByRelevanceFieldEnum)[keyof typeof OrganizationTypeOrderByRelevanceFieldEnum]
+
+
+export const OrganizationTypeAssignmentOrderByRelevanceFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  typeId: 'typeId'
+} as const
+
+export type OrganizationTypeAssignmentOrderByRelevanceFieldEnum = (typeof OrganizationTypeAssignmentOrderByRelevanceFieldEnum)[keyof typeof OrganizationTypeAssignmentOrderByRelevanceFieldEnum]
 
 
 export const UserOrderByRelevanceFieldEnum = {
@@ -7295,7 +7470,7 @@ export const ApprovalStageOrderByRelevanceFieldEnum = {
   id: 'id',
   planId: 'planId',
   name: 'name',
-  organizationId: 'organizationId',
+  organizationTypeId: 'organizationTypeId',
   description: 'description'
 } as const
 
@@ -7446,6 +7621,7 @@ export const ApplicationOrganizationOrderByRelevanceFieldEnum = {
   tenantId: 'tenantId',
   applicationId: 'applicationId',
   organizationId: 'organizationId',
+  assignedAsTypeId: 'assignedAsTypeId',
   assignedById: 'assignedById',
   declineReason: 'declineReason',
   escalatedToUserId: 'escalatedToUserId',
@@ -7606,6 +7782,7 @@ export const DocumentReviewOrderByRelevanceFieldEnum = {
   tenantId: 'tenantId',
   documentId: 'documentId',
   organizationId: 'organizationId',
+  organizationTypeId: 'organizationTypeId',
   reviewerId: 'reviewerId',
   reviewerName: 'reviewerName',
   comments: 'comments',
@@ -7621,6 +7798,7 @@ export const ApprovalStageProgressOrderByRelevanceFieldEnum = {
   documentationPhaseId: 'documentationPhaseId',
   approvalStageId: 'approvalStageId',
   name: 'name',
+  organizationTypeId: 'organizationTypeId',
   completedById: 'completedById',
   transitionComment: 'transitionComment'
 } as const
@@ -7634,6 +7812,7 @@ export const DocumentApprovalOrderByRelevanceFieldEnum = {
   documentId: 'documentId',
   stageProgressId: 'stageProgressId',
   reviewerId: 'reviewerId',
+  organizationTypeId: 'organizationTypeId',
   comment: 'comment'
 } as const
 
@@ -7894,30 +8073,9 @@ export type EnumPermissionEffectFieldRefInput<$PrismaModel> = FieldRefInputType<
 
 
 /**
- * Reference to a field of type 'OrganizationType'
- */
-export type EnumOrganizationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OrganizationType'>
-    
-
-
-/**
  * Reference to a field of type 'OrganizationStatus'
  */
 export type EnumOrganizationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OrganizationStatus'>
-    
-
-
-/**
- * Reference to a field of type 'OrganizationRole'
- */
-export type EnumOrganizationRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OrganizationRole'>
-    
-
-
-/**
- * Reference to a field of type 'Decimal'
- */
-export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
     
 
 
@@ -7953,13 +8111,6 @@ export type EnumPropertyStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$P
  * Reference to a field of type 'UploadedBy'
  */
 export type EnumUploadedByFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UploadedBy'>
-    
-
-
-/**
- * Reference to a field of type 'ReviewParty'
- */
-export type EnumReviewPartyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReviewParty'>
     
 
 
@@ -8058,13 +8209,6 @@ export type EnumFieldTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
  * Reference to a field of type 'ApplicationStatus'
  */
 export type EnumApplicationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ApplicationStatus'>
-    
-
-
-/**
- * Reference to a field of type 'ApplicationOrganizationRole'
- */
-export type EnumApplicationOrganizationRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ApplicationOrganizationRole'>
     
 
 
@@ -8365,6 +8509,8 @@ export type PrismaClientOptions = ({
   comments?: runtime.SqlCommenterPlugin[]
 }
 export type GlobalOmitConfig = {
+  organizationType?: Prisma.OrganizationTypeOmit
+  organizationTypeAssignment?: Prisma.OrganizationTypeAssignmentOmit
   user?: Prisma.UserOmit
   role?: Prisma.RoleOmit
   permission?: Prisma.PermissionOmit
