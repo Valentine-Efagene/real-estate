@@ -606,10 +606,10 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
             // =========================================================================
             if (propertyUnit.variant.property.organizationId) {
                 const devOrgId = propertyUnit.variant.property.organizationId;
-                
+
                 // Look up the DEVELOPER organization type
                 const developerType = await tx.organizationType.findFirst({
-                    where: { 
+                    where: {
                         tenantId: (data as any).tenantId,
                         code: 'DEVELOPER',
                     },

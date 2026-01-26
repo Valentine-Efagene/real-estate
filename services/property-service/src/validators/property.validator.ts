@@ -19,7 +19,7 @@ export const createPropertySchema = z
         longitude: z.number().optional().openapi({ example: -73.935242 }),
         latitude: z.number().optional().openapi({ example: 40.730610 }),
         // Optional organization ownership - if set, any member of this org with DEVELOPER role can manage
-        organizationId: z.string().optional().openapi({ 
+        organizationId: z.string().optional().openapi({
             example: 'org_lekki_gardens_123',
             description: 'ID of the organization that owns this property (e.g., developer). If null, only the creating user can manage it.'
         }),

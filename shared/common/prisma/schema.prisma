@@ -1136,17 +1136,17 @@ model Settings {
 // =============================================================================
 
 model Property {
-  id             String         @id @default(cuid())
-  tenantId       String
-  tenant         Tenant         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  userId         String
-  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id       String @id @default(cuid())
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  userId   String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   // Optional organization ownership
   // If set, any member of this organization with DEVELOPER role can manage the property
   // If null, only the userId owner can manage it (individual seller)
   organizationId String?
-  organization   Organization?  @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
 
   title          String
   category       String // SALE, RENT, LEASE
