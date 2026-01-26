@@ -62,7 +62,7 @@ export function createDocumentationPlanService(prisma: AnyPrismaClient = default
             }
             return orgType.id;
         }
-        
+
         const orgType = await prisma.organizationType.findUnique({
             where: { tenantId_code: { tenantId, code } },
         });

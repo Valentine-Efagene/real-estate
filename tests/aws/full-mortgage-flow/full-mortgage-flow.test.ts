@@ -605,6 +605,8 @@ describe('Full E2E Mortgage Flow', () => {
                     currency: 'NGN',
                     city: 'Lagos',
                     district: 'Lekki',
+                    // Link property to developer organization
+                    organizationId: lekkiGardensOrgId,
                 });
 
             expect(response.status).toBe(201);
@@ -1086,7 +1088,46 @@ describe('Full E2E Mortgage Flow', () => {
             expect(mortgageOfferPhaseId).toBeDefined();
         });
 
-        it('Step 5.2: Verify phase amounts', async () => {
+        it('Step 5.2: Verify Lekki Gardens is auto-bound as developer', async () => {
+            // Developer should be auto-bound because property has organizationId
+            const response = await mortgageApi
+                .get(`/applications/${applicationId}/organizations`)
+                .set(adminHeaders(adaezeAccessToken));
+
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+
+            const developerBinding = response.body.data.find(
+                (b: any) => b.assignedAsType?.code === 'DEVELOPER'
+            );
+            expect(developerBinding).toBeDefined();
+            expect(developerBinding.organizationId).toBe(lekkiGardensOrgId);
+            expect(developerBinding.status).toBe('ACTIVE');
+            expect(developerBinding.isPrimary).toBe(true);
+        });
+
+        it('Step 5.3: Admin binds Access Bank as lender', async () => {
+            const response = await mortgageApi
+                .post(`/applications/${applicationId}/organizations`)
+                .set(adminHeaders(adaezeAccessToken))
+                .set('x-idempotency-key', idempotencyKey('bind-access-bank'))
+                .send({
+                    organizationId: accessBankOrgId,
+                    organizationTypeCode: 'BANK',
+                    isPrimary: true,
+                    slaHours: 48,
+                });
+
+            if (response.status !== 201) {
+                console.log('Bank binding failed:', JSON.stringify(response.body, null, 2));
+            }
+            expect(response.status).toBe(201);
+            expect(response.body.success).toBe(true);
+            expect(response.body.data.organizationId).toBe(accessBankOrgId);
+            expect(response.body.data.isPrimary).toBe(true);
+        });
+
+        it('Step 5.4: Verify phase amounts', async () => {
             const response = await mortgageApi
                 .get(`/applications/${applicationId}/phases`)
                 .set(customerHeaders(chidiAccessToken));
@@ -1099,7 +1140,7 @@ describe('Full E2E Mortgage Flow', () => {
             expect(downPhase.totalAmount).toBe(downpaymentAmount);
         });
 
-        it('Step 5.3: Prequalification phase is auto-activated', async () => {
+        it('Step 5.5: Prequalification phase is auto-activated', async () => {
             const response = await mortgageApi
                 .get(`/applications/${applicationId}/phases/${prequalificationPhaseId}`)
                 .set(customerHeaders(chidiAccessToken));
@@ -1271,7 +1312,7 @@ describe('Full E2E Mortgage Flow', () => {
             // When the lender uploads the preapproval letter during the BANK stage,
             // it is AUTO-APPROVED because the uploader matches the stage's organization type.
             // This is the design: uploaders don't need to review their own documents.
-            
+
             const uploadResponse = await mortgageApi
                 .post(`/applications/${applicationId}/phases/${kycPhaseId}/documents`)
                 .set(lenderHeaders(nkechiAccessToken))

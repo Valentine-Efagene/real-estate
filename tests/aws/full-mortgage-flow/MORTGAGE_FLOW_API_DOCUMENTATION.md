@@ -635,6 +635,7 @@ x-idempotency-key: create-lekki-gardens
 ```
 
 > **Stage Responsibilities:**
+>
 > - **PLATFORM stage** reviews documents with `uploadedBy: CUSTOMER` or `uploadedBy: PLATFORM`
 > - **BANK stage** reviews documents with `uploadedBy: LENDER` (auto-approved when lender uploads)
 
@@ -923,6 +924,7 @@ x-idempotency-key: create-lekki-gardens
 > 2. **Stage 2 (BANK):** Lender documents (preapproval letter) are **auto-approved** when uploaded by the lender
 >
 > Each stage is responsible for reviewing documents from specific uploaders:
+>
 > - **PLATFORM stage** → reviews CUSTOMER and PLATFORM uploads
 > - **BANK stage** → reviews LENDER uploads (auto-approved when lender uploads their own documents)
 >
@@ -1037,6 +1039,7 @@ When the lender uploads their preapproval letter during Stage 2 (BANK), the docu
 ```
 
 > **Important:** The document status is immediately `APPROVED` because:
+>
 > 1. Current stage is BANK (Stage 2)
 > 2. PREAPPROVAL_LETTER is defined with `uploadedBy: LENDER`
 > 3. LENDER maps to BANK organization type

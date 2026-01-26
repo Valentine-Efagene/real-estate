@@ -138,7 +138,7 @@ Documents go through sequential approval stages, where each stage is responsible
 ### Stage Organization Type to Uploader Mapping
 
 | Stage Organization Type | Reviews Documents Uploaded By |
-|-------------------------|-------------------------------|
+| ----------------------- | ----------------------------- |
 | PLATFORM                | CUSTOMER, PLATFORM            |
 | BANK                    | LENDER                        |
 | DEVELOPER               | DEVELOPER                     |

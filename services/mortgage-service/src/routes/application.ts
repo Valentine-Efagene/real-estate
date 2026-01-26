@@ -2,6 +2,7 @@ import { Router, Request, Response, NextFunction } from 'express';
 import { createApplicationService } from '../services/application.service';
 import { applicationPhaseService } from '../services/application-phase.service';
 import { applicationPaymentService } from '../services/application-payment.service';
+import { createApplicationOrganizationService } from '../services/application-organization.service';
 import {
     ApplicationStatus,
     successResponse,
@@ -28,6 +29,10 @@ import {
     GateActionSchema,
 } from '../validators/application-phase.validator';
 import {
+    BindOrganizationSchema,
+    UpdateOrganizationBindingSchema,
+} from '../validators/application-organization.validator';
+import {
     CreatePaymentSchema,
     ProcessPaymentSchema,
     RefundPaymentSchema,
@@ -46,14 +51,22 @@ function getApplicationService(req: Request) {
 }
 
 /**
+ * Helper to get application organization service from request
+ */
+function getAppOrgService(req: Request) {
+    return createApplicationOrganizationService(getTenantPrisma(req));
+}
+
+/**
  * Middleware to verify user can access an application.
  * Admins can access any application in their tenant.
  * Customers can only access their own applications.
- * Developers and Lenders can access applications to upload documents.
+ * Developers, Lenders, and Legal can only access applications where their
+ * organization is bound to the application.
  */
 async function canAccessApplication(req: Request, res: Response, next: NextFunction) {
     try {
-        const { userId, roles } = getAuthContext(req);
+        const { userId, roles, tenantId } = getAuthContext(req);
         const applicationId = req.params.id as string;
 
         // Admins can access any application
@@ -61,24 +74,34 @@ async function canAccessApplication(req: Request, res: Response, next: NextFunct
             return next();
         }
 
-        // Developers, Lenders, and Legal can access applications to upload documents
-        // They're allowed limited access (upload documents, view phases)
-        const isDeveloper = roles?.includes(ROLES.DEVELOPER);
-        const isLender = roles?.includes(ROLES.LENDER);
-        const isLegal = roles?.includes(ROLES.LEGAL);
-        if (isDeveloper || isLender || isLegal) {
-            return next();
-        }
-
         // For customers, check ownership
         const applicationService = getApplicationService(req);
         const application = await applicationService.findById(applicationId);
 
-        if (application.buyerId !== userId) {
-            throw new AppError(403, 'You do not have permission to access this application');
+        if (application.buyerId === userId) {
+            return next();
         }
 
-        next();
+        // Developers, Lenders, and Legal must be bound to the application
+        const isDeveloper = roles?.includes(ROLES.DEVELOPER);
+        const isLender = roles?.includes(ROLES.LENDER);
+        const isLegal = roles?.includes(ROLES.LEGAL);
+
+        if (isDeveloper || isLender || isLegal) {
+            // Check if user's organization is bound to this application
+            const appOrgService = getAppOrgService(req);
+            const binding = await appOrgService.getUserOrganizationBinding(applicationId, userId);
+
+            if (binding) {
+                // Store the binding in request for use by route handlers
+                (req as any).organizationBinding = binding;
+                return next();
+            }
+
+            throw new AppError(403, 'Your organization is not authorized to access this application');
+        }
+
+        throw new AppError(403, 'You do not have permission to access this application');
     } catch (error) {
         next(error);
     }
@@ -244,6 +267,77 @@ router.delete('/:id', requireTenant, canAccessApplication, async (req: Request, 
         const { userId } = getAuthContext(req);
         const applicationService = getApplicationService(req);
         const result = await applicationService.delete(req.params.id as string, userId);
+        res.json(successResponse(result));
+    } catch (error) {
+        next(error);
+    }
+});
+
+// ============================================================================
+// ORGANIZATION BINDING ROUTES
+// ============================================================================
+// These routes manage which organizations (banks, developers, legal firms)
+// are authorized to interact with specific applications.
+
+// Bind an organization to an application (admin only)
+router.post('/:id/organizations', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const data = BindOrganizationSchema.parse(req.body);
+        const { userId, tenantId } = getAuthContext(req);
+        const appOrgService = getAppOrgService(req);
+        const binding = await appOrgService.bindOrganization(
+            req.params.id as string,
+            tenantId as string,
+            data,
+            userId
+        );
+        res.status(201).json(successResponse(binding));
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });
+            return;
+        }
+        next(error);
+    }
+});
+
+// Get all organization bindings for an application
+router.get('/:id/organizations', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const appOrgService = getAppOrgService(req);
+        const bindings = await appOrgService.getOrganizationBindings(req.params.id as string);
+        res.json(successResponse(bindings));
+    } catch (error) {
+        next(error);
+    }
+});
+
+// Update an organization binding (admin only)
+router.patch('/:id/organizations/:bindingId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const data = UpdateOrganizationBindingSchema.parse(req.body);
+        const { userId } = getAuthContext(req);
+        const appOrgService = getAppOrgService(req);
+        const binding = await appOrgService.updateOrganizationBinding(
+            req.params.bindingId as string,
+            data,
+            userId
+        );
+        res.json(successResponse(binding));
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });
+            return;
+        }
+        next(error);
+    }
+});
+
+// Remove an organization binding (admin only)
+router.delete('/:id/organizations/:bindingId', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const appOrgService = getAppOrgService(req);
+        const result = await appOrgService.unbindOrganization(req.params.bindingId as string);
         res.json(successResponse(result));
     } catch (error) {
         next(error);
@@ -501,11 +595,11 @@ router.post('/:id/documents/:documentId/review', requireTenant, canAccessApplica
     try {
         const data = ApproveDocumentSchema.parse(req.body);
         const { userId, tenantId, roles } = getAuthContext(req);
-        
+
         // Map status to ReviewDecision
         const decisionMap: Record<string, string> = {
             'APPROVED': 'APPROVED',
-            'REJECTED': 'REJECTED', 
+            'REJECTED': 'REJECTED',
             'CHANGES_REQUESTED': 'CHANGES_REQUESTED',
         };
         const decision = decisionMap[data.status] || 'REJECTED';
@@ -528,11 +622,11 @@ router.post('/:id/documents/:documentId/review', requireTenant, canAccessApplica
         // Default to 'PLATFORM' for admins if not specified
         let organizationTypeId: string;
         const orgTypeCode = data.organizationTypeCode || (isAdmin(roles) ? 'PLATFORM' : null);
-        
+
         if (!orgTypeCode) {
-            res.status(400).json({ 
-                success: false, 
-                error: 'organizationTypeCode is required for non-admin reviewers' 
+            res.status(400).json({
+                success: false,
+                error: 'organizationTypeCode is required for non-admin reviewers'
             });
             return;
         }
@@ -542,9 +636,9 @@ router.post('/:id/documents/:documentId/review', requireTenant, canAccessApplica
         });
 
         if (!orgType) {
-            res.status(400).json({ 
-                success: false, 
-                error: `Organization type '${orgTypeCode}' not found` 
+            res.status(400).json({
+                success: false,
+                error: `Organization type '${orgTypeCode}' not found`
             });
             return;
         }

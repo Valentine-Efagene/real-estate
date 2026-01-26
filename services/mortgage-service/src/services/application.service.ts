@@ -597,6 +597,51 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                 }
             }
 
+            // =========================================================================
+            // AUTO-BIND DEVELOPER ORGANIZATION
+            // =========================================================================
+            // If the property has an organizationId, automatically bind that organization
+            // to this application as DEVELOPER. This allows the developer's team members
+            // to upload documents and participate in the application workflow.
+            // =========================================================================
+            if (propertyUnit.variant.property.organizationId) {
+                const devOrgId = propertyUnit.variant.property.organizationId;
+                
+                // Look up the DEVELOPER organization type
+                const developerType = await tx.organizationType.findFirst({
+                    where: { 
+                        tenantId: (data as any).tenantId,
+                        code: 'DEVELOPER',
+                    },
+                });
+
+                if (developerType) {
+                    // Verify the organization actually has the DEVELOPER type
+                    const orgHasDevType = await tx.organizationTypeAssignment.findFirst({
+                        where: {
+                            organizationId: devOrgId,
+                            organizationTypeId: developerType.id,
+                        },
+                    });
+
+                    if (orgHasDevType) {
+                        await tx.applicationOrganization.create({
+                            data: {
+                                tenantId: (data as any).tenantId,
+                                applicationId: created.id,
+                                organizationId: devOrgId,
+                                assignedAsTypeId: developerType.id,
+                                status: 'ACTIVE',
+                                isPrimary: true,
+                                assignedById: data.buyerId, // Auto-assigned by system on behalf of buyer
+                                assignedAt: new Date(),
+                                activatedAt: new Date(),
+                            },
+                        });
+                    }
+                }
+            }
+
             // Audit trail (permanent record)
             await tx.applicationEvent.create({
                 data: {

@@ -4,6 +4,30 @@ import type { CreatePropertyInput, UpdatePropertyInput } from '../validators/pro
 
 class PropertyService {
     async createProperty(data: CreatePropertyInput, userId: string, tenantId: string) {
+        // If organizationId is provided, verify user is a member of that organization
+        if (data.organizationId) {
+            const membership = await prisma.organizationMember.findFirst({
+                where: {
+                    userId,
+                    organizationId: data.organizationId,
+                },
+            });
+            if (!membership) {
+                throw new AppError(403, 'You must be a member of the organization to create a property for it');
+            }
+
+            // Verify the organization belongs to the tenant
+            const org = await prisma.organization.findFirst({
+                where: {
+                    id: data.organizationId,
+                    tenantId,
+                },
+            });
+            if (!org) {
+                throw new AppError(404, 'Organization not found');
+            }
+        }
+
         const property = await prisma.property.create({
             data: {
                 ...data,
@@ -33,6 +57,12 @@ class PropertyService {
                         amenity: true,
                     },
                 },
+                organization: {
+                    select: {
+                        id: true,
+                        name: true,
+                    },
+                },
             },
         });
 
@@ -43,17 +73,43 @@ class PropertyService {
         return property;
     }
 
-    async updateProperty(id: string, data: UpdatePropertyInput, userId: string) {
-        // Verify ownership
+    /**
+     * Check if a user can manage a property
+     * Returns true if:
+     * - User is the direct owner (userId matches)
+     * - Property belongs to an organization and user is a member
+     */
+    async canManageProperty(propertyId: string, userId: string): Promise<boolean> {
         const property = await prisma.property.findUnique({
-            where: { id },
+            where: { id: propertyId },
         });
 
         if (!property) {
-            throw new AppError(404, 'Property not found');
+            return false;
         }
 
-        if (property.userId !== userId) {
+        // Direct owner
+        if (property.userId === userId) {
+            return true;
+        }
+
+        // Organization member (if property belongs to an org)
+        if (property.organizationId) {
+            const membership = await prisma.organizationMember.findFirst({
+                where: {
+                    userId,
+                    organizationId: property.organizationId,
+                },
+            });
+            return !!membership;
+        }
+
+        return false;
+    }
+
+    async updateProperty(id: string, data: UpdatePropertyInput, userId: string) {
+        const canManage = await this.canManageProperty(id, userId);
+        if (!canManage) {
             throw new AppError(403, 'Unauthorized to update this property');
         }
 
@@ -66,16 +122,8 @@ class PropertyService {
     }
 
     async deleteProperty(id: string, userId: string) {
-        // Verify ownership
-        const property = await prisma.property.findUnique({
-            where: { id },
-        });
-
-        if (!property) {
-            throw new AppError(404, 'Property not found');
-        }
-
-        if (property.userId !== userId) {
+        const canManage = await this.canManageProperty(id, userId);
+        if (!canManage) {
             throw new AppError(403, 'Unauthorized to delete this property');
         }
 

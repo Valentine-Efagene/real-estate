@@ -705,8 +705,8 @@ model Organization {
   // Document reviews performed by this organization
   documentReviews DocumentReview[]
 
-  // Properties developed by this organization (for DEVELOPERs)
-  // developedProperties Property[] @relation("PropertyDeveloper")
+  // Properties owned/developed by this organization
+  properties Property[]
 
   @@unique([tenantId, bankCode]) // Bank codes unique within tenant
   @@unique([tenantId, cacNumber]) // CAC numbers unique within tenant
@@ -1141,6 +1141,13 @@ model Property {
   tenant         Tenant         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   userId         String
   user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Optional organization ownership
+  // If set, any member of this organization with DEVELOPER role can manage the property
+  // If null, only the userId owner can manage it (individual seller)
+  organizationId String?
+  organization   Organization?  @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+
   title          String
   category       String // SALE, RENT, LEASE
   propertyType   String // APARTMENT, HOUSE, LAND, COMMERCIAL, ESTATE, TOWNHOUSE
@@ -1169,6 +1176,7 @@ model Property {
 
   @@index([tenantId])
   @@index([userId])
+  @@index([organizationId])
   @@index([category])
   @@index([propertyType])
   @@index([city])
