@@ -2,10 +2,33 @@ import { SNSClient, PublishCommand } from '@aws-sdk/client-sns';
 import { PrismaClient } from '@valentine-efagene/qshelter-common';
 import { v4 as uuidv4 } from 'uuid';
 
-const sns = new SNSClient({
+let sns: SNSClient | null = new SNSClient({
     region: process.env.AWS_REGION || 'us-east-1',
     endpoint: process.env.LOCALSTACK_ENDPOINT, // optional for local dev
 });
+
+/**
+ * Get or create the SNS client (lazy initialization)
+ */
+function getSNSClient(): SNSClient {
+    if (!sns) {
+        sns = new SNSClient({
+            region: process.env.AWS_REGION || 'us-east-1',
+            endpoint: process.env.LOCALSTACK_ENDPOINT,
+        });
+    }
+    return sns;
+}
+
+/**
+ * Destroy the SNS client to allow process to exit cleanly (for tests)
+ */
+export function destroySNSClient(): void {
+    if (sns) {
+        sns.destroy();
+        sns = null;
+    }
+}
 
 export interface OutboxEnqueueOptions<T> {
     eventType: string;
@@ -60,7 +83,7 @@ export async function publishOutboxNow(
     const topicArn = buildTopicArn(row.queueName);
 
     try {
-        const resp = await sns.send(
+        const resp = await getSNSClient().send(
             new PublishCommand({
                 TopicArn: topicArn,
                 Message: JSON.stringify({

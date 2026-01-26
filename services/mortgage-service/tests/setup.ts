@@ -2,10 +2,11 @@ import { config } from 'dotenv';
 config({ path: '.env.test' });
 
 import { PrismaMariaDb } from '@prisma/adapter-mariadb';
-import { PrismaClient } from '@valentine-efagene/qshelter-common';
+import { PrismaClient, destroyAllEventPublishers } from '@valentine-efagene/qshelter-common';
 import { faker } from '@faker-js/faker';
 import supertest from 'supertest';
 import { app } from '../src/app.js';
+import { destroySNSClient } from '../src/lib/outbox.js';
 
 // Note: notification-service import removed - tests should use the deployed service or mock
 
@@ -55,6 +56,9 @@ beforeAll(async () => {
 
 // After all tests - disconnect and clean up
 afterAll(async () => {
+    // Destroy AWS SDK clients to allow Jest to exit cleanly
+    destroySNSClient();
+    destroyAllEventPublishers();
     await prisma.$disconnect();
 });
 

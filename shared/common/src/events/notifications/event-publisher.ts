@@ -139,6 +139,13 @@ export class EventPublisher {
     ): Promise<string> {
         return this.publish(type, NotificationChannel.PUSH, payload, meta);
     }
+
+    /**
+     * Destroy the SNS client to allow process to exit cleanly (for tests)
+     */
+    destroy(): void {
+        this.snsClient.destroy();
+    }
 }
 
 // Singleton instances per service
@@ -152,4 +159,15 @@ export function getEventPublisher(serviceName: string, config?: EventPublisherCo
         publisherInstances.set(serviceName, new EventPublisher(serviceName, config));
     }
     return publisherInstances.get(serviceName)!;
+}
+
+/**
+ * Destroy all EventPublisher instances and their SNS clients.
+ * Call this in test teardown to allow Jest to exit cleanly.
+ */
+export function destroyAllEventPublishers(): void {
+    for (const publisher of publisherInstances.values()) {
+        publisher.destroy();
+    }
+    publisherInstances.clear();
 }
