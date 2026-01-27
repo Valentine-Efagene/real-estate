@@ -34,6 +34,43 @@ export function AuthProvider({ children, initialSession = null }: AuthProviderPr
     }
   }, [initialSession]);
 
+  // Proactive token refresh - refresh before expiry
+  useEffect(() => {
+    if (!user?.expiresAt) return;
+
+    const refreshBeforeExpiry = async () => {
+      try {
+        const response = await fetch('/api/auth/refresh', { method: 'POST' });
+        if (response.ok) {
+          const data = await response.json();
+          setUser(data.user);
+        } else {
+          // Token refresh failed, user will be logged out on next protected action
+          console.warn('Token refresh failed');
+        }
+      } catch (error) {
+        console.error('Token refresh error:', error);
+      }
+    };
+
+    // Calculate time until we should refresh (1 minute before expiry)
+    const now = Date.now();
+    const expiresAt = user.expiresAt;
+    const refreshBuffer = 60 * 1000; // 1 minute before expiry
+    const timeUntilRefresh = Math.max(0, expiresAt - now - refreshBuffer);
+
+    // Set timeout to refresh before expiry
+    const timeoutId = setTimeout(refreshBeforeExpiry, timeUntilRefresh);
+
+    // Also set up periodic refresh every 14 minutes as a fallback
+    const intervalId = setInterval(refreshBeforeExpiry, 14 * 60 * 1000);
+
+    return () => {
+      clearTimeout(timeoutId);
+      clearInterval(intervalId);
+    };
+  }, [user?.expiresAt]);
+
   const fetchSession = async () => {
     try {
       const response = await fetch('/api/auth/session');
