@@ -210,8 +210,8 @@ function DashboardContent() {
                         app.status === 'COMPLETED'
                           ? 'default'
                           : app.status === 'ACTIVE'
-                          ? 'secondary'
-                          : 'outline'
+                            ? 'secondary'
+                            : 'outline'
                       }
                     >
                       {app.status}

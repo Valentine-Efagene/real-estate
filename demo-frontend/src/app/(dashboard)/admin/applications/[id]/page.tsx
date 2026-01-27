@@ -93,8 +93,8 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
             application.status === 'COMPLETED'
               ? 'default'
               : application.status === 'ACTIVE'
-              ? 'secondary'
-              : 'outline'
+                ? 'secondary'
+                : 'outline'
           }
           className="text-lg px-4 py-1"
         >
@@ -200,8 +200,8 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
                         doc.status === 'APPROVED'
                           ? 'default'
                           : doc.status === 'REJECTED'
-                          ? 'destructive'
-                          : 'outline'
+                            ? 'destructive'
+                            : 'outline'
                       }
                       className="mt-2"
                     >

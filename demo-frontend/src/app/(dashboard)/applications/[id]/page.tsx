@@ -65,8 +65,8 @@ function ApplicationDetailContent({ applicationId }: { applicationId: string }) 
             application.status === 'COMPLETED'
               ? 'default'
               : application.status === 'ACTIVE'
-              ? 'secondary'
-              : 'outline'
+                ? 'secondary'
+                : 'outline'
           }
           className="text-lg px-4 py-1"
         >

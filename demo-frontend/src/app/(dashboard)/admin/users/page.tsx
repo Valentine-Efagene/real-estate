@@ -141,8 +141,8 @@ function UsersTable({ users, filter }: { users: User[]; filter: string }) {
                       user.status === 'ACTIVE'
                         ? 'default'
                         : user.status === 'SUSPENDED'
-                        ? 'destructive'
-                        : 'outline'
+                          ? 'destructive'
+                          : 'outline'
                     }
                   >
                     {user.status}

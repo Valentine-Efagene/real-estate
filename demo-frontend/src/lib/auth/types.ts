@@ -47,7 +47,7 @@ export interface ApiResponse<T> {
 /**
  * User roles enum matching backend
  */
-export type UserRole = 
+export type UserRole =
   | 'admin'
   | 'user'
   | 'mortgage_ops'

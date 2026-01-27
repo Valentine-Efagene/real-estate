@@ -65,7 +65,7 @@ async function handleProxy(
 
   const endpoint = '/' + pathParts.join('/');
   const url = new URL(endpoint, backendUrl);
-  
+
   // Forward query params
   const searchParams = request.nextUrl.searchParams;
   searchParams.forEach((value, key) => {

@@ -18,7 +18,7 @@ export async function getSession(): Promise<UserSession | null> {
 
   try {
     const payload = decodeJwt(accessToken) as unknown as JwtPayload;
-    
+
     // Check if token is expired
     if (payload.exp * 1000 < Date.now()) {
       return null;

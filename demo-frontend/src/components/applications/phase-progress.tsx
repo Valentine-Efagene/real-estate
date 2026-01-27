@@ -82,9 +82,8 @@ export function PhaseProgress({ phases }: PhaseProgressProps) {
                 </div>
                 {index < sortedPhases.length - 1 && (
                   <div
-                    className={`w-0.5 h-12 ${
-                      phase.status === 'COMPLETED' ? 'bg-green-500' : 'bg-gray-300'
-                    }`}
+                    className={`w-0.5 h-12 ${phase.status === 'COMPLETED' ? 'bg-green-500' : 'bg-gray-300'
+                      }`}
                   />
                 )}
               </div>
@@ -98,8 +97,8 @@ export function PhaseProgress({ phases }: PhaseProgressProps) {
                       phase.status === 'COMPLETED'
                         ? 'default'
                         : phase.status === 'IN_PROGRESS'
-                        ? 'secondary'
-                        : 'outline'
+                          ? 'secondary'
+                          : 'outline'
                     }
                   >
                     {phase.status}

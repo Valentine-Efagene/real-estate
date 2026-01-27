@@ -58,8 +58,8 @@ function PropertyDetailContent({ propertyId }: { propertyId: string }) {
         propertyUnitId: selectedUnit.id,
         paymentMethodId: selectedMethod.id,
         title: `Purchase - ${property?.name} Unit ${selectedUnit.unitNumber}`,
-        applicationType: selectedMethod.type === 'MORTGAGE' ? 'MORTGAGE' : 
-                         selectedMethod.type === 'INSTALLMENT' ? 'INSTALLMENT' : 'FULL_PAYMENT',
+        applicationType: selectedMethod.type === 'MORTGAGE' ? 'MORTGAGE' :
+          selectedMethod.type === 'INSTALLMENT' ? 'INSTALLMENT' : 'FULL_PAYMENT',
         totalAmount: selectedUnit.price,
         monthlyIncome: 2500000, // Default - would collect from user
         monthlyExpenses: 800000, // Default - would collect from user
@@ -147,11 +147,10 @@ function PropertyDetailContent({ propertyId }: { propertyId: string }) {
               {variants?.map((variant) => (
                 <Card
                   key={variant.id}
-                  className={`cursor-pointer transition-all ${
-                    selectedVariant?.id === variant.id
+                  className={`cursor-pointer transition-all ${selectedVariant?.id === variant.id
                       ? 'ring-2 ring-primary'
                       : 'hover:shadow-md'
-                  }`}
+                    }`}
                   onClick={() => {
                     setSelectedVariant(variant);
                     setSelectedUnit(null);
@@ -247,11 +246,10 @@ function PropertyDetailContent({ propertyId }: { propertyId: string }) {
               {paymentMethods?.map((method) => (
                 <Card
                   key={method.id}
-                  className={`cursor-pointer transition-all ${
-                    selectedMethod?.id === method.id
+                  className={`cursor-pointer transition-all ${selectedMethod?.id === method.id
                       ? 'ring-2 ring-primary'
                       : 'hover:shadow-md'
-                  }`}
+                    }`}
                   onClick={() => setSelectedMethod(method)}
                 >
                   <CardHeader>
