@@ -1,0 +1,45 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]: Sign in to QShelter
+      - generic [ref=e6]: Enter your email and password to access your account
+    - generic [ref=e7]:
+      - generic [ref=e8]:
+        - alert [ref=e9]:
+          - generic [ref=e10]: Login failed
+        - button "Continue with Google" [ref=e11]:
+          - img
+          - text: Continue with Google
+        - generic [ref=e15]: Or continue with email
+        - generic [ref=e16]:
+          - generic [ref=e17]: Email
+          - textbox "Email" [ref=e18]:
+            - /placeholder: you@example.com
+            - text: adaeze@mailsac.com
+        - generic [ref=e19]:
+          - generic [ref=e20]: Password
+          - textbox "Password" [ref=e21]:
+            - /placeholder: Enter your password
+            - text: SecureP@ssw0rd123!
+      - generic [ref=e22]:
+        - button "Sign in" [ref=e23]
+        - paragraph [ref=e24]:
+          - text: Don't have an account?
+          - link "Register" [ref=e25] [cursor=pointer]:
+            - /url: /register
+  - region "Notifications alt+T":
+    - list:
+      - listitem [ref=e26]:
+        - img [ref=e28]
+        - generic [ref=e33]: Login failed
+  - generic [ref=e34]:
+    - img [ref=e36]
+    - button "Open Tanstack query devtools" [ref=e84] [cursor=pointer]:
+      - img [ref=e85]
+  - button "Open Next.js Dev Tools" [ref=e138] [cursor=pointer]:
+    - img [ref=e139]
+  - alert [ref=e142]
+```

@@ -6,6 +6,7 @@ const COOKIE_NAME = 'qshelter_access_token';
 // Map service names to their URLs
 const serviceUrls: Record<string, string> = {
   user: env.userServiceUrl,
+  users: env.userServiceUrl, // Alias for user service
   property: env.propertyServiceUrl,
   mortgage: env.mortgageServiceUrl,
   documents: env.documentsServiceUrl,
@@ -98,13 +99,27 @@ async function handleProxy(
   }
 
   try {
+    console.log(`[Proxy] ${method} ${url.toString()}`);
+
     const response = await fetch(url.toString(), {
       method,
       headers,
       body,
     });
 
-    const data = await response.json();
+    const text = await response.text();
+
+    // Try to parse as JSON
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch {
+      console.error(`[Proxy] Non-JSON response from ${url}:`, text.substring(0, 200));
+      return NextResponse.json(
+        { success: false, error: { code: 'INVALID_RESPONSE', message: text.substring(0, 200) } },
+        { status: response.status }
+      );
+    }
 
     return NextResponse.json(data, { status: response.status });
   } catch (error) {

@@ -29,12 +29,23 @@ function useUsers() {
   return useQuery<User[]>({
     queryKey: queryKeys.users.all,
     queryFn: async () => {
-      const res = await fetch('/api/proxy/users', {
-        headers: { 'x-service': 'user' },
+      const res = await fetch('/api/proxy/user/users', {
+        credentials: 'include',
       });
       if (!res.ok) throw new Error('Failed to fetch users');
-      const data = await res.json();
-      return data.users || data.data || [];
+      const json = await res.json();
+      // API returns { success, data: { data: [...], meta: {...} } }
+      const users = json.data?.data || json.data || [];
+      // Map backend format to frontend format
+      return users.map((u: Record<string, unknown>) => ({
+        id: u.id,
+        email: u.email,
+        name: `${u.firstName || ''} ${u.lastName || ''}`.trim() || u.email,
+        phone: u.phone,
+        roles: (u.userRoles as Array<{ role?: { name?: string } }> || []).map(r => r.role?.name || 'user'),
+        status: u.isActive ? 'ACTIVE' : 'INACTIVE',
+        createdAt: u.createdAt,
+      }));
     },
   });
 }
@@ -44,12 +55,12 @@ function useUpdateUserStatus() {
 
   return useMutation({
     mutationFn: async ({ userId, status }: { userId: string; status: string }) => {
-      const res = await fetch(`/api/proxy/users/${userId}/status`, {
+      const res = await fetch(`/api/proxy/user/users/${userId}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
-          'x-service': 'user',
         },
+        credentials: 'include',
         body: JSON.stringify({ status }),
       });
       if (!res.ok) throw new Error('Failed to update user status');
@@ -66,12 +77,12 @@ function useAssignRole() {
 
   return useMutation({
     mutationFn: async ({ userId, roleId }: { userId: string; roleId: string }) => {
-      const res = await fetch(`/api/proxy/users/${userId}/roles`, {
+      const res = await fetch(`/api/proxy/user/users/${userId}/roles`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-service': 'user',
         },
+        credentials: 'include',
         body: JSON.stringify({ roleId }),
       });
       if (!res.ok) throw new Error('Failed to assign role');

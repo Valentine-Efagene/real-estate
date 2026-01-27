@@ -26,7 +26,9 @@
 set -e
 
 # CRITICAL: Export AWS_PROFILE to ensure Serverless Framework uses same credentials as AWS CLI
+# Also unset AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY to prevent conflicts
 export AWS_PROFILE="${AWS_PROFILE:-default}"
+unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY 2>/dev/null || true
 
 STAGE="staging"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

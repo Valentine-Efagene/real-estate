@@ -12,6 +12,7 @@ import {
     VerifyEmailPayload,
     PasswordResetPayload,
     AccountVerifiedPayload,
+    ConfigService,
 } from '@valentine-efagene/qshelter-common';
 import { LoginInput, SignupInput, AuthResponse } from '../validators/auth.validator';
 

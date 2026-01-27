@@ -66,7 +66,7 @@ export function useProperties(filters?: Record<string, unknown>) {
           }
         });
       }
-      const endpoint = `/properties${params.toString() ? `?${params}` : ''}`;
+      const endpoint = `/property/properties${params.toString() ? `?${params}` : ''}`;
       const response = await propertyApi.get<{ items: Property[]; total: number }>(endpoint);
       if (!response.success) {
         throw new Error(response.error?.message || 'Failed to fetch properties');
@@ -80,7 +80,7 @@ export function useProperty(id: string) {
   return useQuery({
     queryKey: queryKeys.properties.detail(id),
     queryFn: async () => {
-      const response = await propertyApi.get<Property>(`/properties/${id}`);
+      const response = await propertyApi.get<Property>(`/property/properties/${id}`);
       if (!response.success) {
         throw new Error(response.error?.message || 'Failed to fetch property');
       }
@@ -95,7 +95,7 @@ export function usePropertyVariants(propertyId: string) {
     queryKey: queryKeys.properties.variants(propertyId),
     queryFn: async () => {
       const response = await propertyApi.get<PropertyVariant[]>(
-        `/properties/${propertyId}/variants`
+        `/property/properties/${propertyId}/variants`
       );
       if (!response.success) {
         throw new Error(response.error?.message || 'Failed to fetch variants');
@@ -111,7 +111,7 @@ export function usePropertyUnits(propertyId: string, variantId: string) {
     queryKey: queryKeys.properties.units(propertyId, variantId),
     queryFn: async () => {
       const response = await propertyApi.get<PropertyUnit[]>(
-        `/properties/${propertyId}/variants/${variantId}/units`
+        `/property/properties/${propertyId}/variants/${variantId}/units`
       );
       if (!response.success) {
         throw new Error(response.error?.message || 'Failed to fetch units');
@@ -127,7 +127,7 @@ export function usePaymentMethods(propertyId: string) {
     queryKey: queryKeys.properties.paymentMethods(propertyId),
     queryFn: async () => {
       const response = await propertyApi.get<PaymentMethod[]>(
-        `/properties/${propertyId}/payment-methods`
+        `/property/properties/${propertyId}/payment-methods`
       );
       if (!response.success) {
         throw new Error(response.error?.message || 'Failed to fetch payment methods');
@@ -144,7 +144,7 @@ export function useCreateProperty() {
 
   return useMutation({
     mutationFn: async (data: Partial<Property>) => {
-      const response = await propertyApi.post<Property>('/properties', data);
+      const response = await propertyApi.post<Property>('/property/properties', data);
       if (!response.success) {
         throw new Error(response.error?.message || 'Failed to create property');
       }

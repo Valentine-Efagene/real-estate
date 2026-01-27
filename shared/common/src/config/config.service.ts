@@ -8,8 +8,8 @@ export interface InfrastructureConfig {
     dbHost: string;
     dbPort: number;
     databaseSecretArn: string;
-    redisHost: string;
-    redisPort: number;
+    redisHost?: string;
+    redisPort?: number;
     rolePoliciesTableName: string;
     s3BucketName: string;
     eventBridgeBusName: string;
@@ -116,6 +116,9 @@ export class ConfigService {
                 nextToken = response.NextToken;
             } while (nextToken);
 
+            const redisHost = this.getOptionalParamValue(params, `${pathPrefix}redis-host`);
+            const redisPortStr = this.getOptionalParamValue(params, `${pathPrefix}redis-port`);
+
             const config: InfrastructureConfig = {
                 vpcId: this.getParamValue(params, `${pathPrefix}vpc-id`),
                 dbSecurityGroupId: this.getParamValue(params, `${pathPrefix}db-security-group-id`),
@@ -123,8 +126,8 @@ export class ConfigService {
                 dbHost: this.getParamValue(params, `${pathPrefix}db-host`),
                 dbPort: parseInt(this.getParamValue(params, `${pathPrefix}db-port`), 10),
                 databaseSecretArn: this.getParamValue(params, `${pathPrefix}database-secret-arn`),
-                redisHost: this.getParamValue(params, `${pathPrefix}redis-host`),
-                redisPort: parseInt(this.getParamValue(params, `${pathPrefix}redis-port`), 10),
+                redisHost: redisHost || undefined,
+                redisPort: redisPortStr ? parseInt(redisPortStr, 10) : undefined,
                 rolePoliciesTableName: this.getParamValue(params, `${pathPrefix}role-policies-table-name`),
                 s3BucketName: this.getParamValue(params, `${pathPrefix}s3-bucket-name`),
                 eventBridgeBusName: this.getParamValue(params, `${pathPrefix}eventbridge-bus-name`),
@@ -331,6 +334,14 @@ export class ConfigService {
             throw new Error(`Parameter ${name} not found in SSM`);
         }
         return param.Value || '';
+    }
+
+    /**
+     * Helper to extract optional parameter value from SSM response
+     */
+    private getOptionalParamValue(params: any[], name: string): string | null {
+        const param = params.find(p => p.Name === name);
+        return param?.Value || null;
     }
 
     /**

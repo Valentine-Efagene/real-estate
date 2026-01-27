@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { BootstrapButton } from "@/components/demo/BootstrapButton";
 
 export default function Home() {
   return (
@@ -159,6 +160,26 @@ export default function Home() {
                 Make payments and complete your property purchase
               </p>
             </div>
+          </div>
+        </div>
+
+        {/* Developer Tools Section */}
+        <div className="mb-16 border-2 border-dashed border-amber-300 rounded-2xl p-8 bg-amber-50/50 dark:bg-amber-950/20 dark:border-amber-700">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="text-2xl">🛠️</span>
+            <h2 className="text-xl font-bold text-amber-800 dark:text-amber-200">
+              Developer Tools
+            </h2>
+            <span className="ml-2 text-xs bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-200 px-2 py-1 rounded">
+              Demo Only
+            </span>
+          </div>
+          <p className="text-sm text-amber-700 dark:text-amber-300 mb-4">
+            Use these tools to set up and test the platform. Bootstrap creates the initial tenant,
+            admin user (Adaeze), and platform organization.
+          </p>
+          <div className="flex gap-4">
+            <BootstrapButton />
           </div>
         </div>
 
