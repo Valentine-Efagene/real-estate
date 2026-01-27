@@ -427,6 +427,19 @@ export class RealEstateStack extends cdk.Stack {
       description: 'Policy Sync SQS Queue URL',
     });
 
+    // === Google OAuth SSM Parameters ===
+    new ssm.StringParameter(this, 'GoogleClientIdParameter', {
+      parameterName: `/qshelter/${stage}/google-client-id`,
+      stringValue: process.env.GOOGLE_CLIENT_ID || 'UPDATE_ME',
+      description: 'Google OAuth Client ID',
+    });
+
+    new ssm.StringParameter(this, 'GoogleClientSecretParameter', {
+      parameterName: `/qshelter/${stage}/google-client-secret`,
+      stringValue: process.env.GOOGLE_CLIENT_SECRET || 'UPDATE_ME',
+      description: 'Google OAuth Client Secret',
+    });
+
     // NOTE: HTTP API ID parameter is created by user-service when it deploys the HTTP API Gateway
     // Do NOT create /qshelter/${stage}/http-api-id here to avoid conflicts
 

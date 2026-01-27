@@ -284,7 +284,7 @@ deploy_authorizer() {
     # CRITICAL: Store authorizer Lambda ARN in SSM for other services to reference
     log_info "Storing authorizer Lambda ARN in SSM..."
     AUTHORIZER_ARN=$(aws lambda get-function --function-name "qshelter-authorizer-$STAGE" --query "Configuration.FunctionArn" --output text)
-    aws ssm put-parameter --name "/qshelter/$STAGE/authorizer-arn" --value "$AUTHORIZER_ARN" --type String --overwrite
+    aws ssm put-parameter --name "/qshelter/$STAGE/authorizer-lambda-arn" --value "$AUTHORIZER_ARN" --type String --overwrite
     
     log_info "Authorizer ARN: $AUTHORIZER_ARN"
     log_info "✅ Authorizer deployed!"

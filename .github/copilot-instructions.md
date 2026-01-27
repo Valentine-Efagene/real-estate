@@ -10,6 +10,29 @@
 
 Note: Please do not manually delete CDKToolkit from the AWS CloudFormation stacks - use the teardown script which handles it properly.
 
+## Demo Frontend (`demo-frontend/`)
+
+The demo-frontend is a **Next.js application** for interactively testing the QShelter API. Its purpose is to:
+
+- **Demo the full mortgage flow scenario** from `docs/FULL_E2E_MORTGAGE_FLOW.md`
+- Provide a UI for both admin (Adaeze) and customer (Chidi) personas
+- Test property browsing, mortgage applications, document uploads, and payments
+
+**Key Demo Scenario (Lekki-Chidi Mortgage):**
+
+| Actor      | Role     | Email                | Description                 |
+| ---------- | -------- | -------------------- | --------------------------- |
+| **Adaeze** | Admin    | `adaeze@mailsac.com` | QShelter operations manager |
+| **Chidi**  | Customer | `chidi@mailsac.com`  | First-time homebuyer        |
+
+**Property:** Lekki Gardens Estate, Unit 14B, ₦85M, 10% down + 90% mortgage @ 9.5% p.a.
+
+**Tech Stack:** Next.js 15+, React 19, TailwindCSS, shadcn/ui, TanStack Query, Zod
+
+```bash
+cd demo-frontend && pnpm dev  # Runs on http://localhost:3000
+```
+
 ## Development Philosophy
 
 ### No Backward Compatibility

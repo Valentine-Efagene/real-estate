@@ -12,3 +12,4 @@ packages:
   - 'infrastructure'
   - 'local-dev'
   - 'tests/localstack'
+  - 'demo-frontend'

@@ -12,10 +12,10 @@ import {
     VerifyEmailPayload,
     PasswordResetPayload,
     AccountVerifiedPayload,
-    ConfigService,
 } from '@valentine-efagene/qshelter-common';
 import { LoginInput, SignupInput, AuthResponse } from '../validators/auth.validator';
 
+// Google OAuth client (credentials loaded from SSM via serverless.yml environment)
 const googleClient = new OAuth2Client(
     process.env.GOOGLE_CLIENT_ID,
     process.env.GOOGLE_CLIENT_SECRET,
