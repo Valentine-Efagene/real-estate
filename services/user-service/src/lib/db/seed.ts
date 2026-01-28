@@ -8,11 +8,11 @@ export const seedData: { roles: RoleCreateManyInput[], tenants: TenantCreateMany
     roles: [
         { name: 'admin', description: 'Administrator role with full access' },
         { name: 'user', description: 'Regular user role' },
-        { name: 'agent', description: 'Real estate agent role' },
-        { name: 'landlord', description: 'Property landlord role' },
-        { name: 'tenant', description: 'Property tenant role' },
-        { name: 'developer', description: 'Property developer who lists properties and uploads sales offer letters' },
-        { name: 'lender', description: 'Bank/financial institution representative who uploads preapproval and mortgage offer letters' },
+        { name: 'agent', description: 'Real estate agent - manages properties, listings, and sales documentation' },
+        { name: 'mortgage_ops', description: 'Mortgage operations - manage applications, phases, and payments' },
+        { name: 'finance', description: 'Finance team - manage payments, refunds, and financial reports' },
+        { name: 'legal', description: 'Legal team - manage documents, terminations, and compliance' },
+        { name: 'lender_ops', description: 'Lender operations - manage mortgage preapprovals, offers, and document reviews' },
     ],
     tenants: [
         { name: 'Default Tenant', isActive: true, subdomain: 'default' },

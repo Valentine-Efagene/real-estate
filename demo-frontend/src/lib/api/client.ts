@@ -10,6 +10,16 @@ interface FetchOptions {
 }
 
 /**
+ * Dispatch a custom event when session expires
+ * This allows the auth context to react to session expiration from API calls
+ */
+function dispatchSessionExpired() {
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('session-expired'));
+  }
+}
+
+/**
  * Base API client that handles authentication via httpOnly cookies.
  * For client-side calls, requests go through Next.js API routes that proxy to backend.
  * For server-side calls, we can call backend directly with the token.
@@ -42,6 +52,20 @@ class ApiClient {
     try {
       const response = await fetch(url, config);
       const data = await response.json();
+
+      // Handle session expiration - the proxy will have already tried to refresh
+      // If we still get a 401, the session is truly expired
+      if (response.status === 401) {
+        console.warn('[ApiClient] Session expired, dispatching event');
+        dispatchSessionExpired();
+        return {
+          success: false,
+          error: data.error || {
+            code: 'SESSION_EXPIRED',
+            message: 'Your session has expired. Please log in again.',
+          },
+        };
+      }
 
       if (!response.ok) {
         return {

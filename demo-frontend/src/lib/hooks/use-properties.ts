@@ -155,3 +155,179 @@ export function useCreateProperty() {
     },
   });
 }
+
+export function useUpdateProperty() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ id, data }: { id: string; data: Partial<Property> }) => {
+      const response = await propertyApi.put<Property>(`/property/properties/${id}`, data);
+      if (!response.success) {
+        throw new Error(response.error?.message || 'Failed to update property');
+      }
+      return response.data!;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.properties.all });
+      queryClient.invalidateQueries({ queryKey: queryKeys.properties.detail(variables.id) });
+    },
+  });
+}
+
+export function useDeleteProperty() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const response = await propertyApi.delete(`/property/properties/${id}`);
+      if (!response.success) {
+        throw new Error(response.error?.message || 'Failed to delete property');
+      }
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.properties.all });
+    },
+  });
+}
+
+export function usePublishProperty() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const response = await propertyApi.patch<Property>(`/property/properties/${id}/publish`, {});
+      if (!response.success) {
+        throw new Error(response.error?.message || 'Failed to publish property');
+      }
+      return response.data!;
+    },
+    onSuccess: (_, id) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.properties.all });
+      queryClient.invalidateQueries({ queryKey: queryKeys.properties.detail(id) });
+    },
+  });
+}
+
+export function useUnpublishProperty() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const response = await propertyApi.patch<Property>(`/property/properties/${id}/unpublish`, {});
+      if (!response.success) {
+        throw new Error(response.error?.message || 'Failed to unpublish property');
+      }
+      return response.data!;
+    },
+    onSuccess: (_, id) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.properties.all });
+      queryClient.invalidateQueries({ queryKey: queryKeys.properties.detail(id) });
+    },
+  });
+}
+
+// Variant mutations
+export interface CreateVariantInput {
+  name: string;
+  description?: string;
+  nBedrooms?: number;
+  nBathrooms?: number;
+  nParkingSpots?: number;
+  area?: number;
+  price: number;
+  pricePerSqm?: number;
+  totalUnits?: number;
+}
+
+export function useCreateVariant() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ propertyId, data }: { propertyId: string; data: CreateVariantInput }) => {
+      const response = await propertyApi.post<PropertyVariant>(
+        `/property/properties/${propertyId}/variants`,
+        data
+      );
+      if (!response.success) {
+        throw new Error(response.error?.message || 'Failed to create variant');
+      }
+      return response.data!;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.properties.variants(variables.propertyId) });
+    },
+  });
+}
+
+export function useDeleteVariant() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ propertyId, variantId }: { propertyId: string; variantId: string }) => {
+      const response = await propertyApi.delete(
+        `/property/properties/${propertyId}/variants/${variantId}`
+      );
+      if (!response.success) {
+        throw new Error(response.error?.message || 'Failed to delete variant');
+      }
+      return response.data;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.properties.variants(variables.propertyId) });
+    },
+  });
+}
+
+// Unit mutations
+export interface CreateUnitInput {
+  unitNumber: string;
+  floorNumber?: number;
+  blockName?: string;
+  priceOverride?: number;
+  areaOverride?: number;
+  notes?: string;
+  status?: string;
+}
+
+export function useCreateUnit() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ propertyId, variantId, data }: { propertyId: string; variantId: string; data: CreateUnitInput }) => {
+      const response = await propertyApi.post<PropertyUnit>(
+        `/property/properties/${propertyId}/variants/${variantId}/units`,
+        data
+      );
+      if (!response.success) {
+        throw new Error(response.error?.message || 'Failed to create unit');
+      }
+      return response.data!;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.properties.units(variables.propertyId, variables.variantId) });
+      queryClient.invalidateQueries({ queryKey: queryKeys.properties.variants(variables.propertyId) });
+    },
+  });
+}
+
+export function useDeleteUnit() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ propertyId, variantId, unitId }: { propertyId: string; variantId: string; unitId: string }) => {
+      const response = await propertyApi.delete(
+        `/property/properties/${propertyId}/variants/${variantId}/units/${unitId}`
+      );
+      if (!response.success) {
+        throw new Error(response.error?.message || 'Failed to delete unit');
+      }
+      return response.data;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.properties.units(variables.propertyId, variables.variantId) });
+      queryClient.invalidateQueries({ queryKey: queryKeys.properties.variants(variables.propertyId) });
+    },
+  });
+}
+

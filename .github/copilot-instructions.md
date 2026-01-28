@@ -128,6 +128,49 @@ GET /organizations?typeCode=BANK
 - Platform organization employees (like Adaeze, the operations manager) are linked via `OrganizationMember`.
 - External partners (banks, developers) are also organizations with their own members.
 
+## RBAC Roles
+
+Roles define what a person can DO in the system, independent of which organization they belong to.
+
+### System Roles (Seeded at Bootstrap)
+
+| Role           | Description                                                    |
+| -------------- | -------------------------------------------------------------- |
+| `admin`        | Full administrative access to all resources                    |
+| `user`         | Basic user - property browsing, own applications, profile      |
+| `mortgage_ops` | Mortgage operations - manage applications, phases, payments    |
+| `finance`      | Finance team - payments, refunds, financial reports            |
+| `legal`        | Legal team - documents, terminations, compliance               |
+| `agent`        | Real estate agent - manage properties, listings, sales docs    |
+| `lender_ops`   | Lender operations - mortgage preapprovals, offers, doc reviews |
+
+### Key Design Principle: Roles ≠ Organization Types
+
+**Organization types** (PLATFORM, BANK, DEVELOPER) describe WHAT the organization IS.
+**Roles** (admin, agent, lender_ops) describe WHAT a person can DO.
+
+A staff member at Lekki Gardens (a DEVELOPER organization) would have:
+
+- OrganizationMember link to Lekki Gardens (organization membership)
+- `agent` role (can manage properties)
+- Optionally `admin` role for full organization admin rights
+
+A loan officer at Access Bank (a BANK organization) would have:
+
+- OrganizationMember link to Access Bank (organization membership)
+- `lender_ops` role (can manage mortgage documents)
+- Optionally `mortgage_ops` for application management
+
+**Wrong**: Creating roles named "DEVELOPER" or "LENDER" - these are organization types!
+**Correct**: Using roles like `agent`, `lender_ops`, `mortgage_ops` that describe job functions.
+
+### Role Assignment
+
+- New users signing up get `user` role by default
+- New organization members also get `user` role by default
+- Additional roles (agent, mortgage_ops, etc.) are assigned by admins via `TenantMembership`
+- Organization type does NOT automatically determine role
+
 ## Stage-Based Document Review
 
 Documents go through sequential approval stages, where each stage is responsible for reviewing documents from specific uploaders:

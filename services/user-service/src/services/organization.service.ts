@@ -513,26 +513,16 @@ class OrganizationService {
     // =========================================================================
 
     /**
-     * Map organization type code to role name.
-     * Uses the primary type of the organization to determine the appropriate role.
+     * Get default role for new organization members.
+     * New members get the 'user' role by default; admins can assign additional roles later.
+     * Note: Organization type does NOT determine role - roles are about what people can DO,
+     * not what organization they belong to.
      */
-    private getRoleNameForOrgTypeCode(typeCode: string): string {
-        switch (typeCode) {
-            case 'BANK':
-                return 'LENDER';
-            case 'DEVELOPER':
-                return 'DEVELOPER';
-            case 'LEGAL':
-                return 'LEGAL';
-            case 'INSURER':
-                return 'INSURER';
-            case 'GOVERNMENT':
-                return 'GOVERNMENT';
-            case 'PLATFORM':
-                return 'admin';
-            default:
-                return 'user';
-        }
+    private getRoleNameForOrgTypeCode(_typeCode: string): string {
+        // All new organization members get the 'user' role by default.
+        // Additional roles (agent, mortgage_ops, lender_ops, etc.) should be
+        // assigned explicitly based on the person's job responsibilities.
+        return 'user';
     }
 
     /**

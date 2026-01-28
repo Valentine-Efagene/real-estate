@@ -24,8 +24,10 @@ const navigation = [
 
 const adminNavigation = [
   { name: 'All Applications', href: '/admin/applications' },
+  { name: 'Properties', href: '/admin/properties' },
   { name: 'Users', href: '/admin/users' },
   { name: 'Organizations', href: '/admin/organizations' },
+  { name: 'Authorization', href: '/admin/authorization' },
 ];
 
 export function Navbar() {

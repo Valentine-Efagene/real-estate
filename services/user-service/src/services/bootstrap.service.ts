@@ -110,12 +110,17 @@ const DEFAULT_ROLES: BootstrapRole[] = [
         ],
     },
     {
-        name: 'DEVELOPER',
-        description: 'Property developer - upload sales offer letters and manage property documentation',
+        name: 'agent',
+        description: 'Real estate agent - manage properties, listings, and sales documentation',
         isSystem: true,
         permissions: [
             { name: 'View Properties', path: '/properties', methods: ['GET'], effect: 'ALLOW' },
-            { name: 'View Property Details', path: '/properties/:id', methods: ['GET'], effect: 'ALLOW' },
+            { name: 'Manage Properties', path: '/properties', methods: ['POST'], effect: 'ALLOW' },
+            { name: 'Manage Property Details', path: '/properties/:id', methods: ['GET', 'PATCH', 'DELETE'], effect: 'ALLOW' },
+            { name: 'Manage Variants', path: '/properties/:id/variants', methods: ['GET', 'POST', 'PATCH', 'DELETE'], effect: 'ALLOW' },
+            { name: 'Manage Units', path: '/properties/:id/variants/:variantId/units', methods: ['GET', 'POST', 'PATCH', 'DELETE'], effect: 'ALLOW' },
+            { name: 'Publish Properties', path: '/properties/:id/publish', methods: ['POST'], effect: 'ALLOW' },
+            { name: 'Unpublish Properties', path: '/properties/:id/unpublish', methods: ['POST'], effect: 'ALLOW' },
             { name: 'View Applications', path: '/applications', methods: ['GET'], effect: 'ALLOW' },
             { name: 'View Application Details', path: '/applications/:id', methods: ['GET'], effect: 'ALLOW' },
             { name: 'Upload Phase Documents', path: '/applications/:id/phases/:phaseId/documents', methods: ['GET', 'POST'], effect: 'ALLOW' },
@@ -123,8 +128,8 @@ const DEFAULT_ROLES: BootstrapRole[] = [
         ],
     },
     {
-        name: 'LENDER',
-        description: 'Bank/lender representative - upload preapproval and mortgage offer letters',
+        name: 'lender_ops',
+        description: 'Lender operations - manage mortgage preapprovals, offers, and document reviews',
         isSystem: true,
         permissions: [
             { name: 'View Applications', path: '/applications', methods: ['GET'], effect: 'ALLOW' },

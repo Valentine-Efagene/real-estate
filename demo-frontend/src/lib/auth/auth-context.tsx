@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
+import { useRouter } from 'next/navigation';
 import type { UserSession, UserRole } from './types';
 import { hasRole, hasAnyRole, isAdmin } from './types';
 
@@ -10,7 +11,7 @@ interface AuthContextValue {
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
-  refresh: () => Promise<void>;
+  refresh: () => Promise<boolean>;
   hasRole: (role: UserRole) => boolean;
   hasAnyRole: (roles: UserRole[]) => boolean;
   isAdmin: boolean;
@@ -26,6 +27,7 @@ interface AuthProviderProps {
 export function AuthProvider({ children, initialSession = null }: AuthProviderProps) {
   const [user, setUser] = useState<UserSession | null>(initialSession);
   const [isLoading, setIsLoading] = useState(!initialSession);
+  const router = useRouter();
 
   // Fetch current session on mount
   useEffect(() => {
@@ -39,37 +41,41 @@ export function AuthProvider({ children, initialSession = null }: AuthProviderPr
     if (!user?.expiresAt) return;
 
     const refreshBeforeExpiry = async () => {
-      try {
-        const response = await fetch('/api/auth/refresh', { method: 'POST' });
-        if (response.ok) {
-          const data = await response.json();
-          setUser(data.user);
-        } else {
-          // Token refresh failed, user will be logged out on next protected action
-          console.warn('Token refresh failed');
-        }
-      } catch (error) {
-        console.error('Token refresh error:', error);
+      console.log('[Auth] Proactive token refresh triggered');
+      const success = await refreshInternal();
+      if (!success) {
+        console.warn('[Auth] Proactive refresh failed, user will need to log in again');
+        // Don't immediately redirect - let the next API call trigger the redirect
       }
     };
 
-    // Calculate time until we should refresh (1 minute before expiry)
+    // Calculate time until we should refresh (2 minutes before expiry for safety)
     const now = Date.now();
     const expiresAt = user.expiresAt;
-    const refreshBuffer = 60 * 1000; // 1 minute before expiry
+    const refreshBuffer = 2 * 60 * 1000; // 2 minutes before expiry
     const timeUntilRefresh = Math.max(0, expiresAt - now - refreshBuffer);
+
+    console.log(`[Auth] Token expires at ${new Date(expiresAt).toISOString()}, refresh in ${Math.round(timeUntilRefresh / 1000)}s`);
 
     // Set timeout to refresh before expiry
     const timeoutId = setTimeout(refreshBeforeExpiry, timeUntilRefresh);
 
-    // Also set up periodic refresh every 14 minutes as a fallback
-    const intervalId = setInterval(refreshBeforeExpiry, 14 * 60 * 1000);
-
     return () => {
       clearTimeout(timeoutId);
-      clearInterval(intervalId);
     };
   }, [user?.expiresAt]);
+
+  // Listen for session expired events from API calls
+  useEffect(() => {
+    const handleSessionExpired = () => {
+      console.log('[Auth] Session expired event received');
+      setUser(null);
+      router.push('/login?reason=session_expired');
+    };
+
+    window.addEventListener('session-expired', handleSessionExpired);
+    return () => window.removeEventListener('session-expired', handleSessionExpired);
+  }, [router]);
 
   const fetchSession = async () => {
     try {
@@ -84,6 +90,23 @@ export function AuthProvider({ children, initialSession = null }: AuthProviderPr
       setUser(null);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const refreshInternal = async (): Promise<boolean> => {
+    try {
+      const response = await fetch('/api/auth/refresh', { method: 'POST' });
+      if (response.ok) {
+        const data = await response.json();
+        if (data.user) {
+          setUser(data.user);
+          return true;
+        }
+      }
+      return false;
+    } catch (error) {
+      console.error('[Auth] Token refresh error:', error);
+      return false;
     }
   };
 
@@ -113,23 +136,14 @@ export function AuthProvider({ children, initialSession = null }: AuthProviderPr
     try {
       await fetch('/api/auth/logout', { method: 'POST' });
       setUser(null);
+      router.push('/');
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [router]);
 
-  const refresh = useCallback(async () => {
-    try {
-      const response = await fetch('/api/auth/refresh', { method: 'POST' });
-      if (response.ok) {
-        const data = await response.json();
-        setUser(data.user);
-      } else {
-        setUser(null);
-      }
-    } catch {
-      setUser(null);
-    }
+  const refresh = useCallback(async (): Promise<boolean> => {
+    return refreshInternal();
   }, []);
 
   const value: AuthContextValue = {

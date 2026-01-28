@@ -49,7 +49,7 @@ export const bootstrapTenantSchema = z.object({
         example: { email: 'admin@acme.com', firstName: 'Admin', lastName: 'User' },
     }),
     roles: z.array(BootstrapRoleSchema).optional().openapi({
-        description: 'Roles to create. If omitted, creates default roles: admin, user, mortgage_ops, finance, legal',
+        description: 'Roles to create. If omitted, creates default roles: admin, user, mortgage_ops, finance, legal, agent, lender_ops',
     }),
     idempotencyKey: z.string().optional().openapi({
         description: 'Optional idempotency key. If provided, duplicate requests with same key are ignored.',

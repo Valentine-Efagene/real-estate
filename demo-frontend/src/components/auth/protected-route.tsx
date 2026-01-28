@@ -27,15 +27,19 @@ export function ProtectedRoute({
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
+      // Not authenticated - redirect to login (not /unauthorized)
       router.push(`${redirectTo}?callbackUrl=${encodeURIComponent(window.location.pathname)}`);
     }
   }, [isLoading, isAuthenticated, router, redirectTo]);
 
   useEffect(() => {
-    if (!isLoading && isAuthenticated && roles && roles.length > 0) {
+    // Only check roles if user is authenticated AND has roles to check
+    if (!isLoading && isAuthenticated && user && roles && roles.length > 0) {
       const hasRequiredRole = roles.some((role) => user?.roles.includes(role));
       if (!hasRequiredRole) {
-        router.push('/unauthorized');
+        // User is authenticated but doesn't have required role - show error toast
+        // but stay on current page or redirect to home, not /unauthorized
+        router.push('/');
       }
     }
   }, [isLoading, isAuthenticated, user, roles, router]);
