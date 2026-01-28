@@ -10,6 +10,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
+import { requireTenantId } from '@/lib/hooks/use-tenant';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -49,7 +50,10 @@ export default function RegisterPage() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/proxy/user/auth/register', {
+      // Get tenantId from storage (set during bootstrap)
+      const tenantId = requireTenantId();
+
+      const response = await fetch('/api/proxy/user/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -57,6 +61,7 @@ export default function RegisterPage() {
           lastName: formData.lastName,
           email: formData.email,
           password: formData.password,
+          tenantId,
         }),
       });
 

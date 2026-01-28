@@ -82,6 +82,14 @@ provider:
             - sns:GetEndpointAttributes
           Resource:
             - arn:aws:sns:${self:provider.region}:*:*
+        # SQS for receiving notification events
+        - Effect: Allow
+          Action:
+            - sqs:ReceiveMessage
+            - sqs:DeleteMessage
+            - sqs:GetQueueAttributes
+          Resource:
+            - arn:aws:sqs:${self:provider.region}:*:qshelter-${self:provider.stage}-notifications
         # VPC permissions for Lambda to create ENIs
         - Effect: Allow
           Action:
@@ -141,3 +149,11 @@ functions:
       - httpApi:
           path: /openapi.json
           method: GET
+
+  sqsConsumer:
+    handler: dist/sqs-handler.handler
+    events:
+      - sqs:
+          arn: arn:aws:sqs:${self:provider.region}:${aws:accountId}:qshelter-${self:provider.stage}-notifications
+          batchSize: 10
+          functionResponseType: ReportBatchItemFailures

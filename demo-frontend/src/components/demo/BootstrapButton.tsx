@@ -19,9 +19,16 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { setStoredTenantId } from '@/lib/hooks/use-tenant';
 
 interface BootstrapResponse {
-    success: boolean;
+    success?: boolean;
+    // Direct response format from backend
+    tenant?: { id: string; name: string };
+    admin?: { id: string; email: string };
+    platformOrg?: { id: string; name: string };
+    roles?: Array<{ id: string; name: string }>;
+    // Or wrapped format
     data?: {
         tenant: { id: string; name: string };
         admin: { id: string; email: string };
@@ -82,6 +89,16 @@ export function BootstrapButton() {
             if (!response.ok) {
                 setError(data.error || data.message || 'Bootstrap failed');
                 return;
+            }
+
+            // Store tenantId for use in registration and other API calls
+            // Handle both direct format (data.tenant.id) and wrapped format (data.data.tenant.id)
+            const tenantId = data.tenant?.id || data.data?.tenant?.id;
+            if (tenantId) {
+                setStoredTenantId(tenantId);
+                console.log('[Bootstrap] Stored tenantId:', tenantId);
+            } else {
+                console.warn('[Bootstrap] No tenantId found in response:', data);
             }
 
             setResult(data);
@@ -192,8 +209,8 @@ export function BootstrapButton() {
                         </div>
                     )}
 
-                    {/* Success Display */}
-                    {result?.success && (
+                    {/* Success Display - handle both direct and wrapped response formats */}
+                    {(result?.tenant || result?.data?.tenant) && (
                         <Card className="border-green-200 bg-green-50">
                             <CardHeader className="pb-2">
                                 <CardTitle className="text-green-700 text-base">✅ Bootstrap Successful!</CardTitle>
@@ -202,15 +219,15 @@ export function BootstrapButton() {
                                 <dl className="space-y-1">
                                     <div>
                                         <dt className="font-medium inline">Tenant:</dt>{' '}
-                                        <dd className="inline">{result.data?.tenant.name} ({result.data?.tenant.id})</dd>
+                                        <dd className="inline">{result.tenant?.name || result.data?.tenant.name} ({result.tenant?.id || result.data?.tenant.id})</dd>
                                     </div>
                                     <div>
                                         <dt className="font-medium inline">Admin:</dt>{' '}
-                                        <dd className="inline">{result.data?.admin.email}</dd>
+                                        <dd className="inline">{result.admin?.email || result.data?.admin.email}</dd>
                                     </div>
                                     <div>
                                         <dt className="font-medium inline">Organization:</dt>{' '}
-                                        <dd className="inline">{result.data?.platformOrg.name}</dd>
+                                        <dd className="inline">{result.platformOrg?.name || result.data?.platformOrg?.name || 'Created'}</dd>
                                     </div>
                                 </dl>
                                 <p className="mt-3 font-medium">

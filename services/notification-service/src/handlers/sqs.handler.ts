@@ -4,10 +4,65 @@ import {
     NotificationType,
     NotificationChannel,
 } from '@valentine-efagene/qshelter-common';
+import { SecretsManagerClient, GetSecretValueCommand } from '@aws-sdk/client-secrets-manager';
 import { EmailService } from '../services/email.service';
 import { TemplateTypeValue } from '../validators/email.validator';
 
-const emailService = new EmailService();
+// Lazy-initialized email service
+let emailService: EmailService | null = null;
+let secretsLoaded = false;
+
+/**
+ * Load notification config secrets from Secrets Manager into process.env
+ */
+async function loadSecrets(): Promise<void> {
+    if (secretsLoaded) return;
+
+    const stage = process.env.STAGE || process.env.NODE_ENV || 'staging';
+    const secretId = `qshelter/${stage}/notification-config`;
+
+    console.log('[SQS Handler] Loading secrets from Secrets Manager', { secretId });
+
+    try {
+        const client = new SecretsManagerClient({ region: process.env.AWS_REGION || 'us-east-1' });
+        const command = new GetSecretValueCommand({ SecretId: secretId });
+        const response = await client.send(command);
+
+        if (response.SecretString) {
+            const secrets = JSON.parse(response.SecretString);
+
+            // Load secrets into process.env
+            for (const [key, value] of Object.entries(secrets)) {
+                if (typeof value === 'string' && !process.env[key]) {
+                    process.env[key] = value;
+                }
+            }
+
+            console.log('[SQS Handler] Secrets loaded successfully', {
+                keys: Object.keys(secrets),
+            });
+        }
+
+        secretsLoaded = true;
+    } catch (error) {
+        console.error('[SQS Handler] Failed to load secrets', {
+            secretId,
+            error: error instanceof Error ? error.message : error,
+        });
+        throw error;
+    }
+}
+
+/**
+ * Get or initialize the email service
+ */
+async function getEmailService(): Promise<EmailService> {
+    if (!emailService) {
+        await loadSecrets();
+        emailService = new EmailService();
+    }
+    return emailService;
+}
 
 /**
  * Parse SNS-wrapped SQS message body
@@ -98,7 +153,8 @@ async function processEmailNotification(event: NotificationEvent): Promise<void>
         correlationId: event.meta?.correlationId,
     });
 
-    await emailService.sendTemplateEmail({
+    const service = await getEmailService();
+    await service.sendTemplateEmail({
         ...payload,
         templateName,
     } as { to_email: string; templateName: typeof templateName;[key: string]: unknown });

@@ -182,7 +182,7 @@ function CreateOrganizationDialog() {
       toast.error('Name and at least one organization type are required');
       return;
     }
-    
+
     await createOrg.mutateAsync({
       name,
       typeCodes: selectedTypes,
@@ -191,7 +191,7 @@ function CreateOrganizationDialog() {
       phone: phone || undefined,
       address: address || undefined,
     });
-    
+
     setOpen(false);
     setName('');
     setEmail('');
@@ -202,8 +202,8 @@ function CreateOrganizationDialog() {
   };
 
   const toggleType = (code: string) => {
-    setSelectedTypes(prev => 
-      prev.includes(code) 
+    setSelectedTypes(prev =>
+      prev.includes(code)
         ? prev.filter(t => t !== code)
         : [...prev, code]
     );
@@ -513,47 +513,47 @@ function OrganizationsTable({
                         View Details
                       </Button>
                     </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>{org.name}</DialogTitle>
-                      <DialogDescription>Organization details</DialogDescription>
-                    </DialogHeader>
-                    <div className="space-y-4 py-4">
-                      <div className="grid grid-cols-2 gap-4 text-sm">
-                        <div className="text-gray-500">Email:</div>
-                        <div className="font-medium">{org.email}</div>
-                        {org.phone && (
-                          <>
-                            <div className="text-gray-500">Phone:</div>
-                            <div className="font-medium">{org.phone}</div>
-                          </>
-                        )}
-                        {org.address && (
-                          <>
-                            <div className="text-gray-500">Address:</div>
-                            <div className="font-medium">{org.address}</div>
-                          </>
-                        )}
-                        <div className="text-gray-500">Organization ID:</div>
-                        <div className="font-medium text-xs">{org.id}</div>
-                      </div>
-                      <div className="space-y-2">
-                        <Label>Organization Types</Label>
-                        <div className="flex flex-wrap gap-2">
-                          {(org.organizationTypes || []).map((ot) => (
-                            <Badge key={ot.id} variant="secondary" className="text-sm">
-                              {ot.organizationType?.name || 'Unknown'}
-                              {ot.isPrimary && ' (Primary)'}
-                            </Badge>
-                          ))}
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>{org.name}</DialogTitle>
+                        <DialogDescription>Organization details</DialogDescription>
+                      </DialogHeader>
+                      <div className="space-y-4 py-4">
+                        <div className="grid grid-cols-2 gap-4 text-sm">
+                          <div className="text-gray-500">Email:</div>
+                          <div className="font-medium">{org.email}</div>
+                          {org.phone && (
+                            <>
+                              <div className="text-gray-500">Phone:</div>
+                              <div className="font-medium">{org.phone}</div>
+                            </>
+                          )}
+                          {org.address && (
+                            <>
+                              <div className="text-gray-500">Address:</div>
+                              <div className="font-medium">{org.address}</div>
+                            </>
+                          )}
+                          <div className="text-gray-500">Organization ID:</div>
+                          <div className="font-medium text-xs">{org.id}</div>
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Organization Types</Label>
+                          <div className="flex flex-wrap gap-2">
+                            {(org.organizationTypes || []).map((ot) => (
+                              <Badge key={ot.id} variant="secondary" className="text-sm">
+                                {ot.organizationType?.name || 'Unknown'}
+                                {ot.isPrimary && ' (Primary)'}
+                              </Badge>
+                            ))}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <DialogFooter>
-                      <Button variant="outline">Close</Button>
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>
+                      <DialogFooter>
+                        <Button variant="outline">Close</Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
                 </div>
               </TableCell>
             </TableRow>
