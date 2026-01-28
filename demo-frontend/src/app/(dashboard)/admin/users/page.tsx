@@ -22,6 +22,7 @@ interface User {
   phone?: string;
   roles: string[];
   status: 'ACTIVE' | 'INACTIVE' | 'SUSPENDED';
+  emailVerifiedAt: string | null;
   createdAt: string;
 }
 
@@ -44,6 +45,7 @@ function useUsers() {
         phone: u.phone,
         roles: (u.userRoles as Array<{ role?: { name?: string } }> || []).map(r => r.role?.name || 'user'),
         status: u.isActive ? 'ACTIVE' : 'INACTIVE',
+        emailVerifiedAt: u.emailVerifiedAt as string | null,
         createdAt: u.createdAt,
       }));
     },
@@ -94,8 +96,26 @@ function useAssignRole() {
   });
 }
 
+function useResendVerification() {
+  return useMutation({
+    mutationFn: async (email: string) => {
+      const res = await fetch('/api/proxy/user/auth/resend-verification', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ email }),
+      });
+      if (!res.ok) throw new Error('Failed to resend verification email');
+      return res.json();
+    },
+  });
+}
+
 function UsersTable({ users, filter }: { users: User[]; filter: string }) {
   const updateStatus = useUpdateUserStatus();
+  const resendVerification = useResendVerification();
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   const filteredUsers = users.filter((user) => {
@@ -112,6 +132,15 @@ function UsersTable({ users, filter }: { users: User[]; filter: string }) {
     }
   };
 
+  const handleResendVerification = async (email: string) => {
+    try {
+      await resendVerification.mutateAsync(email);
+      toast.success('Verification email sent');
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Failed to send verification email');
+    }
+  };
+
   return (
     <>
       <Table>
@@ -120,6 +149,7 @@ function UsersTable({ users, filter }: { users: User[]; filter: string }) {
             <TableHead>Name</TableHead>
             <TableHead>Email</TableHead>
             <TableHead>Roles</TableHead>
+            <TableHead>Verified</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Created</TableHead>
             <TableHead className="text-right">Actions</TableHead>
@@ -128,7 +158,7 @@ function UsersTable({ users, filter }: { users: User[]; filter: string }) {
         <TableBody>
           {filteredUsers.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={6} className="text-center py-8 text-gray-500">
+              <TableCell colSpan={7} className="text-center py-8 text-gray-500">
                 No users found
               </TableCell>
             </TableRow>
@@ -145,6 +175,13 @@ function UsersTable({ users, filter }: { users: User[]; filter: string }) {
                       </Badge>
                     ))}
                   </div>
+                </TableCell>
+                <TableCell>
+                  {user.emailVerifiedAt ? (
+                    <Badge variant="default" className="bg-green-600 text-xs">✓</Badge>
+                  ) : (
+                    <Badge variant="outline" className="text-amber-600 border-amber-600 text-xs">✗</Badge>
+                  )}
                 </TableCell>
                 <TableCell>
                   <Badge
@@ -179,6 +216,30 @@ function UsersTable({ users, filter }: { users: User[]; filter: string }) {
                         <DialogDescription>{user.name} ({user.email})</DialogDescription>
                       </DialogHeader>
                       <div className="space-y-4 py-4">
+                        <div className="space-y-2">
+                          <Label>Email Verification</Label>
+                          <div className="flex items-center gap-2">
+                            {user.emailVerifiedAt ? (
+                              <Badge variant="default" className="bg-green-600">
+                                ✓ Verified
+                              </Badge>
+                            ) : (
+                              <>
+                                <Badge variant="outline" className="text-amber-600 border-amber-600">
+                                  ✗ Not Verified
+                                </Badge>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => handleResendVerification(user.email)}
+                                  disabled={resendVerification.isPending}
+                                >
+                                  {resendVerification.isPending ? 'Sending...' : 'Resend Verification'}
+                                </Button>
+                              </>
+                            )}
+                          </div>
+                        </div>
                         <div className="space-y-2">
                           <Label>Current Status</Label>
                           <div className="flex gap-2">

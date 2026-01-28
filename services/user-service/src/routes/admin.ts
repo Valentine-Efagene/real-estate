@@ -61,6 +61,50 @@ const verifyBootstrapSecret = async (req: Request, res: Response, next: NextFunc
 };
 
 /**
+ * GET /admin/public/bootstrap-status
+ * 
+ * Check if any tenant has been bootstrapped on the platform.
+ * This endpoint is PUBLIC (no auth required) to allow the frontend
+ * to detect bootstrap state across browsers.
+ * 
+ * Returns minimal info - just whether bootstrapped and the tenant ID if so.
+ */
+router.get(
+    '/public/bootstrap-status',
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            // Find the first active tenant (platform typically has one main tenant)
+            const tenant = await prisma.tenant.findFirst({
+                where: { isActive: true },
+                select: {
+                    id: true,
+                    name: true,
+                    subdomain: true,
+                },
+                orderBy: { createdAt: 'asc' },
+            });
+
+            if (!tenant) {
+                res.json({
+                    bootstrapped: false,
+                    message: 'No tenant bootstrapped yet',
+                });
+                return;
+            }
+
+            res.json({
+                bootstrapped: true,
+                tenantId: tenant.id,
+                tenantName: tenant.name,
+                subdomain: tenant.subdomain,
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
+/**
  * POST /admin/bootstrap-tenant
  * 
  * Bootstrap a new tenant with roles, permissions, and first admin user.

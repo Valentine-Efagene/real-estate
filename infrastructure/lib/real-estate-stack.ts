@@ -354,6 +354,14 @@ export class RealEstateStack extends cdk.Stack {
       description: 'Bootstrap Secret for Tenant Creation',
     });
 
+    // Frontend Base URL - used for email verification links, password reset, etc.
+    // Default to localhost:3000 for staging/dev, should be updated for production
+    new ssm.StringParameter(this, 'FrontendBaseUrlParameter', {
+      parameterName: `/qshelter/${stage}/frontend-base-url`,
+      stringValue: stage === 'prod' ? 'https://mreif.com.ng' : 'http://localhost:3000',
+      description: 'Frontend Base URL for email links',
+    });
+
     // === SNS/SQS SSM Parameters ===
     new ssm.StringParameter(this, 'NotificationsTopicArnParameter', {
       parameterName: `/qshelter/${stage}/notifications-topic-arn`,

@@ -46,6 +46,16 @@ authRouter.get('/verify-email', async (req, res, next) => {
     }
 });
 
+authRouter.post('/resend-verification', async (req, res, next) => {
+    try {
+        const { email } = z.object({ email: z.string().email() }).parse(req.body);
+        const result = await authService.resendVerificationEmail(email);
+        res.json(successResponse(result));
+    } catch (error) {
+        next(error);
+    }
+});
+
 authRouter.post('/request-password-reset', async (req, res, next) => {
     try {
         const { email } = z.object({ email: z.string().email() }).parse(req.body);

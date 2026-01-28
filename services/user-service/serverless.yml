@@ -25,11 +25,11 @@ provider:
     LOCALSTACK_ENDPOINT: ${self:custom.localstackEndpoint.${self:provider.stage}, ''}
     NOTIFICATIONS_TOPIC_ARN: ${ssm:/qshelter/${self:provider.stage}/notifications-topic-arn, ''}
     POLICY_SYNC_TOPIC_ARN: ${ssm:/qshelter/${self:provider.stage}/policy-sync-topic-arn, ''}
-    FRONTEND_BASE_URL: ${env:FRONTEND_BASE_URL, 'https://mreif.com.ng'}
+    FRONTEND_BASE_URL: ${ssm:/qshelter/${self:provider.stage}/frontend-base-url, 'http://localhost:3000'}
     BOOTSTRAP_SECRET: ${ssm:/qshelter/${self:provider.stage}/bootstrap-secret, 'local-bootstrap-secret'}
     GOOGLE_CLIENT_ID: ${ssm:/qshelter/${self:provider.stage}/google-client-id, ''}
     GOOGLE_CLIENT_SECRET: ${ssm:/qshelter/${self:provider.stage}/google-client-secret, ''}
-    GOOGLE_CALLBACK_URL: ${env:GOOGLE_CALLBACK_URL, 'http://localhost:3000/auth/google/callback'}
+    GOOGLE_CALLBACK_URL: ${ssm:/qshelter/${self:provider.stage}/google-callback-url, 'http://localhost:3000/auth/google/callback'}
   
   iam:
     role:

@@ -264,6 +264,12 @@ export class LocalStackStack extends cdk.Stack {
             description: 'Authorizer Lambda ARN',
         });
 
+        new ssm.StringParameter(this, 'FrontendBaseUrlParameter', {
+            parameterName: `/qshelter/${stage}/frontend-base-url`,
+            stringValue: 'http://localhost:3000',
+            description: 'Frontend Base URL for email links',
+        });
+
         new ssm.StringParameter(this, 'RolePoliciesTableParameter', {
             parameterName: `/qshelter/${stage}/dynamodb-table-role-policies`,
             stringValue: rolePoliciesTable.tableName,

@@ -100,8 +100,7 @@ export const UpdatedTermsAndConditionsSchema = BaseEmailSchema.extend({
 
 export const VerifyEmailSchema = BaseEmailSchema.extend({
     homeBuyerName: z.string().min(1),
-    otp: z.string().min(1),
-    ttl: z.number().positive(),
+    verificationLink: z.url(),
 }).openapi('VerifyEmail');
 
 export const WalletTopUpSchema = BaseEmailSchema.extend({

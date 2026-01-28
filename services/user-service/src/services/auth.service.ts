@@ -209,6 +209,54 @@ class AuthService {
         return { message: 'Email verified successfully' };
     }
 
+    async resendVerificationEmail(email: string): Promise<{ message: string }> {
+        const user = await prisma.user.findUnique({
+            where: { email },
+            include: {
+                tenantMemberships: {
+                    where: { isActive: true },
+                    take: 1,
+                },
+            },
+        });
+
+        if (!user) {
+            // Don't reveal if user exists
+            return { message: 'If an account exists with this email, a verification email has been sent' };
+        }
+
+        if (user.emailVerifiedAt) {
+            return { message: 'Email is already verified' };
+        }
+
+        // Generate new verification token
+        const emailVerificationToken = randomBytes(32).toString('hex');
+
+        await prisma.user.update({
+            where: { id: user.id },
+            data: { emailVerificationToken },
+        });
+
+        // Publish verify email event
+        const verificationLink = `${process.env.FRONTEND_BASE_URL}/auth/verify-email?token=${emailVerificationToken}`;
+        try {
+            await eventPublisher.publishEmail<VerifyEmailPayload>(
+                NotificationType.VERIFY_EMAIL,
+                {
+                    to_email: user.email,
+                    homeBuyerName: `${user.firstName} ${user.lastName}`.trim() || 'User',
+                    verificationLink,
+                },
+                { userId: user.id }
+            );
+            console.log(`[AuthService] Resend verification email event published for ${user.email}`);
+        } catch (error) {
+            console.error(`[AuthService] Failed to publish resend verification email event:`, error);
+        }
+
+        return { message: 'If an account exists with this email, a verification email has been sent' };
+    }
+
     async requestPasswordReset(email: string) {
         const user = await prisma.user.findUnique({ where: { email } });
 

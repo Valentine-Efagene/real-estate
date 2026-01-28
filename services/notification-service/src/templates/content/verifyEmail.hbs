@@ -7,19 +7,28 @@
 </p>
 
 <p style="font-size:14px; line-height:22px; margin:10px 0 25px;">
-    Thank you for joining the {{projectName}} family! Please enter the OTP below to verify your account:
+    Thank you for joining the {{projectName}} family! Please click the button below to verify your email address:
 </p>
 
-<p style="font-size:24px; font-weight:600; letter-spacing:4px; margin:0 0 20px;">
-    {{otp}}
+<p style="text-align:center; margin:30px 0;">
+    <a href="{{verificationLink}}" style="display:inline-block; background-color:#1E1E1E; color:#ffffff; text-decoration:none; padding:14px 30px; border-radius:6px; font-size:16px; font-weight:600;">
+        Verify Email Address
+    </a>
 </p>
 
-<p style="font-size:14px; line-height:20px; margin:0 0 25px;">
-    This code expires in {{ttl}} minutes.
+<p style="font-size:12px; line-height:18px; color:#666; margin:20px 0;">
+    If the button doesn't work, copy and paste this link into your browser:<br>
+    <a href="{{verificationLink}}" style="color:#1E1E1E; word-break:break-all;">
+        {{verificationLink}}
+    </a>
 </p>
 
-<p style="font-size:14px; line-height:20px; margin:0;">
-    If you didn't sign up on {{projectName}}, please reach out to us at<br>
+<p style="font-size:14px; line-height:20px; margin:25px 0 0;">
+    This link expires in 24 hours.
+</p>
+
+<p style="font-size:14px; line-height:20px; margin:25px 0 0;">
+    If you didn't sign up on {{projectName}}, please ignore this email or reach out to us at<br>
     <a href="mailto:{{supportEmail}}" style="color:#1E1E1E; text-decoration:underline;">
         {{supportEmail}}
     </a>

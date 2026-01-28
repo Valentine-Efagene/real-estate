@@ -1,8 +1,33 @@
 'use client';
 
 import { useAuth } from '@/lib/auth/auth-context';
+import { useQuery } from '@tanstack/react-query';
 
 const TENANT_ID_KEY = 'qshelter_tenant_id';
+
+interface BootstrapStatus {
+    bootstrapped: boolean;
+    tenantId?: string;
+    tenantName?: string;
+    subdomain?: string;
+    message?: string;
+}
+
+/**
+ * Fetch bootstrap status from the API
+ */
+async function fetchBootstrapStatus(): Promise<BootstrapStatus> {
+    const userServiceUrl = process.env.NEXT_PUBLIC_USER_SERVICE_URL;
+    if (!userServiceUrl) {
+        throw new Error('USER_SERVICE_URL not configured');
+    }
+
+    const response = await fetch(`${userServiceUrl}/admin/public/bootstrap-status`);
+    if (!response.ok) {
+        throw new Error(`Failed to fetch bootstrap status: ${response.status}`);
+    }
+    return response.json();
+}
 
 /**
  * Store tenantId in localStorage (called after bootstrap)
@@ -34,13 +59,31 @@ export function clearStoredTenantId(): void {
 
 /**
  * Hook to get the current tenant ID.
- * Prioritizes the auth context (JWT) if available, falls back to localStorage.
+ * Prioritizes the auth context (JWT) if available, then localStorage,
+ * then fetches from the API as a fallback (cross-browser support).
  * 
  * Usage:
  * const { tenantId, isLoading, error } = useTenant();
  */
 export function useTenant() {
     const { user, isLoading: authLoading } = useAuth();
+    const storedTenantId = getStoredTenantId();
+
+    // Only fetch from API if we don't have tenantId in localStorage or auth context
+    const shouldFetch = !user?.tenantId && !authLoading && !storedTenantId;
+
+    const { data: bootstrapStatus, isLoading: statusLoading, error: statusError } = useQuery({
+        queryKey: ['bootstrap-status'],
+        queryFn: fetchBootstrapStatus,
+        enabled: shouldFetch,
+        staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+        retry: 1,
+    });
+
+    // Store tenantId in localStorage when we get it from API
+    if (bootstrapStatus?.bootstrapped && bootstrapStatus.tenantId && !storedTenantId) {
+        setStoredTenantId(bootstrapStatus.tenantId);
+    }
 
     // If authenticated, use tenantId from JWT
     if (user?.tenantId) {
@@ -60,12 +103,28 @@ export function useTenant() {
         };
     }
 
-    // Fall back to localStorage (for unauthenticated flows like registration)
-    const storedTenantId = getStoredTenantId();
-
+    // Check localStorage first
     if (storedTenantId) {
         return {
             tenantId: storedTenantId,
+            isLoading: false,
+            error: null,
+        };
+    }
+
+    // Check if we're loading from API
+    if (statusLoading) {
+        return {
+            tenantId: null,
+            isLoading: true,
+            error: null,
+        };
+    }
+
+    // Check if API returned bootstrap status
+    if (bootstrapStatus?.bootstrapped && bootstrapStatus.tenantId) {
+        return {
+            tenantId: bootstrapStatus.tenantId,
             isLoading: false,
             error: null,
         };
@@ -75,7 +134,7 @@ export function useTenant() {
     return {
         tenantId: null,
         isLoading: false,
-        error: 'No tenant configured. Please run Bootstrap first from the home page.',
+        error: statusError?.message || 'No tenant configured. Please run Bootstrap first from the home page.',
     };
 }
 
