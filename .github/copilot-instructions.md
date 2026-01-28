@@ -615,10 +615,22 @@ After every AWS deployment, you MUST:
    - Deployment date
 
 3. **Verify health endpoints**:
+
    ```bash
    curl -s https://<user-service-url>/health
    curl -s https://<property-service-url>/health
    # ... all services
+   ```
+
+4. **Update demo-frontend `.env`** (`demo-frontend/.env`):
+   - Update all `NEXT_PUBLIC_*_SERVICE_URL` variables with new endpoints
+   - This is critical after teardown/redeploy since URLs change each deployment
+
+   ```bash
+   # Quick way to get all service URLs
+   for service in user property mortgage documents payment notification uploader; do
+     echo "NEXT_PUBLIC_${service^^}_SERVICE_URL=$(cd services/${service}-service && npx serverless info --stage staging 2>/dev/null | grep -o 'https://[^ ]*')"
+   done
    ```
 
 ### Postman Environments
