@@ -21,7 +21,7 @@ import {
   Loader2,
 } from 'lucide-react';
 import { toast } from 'sonner';
-import { useGetPresignedUrl, uploadToS3 } from '@/lib/hooks/use-documents';
+import { useGetPresignedUrl, uploadToS3WithPresignedPost, getPresignedGetUrl } from '@/lib/hooks/use-documents';
 import type { MediaFile } from './types';
 
 interface MediaUploadStepProps {
@@ -111,29 +111,32 @@ export function MediaUploadStep({
       const file = mediaItem.file!;
 
       try {
-        // Get presigned URL
+        // Get presigned POST data
         const presignedData = await getPresignedUrl.mutateAsync({
           fileName: file.name,
           contentType: file.type,
-          folder: 'properties/media',
+          folder: 'property_pictures',
         });
 
-        // Upload to S3 with progress tracking
-        await uploadToS3(presignedData.uploadUrl, file, (progress) => {
+        // Upload to S3 with progress tracking using presigned POST (returns key)
+        const key = await uploadToS3WithPresignedPost(presignedData, file, (progress) => {
           updateMediaItem(mediaItem.id, { uploadProgress: progress });
         });
+
+        // Get presigned GET URL for viewing
+        const downloadUrl = await getPresignedGetUrl(key);
 
         // Mark as uploaded
         updateMediaItem(mediaItem.id, {
           isUploading: false,
-          key: presignedData.key,
-          downloadUrl: presignedData.downloadUrl,
+          key,
+          downloadUrl,
           uploadProgress: 100,
         });
 
         // Set first image as display image if none set
         if (!displayImageKey && mediaItem.type === 'IMAGE') {
-          onDisplayImageChange(presignedData.key);
+          onDisplayImageChange(key);
         }
       } catch (error) {
         toast.error(`Failed to upload ${file.name}`);

@@ -51,3 +51,12 @@ export interface UnitFormData {
   notes?: string;
   status: string;
 }
+
+export interface WizardData {
+  property: PropertyFormData;
+  media: MediaFile[];
+  displayImageKey?: string;
+  variants: VariantFormData[];
+  units: Record<string, UnitFormData[]>; // variantId -> units[]
+  initialStatus: 'DRAFT' | 'PUBLISHED';
+}

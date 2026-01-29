@@ -17,7 +17,7 @@ import {
   Eye,
   EyeOff,
 } from 'lucide-react';
-import type { WizardData } from '../create-property-wizard';
+import type { WizardData } from './types';
 
 interface ReviewStepProps {
   wizardData: WizardData;

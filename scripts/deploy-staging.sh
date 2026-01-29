@@ -307,6 +307,7 @@ deploy_services() {
         "documents-service"
         "notification-service"
         "payment-service"
+        "uploader-service"
         "policy-sync-service"
     )
     

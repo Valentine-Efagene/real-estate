@@ -1,6 +1,31 @@
 import { useMutation } from '@tanstack/react-query';
 import { uploaderApi } from '@/lib/api/client';
 
+// Upload folder types supported by the backend
+export type UploadFolder =
+  | 'mortgage_docs'
+  | 'property_docs'
+  | 'property_pictures'
+  | 'profile_pictures'
+  | 'kyc_documents'
+  | 'legal_documents'
+  | 'archives';
+
+// Response from the presigned-post endpoint
+export interface PresignedPostResponse {
+  url: string;
+  fields: Record<string, string>;
+  key: string;
+  expiresIn: number;
+}
+
+// Response from the presigned-url (GET) endpoint
+export interface PresignedGetUrlResponse {
+  presignedUrl: string;
+  expiresIn: number;
+}
+
+// Legacy interface for backward compatibility
 export interface PresignedUrlResponse {
   uploadUrl: string;
   downloadUrl: string;
@@ -17,7 +42,8 @@ export interface UploadDocumentInput {
 }
 
 /**
- * Get presigned URL for document upload
+ * Get presigned POST URL for file upload to S3
+ * Uses the uploader-service's /upload/presigned-post endpoint
  */
 export function useGetPresignedUrl() {
   return useMutation({
@@ -27,13 +53,13 @@ export function useGetPresignedUrl() {
       folder,
     }: {
       fileName: string;
-      contentType: string;
-      folder?: string;
-    }) => {
-      const response = await uploaderApi.post<PresignedUrlResponse>('/presigned-url', {
+      contentType?: string;
+      folder?: UploadFolder;
+    }): Promise<PresignedPostResponse> => {
+      const response = await uploaderApi.post<PresignedPostResponse>('/upload/presigned-post', {
         fileName,
         contentType,
-        folder: folder || 'documents',
+        folder: folder || 'property_pictures',
       });
       if (!response.success) {
         throw new Error(response.error?.message || 'Failed to get presigned URL');
@@ -44,7 +70,67 @@ export function useGetPresignedUrl() {
 }
 
 /**
- * Upload file directly to S3 using presigned URL
+ * Get presigned GET URL for viewing/downloading a file from S3
+ * Uses the uploader-service's /upload/presigned-url endpoint
+ */
+export async function getPresignedGetUrl(keyOrUrl: string): Promise<string> {
+  const response = await uploaderApi.post<PresignedGetUrlResponse>('/upload/presigned-url', {
+    url: keyOrUrl,
+  });
+  if (!response.success) {
+    throw new Error(response.error?.message || 'Failed to get presigned URL');
+  }
+  return response.data!.presignedUrl;
+}
+
+/**
+ * Upload file directly to S3 using presigned POST
+ * This uses form data with the fields from the presigned POST response
+ * Returns the S3 key (not a direct URL, since bucket is private)
+ */
+export async function uploadToS3WithPresignedPost(
+  presignedPost: PresignedPostResponse,
+  file: File,
+  onProgress?: (progress: number) => void
+): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+
+    xhr.upload.addEventListener('progress', (event) => {
+      if (event.lengthComputable && onProgress) {
+        const progress = Math.round((event.loaded / event.total) * 100);
+        onProgress(progress);
+      }
+    });
+
+    xhr.addEventListener('load', () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        // Return the S3 key - caller must use getPresignedGetUrl to get viewable URL
+        resolve(presignedPost.key);
+      } else {
+        reject(new Error(`Upload failed with status ${xhr.status}`));
+      }
+    });
+
+    xhr.addEventListener('error', () => {
+      reject(new Error('Upload failed'));
+    });
+
+    // Build form data with presigned fields + file
+    const formData = new FormData();
+    Object.entries(presignedPost.fields).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+    formData.append('file', file);
+
+    xhr.open('POST', presignedPost.url);
+    xhr.send(formData);
+  });
+}
+
+/**
+ * Legacy upload function for backwards compatibility
+ * @deprecated Use uploadToS3WithPresignedPost instead
  */
 export async function uploadToS3(
   presignedUrl: string,
@@ -81,9 +167,10 @@ export async function uploadToS3(
 
 /**
  * Combined hook for document upload flow
- * 1. Get presigned URL
- * 2. Upload to S3
- * 3. Optionally notify backend of upload completion
+ * 1. Get presigned POST URL
+ * 2. Upload to S3 using form data
+ * 3. Get presigned GET URL for viewing
+ * 4. Return the S3 key and presigned download URL
  */
 export function useDocumentUpload() {
   const getPresignedUrl = useGetPresignedUrl();
@@ -95,23 +182,26 @@ export function useDocumentUpload() {
       onProgress,
     }: {
       file: File;
-      folder?: string;
+      folder?: UploadFolder;
       onProgress?: (progress: number) => void;
     }) => {
-      // Step 1: Get presigned URL
+      // Step 1: Get presigned POST data
       const presignedData = await getPresignedUrl.mutateAsync({
         fileName: file.name,
         contentType: file.type,
         folder,
       });
 
-      // Step 2: Upload to S3
-      await uploadToS3(presignedData.uploadUrl, file, onProgress);
+      // Step 2: Upload to S3 using presigned POST (returns key)
+      const key = await uploadToS3WithPresignedPost(presignedData, file, onProgress);
 
-      // Return the S3 key and download URL for further processing
+      // Step 3: Get presigned GET URL for viewing
+      const downloadUrl = await getPresignedGetUrl(key);
+
+      // Return the S3 key and presigned download URL for further processing
       return {
-        key: presignedData.key,
-        downloadUrl: presignedData.downloadUrl,
+        key,
+        downloadUrl,
         fileName: file.name,
         contentType: file.type,
         size: file.size,

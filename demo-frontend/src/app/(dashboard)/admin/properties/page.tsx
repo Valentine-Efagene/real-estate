@@ -33,29 +33,8 @@ import {
     PropertyVariant,
     PropertyUnit,
 } from '@/lib/hooks/use-properties';
-import { CreatePropertyWizard } from '@/components/properties/create-property-wizard';
+import Link from 'next/link';
 import { Plus, Trash2, Eye, EyeOff, Building, Layers, Home, ChevronRight } from 'lucide-react';
-
-// ============================================================================
-// Create Property Dialog Wrapper
-// ============================================================================
-function CreatePropertyDialog({ onSuccess }: { onSuccess?: () => void }) {
-    const [wizardOpen, setWizardOpen] = useState(false);
-
-    return (
-        <>
-            <Button onClick={() => setWizardOpen(true)}>
-                <Plus className="h-4 w-4 mr-2" />
-                Create Property
-            </Button>
-            <CreatePropertyWizard
-                open={wizardOpen}
-                onOpenChange={setWizardOpen}
-                onSuccess={onSuccess}
-            />
-        </>
-    );
-}
 
 // ============================================================================
 // Create Variant Dialog
@@ -600,7 +579,12 @@ function AdminPropertiesContent() {
                         Create and manage properties, variants, and units
                     </p>
                 </div>
-                <CreatePropertyDialog />
+                <Button asChild>
+                    <Link href="/admin/properties/new">
+                        <Plus className="h-4 w-4 mr-2" />
+                        Create Property
+                    </Link>
+                </Button>
             </div>
 
             {/* Stats */}
@@ -666,7 +650,12 @@ function AdminPropertiesContent() {
                             <h3 className="mt-4 text-lg font-medium">No properties yet</h3>
                             <p className="text-gray-500 mt-1">Get started by creating your first property.</p>
                             <div className="mt-4">
-                                <CreatePropertyDialog onSuccess={() => {}} />
+                                <Button asChild>
+                                    <Link href="/admin/properties/new">
+                                        <Plus className="h-4 w-4 mr-2" />
+                                        Create Property
+                                    </Link>
+                                </Button>
                             </div>
                         </div>
                     ) : (
