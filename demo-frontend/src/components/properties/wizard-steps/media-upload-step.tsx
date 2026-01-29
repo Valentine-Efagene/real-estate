@@ -213,11 +213,10 @@ export function MediaUploadStep({
             onDrop={handleDrop}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
-            className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors cursor-pointer ${
-              isDragging
+            className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors cursor-pointer ${isDragging
                 ? 'border-primary bg-primary/5'
                 : 'border-muted-foreground/25 hover:border-muted-foreground/50'
-            }`}
+              }`}
             onClick={() => fileInputRef.current?.click()}
           >
             <Upload className="h-12 w-12 mx-auto text-muted-foreground mb-4" />

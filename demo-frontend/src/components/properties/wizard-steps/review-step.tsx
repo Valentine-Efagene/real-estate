@@ -40,8 +40,8 @@ export function ReviewStep({
 
   const currencySymbol =
     property.currency === 'NGN' ? '₦' :
-    property.currency === 'USD' ? '$' :
-    property.currency === 'GBP' ? '£' : '€';
+      property.currency === 'USD' ? '$' :
+        property.currency === 'GBP' ? '£' : '€';
 
   const displayImage = media.find((m) => m.key === displayImageKey);
   const totalUnits = Object.values(units).reduce((sum, variantUnits) => sum + variantUnits.length, 0);
