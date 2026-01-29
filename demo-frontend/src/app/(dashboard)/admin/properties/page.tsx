@@ -33,197 +33,27 @@ import {
     PropertyVariant,
     PropertyUnit,
 } from '@/lib/hooks/use-properties';
+import { CreatePropertyWizard } from '@/components/properties/create-property-wizard';
 import { Plus, Trash2, Eye, EyeOff, Building, Layers, Home, ChevronRight } from 'lucide-react';
 
 // ============================================================================
-// Create Property Dialog
+// Create Property Dialog Wrapper
 // ============================================================================
 function CreatePropertyDialog({ onSuccess }: { onSuccess?: () => void }) {
-    const [open, setOpen] = useState(false);
-    const createProperty = useCreateProperty();
-
-    const [formData, setFormData] = useState({
-        title: '',
-        description: '',
-        category: 'SALE',
-        propertyType: 'APARTMENT',
-        country: 'Nigeria',
-        currency: 'NGN',
-        city: '',
-        district: '',
-        streetAddress: '',
-    });
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        try {
-            await createProperty.mutateAsync(formData as unknown as Partial<Property>);
-            toast.success('Property created successfully');
-            setOpen(false);
-            setFormData({
-                title: '',
-                description: '',
-                category: 'SALE',
-                propertyType: 'APARTMENT',
-                country: 'Nigeria',
-                currency: 'NGN',
-                city: '',
-                district: '',
-                streetAddress: '',
-            });
-            onSuccess?.();
-        } catch (error) {
-            toast.error(error instanceof Error ? error.message : 'Failed to create property');
-        }
-    };
+    const [wizardOpen, setWizardOpen] = useState(false);
 
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-                <Button>
-                    <Plus className="h-4 w-4 mr-2" />
-                    Create Property
-                </Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-                <DialogHeader>
-                    <DialogTitle>Create New Property</DialogTitle>
-                    <DialogDescription>
-                        Add a new property to your portfolio. You can add variants and units after creation.
-                    </DialogDescription>
-                </DialogHeader>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="col-span-2">
-                            <Label htmlFor="title">Property Title *</Label>
-                            <Input
-                                id="title"
-                                value={formData.title}
-                                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                                placeholder="e.g., Lekki Gardens Estate"
-                                required
-                            />
-                        </div>
-
-                        <div className="col-span-2">
-                            <Label htmlFor="description">Description</Label>
-                            <Textarea
-                                id="description"
-                                value={formData.description}
-                                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                                placeholder="Describe the property..."
-                                rows={3}
-                            />
-                        </div>
-
-                        <div>
-                            <Label htmlFor="category">Category *</Label>
-                            <Select
-                                value={formData.category}
-                                onValueChange={(value) => setFormData({ ...formData, category: value })}
-                            >
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select category" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="SALE">For Sale</SelectItem>
-                                    <SelectItem value="RENT">For Rent</SelectItem>
-                                    <SelectItem value="LEASE">For Lease</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-
-                        <div>
-                            <Label htmlFor="propertyType">Property Type *</Label>
-                            <Select
-                                value={formData.propertyType}
-                                onValueChange={(value) => setFormData({ ...formData, propertyType: value })}
-                            >
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select type" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="APARTMENT">Apartment</SelectItem>
-                                    <SelectItem value="HOUSE">House</SelectItem>
-                                    <SelectItem value="ESTATE">Estate</SelectItem>
-                                    <SelectItem value="TOWNHOUSE">Townhouse</SelectItem>
-                                    <SelectItem value="LAND">Land</SelectItem>
-                                    <SelectItem value="COMMERCIAL">Commercial</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-
-                        <div>
-                            <Label htmlFor="country">Country *</Label>
-                            <Input
-                                id="country"
-                                value={formData.country}
-                                onChange={(e) => setFormData({ ...formData, country: e.target.value })}
-                                placeholder="Nigeria"
-                                required
-                            />
-                        </div>
-
-                        <div>
-                            <Label htmlFor="currency">Currency *</Label>
-                            <Select
-                                value={formData.currency}
-                                onValueChange={(value) => setFormData({ ...formData, currency: value })}
-                            >
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select currency" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="NGN">NGN (₦)</SelectItem>
-                                    <SelectItem value="USD">USD ($)</SelectItem>
-                                    <SelectItem value="GBP">GBP (£)</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-
-                        <div>
-                            <Label htmlFor="city">City *</Label>
-                            <Input
-                                id="city"
-                                value={formData.city}
-                                onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                                placeholder="e.g., Lagos"
-                                required
-                            />
-                        </div>
-
-                        <div>
-                            <Label htmlFor="district">District/Area</Label>
-                            <Input
-                                id="district"
-                                value={formData.district}
-                                onChange={(e) => setFormData({ ...formData, district: e.target.value })}
-                                placeholder="e.g., Lekki Phase 1"
-                            />
-                        </div>
-
-                        <div className="col-span-2">
-                            <Label htmlFor="streetAddress">Street Address</Label>
-                            <Input
-                                id="streetAddress"
-                                value={formData.streetAddress}
-                                onChange={(e) => setFormData({ ...formData, streetAddress: e.target.value })}
-                                placeholder="e.g., 123 Admiralty Way"
-                            />
-                        </div>
-                    </div>
-
-                    <DialogFooter>
-                        <Button type="button" variant="outline" onClick={() => setOpen(false)}>
-                            Cancel
-                        </Button>
-                        <Button type="submit" disabled={createProperty.isPending}>
-                            {createProperty.isPending ? 'Creating...' : 'Create Property'}
-                        </Button>
-                    </DialogFooter>
-                </form>
-            </DialogContent>
-        </Dialog>
+        <>
+            <Button onClick={() => setWizardOpen(true)}>
+                <Plus className="h-4 w-4 mr-2" />
+                Create Property
+            </Button>
+            <CreatePropertyWizard
+                open={wizardOpen}
+                onOpenChange={setWizardOpen}
+                onSuccess={onSuccess}
+            />
+        </>
     );
 }
 
@@ -836,7 +666,7 @@ function AdminPropertiesContent() {
                             <h3 className="mt-4 text-lg font-medium">No properties yet</h3>
                             <p className="text-gray-500 mt-1">Get started by creating your first property.</p>
                             <div className="mt-4">
-                                <CreatePropertyDialog />
+                                <CreatePropertyDialog onSuccess={() => {}} />
                             </div>
                         </div>
                     ) : (
