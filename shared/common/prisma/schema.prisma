@@ -1758,14 +1758,14 @@ model PropertyPaymentMethodPhase {
   updatedAt DateTime @updatedAt
 
   // Normalized child tables (for DOCUMENTATION phases - inline definitions)
-  steps               PaymentMethodPhaseStep[]
-  requiredDocuments   PaymentMethodPhaseDocument[]
+  steps                    PaymentMethodPhaseStep[]
+  requiredDocuments        PaymentMethodPhaseDocument[]
   // Normalized child tables (for QUESTIONNAIRE phases)
-  questionnaireFields PaymentMethodPhaseField[]
+  questionnaireFields      PaymentMethodPhaseField[]
   // Event attachments - handlers that fire on phase transitions
-  eventAttachments    PhaseEventAttachment[]
+  eventAttachments         PhaseEventAttachment[]
   // Application phases created from this template
-  applicationPhases   ApplicationPhase[]
+  applicationPhases        ApplicationPhase[]
   // Bank-specific document requirements for this phase
   bankDocumentRequirements BankDocumentRequirement[]
 

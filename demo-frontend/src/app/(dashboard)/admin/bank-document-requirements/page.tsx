@@ -370,11 +370,11 @@ function RequirementCard({
     const deleteMutation = useDeleteBankDocumentRequirement();
 
     const modifier = MODIFIERS.find((m) => m.value === requirement.modifier);
-    
+
     // Get phase info from requirement or lookup
     const phaseInfo = requirement.phase || phases.find(p => p.id === requirement.phaseId);
-    const phaseName = phaseInfo 
-        ? 'paymentMethod' in phaseInfo 
+    const phaseName = phaseInfo
+        ? 'paymentMethod' in phaseInfo
             ? `${phaseInfo.paymentMethod.name} → ${phaseInfo.name}`
             : `${phaseInfo.paymentMethodName} → ${phaseInfo.name}`
         : 'Unknown Phase';
@@ -488,8 +488,8 @@ function BankRequirementsSection({
     // Group by payment method → phase
     const byPhase = requirements.reduce((acc, req) => {
         const phase = req.phase;
-        const key = phase 
-            ? `${phase.paymentMethod.name} → ${phase.name}` 
+        const key = phase
+            ? `${phase.paymentMethod.name} → ${phase.name}`
             : 'Unknown Phase';
         if (!acc[key]) acc[key] = [];
         acc[key].push(req);
