@@ -49,6 +49,7 @@ const UPLOADER_TYPES: { value: UploaderType; label: string; color: string }[] = 
 ];
 
 const ORGANIZATION_TYPE_CODES = [
+    { value: 'CUSTOMER', label: 'Customer (Applicant)' },
     { value: 'PLATFORM', label: 'Platform (QShelter)' },
     { value: 'BANK', label: 'Bank' },
     { value: 'DEVELOPER', label: 'Developer' },
@@ -233,12 +234,13 @@ function StageEditor({ stages, onChange }: StageEditorProps) {
                     No approval stages defined. Add stages to define the review workflow.
                 </p>
             ) : (
-                <div className="space-y-2 max-h-[200px] overflow-y-auto">
+                <div className="space-y-2 max-h-[250px] overflow-y-auto">
                     {stages.map((stage, index) => (
                         <Card key={index} className="p-3">
                             <div className="flex items-start gap-3">
-                                <div className="flex-1 grid gap-2">
-                                    <div className="grid grid-cols-3 gap-2">
+                                <div className="flex-1 space-y-3">
+                                    {/* Row 1: Stage Name and Reviewer Org Type */}
+                                    <div className="grid grid-cols-2 gap-3">
                                         <div>
                                             <Label className="text-xs">Stage Name *</Label>
                                             <Input
@@ -266,6 +268,9 @@ function StageEditor({ stages, onChange }: StageEditorProps) {
                                                 </SelectContent>
                                             </Select>
                                         </div>
+                                    </div>
+                                    {/* Row 2: On Rejection and SLA */}
+                                    <div className="grid grid-cols-1 gap-3">
                                         <div>
                                             <Label className="text-xs">On Rejection</Label>
                                             <Select
@@ -284,7 +289,22 @@ function StageEditor({ stages, onChange }: StageEditorProps) {
                                                 </SelectContent>
                                             </Select>
                                         </div>
+                                        <div>
+                                            <Label className="text-xs">SLA (hours)</Label>
+                                            <Input
+                                                type="number"
+                                                min="1"
+                                                value={stage.slaHours ?? ''}
+                                                onChange={(e) => {
+                                                    const v = e.target.value;
+                                                    updateStage(index, { slaHours: v === '' ? undefined : parseInt(v, 10) });
+                                                }}
+                                                placeholder="24"
+                                                className="text-sm"
+                                            />
+                                        </div>
                                     </div>
+                                    {/* Row 3: Toggles */}
                                     <div className="flex items-center gap-6">
                                         <div className="flex items-center gap-2">
                                             <Switch
@@ -299,19 +319,6 @@ function StageEditor({ stages, onChange }: StageEditorProps) {
                                                 onCheckedChange={(checked) => updateStage(index, { waitForAllDocuments: checked })}
                                             />
                                             <Label className="text-xs">Wait for all docs</Label>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <Label className="text-xs">SLA (hours):</Label>
-                                            <Input
-                                                type="number"
-                                                min="1"
-                                                value={stage.slaHours ?? ''}
-                                                onChange={(e) => {
-                                                    const v = e.target.value;
-                                                    updateStage(index, { slaHours: v === '' ? undefined : parseInt(v, 10) });
-                                                }}
-                                                className="w-16 text-sm"
-                                            />
                                         </div>
                                     </div>
                                 </div>
