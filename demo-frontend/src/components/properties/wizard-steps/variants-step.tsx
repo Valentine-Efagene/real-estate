@@ -344,13 +344,12 @@ export function VariantsStep({ variants, currency, onChange, onNext, onBack }: V
                 id="price"
                 type="number"
                 min="0"
-                value={formData.price}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    price: parseFloat(e.target.value) || 0,
-                  })
-                }
+                value={formData.price ?? ''}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  const parsed = v === '' ? 0 : parseFloat(v);
+                  setFormData({ ...formData, price: Number.isNaN(parsed) ? 0 : parsed });
+                }}
               />
             </div>
 
@@ -383,7 +382,11 @@ export function VariantsStep({ variants, currency, onChange, onNext, onBack }: V
                 onChange={(e) =>
                   setFormData({
                     ...formData,
-                    totalUnits: parseInt(e.target.value) || 1,
+                    totalUnits: ((): number => {
+                      const v = e.target.value;
+                      const parsed = v === '' ? 1 : parseInt(v, 10);
+                      return Number.isNaN(parsed) ? 1 : parsed;
+                    })(),
                   })
                 }
               />

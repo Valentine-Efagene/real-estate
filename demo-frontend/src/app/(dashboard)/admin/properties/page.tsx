@@ -120,8 +120,12 @@ function CreateVariantDialog({ propertyId, onSuccess }: { propertyId: string; on
                             <Input
                                 id="nBedrooms"
                                 type="number"
-                                value={formData.nBedrooms}
-                                onChange={(e) => setFormData({ ...formData, nBedrooms: parseInt(e.target.value) || 0 })}
+                                value={formData.nBedrooms ?? ''}
+                                onChange={(e) => {
+                                    const v = e.target.value;
+                                    const parsed = v === '' ? 0 : parseInt(v, 10);
+                                    setFormData({ ...formData, nBedrooms: Number.isNaN(parsed) ? 0 : parsed });
+                                }}
                             />
                         </div>
 
@@ -130,8 +134,12 @@ function CreateVariantDialog({ propertyId, onSuccess }: { propertyId: string; on
                             <Input
                                 id="nBathrooms"
                                 type="number"
-                                value={formData.nBathrooms}
-                                onChange={(e) => setFormData({ ...formData, nBathrooms: parseInt(e.target.value) || 0 })}
+                                value={formData.nBathrooms ?? ''}
+                                onChange={(e) => {
+                                    const v = e.target.value;
+                                    const parsed = v === '' ? 0 : parseInt(v, 10);
+                                    setFormData({ ...formData, nBathrooms: Number.isNaN(parsed) ? 0 : parsed });
+                                }}
                             />
                         </div>
 
@@ -140,8 +148,12 @@ function CreateVariantDialog({ propertyId, onSuccess }: { propertyId: string; on
                             <Input
                                 id="nParkingSpots"
                                 type="number"
-                                value={formData.nParkingSpots}
-                                onChange={(e) => setFormData({ ...formData, nParkingSpots: parseInt(e.target.value) || 0 })}
+                                value={formData.nParkingSpots ?? ''}
+                                onChange={(e) => {
+                                    const v = e.target.value;
+                                    const parsed = v === '' ? 0 : parseInt(v, 10);
+                                    setFormData({ ...formData, nParkingSpots: Number.isNaN(parsed) ? 0 : parsed });
+                                }}
                             />
                         </div>
 
@@ -150,8 +162,12 @@ function CreateVariantDialog({ propertyId, onSuccess }: { propertyId: string; on
                             <Input
                                 id="area"
                                 type="number"
-                                value={formData.area}
-                                onChange={(e) => setFormData({ ...formData, area: parseFloat(e.target.value) || 0 })}
+                                value={formData.area ?? ''}
+                                onChange={(e) => {
+                                    const v = e.target.value;
+                                    const parsed = v === '' ? 0 : parseFloat(v);
+                                    setFormData({ ...formData, area: Number.isNaN(parsed) ? 0 : parsed });
+                                }}
                             />
                         </div>
 
@@ -160,8 +176,12 @@ function CreateVariantDialog({ propertyId, onSuccess }: { propertyId: string; on
                             <Input
                                 id="price"
                                 type="number"
-                                value={formData.price}
-                                onChange={(e) => setFormData({ ...formData, price: parseFloat(e.target.value) || 0 })}
+                                value={formData.price ?? ''}
+                                onChange={(e) => {
+                                    const v = e.target.value;
+                                    const parsed = v === '' ? 0 : parseFloat(v);
+                                    setFormData({ ...formData, price: Number.isNaN(parsed) ? 0 : parsed });
+                                }}
                                 required
                             />
                         </div>
@@ -171,8 +191,12 @@ function CreateVariantDialog({ propertyId, onSuccess }: { propertyId: string; on
                             <Input
                                 id="totalUnits"
                                 type="number"
-                                value={formData.totalUnits}
-                                onChange={(e) => setFormData({ ...formData, totalUnits: parseInt(e.target.value) || 1 })}
+                                value={formData.totalUnits ?? ''}
+                                onChange={(e) => {
+                                    const v = e.target.value;
+                                    const parsed = v === '' ? 1 : parseInt(v, 10);
+                                    setFormData({ ...formData, totalUnits: Number.isNaN(parsed) ? 1 : parsed });
+                                }}
                                 min={1}
                             />
                         </div>
@@ -257,8 +281,12 @@ function CreateUnitDialog({ propertyId, variantId, onSuccess }: { propertyId: st
                             <Input
                                 id="floorNumber"
                                 type="number"
-                                value={formData.floorNumber}
-                                onChange={(e) => setFormData({ ...formData, floorNumber: parseInt(e.target.value) || 1 })}
+                                value={formData.floorNumber ?? ''}
+                                onChange={(e) => {
+                                    const v = e.target.value;
+                                    const parsed = v === '' ? 1 : parseInt(v, 10);
+                                    setFormData({ ...formData, floorNumber: Number.isNaN(parsed) ? 1 : parsed });
+                                }}
                             />
                         </div>
 
@@ -387,6 +415,11 @@ function PropertyRow({ property }: { property: Property }) {
                             </Button>
                         )}
                         <CreateVariantDialog propertyId={property.id} />
+                        <Link href={`/admin/properties/${property.id}/payment-methods`}>
+                            <Button size="sm" variant="outline">
+                                Payment Methods
+                            </Button>
+                        </Link>
                         <Button
                             size="sm"
                             variant="destructive"

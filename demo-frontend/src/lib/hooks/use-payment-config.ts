@@ -1,0 +1,353 @@
+'use client';
+
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { queryKeys } from '@/lib/query/query-keys';
+import { mortgageApi } from '@/lib/api/client';
+
+export type PaymentFrequency = 'MONTHLY' | 'BIWEEKLY' | 'WEEKLY' | 'ONE_TIME' | 'CUSTOM';
+
+export interface PaymentPlan {
+    id: string;
+    name: string;
+    description: string | null;
+    isActive: boolean;
+    paymentFrequency: PaymentFrequency;
+    customFrequencyDays: number | null;
+    numberOfInstallments: number;
+    calculateInterestDaily: boolean;
+    gracePeriodDays: number;
+    interestRate: number | null;
+    collectFunds: boolean;
+    allowFlexibleTerm: boolean;
+    minTermMonths: number | null;
+    maxTermMonths: number | null;
+    termStepMonths: number | null;
+    maxAgeAtMaturity: number | null;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface CreatePaymentPlanInput {
+    name: string;
+    description?: string;
+    paymentFrequency: PaymentFrequency;
+    numberOfInstallments?: number;
+    interestRate?: number;
+    gracePeriodDays?: number;
+    collectFunds?: boolean;
+    allowFlexibleTerm?: boolean;
+    minTermMonths?: number;
+    maxTermMonths?: number;
+    termStepMonths?: number;
+    maxAgeAtMaturity?: number;
+}
+
+export type PhaseCategory = 'QUESTIONNAIRE' | 'DOCUMENTATION' | 'PAYMENT';
+export type PhaseType =
+    | 'PRE_APPROVAL'
+    | 'UNDERWRITING'
+    | 'KYC'
+    | 'VERIFICATION'
+    | 'DOWNPAYMENT'
+    | 'MORTGAGE'
+    | 'BALLOON'
+    | 'CUSTOM';
+
+export interface PaymentMethodPhase {
+    id: string;
+    name: string;
+    description: string | null;
+    phaseCategory: PhaseCategory;
+    phaseType: PhaseType;
+    order: number;
+    percentOfPrice: number | null;
+    interestRate: number | null;
+    paymentPlanId: string | null;
+    documentationPlanId: string | null;
+    questionnairePlanId: string | null;
+    paymentPlan?: PaymentPlan | null;
+}
+
+export interface PaymentMethod {
+    id: string;
+    name: string;
+    description: string | null;
+    isActive: boolean;
+    requiresManualApproval: boolean;
+    createdAt: string;
+    updatedAt: string;
+    phases: PaymentMethodPhase[];
+}
+
+export interface CreatePaymentMethodPhase {
+    name: string;
+    description?: string;
+    phaseCategory: PhaseCategory;
+    phaseType: PhaseType;
+    order: number;
+    percentOfPrice?: number;
+    interestRate?: number;
+    paymentPlanId?: string;
+    documentationPlanId?: string;
+    questionnairePlanId?: string;
+}
+
+export interface CreatePaymentMethodInput {
+    name: string;
+    description?: string;
+    requiresManualApproval?: boolean;
+    phases?: CreatePaymentMethodPhase[];
+}
+
+export interface PropertyPaymentMethodLink {
+    id: string;
+    propertyId: string;
+    paymentMethodId: string;
+    isActive: boolean;
+    paymentMethod: PaymentMethod;
+}
+
+// ============================================================================
+// Payment Plans Hooks
+// ============================================================================
+
+export function usePaymentPlans() {
+    return useQuery({
+        queryKey: queryKeys.paymentPlans.all,
+        queryFn: async () => {
+            const response = await mortgageApi.get<PaymentPlan[]>('/payment-plans');
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to fetch payment plans');
+            }
+            return response.data!;
+        },
+    });
+}
+
+export function usePaymentPlan(id: string) {
+    return useQuery({
+        queryKey: queryKeys.paymentPlans.detail(id),
+        queryFn: async () => {
+            const response = await mortgageApi.get<PaymentPlan>(`/payment-plans/${id}`);
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to fetch payment plan');
+            }
+            return response.data!;
+        },
+        enabled: !!id,
+    });
+}
+
+export function useCreatePaymentPlan() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (data: CreatePaymentPlanInput) => {
+            const response = await mortgageApi.post<PaymentPlan>('/payment-plans', data);
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to create payment plan');
+            }
+            return response.data!;
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: queryKeys.paymentPlans.all });
+        },
+    });
+}
+
+export function useUpdatePaymentPlan() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async ({ id, data }: { id: string; data: Partial<CreatePaymentPlanInput> }) => {
+            const response = await mortgageApi.patch<PaymentPlan>(`/payment-plans/${id}`, data);
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to update payment plan');
+            }
+            return response.data!;
+        },
+        onSuccess: (_, variables) => {
+            queryClient.invalidateQueries({ queryKey: queryKeys.paymentPlans.all });
+            queryClient.invalidateQueries({ queryKey: queryKeys.paymentPlans.detail(variables.id) });
+        },
+    });
+}
+
+export function useDeletePaymentPlan() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (id: string) => {
+            const response = await mortgageApi.delete(`/payment-plans/${id}`);
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to delete payment plan');
+            }
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: queryKeys.paymentPlans.all });
+        },
+    });
+}
+
+// ============================================================================
+// Payment Methods Hooks
+// ============================================================================
+
+export function usePaymentMethodsList() {
+    return useQuery({
+        queryKey: queryKeys.paymentMethods.all,
+        queryFn: async () => {
+            const response = await mortgageApi.get<PaymentMethod[]>('/payment-methods');
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to fetch payment methods');
+            }
+            return response.data!;
+        },
+    });
+}
+
+export function usePaymentMethod(id: string) {
+    return useQuery({
+        queryKey: queryKeys.paymentMethods.detail(id),
+        queryFn: async () => {
+            const response = await mortgageApi.get<PaymentMethod>(`/payment-methods/${id}`);
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to fetch payment method');
+            }
+            return response.data!;
+        },
+        enabled: !!id,
+    });
+}
+
+export function useCreatePaymentMethod() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (data: CreatePaymentMethodInput) => {
+            const response = await mortgageApi.post<PaymentMethod>('/payment-methods', data);
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to create payment method');
+            }
+            return response.data!;
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: queryKeys.paymentMethods.all });
+        },
+    });
+}
+
+export function useUpdatePaymentMethod() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async ({ id, data }: { id: string; data: Partial<CreatePaymentMethodInput> }) => {
+            const response = await mortgageApi.patch<PaymentMethod>(`/payment-methods/${id}`, data);
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to update payment method');
+            }
+            return response.data!;
+        },
+        onSuccess: (_, variables) => {
+            queryClient.invalidateQueries({ queryKey: queryKeys.paymentMethods.all });
+            queryClient.invalidateQueries({ queryKey: queryKeys.paymentMethods.detail(variables.id) });
+        },
+    });
+}
+
+export function useDeletePaymentMethod() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (id: string) => {
+            const response = await mortgageApi.delete(`/payment-methods/${id}`);
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to delete payment method');
+            }
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: queryKeys.paymentMethods.all });
+        },
+    });
+}
+
+// ============================================================================
+// Property Payment Method Link Hooks
+// ============================================================================
+
+export function usePropertyPaymentMethods(propertyId: string) {
+    return useQuery({
+        queryKey: queryKeys.properties.paymentMethods(propertyId),
+        queryFn: async () => {
+            const response = await mortgageApi.get<PropertyPaymentMethodLink[]>(
+                `/payment-methods/property/${propertyId}`
+            );
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to fetch property payment methods');
+            }
+            return response.data!;
+        },
+        enabled: !!propertyId,
+    });
+}
+
+export function useLinkPaymentMethodToProperty() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async ({ paymentMethodId, propertyId }: { paymentMethodId: string; propertyId: string }) => {
+            const response = await mortgageApi.post<PropertyPaymentMethodLink>(
+                `/payment-methods/${paymentMethodId}/link-property`,
+                { propertyId }
+            );
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to link payment method to property');
+            }
+            return response.data!;
+        },
+        onSuccess: (_, variables) => {
+            queryClient.invalidateQueries({ queryKey: queryKeys.properties.paymentMethods(variables.propertyId) });
+        },
+    });
+}
+
+export function useUnlinkPaymentMethodFromProperty() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async ({ paymentMethodId, propertyId }: { paymentMethodId: string; propertyId: string }) => {
+            const response = await mortgageApi.delete(`/payment-methods/${paymentMethodId}/property/${propertyId}`);
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to unlink payment method from property');
+            }
+        },
+        onSuccess: (_, variables) => {
+            queryClient.invalidateQueries({ queryKey: queryKeys.properties.paymentMethods(variables.propertyId) });
+        },
+    });
+}
+
+// ============================================================================
+// Add Phase to Payment Method
+// ============================================================================
+
+export function useAddPhaseToPaymentMethod() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async ({ paymentMethodId, phase }: { paymentMethodId: string; phase: CreatePaymentMethodPhase }) => {
+            const response = await mortgageApi.post<PaymentMethodPhase>(
+                `/payment-methods/${paymentMethodId}/phases`,
+                phase
+            );
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to add phase to payment method');
+            }
+            return response.data!;
+        },
+        onSuccess: (_, variables) => {
+            queryClient.invalidateQueries({ queryKey: queryKeys.paymentMethods.detail(variables.paymentMethodId) });
+            queryClient.invalidateQueries({ queryKey: queryKeys.paymentMethods.all });
+        },
+    });
+}

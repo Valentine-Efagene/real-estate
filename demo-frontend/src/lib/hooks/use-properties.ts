@@ -23,6 +23,8 @@ export interface Property {
   organizationId?: string;
   createdAt: string;
   updatedAt: string;
+  // Optional eager-loaded relations
+  variants?: PropertyVariant[];
 }
 
 export interface PropertyVariant {

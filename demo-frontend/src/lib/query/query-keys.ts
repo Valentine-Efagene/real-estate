@@ -62,4 +62,18 @@ export const queryKeys = {
     installments: (applicationId: string) =>
       ['payments', 'installments', applicationId] as const,
   },
+
+  // Payment Plans
+  paymentPlans: {
+    all: ['payment-plans'] as const,
+    list: (filters?: Record<string, unknown>) => ['payment-plans', 'list', filters] as const,
+    detail: (id: string) => ['payment-plans', 'detail', id] as const,
+  },
+
+  // Payment Methods
+  paymentMethods: {
+    all: ['payment-methods'] as const,
+    list: (filters?: Record<string, unknown>) => ['payment-methods', 'list', filters] as const,
+    detail: (id: string) => ['payment-methods', 'detail', id] as const,
+  },
 } as const;
