@@ -48,6 +48,8 @@ const UPLOADER_TYPES: { value: UploaderType; label: string; color: string }[] = 
     { value: 'GOVERNMENT', label: 'Government', color: 'bg-red-100 text-red-800' },
 ];
 
+// Organization types that can be assigned to approval stages
+// CUSTOMER is a pseudo-type for customer acceptance stages (no actual org, identified by userId)
 const ORGANIZATION_TYPE_CODES = [
     { value: 'CUSTOMER', label: 'Customer (Applicant)' },
     { value: 'PLATFORM', label: 'Platform (QShelter)' },

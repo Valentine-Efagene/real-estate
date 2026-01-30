@@ -45,6 +45,7 @@ const SYSTEM_ORGANIZATION_TYPES: SystemOrganizationType[] = [
     { code: 'LEGAL', name: 'Legal Firm', description: 'Legal firms handling conveyancing and documentation' },
     { code: 'INSURER', name: 'Insurance Company', description: 'Insurance companies providing property or mortgage insurance' },
     { code: 'GOVERNMENT', name: 'Government Agency', description: 'Government agencies (e.g., land registry, tax authorities)' },
+    { code: 'CUSTOMER', name: 'Customer/Applicant', description: 'Pseudo-type for customer actions (document acceptance, acknowledgments). No actual organization - identified by user ID.' },
 ];
 
 // Default roles with their permissions
