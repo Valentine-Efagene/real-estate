@@ -48,19 +48,21 @@ function PropertyDetailContent({ propertyId }: { propertyId: string }) {
   );
 
   const handleStartApplication = async () => {
-    if (!selectedUnit || !selectedMethod) {
+    if (!selectedUnit || !selectedMethod || !selectedVariant) {
       toast.error('Please select a unit and payment method');
       return;
     }
+
+    const unitPrice = selectedUnit.priceOverride ?? selectedVariant.price;
 
     try {
       const application = await createApplication.mutateAsync({
         propertyUnitId: selectedUnit.id,
         paymentMethodId: selectedMethod.id,
-        title: `Purchase - ${property?.name} Unit ${selectedUnit.unitNumber}`,
+        title: `Purchase - ${property?.title} Unit ${selectedUnit.unitNumber}`,
         applicationType: selectedMethod.type === 'MORTGAGE' ? 'MORTGAGE' :
           selectedMethod.type === 'INSTALLMENT' ? 'INSTALLMENT' : 'FULL_PAYMENT',
-        totalAmount: selectedUnit.price,
+        totalAmount: unitPrice,
         monthlyIncome: 2500000, // Default - would collect from user
         monthlyExpenses: 800000, // Default - would collect from user
         applicantAge: 40, // Default - would collect from user
@@ -105,9 +107,9 @@ function PropertyDetailContent({ propertyId }: { propertyId: string }) {
       {/* Property Header */}
       <div className="flex justify-between items-start">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">{property.name}</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{property.title}</h1>
           <p className="text-gray-500 mt-1">
-            {property.address}, {property.city}, {property.state}
+            {[property.streetAddress, property.city, property.district, property.country].filter(Boolean).join(', ')}
           </p>
         </div>
         <Badge variant={property.status === 'PUBLISHED' ? 'default' : 'secondary'}>
@@ -121,9 +123,29 @@ function PropertyDetailContent({ propertyId }: { propertyId: string }) {
           <CardTitle>About This Property</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-gray-600">
-            {property.description || 'No description available'}
-          </p>
+          <div className="space-y-4">
+            <p className="text-gray-600">
+              {property.description || 'No description available'}
+            </p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t">
+              <div>
+                <span className="text-sm text-gray-500">Type</span>
+                <p className="font-medium">{property.propertyType}</p>
+              </div>
+              <div>
+                <span className="text-sm text-gray-500">Category</span>
+                <p className="font-medium">{property.category}</p>
+              </div>
+              <div>
+                <span className="text-sm text-gray-500">Currency</span>
+                <p className="font-medium">{property.currency}</p>
+              </div>
+              <div>
+                <span className="text-sm text-gray-500">City</span>
+                <p className="font-medium">{property.city}</p>
+              </div>
+            </div>
+          </div>
         </CardContent>
       </Card>
 
@@ -164,24 +186,29 @@ function PropertyDetailContent({ propertyId }: { propertyId: string }) {
                     <div className="grid grid-cols-2 gap-4 text-sm">
                       <div>
                         <span className="text-gray-500">Bedrooms:</span>{' '}
-                        <span className="font-medium">{variant.bedrooms}</span>
+                        <span className="font-medium">{variant.nBedrooms ?? '-'}</span>
                       </div>
                       <div>
                         <span className="text-gray-500">Bathrooms:</span>{' '}
-                        <span className="font-medium">{variant.bathrooms}</span>
+                        <span className="font-medium">{variant.nBathrooms ?? '-'}</span>
                       </div>
                       <div>
                         <span className="text-gray-500">Size:</span>{' '}
-                        <span className="font-medium">{variant.squareMeters} sqm</span>
+                        <span className="font-medium">{variant.area ? `${variant.area} sqm` : '-'}</span>
                       </div>
                       <div>
                         <span className="text-gray-500">Parking:</span>{' '}
-                        <span className="font-medium">{variant.parkingSpaces}</span>
+                        <span className="font-medium">{variant.nParkingSpots ?? '-'}</span>
                       </div>
                     </div>
-                    <p className="mt-4 text-xl font-bold text-primary">
-                      From {formatCurrency(variant.basePrice, variant.currency)}
-                    </p>
+                    <div className="mt-4 flex items-center justify-between">
+                      <p className="text-xl font-bold text-primary">
+                        {formatCurrency(variant.price, property.currency)}
+                      </p>
+                      <span className="text-sm text-gray-500">
+                        {variant.availableUnits}/{variant.totalUnits} available
+                      </span>
+                    </div>
                   </CardContent>
                 </Card>
               ))}
@@ -204,28 +231,31 @@ function PropertyDetailContent({ propertyId }: { propertyId: string }) {
                   <p className="text-gray-500">No units available for this type</p>
                 ) : (
                   <div className="grid gap-2 md:grid-cols-3 lg:grid-cols-4">
-                    {units.map((unit) => (
-                      <Button
-                        key={unit.id}
-                        variant={selectedUnit?.id === unit.id ? 'default' : 'outline'}
-                        className="h-auto py-4 flex-col"
-                        onClick={() => setSelectedUnit(unit)}
-                        disabled={unit.status !== 'AVAILABLE'}
-                      >
-                        <span className="font-bold">Unit {unit.unitNumber}</span>
-                        <span className="text-xs">
-                          Block {unit.block}, Floor {unit.floor}
-                        </span>
-                        <span className="text-xs mt-1">
-                          {formatCurrency(unit.price, unit.currency)}
-                        </span>
-                        {unit.status !== 'AVAILABLE' && (
-                          <Badge variant="secondary" className="mt-1">
-                            {unit.status}
-                          </Badge>
-                        )}
-                      </Button>
-                    ))}
+                    {units.map((unit) => {
+                      const unitPrice = unit.priceOverride ?? selectedVariant.price;
+                      return (
+                        <Button
+                          key={unit.id}
+                          variant={selectedUnit?.id === unit.id ? 'default' : 'outline'}
+                          className="h-auto py-4 flex-col"
+                          onClick={() => setSelectedUnit(unit)}
+                          disabled={unit.status !== 'AVAILABLE'}
+                        >
+                          <span className="font-bold">Unit {unit.unitNumber}</span>
+                          <span className="text-xs">
+                            {[unit.blockName, unit.floorNumber ? `Floor ${unit.floorNumber}` : null].filter(Boolean).join(', ') || 'No location info'}
+                          </span>
+                          <span className="text-xs mt-1">
+                            {formatCurrency(unitPrice, property.currency)}
+                          </span>
+                          {unit.status !== 'AVAILABLE' && (
+                            <Badge variant="secondary" className="mt-1">
+                              {unit.status}
+                            </Badge>
+                          )}
+                        </Button>
+                      );
+                    })}
                   </div>
                 )}
               </CardContent>

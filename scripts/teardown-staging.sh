@@ -88,6 +88,7 @@ remove_services() {
         "documents-service"
         "mortgage-service"
         "property-service"
+        "uploader-service"
         "user-service"
     )
     

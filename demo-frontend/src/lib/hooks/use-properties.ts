@@ -2,17 +2,25 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { propertyApi } from '@/lib/api/client';
 import { queryKeys } from '@/lib/query/query-keys';
 
-// Types (simplified - would import from shared package)
+// Types (aligned with Prisma schema)
 export interface Property {
   id: string;
-  name: string;
-  description: string;
-  address: string;
-  city: string;
-  state: string;
+  title: string;
+  description?: string;
+  category: string; // SALE, RENT, LEASE
+  propertyType: string;
   country: string;
-  status: string;
-  imageUrl?: string;
+  currency: string;
+  city: string;
+  district?: string;
+  zipCode?: string;
+  streetAddress?: string;
+  longitude?: number;
+  latitude?: number;
+  status: string; // DRAFT, PUBLISHED, etc.
+  displayImageId?: string;
+  displayImageUrl?: string;
+  organizationId?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -21,25 +29,28 @@ export interface PropertyVariant {
   id: string;
   propertyId: string;
   name: string;
-  description: string;
-  bedrooms: number;
-  bathrooms: number;
-  squareMeters: number;
-  parkingSpaces: number;
-  basePrice: number;
-  currency: string;
-  imageUrl?: string;
+  description?: string;
+  nBedrooms?: number;
+  nBathrooms?: number;
+  nParkingSpots?: number;
+  area?: number; // sqm
+  price: number;
+  pricePerSqm?: number;
+  totalUnits: number;
+  availableUnits: number;
+  status: string;
 }
 
 export interface PropertyUnit {
   id: string;
   variantId: string;
   unitNumber: string;
-  floor: number;
-  block: string;
-  status: string; // AVAILABLE, RESERVED, SOLD
-  price: number;
-  currency: string;
+  floorNumber?: number;
+  blockName?: string;
+  status: string; // AVAILABLE, RESERVED, SOLD, LOCKED
+  priceOverride?: number;
+  areaOverride?: number;
+  notes?: string;
 }
 
 export interface PaymentMethod {

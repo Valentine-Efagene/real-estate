@@ -43,7 +43,7 @@ class PropertyService {
             where: filters,
             orderBy: { createdAt: 'desc' },
         });
-        return properties;
+        return { items: properties, total: properties.length };
     }
 
     async getPropertyById(id: string) {

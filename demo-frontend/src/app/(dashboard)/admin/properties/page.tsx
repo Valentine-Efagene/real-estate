@@ -300,7 +300,7 @@ function CreateUnitDialog({ propertyId, variantId, onSuccess }: { propertyId: st
 // ============================================================================
 // Property Row with Expandable Variants and Units
 // ============================================================================
-function PropertyRow({ property }: { property: Property & { id: string; title?: string; status?: string } }) {
+function PropertyRow({ property }: { property: Property }) {
     const { data: variants, isLoading: variantsLoading } = usePropertyVariants(property.id);
     const publishProperty = usePublishProperty();
     const unpublishProperty = useUnpublishProperty();
@@ -334,8 +334,9 @@ function PropertyRow({ property }: { property: Property & { id: string; title?: 
         }
     };
 
-    const propertyName = property.title || property.name || 'Unnamed Property';
+    const propertyName = property.title || 'Unnamed Property';
     const propertyStatus = property.status || 'DRAFT';
+    const location = [property.city, property.district, property.country].filter(Boolean).join(', ');
 
     return (
         <AccordionItem value={property.id} className="border rounded-lg mb-2">
@@ -346,7 +347,7 @@ function PropertyRow({ property }: { property: Property & { id: string; title?: 
                         <div className="text-left">
                             <div className="font-medium">{propertyName}</div>
                             <div className="text-sm text-gray-500">
-                                {property.city}, {property.state || property.country}
+                                {location}
                             </div>
                         </div>
                     </div>
@@ -409,13 +410,7 @@ function PropertyRow({ property }: { property: Property & { id: string; title?: 
                                 <Layers className="h-4 w-4" />
                                 Variants
                             </div>
-                            {variants.map((variant: PropertyVariant & {
-                                nBedrooms?: number;
-                                nBathrooms?: number;
-                                area?: number;
-                                availableUnits?: number;
-                                totalUnits?: number;
-                            }) => (
+                            {variants.map((variant) => (
                                 <VariantCard
                                     key={variant.id}
                                     propertyId={property.id}
@@ -440,13 +435,7 @@ function PropertyRow({ property }: { property: Property & { id: string; title?: 
 // ============================================================================
 function VariantCard({ propertyId, variant }: {
     propertyId: string;
-    variant: PropertyVariant & {
-        nBedrooms?: number;
-        nBathrooms?: number;
-        area?: number;
-        availableUnits?: number;
-        totalUnits?: number;
-    }
+    variant: PropertyVariant;
 }) {
     const { data: units, isLoading: unitsLoading } = usePropertyUnits(propertyId, variant.id);
     const deleteVariant = useDeleteVariant();
@@ -470,11 +459,6 @@ function VariantCard({ propertyId, variant }: {
         }).format(price);
     };
 
-    const bedrooms = variant.nBedrooms ?? variant.bedrooms ?? 0;
-    const bathrooms = variant.nBathrooms ?? variant.bathrooms ?? 0;
-    const area = variant.area ?? variant.squareMeters ?? 0;
-    const price = variant.basePrice ?? variant.basePrice ?? 0;
-
     return (
         <Card className="ml-6">
             <CardHeader className="py-3">
@@ -482,12 +466,12 @@ function VariantCard({ propertyId, variant }: {
                     <div>
                         <CardTitle className="text-base">{variant.name}</CardTitle>
                         <CardDescription>
-                            {bedrooms} bed • {bathrooms} bath • {area} sqm • {formatPrice(price)}
+                            {variant.nBedrooms ?? '-'} bed • {variant.nBathrooms ?? '-'} bath • {variant.area ?? '-'} sqm • {formatPrice(variant.price)}
                         </CardDescription>
                     </div>
                     <div className="flex items-center gap-2">
                         <Badge variant="outline">
-                            {variant.availableUnits ?? 0}/{variant.totalUnits ?? 0} available
+                            {variant.availableUnits}/{variant.totalUnits} available
                         </Badge>
                         <Button
                             size="sm"
@@ -528,8 +512,8 @@ function VariantCard({ propertyId, variant }: {
                                 {units.map((unit: PropertyUnit) => (
                                     <TableRow key={unit.id}>
                                         <TableCell className="font-medium">{unit.unitNumber}</TableCell>
-                                        <TableCell>{unit.block || '-'}</TableCell>
-                                        <TableCell>{unit.floor ?? '-'}</TableCell>
+                                        <TableCell>{unit.blockName || '-'}</TableCell>
+                                        <TableCell>{unit.floorNumber ?? '-'}</TableCell>
                                         <TableCell>
                                             <Badge
                                                 variant={unit.status === 'AVAILABLE' ? 'default' : 'secondary'}
@@ -603,7 +587,7 @@ function AdminPropertiesContent() {
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold text-green-600">
-                            {properties.filter((p: Property & { status?: string }) => p.status === 'PUBLISHED').length}
+                            {properties.filter((p) => p.status === 'PUBLISHED').length}
                         </div>
                     </CardContent>
                 </Card>
@@ -613,7 +597,7 @@ function AdminPropertiesContent() {
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold text-gray-600">
-                            {properties.filter((p: Property & { status?: string }) => p.status !== 'PUBLISHED').length}
+                            {properties.filter((p) => p.status !== 'PUBLISHED').length}
                         </div>
                     </CardContent>
                 </Card>
@@ -623,7 +607,7 @@ function AdminPropertiesContent() {
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold text-blue-600">
-                            {properties.filter((p: Property & { category?: string }) => (p as unknown as { category?: string }).category === 'SALE').length}
+                            {properties.filter((p) => p.category === 'SALE').length}
                         </div>
                     </CardContent>
                 </Card>
@@ -660,7 +644,7 @@ function AdminPropertiesContent() {
                         </div>
                     ) : (
                         <Accordion type="single" collapsible className="w-full">
-                            {properties.map((property: Property & { id: string }) => (
+                            {properties.map((property) => (
                                 <PropertyRow key={property.id} property={property} />
                             ))}
                         </Accordion>
