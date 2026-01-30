@@ -63,12 +63,299 @@ const SCORING_STRATEGIES: { value: ScoringStrategy; label: string; description: 
     { value: 'CUSTOM', label: 'Custom', description: 'Custom scoring logic' },
 ];
 
+const SCORING_OPERATORS = [
+    { value: 'EQUALS', label: '=' },
+    { value: 'NOT_EQUALS', label: '≠' },
+    { value: 'GREATER_THAN', label: '>' },
+    { value: 'LESS_THAN', label: '<' },
+    { value: 'GREATER_THAN_OR_EQUAL', label: '≥' },
+    { value: 'LESS_THAN_OR_EQUAL', label: '≤' },
+];
+
+// Types that require options (select-style)
+const OPTION_TYPES: QuestionType[] = ['SELECT', 'MULTI_SELECT', 'RADIO'];
+// Boolean type (Yes/No with fixed options)
+const BOOLEAN_TYPE: QuestionType = 'CHECKBOX';
+// Types that support scoring rules
+const NUMERIC_TYPES: QuestionType[] = ['NUMBER', 'CURRENCY', 'PERCENTAGE', 'YEARS_MONTHS'];
+
+// Default Yes/No options for CHECKBOX type
+const DEFAULT_BOOLEAN_OPTIONS = [
+    { value: 'true', label: 'Yes', score: 100 },
+    { value: 'false', label: 'No', score: 0 },
+];
+
 interface QuestionEditorProps {
     questions: QuestionDefinition[];
     onChange: (questions: QuestionDefinition[]) => void;
 }
 
+// Sub-component for managing options (SELECT, MULTI_SELECT, RADIO)
+function OptionsEditor({
+    options,
+    onChange,
+}: {
+    options: { value: string; label: string; score?: number }[];
+    onChange: (options: { value: string; label: string; score?: number }[]) => void;
+}) {
+    const addOption = () => {
+        onChange([...options, { value: '', label: '', score: 0 }]);
+    };
+
+    const updateOption = (index: number, updates: Partial<{ value: string; label: string; score?: number }>) => {
+        const updated = [...options];
+        updated[index] = { ...updated[index], ...updates };
+        onChange(updated);
+    };
+
+    const removeOption = (index: number) => {
+        onChange(options.filter((_, i) => i !== index));
+    };
+
+    return (
+        <div className="space-y-2 mt-2 pl-4 border-l-2 border-muted">
+            <div className="flex justify-between items-center">
+                <Label className="text-xs text-muted-foreground">Options</Label>
+                <Button type="button" variant="ghost" size="sm" onClick={addOption}>
+                    <Plus className="h-3 w-3 mr-1" />
+                    Add Option
+                </Button>
+            </div>
+            {options.map((opt, i) => (
+                <div key={i} className="flex items-center gap-2">
+                    <Input
+                        value={opt.value}
+                        onChange={(e) => updateOption(i, { value: e.target.value.toUpperCase().replace(/\s+/g, '_') })}
+                        placeholder="VALUE"
+                        className="text-xs w-24"
+                    />
+                    <Input
+                        value={opt.label}
+                        onChange={(e) => updateOption(i, { label: e.target.value })}
+                        placeholder="Display Label"
+                        className="text-xs flex-1"
+                    />
+                    <Input
+                        type="number"
+                        value={opt.score ?? 0}
+                        onChange={(e) => updateOption(i, { score: e.target.value === '' ? 0 : parseInt(e.target.value, 10) })}
+                        placeholder="Score"
+                        className="text-xs w-16"
+                    />
+                    <Button type="button" variant="ghost" size="icon" onClick={() => removeOption(i)}>
+                        <Trash2 className="h-3 w-3 text-destructive" />
+                    </Button>
+                </div>
+            ))}
+            {options.length === 0 && (
+                <p className="text-xs text-muted-foreground">No options. Add options for users to select from.</p>
+            )}
+        </div>
+    );
+}
+
+// Sub-component for managing Yes/No (CHECKBOX) options with fixed true/false values
+function BooleanOptionsEditor({
+    options,
+    onChange,
+}: {
+    options: { value: string; label: string; score?: number }[];
+    onChange: (options: { value: string; label: string; score?: number }[]) => void;
+}) {
+    // Ensure we have both true and false options
+    const trueOption = options.find((o) => o.value === 'true') || { value: 'true', label: 'Yes', score: 100 };
+    const falseOption = options.find((o) => o.value === 'false') || { value: 'false', label: 'No', score: 0 };
+
+    const updateOption = (value: 'true' | 'false', updates: Partial<{ label: string; score?: number }>) => {
+        const updated = value === 'true'
+            ? [{ ...trueOption, ...updates }, falseOption]
+            : [trueOption, { ...falseOption, ...updates }];
+        onChange(updated);
+    };
+
+    return (
+        <div className="space-y-2 mt-2 pl-4 border-l-2 border-green-200">
+            <Label className="text-xs text-muted-foreground">Yes/No Scoring</Label>
+            <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1">
+                    <Label className="text-xs font-medium text-green-700">Yes (true)</Label>
+                    <div className="flex items-center gap-2">
+                        <Input
+                            value={trueOption.label}
+                            onChange={(e) => updateOption('true', { label: e.target.value })}
+                            placeholder="Yes"
+                            className="text-xs flex-1"
+                        />
+                        <div className="flex items-center gap-1">
+                            <Label className="text-xs">Score:</Label>
+                            <Input
+                                type="number"
+                                value={trueOption.score ?? 0}
+                                onChange={(e) => updateOption('true', { score: e.target.value === '' ? 0 : parseInt(e.target.value, 10) })}
+                                className="text-xs w-16"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div className="space-y-1">
+                    <Label className="text-xs font-medium text-red-700">No (false)</Label>
+                    <div className="flex items-center gap-2">
+                        <Input
+                            value={falseOption.label}
+                            onChange={(e) => updateOption('false', { label: e.target.value })}
+                            placeholder="No"
+                            className="text-xs flex-1"
+                        />
+                        <div className="flex items-center gap-1">
+                            <Label className="text-xs">Score:</Label>
+                            <Input
+                                type="number"
+                                value={falseOption.score ?? 0}
+                                onChange={(e) => updateOption('false', { score: e.target.value === '' ? 0 : parseInt(e.target.value, 10) })}
+                                className="text-xs w-16"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+// Sub-component for managing scoring rules (NUMBER, CURRENCY)
+function ScoringRulesEditor({
+    rules,
+    onChange,
+}: {
+    rules: { operator: string; value: number | string; score: number }[];
+    onChange: (rules: { operator: string; value: number | string; score: number }[]) => void;
+}) {
+    const addRule = () => {
+        onChange([...rules, { operator: 'GREATER_THAN_OR_EQUAL', value: 0, score: 100 }]);
+    };
+
+    const updateRule = (index: number, updates: Partial<{ operator: string; value: number | string; score: number }>) => {
+        const updated = [...rules];
+        updated[index] = { ...updated[index], ...updates };
+        onChange(updated);
+    };
+
+    const removeRule = (index: number) => {
+        onChange(rules.filter((_, i) => i !== index));
+    };
+
+    return (
+        <div className="space-y-2 mt-2 pl-4 border-l-2 border-blue-200">
+            <div className="flex justify-between items-center">
+                <Label className="text-xs text-muted-foreground">Scoring Rules</Label>
+                <Button type="button" variant="ghost" size="sm" onClick={addRule}>
+                    <Plus className="h-3 w-3 mr-1" />
+                    Add Rule
+                </Button>
+            </div>
+            {rules.map((rule, i) => (
+                <div key={i} className="flex items-center gap-2">
+                    <Select
+                        value={rule.operator}
+                        onValueChange={(value) => updateRule(i, { operator: value })}
+                    >
+                        <SelectTrigger className="text-xs w-20">
+                            <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {SCORING_OPERATORS.map((op) => (
+                                <SelectItem key={op.value} value={op.value}>
+                                    {op.label}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    <Input
+                        type="number"
+                        value={typeof rule.value === 'number' ? rule.value : 0}
+                        onChange={(e) => updateRule(i, { value: e.target.value === '' ? 0 : parseFloat(e.target.value) })}
+                        placeholder="Value"
+                        className="text-xs w-24"
+                    />
+                    <span className="text-xs text-muted-foreground">→</span>
+                    <Input
+                        type="number"
+                        value={rule.score}
+                        onChange={(e) => updateRule(i, { score: e.target.value === '' ? 0 : parseInt(e.target.value, 10) })}
+                        placeholder="Score"
+                        className="text-xs w-16"
+                    />
+                    <Button type="button" variant="ghost" size="icon" onClick={() => removeRule(i)}>
+                        <Trash2 className="h-3 w-3 text-destructive" />
+                    </Button>
+                </div>
+            ))}
+            {rules.length === 0 && (
+                <p className="text-xs text-muted-foreground">No rules. Add scoring rules based on numeric values.</p>
+            )}
+        </div>
+    );
+}
+
+// Sub-component for validation rules (min/max for numeric types)
+function ValidationRulesEditor({
+    rules,
+    onChange,
+    questionType,
+}: {
+    rules: Record<string, unknown>;
+    onChange: (rules: Record<string, unknown>) => void;
+    questionType: QuestionType;
+}) {
+    if (!NUMERIC_TYPES.includes(questionType)) return null;
+
+    return (
+        <div className="flex items-center gap-4 mt-2">
+            <div className="flex items-center gap-2">
+                <Label className="text-xs text-muted-foreground">Min:</Label>
+                <Input
+                    type="number"
+                    value={(rules.min as number) ?? ''}
+                    onChange={(e) => {
+                        const val = e.target.value;
+                        const newRules = { ...rules };
+                        if (val === '') {
+                            delete newRules.min;
+                        } else {
+                            newRules.min = parseFloat(val);
+                        }
+                        onChange(newRules);
+                    }}
+                    placeholder="—"
+                    className="text-xs w-20"
+                />
+            </div>
+            <div className="flex items-center gap-2">
+                <Label className="text-xs text-muted-foreground">Max:</Label>
+                <Input
+                    type="number"
+                    value={(rules.max as number) ?? ''}
+                    onChange={(e) => {
+                        const val = e.target.value;
+                        const newRules = { ...rules };
+                        if (val === '') {
+                            delete newRules.max;
+                        } else {
+                            newRules.max = parseFloat(val);
+                        }
+                        onChange(newRules);
+                    }}
+                    placeholder="—"
+                    className="text-xs w-20"
+                />
+            </div>
+        </div>
+    );
+}
+
 function QuestionEditor({ questions, onChange }: QuestionEditorProps) {
+    const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+
     const addQuestion = () => {
         const newQuestion: QuestionDefinition = {
             questionKey: `question_${questions.length + 1}`,
@@ -78,6 +365,7 @@ function QuestionEditor({ questions, onChange }: QuestionEditorProps) {
             isRequired: true,
         };
         onChange([...questions, newQuestion]);
+        setExpandedIndex(questions.length); // Expand the new question
     };
 
     const updateQuestion = (index: number, updates: Partial<QuestionDefinition>) => {
@@ -90,6 +378,7 @@ function QuestionEditor({ questions, onChange }: QuestionEditorProps) {
         const updated = questions.filter((_, i) => i !== index);
         updated.forEach((q, i) => (q.order = i + 1));
         onChange(updated);
+        if (expandedIndex === index) setExpandedIndex(null);
     };
 
     return (
@@ -107,11 +396,12 @@ function QuestionEditor({ questions, onChange }: QuestionEditorProps) {
                     No questions added. Add questions to collect applicant information.
                 </p>
             ) : (
-                <div className="space-y-3 max-h-[300px] overflow-y-auto">
+                <div className="space-y-3 max-h-[400px] overflow-y-auto">
                     {questions.map((question, index) => (
                         <Card key={index} className="p-3">
                             <div className="flex items-start gap-3">
-                                <div className="flex-1 grid gap-2">
+                                <div className="flex-1 space-y-2">
+                                    {/* Row 1: Key, Type */}
                                     <div className="grid grid-cols-3 gap-2">
                                         <div className="col-span-2">
                                             <Label className="text-xs">Question Key *</Label>
@@ -126,7 +416,22 @@ function QuestionEditor({ questions, onChange }: QuestionEditorProps) {
                                             <Label className="text-xs">Type *</Label>
                                             <Select
                                                 value={question.questionType}
-                                                onValueChange={(value: QuestionType) => updateQuestion(index, { questionType: value })}
+                                                onValueChange={(value: QuestionType) => {
+                                                    const updates: Partial<QuestionDefinition> = { questionType: value };
+                                                    // Initialize options for select types
+                                                    if (OPTION_TYPES.includes(value) && !question.options) {
+                                                        updates.options = [];
+                                                    }
+                                                    // Initialize Yes/No options for CHECKBOX type
+                                                    if (value === BOOLEAN_TYPE) {
+                                                        updates.options = [...DEFAULT_BOOLEAN_OPTIONS];
+                                                    }
+                                                    // Initialize scoring rules for numeric types
+                                                    if (NUMERIC_TYPES.includes(value) && !question.scoringRules) {
+                                                        updates.scoringRules = [];
+                                                    }
+                                                    updateQuestion(index, updates);
+                                                }}
                                             >
                                                 <SelectTrigger className="text-sm">
                                                     <SelectValue />
@@ -141,6 +446,8 @@ function QuestionEditor({ questions, onChange }: QuestionEditorProps) {
                                             </Select>
                                         </div>
                                     </div>
+
+                                    {/* Row 2: Question Text */}
                                     <div>
                                         <Label className="text-xs">Question Text *</Label>
                                         <Input
@@ -150,6 +457,8 @@ function QuestionEditor({ questions, onChange }: QuestionEditorProps) {
                                             className="text-sm"
                                         />
                                     </div>
+
+                                    {/* Row 3: Required, Weight, Category */}
                                     <div className="flex items-center gap-4">
                                         <div className="flex items-center gap-2">
                                             <Switch
@@ -180,7 +489,62 @@ function QuestionEditor({ questions, onChange }: QuestionEditorProps) {
                                                 className="w-28 text-sm"
                                             />
                                         </div>
+                                        <Button
+                                            type="button"
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={() => setExpandedIndex(expandedIndex === index ? null : index)}
+                                        >
+                                            {expandedIndex === index ? 'Collapse' : 'Expand'}
+                                        </Button>
                                     </div>
+
+                                    {/* Expanded Section: Options, Scoring Rules, Validation */}
+                                    {expandedIndex === index && (
+                                        <div className="space-y-3 pt-2 border-t">
+                                            {/* Help Text */}
+                                            <div>
+                                                <Label className="text-xs">Help Text</Label>
+                                                <Input
+                                                    value={question.helpText || ''}
+                                                    onChange={(e) => updateQuestion(index, { helpText: e.target.value })}
+                                                    placeholder="Optional helper text for users"
+                                                    className="text-sm"
+                                                />
+                                            </div>
+
+                                            {/* Validation Rules for numeric types */}
+                                            <ValidationRulesEditor
+                                                rules={question.validationRules || {}}
+                                                onChange={(rules) => updateQuestion(index, { validationRules: rules })}
+                                                questionType={question.questionType}
+                                            />
+
+                                            {/* Options for SELECT/MULTI_SELECT/RADIO */}
+                                            {OPTION_TYPES.includes(question.questionType) && (
+                                                <OptionsEditor
+                                                    options={question.options || []}
+                                                    onChange={(options) => updateQuestion(index, { options })}
+                                                />
+                                            )}
+
+                                            {/* Yes/No options for CHECKBOX type */}
+                                            {question.questionType === BOOLEAN_TYPE && (
+                                                <BooleanOptionsEditor
+                                                    options={question.options || DEFAULT_BOOLEAN_OPTIONS}
+                                                    onChange={(options) => updateQuestion(index, { options })}
+                                                />
+                                            )}
+
+                                            {/* Scoring Rules for numeric types */}
+                                            {NUMERIC_TYPES.includes(question.questionType) && (
+                                                <ScoringRulesEditor
+                                                    rules={(question.scoringRules || []) as { operator: string; value: number | string; score: number }[]}
+                                                    onChange={(rules) => updateQuestion(index, { scoringRules: rules as QuestionDefinition['scoringRules'] })}
+                                                />
+                                            )}
+                                        </div>
+                                    )}
                                 </div>
                                 <Button
                                     type="button"
