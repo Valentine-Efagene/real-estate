@@ -27,6 +27,8 @@ const adminNavigation = [
   { name: 'Properties', href: '/admin/properties' },
   { name: 'Users', href: '/admin/users' },
   { name: 'Organizations', href: '/admin/organizations' },
+  { name: 'Questionnaire Plans', href: '/admin/questionnaire-plans' },
+  { name: 'Documentation Plans', href: '/admin/documentation-plans' },
   { name: 'Payment Plans', href: '/admin/payment-plans' },
   { name: 'Payment Methods', href: '/admin/payment-methods' },
   { name: 'Authorization', href: '/admin/authorization' },

@@ -76,4 +76,18 @@ export const queryKeys = {
     list: (filters?: Record<string, unknown>) => ['payment-methods', 'list', filters] as const,
     detail: (id: string) => ['payment-methods', 'detail', id] as const,
   },
+
+  // Questionnaire Plans
+  questionnairePlans: {
+    all: ['questionnaire-plans'] as const,
+    list: (filters?: Record<string, unknown>) => ['questionnaire-plans', 'list', filters] as const,
+    detail: (id: string) => ['questionnaire-plans', 'detail', id] as const,
+  },
+
+  // Documentation Plans
+  documentationPlans: {
+    all: ['documentation-plans'] as const,
+    list: (filters?: Record<string, unknown>) => ['documentation-plans', 'list', filters] as const,
+    detail: (id: string) => ['documentation-plans', 'detail', id] as const,
+  },
 } as const;

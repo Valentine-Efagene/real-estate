@@ -351,3 +351,229 @@ export function useAddPhaseToPaymentMethod() {
         },
     });
 }
+
+// ============================================================================
+// Questionnaire Plans Hooks
+// ============================================================================
+
+export type QuestionType = 'TEXT' | 'NUMBER' | 'CURRENCY' | 'DATE' | 'SELECT' | 'MULTI_SELECT' | 'RADIO' | 'CHECKBOX' | 'FILE_UPLOAD' | 'PHONE' | 'EMAIL' | 'ADDRESS' | 'PERCENTAGE' | 'YEARS_MONTHS';
+export type ScoringStrategy = 'SUM' | 'AVERAGE' | 'WEIGHTED_SUM' | 'MIN_ALL' | 'CUSTOM';
+
+export interface QuestionOption {
+    value: string;
+    label: string;
+    score?: number;
+}
+
+export interface ScoringRule {
+    operator: 'EQUALS' | 'NOT_EQUALS' | 'GREATER_THAN' | 'LESS_THAN' | 'GREATER_THAN_OR_EQUAL' | 'LESS_THAN_OR_EQUAL' | 'CONTAINS' | 'IN';
+    value: string | number | string[];
+    score: number;
+}
+
+export interface QuestionDefinition {
+    questionKey: string;
+    questionText: string;
+    questionType: QuestionType;
+    order: number;
+    isRequired: boolean;
+    options?: QuestionOption[];
+    validationRules?: Record<string, unknown>;
+    scoringRules?: ScoringRule[];
+    scoreWeight?: number;
+    category?: string;
+    helpText?: string;
+}
+
+export interface QuestionnairePlan {
+    id: string;
+    name: string;
+    description: string | null;
+    isActive: boolean;
+    passingScore: number | null;
+    scoringStrategy: ScoringStrategy;
+    autoDecisionEnabled: boolean;
+    estimatedMinutes: number | null;
+    category: string | null;
+    questions: QuestionDefinition[];
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface CreateQuestionnairePlanInput {
+    name: string;
+    description?: string;
+    isActive?: boolean;
+    passingScore?: number;
+    scoringStrategy?: ScoringStrategy;
+    autoDecisionEnabled?: boolean;
+    estimatedMinutes?: number;
+    category?: string;
+    questions: QuestionDefinition[];
+}
+
+export function useQuestionnairePlans() {
+    return useQuery({
+        queryKey: queryKeys.questionnairePlans.all,
+        queryFn: async () => {
+            const response = await mortgageApi.get<QuestionnairePlan[]>('/questionnaire-plans');
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to fetch questionnaire plans');
+            }
+            return response.data!;
+        },
+    });
+}
+
+export function useQuestionnairePlan(id: string) {
+    return useQuery({
+        queryKey: queryKeys.questionnairePlans.detail(id),
+        queryFn: async () => {
+            const response = await mortgageApi.get<QuestionnairePlan>(`/questionnaire-plans/${id}`);
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to fetch questionnaire plan');
+            }
+            return response.data!;
+        },
+        enabled: !!id,
+    });
+}
+
+export function useCreateQuestionnairePlan() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (data: CreateQuestionnairePlanInput) => {
+            const response = await mortgageApi.post<QuestionnairePlan>('/questionnaire-plans', data);
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to create questionnaire plan');
+            }
+            return response.data!;
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: queryKeys.questionnairePlans.all });
+        },
+    });
+}
+
+export function useDeleteQuestionnairePlan() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (id: string) => {
+            const response = await mortgageApi.delete(`/questionnaire-plans/${id}`);
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to delete questionnaire plan');
+            }
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: queryKeys.questionnairePlans.all });
+        },
+    });
+}
+
+// ============================================================================
+// Documentation Plans Hooks
+// ============================================================================
+
+export type UploaderType = 'CUSTOMER' | 'PLATFORM' | 'DEVELOPER' | 'LENDER' | 'LEGAL' | 'INSURER' | 'GOVERNMENT';
+
+export interface DocumentDefinition {
+    documentType: string;
+    documentName: string;
+    uploadedBy: UploaderType;
+    order: number;
+    isRequired: boolean;
+    description?: string;
+    maxSizeBytes?: number;
+    allowedMimeTypes?: string[];
+}
+
+export interface ApprovalStage {
+    name: string;
+    order: number;
+    organizationTypeCode: string;
+    autoTransition?: boolean;
+    waitForAllDocuments?: boolean;
+    onRejection?: 'CASCADE_BACK' | 'REJECT_APPLICATION' | 'HOLD';
+    slaHours?: number;
+}
+
+export interface DocumentationPlan {
+    id: string;
+    name: string;
+    description: string | null;
+    isActive: boolean;
+    documentDefinitions: DocumentDefinition[];
+    approvalStages: ApprovalStage[];
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface CreateDocumentationPlanInput {
+    name: string;
+    description?: string;
+    isActive?: boolean;
+    documentDefinitions: DocumentDefinition[];
+    approvalStages: ApprovalStage[];
+}
+
+export function useDocumentationPlans() {
+    return useQuery({
+        queryKey: queryKeys.documentationPlans.all,
+        queryFn: async () => {
+            const response = await mortgageApi.get<DocumentationPlan[]>('/documentation-plans');
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to fetch documentation plans');
+            }
+            return response.data!;
+        },
+    });
+}
+
+export function useDocumentationPlan(id: string) {
+    return useQuery({
+        queryKey: queryKeys.documentationPlans.detail(id),
+        queryFn: async () => {
+            const response = await mortgageApi.get<DocumentationPlan>(`/documentation-plans/${id}`);
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to fetch documentation plan');
+            }
+            return response.data!;
+        },
+        enabled: !!id,
+    });
+}
+
+export function useCreateDocumentationPlan() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (data: CreateDocumentationPlanInput) => {
+            const response = await mortgageApi.post<DocumentationPlan>('/documentation-plans', data);
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to create documentation plan');
+            }
+            return response.data!;
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: queryKeys.documentationPlans.all });
+        },
+    });
+}
+
+export function useDeleteDocumentationPlan() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (id: string) => {
+            const response = await mortgageApi.delete(`/documentation-plans/${id}`);
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to delete documentation plan');
+            }
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: queryKeys.documentationPlans.all });
+        },
+    });
+}

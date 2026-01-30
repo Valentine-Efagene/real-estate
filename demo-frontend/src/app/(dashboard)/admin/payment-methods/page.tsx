@@ -4,6 +4,8 @@ import { useState } from 'react';
 import {
     usePaymentMethodsList,
     usePaymentPlans,
+    useQuestionnairePlans,
+    useDocumentationPlans,
     useCreatePaymentMethod,
     useDeletePaymentMethod,
     type PaymentMethod,
@@ -12,6 +14,8 @@ import {
     type PhaseCategory,
     type PhaseType,
     type PaymentPlan,
+    type QuestionnairePlan,
+    type DocumentationPlan,
 } from '@/lib/hooks/use-payment-config';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -44,6 +48,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Switch } from '@/components/ui/switch';
 import { Plus, Trash2, ChevronRight, FileText, CreditCard, ClipboardList } from 'lucide-react';
 import { toast } from 'sonner';
+import Link from 'next/link';
 
 const PHASE_CATEGORIES: { value: PhaseCategory; label: string; icon: React.ReactNode }[] = [
     { value: 'QUESTIONNAIRE', label: 'Questionnaire', icon: <ClipboardList className="h-4 w-4" /> },
@@ -71,10 +76,14 @@ function PhaseEditor({
     phases,
     onChange,
     paymentPlans,
+    questionnairePlans,
+    documentationPlans,
 }: {
     phases: CreatePaymentMethodPhase[];
     onChange: (phases: CreatePaymentMethodPhase[]) => void;
     paymentPlans: PaymentPlan[];
+    questionnairePlans: QuestionnairePlan[];
+    documentationPlans: DocumentationPlan[];
 }) {
     const addPhase = () => {
         const newPhase: CreatePaymentMethodPhase = {
@@ -151,6 +160,10 @@ function PhaseEditor({
                                                     updatePhase(index, {
                                                         phaseCategory: value,
                                                         phaseType: PHASE_TYPES[value][0].value,
+                                                        // Clear plan IDs when changing category
+                                                        questionnairePlanId: undefined,
+                                                        documentationPlanId: undefined,
+                                                        paymentPlanId: undefined,
                                                     })
                                                 }
                                             >
@@ -188,6 +201,67 @@ function PhaseEditor({
                                             </Select>
                                         </div>
                                     </div>
+                                    {/* Questionnaire Plan selector for QUESTIONNAIRE phases */}
+                                    {phase.phaseCategory === 'QUESTIONNAIRE' && (
+                                        <div>
+                                            <Label className="text-xs">Questionnaire Plan *</Label>
+                                            {questionnairePlans.length === 0 ? (
+                                                <p className="text-xs text-muted-foreground py-2">
+                                                    No questionnaire plans available.{' '}
+                                                    <Link href="/admin/questionnaire-plans" className="text-primary hover:underline">
+                                                        Create one first
+                                                    </Link>
+                                                </p>
+                                            ) : (
+                                                <Select
+                                                    value={phase.questionnairePlanId || ''}
+                                                    onValueChange={(value) => updatePhase(index, { questionnairePlanId: value === '' ? undefined : value })}
+                                                >
+                                                    <SelectTrigger>
+                                                        <SelectValue placeholder="Select questionnaire plan" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        {questionnairePlans.map((plan) => (
+                                                            <SelectItem key={plan.id} value={plan.id}>
+                                                                {plan.name} ({plan.questions?.length || 0} questions)
+                                                            </SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                            )}
+                                        </div>
+                                    )}
+                                    {/* Documentation Plan selector for DOCUMENTATION phases */}
+                                    {phase.phaseCategory === 'DOCUMENTATION' && (
+                                        <div>
+                                            <Label className="text-xs">Documentation Plan *</Label>
+                                            {documentationPlans.length === 0 ? (
+                                                <p className="text-xs text-muted-foreground py-2">
+                                                    No documentation plans available.{' '}
+                                                    <Link href="/admin/documentation-plans" className="text-primary hover:underline">
+                                                        Create one first
+                                                    </Link>
+                                                </p>
+                                            ) : (
+                                                <Select
+                                                    value={phase.documentationPlanId || ''}
+                                                    onValueChange={(value) => updatePhase(index, { documentationPlanId: value === '' ? undefined : value })}
+                                                >
+                                                    <SelectTrigger>
+                                                        <SelectValue placeholder="Select documentation plan" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        {documentationPlans.map((plan) => (
+                                                            <SelectItem key={plan.id} value={plan.id}>
+                                                                {plan.name} ({plan.documentDefinitions?.length || 0} docs, {plan.approvalStages?.length || 0} stages)
+                                                            </SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                            )}
+                                        </div>
+                                    )}
+                                    {/* Payment Plan selector for PAYMENT phases */}
                                     {phase.phaseCategory === 'PAYMENT' && (
                                         <div className="grid grid-cols-2 gap-3">
                                             <div>
@@ -206,21 +280,30 @@ function PhaseEditor({
                                             </div>
                                             <div>
                                                 <Label className="text-xs">Payment Plan</Label>
-                                                <Select
-                                                    value={phase.paymentPlanId || ''}
-                                                    onValueChange={(value) => updatePhase(index, { paymentPlanId: value === '' ? undefined : value })}
-                                                >
-                                                    <SelectTrigger>
-                                                        <SelectValue placeholder="Select plan" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        {paymentPlans.map((plan) => (
-                                                            <SelectItem key={plan.id} value={plan.id}>
-                                                                {plan.name} ({plan.paymentFrequency})
-                                                            </SelectItem>
-                                                        ))}
-                                                    </SelectContent>
-                                                </Select>
+                                                {paymentPlans.length === 0 ? (
+                                                    <p className="text-xs text-muted-foreground py-2">
+                                                        No payment plans.{' '}
+                                                        <Link href="/admin/payment-plans" className="text-primary hover:underline">
+                                                            Create one first
+                                                        </Link>
+                                                    </p>
+                                                ) : (
+                                                    <Select
+                                                        value={phase.paymentPlanId || ''}
+                                                        onValueChange={(value) => updatePhase(index, { paymentPlanId: value === '' ? undefined : value })}
+                                                    >
+                                                        <SelectTrigger>
+                                                            <SelectValue placeholder="Select plan" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            {paymentPlans.map((plan) => (
+                                                                <SelectItem key={plan.id} value={plan.id}>
+                                                                    {plan.name} ({plan.paymentFrequency})
+                                                                </SelectItem>
+                                                            ))}
+                                                        </SelectContent>
+                                                    </Select>
+                                                )}
                                             </div>
                                         </div>
                                     )}
@@ -253,6 +336,8 @@ function CreatePaymentMethodDialog() {
 
     const createMutation = useCreatePaymentMethod();
     const { data: paymentPlans = [] } = usePaymentPlans();
+    const { data: questionnairePlans = [] } = useQuestionnairePlans();
+    const { data: documentationPlans = [] } = useDocumentationPlans();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -334,6 +419,8 @@ function CreatePaymentMethodDialog() {
                             phases={formData.phases || []}
                             onChange={(phases) => setFormData({ ...formData, phases })}
                             paymentPlans={paymentPlans}
+                            questionnairePlans={questionnairePlans}
+                            documentationPlans={documentationPlans}
                         />
                     </div>
                     <DialogFooter>
