@@ -7,7 +7,9 @@ import {
     useQuestionnairePlans,
     useDocumentationPlans,
     useCreatePaymentMethod,
+    useUpdatePaymentMethod,
     useDeletePaymentMethod,
+    useLinkPaymentMethodToProperty,
     type PaymentMethod,
     type CreatePaymentMethodInput,
     type CreatePaymentMethodPhase,
@@ -17,6 +19,7 @@ import {
     type QuestionnairePlan,
     type DocumentationPlan,
 } from '@/lib/hooks/use-payment-config';
+import { useProperties, type Property } from '@/lib/hooks/use-properties';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -46,7 +49,7 @@ import {
 } from '@/components/ui/accordion';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Switch } from '@/components/ui/switch';
-import { Plus, Trash2, ChevronRight, FileText, CreditCard, ClipboardList, ChevronUp, ChevronDown, MoreVertical, Copy, ArrowUpToLine, ArrowDownToLine } from 'lucide-react';
+import { Plus, Trash2, ChevronRight, FileText, CreditCard, ClipboardList, ChevronUp, ChevronDown, MoreVertical, Copy, ArrowUpToLine, ArrowDownToLine, Pencil, Power, Building2 } from 'lucide-react';
 import { toast } from 'sonner';
 import Link from 'next/link';
 import {
@@ -518,7 +521,79 @@ function CreatePaymentMethodDialog() {
     );
 }
 
+// Attach to Property Dialog
+function AttachToPropertyDialog({ method, open, onOpenChange }: { method: PaymentMethod; open: boolean; onOpenChange: (open: boolean) => void }) {
+    const [selectedPropertyId, setSelectedPropertyId] = useState<string>('');
+    const { data: propertiesData } = useProperties({ status: 'PUBLISHED' });
+    const linkMutation = useLinkPaymentMethodToProperty();
+
+    const properties = propertiesData?.items || [];
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!selectedPropertyId) {
+            toast.error('Please select a property');
+            return;
+        }
+        try {
+            await linkMutation.mutateAsync({ paymentMethodId: method.id, propertyId: selectedPropertyId });
+            toast.success('Payment method linked to property');
+            onOpenChange(false);
+            setSelectedPropertyId('');
+        } catch (error: any) {
+            toast.error(error.message || 'Failed to link payment method to property');
+        }
+    };
+
+    return (
+        <Dialog open={open} onOpenChange={onOpenChange}>
+            <DialogContent>
+                <form onSubmit={handleSubmit}>
+                    <DialogHeader>
+                        <DialogTitle>Attach to Property</DialogTitle>
+                        <DialogDescription>
+                            Link &ldquo;{method.name}&rdquo; to a property so customers can use it for purchases.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="grid gap-4 py-4">
+                        <div className="grid gap-2">
+                            <Label>Select Property *</Label>
+                            <Select value={selectedPropertyId} onValueChange={setSelectedPropertyId}>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select a property..." />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {properties.length === 0 ? (
+                                        <SelectItem value="" disabled>
+                                            No published properties available
+                                        </SelectItem>
+                                    ) : (
+                                        properties.map((property: Property) => (
+                                            <SelectItem key={property.id} value={property.id}>
+                                                {property.title} - {property.city}
+                                            </SelectItem>
+                                        ))
+                                    )}
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    </div>
+                    <DialogFooter>
+                        <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+                            Cancel
+                        </Button>
+                        <Button type="submit" disabled={linkMutation.isPending || !selectedPropertyId}>
+                            {linkMutation.isPending ? 'Linking...' : 'Link to Property'}
+                        </Button>
+                    </DialogFooter>
+                </form>
+            </DialogContent>
+        </Dialog>
+    );
+}
+
 function PaymentMethodCard({ method }: { method: PaymentMethod }) {
+    const [attachOpen, setAttachOpen] = useState(false);
     const deleteMutation = useDeletePaymentMethod();
 
     const handleDelete = async () => {
@@ -554,28 +629,49 @@ function PaymentMethodCard({ method }: { method: PaymentMethod }) {
     };
 
     return (
-        <Card>
-            <CardHeader className="pb-2">
-                <div className="flex justify-between items-start">
-                    <div>
-                        <CardTitle className="text-lg">{method.name}</CardTitle>
-                        <CardDescription>{method.description || 'No description'}</CardDescription>
+        <>
+            <Card>
+                <CardHeader className="pb-2">
+                    <div className="flex justify-between items-start">
+                        <div>
+                            <CardTitle className="text-lg">{method.name}</CardTitle>
+                            <CardDescription>{method.description || 'No description'}</CardDescription>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <Badge variant={method.isActive ? 'default' : 'secondary'}>
+                                {method.isActive ? 'Active' : 'Inactive'}
+                            </Badge>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant="ghost" size="icon">
+                                        <MoreVertical className="h-4 w-4" />
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                    <DropdownMenuItem asChild>
+                                        <Link href={`/admin/payment-methods/${method.id}/edit`}>
+                                            <Pencil className="h-4 w-4 mr-2" />
+                                            Edit
+                                        </Link>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => setAttachOpen(true)}>
+                                        <Building2 className="h-4 w-4 mr-2" />
+                                        Attach to Property
+                                    </DropdownMenuItem>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem
+                                        className="text-destructive focus:text-destructive"
+                                        onClick={handleDelete}
+                                        disabled={deleteMutation.isPending}
+                                    >
+                                        <Trash2 className="h-4 w-4 mr-2" />
+                                        Delete
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                        <Badge variant={method.isActive ? 'default' : 'secondary'}>
-                            {method.isActive ? 'Active' : 'Inactive'}
-                        </Badge>
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={handleDelete}
-                            disabled={deleteMutation.isPending}
-                        >
-                            <Trash2 className="h-4 w-4 text-destructive" />
-                        </Button>
-                    </div>
-                </div>
-            </CardHeader>
+                </CardHeader>
             <CardContent>
                 <div className="space-y-2">
                     <p className="text-sm font-medium text-muted-foreground">
@@ -603,7 +699,10 @@ function PaymentMethodCard({ method }: { method: PaymentMethod }) {
                 </div>
             </CardContent>
         </Card>
-    );
+            
+            {/* Attach to Property Dialog */}
+            <AttachToPropertyDialog method={method} open={attachOpen} onOpenChange={setAttachOpen} />
+        </>    );
 }
 
 export default function PaymentMethodsPage() {

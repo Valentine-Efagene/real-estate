@@ -297,7 +297,7 @@ export function useLinkPaymentMethodToProperty() {
     return useMutation({
         mutationFn: async ({ paymentMethodId, propertyId }: { paymentMethodId: string; propertyId: string }) => {
             const response = await mortgageApi.post<PropertyPaymentMethodLink>(
-                `/payment-methods/${paymentMethodId}/link-property`,
+                `/payment-methods/${paymentMethodId}/properties`,
                 { propertyId }
             );
             if (!response.success) {
@@ -342,6 +342,87 @@ export function useAddPhaseToPaymentMethod() {
             );
             if (!response.success) {
                 throw new Error(response.error?.message || 'Failed to add phase to payment method');
+            }
+            return response.data!;
+        },
+        onSuccess: (_, variables) => {
+            queryClient.invalidateQueries({ queryKey: queryKeys.paymentMethods.detail(variables.paymentMethodId) });
+            queryClient.invalidateQueries({ queryKey: queryKeys.paymentMethods.all });
+        },
+    });
+}
+
+export function useUpdatePhase() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async ({ 
+            paymentMethodId, 
+            phaseId, 
+            data 
+        }: { 
+            paymentMethodId: string; 
+            phaseId: string; 
+            data: Partial<CreatePaymentMethodPhase> 
+        }) => {
+            const response = await mortgageApi.patch<PaymentMethodPhase>(
+                `/payment-methods/${paymentMethodId}/phases/${phaseId}`,
+                data
+            );
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to update phase');
+            }
+            return response.data!;
+        },
+        onSuccess: (_, variables) => {
+            queryClient.invalidateQueries({ queryKey: queryKeys.paymentMethods.detail(variables.paymentMethodId) });
+            queryClient.invalidateQueries({ queryKey: queryKeys.paymentMethods.all });
+        },
+    });
+}
+
+export function useDeletePhase() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async ({ 
+            paymentMethodId, 
+            phaseId 
+        }: { 
+            paymentMethodId: string; 
+            phaseId: string; 
+        }) => {
+            const response = await mortgageApi.delete(
+                `/payment-methods/${paymentMethodId}/phases/${phaseId}`
+            );
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to delete phase');
+            }
+        },
+        onSuccess: (_, variables) => {
+            queryClient.invalidateQueries({ queryKey: queryKeys.paymentMethods.detail(variables.paymentMethodId) });
+            queryClient.invalidateQueries({ queryKey: queryKeys.paymentMethods.all });
+        },
+    });
+}
+
+export function useReorderPhases() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async ({ 
+            paymentMethodId, 
+            phaseOrders 
+        }: { 
+            paymentMethodId: string; 
+            phaseOrders: { phaseId: string; order: number }[]; 
+        }) => {
+            const response = await mortgageApi.post<PaymentMethod>(
+                `/payment-methods/${paymentMethodId}/phases/reorder`,
+                { phaseOrders }
+            );
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to reorder phases');
             }
             return response.data!;
         },
