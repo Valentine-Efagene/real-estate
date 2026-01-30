@@ -202,4 +202,49 @@ router.delete('/:id/approval-stages/:stageId', requireTenant, requireRole(ADMIN_
     }
 });
 
+// =========================================================================
+// EFFECTIVE DOCUMENT REQUIREMENTS (Bank Overlay Merge)
+// =========================================================================
+
+/**
+ * GET /phases/:phaseId/effective-requirements
+ * 
+ * Get effective document requirements by merging the phase's documentation plan
+ * with bank-specific overlays for that phase.
+ * 
+ * Query params:
+ * - bankOrganizationId (required): The bank's organization ID
+ * 
+ * The phase determines:
+ * - Which DocumentationPlan to use (phase.documentationPlanId)
+ * - Which BankDocumentRequirements to apply (scoped to this exact phase)
+ */
+router.get('/phases/:phaseId/effective-requirements', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { phaseId } = req.params;
+        const { bankOrganizationId } = req.query;
+
+        if (!bankOrganizationId || typeof bankOrganizationId !== 'string') {
+            res.status(400).json({ success: false, error: 'bankOrganizationId query parameter is required' });
+            return;
+        }
+
+        const documentationPlanService = getDocumentationPlanService(req);
+        const requirements = await documentationPlanService.getEffectiveDocumentRequirements(
+            phaseId,
+            bankOrganizationId
+        );
+
+        res.json(successResponse({
+            phaseId,
+            bankOrganizationId,
+            requirements,
+            totalRequired: requirements.filter(r => r.isRequired).length,
+            totalOptional: requirements.filter(r => !r.isRequired).length,
+        }));
+    } catch (error) {
+        next(error);
+    }
+});
+
 export default router;

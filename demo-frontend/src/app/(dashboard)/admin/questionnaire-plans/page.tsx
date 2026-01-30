@@ -615,7 +615,7 @@ function CreateQuestionnairePlanDialog() {
                     Create Questionnaire Plan
                 </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto">
+            <DialogContent className="min-w-max max-w-3xl max-h-[85vh] overflow-y-auto">
                 <form onSubmit={handleSubmit}>
                     <DialogHeader>
                         <DialogTitle>Create Questionnaire Plan</DialogTitle>

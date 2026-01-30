@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE `event_handlers` MODIFY `handlerType` ENUM('INTERNAL', 'WEBHOOK', 'WORKFLOW', 'NOTIFICATION', 'SNS', 'SCRIPT') NOT NULL;

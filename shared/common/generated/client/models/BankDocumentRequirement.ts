@@ -14,7 +14,7 @@ import type * as Prisma from "../internal/prismaNamespace.js"
 
 /**
  * Model BankDocumentRequirement
- * Bank Document Requirement - Bank-specific document rules
+ * Bank Document Requirement - Bank-specific document rules per phase
  */
 export type BankDocumentRequirementModel = runtime.Types.Result.DefaultSelection<Prisma.$BankDocumentRequirementPayload>
 
@@ -44,8 +44,7 @@ export type BankDocumentRequirementMinAggregateOutputType = {
   id: string | null
   tenantId: string | null
   organizationId: string | null
-  phaseType: string | null
-  paymentMethodId: string | null
+  phaseId: string | null
   documentType: string | null
   documentName: string | null
   modifier: $Enums.BankDocumentModifier | null
@@ -64,8 +63,7 @@ export type BankDocumentRequirementMaxAggregateOutputType = {
   id: string | null
   tenantId: string | null
   organizationId: string | null
-  phaseType: string | null
-  paymentMethodId: string | null
+  phaseId: string | null
   documentType: string | null
   documentName: string | null
   modifier: $Enums.BankDocumentModifier | null
@@ -84,8 +82,7 @@ export type BankDocumentRequirementCountAggregateOutputType = {
   id: number
   tenantId: number
   organizationId: number
-  phaseType: number
-  paymentMethodId: number
+  phaseId: number
   documentType: number
   documentName: number
   modifier: number
@@ -121,8 +118,7 @@ export type BankDocumentRequirementMinAggregateInputType = {
   id?: true
   tenantId?: true
   organizationId?: true
-  phaseType?: true
-  paymentMethodId?: true
+  phaseId?: true
   documentType?: true
   documentName?: true
   modifier?: true
@@ -141,8 +137,7 @@ export type BankDocumentRequirementMaxAggregateInputType = {
   id?: true
   tenantId?: true
   organizationId?: true
-  phaseType?: true
-  paymentMethodId?: true
+  phaseId?: true
   documentType?: true
   documentName?: true
   modifier?: true
@@ -161,8 +156,7 @@ export type BankDocumentRequirementCountAggregateInputType = {
   id?: true
   tenantId?: true
   organizationId?: true
-  phaseType?: true
-  paymentMethodId?: true
+  phaseId?: true
   documentType?: true
   documentName?: true
   modifier?: true
@@ -269,8 +263,7 @@ export type BankDocumentRequirementGroupByOutputType = {
   id: string
   tenantId: string
   organizationId: string
-  phaseType: string
-  paymentMethodId: string | null
+  phaseId: string
   documentType: string
   documentName: string
   modifier: $Enums.BankDocumentModifier
@@ -313,8 +306,7 @@ export type BankDocumentRequirementWhereInput = {
   id?: Prisma.StringFilter<"BankDocumentRequirement"> | string
   tenantId?: Prisma.StringFilter<"BankDocumentRequirement"> | string
   organizationId?: Prisma.StringFilter<"BankDocumentRequirement"> | string
-  phaseType?: Prisma.StringFilter<"BankDocumentRequirement"> | string
-  paymentMethodId?: Prisma.StringNullableFilter<"BankDocumentRequirement"> | string | null
+  phaseId?: Prisma.StringFilter<"BankDocumentRequirement"> | string
   documentType?: Prisma.StringFilter<"BankDocumentRequirement"> | string
   documentName?: Prisma.StringFilter<"BankDocumentRequirement"> | string
   modifier?: Prisma.EnumBankDocumentModifierFilter<"BankDocumentRequirement"> | $Enums.BankDocumentModifier
@@ -330,15 +322,14 @@ export type BankDocumentRequirementWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"BankDocumentRequirement"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
-  paymentMethod?: Prisma.XOR<Prisma.PropertyPaymentMethodNullableScalarRelationFilter, Prisma.PropertyPaymentMethodWhereInput> | null
+  phase?: Prisma.XOR<Prisma.PropertyPaymentMethodPhaseScalarRelationFilter, Prisma.PropertyPaymentMethodPhaseWhereInput>
 }
 
 export type BankDocumentRequirementOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
-  phaseType?: Prisma.SortOrder
-  paymentMethodId?: Prisma.SortOrderInput | Prisma.SortOrder
+  phaseId?: Prisma.SortOrder
   documentType?: Prisma.SortOrder
   documentName?: Prisma.SortOrder
   modifier?: Prisma.SortOrder
@@ -354,20 +345,19 @@ export type BankDocumentRequirementOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   tenant?: Prisma.TenantOrderByWithRelationInput
   organization?: Prisma.OrganizationOrderByWithRelationInput
-  paymentMethod?: Prisma.PropertyPaymentMethodOrderByWithRelationInput
+  phase?: Prisma.PropertyPaymentMethodPhaseOrderByWithRelationInput
   _relevance?: Prisma.BankDocumentRequirementOrderByRelevanceInput
 }
 
 export type BankDocumentRequirementWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  organizationId_phaseType_documentType_paymentMethodId?: Prisma.BankDocumentRequirementOrganizationIdPhaseTypeDocumentTypePaymentMethodIdCompoundUniqueInput
+  organizationId_phaseId_documentType?: Prisma.BankDocumentRequirementOrganizationIdPhaseIdDocumentTypeCompoundUniqueInput
   AND?: Prisma.BankDocumentRequirementWhereInput | Prisma.BankDocumentRequirementWhereInput[]
   OR?: Prisma.BankDocumentRequirementWhereInput[]
   NOT?: Prisma.BankDocumentRequirementWhereInput | Prisma.BankDocumentRequirementWhereInput[]
   tenantId?: Prisma.StringFilter<"BankDocumentRequirement"> | string
   organizationId?: Prisma.StringFilter<"BankDocumentRequirement"> | string
-  phaseType?: Prisma.StringFilter<"BankDocumentRequirement"> | string
-  paymentMethodId?: Prisma.StringNullableFilter<"BankDocumentRequirement"> | string | null
+  phaseId?: Prisma.StringFilter<"BankDocumentRequirement"> | string
   documentType?: Prisma.StringFilter<"BankDocumentRequirement"> | string
   documentName?: Prisma.StringFilter<"BankDocumentRequirement"> | string
   modifier?: Prisma.EnumBankDocumentModifierFilter<"BankDocumentRequirement"> | $Enums.BankDocumentModifier
@@ -383,15 +373,14 @@ export type BankDocumentRequirementWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"BankDocumentRequirement"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
-  paymentMethod?: Prisma.XOR<Prisma.PropertyPaymentMethodNullableScalarRelationFilter, Prisma.PropertyPaymentMethodWhereInput> | null
-}, "id" | "organizationId_phaseType_documentType_paymentMethodId">
+  phase?: Prisma.XOR<Prisma.PropertyPaymentMethodPhaseScalarRelationFilter, Prisma.PropertyPaymentMethodPhaseWhereInput>
+}, "id" | "organizationId_phaseId_documentType">
 
 export type BankDocumentRequirementOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
-  phaseType?: Prisma.SortOrder
-  paymentMethodId?: Prisma.SortOrderInput | Prisma.SortOrder
+  phaseId?: Prisma.SortOrder
   documentType?: Prisma.SortOrder
   documentName?: Prisma.SortOrder
   modifier?: Prisma.SortOrder
@@ -419,8 +408,7 @@ export type BankDocumentRequirementScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"BankDocumentRequirement"> | string
   tenantId?: Prisma.StringWithAggregatesFilter<"BankDocumentRequirement"> | string
   organizationId?: Prisma.StringWithAggregatesFilter<"BankDocumentRequirement"> | string
-  phaseType?: Prisma.StringWithAggregatesFilter<"BankDocumentRequirement"> | string
-  paymentMethodId?: Prisma.StringNullableWithAggregatesFilter<"BankDocumentRequirement"> | string | null
+  phaseId?: Prisma.StringWithAggregatesFilter<"BankDocumentRequirement"> | string
   documentType?: Prisma.StringWithAggregatesFilter<"BankDocumentRequirement"> | string
   documentName?: Prisma.StringWithAggregatesFilter<"BankDocumentRequirement"> | string
   modifier?: Prisma.EnumBankDocumentModifierWithAggregatesFilter<"BankDocumentRequirement"> | $Enums.BankDocumentModifier
@@ -438,7 +426,6 @@ export type BankDocumentRequirementScalarWhereWithAggregatesInput = {
 
 export type BankDocumentRequirementCreateInput = {
   id?: string
-  phaseType: string
   documentType: string
   documentName: string
   modifier?: $Enums.BankDocumentModifier
@@ -454,15 +441,14 @@ export type BankDocumentRequirementCreateInput = {
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutBankDocumentRequirementsInput
   organization: Prisma.OrganizationCreateNestedOneWithoutDocumentRequirementsInput
-  paymentMethod?: Prisma.PropertyPaymentMethodCreateNestedOneWithoutBankDocumentRequirementsInput
+  phase: Prisma.PropertyPaymentMethodPhaseCreateNestedOneWithoutBankDocumentRequirementsInput
 }
 
 export type BankDocumentRequirementUncheckedCreateInput = {
   id?: string
   tenantId: string
   organizationId: string
-  phaseType: string
-  paymentMethodId?: string | null
+  phaseId: string
   documentType: string
   documentName: string
   modifier?: $Enums.BankDocumentModifier
@@ -480,7 +466,6 @@ export type BankDocumentRequirementUncheckedCreateInput = {
 
 export type BankDocumentRequirementUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  phaseType?: Prisma.StringFieldUpdateOperationsInput | string
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   documentName?: Prisma.StringFieldUpdateOperationsInput | string
   modifier?: Prisma.EnumBankDocumentModifierFieldUpdateOperationsInput | $Enums.BankDocumentModifier
@@ -496,15 +481,14 @@ export type BankDocumentRequirementUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutBankDocumentRequirementsNestedInput
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutDocumentRequirementsNestedInput
-  paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneWithoutBankDocumentRequirementsNestedInput
+  phase?: Prisma.PropertyPaymentMethodPhaseUpdateOneRequiredWithoutBankDocumentRequirementsNestedInput
 }
 
 export type BankDocumentRequirementUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
-  phaseType?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phaseId?: Prisma.StringFieldUpdateOperationsInput | string
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   documentName?: Prisma.StringFieldUpdateOperationsInput | string
   modifier?: Prisma.EnumBankDocumentModifierFieldUpdateOperationsInput | $Enums.BankDocumentModifier
@@ -524,8 +508,7 @@ export type BankDocumentRequirementCreateManyInput = {
   id?: string
   tenantId: string
   organizationId: string
-  phaseType: string
-  paymentMethodId?: string | null
+  phaseId: string
   documentType: string
   documentName: string
   modifier?: $Enums.BankDocumentModifier
@@ -543,7 +526,6 @@ export type BankDocumentRequirementCreateManyInput = {
 
 export type BankDocumentRequirementUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  phaseType?: Prisma.StringFieldUpdateOperationsInput | string
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   documentName?: Prisma.StringFieldUpdateOperationsInput | string
   modifier?: Prisma.EnumBankDocumentModifierFieldUpdateOperationsInput | $Enums.BankDocumentModifier
@@ -563,8 +545,7 @@ export type BankDocumentRequirementUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
-  phaseType?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phaseId?: Prisma.StringFieldUpdateOperationsInput | string
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   documentName?: Prisma.StringFieldUpdateOperationsInput | string
   modifier?: Prisma.EnumBankDocumentModifierFieldUpdateOperationsInput | $Enums.BankDocumentModifier
@@ -596,19 +577,17 @@ export type BankDocumentRequirementOrderByRelevanceInput = {
   search: string
 }
 
-export type BankDocumentRequirementOrganizationIdPhaseTypeDocumentTypePaymentMethodIdCompoundUniqueInput = {
+export type BankDocumentRequirementOrganizationIdPhaseIdDocumentTypeCompoundUniqueInput = {
   organizationId: string
-  phaseType: string
+  phaseId: string
   documentType: string
-  paymentMethodId: string
 }
 
 export type BankDocumentRequirementCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
-  phaseType?: Prisma.SortOrder
-  paymentMethodId?: Prisma.SortOrder
+  phaseId?: Prisma.SortOrder
   documentType?: Prisma.SortOrder
   documentName?: Prisma.SortOrder
   modifier?: Prisma.SortOrder
@@ -635,8 +614,7 @@ export type BankDocumentRequirementMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
-  phaseType?: Prisma.SortOrder
-  paymentMethodId?: Prisma.SortOrder
+  phaseId?: Prisma.SortOrder
   documentType?: Prisma.SortOrder
   documentName?: Prisma.SortOrder
   modifier?: Prisma.SortOrder
@@ -655,8 +633,7 @@ export type BankDocumentRequirementMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
-  phaseType?: Prisma.SortOrder
-  paymentMethodId?: Prisma.SortOrder
+  phaseId?: Prisma.SortOrder
   documentType?: Prisma.SortOrder
   documentName?: Prisma.SortOrder
   modifier?: Prisma.SortOrder
@@ -782,51 +759,50 @@ export type BankDocumentRequirementUncheckedUpdateManyWithoutTenantNestedInput =
   deleteMany?: Prisma.BankDocumentRequirementScalarWhereInput | Prisma.BankDocumentRequirementScalarWhereInput[]
 }
 
-export type BankDocumentRequirementCreateNestedManyWithoutPaymentMethodInput = {
-  create?: Prisma.XOR<Prisma.BankDocumentRequirementCreateWithoutPaymentMethodInput, Prisma.BankDocumentRequirementUncheckedCreateWithoutPaymentMethodInput> | Prisma.BankDocumentRequirementCreateWithoutPaymentMethodInput[] | Prisma.BankDocumentRequirementUncheckedCreateWithoutPaymentMethodInput[]
-  connectOrCreate?: Prisma.BankDocumentRequirementCreateOrConnectWithoutPaymentMethodInput | Prisma.BankDocumentRequirementCreateOrConnectWithoutPaymentMethodInput[]
-  createMany?: Prisma.BankDocumentRequirementCreateManyPaymentMethodInputEnvelope
+export type BankDocumentRequirementCreateNestedManyWithoutPhaseInput = {
+  create?: Prisma.XOR<Prisma.BankDocumentRequirementCreateWithoutPhaseInput, Prisma.BankDocumentRequirementUncheckedCreateWithoutPhaseInput> | Prisma.BankDocumentRequirementCreateWithoutPhaseInput[] | Prisma.BankDocumentRequirementUncheckedCreateWithoutPhaseInput[]
+  connectOrCreate?: Prisma.BankDocumentRequirementCreateOrConnectWithoutPhaseInput | Prisma.BankDocumentRequirementCreateOrConnectWithoutPhaseInput[]
+  createMany?: Prisma.BankDocumentRequirementCreateManyPhaseInputEnvelope
   connect?: Prisma.BankDocumentRequirementWhereUniqueInput | Prisma.BankDocumentRequirementWhereUniqueInput[]
 }
 
-export type BankDocumentRequirementUncheckedCreateNestedManyWithoutPaymentMethodInput = {
-  create?: Prisma.XOR<Prisma.BankDocumentRequirementCreateWithoutPaymentMethodInput, Prisma.BankDocumentRequirementUncheckedCreateWithoutPaymentMethodInput> | Prisma.BankDocumentRequirementCreateWithoutPaymentMethodInput[] | Prisma.BankDocumentRequirementUncheckedCreateWithoutPaymentMethodInput[]
-  connectOrCreate?: Prisma.BankDocumentRequirementCreateOrConnectWithoutPaymentMethodInput | Prisma.BankDocumentRequirementCreateOrConnectWithoutPaymentMethodInput[]
-  createMany?: Prisma.BankDocumentRequirementCreateManyPaymentMethodInputEnvelope
+export type BankDocumentRequirementUncheckedCreateNestedManyWithoutPhaseInput = {
+  create?: Prisma.XOR<Prisma.BankDocumentRequirementCreateWithoutPhaseInput, Prisma.BankDocumentRequirementUncheckedCreateWithoutPhaseInput> | Prisma.BankDocumentRequirementCreateWithoutPhaseInput[] | Prisma.BankDocumentRequirementUncheckedCreateWithoutPhaseInput[]
+  connectOrCreate?: Prisma.BankDocumentRequirementCreateOrConnectWithoutPhaseInput | Prisma.BankDocumentRequirementCreateOrConnectWithoutPhaseInput[]
+  createMany?: Prisma.BankDocumentRequirementCreateManyPhaseInputEnvelope
   connect?: Prisma.BankDocumentRequirementWhereUniqueInput | Prisma.BankDocumentRequirementWhereUniqueInput[]
 }
 
-export type BankDocumentRequirementUpdateManyWithoutPaymentMethodNestedInput = {
-  create?: Prisma.XOR<Prisma.BankDocumentRequirementCreateWithoutPaymentMethodInput, Prisma.BankDocumentRequirementUncheckedCreateWithoutPaymentMethodInput> | Prisma.BankDocumentRequirementCreateWithoutPaymentMethodInput[] | Prisma.BankDocumentRequirementUncheckedCreateWithoutPaymentMethodInput[]
-  connectOrCreate?: Prisma.BankDocumentRequirementCreateOrConnectWithoutPaymentMethodInput | Prisma.BankDocumentRequirementCreateOrConnectWithoutPaymentMethodInput[]
-  upsert?: Prisma.BankDocumentRequirementUpsertWithWhereUniqueWithoutPaymentMethodInput | Prisma.BankDocumentRequirementUpsertWithWhereUniqueWithoutPaymentMethodInput[]
-  createMany?: Prisma.BankDocumentRequirementCreateManyPaymentMethodInputEnvelope
+export type BankDocumentRequirementUpdateManyWithoutPhaseNestedInput = {
+  create?: Prisma.XOR<Prisma.BankDocumentRequirementCreateWithoutPhaseInput, Prisma.BankDocumentRequirementUncheckedCreateWithoutPhaseInput> | Prisma.BankDocumentRequirementCreateWithoutPhaseInput[] | Prisma.BankDocumentRequirementUncheckedCreateWithoutPhaseInput[]
+  connectOrCreate?: Prisma.BankDocumentRequirementCreateOrConnectWithoutPhaseInput | Prisma.BankDocumentRequirementCreateOrConnectWithoutPhaseInput[]
+  upsert?: Prisma.BankDocumentRequirementUpsertWithWhereUniqueWithoutPhaseInput | Prisma.BankDocumentRequirementUpsertWithWhereUniqueWithoutPhaseInput[]
+  createMany?: Prisma.BankDocumentRequirementCreateManyPhaseInputEnvelope
   set?: Prisma.BankDocumentRequirementWhereUniqueInput | Prisma.BankDocumentRequirementWhereUniqueInput[]
   disconnect?: Prisma.BankDocumentRequirementWhereUniqueInput | Prisma.BankDocumentRequirementWhereUniqueInput[]
   delete?: Prisma.BankDocumentRequirementWhereUniqueInput | Prisma.BankDocumentRequirementWhereUniqueInput[]
   connect?: Prisma.BankDocumentRequirementWhereUniqueInput | Prisma.BankDocumentRequirementWhereUniqueInput[]
-  update?: Prisma.BankDocumentRequirementUpdateWithWhereUniqueWithoutPaymentMethodInput | Prisma.BankDocumentRequirementUpdateWithWhereUniqueWithoutPaymentMethodInput[]
-  updateMany?: Prisma.BankDocumentRequirementUpdateManyWithWhereWithoutPaymentMethodInput | Prisma.BankDocumentRequirementUpdateManyWithWhereWithoutPaymentMethodInput[]
+  update?: Prisma.BankDocumentRequirementUpdateWithWhereUniqueWithoutPhaseInput | Prisma.BankDocumentRequirementUpdateWithWhereUniqueWithoutPhaseInput[]
+  updateMany?: Prisma.BankDocumentRequirementUpdateManyWithWhereWithoutPhaseInput | Prisma.BankDocumentRequirementUpdateManyWithWhereWithoutPhaseInput[]
   deleteMany?: Prisma.BankDocumentRequirementScalarWhereInput | Prisma.BankDocumentRequirementScalarWhereInput[]
 }
 
-export type BankDocumentRequirementUncheckedUpdateManyWithoutPaymentMethodNestedInput = {
-  create?: Prisma.XOR<Prisma.BankDocumentRequirementCreateWithoutPaymentMethodInput, Prisma.BankDocumentRequirementUncheckedCreateWithoutPaymentMethodInput> | Prisma.BankDocumentRequirementCreateWithoutPaymentMethodInput[] | Prisma.BankDocumentRequirementUncheckedCreateWithoutPaymentMethodInput[]
-  connectOrCreate?: Prisma.BankDocumentRequirementCreateOrConnectWithoutPaymentMethodInput | Prisma.BankDocumentRequirementCreateOrConnectWithoutPaymentMethodInput[]
-  upsert?: Prisma.BankDocumentRequirementUpsertWithWhereUniqueWithoutPaymentMethodInput | Prisma.BankDocumentRequirementUpsertWithWhereUniqueWithoutPaymentMethodInput[]
-  createMany?: Prisma.BankDocumentRequirementCreateManyPaymentMethodInputEnvelope
+export type BankDocumentRequirementUncheckedUpdateManyWithoutPhaseNestedInput = {
+  create?: Prisma.XOR<Prisma.BankDocumentRequirementCreateWithoutPhaseInput, Prisma.BankDocumentRequirementUncheckedCreateWithoutPhaseInput> | Prisma.BankDocumentRequirementCreateWithoutPhaseInput[] | Prisma.BankDocumentRequirementUncheckedCreateWithoutPhaseInput[]
+  connectOrCreate?: Prisma.BankDocumentRequirementCreateOrConnectWithoutPhaseInput | Prisma.BankDocumentRequirementCreateOrConnectWithoutPhaseInput[]
+  upsert?: Prisma.BankDocumentRequirementUpsertWithWhereUniqueWithoutPhaseInput | Prisma.BankDocumentRequirementUpsertWithWhereUniqueWithoutPhaseInput[]
+  createMany?: Prisma.BankDocumentRequirementCreateManyPhaseInputEnvelope
   set?: Prisma.BankDocumentRequirementWhereUniqueInput | Prisma.BankDocumentRequirementWhereUniqueInput[]
   disconnect?: Prisma.BankDocumentRequirementWhereUniqueInput | Prisma.BankDocumentRequirementWhereUniqueInput[]
   delete?: Prisma.BankDocumentRequirementWhereUniqueInput | Prisma.BankDocumentRequirementWhereUniqueInput[]
   connect?: Prisma.BankDocumentRequirementWhereUniqueInput | Prisma.BankDocumentRequirementWhereUniqueInput[]
-  update?: Prisma.BankDocumentRequirementUpdateWithWhereUniqueWithoutPaymentMethodInput | Prisma.BankDocumentRequirementUpdateWithWhereUniqueWithoutPaymentMethodInput[]
-  updateMany?: Prisma.BankDocumentRequirementUpdateManyWithWhereWithoutPaymentMethodInput | Prisma.BankDocumentRequirementUpdateManyWithWhereWithoutPaymentMethodInput[]
+  update?: Prisma.BankDocumentRequirementUpdateWithWhereUniqueWithoutPhaseInput | Prisma.BankDocumentRequirementUpdateWithWhereUniqueWithoutPhaseInput[]
+  updateMany?: Prisma.BankDocumentRequirementUpdateManyWithWhereWithoutPhaseInput | Prisma.BankDocumentRequirementUpdateManyWithWhereWithoutPhaseInput[]
   deleteMany?: Prisma.BankDocumentRequirementScalarWhereInput | Prisma.BankDocumentRequirementScalarWhereInput[]
 }
 
 export type BankDocumentRequirementCreateWithoutOrganizationInput = {
   id?: string
-  phaseType: string
   documentType: string
   documentName: string
   modifier?: $Enums.BankDocumentModifier
@@ -841,14 +817,13 @@ export type BankDocumentRequirementCreateWithoutOrganizationInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutBankDocumentRequirementsInput
-  paymentMethod?: Prisma.PropertyPaymentMethodCreateNestedOneWithoutBankDocumentRequirementsInput
+  phase: Prisma.PropertyPaymentMethodPhaseCreateNestedOneWithoutBankDocumentRequirementsInput
 }
 
 export type BankDocumentRequirementUncheckedCreateWithoutOrganizationInput = {
   id?: string
   tenantId: string
-  phaseType: string
-  paymentMethodId?: string | null
+  phaseId: string
   documentType: string
   documentName: string
   modifier?: $Enums.BankDocumentModifier
@@ -897,8 +872,7 @@ export type BankDocumentRequirementScalarWhereInput = {
   id?: Prisma.StringFilter<"BankDocumentRequirement"> | string
   tenantId?: Prisma.StringFilter<"BankDocumentRequirement"> | string
   organizationId?: Prisma.StringFilter<"BankDocumentRequirement"> | string
-  phaseType?: Prisma.StringFilter<"BankDocumentRequirement"> | string
-  paymentMethodId?: Prisma.StringNullableFilter<"BankDocumentRequirement"> | string | null
+  phaseId?: Prisma.StringFilter<"BankDocumentRequirement"> | string
   documentType?: Prisma.StringFilter<"BankDocumentRequirement"> | string
   documentName?: Prisma.StringFilter<"BankDocumentRequirement"> | string
   modifier?: Prisma.EnumBankDocumentModifierFilter<"BankDocumentRequirement"> | $Enums.BankDocumentModifier
@@ -916,7 +890,6 @@ export type BankDocumentRequirementScalarWhereInput = {
 
 export type BankDocumentRequirementCreateWithoutTenantInput = {
   id?: string
-  phaseType: string
   documentType: string
   documentName: string
   modifier?: $Enums.BankDocumentModifier
@@ -931,14 +904,13 @@ export type BankDocumentRequirementCreateWithoutTenantInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutDocumentRequirementsInput
-  paymentMethod?: Prisma.PropertyPaymentMethodCreateNestedOneWithoutBankDocumentRequirementsInput
+  phase: Prisma.PropertyPaymentMethodPhaseCreateNestedOneWithoutBankDocumentRequirementsInput
 }
 
 export type BankDocumentRequirementUncheckedCreateWithoutTenantInput = {
   id?: string
   organizationId: string
-  phaseType: string
-  paymentMethodId?: string | null
+  phaseId: string
   documentType: string
   documentName: string
   modifier?: $Enums.BankDocumentModifier
@@ -980,9 +952,8 @@ export type BankDocumentRequirementUpdateManyWithWhereWithoutTenantInput = {
   data: Prisma.XOR<Prisma.BankDocumentRequirementUpdateManyMutationInput, Prisma.BankDocumentRequirementUncheckedUpdateManyWithoutTenantInput>
 }
 
-export type BankDocumentRequirementCreateWithoutPaymentMethodInput = {
+export type BankDocumentRequirementCreateWithoutPhaseInput = {
   id?: string
-  phaseType: string
   documentType: string
   documentName: string
   modifier?: $Enums.BankDocumentModifier
@@ -1000,11 +971,10 @@ export type BankDocumentRequirementCreateWithoutPaymentMethodInput = {
   organization: Prisma.OrganizationCreateNestedOneWithoutDocumentRequirementsInput
 }
 
-export type BankDocumentRequirementUncheckedCreateWithoutPaymentMethodInput = {
+export type BankDocumentRequirementUncheckedCreateWithoutPhaseInput = {
   id?: string
   tenantId: string
   organizationId: string
-  phaseType: string
   documentType: string
   documentName: string
   modifier?: $Enums.BankDocumentModifier
@@ -1020,37 +990,36 @@ export type BankDocumentRequirementUncheckedCreateWithoutPaymentMethodInput = {
   updatedAt?: Date | string
 }
 
-export type BankDocumentRequirementCreateOrConnectWithoutPaymentMethodInput = {
+export type BankDocumentRequirementCreateOrConnectWithoutPhaseInput = {
   where: Prisma.BankDocumentRequirementWhereUniqueInput
-  create: Prisma.XOR<Prisma.BankDocumentRequirementCreateWithoutPaymentMethodInput, Prisma.BankDocumentRequirementUncheckedCreateWithoutPaymentMethodInput>
+  create: Prisma.XOR<Prisma.BankDocumentRequirementCreateWithoutPhaseInput, Prisma.BankDocumentRequirementUncheckedCreateWithoutPhaseInput>
 }
 
-export type BankDocumentRequirementCreateManyPaymentMethodInputEnvelope = {
-  data: Prisma.BankDocumentRequirementCreateManyPaymentMethodInput | Prisma.BankDocumentRequirementCreateManyPaymentMethodInput[]
+export type BankDocumentRequirementCreateManyPhaseInputEnvelope = {
+  data: Prisma.BankDocumentRequirementCreateManyPhaseInput | Prisma.BankDocumentRequirementCreateManyPhaseInput[]
   skipDuplicates?: boolean
 }
 
-export type BankDocumentRequirementUpsertWithWhereUniqueWithoutPaymentMethodInput = {
+export type BankDocumentRequirementUpsertWithWhereUniqueWithoutPhaseInput = {
   where: Prisma.BankDocumentRequirementWhereUniqueInput
-  update: Prisma.XOR<Prisma.BankDocumentRequirementUpdateWithoutPaymentMethodInput, Prisma.BankDocumentRequirementUncheckedUpdateWithoutPaymentMethodInput>
-  create: Prisma.XOR<Prisma.BankDocumentRequirementCreateWithoutPaymentMethodInput, Prisma.BankDocumentRequirementUncheckedCreateWithoutPaymentMethodInput>
+  update: Prisma.XOR<Prisma.BankDocumentRequirementUpdateWithoutPhaseInput, Prisma.BankDocumentRequirementUncheckedUpdateWithoutPhaseInput>
+  create: Prisma.XOR<Prisma.BankDocumentRequirementCreateWithoutPhaseInput, Prisma.BankDocumentRequirementUncheckedCreateWithoutPhaseInput>
 }
 
-export type BankDocumentRequirementUpdateWithWhereUniqueWithoutPaymentMethodInput = {
+export type BankDocumentRequirementUpdateWithWhereUniqueWithoutPhaseInput = {
   where: Prisma.BankDocumentRequirementWhereUniqueInput
-  data: Prisma.XOR<Prisma.BankDocumentRequirementUpdateWithoutPaymentMethodInput, Prisma.BankDocumentRequirementUncheckedUpdateWithoutPaymentMethodInput>
+  data: Prisma.XOR<Prisma.BankDocumentRequirementUpdateWithoutPhaseInput, Prisma.BankDocumentRequirementUncheckedUpdateWithoutPhaseInput>
 }
 
-export type BankDocumentRequirementUpdateManyWithWhereWithoutPaymentMethodInput = {
+export type BankDocumentRequirementUpdateManyWithWhereWithoutPhaseInput = {
   where: Prisma.BankDocumentRequirementScalarWhereInput
-  data: Prisma.XOR<Prisma.BankDocumentRequirementUpdateManyMutationInput, Prisma.BankDocumentRequirementUncheckedUpdateManyWithoutPaymentMethodInput>
+  data: Prisma.XOR<Prisma.BankDocumentRequirementUpdateManyMutationInput, Prisma.BankDocumentRequirementUncheckedUpdateManyWithoutPhaseInput>
 }
 
 export type BankDocumentRequirementCreateManyOrganizationInput = {
   id?: string
   tenantId: string
-  phaseType: string
-  paymentMethodId?: string | null
+  phaseId: string
   documentType: string
   documentName: string
   modifier?: $Enums.BankDocumentModifier
@@ -1068,7 +1037,6 @@ export type BankDocumentRequirementCreateManyOrganizationInput = {
 
 export type BankDocumentRequirementUpdateWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  phaseType?: Prisma.StringFieldUpdateOperationsInput | string
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   documentName?: Prisma.StringFieldUpdateOperationsInput | string
   modifier?: Prisma.EnumBankDocumentModifierFieldUpdateOperationsInput | $Enums.BankDocumentModifier
@@ -1083,14 +1051,13 @@ export type BankDocumentRequirementUpdateWithoutOrganizationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutBankDocumentRequirementsNestedInput
-  paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneWithoutBankDocumentRequirementsNestedInput
+  phase?: Prisma.PropertyPaymentMethodPhaseUpdateOneRequiredWithoutBankDocumentRequirementsNestedInput
 }
 
 export type BankDocumentRequirementUncheckedUpdateWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  phaseType?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phaseId?: Prisma.StringFieldUpdateOperationsInput | string
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   documentName?: Prisma.StringFieldUpdateOperationsInput | string
   modifier?: Prisma.EnumBankDocumentModifierFieldUpdateOperationsInput | $Enums.BankDocumentModifier
@@ -1109,8 +1076,7 @@ export type BankDocumentRequirementUncheckedUpdateWithoutOrganizationInput = {
 export type BankDocumentRequirementUncheckedUpdateManyWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  phaseType?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phaseId?: Prisma.StringFieldUpdateOperationsInput | string
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   documentName?: Prisma.StringFieldUpdateOperationsInput | string
   modifier?: Prisma.EnumBankDocumentModifierFieldUpdateOperationsInput | $Enums.BankDocumentModifier
@@ -1129,8 +1095,7 @@ export type BankDocumentRequirementUncheckedUpdateManyWithoutOrganizationInput =
 export type BankDocumentRequirementCreateManyTenantInput = {
   id?: string
   organizationId: string
-  phaseType: string
-  paymentMethodId?: string | null
+  phaseId: string
   documentType: string
   documentName: string
   modifier?: $Enums.BankDocumentModifier
@@ -1148,7 +1113,6 @@ export type BankDocumentRequirementCreateManyTenantInput = {
 
 export type BankDocumentRequirementUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  phaseType?: Prisma.StringFieldUpdateOperationsInput | string
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   documentName?: Prisma.StringFieldUpdateOperationsInput | string
   modifier?: Prisma.EnumBankDocumentModifierFieldUpdateOperationsInput | $Enums.BankDocumentModifier
@@ -1163,14 +1127,13 @@ export type BankDocumentRequirementUpdateWithoutTenantInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutDocumentRequirementsNestedInput
-  paymentMethod?: Prisma.PropertyPaymentMethodUpdateOneWithoutBankDocumentRequirementsNestedInput
+  phase?: Prisma.PropertyPaymentMethodPhaseUpdateOneRequiredWithoutBankDocumentRequirementsNestedInput
 }
 
 export type BankDocumentRequirementUncheckedUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
-  phaseType?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phaseId?: Prisma.StringFieldUpdateOperationsInput | string
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   documentName?: Prisma.StringFieldUpdateOperationsInput | string
   modifier?: Prisma.EnumBankDocumentModifierFieldUpdateOperationsInput | $Enums.BankDocumentModifier
@@ -1189,8 +1152,7 @@ export type BankDocumentRequirementUncheckedUpdateWithoutTenantInput = {
 export type BankDocumentRequirementUncheckedUpdateManyWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
-  phaseType?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentMethodId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phaseId?: Prisma.StringFieldUpdateOperationsInput | string
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   documentName?: Prisma.StringFieldUpdateOperationsInput | string
   modifier?: Prisma.EnumBankDocumentModifierFieldUpdateOperationsInput | $Enums.BankDocumentModifier
@@ -1206,11 +1168,10 @@ export type BankDocumentRequirementUncheckedUpdateManyWithoutTenantInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type BankDocumentRequirementCreateManyPaymentMethodInput = {
+export type BankDocumentRequirementCreateManyPhaseInput = {
   id?: string
   tenantId: string
   organizationId: string
-  phaseType: string
   documentType: string
   documentName: string
   modifier?: $Enums.BankDocumentModifier
@@ -1226,9 +1187,8 @@ export type BankDocumentRequirementCreateManyPaymentMethodInput = {
   updatedAt?: Date | string
 }
 
-export type BankDocumentRequirementUpdateWithoutPaymentMethodInput = {
+export type BankDocumentRequirementUpdateWithoutPhaseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  phaseType?: Prisma.StringFieldUpdateOperationsInput | string
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   documentName?: Prisma.StringFieldUpdateOperationsInput | string
   modifier?: Prisma.EnumBankDocumentModifierFieldUpdateOperationsInput | $Enums.BankDocumentModifier
@@ -1246,11 +1206,10 @@ export type BankDocumentRequirementUpdateWithoutPaymentMethodInput = {
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutDocumentRequirementsNestedInput
 }
 
-export type BankDocumentRequirementUncheckedUpdateWithoutPaymentMethodInput = {
+export type BankDocumentRequirementUncheckedUpdateWithoutPhaseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
-  phaseType?: Prisma.StringFieldUpdateOperationsInput | string
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   documentName?: Prisma.StringFieldUpdateOperationsInput | string
   modifier?: Prisma.EnumBankDocumentModifierFieldUpdateOperationsInput | $Enums.BankDocumentModifier
@@ -1266,11 +1225,10 @@ export type BankDocumentRequirementUncheckedUpdateWithoutPaymentMethodInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type BankDocumentRequirementUncheckedUpdateManyWithoutPaymentMethodInput = {
+export type BankDocumentRequirementUncheckedUpdateManyWithoutPhaseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
-  phaseType?: Prisma.StringFieldUpdateOperationsInput | string
   documentType?: Prisma.StringFieldUpdateOperationsInput | string
   documentName?: Prisma.StringFieldUpdateOperationsInput | string
   modifier?: Prisma.EnumBankDocumentModifierFieldUpdateOperationsInput | $Enums.BankDocumentModifier
@@ -1292,8 +1250,7 @@ export type BankDocumentRequirementSelect<ExtArgs extends runtime.Types.Extensio
   id?: boolean
   tenantId?: boolean
   organizationId?: boolean
-  phaseType?: boolean
-  paymentMethodId?: boolean
+  phaseId?: boolean
   documentType?: boolean
   documentName?: boolean
   modifier?: boolean
@@ -1309,7 +1266,7 @@ export type BankDocumentRequirementSelect<ExtArgs extends runtime.Types.Extensio
   updatedAt?: boolean
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
-  paymentMethod?: boolean | Prisma.BankDocumentRequirement$paymentMethodArgs<ExtArgs>
+  phase?: boolean | Prisma.PropertyPaymentMethodPhaseDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["bankDocumentRequirement"]>
 
 
@@ -1318,8 +1275,7 @@ export type BankDocumentRequirementSelectScalar = {
   id?: boolean
   tenantId?: boolean
   organizationId?: boolean
-  phaseType?: boolean
-  paymentMethodId?: boolean
+  phaseId?: boolean
   documentType?: boolean
   documentName?: boolean
   modifier?: boolean
@@ -1335,11 +1291,11 @@ export type BankDocumentRequirementSelectScalar = {
   updatedAt?: boolean
 }
 
-export type BankDocumentRequirementOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "organizationId" | "phaseType" | "paymentMethodId" | "documentType" | "documentName" | "modifier" | "description" | "expiryDays" | "minFiles" | "maxFiles" | "allowedMimeTypes" | "validationRules" | "priority" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["bankDocumentRequirement"]>
+export type BankDocumentRequirementOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "organizationId" | "phaseId" | "documentType" | "documentName" | "modifier" | "description" | "expiryDays" | "minFiles" | "maxFiles" | "allowedMimeTypes" | "validationRules" | "priority" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["bankDocumentRequirement"]>
 export type BankDocumentRequirementInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
-  paymentMethod?: boolean | Prisma.BankDocumentRequirement$paymentMethodArgs<ExtArgs>
+  phase?: boolean | Prisma.PropertyPaymentMethodPhaseDefaultArgs<ExtArgs>
 }
 
 export type $BankDocumentRequirementPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1347,14 +1303,13 @@ export type $BankDocumentRequirementPayload<ExtArgs extends runtime.Types.Extens
   objects: {
     tenant: Prisma.$TenantPayload<ExtArgs>
     organization: Prisma.$OrganizationPayload<ExtArgs>
-    paymentMethod: Prisma.$PropertyPaymentMethodPayload<ExtArgs> | null
+    phase: Prisma.$PropertyPaymentMethodPhasePayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     tenantId: string
     organizationId: string
-    phaseType: string
-    paymentMethodId: string | null
+    phaseId: string
     documentType: string
     documentName: string
     modifier: $Enums.BankDocumentModifier
@@ -1710,7 +1665,7 @@ export interface Prisma__BankDocumentRequirementClient<T, Null = never, ExtArgs 
   readonly [Symbol.toStringTag]: "PrismaPromise"
   tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   organization<T extends Prisma.OrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  paymentMethod<T extends Prisma.BankDocumentRequirement$paymentMethodArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BankDocumentRequirement$paymentMethodArgs<ExtArgs>>): Prisma.Prisma__PropertyPaymentMethodClient<runtime.Types.Result.GetResult<Prisma.$PropertyPaymentMethodPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  phase<T extends Prisma.PropertyPaymentMethodPhaseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PropertyPaymentMethodPhaseDefaultArgs<ExtArgs>>): Prisma.Prisma__PropertyPaymentMethodPhaseClient<runtime.Types.Result.GetResult<Prisma.$PropertyPaymentMethodPhasePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1743,8 +1698,7 @@ export interface BankDocumentRequirementFieldRefs {
   readonly id: Prisma.FieldRef<"BankDocumentRequirement", 'String'>
   readonly tenantId: Prisma.FieldRef<"BankDocumentRequirement", 'String'>
   readonly organizationId: Prisma.FieldRef<"BankDocumentRequirement", 'String'>
-  readonly phaseType: Prisma.FieldRef<"BankDocumentRequirement", 'String'>
-  readonly paymentMethodId: Prisma.FieldRef<"BankDocumentRequirement", 'String'>
+  readonly phaseId: Prisma.FieldRef<"BankDocumentRequirement", 'String'>
   readonly documentType: Prisma.FieldRef<"BankDocumentRequirement", 'String'>
   readonly documentName: Prisma.FieldRef<"BankDocumentRequirement", 'String'>
   readonly modifier: Prisma.FieldRef<"BankDocumentRequirement", 'BankDocumentModifier'>
@@ -2098,25 +2052,6 @@ export type BankDocumentRequirementDeleteManyArgs<ExtArgs extends runtime.Types.
    * Limit how many BankDocumentRequirements to delete.
    */
   limit?: number
-}
-
-/**
- * BankDocumentRequirement.paymentMethod
- */
-export type BankDocumentRequirement$paymentMethodArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the PropertyPaymentMethod
-   */
-  select?: Prisma.PropertyPaymentMethodSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the PropertyPaymentMethod
-   */
-  omit?: Prisma.PropertyPaymentMethodOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PropertyPaymentMethodInclude<ExtArgs> | null
-  where?: Prisma.PropertyPaymentMethodWhereInput
 }
 
 /**

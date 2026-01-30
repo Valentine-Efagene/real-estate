@@ -96,7 +96,7 @@ export type Organization = Prisma.OrganizationModel
 export type OrganizationMember = Prisma.OrganizationMemberModel
 /**
  * Model BankDocumentRequirement
- * Bank Document Requirement - Bank-specific document rules
+ * Bank Document Requirement - Bank-specific document rules per phase
  */
 export type BankDocumentRequirement = Prisma.BankDocumentRequirementModel
 /**

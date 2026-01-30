@@ -26,6 +26,31 @@ export interface DocumentationPlanService {
     addApprovalStage(planId: string, data: AddApprovalStageInput): Promise<any>;
     removeApprovalStage(planId: string, stageId: string): Promise<{ success: boolean }>;
     updateApprovalStage(planId: string, stageId: string, data: Partial<AddApprovalStageInput>): Promise<any>;
+    getEffectiveDocumentRequirements(
+        phaseId: string,
+        bankOrganizationId: string
+    ): Promise<EffectiveDocumentRequirement[]>;
+}
+
+/**
+ * Effective document requirement after merging base plan + bank overlays
+ */
+export interface EffectiveDocumentRequirement {
+    documentType: string;
+    documentName: string;
+    uploadedBy: string;
+    isRequired: boolean;
+    description?: string;
+    minFiles: number;
+    maxFiles: number;
+    expiryDays?: number;
+    allowedMimeTypes?: string;
+    validationRules?: any;
+    // Source tracking
+    source: 'BASE' | 'BANK_OVERLAY';
+    modifier?: string; // REQUIRED, OPTIONAL, NOT_REQUIRED, STRICTER
+    bankOrganizationId?: string;
+    priority?: number;
 }
 
 /**
@@ -427,6 +452,161 @@ export function createDocumentationPlanService(prisma: AnyPrismaClient = default
         return updated;
     }
 
+    /**
+     * Get effective document requirements by merging base DocumentationPlan
+     * with bank-specific BankDocumentRequirement overlays.
+     * 
+     * @param phaseId - The payment method phase ID (links to DocumentationPlan)
+     * @param bankOrganizationId - The bank's organization ID
+     */
+    async function getEffectiveDocumentRequirements(
+        phaseId: string,
+        bankOrganizationId: string
+    ): Promise<EffectiveDocumentRequirement[]> {
+        // 1. Get the phase with its documentation plan
+        const phase = await prisma.propertyPaymentMethodPhase.findUnique({
+            where: { id: phaseId },
+            include: {
+                documentationPlan: {
+                    include: {
+                        documentDefinitions: {
+                            orderBy: { order: 'asc' },
+                        },
+                    },
+                },
+                paymentMethod: true,
+            },
+        });
+
+        if (!phase) {
+            throw new AppError(404, 'Phase not found');
+        }
+
+        if (!phase.documentationPlan) {
+            throw new AppError(400, 'Phase does not have a documentation plan');
+        }
+
+        const plan = phase.documentationPlan;
+
+        // 2. Get bank-specific overlays for this exact phase
+        const bankOverlays = await prisma.bankDocumentRequirement.findMany({
+            where: {
+                organizationId: bankOrganizationId,
+                phaseId,
+                isActive: true,
+            },
+            orderBy: { priority: 'desc' },
+        });
+
+        // Create a map of bank overlays by documentType
+        const overlayMap = new Map<string, typeof bankOverlays[0]>();
+        for (const overlay of bankOverlays) {
+            // First overlay wins (highest priority due to orderBy)
+            if (!overlayMap.has(overlay.documentType)) {
+                overlayMap.set(overlay.documentType, overlay);
+            }
+        }
+
+        // 3. Build effective requirements
+        const effective: EffectiveDocumentRequirement[] = [];
+        const processedDocTypes = new Set<string>();
+
+        // Process base documents with overlays
+        for (const doc of plan.documentDefinitions) {
+            const overlay = overlayMap.get(doc.documentType);
+            processedDocTypes.add(doc.documentType);
+
+            if (overlay) {
+                // Apply overlay
+                switch (overlay.modifier) {
+                    case 'NOT_REQUIRED':
+                        // Skip this document entirely
+                        continue;
+
+                    case 'OPTIONAL':
+                        effective.push({
+                            documentType: doc.documentType,
+                            documentName: overlay.documentName || doc.documentName,
+                            uploadedBy: doc.uploadedBy,
+                            isRequired: false, // Made optional by bank
+                            description: overlay.description || doc.description || undefined,
+                            minFiles: overlay.minFiles ?? doc.minFiles ?? 1,
+                            maxFiles: overlay.maxFiles ?? doc.maxFiles ?? 1,
+                            expiryDays: overlay.expiryDays ?? doc.expiryDays ?? undefined,
+                            allowedMimeTypes: overlay.allowedMimeTypes || doc.allowedMimeTypes || undefined,
+                            validationRules: overlay.validationRules,
+                            source: 'BANK_OVERLAY',
+                            modifier: overlay.modifier,
+                            bankOrganizationId,
+                            priority: overlay.priority,
+                        });
+                        break;
+
+                    case 'STRICTER':
+                    case 'REQUIRED':
+                    default:
+                        // Bank has stricter or additional requirements
+                        effective.push({
+                            documentType: doc.documentType,
+                            documentName: overlay.documentName || doc.documentName,
+                            uploadedBy: doc.uploadedBy,
+                            isRequired: true,
+                            description: overlay.description || doc.description || undefined,
+                            // For STRICTER, bank values override base
+                            minFiles: overlay.minFiles ?? doc.minFiles ?? 1,
+                            maxFiles: overlay.maxFiles ?? doc.maxFiles ?? 1,
+                            expiryDays: overlay.expiryDays ?? doc.expiryDays ?? undefined,
+                            allowedMimeTypes: overlay.allowedMimeTypes || doc.allowedMimeTypes || undefined,
+                            validationRules: overlay.validationRules,
+                            source: 'BANK_OVERLAY',
+                            modifier: overlay.modifier,
+                            bankOrganizationId,
+                            priority: overlay.priority,
+                        });
+                        break;
+                }
+            } else {
+                // No overlay - use base document as-is
+                effective.push({
+                    documentType: doc.documentType,
+                    documentName: doc.documentName,
+                    uploadedBy: doc.uploadedBy,
+                    isRequired: doc.isRequired,
+                    description: doc.description || undefined,
+                    minFiles: doc.minFiles ?? 1,
+                    maxFiles: doc.maxFiles ?? 1,
+                    expiryDays: doc.expiryDays ?? undefined,
+                    allowedMimeTypes: doc.allowedMimeTypes || undefined,
+                    source: 'BASE',
+                });
+            }
+        }
+
+        // 4. Add bank-only requirements (REQUIRED documents not in base plan)
+        for (const [docType, overlay] of overlayMap) {
+            if (!processedDocTypes.has(docType) && overlay.modifier === 'REQUIRED') {
+                effective.push({
+                    documentType: overlay.documentType,
+                    documentName: overlay.documentName,
+                    uploadedBy: 'CUSTOMER', // Default uploader for bank-added docs
+                    isRequired: true,
+                    description: overlay.description || undefined,
+                    minFiles: overlay.minFiles ?? 1,
+                    maxFiles: overlay.maxFiles ?? 1,
+                    expiryDays: overlay.expiryDays ?? undefined,
+                    allowedMimeTypes: overlay.allowedMimeTypes || undefined,
+                    validationRules: overlay.validationRules,
+                    source: 'BANK_OVERLAY',
+                    modifier: 'REQUIRED',
+                    bankOrganizationId,
+                    priority: overlay.priority,
+                });
+            }
+        }
+
+        return effective;
+    }
+
     return {
         create,
         findAll,
@@ -441,5 +621,6 @@ export function createDocumentationPlanService(prisma: AnyPrismaClient = default
         addApprovalStage,
         removeApprovalStage,
         updateApprovalStage,
+        getEffectiveDocumentRequirements,
     };
 }

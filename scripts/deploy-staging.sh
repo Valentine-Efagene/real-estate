@@ -534,11 +534,6 @@ case $STEP in
         exit 1
         ;;
 esac
-        log_error "Unknown step: $STEP"
-        show_usage
-        exit 1
-        ;;
-esac
 
 echo ""
 log_info "🎉 Deployment step '$STEP' complete!"

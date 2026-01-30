@@ -749,19 +749,22 @@ model OrganizationMember {
 }
 
 // =============================================================================
-// BANK DOCUMENT REQUIREMENTS - Bank-specific document overlays
+// BANK DOCUMENT REQUIREMENTS - Bank-specific document overlays per phase
 // =============================================================================
 // Banks have different risk appetites and compliance requirements.
-// For a standardized product (e.g., NHF Mortgage), the payment structure is fixed
-// but document requirements vary by bank.
+// Requirements are scoped to a specific PHASE within a PAYMENT METHOD.
+//
+// Example: UBA's MREIF preapproval phase may have stricter requirements
+// than UBA's NHF preapproval phase - even though both are "preapproval".
 //
 // This model defines OVERLAY rules:
-// - Base documents come from DocumentationPlan
+// - Base documents come from the phase's DocumentationPlan
 // - Bank adds/modifies requirements via BankDocumentRequirement
+// - Scoped to: Bank + Phase (which belongs to a specific PaymentMethod)
 //
 // When switching banks mid-application:
 // 1. Keep all existing approved documents
-// 2. Query new bank's requirements
+// 2. Query new bank's requirements for the same phase
 // 3. Calculate delta (what's missing)
 // 4. Customer uploads only the delta
 // =============================================================================
@@ -774,7 +777,7 @@ enum BankDocumentModifier {
   STRICTER // Bank has stricter version (e.g., 12 months instead of 6)
 }
 
-/// Bank Document Requirement - Bank-specific document rules
+/// Bank Document Requirement - Bank-specific document rules per phase
 model BankDocumentRequirement {
   id       String @id @default(cuid())
   tenantId String
@@ -784,12 +787,10 @@ model BankDocumentRequirement {
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
-  // Which phase type this applies to (e.g., KYC, VERIFICATION)
-  phaseType String
-
-  // Optional: specific payment method (NULL = applies to all)
-  paymentMethodId String?
-  paymentMethod   PropertyPaymentMethod? @relation(fields: [paymentMethodId], references: [id])
+  // Which specific phase within a payment method this applies to
+  // This allows different requirements per product (e.g., UBA's MREIF vs NHF)
+  phaseId String
+  phase   PropertyPaymentMethodPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
 
   // Document identification
   documentType String // ID_CARD, BANK_STATEMENT, EMPLOYMENT_LETTER, etc.
@@ -816,12 +817,11 @@ model BankDocumentRequirement {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([organizationId, phaseType, documentType, paymentMethodId])
+  @@unique([organizationId, phaseId, documentType])
   @@index([tenantId])
   @@index([organizationId])
-  @@index([phaseType])
+  @@index([phaseId])
   @@index([documentType])
-  @@index([paymentMethodId])
   @@map("bank_document_requirements")
 }
 
@@ -1681,9 +1681,6 @@ model PropertyPaymentMethod {
   changeRulesFrom DocumentRequirementRule[] @relation("RuleFromMethod")
   changeRulesTo   DocumentRequirementRule[] @relation("RuleToMethod")
 
-  // Bank-specific document requirements for this payment method
-  bankDocumentRequirements BankDocumentRequirement[]
-
   @@unique([tenantId, name]) // Unique per tenant
   @@index([tenantId])
   @@map("property_payment_methods")
@@ -1769,6 +1766,8 @@ model PropertyPaymentMethodPhase {
   eventAttachments    PhaseEventAttachment[]
   // Application phases created from this template
   applicationPhases   ApplicationPhase[]
+  // Bank-specific document requirements for this phase
+  bankDocumentRequirements BankDocumentRequirement[]
 
   @@unique([paymentMethodId, order]) // Enforce unique, sequential ordering
   @@index([tenantId])

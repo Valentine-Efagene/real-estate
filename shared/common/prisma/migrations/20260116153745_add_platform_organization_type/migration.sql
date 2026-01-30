@@ -1,3 +1,0 @@
--- AlterTable
-ALTER TABLE `organizations` ADD COLUMN `isPlatformOrg` BOOLEAN NOT NULL DEFAULT false,
-    MODIFY `type` ENUM('PLATFORM', 'BANK', 'DEVELOPER', 'LEGAL', 'INSURER', 'GOVERNMENT') NOT NULL;

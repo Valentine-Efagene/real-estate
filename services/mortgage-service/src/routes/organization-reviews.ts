@@ -425,14 +425,15 @@ router.get(
 // BANK DOCUMENT REQUIREMENTS
 // =============================================================================
 // Banks can specify additional/stricter document requirements beyond the base plan.
-// This overlays on top of DocumentationPlan steps.
+// Requirements are scoped to a specific PHASE within a payment method, allowing
+// different requirements for different products (e.g., UBA MREIF vs UBA NHF).
 // =============================================================================
 
 const BankDocumentRequirementSchema = z.object({
-    phaseType: z.string().min(1), // KYC, VERIFICATION, etc.
+    phaseId: z.string().min(1), // The specific payment method phase
     documentType: z.string().min(1), // ID_CARD, BANK_STATEMENT, etc.
     documentName: z.string().min(1), // Human-readable name
-    modifier: z.enum(['STRICTER', 'REQUIRED', 'OPTIONAL']).default('REQUIRED'),
+    modifier: z.enum(['STRICTER', 'REQUIRED', 'OPTIONAL', 'NOT_REQUIRED']).default('REQUIRED'),
     description: z.string().optional(),
     expiryDays: z.number().int().positive().optional(),
     minFiles: z.number().int().positive().optional(),
@@ -440,7 +441,6 @@ const BankDocumentRequirementSchema = z.object({
     allowedMimeTypes: z.string().optional(), // Comma-separated
     validationRules: z.any().optional(), // JSON object for validation
     priority: z.number().int().default(100),
-    paymentMethodId: z.string().nullish(),
 });
 
 /**
@@ -489,6 +489,18 @@ router.get(
         const requirements = await tenantPrisma.bankDocumentRequirement.findMany({
             where: { organizationId: orgId },
             orderBy: { documentType: 'asc' },
+            include: {
+                phase: {
+                    select: {
+                        id: true,
+                        name: true,
+                        phaseType: true,
+                        paymentMethod: {
+                            select: { id: true, name: true },
+                        },
+                    },
+                },
+            },
         });
 
         res.json(successResponse({
@@ -551,19 +563,33 @@ router.post(
             where: {
                 organizationId: orgId,
                 documentType: data.documentType,
-                phaseType: data.phaseType,
+                phaseId: data.phaseId,
             },
         });
 
         if (existing) {
-            throw new AppError(409, `Requirement for document type '${data.documentType}' already exists. Use PUT to update.`);
+            throw new AppError(409, `Requirement for document type '${data.documentType}' already exists for this phase. Use PUT to update.`);
+        }
+
+        // Verify phase exists and is a documentation phase
+        const phase = await tenantPrisma.propertyPaymentMethodPhase.findUnique({
+            where: { id: data.phaseId },
+            include: { paymentMethod: { select: { name: true } } },
+        });
+
+        if (!phase) {
+            throw new AppError(404, 'Phase not found');
+        }
+
+        if (phase.phaseCategory !== 'DOCUMENTATION') {
+            throw new AppError(400, 'Bank document requirements can only be added to DOCUMENTATION phases');
         }
 
         const requirement = await tenantPrisma.bankDocumentRequirement.create({
             data: {
                 organizationId: orgId,
                 tenantId: organization.tenantId,
-                phaseType: data.phaseType,
+                phaseId: data.phaseId,
                 documentType: data.documentType,
                 documentName: data.documentName,
                 modifier: data.modifier,
@@ -574,7 +600,18 @@ router.post(
                 allowedMimeTypes: data.allowedMimeTypes,
                 validationRules: data.validationRules,
                 priority: data.priority,
-                paymentMethodId: data.paymentMethodId ?? undefined,
+            },
+            include: {
+                phase: {
+                    select: {
+                        id: true,
+                        name: true,
+                        phaseType: true,
+                        paymentMethod: {
+                            select: { id: true, name: true },
+                        },
+                    },
+                },
             },
         });
 
@@ -627,7 +664,7 @@ router.put(
         const updated = await tenantPrisma.bankDocumentRequirement.update({
             where: { id: reqId },
             data: {
-                phaseType: data.phaseType,
+                phaseId: data.phaseId,
                 documentType: data.documentType,
                 documentName: data.documentName,
                 modifier: data.modifier,
@@ -638,7 +675,18 @@ router.put(
                 allowedMimeTypes: data.allowedMimeTypes,
                 validationRules: data.validationRules,
                 priority: data.priority,
-                paymentMethodId: data.paymentMethodId ?? undefined,
+            },
+            include: {
+                phase: {
+                    select: {
+                        id: true,
+                        name: true,
+                        phaseType: true,
+                        paymentMethod: {
+                            select: { id: true, name: true },
+                        },
+                    },
+                },
             },
         });
 

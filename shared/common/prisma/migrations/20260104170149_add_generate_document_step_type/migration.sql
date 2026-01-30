@@ -1,5 +1,0 @@
--- AlterTable
-ALTER TABLE `contract_phase_steps` MODIFY `stepType` ENUM('UPLOAD', 'REVIEW', 'SIGNATURE', 'APPROVAL', 'EXTERNAL_CHECK', 'WAIT', 'GENERATE_DOCUMENT') NOT NULL;
-
--- AlterTable
-ALTER TABLE `payment_method_phase_steps` MODIFY `stepType` ENUM('UPLOAD', 'REVIEW', 'SIGNATURE', 'APPROVAL', 'EXTERNAL_CHECK', 'WAIT', 'GENERATE_DOCUMENT') NOT NULL;

@@ -31,6 +31,7 @@ const adminNavigation = [
   { name: 'Documentation Plans', href: '/admin/documentation-plans' },
   { name: 'Payment Plans', href: '/admin/payment-plans' },
   { name: 'Payment Methods', href: '/admin/payment-methods' },
+  { name: 'Bank Doc Requirements', href: '/admin/bank-document-requirements' },
   { name: 'Authorization', href: '/admin/authorization' },
 ];
 
