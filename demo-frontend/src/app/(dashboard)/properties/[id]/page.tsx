@@ -333,7 +333,7 @@ function PropertyDetailContent({ propertyId }: { propertyId: string }) {
                   Unit {selectedUnit.unitNumber} • {selectedMethod.name}
                 </p>
                 <p className="text-xl font-bold mt-2">
-                  {formatCurrency(selectedUnit.price, selectedUnit.currency)}
+                  {formatCurrency(selectedUnit.priceOverride ?? selectedVariant?.price ?? 0, property?.currency || 'NGN')}
                 </p>
               </div>
               <Dialog open={showApplicationDialog} onOpenChange={setShowApplicationDialog}>
@@ -350,20 +350,20 @@ function PropertyDetailContent({ propertyId }: { propertyId: string }) {
                   <div className="space-y-4 py-4">
                     <div className="grid grid-cols-2 gap-4 text-sm">
                       <div className="text-gray-500">Property:</div>
-                      <div className="font-medium">{property.name}</div>
+                      <div className="font-medium">{property?.title}</div>
                       <div className="text-gray-500">Unit:</div>
                       <div className="font-medium">{selectedUnit.unitNumber}</div>
                       <div className="text-gray-500">Price:</div>
                       <div className="font-medium">
-                        {formatCurrency(selectedUnit.price, selectedUnit.currency)}
+                        {formatCurrency(selectedUnit.priceOverride ?? selectedVariant?.price ?? 0, property?.currency || 'NGN')}
                       </div>
                       <div className="text-gray-500">Payment Method:</div>
                       <div className="font-medium">{selectedMethod.name}</div>
                       <div className="text-gray-500">Down Payment:</div>
                       <div className="font-medium">
                         {formatCurrency(
-                          (selectedUnit.price * selectedMethod.downPaymentPercentage) / 100,
-                          selectedUnit.currency
+                          ((selectedUnit.priceOverride ?? selectedVariant?.price ?? 0) * selectedMethod.downPaymentPercentage) / 100,
+                          property?.currency || 'NGN'
                         )}{' '}
                         ({selectedMethod.downPaymentPercentage}%)
                       </div>

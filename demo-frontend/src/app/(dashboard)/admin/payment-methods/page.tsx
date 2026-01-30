@@ -46,9 +46,16 @@ import {
 } from '@/components/ui/accordion';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Switch } from '@/components/ui/switch';
-import { Plus, Trash2, ChevronRight, FileText, CreditCard, ClipboardList } from 'lucide-react';
+import { Plus, Trash2, ChevronRight, FileText, CreditCard, ClipboardList, ChevronUp, ChevronDown, MoreVertical, Copy, ArrowUpToLine, ArrowDownToLine } from 'lucide-react';
 import { toast } from 'sonner';
 import Link from 'next/link';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 const PHASE_CATEGORIES: { value: PhaseCategory; label: string; icon: React.ReactNode }[] = [
     { value: 'QUESTIONNAIRE', label: 'Questionnaire', icon: <ClipboardList className="h-4 w-4" /> },
@@ -85,6 +92,11 @@ function PhaseEditor({
     questionnairePlans: QuestionnairePlan[];
     documentationPlans: DocumentationPlan[];
 }) {
+    // Helper to recalculate order after changes
+    const reorderPhases = (phaseList: CreatePaymentMethodPhase[]): CreatePaymentMethodPhase[] => {
+        return phaseList.map((phase, i) => ({ ...phase, order: i + 1 }));
+    };
+
     const addPhase = () => {
         const newPhase: CreatePaymentMethodPhase = {
             name: '',
@@ -95,6 +107,38 @@ function PhaseEditor({
         onChange([...phases, newPhase]);
     };
 
+    const insertPhaseAt = (index: number) => {
+        const newPhase: CreatePaymentMethodPhase = {
+            name: '',
+            phaseCategory: 'DOCUMENTATION',
+            phaseType: 'KYC',
+            order: index + 1,
+        };
+        const updated = [...phases];
+        updated.splice(index, 0, newPhase);
+        onChange(reorderPhases(updated));
+    };
+
+    const duplicatePhase = (index: number) => {
+        const original = phases[index];
+        const duplicate: CreatePaymentMethodPhase = {
+            ...original,
+            name: `${original.name} (copy)`,
+            order: index + 2,
+        };
+        const updated = [...phases];
+        updated.splice(index + 1, 0, duplicate);
+        onChange(reorderPhases(updated));
+    };
+
+    const movePhase = (fromIndex: number, toIndex: number) => {
+        if (toIndex < 0 || toIndex >= phases.length) return;
+        const updated = [...phases];
+        const [moved] = updated.splice(fromIndex, 1);
+        updated.splice(toIndex, 0, moved);
+        onChange(reorderPhases(updated));
+    };
+
     const updatePhase = (index: number, updates: Partial<CreatePaymentMethodPhase>) => {
         const updated = [...phases];
         updated[index] = { ...updated[index], ...updates };
@@ -103,9 +147,7 @@ function PhaseEditor({
 
     const removePhase = (index: number) => {
         const updated = phases.filter((_, i) => i !== index);
-        // Re-order remaining phases
-        updated.forEach((phase, i) => (phase.order = i + 1));
-        onChange(updated);
+        onChange(reorderPhases(updated));
     };
 
     return (
@@ -126,28 +168,45 @@ function PhaseEditor({
                 <div className="space-y-3">
                     {phases.map((phase, index) => (
                         <Card key={index} className="p-4">
-                            <div className="flex items-start gap-4">
+                            <div className="flex items-start gap-2">
+                                {/* Reorder controls on the left */}
+                                <div className="flex flex-col gap-0.5 pt-1">
+                                    <Button
+                                        type="button"
+                                        variant="ghost"
+                                        size="icon"
+                                        className="h-6 w-6"
+                                        disabled={index === 0}
+                                        onClick={() => movePhase(index, index - 1)}
+                                        title="Move up"
+                                    >
+                                        <ChevronUp className="h-4 w-4" />
+                                    </Button>
+                                    <div className="text-center text-xs font-medium text-muted-foreground w-6">
+                                        {phase.order}
+                                    </div>
+                                    <Button
+                                        type="button"
+                                        variant="ghost"
+                                        size="icon"
+                                        className="h-6 w-6"
+                                        disabled={index === phases.length - 1}
+                                        onClick={() => movePhase(index, index + 1)}
+                                        title="Move down"
+                                    >
+                                        <ChevronDown className="h-4 w-4" />
+                                    </Button>
+                                </div>
+
+                                {/* Main content */}
                                 <div className="flex-1 grid gap-3">
                                     <div className="grid grid-cols-2 gap-3">
-                                        <div>
+                                        <div className="col-span-2">
                                             <Label className="text-xs">Phase Name *</Label>
                                             <Input
                                                 value={phase.name}
                                                 onChange={(e) => updatePhase(index, { name: e.target.value })}
                                                 placeholder="e.g., KYC Verification"
-                                            />
-                                        </div>
-                                        <div>
-                                            <Label className="text-xs">Order</Label>
-                                            <Input
-                                                type="number"
-                                                min="1"
-                                                value={phase.order ?? ''}
-                                                onChange={(e) => {
-                                                    const v = e.target.value;
-                                                    const parsed = v === '' ? 1 : parseInt(v, 10);
-                                                    updatePhase(index, { order: Number.isNaN(parsed) ? 1 : parsed });
-                                                }}
                                             />
                                         </div>
                                     </div>
@@ -308,14 +367,36 @@ function PhaseEditor({
                                         </div>
                                     )}
                                 </div>
-                                <Button
-                                    type="button"
-                                    variant="ghost"
-                                    size="icon"
-                                    onClick={() => removePhase(index)}
-                                >
-                                    <Trash2 className="h-4 w-4 text-destructive" />
-                                </Button>
+                                {/* Actions dropdown */}
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button type="button" variant="ghost" size="icon" className="h-8 w-8">
+                                            <MoreVertical className="h-4 w-4" />
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align="end">
+                                        <DropdownMenuItem onClick={() => insertPhaseAt(index)}>
+                                            <ArrowUpToLine className="h-4 w-4 mr-2" />
+                                            Insert Above
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem onClick={() => insertPhaseAt(index + 1)}>
+                                            <ArrowDownToLine className="h-4 w-4 mr-2" />
+                                            Insert Below
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem onClick={() => duplicatePhase(index)}>
+                                            <Copy className="h-4 w-4 mr-2" />
+                                            Duplicate
+                                        </DropdownMenuItem>
+                                        <DropdownMenuSeparator />
+                                        <DropdownMenuItem
+                                            className="text-destructive focus:text-destructive"
+                                            onClick={() => removePhase(index)}
+                                        >
+                                            <Trash2 className="h-4 w-4 mr-2" />
+                                            Delete
+                                        </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
                             </div>
                         </Card>
                     ))}

@@ -41,7 +41,7 @@ export function DocumentUploadSection({
       try {
         await uploadDocument.mutateAsync({
           file,
-          folder: `applications/${applicationId}/${phaseId}`,
+          folder: 'mortgage_docs',
           onProgress: (progress) => {
             setUploadingFiles((prev) => ({
               ...prev,

@@ -61,10 +61,10 @@ function PropertiesContent() {
           {properties.map((property) => (
             <Card key={property.id} className="overflow-hidden">
               <div className="relative h-48 bg-gray-200">
-                {property.imageUrl ? (
+                {property.displayImageUrl ? (
                   <Image
-                    src={property.imageUrl}
-                    alt={property.name}
+                    src={property.displayImageUrl}
+                    alt={property.title}
                     fill
                     className="object-cover"
                   />
@@ -78,9 +78,9 @@ function PropertiesContent() {
                 </Badge>
               </div>
               <CardHeader>
-                <CardTitle className="line-clamp-1">{property.name}</CardTitle>
+                <CardTitle className="line-clamp-1">{property.title}</CardTitle>
                 <CardDescription className="line-clamp-1">
-                  {property.city}, {property.state}
+                  {[property.city, property.district].filter(Boolean).join(', ') || 'Location not specified'}
                 </CardDescription>
               </CardHeader>
               <CardContent>
