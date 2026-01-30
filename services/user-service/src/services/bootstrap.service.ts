@@ -288,6 +288,66 @@ class BootstrapService {
                 console.log(`[Bootstrap] Created membership for ${adminUser.email} with role ${adminRole.name}`);
             }
 
+            // 6. Create platform organization (e.g., QShelter) and add admin as member
+            const platformOrgType = await tx.organizationType.findFirst({
+                where: { tenantId: tenant!.id, code: 'PLATFORM' },
+            });
+
+            if (platformOrgType) {
+                // Check if platform org already exists
+                let platformOrg = await tx.organization.findFirst({
+                    where: { tenantId: tenant!.id, isPlatformOrg: true },
+                });
+
+                if (!platformOrg) {
+                    // Create platform organization using tenant name
+                    platformOrg = await tx.organization.create({
+                        data: {
+                            tenantId: tenant!.id,
+                            name: tenant!.name,
+                            isPlatformOrg: true,
+                            status: 'ACTIVE',
+                            email: adminInput.email, // Use admin email as org contact
+                        },
+                    });
+
+                    // Assign PLATFORM type to this organization
+                    await tx.organizationTypeAssignment.create({
+                        data: {
+                            organizationId: platformOrg.id,
+                            typeId: platformOrgType.id,
+                            isPrimary: true,
+                        },
+                    });
+
+                    console.log(`[Bootstrap] Created platform organization: ${platformOrg.name}`);
+                }
+
+                // Check if admin is already a member of the platform org
+                const existingOrgMembership = await tx.organizationMember.findUnique({
+                    where: {
+                        organizationId_userId: {
+                            organizationId: platformOrg.id,
+                            userId: adminUser.id,
+                        },
+                    },
+                });
+
+                if (!existingOrgMembership) {
+                    // Add admin as member of platform organization
+                    await tx.organizationMember.create({
+                        data: {
+                            organizationId: platformOrg.id,
+                            userId: adminUser.id,
+                            title: 'Operations Manager',
+                            department: 'Operations',
+                            isActive: true,
+                        },
+                    });
+                    console.log(`[Bootstrap] Added ${adminUser.email} as member of ${platformOrg.name}`);
+                }
+            }
+
             adminResult = {
                 id: adminUser.id,
                 email: adminUser.email,
@@ -451,13 +511,25 @@ class BootstrapService {
             for (const permInput of roleInput.permissions) {
                 const permission = await this.createOrGetPermission(tx, tenantId, permInput);
 
-                // Link permission to role
-                await tx.rolePermission.create({
-                    data: {
-                        roleId: role.id,
-                        permissionId: permission.id,
+                // Check if role-permission link already exists
+                const existingLink = await tx.rolePermission.findUnique({
+                    where: {
+                        roleId_permissionId: {
+                            roleId: role.id,
+                            permissionId: permission.id,
+                        },
                     },
                 });
+
+                if (!existingLink) {
+                    // Link permission to role
+                    await tx.rolePermission.create({
+                        data: {
+                            roleId: role.id,
+                            permissionId: permission.id,
+                        },
+                    });
+                }
                 permissionsCount++;
             }
         }
