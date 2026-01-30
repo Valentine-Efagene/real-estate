@@ -170,8 +170,8 @@ function PropertyDetailContent({ propertyId }: { propertyId: string }) {
                 <Card
                   key={variant.id}
                   className={`cursor-pointer transition-all ${selectedVariant?.id === variant.id
-                      ? 'ring-2 ring-primary'
-                      : 'hover:shadow-md'
+                    ? 'ring-2 ring-primary'
+                    : 'hover:shadow-md'
                     }`}
                   onClick={() => {
                     setSelectedVariant(variant);
@@ -277,8 +277,8 @@ function PropertyDetailContent({ propertyId }: { propertyId: string }) {
                 <Card
                   key={method.id}
                   className={`cursor-pointer transition-all ${selectedMethod?.id === method.id
-                      ? 'ring-2 ring-primary'
-                      : 'hover:shadow-md'
+                    ? 'ring-2 ring-primary'
+                    : 'hover:shadow-md'
                     }`}
                   onClick={() => setSelectedMethod(method)}
                 >

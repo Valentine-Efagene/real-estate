@@ -25,10 +25,11 @@ interface Organization {
   phone?: string;
   address?: string;
   isPlatformOrg: boolean;
-  organizationTypes: {
+  // Backend returns `types` with `orgType` inside
+  types: {
     id: string;
     isPrimary: boolean;
-    organizationType: {
+    orgType: {
       id: string;
       code: string;
       name: string;
@@ -454,7 +455,7 @@ function OrganizationsTable({
 }) {
   const filteredOrgs = organizations.filter((org) => {
     if (filter === 'all') return true;
-    return org.organizationTypes?.some((ot) => ot.organizationType?.code === filter);
+    return org.types?.some((ot) => ot.orgType?.code === filter);
   });
 
   return (
@@ -491,13 +492,13 @@ function OrganizationsTable({
               <TableCell>{org.email}</TableCell>
               <TableCell>
                 <div className="flex flex-wrap gap-1">
-                  {(org.organizationTypes || []).map((ot) => (
+                  {(org.types || []).map((ot) => (
                     <Badge
                       key={ot.id}
-                      variant={getOrgTypeColor(ot.organizationType?.code || '')}
+                      variant={getOrgTypeColor(ot.orgType?.code || '')}
                       className="text-xs"
                     >
-                      {ot.organizationType?.name || 'Unknown'}
+                      {ot.orgType?.name || 'Unknown'}
                       {ot.isPrimary && ' ★'}
                     </Badge>
                   ))}
@@ -540,9 +541,9 @@ function OrganizationsTable({
                         <div className="space-y-2">
                           <Label>Organization Types</Label>
                           <div className="flex flex-wrap gap-2">
-                            {(org.organizationTypes || []).map((ot) => (
+                            {(org.types || []).map((ot) => (
                               <Badge key={ot.id} variant="secondary" className="text-sm">
-                                {ot.organizationType?.name || 'Unknown'}
+                                {ot.orgType?.name || 'Unknown'}
                                 {ot.isPrimary && ' (Primary)'}
                               </Badge>
                             ))}
@@ -599,13 +600,13 @@ function AdminOrganizationsContent() {
   const stats = {
     total: allOrgs.length,
     platform: allOrgs.filter((o) =>
-      o.organizationTypes?.some((ot) => ot.organizationType?.code === 'PLATFORM')
+      o.types?.some((ot) => ot.orgType?.code === 'PLATFORM')
     ).length,
     banks: allOrgs.filter((o) =>
-      o.organizationTypes?.some((ot) => ot.organizationType?.code === 'BANK')
+      o.types?.some((ot) => ot.orgType?.code === 'BANK')
     ).length,
     developers: allOrgs.filter((o) =>
-      o.organizationTypes?.some((ot) => ot.organizationType?.code === 'DEVELOPER')
+      o.types?.some((ot) => ot.orgType?.code === 'DEVELOPER')
     ).length,
   };
 
