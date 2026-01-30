@@ -672,37 +672,37 @@ function PaymentMethodCard({ method }: { method: PaymentMethod }) {
                         </div>
                     </div>
                 </CardHeader>
-            <CardContent>
-                <div className="space-y-2">
-                    <p className="text-sm font-medium text-muted-foreground">
-                        {method.phases?.length || 0} Phases
-                    </p>
-                    <div className="flex items-center flex-wrap gap-2">
-                        {method.phases
-                            ?.sort((a, b) => a.order - b.order)
-                            .map((phase, index) => (
-                                <div key={phase.id} className="flex items-center">
-                                    <Badge
-                                        variant="outline"
-                                        className={`flex items-center gap-1 ${getCategoryColor(phase.phaseCategory)}`}
-                                    >
-                                        {getCategoryIcon(phase.phaseCategory)}
-                                        {phase.name}
-                                        {phase.percentOfPrice && ` (${phase.percentOfPrice}%)`}
-                                    </Badge>
-                                    {index < method.phases.length - 1 && (
-                                        <ChevronRight className="h-4 w-4 mx-1 text-muted-foreground" />
-                                    )}
-                                </div>
-                            ))}
+                <CardContent>
+                    <div className="space-y-2">
+                        <p className="text-sm font-medium text-muted-foreground">
+                            {method.phases?.length || 0} Phases
+                        </p>
+                        <div className="flex items-center flex-wrap gap-2">
+                            {method.phases
+                                ?.sort((a, b) => a.order - b.order)
+                                .map((phase, index) => (
+                                    <div key={phase.id} className="flex items-center">
+                                        <Badge
+                                            variant="outline"
+                                            className={`flex items-center gap-1 ${getCategoryColor(phase.phaseCategory)}`}
+                                        >
+                                            {getCategoryIcon(phase.phaseCategory)}
+                                            {phase.name}
+                                            {phase.percentOfPrice && ` (${phase.percentOfPrice}%)`}
+                                        </Badge>
+                                        {index < method.phases.length - 1 && (
+                                            <ChevronRight className="h-4 w-4 mx-1 text-muted-foreground" />
+                                        )}
+                                    </div>
+                                ))}
+                        </div>
                     </div>
-                </div>
-            </CardContent>
-        </Card>
-            
+                </CardContent>
+            </Card>
+
             {/* Attach to Property Dialog */}
             <AttachToPropertyDialog method={method} open={attachOpen} onOpenChange={setAttachOpen} />
-        </>    );
+        </>);
 }
 
 export default function PaymentMethodsPage() {

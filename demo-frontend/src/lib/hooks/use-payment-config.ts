@@ -356,14 +356,14 @@ export function useUpdatePhase() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async ({ 
-            paymentMethodId, 
-            phaseId, 
-            data 
-        }: { 
-            paymentMethodId: string; 
-            phaseId: string; 
-            data: Partial<CreatePaymentMethodPhase> 
+        mutationFn: async ({
+            paymentMethodId,
+            phaseId,
+            data
+        }: {
+            paymentMethodId: string;
+            phaseId: string;
+            data: Partial<CreatePaymentMethodPhase>
         }) => {
             const response = await mortgageApi.patch<PaymentMethodPhase>(
                 `/payment-methods/${paymentMethodId}/phases/${phaseId}`,
@@ -385,12 +385,12 @@ export function useDeletePhase() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async ({ 
-            paymentMethodId, 
-            phaseId 
-        }: { 
-            paymentMethodId: string; 
-            phaseId: string; 
+        mutationFn: async ({
+            paymentMethodId,
+            phaseId
+        }: {
+            paymentMethodId: string;
+            phaseId: string;
         }) => {
             const response = await mortgageApi.delete(
                 `/payment-methods/${paymentMethodId}/phases/${phaseId}`
@@ -410,12 +410,12 @@ export function useReorderPhases() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async ({ 
-            paymentMethodId, 
-            phaseOrders 
-        }: { 
-            paymentMethodId: string; 
-            phaseOrders: { phaseId: string; order: number }[]; 
+        mutationFn: async ({
+            paymentMethodId,
+            phaseOrders
+        }: {
+            paymentMethodId: string;
+            phaseOrders: { phaseId: string; order: number }[];
         }) => {
             const response = await mortgageApi.post<PaymentMethod>(
                 `/payment-methods/${paymentMethodId}/phases/reorder`,
