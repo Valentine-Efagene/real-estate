@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
     Card,
@@ -51,6 +52,7 @@ export function BootstrapButton() {
     const [adminFirstName, setAdminFirstName] = useState('Adaeze');
     const [adminLastName, setAdminLastName] = useState('Okonkwo');
     const [adminPassword, setAdminPassword] = useState('SecureP@ssw0rd123!');
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleBootstrap = async () => {
         if (!bootstrapSecret) {
@@ -193,12 +195,23 @@ export function BootstrapButton() {
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="adminPassword">Admin Password</Label>
-                            <Input
-                                id="adminPassword"
-                                type="password"
-                                value={adminPassword}
-                                onChange={(e) => setAdminPassword(e.target.value)}
-                            />
+                            <div className="relative">
+                                <Input
+                                    id="adminPassword"
+                                    type={showPassword ? 'text' : 'password'}
+                                    value={adminPassword}
+                                    onChange={(e) => setAdminPassword(e.target.value)}
+                                    className="pr-10"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                                    tabIndex={-1}
+                                >
+                                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                </button>
+                            </div>
                         </div>
                     </div>
 
