@@ -4,7 +4,10 @@ import { SecretsManagerClient, GetSecretValueCommand } from '@aws-sdk/client-sec
 export interface InfrastructureConfig {
     vpcId: string;
     dbSecurityGroupId: string;
-    privateSubnetIds: string[];
+    /** Optional for non-prod stages where Lambdas run outside VPC */
+    privateSubnetIds?: string[];
+    /** Optional for non-prod stages where Lambdas run outside VPC */
+    lambdaSecurityGroupId?: string;
     dbHost: string;
     dbPort: number;
     databaseSecretArn: string;
@@ -118,11 +121,14 @@ export class ConfigService {
 
             const redisHost = this.getOptionalParamValue(params, `${pathPrefix}redis-host`);
             const redisPortStr = this.getOptionalParamValue(params, `${pathPrefix}redis-port`);
+            const privateSubnetIdsStr = this.getOptionalParamValue(params, `${pathPrefix}private-subnet-ids`);
+            const lambdaSecurityGroupId = this.getOptionalParamValue(params, `${pathPrefix}lambda-security-group-id`);
 
             const config: InfrastructureConfig = {
                 vpcId: this.getParamValue(params, `${pathPrefix}vpc-id`),
                 dbSecurityGroupId: this.getParamValue(params, `${pathPrefix}db-security-group-id`),
-                privateSubnetIds: this.getParamValue(params, `${pathPrefix}private-subnet-ids`).split(','),
+                privateSubnetIds: privateSubnetIdsStr ? privateSubnetIdsStr.split(',') : undefined,
+                lambdaSecurityGroupId: lambdaSecurityGroupId || undefined,
                 dbHost: this.getParamValue(params, `${pathPrefix}db-host`),
                 dbPort: parseInt(this.getParamValue(params, `${pathPrefix}db-port`), 10),
                 databaseSecretArn: this.getParamValue(params, `${pathPrefix}database-secret-arn`),

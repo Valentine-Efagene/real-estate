@@ -30,9 +30,12 @@ export class RealEstateStack extends cdk.Stack {
     const prefix = `qshelter-${stage}`;
 
     // === Networking ===
+    // For staging: No NAT gateway needed since RDS is publicly accessible
+    // and Lambdas connect via public endpoint (not in VPC)
+    // For production: Set natGateways: 1 and put Lambdas in VPC
     const vpc = new ec2.Vpc(this, "RealEstateVpc", {
       maxAzs: 2,
-      natGateways: 1,
+      natGateways: stage === 'prod' ? 1 : 0,
     });
 
     // === Lambda Security Group ===
@@ -273,20 +276,24 @@ export class RealEstateStack extends cdk.Stack {
       description: 'Database Security Group ID',
     });
 
-    new ssm.StringParameter(this, 'PrivateSubnetIdsParameter', {
-      parameterName: `/qshelter/${stage}/private-subnet-ids`,
-      stringValue: vpc.privateSubnets.map(subnet => subnet.subnetId).join(','),
-      description: 'Private Subnet IDs (comma-separated)',
-    });
-
-    // Individual subnet IDs for Serverless Framework (which needs array format)
-    vpc.privateSubnets.forEach((subnet, index) => {
-      new ssm.StringParameter(this, `PrivateSubnet${index + 1}IdParameter`, {
-        parameterName: `/qshelter/${stage}/private-subnet-${index + 1}-id`,
-        stringValue: subnet.subnetId,
-        description: `Private Subnet ${index + 1} ID`,
+    // Private subnet SSM parameters - only needed for production where Lambdas run in VPC
+    // For staging/dev, Lambdas run outside VPC and connect to RDS via public endpoint
+    if (stage === 'prod') {
+      new ssm.StringParameter(this, 'PrivateSubnetIdsParameter', {
+        parameterName: `/qshelter/${stage}/private-subnet-ids`,
+        stringValue: vpc.privateSubnets.map(subnet => subnet.subnetId).join(','),
+        description: 'Private Subnet IDs (comma-separated)',
       });
-    });
+
+      // Individual subnet IDs for Serverless Framework (which needs array format)
+      vpc.privateSubnets.forEach((subnet, index) => {
+        new ssm.StringParameter(this, `PrivateSubnet${index + 1}IdParameter`, {
+          parameterName: `/qshelter/${stage}/private-subnet-${index + 1}-id`,
+          stringValue: subnet.subnetId,
+          description: `Private Subnet ${index + 1} ID`,
+        });
+      });
+    }
 
     new ssm.StringParameter(this, 'DbHostParameter', {
       parameterName: `/qshelter/${stage}/db-host`,

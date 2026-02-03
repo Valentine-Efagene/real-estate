@@ -76,13 +76,9 @@ provider:
             - ec2:UnassignPrivateIpAddresses
           Resource: '*'
   
-  # VPC configuration for database access
-  vpc:
-    securityGroupIds:
-      - ${ssm:/qshelter/${self:provider.stage}/lambda-security-group-id}
-    subnetIds:
-      - ${ssm:/qshelter/${self:provider.stage}/private-subnet-1-id}
-      - ${ssm:/qshelter/${self:provider.stage}/private-subnet-2-id}
+  # VPC configuration for database access (production only)
+  # Staging: RDS is publicly accessible, no VPC needed (saves NAT gateway cost)
+  vpc: ${self:custom.vpcConfig.${self:provider.stage}, null}
 
 package:
   individually: true
@@ -118,3 +114,11 @@ functions:
 
 # Resources now created by CDK infrastructure stack
 
+custom:
+  vpcConfig:
+    prod:
+      securityGroupIds:
+        - ${ssm:/qshelter/prod/lambda-security-group-id, 'sg-placeholder'}
+      subnetIds:
+        - ${ssm:/qshelter/prod/private-subnet-1-id, 'subnet-placeholder-1'}
+        - ${ssm:/qshelter/prod/private-subnet-2-id, 'subnet-placeholder-2'}

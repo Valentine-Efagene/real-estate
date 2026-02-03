@@ -232,6 +232,25 @@ run_migrations() {
     # Build DATABASE_URL
     export DATABASE_URL="mysql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}"
     
+    # Clean up any failed migrations using prisma migrate resolve
+    # This ensures deploy always works even if a previous migration failed
+    log_info "Checking for and resolving any failed migrations..."
+    
+    # Get migrate status and extract failed migration names (macOS compatible)
+    MIGRATE_STATUS=$(npx prisma migrate status 2>&1 || true)
+    
+    # Check if there are failed migrations
+    # Output format: "Following migration have failed:\n20260130125124_migration_name"
+    if echo "$MIGRATE_STATUS" | grep -q "Following migration have failed"; then
+        # Extract migration names - they appear on lines after "Following migration have failed:"
+        FAILED_MIGRATIONS=$(echo "$MIGRATE_STATUS" | grep -E "^[0-9]{14}_")
+        
+        for migration in $FAILED_MIGRATIONS; do
+            log_warn "Resolving failed migration: $migration"
+            npx prisma migrate resolve --rolled-back "$migration" || true
+        done
+    fi
+    
     log_info "Running Prisma migrations against Aurora MySQL at $DB_HOST..."
     npx prisma migrate deploy
     

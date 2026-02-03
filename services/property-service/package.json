@@ -24,7 +24,7 @@
     "@asteasolutions/zod-to-openapi": "^8.2.0",
     "@codegenie/serverless-express": "^4.14.1",
     "@prisma/adapter-mariadb": "^7.2.0",
-    "@valentine-efagene/qshelter-common": "^2.0.158",
+    "@valentine-efagene/qshelter-common": "^2.0.159",
     "dotenv": "^16.4.5",
     "express": "^4.21.2",
     "swagger-ui-express": "^5.0.1",
