@@ -11,9 +11,22 @@ import { Separator } from '@/components/ui/separator';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
-import { useApplication, useCurrentAction, useReviewDocument } from '@/lib/hooks';
+import {
+  useApplication,
+  useCurrentAction,
+  useReviewDocument,
+  useApplicationPhases,
+  useReviewQuestionnaire,
+  useApplicationOrganizations,
+  useBindOrganization,
+  type QuestionnaireField
+} from '@/lib/hooks';
+import { useOrganizations } from '@/lib/hooks/use-organizations';
 import { PhaseProgress } from '@/components/applications/phase-progress';
+import { PartnerDocumentUpload } from '@/components/applications/partner-document-upload';
 
 function formatCurrency(amount: number, currency: string = 'NGN') {
   return new Intl.NumberFormat('en-NG', {
@@ -26,10 +39,54 @@ function formatCurrency(amount: number, currency: string = 'NGN') {
 function AdminApplicationDetailContent({ applicationId }: { applicationId: string }) {
   const { data: application, isLoading: appLoading } = useApplication(applicationId);
   const { data: currentAction, isLoading: actionLoading } = useCurrentAction(applicationId);
+  const { data: phases } = useApplicationPhases(applicationId);
+  const { data: boundOrganizations, isLoading: orgsLoading } = useApplicationOrganizations(applicationId);
+  const { data: allOrganizations } = useOrganizations();
   const reviewDocument = useReviewDocument();
+  const reviewQuestionnaire = useReviewQuestionnaire();
+  const bindOrganization = useBindOrganization();
 
   const [reviewingDocId, setReviewingDocId] = useState<string | null>(null);
   const [reviewComment, setReviewComment] = useState('');
+  const [questionnaireReviewNotes, setQuestionnaireReviewNotes] = useState('');
+  const [showQuestionnaireReview, setShowQuestionnaireReview] = useState(false);
+  const [showBindOrgDialog, setShowBindOrgDialog] = useState(false);
+  const [selectedOrgId, setSelectedOrgId] = useState('');
+  const [selectedOrgType, setSelectedOrgType] = useState('BANK');
+  const [slaHours, setSlaHours] = useState('48');
+
+  // Get current phase with questionnaire fields
+  const currentPhaseWithFields = phases?.find(
+    (p) => p.id === currentAction?.phase?.id
+  ) as (typeof phases)[0] & { fields?: QuestionnaireField[] } | undefined;
+
+  // Filter out already bound organizations
+  const boundOrgIds = new Set(boundOrganizations?.map(bo => bo.organizationId) || []);
+  const availableOrganizations = allOrganizations?.filter(org => !boundOrgIds.has(org.id)) || [];
+
+  const handleBindOrganization = async () => {
+    if (!selectedOrgId || !selectedOrgType) {
+      toast.error('Please select an organization and type');
+      return;
+    }
+
+    try {
+      await bindOrganization.mutateAsync({
+        applicationId,
+        organizationId: selectedOrgId,
+        organizationTypeCode: selectedOrgType,
+        isPrimary: true,
+        slaHours: parseInt(slaHours) || 48,
+      });
+      toast.success('Organization bound successfully');
+      setShowBindOrgDialog(false);
+      setSelectedOrgId('');
+      setSelectedOrgType('BANK');
+      setSlaHours('48');
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Failed to bind organization');
+    }
+  };
 
   const handleReviewDocument = async (
     documentId: string,
@@ -48,6 +105,24 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
       setReviewComment('');
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'Failed to review document');
+    }
+  };
+
+  const handleReviewQuestionnaire = async (decision: 'APPROVE' | 'REJECT') => {
+    if (!currentAction?.phase?.id) return;
+
+    try {
+      await reviewQuestionnaire.mutateAsync({
+        applicationId,
+        phaseId: currentAction.phase.id,
+        decision,
+        notes: questionnaireReviewNotes,
+      });
+      toast.success(`Questionnaire ${decision.toLowerCase()}d successfully`);
+      setShowQuestionnaireReview(false);
+      setQuestionnaireReviewNotes('');
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Failed to review questionnaire');
     }
   };
 
@@ -174,6 +249,116 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
 
       <Separator />
 
+      {/* Bound Organizations Section */}
+      <Card>
+        <CardHeader>
+          <div className="flex justify-between items-center">
+            <div>
+              <CardTitle>Bound Organizations</CardTitle>
+              <CardDescription>
+                Organizations participating in this application
+              </CardDescription>
+            </div>
+            <Dialog open={showBindOrgDialog} onOpenChange={setShowBindOrgDialog}>
+              <DialogTrigger asChild>
+                <Button size="sm">+ Bind Organization</Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Bind Organization</DialogTitle>
+                  <DialogDescription>
+                    Add an organization (e.g., bank, developer) to this application
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4 py-4">
+                  <div className="space-y-2">
+                    <Label>Organization</Label>
+                    <Select value={selectedOrgId} onValueChange={setSelectedOrgId}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select organization" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {availableOrganizations.map((org) => (
+                          <SelectItem key={org.id} value={org.id}>
+                            {org.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Role Type</Label>
+                    <Select value={selectedOrgType} onValueChange={setSelectedOrgType}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="BANK">Bank / Lender</SelectItem>
+                        <SelectItem value="DEVELOPER">Developer</SelectItem>
+                        <SelectItem value="LEGAL">Legal</SelectItem>
+                        <SelectItem value="INSURER">Insurer</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="sla">SLA Hours</Label>
+                    <Input
+                      id="sla"
+                      type="number"
+                      value={slaHours}
+                      onChange={(e) => setSlaHours(e.target.value)}
+                      placeholder="48"
+                    />
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button
+                    onClick={handleBindOrganization}
+                    disabled={bindOrganization.isPending || !selectedOrgId}
+                  >
+                    {bindOrganization.isPending ? 'Binding...' : 'Bind Organization'}
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          </div>
+        </CardHeader>
+        <CardContent>
+          {orgsLoading ? (
+            <Skeleton className="h-24" />
+          ) : boundOrganizations && boundOrganizations.length > 0 ? (
+            <div className="space-y-3">
+              {boundOrganizations.map((binding) => (
+                <div
+                  key={binding.id}
+                  className="flex items-center justify-between p-4 border rounded-lg"
+                >
+                  <div>
+                    <p className="font-medium">{binding.organization?.name || 'Unknown'}</p>
+                    <div className="flex gap-2 mt-1">
+                      <Badge variant="outline">{binding.assignedAsType?.code || 'N/A'}</Badge>
+                      <Badge
+                        variant={binding.status === 'ACTIVE' ? 'default' : 'secondary'}
+                      >
+                        {binding.status}
+                      </Badge>
+                      {binding.isPrimary && <Badge variant="secondary">Primary</Badge>}
+                    </div>
+                    {binding.slaHours && (
+                      <p className="text-sm text-gray-500 mt-1">SLA: {binding.slaHours} hours</p>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-500 text-center py-4">No organizations bound yet</p>
+          )}
+        </CardContent>
+      </Card>
+
+      <Separator />
+
       {/* Document Review Section */}
       {actionLoading ? (
         <Skeleton className="h-48" />
@@ -279,11 +464,102 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
             </div>
           </CardContent>
         </Card>
+      ) : currentAction?.phase.category === 'QUESTIONNAIRE' && currentPhaseWithFields?.fields ? (
+        <Card>
+          <CardHeader>
+            <CardTitle>Questionnaire Review</CardTitle>
+            <CardDescription>
+              Review the applicant&apos;s submitted answers for {currentAction.phase.name}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {/* Display submitted answers */}
+            <div className="space-y-4 mb-6">
+              {currentPhaseWithFields.fields
+                .filter((field) => field.answer !== null && field.answer !== undefined)
+                .sort((a, b) => a.order - b.order)
+                .map((field) => (
+                  <div key={field.id} className="p-4 border rounded-lg">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <p className="font-medium text-gray-700">{field.label}</p>
+                        {field.description && (
+                          <p className="text-sm text-gray-500">{field.description}</p>
+                        )}
+                      </div>
+                      <Badge variant="outline">{field.fieldType}</Badge>
+                    </div>
+                    <div className="mt-2 p-3 bg-gray-50 rounded">
+                      <p className="font-medium">
+                        {field.fieldType === 'CURRENCY' && '₦'}
+                        {String(field.answer)}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+            </div>
+
+            {/* No answers submitted yet */}
+            {currentPhaseWithFields.fields.every(
+              (field) => field.answer === null || field.answer === undefined
+            ) && (
+                <div className="text-center py-8 text-gray-500">
+                  <p>The applicant has not submitted their answers yet.</p>
+                </div>
+              )}
+
+            {/* Review actions */}
+            {currentPhaseWithFields.fields.some(
+              (field) => field.answer !== null && field.answer !== undefined
+            ) && currentAction.phase.status === 'AWAITING_APPROVAL' && (
+                <Dialog open={showQuestionnaireReview} onOpenChange={setShowQuestionnaireReview}>
+                  <DialogTrigger asChild>
+                    <Button className="w-full">Review Questionnaire</Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Review Questionnaire</DialogTitle>
+                      <DialogDescription>
+                        Approve or reject the applicant&apos;s submitted answers
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="space-y-4 py-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="notes">Review Notes (optional)</Label>
+                        <Textarea
+                          id="notes"
+                          placeholder="Add notes about your decision..."
+                          value={questionnaireReviewNotes}
+                          onChange={(e) => setQuestionnaireReviewNotes(e.target.value)}
+                          rows={3}
+                        />
+                      </div>
+                    </div>
+                    <DialogFooter className="flex gap-2">
+                      <Button
+                        variant="destructive"
+                        onClick={() => handleReviewQuestionnaire('REJECT')}
+                        disabled={reviewQuestionnaire.isPending}
+                      >
+                        Reject
+                      </Button>
+                      <Button
+                        onClick={() => handleReviewQuestionnaire('APPROVE')}
+                        disabled={reviewQuestionnaire.isPending}
+                      >
+                        Approve
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+              )}
+          </CardContent>
+        </Card>
       ) : (
         <Card>
           <CardContent className="py-8 text-center">
             <span className="text-4xl">📋</span>
-            <h3 className="text-lg font-semibold mt-4">No documents to review</h3>
+            <h3 className="text-lg font-semibold mt-4">No action required</h3>
             <p className="text-gray-500">
               {currentAction
                 ? `Current phase: ${currentAction.phase.name} (${currentAction.phase.category})`
@@ -291,6 +567,40 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
             </p>
           </CardContent>
         </Card>
+      )}
+
+      {/* Partner Document Upload Section */}
+      {currentAction?.phase.category === 'DOCUMENTATION' && (
+        <>
+          <Separator />
+          <div className="grid gap-4 md:grid-cols-2">
+            {/* Developer uploads */}
+            {boundOrganizations?.some(org => org.assignedAsType?.code === 'DEVELOPER') && (
+              <PartnerDocumentUpload
+                applicationId={applicationId}
+                phaseId={currentAction.phase.id}
+                phaseName={currentAction.phase.name}
+                role="DEVELOPER"
+              />
+            )}
+            {/* Lender uploads */}
+            {boundOrganizations?.some(org => org.assignedAsType?.code === 'BANK') && (
+              <PartnerDocumentUpload
+                applicationId={applicationId}
+                phaseId={currentAction.phase.id}
+                phaseName={currentAction.phase.name}
+                role="LENDER"
+              />
+            )}
+            {/* Platform admin uploads */}
+            <PartnerDocumentUpload
+              applicationId={applicationId}
+              phaseId={currentAction.phase.id}
+              phaseName={currentAction.phase.name}
+              role="PLATFORM"
+            />
+          </div>
+        </>
       )}
     </div>
   );

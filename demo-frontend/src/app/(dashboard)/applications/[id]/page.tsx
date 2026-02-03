@@ -8,9 +8,11 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Separator } from '@/components/ui/separator';
-import { useApplication, useCurrentAction } from '@/lib/hooks';
+import { useApplication, useCurrentAction, useApplicationPhases, type Phase } from '@/lib/hooks';
 import { DocumentUploadSection } from '@/components/applications/document-upload-section';
 import { PhaseProgress } from '@/components/applications/phase-progress';
+import { QuestionnaireForm, type QuestionnaireField } from '@/components/applications/questionnaire-form';
+import { PaymentSection } from '@/components/applications/payment-section';
 
 function formatCurrency(amount: number, currency: string = 'NGN') {
   return new Intl.NumberFormat('en-NG', {
@@ -21,8 +23,14 @@ function formatCurrency(amount: number, currency: string = 'NGN') {
 }
 
 function ApplicationDetailContent({ applicationId }: { applicationId: string }) {
-  const { data: application, isLoading: appLoading } = useApplication(applicationId);
+  const { data: application, isLoading: appLoading, refetch: refetchApplication } = useApplication(applicationId);
   const { data: currentAction, isLoading: actionLoading } = useCurrentAction(applicationId);
+  const { data: phases } = useApplicationPhases(applicationId);
+
+  // Get current phase details with fields for questionnaires
+  const currentPhaseWithFields = phases?.find(
+    (p) => p.id === currentAction?.phase?.id
+  ) as (Phase & { fields?: QuestionnaireField[] }) | undefined;
 
   if (appLoading) {
     return (
@@ -171,35 +179,33 @@ function ApplicationDetailContent({ applicationId }: { applicationId: string }) 
               />
             )}
 
-            {currentAction.phase.category === 'QUESTIONNAIRE' && currentAction.pendingQuestions && (
-              <div className="space-y-4">
-                <h4 className="font-semibold">Complete the following questions:</h4>
-                <ul className="list-disc pl-6 space-y-2">
-                  {currentAction.pendingQuestions.map((q) => (
-                    <li key={q.id}>{q.question}</li>
-                  ))}
-                </ul>
-                <Button>Answer Questions</Button>
+            {currentAction.phase.category === 'QUESTIONNAIRE' && currentPhaseWithFields?.fields && (
+              <QuestionnaireForm
+                applicationId={applicationId}
+                phaseId={currentAction.phase.id}
+                fields={currentPhaseWithFields.fields}
+                phaseName={currentAction.phase.name}
+                onSubmitSuccess={() => refetchApplication()}
+              />
+            )}
+
+            {currentAction.phase.category === 'QUESTIONNAIRE' && !currentPhaseWithFields?.fields && (
+              <div className="text-center py-4">
+                <p className="text-gray-500">Loading questionnaire...</p>
               </div>
             )}
 
-            {currentAction.phase.category === 'PAYMENT' && currentAction.pendingPayments && (
-              <div className="space-y-4">
-                <h4 className="font-semibold">Pending Payments:</h4>
-                {currentAction.pendingPayments.map((payment) => (
-                  <div key={payment.id} className="flex justify-between items-center p-4 bg-white rounded-lg">
-                    <div>
-                      <p className="font-medium">
-                        {formatCurrency(payment.amount, payment.currency)}
-                      </p>
-                      <p className="text-sm text-gray-500">
-                        Due: {new Date(payment.dueDate).toLocaleDateString()}
-                      </p>
-                    </div>
-                    <Button>Make Payment</Button>
-                  </div>
-                ))}
-              </div>
+            {currentAction.phase.category === 'PAYMENT' && currentPhaseWithFields && (
+              <PaymentSection
+                applicationId={applicationId}
+                phaseId={currentAction.phase.id}
+                phaseName={currentAction.phase.name}
+                totalAmount={currentPhaseWithFields.totalAmount || 0}
+                paidAmount={currentPhaseWithFields.paidAmount || 0}
+                currency={application.currency}
+                installments={currentPhaseWithFields.installments || []}
+                onPaymentSuccess={() => refetchApplication()}
+              />
             )}
           </CardContent>
         </Card>

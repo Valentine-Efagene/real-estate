@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { AdminOnly, StaffOnly } from '@/components/auth';
+import { PersonaSwitcher } from '@/components/demo/persona-switcher';
 import { cn } from '@/lib/utils';
 
 const navigation = [
@@ -98,7 +99,10 @@ export function Navbar() {
           </div>
 
           {/* Right side */}
-          <div className="flex items-center">
+          <div className="flex items-center gap-4">
+            {/* Demo persona switcher */}
+            <PersonaSwitcher />
+
             {isAuthenticated ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>

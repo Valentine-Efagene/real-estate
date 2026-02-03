@@ -32,6 +32,35 @@ export interface Phase {
   order: number;
   startedAt?: string;
   completedAt?: string;
+  // Questionnaire phase fields
+  fields?: QuestionnaireField[];
+  // Payment phase fields
+  totalAmount?: number;
+  paidAmount?: number;
+  installments?: Installment[];
+}
+
+export interface QuestionnaireField {
+  id: string;
+  name: string;
+  label: string;
+  description?: string | null;
+  placeholder?: string | null;
+  fieldType: string;
+  isRequired: boolean;
+  order: number;
+  validation?: Record<string, unknown> | null;
+  displayCondition?: Record<string, unknown> | null;
+  defaultValue?: unknown;
+  answer?: unknown;
+}
+
+export interface Installment {
+  id: string;
+  amount: number;
+  dueDate: string;
+  status: string;
+  paidAt?: string;
 }
 
 export interface CurrentAction {
@@ -199,10 +228,10 @@ export function useSubmitQuestionnaire() {
     }: {
       applicationId: string;
       phaseId: string;
-      answers: Record<string, unknown>;
+      answers: Array<{ fieldName: string; value: string }>;
     }) => {
       const response = await mortgageApi.post(
-        `/applications/${applicationId}/phases/${phaseId}/submit`,
+        `/applications/${applicationId}/phases/${phaseId}/questionnaire/submit`,
         { answers }
       );
       if (!response.success) {
@@ -213,6 +242,44 @@ export function useSubmitQuestionnaire() {
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.applications.detail(variables.applicationId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.applications.currentAction(variables.applicationId),
+      });
+    },
+  });
+}
+
+export function useReviewQuestionnaire() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      applicationId,
+      phaseId,
+      decision,
+      notes,
+    }: {
+      applicationId: string;
+      phaseId: string;
+      decision: 'APPROVE' | 'REJECT';
+      notes?: string;
+    }) => {
+      const response = await mortgageApi.post(
+        `/applications/${applicationId}/phases/${phaseId}/questionnaire/review`,
+        { decision, notes }
+      );
+      if (!response.success) {
+        throw new Error(response.error?.message || 'Failed to review questionnaire');
+      }
+      return response.data;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.applications.detail(variables.applicationId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.applications.phases(variables.applicationId),
       });
       queryClient.invalidateQueries({
         queryKey: queryKeys.applications.currentAction(variables.applicationId),
@@ -253,6 +320,261 @@ export function useReviewDocument() {
       });
       queryClient.invalidateQueries({
         queryKey: queryKeys.applications.currentAction(variables.applicationId),
+      });
+    },
+  });
+}
+
+// ============================================================================
+// Payment Hooks
+// ============================================================================
+
+export interface PaymentInput {
+  applicationId: string;
+  phaseId: string;
+  installmentId: string;
+  amount: number;
+  paymentMethod: 'BANK_TRANSFER' | 'CARD' | 'USSD' | 'WALLET';
+  externalReference?: string;
+}
+
+export interface Payment {
+  id: string;
+  reference: string;
+  amount: number;
+  currency: string;
+  status: string;
+  paymentMethod: string;
+  installmentId: string;
+  createdAt: string;
+}
+
+export function useGenerateInstallments() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      applicationId,
+      phaseId,
+      startDate,
+    }: {
+      applicationId: string;
+      phaseId: string;
+      startDate?: string;
+    }) => {
+      const response = await mortgageApi.post<{ installments: Installment[] }>(
+        `/applications/${applicationId}/phases/${phaseId}/installments`,
+        { startDate: startDate || new Date().toISOString() }
+      );
+      if (!response.success) {
+        throw new Error(response.error?.message || 'Failed to generate installments');
+      }
+      return response.data!;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.applications.phases(variables.applicationId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.applications.currentAction(variables.applicationId),
+      });
+    },
+  });
+}
+
+export function useCreatePayment() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      applicationId,
+      phaseId,
+      installmentId,
+      amount,
+      paymentMethod,
+      externalReference,
+    }: PaymentInput) => {
+      const response = await mortgageApi.post<Payment>(
+        `/applications/${applicationId}/payments`,
+        { phaseId, installmentId, amount, paymentMethod, externalReference }
+      );
+      if (!response.success) {
+        throw new Error(response.error?.message || 'Failed to create payment');
+      }
+      return response.data!;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.applications.phases(variables.applicationId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.applications.currentAction(variables.applicationId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.payments.all,
+      });
+    },
+  });
+}
+
+export function useProcessPayment() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      reference,
+      status,
+      gatewayTransactionId,
+    }: {
+      reference: string;
+      status: 'COMPLETED' | 'FAILED' | 'CANCELLED';
+      gatewayTransactionId?: string;
+    }) => {
+      const response = await mortgageApi.post(
+        `/applications/payments/process`,
+        { reference, status, gatewayTransactionId }
+      );
+      if (!response.success) {
+        throw new Error(response.error?.message || 'Failed to process payment');
+      }
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.applications.all,
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.payments.all,
+      });
+    },
+  });
+}
+
+// ============================================================================
+// Application Organization Binding Hooks
+// ============================================================================
+
+export interface ApplicationOrganization {
+  id: string;
+  organizationId: string;
+  organization?: {
+    id: string;
+    name: string;
+  };
+  assignedAsType?: {
+    id: string;
+    code: string;
+    name: string;
+  };
+  status: string;
+  isPrimary: boolean;
+  slaHours?: number;
+  activatedAt?: string;
+  createdAt: string;
+}
+
+export function useApplicationOrganizations(applicationId: string) {
+  return useQuery({
+    queryKey: ['applications', applicationId, 'organizations'] as const,
+    queryFn: async () => {
+      const response = await mortgageApi.get<ApplicationOrganization[]>(
+        `/applications/${applicationId}/organizations`
+      );
+      if (!response.success) {
+        throw new Error(response.error?.message || 'Failed to fetch application organizations');
+      }
+      return response.data!;
+    },
+    enabled: !!applicationId,
+  });
+}
+
+export function useBindOrganization() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      applicationId,
+      organizationId,
+      organizationTypeCode,
+      isPrimary,
+      slaHours,
+    }: {
+      applicationId: string;
+      organizationId: string;
+      organizationTypeCode: string;
+      isPrimary?: boolean;
+      slaHours?: number;
+    }) => {
+      const response = await mortgageApi.post<ApplicationOrganization>(
+        `/applications/${applicationId}/organizations`,
+        { organizationId, organizationTypeCode, isPrimary, slaHours }
+      );
+      if (!response.success) {
+        throw new Error(response.error?.message || 'Failed to bind organization');
+      }
+      return response.data!;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ['applications', variables.applicationId, 'organizations'],
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.applications.detail(variables.applicationId),
+      });
+    },
+  });
+}
+
+// ============================================================================
+// Phase Document Upload Hook
+// ============================================================================
+
+export interface PhaseDocument {
+  id: string;
+  documentType: string;
+  fileName: string;
+  url: string;
+  status: string;
+  uploadedBy: string;
+  createdAt: string;
+}
+
+export function useUploadPhaseDocument() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      applicationId,
+      phaseId,
+      documentType,
+      url,
+      fileName,
+    }: {
+      applicationId: string;
+      phaseId: string;
+      documentType: string;
+      url: string;
+      fileName: string;
+    }) => {
+      const response = await mortgageApi.post<PhaseDocument>(
+        `/applications/${applicationId}/phases/${phaseId}/documents`,
+        { documentType, url, fileName }
+      );
+      if (!response.success) {
+        throw new Error(response.error?.message || 'Failed to upload document');
+      }
+      return response.data!;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.applications.phases(variables.applicationId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.applications.currentAction(variables.applicationId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.applications.detail(variables.applicationId),
       });
     },
   });
