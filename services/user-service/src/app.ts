@@ -10,13 +10,17 @@ import { apiKeyRouter } from './routes/api-keys';
 import { adminRouter } from './routes/admin';
 import { organizationRouter } from './routes/organizations';
 import { errorHandler } from './middleware/error-handler';
-import { requestLogger } from '@valentine-efagene/qshelter-common';
+import { requestLogger, createTenantMiddleware } from '@valentine-efagene/qshelter-common';
 import { generateOpenAPIDocument } from './config/swagger';
+import { prisma } from './lib/prisma';
 
 export const app = express();
 
 app.use(express.json());
 app.use(requestLogger);
+
+// Apply tenant middleware to extract tenant context from requests
+app.use(createTenantMiddleware({ prisma }));
 
 app.get('/health', (req, res) => {
     res.json({ status: 'healthy', service: 'user-service-v2' });

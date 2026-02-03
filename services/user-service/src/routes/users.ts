@@ -69,7 +69,11 @@ userRouter.put('/:id/avatar', async (req, res, next) => {
 // Update profile (for authenticated user)
 userRouter.patch('/profile', async (req, res, next) => {
     try {
-        const userId = (req as any).userId; // Will be set by auth middleware
+        const userId = req.tenantContext?.userId;
+
+        if (!userId) {
+            return res.status(401).json({ success: false, error: 'Not authenticated' });
+        }
 
         const updateData = z.object({
             firstName: z.string().optional(),
@@ -88,7 +92,11 @@ userRouter.patch('/profile', async (req, res, next) => {
 // Change password (for authenticated user)
 userRouter.post('/change-password', async (req, res, next) => {
     try {
-        const userId = (req as any).userId;
+        const userId = req.tenantContext?.userId;
+
+        if (!userId) {
+            return res.status(401).json({ success: false, error: 'Not authenticated' });
+        }
 
         const { currentPassword, newPassword } = z.object({
             currentPassword: z.string().min(1, 'Current password is required'),
