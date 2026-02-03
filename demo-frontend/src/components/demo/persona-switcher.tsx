@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
@@ -13,61 +14,99 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
-import { Users, UserCircle, Building2, Landmark, Loader2 } from 'lucide-react';
+import { Users, UserCircle, Loader2 } from 'lucide-react';
+import { userApi } from '@/lib/api/client';
 
-// Demo personas matching the Chidi-Lekki mortgage scenario
-const DEMO_PERSONAS = [
-    {
-        name: 'Adaeze',
-        email: 'adaeze@mailsac.com',
-        password: 'password123',
-        role: 'Admin',
-        roleColor: 'bg-purple-500',
-        icon: UserCircle,
-        description: 'QShelter operations manager',
-    },
-    {
-        name: 'Chidi',
-        email: 'chidi@mailsac.com',
-        password: 'password123',
-        role: 'Customer',
-        roleColor: 'bg-green-500',
-        icon: Users,
-        description: 'First-time homebuyer',
-    },
-    {
-        name: 'Emeka',
-        email: 'emeka@mailsac.com',
-        password: 'password123',
-        role: 'Developer',
-        roleColor: 'bg-blue-500',
-        icon: Building2,
-        description: 'Lekki Gardens developer rep',
-    },
-    {
-        name: 'Nkechi',
-        email: 'nkechi@mailsac.com',
-        password: 'password123',
-        role: 'Lender',
-        roleColor: 'bg-amber-500',
-        icon: Landmark,
-        description: 'Access Bank loan officer',
-    },
-];
+// Default password for all demo users
+const DEMO_PASSWORD = 'password';
+
+// Role color mapping
+const ROLE_COLORS: Record<string, string> = {
+    admin: 'bg-purple-500',
+    user: 'bg-green-500',
+    mortgage_ops: 'bg-blue-500',
+    finance: 'bg-amber-500',
+    legal: 'bg-indigo-500',
+    agent: 'bg-teal-500',
+    lender_ops: 'bg-orange-500',
+};
+
+interface UserRole {
+    role: {
+        id: string;
+        name: string;
+    };
+}
+
+interface UserFromApi {
+    id: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    phone: string | null;
+    isActive: boolean;
+    isEmailVerified: boolean;
+    lastLoginAt: string | null;
+    createdAt: string;
+    updatedAt: string;
+    userRoles: UserRole[];
+}
+
+interface UsersResponse {
+    data: UserFromApi[];
+    meta: {
+        total: number;
+        page: number;
+        limit: number;
+        totalPages: number;
+    };
+}
 
 export function PersonaSwitcher() {
-    const { user, login, logout, isLoading } = useAuth();
+    const { user, login, logout, isLoading: authLoading } = useAuth();
     const router = useRouter();
     const [switching, setSwitching] = useState(false);
     const [switchingTo, setSwitchingTo] = useState<string | null>(null);
 
-    const currentPersona = DEMO_PERSONAS.find(p => p.email === user?.email);
+    // Fetch users from the API
+    const { data: usersResponse, isLoading: usersLoading } = useQuery({
+        queryKey: ['users-for-switcher'],
+        queryFn: async () => {
+            const response = await userApi.get<UsersResponse>('/users?limit=50');
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to fetch users');
+            }
+            return response.data;
+        },
+        enabled: !!user, // Only fetch when logged in
+        staleTime: 1000 * 60 * 5, // Cache for 5 minutes
+    });
 
-    const handleSwitch = async (persona: (typeof DEMO_PERSONAS)[0]) => {
-        if (persona.email === user?.email) return;
+    const users = usersResponse?.data || [];
+
+    const getPrimaryRole = (userRoles: UserRole[]): string => {
+        if (!userRoles || userRoles.length === 0) return 'user';
+        // Prefer 'admin' role, otherwise take the first one
+        const adminRole = userRoles.find(ur => ur.role.name === 'admin');
+        return adminRole ? 'admin' : userRoles[0].role.name;
+    };
+
+    const getRoleColor = (roleName: string): string => {
+        return ROLE_COLORS[roleName] || 'bg-gray-500';
+    };
+
+    const formatRoleName = (roleName: string): string => {
+        return roleName
+            .split('_')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
+    };
+
+    const handleSwitch = async (targetUser: UserFromApi) => {
+        if (targetUser.email === user?.email) return;
 
         setSwitching(true);
-        setSwitchingTo(persona.name);
+        setSwitchingTo(targetUser.firstName);
 
         try {
             // Logout current user
@@ -75,11 +114,12 @@ export function PersonaSwitcher() {
                 await logout();
             }
 
-            // Login as new persona
-            await login(persona.email, persona.password);
+            // Login as new persona with the demo password
+            await login(targetUser.email, DEMO_PASSWORD);
 
             // Redirect based on role
-            if (persona.role === 'Admin') {
+            const primaryRole = getPrimaryRole(targetUser.userRoles);
+            if (primaryRole === 'admin') {
                 router.push('/admin/dashboard');
             } else {
                 router.push('/dashboard');
@@ -92,9 +132,11 @@ export function PersonaSwitcher() {
         }
     };
 
-    if (isLoading) {
+    if (authLoading) {
         return null;
     }
+
+    const currentUserName = user ? `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email : 'Personas';
 
     return (
         <DropdownMenu>
@@ -108,42 +150,58 @@ export function PersonaSwitcher() {
                     ) : (
                         <>
                             <Users className="h-4 w-4" />
-                            {currentPersona ? currentPersona.name : 'Demo Personas'}
+                            {currentUserName}
                         </>
                     )}
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-64">
+            <DropdownMenuContent align="end" className="w-72">
                 <DropdownMenuLabel>Switch Demo Persona</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                {DEMO_PERSONAS.map(persona => {
-                    const Icon = persona.icon;
-                    const isActive = persona.email === user?.email;
+                {usersLoading ? (
+                    <div className="flex items-center justify-center py-4">
+                        <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+                        <span className="ml-2 text-sm text-muted-foreground">Loading users...</span>
+                    </div>
+                ) : users.length === 0 ? (
+                    <div className="px-2 py-4 text-sm text-muted-foreground text-center">
+                        No users found. Create demo users to enable switching.
+                    </div>
+                ) : (
+                    users.map(u => {
+                        const isActive = u.email === user?.email;
+                        const primaryRole = getPrimaryRole(u.userRoles);
+                        const roleColor = getRoleColor(primaryRole);
 
-                    return (
-                        <DropdownMenuItem
-                            key={persona.email}
-                            onClick={() => handleSwitch(persona)}
-                            disabled={isActive || switching}
-                            className="flex items-start gap-3 py-2"
-                        >
-                            <Icon className={`h-5 w-5 mt-0.5 ${isActive ? 'text-primary' : 'text-muted-foreground'}`} />
-                            <div className="flex flex-col flex-1">
-                                <div className="flex items-center gap-2">
-                                    <span className={isActive ? 'font-medium' : ''}>{persona.name}</span>
-                                    <Badge variant="secondary" className={`${persona.roleColor} text-white text-xs`}>
-                                        {persona.role}
-                                    </Badge>
+                        return (
+                            <DropdownMenuItem
+                                key={u.id}
+                                onClick={() => handleSwitch(u)}
+                                disabled={isActive || switching}
+                                className="flex items-start gap-3 py-2"
+                            >
+                                <UserCircle
+                                    className={`h-5 w-5 mt-0.5 ${isActive ? 'text-primary' : 'text-muted-foreground'}`}
+                                />
+                                <div className="flex flex-col flex-1 min-w-0">
+                                    <div className="flex items-center gap-2">
+                                        <span className={`truncate ${isActive ? 'font-medium' : ''}`}>
+                                            {u.firstName} {u.lastName}
+                                        </span>
+                                        <Badge variant="secondary" className={`${roleColor} text-white text-xs shrink-0`}>
+                                            {formatRoleName(primaryRole)}
+                                        </Badge>
+                                    </div>
+                                    <span className="text-xs text-muted-foreground truncate">{u.email}</span>
                                 </div>
-                                <span className="text-xs text-muted-foreground">{persona.description}</span>
-                            </div>
-                            {isActive && <span className="text-xs text-green-600 mt-0.5">Active</span>}
-                        </DropdownMenuItem>
-                    );
-                })}
+                                {isActive && <span className="text-xs text-green-600 mt-0.5 shrink-0">Active</span>}
+                            </DropdownMenuItem>
+                        );
+                    })
+                )}
                 <DropdownMenuSeparator />
                 <div className="px-2 py-1.5 text-xs text-muted-foreground">
-                    Quick-switch between demo users to test the full mortgage flow
+                    Quick-switch between users. Default password: <code className="bg-muted px-1 rounded">{DEMO_PASSWORD}</code>
                 </div>
             </DropdownMenuContent>
         </DropdownMenu>

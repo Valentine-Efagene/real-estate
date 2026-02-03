@@ -85,6 +85,23 @@ userRouter.patch('/profile', async (req, res, next) => {
     }
 });
 
+// Change password (for authenticated user)
+userRouter.post('/change-password', async (req, res, next) => {
+    try {
+        const userId = (req as any).userId;
+
+        const { currentPassword, newPassword } = z.object({
+            currentPassword: z.string().min(1, 'Current password is required'),
+            newPassword: z.string().min(8, 'New password must be at least 8 characters'),
+        }).parse(req.body);
+
+        const result = await userService.changePassword(userId, currentPassword, newPassword);
+        res.json(successResponse(result));
+    } catch (error) {
+        next(error);
+    }
+});
+
 // Suspend user
 userRouter.post('/:id/suspend', async (req, res, next) => {
     try {

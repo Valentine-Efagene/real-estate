@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import { prisma } from '../lib/prisma';
-import { NotFoundError, ConflictError } from '@valentine-efagene/qshelter-common';
+import { NotFoundError, ConflictError, UnauthorizedError } from '@valentine-efagene/qshelter-common';
 import {
     createUserSchema,
     updateUserSchema,
@@ -283,6 +283,34 @@ class UserService {
         });
 
         return this.findById(userId);
+    }
+
+    async changePassword(userId: string, currentPassword: string, newPassword: string) {
+        const user = await prisma.user.findUnique({ where: { id: userId } });
+        if (!user) {
+            throw new NotFoundError('User not found');
+        }
+
+        // Check if user has a password (OAuth users may not)
+        if (!user.password) {
+            throw new UnauthorizedError('Cannot change password for OAuth accounts');
+        }
+
+        // Verify current password
+        const isValidPassword = await bcrypt.compare(currentPassword, user.password);
+        if (!isValidPassword) {
+            throw new UnauthorizedError('Current password is incorrect');
+        }
+
+        // Hash new password
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+        await prisma.user.update({
+            where: { id: userId },
+            data: { password: hashedPassword },
+        });
+
+        return { message: 'Password changed successfully' };
     }
 }
 
