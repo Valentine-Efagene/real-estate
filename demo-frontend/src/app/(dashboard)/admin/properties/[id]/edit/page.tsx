@@ -72,7 +72,7 @@ function EditPropertyPage() {
     useEffect(() => {
         const fetchPresignedUrls = async () => {
             if (!existingMedia || existingMedia.length === 0) return;
-            
+
             const urls: Record<string, string> = {};
             await Promise.all(
                 existingMedia.map(async (media) => {
@@ -86,7 +86,7 @@ function EditPropertyPage() {
             );
             setPresignedUrls(urls);
         };
-        
+
         fetchPresignedUrls();
     }, [existingMedia]);
 
@@ -450,68 +450,66 @@ function EditPropertyPage() {
                                     {existingMedia.map((media) => {
                                         const displayUrl = presignedUrls[media.id] || '';
                                         return (
-                                        <div
-                                            key={media.id}
-                                            className={`relative group rounded-lg overflow-hidden border-2 ${
-                                                formData.displayImageId === media.id
-                                                    ? 'border-primary ring-2 ring-primary/20'
-                                                    : 'border-transparent'
-                                            }`}
-                                        >
-                                            {!displayUrl ? (
-                                                <div className="w-full h-32 bg-muted flex items-center justify-center">
-                                                    <span className="text-xs text-muted-foreground">Loading...</span>
-                                                </div>
-                                            ) : media.type === 'VIDEO' ? (
-                                                <video
-                                                    src={displayUrl}
-                                                    className="w-full h-32 object-cover"
-                                                    muted
-                                                />
-                                            ) : (
-                                                <img
-                                                    src={displayUrl}
-                                                    alt="Property media"
-                                                    className="w-full h-32 object-cover"
-                                                />
-                                            )}
-
-                                            {/* Overlay controls */}
-                                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                                                <Button
-                                                    size="icon"
-                                                    variant="secondary"
-                                                    className="h-8 w-8"
-                                                    onClick={() => handleSetDisplayImage(media.id)}
-                                                    title="Set as display image"
-                                                >
-                                                    <Star
-                                                        className={`h-4 w-4 ${
-                                                            formData.displayImageId === media.id
-                                                                ? 'fill-yellow-400 text-yellow-400'
-                                                                : ''
-                                                        }`}
+                                            <div
+                                                key={media.id}
+                                                className={`relative group rounded-lg overflow-hidden border-2 ${formData.displayImageId === media.id
+                                                        ? 'border-primary ring-2 ring-primary/20'
+                                                        : 'border-transparent'
+                                                    }`}
+                                            >
+                                                {!displayUrl ? (
+                                                    <div className="w-full h-32 bg-muted flex items-center justify-center">
+                                                        <span className="text-xs text-muted-foreground">Loading...</span>
+                                                    </div>
+                                                ) : media.type === 'VIDEO' ? (
+                                                    <video
+                                                        src={displayUrl}
+                                                        className="w-full h-32 object-cover"
+                                                        muted
                                                     />
-                                                </Button>
-                                                <Button
-                                                    size="icon"
-                                                    variant="destructive"
-                                                    className="h-8 w-8"
-                                                    onClick={() => handleDeleteMedia(media.id)}
-                                                    title="Delete media"
-                                                >
-                                                    <Trash2 className="h-4 w-4" />
-                                                </Button>
-                                            </div>
+                                                ) : (
+                                                    <img
+                                                        src={displayUrl}
+                                                        alt="Property media"
+                                                        className="w-full h-32 object-cover"
+                                                    />
+                                                )}
 
-                                            {/* Display image badge */}
-                                            {formData.displayImageId === media.id && (
-                                                <div className="absolute top-2 left-2 bg-primary text-primary-foreground text-xs px-2 py-1 rounded">
-                                                    Display Image
+                                                {/* Overlay controls */}
+                                                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                                                    <Button
+                                                        size="icon"
+                                                        variant="secondary"
+                                                        className="h-8 w-8"
+                                                        onClick={() => handleSetDisplayImage(media.id)}
+                                                        title="Set as display image"
+                                                    >
+                                                        <Star
+                                                            className={`h-4 w-4 ${formData.displayImageId === media.id
+                                                                    ? 'fill-yellow-400 text-yellow-400'
+                                                                    : ''
+                                                                }`}
+                                                        />
+                                                    </Button>
+                                                    <Button
+                                                        size="icon"
+                                                        variant="destructive"
+                                                        className="h-8 w-8"
+                                                        onClick={() => handleDeleteMedia(media.id)}
+                                                        title="Delete media"
+                                                    >
+                                                        <Trash2 className="h-4 w-4" />
+                                                    </Button>
                                                 </div>
-                                            )}
-                                        </div>
-                                    );
+
+                                                {/* Display image badge */}
+                                                {formData.displayImageId === media.id && (
+                                                    <div className="absolute top-2 left-2 bg-primary text-primary-foreground text-xs px-2 py-1 rounded">
+                                                        Display Image
+                                                    </div>
+                                                )}
+                                            </div>
+                                        );
                                     })}
                                 </div>
                             ) : (
