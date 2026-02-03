@@ -21,6 +21,7 @@ import {
   type PropertyUnit,
   type PaymentMethod,
 } from '@/lib/hooks';
+import { PropertyImage } from '@/components/ui/property-image';
 
 function formatCurrency(amount: number, currency: string = 'NGN') {
   return new Intl.NumberFormat('en-NG', {
@@ -103,6 +104,16 @@ function PropertyDetailContent({ propertyId }: { propertyId: string }) {
       <Link href="/properties">
         <Button variant="ghost">← Back to Properties</Button>
       </Link>
+
+      {/* Property Hero Image */}
+      <div className="relative h-64 md:h-80 rounded-lg overflow-hidden bg-gray-200">
+        <PropertyImage
+          src={property.displayImage?.url}
+          alt={property.title}
+          fill
+          className="object-cover"
+        />
+      </div>
 
       {/* Property Header */}
       <div className="flex justify-between items-start">

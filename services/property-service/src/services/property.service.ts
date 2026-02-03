@@ -42,6 +42,14 @@ class PropertyService {
         const properties = await prisma.property.findMany({
             where: filters,
             orderBy: { createdAt: 'desc' },
+            include: {
+                displayImage: {
+                    select: {
+                        id: true,
+                        url: true,
+                    },
+                },
+            },
         });
         return { items: properties, total: properties.length };
     }
@@ -50,6 +58,12 @@ class PropertyService {
         const property = await prisma.property.findUnique({
             where: { id },
             include: {
+                displayImage: {
+                    select: {
+                        id: true,
+                        url: true,
+                    },
+                },
                 media: true,
                 documents: true,
                 amenities: {

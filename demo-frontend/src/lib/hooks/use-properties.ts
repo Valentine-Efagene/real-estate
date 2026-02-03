@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { propertyApi } from '@/lib/api/client';
+import { propertyApi, mortgageApi } from '@/lib/api/client';
 import { queryKeys } from '@/lib/query/query-keys';
 
 // Types (aligned with Prisma schema)
@@ -19,7 +19,10 @@ export interface Property {
   latitude?: number;
   status: string; // DRAFT, PUBLISHED, etc.
   displayImageId?: string;
-  displayImageUrl?: string;
+  displayImage?: {
+    id: string;
+    url: string;
+  };
   organizationId?: string;
   createdAt: string;
   updatedAt: string;
@@ -139,8 +142,8 @@ export function usePaymentMethods(propertyId: string) {
   return useQuery({
     queryKey: queryKeys.properties.paymentMethods(propertyId),
     queryFn: async () => {
-      const response = await propertyApi.get<PaymentMethod[]>(
-        `/property/properties/${propertyId}/payment-methods`
+      const response = await mortgageApi.get<PaymentMethod[]>(
+        `/payment-methods/property/${propertyId}`
       );
       if (!response.success) {
         throw new Error(response.error?.message || 'Failed to fetch payment methods');

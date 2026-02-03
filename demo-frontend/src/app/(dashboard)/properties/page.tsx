@@ -1,12 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { ProtectedRoute } from '@/components/auth';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import { PropertyImage } from '@/components/ui/property-image';
 import { useProperties } from '@/lib/hooks';
 
 function PropertiesContent() {
@@ -61,18 +61,12 @@ function PropertiesContent() {
           {properties.map((property) => (
             <Card key={property.id} className="overflow-hidden">
               <div className="relative h-48 bg-gray-200">
-                {property.displayImageUrl ? (
-                  <Image
-                    src={property.displayImageUrl}
-                    alt={property.title}
-                    fill
-                    className="object-cover"
-                  />
-                ) : (
-                  <div className="flex items-center justify-center h-full">
-                    <span className="text-4xl">🏠</span>
-                  </div>
-                )}
+                <PropertyImage
+                  src={property.displayImage?.url}
+                  alt={property.title}
+                  fill
+                  className="object-cover"
+                />
                 <Badge className="absolute top-2 right-2">
                   {property.status}
                 </Badge>

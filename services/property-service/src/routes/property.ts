@@ -99,9 +99,22 @@ propertyRouter.post('/properties/:id/media', async (req, res, next) => {
         if (!tenantId) {
             return res.status(400).json({ success: false, error: 'Tenant context required' });
         }
-        
-        // Expect array of media items: [{ url, type, order?, caption? }]
-        const mediaItems = Array.isArray(req.body) ? req.body : [req.body];
+
+        // Accept multiple formats:
+        // 1. Array directly: [{ url, type, order?, caption? }]
+        // 2. Object with media property: { media: [...] }
+        // 3. Single object: { url, type, order?, caption? }
+        let mediaItems: Array<{ url: string; type: string; order?: number; caption?: string }>;
+        if (Array.isArray(req.body)) {
+            mediaItems = req.body;
+        } else if (req.body.media && Array.isArray(req.body.media)) {
+            mediaItems = req.body.media;
+        } else if (req.body.url) {
+            mediaItems = [req.body];
+        } else {
+            return res.status(400).json({ success: false, error: 'Invalid media format. Expected array or { media: [...] }' });
+        }
+
         const created = await propertyService.addPropertyMedia(id, tenantId, mediaItems);
         res.status(201).json(successResponse(created));
     } catch (error) {

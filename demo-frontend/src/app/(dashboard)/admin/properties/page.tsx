@@ -34,7 +34,7 @@ import {
     PropertyUnit,
 } from '@/lib/hooks/use-properties';
 import Link from 'next/link';
-import { Plus, Trash2, Eye, EyeOff, Building, Layers, Home, ChevronRight } from 'lucide-react';
+import { Plus, Trash2, Eye, EyeOff, Building, Layers, Home, ChevronRight, Pencil } from 'lucide-react';
 
 // ============================================================================
 // Create Variant Dialog
@@ -414,6 +414,12 @@ function PropertyRow({ property }: { property: Property }) {
                                 Publish
                             </Button>
                         )}
+                        <Link href={`/admin/properties/${property.id}/edit`}>
+                            <Button size="sm" variant="outline">
+                                <Pencil className="h-3 w-3 mr-1" />
+                                Edit
+                            </Button>
+                        </Link>
                         <CreateVariantDialog propertyId={property.id} />
                         <Link href={`/admin/properties/${property.id}/payment-methods`}>
                             <Button size="sm" variant="outline">

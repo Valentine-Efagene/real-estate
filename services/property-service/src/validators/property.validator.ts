@@ -23,6 +23,11 @@ export const createPropertySchema = z
             example: 'org_lekki_gardens_123',
             description: 'ID of the organization that owns this property (e.g., developer). If null, only the creating user can manage it.'
         }),
+        // Display image ID - reference to a PropertyMedia record
+        displayImageId: z.string().optional().openapi({
+            example: 'media_123',
+            description: 'ID of the PropertyMedia to use as display image'
+        }),
     })
     .openapi('CreatePropertyRequest');
 
