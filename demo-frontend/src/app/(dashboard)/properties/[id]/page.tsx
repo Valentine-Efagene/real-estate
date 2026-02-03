@@ -31,6 +31,27 @@ function formatCurrency(amount: number, currency: string = 'NGN') {
   }).format(amount);
 }
 
+// Helper to extract payment info from phases
+function getPaymentMethodInfo(method: PaymentMethod) {
+  const paymentPhases = method.phases?.filter(p => p.phaseCategory === 'PAYMENT') || [];
+  const downPaymentPhase = paymentPhases.find(p => p.phaseType === 'DOWNPAYMENT');
+  const mortgagePhase = paymentPhases.find(p => p.phaseType === 'MORTGAGE' || p.phaseType === 'INSTALLMENT');
+
+  // Determine type based on phases present
+  let type: 'MORTGAGE' | 'INSTALLMENT' | 'FULL_PAYMENT' = 'FULL_PAYMENT';
+  if (mortgagePhase) {
+    type = mortgagePhase.phaseType === 'MORTGAGE' ? 'MORTGAGE' : 'INSTALLMENT';
+  }
+
+  return {
+    type,
+    downPaymentPercentage: downPaymentPhase?.percentOfPrice || 0,
+    mortgagePercentage: mortgagePhase?.percentOfPrice || 0,
+    interestRate: mortgagePhase?.interestRate || 0,
+    termMonths: mortgagePhase?.paymentPlan?.numberOfInstallments || undefined,
+  };
+}
+
 function PropertyDetailContent({ propertyId }: { propertyId: string }) {
   const router = useRouter();
   const { data: property, isLoading: propertyLoading } = useProperty(propertyId);
@@ -55,19 +76,19 @@ function PropertyDetailContent({ propertyId }: { propertyId: string }) {
     }
 
     const unitPrice = selectedUnit.priceOverride ?? selectedVariant.price;
+    const methodInfo = getPaymentMethodInfo(selectedMethod);
 
     try {
       const application = await createApplication.mutateAsync({
         propertyUnitId: selectedUnit.id,
         paymentMethodId: selectedMethod.id,
         title: `Purchase - ${property?.title} Unit ${selectedUnit.unitNumber}`,
-        applicationType: selectedMethod.type === 'MORTGAGE' ? 'MORTGAGE' :
-          selectedMethod.type === 'INSTALLMENT' ? 'INSTALLMENT' : 'FULL_PAYMENT',
+        applicationType: methodInfo.type,
         totalAmount: unitPrice,
         monthlyIncome: 2500000, // Default - would collect from user
         monthlyExpenses: 800000, // Default - would collect from user
         applicantAge: 40, // Default - would collect from user
-        selectedMortgageTermMonths: selectedMethod.termMonths,
+        selectedMortgageTermMonths: methodInfo.termMonths,
       });
 
       toast.success('Application created successfully!');
@@ -283,51 +304,93 @@ function PropertyDetailContent({ propertyId }: { propertyId: string }) {
           ) : paymentMethods?.length === 0 ? (
             <p className="text-gray-500">No payment methods configured</p>
           ) : (
-            <div className="grid gap-4 md:grid-cols-2">
-              {paymentMethods?.map((method) => (
-                <Card
-                  key={method.id}
-                  className={`cursor-pointer transition-all ${selectedMethod?.id === method.id
-                    ? 'ring-2 ring-primary'
-                    : 'hover:shadow-md'
-                    }`}
-                  onClick={() => setSelectedMethod(method)}
-                >
-                  <CardHeader>
-                    <div className="flex justify-between items-start">
-                      <CardTitle className="text-lg">{method.name}</CardTitle>
-                      <Badge>{method.type}</Badge>
-                    </div>
-                    <CardDescription>{method.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-2 text-sm">
-                      <div>
-                        <span className="text-gray-500">Down Payment:</span>{' '}
-                        <span className="font-medium">{method.downPaymentPercentage}%</span>
+            <div className="grid gap-4 md:grid-cols-1">
+              {paymentMethods?.map((method) => {
+                // Calculate summary from phases
+                const paymentPhases = method.phases?.filter(p => p.phaseCategory === 'PAYMENT') || [];
+                const downPaymentPhase = paymentPhases.find(p => p.phaseType === 'DOWNPAYMENT');
+                const mortgagePhase = paymentPhases.find(p => p.phaseType === 'MORTGAGE' || p.phaseType === 'INSTALLMENT');
+
+                return (
+                  <Card
+                    key={method.id}
+                    className={`cursor-pointer transition-all ${selectedMethod?.id === method.id
+                      ? 'ring-2 ring-primary'
+                      : 'hover:shadow-md'
+                      }`}
+                    onClick={() => setSelectedMethod(method)}
+                  >
+                    <CardHeader>
+                      <div className="flex justify-between items-start">
+                        <CardTitle className="text-lg">{method.name}</CardTitle>
+                        <div className="flex gap-2">
+                          {method.requiresManualApproval && (
+                            <Badge variant="outline">Requires Approval</Badge>
+                          )}
+                          {method.allowEarlyPayoff && (
+                            <Badge variant="secondary">Early Payoff Allowed</Badge>
+                          )}
+                        </div>
                       </div>
-                      {method.mortgagePercentage && (
-                        <div>
-                          <span className="text-gray-500">Mortgage:</span>{' '}
-                          <span className="font-medium">{method.mortgagePercentage}%</span>
+                      <CardDescription>{method.description}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        {/* Quick Summary */}
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                          {downPaymentPhase?.percentOfPrice && (
+                            <div>
+                              <span className="text-gray-500 block">Down Payment</span>
+                              <span className="font-medium">{downPaymentPhase.percentOfPrice}%</span>
+                            </div>
+                          )}
+                          {mortgagePhase?.percentOfPrice && (
+                            <div>
+                              <span className="text-gray-500 block">Mortgage</span>
+                              <span className="font-medium">{mortgagePhase.percentOfPrice}%</span>
+                            </div>
+                          )}
+                          {mortgagePhase?.interestRate && (
+                            <div>
+                              <span className="text-gray-500 block">Interest Rate</span>
+                              <span className="font-medium">{mortgagePhase.interestRate}% p.a.</span>
+                            </div>
+                          )}
+                          <div>
+                            <span className="text-gray-500 block">Phases</span>
+                            <span className="font-medium">{method.phases?.length || 0} steps</span>
+                          </div>
                         </div>
-                      )}
-                      {method.interestRate && (
-                        <div>
-                          <span className="text-gray-500">Interest Rate:</span>{' '}
-                          <span className="font-medium">{method.interestRate}% p.a.</span>
-                        </div>
-                      )}
-                      {method.termMonths && (
-                        <div>
-                          <span className="text-gray-500">Term:</span>{' '}
-                          <span className="font-medium">{method.termMonths / 12} years</span>
-                        </div>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+
+                        {/* Phase Timeline */}
+                        {method.phases && method.phases.length > 0 && (
+                          <div className="border-t pt-4">
+                            <h4 className="text-sm font-medium mb-3">Payment Journey</h4>
+                            <div className="space-y-2">
+                              {method.phases.sort((a, b) => a.order - b.order).map((phase, idx) => (
+                                <div key={phase.id} className="flex items-center gap-3 text-sm">
+                                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs font-medium">
+                                    {idx + 1}
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <span className="font-medium">{phase.name}</span>
+                                    {phase.percentOfPrice && (
+                                      <span className="text-gray-500 ml-2">({phase.percentOfPrice}%)</span>
+                                    )}
+                                  </div>
+                                  <Badge variant="outline" className="text-xs">
+                                    {phase.phaseCategory}
+                                  </Badge>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
           )}
         </TabsContent>
@@ -359,26 +422,36 @@ function PropertyDetailContent({ propertyId }: { propertyId: string }) {
                     </DialogDescription>
                   </DialogHeader>
                   <div className="space-y-4 py-4">
-                    <div className="grid grid-cols-2 gap-4 text-sm">
-                      <div className="text-gray-500">Property:</div>
-                      <div className="font-medium">{property?.title}</div>
-                      <div className="text-gray-500">Unit:</div>
-                      <div className="font-medium">{selectedUnit.unitNumber}</div>
-                      <div className="text-gray-500">Price:</div>
-                      <div className="font-medium">
-                        {formatCurrency(selectedUnit.priceOverride ?? selectedVariant?.price ?? 0, property?.currency || 'NGN')}
-                      </div>
-                      <div className="text-gray-500">Payment Method:</div>
-                      <div className="font-medium">{selectedMethod.name}</div>
-                      <div className="text-gray-500">Down Payment:</div>
-                      <div className="font-medium">
-                        {formatCurrency(
-                          ((selectedUnit.priceOverride ?? selectedVariant?.price ?? 0) * selectedMethod.downPaymentPercentage) / 100,
-                          property?.currency || 'NGN'
-                        )}{' '}
-                        ({selectedMethod.downPaymentPercentage}%)
-                      </div>
-                    </div>
+                    {(() => {
+                      const methodInfo = getPaymentMethodInfo(selectedMethod);
+                      const unitPrice = selectedUnit.priceOverride ?? selectedVariant?.price ?? 0;
+                      return (
+                        <div className="grid grid-cols-2 gap-4 text-sm">
+                          <div className="text-gray-500">Property:</div>
+                          <div className="font-medium">{property?.title}</div>
+                          <div className="text-gray-500">Unit:</div>
+                          <div className="font-medium">{selectedUnit.unitNumber}</div>
+                          <div className="text-gray-500">Price:</div>
+                          <div className="font-medium">
+                            {formatCurrency(unitPrice, property?.currency || 'NGN')}
+                          </div>
+                          <div className="text-gray-500">Payment Method:</div>
+                          <div className="font-medium">{selectedMethod.name}</div>
+                          {methodInfo.downPaymentPercentage > 0 && (
+                            <>
+                              <div className="text-gray-500">Down Payment:</div>
+                              <div className="font-medium">
+                                {formatCurrency(
+                                  (unitPrice * methodInfo.downPaymentPercentage) / 100,
+                                  property?.currency || 'NGN'
+                                )}{' '}
+                                ({methodInfo.downPaymentPercentage}%)
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      );
+                    })()}
                   </div>
                   <DialogFooter>
                     <Button variant="outline" onClick={() => setShowApplicationDialog(false)}>

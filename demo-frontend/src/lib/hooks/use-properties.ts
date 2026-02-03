@@ -58,15 +58,32 @@ export interface PropertyUnit {
   notes?: string;
 }
 
+export interface PaymentMethodPhase {
+  id: string;
+  name: string;
+  description: string | null;
+  phaseCategory: 'QUESTIONNAIRE' | 'DOCUMENTATION' | 'PAYMENT';
+  phaseType: string;
+  order: number;
+  interestRate: number | null;
+  percentOfPrice: number | null;
+  paymentPlan?: {
+    id: string;
+    name: string;
+    description: string;
+    paymentFrequency: string;
+    numberOfInstallments: number;
+  } | null;
+}
+
 export interface PaymentMethod {
   id: string;
   name: string;
-  type: string; // FULL_PAYMENT, INSTALLMENT, MORTGAGE
-  downPaymentPercentage: number;
-  mortgagePercentage?: number;
-  interestRate?: number;
-  termMonths?: number;
   description: string;
+  isActive: boolean;
+  allowEarlyPayoff: boolean;
+  requiresManualApproval: boolean;
+  phases: PaymentMethodPhase[];
 }
 
 // Hooks
@@ -138,17 +155,26 @@ export function usePropertyUnits(propertyId: string, variantId: string) {
   });
 }
 
+// API response type for payment method links
+interface PaymentMethodLink {
+  propertyId: string;
+  paymentMethodId: string;
+  isActive: boolean;
+  paymentMethod: PaymentMethod;
+}
+
 export function usePaymentMethods(propertyId: string) {
   return useQuery({
     queryKey: queryKeys.properties.paymentMethods(propertyId),
     queryFn: async () => {
-      const response = await mortgageApi.get<PaymentMethod[]>(
+      const response = await mortgageApi.get<PaymentMethodLink[]>(
         `/payment-methods/property/${propertyId}`
       );
       if (!response.success) {
         throw new Error(response.error?.message || 'Failed to fetch payment methods');
       }
-      return response.data!;
+      // Extract the paymentMethod from each link
+      return response.data!.map((link) => link.paymentMethod);
     },
     enabled: !!propertyId,
   });
