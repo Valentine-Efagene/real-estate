@@ -196,6 +196,55 @@ class PropertyService {
 
         return updated;
     }
+
+    async addPropertyMedia(
+        propertyId: string,
+        tenantId: string,
+        media: Array<{ url: string; type: string; order?: number; caption?: string }>
+    ) {
+        // Verify property exists and belongs to tenant
+        const property = await prisma.property.findFirst({
+            where: { id: propertyId, tenantId },
+        });
+
+        if (!property) {
+            throw new AppError(404, 'Property not found');
+        }
+
+        // Create all media entries
+        const created = await prisma.$transaction(
+            media.map((item, index) =>
+                prisma.propertyMedia.create({
+                    data: {
+                        propertyId,
+                        tenantId,
+                        url: item.url,
+                        type: item.type,
+                        order: item.order ?? index,
+                        caption: item.caption,
+                    },
+                })
+            )
+        );
+
+        return created;
+    }
+
+    async deletePropertyMedia(mediaId: string, tenantId: string) {
+        const media = await prisma.propertyMedia.findFirst({
+            where: { id: mediaId, tenantId },
+        });
+
+        if (!media) {
+            throw new AppError(404, 'Media not found');
+        }
+
+        await prisma.propertyMedia.delete({
+            where: { id: mediaId },
+        });
+
+        return { success: true };
+    }
 }
 
 export const propertyService = new PropertyService();

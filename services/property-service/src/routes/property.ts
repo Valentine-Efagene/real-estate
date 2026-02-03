@@ -91,6 +91,39 @@ propertyRouter.get('/property-media/:propertyId', async (req, res, next) => {
     }
 });
 
+// Add media to property
+propertyRouter.post('/properties/:id/media', async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const tenantId = req.tenantContext?.tenantId;
+        if (!tenantId) {
+            return res.status(400).json({ success: false, error: 'Tenant context required' });
+        }
+        
+        // Expect array of media items: [{ url, type, order?, caption? }]
+        const mediaItems = Array.isArray(req.body) ? req.body : [req.body];
+        const created = await propertyService.addPropertyMedia(id, tenantId, mediaItems);
+        res.status(201).json(successResponse(created));
+    } catch (error) {
+        next(error);
+    }
+});
+
+// Delete property media
+propertyRouter.delete('/property-media/:mediaId', async (req, res, next) => {
+    try {
+        const { mediaId } = req.params;
+        const tenantId = req.tenantContext?.tenantId;
+        if (!tenantId) {
+            return res.status(400).json({ success: false, error: 'Tenant context required' });
+        }
+        const result = await propertyService.deletePropertyMedia(mediaId, tenantId);
+        res.json(successResponse(result));
+    } catch (error) {
+        next(error);
+    }
+});
+
 // Property Documents
 propertyRouter.get('/property-document/:propertyId', async (req, res, next) => {
     try {
