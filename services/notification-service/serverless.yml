@@ -156,6 +156,12 @@ functions:
 
 custom:
   vpcConfig:
+    staging:
+      securityGroupIds:
+        - ${ssm:/qshelter/staging/lambda-security-group-id}
+      subnetIds:
+        - ${ssm:/qshelter/staging/private-subnet-1-id}
+        - ${ssm:/qshelter/staging/private-subnet-2-id}
     prod:
       securityGroupIds:
         - ${ssm:/qshelter/prod/lambda-security-group-id, 'sg-placeholder'}

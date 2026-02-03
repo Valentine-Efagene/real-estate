@@ -30,12 +30,12 @@ export class RealEstateStack extends cdk.Stack {
     const prefix = `qshelter-${stage}`;
 
     // === Networking ===
-    // For staging: No NAT gateway needed since RDS is publicly accessible
-    // and Lambdas connect via public endpoint (not in VPC)
-    // For production: Set natGateways: 1 and put Lambdas in VPC
+    // NAT gateway allows Lambda in private subnets to reach AWS services (SSM, Secrets Manager, SNS)
+    // Cost: ~$32/month for 1 NAT gateway
+    // Alternative: VPC endpoints (~$7/month each for SSM, Secrets Manager, SNS)
     const vpc = new ec2.Vpc(this, "RealEstateVpc", {
       maxAzs: 2,
-      natGateways: stage === 'prod' ? 1 : 0,
+      natGateways: 1, // Enable NAT for both staging and prod
     });
 
     // === Lambda Security Group ===
@@ -276,23 +276,31 @@ export class RealEstateStack extends cdk.Stack {
       description: 'Database Security Group ID',
     });
 
-    // Private subnet SSM parameters - only needed for production where Lambdas run in VPC
-    // For staging/dev, Lambdas run outside VPC and connect to RDS via public endpoint
-    if (stage === 'prod') {
-      new ssm.StringParameter(this, 'PrivateSubnetIdsParameter', {
-        parameterName: `/qshelter/${stage}/private-subnet-ids`,
-        stringValue: vpc.privateSubnets.map(subnet => subnet.subnetId).join(','),
-        description: 'Private Subnet IDs (comma-separated)',
-      });
+    // Private subnet SSM parameters - needed for all stages where Lambdas run in VPC
+    new ssm.StringParameter(this, 'PrivateSubnetIdsParameter', {
+      parameterName: `/qshelter/${stage}/private-subnet-ids`,
+      stringValue: vpc.privateSubnets.map(subnet => subnet.subnetId).join(','),
+      description: 'Private Subnet IDs (comma-separated)',
+    });
 
-      // Individual subnet IDs for Serverless Framework (which needs array format)
-      vpc.privateSubnets.forEach((subnet, index) => {
-        new ssm.StringParameter(this, `PrivateSubnet${index + 1}IdParameter`, {
-          parameterName: `/qshelter/${stage}/private-subnet-${index + 1}-id`,
-          stringValue: subnet.subnetId,
-          description: `Private Subnet ${index + 1} ID`,
-        });
+    // Individual subnet IDs for Serverless Framework (which needs array format)
+    vpc.privateSubnets.forEach((subnet, index) => {
+      new ssm.StringParameter(this, `PrivateSubnet${index + 1}IdParameter`, {
+        parameterName: `/qshelter/${stage}/private-subnet-${index + 1}-id`,
+        stringValue: subnet.subnetId,
+        description: `Private Subnet ${index + 1} ID`,
       });
+    });
+
+    // Allow deployer's IP to access RDS directly (for migrations, debugging)
+    // Pass via context: --context deployerIp=1.2.3.4
+    const deployerIp = this.node.tryGetContext('deployerIp');
+    if (deployerIp) {
+      cluster.connections.allowFrom(
+        ec2.Peer.ipv4(`${deployerIp}/32`),
+        ec2.Port.tcp(3306),
+        'Allow deployer IP to access Aurora MySQL for migrations'
+      );
     }
 
     new ssm.StringParameter(this, 'DbHostParameter', {
