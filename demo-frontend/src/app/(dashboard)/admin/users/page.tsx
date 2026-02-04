@@ -11,9 +11,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from 'sonner';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@/lib/query';
+import { useRoles } from '@/lib/hooks/use-authorization';
+import { X, Plus } from 'lucide-react';
 
 interface User {
   id: string;
@@ -21,6 +25,7 @@ interface User {
   name: string;
   phone?: string;
   roles: string[];
+  roleIds: string[];
   status: 'ACTIVE' | 'INACTIVE' | 'SUSPENDED';
   emailVerifiedAt: string | null;
   createdAt: string;
@@ -38,16 +43,20 @@ function useUsers() {
       // API returns { success, data: { data: [...], meta: {...} } }
       const users = json.data?.data || json.data || [];
       // Map backend format to frontend format
-      return users.map((u: Record<string, unknown>) => ({
-        id: u.id,
-        email: u.email,
-        name: `${u.firstName || ''} ${u.lastName || ''}`.trim() || u.email,
-        phone: u.phone,
-        roles: (u.userRoles as Array<{ role?: { name?: string } }> || []).map(r => r.role?.name || 'user'),
-        status: u.isActive ? 'ACTIVE' : 'INACTIVE',
-        emailVerifiedAt: u.emailVerifiedAt as string | null,
-        createdAt: u.createdAt,
-      }));
+      return users.map((u: Record<string, unknown>) => {
+        const userRoles = (u.userRoles as Array<{ role?: { id?: string; name?: string } }> || []);
+        return {
+          id: u.id,
+          email: u.email,
+          name: `${u.firstName || ''} ${u.lastName || ''}`.trim() || u.email,
+          phone: u.phone,
+          roles: userRoles.map(r => r.role?.name || 'user'),
+          roleIds: userRoles.map(r => r.role?.id || '').filter(Boolean),
+          status: u.isActive ? 'ACTIVE' : 'INACTIVE',
+          emailVerifiedAt: u.emailVerifiedAt as string | null,
+          createdAt: u.createdAt,
+        };
+      });
     },
   });
 }
@@ -74,24 +83,28 @@ function useUpdateUserStatus() {
   });
 }
 
-function useAssignRole() {
+function useUpdateUserRoles() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ userId, roleId }: { userId: string; roleId: string }) => {
+    mutationFn: async ({ userId, roleIds }: { userId: string; roleIds: string[] }) => {
       const res = await fetch(`/api/proxy/user/users/${userId}/roles`, {
-        method: 'POST',
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         credentials: 'include',
-        body: JSON.stringify({ roleId }),
+        body: JSON.stringify({ roleIds }),
       });
-      if (!res.ok) throw new Error('Failed to assign role');
+      if (!res.ok) throw new Error('Failed to update user roles');
       return res.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.users.all });
+      toast.success('User roles updated');
+    },
+    onError: (error) => {
+      toast.error(error instanceof Error ? error.message : 'Failed to update roles');
     },
   });
 }
@@ -115,13 +128,26 @@ function useResendVerification() {
 
 function UsersTable({ users, filter }: { users: User[]; filter: string }) {
   const updateStatus = useUpdateUserStatus();
+  const updateRoles = useUpdateUserRoles();
   const resendVerification = useResendVerification();
+  const { data: allRoles = [] } = useRoles();
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [pendingRoleIds, setPendingRoleIds] = useState<string[]>([]);
 
   const filteredUsers = users.filter((user) => {
     if (filter === 'all') return true;
     return user.status === filter.toUpperCase();
   });
+
+  const handleOpenUserDialog = (user: User) => {
+    setSelectedUser(user);
+    setPendingRoleIds(user.roleIds);
+  };
+
+  const handleCloseUserDialog = () => {
+    setSelectedUser(null);
+    setPendingRoleIds([]);
+  };
 
   const handleStatusChange = async (userId: string, newStatus: string) => {
     try {
@@ -205,7 +231,7 @@ function UsersTable({ users, filter }: { users: User[]; filter: string }) {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => setSelectedUser(user)}
+                        onClick={() => handleOpenUserDialog(user)}
                       >
                         Manage
                       </Button>
@@ -271,17 +297,62 @@ function UsersTable({ users, filter }: { users: User[]; filter: string }) {
                         </div>
                         <div className="space-y-2">
                           <Label>Roles</Label>
-                          <div className="flex flex-wrap gap-1">
-                            {user.roles.map((role) => (
-                              <Badge key={role} variant="secondary">
-                                {role}
-                              </Badge>
-                            ))}
+                          <div className="flex flex-wrap gap-2">
+                            {pendingRoleIds.map((roleId) => {
+                              const role = allRoles.find((r) => r.id === roleId);
+                              return (
+                                <Badge key={roleId} variant="secondary" className="flex items-center gap-1">
+                                  {role?.name || roleId}
+                                  <button
+                                    type="button"
+                                    onClick={() => setPendingRoleIds(ids => ids.filter(id => id !== roleId))}
+                                    className="ml-1 hover:bg-muted rounded-full p-0.5"
+                                  >
+                                    <X className="h-3 w-3" />
+                                  </button>
+                                </Badge>
+                              );
+                            })}
                           </div>
+                          <div className="flex gap-2 mt-2">
+                            <Select
+                              value=""
+                              onValueChange={(roleId) => {
+                                if (roleId && !pendingRoleIds.includes(roleId)) {
+                                  setPendingRoleIds([...pendingRoleIds, roleId]);
+                                }
+                              }}
+                            >
+                              <SelectTrigger className="flex-1">
+                                <SelectValue placeholder="Add a role..." />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {allRoles
+                                  .filter((role) => !pendingRoleIds.includes(role.id))
+                                  .map((role) => (
+                                    <SelectItem key={role.id} value={role.id}>
+                                      {role.name} {role.description ? `- ${role.description}` : ''}
+                                    </SelectItem>
+                                  ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          {JSON.stringify(pendingRoleIds.sort()) !== JSON.stringify(user.roleIds.sort()) && (
+                            <Button
+                              size="sm"
+                              onClick={async () => {
+                                await updateRoles.mutateAsync({ userId: user.id, roleIds: pendingRoleIds });
+                              }}
+                              disabled={updateRoles.isPending}
+                              className="mt-2"
+                            >
+                              {updateRoles.isPending ? 'Saving...' : 'Save Role Changes'}
+                            </Button>
+                          )}
                         </div>
                       </div>
                       <DialogFooter>
-                        <Button variant="outline" onClick={() => setSelectedUser(null)}>
+                        <Button variant="outline" onClick={handleCloseUserDialog}>
                           Close
                         </Button>
                       </DialogFooter>

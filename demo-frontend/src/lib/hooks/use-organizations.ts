@@ -250,3 +250,38 @@ export function useEffectiveDocumentRequirements(
         enabled: !!phaseId && !!bankOrganizationId,
     });
 }
+
+// ============================================================================
+// Organization Members Hooks
+// ============================================================================
+
+export interface OrganizationMember {
+    id: string;
+    organizationId: string;
+    userId: string;
+    user: {
+        id: string;
+        email: string;
+        firstName: string | null;
+        lastName: string | null;
+    };
+    title: string | null;
+    department: string | null;
+    isActive: boolean;
+    joinedAt: string | null;
+    createdAt: string;
+}
+
+export function useOrganizationMembers(organizationId: string) {
+    return useQuery({
+        queryKey: queryKeys.organizations.members(organizationId),
+        queryFn: async () => {
+            const response = await userApi.get<OrganizationMember[]>(`/organizations/${organizationId}/members`);
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to fetch organization members');
+            }
+            return response.data!;
+        },
+        enabled: !!organizationId,
+    });
+}

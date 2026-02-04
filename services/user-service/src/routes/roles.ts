@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { successResponse } from '@valentine-efagene/qshelter-common';
+import { successResponse, getAuthContext } from '@valentine-efagene/qshelter-common';
 import { roleService } from '../services/role.service';
 import { z } from 'zod';
 
@@ -7,7 +7,10 @@ export const roleRouter = Router();
 
 roleRouter.get('/', async (req, res, next) => {
     try {
-        const tenantId = req.query.tenantId as string | undefined;
+        // Use tenantId from query param if provided, otherwise from auth context
+        const queryTenantId = req.query.tenantId as string | undefined;
+        const ctx = getAuthContext(req);
+        const tenantId = queryTenantId ?? ctx.tenantId;
         const result = await roleService.findAll(tenantId);
         res.json(successResponse(result));
     } catch (error) {

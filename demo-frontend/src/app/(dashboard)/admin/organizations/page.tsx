@@ -9,14 +9,14 @@ import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from 'sonner';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@/lib/query';
-import { Plus, UserPlus, Mail, RefreshCw, X, Clock } from 'lucide-react';
+import { Plus, UserPlus, Mail, RefreshCw, X, Clock, User } from 'lucide-react';
 
 interface Organization {
   id: string;
@@ -524,7 +524,7 @@ function AddMemberDialog({ organization }: { organization: Organization }) {
             Invite a user to join this organization as a staff member
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 max-w-md">
           <div className="space-y-2">
             <Label htmlFor="user-select">Select User *</Label>
             <Select value={selectedUserId} onValueChange={setSelectedUserId}>
@@ -553,20 +553,16 @@ function AddMemberDialog({ organization }: { organization: Organization }) {
             <Label htmlFor="role-select">Role</Label>
             <Select value={selectedRoleId} onValueChange={setSelectedRoleId}>
               <SelectTrigger>
-                <SelectValue placeholder="Auto-detect based on org type" />
+                <SelectValue placeholder="Select a role" />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="">Auto-detect based on org type</SelectItem>
+              <SelectContent className="max-w-[300px]">
                 {roles.map((role: Role) => (
-                  <SelectItem key={role.id} value={role.id}>
-                    {role.name} {role.description ? `- ${role.description}` : ''}
+                  <SelectItem key={role.id} value={role.id} className="truncate">
+                    {role.name}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
-            <p className="text-xs text-muted-foreground">
-              If not selected, a role will be assigned based on the organization type
-            </p>
           </div>
 
           <div className="space-y-2">
@@ -816,6 +812,60 @@ function PendingInvitationsList({ organization }: { organization: Organization }
   );
 }
 
+// Staff Members List Component
+function StaffMembersList({ organization }: { organization: Organization }) {
+  const { data: members = [], isLoading } = useQuery({
+    queryKey: queryKeys.organizations.members(organization.id),
+    queryFn: async () => {
+      const response = await fetch(`/api/proxy/user/organizations/${organization.id}/members`, {
+        credentials: 'include',
+      });
+      if (!response.ok) throw new Error('Failed to fetch members');
+      const json = await response.json();
+      return json.data || [];
+    },
+  });
+
+  if (isLoading) {
+    return <Skeleton className="h-20" />;
+  }
+
+  if (members.length === 0) {
+    return (
+      <p className="text-sm text-muted-foreground italic">No staff members yet</p>
+    );
+  }
+
+  return (
+    <div className="space-y-2 max-h-[200px] overflow-y-auto">
+      {members.map((member: OrganizationMember) => (
+        <div
+          key={member.id}
+          className="flex items-center justify-between p-3 bg-muted/50 rounded-lg"
+        >
+          <div className="flex items-center gap-3">
+            <User className="h-4 w-4 text-muted-foreground" />
+            <div>
+              <p className="font-medium text-sm">
+                {member.user?.firstName && member.user?.lastName
+                  ? `${member.user.firstName} ${member.user.lastName}`
+                  : member.user?.email || 'Unknown'}
+              </p>
+              <p className="text-xs text-muted-foreground">{member.user?.email}</p>
+              {member.title && (
+                <p className="text-xs text-muted-foreground">{member.title}</p>
+              )}
+            </div>
+          </div>
+          <Badge variant={member.isActive ? 'default' : 'outline'} className="text-xs">
+            {member.isActive ? 'Active' : 'Inactive'}
+          </Badge>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function getOrgTypeColor(code: string): 'default' | 'secondary' | 'outline' | 'destructive' {
   switch (code) {
     case 'PLATFORM':
@@ -937,9 +987,15 @@ function OrganizationsTable({
                           <Label>Pending Invitations</Label>
                           <PendingInvitationsList organization={org} />
                         </div>
+                        <div className="space-y-2">
+                          <Label>Staff Members</Label>
+                          <StaffMembersList organization={org} />
+                        </div>
                       </div>
                       <DialogFooter>
-                        <Button variant="outline">Close</Button>
+                        <DialogClose asChild>
+                          <Button variant="outline">Close</Button>
+                        </DialogClose>
                       </DialogFooter>
                     </DialogContent>
                   </Dialog>
