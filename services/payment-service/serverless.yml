@@ -91,6 +91,13 @@ functions:
       - httpApi:
           path: /health
           method: GET
+      # API Documentation (no auth required)
+      - httpApi:
+          path: /api-docs
+          method: GET
+      - httpApi:
+          path: /openapi.json
+          method: GET
       # Webhook endpoints (no auth - verified by signature)
       - httpApi:
           path: /webhooks/budpay

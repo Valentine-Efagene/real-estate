@@ -5,6 +5,7 @@ import {
     createTenantMiddleware,
 } from '@valentine-efagene/qshelter-common';
 import { prisma } from './lib/prisma';
+import { generateOpenAPIDocument } from './config/swagger';
 
 // Routes
 import templateRouter from './routes/template';
@@ -25,61 +26,22 @@ app.get('/health', (req, res) => {
 
 // OpenAPI JSON spec
 app.get('/openapi.json', (req, res) => {
-    res.json({
-        openapi: '3.0.0',
-        info: {
-            title: 'Documents Service API',
-            version: '1.0.0',
-            description: 'API for document template management and generation',
-        },
-        paths: {
-            '/templates': {
-                get: { summary: 'List all templates', tags: ['Templates'] },
-                post: { summary: 'Create a new template', tags: ['Templates'] },
-            },
-            '/templates/{id}': {
-                get: { summary: 'Get template by ID', tags: ['Templates'] },
-                patch: { summary: 'Update template', tags: ['Templates'] },
-                delete: { summary: 'Delete template', tags: ['Templates'] },
-            },
-            '/templates/{id}/versions': {
-                post: { summary: 'Create new template version', tags: ['Templates'] },
-            },
-            '/templates/code/{code}': {
-                get: { summary: 'Get template by code', tags: ['Templates'] },
-            },
-            '/templates/validate': {
-                post: { summary: 'Validate template syntax', tags: ['Templates'] },
-            },
-            '/templates/extract-fields': {
-                post: { summary: 'Extract merge fields from template', tags: ['Templates'] },
-            },
-            '/generate': {
-                post: { summary: 'Generate document from template', tags: ['Generation'] },
-            },
-            '/generate/offer-letter': {
-                post: { summary: 'Generate offer letter', tags: ['Generation'] },
-            },
-            '/generate/preview': {
-                post: { summary: 'Preview template with sample data', tags: ['Generation'] },
-            },
-        },
-    });
+    res.json(generateOpenAPIDocument());
 });
 
 // Swagger UI
-app.get('/api-docs', (req, res) => {
-    if (!req.originalUrl.endsWith('/')) {
-        return res.redirect(301, req.originalUrl + '/');
-    }
+app.get('/api-docs', (_req, res) => {
     res.send(getSwaggerHtml());
 });
 
-app.get('/api-docs/', (req, res) => {
+app.get('/api-docs/', (_req, res) => {
     res.send(getSwaggerHtml());
 });
 
 function getSwaggerHtml(): string {
+    const openApiDocument = generateOpenAPIDocument();
+    const specJson = JSON.stringify(openApiDocument);
+
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -94,10 +56,17 @@ function getSwaggerHtml(): string {
         window.onload = () => {
             const url = new URL(window.location.href);
             const basePath = url.pathname.replace(/\\/api-docs\\/?$/, '');
-            const specUrl = url.origin + basePath + '/openapi.json';
+            const currentPath = url.origin + basePath;
+            
+            const specString = ${JSON.stringify(specJson)};
+            const spec = JSON.parse(specString);
+            
+            if (spec.servers && spec.servers[0]) {
+                spec.servers[0].url = currentPath;
+            }
             
             window.ui = SwaggerUIBundle({
-                url: specUrl,
+                spec: spec,
                 dom_id: '#swagger-ui',
                 deepLinking: true,
                 presets: [SwaggerUIBundle.presets.apis]
