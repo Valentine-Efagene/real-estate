@@ -504,6 +504,32 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
             </CardDescription>
           </CardHeader>
           <CardContent>
+            {/* Score Summary */}
+            {currentPhase?.questionnairePhase?.totalScore !== null && currentPhase?.questionnairePhase?.totalScore !== undefined && (
+              <div className="mb-6 p-4 border rounded-lg bg-gray-50">
+                <h4 className="font-semibold mb-3">Score Summary</h4>
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="text-center">
+                    <p className="text-2xl font-bold">{currentPhase.questionnairePhase.totalScore}</p>
+                    <p className="text-sm text-gray-500">Total Score</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-2xl font-bold">{currentPhase.questionnairePhase.passingScore ?? 'N/A'}</p>
+                    <p className="text-sm text-gray-500">Passing Score</p>
+                  </div>
+                  <div className="text-center">
+                    <Badge
+                      variant={currentPhase.questionnairePhase.passed ? 'default' : 'destructive'}
+                      className="text-lg px-3 py-1"
+                    >
+                      {currentPhase.questionnairePhase.passed ? '✓ PASSED' : '✗ FAILED'}
+                    </Badge>
+                    <p className="text-sm text-gray-500 mt-1">Result</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Display submitted answers */}
             <div className="space-y-4 mb-6">
               {questionnaireFields
