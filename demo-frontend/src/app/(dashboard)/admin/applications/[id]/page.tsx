@@ -57,7 +57,7 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
 
   // Get current phase with questionnaire fields
   const currentPhaseWithFields = phases?.find(
-    (p) => p.id === currentAction?.phase?.id
+    (p) => p.id === currentAction?.currentPhase?.id
   ) as (typeof phases)[0] & { fields?: QuestionnaireField[] } | undefined;
 
   // Filter out already bound organizations
@@ -109,12 +109,12 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
   };
 
   const handleReviewQuestionnaire = async (decision: 'APPROVE' | 'REJECT') => {
-    if (!currentAction?.phase?.id) return;
+    if (!currentAction?.currentPhase?.id) return;
 
     try {
       await reviewQuestionnaire.mutateAsync({
         applicationId,
-        phaseId: currentAction.phase.id,
+        phaseId: currentAction.currentPhase.id,
         decision,
         notes: questionnaireReviewNotes,
       });
@@ -185,8 +185,18 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-4 text-sm">
-              <div className="text-gray-500">Applicant ID:</div>
-              <div className="font-medium">{application.userId}</div>
+              <div className="text-gray-500">Applicant:</div>
+              <div className="font-medium">
+                {application.buyer
+                  ? `${application.buyer.firstName} ${application.buyer.lastName}`
+                  : application.buyerId?.slice(0, 8) + '...'}
+              </div>
+              {application.buyer?.email && (
+                <>
+                  <div className="text-gray-500">Email:</div>
+                  <div className="font-medium">{application.buyer.email}</div>
+                </>
+              )}
               <div className="text-gray-500">Type:</div>
               <div className="font-medium">{application.applicationType}</div>
               <div className="text-gray-500">Total Amount:</div>
@@ -362,7 +372,7 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
       {/* Document Review Section */}
       {actionLoading ? (
         <Skeleton className="h-48" />
-      ) : currentAction?.phase.category === 'DOCUMENTATION' && currentAction.requiredDocuments ? (
+      ) : currentAction?.currentPhase?.phaseCategory === 'DOCUMENTATION' && currentAction.uploadedDocuments?.length > 0 ? (
         <Card>
           <CardHeader>
             <CardTitle>Document Review</CardTitle>
@@ -372,14 +382,14 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {currentAction.requiredDocuments.map((doc) => (
+              {currentAction.uploadedDocuments.map((doc) => (
                 <div
                   key={doc.id}
                   className="flex items-center justify-between p-4 border rounded-lg"
                 >
                   <div>
                     <p className="font-medium">{doc.name}</p>
-                    <p className="text-sm text-gray-500">{doc.description}</p>
+                    <p className="text-sm text-gray-500">{doc.type}</p>
                     <Badge
                       variant={
                         doc.status === 'APPROVED'
@@ -394,7 +404,7 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
                     </Badge>
                   </div>
                   <div className="flex gap-2">
-                    {doc.status === 'UPLOADED' && (
+                    {doc.status === 'PENDING' && (
                       <>
                         <Dialog
                           open={reviewingDocId === doc.id}
@@ -464,12 +474,12 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
             </div>
           </CardContent>
         </Card>
-      ) : currentAction?.phase.category === 'QUESTIONNAIRE' && currentPhaseWithFields?.fields ? (
+      ) : currentAction?.currentPhase?.phaseCategory === 'QUESTIONNAIRE' && currentPhaseWithFields?.fields ? (
         <Card>
           <CardHeader>
             <CardTitle>Questionnaire Review</CardTitle>
             <CardDescription>
-              Review the applicant&apos;s submitted answers for {currentAction.phase.name}
+              Review the applicant&apos;s submitted answers for {currentAction.currentPhase.name}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -511,7 +521,7 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
             {/* Review actions */}
             {currentPhaseWithFields.fields.some(
               (field) => field.answer !== null && field.answer !== undefined
-            ) && currentAction.phase.status === 'AWAITING_APPROVAL' && (
+            ) && currentAction.currentPhase?.status === 'AWAITING_APPROVAL' && (
                 <Dialog open={showQuestionnaireReview} onOpenChange={setShowQuestionnaireReview}>
                   <DialogTrigger asChild>
                     <Button className="w-full">Review Questionnaire</Button>
@@ -561,8 +571,8 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
             <span className="text-4xl">📋</span>
             <h3 className="text-lg font-semibold mt-4">No action required</h3>
             <p className="text-gray-500">
-              {currentAction
-                ? `Current phase: ${currentAction.phase.name} (${currentAction.phase.category})`
+              {currentAction?.currentPhase
+                ? `Current phase: ${currentAction.currentPhase.name} (${currentAction.currentPhase.phaseCategory})`
                 : 'Application is awaiting the next phase'}
             </p>
           </CardContent>
@@ -570,7 +580,7 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
       )}
 
       {/* Partner Document Upload Section */}
-      {currentAction?.phase.category === 'DOCUMENTATION' && (
+      {currentAction?.currentPhase?.phaseCategory === 'DOCUMENTATION' && (
         <>
           <Separator />
           <div className="grid gap-4 md:grid-cols-2">
@@ -578,8 +588,8 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
             {boundOrganizations?.some(org => org.assignedAsType?.code === 'DEVELOPER') && (
               <PartnerDocumentUpload
                 applicationId={applicationId}
-                phaseId={currentAction.phase.id}
-                phaseName={currentAction.phase.name}
+                phaseId={currentAction.currentPhase.id}
+                phaseName={currentAction.currentPhase.name}
                 role="DEVELOPER"
               />
             )}
@@ -587,16 +597,16 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
             {boundOrganizations?.some(org => org.assignedAsType?.code === 'BANK') && (
               <PartnerDocumentUpload
                 applicationId={applicationId}
-                phaseId={currentAction.phase.id}
-                phaseName={currentAction.phase.name}
+                phaseId={currentAction.currentPhase.id}
+                phaseName={currentAction.currentPhase.name}
                 role="LENDER"
               />
             )}
             {/* Platform admin uploads */}
             <PartnerDocumentUpload
               applicationId={applicationId}
-              phaseId={currentAction.phase.id}
-              phaseName={currentAction.phase.name}
+              phaseId={currentAction.currentPhase.id}
+              phaseName={currentAction.currentPhase.name}
               role="PLATFORM"
             />
           </div>

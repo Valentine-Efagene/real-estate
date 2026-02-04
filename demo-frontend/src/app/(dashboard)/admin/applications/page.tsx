@@ -89,7 +89,16 @@ function AdminApplicationsContent() {
                 </div>
               </TableCell>
               <TableCell>
-                <p className="text-sm">User: {application.userId.slice(0, 8)}...</p>
+                <div className="text-sm">
+                  {application.buyer ? (
+                    <>
+                      <p className="font-medium">{application.buyer.firstName} {application.buyer.lastName}</p>
+                      <p className="text-xs text-gray-500">{application.buyer.email}</p>
+                    </>
+                  ) : (
+                    <p className="text-gray-500">Unknown</p>
+                  )}
+                </div>
               </TableCell>
               <TableCell>
                 <Badge variant="outline">{application.applicationType}</Badge>

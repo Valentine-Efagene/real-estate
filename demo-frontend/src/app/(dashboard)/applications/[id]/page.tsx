@@ -27,10 +27,27 @@ function ApplicationDetailContent({ applicationId }: { applicationId: string }) 
   const { data: currentAction, isLoading: actionLoading } = useCurrentAction(applicationId);
   const { data: phases } = useApplicationPhases(applicationId);
 
-  // Get current phase details with fields for questionnaires
-  const currentPhaseWithFields = phases?.find(
-    (p) => p.id === currentAction?.phase?.id
-  ) as (Phase & { fields?: QuestionnaireField[] }) | undefined;
+  // Get current phase details
+  const currentPhase = phases?.find(
+    (p) => p.id === currentAction?.currentPhase?.id
+  );
+
+  // Extract questionnaire fields from the phase's fieldsSnapshot
+  const questionnaireFields: QuestionnaireField[] | undefined = currentPhase?.questionnairePhase?.fieldsSnapshot?.questions?.map(q => ({
+    id: q.questionKey,
+    name: q.questionKey,
+    label: q.questionText,
+    description: q.helpText,
+    placeholder: null,
+    fieldType: q.questionType,
+    isRequired: q.isRequired,
+    order: q.order,
+    validation: q.validationRules,
+    displayCondition: null,
+    defaultValue: null,
+    answer: q.answer,
+    options: q.options,
+  }));
 
   if (appLoading) {
     return (
@@ -159,55 +176,80 @@ function ApplicationDetailContent({ applicationId }: { applicationId: string }) 
       {/* Current Action Required */}
       {actionLoading ? (
         <Skeleton className="h-48" />
-      ) : currentAction ? (
+      ) : currentAction && currentAction.currentPhase ? (
         <Card className="bg-primary/5 border-primary/20">
           <CardHeader>
             <div className="flex items-center gap-2">
               <span className="text-2xl">⚡</span>
               <div>
                 <CardTitle>Action Required</CardTitle>
-                <CardDescription>{currentAction.description}</CardDescription>
+                <CardDescription>
+                  {currentAction.actionMessage}
+                </CardDescription>
               </div>
             </div>
           </CardHeader>
           <CardContent>
-            {currentAction.phase.category === 'DOCUMENTATION' && currentAction.requiredDocuments && (
+            {currentAction.currentPhase.phaseCategory === 'DOCUMENTATION' && currentAction.currentStep?.requiredDocuments && (
               <DocumentUploadSection
                 applicationId={applicationId}
-                phaseId={currentAction.phase.id}
-                requiredDocuments={currentAction.requiredDocuments}
+                phaseId={currentAction.currentPhase.id}
+                requiredDocuments={currentAction.currentStep.requiredDocuments.map(doc => ({
+                  id: doc.documentType,
+                  name: doc.documentType,
+                  description: doc.documentType,
+                  status: 'PENDING',
+                }))}
               />
             )}
 
-            {currentAction.phase.category === 'QUESTIONNAIRE' && currentPhaseWithFields?.fields && (
+            {currentAction.actionRequired === 'QUESTIONNAIRE' && questionnaireFields && questionnaireFields.length > 0 && (
               <QuestionnaireForm
                 applicationId={applicationId}
-                phaseId={currentAction.phase.id}
-                fields={currentPhaseWithFields.fields}
-                phaseName={currentAction.phase.name}
+                phaseId={currentAction.currentPhase.id}
+                fields={questionnaireFields}
+                phaseName={currentAction.currentPhase.name}
                 onSubmitSuccess={() => refetchApplication()}
               />
             )}
 
-            {currentAction.phase.category === 'QUESTIONNAIRE' && !currentPhaseWithFields?.fields && (
+            {currentAction.actionRequired === 'QUESTIONNAIRE' && (!questionnaireFields || questionnaireFields.length === 0) && (
               <div className="text-center py-4">
-                <p className="text-gray-500">Loading questionnaire...</p>
+                <p className="text-gray-500">No questions to answer for this phase.</p>
               </div>
             )}
 
-            {currentAction.phase.category === 'PAYMENT' && currentPhaseWithFields && (
+            {currentAction.currentPhase.phaseCategory === 'QUESTIONNAIRE' && currentAction.actionRequired === 'WAIT_FOR_REVIEW' && (
+              <div className="text-center py-4">
+                <p className="text-gray-500">Your questionnaire answers have been submitted and are under review.</p>
+              </div>
+            )}
+
+            {currentAction.currentPhase.phaseCategory === 'PAYMENT' && currentPhase && (
               <PaymentSection
                 applicationId={applicationId}
-                phaseId={currentAction.phase.id}
-                phaseName={currentAction.phase.name}
-                totalAmount={currentPhaseWithFields.totalAmount || 0}
-                paidAmount={currentPhaseWithFields.paidAmount || 0}
+                phaseId={currentAction.currentPhase.id}
+                phaseName={currentAction.currentPhase.name}
+                totalAmount={currentPhase.totalAmount || 0}
+                paidAmount={currentPhase.paidAmount || 0}
                 currency={application.currency}
-                installments={currentPhaseWithFields.installments || []}
+                installments={currentPhase.installments || []}
                 onPaymentSuccess={() => refetchApplication()}
               />
             )}
           </CardContent>
+        </Card>
+      ) : currentAction && currentAction.actionRequired !== 'NONE' ? (
+        <Card className="bg-primary/5 border-primary/20">
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <span className="text-2xl">⚡</span>
+              <div>
+                <CardTitle>Action Required</CardTitle>
+                <CardDescription>{currentAction.actionMessage}</CardDescription>
+              </div>
+            </div>
+          </CardHeader>
         </Card>
       ) : (
         <Card>

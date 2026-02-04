@@ -112,11 +112,11 @@ export function useOrganizations(filters?: { typeCode?: string }) {
             const params = new URLSearchParams();
             if (filters?.typeCode) params.set('typeCode', filters.typeCode);
             const endpoint = `/organizations${params.toString() ? `?${params}` : ''}`;
-            const response = await userApi.get<Organization[]>(endpoint);
+            const response = await userApi.get<{ items: Organization[]; pagination: { page: number; limit: number; total: number; totalPages: number } }>(endpoint);
             if (!response.success) {
                 throw new Error(response.error?.message || 'Failed to fetch organizations');
             }
-            return response.data!;
+            return response.data!.items;
         },
     });
 }

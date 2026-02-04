@@ -12,7 +12,13 @@ export interface Application {
   currency: string;
   propertyUnitId: string;
   paymentMethodId: string;
-  userId: string;
+  buyerId: string;
+  buyer?: {
+    id: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+  };
   monthlyIncome?: number;
   monthlyExpenses?: number;
   applicantAge?: number;
@@ -26,18 +32,45 @@ export interface Phase {
   id: string;
   applicationId: string;
   name: string;
-  category: string; // QUESTIONNAIRE, DOCUMENTATION, PAYMENT
-  type: string; // PRE_APPROVAL, KYC, DOWNPAYMENT, MORTGAGE, etc.
+  phaseCategory: string; // QUESTIONNAIRE, DOCUMENTATION, PAYMENT
+  phaseType: string; // PRE_APPROVAL, KYC, DOWNPAYMENT, MORTGAGE, etc.
   status: string; // PENDING, IN_PROGRESS, COMPLETED, SKIPPED
   order: number;
   startedAt?: string;
   completedAt?: string;
-  // Questionnaire phase fields
+  // Questionnaire phase fields (legacy - may be empty)
   fields?: QuestionnaireField[];
+  // Questionnaire phase with fields snapshot
+  questionnairePhase?: {
+    id: string;
+    completedFieldsCount: number;
+    totalFieldsCount: number;
+    totalScore?: number | null;
+    passingScore?: number | null;
+    passed?: boolean | null;
+    fieldsSnapshot?: {
+      questions: QuestionnaireQuestion[];
+      passingScore?: number;
+      scoringStrategy?: string;
+    };
+  };
   // Payment phase fields
   totalAmount?: number;
   paidAmount?: number;
   installments?: Installment[];
+}
+
+export interface QuestionnaireQuestion {
+  questionKey: string;
+  questionText: string;
+  questionType: string; // NUMBER, TEXT, CHECKBOX, SELECT, etc.
+  helpText?: string | null;
+  isRequired: boolean;
+  order: number;
+  options?: Array<{ label: string; value: string; score?: number }> | null;
+  validationRules?: Record<string, unknown> | null;
+  scoringRules?: Array<{ operator: string; value: unknown; score: number }> | null;
+  answer?: unknown;
 }
 
 export interface QuestionnaireField {
@@ -64,12 +97,44 @@ export interface Installment {
 }
 
 export interface CurrentAction {
-  phase: Phase;
-  action: string;
-  description: string;
-  requiredDocuments?: RequiredDocument[];
-  pendingQuestions?: Question[];
-  pendingPayments?: PendingPayment[];
+  applicationId: string;
+  applicationStatus: string;
+  currentPhase: {
+    id: string;
+    name: string;
+    phaseCategory: string;
+    phaseType: string;
+    status: string;
+    order: number;
+  } | null;
+  currentStep: {
+    id: string;
+    name: string;
+    stepType: string;
+    status: string;
+    order: number;
+    actionReason?: string | null;
+    submissionCount?: number;
+    requiredDocuments?: Array<{
+      documentType: string;
+      isRequired: boolean;
+    }>;
+    latestApproval?: {
+      decision: string;
+      comment: string | null;
+      decidedAt: string;
+    } | null;
+  } | null;
+  uploadedDocuments: Array<{
+    id: string;
+    name: string;
+    type: string;
+    status: string;
+    stepId: string | null;
+    createdAt: string;
+  }>;
+  actionRequired: 'NONE' | 'UPLOAD' | 'RESUBMIT' | 'SIGN' | 'WAIT_FOR_REVIEW' | 'PAYMENT' | 'COMPLETE' | 'QUESTIONNAIRE';
+  actionMessage: string;
 }
 
 export interface RequiredDocument {
@@ -108,6 +173,19 @@ export interface CreateApplicationInput {
   selectedMortgageTermMonths?: number;
 }
 
+// Pagination types matching backend
+export interface PaginationMeta {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+}
+
+export interface PaginatedResponse<T> {
+  items: T[];
+  pagination: PaginationMeta;
+}
+
 // Hooks
 export function useApplications(filters?: Record<string, unknown>) {
   return useQuery({
@@ -122,7 +200,7 @@ export function useApplications(filters?: Record<string, unknown>) {
         });
       }
       const endpoint = `/applications${params.toString() ? `?${params}` : ''}`;
-      const response = await mortgageApi.get<{ items: Application[]; total: number }>(endpoint);
+      const response = await mortgageApi.get<PaginatedResponse<Application>>(endpoint);
       if (!response.success) {
         throw new Error(response.error?.message || 'Failed to fetch applications');
       }

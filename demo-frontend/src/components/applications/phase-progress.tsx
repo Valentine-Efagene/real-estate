@@ -77,7 +77,7 @@ export function PhaseProgress({ phases }: PhaseProgressProps) {
                   {phase.status === 'COMPLETED' ? (
                     '✓'
                   ) : (
-                    <span>{getPhaseIcon(phase.category)}</span>
+                    <span>{getPhaseIcon(phase.phaseCategory)}</span>
                   )}
                 </div>
                 {index < sortedPhases.length - 1 && (
@@ -105,7 +105,7 @@ export function PhaseProgress({ phases }: PhaseProgressProps) {
                   </Badge>
                 </div>
                 <p className="text-sm text-gray-500 mt-1">
-                  {phase.category} • {phase.type}
+                  {phase.phaseCategory} • {phase.phaseType}
                 </p>
                 {phase.completedAt && (
                   <p className="text-xs text-gray-400 mt-1">

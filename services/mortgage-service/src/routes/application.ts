@@ -136,7 +136,7 @@ router.post('/', requireTenant, async (req: Request, res: Response, next: NextFu
 // Get all applications
 router.get('/', requireTenant, async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { buyerId, propertyUnitId, status } = req.query;
+        const { buyerId, propertyUnitId, status, page, limit } = req.query;
         const { userId, roles } = getAuthContext(req);
         const applicationService = getApplicationService(req);
 
@@ -144,6 +144,8 @@ router.get('/', requireTenant, async (req: Request, res: Response, next: NextFun
         const filters: any = {
             propertyUnitId: propertyUnitId as string,
             status: status as ApplicationStatus | undefined,
+            page: page ? parseInt(page as string, 10) : 1,
+            limit: limit ? parseInt(limit as string, 10) : 20,
         };
 
         if (isAdmin(roles)) {
@@ -154,8 +156,8 @@ router.get('/', requireTenant, async (req: Request, res: Response, next: NextFun
             filters.buyerId = userId;
         }
 
-        const applications = await applicationService.findAll(filters);
-        res.json(successResponse(applications));
+        const result = await applicationService.findAll(filters);
+        res.json(successResponse(result));
     } catch (error) {
         next(error);
     }

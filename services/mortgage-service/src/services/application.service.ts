@@ -21,6 +21,7 @@ import type {
     TransitionApplicationInput,
 } from '../validators/application.validator';
 import { createPaymentMethodService } from './payment-method.service';
+import { unitLockingService } from './unit-locking.service';
 import {
     sendApplicationCreatedNotification,
     sendApplicationActivatedNotification,
@@ -267,7 +268,17 @@ export interface ApplicationService {
         buyerId?: string;
         propertyUnitId?: string;
         status?: ApplicationStatus;
-    }): Promise<any[]>;
+        page?: number;
+        limit?: number;
+    }): Promise<{
+        items: any[];
+        pagination: {
+            page: number;
+            limit: number;
+            total: number;
+            totalPages: number;
+        };
+    }>;
     findById(id: string): Promise<any>;
     findByApplicationNumber(applicationNumber: string): Promise<any>;
     update(id: string, data: UpdateApplicationInput, userId: string): Promise<any>;
@@ -763,35 +774,61 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
         buyerId?: string;
         propertyUnitId?: string;
         status?: ApplicationStatus;
+        page?: number;
+        limit?: number;
     }) {
-        const applications = await prisma.application.findMany({
-            where: filters,
-            orderBy: { createdAt: 'desc' },
-            include: {
-                propertyUnit: {
-                    include: {
-                        variant: {
-                            include: {
-                                property: true,
+        const page = filters?.page || 1;
+        const limit = filters?.limit || 20;
+        const skip = (page - 1) * limit;
+
+        const where = {
+            buyerId: filters?.buyerId,
+            propertyUnitId: filters?.propertyUnitId,
+            status: filters?.status,
+        };
+
+        const [items, total] = await Promise.all([
+            prisma.application.findMany({
+                where,
+                orderBy: { createdAt: 'desc' },
+                skip,
+                take: limit,
+                include: {
+                    propertyUnit: {
+                        include: {
+                            variant: {
+                                include: {
+                                    property: true,
+                                },
                             },
                         },
                     },
-                },
-                buyer: {
-                    select: {
-                        id: true,
-                        email: true,
-                        firstName: true,
-                        lastName: true,
+                    buyer: {
+                        select: {
+                            id: true,
+                            email: true,
+                            firstName: true,
+                            lastName: true,
+                        },
+                    },
+                    paymentMethod: true,
+                    phases: {
+                        orderBy: { order: 'asc' },
                     },
                 },
-                paymentMethod: true,
-                phases: {
-                    orderBy: { order: 'asc' },
-                },
+            }),
+            prisma.application.count({ where }),
+        ]);
+
+        return {
+            items,
+            pagination: {
+                page,
+                limit,
+                total,
+                totalPages: Math.ceil(total / limit),
             },
-        });
-        return applications;
+        };
     }
 
     async function findById(id: string): Promise<any> {
@@ -1070,6 +1107,18 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
             throw new AppError(400, `Cannot cancel application in ${application.status} status`);
         }
 
+        // Release the unit lock before cancelling
+        try {
+            await unitLockingService.releaseUnitLock(
+                application.tenantId,
+                id,
+                userId
+            );
+        } catch (error) {
+            console.error('[Application] Failed to release unit lock on cancel', { id, error });
+            // Continue with cancellation even if release fails
+        }
+
         const updated = await prisma.$transaction(async (tx: any) => {
             const result = await tx.application.update({
                 where: { id },
@@ -1204,7 +1253,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
             stepId: string | null;
             createdAt: Date;
         }>;
-        actionRequired: 'NONE' | 'UPLOAD' | 'RESUBMIT' | 'SIGN' | 'WAIT_FOR_REVIEW' | 'PAYMENT' | 'COMPLETE';
+        actionRequired: 'NONE' | 'UPLOAD' | 'RESUBMIT' | 'SIGN' | 'WAIT_FOR_REVIEW' | 'PAYMENT' | 'COMPLETE' | 'QUESTIONNAIRE';
         actionMessage: string;
     }> {
         // Use any to avoid Prisma type issues with new relations
@@ -1284,12 +1333,30 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
         }
 
         // Determine action required based on step status
-        let actionRequired: 'NONE' | 'UPLOAD' | 'RESUBMIT' | 'SIGN' | 'WAIT_FOR_REVIEW' | 'PAYMENT' | 'COMPLETE' = 'NONE';
+        let actionRequired: 'NONE' | 'UPLOAD' | 'RESUBMIT' | 'SIGN' | 'WAIT_FOR_REVIEW' | 'PAYMENT' | 'COMPLETE' | 'QUESTIONNAIRE' = 'NONE';
         let actionMessage = 'No action required';
 
         if (currentPhase.phaseCategory === 'PAYMENT') {
             actionRequired = 'PAYMENT';
             actionMessage = 'Payment is required for this phase';
+        } else if (currentPhase.phaseCategory === 'QUESTIONNAIRE') {
+            // Check if questionnaire has unanswered questions
+            const questionnairePhase = currentPhase.questionnairePhase;
+            if (questionnairePhase) {
+                const completedCount = questionnairePhase.completedFieldsCount || 0;
+                const totalCount = questionnairePhase.totalFieldsCount || 0;
+                if (completedCount < totalCount) {
+                    actionRequired = 'QUESTIONNAIRE';
+                    actionMessage = `Please complete the ${currentPhase.name} questionnaire (${completedCount}/${totalCount} questions answered)`;
+                } else if (currentPhase.status === 'AWAITING_APPROVAL') {
+                    actionRequired = 'WAIT_FOR_REVIEW';
+                    actionMessage = 'Your questionnaire answers are being reviewed';
+                }
+            } else {
+                // No questionnaire phase data - still needs completion
+                actionRequired = 'QUESTIONNAIRE';
+                actionMessage = `Please complete the ${currentPhase.name} questionnaire`;
+            }
         } else if (currentStep) {
             switch (currentStep.status) {
                 case 'NEEDS_RESUBMISSION':
