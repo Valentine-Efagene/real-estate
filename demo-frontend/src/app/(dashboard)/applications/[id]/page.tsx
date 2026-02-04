@@ -297,6 +297,7 @@ function ApplicationDetailContent({ applicationId }: { applicationId: string }) 
                 paidAmount={currentPhase.paidAmount || 0}
                 currency={application.currency}
                 installments={currentPhase.installments || []}
+                buyerEmail={application.buyer?.email}
                 onPaymentSuccess={() => refetchApplication()}
               />
             )}

@@ -13,6 +13,7 @@ import {
     useGenerateInstallments,
     useCreatePayment,
     useProcessPayment,
+    useSimulatePayment,
     type Installment
 } from '@/lib/hooks';
 
@@ -24,6 +25,7 @@ interface PaymentSectionProps {
     paidAmount: number;
     currency?: string;
     installments: Installment[];
+    buyerEmail?: string;
     onPaymentSuccess?: () => void;
 }
 
@@ -43,11 +45,13 @@ export function PaymentSection({
     paidAmount,
     currency = 'NGN',
     installments,
+    buyerEmail,
     onPaymentSuccess,
 }: PaymentSectionProps) {
     const generateInstallments = useGenerateInstallments();
     const createPayment = useCreatePayment();
     const processPayment = useProcessPayment();
+    const simulatePayment = useSimulatePayment();
 
     const [selectedInstallment, setSelectedInstallment] = useState<Installment | null>(null);
     const [paymentMethod, setPaymentMethod] = useState<string>('BANK_TRANSFER');
@@ -118,6 +122,27 @@ export function PaymentSection({
         }
     }, [pendingPaymentRef, processPayment, onPaymentSuccess]);
 
+    const handleSimulatePayment = useCallback(async () => {
+        if (!selectedInstallment || !buyerEmail) {
+            toast.error('Cannot simulate payment: missing installment or buyer email');
+            return;
+        }
+
+        try {
+            await simulatePayment.mutateAsync({
+                email: buyerEmail,
+                amount: selectedInstallment.amount,
+                reference: `SIM-${Date.now()}`,
+            });
+            toast.success('Payment simulated! Wallet credited and installment should be paid.');
+            setShowPaymentDialog(false);
+            setSelectedInstallment(null);
+            onPaymentSuccess?.();
+        } catch (error) {
+            toast.error(error instanceof Error ? error.message : 'Failed to simulate payment');
+        }
+    }, [selectedInstallment, buyerEmail, simulatePayment, onPaymentSuccess]);
+
     const remainingAmount = totalAmount - paidAmount;
     const progressPercent = totalAmount > 0 ? (paidAmount / totalAmount) * 100 : 0;
 
@@ -170,7 +195,7 @@ export function PaymentSection({
                             <div
                                 key={installment.id}
                                 className={`flex items-center justify-between p-4 border rounded-lg ${installment.status === 'PAID' ? 'bg-green-50 border-green-200' :
-                                        installment.status === 'OVERDUE' ? 'bg-red-50 border-red-200' : ''
+                                    installment.status === 'OVERDUE' ? 'bg-red-50 border-red-200' : ''
                                     }`}
                             >
                                 <div>
@@ -247,7 +272,7 @@ export function PaymentSection({
                                                             </div>
                                                         </div>
 
-                                                        <DialogFooter>
+                                                        <DialogFooter className="flex-col gap-2">
                                                             <Button
                                                                 onClick={handleInitiatePayment}
                                                                 disabled={createPayment.isPending}
@@ -255,6 +280,16 @@ export function PaymentSection({
                                                             >
                                                                 {createPayment.isPending ? 'Processing...' : 'Initiate Payment'}
                                                             </Button>
+                                                            {buyerEmail && (
+                                                                <Button
+                                                                    variant="outline"
+                                                                    onClick={handleSimulatePayment}
+                                                                    disabled={simulatePayment.isPending}
+                                                                    className="w-full"
+                                                                >
+                                                                    {simulatePayment.isPending ? 'Simulating...' : '🧪 Simulate Payment (Test)'}
+                                                                </Button>
+                                                            )}
                                                         </DialogFooter>
                                                     </>
                                                 ) : (

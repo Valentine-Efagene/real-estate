@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { mortgageApi } from '@/lib/api/client';
+import { mortgageApi, paymentApi } from '@/lib/api/client';
 import { queryKeys } from '@/lib/query/query-keys';
 
 // Types (simplified - would import from shared package)
@@ -531,6 +531,45 @@ export function useProcessPayment() {
       return response.data;
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.applications.all,
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.payments.all,
+      });
+    },
+  });
+}
+
+/**
+ * Hook to simulate a payment via mock webhook
+ * This is for testing purposes only - simulates a bank transfer payment
+ */
+export function useSimulatePayment() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      email,
+      amount,
+      reference,
+    }: {
+      email: string;
+      amount: number;
+      reference?: string;
+    }) => {
+      const response = await paymentApi.post('/webhooks/budpay/mock', {
+        email,
+        amount,
+        reference,
+      });
+      if (!response.success) {
+        throw new Error(response.error?.message || 'Failed to simulate payment');
+      }
+      return response.data;
+    },
+    onSuccess: () => {
+      // Invalidate all relevant queries after simulated payment
       queryClient.invalidateQueries({
         queryKey: queryKeys.applications.all,
       });
