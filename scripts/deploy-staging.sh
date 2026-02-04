@@ -252,7 +252,17 @@ run_migrations() {
     fi
     
     log_info "Running Prisma migrations against Aurora MySQL at $DB_HOST..."
-    npx prisma migrate deploy
+    
+    # Check if there are schema changes that need a new migration using prisma migrate diff
+    SCHEMA_DIFF=$(npx prisma migrate diff --from-config-datasource --to-schema prisma/schema.prisma --script 2>&1 || true)
+    
+    if [ -n "$SCHEMA_DIFF" ] && ! echo "$SCHEMA_DIFF" | grep -q "No difference detected"; then
+        log_info "Schema changes detected - creating new migration..."
+        npx prisma migrate dev --name "auto_$(date +%Y%m%d_%H%M%S)"
+    else
+        # Just apply existing migrations
+        npx prisma migrate deploy
+    fi
     
     # Generate Prisma client
     log_info "Generating Prisma client..."

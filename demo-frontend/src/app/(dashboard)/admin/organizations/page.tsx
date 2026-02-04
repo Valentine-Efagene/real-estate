@@ -16,7 +16,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from 'sonner';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@/lib/query';
-import { Plus, UserPlus } from 'lucide-react';
+import { Plus, UserPlus, Mail, RefreshCw, X, Clock } from 'lucide-react';
 
 interface Organization {
   id: string;
@@ -182,6 +182,131 @@ function useRoles() {
       if (!res.ok) throw new Error('Failed to fetch roles');
       const data = await res.json();
       return data.data || [];
+    },
+  });
+}
+
+// Invitation types
+interface OrganizationInvitation {
+  id: string;
+  email: string;
+  firstName: string | null;
+  lastName: string | null;
+  title: string | null;
+  department: string | null;
+  status: 'PENDING' | 'ACCEPTED' | 'EXPIRED' | 'CANCELLED';
+  expiresAt: string;
+  createdAt: string;
+  role: {
+    id: string;
+    name: string;
+  } | null;
+  invitedBy: {
+    id: string;
+    firstName: string | null;
+    lastName: string | null;
+  } | null;
+}
+
+function useOrganizationInvitations(orgId: string | null) {
+  return useQuery<OrganizationInvitation[]>({
+    queryKey: ['organizations', orgId, 'invitations'],
+    queryFn: async () => {
+      if (!orgId) return [];
+      const res = await fetch(`/api/proxy/user/organizations/${orgId}/invitations`, {
+        credentials: 'include',
+      });
+      if (!res.ok) throw new Error('Failed to fetch invitations');
+      const data = await res.json();
+      return data.data?.items || data.data || [];
+    },
+    enabled: !!orgId,
+  });
+}
+
+function useCreateInvitation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({
+      orgId,
+      data,
+    }: {
+      orgId: string;
+      data: {
+        email: string;
+        firstName: string;
+        lastName: string;
+        roleId?: string;
+        title?: string;
+        department?: string;
+      };
+    }) => {
+      const res = await fetch(`/api/proxy/user/organizations/${orgId}/invitations`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.message || error.error?.message || 'Failed to send invitation');
+      }
+      return res.json();
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['organizations', variables.orgId, 'invitations'] });
+      toast.success('Invitation sent successfully');
+    },
+    onError: (error: Error) => {
+      toast.error(error.message);
+    },
+  });
+}
+
+function useCancelInvitation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ invitationId, orgId }: { invitationId: string; orgId: string }) => {
+      const res = await fetch(`/api/proxy/user/invitations/${invitationId}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      });
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.message || error.error?.message || 'Failed to cancel invitation');
+      }
+      return res.json();
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['organizations', variables.orgId, 'invitations'] });
+      toast.success('Invitation cancelled');
+    },
+    onError: (error: Error) => {
+      toast.error(error.message);
+    },
+  });
+}
+
+function useResendInvitation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ invitationId, orgId }: { invitationId: string; orgId: string }) => {
+      const res = await fetch(`/api/proxy/user/invitations/${invitationId}/resend`, {
+        method: 'POST',
+        credentials: 'include',
+      });
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.message || error.error?.message || 'Failed to resend invitation');
+      }
+      return res.json();
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['organizations', variables.orgId, 'invitations'] });
+      toast.success('Invitation resent');
+    },
+    onError: (error: Error) => {
+      toast.error(error.message);
     },
   });
 }
@@ -478,6 +603,219 @@ function AddMemberDialog({ organization }: { organization: Organization }) {
   );
 }
 
+// Invite Staff Dialog (for users who don't have an account yet)
+function InviteStaffDialog({ organization }: { organization: Organization }) {
+  const [open, setOpen] = useState(false);
+  const [email, setEmail] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [selectedRoleId, setSelectedRoleId] = useState('');
+  const [title, setTitle] = useState('');
+  const [department, setDepartment] = useState('');
+
+  const { data: roles = [] } = useRoles();
+  const createInvitation = useCreateInvitation();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !firstName || !lastName || !selectedRoleId) {
+      toast.error('Please fill in all required fields');
+      return;
+    }
+
+    await createInvitation.mutateAsync({
+      orgId: organization.id,
+      data: {
+        email,
+        firstName,
+        lastName,
+        roleId: selectedRoleId,
+        title: title || undefined,
+        department: department || undefined,
+      },
+    });
+
+    setOpen(false);
+    setEmail('');
+    setFirstName('');
+    setLastName('');
+    setSelectedRoleId('');
+    setTitle('');
+    setDepartment('');
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button variant="outline" size="sm">
+          <Mail className="h-4 w-4 mr-1" />
+          Invite
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Invite Staff to {organization.name}</DialogTitle>
+          <DialogDescription>
+            Send an invitation email to someone who doesn't have an account yet
+          </DialogDescription>
+        </DialogHeader>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="invite-email">Email *</Label>
+            <Input
+              id="invite-email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="e.g., john@company.com"
+              required
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="invite-firstName">First Name *</Label>
+              <Input
+                id="invite-firstName"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                placeholder="e.g., John"
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="invite-lastName">Last Name *</Label>
+              <Input
+                id="invite-lastName"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                placeholder="e.g., Doe"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="invite-role">Role *</Label>
+            <Select value={selectedRoleId} onValueChange={setSelectedRoleId} required>
+              <SelectTrigger>
+                <SelectValue placeholder="Select a role" />
+              </SelectTrigger>
+              <SelectContent>
+                {roles.map((role: Role) => (
+                  <SelectItem key={role.id} value={role.id}>
+                    {role.name} {role.description ? `- ${role.description}` : ''}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="invite-title">Job Title</Label>
+            <Input
+              id="invite-title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="e.g., Loan Officer"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="invite-department">Department</Label>
+            <Input
+              id="invite-department"
+              value={department}
+              onChange={(e) => setDepartment(e.target.value)}
+              placeholder="e.g., Mortgages"
+            />
+          </div>
+
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+              Cancel
+            </Button>
+            <Button type="submit" disabled={createInvitation.isPending}>
+              {createInvitation.isPending ? 'Sending...' : 'Send Invitation'}
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+// Pending Invitations List
+function PendingInvitationsList({ organization }: { organization: Organization }) {
+  const { data: invitations = [], isLoading } = useOrganizationInvitations(organization.id);
+  const cancelInvitation = useCancelInvitation();
+  const resendInvitation = useResendInvitation();
+
+  const pendingInvitations = invitations.filter((i) => i.status === 'PENDING');
+
+  if (isLoading) {
+    return <Skeleton className="h-20" />;
+  }
+
+  if (pendingInvitations.length === 0) {
+    return (
+      <p className="text-sm text-muted-foreground italic">No pending invitations</p>
+    );
+  }
+
+  return (
+    <div className="space-y-2">
+      {pendingInvitations.map((invitation) => (
+        <div
+          key={invitation.id}
+          className="flex items-center justify-between p-3 bg-muted/50 rounded-lg"
+        >
+          <div className="flex items-center gap-3">
+            <Clock className="h-4 w-4 text-muted-foreground" />
+            <div>
+              <p className="font-medium text-sm">
+                {invitation.firstName} {invitation.lastName}
+              </p>
+              <p className="text-xs text-muted-foreground">{invitation.email}</p>
+              <p className="text-xs text-muted-foreground">
+                Expires: {new Date(invitation.expiresAt).toLocaleDateString()}
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() =>
+                resendInvitation.mutate({
+                  invitationId: invitation.id,
+                  orgId: organization.id,
+                })
+              }
+              disabled={resendInvitation.isPending}
+            >
+              <RefreshCw className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() =>
+                cancelInvitation.mutate({
+                  invitationId: invitation.id,
+                  orgId: organization.id,
+                })
+              }
+              disabled={cancelInvitation.isPending}
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function getOrgTypeColor(code: string): 'default' | 'secondary' | 'outline' | 'destructive' {
   switch (code) {
     case 'PLATFORM':
@@ -553,6 +891,7 @@ function OrganizationsTable({
               <TableCell className="text-right">
                 <div className="flex items-center justify-end gap-2">
                   <AddMemberDialog organization={org} />
+                  <InviteStaffDialog organization={org} />
                   <Dialog>
                     <DialogTrigger asChild>
                       <Button variant="outline" size="sm">
@@ -593,6 +932,10 @@ function OrganizationsTable({
                               </Badge>
                             ))}
                           </div>
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Pending Invitations</Label>
+                          <PendingInvitationsList organization={org} />
                         </div>
                       </div>
                       <DialogFooter>

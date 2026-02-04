@@ -326,8 +326,8 @@ function AdminUsersContent() {
   const allUsers = users || [];
   const filteredBySearch = allUsers.filter(
     (user) =>
-      user.name.toLowerCase().includes(search.toLowerCase()) ||
-      user.email.toLowerCase().includes(search.toLowerCase())
+      (user.name?.toLowerCase() || '').includes(search.toLowerCase()) ||
+      (user.email?.toLowerCase() || '').includes(search.toLowerCase())
   );
 
   const stats = {

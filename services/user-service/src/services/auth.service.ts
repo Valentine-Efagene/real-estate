@@ -626,6 +626,14 @@ class AuthService {
         return user;
     }
 
+    /**
+     * Generate tokens for a user (public wrapper for invitation acceptance, etc.)
+     * Use when you need to log in a user programmatically without password verification.
+     */
+    async generateTokensForUser(userId: string, email: string, roles: string[], tenantId?: string | null): Promise<AuthResponse> {
+        return this.generateTokens(userId, email, roles, tenantId);
+    }
+
     private async generateTokens(userId: string, email: string, roles: string[], tenantId?: string | null): Promise<AuthResponse> {
         // Get JWT secrets from ConfigService (Secrets Manager)
         const configService = ConfigService.getInstance();

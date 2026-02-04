@@ -9,6 +9,7 @@ import { socialRouter } from './routes/socials';
 import { apiKeyRouter } from './routes/api-keys';
 import { adminRouter } from './routes/admin';
 import { organizationRouter } from './routes/organizations';
+import { invitationRouter, publicInvitationRouter } from './routes/invitations';
 import { errorHandler } from './middleware/error-handler';
 import { requestLogger, createTenantMiddleware } from '@valentine-efagene/qshelter-common';
 import { generateOpenAPIDocument } from './config/swagger';
@@ -85,6 +86,12 @@ app.use('/socials', socialRouter);
 app.use('/api-keys', apiKeyRouter);
 app.use('/admin', adminRouter);
 app.use('/organizations', organizationRouter);
+
+// Invitation routes (authenticated - for creating/managing invitations)
+app.use(invitationRouter);
+
+// Public invitation routes (no auth - for accepting invitations)
+app.use(publicInvitationRouter);
 
 // Tenant membership routes (handles both /tenants/:id/members and /users/:id/tenants)
 app.use(tenantMembershipRouter);

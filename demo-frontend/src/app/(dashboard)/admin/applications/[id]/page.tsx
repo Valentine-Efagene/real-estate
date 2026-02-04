@@ -56,9 +56,10 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
   const [slaHours, setSlaHours] = useState('48');
 
   // Get current phase with questionnaire fields
+  type Phase = NonNullable<typeof phases>[number];
   const currentPhaseWithFields = phases?.find(
     (p) => p.id === currentAction?.currentPhase?.id
-  ) as (typeof phases)[0] & { fields?: QuestionnaireField[] } | undefined;
+  ) as (Phase & { fields?: QuestionnaireField[] }) | undefined;
 
   // Filter out already bound organizations
   const boundOrgIds = new Set(boundOrganizations?.map(bo => bo.organizationId) || []);

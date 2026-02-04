@@ -91,6 +91,14 @@ functions:
           path: /openapi.json
           method: GET
       
+      # Public invitation routes (no authorizer - for accepting invitations)
+      - httpApi:
+          path: /invitations/accept
+          method: GET
+      - httpApi:
+          path: /invitations/accept
+          method: POST
+      
       # Protected catch-all route - requires authorization
       - httpApi:
           path: /{proxy+}

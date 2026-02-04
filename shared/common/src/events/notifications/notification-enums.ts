@@ -65,6 +65,11 @@ export enum NotificationType {
     SLA_WARNING = 'slaWarning',
     SLA_BREACHED = 'slaBreached',
 
+    // Organization Invitations
+    ORGANIZATION_INVITATION = 'organizationInvitation',
+    ORGANIZATION_INVITATION_ACCEPTED = 'organizationInvitationAccepted',
+    ORGANIZATION_INVITATION_EXPIRED = 'organizationInvitationExpired',
+
     // Admin
     ADMIN_CONTRIBUTION_RECEIVED = 'adminContributionReceived',
     ADMIN_PROPERTY_ALLOCATION = 'adminPropertyAllocation',

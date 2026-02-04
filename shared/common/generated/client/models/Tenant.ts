@@ -250,6 +250,7 @@ export type TenantWhereInput = {
   organizations?: Prisma.OrganizationListRelationFilter
   applicationOrganizations?: Prisma.ApplicationOrganizationListRelationFilter
   organizationTypes?: Prisma.OrganizationTypeListRelationFilter
+  organizationInvitations?: Prisma.OrganizationInvitationListRelationFilter
 }
 
 export type TenantOrderByWithRelationInput = {
@@ -319,6 +320,7 @@ export type TenantOrderByWithRelationInput = {
   organizations?: Prisma.OrganizationOrderByRelationAggregateInput
   applicationOrganizations?: Prisma.ApplicationOrganizationOrderByRelationAggregateInput
   organizationTypes?: Prisma.OrganizationTypeOrderByRelationAggregateInput
+  organizationInvitations?: Prisma.OrganizationInvitationOrderByRelationAggregateInput
   _relevance?: Prisma.TenantOrderByRelevanceInput
 }
 
@@ -392,6 +394,7 @@ export type TenantWhereUniqueInput = Prisma.AtLeast<{
   organizations?: Prisma.OrganizationListRelationFilter
   applicationOrganizations?: Prisma.ApplicationOrganizationListRelationFilter
   organizationTypes?: Prisma.OrganizationTypeListRelationFilter
+  organizationInvitations?: Prisma.OrganizationInvitationListRelationFilter
 }, "id" | "subdomain">
 
 export type TenantOrderByWithAggregationInput = {
@@ -485,6 +488,7 @@ export type TenantCreateInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateInput = {
@@ -554,6 +558,7 @@ export type TenantUncheckedCreateInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUpdateInput = {
@@ -623,6 +628,7 @@ export type TenantUpdateInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateInput = {
@@ -692,6 +698,7 @@ export type TenantUncheckedUpdateInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateManyInput = {
@@ -852,6 +859,20 @@ export type TenantUpdateOneRequiredWithoutOrganizationsNestedInput = {
   upsert?: Prisma.TenantUpsertWithoutOrganizationsInput
   connect?: Prisma.TenantWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutOrganizationsInput, Prisma.TenantUpdateWithoutOrganizationsInput>, Prisma.TenantUncheckedUpdateWithoutOrganizationsInput>
+}
+
+export type TenantCreateNestedOneWithoutOrganizationInvitationsInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutOrganizationInvitationsInput, Prisma.TenantUncheckedCreateWithoutOrganizationInvitationsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutOrganizationInvitationsInput
+  connect?: Prisma.TenantWhereUniqueInput
+}
+
+export type TenantUpdateOneRequiredWithoutOrganizationInvitationsNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutOrganizationInvitationsInput, Prisma.TenantUncheckedCreateWithoutOrganizationInvitationsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutOrganizationInvitationsInput
+  upsert?: Prisma.TenantUpsertWithoutOrganizationInvitationsInput
+  connect?: Prisma.TenantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutOrganizationInvitationsInput, Prisma.TenantUpdateWithoutOrganizationInvitationsInput>, Prisma.TenantUncheckedUpdateWithoutOrganizationInvitationsInput>
 }
 
 export type TenantCreateNestedOneWithoutBankDocumentRequirementsInput = {
@@ -1682,6 +1703,7 @@ export type TenantCreateWithoutOrganizationTypesInput = {
   bankDocumentRequirements?: Prisma.BankDocumentRequirementCreateNestedManyWithoutTenantInput
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutOrganizationTypesInput = {
@@ -1750,6 +1772,7 @@ export type TenantUncheckedCreateWithoutOrganizationTypesInput = {
   bankDocumentRequirements?: Prisma.BankDocumentRequirementUncheckedCreateNestedManyWithoutTenantInput
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutOrganizationTypesInput = {
@@ -1834,6 +1857,7 @@ export type TenantUpdateWithoutOrganizationTypesInput = {
   bankDocumentRequirements?: Prisma.BankDocumentRequirementUpdateManyWithoutTenantNestedInput
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutOrganizationTypesInput = {
@@ -1902,6 +1926,7 @@ export type TenantUncheckedUpdateWithoutOrganizationTypesInput = {
   bankDocumentRequirements?: Prisma.BankDocumentRequirementUncheckedUpdateManyWithoutTenantNestedInput
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutUsersInput = {
@@ -1970,6 +1995,7 @@ export type TenantCreateWithoutUsersInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutUsersInput = {
@@ -2038,6 +2064,7 @@ export type TenantUncheckedCreateWithoutUsersInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutUsersInput = {
@@ -2122,6 +2149,7 @@ export type TenantUpdateWithoutUsersInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutUsersInput = {
@@ -2190,6 +2218,7 @@ export type TenantUncheckedUpdateWithoutUsersInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutRolesInput = {
@@ -2258,6 +2287,7 @@ export type TenantCreateWithoutRolesInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutRolesInput = {
@@ -2326,6 +2356,7 @@ export type TenantUncheckedCreateWithoutRolesInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutRolesInput = {
@@ -2410,6 +2441,7 @@ export type TenantUpdateWithoutRolesInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutRolesInput = {
@@ -2478,6 +2510,7 @@ export type TenantUncheckedUpdateWithoutRolesInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPermissionsInput = {
@@ -2546,6 +2579,7 @@ export type TenantCreateWithoutPermissionsInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPermissionsInput = {
@@ -2614,6 +2648,7 @@ export type TenantUncheckedCreateWithoutPermissionsInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPermissionsInput = {
@@ -2698,6 +2733,7 @@ export type TenantUpdateWithoutPermissionsInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPermissionsInput = {
@@ -2766,6 +2802,7 @@ export type TenantUncheckedUpdateWithoutPermissionsInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutMembershipsInput = {
@@ -2834,6 +2871,7 @@ export type TenantCreateWithoutMembershipsInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutMembershipsInput = {
@@ -2902,6 +2940,7 @@ export type TenantUncheckedCreateWithoutMembershipsInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutMembershipsInput = {
@@ -2986,6 +3025,7 @@ export type TenantUpdateWithoutMembershipsInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutMembershipsInput = {
@@ -3054,6 +3094,7 @@ export type TenantUncheckedUpdateWithoutMembershipsInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutOrganizationsInput = {
@@ -3122,6 +3163,7 @@ export type TenantCreateWithoutOrganizationsInput = {
   bankDocumentRequirements?: Prisma.BankDocumentRequirementCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutOrganizationsInput = {
@@ -3190,6 +3232,7 @@ export type TenantUncheckedCreateWithoutOrganizationsInput = {
   bankDocumentRequirements?: Prisma.BankDocumentRequirementUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutOrganizationsInput = {
@@ -3274,6 +3317,7 @@ export type TenantUpdateWithoutOrganizationsInput = {
   bankDocumentRequirements?: Prisma.BankDocumentRequirementUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutOrganizationsInput = {
@@ -3340,6 +3384,299 @@ export type TenantUncheckedUpdateWithoutOrganizationsInput = {
   questionnairePhaseReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
   documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutTenantNestedInput
   bankDocumentRequirements?: Prisma.BankDocumentRequirementUncheckedUpdateManyWithoutTenantNestedInput
+  applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
+  organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantCreateWithoutOrganizationInvitationsInput = {
+  id?: string
+  name: string
+  subdomain: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserCreateNestedManyWithoutTenantInput
+  properties?: Prisma.PropertyCreateNestedManyWithoutTenantInput
+  paymentPlans?: Prisma.PaymentPlanCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanCreateNestedManyWithoutTenantInput
+  paymentMethods?: Prisma.PropertyPaymentMethodCreateNestedManyWithoutTenantInput
+  applications?: Prisma.ApplicationCreateNestedManyWithoutTenantInput
+  roles?: Prisma.RoleCreateNestedManyWithoutTenantInput
+  permissions?: Prisma.PermissionCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.TenantMembershipCreateNestedManyWithoutTenantInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestCreateNestedManyWithoutTenantInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleCreateNestedManyWithoutTenantInput
+  contractTerminations?: Prisma.ApplicationTerminationCreateNestedManyWithoutTenantInput
+  documentTemplates?: Prisma.DocumentTemplateCreateNestedManyWithoutTenantInput
+  offerLetters?: Prisma.OfferLetterCreateNestedManyWithoutTenantInput
+  apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutTenantInput
+  eventChannels?: Prisma.EventChannelCreateNestedManyWithoutTenantInput
+  eventTypes?: Prisma.EventTypeCreateNestedManyWithoutTenantInput
+  eventHandlers?: Prisma.EventHandlerCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestCreateNestedManyWithoutTenantInput
+  approvalRequests?: Prisma.ApprovalRequestCreateNestedManyWithoutTenantInput
+  contractRefunds?: Prisma.ApplicationRefundCreateNestedManyWithoutTenantInput
+  propertyPaymentMethodLinks?: Prisma.PropertyPaymentMethodLinkCreateNestedManyWithoutTenantInput
+  propertyPaymentMethodPhases?: Prisma.PropertyPaymentMethodPhaseCreateNestedManyWithoutTenantInput
+  phaseEventAttachments?: Prisma.PhaseEventAttachmentCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseSteps?: Prisma.PaymentMethodPhaseStepCreateNestedManyWithoutTenantInput
+  stepEventAttachments?: Prisma.StepEventAttachmentCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseDocuments?: Prisma.PaymentMethodPhaseDocumentCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseFields?: Prisma.PaymentMethodPhaseFieldCreateNestedManyWithoutTenantInput
+  applicationPhases?: Prisma.ApplicationPhaseCreateNestedManyWithoutTenantInput
+  questionnairePhases?: Prisma.QuestionnairePhaseCreateNestedManyWithoutTenantInput
+  documentationPhases?: Prisma.DocumentationPhaseCreateNestedManyWithoutTenantInput
+  paymentPhases?: Prisma.PaymentPhaseCreateNestedManyWithoutTenantInput
+  questionnaireFields?: Prisma.QuestionnaireFieldCreateNestedManyWithoutTenantInput
+  applicationEvents?: Prisma.ApplicationEventCreateNestedManyWithoutTenantInput
+  paymentInstallments?: Prisma.PaymentInstallmentCreateNestedManyWithoutTenantInput
+  applicationPayments?: Prisma.ApplicationPaymentCreateNestedManyWithoutTenantInput
+  applicationDocuments?: Prisma.ApplicationDocumentCreateNestedManyWithoutTenantInput
+  documentApprovals?: Prisma.DocumentApprovalCreateNestedManyWithoutTenantInput
+  approvalStageProgress?: Prisma.ApprovalStageProgressCreateNestedManyWithoutTenantInput
+  propertyMedia?: Prisma.PropertyMediaCreateNestedManyWithoutTenantInput
+  propertyDocuments?: Prisma.PropertyDocumentCreateNestedManyWithoutTenantInput
+  propertyVariants?: Prisma.PropertyVariantCreateNestedManyWithoutTenantInput
+  propertyVariantAmenities?: Prisma.PropertyVariantAmenityCreateNestedManyWithoutTenantInput
+  propertyVariantMedia?: Prisma.PropertyVariantMediaCreateNestedManyWithoutTenantInput
+  propertyUnits?: Prisma.PropertyUnitCreateNestedManyWithoutTenantInput
+  propertyAmenities?: Prisma.PropertyAmenityCreateNestedManyWithoutTenantInput
+  amenities?: Prisma.AmenityCreateNestedManyWithoutTenantInput
+  socials?: Prisma.SocialCreateNestedManyWithoutTenantInput
+  wallets?: Prisma.WalletCreateNestedManyWithoutTenantInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutTenantInput
+  settings?: Prisma.SettingsCreateNestedManyWithoutTenantInput
+  domainEvents?: Prisma.DomainEventCreateNestedManyWithoutTenantInput
+  workflowBlockers?: Prisma.WorkflowBlockerCreateNestedManyWithoutTenantInput
+  questionnairePlans?: Prisma.QuestionnairePlanCreateNestedManyWithoutTenantInput
+  questionnairePhaseReviews?: Prisma.QuestionnairePhaseReviewCreateNestedManyWithoutTenantInput
+  documentReviews?: Prisma.DocumentReviewCreateNestedManyWithoutTenantInput
+  bankDocumentRequirements?: Prisma.BankDocumentRequirementCreateNestedManyWithoutTenantInput
+  organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
+  applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
+  organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+}
+
+export type TenantUncheckedCreateWithoutOrganizationInvitationsInput = {
+  id?: string
+  name: string
+  subdomain: string
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
+  properties?: Prisma.PropertyUncheckedCreateNestedManyWithoutTenantInput
+  paymentPlans?: Prisma.PaymentPlanUncheckedCreateNestedManyWithoutTenantInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethods?: Prisma.PropertyPaymentMethodUncheckedCreateNestedManyWithoutTenantInput
+  applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutTenantInput
+  roles?: Prisma.RoleUncheckedCreateNestedManyWithoutTenantInput
+  permissions?: Prisma.PermissionUncheckedCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.TenantMembershipUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedCreateNestedManyWithoutTenantInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleUncheckedCreateNestedManyWithoutTenantInput
+  contractTerminations?: Prisma.ApplicationTerminationUncheckedCreateNestedManyWithoutTenantInput
+  documentTemplates?: Prisma.DocumentTemplateUncheckedCreateNestedManyWithoutTenantInput
+  offerLetters?: Prisma.OfferLetterUncheckedCreateNestedManyWithoutTenantInput
+  apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutTenantInput
+  eventChannels?: Prisma.EventChannelUncheckedCreateNestedManyWithoutTenantInput
+  eventTypes?: Prisma.EventTypeUncheckedCreateNestedManyWithoutTenantInput
+  eventHandlers?: Prisma.EventHandlerUncheckedCreateNestedManyWithoutTenantInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedCreateNestedManyWithoutTenantInput
+  approvalRequests?: Prisma.ApprovalRequestUncheckedCreateNestedManyWithoutTenantInput
+  contractRefunds?: Prisma.ApplicationRefundUncheckedCreateNestedManyWithoutTenantInput
+  propertyPaymentMethodLinks?: Prisma.PropertyPaymentMethodLinkUncheckedCreateNestedManyWithoutTenantInput
+  propertyPaymentMethodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedCreateNestedManyWithoutTenantInput
+  phaseEventAttachments?: Prisma.PhaseEventAttachmentUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseSteps?: Prisma.PaymentMethodPhaseStepUncheckedCreateNestedManyWithoutTenantInput
+  stepEventAttachments?: Prisma.StepEventAttachmentUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseDocuments?: Prisma.PaymentMethodPhaseDocumentUncheckedCreateNestedManyWithoutTenantInput
+  paymentMethodPhaseFields?: Prisma.PaymentMethodPhaseFieldUncheckedCreateNestedManyWithoutTenantInput
+  applicationPhases?: Prisma.ApplicationPhaseUncheckedCreateNestedManyWithoutTenantInput
+  questionnairePhases?: Prisma.QuestionnairePhaseUncheckedCreateNestedManyWithoutTenantInput
+  documentationPhases?: Prisma.DocumentationPhaseUncheckedCreateNestedManyWithoutTenantInput
+  paymentPhases?: Prisma.PaymentPhaseUncheckedCreateNestedManyWithoutTenantInput
+  questionnaireFields?: Prisma.QuestionnaireFieldUncheckedCreateNestedManyWithoutTenantInput
+  applicationEvents?: Prisma.ApplicationEventUncheckedCreateNestedManyWithoutTenantInput
+  paymentInstallments?: Prisma.PaymentInstallmentUncheckedCreateNestedManyWithoutTenantInput
+  applicationPayments?: Prisma.ApplicationPaymentUncheckedCreateNestedManyWithoutTenantInput
+  applicationDocuments?: Prisma.ApplicationDocumentUncheckedCreateNestedManyWithoutTenantInput
+  documentApprovals?: Prisma.DocumentApprovalUncheckedCreateNestedManyWithoutTenantInput
+  approvalStageProgress?: Prisma.ApprovalStageProgressUncheckedCreateNestedManyWithoutTenantInput
+  propertyMedia?: Prisma.PropertyMediaUncheckedCreateNestedManyWithoutTenantInput
+  propertyDocuments?: Prisma.PropertyDocumentUncheckedCreateNestedManyWithoutTenantInput
+  propertyVariants?: Prisma.PropertyVariantUncheckedCreateNestedManyWithoutTenantInput
+  propertyVariantAmenities?: Prisma.PropertyVariantAmenityUncheckedCreateNestedManyWithoutTenantInput
+  propertyVariantMedia?: Prisma.PropertyVariantMediaUncheckedCreateNestedManyWithoutTenantInput
+  propertyUnits?: Prisma.PropertyUnitUncheckedCreateNestedManyWithoutTenantInput
+  propertyAmenities?: Prisma.PropertyAmenityUncheckedCreateNestedManyWithoutTenantInput
+  amenities?: Prisma.AmenityUncheckedCreateNestedManyWithoutTenantInput
+  socials?: Prisma.SocialUncheckedCreateNestedManyWithoutTenantInput
+  wallets?: Prisma.WalletUncheckedCreateNestedManyWithoutTenantInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutTenantInput
+  settings?: Prisma.SettingsUncheckedCreateNestedManyWithoutTenantInput
+  domainEvents?: Prisma.DomainEventUncheckedCreateNestedManyWithoutTenantInput
+  workflowBlockers?: Prisma.WorkflowBlockerUncheckedCreateNestedManyWithoutTenantInput
+  questionnairePlans?: Prisma.QuestionnairePlanUncheckedCreateNestedManyWithoutTenantInput
+  questionnairePhaseReviews?: Prisma.QuestionnairePhaseReviewUncheckedCreateNestedManyWithoutTenantInput
+  documentReviews?: Prisma.DocumentReviewUncheckedCreateNestedManyWithoutTenantInput
+  bankDocumentRequirements?: Prisma.BankDocumentRequirementUncheckedCreateNestedManyWithoutTenantInput
+  organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
+  applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
+  organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type TenantCreateOrConnectWithoutOrganizationInvitationsInput = {
+  where: Prisma.TenantWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantCreateWithoutOrganizationInvitationsInput, Prisma.TenantUncheckedCreateWithoutOrganizationInvitationsInput>
+}
+
+export type TenantUpsertWithoutOrganizationInvitationsInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutOrganizationInvitationsInput, Prisma.TenantUncheckedUpdateWithoutOrganizationInvitationsInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutOrganizationInvitationsInput, Prisma.TenantUncheckedCreateWithoutOrganizationInvitationsInput>
+  where?: Prisma.TenantWhereInput
+}
+
+export type TenantUpdateToOneWithWhereWithoutOrganizationInvitationsInput = {
+  where?: Prisma.TenantWhereInput
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutOrganizationInvitationsInput, Prisma.TenantUncheckedUpdateWithoutOrganizationInvitationsInput>
+}
+
+export type TenantUpdateWithoutOrganizationInvitationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  subdomain?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserUpdateManyWithoutTenantNestedInput
+  properties?: Prisma.PropertyUpdateManyWithoutTenantNestedInput
+  paymentPlans?: Prisma.PaymentPlanUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUpdateManyWithoutTenantNestedInput
+  paymentMethods?: Prisma.PropertyPaymentMethodUpdateManyWithoutTenantNestedInput
+  applications?: Prisma.ApplicationUpdateManyWithoutTenantNestedInput
+  roles?: Prisma.RoleUpdateManyWithoutTenantNestedInput
+  permissions?: Prisma.PermissionUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.TenantMembershipUpdateManyWithoutTenantNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUpdateManyWithoutTenantNestedInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleUpdateManyWithoutTenantNestedInput
+  contractTerminations?: Prisma.ApplicationTerminationUpdateManyWithoutTenantNestedInput
+  documentTemplates?: Prisma.DocumentTemplateUpdateManyWithoutTenantNestedInput
+  offerLetters?: Prisma.OfferLetterUpdateManyWithoutTenantNestedInput
+  apiKeys?: Prisma.ApiKeyUpdateManyWithoutTenantNestedInput
+  eventChannels?: Prisma.EventChannelUpdateManyWithoutTenantNestedInput
+  eventTypes?: Prisma.EventTypeUpdateManyWithoutTenantNestedInput
+  eventHandlers?: Prisma.EventHandlerUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUpdateManyWithoutTenantNestedInput
+  approvalRequests?: Prisma.ApprovalRequestUpdateManyWithoutTenantNestedInput
+  contractRefunds?: Prisma.ApplicationRefundUpdateManyWithoutTenantNestedInput
+  propertyPaymentMethodLinks?: Prisma.PropertyPaymentMethodLinkUpdateManyWithoutTenantNestedInput
+  propertyPaymentMethodPhases?: Prisma.PropertyPaymentMethodPhaseUpdateManyWithoutTenantNestedInput
+  phaseEventAttachments?: Prisma.PhaseEventAttachmentUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseSteps?: Prisma.PaymentMethodPhaseStepUpdateManyWithoutTenantNestedInput
+  stepEventAttachments?: Prisma.StepEventAttachmentUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseDocuments?: Prisma.PaymentMethodPhaseDocumentUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseFields?: Prisma.PaymentMethodPhaseFieldUpdateManyWithoutTenantNestedInput
+  applicationPhases?: Prisma.ApplicationPhaseUpdateManyWithoutTenantNestedInput
+  questionnairePhases?: Prisma.QuestionnairePhaseUpdateManyWithoutTenantNestedInput
+  documentationPhases?: Prisma.DocumentationPhaseUpdateManyWithoutTenantNestedInput
+  paymentPhases?: Prisma.PaymentPhaseUpdateManyWithoutTenantNestedInput
+  questionnaireFields?: Prisma.QuestionnaireFieldUpdateManyWithoutTenantNestedInput
+  applicationEvents?: Prisma.ApplicationEventUpdateManyWithoutTenantNestedInput
+  paymentInstallments?: Prisma.PaymentInstallmentUpdateManyWithoutTenantNestedInput
+  applicationPayments?: Prisma.ApplicationPaymentUpdateManyWithoutTenantNestedInput
+  applicationDocuments?: Prisma.ApplicationDocumentUpdateManyWithoutTenantNestedInput
+  documentApprovals?: Prisma.DocumentApprovalUpdateManyWithoutTenantNestedInput
+  approvalStageProgress?: Prisma.ApprovalStageProgressUpdateManyWithoutTenantNestedInput
+  propertyMedia?: Prisma.PropertyMediaUpdateManyWithoutTenantNestedInput
+  propertyDocuments?: Prisma.PropertyDocumentUpdateManyWithoutTenantNestedInput
+  propertyVariants?: Prisma.PropertyVariantUpdateManyWithoutTenantNestedInput
+  propertyVariantAmenities?: Prisma.PropertyVariantAmenityUpdateManyWithoutTenantNestedInput
+  propertyVariantMedia?: Prisma.PropertyVariantMediaUpdateManyWithoutTenantNestedInput
+  propertyUnits?: Prisma.PropertyUnitUpdateManyWithoutTenantNestedInput
+  propertyAmenities?: Prisma.PropertyAmenityUpdateManyWithoutTenantNestedInput
+  amenities?: Prisma.AmenityUpdateManyWithoutTenantNestedInput
+  socials?: Prisma.SocialUpdateManyWithoutTenantNestedInput
+  wallets?: Prisma.WalletUpdateManyWithoutTenantNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutTenantNestedInput
+  settings?: Prisma.SettingsUpdateManyWithoutTenantNestedInput
+  domainEvents?: Prisma.DomainEventUpdateManyWithoutTenantNestedInput
+  workflowBlockers?: Prisma.WorkflowBlockerUpdateManyWithoutTenantNestedInput
+  questionnairePlans?: Prisma.QuestionnairePlanUpdateManyWithoutTenantNestedInput
+  questionnairePhaseReviews?: Prisma.QuestionnairePhaseReviewUpdateManyWithoutTenantNestedInput
+  documentReviews?: Prisma.DocumentReviewUpdateManyWithoutTenantNestedInput
+  bankDocumentRequirements?: Prisma.BankDocumentRequirementUpdateManyWithoutTenantNestedInput
+  organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
+  applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
+  organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateWithoutOrganizationInvitationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  subdomain?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
+  properties?: Prisma.PropertyUncheckedUpdateManyWithoutTenantNestedInput
+  paymentPlans?: Prisma.PaymentPlanUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPlans?: Prisma.DocumentationPlanUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethods?: Prisma.PropertyPaymentMethodUncheckedUpdateManyWithoutTenantNestedInput
+  applications?: Prisma.ApplicationUncheckedUpdateManyWithoutTenantNestedInput
+  roles?: Prisma.RoleUncheckedUpdateManyWithoutTenantNestedInput
+  permissions?: Prisma.PermissionUncheckedUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.TenantMembershipUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodChangeRequests?: Prisma.PaymentMethodChangeRequestUncheckedUpdateManyWithoutTenantNestedInput
+  documentRequirementRules?: Prisma.DocumentRequirementRuleUncheckedUpdateManyWithoutTenantNestedInput
+  contractTerminations?: Prisma.ApplicationTerminationUncheckedUpdateManyWithoutTenantNestedInput
+  documentTemplates?: Prisma.DocumentTemplateUncheckedUpdateManyWithoutTenantNestedInput
+  offerLetters?: Prisma.OfferLetterUncheckedUpdateManyWithoutTenantNestedInput
+  apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutTenantNestedInput
+  eventChannels?: Prisma.EventChannelUncheckedUpdateManyWithoutTenantNestedInput
+  eventTypes?: Prisma.EventTypeUncheckedUpdateManyWithoutTenantNestedInput
+  eventHandlers?: Prisma.EventHandlerUncheckedUpdateManyWithoutTenantNestedInput
+  propertyTransferRequests?: Prisma.PropertyTransferRequestUncheckedUpdateManyWithoutTenantNestedInput
+  approvalRequests?: Prisma.ApprovalRequestUncheckedUpdateManyWithoutTenantNestedInput
+  contractRefunds?: Prisma.ApplicationRefundUncheckedUpdateManyWithoutTenantNestedInput
+  propertyPaymentMethodLinks?: Prisma.PropertyPaymentMethodLinkUncheckedUpdateManyWithoutTenantNestedInput
+  propertyPaymentMethodPhases?: Prisma.PropertyPaymentMethodPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  phaseEventAttachments?: Prisma.PhaseEventAttachmentUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseSteps?: Prisma.PaymentMethodPhaseStepUncheckedUpdateManyWithoutTenantNestedInput
+  stepEventAttachments?: Prisma.StepEventAttachmentUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseDocuments?: Prisma.PaymentMethodPhaseDocumentUncheckedUpdateManyWithoutTenantNestedInput
+  paymentMethodPhaseFields?: Prisma.PaymentMethodPhaseFieldUncheckedUpdateManyWithoutTenantNestedInput
+  applicationPhases?: Prisma.ApplicationPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  questionnairePhases?: Prisma.QuestionnairePhaseUncheckedUpdateManyWithoutTenantNestedInput
+  documentationPhases?: Prisma.DocumentationPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  paymentPhases?: Prisma.PaymentPhaseUncheckedUpdateManyWithoutTenantNestedInput
+  questionnaireFields?: Prisma.QuestionnaireFieldUncheckedUpdateManyWithoutTenantNestedInput
+  applicationEvents?: Prisma.ApplicationEventUncheckedUpdateManyWithoutTenantNestedInput
+  paymentInstallments?: Prisma.PaymentInstallmentUncheckedUpdateManyWithoutTenantNestedInput
+  applicationPayments?: Prisma.ApplicationPaymentUncheckedUpdateManyWithoutTenantNestedInput
+  applicationDocuments?: Prisma.ApplicationDocumentUncheckedUpdateManyWithoutTenantNestedInput
+  documentApprovals?: Prisma.DocumentApprovalUncheckedUpdateManyWithoutTenantNestedInput
+  approvalStageProgress?: Prisma.ApprovalStageProgressUncheckedUpdateManyWithoutTenantNestedInput
+  propertyMedia?: Prisma.PropertyMediaUncheckedUpdateManyWithoutTenantNestedInput
+  propertyDocuments?: Prisma.PropertyDocumentUncheckedUpdateManyWithoutTenantNestedInput
+  propertyVariants?: Prisma.PropertyVariantUncheckedUpdateManyWithoutTenantNestedInput
+  propertyVariantAmenities?: Prisma.PropertyVariantAmenityUncheckedUpdateManyWithoutTenantNestedInput
+  propertyVariantMedia?: Prisma.PropertyVariantMediaUncheckedUpdateManyWithoutTenantNestedInput
+  propertyUnits?: Prisma.PropertyUnitUncheckedUpdateManyWithoutTenantNestedInput
+  propertyAmenities?: Prisma.PropertyAmenityUncheckedUpdateManyWithoutTenantNestedInput
+  amenities?: Prisma.AmenityUncheckedUpdateManyWithoutTenantNestedInput
+  socials?: Prisma.SocialUncheckedUpdateManyWithoutTenantNestedInput
+  wallets?: Prisma.WalletUncheckedUpdateManyWithoutTenantNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutTenantNestedInput
+  settings?: Prisma.SettingsUncheckedUpdateManyWithoutTenantNestedInput
+  domainEvents?: Prisma.DomainEventUncheckedUpdateManyWithoutTenantNestedInput
+  workflowBlockers?: Prisma.WorkflowBlockerUncheckedUpdateManyWithoutTenantNestedInput
+  questionnairePlans?: Prisma.QuestionnairePlanUncheckedUpdateManyWithoutTenantNestedInput
+  questionnairePhaseReviews?: Prisma.QuestionnairePhaseReviewUncheckedUpdateManyWithoutTenantNestedInput
+  documentReviews?: Prisma.DocumentReviewUncheckedUpdateManyWithoutTenantNestedInput
+  bankDocumentRequirements?: Prisma.BankDocumentRequirementUncheckedUpdateManyWithoutTenantNestedInput
+  organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
 }
@@ -3410,6 +3747,7 @@ export type TenantCreateWithoutBankDocumentRequirementsInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutBankDocumentRequirementsInput = {
@@ -3478,6 +3816,7 @@ export type TenantUncheckedCreateWithoutBankDocumentRequirementsInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutBankDocumentRequirementsInput = {
@@ -3562,6 +3901,7 @@ export type TenantUpdateWithoutBankDocumentRequirementsInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutBankDocumentRequirementsInput = {
@@ -3630,6 +3970,7 @@ export type TenantUncheckedUpdateWithoutBankDocumentRequirementsInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutApiKeysInput = {
@@ -3698,6 +4039,7 @@ export type TenantCreateWithoutApiKeysInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutApiKeysInput = {
@@ -3766,6 +4108,7 @@ export type TenantUncheckedCreateWithoutApiKeysInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutApiKeysInput = {
@@ -3850,6 +4193,7 @@ export type TenantUpdateWithoutApiKeysInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutApiKeysInput = {
@@ -3918,6 +4262,7 @@ export type TenantUncheckedUpdateWithoutApiKeysInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutSocialsInput = {
@@ -3986,6 +4331,7 @@ export type TenantCreateWithoutSocialsInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutSocialsInput = {
@@ -4054,6 +4400,7 @@ export type TenantUncheckedCreateWithoutSocialsInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutSocialsInput = {
@@ -4138,6 +4485,7 @@ export type TenantUpdateWithoutSocialsInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutSocialsInput = {
@@ -4206,6 +4554,7 @@ export type TenantUncheckedUpdateWithoutSocialsInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutWalletsInput = {
@@ -4274,6 +4623,7 @@ export type TenantCreateWithoutWalletsInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutWalletsInput = {
@@ -4342,6 +4692,7 @@ export type TenantUncheckedCreateWithoutWalletsInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutWalletsInput = {
@@ -4426,6 +4777,7 @@ export type TenantUpdateWithoutWalletsInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutWalletsInput = {
@@ -4494,6 +4846,7 @@ export type TenantUncheckedUpdateWithoutWalletsInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutTransactionsInput = {
@@ -4562,6 +4915,7 @@ export type TenantCreateWithoutTransactionsInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutTransactionsInput = {
@@ -4630,6 +4984,7 @@ export type TenantUncheckedCreateWithoutTransactionsInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutTransactionsInput = {
@@ -4714,6 +5069,7 @@ export type TenantUpdateWithoutTransactionsInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutTransactionsInput = {
@@ -4782,6 +5138,7 @@ export type TenantUncheckedUpdateWithoutTransactionsInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutSettingsInput = {
@@ -4850,6 +5207,7 @@ export type TenantCreateWithoutSettingsInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutSettingsInput = {
@@ -4918,6 +5276,7 @@ export type TenantUncheckedCreateWithoutSettingsInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutSettingsInput = {
@@ -5002,6 +5361,7 @@ export type TenantUpdateWithoutSettingsInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutSettingsInput = {
@@ -5070,6 +5430,7 @@ export type TenantUncheckedUpdateWithoutSettingsInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPropertiesInput = {
@@ -5138,6 +5499,7 @@ export type TenantCreateWithoutPropertiesInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPropertiesInput = {
@@ -5206,6 +5568,7 @@ export type TenantUncheckedCreateWithoutPropertiesInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPropertiesInput = {
@@ -5290,6 +5653,7 @@ export type TenantUpdateWithoutPropertiesInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPropertiesInput = {
@@ -5358,6 +5722,7 @@ export type TenantUncheckedUpdateWithoutPropertiesInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPropertyMediaInput = {
@@ -5426,6 +5791,7 @@ export type TenantCreateWithoutPropertyMediaInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPropertyMediaInput = {
@@ -5494,6 +5860,7 @@ export type TenantUncheckedCreateWithoutPropertyMediaInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPropertyMediaInput = {
@@ -5578,6 +5945,7 @@ export type TenantUpdateWithoutPropertyMediaInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPropertyMediaInput = {
@@ -5646,6 +6014,7 @@ export type TenantUncheckedUpdateWithoutPropertyMediaInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPropertyDocumentsInput = {
@@ -5714,6 +6083,7 @@ export type TenantCreateWithoutPropertyDocumentsInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPropertyDocumentsInput = {
@@ -5782,6 +6152,7 @@ export type TenantUncheckedCreateWithoutPropertyDocumentsInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPropertyDocumentsInput = {
@@ -5866,6 +6237,7 @@ export type TenantUpdateWithoutPropertyDocumentsInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPropertyDocumentsInput = {
@@ -5934,6 +6306,7 @@ export type TenantUncheckedUpdateWithoutPropertyDocumentsInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutAmenitiesInput = {
@@ -6002,6 +6375,7 @@ export type TenantCreateWithoutAmenitiesInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutAmenitiesInput = {
@@ -6070,6 +6444,7 @@ export type TenantUncheckedCreateWithoutAmenitiesInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutAmenitiesInput = {
@@ -6154,6 +6529,7 @@ export type TenantUpdateWithoutAmenitiesInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutAmenitiesInput = {
@@ -6222,6 +6598,7 @@ export type TenantUncheckedUpdateWithoutAmenitiesInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPropertyVariantsInput = {
@@ -6290,6 +6667,7 @@ export type TenantCreateWithoutPropertyVariantsInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPropertyVariantsInput = {
@@ -6358,6 +6736,7 @@ export type TenantUncheckedCreateWithoutPropertyVariantsInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPropertyVariantsInput = {
@@ -6442,6 +6821,7 @@ export type TenantUpdateWithoutPropertyVariantsInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPropertyVariantsInput = {
@@ -6510,6 +6890,7 @@ export type TenantUncheckedUpdateWithoutPropertyVariantsInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPropertyVariantAmenitiesInput = {
@@ -6578,6 +6959,7 @@ export type TenantCreateWithoutPropertyVariantAmenitiesInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPropertyVariantAmenitiesInput = {
@@ -6646,6 +7028,7 @@ export type TenantUncheckedCreateWithoutPropertyVariantAmenitiesInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPropertyVariantAmenitiesInput = {
@@ -6730,6 +7113,7 @@ export type TenantUpdateWithoutPropertyVariantAmenitiesInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPropertyVariantAmenitiesInput = {
@@ -6798,6 +7182,7 @@ export type TenantUncheckedUpdateWithoutPropertyVariantAmenitiesInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPropertyVariantMediaInput = {
@@ -6866,6 +7251,7 @@ export type TenantCreateWithoutPropertyVariantMediaInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPropertyVariantMediaInput = {
@@ -6934,6 +7320,7 @@ export type TenantUncheckedCreateWithoutPropertyVariantMediaInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPropertyVariantMediaInput = {
@@ -7018,6 +7405,7 @@ export type TenantUpdateWithoutPropertyVariantMediaInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPropertyVariantMediaInput = {
@@ -7086,6 +7474,7 @@ export type TenantUncheckedUpdateWithoutPropertyVariantMediaInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPropertyUnitsInput = {
@@ -7154,6 +7543,7 @@ export type TenantCreateWithoutPropertyUnitsInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPropertyUnitsInput = {
@@ -7222,6 +7612,7 @@ export type TenantUncheckedCreateWithoutPropertyUnitsInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPropertyUnitsInput = {
@@ -7306,6 +7697,7 @@ export type TenantUpdateWithoutPropertyUnitsInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPropertyUnitsInput = {
@@ -7374,6 +7766,7 @@ export type TenantUncheckedUpdateWithoutPropertyUnitsInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPropertyAmenitiesInput = {
@@ -7442,6 +7835,7 @@ export type TenantCreateWithoutPropertyAmenitiesInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPropertyAmenitiesInput = {
@@ -7510,6 +7904,7 @@ export type TenantUncheckedCreateWithoutPropertyAmenitiesInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPropertyAmenitiesInput = {
@@ -7594,6 +7989,7 @@ export type TenantUpdateWithoutPropertyAmenitiesInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPropertyAmenitiesInput = {
@@ -7662,6 +8058,7 @@ export type TenantUncheckedUpdateWithoutPropertyAmenitiesInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutDocumentationPlansInput = {
@@ -7730,6 +8127,7 @@ export type TenantCreateWithoutDocumentationPlansInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutDocumentationPlansInput = {
@@ -7798,6 +8196,7 @@ export type TenantUncheckedCreateWithoutDocumentationPlansInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutDocumentationPlansInput = {
@@ -7882,6 +8281,7 @@ export type TenantUpdateWithoutDocumentationPlansInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutDocumentationPlansInput = {
@@ -7950,6 +8350,7 @@ export type TenantUncheckedUpdateWithoutDocumentationPlansInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutQuestionnairePlansInput = {
@@ -8018,6 +8419,7 @@ export type TenantCreateWithoutQuestionnairePlansInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutQuestionnairePlansInput = {
@@ -8086,6 +8488,7 @@ export type TenantUncheckedCreateWithoutQuestionnairePlansInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutQuestionnairePlansInput = {
@@ -8170,6 +8573,7 @@ export type TenantUpdateWithoutQuestionnairePlansInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutQuestionnairePlansInput = {
@@ -8238,6 +8642,7 @@ export type TenantUncheckedUpdateWithoutQuestionnairePlansInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPaymentPlansInput = {
@@ -8306,6 +8711,7 @@ export type TenantCreateWithoutPaymentPlansInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPaymentPlansInput = {
@@ -8374,6 +8780,7 @@ export type TenantUncheckedCreateWithoutPaymentPlansInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPaymentPlansInput = {
@@ -8458,6 +8865,7 @@ export type TenantUpdateWithoutPaymentPlansInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPaymentPlansInput = {
@@ -8526,6 +8934,7 @@ export type TenantUncheckedUpdateWithoutPaymentPlansInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPaymentMethodsInput = {
@@ -8594,6 +9003,7 @@ export type TenantCreateWithoutPaymentMethodsInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPaymentMethodsInput = {
@@ -8662,6 +9072,7 @@ export type TenantUncheckedCreateWithoutPaymentMethodsInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPaymentMethodsInput = {
@@ -8746,6 +9157,7 @@ export type TenantUpdateWithoutPaymentMethodsInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPaymentMethodsInput = {
@@ -8814,6 +9226,7 @@ export type TenantUncheckedUpdateWithoutPaymentMethodsInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPropertyPaymentMethodLinksInput = {
@@ -8882,6 +9295,7 @@ export type TenantCreateWithoutPropertyPaymentMethodLinksInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPropertyPaymentMethodLinksInput = {
@@ -8950,6 +9364,7 @@ export type TenantUncheckedCreateWithoutPropertyPaymentMethodLinksInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPropertyPaymentMethodLinksInput = {
@@ -9034,6 +9449,7 @@ export type TenantUpdateWithoutPropertyPaymentMethodLinksInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPropertyPaymentMethodLinksInput = {
@@ -9102,6 +9518,7 @@ export type TenantUncheckedUpdateWithoutPropertyPaymentMethodLinksInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPropertyPaymentMethodPhasesInput = {
@@ -9170,6 +9587,7 @@ export type TenantCreateWithoutPropertyPaymentMethodPhasesInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPropertyPaymentMethodPhasesInput = {
@@ -9238,6 +9656,7 @@ export type TenantUncheckedCreateWithoutPropertyPaymentMethodPhasesInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPropertyPaymentMethodPhasesInput = {
@@ -9322,6 +9741,7 @@ export type TenantUpdateWithoutPropertyPaymentMethodPhasesInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPropertyPaymentMethodPhasesInput = {
@@ -9390,6 +9810,7 @@ export type TenantUncheckedUpdateWithoutPropertyPaymentMethodPhasesInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPhaseEventAttachmentsInput = {
@@ -9458,6 +9879,7 @@ export type TenantCreateWithoutPhaseEventAttachmentsInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPhaseEventAttachmentsInput = {
@@ -9526,6 +9948,7 @@ export type TenantUncheckedCreateWithoutPhaseEventAttachmentsInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPhaseEventAttachmentsInput = {
@@ -9610,6 +10033,7 @@ export type TenantUpdateWithoutPhaseEventAttachmentsInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPhaseEventAttachmentsInput = {
@@ -9678,6 +10102,7 @@ export type TenantUncheckedUpdateWithoutPhaseEventAttachmentsInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPaymentMethodPhaseStepsInput = {
@@ -9746,6 +10171,7 @@ export type TenantCreateWithoutPaymentMethodPhaseStepsInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPaymentMethodPhaseStepsInput = {
@@ -9814,6 +10240,7 @@ export type TenantUncheckedCreateWithoutPaymentMethodPhaseStepsInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPaymentMethodPhaseStepsInput = {
@@ -9898,6 +10325,7 @@ export type TenantUpdateWithoutPaymentMethodPhaseStepsInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPaymentMethodPhaseStepsInput = {
@@ -9966,6 +10394,7 @@ export type TenantUncheckedUpdateWithoutPaymentMethodPhaseStepsInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutStepEventAttachmentsInput = {
@@ -10034,6 +10463,7 @@ export type TenantCreateWithoutStepEventAttachmentsInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutStepEventAttachmentsInput = {
@@ -10102,6 +10532,7 @@ export type TenantUncheckedCreateWithoutStepEventAttachmentsInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutStepEventAttachmentsInput = {
@@ -10186,6 +10617,7 @@ export type TenantUpdateWithoutStepEventAttachmentsInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutStepEventAttachmentsInput = {
@@ -10254,6 +10686,7 @@ export type TenantUncheckedUpdateWithoutStepEventAttachmentsInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPaymentMethodPhaseDocumentsInput = {
@@ -10322,6 +10755,7 @@ export type TenantCreateWithoutPaymentMethodPhaseDocumentsInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPaymentMethodPhaseDocumentsInput = {
@@ -10390,6 +10824,7 @@ export type TenantUncheckedCreateWithoutPaymentMethodPhaseDocumentsInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPaymentMethodPhaseDocumentsInput = {
@@ -10474,6 +10909,7 @@ export type TenantUpdateWithoutPaymentMethodPhaseDocumentsInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPaymentMethodPhaseDocumentsInput = {
@@ -10542,6 +10978,7 @@ export type TenantUncheckedUpdateWithoutPaymentMethodPhaseDocumentsInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPaymentMethodPhaseFieldsInput = {
@@ -10610,6 +11047,7 @@ export type TenantCreateWithoutPaymentMethodPhaseFieldsInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPaymentMethodPhaseFieldsInput = {
@@ -10678,6 +11116,7 @@ export type TenantUncheckedCreateWithoutPaymentMethodPhaseFieldsInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPaymentMethodPhaseFieldsInput = {
@@ -10762,6 +11201,7 @@ export type TenantUpdateWithoutPaymentMethodPhaseFieldsInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPaymentMethodPhaseFieldsInput = {
@@ -10830,6 +11270,7 @@ export type TenantUncheckedUpdateWithoutPaymentMethodPhaseFieldsInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutApplicationsInput = {
@@ -10898,6 +11339,7 @@ export type TenantCreateWithoutApplicationsInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutApplicationsInput = {
@@ -10966,6 +11408,7 @@ export type TenantUncheckedCreateWithoutApplicationsInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutApplicationsInput = {
@@ -11050,6 +11493,7 @@ export type TenantUpdateWithoutApplicationsInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutApplicationsInput = {
@@ -11118,6 +11562,7 @@ export type TenantUncheckedUpdateWithoutApplicationsInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutApplicationOrganizationsInput = {
@@ -11186,6 +11631,7 @@ export type TenantCreateWithoutApplicationOrganizationsInput = {
   bankDocumentRequirements?: Prisma.BankDocumentRequirementCreateNestedManyWithoutTenantInput
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutApplicationOrganizationsInput = {
@@ -11254,6 +11700,7 @@ export type TenantUncheckedCreateWithoutApplicationOrganizationsInput = {
   bankDocumentRequirements?: Prisma.BankDocumentRequirementUncheckedCreateNestedManyWithoutTenantInput
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutApplicationOrganizationsInput = {
@@ -11338,6 +11785,7 @@ export type TenantUpdateWithoutApplicationOrganizationsInput = {
   bankDocumentRequirements?: Prisma.BankDocumentRequirementUpdateManyWithoutTenantNestedInput
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutApplicationOrganizationsInput = {
@@ -11406,6 +11854,7 @@ export type TenantUncheckedUpdateWithoutApplicationOrganizationsInput = {
   bankDocumentRequirements?: Prisma.BankDocumentRequirementUncheckedUpdateManyWithoutTenantNestedInput
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutContractRefundsInput = {
@@ -11474,6 +11923,7 @@ export type TenantCreateWithoutContractRefundsInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutContractRefundsInput = {
@@ -11542,6 +11992,7 @@ export type TenantUncheckedCreateWithoutContractRefundsInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutContractRefundsInput = {
@@ -11626,6 +12077,7 @@ export type TenantUpdateWithoutContractRefundsInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutContractRefundsInput = {
@@ -11694,6 +12146,7 @@ export type TenantUncheckedUpdateWithoutContractRefundsInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutApplicationPhasesInput = {
@@ -11762,6 +12215,7 @@ export type TenantCreateWithoutApplicationPhasesInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutApplicationPhasesInput = {
@@ -11830,6 +12284,7 @@ export type TenantUncheckedCreateWithoutApplicationPhasesInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutApplicationPhasesInput = {
@@ -11914,6 +12369,7 @@ export type TenantUpdateWithoutApplicationPhasesInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutApplicationPhasesInput = {
@@ -11982,6 +12438,7 @@ export type TenantUncheckedUpdateWithoutApplicationPhasesInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutQuestionnairePhasesInput = {
@@ -12050,6 +12507,7 @@ export type TenantCreateWithoutQuestionnairePhasesInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutQuestionnairePhasesInput = {
@@ -12118,6 +12576,7 @@ export type TenantUncheckedCreateWithoutQuestionnairePhasesInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutQuestionnairePhasesInput = {
@@ -12202,6 +12661,7 @@ export type TenantUpdateWithoutQuestionnairePhasesInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutQuestionnairePhasesInput = {
@@ -12270,6 +12730,7 @@ export type TenantUncheckedUpdateWithoutQuestionnairePhasesInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutQuestionnairePhaseReviewsInput = {
@@ -12338,6 +12799,7 @@ export type TenantCreateWithoutQuestionnairePhaseReviewsInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutQuestionnairePhaseReviewsInput = {
@@ -12406,6 +12868,7 @@ export type TenantUncheckedCreateWithoutQuestionnairePhaseReviewsInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutQuestionnairePhaseReviewsInput = {
@@ -12490,6 +12953,7 @@ export type TenantUpdateWithoutQuestionnairePhaseReviewsInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutQuestionnairePhaseReviewsInput = {
@@ -12558,6 +13022,7 @@ export type TenantUncheckedUpdateWithoutQuestionnairePhaseReviewsInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutDocumentationPhasesInput = {
@@ -12626,6 +13091,7 @@ export type TenantCreateWithoutDocumentationPhasesInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutDocumentationPhasesInput = {
@@ -12694,6 +13160,7 @@ export type TenantUncheckedCreateWithoutDocumentationPhasesInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutDocumentationPhasesInput = {
@@ -12778,6 +13245,7 @@ export type TenantUpdateWithoutDocumentationPhasesInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutDocumentationPhasesInput = {
@@ -12846,6 +13314,7 @@ export type TenantUncheckedUpdateWithoutDocumentationPhasesInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPaymentPhasesInput = {
@@ -12914,6 +13383,7 @@ export type TenantCreateWithoutPaymentPhasesInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPaymentPhasesInput = {
@@ -12982,6 +13452,7 @@ export type TenantUncheckedCreateWithoutPaymentPhasesInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPaymentPhasesInput = {
@@ -13066,6 +13537,7 @@ export type TenantUpdateWithoutPaymentPhasesInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPaymentPhasesInput = {
@@ -13134,6 +13606,7 @@ export type TenantUncheckedUpdateWithoutPaymentPhasesInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutQuestionnaireFieldsInput = {
@@ -13202,6 +13675,7 @@ export type TenantCreateWithoutQuestionnaireFieldsInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutQuestionnaireFieldsInput = {
@@ -13270,6 +13744,7 @@ export type TenantUncheckedCreateWithoutQuestionnaireFieldsInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutQuestionnaireFieldsInput = {
@@ -13354,6 +13829,7 @@ export type TenantUpdateWithoutQuestionnaireFieldsInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutQuestionnaireFieldsInput = {
@@ -13422,6 +13898,7 @@ export type TenantUncheckedUpdateWithoutQuestionnaireFieldsInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutApplicationEventsInput = {
@@ -13490,6 +13967,7 @@ export type TenantCreateWithoutApplicationEventsInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutApplicationEventsInput = {
@@ -13558,6 +14036,7 @@ export type TenantUncheckedCreateWithoutApplicationEventsInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutApplicationEventsInput = {
@@ -13642,6 +14121,7 @@ export type TenantUpdateWithoutApplicationEventsInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutApplicationEventsInput = {
@@ -13710,6 +14190,7 @@ export type TenantUncheckedUpdateWithoutApplicationEventsInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPaymentInstallmentsInput = {
@@ -13778,6 +14259,7 @@ export type TenantCreateWithoutPaymentInstallmentsInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPaymentInstallmentsInput = {
@@ -13846,6 +14328,7 @@ export type TenantUncheckedCreateWithoutPaymentInstallmentsInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPaymentInstallmentsInput = {
@@ -13930,6 +14413,7 @@ export type TenantUpdateWithoutPaymentInstallmentsInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPaymentInstallmentsInput = {
@@ -13998,6 +14482,7 @@ export type TenantUncheckedUpdateWithoutPaymentInstallmentsInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutApplicationPaymentsInput = {
@@ -14066,6 +14551,7 @@ export type TenantCreateWithoutApplicationPaymentsInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutApplicationPaymentsInput = {
@@ -14134,6 +14620,7 @@ export type TenantUncheckedCreateWithoutApplicationPaymentsInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutApplicationPaymentsInput = {
@@ -14218,6 +14705,7 @@ export type TenantUpdateWithoutApplicationPaymentsInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutApplicationPaymentsInput = {
@@ -14286,6 +14774,7 @@ export type TenantUncheckedUpdateWithoutApplicationPaymentsInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutApplicationDocumentsInput = {
@@ -14354,6 +14843,7 @@ export type TenantCreateWithoutApplicationDocumentsInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutApplicationDocumentsInput = {
@@ -14422,6 +14912,7 @@ export type TenantUncheckedCreateWithoutApplicationDocumentsInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutApplicationDocumentsInput = {
@@ -14506,6 +14997,7 @@ export type TenantUpdateWithoutApplicationDocumentsInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutApplicationDocumentsInput = {
@@ -14574,6 +15066,7 @@ export type TenantUncheckedUpdateWithoutApplicationDocumentsInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutDocumentReviewsInput = {
@@ -14642,6 +15135,7 @@ export type TenantCreateWithoutDocumentReviewsInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutDocumentReviewsInput = {
@@ -14710,6 +15204,7 @@ export type TenantUncheckedCreateWithoutDocumentReviewsInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutDocumentReviewsInput = {
@@ -14794,6 +15289,7 @@ export type TenantUpdateWithoutDocumentReviewsInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutDocumentReviewsInput = {
@@ -14862,6 +15358,7 @@ export type TenantUncheckedUpdateWithoutDocumentReviewsInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutApprovalStageProgressInput = {
@@ -14930,6 +15427,7 @@ export type TenantCreateWithoutApprovalStageProgressInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutApprovalStageProgressInput = {
@@ -14998,6 +15496,7 @@ export type TenantUncheckedCreateWithoutApprovalStageProgressInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutApprovalStageProgressInput = {
@@ -15082,6 +15581,7 @@ export type TenantUpdateWithoutApprovalStageProgressInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutApprovalStageProgressInput = {
@@ -15150,6 +15650,7 @@ export type TenantUncheckedUpdateWithoutApprovalStageProgressInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutDocumentApprovalsInput = {
@@ -15218,6 +15719,7 @@ export type TenantCreateWithoutDocumentApprovalsInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutDocumentApprovalsInput = {
@@ -15286,6 +15788,7 @@ export type TenantUncheckedCreateWithoutDocumentApprovalsInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutDocumentApprovalsInput = {
@@ -15370,6 +15873,7 @@ export type TenantUpdateWithoutDocumentApprovalsInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutDocumentApprovalsInput = {
@@ -15438,6 +15942,7 @@ export type TenantUncheckedUpdateWithoutDocumentApprovalsInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutDocumentTemplatesInput = {
@@ -15506,6 +16011,7 @@ export type TenantCreateWithoutDocumentTemplatesInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutDocumentTemplatesInput = {
@@ -15574,6 +16080,7 @@ export type TenantUncheckedCreateWithoutDocumentTemplatesInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutDocumentTemplatesInput = {
@@ -15658,6 +16165,7 @@ export type TenantUpdateWithoutDocumentTemplatesInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutDocumentTemplatesInput = {
@@ -15726,6 +16234,7 @@ export type TenantUncheckedUpdateWithoutDocumentTemplatesInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutOfferLettersInput = {
@@ -15794,6 +16303,7 @@ export type TenantCreateWithoutOfferLettersInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutOfferLettersInput = {
@@ -15862,6 +16372,7 @@ export type TenantUncheckedCreateWithoutOfferLettersInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutOfferLettersInput = {
@@ -15946,6 +16457,7 @@ export type TenantUpdateWithoutOfferLettersInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutOfferLettersInput = {
@@ -16014,6 +16526,7 @@ export type TenantUncheckedUpdateWithoutOfferLettersInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutContractTerminationsInput = {
@@ -16082,6 +16595,7 @@ export type TenantCreateWithoutContractTerminationsInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutContractTerminationsInput = {
@@ -16150,6 +16664,7 @@ export type TenantUncheckedCreateWithoutContractTerminationsInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutContractTerminationsInput = {
@@ -16234,6 +16749,7 @@ export type TenantUpdateWithoutContractTerminationsInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutContractTerminationsInput = {
@@ -16302,6 +16818,7 @@ export type TenantUncheckedUpdateWithoutContractTerminationsInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPaymentMethodChangeRequestsInput = {
@@ -16370,6 +16887,7 @@ export type TenantCreateWithoutPaymentMethodChangeRequestsInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPaymentMethodChangeRequestsInput = {
@@ -16438,6 +16956,7 @@ export type TenantUncheckedCreateWithoutPaymentMethodChangeRequestsInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPaymentMethodChangeRequestsInput = {
@@ -16522,6 +17041,7 @@ export type TenantUpdateWithoutPaymentMethodChangeRequestsInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPaymentMethodChangeRequestsInput = {
@@ -16590,6 +17110,7 @@ export type TenantUncheckedUpdateWithoutPaymentMethodChangeRequestsInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutDocumentRequirementRulesInput = {
@@ -16658,6 +17179,7 @@ export type TenantCreateWithoutDocumentRequirementRulesInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutDocumentRequirementRulesInput = {
@@ -16726,6 +17248,7 @@ export type TenantUncheckedCreateWithoutDocumentRequirementRulesInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutDocumentRequirementRulesInput = {
@@ -16810,6 +17333,7 @@ export type TenantUpdateWithoutDocumentRequirementRulesInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutDocumentRequirementRulesInput = {
@@ -16878,6 +17402,7 @@ export type TenantUncheckedUpdateWithoutDocumentRequirementRulesInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutEventChannelsInput = {
@@ -16946,6 +17471,7 @@ export type TenantCreateWithoutEventChannelsInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutEventChannelsInput = {
@@ -17014,6 +17540,7 @@ export type TenantUncheckedCreateWithoutEventChannelsInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutEventChannelsInput = {
@@ -17098,6 +17625,7 @@ export type TenantUpdateWithoutEventChannelsInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutEventChannelsInput = {
@@ -17166,6 +17694,7 @@ export type TenantUncheckedUpdateWithoutEventChannelsInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutEventTypesInput = {
@@ -17234,6 +17763,7 @@ export type TenantCreateWithoutEventTypesInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutEventTypesInput = {
@@ -17302,6 +17832,7 @@ export type TenantUncheckedCreateWithoutEventTypesInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutEventTypesInput = {
@@ -17386,6 +17917,7 @@ export type TenantUpdateWithoutEventTypesInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutEventTypesInput = {
@@ -17454,6 +17986,7 @@ export type TenantUncheckedUpdateWithoutEventTypesInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutEventHandlersInput = {
@@ -17522,6 +18055,7 @@ export type TenantCreateWithoutEventHandlersInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutEventHandlersInput = {
@@ -17590,6 +18124,7 @@ export type TenantUncheckedCreateWithoutEventHandlersInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutEventHandlersInput = {
@@ -17674,6 +18209,7 @@ export type TenantUpdateWithoutEventHandlersInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutEventHandlersInput = {
@@ -17742,6 +18278,7 @@ export type TenantUncheckedUpdateWithoutEventHandlersInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutDomainEventsInput = {
@@ -17810,6 +18347,7 @@ export type TenantCreateWithoutDomainEventsInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutDomainEventsInput = {
@@ -17878,6 +18416,7 @@ export type TenantUncheckedCreateWithoutDomainEventsInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutDomainEventsInput = {
@@ -17962,6 +18501,7 @@ export type TenantUpdateWithoutDomainEventsInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutDomainEventsInput = {
@@ -18030,6 +18570,7 @@ export type TenantUncheckedUpdateWithoutDomainEventsInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPropertyTransferRequestsInput = {
@@ -18098,6 +18639,7 @@ export type TenantCreateWithoutPropertyTransferRequestsInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPropertyTransferRequestsInput = {
@@ -18166,6 +18708,7 @@ export type TenantUncheckedCreateWithoutPropertyTransferRequestsInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPropertyTransferRequestsInput = {
@@ -18250,6 +18793,7 @@ export type TenantUpdateWithoutPropertyTransferRequestsInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPropertyTransferRequestsInput = {
@@ -18318,6 +18862,7 @@ export type TenantUncheckedUpdateWithoutPropertyTransferRequestsInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutApprovalRequestsInput = {
@@ -18386,6 +18931,7 @@ export type TenantCreateWithoutApprovalRequestsInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutApprovalRequestsInput = {
@@ -18454,6 +19000,7 @@ export type TenantUncheckedCreateWithoutApprovalRequestsInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutApprovalRequestsInput = {
@@ -18538,6 +19085,7 @@ export type TenantUpdateWithoutApprovalRequestsInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutApprovalRequestsInput = {
@@ -18606,6 +19154,7 @@ export type TenantUncheckedUpdateWithoutApprovalRequestsInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutWorkflowBlockersInput = {
@@ -18674,6 +19223,7 @@ export type TenantCreateWithoutWorkflowBlockersInput = {
   organizations?: Prisma.OrganizationCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutWorkflowBlockersInput = {
@@ -18742,6 +19292,7 @@ export type TenantUncheckedCreateWithoutWorkflowBlockersInput = {
   organizations?: Prisma.OrganizationUncheckedCreateNestedManyWithoutTenantInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedCreateNestedManyWithoutTenantInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedCreateNestedManyWithoutTenantInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutWorkflowBlockersInput = {
@@ -18826,6 +19377,7 @@ export type TenantUpdateWithoutWorkflowBlockersInput = {
   organizations?: Prisma.OrganizationUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutWorkflowBlockersInput = {
@@ -18894,6 +19446,7 @@ export type TenantUncheckedUpdateWithoutWorkflowBlockersInput = {
   organizations?: Prisma.OrganizationUncheckedUpdateManyWithoutTenantNestedInput
   applicationOrganizations?: Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutTenantNestedInput
   organizationTypes?: Prisma.OrganizationTypeUncheckedUpdateManyWithoutTenantNestedInput
+  organizationInvitations?: Prisma.OrganizationInvitationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 
@@ -18962,6 +19515,7 @@ export type TenantCountOutputType = {
   organizations: number
   applicationOrganizations: number
   organizationTypes: number
+  organizationInvitations: number
 }
 
 export type TenantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -19025,6 +19579,7 @@ export type TenantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions
   organizations?: boolean | TenantCountOutputTypeCountOrganizationsArgs
   applicationOrganizations?: boolean | TenantCountOutputTypeCountApplicationOrganizationsArgs
   organizationTypes?: boolean | TenantCountOutputTypeCountOrganizationTypesArgs
+  organizationInvitations?: boolean | TenantCountOutputTypeCountOrganizationInvitationsArgs
 }
 
 /**
@@ -19457,6 +20012,13 @@ export type TenantCountOutputTypeCountOrganizationTypesArgs<ExtArgs extends runt
   where?: Prisma.OrganizationTypeWhereInput
 }
 
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountOrganizationInvitationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OrganizationInvitationWhereInput
+}
+
 
 export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -19525,6 +20087,7 @@ export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   organizations?: boolean | Prisma.Tenant$organizationsArgs<ExtArgs>
   applicationOrganizations?: boolean | Prisma.Tenant$applicationOrganizationsArgs<ExtArgs>
   organizationTypes?: boolean | Prisma.Tenant$organizationTypesArgs<ExtArgs>
+  organizationInvitations?: boolean | Prisma.Tenant$organizationInvitationsArgs<ExtArgs>
   _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tenant"]>
 
@@ -19601,6 +20164,7 @@ export type TenantInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   organizations?: boolean | Prisma.Tenant$organizationsArgs<ExtArgs>
   applicationOrganizations?: boolean | Prisma.Tenant$applicationOrganizationsArgs<ExtArgs>
   organizationTypes?: boolean | Prisma.Tenant$organizationTypesArgs<ExtArgs>
+  organizationInvitations?: boolean | Prisma.Tenant$organizationInvitationsArgs<ExtArgs>
   _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -19667,6 +20231,7 @@ export type $TenantPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     organizations: Prisma.$OrganizationPayload<ExtArgs>[]
     applicationOrganizations: Prisma.$ApplicationOrganizationPayload<ExtArgs>[]
     organizationTypes: Prisma.$OrganizationTypePayload<ExtArgs>[]
+    organizationInvitations: Prisma.$OrganizationInvitationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -20075,6 +20640,7 @@ export interface Prisma__TenantClient<T, Null = never, ExtArgs extends runtime.T
   organizations<T extends Prisma.Tenant$organizationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$organizationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   applicationOrganizations<T extends Prisma.Tenant$applicationOrganizationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$applicationOrganizationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApplicationOrganizationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   organizationTypes<T extends Prisma.Tenant$organizationTypesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$organizationTypesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrganizationTypePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  organizationInvitations<T extends Prisma.Tenant$organizationInvitationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$organizationInvitationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrganizationInvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -21890,6 +22456,30 @@ export type Tenant$organizationTypesArgs<ExtArgs extends runtime.Types.Extension
   take?: number
   skip?: number
   distinct?: Prisma.OrganizationTypeScalarFieldEnum | Prisma.OrganizationTypeScalarFieldEnum[]
+}
+
+/**
+ * Tenant.organizationInvitations
+ */
+export type Tenant$organizationInvitationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OrganizationInvitation
+   */
+  select?: Prisma.OrganizationInvitationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OrganizationInvitation
+   */
+  omit?: Prisma.OrganizationInvitationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrganizationInvitationInclude<ExtArgs> | null
+  where?: Prisma.OrganizationInvitationWhereInput
+  orderBy?: Prisma.OrganizationInvitationOrderByWithRelationInput | Prisma.OrganizationInvitationOrderByWithRelationInput[]
+  cursor?: Prisma.OrganizationInvitationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OrganizationInvitationScalarFieldEnum | Prisma.OrganizationInvitationScalarFieldEnum[]
 }
 
 /**

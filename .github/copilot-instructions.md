@@ -10,6 +10,14 @@
 
 Note: Please do not manually delete CDKToolkit from the AWS CloudFormation stacks - use the teardown script which handles it properly.
 
+**IMPORTANT - Database Migrations**: The local MySQL database is often not running. Always run Prisma migrations against the **AWS staging database** using:
+
+```bash
+./scripts/deploy-staging.sh migrations
+```
+
+This script handles fetching credentials from AWS Secrets Manager and running migrations against the staging RDS instance.
+
 ## Demo Frontend (`demo-frontend/`)
 
 The demo-frontend is a **Next.js application** for interactively testing the QShelter API. Its purpose is to:

@@ -82,3 +82,35 @@ export interface AccountVerifiedPayload extends EmailPayload {
     homeBuyerName: string;
     loginLink: string;
 }
+
+/**
+ * Organization invitation payload
+ */
+export interface OrganizationInvitationPayload extends EmailPayload {
+    /** Invitee's first name */
+    inviteeName: string;
+    /** Name of the organization they're being invited to */
+    organizationName: string;
+    /** Name of the person sending the invitation */
+    inviterName: string;
+    /** Role they'll be assigned */
+    roleName: string;
+    /** Job title if provided */
+    title?: string;
+    /** Link to accept the invitation */
+    acceptLink: string;
+    /** Expiry date of invitation */
+    expiresAt: string;
+}
+
+/**
+ * Organization invitation accepted payload (sent to inviter)
+ */
+export interface OrganizationInvitationAcceptedPayload extends EmailPayload {
+    /** The inviter who sent the original invitation */
+    inviterName: string;
+    /** The person who accepted */
+    inviteeName: string;
+    /** Organization name */
+    organizationName: string;
+}

@@ -61,6 +61,7 @@ export const ModelName = {
   TenantMembership: 'TenantMembership',
   Organization: 'Organization',
   OrganizationMember: 'OrganizationMember',
+  OrganizationInvitation: 'OrganizationInvitation',
   BankDocumentRequirement: 'BankDocumentRequirement',
   Tenant: 'Tenant',
   ApiKey: 'ApiKey',
@@ -303,6 +304,28 @@ export const OrganizationMemberScalarFieldEnum = {
 } as const
 
 export type OrganizationMemberScalarFieldEnum = (typeof OrganizationMemberScalarFieldEnum)[keyof typeof OrganizationMemberScalarFieldEnum]
+
+
+export const OrganizationInvitationScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  organizationId: 'organizationId',
+  email: 'email',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  roleId: 'roleId',
+  title: 'title',
+  department: 'department',
+  token: 'token',
+  expiresAt: 'expiresAt',
+  status: 'status',
+  invitedById: 'invitedById',
+  acceptedAt: 'acceptedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OrganizationInvitationScalarFieldEnum = (typeof OrganizationInvitationScalarFieldEnum)[keyof typeof OrganizationInvitationScalarFieldEnum]
 
 
 export const BankDocumentRequirementScalarFieldEnum = {
@@ -1805,6 +1828,23 @@ export const OrganizationMemberOrderByRelevanceFieldEnum = {
 } as const
 
 export type OrganizationMemberOrderByRelevanceFieldEnum = (typeof OrganizationMemberOrderByRelevanceFieldEnum)[keyof typeof OrganizationMemberOrderByRelevanceFieldEnum]
+
+
+export const OrganizationInvitationOrderByRelevanceFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  organizationId: 'organizationId',
+  email: 'email',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  roleId: 'roleId',
+  title: 'title',
+  department: 'department',
+  token: 'token',
+  invitedById: 'invitedById'
+} as const
+
+export type OrganizationInvitationOrderByRelevanceFieldEnum = (typeof OrganizationInvitationOrderByRelevanceFieldEnum)[keyof typeof OrganizationInvitationOrderByRelevanceFieldEnum]
 
 
 export const BankDocumentRequirementOrderByRelevanceFieldEnum = {

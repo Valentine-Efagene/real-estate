@@ -540,6 +540,9 @@ model User {
   // Organization memberships (user can be employee of banks/developers)
   organizationMemberships OrganizationMember[]
 
+  // Organization invitations sent by this user
+  sentInvitations OrganizationInvitation[] @relation("InvitedByUser")
+
   @@index([email])
   @@index([tenantId])
   @@map("users")
@@ -560,8 +563,12 @@ model Role {
   // New: TenantMembership for federated users
   memberships TenantMembership[]
   permissions RolePermission[]
-  createdAt   DateTime           @default(now())
-  updatedAt   DateTime           @updatedAt
+
+  // Organization invitations with this role
+  invitations OrganizationInvitation[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([name, tenantId]) // Unique name per tenant (null tenantId = global)
   @@index([tenantId])
@@ -696,6 +703,9 @@ model Organization {
   tenant  Tenant               @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   members OrganizationMember[]
 
+  // Pending invitations for this organization
+  invitations OrganizationInvitation[]
+
   // Applications where this organization is involved
   applicationAssignments ApplicationOrganization[]
 
@@ -746,6 +756,57 @@ model OrganizationMember {
   @@index([userId])
   @@index([organizationId])
   @@map("organization_members")
+}
+
+/// OrganizationInvitation: Pending invitations for users who don't have accounts yet
+/// When accepted, creates user account and organization membership
+model OrganizationInvitation {
+  id             String @id @default(cuid())
+  tenantId       String
+  organizationId String
+
+  // Invitee details
+  email     String
+  firstName String?
+  lastName  String?
+
+  // Role and position
+  roleId     String? // Role to assign when accepted
+  title      String? // Job title
+  department String? // Department
+
+  // Invitation token
+  token     String   @unique @default(cuid())
+  expiresAt DateTime
+
+  // Status
+  status InvitationStatus @default(PENDING)
+
+  // Tracking
+  invitedById String // User who sent the invite
+  acceptedAt  DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tenant       Tenant       @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  invitedBy    User         @relation("InvitedByUser", fields: [invitedById], references: [id])
+  role         Role?        @relation(fields: [roleId], references: [id])
+
+  @@unique([organizationId, email]) // Can't invite same email twice to same org
+  @@index([tenantId])
+  @@index([email])
+  @@index([token])
+  @@index([status])
+  @@map("organization_invitations")
+}
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  EXPIRED
+  CANCELLED
 }
 
 // =============================================================================
@@ -919,6 +980,9 @@ model Tenant {
   // Application organization assignments
   applicationOrganizations ApplicationOrganization[]
   organizationTypes        OrganizationType[]
+
+  // Organization invitations
+  organizationInvitations OrganizationInvitation[]
 
   @@index([subdomain])
   @@map("tenants")

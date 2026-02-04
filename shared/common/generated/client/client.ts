@@ -95,6 +95,12 @@ export type Organization = Prisma.OrganizationModel
  */
 export type OrganizationMember = Prisma.OrganizationMemberModel
 /**
+ * Model OrganizationInvitation
+ * OrganizationInvitation: Pending invitations for users who don't have accounts yet
+ * When accepted, creates user account and organization membership
+ */
+export type OrganizationInvitation = Prisma.OrganizationInvitationModel
+/**
  * Model BankDocumentRequirement
  * Bank Document Requirement - Bank-specific document rules per phase
  */

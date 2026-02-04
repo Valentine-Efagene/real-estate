@@ -136,7 +136,7 @@ export function PersonaSwitcher() {
         return null;
     }
 
-    const currentUserName = user ? `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email : 'Personas';
+    const currentUserName = user ? user.email : 'Personas';
 
     return (
         <DropdownMenu>
