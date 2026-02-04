@@ -11,6 +11,7 @@ import {
     RejectionBehavior,
     NextActor,
     ConditionOperator,
+    PaymentEventPublisher,
 } from '@valentine-efagene/qshelter-common';
 import { v4 as uuidv4 } from 'uuid';
 import type {
@@ -500,6 +501,29 @@ class ApplicationPhaseService {
         } catch (error) {
             console.error('[ApplicationPhaseService] Error executing ON_ACTIVATE handlers:', error);
             // Don't fail the phase activation if handlers fail
+        }
+
+        // For PAYMENT phases, publish event to trigger installment generation
+        if (phase.phaseCategory === 'PAYMENT' && phase.paymentPhase) {
+            try {
+                const paymentPublisher = new PaymentEventPublisher('mortgage-service');
+                await paymentPublisher.publishPaymentPhaseActivated({
+                    phaseId,
+                    applicationId: phase.applicationId,
+                    tenantId: phase.application?.tenantId || phase.tenantId,
+                    paymentPhaseId: phase.paymentPhase.id,
+                    totalAmount: phase.paymentPhase.totalAmount ?? 0,
+                    interestRate: phase.paymentPhase.interestRate ?? 0,
+                    numberOfInstallments: phase.paymentPhase.numberOfInstallments,
+                    paymentPlanId: phase.paymentPhase.paymentPlanId || '',
+                    startDate: startDate.toISOString(),
+                    userId,
+                });
+                console.log('[ApplicationPhaseService] Published PAYMENT_PHASE_ACTIVATED event', { phaseId });
+            } catch (error) {
+                console.error('[ApplicationPhaseService] Error publishing payment phase activation:', error);
+                // Don't fail the phase activation if event publishing fails
+            }
         }
 
         // Get enriched phase with action status

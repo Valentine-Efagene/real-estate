@@ -132,4 +132,27 @@ export class PaymentEventPublisher {
             userId: payload.userId,
         });
     }
+
+    /**
+     * Publish payment phase activated event
+     * Triggers automatic installment generation in payment-service
+     */
+    async publishPaymentPhaseActivated(payload: {
+        phaseId: string;
+        applicationId: string;
+        tenantId: string;
+        paymentPhaseId: string;
+        totalAmount: number;
+        interestRate: number;
+        numberOfInstallments: number | null;
+        paymentPlanId: string;
+        startDate: string;
+        userId: string;
+    }, meta?: Partial<PaymentEventMeta>): Promise<string> {
+        return this.publish(PaymentEventType.PAYMENT_PHASE_ACTIVATED, payload, {
+            ...meta,
+            userId: payload.userId,
+            tenantId: payload.tenantId,
+        });
+    }
 }

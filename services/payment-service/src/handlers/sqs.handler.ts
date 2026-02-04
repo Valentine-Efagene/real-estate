@@ -5,9 +5,11 @@ import {
     AllocateToInstallmentsPayload,
     WalletCreditedPayload,
     ProcessInstallmentPaymentPayload,
+    PaymentPhaseActivatedPayload,
 } from '@valentine-efagene/qshelter-common';
 import { walletService } from '../services/wallet.service';
 import { allocationService } from '../services/allocation.service';
+import { installmentGenerationService } from '../services/installment-generation.service';
 
 /**
  * Parse SNS-wrapped SQS message body
@@ -100,6 +102,34 @@ async function handleProcessInstallmentPayment(event: PaymentEvent<ProcessInstal
 }
 
 /**
+ * Handle PAYMENT_PHASE_ACTIVATED event
+ * Triggers automatic installment generation for the phase
+ */
+async function handlePaymentPhaseActivated(event: PaymentEvent<PaymentPhaseActivatedPayload>): Promise<void> {
+    const payload = event.payload;
+
+    console.log('[SQS Handler] Processing payment phase activated event', {
+        phaseId: payload.phaseId,
+        paymentPhaseId: payload.paymentPhaseId,
+        totalAmount: payload.totalAmount,
+        correlationId: event.meta.correlationId,
+    });
+
+    await installmentGenerationService.generateInstallments({
+        phaseId: payload.phaseId,
+        applicationId: payload.applicationId,
+        tenantId: payload.tenantId,
+        paymentPhaseId: payload.paymentPhaseId,
+        totalAmount: payload.totalAmount,
+        interestRate: payload.interestRate,
+        numberOfInstallments: payload.numberOfInstallments,
+        paymentPlanId: payload.paymentPlanId,
+        startDate: payload.startDate,
+        userId: payload.userId,
+    });
+}
+
+/**
  * Process a single payment event based on type
  */
 async function processPaymentEvent(event: PaymentEvent): Promise<void> {
@@ -114,6 +144,10 @@ async function processPaymentEvent(event: PaymentEvent): Promise<void> {
 
         case PaymentEventType.PROCESS_INSTALLMENT_PAYMENT:
             await handleProcessInstallmentPayment(event as unknown as PaymentEvent<ProcessInstallmentPaymentPayload>);
+            break;
+
+        case PaymentEventType.PAYMENT_PHASE_ACTIVATED:
+            await handlePaymentPhaseActivated(event as unknown as PaymentEvent<PaymentPhaseActivatedPayload>);
             break;
 
         default:

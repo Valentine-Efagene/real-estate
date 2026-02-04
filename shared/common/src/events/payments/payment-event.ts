@@ -17,6 +17,9 @@ export enum PaymentEventType {
 
     // Virtual account events
     VIRTUAL_ACCOUNT_FUNDED = 'virtualaccount.funded',
+
+    // Phase events (published by mortgage service when payment phase is activated)
+    PAYMENT_PHASE_ACTIVATED = 'phase.payment_activated',
 }
 
 /**
@@ -83,4 +86,23 @@ export interface ProcessInstallmentPaymentPayload {
     walletId: string;
     userId: string;
     reference: string;
+}
+
+/**
+ * Payload when a PAYMENT phase is activated
+ * Triggers installment generation in payment-service
+ */
+export interface PaymentPhaseActivatedPayload {
+    phaseId: string;
+    applicationId: string;
+    tenantId: string;
+    paymentPhaseId: string;
+    totalAmount: number;
+    interestRate: number;
+    numberOfInstallments: number | null;
+    paymentPlanId: string;
+    /** ISO date string for installment start date */
+    startDate: string;
+    /** Actor who triggered the phase activation */
+    userId: string;
 }
