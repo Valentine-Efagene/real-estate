@@ -37,6 +37,19 @@ function getStatusColor(status: string) {
   }
 }
 
+function getActorBadge(nextActor?: string) {
+  switch (nextActor) {
+    case 'CUSTOMER':
+      return { label: 'Awaiting Customer', variant: 'secondary' as const, icon: '👤' };
+    case 'ADMIN':
+      return { label: 'Awaiting Admin', variant: 'outline' as const, icon: '🏢' };
+    case 'SYSTEM':
+      return { label: 'Processing', variant: 'outline' as const, icon: '⚙️' };
+    default:
+      return null;
+  }
+}
+
 export function PhaseProgress({ phases }: PhaseProgressProps) {
   if (!phases || phases.length === 0) {
     return null;
@@ -90,7 +103,7 @@ export function PhaseProgress({ phases }: PhaseProgressProps) {
 
               {/* Phase info */}
               <div className="flex-1 pb-8">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
                   <h4 className="font-semibold">{phase.name}</h4>
                   <Badge
                     variant={
@@ -103,10 +116,22 @@ export function PhaseProgress({ phases }: PhaseProgressProps) {
                   >
                     {phase.status}
                   </Badge>
+                  {/* Show who needs to act for in-progress phases */}
+                  {phase.status === 'IN_PROGRESS' && phase.actionStatus?.nextActor && getActorBadge(phase.actionStatus.nextActor) && (
+                    <Badge variant={getActorBadge(phase.actionStatus.nextActor)!.variant}>
+                      {getActorBadge(phase.actionStatus.nextActor)!.icon} {getActorBadge(phase.actionStatus.nextActor)!.label}
+                    </Badge>
+                  )}
                 </div>
                 <p className="text-sm text-gray-500 mt-1">
                   {phase.phaseCategory} • {phase.phaseType}
                 </p>
+                {/* Show action required message */}
+                {phase.status === 'IN_PROGRESS' && phase.actionStatus?.actionRequired && (
+                  <p className="text-sm text-blue-600 mt-1">
+                    {phase.actionStatus.actionRequired}
+                  </p>
+                )}
                 {phase.completedAt && (
                   <p className="text-xs text-gray-400 mt-1">
                     Completed: {new Date(phase.completedAt).toLocaleDateString()}

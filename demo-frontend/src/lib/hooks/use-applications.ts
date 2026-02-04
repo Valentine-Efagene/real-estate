@@ -28,6 +28,15 @@ export interface Application {
   phases?: Phase[];
 }
 
+export interface ActionStatus {
+  nextActor: 'CUSTOMER' | 'ADMIN' | 'SYSTEM' | 'NONE';
+  actionCategory: 'UPLOAD' | 'SIGNATURE' | 'REVIEW' | 'PAYMENT' | 'PROCESSING' | 'COMPLETED' | 'WAITING';
+  actionRequired: string;
+  progress?: string;
+  dueDate?: string | null;
+  isBlocking?: boolean;
+}
+
 export interface Phase {
   id: string;
   applicationId: string;
@@ -38,6 +47,8 @@ export interface Phase {
   order: number;
   startedAt?: string;
   completedAt?: string;
+  // Action status indicating who needs to act next
+  actionStatus?: ActionStatus;
   // Questionnaire phase fields (legacy - may be empty)
   fields?: QuestionnaireField[];
   // Questionnaire phase with fields snapshot
