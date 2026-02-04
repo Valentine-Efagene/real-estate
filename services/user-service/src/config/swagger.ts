@@ -143,6 +143,7 @@ const OrganizationMemberSchema = z.object({
 
 const AddMemberSchema = z.object({
     userId: z.string().min(1),
+    roleId: z.string().optional().openapi({ description: 'Optional role ID to assign. If not provided, role is auto-detected based on organization type.' }),
     title: z.string().optional(),
     department: z.string().optional(),
     employeeId: z.string().optional(),

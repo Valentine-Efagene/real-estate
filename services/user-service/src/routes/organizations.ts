@@ -62,6 +62,7 @@ const UpdateOrganizationSchema = z.object({
 
 const AddMemberSchema = z.object({
     userId: z.string().min(1),
+    roleId: z.string().optional(),
     title: z.string().optional(),
     department: z.string().optional(),
     employeeId: z.string().optional(),

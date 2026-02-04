@@ -65,6 +65,7 @@ export interface UpdateOrganizationInput {
 
 export interface AddMemberInput {
     userId: string;
+    roleId?: string;
     title?: string;
     department?: string;
     employeeId?: string;
@@ -381,10 +382,6 @@ class OrganizationService {
             throw new ConflictError('User is already a member of this organization');
         }
 
-        // Determine the role name based on organization's primary type
-        const primaryTypeCode = await this.getPrimaryTypeCode(organizationId);
-        const roleName = primaryTypeCode ? this.getRoleNameForOrgTypeCode(primaryTypeCode) : 'user';
-
         // Create member and assign role in a transaction
         const result = await prisma.$transaction(async (tx) => {
             // Create organization member
@@ -407,22 +404,37 @@ class OrganizationService {
                 },
             });
 
-            // Find or create the role for this org type
-            let role = await tx.role.findFirst({
-                where: { name: roleName, tenantId },
-            });
-
-            if (!role) {
-                // Create the role with appropriate permissions
-                role = await tx.role.create({
-                    data: {
-                        name: roleName,
-                        description: `${roleName} role for organization members`,
-                        tenantId,
-                        isSystem: false,
-                    },
+            // Determine the role to assign
+            let role;
+            if (data.roleId) {
+                // Use explicitly provided roleId
+                role = await tx.role.findFirst({
+                    where: { id: data.roleId, tenantId },
                 });
-                console.log(`[OrganizationService] Created role: ${roleName}`);
+                if (!role) {
+                    throw new NotFoundError('Role not found');
+                }
+            } else {
+                // Fall back to auto-detected role based on organization type
+                const primaryTypeCode = await this.getPrimaryTypeCode(organizationId);
+                const roleName = primaryTypeCode ? this.getRoleNameForOrgTypeCode(primaryTypeCode) : 'user';
+
+                role = await tx.role.findFirst({
+                    where: { name: roleName, tenantId },
+                });
+
+                if (!role) {
+                    // Create the role with appropriate permissions
+                    role = await tx.role.create({
+                        data: {
+                            name: roleName,
+                            description: `${roleName} role for organization members`,
+                            tenantId,
+                            isSystem: false,
+                        },
+                    });
+                    console.log(`[OrganizationService] Created role: ${roleName}`);
+                }
             }
 
             // Assign the role to the user via TenantMembership

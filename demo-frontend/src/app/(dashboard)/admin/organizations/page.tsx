@@ -128,7 +128,7 @@ function useOrganizationMembers(orgId: string | null) {
 function useAddMember() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async ({ orgId, data }: { orgId: string; data: { userId: string; title?: string; department?: string } }) => {
+    mutationFn: async ({ orgId, data }: { orgId: string; data: { userId: string; roleId?: string; title?: string; department?: string } }) => {
       const res = await fetch(`/api/proxy/user/organizations/${orgId}/members`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -161,6 +161,27 @@ function useUsers() {
       if (!res.ok) throw new Error('Failed to fetch users');
       const data = await res.json();
       return data.data?.data || data.data || [];
+    },
+  });
+}
+
+interface Role {
+  id: string;
+  name: string;
+  description?: string;
+  isSystem: boolean;
+}
+
+function useRoles() {
+  return useQuery<Role[]>({
+    queryKey: ['roles'],
+    queryFn: async () => {
+      const res = await fetch('/api/proxy/user/roles', {
+        credentials: 'include',
+      });
+      if (!res.ok) throw new Error('Failed to fetch roles');
+      const data = await res.json();
+      return data.data || [];
     },
   });
 }
@@ -326,10 +347,12 @@ function CreateOrganizationDialog() {
 function AddMemberDialog({ organization }: { organization: Organization }) {
   const [open, setOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState('');
+  const [selectedRoleId, setSelectedRoleId] = useState('');
   const [title, setTitle] = useState('');
   const [department, setDepartment] = useState('');
 
   const { data: users = [] } = useUsers();
+  const { data: roles = [] } = useRoles();
   const { data: existingMembers = [] } = useOrganizationMembers(organization.id);
   const addMember = useAddMember();
 
@@ -348,6 +371,7 @@ function AddMemberDialog({ organization }: { organization: Organization }) {
       orgId: organization.id,
       data: {
         userId: selectedUserId,
+        roleId: selectedRoleId || undefined,
         title: title || undefined,
         department: department || undefined,
       },
@@ -355,6 +379,7 @@ function AddMemberDialog({ organization }: { organization: Organization }) {
 
     setOpen(false);
     setSelectedUserId('');
+    setSelectedRoleId('');
     setTitle('');
     setDepartment('');
   };
@@ -397,6 +422,26 @@ function AddMemberDialog({ organization }: { organization: Organization }) {
                 )}
               </SelectContent>
             </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="role-select">Role</Label>
+            <Select value={selectedRoleId} onValueChange={setSelectedRoleId}>
+              <SelectTrigger>
+                <SelectValue placeholder="Auto-detect based on org type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">Auto-detect based on org type</SelectItem>
+                {roles.map((role: Role) => (
+                  <SelectItem key={role.id} value={role.id}>
+                    {role.name} {role.description ? `- ${role.description}` : ''}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <p className="text-xs text-muted-foreground">
+              If not selected, a role will be assigned based on the organization type
+            </p>
           </div>
 
           <div className="space-y-2">
