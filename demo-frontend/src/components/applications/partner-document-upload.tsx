@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
 import { useUploadPhaseDocument } from '@/lib/hooks/use-applications';
-import { useGetPresignedUrl, uploadToS3WithPresignedPost, type UploadFolder } from '@/lib/hooks/use-documents';
+import { useGetPresignedUrl, uploadToS3WithPresignedPost, getPresignedGetUrl, type UploadFolder } from '@/lib/hooks/use-documents';
 
 interface PartnerDocumentUploadProps {
     applicationId: string;
@@ -86,12 +86,14 @@ export function PartnerDocumentUpload({
             });
 
             // Step 3: Record document in the application phase
-            // For demo, we'll use the S3 key as URL (in production, this would be resolved via presigned get URL)
+            // Get presigned URL and strip query params to get clean S3 URL
+            const presignedUrl = await getPresignedGetUrl(s3Key);
+            const cleanUrl = presignedUrl.split('?')[0];
             await uploadPhaseDocument.mutateAsync({
                 applicationId,
                 phaseId,
                 documentType,
-                url: `s3://qshelter-uploads/${s3Key}`,
+                url: cleanUrl,
                 fileName: selectedFile.name,
             });
 

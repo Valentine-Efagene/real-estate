@@ -54,11 +54,13 @@ export function DocumentUploadSection({
         });
 
         // Step 2: Record the document in the backend
+        // Store the clean S3 URL (strip query params from presigned URL)
+        const cleanUrl = s3Result.downloadUrl.split('?')[0];
         await uploadPhaseDocument.mutateAsync({
           applicationId,
           phaseId,
           documentType: documentId,
-          url: s3Result.downloadUrl,
+          url: cleanUrl,
           fileName: file.name,
         });
 
