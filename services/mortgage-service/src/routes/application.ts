@@ -403,9 +403,9 @@ router.get('/:id/phases', requireTenant, canAccessApplication, async (req: Reque
             interestRate: phase.paymentPhase?.interestRate ?? null,
             collectFunds: phase.paymentPhase?.collectFunds ?? false,
             installments: phase.paymentPhase?.installments ?? [],
-            // Flatten DocumentationPhase fields
-            currentStepId: phase.documentationPhase?.currentStepId ?? null,
-            steps: phase.documentationPhase?.steps ?? [],
+            // Flatten DocumentationPhase fields (stageProgress is the actual field name)
+            currentStageOrder: phase.documentationPhase?.currentStageOrder ?? null,
+            stageProgress: phase.documentationPhase?.stageProgress ?? [],
             // Flatten QuestionnairePhase fields
             fields: phase.questionnairePhase?.fields ?? [],
         }));

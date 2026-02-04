@@ -3,6 +3,7 @@
 import { use, useState } from 'react';
 import Link from 'next/link';
 import { ProtectedRoute, AdminOnly } from '@/components/auth';
+import { useAuth } from '@/lib/auth';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -28,6 +29,16 @@ import { useOrganizations } from '@/lib/hooks/use-organizations';
 import { PhaseProgress } from '@/components/applications/phase-progress';
 import { PartnerDocumentUpload } from '@/components/applications/partner-document-upload';
 
+// Role mappings for determining which uploads to show
+const ROLE_TO_UPLOAD_TYPE: Record<string, 'PLATFORM' | 'LENDER' | 'DEVELOPER' | null> = {
+  admin: 'PLATFORM',
+  mortgage_ops: 'PLATFORM',
+  finance: 'PLATFORM',
+  legal: 'PLATFORM',
+  lender_ops: 'LENDER',
+  agent: 'DEVELOPER',
+};
+
 function formatCurrency(amount: number, currency: string = 'NGN') {
   return new Intl.NumberFormat('en-NG', {
     style: 'currency',
@@ -37,6 +48,7 @@ function formatCurrency(amount: number, currency: string = 'NGN') {
 }
 
 function AdminApplicationDetailContent({ applicationId }: { applicationId: string }) {
+  const { user } = useAuth();
   const { data: application, isLoading: appLoading } = useApplication(applicationId);
   const { data: currentAction, isLoading: actionLoading } = useCurrentAction(applicationId);
   const { data: phases } = useApplicationPhases(applicationId);
@@ -45,6 +57,10 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
   const reviewDocument = useReviewDocument();
   const reviewQuestionnaire = useReviewQuestionnaire();
   const bindOrganization = useBindOrganization();
+
+  // Determine what upload type this user can perform based on their roles
+  const userUploadType = user?.roles?.map(role => ROLE_TO_UPLOAD_TYPE[role]).find(t => t) || null;
+  const isAdmin = user?.roles?.includes('admin') ?? false;
 
   const [reviewingDocId, setReviewingDocId] = useState<string | null>(null);
   const [reviewComment, setReviewComment] = useState('');
@@ -495,6 +511,25 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
             </div>
           </CardContent>
         </Card>
+      ) : currentAction?.currentPhase?.phaseCategory === 'DOCUMENTATION' && (!currentAction.uploadedDocuments || currentAction.uploadedDocuments.length === 0) ? (
+        <Card>
+          <CardHeader>
+            <CardTitle>Document Review</CardTitle>
+            <CardDescription>
+              {currentAction.currentPhase.name}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="py-8 text-center">
+            <span className="text-4xl">📄</span>
+            <h3 className="text-lg font-semibold mt-4">Waiting for Customer Documents</h3>
+            <p className="text-gray-500 mt-2">
+              The customer has not uploaded any documents for this phase yet.
+            </p>
+            <p className="text-sm text-gray-400 mt-1">
+              Documents will appear here for review once uploaded.
+            </p>
+          </CardContent>
+        </Card>
       ) : currentAction?.currentPhase?.phaseCategory === 'QUESTIONNAIRE' && questionnaireFields && questionnaireFields.length > 0 ? (
         <Card>
           <CardHeader>
@@ -626,13 +661,13 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
         </Card>
       )}
 
-      {/* Partner Document Upload Section */}
-      {currentAction?.currentPhase?.phaseCategory === 'DOCUMENTATION' && (
+      {/* Partner Document Upload Section - Only show uploads for current user's role */}
+      {currentAction?.currentPhase?.phaseCategory === 'DOCUMENTATION' && userUploadType && (
         <>
           <Separator />
-          <div className="grid gap-4 md:grid-cols-2">
-            {/* Developer uploads */}
-            {boundOrganizations?.some(org => org.assignedAsType?.code === 'DEVELOPER') && (
+          <div className="grid gap-4 md:grid-cols-1">
+            {/* Show only the upload section relevant to the user's role */}
+            {userUploadType === 'DEVELOPER' && boundOrganizations?.some(org => org.assignedAsType?.code === 'DEVELOPER') && (
               <PartnerDocumentUpload
                 applicationId={applicationId}
                 phaseId={currentAction.currentPhase.id}
@@ -640,8 +675,7 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
                 role="DEVELOPER"
               />
             )}
-            {/* Lender uploads */}
-            {boundOrganizations?.some(org => org.assignedAsType?.code === 'BANK') && (
+            {userUploadType === 'LENDER' && boundOrganizations?.some(org => org.assignedAsType?.code === 'BANK') && (
               <PartnerDocumentUpload
                 applicationId={applicationId}
                 phaseId={currentAction.currentPhase.id}
@@ -649,13 +683,14 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
                 role="LENDER"
               />
             )}
-            {/* Platform admin uploads */}
-            <PartnerDocumentUpload
-              applicationId={applicationId}
-              phaseId={currentAction.currentPhase.id}
-              phaseName={currentAction.currentPhase.name}
-              role="PLATFORM"
-            />
+            {userUploadType === 'PLATFORM' && (
+              <PartnerDocumentUpload
+                applicationId={applicationId}
+                phaseId={currentAction.currentPhase.id}
+                phaseName={currentAction.currentPhase.name}
+                role="PLATFORM"
+              />
+            )}
           </div>
         </>
       )}
@@ -671,7 +706,7 @@ export default function AdminApplicationDetailPage({
   const { id } = use(params);
 
   return (
-    <ProtectedRoute roles={['admin', 'mortgage_ops', 'finance', 'legal']}>
+    <ProtectedRoute roles={['admin', 'mortgage_ops', 'finance', 'legal', 'lender_ops', 'agent']}>
       <AdminApplicationDetailContent applicationId={id} />
     </ProtectedRoute>
   );

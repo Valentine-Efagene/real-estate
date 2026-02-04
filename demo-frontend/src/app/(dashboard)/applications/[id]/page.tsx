@@ -242,17 +242,25 @@ function ApplicationDetailContent({ applicationId }: { applicationId: string }) 
             </div>
           </CardHeader>
           <CardContent>
-            {currentAction.currentPhase.phaseCategory === 'DOCUMENTATION' && currentAction.currentStep?.requiredDocuments && (
+            {currentAction.currentPhase.phaseCategory === 'DOCUMENTATION' && currentAction.currentStep?.requiredDocuments && currentAction.currentStep.requiredDocuments.length > 0 && (
               <DocumentUploadSection
                 applicationId={applicationId}
                 phaseId={currentAction.currentPhase.id}
                 requiredDocuments={currentAction.currentStep.requiredDocuments.map(doc => ({
                   id: doc.documentType,
-                  name: doc.documentType,
-                  description: doc.documentType,
+                  name: doc.name || doc.documentType,
+                  description: doc.name || doc.documentType,
                   status: 'PENDING',
                 }))}
               />
+            )}
+
+            {/* Fallback for documentation phase without current step (should show upload) */}
+            {currentAction.currentPhase.phaseCategory === 'DOCUMENTATION' && (!currentAction.currentStep?.requiredDocuments || currentAction.currentStep.requiredDocuments.length === 0) && currentAction.actionRequired === 'UPLOAD' && (
+              <div className="text-center py-4">
+                <p className="text-gray-600 mb-4">Document upload is required for this phase.</p>
+                <p className="text-sm text-gray-500">Please contact support if you don&apos;t see the upload form.</p>
+              </div>
             )}
 
             {currentAction.actionRequired === 'QUESTIONNAIRE' && questionnaireFields && questionnaireFields.length > 0 && (

@@ -1276,6 +1276,16 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                             include: {
                                 stageProgress: {
                                     orderBy: { order: 'asc' },
+                                    include: {
+                                        organizationType: true,
+                                    },
+                                },
+                                documentationPlan: {
+                                    include: {
+                                        documentDefinitions: {
+                                            orderBy: { order: 'asc' },
+                                        },
+                                    },
                                 },
                             },
                         },
@@ -1320,24 +1330,61 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
             };
         }
 
-        // Find current step - only for DOCUMENTATION phases
-        // Steps are now in documentationPhase extension
+        // Find current stage - for DOCUMENTATION phases using stageProgress
         let currentStep: any = null;
-        const steps = currentPhase.documentationPhase?.steps || [];
-        const currentStepId = currentPhase.documentationPhase?.currentStepId;
+        const stageProgress = currentPhase.documentationPhase?.stageProgress || [];
+        const currentStageOrder = currentPhase.documentationPhase?.currentStageOrder ?? 1;
 
-        if (currentStepId) {
-            currentStep = steps.find((s: any) => s.id === currentStepId);
+        // Find the current stage based on currentStageOrder
+        const currentStage = stageProgress.find((s: any) => s.order === currentStageOrder);
+
+        // Get document requirements from snapshot or plan
+        let requiredDocuments: Array<{ documentType: string; isRequired: boolean; name: string }> = [];
+        const docPhase = currentPhase.documentationPhase;
+        if (docPhase) {
+            if (docPhase.documentDefinitionsSnapshot && Array.isArray(docPhase.documentDefinitionsSnapshot)) {
+                requiredDocuments = (docPhase.documentDefinitionsSnapshot as any[]).map((d: any) => ({
+                    documentType: d.documentType || d.name,
+                    isRequired: d.isRequired ?? true,
+                    name: d.name || d.documentType,
+                }));
+            } else if (docPhase.documentationPlan?.documentDefinitions) {
+                requiredDocuments = docPhase.documentationPlan.documentDefinitions.map((d: any) => ({
+                    documentType: d.documentType || d.name,
+                    isRequired: d.isRequired ?? true,
+                    name: d.name || d.documentType,
+                }));
+            }
         }
-        if (!currentStep && steps.length > 0) {
-            // Fallback: find next actionable step
-            currentStep = steps.find(
-                (s: any) => s.status === 'NEEDS_RESUBMISSION' || s.status === 'ACTION_REQUIRED'
+
+        // Map current stage to currentStep format for backwards compatibility
+        if (currentStage) {
+            currentStep = {
+                id: currentStage.id,
+                name: currentStage.name,
+                stepType: currentStage.organizationType?.code || 'PLATFORM',
+                status: currentStage.status,
+                order: currentStage.order,
+                actionReason: null,
+                submissionCount: 0,
+                requiredDocuments: requiredDocuments,
+            };
+        } else if (stageProgress.length > 0) {
+            // Fallback: find next actionable stage
+            const nextStage = stageProgress.find(
+                (s: any) => s.status === 'PENDING' || s.status === 'IN_PROGRESS' || s.status === 'AWAITING_REVIEW'
             );
-            if (!currentStep) {
-                currentStep = steps.find(
-                    (s: any) => s.status === 'PENDING' || s.status === 'IN_PROGRESS' || s.status === 'AWAITING_REVIEW'
-                );
+            if (nextStage) {
+                currentStep = {
+                    id: nextStage.id,
+                    name: nextStage.name,
+                    stepType: nextStage.organizationType?.code || 'PLATFORM',
+                    status: nextStage.status,
+                    order: nextStage.order,
+                    actionReason: null,
+                    submissionCount: 0,
+                    requiredDocuments: requiredDocuments,
+                };
             }
         }
 
@@ -1367,6 +1414,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                 actionMessage = `Please complete the ${currentPhase.name} questionnaire`;
             }
         } else if (currentStep) {
+            // For documentation phases, determine action based on stage status
             switch (currentStep.status) {
                 case 'NEEDS_RESUBMISSION':
                     actionRequired = 'RESUBMIT';
@@ -1378,27 +1426,29 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                     break;
                 case 'PENDING':
                 case 'IN_PROGRESS':
-                    if (currentStep.stepType === 'UPLOAD') {
-                        actionRequired = 'UPLOAD';
-                        actionMessage = `Please upload the required documents for: ${currentStep.name}`;
-                    } else if (currentStep.stepType === 'SIGNATURE') {
-                        actionRequired = 'SIGN';
-                        actionMessage = 'Please sign the document';
-                    } else if (currentStep.stepType === 'PRE_APPROVAL') {
-                        actionRequired = 'UPLOAD';
-                        actionMessage = 'Please complete the pre-approval questionnaire';
-                    } else {
-                        actionRequired = 'WAIT_FOR_REVIEW';
-                        actionMessage = 'Your submission is being processed';
-                    }
+                    // For stages, the stepType is the organization code (PLATFORM, BANK, etc.)
+                    // Customer should upload when the stage is pending/in_progress and it's a CUSTOMER-facing stage
+                    // For now, assume first stage(s) require customer upload
+                    actionRequired = 'UPLOAD';
+                    actionMessage = `Please upload the required documents for: ${currentPhase.name}`;
                     break;
                 case 'AWAITING_REVIEW':
                     actionRequired = 'WAIT_FOR_REVIEW';
-                    actionMessage = 'Your submission is under review';
+                    actionMessage = 'Your documents are under review';
                     break;
                 default:
+                    // Check if all stages are completed
+                    const allStagesCompleted = stageProgress.every((s: any) => s.status === 'COMPLETED');
+                    if (allStagesCompleted) {
+                        actionRequired = 'NONE';
+                        actionMessage = 'All document reviews completed';
+                    }
                     break;
             }
+        } else if (currentPhase.phaseCategory === 'DOCUMENTATION') {
+            // Documentation phase but no current step - means customer needs to upload
+            actionRequired = 'UPLOAD';
+            actionMessage = `Please upload the required documents for: ${currentPhase.name}`;
         }
 
         // Get documents for this phase
@@ -1429,14 +1479,9 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                     requiredDocuments: currentStep.requiredDocuments.map((d: any) => ({
                         documentType: d.documentType,
                         isRequired: d.isRequired,
+                        name: d.name || d.documentType,
                     })),
-                    latestApproval: currentStep.approvals[0]
-                        ? {
-                            decision: currentStep.approvals[0].decision,
-                            comment: currentStep.approvals[0].comment,
-                            decidedAt: currentStep.approvals[0].decidedAt,
-                        }
-                        : null,
+                    latestApproval: null, // Stage-based workflow uses documentApprovals not step approvals
                 }
                 : null,
             uploadedDocuments: phaseDocuments.map((d: any) => ({

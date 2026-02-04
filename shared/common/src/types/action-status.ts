@@ -381,14 +381,28 @@ function computeDocumentationPhaseStatus(
         };
     }
 
-    const completedSteps = docPhase.completedStepsCount ?? 0;
-    const totalSteps = docPhase.totalStepsCount ?? docPhase.steps?.length ?? 0;
-    const stepsProgress = `${completedSteps} of ${totalSteps} steps completed`;
+    // Use stageProgress (the actual model field name) - may be at top level if flattened
+    const stageProgress = docPhase.stageProgress || phase.stageProgress || [];
+    const completedStages = stageProgress.filter((s: any) => s.status === 'COMPLETED').length;
+    const totalStages = stageProgress.length;
+    const stepsProgress = totalStages > 0
+        ? `${completedStages} of ${totalStages} stages completed`
+        : 'No stages defined';
 
-    // Get current step status
-    const currentStep = docPhase.currentStep;
-    if (currentStep) {
-        const stepStatus = computeStepActionStatus(currentStep);
+    // Get current stage based on currentStageOrder
+    const currentStageOrder = docPhase.currentStageOrder ?? 1;
+    const currentStage = stageProgress.find((s: any) => s.order === currentStageOrder);
+
+    if (currentStage && currentStage.status !== 'COMPLETED') {
+        const stepStatus = computeStepActionStatus({
+            id: currentStage.id,
+            name: currentStage.name || `Stage ${currentStage.order}`,
+            stepType: currentStage.organizationTypeCode || 'PLATFORM',
+            order: currentStage.order,
+            status: currentStage.status,
+            actionReason: currentStage.actionReason,
+            dueDate: currentStage.dueDate,
+        });
         return {
             ...base,
             nextActor: stepStatus.nextActor,
@@ -401,26 +415,32 @@ function computeDocumentationPhaseStatus(
         };
     }
 
-    // No current step - check if all steps are completed
-    const steps = docPhase.steps || [];
-    const allCompleted = steps.every((s: any) => s.status === 'COMPLETED');
-    if (allCompleted) {
+    // Check if all stages are completed
+    if (totalStages > 0 && stageProgress.every((s: any) => s.status === 'COMPLETED')) {
         return {
             ...base,
             nextActor: NextActor.NONE,
             actionCategory: ActionCategory.COMPLETED,
-            actionRequired: 'All steps completed',
+            actionRequired: 'All stages completed',
             stepsProgress,
             isBlocking: false,
         };
     }
 
-    // Find next pending step
-    const nextStep = steps.find((s: any) =>
+    // Find next pending stage
+    const nextStage = stageProgress.find((s: any) =>
         s.status !== 'COMPLETED' && s.status !== 'SKIPPED'
     );
-    if (nextStep) {
-        const stepStatus = computeStepActionStatus(nextStep);
+    if (nextStage) {
+        const stepStatus = computeStepActionStatus({
+            id: nextStage.id,
+            name: nextStage.name || `Stage ${nextStage.order}`,
+            stepType: nextStage.organizationTypeCode || 'PLATFORM',
+            order: nextStage.order,
+            status: nextStage.status,
+            actionReason: nextStage.actionReason,
+            dueDate: nextStage.dueDate,
+        });
         return {
             ...base,
             nextActor: stepStatus.nextActor,
@@ -429,6 +449,18 @@ function computeDocumentationPhaseStatus(
             progress: stepStatus.progress,
             stepsProgress,
             currentStep: stepStatus,
+            isBlocking: true,
+        };
+    }
+
+    // No stages defined - default to customer upload
+    if (totalStages === 0) {
+        return {
+            ...base,
+            nextActor: NextActor.CUSTOMER,
+            actionCategory: ActionCategory.UPLOAD,
+            actionRequired: 'Upload required documents',
+            stepsProgress,
             isBlocking: true,
         };
     }

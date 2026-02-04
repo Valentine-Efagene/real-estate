@@ -54,7 +54,9 @@ export type UserRole =
   | 'finance'
   | 'legal'
   | 'lender'
-  | 'developer';
+  | 'lender_ops'
+  | 'developer'
+  | 'agent';
 
 /**
  * Check if user has a specific role

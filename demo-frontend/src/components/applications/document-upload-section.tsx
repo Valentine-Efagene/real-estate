@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { useDocumentUpload } from '@/lib/hooks';
+import { useUploadPhaseDocument } from '@/lib/hooks/use-applications';
 import type { RequiredDocument } from '@/lib/hooks/use-applications';
 
 interface DocumentUploadSectionProps {
@@ -29,7 +30,8 @@ export function DocumentUploadSection({
   requiredDocuments,
 }: DocumentUploadSectionProps) {
   const [uploadingFiles, setUploadingFiles] = useState<Record<string, UploadingFile>>({});
-  const uploadDocument = useDocumentUpload();
+  const uploadToS3 = useDocumentUpload();
+  const uploadPhaseDocument = useUploadPhaseDocument();
 
   const handleFileSelect = useCallback(
     async (documentId: string, file: File) => {
@@ -39,15 +41,25 @@ export function DocumentUploadSection({
       }));
 
       try {
-        await uploadDocument.mutateAsync({
+        // Step 1: Upload file to S3
+        const s3Result = await uploadToS3.mutateAsync({
           file,
           folder: 'mortgage_docs',
           onProgress: (progress) => {
             setUploadingFiles((prev) => ({
               ...prev,
-              [documentId]: { ...prev[documentId], progress },
+              [documentId]: { ...prev[documentId], progress: Math.min(progress, 90) },
             }));
           },
+        });
+
+        // Step 2: Record the document in the backend
+        await uploadPhaseDocument.mutateAsync({
+          applicationId,
+          phaseId,
+          documentType: documentId,
+          url: s3Result.downloadUrl,
+          fileName: file.name,
         });
 
         setUploadingFiles((prev) => ({
@@ -66,7 +78,7 @@ export function DocumentUploadSection({
         );
       }
     },
-    [applicationId, phaseId, uploadDocument]
+    [applicationId, phaseId, uploadToS3, uploadPhaseDocument]
   );
 
   const getStatusBadge = (status: string) => {
