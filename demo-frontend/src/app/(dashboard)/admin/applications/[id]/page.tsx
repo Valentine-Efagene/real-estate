@@ -2,7 +2,7 @@
 
 import { use, useState } from 'react';
 import Link from 'next/link';
-import { ProtectedRoute } from '@/components/auth';
+import { ProtectedRoute, AdminOnly } from '@/components/auth';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -57,9 +57,27 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
 
   // Get current phase with questionnaire fields
   type Phase = NonNullable<typeof phases>[number];
-  const currentPhaseWithFields = phases?.find(
+  const currentPhase = phases?.find(
     (p) => p.id === currentAction?.currentPhase?.id
-  ) as (Phase & { fields?: QuestionnaireField[] }) | undefined;
+  ) as Phase | undefined;
+
+  // Extract questionnaire fields from the flattened fields array (QuestionnaireField records)
+  // The backend flattens questionnairePhase.fields to phase.fields
+  const questionnaireFields: QuestionnaireField[] | undefined = currentPhase?.fields?.map(f => ({
+    id: f.id,
+    name: f.name,
+    label: f.label,
+    description: f.description,
+    placeholder: f.placeholder,
+    fieldType: f.fieldType,
+    isRequired: f.isRequired,
+    order: f.order,
+    validation: f.validation,
+    displayCondition: f.displayCondition,
+    defaultValue: f.defaultValue,
+    answer: f.answer,
+    options: f.options,
+  }));
 
   // Filter out already bound organizations
   const boundOrgIds = new Set(boundOrganizations?.map(bo => bo.organizationId) || []);
@@ -270,68 +288,70 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
                 Organizations participating in this application
               </CardDescription>
             </div>
-            <Dialog open={showBindOrgDialog} onOpenChange={setShowBindOrgDialog}>
-              <DialogTrigger asChild>
-                <Button size="sm">+ Bind Organization</Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Bind Organization</DialogTitle>
-                  <DialogDescription>
-                    Add an organization (e.g., bank, developer) to this application
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="space-y-4 py-4">
-                  <div className="space-y-2">
-                    <Label>Organization</Label>
-                    <Select value={selectedOrgId} onValueChange={setSelectedOrgId}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select organization" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {availableOrganizations.map((org) => (
-                          <SelectItem key={org.id} value={org.id}>
-                            {org.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+            <AdminOnly>
+              <Dialog open={showBindOrgDialog} onOpenChange={setShowBindOrgDialog}>
+                <DialogTrigger asChild>
+                  <Button size="sm">+ Bind Organization</Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Bind Organization</DialogTitle>
+                    <DialogDescription>
+                      Add an organization (e.g., bank, developer) to this application
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="space-y-4 py-4">
+                    <div className="space-y-2">
+                      <Label>Organization</Label>
+                      <Select value={selectedOrgId} onValueChange={setSelectedOrgId}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select organization" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {availableOrganizations.map((org) => (
+                            <SelectItem key={org.id} value={org.id}>
+                              {org.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Role Type</Label>
+                      <Select value={selectedOrgType} onValueChange={setSelectedOrgType}>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="BANK">Bank / Lender</SelectItem>
+                          <SelectItem value="DEVELOPER">Developer</SelectItem>
+                          <SelectItem value="LEGAL">Legal</SelectItem>
+                          <SelectItem value="INSURER">Insurer</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="sla">SLA Hours</Label>
+                      <Input
+                        id="sla"
+                        type="number"
+                        value={slaHours}
+                        onChange={(e) => setSlaHours(e.target.value)}
+                        placeholder="48"
+                      />
+                    </div>
                   </div>
-                  <div className="space-y-2">
-                    <Label>Role Type</Label>
-                    <Select value={selectedOrgType} onValueChange={setSelectedOrgType}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="BANK">Bank / Lender</SelectItem>
-                        <SelectItem value="DEVELOPER">Developer</SelectItem>
-                        <SelectItem value="LEGAL">Legal</SelectItem>
-                        <SelectItem value="INSURER">Insurer</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="sla">SLA Hours</Label>
-                    <Input
-                      id="sla"
-                      type="number"
-                      value={slaHours}
-                      onChange={(e) => setSlaHours(e.target.value)}
-                      placeholder="48"
-                    />
-                  </div>
-                </div>
-                <DialogFooter>
-                  <Button
-                    onClick={handleBindOrganization}
-                    disabled={bindOrganization.isPending || !selectedOrgId}
-                  >
-                    {bindOrganization.isPending ? 'Binding...' : 'Bind Organization'}
-                  </Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
+                  <DialogFooter>
+                    <Button
+                      onClick={handleBindOrganization}
+                      disabled={bindOrganization.isPending || !selectedOrgId}
+                    >
+                      {bindOrganization.isPending ? 'Binding...' : 'Bind Organization'}
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </AdminOnly>
           </div>
         </CardHeader>
         <CardContent>
@@ -475,7 +495,7 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
             </div>
           </CardContent>
         </Card>
-      ) : currentAction?.currentPhase?.phaseCategory === 'QUESTIONNAIRE' && currentPhaseWithFields?.fields ? (
+      ) : currentAction?.currentPhase?.phaseCategory === 'QUESTIONNAIRE' && questionnaireFields && questionnaireFields.length > 0 ? (
         <Card>
           <CardHeader>
             <CardTitle>Questionnaire Review</CardTitle>
@@ -486,7 +506,7 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
           <CardContent>
             {/* Display submitted answers */}
             <div className="space-y-4 mb-6">
-              {currentPhaseWithFields.fields
+              {questionnaireFields
                 .filter((field) => field.answer !== null && field.answer !== undefined)
                 .sort((a, b) => a.order - b.order)
                 .map((field) => (
@@ -511,7 +531,7 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
             </div>
 
             {/* No answers submitted yet */}
-            {currentPhaseWithFields.fields.every(
+            {questionnaireFields.every(
               (field) => field.answer === null || field.answer === undefined
             ) && (
                 <div className="text-center py-8 text-gray-500">
@@ -520,7 +540,7 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
               )}
 
             {/* Review actions */}
-            {currentPhaseWithFields.fields.some(
+            {questionnaireFields.some(
               (field) => field.answer !== null && field.answer !== undefined
             ) && currentAction.currentPhase?.status === 'AWAITING_APPROVAL' && (
                 <Dialog open={showQuestionnaireReview} onOpenChange={setShowQuestionnaireReview}>

@@ -270,6 +270,8 @@ export interface ApplicationService {
         status?: ApplicationStatus;
         page?: number;
         limit?: number;
+        /** Filter applications by specific IDs (for organization staff filtering) */
+        applicationIds?: string[];
     }): Promise<{
         items: any[];
         pagination: {
@@ -776,16 +778,23 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
         status?: ApplicationStatus;
         page?: number;
         limit?: number;
+        /** Filter applications by specific IDs (for organization staff filtering) */
+        applicationIds?: string[];
     }) {
         const page = filters?.page || 1;
         const limit = filters?.limit || 20;
         const skip = (page - 1) * limit;
 
-        const where = {
+        const where: Record<string, unknown> = {
             buyerId: filters?.buyerId,
             propertyUnitId: filters?.propertyUnitId,
             status: filters?.status,
         };
+
+        // Filter by specific application IDs if provided (for org staff)
+        if (filters?.applicationIds) {
+            where.id = { in: filters.applicationIds };
+        }
 
         const [items, total] = await Promise.all([
             prisma.application.findMany({

@@ -82,22 +82,23 @@ export function AdminOnly({ children, fallback }: { children: ReactNode; fallbac
 }
 
 /**
- * Staff-only content (admin, mortgage_ops, finance, legal)
+ * Staff-only content (admin, mortgage_ops, finance, legal, lender_ops, agent)
+ * These are staff who can view and act on applications
  */
 export function StaffOnly({ children, fallback }: { children: ReactNode; fallback?: ReactNode }) {
   return (
-    <RoleGate roles={['admin', 'mortgage_ops', 'finance', 'legal']} fallback={fallback}>
+    <RoleGate roles={['admin', 'mortgage_ops', 'finance', 'legal', 'lender_ops', 'agent']} fallback={fallback}>
       {children}
     </RoleGate>
   );
 }
 
 /**
- * Lender-only content
+ * Lender-only content (bank staff)
  */
 export function LenderOnly({ children, fallback }: { children: ReactNode; fallback?: ReactNode }) {
   return (
-    <RoleGate roles={['lender', 'admin']} fallback={fallback}>
+    <RoleGate roles={['lender', 'lender_ops', 'admin']} fallback={fallback}>
       {children}
     </RoleGate>
   );

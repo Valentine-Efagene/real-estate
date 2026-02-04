@@ -2,7 +2,7 @@ import { Router, Request, Response, NextFunction } from 'express';
 import { createApplicationService } from '../services/application.service';
 import { applicationPhaseService } from '../services/application-phase.service';
 import { applicationPaymentService } from '../services/application-payment.service';
-import { createApplicationOrganizationService } from '../services/application-organization.service';
+import { createApplicationOrganizationService, isOrgStaffRole } from '../services/application-organization.service';
 import {
     ApplicationStatus,
     successResponse,
@@ -139,8 +139,9 @@ router.get('/', requireTenant, async (req: Request, res: Response, next: NextFun
         const { buyerId, propertyUnitId, status, page, limit } = req.query;
         const { userId, roles } = getAuthContext(req);
         const applicationService = getApplicationService(req);
+        const appOrgService = getAppOrgService(req);
 
-        // Non-admins can only see their own applications
+        // Build filters
         const filters: any = {
             propertyUnitId: propertyUnitId as string,
             status: status as ApplicationStatus | undefined,
@@ -149,10 +150,49 @@ router.get('/', requireTenant, async (req: Request, res: Response, next: NextFun
         };
 
         if (isAdmin(roles)) {
-            // Admins can filter by any buyerId
+            // Platform admins can filter by any buyerId and see all applications
             filters.buyerId = buyerId as string;
+        } else if (isOrgStaffRole(roles)) {
+            // Organization staff (bank lender_ops, agents, legal, etc.)
+            // can only see applications where their organization is bound
+            const userOrgIds = await appOrgService.getUserOrganizationIds(userId);
+
+            if (userOrgIds.length === 0) {
+                // User is not a member of any organization - return empty
+                return res.json(successResponse({
+                    items: [],
+                    pagination: {
+                        page: filters.page,
+                        limit: filters.limit,
+                        total: 0,
+                        totalPages: 0,
+                    },
+                }));
+            }
+
+            // Get applications bound to user's organizations
+            const boundAppIds = await appOrgService.getApplicationIdsByOrganizations(userOrgIds);
+
+            if (boundAppIds.length === 0) {
+                // No applications bound to user's organizations
+                return res.json(successResponse({
+                    items: [],
+                    pagination: {
+                        page: filters.page,
+                        limit: filters.limit,
+                        total: 0,
+                        totalPages: 0,
+                    },
+                }));
+            }
+
+            filters.applicationIds = boundAppIds;
+            // Staff can also filter by buyerId within their org-bound applications
+            if (buyerId) {
+                filters.buyerId = buyerId as string;
+            }
         } else {
-            // Customers can only see their own
+            // Regular customers can only see their own applications
             filters.buyerId = userId;
         }
 

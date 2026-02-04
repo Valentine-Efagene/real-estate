@@ -325,7 +325,13 @@ class ApplicationPhaseService {
             where: { applicationId },
             orderBy: { order: 'asc' },
             include: {
-                questionnairePhase: true,
+                questionnairePhase: {
+                    include: {
+                        fields: {
+                            orderBy: { order: 'asc' },
+                        },
+                    },
+                },
                 documentationPhase: {
                     include: {
                         stageProgress: {

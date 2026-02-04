@@ -86,6 +86,7 @@ export interface QuestionnaireField {
   displayCondition?: Record<string, unknown> | null;
   defaultValue?: unknown;
   answer?: unknown;
+  options?: Array<{ label: string; value: string; score?: number }> | null;
 }
 
 export interface Installment {

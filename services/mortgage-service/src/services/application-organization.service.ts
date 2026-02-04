@@ -5,6 +5,27 @@ import type { BindOrganizationInput, UpdateOrganizationBindingInput } from '../v
 type AnyPrismaClient = PrismaClient;
 
 /**
+ * Organization staff roles that should see applications bound to their organization.
+ * These roles are NOT admins - they only see applications where their org is involved.
+ */
+export const ORG_STAFF_ROLES = [
+    'DEVELOPER',    // Legacy
+    'LENDER',       // Legacy
+    'LEGAL',        // Legacy
+    'lender_ops',   // Bank staff
+    'agent',        // Real estate agents
+    'legal',        // Legal team
+] as const;
+
+/**
+ * Check if user has an organization staff role (not platform admin).
+ */
+export function isOrgStaffRole(roles: string[] | undefined): boolean {
+    if (!roles || roles.length === 0) return false;
+    return ORG_STAFF_ROLES.some(role => roles.includes(role));
+}
+
+/**
  * Service for managing organization bindings to applications
  * 
  * This service controls which organizations (banks, developers, legal firms)
@@ -12,6 +33,44 @@ type AnyPrismaClient = PrismaClient;
  */
 export function createApplicationOrganizationService(prisma: AnyPrismaClient) {
     return {
+        /**
+         * Get organization IDs where user is an active member.
+         * Used for filtering applications by organization binding.
+         */
+        async getUserOrganizationIds(userId: string): Promise<string[]> {
+            // Query organizations where user is an active member
+            const organizations = await prisma.organization.findMany({
+                where: {
+                    members: {
+                        some: {
+                            userId,
+                            isActive: true,
+                        },
+                    },
+                },
+                select: { id: true },
+            });
+            return organizations.map((org: { id: string }) => org.id);
+        },
+
+        /**
+         * Get application IDs that are bound to any of the given organizations.
+         * Used for filtering application lists for organization staff.
+         */
+        async getApplicationIdsByOrganizations(organizationIds: string[]): Promise<string[]> {
+            if (organizationIds.length === 0) return [];
+
+            const bindings = await prisma.applicationOrganization.findMany({
+                where: {
+                    organizationId: { in: organizationIds },
+                    status: { in: ['PENDING', 'ACTIVE', 'COMPLETED'] },
+                },
+                select: { applicationId: true },
+                distinct: ['applicationId'],
+            });
+            return bindings.map((b: { applicationId: string }) => b.applicationId);
+        },
+
         /**
          * Bind an organization to an application
          * The organization must have the specified type in their OrganizationTypeAssignment

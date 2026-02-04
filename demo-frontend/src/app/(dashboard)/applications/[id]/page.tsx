@@ -2,12 +2,14 @@
 
 import { use } from 'react';
 import Link from 'next/link';
-import { ProtectedRoute } from '@/components/auth';
+import { ProtectedRoute, StaffOnly } from '@/components/auth';
+import { useAuth } from '@/lib/auth';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Separator } from '@/components/ui/separator';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useApplication, useCurrentAction, useApplicationPhases, type Phase } from '@/lib/hooks';
 import { DocumentUploadSection } from '@/components/applications/document-upload-section';
 import { PhaseProgress } from '@/components/applications/phase-progress';
@@ -22,10 +24,17 @@ function formatCurrency(amount: number, currency: string = 'NGN') {
   }).format(amount);
 }
 
+// Staff roles that can review applications
+const STAFF_ROLES = ['admin', 'mortgage_ops', 'finance', 'legal', 'lender_ops', 'agent'];
+
 function ApplicationDetailContent({ applicationId }: { applicationId: string }) {
+  const { user } = useAuth();
   const { data: application, isLoading: appLoading, refetch: refetchApplication } = useApplication(applicationId);
   const { data: currentAction, isLoading: actionLoading } = useCurrentAction(applicationId);
   const { data: phases } = useApplicationPhases(applicationId);
+
+  // Check if user is staff
+  const isStaff = user?.roles?.some(role => STAFF_ROLES.includes(role)) ?? false;
 
   // Get current phase details
   const currentPhase = phases?.find(
@@ -77,6 +86,21 @@ function ApplicationDetailContent({ applicationId }: { applicationId: string }) 
         <Button variant="ghost">← Back to Applications</Button>
       </Link>
 
+      {/* Staff Notice - Show review link for staff members */}
+      <StaffOnly>
+        <Alert>
+          <AlertTitle>Staff View</AlertTitle>
+          <AlertDescription className="flex items-center justify-between">
+            <span>You&apos;re viewing the customer view. To review and take action on this application:</span>
+            <Link href={`/admin/applications/${applicationId}`}>
+              <Button size="sm" variant="default">
+                Go to Review Page →
+              </Button>
+            </Link>
+          </AlertDescription>
+        </Alert>
+      </StaffOnly>
+
       {/* Application Header */}
       <div className="flex justify-between items-start">
         <div>
@@ -100,7 +124,41 @@ function ApplicationDetailContent({ applicationId }: { applicationId: string }) 
       </div>
 
       {/* Application Overview */}
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {/* Applicant Info */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Applicant</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-center gap-4">
+              <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+                <span className="text-lg font-semibold text-primary">
+                  {application.buyer
+                    ? `${application.buyer.firstName?.[0] || ''}${application.buyer.lastName?.[0] || ''}`.toUpperCase()
+                    : '?'}
+                </span>
+              </div>
+              <div>
+                <p className="font-medium">
+                  {application.buyer
+                    ? `${application.buyer.firstName} ${application.buyer.lastName}`
+                    : 'Unknown Applicant'}
+                </p>
+                {application.buyer?.email && (
+                  <p className="text-sm text-gray-500">{application.buyer.email}</p>
+                )}
+              </div>
+            </div>
+            {application.applicantAge && (
+              <div className="grid grid-cols-2 gap-2 text-sm pt-2 border-t">
+                <div className="text-gray-500">Age:</div>
+                <div className="font-medium">{application.applicantAge} years</div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
         <Card>
           <CardHeader>
             <CardTitle>Application Details</CardTitle>
@@ -145,12 +203,6 @@ function ApplicationDetailContent({ applicationId }: { applicationId: string }) 
                   <div className="font-medium">
                     {formatCurrency(application.monthlyExpenses, application.currency)}
                   </div>
-                </>
-              )}
-              {application.applicantAge && (
-                <>
-                  <div className="text-gray-500">Applicant Age:</div>
-                  <div className="font-medium">{application.applicantAge} years</div>
                 </>
               )}
               {application.selectedMortgageTermMonths && (
@@ -221,7 +273,16 @@ function ApplicationDetailContent({ applicationId }: { applicationId: string }) 
 
             {currentAction.currentPhase.phaseCategory === 'QUESTIONNAIRE' && currentAction.actionRequired === 'WAIT_FOR_REVIEW' && (
               <div className="text-center py-4">
-                <p className="text-gray-500">Your questionnaire answers have been submitted and are under review.</p>
+                {isStaff ? (
+                  <>
+                    <p className="text-gray-600 mb-4">The applicant&apos;s questionnaire is awaiting review.</p>
+                    <Link href={`/admin/applications/${applicationId}`}>
+                      <Button>Review Questionnaire</Button>
+                    </Link>
+                  </>
+                ) : (
+                  <p className="text-gray-500">Your questionnaire answers have been submitted and are under review.</p>
+                )}
               </div>
             )}
 
