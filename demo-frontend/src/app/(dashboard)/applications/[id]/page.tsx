@@ -2,14 +2,14 @@
 
 import { use } from 'react';
 import Link from 'next/link';
-import { ProtectedRoute, StaffOnly } from '@/components/auth';
+import { redirect } from 'next/navigation';
+import { ProtectedRoute } from '@/components/auth';
 import { useAuth } from '@/lib/auth';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Separator } from '@/components/ui/separator';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useApplication, useCurrentAction, useApplicationPhases, type Phase } from '@/lib/hooks';
 import { DocumentUploadSection } from '@/components/applications/document-upload-section';
 import { PhaseProgress } from '@/components/applications/phase-progress';
@@ -35,6 +35,9 @@ function ApplicationDetailContent({ applicationId }: { applicationId: string }) 
 
   // Check if user is staff
   const isStaff = user?.roles?.some(role => STAFF_ROLES.includes(role)) ?? false;
+
+  // Check if user is the actual applicant (owner) of this application
+  const isApplicant = application?.buyerId === user?.userId;
 
   // Get current phase details
   const currentPhase = phases?.find(
@@ -79,27 +82,18 @@ function ApplicationDetailContent({ applicationId }: { applicationId: string }) 
     );
   }
 
+  // Staff members who are NOT the applicant should be redirected to the review page
+  // This prevents staff from accidentally using customer controls on someone else's application
+  if (isStaff && !isApplicant) {
+    redirect(`/admin/applications/${applicationId}`);
+  }
+
   return (
     <div className="space-y-8">
       {/* Back Button */}
       <Link href="/applications">
         <Button variant="ghost">← Back to Applications</Button>
       </Link>
-
-      {/* Staff Notice - Show review link for staff members */}
-      <StaffOnly>
-        <Alert>
-          <AlertTitle>Staff View</AlertTitle>
-          <AlertDescription className="flex items-center justify-between">
-            <span>You&apos;re viewing the customer view. To review and take action on this application:</span>
-            <Link href={`/admin/applications/${applicationId}`}>
-              <Button size="sm" variant="default">
-                Go to Review Page →
-              </Button>
-            </Link>
-          </AlertDescription>
-        </Alert>
-      </StaffOnly>
 
       {/* Application Header */}
       <div className="flex justify-between items-start">
@@ -248,8 +242,8 @@ function ApplicationDetailContent({ applicationId }: { applicationId: string }) 
                 phaseId={currentAction.currentPhase.id}
                 requiredDocuments={currentAction.currentStep.requiredDocuments.map(doc => ({
                   id: doc.documentType,
-                  name: doc.name || doc.documentType,
-                  description: doc.name || doc.documentType,
+                  name: doc.documentType,
+                  description: doc.documentType,
                   status: 'PENDING',
                 }))}
               />

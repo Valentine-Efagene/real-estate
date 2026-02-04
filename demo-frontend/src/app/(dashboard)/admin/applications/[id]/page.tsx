@@ -1,9 +1,10 @@
 'use client';
 
-import { use, useState } from 'react';
+import { use, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { ProtectedRoute, AdminOnly } from '@/components/auth';
 import { useAuth } from '@/lib/auth';
+import { getPresignedGetUrl } from '@/lib/hooks/use-documents';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -25,11 +26,11 @@ import {
   useBindOrganization,
   type QuestionnaireField
 } from '@/lib/hooks';
-import { useOrganizations } from '@/lib/hooks/use-organizations';
+import { useOrganizations, useUserProfile, getUserOrganizationTypeCode } from '@/lib/hooks/use-organizations';
 import { PhaseProgress } from '@/components/applications/phase-progress';
 import { PartnerDocumentUpload } from '@/components/applications/partner-document-upload';
 
-// Role mappings for determining which uploads to show
+// Role mappings for determining which uploads to show (fallback when no org membership)
 const ROLE_TO_UPLOAD_TYPE: Record<string, 'PLATFORM' | 'LENDER' | 'DEVELOPER' | null> = {
   admin: 'PLATFORM',
   mortgage_ops: 'PLATFORM',
@@ -49,6 +50,7 @@ function formatCurrency(amount: number, currency: string = 'NGN') {
 
 function AdminApplicationDetailContent({ applicationId }: { applicationId: string }) {
   const { user } = useAuth();
+  const { data: userProfile } = useUserProfile();
   const { data: application, isLoading: appLoading } = useApplication(applicationId);
   const { data: currentAction, isLoading: actionLoading } = useCurrentAction(applicationId);
   const { data: phases } = useApplicationPhases(applicationId);
@@ -58,8 +60,13 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
   const reviewQuestionnaire = useReviewQuestionnaire();
   const bindOrganization = useBindOrganization();
 
-  // Determine what upload type this user can perform based on their roles
-  const userUploadType = user?.roles?.map(role => ROLE_TO_UPLOAD_TYPE[role]).find(t => t) || null;
+  // Get user's organization type from their membership (dynamic from backend)
+  const userOrgTypeCode = getUserOrganizationTypeCode(userProfile);
+
+  // Determine what upload type this user can perform based on their organization or roles (fallback)
+  const userUploadType = userOrgTypeCode
+    ? (userOrgTypeCode === 'BANK' ? 'LENDER' : userOrgTypeCode === 'DEVELOPER' ? 'DEVELOPER' : 'PLATFORM') as 'PLATFORM' | 'LENDER' | 'DEVELOPER'
+    : user?.roles?.map(role => ROLE_TO_UPLOAD_TYPE[role]).find(t => t) || null;
   const isAdmin = user?.roles?.includes('admin') ?? false;
 
   const [reviewingDocId, setReviewingDocId] = useState<string | null>(null);
@@ -70,6 +77,50 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
   const [selectedOrgId, setSelectedOrgId] = useState('');
   const [selectedOrgType, setSelectedOrgType] = useState('BANK');
   const [slaHours, setSlaHours] = useState('48');
+  const [presignedUrls, setPresignedUrls] = useState<Record<string, string>>({});
+  const [loadingPresignedUrl, setLoadingPresignedUrl] = useState<string | null>(null);
+
+  // Get presigned URL for viewing a document
+  const getDocumentViewUrl = useCallback(async (docId: string, s3Key: string) => {
+    // Check cache first
+    if (presignedUrls[docId]) {
+      return presignedUrls[docId];
+    }
+
+    setLoadingPresignedUrl(docId);
+    try {
+      const presignedUrl = await getPresignedGetUrl(s3Key);
+      setPresignedUrls(prev => ({ ...prev, [docId]: presignedUrl }));
+      return presignedUrl;
+    } catch (error) {
+      toast.error('Failed to get document URL');
+      throw error;
+    } finally {
+      setLoadingPresignedUrl(null);
+    }
+  }, [presignedUrls]);
+
+  // Handle View button click
+  const handleViewDocument = async (docId: string, s3Key: string) => {
+    try {
+      const url = await getDocumentViewUrl(docId, s3Key);
+      window.open(url, '_blank');
+    } catch {
+      // Error already shown in toast
+    }
+  };
+
+  // Preload presigned URL when opening review dialog
+  const handleOpenReviewDialog = async (docId: string, s3Key: string | null) => {
+    setReviewingDocId(docId);
+    if (s3Key && !presignedUrls[docId]) {
+      try {
+        await getDocumentViewUrl(docId, s3Key);
+      } catch {
+        // Non-fatal, preview just won't work
+      }
+    }
+  };
 
   // Get current phase with questionnaire fields
   type Phase = NonNullable<typeof phases>[number];
@@ -127,12 +178,15 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
     documentId: string,
     status: 'APPROVED' | 'REJECTED' | 'CHANGES_REQUESTED'
   ) => {
+    // Use organization type from user's profile, fallback to PLATFORM for admins without org membership
+    const orgTypeCode = userOrgTypeCode || 'PLATFORM';
+
     try {
       await reviewDocument.mutateAsync({
         applicationId,
         documentId,
         status,
-        organizationTypeCode: 'PLATFORM',
+        organizationTypeCode: orgTypeCode,
         comment: reviewComment,
       });
       toast.success(`Document ${status.toLowerCase()}`);
@@ -441,6 +495,17 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
                     </Badge>
                   </div>
                   <div className="flex gap-2">
+                    {/* View Document Button */}
+                    {doc.url && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleViewDocument(doc.id, doc.url!)}
+                        disabled={loadingPresignedUrl === doc.id}
+                      >
+                        {loadingPresignedUrl === doc.id ? 'Loading...' : 'View'}
+                      </Button>
+                    )}
                     {doc.status === 'PENDING' && (
                       <>
                         <Dialog
@@ -456,18 +521,57 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
                             <Button
                               variant="outline"
                               size="sm"
-                              onClick={() => setReviewingDocId(doc.id)}
+                              onClick={() => handleOpenReviewDialog(doc.id, doc.url)}
                             >
                               Review
                             </Button>
                           </DialogTrigger>
-                          <DialogContent>
+                          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
                             <DialogHeader>
                               <DialogTitle>Review Document</DialogTitle>
                               <DialogDescription>
-                                {doc.name}
+                                {doc.name} ({doc.type})
                               </DialogDescription>
                             </DialogHeader>
+
+                            {/* Document Preview */}
+                            {doc.url && (
+                              <div className="border rounded-lg overflow-hidden bg-gray-100">
+                                {presignedUrls[doc.id] ? (
+                                  doc.url.match(/\.(pdf)$/i) || doc.type?.toLowerCase().includes('pdf') ? (
+                                    <iframe
+                                      src={presignedUrls[doc.id]}
+                                      className="w-full h-[500px]"
+                                      title={`Preview: ${doc.name}`}
+                                    />
+                                  ) : doc.url.match(/\.(jpg|jpeg|png|gif|webp)$/i) || doc.type?.toLowerCase().includes('image') ? (
+                                    <div className="flex items-center justify-center p-4">
+                                      <img
+                                        src={presignedUrls[doc.id]}
+                                        alt={doc.name}
+                                        className="max-w-full max-h-[500px] object-contain"
+                                      />
+                                    </div>
+                                  ) : (
+                                    <div className="flex flex-col items-center justify-center p-8 text-gray-500">
+                                      <span className="text-4xl mb-2">📄</span>
+                                      <p>Preview not available for this file type</p>
+                                      <Button
+                                        variant="link"
+                                        onClick={() => window.open(presignedUrls[doc.id], '_blank')}
+                                      >
+                                        Open in new tab →
+                                      </Button>
+                                    </div>
+                                  )
+                                ) : (
+                                  <div className="flex items-center justify-center p-8 text-gray-500">
+                                    <span>Loading preview...</span>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+
                             <div className="space-y-4 py-4">
                               <div className="space-y-2">
                                 <Label htmlFor="comment">Comment (optional)</Label>

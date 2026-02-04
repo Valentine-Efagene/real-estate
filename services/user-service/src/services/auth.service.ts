@@ -616,6 +616,27 @@ class AuthService {
                         },
                     },
                 },
+                organizationMemberships: {
+                    include: {
+                        organization: {
+                            select: {
+                                id: true,
+                                name: true,
+                                types: {
+                                    include: {
+                                        orgType: {
+                                            select: {
+                                                id: true,
+                                                code: true,
+                                                name: true,
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
             },
         });
 

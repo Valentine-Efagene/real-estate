@@ -141,6 +141,7 @@ export interface CurrentAction {
     id: string;
     name: string;
     type: string;
+    url: string | null;
     status: string;
     stepId: string | null;
     createdAt: string;

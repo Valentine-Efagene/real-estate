@@ -102,6 +102,74 @@ const bankDocReqKeys = {
 };
 
 // ============================================================================
+// User Profile with Organizations
+// ============================================================================
+
+export interface UserOrganizationMembership {
+    id: string;
+    organizationId: string;
+    organization: {
+        id: string;
+        name: string;
+        types: Array<{
+            orgType: {
+                id: string;
+                code: string;
+                name: string;
+            };
+        }>;
+    };
+}
+
+export interface UserProfile {
+    id: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    phone: string | null;
+    avatar: string | null;
+    isActive: boolean;
+    userRoles: Array<{
+        role: {
+            id: string;
+            name: string;
+            description: string;
+        };
+    }>;
+    organizationMemberships: UserOrganizationMembership[];
+}
+
+/**
+ * Fetches the current user's profile including organization memberships
+ */
+export function useUserProfile() {
+    return useQuery({
+        queryKey: ['userProfile'],
+        queryFn: async () => {
+            const response = await userApi.get<UserProfile>('/auth/me');
+            if (!response.success) {
+                throw new Error(response.error?.message || 'Failed to fetch user profile');
+            }
+            return response.data!;
+        },
+    });
+}
+
+/**
+ * Get the primary organization type code for the current user
+ * Returns the first organization type code found, or null if none
+ */
+export function getUserOrganizationTypeCode(profile: UserProfile | undefined): string | null {
+    if (!profile?.organizationMemberships?.length) return null;
+
+    // Get the first organization's primary type
+    const firstMembership = profile.organizationMemberships[0];
+    const primaryType = firstMembership.organization.types?.[0]?.orgType?.code;
+
+    return primaryType || null;
+}
+
+// ============================================================================
 // Organizations Hooks
 // ============================================================================
 
