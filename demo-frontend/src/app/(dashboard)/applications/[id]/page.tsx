@@ -248,20 +248,24 @@ function ApplicationDetailContent({ applicationId }: { applicationId: string }) 
       ) : currentAction && currentAction.currentPhase ? (
         (() => {
           const phase = currentAction.currentPhase!;
-          // For documentation phases, check if the current stage is for the customer
+          // Use actionRequired from API - it's already computed correctly on the backend
           const isDocPhase = phase.phaseCategory === 'DOCUMENTATION';
           const currentStepType = currentAction.currentStep?.stepType;
-          // Stage is customer-facing if stepType is CUSTOMER or not set
-          const isCustomerStage = !currentStepType || currentStepType === 'CUSTOMER';
-          // Filter documents that the customer needs to upload
+          
+          // Check what action the backend says is required
+          const isUploadAction = currentAction.actionRequired === 'UPLOAD' || currentAction.actionRequired === 'RESUBMIT';
+          const isReviewAction = currentAction.actionRequired === 'REVIEW';
+          const isWaitingAction = currentAction.actionRequired === 'WAIT_FOR_REVIEW' || currentAction.actionRequired === 'NONE';
+          
+          // Customer has action if backend says UPLOAD, RESUBMIT, or REVIEW
+          const hasCustomerAction = isUploadAction || isReviewAction;
+          
+          // Get customer docs from requiredDocuments
           const customerDocs = currentAction.currentStep?.requiredDocuments?.filter(
             (doc: any) => !doc.uploadedBy || doc.uploadedBy === 'CUSTOMER'
           ) || [];
-          // Check if this is a REVIEW action (customer needs to review/approve other party's documents)
-          const isReviewAction = currentAction.actionRequired === 'REVIEW';
-          // Customer has action if: not a doc phase, OR it's a customer stage with customer docs, OR it's a REVIEW action
-          const hasCustomerAction = !isDocPhase || (isCustomerStage && customerDocs.length > 0) || isReviewAction;
-          // Get a friendly name for the current party (but not "customer" since user IS customer)
+          
+          // Get a friendly name for the current party
           const currentParty = currentStepType && currentStepType !== 'CUSTOMER'
             ? currentStepType.toLowerCase().replace('_', ' ')
             : 'the reviewing team';
@@ -274,12 +278,12 @@ function ApplicationDetailContent({ applicationId }: { applicationId: string }) 
             if (hasCustomerAction) {
               return currentAction.actionMessage;
             }
-            // Customer stage with no docs = all docs submitted, awaiting review
-            if (isCustomerStage && customerDocs.length === 0) {
-              return 'Your documents have been submitted. Awaiting review.';
+            // Waiting for review
+            if (isWaitingAction) {
+              return currentAction.actionMessage || 'Your documents are being reviewed.';
             }
-            // Non-customer stage = waiting for other party
-            return `Waiting for ${currentParty} to complete: ${currentAction.currentStep?.name || 'their tasks'}`;
+            // Default fallback
+            return currentAction.actionMessage || `Waiting for ${currentParty} to complete: ${currentAction.currentStep?.name || 'their tasks'}`;
           };
 
           return (
@@ -354,14 +358,14 @@ function ApplicationDetailContent({ applicationId }: { applicationId: string }) 
                   </div>
                 )}
 
-                {isDocPhase && !isCustomerStage && (
+                {isDocPhase && isWaitingAction && (
                   <div className="text-center py-4">
-                    <p className="text-gray-600">Waiting for {currentParty} to upload their documents.</p>
+                    <p className="text-gray-600">Your documents are being reviewed by {currentParty}.</p>
                     <p className="text-sm text-gray-500 mt-2">You will be notified when action is required from you.</p>
                   </div>
                 )}
 
-                {isDocPhase && isCustomerStage && customerDocs.length > 0 && (
+                {isDocPhase && isUploadAction && customerDocs.length > 0 && (
                   <DocumentUploadSection
                     applicationId={applicationId}
                     phaseId={phase.id}
@@ -374,7 +378,7 @@ function ApplicationDetailContent({ applicationId }: { applicationId: string }) 
                   />
                 )}
 
-                {isDocPhase && isCustomerStage && customerDocs.length === 0 && !isReviewAction && (
+                {isDocPhase && isWaitingAction && currentAction.uploadedDocuments && currentAction.uploadedDocuments.length > 0 && (
                   <div className="text-center py-4">
                     <p className="text-gray-500">All required documents for this stage have been submitted.</p>
                     <p className="text-sm text-gray-400 mt-2">The review team will process your application shortly.</p>
