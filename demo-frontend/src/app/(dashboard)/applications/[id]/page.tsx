@@ -251,20 +251,20 @@ function ApplicationDetailContent({ applicationId }: { applicationId: string }) 
           // Use actionRequired from API - it's already computed correctly on the backend
           const isDocPhase = phase.phaseCategory === 'DOCUMENTATION';
           const currentStepType = currentAction.currentStep?.stepType;
-          
+
           // Check what action the backend says is required
           const isUploadAction = currentAction.actionRequired === 'UPLOAD' || currentAction.actionRequired === 'RESUBMIT';
           const isReviewAction = currentAction.actionRequired === 'REVIEW';
           const isWaitingAction = currentAction.actionRequired === 'WAIT_FOR_REVIEW' || currentAction.actionRequired === 'NONE';
-          
+
           // Customer has action if backend says UPLOAD, RESUBMIT, or REVIEW
           const hasCustomerAction = isUploadAction || isReviewAction;
-          
+
           // Get customer docs from requiredDocuments
           const customerDocs = currentAction.currentStep?.requiredDocuments?.filter(
             (doc: any) => !doc.uploadedBy || doc.uploadedBy === 'CUSTOMER'
           ) || [];
-          
+
           // Get a friendly name for the current party
           const currentParty = currentStepType && currentStepType !== 'CUSTOMER'
             ? currentStepType.toLowerCase().replace('_', ' ')
