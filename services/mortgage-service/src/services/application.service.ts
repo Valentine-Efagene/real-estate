@@ -1262,7 +1262,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
             stepId: string | null;
             createdAt: Date;
         }>;
-        actionRequired: 'NONE' | 'UPLOAD' | 'RESUBMIT' | 'SIGN' | 'WAIT_FOR_REVIEW' | 'PAYMENT' | 'COMPLETE' | 'QUESTIONNAIRE';
+        actionRequired: 'NONE' | 'UPLOAD' | 'RESUBMIT' | 'SIGN' | 'REVIEW' | 'WAIT_FOR_REVIEW' | 'PAYMENT' | 'COMPLETE' | 'QUESTIONNAIRE';
         actionMessage: string;
     }> {
         // Use any to avoid Prisma type issues with new relations
@@ -1427,7 +1427,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
         }
 
         // Determine action required based on step status
-        let actionRequired: 'NONE' | 'UPLOAD' | 'RESUBMIT' | 'SIGN' | 'WAIT_FOR_REVIEW' | 'PAYMENT' | 'COMPLETE' | 'QUESTIONNAIRE' = 'NONE';
+        let actionRequired: 'NONE' | 'UPLOAD' | 'RESUBMIT' | 'SIGN' | 'REVIEW' | 'WAIT_FOR_REVIEW' | 'PAYMENT' | 'COMPLETE' | 'QUESTIONNAIRE' = 'NONE';
         let actionMessage = 'No action required';
 
         if (currentPhase.phaseCategory === 'PAYMENT') {
@@ -1469,8 +1469,18 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                 case 'IN_PROGRESS':
                     // For stages, the stepType is the organization code (PLATFORM, BANK, etc.)
                     if (isCustomerStage) {
-                        actionRequired = 'UPLOAD';
-                        actionMessage = `Please upload the required documents for: ${currentPhase.name}`;
+                        // Check if customer has documents to upload for this stage
+                        const customerDocsToUpload = currentStep.requiredDocuments.filter(
+                            (d: any) => d.uploadedBy === 'CUSTOMER' || !d.uploadedBy
+                        );
+                        if (customerDocsToUpload.length > 0) {
+                            actionRequired = 'UPLOAD';
+                            actionMessage = `Please upload the required documents for: ${currentPhase.name}`;
+                        } else {
+                            // Customer stage but no customer uploads - they're reviewing other party's documents
+                            actionRequired = 'REVIEW';
+                            actionMessage = `Please review and acknowledge the documents for: ${currentPhase.name}`;
+                        }
                     } else {
                         // Non-customer stage - waiting for bank/platform/etc.
                         actionRequired = 'WAIT_FOR_REVIEW';
@@ -1551,7 +1561,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                 url: d.url,
                 status: d.status,
                 stepId: d.stepId,
-                uploadedBy: d.uploadedBy || 'CUSTOMER',
+                uploadedBy: d.expectedUploader || 'CUSTOMER',
                 createdAt: d.createdAt,
             })),
             actionRequired,

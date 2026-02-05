@@ -148,7 +148,7 @@ export interface CurrentAction {
     stepId: string | null;
     createdAt: string;
   }>;
-  actionRequired: 'NONE' | 'UPLOAD' | 'RESUBMIT' | 'SIGN' | 'WAIT_FOR_REVIEW' | 'PAYMENT' | 'COMPLETE' | 'QUESTIONNAIRE';
+  actionRequired: 'NONE' | 'UPLOAD' | 'RESUBMIT' | 'SIGN' | 'REVIEW' | 'WAIT_FOR_REVIEW' | 'PAYMENT' | 'COMPLETE' | 'QUESTIONNAIRE';
   actionMessage: string;
 }
 

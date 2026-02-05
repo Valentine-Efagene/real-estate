@@ -239,6 +239,9 @@ export function createApprovalWorkflowService() {
 
             let document: any;
 
+            // Get expectedUploader from document definition (LENDER, CUSTOMER, etc.)
+            const expectedUploader = docDef?.uploadedBy || 'CUSTOMER';
+
             if (existingDoc) {
                 // Update existing document (re-upload)
                 document = await prisma.applicationDocument.update({
@@ -248,6 +251,7 @@ export function createApprovalWorkflowService() {
                         url: fileUrl,
                         documentName,
                         uploadedById,
+                        expectedUploader,
                         status: 'PENDING',
                         updatedAt: new Date(),
                     },
@@ -266,6 +270,7 @@ export function createApprovalWorkflowService() {
                         url: fileUrl,
                         type: documentType, // Legacy field
                         uploadedById,
+                        expectedUploader,
                         status: 'PENDING',
                     },
                 });

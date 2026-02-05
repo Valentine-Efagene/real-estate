@@ -1,6 +1,6 @@
 'use client';
 
-import { use } from 'react';
+import { use, useState } from 'react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { ProtectedRoute } from '@/components/auth';
@@ -10,7 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Separator } from '@/components/ui/separator';
-import { useApplication, useCurrentAction, useApplicationPhases, type Phase } from '@/lib/hooks';
+import { useApplication, useCurrentAction, useApplicationPhases, useReviewDocument, type Phase } from '@/lib/hooks';
 import { DocumentUploadSection } from '@/components/applications/document-upload-section';
 import { PhaseProgress } from '@/components/applications/phase-progress';
 import { QuestionnaireForm, type QuestionnaireField } from '@/components/applications/questionnaire-form';
@@ -30,8 +30,10 @@ const STAFF_ROLES = ['admin', 'mortgage_ops', 'finance', 'legal', 'lender_ops', 
 function ApplicationDetailContent({ applicationId }: { applicationId: string }) {
   const { user } = useAuth();
   const { data: application, isLoading: appLoading, refetch: refetchApplication } = useApplication(applicationId);
-  const { data: currentAction, isLoading: actionLoading } = useCurrentAction(applicationId);
+  const { data: currentAction, isLoading: actionLoading, refetch: refetchCurrentAction } = useCurrentAction(applicationId);
   const { data: phases } = useApplicationPhases(applicationId);
+  const reviewDocumentMutation = useReviewDocument();
+  const [reviewingDocId, setReviewingDocId] = useState<string | null>(null);
 
   // Check if user is staff
   const isStaff = user?.roles?.some(role => STAFF_ROLES.includes(role)) ?? false;
@@ -43,6 +45,27 @@ function ApplicationDetailContent({ applicationId }: { applicationId: string }) 
   const currentPhase = phases?.find(
     (p) => p.id === currentAction?.currentPhase?.id
   );
+
+  // Handler for customer accepting/acknowledging a document
+  const handleAcceptDocument = async (documentId: string) => {
+    setReviewingDocId(documentId);
+    try {
+      await reviewDocumentMutation.mutateAsync({
+        applicationId,
+        documentId,
+        status: 'APPROVED',
+        organizationTypeCode: 'CUSTOMER',
+        comment: 'Customer acknowledged',
+      });
+      // Refetch to update the UI
+      await refetchCurrentAction();
+      await refetchApplication();
+    } catch {
+      console.error('Failed to accept document');
+    } finally {
+      setReviewingDocId(null);
+    }
+  };
 
   // Extract questionnaire fields from the phase's fieldsSnapshot
   const questionnaireFields: QuestionnaireField[] | undefined = currentPhase?.questionnairePhase?.fieldsSnapshot?.questions?.map(q => ({
@@ -234,8 +257,10 @@ function ApplicationDetailContent({ applicationId }: { applicationId: string }) 
           const customerDocs = currentAction.currentStep?.requiredDocuments?.filter(
             (doc: any) => !doc.uploadedBy || doc.uploadedBy === 'CUSTOMER'
           ) || [];
-          // Customer has action only if: not a doc phase, OR it's a customer stage with customer docs
-          const hasCustomerAction = !isDocPhase || (isCustomerStage && customerDocs.length > 0);
+          // Check if this is a REVIEW action (customer needs to review/approve other party's documents)
+          const isReviewAction = currentAction.actionRequired === 'REVIEW';
+          // Customer has action if: not a doc phase, OR it's a customer stage with customer docs, OR it's a REVIEW action
+          const hasCustomerAction = !isDocPhase || (isCustomerStage && customerDocs.length > 0) || isReviewAction;
           // Get a friendly name for the current party (but not "customer" since user IS customer)
           const currentParty = currentStepType && currentStepType !== 'CUSTOMER'
             ? currentStepType.toLowerCase().replace('_', ' ')
@@ -243,6 +268,9 @@ function ApplicationDetailContent({ applicationId }: { applicationId: string }) 
 
           // Determine the right message for the header
           const getHeaderMessage = () => {
+            if (isReviewAction) {
+              return currentAction.actionMessage || 'Please review and acknowledge the documents below.';
+            }
             if (hasCustomerAction) {
               return currentAction.actionMessage;
             }
@@ -271,7 +299,9 @@ function ApplicationDetailContent({ applicationId }: { applicationId: string }) 
                 {/* Show uploaded documents for customer to review/accept */}
                 {isDocPhase && currentAction.uploadedDocuments && currentAction.uploadedDocuments.length > 0 && (
                   <div className="mb-6">
-                    <h4 className="font-medium mb-3">Documents for Review</h4>
+                    <h4 className="font-medium mb-3">
+                      {isReviewAction ? 'Documents Requiring Your Review' : 'Documents for Review'}
+                    </h4>
                     <div className="space-y-3">
                       {currentAction.uploadedDocuments.map((doc: any) => (
                         <div key={doc.id} className="flex items-center justify-between p-3 border rounded-lg bg-white">
@@ -299,15 +329,25 @@ function ApplicationDetailContent({ applicationId }: { applicationId: string }) 
                                 </a>
                               </Button>
                             )}
+                            {/* Show acknowledge button for REVIEW action and pending docs from other parties */}
+                            {isReviewAction && doc.status === 'PENDING' && doc.uploadedBy !== 'CUSTOMER' && (
+                              <Button
+                                size="sm"
+                                disabled={reviewingDocId === doc.id}
+                                onClick={() => handleAcceptDocument(doc.id)}
+                              >
+                                {reviewingDocId === doc.id ? 'Accepting...' : 'Accept'}
+                              </Button>
+                            )}
                           </div>
                         </div>
                       ))}
                     </div>
-                    {isCustomerStage && customerDocs.length === 0 && currentAction.uploadedDocuments.some((d: any) => d.uploadedBy !== 'CUSTOMER' && d.status === 'PENDING') && (
+                    {isReviewAction && currentAction.uploadedDocuments.some((d: any) => d.status === 'PENDING' && d.uploadedBy !== 'CUSTOMER') && (
                       <div className="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
-                        <p className="text-amber-800 font-medium">Action Required</p>
+                        <p className="text-amber-800 font-medium">⚠️ Action Required</p>
                         <p className="text-amber-700 text-sm mt-1">
-                          Please review the documents above. Once reviewed, you can proceed with acceptance.
+                          Please review the documents above and click &quot;Accept&quot; to acknowledge each document.
                         </p>
                       </div>
                     )}
@@ -334,7 +374,7 @@ function ApplicationDetailContent({ applicationId }: { applicationId: string }) 
                   />
                 )}
 
-                {isDocPhase && isCustomerStage && customerDocs.length === 0 && (
+                {isDocPhase && isCustomerStage && customerDocs.length === 0 && !isReviewAction && (
                   <div className="text-center py-4">
                     <p className="text-gray-500">All required documents for this stage have been submitted.</p>
                     <p className="text-sm text-gray-400 mt-2">The review team will process your application shortly.</p>
