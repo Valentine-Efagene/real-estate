@@ -225,12 +225,34 @@ function ApplicationDetailContent({ applicationId }: { applicationId: string }) 
       ) : currentAction && currentAction.currentPhase ? (
         (() => {
           const phase = currentAction.currentPhase!;
-          // For documentation phases, check if there are any customer documents to upload
+          // For documentation phases, check if the current stage is for the customer
           const isDocPhase = phase.phaseCategory === 'DOCUMENTATION';
+          const currentStepType = currentAction.currentStep?.stepType;
+          // Stage is customer-facing if stepType is CUSTOMER or not set
+          const isCustomerStage = !currentStepType || currentStepType === 'CUSTOMER';
+          // Filter documents that the customer needs to upload
           const customerDocs = currentAction.currentStep?.requiredDocuments?.filter(
             (doc: any) => !doc.uploadedBy || doc.uploadedBy === 'CUSTOMER'
           ) || [];
-          const hasCustomerAction = !isDocPhase || customerDocs.length > 0;
+          // Customer has action only if: not a doc phase, OR it's a customer stage with customer docs
+          const hasCustomerAction = !isDocPhase || (isCustomerStage && customerDocs.length > 0);
+          // Get a friendly name for the current party (but not "customer" since user IS customer)
+          const currentParty = currentStepType && currentStepType !== 'CUSTOMER'
+            ? currentStepType.toLowerCase().replace('_', ' ')
+            : 'the reviewing team';
+
+          // Determine the right message for the header
+          const getHeaderMessage = () => {
+            if (hasCustomerAction) {
+              return currentAction.actionMessage;
+            }
+            // Customer stage with no docs = all docs submitted, awaiting review
+            if (isCustomerStage && customerDocs.length === 0) {
+              return 'Your documents have been submitted. Awaiting review.';
+            }
+            // Non-customer stage = waiting for other party
+            return `Waiting for ${currentParty} to complete: ${currentAction.currentStep?.name || 'their tasks'}`;
+          };
 
           return (
             <Card className={hasCustomerAction ? "bg-primary/5 border-primary/20" : "bg-gray-50 border-gray-200"}>
@@ -240,39 +262,82 @@ function ApplicationDetailContent({ applicationId }: { applicationId: string }) 
                   <div>
                     <CardTitle>{hasCustomerAction ? 'Action Required' : 'In Progress'}</CardTitle>
                     <CardDescription>
-                      {hasCustomerAction
-                        ? currentAction.actionMessage
-                        : `Waiting for ${currentAction.currentStep?.name || 'other parties'} to complete their tasks`}
+                      {getHeaderMessage()}
                     </CardDescription>
                   </div>
                 </div>
               </CardHeader>
               <CardContent>
-                {isDocPhase && currentAction.currentStep?.requiredDocuments && currentAction.currentStep.requiredDocuments.length > 0 && (
-                  customerDocs.length === 0 ? (
-                    <div className="text-center py-4">
-                      <p className="text-gray-600">Waiting for other parties to upload their documents.</p>
-                      <p className="text-sm text-gray-500 mt-2">You will be notified when action is required from you.</p>
+                {/* Show uploaded documents for customer to review/accept */}
+                {isDocPhase && currentAction.uploadedDocuments && currentAction.uploadedDocuments.length > 0 && (
+                  <div className="mb-6">
+                    <h4 className="font-medium mb-3">Documents for Review</h4>
+                    <div className="space-y-3">
+                      {currentAction.uploadedDocuments.map((doc: any) => (
+                        <div key={doc.id} className="flex items-center justify-between p-3 border rounded-lg bg-white">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded bg-blue-100 flex items-center justify-center">
+                              <span className="text-blue-600">📄</span>
+                            </div>
+                            <div>
+                              <p className="font-medium">{doc.name || doc.type}</p>
+                              <p className="text-sm text-gray-500">
+                                {doc.uploadedBy && doc.uploadedBy !== 'CUSTOMER'
+                                  ? `Uploaded by ${doc.uploadedBy.toLowerCase()}`
+                                  : 'Your document'}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Badge variant={doc.status === 'APPROVED' ? 'default' : doc.status === 'PENDING' ? 'secondary' : 'outline'}>
+                              {doc.status}
+                            </Badge>
+                            {doc.url && (
+                              <Button variant="outline" size="sm" asChild>
+                                <a href={doc.url} target="_blank" rel="noopener noreferrer">
+                                  View
+                                </a>
+                              </Button>
+                            )}
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  ) : (
-                    <DocumentUploadSection
-                      applicationId={applicationId}
-                      phaseId={phase.id}
-                      requiredDocuments={customerDocs.map((doc: any) => ({
-                        id: doc.documentType,
-                        name: doc.name || doc.documentType,
-                        description: doc.documentType,
-                        status: 'PENDING',
-                      }))}
-                    />
-                  )
+                    {isCustomerStage && customerDocs.length === 0 && currentAction.uploadedDocuments.some((d: any) => d.uploadedBy !== 'CUSTOMER' && d.status === 'PENDING') && (
+                      <div className="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+                        <p className="text-amber-800 font-medium">Action Required</p>
+                        <p className="text-amber-700 text-sm mt-1">
+                          Please review the documents above. Once reviewed, you can proceed with acceptance.
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 )}
 
-                {/* Fallback for documentation phase without current step (should show upload) */}
-                {phase.phaseCategory === 'DOCUMENTATION' && (!currentAction.currentStep?.requiredDocuments || currentAction.currentStep.requiredDocuments.length === 0) && currentAction.actionRequired === 'UPLOAD' && (
+                {isDocPhase && !isCustomerStage && (
                   <div className="text-center py-4">
-                    <p className="text-gray-600 mb-4">Document upload is required for this phase.</p>
-                    <p className="text-sm text-gray-500">Please contact support if you don&apos;t see the upload form.</p>
+                    <p className="text-gray-600">Waiting for {currentParty} to upload their documents.</p>
+                    <p className="text-sm text-gray-500 mt-2">You will be notified when action is required from you.</p>
+                  </div>
+                )}
+
+                {isDocPhase && isCustomerStage && customerDocs.length > 0 && (
+                  <DocumentUploadSection
+                    applicationId={applicationId}
+                    phaseId={phase.id}
+                    requiredDocuments={customerDocs.map((doc: any) => ({
+                      id: doc.documentType,
+                      name: doc.name || doc.documentType,
+                      description: doc.documentType,
+                      status: 'PENDING',
+                    }))}
+                  />
+                )}
+
+                {isDocPhase && isCustomerStage && customerDocs.length === 0 && (
+                  <div className="text-center py-4">
+                    <p className="text-gray-500">All required documents for this stage have been submitted.</p>
+                    <p className="text-sm text-gray-400 mt-2">The review team will process your application shortly.</p>
                   </div>
                 )}
 

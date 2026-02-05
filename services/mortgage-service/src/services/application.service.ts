@@ -1360,17 +1360,46 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
             }
         }
 
+        // Helper to map stage organization type to document uploadedBy values
+        const getUploadedByForStageType = (stageOrgType: string): string[] => {
+            switch (stageOrgType) {
+                case 'CUSTOMER':
+                    return ['CUSTOMER'];
+                case 'BANK':
+                case 'LENDER':
+                    return ['LENDER', 'BANK'];
+                case 'PLATFORM':
+                    return ['PLATFORM', 'CUSTOMER']; // Platform reviews customer docs
+                case 'DEVELOPER':
+                    return ['DEVELOPER'];
+                case 'LEGAL':
+                    return ['LEGAL'];
+                case 'INSURER':
+                    return ['INSURER'];
+                case 'GOVERNMENT':
+                    return ['GOVERNMENT'];
+                default:
+                    return ['CUSTOMER']; // Default to customer
+            }
+        };
+
         // Map current stage to currentStep format for backwards compatibility
         if (currentStage) {
+            const stageOrgType = currentStage.organizationType?.code || 'PLATFORM';
+            const allowedUploadedBy = getUploadedByForStageType(stageOrgType);
+            // Filter documents to only those relevant to this stage
+            const stageDocuments = requiredDocuments.filter(doc =>
+                allowedUploadedBy.includes(doc.uploadedBy)
+            );
             currentStep = {
                 id: currentStage.id,
                 name: currentStage.name,
-                stepType: currentStage.organizationType?.code || 'PLATFORM',
+                stepType: stageOrgType,
                 status: currentStage.status,
                 order: currentStage.order,
                 actionReason: null,
                 submissionCount: 0,
-                requiredDocuments: requiredDocuments,
+                requiredDocuments: stageDocuments,
             };
         } else if (stageProgress.length > 0) {
             // Fallback: find next actionable stage
@@ -1378,15 +1407,21 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                 (s: any) => s.status === 'PENDING' || s.status === 'IN_PROGRESS' || s.status === 'AWAITING_REVIEW'
             );
             if (nextStage) {
+                const stageOrgType = nextStage.organizationType?.code || 'PLATFORM';
+                const allowedUploadedBy = getUploadedByForStageType(stageOrgType);
+                // Filter documents to only those relevant to this stage
+                const stageDocuments = requiredDocuments.filter(doc =>
+                    allowedUploadedBy.includes(doc.uploadedBy)
+                );
                 currentStep = {
                     id: nextStage.id,
                     name: nextStage.name,
-                    stepType: nextStage.organizationType?.code || 'PLATFORM',
+                    stepType: stageOrgType,
                     status: nextStage.status,
                     order: nextStage.order,
                     actionReason: null,
                     submissionCount: 0,
-                    requiredDocuments: requiredDocuments,
+                    requiredDocuments: stageDocuments,
                 };
             }
         }
@@ -1466,6 +1501,21 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
             (d: any) => d.phaseId === currentPhase.id
         );
 
+        // Deduplicate documents by documentType, keeping only the latest one
+        const uniqueDocuments = phaseDocuments.reduce((acc: any[], doc: any) => {
+            const existingIndex = acc.findIndex((d: any) => d.type === doc.type || d.documentType === doc.documentType);
+            if (existingIndex === -1) {
+                acc.push(doc);
+            } else {
+                // Keep the newer one
+                const existing = acc[existingIndex];
+                if (new Date(doc.createdAt) > new Date(existing.createdAt)) {
+                    acc[existingIndex] = doc;
+                }
+            }
+            return acc;
+        }, []);
+
         return {
             applicationId: application.id,
             applicationStatus: application.status,
@@ -1494,13 +1544,14 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                     latestApproval: null, // Stage-based workflow uses documentApprovals not step approvals
                 }
                 : null,
-            uploadedDocuments: phaseDocuments.map((d: any) => ({
+            uploadedDocuments: uniqueDocuments.map((d: any) => ({
                 id: d.id,
                 name: d.name,
                 type: d.type,
                 url: d.url,
                 status: d.status,
                 stepId: d.stepId,
+                uploadedBy: d.uploadedBy || 'CUSTOMER',
                 createdAt: d.createdAt,
             })),
             actionRequired,
