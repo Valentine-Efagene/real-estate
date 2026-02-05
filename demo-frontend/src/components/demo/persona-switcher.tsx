@@ -120,7 +120,7 @@ export function PersonaSwitcher() {
             // Redirect based on role
             const primaryRole = getPrimaryRole(targetUser.userRoles);
             if (primaryRole === 'admin') {
-                router.push('/admin/dashboard');
+                router.push('/admin/applications');
             } else {
                 router.push('/dashboard');
             }
