@@ -82,12 +82,9 @@ async function canAccessApplication(req: Request, res: Response, next: NextFunct
             return next();
         }
 
-        // Developers, Lenders, and Legal must be bound to the application
-        const isDeveloper = roles?.includes(ROLES.DEVELOPER);
-        const isLender = roles?.includes(ROLES.LENDER);
-        const isLegal = roles?.includes(ROLES.LEGAL);
-
-        if (isDeveloper || isLender || isLegal) {
+        // Organization staff (lender_ops, agent, legal, DEVELOPER, LENDER, LEGAL)
+        // must be bound to the application via their organization
+        if (isOrgStaffRole(roles)) {
             // Check if user's organization is bound to this application
             const appOrgService = getAppOrgService(req);
             const binding = await appOrgService.getUserOrganizationBinding(applicationId, userId);

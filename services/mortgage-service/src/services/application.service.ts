@@ -1451,59 +1451,81 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                 actionRequired = 'QUESTIONNAIRE';
                 actionMessage = `Please complete the ${currentPhase.name} questionnaire`;
             }
-        } else if (currentStep) {
-            // For documentation phases, determine action based on stage status
-            const stageOrgType = currentStep.stepType; // Organization type code: PLATFORM, BANK, CUSTOMER, etc.
-            const isCustomerStage = stageOrgType === 'CUSTOMER' || !stageOrgType;
+        } else if (currentPhase.phaseCategory === 'DOCUMENTATION') {
+            // For documentation phases, FIRST check if customer has pending uploads
+            // This takes priority over the stage status
+            const customerDocsRequired = requiredDocuments.filter(
+                (d: any) => d.uploadedBy === 'CUSTOMER' || !d.uploadedBy
+            );
 
-            switch (currentStep.status) {
-                case 'NEEDS_RESUBMISSION':
-                    actionRequired = 'RESUBMIT';
-                    actionMessage = currentStep.actionReason || 'Please resubmit the required documents';
-                    break;
-                case 'ACTION_REQUIRED':
-                    actionRequired = 'UPLOAD';
-                    actionMessage = currentStep.actionReason || 'Please address the requested changes';
-                    break;
-                case 'PENDING':
-                case 'IN_PROGRESS':
-                    // For stages, the stepType is the organization code (PLATFORM, BANK, etc.)
-                    if (isCustomerStage) {
-                        // Check if customer has documents to upload for this stage
-                        const customerDocsToUpload = currentStep.requiredDocuments.filter(
-                            (d: any) => d.uploadedBy === 'CUSTOMER' || !d.uploadedBy
-                        );
-                        if (customerDocsToUpload.length > 0) {
-                            actionRequired = 'UPLOAD';
-                            actionMessage = `Please upload the required documents for: ${currentPhase.name}`;
-                        } else {
-                            // Customer stage but no customer uploads - they're reviewing other party's documents
+            // Get uploaded documents for this phase
+            const phaseUploadedDocs = application.documents.filter(
+                (d: any) => d.phaseId === currentPhase.id
+            );
+
+            // Check which customer documents are still missing
+            const customerDocsUploaded = phaseUploadedDocs.filter(
+                (d: any) => customerDocsRequired.some((req: any) =>
+                    req.documentType === d.type || req.documentType === d.documentType
+                )
+            );
+
+            const pendingCustomerUploads = customerDocsRequired.length - customerDocsUploaded.length;
+
+            if (pendingCustomerUploads > 0) {
+                // Customer still needs to upload documents
+                actionRequired = 'UPLOAD';
+                const docNames = customerDocsRequired
+                    .filter((d: any) => !customerDocsUploaded.some((up: any) =>
+                        up.type === d.documentType || up.documentType === d.documentType
+                    ))
+                    .map((d: any) => d.name || d.documentType)
+                    .join(', ');
+                actionMessage = `Please upload the required documents: ${docNames}`;
+            } else if (currentStep) {
+                // All customer uploads done, determine action based on stage status
+                const stageOrgType = currentStep.stepType;
+                const isCustomerStage = stageOrgType === 'CUSTOMER' || !stageOrgType;
+
+                switch (currentStep.status) {
+                    case 'NEEDS_RESUBMISSION':
+                        actionRequired = 'RESUBMIT';
+                        actionMessage = currentStep.actionReason || 'Please resubmit the required documents';
+                        break;
+                    case 'ACTION_REQUIRED':
+                        actionRequired = 'UPLOAD';
+                        actionMessage = currentStep.actionReason || 'Please address the requested changes';
+                        break;
+                    case 'PENDING':
+                    case 'IN_PROGRESS':
+                        if (isCustomerStage) {
+                            // Customer stage - check if they need to review other party's documents
                             actionRequired = 'REVIEW';
                             actionMessage = `Please review and acknowledge the documents for: ${currentPhase.name}`;
+                        } else {
+                            // Non-customer stage - waiting for bank/platform/etc.
+                            actionRequired = 'WAIT_FOR_REVIEW';
+                            actionMessage = `Your documents are under review by ${stageOrgType.toLowerCase().replace('_', ' ')}`;
                         }
-                    } else {
-                        // Non-customer stage - waiting for bank/platform/etc.
+                        break;
+                    case 'AWAITING_REVIEW':
                         actionRequired = 'WAIT_FOR_REVIEW';
-                        actionMessage = `Waiting for ${stageOrgType.toLowerCase()} to complete: ${currentStep.name}`;
-                    }
-                    break;
-                case 'AWAITING_REVIEW':
-                    actionRequired = 'WAIT_FOR_REVIEW';
-                    actionMessage = 'Your documents are under review';
-                    break;
-                default:
-                    // Check if all stages are completed
-                    const allStagesCompleted = stageProgress.every((s: any) => s.status === 'COMPLETED');
-                    if (allStagesCompleted) {
-                        actionRequired = 'NONE';
-                        actionMessage = 'All document reviews completed';
-                    }
-                    break;
+                        actionMessage = 'Your documents are under review';
+                        break;
+                    default:
+                        // Check if all stages are completed
+                        const allStagesCompleted = stageProgress.every((s: any) => s.status === 'COMPLETED');
+                        if (allStagesCompleted) {
+                            actionRequired = 'NONE';
+                            actionMessage = 'All document reviews completed';
+                        }
+                        break;
+                }
+            } else {
+                // No current step but docs needed
+                actionRequired = 'UPLOAD';
+                actionMessage = `Please upload the required documents for: ${currentPhase.name}`;
             }
-        } else if (currentPhase.phaseCategory === 'DOCUMENTATION') {
-            // Documentation phase but no current step - means customer needs to upload
-            actionRequired = 'UPLOAD';
-            actionMessage = `Please upload the required documents for: ${currentPhase.name}`;
         }
 
         // Get documents for this phase

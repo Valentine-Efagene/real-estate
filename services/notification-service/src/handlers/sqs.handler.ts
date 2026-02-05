@@ -128,6 +128,9 @@ function getTemplateType(notificationType: NotificationType): TemplateTypeValue 
         // Documents
         [NotificationType.DOCUMENT_APPROVED]: 'documentApproved',
         [NotificationType.DOCUMENT_REJECTED]: 'documentRejected',
+        // Organization
+        [NotificationType.ORGANIZATION_INVITATION]: 'organizationInvitation',
+        [NotificationType.ORGANIZATION_INVITATION_ACCEPTED]: 'organizationInvitationAccepted',
     };
 
     return typeMap[notificationType] || null;

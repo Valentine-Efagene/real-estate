@@ -43,6 +43,9 @@ export const templatePathMap: Readonly<Record<TemplateTypeValue, string>> = Obje
     // Documents
     'documentApproved': 'content/documentApproved.hbs',
     'documentRejected': 'content/documentRejected.hbs',
+    // Organization
+    'organizationInvitation': 'content/organizationInvitation.hbs',
+    'organizationInvitationAccepted': 'content/organizationInvitationAccepted.hbs',
 });
 
 /**
@@ -83,6 +86,9 @@ export const templateTitle: Readonly<Record<TemplateTypeValue, string>> = Object
     // Documents
     'documentApproved': 'Your Document Has Been Approved',
     'documentRejected': 'Document Requires Resubmission',
+    // Organization
+    'organizationInvitation': 'You\'ve Been Invited to Join {{organizationName}}',
+    'organizationInvitationAccepted': 'Invitation Accepted',
 });
 
 // Pre-computed set of dynamic templates for O(1) lookup

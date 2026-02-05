@@ -700,7 +700,7 @@ function InviteStaffDialog({ organization }: { organization: Organization }) {
               <SelectContent>
                 {roles.map((role: Role) => (
                   <SelectItem key={role.id} value={role.id}>
-                    {role.name} {role.description ? `- ${role.description}` : ''}
+                    {role.name}
                   </SelectItem>
                 ))}
               </SelectContent>

@@ -446,6 +446,33 @@ function computeDocumentationPhaseStatus(
         ? `${completedStages} of ${totalStages} stages completed`
         : 'No stages defined';
 
+    // Check for pending customer uploads BEFORE checking stage status
+    // This ensures customers are prompted to upload before showing "awaiting review"
+    const documentDefinitions = docPhase.documentDefinitionsSnapshot || [];
+    const customerDocuments = documentDefinitions.filter(
+        (d: any) => d.uploadedBy === 'CUSTOMER'
+    );
+    const approvedCount = docPhase.approvedDocumentsCount ?? 0;
+    const requiredCount = docPhase.requiredDocumentsCount ?? 0;
+
+    // If there are customer documents required and not all documents are approved yet,
+    // the customer should upload first
+    if (customerDocuments.length > 0 && approvedCount < requiredCount) {
+        // Check if ALL customer documents are submitted (even if not approved)
+        // For now, use a simple heuristic: if approved < required and customer docs exist,
+        // assume customer still needs to upload
+        const pendingUploads = requiredCount - approvedCount;
+        return {
+            ...base,
+            nextActor: NextActor.CUSTOMER,
+            actionCategory: ActionCategory.UPLOAD,
+            actionRequired: `Upload required: ${customerDocuments.map((d: any) => d.documentName).join(', ')}`,
+            progress: `${approvedCount} of ${requiredCount} documents uploaded`,
+            stepsProgress,
+            isBlocking: true,
+        };
+    }
+
     // Get current stage based on currentStageOrder
     const currentStageOrder = docPhase.currentStageOrder ?? 1;
     const currentStage = stageProgress.find((s: any) => s.order === currentStageOrder);
