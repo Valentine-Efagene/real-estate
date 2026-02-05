@@ -223,86 +223,107 @@ function ApplicationDetailContent({ applicationId }: { applicationId: string }) 
       {actionLoading ? (
         <Skeleton className="h-48" />
       ) : currentAction && currentAction.currentPhase ? (
-        <Card className="bg-primary/5 border-primary/20">
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <span className="text-2xl">⚡</span>
-              <div>
-                <CardTitle>Action Required</CardTitle>
-                <CardDescription>
-                  {currentAction.actionMessage}
-                </CardDescription>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {currentAction.currentPhase.phaseCategory === 'DOCUMENTATION' && currentAction.currentStep?.requiredDocuments && currentAction.currentStep.requiredDocuments.length > 0 && (
-              <DocumentUploadSection
-                applicationId={applicationId}
-                phaseId={currentAction.currentPhase.id}
-                requiredDocuments={currentAction.currentStep.requiredDocuments.map(doc => ({
-                  id: doc.documentType,
-                  name: doc.documentType,
-                  description: doc.documentType,
-                  status: 'PENDING',
-                }))}
-              />
-            )}
+        (() => {
+          const phase = currentAction.currentPhase!;
+          // For documentation phases, check if there are any customer documents to upload
+          const isDocPhase = phase.phaseCategory === 'DOCUMENTATION';
+          const customerDocs = currentAction.currentStep?.requiredDocuments?.filter(
+            (doc: any) => !doc.uploadedBy || doc.uploadedBy === 'CUSTOMER'
+          ) || [];
+          const hasCustomerAction = !isDocPhase || customerDocs.length > 0;
 
-            {/* Fallback for documentation phase without current step (should show upload) */}
-            {currentAction.currentPhase.phaseCategory === 'DOCUMENTATION' && (!currentAction.currentStep?.requiredDocuments || currentAction.currentStep.requiredDocuments.length === 0) && currentAction.actionRequired === 'UPLOAD' && (
-              <div className="text-center py-4">
-                <p className="text-gray-600 mb-4">Document upload is required for this phase.</p>
-                <p className="text-sm text-gray-500">Please contact support if you don&apos;t see the upload form.</p>
-              </div>
-            )}
-
-            {currentAction.actionRequired === 'QUESTIONNAIRE' && questionnaireFields && questionnaireFields.length > 0 && (
-              <QuestionnaireForm
-                applicationId={applicationId}
-                phaseId={currentAction.currentPhase.id}
-                fields={questionnaireFields}
-                phaseName={currentAction.currentPhase.name}
-                onSubmitSuccess={() => refetchApplication()}
-              />
-            )}
-
-            {currentAction.actionRequired === 'QUESTIONNAIRE' && (!questionnaireFields || questionnaireFields.length === 0) && (
-              <div className="text-center py-4">
-                <p className="text-gray-500">No questions to answer for this phase.</p>
-              </div>
-            )}
-
-            {currentAction.currentPhase.phaseCategory === 'QUESTIONNAIRE' && currentAction.actionRequired === 'WAIT_FOR_REVIEW' && (
-              <div className="text-center py-4">
-                {isStaff ? (
-                  <>
-                    <p className="text-gray-600 mb-4">The applicant&apos;s questionnaire is awaiting review.</p>
-                    <Link href={`/admin/applications/${applicationId}`}>
-                      <Button>Review Questionnaire</Button>
-                    </Link>
-                  </>
-                ) : (
-                  <p className="text-gray-500">Your questionnaire answers have been submitted and are under review.</p>
+          return (
+            <Card className={hasCustomerAction ? "bg-primary/5 border-primary/20" : "bg-gray-50 border-gray-200"}>
+              <CardHeader>
+                <div className="flex items-center gap-2">
+                  <span className="text-2xl">{hasCustomerAction ? '⚡' : '⏳'}</span>
+                  <div>
+                    <CardTitle>{hasCustomerAction ? 'Action Required' : 'In Progress'}</CardTitle>
+                    <CardDescription>
+                      {hasCustomerAction
+                        ? currentAction.actionMessage
+                        : `Waiting for ${currentAction.currentStep?.name || 'other parties'} to complete their tasks`}
+                    </CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                {isDocPhase && currentAction.currentStep?.requiredDocuments && currentAction.currentStep.requiredDocuments.length > 0 && (
+                  customerDocs.length === 0 ? (
+                    <div className="text-center py-4">
+                      <p className="text-gray-600">Waiting for other parties to upload their documents.</p>
+                      <p className="text-sm text-gray-500 mt-2">You will be notified when action is required from you.</p>
+                    </div>
+                  ) : (
+                    <DocumentUploadSection
+                      applicationId={applicationId}
+                      phaseId={phase.id}
+                      requiredDocuments={customerDocs.map((doc: any) => ({
+                        id: doc.documentType,
+                        name: doc.name || doc.documentType,
+                        description: doc.documentType,
+                        status: 'PENDING',
+                      }))}
+                    />
+                  )
                 )}
-              </div>
-            )}
 
-            {currentAction.currentPhase.phaseCategory === 'PAYMENT' && currentPhase && (
-              <PaymentSection
-                applicationId={applicationId}
-                phaseId={currentAction.currentPhase.id}
-                phaseName={currentAction.currentPhase.name}
-                totalAmount={currentPhase.totalAmount || 0}
-                paidAmount={currentPhase.paidAmount || 0}
-                currency={application.currency}
-                installments={currentPhase.installments || []}
-                buyerEmail={application.buyer?.email}
-                onPaymentSuccess={() => refetchApplication()}
-              />
-            )}
-          </CardContent>
-        </Card>
+                {/* Fallback for documentation phase without current step (should show upload) */}
+                {phase.phaseCategory === 'DOCUMENTATION' && (!currentAction.currentStep?.requiredDocuments || currentAction.currentStep.requiredDocuments.length === 0) && currentAction.actionRequired === 'UPLOAD' && (
+                  <div className="text-center py-4">
+                    <p className="text-gray-600 mb-4">Document upload is required for this phase.</p>
+                    <p className="text-sm text-gray-500">Please contact support if you don&apos;t see the upload form.</p>
+                  </div>
+                )}
+
+                {currentAction.actionRequired === 'QUESTIONNAIRE' && questionnaireFields && questionnaireFields.length > 0 && (
+                  <QuestionnaireForm
+                    applicationId={applicationId}
+                    phaseId={phase.id}
+                    fields={questionnaireFields}
+                    phaseName={phase.name}
+                    onSubmitSuccess={() => refetchApplication()}
+                  />
+                )}
+
+                {currentAction.actionRequired === 'QUESTIONNAIRE' && (!questionnaireFields || questionnaireFields.length === 0) && (
+                  <div className="text-center py-4">
+                    <p className="text-gray-500">No questions to answer for this phase.</p>
+                  </div>
+                )}
+
+                {phase.phaseCategory === 'QUESTIONNAIRE' && currentAction.actionRequired === 'WAIT_FOR_REVIEW' && (
+                  <div className="text-center py-4">
+                    {isStaff ? (
+                      <>
+                        <p className="text-gray-600 mb-4">The applicant&apos;s questionnaire is awaiting review.</p>
+                        <Link href={`/admin/applications/${applicationId}`}>
+                          <Button>Review Questionnaire</Button>
+                        </Link>
+                      </>
+                    ) : (
+                      <p className="text-gray-500">Your questionnaire answers have been submitted and are under review.</p>
+                    )}
+                  </div>
+                )}
+
+                {phase.phaseCategory === 'PAYMENT' && currentPhase && (
+                  <PaymentSection
+                    applicationId={applicationId}
+                    phaseId={phase.id}
+                    phaseName={phase.name}
+                    totalAmount={currentPhase.totalAmount || 0}
+                    paidAmount={currentPhase.paidAmount || 0}
+                    currency={application.currency}
+                    installments={currentPhase.installments || []}
+                    buyerEmail={application.buyer?.email}
+                    onPaymentSuccess={() => refetchApplication()}
+                  />
+                )}
+              </CardContent>
+            </Card>
+          );
+        })()
       ) : currentAction && currentAction.actionRequired !== 'NONE' ? (
         <Card className="bg-primary/5 border-primary/20">
           <CardHeader>

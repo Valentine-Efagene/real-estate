@@ -1,8 +1,9 @@
 import { Router } from 'express';
-import { successResponse } from '@valentine-efagene/qshelter-common';
+import { successResponse, UnauthorizedError, ConfigService } from '@valentine-efagene/qshelter-common';
 import { loginSchema, signupSchema, refreshTokenSchema } from '../validators/auth.validator';
 import { authService } from '../services/auth.service';
 import { z } from 'zod';
+import jwt from 'jsonwebtoken';
 
 export const authRouter = Router();
 
@@ -119,8 +120,27 @@ authRouter.get('/google/callback', async (req, res, next) => {
 
 authRouter.get('/me', async (req, res, next) => {
     try {
-        // TODO: Extract userId from auth context/JWT
-        const userId = (req as any).userId; // Will be set by auth middleware
+        // Extract and verify JWT token manually since /auth/* routes are public
+        const authHeader = req.headers.authorization;
+        if (!authHeader?.startsWith('Bearer ')) {
+            throw new UnauthorizedError('No token provided');
+        }
+
+        const token = authHeader.substring(7);
+        const configService = ConfigService.getInstance();
+        const stage = process.env.STAGE || process.env.NODE_ENV || 'dev';
+        const secretResult = await configService.getJwtAccessSecret(stage);
+        const jwtSecret = secretResult.secret;
+        if (!jwtSecret) {
+            throw new Error('JWT_SECRET not configured');
+        }
+
+        const decoded = jwt.verify(token, jwtSecret) as unknown as { userId: string; sub?: string };
+        const userId = decoded.userId || decoded.sub;
+        if (!userId) {
+            throw new UnauthorizedError('Invalid token');
+        }
+
         const result = await authService.getProfile(userId);
         res.json(successResponse(result));
     } catch (error) {

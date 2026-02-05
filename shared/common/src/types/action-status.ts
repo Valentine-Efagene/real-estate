@@ -261,6 +261,63 @@ function computeStepActionByType(
                 progress: 'Underwriting in progress',
             };
 
+        // Organization type codes for stage-based workflow
+        // These indicate which party needs to act (upload documents or review)
+        case 'PLATFORM':
+            return {
+                ...base,
+                nextActor: NextActor.ADMIN,
+                actionCategory: ActionCategory.REVIEW,
+                actionRequired: `Platform review: ${step.name}`,
+                progress: 'Awaiting platform review',
+            };
+
+        case 'BANK':
+        case 'LENDER':
+            return {
+                ...base,
+                nextActor: NextActor.ADMIN,
+                actionCategory: ActionCategory.UPLOAD,
+                actionRequired: `Lender action required: ${step.name}`,
+                progress: 'Awaiting bank/lender',
+            };
+
+        case 'DEVELOPER':
+            return {
+                ...base,
+                nextActor: NextActor.ADMIN,
+                actionCategory: ActionCategory.UPLOAD,
+                actionRequired: `Developer action required: ${step.name}`,
+                progress: 'Awaiting developer',
+            };
+
+        case 'LEGAL':
+            return {
+                ...base,
+                nextActor: NextActor.ADMIN,
+                actionCategory: ActionCategory.REVIEW,
+                actionRequired: `Legal review: ${step.name}`,
+                progress: 'Awaiting legal review',
+            };
+
+        case 'INSURER':
+            return {
+                ...base,
+                nextActor: NextActor.ADMIN,
+                actionCategory: ActionCategory.REVIEW,
+                actionRequired: `Insurance review: ${step.name}`,
+                progress: 'Awaiting insurer',
+            };
+
+        case 'GOVERNMENT':
+            return {
+                ...base,
+                nextActor: NextActor.ADMIN,
+                actionCategory: ActionCategory.REVIEW,
+                actionRequired: `Government processing: ${step.name}`,
+                progress: 'Awaiting government approval',
+            };
+
         default:
             return {
                 ...base,

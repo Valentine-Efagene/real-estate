@@ -1340,7 +1340,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
         const currentStage = stageProgress.find((s: any) => s.order === currentStageOrder);
 
         // Get document requirements from snapshot or plan
-        let requiredDocuments: Array<{ documentType: string; isRequired: boolean; name: string }> = [];
+        let requiredDocuments: Array<{ documentType: string; isRequired: boolean; name: string; uploadedBy: string }> = [];
         const docPhase = currentPhase.documentationPhase;
         if (docPhase) {
             if (docPhase.documentDefinitionsSnapshot && Array.isArray(docPhase.documentDefinitionsSnapshot)) {
@@ -1348,12 +1348,14 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                     documentType: d.documentType || d.name,
                     isRequired: d.isRequired ?? true,
                     name: d.name || d.documentType,
+                    uploadedBy: d.uploadedBy || 'CUSTOMER',
                 }));
             } else if (docPhase.documentationPlan?.documentDefinitions) {
                 requiredDocuments = docPhase.documentationPlan.documentDefinitions.map((d: any) => ({
                     documentType: d.documentType || d.name,
                     isRequired: d.isRequired ?? true,
                     name: d.name || d.documentType,
+                    uploadedBy: d.uploadedBy || 'CUSTOMER',
                 }));
             }
         }
@@ -1416,6 +1418,9 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
             }
         } else if (currentStep) {
             // For documentation phases, determine action based on stage status
+            const stageOrgType = currentStep.stepType; // Organization type code: PLATFORM, BANK, CUSTOMER, etc.
+            const isCustomerStage = stageOrgType === 'CUSTOMER' || !stageOrgType;
+
             switch (currentStep.status) {
                 case 'NEEDS_RESUBMISSION':
                     actionRequired = 'RESUBMIT';
@@ -1428,10 +1433,14 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                 case 'PENDING':
                 case 'IN_PROGRESS':
                     // For stages, the stepType is the organization code (PLATFORM, BANK, etc.)
-                    // Customer should upload when the stage is pending/in_progress and it's a CUSTOMER-facing stage
-                    // For now, assume first stage(s) require customer upload
-                    actionRequired = 'UPLOAD';
-                    actionMessage = `Please upload the required documents for: ${currentPhase.name}`;
+                    if (isCustomerStage) {
+                        actionRequired = 'UPLOAD';
+                        actionMessage = `Please upload the required documents for: ${currentPhase.name}`;
+                    } else {
+                        // Non-customer stage - waiting for bank/platform/etc.
+                        actionRequired = 'WAIT_FOR_REVIEW';
+                        actionMessage = `Waiting for ${stageOrgType.toLowerCase()} to complete: ${currentStep.name}`;
+                    }
                     break;
                 case 'AWAITING_REVIEW':
                     actionRequired = 'WAIT_FOR_REVIEW';

@@ -130,6 +130,8 @@ export interface CurrentAction {
     requiredDocuments?: Array<{
       documentType: string;
       isRequired: boolean;
+      name?: string;
+      uploadedBy?: string;
     }>;
     latestApproval?: {
       decision: string;
