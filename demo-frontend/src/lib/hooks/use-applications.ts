@@ -108,6 +108,17 @@ export interface Installment {
   paidAt?: string;
 }
 
+// Party action types for the new party-based response
+export type PartyAction = 'UPLOAD' | 'REVIEW' | 'WAIT' | 'PAYMENT' | 'QUESTIONNAIRE' | 'NONE';
+
+export interface PartyActionInfo {
+  action: PartyAction;
+  message: string;
+  pendingDocuments: string[];
+  assignedStaffId: string | null;
+  canCurrentUserAct: boolean;
+}
+
 export interface CurrentAction {
   applicationId: string;
   applicationStatus: string;
@@ -116,6 +127,16 @@ export interface CurrentAction {
     name: string;
     phaseCategory: string;
     phaseType: string;
+    status: string;
+    order: number;
+  } | null;
+  // New party-based actions
+  partyActions?: Record<string, PartyActionInfo>;
+  userPartyType?: string | null;
+  reviewStage?: {
+    id: string;
+    name: string;
+    reviewerType: string;
     status: string;
     order: number;
   } | null;
@@ -147,8 +168,10 @@ export interface CurrentAction {
     status: string;
     stepId: string | null;
     createdAt: string;
+    uploadedBy?: string;
   }>;
-  actionRequired: 'NONE' | 'UPLOAD' | 'RESUBMIT' | 'SIGN' | 'REVIEW' | 'WAIT_FOR_REVIEW' | 'PAYMENT' | 'COMPLETE' | 'QUESTIONNAIRE';
+  // Backward compatible fields (set based on user's party)
+  actionRequired: 'NONE' | 'UPLOAD' | 'RESUBMIT' | 'SIGN' | 'REVIEW' | 'WAIT_FOR_REVIEW' | 'WAIT' | 'PAYMENT' | 'COMPLETE' | 'QUESTIONNAIRE';
   actionMessage: string;
 }
 

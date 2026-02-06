@@ -288,7 +288,7 @@ export interface ApplicationService {
     sign(id: string, userId: string): Promise<any>;
     cancel(id: string, userId: string, reason?: string): Promise<any>;
     delete(id: string, userId: string): Promise<{ success: boolean }>;
-    getCurrentAction(id: string): Promise<any>;
+    getCurrentAction(id: string, userId?: string, userOrgTypeIds?: string[]): Promise<any>;
 }
 
 /**
@@ -1220,12 +1220,27 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
         return { success: true };
     }
 
+    // Type definitions for party-based actions
+    type PartyAction = 'UPLOAD' | 'REVIEW' | 'WAIT' | 'PAYMENT' | 'QUESTIONNAIRE' | 'NONE';
+    
+    interface PartyActionInfo {
+        action: PartyAction;
+        message: string;
+        pendingDocuments: string[];
+        assignedStaffId: string | null;
+        canCurrentUserAct: boolean;
+    }
+
     /**
      * Get the current action required for a application
-     * Returns the current phase, current step, required action, and relevant documents
-     * This is the canonical endpoint for the app to know what to show the user
+     * Returns the current phase and actions for ALL parties involved
+     * Each party sees their own action, eliminating complex server-side user-context logic
+     * 
+     * @param id - Application ID
+     * @param userId - Optional user ID for determining canCurrentUserAct
+     * @param userOrgTypeCodes - Optional array of organization type CODES the user belongs to
      */
-    async function getCurrentAction(id: string): Promise<{
+    async function getCurrentAction(id: string, userId?: string, userOrgTypeCodes?: string[]): Promise<{
         applicationId: string;
         applicationStatus: ApplicationStatus;
         currentPhase: {
@@ -1233,6 +1248,15 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
             name: string;
             phaseCategory: string;
             phaseType: string;
+            status: string;
+            order: number;
+        } | null;
+        partyActions: Record<string, PartyActionInfo>;
+        userPartyType: string | null;
+        reviewStage: {
+            id: string;
+            name: string;
+            reviewerType: string;
             status: string;
             order: number;
         } | null;
@@ -1260,12 +1284,14 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
             type: string;
             status: string;
             stepId: string | null;
+            uploadedBy: string;
             createdAt: Date;
         }>;
+        // Keep for backward compatibility
         actionRequired: 'NONE' | 'UPLOAD' | 'RESUBMIT' | 'SIGN' | 'REVIEW' | 'WAIT_FOR_REVIEW' | 'PAYMENT' | 'COMPLETE' | 'QUESTIONNAIRE';
         actionMessage: string;
     }> {
-        // Use any to avoid Prisma type issues with new relations
+        // Fetch application with organization bindings for staff assignment check
         const application: any = await prisma.application.findUnique({
             where: { id },
             include: {
@@ -1296,6 +1322,12 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                 documents: {
                     orderBy: { createdAt: 'desc' },
                 },
+                organizations: {
+                    include: {
+                        assignedAsType: true,
+                        assignedStaff: true,
+                    },
+                },
             },
         });
 
@@ -1303,17 +1335,68 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
             throw new AppError(404, 'application not found');
         }
 
+        // Build organization binding map for staff assignment checks
+        const orgBindingByType: Record<string, { organizationId: string; assignedStaffId: string | null }> = {};
+        for (const binding of application.organizations || []) {
+            const typeCode = binding.assignedAsType?.code;
+            if (typeCode) {
+                orgBindingByType[typeCode] = {
+                    organizationId: binding.organizationId,
+                    assignedStaffId: binding.assignedStaffId,
+                };
+            }
+        }
+
+        // Determine user's party type
+        const isCustomer = userId && application.buyerId === userId;
+        let userPartyType: string | null = isCustomer ? 'CUSTOMER' : null;
+        
+        // If not customer, check org type codes
+        if (!userPartyType && userOrgTypeCodes && userOrgTypeCodes.length > 0) {
+            // Priority: BANK > PLATFORM > DEVELOPER > LEGAL > INSURER
+            const priorityOrder = ['BANK', 'LENDER', 'PLATFORM', 'DEVELOPER', 'LEGAL', 'INSURER', 'GOVERNMENT'];
+            for (const type of priorityOrder) {
+                if (userOrgTypeCodes.includes(type)) {
+                    userPartyType = type === 'LENDER' ? 'BANK' : type; // Normalize LENDER to BANK
+                    break;
+                }
+            }
+        }
+
+        // Helper to check if user can act for a party type
+        const canUserActForParty = (partyType: string): boolean => {
+            if (partyType === 'CUSTOMER') {
+                return isCustomer || false;
+            }
+            // Check if user's org types include this party type
+            const matchingTypes = partyType === 'LENDER' ? ['BANK', 'LENDER'] : [partyType];
+            const hasOrgType = userOrgTypeCodes?.some(code => matchingTypes.includes(code)) || false;
+            
+            if (!hasOrgType) return false;
+
+            // Check staff assignment - if assigned, must be this user
+            const binding = orgBindingByType[partyType] || orgBindingByType[partyType === 'LENDER' ? 'BANK' : partyType];
+            if (binding?.assignedStaffId && binding.assignedStaffId !== userId) {
+                return false; // Someone else is assigned
+            }
+            return true;
+        };
+
         // Find current phase (IN_PROGRESS or ACTIVE)
         const currentPhase = application.phases.find(
             (p: any) => p.status === 'IN_PROGRESS' || p.status === 'ACTIVE' || p.status === 'AWAITING_APPROVAL'
         );
 
-        // If no active phase, check application status
+        // If no active phase, return minimal response
         if (!currentPhase) {
+            const emptyPartyActions: Record<string, PartyActionInfo> = {};
             return {
                 applicationId: application.id,
                 applicationStatus: application.status,
                 currentPhase: null,
+                partyActions: emptyPartyActions,
+                userPartyType,
+                reviewStage: null,
                 currentStep: null,
                 uploadedDocuments: application.documents.map((d: any) => ({
                     id: d.id,
@@ -1322,6 +1405,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                     url: d.url,
                     status: d.status,
                     stepId: d.stepId,
+                    uploadedBy: d.expectedUploader || 'CUSTOMER',
                     createdAt: d.createdAt,
                 })),
                 actionRequired: application.status === 'COMPLETED' ? 'COMPLETE' : 'NONE',
@@ -1331,12 +1415,9 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
             };
         }
 
-        // Find current stage - for DOCUMENTATION phases using stageProgress
-        let currentStep: any = null;
+        // Get stage progress and document requirements
         const stageProgress = currentPhase.documentationPhase?.stageProgress || [];
         const currentStageOrder = currentPhase.documentationPhase?.currentStageOrder ?? 1;
-
-        // Find the current stage based on currentStageOrder
         const currentStage = stageProgress.find((s: any) => s.order === currentStageOrder);
 
         // Get document requirements from snapshot or plan
@@ -1360,37 +1441,178 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
             }
         }
 
-        // Helper to map stage organization type to document uploadedBy values
-        const getUploadedByForStageType = (stageOrgType: string): string[] => {
-            switch (stageOrgType) {
-                case 'CUSTOMER':
-                    return ['CUSTOMER'];
-                case 'BANK':
-                case 'LENDER':
-                    return ['LENDER', 'BANK'];
-                case 'PLATFORM':
-                    return ['PLATFORM', 'CUSTOMER']; // Platform reviews customer docs
-                case 'DEVELOPER':
-                    return ['DEVELOPER'];
-                case 'LEGAL':
-                    return ['LEGAL'];
-                case 'INSURER':
-                    return ['INSURER'];
-                case 'GOVERNMENT':
-                    return ['GOVERNMENT'];
-                default:
-                    return ['CUSTOMER']; // Default to customer
-            }
+        // Get uploaded documents for this phase
+        const phaseUploadedDocs = application.documents.filter(
+            (d: any) => d.phaseId === currentPhase.id
+        );
+
+        // Helper to check if a document has been uploaded
+        const isDocUploaded = (docType: string) => phaseUploadedDocs.some(
+            (d: any) => d.type === docType || d.documentType === docType
+        );
+
+        // Initialize party actions
+        const partyActions: Record<string, PartyActionInfo> = {};
+
+        // Map uploadedBy to normalized party types
+        const normalizePartyType = (uploadedBy: string): string => {
+            if (uploadedBy === 'LENDER') return 'BANK';
+            return uploadedBy;
         };
 
-        // Map current stage to currentStep format for backwards compatibility
+        // Build actions based on phase category
+        if (currentPhase.phaseCategory === 'PAYMENT') {
+            // Payment phase - only CUSTOMER needs to pay
+            partyActions['CUSTOMER'] = {
+                action: 'PAYMENT',
+                message: 'Payment is required for this phase',
+                pendingDocuments: [],
+                assignedStaffId: null,
+                canCurrentUserAct: canUserActForParty('CUSTOMER'),
+            };
+            // Other parties wait
+            for (const [partyType] of Object.entries(orgBindingByType)) {
+                if (partyType !== 'CUSTOMER') {
+                    partyActions[partyType] = {
+                        action: 'WAIT',
+                        message: 'Waiting for customer to complete payment',
+                        pendingDocuments: [],
+                        assignedStaffId: orgBindingByType[partyType]?.assignedStaffId || null,
+                        canCurrentUserAct: false,
+                    };
+                }
+            }
+        } else if (currentPhase.phaseCategory === 'QUESTIONNAIRE') {
+            // Questionnaire phase - only CUSTOMER fills it
+            const questionnairePhase = currentPhase.questionnairePhase;
+            const completedCount = questionnairePhase?.completedFieldsCount || 0;
+            const totalCount = questionnairePhase?.totalFieldsCount || 0;
+
+            if (completedCount < totalCount) {
+                partyActions['CUSTOMER'] = {
+                    action: 'QUESTIONNAIRE',
+                    message: `Please complete the ${currentPhase.name} questionnaire (${completedCount}/${totalCount} questions answered)`,
+                    pendingDocuments: [],
+                    assignedStaffId: null,
+                    canCurrentUserAct: canUserActForParty('CUSTOMER'),
+                };
+            } else if (currentPhase.status === 'AWAITING_APPROVAL') {
+                // Customer done, waiting for review
+                partyActions['CUSTOMER'] = {
+                    action: 'WAIT',
+                    message: 'Your questionnaire is under review',
+                    pendingDocuments: [],
+                    assignedStaffId: null,
+                    canCurrentUserAct: false,
+                };
+                // Platform reviews
+                partyActions['PLATFORM'] = {
+                    action: 'REVIEW',
+                    message: `Please review the ${currentPhase.name} questionnaire`,
+                    pendingDocuments: [],
+                    assignedStaffId: orgBindingByType['PLATFORM']?.assignedStaffId || null,
+                    canCurrentUserAct: canUserActForParty('PLATFORM'),
+                };
+            } else {
+                partyActions['CUSTOMER'] = {
+                    action: 'QUESTIONNAIRE',
+                    message: `Please complete the ${currentPhase.name} questionnaire`,
+                    pendingDocuments: [],
+                    assignedStaffId: null,
+                    canCurrentUserAct: canUserActForParty('CUSTOMER'),
+                };
+            }
+        } else if (currentPhase.phaseCategory === 'DOCUMENTATION') {
+            // Documentation phase - compute actions for each party based on pending uploads
+
+            // Group required documents by uploadedBy (normalized)
+            const docsByParty: Record<string, typeof requiredDocuments> = {};
+            for (const doc of requiredDocuments) {
+                const party = normalizePartyType(doc.uploadedBy || 'CUSTOMER');
+                if (!docsByParty[party]) {
+                    docsByParty[party] = [];
+                }
+                docsByParty[party].push(doc);
+            }
+
+            // Check which parties have pending uploads
+            const pendingByParty: Record<string, string[]> = {};
+            for (const [party, docs] of Object.entries(docsByParty)) {
+                const pending = docs.filter((d) => !isDocUploaded(d.documentType));
+                if (pending.length > 0) {
+                    pendingByParty[party] = pending.map((d) => d.name || d.documentType);
+                }
+            }
+
+            // Determine the current review stage info
+            const stageOrgType = currentStage?.organizationType?.code || 'PLATFORM';
+            const isCustomerReviewStage = stageOrgType === 'CUSTOMER' || !stageOrgType;
+            const allDocsUploaded = Object.keys(pendingByParty).length === 0;
+
+            // Compute action for each party
+            const allParties = new Set([
+                'CUSTOMER',
+                ...Object.keys(docsByParty),
+                ...Object.keys(orgBindingByType),
+            ]);
+
+            for (const party of allParties) {
+                const pendingDocs = pendingByParty[party] || [];
+                const binding = orgBindingByType[party];
+
+                if (pendingDocs.length > 0) {
+                    // This party has documents to upload
+                    partyActions[party] = {
+                        action: 'UPLOAD',
+                        message: `Please upload the required documents: ${pendingDocs.join(', ')}`,
+                        pendingDocuments: pendingDocs,
+                        assignedStaffId: binding?.assignedStaffId || null,
+                        canCurrentUserAct: canUserActForParty(party),
+                    };
+                } else if (!allDocsUploaded) {
+                    // This party is done, but others have pending uploads
+                    const waitingFor = Object.keys(pendingByParty).map(p => p.toLowerCase()).join(', ');
+                    partyActions[party] = {
+                        action: 'WAIT',
+                        message: `Waiting for ${waitingFor} to upload documents`,
+                        pendingDocuments: [],
+                        assignedStaffId: binding?.assignedStaffId || null,
+                        canCurrentUserAct: false,
+                    };
+                } else {
+                    // All documents uploaded - now in review stage
+                    const isReviewer = (isCustomerReviewStage && party === 'CUSTOMER') ||
+                                       (!isCustomerReviewStage && party === stageOrgType);
+
+                    if (isReviewer && currentStage?.status !== 'COMPLETED') {
+                        partyActions[party] = {
+                            action: 'REVIEW',
+                            message: `Please review the documents for: ${currentPhase.name}`,
+                            pendingDocuments: [],
+                            assignedStaffId: binding?.assignedStaffId || null,
+                            canCurrentUserAct: canUserActForParty(party),
+                        };
+                    } else {
+                        // Waiting for reviewer
+                        const reviewerName = isCustomerReviewStage ? 'customer' : stageOrgType.toLowerCase();
+                        partyActions[party] = {
+                            action: 'WAIT',
+                            message: currentStage?.status === 'COMPLETED'
+                                ? 'Review completed for this stage'
+                                : `Waiting for ${reviewerName} to review documents`,
+                            pendingDocuments: [],
+                            assignedStaffId: binding?.assignedStaffId || null,
+                            canCurrentUserAct: false,
+                        };
+                    }
+                }
+            }
+        }
+
+        // Build currentStep for backward compatibility
+        let currentStep: any = null;
         if (currentStage) {
             const stageOrgType = currentStage.organizationType?.code || 'PLATFORM';
-            const allowedUploadedBy = getUploadedByForStageType(stageOrgType);
-            // Filter documents to only those relevant to this stage
-            const stageDocuments = requiredDocuments.filter(doc =>
-                allowedUploadedBy.includes(doc.uploadedBy)
-            );
             currentStep = {
                 id: currentStage.id,
                 name: currentStage.name,
@@ -1399,147 +1621,29 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                 order: currentStage.order,
                 actionReason: null,
                 submissionCount: 0,
-                requiredDocuments: stageDocuments,
+                requiredDocuments: requiredDocuments.map((d) => ({
+                    documentType: d.documentType,
+                    isRequired: d.isRequired,
+                    name: d.name || d.documentType,
+                })),
             };
-        } else if (stageProgress.length > 0) {
-            // Fallback: find next actionable stage
-            const nextStage = stageProgress.find(
-                (s: any) => s.status === 'PENDING' || s.status === 'IN_PROGRESS' || s.status === 'AWAITING_REVIEW'
-            );
-            if (nextStage) {
-                const stageOrgType = nextStage.organizationType?.code || 'PLATFORM';
-                const allowedUploadedBy = getUploadedByForStageType(stageOrgType);
-                // Filter documents to only those relevant to this stage
-                const stageDocuments = requiredDocuments.filter(doc =>
-                    allowedUploadedBy.includes(doc.uploadedBy)
-                );
-                currentStep = {
-                    id: nextStage.id,
-                    name: nextStage.name,
-                    stepType: stageOrgType,
-                    status: nextStage.status,
-                    order: nextStage.order,
-                    actionReason: null,
-                    submissionCount: 0,
-                    requiredDocuments: stageDocuments,
-                };
-            }
         }
 
-        // Determine action required based on step status
-        let actionRequired: 'NONE' | 'UPLOAD' | 'RESUBMIT' | 'SIGN' | 'REVIEW' | 'WAIT_FOR_REVIEW' | 'PAYMENT' | 'COMPLETE' | 'QUESTIONNAIRE' = 'NONE';
-        let actionMessage = 'No action required';
-
-        if (currentPhase.phaseCategory === 'PAYMENT') {
-            actionRequired = 'PAYMENT';
-            actionMessage = 'Payment is required for this phase';
-        } else if (currentPhase.phaseCategory === 'QUESTIONNAIRE') {
-            // Check if questionnaire has unanswered questions
-            const questionnairePhase = currentPhase.questionnairePhase;
-            if (questionnairePhase) {
-                const completedCount = questionnairePhase.completedFieldsCount || 0;
-                const totalCount = questionnairePhase.totalFieldsCount || 0;
-                if (completedCount < totalCount) {
-                    actionRequired = 'QUESTIONNAIRE';
-                    actionMessage = `Please complete the ${currentPhase.name} questionnaire (${completedCount}/${totalCount} questions answered)`;
-                } else if (currentPhase.status === 'AWAITING_APPROVAL') {
-                    actionRequired = 'WAIT_FOR_REVIEW';
-                    actionMessage = 'Your questionnaire answers are being reviewed';
-                }
-            } else {
-                // No questionnaire phase data - still needs completion
-                actionRequired = 'QUESTIONNAIRE';
-                actionMessage = `Please complete the ${currentPhase.name} questionnaire`;
-            }
-        } else if (currentPhase.phaseCategory === 'DOCUMENTATION') {
-            // For documentation phases, FIRST check if customer has pending uploads
-            // This takes priority over the stage status
-            const customerDocsRequired = requiredDocuments.filter(
-                (d: any) => d.uploadedBy === 'CUSTOMER' || !d.uploadedBy
-            );
-
-            // Get uploaded documents for this phase
-            const phaseUploadedDocs = application.documents.filter(
-                (d: any) => d.phaseId === currentPhase.id
-            );
-
-            // Check which customer documents are still missing
-            const customerDocsUploaded = phaseUploadedDocs.filter(
-                (d: any) => customerDocsRequired.some((req: any) =>
-                    req.documentType === d.type || req.documentType === d.documentType
-                )
-            );
-
-            const pendingCustomerUploads = customerDocsRequired.length - customerDocsUploaded.length;
-
-            if (pendingCustomerUploads > 0) {
-                // Customer still needs to upload documents
-                actionRequired = 'UPLOAD';
-                const docNames = customerDocsRequired
-                    .filter((d: any) => !customerDocsUploaded.some((up: any) =>
-                        up.type === d.documentType || up.documentType === d.documentType
-                    ))
-                    .map((d: any) => d.name || d.documentType)
-                    .join(', ');
-                actionMessage = `Please upload the required documents: ${docNames}`;
-            } else if (currentStep) {
-                // All customer uploads done, determine action based on stage status
-                const stageOrgType = currentStep.stepType;
-                const isCustomerStage = stageOrgType === 'CUSTOMER' || !stageOrgType;
-
-                switch (currentStep.status) {
-                    case 'NEEDS_RESUBMISSION':
-                        actionRequired = 'RESUBMIT';
-                        actionMessage = currentStep.actionReason || 'Please resubmit the required documents';
-                        break;
-                    case 'ACTION_REQUIRED':
-                        actionRequired = 'UPLOAD';
-                        actionMessage = currentStep.actionReason || 'Please address the requested changes';
-                        break;
-                    case 'PENDING':
-                    case 'IN_PROGRESS':
-                        if (isCustomerStage) {
-                            // Customer stage - check if they need to review other party's documents
-                            actionRequired = 'REVIEW';
-                            actionMessage = `Please review and acknowledge the documents for: ${currentPhase.name}`;
-                        } else {
-                            // Non-customer stage - waiting for bank/platform/etc.
-                            actionRequired = 'WAIT_FOR_REVIEW';
-                            actionMessage = `Your documents are under review by ${stageOrgType.toLowerCase().replace('_', ' ')}`;
-                        }
-                        break;
-                    case 'AWAITING_REVIEW':
-                        actionRequired = 'WAIT_FOR_REVIEW';
-                        actionMessage = 'Your documents are under review';
-                        break;
-                    default:
-                        // Check if all stages are completed
-                        const allStagesCompleted = stageProgress.every((s: any) => s.status === 'COMPLETED');
-                        if (allStagesCompleted) {
-                            actionRequired = 'NONE';
-                            actionMessage = 'All document reviews completed';
-                        }
-                        break;
-                }
-            } else {
-                // No current step but docs needed
-                actionRequired = 'UPLOAD';
-                actionMessage = `Please upload the required documents for: ${currentPhase.name}`;
-            }
-        }
-
-        // Get documents for this phase
-        const phaseDocuments = application.documents.filter(
-            (d: any) => d.phaseId === currentPhase.id
-        );
+        // Build reviewStage info
+        const reviewStage = currentStage ? {
+            id: currentStage.id,
+            name: currentStage.name,
+            reviewerType: currentStage.organizationType?.code || 'PLATFORM',
+            status: currentStage.status,
+            order: currentStage.order,
+        } : null;
 
         // Deduplicate documents by documentType, keeping only the latest one
-        const uniqueDocuments = phaseDocuments.reduce((acc: any[], doc: any) => {
+        const uniqueDocuments = phaseUploadedDocs.reduce((acc: any[], doc: any) => {
             const existingIndex = acc.findIndex((d: any) => d.type === doc.type || d.documentType === doc.documentType);
             if (existingIndex === -1) {
                 acc.push(doc);
             } else {
-                // Keep the newer one
                 const existing = acc[existingIndex];
                 if (new Date(doc.createdAt) > new Date(existing.createdAt)) {
                     acc[existingIndex] = doc;
@@ -1547,6 +1651,39 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
             }
             return acc;
         }, []);
+
+        // Compute backward-compatible actionRequired/actionMessage from user's party
+        let actionRequired: 'NONE' | 'UPLOAD' | 'RESUBMIT' | 'SIGN' | 'REVIEW' | 'WAIT_FOR_REVIEW' | 'PAYMENT' | 'COMPLETE' | 'QUESTIONNAIRE' = 'NONE';
+        let actionMessage = 'No action required';
+
+        if (userPartyType && partyActions[userPartyType]) {
+            const userAction = partyActions[userPartyType];
+            switch (userAction.action) {
+                case 'UPLOAD':
+                    actionRequired = 'UPLOAD';
+                    actionMessage = userAction.message;
+                    break;
+                case 'REVIEW':
+                    actionRequired = 'REVIEW';
+                    actionMessage = userAction.message;
+                    break;
+                case 'WAIT':
+                    actionRequired = 'WAIT_FOR_REVIEW';
+                    actionMessage = userAction.message;
+                    break;
+                case 'PAYMENT':
+                    actionRequired = 'PAYMENT';
+                    actionMessage = userAction.message;
+                    break;
+                case 'QUESTIONNAIRE':
+                    actionRequired = 'QUESTIONNAIRE';
+                    actionMessage = userAction.message;
+                    break;
+                default:
+                    actionRequired = 'NONE';
+                    actionMessage = userAction.message;
+            }
+        }
 
         return {
             applicationId: application.id,
@@ -1559,6 +1696,9 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                 status: currentPhase.status,
                 order: currentPhase.order,
             },
+            partyActions,
+            userPartyType,
+            reviewStage,
             currentStep: currentStep
                 ? {
                     id: currentStep.id,
@@ -1573,7 +1713,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                         isRequired: d.isRequired,
                         name: d.name || d.documentType,
                     })),
-                    latestApproval: null, // Stage-based workflow uses documentApprovals not step approvals
+                    latestApproval: null,
                 }
                 : null,
             uploadedDocuments: uniqueDocuments.map((d: any) => ({

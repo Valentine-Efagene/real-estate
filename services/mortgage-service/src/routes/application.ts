@@ -218,7 +218,55 @@ router.get('/:id', requireTenant, canAccessApplication, async (req: Request, res
 router.get('/:id/current-action', requireTenant, canAccessApplication, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const applicationService = getApplicationService(req);
-        const result = await applicationService.getCurrentAction(req.params.id as string);
+        const { userId, tenantId } = getAuthContext(req);
+
+        // Get user's organization type codes for context-aware action determination
+        // This helps determine if user should see UPLOAD vs WAIT vs REVIEW
+        const userOrgTypeCodes: string[] = [];
+
+        // Check if user has an organization binding (from canAccessApplication middleware)
+        const binding = (req as any).organizationBinding;
+        if (binding) {
+            // User accessed via organization membership - get org types
+            // Note: OrganizationTypeAssignment is NOT tenant-scoped, use base prisma
+            const orgTypes = await prisma.organizationTypeAssignment.findMany({
+                where: { organizationId: binding.organizationId },
+                include: { orgType: true }
+            });
+            userOrgTypeCodes.push(...orgTypes.map(ot => ot.orgType.code));
+        } else {
+            // User might be accessing as buyer or admin
+            // Fetch their organization memberships
+            // Note: OrganizationMember is NOT tenant-scoped, so use base prisma
+            // but filter through tenant-scoped organizations
+            const memberships = await prisma.organizationMember.findMany({
+                where: { 
+                    userId,
+                    organization: {
+                        tenantId // Filter by tenant through organization relation
+                    }
+                },
+                include: {
+                    organization: {
+                        include: {
+                            types: {
+                                include: { orgType: true }
+                            }
+                        }
+                    }
+                }
+            });
+
+            for (const membership of memberships) {
+                for (const ta of membership.organization.types) {
+                    if (!userOrgTypeCodes.includes(ta.orgType.code)) {
+                        userOrgTypeCodes.push(ta.orgType.code);
+                    }
+                }
+            }
+        }
+
+        const result = await applicationService.getCurrentAction(req.params.id as string, userId, userOrgTypeCodes);
         res.json(successResponse(result));
     } catch (error) {
         next(error);

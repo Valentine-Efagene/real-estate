@@ -460,6 +460,83 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
 
       <Separator />
 
+      {/* Party Actions Status - Shows what each party needs to do */}
+      {actionLoading ? (
+        <Skeleton className="h-48" />
+      ) : currentAction?.partyActions && Object.keys(currentAction.partyActions).length > 0 ? (
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle>Action Status</CardTitle>
+                <CardDescription>
+                  Current phase: {currentAction.currentPhase?.name || 'N/A'}
+                </CardDescription>
+              </div>
+              {currentAction.userPartyType && (
+                <Badge variant="outline" className="text-sm">
+                  You are: {currentAction.userPartyType}
+                </Badge>
+              )}
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-4 md:grid-cols-2">
+              {Object.entries(currentAction.partyActions).map(([party, actionInfo]) => {
+                const isUserParty = party === currentAction.userPartyType;
+                const actionColors: Record<string, string> = {
+                  UPLOAD: 'bg-blue-50 border-blue-200 text-blue-800',
+                  REVIEW: 'bg-purple-50 border-purple-200 text-purple-800',
+                  WAIT: 'bg-gray-50 border-gray-200 text-gray-600',
+                  PAYMENT: 'bg-green-50 border-green-200 text-green-800',
+                  QUESTIONNAIRE: 'bg-yellow-50 border-yellow-200 text-yellow-800',
+                  NONE: 'bg-gray-50 border-gray-200 text-gray-500',
+                };
+                const actionIcons: Record<string, string> = {
+                  UPLOAD: '📤',
+                  REVIEW: '👀',
+                  WAIT: '⏳',
+                  PAYMENT: '💳',
+                  QUESTIONNAIRE: '📝',
+                  NONE: '✓',
+                };
+
+                return (
+                  <div
+                    key={party}
+                    className={`p-4 rounded-lg border-2 ${actionColors[actionInfo.action] || 'bg-gray-50 border-gray-200'} ${isUserParty ? 'ring-2 ring-primary ring-offset-2' : ''}`}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xl">{actionIcons[actionInfo.action] || '❓'}</span>
+                        <span className="font-semibold">{party}</span>
+                      </div>
+                      <Badge variant={actionInfo.action === 'WAIT' || actionInfo.action === 'NONE' ? 'secondary' : 'default'}>
+                        {actionInfo.action}
+                      </Badge>
+                    </div>
+                    <p className="text-sm mb-2">{actionInfo.message}</p>
+                    {actionInfo.pendingDocuments.length > 0 && (
+                      <div className="text-xs">
+                        <span className="font-medium">Pending: </span>
+                        {actionInfo.pendingDocuments.join(', ')}
+                      </div>
+                    )}
+                    {isUserParty && actionInfo.canCurrentUserAct && (
+                      <div className="mt-2 pt-2 border-t border-current/20">
+                        <span className="text-xs font-medium">✓ You can take this action</span>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </CardContent>
+        </Card>
+      ) : null}
+
+      <Separator />
+
       {/* Document Review Section */}
       {actionLoading ? (
         <Skeleton className="h-48" />
@@ -616,24 +693,42 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
           </CardContent>
         </Card>
       ) : currentAction?.currentPhase?.phaseCategory === 'DOCUMENTATION' && (!currentAction.uploadedDocuments || currentAction.uploadedDocuments.length === 0) ? (
-        <Card>
-          <CardHeader>
-            <CardTitle>Document Review</CardTitle>
-            <CardDescription>
-              {currentAction.currentPhase.name}
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="py-8 text-center">
-            <span className="text-4xl">📄</span>
-            <h3 className="text-lg font-semibold mt-4">Waiting for Customer Documents</h3>
-            <p className="text-gray-500 mt-2">
-              The customer has not uploaded any documents for this phase yet.
-            </p>
-            <p className="text-sm text-gray-400 mt-1">
-              Documents will appear here for review once uploaded.
-            </p>
-          </CardContent>
-        </Card>
+        (() => {
+          // Find which party needs to upload
+          const uploadingParty = currentAction.partyActions
+            ? Object.entries(currentAction.partyActions).find(([, info]) => info.action === 'UPLOAD')
+            : null;
+          const partyName = uploadingParty ? uploadingParty[0] : 'the relevant party';
+          const pendingDocs = uploadingParty ? uploadingParty[1].pendingDocuments : [];
+          const isUserAction = currentAction.userPartyType && currentAction.partyActions?.[currentAction.userPartyType]?.action === 'UPLOAD';
+
+          return (
+            <Card className={isUserAction ? 'border-primary/50 bg-primary/5' : ''}>
+              <CardHeader>
+                <CardTitle>{isUserAction ? 'Document Upload Required' : 'Document Review'}</CardTitle>
+                <CardDescription>
+                  {currentAction.currentPhase.name}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="py-8 text-center">
+                <span className="text-4xl">{isUserAction ? '📤' : '⏳'}</span>
+                <h3 className="text-lg font-semibold mt-4">
+                  {isUserAction ? 'You Need to Upload Documents' : `Waiting for ${partyName} to Upload`}
+                </h3>
+                <p className="text-gray-500 mt-2">
+                  {isUserAction
+                    ? 'Please upload the required documents to proceed with this phase.'
+                    : `No documents have been uploaded for this phase yet.`}
+                </p>
+                {pendingDocs.length > 0 && (
+                  <p className="text-sm text-gray-600 mt-2">
+                    Required: <span className="font-medium">{pendingDocs.join(', ')}</span>
+                  </p>
+                )}
+              </CardContent>
+            </Card>
+          );
+        })()
       ) : currentAction?.currentPhase?.phaseCategory === 'QUESTIONNAIRE' && questionnaireFields && questionnaireFields.length > 0 ? (
         <Card>
           <CardHeader>
@@ -765,39 +860,57 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
         </Card>
       )}
 
-      {/* Partner Document Upload Section - Only show uploads for current user's role */}
-      {currentAction?.currentPhase?.phaseCategory === 'DOCUMENTATION' && userUploadType && (
-        <>
-          <Separator />
-          <div className="grid gap-4 md:grid-cols-1">
-            {/* Show only the upload section relevant to the user's role */}
-            {userUploadType === 'DEVELOPER' && boundOrganizations?.some(org => org.assignedAsType?.code === 'DEVELOPER') && (
-              <PartnerDocumentUpload
-                applicationId={applicationId}
-                phaseId={currentAction.currentPhase.id}
-                phaseName={currentAction.currentPhase.name}
-                role="DEVELOPER"
-              />
-            )}
-            {userUploadType === 'LENDER' && boundOrganizations?.some(org => org.assignedAsType?.code === 'BANK') && (
-              <PartnerDocumentUpload
-                applicationId={applicationId}
-                phaseId={currentAction.currentPhase.id}
-                phaseName={currentAction.currentPhase.name}
-                role="LENDER"
-              />
-            )}
-            {userUploadType === 'PLATFORM' && (
-              <PartnerDocumentUpload
-                applicationId={applicationId}
-                phaseId={currentAction.currentPhase.id}
-                phaseName={currentAction.currentPhase.name}
-                role="PLATFORM"
-              />
-            )}
-          </div>
-        </>
-      )}
+      {/* Partner Document Upload Section - Only show if user's party needs to upload */}
+      {currentAction?.currentPhase?.phaseCategory === 'DOCUMENTATION' && userUploadType && (() => {
+        // Check if user's party action is UPLOAD based on the new party-based response
+        const userPartyType = currentAction.userPartyType;
+        if (!userPartyType || !currentAction.partyActions) {
+          return null;
+        }
+        const userPartyAction = currentAction.partyActions[userPartyType];
+        if (!userPartyAction || userPartyAction.action !== 'UPLOAD' || !userPartyAction.canCurrentUserAct) {
+          return null;
+        }
+        const pendingDocs = userPartyAction.pendingDocuments || [];
+
+        return (
+          <>
+            <Separator />
+            <div className="grid gap-4 md:grid-cols-1">
+              {/* Show upload section with pending documents info */}
+              {userUploadType === 'DEVELOPER' && boundOrganizations?.some(org => org.assignedAsType?.code === 'DEVELOPER') && (
+                <PartnerDocumentUpload
+                  applicationId={applicationId}
+                  phaseId={currentAction.currentPhase!.id}
+                  phaseName={currentAction.currentPhase!.name}
+                  role="DEVELOPER"
+                />
+              )}
+              {userUploadType === 'LENDER' && boundOrganizations?.some(org => org.assignedAsType?.code === 'BANK') && (
+                <PartnerDocumentUpload
+                  applicationId={applicationId}
+                  phaseId={currentAction.currentPhase!.id}
+                  phaseName={currentAction.currentPhase!.name}
+                  role="LENDER"
+                />
+              )}
+              {userUploadType === 'PLATFORM' && (
+                <PartnerDocumentUpload
+                  applicationId={applicationId}
+                  phaseId={currentAction.currentPhase!.id}
+                  phaseName={currentAction.currentPhase!.name}
+                  role="PLATFORM"
+                />
+              )}
+              {pendingDocs.length > 0 && (
+                <p className="text-sm text-gray-500">
+                  Required documents: <span className="font-medium">{pendingDocs.join(', ')}</span>
+                </p>
+              )}
+            </div>
+          </>
+        );
+      })()}
     </div>
   );
 }

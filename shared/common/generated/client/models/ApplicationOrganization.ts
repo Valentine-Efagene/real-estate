@@ -42,6 +42,7 @@ export type ApplicationOrganizationMinAggregateOutputType = {
   applicationId: string | null
   organizationId: string | null
   assignedAsTypeId: string | null
+  assignedStaffId: string | null
   status: $Enums.ApplicationOrganizationStatus | null
   assignedById: string | null
   assignedAt: Date | null
@@ -73,6 +74,7 @@ export type ApplicationOrganizationMaxAggregateOutputType = {
   applicationId: string | null
   organizationId: string | null
   assignedAsTypeId: string | null
+  assignedStaffId: string | null
   status: $Enums.ApplicationOrganizationStatus | null
   assignedById: string | null
   assignedAt: Date | null
@@ -104,6 +106,7 @@ export type ApplicationOrganizationCountAggregateOutputType = {
   applicationId: number
   organizationId: number
   assignedAsTypeId: number
+  assignedStaffId: number
   status: number
   assignedById: number
   assignedAt: number
@@ -148,6 +151,7 @@ export type ApplicationOrganizationMinAggregateInputType = {
   applicationId?: true
   organizationId?: true
   assignedAsTypeId?: true
+  assignedStaffId?: true
   status?: true
   assignedById?: true
   assignedAt?: true
@@ -179,6 +183,7 @@ export type ApplicationOrganizationMaxAggregateInputType = {
   applicationId?: true
   organizationId?: true
   assignedAsTypeId?: true
+  assignedStaffId?: true
   status?: true
   assignedById?: true
   assignedAt?: true
@@ -210,6 +215,7 @@ export type ApplicationOrganizationCountAggregateInputType = {
   applicationId?: true
   organizationId?: true
   assignedAsTypeId?: true
+  assignedStaffId?: true
   status?: true
   assignedById?: true
   assignedAt?: true
@@ -329,6 +335,7 @@ export type ApplicationOrganizationGroupByOutputType = {
   applicationId: string
   organizationId: string
   assignedAsTypeId: string
+  assignedStaffId: string | null
   status: $Enums.ApplicationOrganizationStatus
   assignedById: string | null
   assignedAt: Date
@@ -384,6 +391,7 @@ export type ApplicationOrganizationWhereInput = {
   applicationId?: Prisma.StringFilter<"ApplicationOrganization"> | string
   organizationId?: Prisma.StringFilter<"ApplicationOrganization"> | string
   assignedAsTypeId?: Prisma.StringFilter<"ApplicationOrganization"> | string
+  assignedStaffId?: Prisma.StringNullableFilter<"ApplicationOrganization"> | string | null
   status?: Prisma.EnumApplicationOrganizationStatusFilter<"ApplicationOrganization"> | $Enums.ApplicationOrganizationStatus
   assignedById?: Prisma.StringNullableFilter<"ApplicationOrganization"> | string | null
   assignedAt?: Prisma.DateTimeFilter<"ApplicationOrganization"> | Date | string
@@ -412,6 +420,7 @@ export type ApplicationOrganizationWhereInput = {
   application?: Prisma.XOR<Prisma.ApplicationScalarRelationFilter, Prisma.ApplicationWhereInput>
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   assignedAsType?: Prisma.XOR<Prisma.OrganizationTypeScalarRelationFilter, Prisma.OrganizationTypeWhereInput>
+  assignedStaff?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }
 
 export type ApplicationOrganizationOrderByWithRelationInput = {
@@ -420,6 +429,7 @@ export type ApplicationOrganizationOrderByWithRelationInput = {
   applicationId?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
   assignedAsTypeId?: Prisma.SortOrder
+  assignedStaffId?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   assignedById?: Prisma.SortOrderInput | Prisma.SortOrder
   assignedAt?: Prisma.SortOrder
@@ -448,6 +458,7 @@ export type ApplicationOrganizationOrderByWithRelationInput = {
   application?: Prisma.ApplicationOrderByWithRelationInput
   organization?: Prisma.OrganizationOrderByWithRelationInput
   assignedAsType?: Prisma.OrganizationTypeOrderByWithRelationInput
+  assignedStaff?: Prisma.UserOrderByWithRelationInput
   _relevance?: Prisma.ApplicationOrganizationOrderByRelevanceInput
 }
 
@@ -461,6 +472,7 @@ export type ApplicationOrganizationWhereUniqueInput = Prisma.AtLeast<{
   applicationId?: Prisma.StringFilter<"ApplicationOrganization"> | string
   organizationId?: Prisma.StringFilter<"ApplicationOrganization"> | string
   assignedAsTypeId?: Prisma.StringFilter<"ApplicationOrganization"> | string
+  assignedStaffId?: Prisma.StringNullableFilter<"ApplicationOrganization"> | string | null
   status?: Prisma.EnumApplicationOrganizationStatusFilter<"ApplicationOrganization"> | $Enums.ApplicationOrganizationStatus
   assignedById?: Prisma.StringNullableFilter<"ApplicationOrganization"> | string | null
   assignedAt?: Prisma.DateTimeFilter<"ApplicationOrganization"> | Date | string
@@ -489,6 +501,7 @@ export type ApplicationOrganizationWhereUniqueInput = Prisma.AtLeast<{
   application?: Prisma.XOR<Prisma.ApplicationScalarRelationFilter, Prisma.ApplicationWhereInput>
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   assignedAsType?: Prisma.XOR<Prisma.OrganizationTypeScalarRelationFilter, Prisma.OrganizationTypeWhereInput>
+  assignedStaff?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }, "id" | "applicationId_assignedAsTypeId">
 
 export type ApplicationOrganizationOrderByWithAggregationInput = {
@@ -497,6 +510,7 @@ export type ApplicationOrganizationOrderByWithAggregationInput = {
   applicationId?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
   assignedAsTypeId?: Prisma.SortOrder
+  assignedStaffId?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   assignedById?: Prisma.SortOrderInput | Prisma.SortOrder
   assignedAt?: Prisma.SortOrder
@@ -537,6 +551,7 @@ export type ApplicationOrganizationScalarWhereWithAggregatesInput = {
   applicationId?: Prisma.StringWithAggregatesFilter<"ApplicationOrganization"> | string
   organizationId?: Prisma.StringWithAggregatesFilter<"ApplicationOrganization"> | string
   assignedAsTypeId?: Prisma.StringWithAggregatesFilter<"ApplicationOrganization"> | string
+  assignedStaffId?: Prisma.StringNullableWithAggregatesFilter<"ApplicationOrganization"> | string | null
   status?: Prisma.EnumApplicationOrganizationStatusWithAggregatesFilter<"ApplicationOrganization"> | $Enums.ApplicationOrganizationStatus
   assignedById?: Prisma.StringNullableWithAggregatesFilter<"ApplicationOrganization"> | string | null
   assignedAt?: Prisma.DateTimeWithAggregatesFilter<"ApplicationOrganization"> | Date | string
@@ -593,6 +608,7 @@ export type ApplicationOrganizationCreateInput = {
   application: Prisma.ApplicationCreateNestedOneWithoutOrganizationsInput
   organization: Prisma.OrganizationCreateNestedOneWithoutApplicationAssignmentsInput
   assignedAsType: Prisma.OrganizationTypeCreateNestedOneWithoutApplicationOrganizationsInput
+  assignedStaff?: Prisma.UserCreateNestedOneWithoutAssignedApplicationOrgsInput
 }
 
 export type ApplicationOrganizationUncheckedCreateInput = {
@@ -601,6 +617,7 @@ export type ApplicationOrganizationUncheckedCreateInput = {
   applicationId: string
   organizationId: string
   assignedAsTypeId: string
+  assignedStaffId?: string | null
   status?: $Enums.ApplicationOrganizationStatus
   assignedById?: string | null
   assignedAt?: Date | string
@@ -657,6 +674,7 @@ export type ApplicationOrganizationUpdateInput = {
   application?: Prisma.ApplicationUpdateOneRequiredWithoutOrganizationsNestedInput
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutApplicationAssignmentsNestedInput
   assignedAsType?: Prisma.OrganizationTypeUpdateOneRequiredWithoutApplicationOrganizationsNestedInput
+  assignedStaff?: Prisma.UserUpdateOneWithoutAssignedApplicationOrgsNestedInput
 }
 
 export type ApplicationOrganizationUncheckedUpdateInput = {
@@ -665,6 +683,7 @@ export type ApplicationOrganizationUncheckedUpdateInput = {
   applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   assignedAsTypeId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedStaffId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumApplicationOrganizationStatusFieldUpdateOperationsInput | $Enums.ApplicationOrganizationStatus
   assignedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -697,6 +716,7 @@ export type ApplicationOrganizationCreateManyInput = {
   applicationId: string
   organizationId: string
   assignedAsTypeId: string
+  assignedStaffId?: string | null
   status?: $Enums.ApplicationOrganizationStatus
   assignedById?: string | null
   assignedAt?: Date | string
@@ -757,6 +777,7 @@ export type ApplicationOrganizationUncheckedUpdateManyInput = {
   applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   assignedAsTypeId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedStaffId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumApplicationOrganizationStatusFieldUpdateOperationsInput | $Enums.ApplicationOrganizationStatus
   assignedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -810,6 +831,7 @@ export type ApplicationOrganizationCountOrderByAggregateInput = {
   applicationId?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
   assignedAsTypeId?: Prisma.SortOrder
+  assignedStaffId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   assignedById?: Prisma.SortOrder
   assignedAt?: Prisma.SortOrder
@@ -847,6 +869,7 @@ export type ApplicationOrganizationMaxOrderByAggregateInput = {
   applicationId?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
   assignedAsTypeId?: Prisma.SortOrder
+  assignedStaffId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   assignedById?: Prisma.SortOrder
   assignedAt?: Prisma.SortOrder
@@ -878,6 +901,7 @@ export type ApplicationOrganizationMinOrderByAggregateInput = {
   applicationId?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
   assignedAsTypeId?: Prisma.SortOrder
+  assignedStaffId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   assignedById?: Prisma.SortOrder
   assignedAt?: Prisma.SortOrder
@@ -947,6 +971,48 @@ export type ApplicationOrganizationUncheckedUpdateManyWithoutAssignedAsTypeNeste
   connect?: Prisma.ApplicationOrganizationWhereUniqueInput | Prisma.ApplicationOrganizationWhereUniqueInput[]
   update?: Prisma.ApplicationOrganizationUpdateWithWhereUniqueWithoutAssignedAsTypeInput | Prisma.ApplicationOrganizationUpdateWithWhereUniqueWithoutAssignedAsTypeInput[]
   updateMany?: Prisma.ApplicationOrganizationUpdateManyWithWhereWithoutAssignedAsTypeInput | Prisma.ApplicationOrganizationUpdateManyWithWhereWithoutAssignedAsTypeInput[]
+  deleteMany?: Prisma.ApplicationOrganizationScalarWhereInput | Prisma.ApplicationOrganizationScalarWhereInput[]
+}
+
+export type ApplicationOrganizationCreateNestedManyWithoutAssignedStaffInput = {
+  create?: Prisma.XOR<Prisma.ApplicationOrganizationCreateWithoutAssignedStaffInput, Prisma.ApplicationOrganizationUncheckedCreateWithoutAssignedStaffInput> | Prisma.ApplicationOrganizationCreateWithoutAssignedStaffInput[] | Prisma.ApplicationOrganizationUncheckedCreateWithoutAssignedStaffInput[]
+  connectOrCreate?: Prisma.ApplicationOrganizationCreateOrConnectWithoutAssignedStaffInput | Prisma.ApplicationOrganizationCreateOrConnectWithoutAssignedStaffInput[]
+  createMany?: Prisma.ApplicationOrganizationCreateManyAssignedStaffInputEnvelope
+  connect?: Prisma.ApplicationOrganizationWhereUniqueInput | Prisma.ApplicationOrganizationWhereUniqueInput[]
+}
+
+export type ApplicationOrganizationUncheckedCreateNestedManyWithoutAssignedStaffInput = {
+  create?: Prisma.XOR<Prisma.ApplicationOrganizationCreateWithoutAssignedStaffInput, Prisma.ApplicationOrganizationUncheckedCreateWithoutAssignedStaffInput> | Prisma.ApplicationOrganizationCreateWithoutAssignedStaffInput[] | Prisma.ApplicationOrganizationUncheckedCreateWithoutAssignedStaffInput[]
+  connectOrCreate?: Prisma.ApplicationOrganizationCreateOrConnectWithoutAssignedStaffInput | Prisma.ApplicationOrganizationCreateOrConnectWithoutAssignedStaffInput[]
+  createMany?: Prisma.ApplicationOrganizationCreateManyAssignedStaffInputEnvelope
+  connect?: Prisma.ApplicationOrganizationWhereUniqueInput | Prisma.ApplicationOrganizationWhereUniqueInput[]
+}
+
+export type ApplicationOrganizationUpdateManyWithoutAssignedStaffNestedInput = {
+  create?: Prisma.XOR<Prisma.ApplicationOrganizationCreateWithoutAssignedStaffInput, Prisma.ApplicationOrganizationUncheckedCreateWithoutAssignedStaffInput> | Prisma.ApplicationOrganizationCreateWithoutAssignedStaffInput[] | Prisma.ApplicationOrganizationUncheckedCreateWithoutAssignedStaffInput[]
+  connectOrCreate?: Prisma.ApplicationOrganizationCreateOrConnectWithoutAssignedStaffInput | Prisma.ApplicationOrganizationCreateOrConnectWithoutAssignedStaffInput[]
+  upsert?: Prisma.ApplicationOrganizationUpsertWithWhereUniqueWithoutAssignedStaffInput | Prisma.ApplicationOrganizationUpsertWithWhereUniqueWithoutAssignedStaffInput[]
+  createMany?: Prisma.ApplicationOrganizationCreateManyAssignedStaffInputEnvelope
+  set?: Prisma.ApplicationOrganizationWhereUniqueInput | Prisma.ApplicationOrganizationWhereUniqueInput[]
+  disconnect?: Prisma.ApplicationOrganizationWhereUniqueInput | Prisma.ApplicationOrganizationWhereUniqueInput[]
+  delete?: Prisma.ApplicationOrganizationWhereUniqueInput | Prisma.ApplicationOrganizationWhereUniqueInput[]
+  connect?: Prisma.ApplicationOrganizationWhereUniqueInput | Prisma.ApplicationOrganizationWhereUniqueInput[]
+  update?: Prisma.ApplicationOrganizationUpdateWithWhereUniqueWithoutAssignedStaffInput | Prisma.ApplicationOrganizationUpdateWithWhereUniqueWithoutAssignedStaffInput[]
+  updateMany?: Prisma.ApplicationOrganizationUpdateManyWithWhereWithoutAssignedStaffInput | Prisma.ApplicationOrganizationUpdateManyWithWhereWithoutAssignedStaffInput[]
+  deleteMany?: Prisma.ApplicationOrganizationScalarWhereInput | Prisma.ApplicationOrganizationScalarWhereInput[]
+}
+
+export type ApplicationOrganizationUncheckedUpdateManyWithoutAssignedStaffNestedInput = {
+  create?: Prisma.XOR<Prisma.ApplicationOrganizationCreateWithoutAssignedStaffInput, Prisma.ApplicationOrganizationUncheckedCreateWithoutAssignedStaffInput> | Prisma.ApplicationOrganizationCreateWithoutAssignedStaffInput[] | Prisma.ApplicationOrganizationUncheckedCreateWithoutAssignedStaffInput[]
+  connectOrCreate?: Prisma.ApplicationOrganizationCreateOrConnectWithoutAssignedStaffInput | Prisma.ApplicationOrganizationCreateOrConnectWithoutAssignedStaffInput[]
+  upsert?: Prisma.ApplicationOrganizationUpsertWithWhereUniqueWithoutAssignedStaffInput | Prisma.ApplicationOrganizationUpsertWithWhereUniqueWithoutAssignedStaffInput[]
+  createMany?: Prisma.ApplicationOrganizationCreateManyAssignedStaffInputEnvelope
+  set?: Prisma.ApplicationOrganizationWhereUniqueInput | Prisma.ApplicationOrganizationWhereUniqueInput[]
+  disconnect?: Prisma.ApplicationOrganizationWhereUniqueInput | Prisma.ApplicationOrganizationWhereUniqueInput[]
+  delete?: Prisma.ApplicationOrganizationWhereUniqueInput | Prisma.ApplicationOrganizationWhereUniqueInput[]
+  connect?: Prisma.ApplicationOrganizationWhereUniqueInput | Prisma.ApplicationOrganizationWhereUniqueInput[]
+  update?: Prisma.ApplicationOrganizationUpdateWithWhereUniqueWithoutAssignedStaffInput | Prisma.ApplicationOrganizationUpdateWithWhereUniqueWithoutAssignedStaffInput[]
+  updateMany?: Prisma.ApplicationOrganizationUpdateManyWithWhereWithoutAssignedStaffInput | Prisma.ApplicationOrganizationUpdateManyWithWhereWithoutAssignedStaffInput[]
   deleteMany?: Prisma.ApplicationOrganizationScalarWhereInput | Prisma.ApplicationOrganizationScalarWhereInput[]
 }
 
@@ -1109,6 +1175,7 @@ export type ApplicationOrganizationCreateWithoutAssignedAsTypeInput = {
   tenant: Prisma.TenantCreateNestedOneWithoutApplicationOrganizationsInput
   application: Prisma.ApplicationCreateNestedOneWithoutOrganizationsInput
   organization: Prisma.OrganizationCreateNestedOneWithoutApplicationAssignmentsInput
+  assignedStaff?: Prisma.UserCreateNestedOneWithoutAssignedApplicationOrgsInput
 }
 
 export type ApplicationOrganizationUncheckedCreateWithoutAssignedAsTypeInput = {
@@ -1116,6 +1183,7 @@ export type ApplicationOrganizationUncheckedCreateWithoutAssignedAsTypeInput = {
   tenantId: string
   applicationId: string
   organizationId: string
+  assignedStaffId?: string | null
   status?: $Enums.ApplicationOrganizationStatus
   assignedById?: string | null
   assignedAt?: Date | string
@@ -1177,6 +1245,7 @@ export type ApplicationOrganizationScalarWhereInput = {
   applicationId?: Prisma.StringFilter<"ApplicationOrganization"> | string
   organizationId?: Prisma.StringFilter<"ApplicationOrganization"> | string
   assignedAsTypeId?: Prisma.StringFilter<"ApplicationOrganization"> | string
+  assignedStaffId?: Prisma.StringNullableFilter<"ApplicationOrganization"> | string | null
   status?: Prisma.EnumApplicationOrganizationStatusFilter<"ApplicationOrganization"> | $Enums.ApplicationOrganizationStatus
   assignedById?: Prisma.StringNullableFilter<"ApplicationOrganization"> | string | null
   assignedAt?: Prisma.DateTimeFilter<"ApplicationOrganization"> | Date | string
@@ -1201,6 +1270,96 @@ export type ApplicationOrganizationScalarWhereInput = {
   escalationNotes?: Prisma.StringNullableFilter<"ApplicationOrganization"> | string | null
   createdAt?: Prisma.DateTimeFilter<"ApplicationOrganization"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ApplicationOrganization"> | Date | string
+}
+
+export type ApplicationOrganizationCreateWithoutAssignedStaffInput = {
+  id?: string
+  status?: $Enums.ApplicationOrganizationStatus
+  assignedById?: string | null
+  assignedAt?: Date | string
+  isPrimary?: boolean
+  offeredTerms?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  termsOfferedAt?: Date | string | null
+  termsAcceptedAt?: Date | string | null
+  termsDeclinedAt?: Date | string | null
+  declineReason?: string | null
+  activatedAt?: Date | string | null
+  completedAt?: Date | string | null
+  withdrawnAt?: Date | string | null
+  slaHours?: number | null
+  slaStartedAt?: Date | string | null
+  slaBreachedAt?: Date | string | null
+  slaBreachNotified?: boolean
+  reminderCount?: number
+  lastReminderSentAt?: Date | string | null
+  nextReminderAt?: Date | string | null
+  escalatedAt?: Date | string | null
+  escalatedToUserId?: string | null
+  escalationNotes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutApplicationOrganizationsInput
+  application: Prisma.ApplicationCreateNestedOneWithoutOrganizationsInput
+  organization: Prisma.OrganizationCreateNestedOneWithoutApplicationAssignmentsInput
+  assignedAsType: Prisma.OrganizationTypeCreateNestedOneWithoutApplicationOrganizationsInput
+}
+
+export type ApplicationOrganizationUncheckedCreateWithoutAssignedStaffInput = {
+  id?: string
+  tenantId: string
+  applicationId: string
+  organizationId: string
+  assignedAsTypeId: string
+  status?: $Enums.ApplicationOrganizationStatus
+  assignedById?: string | null
+  assignedAt?: Date | string
+  isPrimary?: boolean
+  offeredTerms?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  termsOfferedAt?: Date | string | null
+  termsAcceptedAt?: Date | string | null
+  termsDeclinedAt?: Date | string | null
+  declineReason?: string | null
+  activatedAt?: Date | string | null
+  completedAt?: Date | string | null
+  withdrawnAt?: Date | string | null
+  slaHours?: number | null
+  slaStartedAt?: Date | string | null
+  slaBreachedAt?: Date | string | null
+  slaBreachNotified?: boolean
+  reminderCount?: number
+  lastReminderSentAt?: Date | string | null
+  nextReminderAt?: Date | string | null
+  escalatedAt?: Date | string | null
+  escalatedToUserId?: string | null
+  escalationNotes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ApplicationOrganizationCreateOrConnectWithoutAssignedStaffInput = {
+  where: Prisma.ApplicationOrganizationWhereUniqueInput
+  create: Prisma.XOR<Prisma.ApplicationOrganizationCreateWithoutAssignedStaffInput, Prisma.ApplicationOrganizationUncheckedCreateWithoutAssignedStaffInput>
+}
+
+export type ApplicationOrganizationCreateManyAssignedStaffInputEnvelope = {
+  data: Prisma.ApplicationOrganizationCreateManyAssignedStaffInput | Prisma.ApplicationOrganizationCreateManyAssignedStaffInput[]
+  skipDuplicates?: boolean
+}
+
+export type ApplicationOrganizationUpsertWithWhereUniqueWithoutAssignedStaffInput = {
+  where: Prisma.ApplicationOrganizationWhereUniqueInput
+  update: Prisma.XOR<Prisma.ApplicationOrganizationUpdateWithoutAssignedStaffInput, Prisma.ApplicationOrganizationUncheckedUpdateWithoutAssignedStaffInput>
+  create: Prisma.XOR<Prisma.ApplicationOrganizationCreateWithoutAssignedStaffInput, Prisma.ApplicationOrganizationUncheckedCreateWithoutAssignedStaffInput>
+}
+
+export type ApplicationOrganizationUpdateWithWhereUniqueWithoutAssignedStaffInput = {
+  where: Prisma.ApplicationOrganizationWhereUniqueInput
+  data: Prisma.XOR<Prisma.ApplicationOrganizationUpdateWithoutAssignedStaffInput, Prisma.ApplicationOrganizationUncheckedUpdateWithoutAssignedStaffInput>
+}
+
+export type ApplicationOrganizationUpdateManyWithWhereWithoutAssignedStaffInput = {
+  where: Prisma.ApplicationOrganizationScalarWhereInput
+  data: Prisma.XOR<Prisma.ApplicationOrganizationUpdateManyMutationInput, Prisma.ApplicationOrganizationUncheckedUpdateManyWithoutAssignedStaffInput>
 }
 
 export type ApplicationOrganizationCreateWithoutOrganizationInput = {
@@ -1232,6 +1391,7 @@ export type ApplicationOrganizationCreateWithoutOrganizationInput = {
   tenant: Prisma.TenantCreateNestedOneWithoutApplicationOrganizationsInput
   application: Prisma.ApplicationCreateNestedOneWithoutOrganizationsInput
   assignedAsType: Prisma.OrganizationTypeCreateNestedOneWithoutApplicationOrganizationsInput
+  assignedStaff?: Prisma.UserCreateNestedOneWithoutAssignedApplicationOrgsInput
 }
 
 export type ApplicationOrganizationUncheckedCreateWithoutOrganizationInput = {
@@ -1239,6 +1399,7 @@ export type ApplicationOrganizationUncheckedCreateWithoutOrganizationInput = {
   tenantId: string
   applicationId: string
   assignedAsTypeId: string
+  assignedStaffId?: string | null
   status?: $Enums.ApplicationOrganizationStatus
   assignedById?: string | null
   assignedAt?: Date | string
@@ -1320,6 +1481,7 @@ export type ApplicationOrganizationCreateWithoutTenantInput = {
   application: Prisma.ApplicationCreateNestedOneWithoutOrganizationsInput
   organization: Prisma.OrganizationCreateNestedOneWithoutApplicationAssignmentsInput
   assignedAsType: Prisma.OrganizationTypeCreateNestedOneWithoutApplicationOrganizationsInput
+  assignedStaff?: Prisma.UserCreateNestedOneWithoutAssignedApplicationOrgsInput
 }
 
 export type ApplicationOrganizationUncheckedCreateWithoutTenantInput = {
@@ -1327,6 +1489,7 @@ export type ApplicationOrganizationUncheckedCreateWithoutTenantInput = {
   applicationId: string
   organizationId: string
   assignedAsTypeId: string
+  assignedStaffId?: string | null
   status?: $Enums.ApplicationOrganizationStatus
   assignedById?: string | null
   assignedAt?: Date | string
@@ -1408,6 +1571,7 @@ export type ApplicationOrganizationCreateWithoutApplicationInput = {
   tenant: Prisma.TenantCreateNestedOneWithoutApplicationOrganizationsInput
   organization: Prisma.OrganizationCreateNestedOneWithoutApplicationAssignmentsInput
   assignedAsType: Prisma.OrganizationTypeCreateNestedOneWithoutApplicationOrganizationsInput
+  assignedStaff?: Prisma.UserCreateNestedOneWithoutAssignedApplicationOrgsInput
 }
 
 export type ApplicationOrganizationUncheckedCreateWithoutApplicationInput = {
@@ -1415,6 +1579,7 @@ export type ApplicationOrganizationUncheckedCreateWithoutApplicationInput = {
   tenantId: string
   organizationId: string
   assignedAsTypeId: string
+  assignedStaffId?: string | null
   status?: $Enums.ApplicationOrganizationStatus
   assignedById?: string | null
   assignedAt?: Date | string
@@ -1472,6 +1637,7 @@ export type ApplicationOrganizationCreateManyAssignedAsTypeInput = {
   tenantId: string
   applicationId: string
   organizationId: string
+  assignedStaffId?: string | null
   status?: $Enums.ApplicationOrganizationStatus
   assignedById?: string | null
   assignedAt?: Date | string
@@ -1527,6 +1693,7 @@ export type ApplicationOrganizationUpdateWithoutAssignedAsTypeInput = {
   tenant?: Prisma.TenantUpdateOneRequiredWithoutApplicationOrganizationsNestedInput
   application?: Prisma.ApplicationUpdateOneRequiredWithoutOrganizationsNestedInput
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutApplicationAssignmentsNestedInput
+  assignedStaff?: Prisma.UserUpdateOneWithoutAssignedApplicationOrgsNestedInput
 }
 
 export type ApplicationOrganizationUncheckedUpdateWithoutAssignedAsTypeInput = {
@@ -1534,6 +1701,7 @@ export type ApplicationOrganizationUncheckedUpdateWithoutAssignedAsTypeInput = {
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedStaffId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumApplicationOrganizationStatusFieldUpdateOperationsInput | $Enums.ApplicationOrganizationStatus
   assignedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1565,6 +1733,135 @@ export type ApplicationOrganizationUncheckedUpdateManyWithoutAssignedAsTypeInput
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedStaffId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumApplicationOrganizationStatusFieldUpdateOperationsInput | $Enums.ApplicationOrganizationStatus
+  assignedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  offeredTerms?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  termsOfferedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  termsAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  termsDeclinedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  declineReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  withdrawnAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  slaHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  slaStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  slaBreachedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  slaBreachNotified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  reminderCount?: Prisma.IntFieldUpdateOperationsInput | number
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  nextReminderAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  escalatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  escalatedToUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  escalationNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ApplicationOrganizationCreateManyAssignedStaffInput = {
+  id?: string
+  tenantId: string
+  applicationId: string
+  organizationId: string
+  assignedAsTypeId: string
+  status?: $Enums.ApplicationOrganizationStatus
+  assignedById?: string | null
+  assignedAt?: Date | string
+  isPrimary?: boolean
+  offeredTerms?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  termsOfferedAt?: Date | string | null
+  termsAcceptedAt?: Date | string | null
+  termsDeclinedAt?: Date | string | null
+  declineReason?: string | null
+  activatedAt?: Date | string | null
+  completedAt?: Date | string | null
+  withdrawnAt?: Date | string | null
+  slaHours?: number | null
+  slaStartedAt?: Date | string | null
+  slaBreachedAt?: Date | string | null
+  slaBreachNotified?: boolean
+  reminderCount?: number
+  lastReminderSentAt?: Date | string | null
+  nextReminderAt?: Date | string | null
+  escalatedAt?: Date | string | null
+  escalatedToUserId?: string | null
+  escalationNotes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ApplicationOrganizationUpdateWithoutAssignedStaffInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumApplicationOrganizationStatusFieldUpdateOperationsInput | $Enums.ApplicationOrganizationStatus
+  assignedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  offeredTerms?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  termsOfferedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  termsAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  termsDeclinedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  declineReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  withdrawnAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  slaHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  slaStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  slaBreachedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  slaBreachNotified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  reminderCount?: Prisma.IntFieldUpdateOperationsInput | number
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  nextReminderAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  escalatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  escalatedToUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  escalationNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutApplicationOrganizationsNestedInput
+  application?: Prisma.ApplicationUpdateOneRequiredWithoutOrganizationsNestedInput
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutApplicationAssignmentsNestedInput
+  assignedAsType?: Prisma.OrganizationTypeUpdateOneRequiredWithoutApplicationOrganizationsNestedInput
+}
+
+export type ApplicationOrganizationUncheckedUpdateWithoutAssignedStaffInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  applicationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedAsTypeId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumApplicationOrganizationStatusFieldUpdateOperationsInput | $Enums.ApplicationOrganizationStatus
+  assignedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  offeredTerms?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  termsOfferedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  termsAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  termsDeclinedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  declineReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  withdrawnAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  slaHours?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  slaStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  slaBreachedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  slaBreachNotified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  reminderCount?: Prisma.IntFieldUpdateOperationsInput | number
+  lastReminderSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  nextReminderAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  escalatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  escalatedToUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  escalationNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ApplicationOrganizationUncheckedUpdateManyWithoutAssignedStaffInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  applicationId?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedAsTypeId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumApplicationOrganizationStatusFieldUpdateOperationsInput | $Enums.ApplicationOrganizationStatus
   assignedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1596,6 +1893,7 @@ export type ApplicationOrganizationCreateManyOrganizationInput = {
   tenantId: string
   applicationId: string
   assignedAsTypeId: string
+  assignedStaffId?: string | null
   status?: $Enums.ApplicationOrganizationStatus
   assignedById?: string | null
   assignedAt?: Date | string
@@ -1651,6 +1949,7 @@ export type ApplicationOrganizationUpdateWithoutOrganizationInput = {
   tenant?: Prisma.TenantUpdateOneRequiredWithoutApplicationOrganizationsNestedInput
   application?: Prisma.ApplicationUpdateOneRequiredWithoutOrganizationsNestedInput
   assignedAsType?: Prisma.OrganizationTypeUpdateOneRequiredWithoutApplicationOrganizationsNestedInput
+  assignedStaff?: Prisma.UserUpdateOneWithoutAssignedApplicationOrgsNestedInput
 }
 
 export type ApplicationOrganizationUncheckedUpdateWithoutOrganizationInput = {
@@ -1658,6 +1957,7 @@ export type ApplicationOrganizationUncheckedUpdateWithoutOrganizationInput = {
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   assignedAsTypeId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedStaffId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumApplicationOrganizationStatusFieldUpdateOperationsInput | $Enums.ApplicationOrganizationStatus
   assignedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1689,6 +1989,7 @@ export type ApplicationOrganizationUncheckedUpdateManyWithoutOrganizationInput =
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   assignedAsTypeId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedStaffId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumApplicationOrganizationStatusFieldUpdateOperationsInput | $Enums.ApplicationOrganizationStatus
   assignedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1720,6 +2021,7 @@ export type ApplicationOrganizationCreateManyTenantInput = {
   applicationId: string
   organizationId: string
   assignedAsTypeId: string
+  assignedStaffId?: string | null
   status?: $Enums.ApplicationOrganizationStatus
   assignedById?: string | null
   assignedAt?: Date | string
@@ -1775,6 +2077,7 @@ export type ApplicationOrganizationUpdateWithoutTenantInput = {
   application?: Prisma.ApplicationUpdateOneRequiredWithoutOrganizationsNestedInput
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutApplicationAssignmentsNestedInput
   assignedAsType?: Prisma.OrganizationTypeUpdateOneRequiredWithoutApplicationOrganizationsNestedInput
+  assignedStaff?: Prisma.UserUpdateOneWithoutAssignedApplicationOrgsNestedInput
 }
 
 export type ApplicationOrganizationUncheckedUpdateWithoutTenantInput = {
@@ -1782,6 +2085,7 @@ export type ApplicationOrganizationUncheckedUpdateWithoutTenantInput = {
   applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   assignedAsTypeId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedStaffId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumApplicationOrganizationStatusFieldUpdateOperationsInput | $Enums.ApplicationOrganizationStatus
   assignedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1813,6 +2117,7 @@ export type ApplicationOrganizationUncheckedUpdateManyWithoutTenantInput = {
   applicationId?: Prisma.StringFieldUpdateOperationsInput | string
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   assignedAsTypeId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedStaffId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumApplicationOrganizationStatusFieldUpdateOperationsInput | $Enums.ApplicationOrganizationStatus
   assignedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1844,6 +2149,7 @@ export type ApplicationOrganizationCreateManyApplicationInput = {
   tenantId: string
   organizationId: string
   assignedAsTypeId: string
+  assignedStaffId?: string | null
   status?: $Enums.ApplicationOrganizationStatus
   assignedById?: string | null
   assignedAt?: Date | string
@@ -1899,6 +2205,7 @@ export type ApplicationOrganizationUpdateWithoutApplicationInput = {
   tenant?: Prisma.TenantUpdateOneRequiredWithoutApplicationOrganizationsNestedInput
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutApplicationAssignmentsNestedInput
   assignedAsType?: Prisma.OrganizationTypeUpdateOneRequiredWithoutApplicationOrganizationsNestedInput
+  assignedStaff?: Prisma.UserUpdateOneWithoutAssignedApplicationOrgsNestedInput
 }
 
 export type ApplicationOrganizationUncheckedUpdateWithoutApplicationInput = {
@@ -1906,6 +2213,7 @@ export type ApplicationOrganizationUncheckedUpdateWithoutApplicationInput = {
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   assignedAsTypeId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedStaffId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumApplicationOrganizationStatusFieldUpdateOperationsInput | $Enums.ApplicationOrganizationStatus
   assignedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1937,6 +2245,7 @@ export type ApplicationOrganizationUncheckedUpdateManyWithoutApplicationInput = 
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   assignedAsTypeId?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedStaffId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumApplicationOrganizationStatusFieldUpdateOperationsInput | $Enums.ApplicationOrganizationStatus
   assignedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1971,6 +2280,7 @@ export type ApplicationOrganizationSelect<ExtArgs extends runtime.Types.Extensio
   applicationId?: boolean
   organizationId?: boolean
   assignedAsTypeId?: boolean
+  assignedStaffId?: boolean
   status?: boolean
   assignedById?: boolean
   assignedAt?: boolean
@@ -1999,6 +2309,7 @@ export type ApplicationOrganizationSelect<ExtArgs extends runtime.Types.Extensio
   application?: boolean | Prisma.ApplicationDefaultArgs<ExtArgs>
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   assignedAsType?: boolean | Prisma.OrganizationTypeDefaultArgs<ExtArgs>
+  assignedStaff?: boolean | Prisma.ApplicationOrganization$assignedStaffArgs<ExtArgs>
 }, ExtArgs["result"]["applicationOrganization"]>
 
 
@@ -2009,6 +2320,7 @@ export type ApplicationOrganizationSelectScalar = {
   applicationId?: boolean
   organizationId?: boolean
   assignedAsTypeId?: boolean
+  assignedStaffId?: boolean
   status?: boolean
   assignedById?: boolean
   assignedAt?: boolean
@@ -2035,12 +2347,13 @@ export type ApplicationOrganizationSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ApplicationOrganizationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "applicationId" | "organizationId" | "assignedAsTypeId" | "status" | "assignedById" | "assignedAt" | "isPrimary" | "offeredTerms" | "termsOfferedAt" | "termsAcceptedAt" | "termsDeclinedAt" | "declineReason" | "activatedAt" | "completedAt" | "withdrawnAt" | "slaHours" | "slaStartedAt" | "slaBreachedAt" | "slaBreachNotified" | "reminderCount" | "lastReminderSentAt" | "nextReminderAt" | "escalatedAt" | "escalatedToUserId" | "escalationNotes" | "createdAt" | "updatedAt", ExtArgs["result"]["applicationOrganization"]>
+export type ApplicationOrganizationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "applicationId" | "organizationId" | "assignedAsTypeId" | "assignedStaffId" | "status" | "assignedById" | "assignedAt" | "isPrimary" | "offeredTerms" | "termsOfferedAt" | "termsAcceptedAt" | "termsDeclinedAt" | "declineReason" | "activatedAt" | "completedAt" | "withdrawnAt" | "slaHours" | "slaStartedAt" | "slaBreachedAt" | "slaBreachNotified" | "reminderCount" | "lastReminderSentAt" | "nextReminderAt" | "escalatedAt" | "escalatedToUserId" | "escalationNotes" | "createdAt" | "updatedAt", ExtArgs["result"]["applicationOrganization"]>
 export type ApplicationOrganizationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   application?: boolean | Prisma.ApplicationDefaultArgs<ExtArgs>
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   assignedAsType?: boolean | Prisma.OrganizationTypeDefaultArgs<ExtArgs>
+  assignedStaff?: boolean | Prisma.ApplicationOrganization$assignedStaffArgs<ExtArgs>
 }
 
 export type $ApplicationOrganizationPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2050,6 +2363,7 @@ export type $ApplicationOrganizationPayload<ExtArgs extends runtime.Types.Extens
     application: Prisma.$ApplicationPayload<ExtArgs>
     organization: Prisma.$OrganizationPayload<ExtArgs>
     assignedAsType: Prisma.$OrganizationTypePayload<ExtArgs>
+    assignedStaff: Prisma.$UserPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2057,6 +2371,7 @@ export type $ApplicationOrganizationPayload<ExtArgs extends runtime.Types.Extens
     applicationId: string
     organizationId: string
     assignedAsTypeId: string
+    assignedStaffId: string | null
     status: $Enums.ApplicationOrganizationStatus
     assignedById: string | null
     assignedAt: Date
@@ -2425,6 +2740,7 @@ export interface Prisma__ApplicationOrganizationClient<T, Null = never, ExtArgs 
   application<T extends Prisma.ApplicationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApplicationDefaultArgs<ExtArgs>>): Prisma.Prisma__ApplicationClient<runtime.Types.Result.GetResult<Prisma.$ApplicationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   organization<T extends Prisma.OrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   assignedAsType<T extends Prisma.OrganizationTypeDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationTypeDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationTypeClient<runtime.Types.Result.GetResult<Prisma.$OrganizationTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  assignedStaff<T extends Prisma.ApplicationOrganization$assignedStaffArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApplicationOrganization$assignedStaffArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2459,6 +2775,7 @@ export interface ApplicationOrganizationFieldRefs {
   readonly applicationId: Prisma.FieldRef<"ApplicationOrganization", 'String'>
   readonly organizationId: Prisma.FieldRef<"ApplicationOrganization", 'String'>
   readonly assignedAsTypeId: Prisma.FieldRef<"ApplicationOrganization", 'String'>
+  readonly assignedStaffId: Prisma.FieldRef<"ApplicationOrganization", 'String'>
   readonly status: Prisma.FieldRef<"ApplicationOrganization", 'ApplicationOrganizationStatus'>
   readonly assignedById: Prisma.FieldRef<"ApplicationOrganization", 'String'>
   readonly assignedAt: Prisma.FieldRef<"ApplicationOrganization", 'DateTime'>
@@ -2823,6 +3140,25 @@ export type ApplicationOrganizationDeleteManyArgs<ExtArgs extends runtime.Types.
    * Limit how many ApplicationOrganizations to delete.
    */
   limit?: number
+}
+
+/**
+ * ApplicationOrganization.assignedStaff
+ */
+export type ApplicationOrganization$assignedStaffArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
 }
 
 /**

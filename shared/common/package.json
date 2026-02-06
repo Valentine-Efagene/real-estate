@@ -1,6 +1,6 @@
 {
   "name": "@valentine-efagene/qshelter-common",
-  "version": "2.0.173",
+  "version": "2.0.174",
   "description": "Shared database schemas and utilities for QShelter services",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",

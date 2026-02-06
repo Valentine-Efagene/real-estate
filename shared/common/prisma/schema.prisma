@@ -544,6 +544,9 @@ model User {
   // Organization invitations sent by this user
   sentInvitations OrganizationInvitation[] @relation("InvitedByUser")
 
+  // Applications where this user is assigned as the staff handler for an org
+  assignedApplicationOrgs ApplicationOrganization[] @relation("ApplicationOrgAssignedStaff")
+
   @@index([email])
   @@index([tenantId])
   @@map("users")
@@ -2210,6 +2213,12 @@ model ApplicationOrganization {
   // (org must have this type in their OrganizationTypeAssignment)
   assignedAsTypeId String
   assignedAsType   OrganizationType @relation(fields: [assignedAsTypeId], references: [id])
+
+  // Optional: Specific staff member assigned to handle this application
+  // If null, any staff from the organization can act
+  // If set, only this staff member can perform actions for this org on this application
+  assignedStaffId String?
+  assignedStaff   User?    @relation("ApplicationOrgAssignedStaff", fields: [assignedStaffId], references: [id])
 
   status ApplicationOrganizationStatus @default(PENDING)
 
