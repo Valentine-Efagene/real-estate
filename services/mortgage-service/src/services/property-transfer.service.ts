@@ -567,7 +567,9 @@ class PropertyTransferService {
                                     name: stage.name,
                                     order: stage.order,
                                     organizationTypeId: stage.organizationTypeId,
-                                    status: StageStatus.PENDING,
+                                    // First stage is IN_PROGRESS, others are PENDING
+                                    status: stage.order === 1 ? StageStatus.IN_PROGRESS : StageStatus.PENDING,
+                                    activatedAt: stage.order === 1 ? new Date() : null,
                                     onRejection: stage.onRejection || 'BLOCK',
                                 },
                             });

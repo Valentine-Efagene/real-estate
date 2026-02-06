@@ -391,12 +391,38 @@ export function createApprovalWorkflowService() {
             const docPhase = phase.documentationPhase;
 
             // Get the current active stage
-            const currentStage = docPhase.stageProgress.find(
+            let currentStage = docPhase.stageProgress.find(
                 (s: any) => s.status === 'IN_PROGRESS'
             );
 
+            // If no IN_PROGRESS stage, check if first stage is PENDING and auto-activate it
+            // This handles the edge case where stage was created without proper activation
             if (!currentStage) {
-                throw new AppError(400, 'No active approval stage found');
+                const firstPendingStage = docPhase.stageProgress.find(
+                    (s: any) => s.status === 'PENDING' && s.order === docPhase.currentStageOrder
+                );
+
+                if (firstPendingStage) {
+                    // Auto-activate the first pending stage
+                    await prisma.approvalStageProgress.update({
+                        where: { id: firstPendingStage.id },
+                        data: {
+                            status: 'IN_PROGRESS',
+                            activatedAt: new Date(),
+                        },
+                    });
+
+                    // Refetch the stage with updated status
+                    currentStage = {
+                        ...firstPendingStage,
+                        status: 'IN_PROGRESS',
+                        activatedAt: new Date(),
+                    };
+
+                    console.log(`Auto-activated stage ${firstPendingStage.name} (order ${firstPendingStage.order})`);
+                } else {
+                    throw new AppError(400, 'No active approval stage found');
+                }
             }
 
             // Verify reviewer's organization type matches the current stage

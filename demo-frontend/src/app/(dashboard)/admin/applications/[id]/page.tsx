@@ -541,157 +541,184 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
       {actionLoading ? (
         <Skeleton className="h-48" />
       ) : currentAction?.currentPhase?.phaseCategory === 'DOCUMENTATION' && currentAction.uploadedDocuments?.length > 0 ? (
-        <Card>
-          <CardHeader>
-            <CardTitle>Document Review</CardTitle>
-            <CardDescription>
-              Review uploaded documents for this phase
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {currentAction.uploadedDocuments.map((doc) => (
-                <div
-                  key={doc.id}
-                  className="flex items-center justify-between p-4 border rounded-lg"
-                >
-                  <div>
-                    <p className="font-medium">{doc.name}</p>
-                    <p className="text-sm text-gray-500">{doc.type}</p>
-                    <Badge
-                      variant={
-                        doc.status === 'APPROVED'
-                          ? 'default'
-                          : doc.status === 'REJECTED'
-                            ? 'destructive'
-                            : 'outline'
-                      }
-                      className="mt-2"
-                    >
-                      {doc.status}
-                    </Badge>
-                  </div>
-                  <div className="flex gap-2">
-                    {/* View Document Button */}
-                    {doc.url && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleViewDocument(doc.id, doc.url!)}
-                        disabled={loadingPresignedUrl === doc.id}
-                      >
-                        {loadingPresignedUrl === doc.id ? 'Loading...' : 'View'}
-                      </Button>
-                    )}
-                    {doc.status === 'PENDING' && (
-                      <>
-                        <Dialog
-                          open={reviewingDocId === doc.id}
-                          onOpenChange={(open) => {
-                            if (!open) {
-                              setReviewingDocId(null);
-                              setReviewComment('');
-                            }
-                          }}
-                        >
-                          <DialogTrigger asChild>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleOpenReviewDialog(doc.id, doc.url)}
-                            >
-                              Review
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-                            <DialogHeader>
-                              <DialogTitle>Review Document</DialogTitle>
-                              <DialogDescription>
-                                {doc.name} ({doc.type})
-                              </DialogDescription>
-                            </DialogHeader>
+        (() => {
+          // Check if current user's party action is REVIEW
+          const userPartyType = currentAction.userPartyType;
+          const userPartyAction = userPartyType && currentAction.partyActions
+            ? currentAction.partyActions[userPartyType]
+            : null;
+          const canReview = userPartyAction && userPartyAction.action === 'REVIEW' && userPartyAction.canCurrentUserAct;
 
-                            {/* Document Preview */}
-                            {doc.url && (
-                              <div className="border rounded-lg overflow-hidden bg-gray-100">
-                                {presignedUrls[doc.id] ? (
-                                  doc.url.match(/\.(pdf)$/i) || doc.type?.toLowerCase().includes('pdf') ? (
-                                    <iframe
-                                      src={presignedUrls[doc.id]}
-                                      className="w-full h-[500px]"
-                                      title={`Preview: ${doc.name}`}
-                                    />
-                                  ) : doc.url.match(/\.(jpg|jpeg|png|gif|webp)$/i) || doc.type?.toLowerCase().includes('image') ? (
-                                    <div className="flex items-center justify-center p-4">
-                                      <img
-                                        src={presignedUrls[doc.id]}
-                                        alt={doc.name}
-                                        className="max-w-full max-h-[500px] object-contain"
-                                      />
-                                    </div>
-                                  ) : (
-                                    <div className="flex flex-col items-center justify-center p-8 text-gray-500">
-                                      <span className="text-4xl mb-2">📄</span>
-                                      <p>Preview not available for this file type</p>
-                                      <Button
-                                        variant="link"
-                                        onClick={() => window.open(presignedUrls[doc.id], '_blank')}
-                                      >
-                                        Open in new tab →
-                                      </Button>
-                                    </div>
-                                  )
-                                ) : (
-                                  <div className="flex items-center justify-center p-8 text-gray-500">
-                                    <span>Loading preview...</span>
+          return (
+            <Card>
+              <CardHeader>
+                <CardTitle>Uploaded Documents</CardTitle>
+                <CardDescription>
+                  {canReview
+                    ? 'Review uploaded documents for this phase'
+                    : 'Documents uploaded for this phase'}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {currentAction.uploadedDocuments.map((doc) => (
+                    <div
+                      key={doc.id}
+                      className="flex items-center justify-between p-4 border rounded-lg"
+                    >
+                      <div>
+                        <p className="font-medium">{doc.name}</p>
+                        <p className="text-sm text-gray-500">{doc.type}</p>
+                        {doc.uploadedBy && (
+                          <p className="text-xs text-gray-400">Uploaded by: {doc.uploadedBy}</p>
+                        )}
+                        <Badge
+                          variant={
+                            doc.status === 'APPROVED'
+                              ? 'default'
+                              : doc.status === 'REJECTED'
+                                ? 'destructive'
+                                : 'outline'
+                          }
+                          className="mt-2"
+                        >
+                          {doc.status}
+                        </Badge>
+                      </div>
+                      <div className="flex gap-2">
+                        {/* View Document Button */}
+                        {doc.url && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleViewDocument(doc.id, doc.url!)}
+                            disabled={loadingPresignedUrl === doc.id}
+                          >
+                            {loadingPresignedUrl === doc.id ? 'Loading...' : 'View'}
+                          </Button>
+                        )}
+                        {/* Only show Review button if user's party action is REVIEW */}
+                        {doc.status === 'PENDING' && canReview && (
+                          <>
+                            <Dialog
+                              open={reviewingDocId === doc.id}
+                              onOpenChange={(open) => {
+                                if (!open) {
+                                  setReviewingDocId(null);
+                                  setReviewComment('');
+                                }
+                              }}
+                            >
+                              <DialogTrigger asChild>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => handleOpenReviewDialog(doc.id, doc.url)}
+                                >
+                                  Review
+                                </Button>
+                              </DialogTrigger>
+                              <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                                <DialogHeader>
+                                  <DialogTitle>Review Document</DialogTitle>
+                                  <DialogDescription>
+                                    {doc.name} ({doc.type})
+                                  </DialogDescription>
+                                </DialogHeader>
+
+                                {/* Document Preview */}
+                                {doc.url && (
+                                  <div className="border rounded-lg overflow-hidden bg-gray-100">
+                                    {presignedUrls[doc.id] ? (
+                                      doc.url.match(/\.(pdf)$/i) || doc.type?.toLowerCase().includes('pdf') ? (
+                                        <iframe
+                                          src={presignedUrls[doc.id]}
+                                          className="w-full h-[500px]"
+                                          title={`Preview: ${doc.name}`}
+                                        />
+                                      ) : doc.url.match(/\.(jpg|jpeg|png|gif|webp)$/i) || doc.type?.toLowerCase().includes('image') ? (
+                                        <div className="flex items-center justify-center p-4">
+                                          <img
+                                            src={presignedUrls[doc.id]}
+                                            alt={doc.name}
+                                            className="max-w-full max-h-[500px] object-contain"
+                                          />
+                                        </div>
+                                      ) : (
+                                        <div className="flex flex-col items-center justify-center p-8 text-gray-500">
+                                          <span className="text-4xl mb-2">📄</span>
+                                          <p>Preview not available for this file type</p>
+                                          <Button
+                                            variant="link"
+                                            onClick={() => window.open(presignedUrls[doc.id], '_blank')}
+                                          >
+                                            Open in new tab →
+                                          </Button>
+                                        </div>
+                                      )
+                                    ) : (
+                                      <div className="flex items-center justify-center p-8 text-gray-500">
+                                        <span>Loading preview...</span>
+                                      </div>
+                                    )}
                                   </div>
                                 )}
-                              </div>
-                            )}
 
-                            <div className="space-y-4 py-4">
-                              <div className="space-y-2">
-                                <Label htmlFor="comment">Comment (optional)</Label>
-                                <Input
-                                  id="comment"
-                                  placeholder="Add a comment..."
-                                  value={reviewComment}
-                                  onChange={(e) => setReviewComment(e.target.value)}
-                                />
-                              </div>
-                            </div>
-                            <DialogFooter className="flex gap-2">
-                              <Button
-                                variant="outline"
-                                onClick={() => handleReviewDocument(doc.id, 'CHANGES_REQUESTED')}
-                                disabled={reviewDocument.isPending}
-                              >
-                                Request Changes
-                              </Button>
-                              <Button
-                                variant="destructive"
-                                onClick={() => handleReviewDocument(doc.id, 'REJECTED')}
-                                disabled={reviewDocument.isPending}
-                              >
-                                Reject
-                              </Button>
-                              <Button
-                                onClick={() => handleReviewDocument(doc.id, 'APPROVED')}
-                                disabled={reviewDocument.isPending}
-                              >
-                                Approve
-                              </Button>
-                            </DialogFooter>
-                          </DialogContent>
-                        </Dialog>
-                      </>
-                    )}
-                  </div>
+                                <div className="space-y-4 py-4">
+                                  <div className="space-y-2">
+                                    <Label htmlFor="comment">Comment (optional)</Label>
+                                    <Input
+                                      id="comment"
+                                      placeholder="Add a comment..."
+                                      value={reviewComment}
+                                      onChange={(e) => setReviewComment(e.target.value)}
+                                    />
+                                  </div>
+                                </div>
+                                <DialogFooter className="flex gap-2">
+                                  <Button
+                                    variant="outline"
+                                    onClick={() => handleReviewDocument(doc.id, 'CHANGES_REQUESTED')}
+                                    disabled={reviewDocument.isPending}
+                                  >
+                                    Request Changes
+                                  </Button>
+                                  <Button
+                                    variant="destructive"
+                                    onClick={() => handleReviewDocument(doc.id, 'REJECTED')}
+                                    disabled={reviewDocument.isPending}
+                                  >
+                                    Reject
+                                  </Button>
+                                  <Button
+                                    onClick={() => handleReviewDocument(doc.id, 'APPROVED')}
+                                    disabled={reviewDocument.isPending}
+                                  >
+                                    Approve
+                                  </Button>
+                                </DialogFooter>
+                              </DialogContent>
+                            </Dialog>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+                {/* Show message if user cannot review */}
+                {!canReview && currentAction.uploadedDocuments.some(d => d.status === 'PENDING') && (
+                  <div className="mt-4 p-4 bg-gray-50 rounded-lg text-center">
+                    <p className="text-sm text-gray-600">
+                      {userPartyAction?.action === 'WAIT'
+                        ? userPartyAction.message
+                        : 'Waiting for the reviewer to process these documents'}
+                    </p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          );
+        })()
       ) : currentAction?.currentPhase?.phaseCategory === 'DOCUMENTATION' && (!currentAction.uploadedDocuments || currentAction.uploadedDocuments.length === 0) ? (
         (() => {
           // Find which party needs to upload
