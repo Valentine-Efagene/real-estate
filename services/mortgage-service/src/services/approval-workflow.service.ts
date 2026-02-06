@@ -779,6 +779,16 @@ export function createApprovalWorkflowService() {
                     });
                 } else {
                     // No more phases - mark application as COMPLETED
+                    // First get the application to find the propertyUnitId
+                    const application = await tx.application.findUnique({
+                        where: { id: docPhase.phase.applicationId },
+                        select: { 
+                            propertyUnitId: true, 
+                            buyerId: true,
+                            propertyUnit: { select: { variantId: true } },
+                        },
+                    });
+
                     await tx.application.update({
                         where: { id: docPhase.phase.applicationId },
                         data: {
@@ -786,6 +796,28 @@ export function createApprovalWorkflowService() {
                             endDate: new Date(),
                         },
                     });
+
+                    // Mark the property unit as SOLD and transfer ownership
+                    if (application?.propertyUnitId) {
+                        await tx.propertyUnit.update({
+                            where: { id: application.propertyUnitId },
+                            data: {
+                                status: 'SOLD',
+                                ownerId: application.buyerId,
+                            },
+                        });
+
+                        // Update variant counters
+                        if (application.propertyUnit?.variantId) {
+                            await tx.propertyVariant.update({
+                                where: { id: application.propertyUnit.variantId },
+                                data: {
+                                    reservedUnits: { decrement: 1 },
+                                    soldUnits: { increment: 1 },
+                                },
+                            });
+                        }
+                    }
 
                     // Create domain event for application completion
                     await tx.domainEvent.create({

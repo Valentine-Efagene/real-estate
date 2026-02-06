@@ -12,10 +12,23 @@ export const createUnitSchema = z
         areaOverride: z.number().positive().optional().openapi({ example: 155 }),
         notes: z.string().optional().openapi({ example: 'Corner unit with extra windows' }),
         status: z.enum(['AVAILABLE', 'RESERVED', 'SOLD', 'RENTED', 'UNAVAILABLE']).default('AVAILABLE').openapi({ example: 'AVAILABLE' }),
+        ownerId: z.string().optional().openapi({ description: 'ID of the owner after sale', example: 'user_123' }),
     })
     .openapi('CreateUnitRequest');
 
-export const updateUnitSchema = createUnitSchema.partial().openapi('UpdateUnitRequest');
+// Update schema doesn't have status default - only update what's provided
+export const updateUnitSchema = z
+    .object({
+        unitNumber: z.string().min(1).optional().openapi({ example: '14B' }),
+        floorNumber: z.number().int().optional().openapi({ example: 14 }),
+        blockName: z.string().optional().openapi({ example: 'Block B' }),
+        priceOverride: z.number().positive().optional().openapi({ example: 87000000 }),
+        areaOverride: z.number().positive().optional().openapi({ example: 155 }),
+        notes: z.string().optional().openapi({ example: 'Corner unit with extra windows' }),
+        status: z.enum(['AVAILABLE', 'RESERVED', 'SOLD', 'RENTED', 'UNAVAILABLE']).optional().openapi({ example: 'SOLD' }),
+        ownerId: z.string().optional().openapi({ description: 'ID of the owner after sale', example: 'user_123' }),
+    })
+    .openapi('UpdateUnitRequest');
 
 export const unitResponseSchema = z
     .object({

@@ -1284,12 +1284,44 @@ class ApplicationPhaseService {
 
             if (incompletePhasesCount === 0) {
                 // All phases completed - complete the application
+                // First get the application to find the propertyUnitId
+                const application = await tx.application.findUnique({
+                    where: { id: phase.applicationId },
+                    select: { 
+                        propertyUnitId: true, 
+                        buyerId: true,
+                        propertyUnit: { select: { variantId: true } },
+                    },
+                });
+
                 await tx.application.update({
                     where: { id: phase.applicationId },
                     data: {
                         status: 'COMPLETED',
                     },
                 });
+
+                // Mark the property unit as SOLD and transfer ownership
+                if (application?.propertyUnitId) {
+                    await tx.propertyUnit.update({
+                        where: { id: application.propertyUnitId },
+                        data: {
+                            status: 'SOLD',
+                            ownerId: application.buyerId,
+                        },
+                    });
+
+                    // Update variant counters
+                    if (application.propertyUnit?.variantId) {
+                        await tx.propertyVariant.update({
+                            where: { id: application.propertyUnit.variantId },
+                            data: {
+                                reservedUnits: { decrement: 1 },
+                                soldUnits: { increment: 1 },
+                            },
+                        });
+                    }
+                }
 
                 await tx.domainEvent.create({
                     data: {
@@ -1375,12 +1407,44 @@ class ApplicationPhaseService {
 
             if (incompletePhasesCount === 0) {
                 // All phases completed - complete the application
+                // First get the application to find the propertyUnitId
+                const application = await tx.application.findUnique({
+                    where: { id: phase.applicationId },
+                    select: { 
+                        propertyUnitId: true, 
+                        buyerId: true,
+                        propertyUnit: { select: { variantId: true } },
+                    },
+                });
+
                 await tx.application.update({
                     where: { id: phase.applicationId },
                     data: {
                         status: 'COMPLETED',
                     },
                 });
+
+                // Mark the property unit as SOLD and transfer ownership
+                if (application?.propertyUnitId) {
+                    await tx.propertyUnit.update({
+                        where: { id: application.propertyUnitId },
+                        data: {
+                            status: 'SOLD',
+                            ownerId: application.buyerId,
+                        },
+                    });
+
+                    // Update variant counters
+                    if (application.propertyUnit?.variantId) {
+                        await tx.propertyVariant.update({
+                            where: { id: application.propertyUnit.variantId },
+                            data: {
+                                reservedUnits: { decrement: 1 },
+                                soldUnits: { increment: 1 },
+                            },
+                        });
+                    }
+                }
 
                 await tx.domainEvent.create({
                     data: {

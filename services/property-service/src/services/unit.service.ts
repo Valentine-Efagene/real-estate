@@ -149,6 +149,7 @@ class UnitService {
                     areaOverride: data.areaOverride,
                     notes: data.notes,
                     status: data.status,
+                    ownerId: data.ownerId,
                 },
             });
 

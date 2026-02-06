@@ -1550,10 +1550,12 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
             const allDocsUploaded = Object.keys(pendingByParty).length === 0;
 
             // Compute action for each party
+            // Always include the current stage reviewer so they appear in partyActions
             const allParties = new Set([
                 'CUSTOMER',
                 ...Object.keys(docsByParty),
                 ...Object.keys(orgBindingByType),
+                stageOrgType, // Include reviewer party type
             ]);
 
             for (const party of allParties) {
