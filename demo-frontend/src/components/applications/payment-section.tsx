@@ -272,24 +272,26 @@ export function PaymentSection({
                                                             </div>
                                                         </div>
 
-                                                        <DialogFooter className="flex-col gap-2">
-                                                            <Button
-                                                                onClick={handleInitiatePayment}
-                                                                disabled={createPayment.isPending}
-                                                                className="w-full"
-                                                            >
-                                                                {createPayment.isPending ? 'Processing...' : 'Initiate Payment'}
-                                                            </Button>
-                                                            {buyerEmail && (
+                                                        <DialogFooter>
+                                                            <div className="flex flex-col gap-2 w-full">
                                                                 <Button
-                                                                    variant="outline"
-                                                                    onClick={handleSimulatePayment}
-                                                                    disabled={simulatePayment.isPending}
+                                                                    onClick={handleInitiatePayment}
+                                                                    disabled={createPayment.isPending}
                                                                     className="w-full"
                                                                 >
-                                                                    {simulatePayment.isPending ? 'Simulating...' : '🧪 Simulate Payment (Test)'}
+                                                                    {createPayment.isPending ? 'Processing...' : 'Initiate Payment'}
                                                                 </Button>
-                                                            )}
+                                                                {buyerEmail && (
+                                                                    <Button
+                                                                        variant="outline"
+                                                                        onClick={handleSimulatePayment}
+                                                                        disabled={simulatePayment.isPending}
+                                                                        className="w-full"
+                                                                    >
+                                                                        {simulatePayment.isPending ? 'Simulating...' : '🧪 Simulate Payment (Test)'}
+                                                                    </Button>
+                                                                )}
+                                                            </div>
                                                         </DialogFooter>
                                                     </>
                                                 ) : (

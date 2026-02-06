@@ -62,8 +62,8 @@ router.post('/budpay/mock', async (req: Request, res: Response, next: NextFuncti
 
         if (!email || !amount) {
             return res.status(400).json({
-                status: 'error',
-                message: 'email and amount are required',
+                success: false,
+                error: { code: 'VALIDATION_ERROR', message: 'email and amount are required' },
             });
         }
 
@@ -97,7 +97,7 @@ router.post('/budpay/mock', async (req: Request, res: Response, next: NextFuncti
         const result = await walletService.processBudPayWebhook(mockPayload, 'mock-signature');
 
         return res.status(200).json({
-            status: 'success',
+            success: true,
             message: 'Mock webhook processed',
             data: result,
         });
