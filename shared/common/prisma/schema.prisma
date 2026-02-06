@@ -2218,7 +2218,7 @@ model ApplicationOrganization {
   // If null, any staff from the organization can act
   // If set, only this staff member can perform actions for this org on this application
   assignedStaffId String?
-  assignedStaff   User?    @relation("ApplicationOrgAssignedStaff", fields: [assignedStaffId], references: [id])
+  assignedStaff   User?   @relation("ApplicationOrgAssignedStaff", fields: [assignedStaffId], references: [id])
 
   status ApplicationOrganizationStatus @default(PENDING)
 

@@ -240,7 +240,7 @@ router.get('/:id/current-action', requireTenant, canAccessApplication, async (re
             // Note: OrganizationMember is NOT tenant-scoped, so use base prisma
             // but filter through tenant-scoped organizations
             const memberships = await prisma.organizationMember.findMany({
-                where: { 
+                where: {
                     userId,
                     organization: {
                         tenantId // Filter by tenant through organization relation

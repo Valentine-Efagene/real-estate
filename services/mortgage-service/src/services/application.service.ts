@@ -1222,7 +1222,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
 
     // Type definitions for party-based actions
     type PartyAction = 'UPLOAD' | 'REVIEW' | 'WAIT' | 'PAYMENT' | 'QUESTIONNAIRE' | 'NONE';
-    
+
     interface PartyActionInfo {
         action: PartyAction;
         message: string;
@@ -1350,7 +1350,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
         // Determine user's party type
         const isCustomer = userId && application.buyerId === userId;
         let userPartyType: string | null = isCustomer ? 'CUSTOMER' : null;
-        
+
         // If not customer, check org type codes
         if (!userPartyType && userOrgTypeCodes && userOrgTypeCodes.length > 0) {
             // Priority: BANK > PLATFORM > DEVELOPER > LEGAL > INSURER
@@ -1371,7 +1371,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
             // Check if user's org types include this party type
             const matchingTypes = partyType === 'LENDER' ? ['BANK', 'LENDER'] : [partyType];
             const hasOrgType = userOrgTypeCodes?.some(code => matchingTypes.includes(code)) || false;
-            
+
             if (!hasOrgType) return false;
 
             // Check staff assignment - if assigned, must be this user
@@ -1582,7 +1582,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                 } else {
                     // All documents uploaded - now in review stage
                     const isReviewer = (isCustomerReviewStage && party === 'CUSTOMER') ||
-                                       (!isCustomerReviewStage && party === stageOrgType);
+                        (!isCustomerReviewStage && party === stageOrgType);
 
                     if (isReviewer && currentStage?.status !== 'COMPLETED') {
                         partyActions[party] = {
