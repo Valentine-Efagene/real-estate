@@ -11,6 +11,10 @@ import {
 import {
   CreateApplicationSchema,
 } from '../validators/application.validator';
+import {
+  RevertDocumentSchema,
+  ReopenPhaseSchema,
+} from '../validators/application-phase.validator';
 
 extendZodWithOpenApi(z);
 
@@ -1157,6 +1161,84 @@ registry.registerPath({
         },
       },
     },
+    404: { description: 'Phase not found' },
+  },
+});
+
+// ============ Document Revert ============
+registry.registerPath({
+  method: 'post',
+  path: '/applications/{id}/documents/{documentId}/revert',
+  tags: ['Application Phases'],
+  summary: 'Revert a document approval',
+  description: 'Revert a document approval back to PENDING status. This allows admins to undo a mistaken approval. A REVERTED entry is added to the audit trail. Only APPROVED documents can be reverted.',
+  security: [{ bearerAuth: [] }],
+  request: {
+    params: z.object({
+      id: z.string().openapi({ description: 'Application ID' }),
+      documentId: z.string().openapi({ description: 'Document ID' }),
+    }),
+    body: {
+      content: {
+        'application/json': {
+          schema: RevertDocumentSchema,
+        },
+      },
+    },
+  },
+  responses: {
+    200: {
+      description: 'Document approval reverted successfully',
+      content: {
+        'application/json': {
+          schema: z.object({
+            success: z.literal(true),
+            data: z.any().openapi({ description: 'Updated phase with action status' }),
+          }),
+        },
+      },
+    },
+    400: { description: 'Document is not in APPROVED status or phase is not a documentation phase' },
+    403: { description: 'Forbidden - requires admin role' },
+    404: { description: 'Document or phase not found' },
+  },
+});
+
+// ============ Phase Reopen ============
+registry.registerPath({
+  method: 'post',
+  path: '/applications/{id}/phases/{phaseId}/reopen',
+  tags: ['Application Phases'],
+  summary: 'Reopen a completed phase',
+  description: 'Reopen a completed phase to allow corrections. This resets the phase to IN_PROGRESS and optionally resets all dependent (subsequent) phases to PENDING. A PHASE.REOPENED domain event is created for audit purposes.',
+  security: [{ bearerAuth: [] }],
+  request: {
+    params: z.object({
+      id: z.string().openapi({ description: 'Application ID' }),
+      phaseId: z.string().openapi({ description: 'Phase ID' }),
+    }),
+    body: {
+      content: {
+        'application/json': {
+          schema: ReopenPhaseSchema,
+        },
+      },
+    },
+  },
+  responses: {
+    200: {
+      description: 'Phase reopened successfully',
+      content: {
+        'application/json': {
+          schema: z.object({
+            success: z.literal(true),
+            data: z.any().openapi({ description: 'Updated phase with action status' }),
+          }),
+        },
+      },
+    },
+    400: { description: 'Phase is not in COMPLETED status' },
+    403: { description: 'Forbidden - requires admin role' },
     404: { description: 'Phase not found' },
   },
 });

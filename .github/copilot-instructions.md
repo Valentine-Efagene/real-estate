@@ -720,6 +720,47 @@ cd services/user-service && npx serverless info --stage staging
 - All authorization via API Gateway Lambda authorizer—services trust the authorizer.
 - File uploads use presigned S3 URLs (backend generates, frontend uploads directly).
 
+## API Documentation (Swagger/OpenAPI)
+
+**IMPORTANT**: When adding new API endpoints, always update the OpenAPI/Swagger documentation.
+
+Each service has its own Swagger configuration in `src/config/swagger.ts`. When adding a new endpoint:
+
+1. **Add Zod schema with `.openapi()`**: In the validator file, ensure the schema has `.openapi('SchemaName')` call.
+2. **Register the path**: In `swagger.ts`, add a `registry.registerPath({...})` call with:
+   - `method`: HTTP method (get, post, put, delete)
+   - `path`: Route path with parameters like `{id}`
+   - `tags`: Array of tag names (e.g., `['Application Phases']`)
+   - `summary`: Brief description
+   - `description`: Detailed description of behavior
+   - `security`: Auth requirements (usually `[{ bearerAuth: [] }]`)
+   - `request.params/body`: Zod schemas for request validation
+   - `responses`: Status codes with descriptions and schemas
+
+Example:
+
+```typescript
+registry.registerPath({
+  method: 'post',
+  path: '/applications/{id}/phases/{phaseId}/reopen',
+  tags: ['Application Phases'],
+  summary: 'Reopen a completed phase',
+  description: 'Detailed description of what this endpoint does...',
+  security: [{ bearerAuth: [] }],
+  request: {
+    params: z.object({ id: z.string(), phaseId: z.string() }),
+    body: { content: { 'application/json': { schema: ReopenPhaseSchema } } },
+  },
+  responses: {
+    200: { description: 'Success', content: { 'application/json': { schema: z.object({...}) } } },
+    400: { description: 'Bad request' },
+    403: { description: 'Forbidden' },
+  },
+});
+```
+
+**Viewing docs**: Each service exposes `/api-docs` for Swagger UI and `/openapi.json` for the raw spec.
+
 ## Common Commands
 
 ```bash
