@@ -2034,6 +2034,283 @@ class ApplicationPhaseService {
 
         return this.findByIdWithActionStatus(phaseId);
     }
+
+    /**
+     * Revert a document approval - return it to PENDING state
+     * This allows admins to undo a mistaken approval
+     */
+    async revertDocumentApproval(
+        phaseId: string,
+        documentId: string,
+        organizationTypeId: string,
+        userId: string,
+        reason?: string
+    ): Promise<any> {
+        const phase = await this.findById(phaseId);
+
+        if (!phase.documentationPhase) {
+            throw new AppError(400, 'Can only revert documents in DOCUMENTATION phases');
+        }
+
+        // Check if document exists and belongs to this phase
+        const document = await prisma.applicationDocument.findFirst({
+            where: {
+                id: documentId,
+                phaseId,
+            },
+            include: {
+                approvalTrail: {
+                    orderBy: { createdAt: 'desc' },
+                    take: 1,
+                },
+            },
+        });
+
+        if (!document) {
+            throw new AppError(404, 'Document not found in this phase');
+        }
+
+        // Only allow reverting if document is currently APPROVED
+        if (document.status !== 'APPROVED') {
+            throw new AppError(400, `Cannot revert document with status ${document.status}. Only APPROVED documents can be reverted.`);
+        }
+
+        const tenantId = phase.application?.tenantId || phase.tenantId;
+
+        await prisma.$transaction(async (tx) => {
+            // 1. Update document status back to PENDING
+            await tx.applicationDocument.update({
+                where: { id: documentId },
+                data: {
+                    status: DocumentStatus.PENDING,
+                },
+            });
+
+            // 2. Find the current/last stage to link the REVERTED entry
+            const currentStageProgress = await tx.approvalStageProgress.findFirst({
+                where: {
+                    documentationPhaseId: phase.documentationPhase.id,
+                    status: { in: ['COMPLETED', 'AWAITING_TRANSITION', 'IN_PROGRESS'] },
+                },
+                orderBy: { order: 'desc' },
+            });
+
+            if (!currentStageProgress) {
+                throw new AppError(400, 'No active stage found to record revert');
+            }
+
+            // 3. Add a REVERTED entry to the approval trail
+            await tx.documentApproval.create({
+                data: {
+                    id: uuidv4(),
+                    tenantId,
+                    documentId,
+                    stageProgressId: currentStageProgress.id,
+                    reviewerId: userId,
+                    organizationTypeId,
+                    decision: 'REVERTED' as ReviewDecision,
+                    comment: reason || 'Approval reverted by admin',
+                    reviewedAt: new Date(),
+                },
+            });
+
+            // 4. If the stage that approved this document was completed, reset it to IN_PROGRESS
+            if (currentStageProgress.status === 'COMPLETED' || currentStageProgress.status === 'AWAITING_TRANSITION') {
+                await tx.approvalStageProgress.update({
+                    where: { id: currentStageProgress.id },
+                    data: {
+                        status: StageStatus.IN_PROGRESS,
+                        completedAt: null,
+                    },
+                });
+            }
+
+            // 5. If phase was COMPLETED, reset it to IN_PROGRESS
+            if (phase.status === 'COMPLETED') {
+                await tx.applicationPhase.update({
+                    where: { id: phaseId },
+                    data: {
+                        status: PhaseStatus.IN_PROGRESS,
+                        completedAt: null,
+                    },
+                });
+
+                // Update currentStageOrder to the stage we just reset
+                await tx.documentationPhase.update({
+                    where: { id: phase.documentationPhase.id },
+                    data: { currentStageOrder: currentStageProgress.order },
+                });
+            }
+
+            // 5. Write domain event for audit
+            await tx.domainEvent.create({
+                data: {
+                    id: uuidv4(),
+                    tenantId,
+                    eventType: 'DOCUMENT.APPROVAL_REVERTED',
+                    aggregateType: 'ApplicationDocument',
+                    aggregateId: documentId,
+                    queueName: 'application-documents',
+                    payload: JSON.stringify({
+                        documentId,
+                        phaseId,
+                        applicationId: phase.applicationId,
+                        revertedBy: userId,
+                        reason: reason || 'No reason provided',
+                        previousStatus: document.status,
+                    }),
+                    actorId: userId,
+                },
+            });
+        });
+
+        console.log('[ApplicationPhaseService] Document approval reverted', {
+            documentId,
+            phaseId,
+            revertedBy: userId,
+            reason,
+        });
+
+        return this.findByIdWithActionStatus(phaseId);
+    }
+
+    /**
+     * Reopen a completed phase - allows corrections to be made
+     * This resets the phase to IN_PROGRESS and optionally resets dependent phases
+     */
+    async reopenPhase(
+        phaseId: string,
+        userId: string,
+        reason?: string,
+        resetDependentPhases: boolean = true
+    ): Promise<any> {
+        const phase = await this.findById(phaseId);
+
+        // Only allow reopening COMPLETED phases
+        if (phase.status !== 'COMPLETED') {
+            throw new AppError(400, `Cannot reopen phase with status ${phase.status}. Only COMPLETED phases can be reopened.`);
+        }
+
+        const tenantId = phase.application?.tenantId || phase.tenantId;
+
+        await prisma.$transaction(async (tx) => {
+            // 1. Reset this phase to IN_PROGRESS
+            await tx.applicationPhase.update({
+                where: { id: phaseId },
+                data: {
+                    status: PhaseStatus.IN_PROGRESS,
+                    completedAt: null,
+                },
+            });
+
+            // 2. For DOCUMENTATION phases, reset the last stage to IN_PROGRESS
+            if (phase.documentationPhase) {
+                const lastStage = await tx.approvalStageProgress.findFirst({
+                    where: {
+                        documentationPhaseId: phase.documentationPhase.id,
+                    },
+                    orderBy: { order: 'desc' },
+                });
+
+                if (lastStage) {
+                    await tx.approvalStageProgress.update({
+                        where: { id: lastStage.id },
+                        data: {
+                            status: StageStatus.IN_PROGRESS,
+                            completedAt: null,
+                        },
+                    });
+
+                    // Update currentStageOrder
+                    await tx.documentationPhase.update({
+                        where: { id: phase.documentationPhase.id },
+                        data: { currentStageOrder: lastStage.order },
+                    });
+                }
+            }
+
+            // 3. Update application's currentPhaseId to this phase
+            await tx.application.update({
+                where: { id: phase.applicationId },
+                data: { currentPhaseId: phaseId },
+            });
+
+            // 4. Reset dependent phases if requested
+            if (resetDependentPhases) {
+                const subsequentPhases = await tx.applicationPhase.findMany({
+                    where: {
+                        applicationId: phase.applicationId,
+                        order: { gt: phase.order },
+                    },
+                });
+
+                for (const depPhase of subsequentPhases) {
+                    await tx.applicationPhase.update({
+                        where: { id: depPhase.id },
+                        data: {
+                            status: PhaseStatus.PENDING,
+                            activatedAt: null,
+                            completedAt: null,
+                        },
+                    });
+
+                    // Reset stage progress for documentation phases
+                    if (depPhase.phaseCategory === 'DOCUMENTATION') {
+                        const docPhase = await tx.documentationPhase.findUnique({
+                            where: { phaseId: depPhase.id },
+                        });
+
+                        if (docPhase) {
+                            await tx.approvalStageProgress.updateMany({
+                                where: { documentationPhaseId: docPhase.id },
+                                data: {
+                                    status: StageStatus.PENDING,
+                                    activatedAt: null,
+                                    completedAt: null,
+                                },
+                            });
+
+                            await tx.documentationPhase.update({
+                                where: { id: docPhase.id },
+                                data: { currentStageOrder: 1 }, // Reset to first stage
+                            });
+                        }
+                    }
+                }
+            }
+
+            // 5. Write domain event for audit
+            await tx.domainEvent.create({
+                data: {
+                    id: uuidv4(),
+                    tenantId,
+                    eventType: 'PHASE.REOPENED',
+                    aggregateType: 'ApplicationPhase',
+                    aggregateId: phaseId,
+                    queueName: 'application-steps',
+                    payload: JSON.stringify({
+                        phaseId,
+                        applicationId: phase.applicationId,
+                        phaseType: phase.phaseType,
+                        reopenedBy: userId,
+                        reason: reason || 'No reason provided',
+                        resetDependentPhases,
+                    }),
+                    actorId: userId,
+                },
+            });
+        });
+
+        console.log('[ApplicationPhaseService] Phase reopened', {
+            phaseId,
+            phaseType: phase.phaseType,
+            reopenedBy: userId,
+            reason,
+            resetDependentPhases,
+        });
+
+        return this.findByIdWithActionStatus(phaseId);
+    }
 }
 
 export const applicationPhaseService = new ApplicationPhaseService();

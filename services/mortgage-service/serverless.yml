@@ -25,6 +25,7 @@ provider:
   environment:
     NODE_ENV: ${self:provider.stage}
     LOCALSTACK_ENDPOINT: ${self:custom.localstackEndpoint.${self:provider.stage}, ''}
+    PAYMENTS_TOPIC_ARN: ${ssm:/qshelter/${self:provider.stage}/payments-topic-arn, ''}
 
   iam:
     role:
@@ -56,6 +57,7 @@ provider:
             - sns:Publish
           Resource:
             - arn:aws:sns:${self:provider.region}:*:qshelter-${self:provider.stage}-notifications
+            - arn:aws:sns:${self:provider.region}:*:qshelter-${self:provider.stage}-payments
         # VPC permissions for Lambda to create ENIs
         - Effect: Allow
           Action:

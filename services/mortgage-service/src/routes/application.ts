@@ -27,6 +27,8 @@ import {
     ApproveDocumentSchema,
     SubmitQuestionnaireSchema,
     GateActionSchema,
+    RevertDocumentSchema,
+    ReopenPhaseSchema,
 } from '../validators/application-phase.validator';
 import {
     BindOrganizationSchema,
@@ -690,6 +692,81 @@ router.post('/:id/documents/:documentId/review', requireTenant, canAccessApplica
             organizationTypeId,
             userId,
             data.comment
+        );
+        res.json(successResponse(result));
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });
+            return;
+        }
+        next(error);
+    }
+});
+
+// Revert document approval - return to PENDING state (admin only)
+// Allows undoing a document approval, returning it to pending for re-review
+router.post('/:id/documents/:documentId/revert', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const data = RevertDocumentSchema.parse(req.body);
+        const { userId, tenantId, roles } = getAuthContext(req);
+
+        // Look up the document to get the phaseId
+        const document = await prisma.applicationDocument.findFirst({
+            where: {
+                id: req.params.documentId,
+                tenantId,
+                applicationId: req.params.id,
+            },
+        });
+
+        if (!document || !document.phaseId) {
+            res.status(404).json({ success: false, error: 'Document not found or not linked to a phase' });
+            return;
+        }
+
+        // Resolve organization type code to ID (default to PLATFORM for admins)
+        const orgTypeCode = data.organizationTypeCode || 'PLATFORM';
+        const orgType = await prisma.organizationType.findUnique({
+            where: { tenantId_code: { tenantId: tenantId as string, code: orgTypeCode } },
+        });
+
+        if (!orgType) {
+            res.status(400).json({
+                success: false,
+                error: `Organization type '${orgTypeCode}' not found`
+            });
+            return;
+        }
+
+        const result = await applicationPhaseService.revertDocumentApproval(
+            document.phaseId,
+            req.params.documentId as string,
+            orgType.id,
+            userId,
+            data.reason
+        );
+        res.json(successResponse(result));
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            res.status(400).json({ success: false, error: 'Validation failed', details: error.issues });
+            return;
+        }
+        next(error);
+    }
+});
+
+// Reopen a completed phase (admin only)
+// Allows reopening a completed phase to make corrections
+router.post('/:id/phases/:phaseId/reopen', requireTenant, requireRole(ADMIN_ROLES), async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const data = ReopenPhaseSchema.parse(req.body);
+        const { userId } = getAuthContext(req);
+
+        const result = await applicationPhaseService.reopenPhase(
+            req.params.phaseId as string,
+            userId,
+            data.reason,
+            data.resetDependentPhases
         );
         res.json(successResponse(result));
     } catch (error) {

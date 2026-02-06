@@ -299,7 +299,8 @@ export const ReviewDecision = {
   APPROVED: 'APPROVED',
   REJECTED: 'REJECTED',
   CHANGES_REQUESTED: 'CHANGES_REQUESTED',
-  WAIVED: 'WAIVED'
+  WAIVED: 'WAIVED',
+  REVERTED: 'REVERTED'
 } as const
 
 export type ReviewDecision = (typeof ReviewDecision)[keyof typeof ReviewDecision]

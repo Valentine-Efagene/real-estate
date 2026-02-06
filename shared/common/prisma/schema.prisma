@@ -327,6 +327,7 @@ enum ReviewDecision {
   REJECTED // Document rejected (permanent)
   CHANGES_REQUESTED // Document needs modifications
   WAIVED // Review not required by this party
+  REVERTED // Approval was undone, document returned to pending
 }
 
 enum DocumentStatus {

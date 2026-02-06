@@ -187,3 +187,35 @@ export const GateActionSchema = z
     .openapi('GateAction');
 
 export type GateActionInput = z.infer<typeof GateActionSchema>;
+
+// Revert document approval - return to PENDING state
+export const RevertDocumentSchema = z
+    .object({
+        reason: z.string().optional().openapi({
+            description: 'Reason for reverting the document approval',
+            example: 'Incorrect document was approved by mistake',
+        }),
+        organizationTypeCode: z.string().optional().openapi({
+            description: 'Organization type code of the reverter (e.g., PLATFORM). Defaults to PLATFORM if not provided.',
+            example: 'PLATFORM',
+        }),
+    })
+    .openapi('RevertDocument');
+
+export type RevertDocumentInput = z.infer<typeof RevertDocumentSchema>;
+
+// Reopen a completed phase
+export const ReopenPhaseSchema = z
+    .object({
+        reason: z.string().optional().openapi({
+            description: 'Reason for reopening the phase',
+            example: 'Need to review documents again',
+        }),
+        resetDependentPhases: z.boolean().optional().default(true).openapi({
+            description: 'Whether to reset subsequent phases to PENDING. Defaults to true.',
+            example: true,
+        }),
+    })
+    .openapi('ReopenPhase');
+
+export type ReopenPhaseInput = z.infer<typeof ReopenPhaseSchema>;
