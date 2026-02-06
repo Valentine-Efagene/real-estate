@@ -44,6 +44,42 @@ interface ScoringRule {
     score: number;
 }
 
+/**
+ * Helper function to publish PAYMENT_PHASE_ACTIVATED event when a payment phase is auto-activated.
+ * This triggers installment generation in the payment-service via SNS/SQS.
+ */
+async function publishPaymentPhaseActivatedEvent(
+    phaseId: string,
+    applicationId: string,
+    tenantId: string,
+    paymentPhaseId: string,
+    totalAmount: number,
+    interestRate: number,
+    numberOfInstallments: number | null,
+    paymentPlanId: string,
+    userId: string
+): Promise<void> {
+    try {
+        const paymentPublisher = new PaymentEventPublisher('mortgage-service');
+        await paymentPublisher.publishPaymentPhaseActivated({
+            phaseId,
+            applicationId,
+            tenantId,
+            paymentPhaseId,
+            totalAmount,
+            interestRate,
+            numberOfInstallments,
+            paymentPlanId,
+            startDate: new Date().toISOString(),
+            userId,
+        });
+        console.log('[ApplicationPhaseService] Published PAYMENT_PHASE_ACTIVATED event', { phaseId, paymentPhaseId });
+    } catch (error) {
+        console.error('[ApplicationPhaseService] Error publishing PAYMENT_PHASE_ACTIVATED event:', error);
+        // Don't throw - this is a non-critical operation that can be retried manually
+    }
+}
+
 class ApplicationPhaseService {
     async findById(phaseId: string): Promise<any> {
         const phase = await prisma.applicationPhase.findUnique({
@@ -866,6 +902,9 @@ class ApplicationPhaseService {
                     applicationId: phase.applicationId,
                     order: phase.order + 1,
                 },
+                include: {
+                    paymentPhase: true,
+                },
             });
 
             if (nextPhase) {
@@ -878,6 +917,24 @@ class ApplicationPhaseService {
                     where: { id: phase.applicationId },
                     data: { currentPhaseId: nextPhase.id },
                 });
+
+                // If next phase is PAYMENT, publish event to trigger installment generation
+                if (nextPhase.phaseCategory === 'PAYMENT' && nextPhase.paymentPhase) {
+                    // Schedule event publishing after transaction commits
+                    setTimeout(async () => {
+                        await publishPaymentPhaseActivatedEvent(
+                            nextPhase.id,
+                            phase.applicationId,
+                            phase.application?.tenantId || phase.tenantId,
+                            nextPhase.paymentPhase!.id,
+                            nextPhase.paymentPhase!.totalAmount ?? 0,
+                            nextPhase.paymentPhase!.interestRate ?? 0,
+                            nextPhase.paymentPhase!.numberOfInstallments,
+                            nextPhase.paymentPhase!.paymentPlanId || '',
+                            userId
+                        );
+                    }, 100);
+                }
             }
 
             // Handle unit locking if configured (legacy - will be replaced by handlers)
@@ -1227,6 +1284,7 @@ class ApplicationPhaseService {
             },
             include: {
                 documentationPhase: true,
+                paymentPhase: true,
             },
         });
 
@@ -1254,6 +1312,25 @@ class ApplicationPhaseService {
                     `${evaluationResult.skippedCount} steps skipped, ` +
                     `${evaluationResult.applicableCount} steps applicable`
                 );
+            }
+
+            // If next phase is PAYMENT, schedule event publishing after transaction commits
+            if (nextPhase.phaseCategory === 'PAYMENT' && nextPhase.paymentPhase) {
+                const paymentPhaseData = nextPhase.paymentPhase;
+                const tenantId = phase.application?.tenantId || phase.tenantId;
+                setTimeout(async () => {
+                    await publishPaymentPhaseActivatedEvent(
+                        nextPhase.id,
+                        phase.applicationId,
+                        tenantId,
+                        paymentPhaseData.id,
+                        paymentPhaseData.totalAmount ?? 0,
+                        paymentPhaseData.interestRate ?? 0,
+                        paymentPhaseData.numberOfInstallments,
+                        paymentPhaseData.paymentPlanId || '',
+                        userId
+                    );
+                }, 100);
             }
 
             await tx.domainEvent.create({
@@ -1287,8 +1364,8 @@ class ApplicationPhaseService {
                 // First get the application to find the propertyUnitId
                 const application = await tx.application.findUnique({
                     where: { id: phase.applicationId },
-                    select: { 
-                        propertyUnitId: true, 
+                    select: {
+                        propertyUnitId: true,
                         buyerId: true,
                         propertyUnit: { select: { variantId: true } },
                     },
@@ -1410,8 +1487,8 @@ class ApplicationPhaseService {
                 // First get the application to find the propertyUnitId
                 const application = await tx.application.findUnique({
                     where: { id: phase.applicationId },
-                    select: { 
-                        propertyUnitId: true, 
+                    select: {
+                        propertyUnitId: true,
                         buyerId: true,
                         propertyUnit: { select: { variantId: true } },
                     },
@@ -1717,6 +1794,7 @@ class ApplicationPhaseService {
                     },
                     include: {
                         documentationPhase: true,
+                        paymentPhase: true,
                     },
                 });
 
@@ -1747,6 +1825,24 @@ class ApplicationPhaseService {
                             `${evaluationResult.skippedCount} steps skipped, ` +
                             `${evaluationResult.applicableCount} steps applicable`
                         );
+                    }
+
+                    // If next phase is PAYMENT, schedule event publishing after transaction commits
+                    if (nextPhase.phaseCategory === 'PAYMENT' && nextPhase.paymentPhase) {
+                        const paymentPhaseData = nextPhase.paymentPhase;
+                        setTimeout(async () => {
+                            await publishPaymentPhaseActivatedEvent(
+                                nextPhase.id,
+                                phase.applicationId,
+                                phase.tenantId,
+                                paymentPhaseData.id,
+                                paymentPhaseData.totalAmount ?? 0,
+                                paymentPhaseData.interestRate ?? 0,
+                                paymentPhaseData.numberOfInstallments,
+                                paymentPhaseData.paymentPlanId || '',
+                                userId
+                            );
+                        }, 100);
                     }
 
                     // Write PHASE.ACTIVATED event
@@ -1991,6 +2087,7 @@ class ApplicationPhaseService {
                     },
                     include: {
                         documentationPhase: true,
+                        paymentPhase: true,
                     },
                 });
 
@@ -2014,6 +2111,24 @@ class ApplicationPhaseService {
                         await conditionEvaluator.applyConditionEvaluation(
                             nextPhase.documentationPhase.id
                         );
+                    }
+
+                    // If next phase is PAYMENT, schedule event publishing after transaction commits
+                    if (nextPhase.phaseCategory === 'PAYMENT' && nextPhase.paymentPhase) {
+                        const paymentPhaseData = nextPhase.paymentPhase;
+                        setTimeout(async () => {
+                            await publishPaymentPhaseActivatedEvent(
+                                nextPhase.id,
+                                phase.applicationId,
+                                phase.tenantId,
+                                paymentPhaseData.id,
+                                paymentPhaseData.totalAmount ?? 0,
+                                paymentPhaseData.interestRate ?? 0,
+                                paymentPhaseData.numberOfInstallments,
+                                paymentPhaseData.paymentPlanId || '',
+                                reviewerId
+                            );
+                        }, 100);
                     }
 
                     // Write PHASE.ACTIVATED event

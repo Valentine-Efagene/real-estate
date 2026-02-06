@@ -155,4 +155,24 @@ export class PaymentEventPublisher {
             tenantId: payload.tenantId,
         });
     }
+
+    /**
+     * Publish payment phase completed event
+     * Triggers next phase activation in mortgage-service
+     */
+    async publishPaymentPhaseCompleted(payload: {
+        phaseId: string;
+        applicationId: string;
+        tenantId: string;
+        paymentPhaseId: string;
+        phaseName: string;
+        phaseOrder: number;
+        userId: string;
+    }, meta?: Partial<PaymentEventMeta>): Promise<string> {
+        return this.publish(PaymentEventType.PAYMENT_PHASE_COMPLETED, payload, {
+            ...meta,
+            userId: payload.userId,
+            tenantId: payload.tenantId,
+        });
+    }
 }

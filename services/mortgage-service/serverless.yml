@@ -58,6 +58,14 @@ provider:
           Resource:
             - arn:aws:sns:${self:provider.region}:*:qshelter-${self:provider.stage}-notifications
             - arn:aws:sns:${self:provider.region}:*:qshelter-${self:provider.stage}-payments
+        # SQS access for receiving payment events
+        - Effect: Allow
+          Action:
+            - sqs:ReceiveMessage
+            - sqs:DeleteMessage
+            - sqs:GetQueueAttributes
+          Resource:
+            - arn:aws:sqs:${self:provider.region}:*:qshelter-${self:provider.stage}-mortgage-events
         # VPC permissions for Lambda to create ENIs
         - Effect: Allow
           Action:
@@ -118,6 +126,17 @@ functions:
   # Note: EventBridge bus name will be fetched from ConfigService at runtime
   fsmEventHandler:
     handler: dist/fsm-event-handler.handler
+
+  # SQS consumer for payment phase completion events
+  # Receives PAYMENT_PHASE_COMPLETED from payment-service to orchestrate next phase
+  sqsConsumer:
+    handler: dist/lambda.sqsHandler
+    timeout: 30
+    events:
+      - sqs:
+          arn: ${ssm:/qshelter/${self:provider.stage}/mortgage-events-queue-arn, ''}
+          batchSize: 10
+          functionResponseType: ReportBatchItemFailures
 
 plugins:
   - serverless-localstack

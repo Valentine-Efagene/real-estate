@@ -175,6 +175,16 @@ export class RealEstateStack extends cdk.Stack {
       },
     });
 
+    // Mortgage service queue for payment phase completion events
+    // Fan-out pattern: payments topic → multiple queues (payment-service + mortgage-service)
+    const mortgageEventsQueue = new sqs.Queue(this, 'MortgageEventsQueue', {
+      queueName: `${prefix}-mortgage-events`,
+      deadLetterQueue: {
+        queue: dlq,
+        maxReceiveCount: 3,
+      },
+    });
+
     const policySyncQueue = new sqs.Queue(this, 'PolicySyncQueue', {
       queueName: `${prefix}-policy-sync`,
       visibilityTimeout: cdk.Duration.seconds(60),
@@ -217,6 +227,18 @@ export class RealEstateStack extends cdk.Stack {
     paymentsTopic.addSubscription(
       new snsSubscriptions.SqsSubscription(paymentsQueue, {
         rawMessageDelivery: false,
+      })
+    );
+
+    // Mortgage service receives PAYMENT_PHASE_COMPLETED events to orchestrate next phase
+    paymentsTopic.addSubscription(
+      new snsSubscriptions.SqsSubscription(mortgageEventsQueue, {
+        rawMessageDelivery: false,
+        filterPolicy: {
+          eventType: sns.SubscriptionFilter.stringFilter({
+            allowlist: ['phase.payment_completed'],
+          }),
+        },
       })
     );
 
@@ -412,6 +434,18 @@ export class RealEstateStack extends cdk.Stack {
       parameterName: `/qshelter/${stage}/payments-queue-url`,
       stringValue: paymentsQueue.queueUrl,
       description: 'Payments SQS Queue URL',
+    });
+
+    new ssm.StringParameter(this, 'MortgageEventsQueueArnParameter', {
+      parameterName: `/qshelter/${stage}/mortgage-events-queue-arn`,
+      stringValue: mortgageEventsQueue.queueArn,
+      description: 'Mortgage Events SQS Queue ARN (receives PAYMENT_PHASE_COMPLETED)',
+    });
+
+    new ssm.StringParameter(this, 'MortgageEventsQueueUrlParameter', {
+      parameterName: `/qshelter/${stage}/mortgage-events-queue-url`,
+      stringValue: mortgageEventsQueue.queueUrl,
+      description: 'Mortgage Events SQS Queue URL',
     });
 
     new ssm.StringParameter(this, 'ContractEventsTopicArnParameter', {

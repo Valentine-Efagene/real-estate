@@ -427,6 +427,7 @@ function ApplicationDetailContent({ applicationId }: { applicationId: string }) 
                     installments={currentPhase.installments || []}
                     buyerEmail={application.buyer?.email}
                     onPaymentSuccess={() => refetchApplication()}
+                    isStaff={isStaff}
                   />
                 )}
               </CardContent>

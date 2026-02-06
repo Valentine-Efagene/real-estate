@@ -40,6 +40,7 @@ import { DynamoDBDocumentClient, GetCommand } from '@aws-sdk/lib-dynamodb';
 const USER_SERVICE_URL = process.env.USER_SERVICE_URL;
 const PROPERTY_SERVICE_URL = process.env.PROPERTY_SERVICE_URL;
 const MORTGAGE_SERVICE_URL = process.env.MORTGAGE_SERVICE_URL || process.env.API_BASE_URL;
+const PAYMENT_SERVICE_URL = process.env.PAYMENT_SERVICE_URL;
 
 // DynamoDB table for role policies (set by run script)
 const ROLE_POLICIES_TABLE = process.env.ROLE_POLICIES_TABLE || 'role-policies-staging';
@@ -50,6 +51,7 @@ function validateEnvVars() {
     if (!USER_SERVICE_URL) missing.push('USER_SERVICE_URL');
     if (!PROPERTY_SERVICE_URL) missing.push('PROPERTY_SERVICE_URL');
     if (!MORTGAGE_SERVICE_URL) missing.push('MORTGAGE_SERVICE_URL or API_BASE_URL');
+    if (!PAYMENT_SERVICE_URL) missing.push('PAYMENT_SERVICE_URL');
 
     if (missing.length > 0) {
         throw new Error(
@@ -66,6 +68,7 @@ validateEnvVars();
 const userApi = supertest(USER_SERVICE_URL!);
 const propertyApi = supertest(PROPERTY_SERVICE_URL!);
 const mortgageApi = supertest(MORTGAGE_SERVICE_URL!);
+const paymentApi = supertest(PAYMENT_SERVICE_URL!);
 
 // DynamoDB client for polling policy sync status
 const dynamoClient = new DynamoDBClient({ region: 'us-east-1' });
@@ -229,6 +232,7 @@ describe('Full E2E Mortgage Flow', () => {
     // Payment tracking
     let downpaymentInstallmentId: string;
     let paymentReference: string;
+    let chidiWalletId: string; // Chidi's wallet for payments
 
     // Realistic Nigerian property pricing
     const propertyPrice = 85_000_000; // ₦85M
@@ -1367,9 +1371,15 @@ describe('Full E2E Mortgage Flow', () => {
     });
 
     // =========================================================================
-    // Phase 9: Downpayment
+    // Phase 9: Downpayment (Event-Based Payment Flow)
+    // This tests the centralized phase orchestration:
+    // 1. Admin generates installments (or auto-generated via PAYMENT_PHASE_ACTIVATED event)
+    // 2. Customer's wallet is credited (simulating bank transfer received)
+    // 3. payment-service auto-allocates funds to pending installments
+    // 4. When payment phase completes, PAYMENT_PHASE_COMPLETED event triggers
+    // 5. mortgage-service's sqsConsumer activates the next phase
     // =========================================================================
-    describe('Phase 9: Downpayment', () => {
+    describe('Phase 9: Downpayment (Event-Based Flow)', () => {
         it('Step 9.1: Downpayment phase is auto-activated', async () => {
             const response = await mortgageApi
                 .get(`/applications/${applicationId}/phases/${downpaymentPhaseId}`)
@@ -1379,76 +1389,157 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.body.data.status).toBe('IN_PROGRESS');
         });
 
-        it('Step 9.2: Generate downpayment installment', async () => {
+        it('Step 9.2: Create wallet for Chidi via payment-service', async () => {
+            const response = await paymentApi
+                .post('/wallets/me')
+                .set(customerHeaders(chidiAccessToken))
+                .set('x-idempotency-key', idempotencyKey('create-chidi-wallet'))
+                .send({
+                    currency: 'NGN',
+                });
+
+            // Might already exist, check for 200 or 201
+            if (response.status === 409) {
+                // Wallet already exists, get it
+                const getResponse = await paymentApi
+                    .get('/wallets/me')
+                    .set(customerHeaders(chidiAccessToken));
+
+                expect(getResponse.status).toBe(200);
+                chidiWalletId = getResponse.body.data.id;
+            } else {
+                expect([200, 201]).toContain(response.status);
+                chidiWalletId = response.body.data.id;
+            }
+
+            expect(chidiWalletId).toBeDefined();
+            console.log(`Chidi's wallet ID: ${chidiWalletId}`);
+        });
+
+        it('Step 9.3: Generate downpayment installment', async () => {
             const response = await mortgageApi
                 .post(`/applications/${applicationId}/phases/${downpaymentPhaseId}/installments`)
-                .set(customerHeaders(chidiAccessToken))
+                .set(adminHeaders(adaezeAccessToken))
                 .set('x-idempotency-key', idempotencyKey('generate-downpayment'))
                 .send({ startDate: new Date().toISOString() });
 
-            expect(response.status).toBe(200);
-            expect(response.body.success).toBe(true);
-            expect(response.body.data.installments).toHaveLength(1);
-            expect(response.body.data.installments[0].amount).toBe(downpaymentAmount);
+            // Might already be generated via event
+            if (response.status === 400 && response.body.message?.includes('already')) {
+                console.log('Installments already generated (via event)');
+                // Fetch existing installments
+                const phaseResponse = await mortgageApi
+                    .get(`/applications/${applicationId}/phases/${downpaymentPhaseId}`)
+                    .set(customerHeaders(chidiAccessToken));
 
-            downpaymentInstallmentId = response.body.data.installments[0].id;
+                expect(phaseResponse.status).toBe(200);
+                const installments = phaseResponse.body.data.paymentPhase?.installments || [];
+                expect(installments.length).toBeGreaterThan(0);
+                downpaymentInstallmentId = installments[0].id;
+            } else {
+                expect(response.status).toBe(200);
+                expect(response.body.success).toBe(true);
+                expect(response.body.data.installments).toHaveLength(1);
+                expect(response.body.data.installments[0].amount).toBe(downpaymentAmount);
+                downpaymentInstallmentId = response.body.data.installments[0].id;
+            }
+
+            console.log(`Downpayment installment ID: ${downpaymentInstallmentId}`);
         });
 
-        it('Step 9.3: Chidi pays downpayment', async () => {
-            const response = await mortgageApi
-                .post(`/applications/${applicationId}/payments`)
-                .set(customerHeaders(chidiAccessToken))
-                .set('x-idempotency-key', idempotencyKey('pay-downpayment'))
+        it('Step 9.4: Simulate payment by crediting wallet (triggers auto-allocation)', async () => {
+            // This simulates Chidi making a bank transfer that gets credited to his wallet.
+            // The wallet credit triggers WALLET_CREDITED event → auto-allocation service
+            // → pays the pending installment → PAYMENT_PHASE_COMPLETED event → next phase activation
+
+            const response = await paymentApi
+                .post(`/wallets/${chidiWalletId}/credit`)
+                .set(adminHeaders(adaezeAccessToken)) // Admin can credit wallets
+                .set('x-idempotency-key', idempotencyKey('credit-chidi-downpayment'))
                 .send({
-                    phaseId: downpaymentPhaseId,
-                    installmentId: downpaymentInstallmentId,
                     amount: downpaymentAmount,
-                    paymentMethod: 'BANK_TRANSFER',
-                    externalReference: 'TRF-CHIDI-DOWNPAYMENT-001',
+                    reference: `DOWNPAYMENT-${TEST_RUN_ID.slice(0, 8)}`,
+                    description: 'Downpayment for Lekki Gardens Unit 14B',
+                    source: 'manual', // Admin manually crediting (simulating bank transfer)
                 });
 
-            expect(response.status).toBe(201);
-            expect(response.body.success).toBe(true);
+            if (response.status !== 200) {
+                console.log('Wallet credit failed:', JSON.stringify(response.body, null, 2));
+            }
+            expect(response.status).toBe(200);
+            expect(response.body.status).toBe('success');
 
-            paymentReference = response.body.data.reference;
+            console.log('Wallet credited, waiting for event processing...');
         });
 
-        it('Step 9.4: Process payment confirmation', async () => {
-            const response = await mortgageApi
-                .post('/applications/payments/process')
-                .set(customerHeaders(chidiAccessToken))
-                .set('x-idempotency-key', idempotencyKey('process-downpayment'))
-                .send({
-                    reference: paymentReference,
-                    status: 'COMPLETED',
-                    gatewayTransactionId: 'GW-TRX-123456',
-                });
+        it('Step 9.5: Wait for async event processing and verify downpayment phase completes', async () => {
+            // The event flow is:
+            // 1. WALLET_CREDITED → payment-service allocates to installment
+            // 2. Installment PAID → payment phase COMPLETED
+            // 3. PAYMENT_PHASE_COMPLETED event → SNS → SQS → mortgage-service
+            // 4. mortgage-service activates next phase
 
-            expect(response.status).toBe(200);
-            expect(response.body.success).toBe(true);
-        });
+            // Poll for phase completion with timeout
+            const maxWaitMs = 30000;
+            const pollIntervalMs = 2000;
+            const startTime = Date.now();
 
-        it('Step 9.5: Downpayment phase completes', async () => {
-            const response = await mortgageApi
-                .get(`/applications/${applicationId}/phases/${downpaymentPhaseId}`)
-                .set(customerHeaders(chidiAccessToken));
+            let phaseStatus = 'IN_PROGRESS';
 
-            expect(response.status).toBe(200);
-            expect(response.body.data.status).toBe('COMPLETED');
+            while (Date.now() - startTime < maxWaitMs) {
+                const response = await mortgageApi
+                    .get(`/applications/${applicationId}/phases/${downpaymentPhaseId}`)
+                    .set(customerHeaders(chidiAccessToken));
+
+                expect(response.status).toBe(200);
+                phaseStatus = response.body.data.status;
+
+                console.log(`Phase status: ${phaseStatus} (waited ${Math.round((Date.now() - startTime) / 1000)}s)`);
+
+                if (phaseStatus === 'COMPLETED') {
+                    break;
+                }
+
+                await new Promise(resolve => setTimeout(resolve, pollIntervalMs));
+            }
+
+            expect(phaseStatus).toBe('COMPLETED');
+            console.log('✓ Downpayment phase completed via event-based flow');
         });
     });
 
     // =========================================================================
-    // Phase 10: Mortgage Offer
+    // Phase 10: Mortgage Offer (Activated via Event from Payment Service)
+    // The PAYMENT_PHASE_COMPLETED event triggered by payment-service should have
+    // activated this phase via the mortgage-service sqsConsumer
     // =========================================================================
-    describe('Phase 10: Mortgage Offer', () => {
-        it('Step 10.1: Mortgage offer phase is auto-activated', async () => {
-            const response = await mortgageApi
-                .get(`/applications/${applicationId}/phases/${mortgageOfferPhaseId}`)
-                .set(customerHeaders(chidiAccessToken));
+    describe('Phase 10: Mortgage Offer (Event-Activated)', () => {
+        it('Step 10.1: Verify mortgage offer phase was auto-activated via event', async () => {
+            // Poll to allow time for SQS event processing
+            const maxWaitMs = 15000;
+            const pollIntervalMs = 2000;
+            const startTime = Date.now();
 
-            expect(response.status).toBe(200);
-            expect(response.body.data.status).toBe('IN_PROGRESS');
+            let phaseStatus = 'PENDING';
+
+            while (Date.now() - startTime < maxWaitMs) {
+                const response = await mortgageApi
+                    .get(`/applications/${applicationId}/phases/${mortgageOfferPhaseId}`)
+                    .set(customerHeaders(chidiAccessToken));
+
+                expect(response.status).toBe(200);
+                phaseStatus = response.body.data.status;
+
+                console.log(`Mortgage offer phase status: ${phaseStatus} (waited ${Math.round((Date.now() - startTime) / 1000)}s)`);
+
+                if (phaseStatus === 'IN_PROGRESS') {
+                    break;
+                }
+
+                await new Promise(resolve => setTimeout(resolve, pollIntervalMs));
+            }
+
+            expect(phaseStatus).toBe('IN_PROGRESS');
+            console.log('✓ Mortgage offer phase auto-activated via PAYMENT_PHASE_COMPLETED event');
         });
 
         it('Step 10.2: Lender (Nkechi) uploads mortgage offer letter', async () => {

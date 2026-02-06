@@ -6,6 +6,7 @@ import {
     DocumentStatus,
     RejectionBehavior,
     PhaseStatus,
+    PaymentEventPublisher,
 } from '@valentine-efagene/qshelter-common';
 import { v4 as uuidv4 } from 'uuid';
 import {
@@ -743,6 +744,9 @@ export function createApprovalWorkflowService() {
                         applicationId: docPhase.phase.applicationId,
                         order: docPhase.phase.order + 1,
                     },
+                    include: {
+                        paymentPhase: true,
+                    },
                 });
 
                 if (nextApplicationPhase) {
@@ -759,6 +763,35 @@ export function createApprovalWorkflowService() {
                         where: { id: docPhase.phase.applicationId },
                         data: { currentPhaseId: nextApplicationPhase.id },
                     });
+
+                    // If next phase is PAYMENT, publish event to trigger installment generation
+                    if (nextApplicationPhase.phaseCategory === 'PAYMENT' && nextApplicationPhase.paymentPhase) {
+                        const paymentPhaseData = nextApplicationPhase.paymentPhase;
+                        // Schedule event publishing after transaction commits
+                        setTimeout(async () => {
+                            try {
+                                const paymentPublisher = new PaymentEventPublisher('mortgage-service');
+                                await paymentPublisher.publishPaymentPhaseActivated({
+                                    phaseId: nextApplicationPhase.id,
+                                    applicationId: docPhase.phase.applicationId,
+                                    tenantId: docPhase.tenantId,
+                                    paymentPhaseId: paymentPhaseData.id,
+                                    totalAmount: paymentPhaseData.totalAmount ?? 0,
+                                    interestRate: paymentPhaseData.interestRate ?? 0,
+                                    numberOfInstallments: paymentPhaseData.numberOfInstallments ?? undefined,
+                                    paymentPlanId: paymentPhaseData.paymentPlanId || '',
+                                    startDate: new Date().toISOString(),
+                                    userId: userId || 'system',
+                                });
+                                console.log('[ApprovalWorkflow] Published PAYMENT_PHASE_ACTIVATED event', {
+                                    phaseId: nextApplicationPhase.id,
+                                    paymentPhaseId: paymentPhaseData.id,
+                                });
+                            } catch (error) {
+                                console.error('[ApprovalWorkflow] Error publishing PAYMENT_PHASE_ACTIVATED:', error);
+                            }
+                        }, 100);
+                    }
 
                     // Create domain event for phase activation
                     await tx.domainEvent.create({
@@ -782,8 +815,8 @@ export function createApprovalWorkflowService() {
                     // First get the application to find the propertyUnitId
                     const application = await tx.application.findUnique({
                         where: { id: docPhase.phase.applicationId },
-                        select: { 
-                            propertyUnitId: true, 
+                        select: {
+                            propertyUnitId: true,
                             buyerId: true,
                             propertyUnit: { select: { variantId: true } },
                         },

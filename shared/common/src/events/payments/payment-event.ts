@@ -20,6 +20,10 @@ export enum PaymentEventType {
 
     // Phase events (published by mortgage service when payment phase is activated)
     PAYMENT_PHASE_ACTIVATED = 'phase.payment_activated',
+
+    // Phase completed (published by payment service when all installments paid)
+    // mortgage-service listens to this to activate the next phase
+    PAYMENT_PHASE_COMPLETED = 'phase.payment_completed',
 }
 
 /**
@@ -104,5 +108,20 @@ export interface PaymentPhaseActivatedPayload {
     /** ISO date string for installment start date */
     startDate: string;
     /** Actor who triggered the phase activation */
+    userId: string;
+}
+
+/**
+ * Payload when a PAYMENT phase is completed (all installments paid)
+ * Triggers next phase activation in mortgage-service
+ */
+export interface PaymentPhaseCompletedPayload {
+    phaseId: string;
+    applicationId: string;
+    tenantId: string;
+    paymentPhaseId: string;
+    phaseName: string;
+    phaseOrder: number;
+    /** Actor who made the final payment */
     userId: string;
 }

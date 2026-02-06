@@ -60,7 +60,7 @@ class AllocationService {
         const applications = await prisma.application.findMany({
             where: {
                 buyerId: userId,
-                status: 'ACTIVE', // Only active applications (arrears tracked at installment level)
+                status: { in: ['PENDING', 'ACTIVE'] }, // Applications accepting payments
                 ...(options?.applicationId ? { id: options.applicationId } : {}),
             },
             select: { id: true },
@@ -73,26 +73,29 @@ class AllocationService {
 
         const applicationIds = applications.map((c) => c.id);
 
-        // Find phases for these applications
-        const phases = await prisma.applicationPhase.findMany({
+        // Find payment phases for these applications
+        // PaymentInstallment.paymentPhaseId links to PaymentPhase.id, not ApplicationPhase.id
+        const paymentPhases = await prisma.paymentPhase.findMany({
             where: {
-                applicationId: { in: applicationIds },
-                status: { in: ['ACTIVE', 'PENDING'] },
+                phase: {
+                    applicationId: { in: applicationIds },
+                    status: { in: ['IN_PROGRESS', 'ACTIVE'] }, // IN_PROGRESS for payment phases
+                },
             },
             select: { id: true },
         });
 
-        if (phases.length === 0) {
-            console.log('[Allocation] No active phases for applications', { userId, applicationIds });
+        if (paymentPhases.length === 0) {
+            console.log('[Allocation] No active payment phases for applications', { userId, applicationIds });
             return { totalAllocated: 0, installmentsPaid: [], remainingBalance: wallet.balance };
         }
 
-        const phaseIds = phases.map((p) => p.id);
+        const paymentPhaseIds = paymentPhases.map((p) => p.id);
 
         // Find pending/overdue installments ordered by priority
         const installments = await prisma.paymentInstallment.findMany({
             where: {
-                paymentPhaseId: { in: phaseIds },
+                paymentPhaseId: { in: paymentPhaseIds },
                 status: { in: ['PENDING', 'OVERDUE', 'PARTIALLY_PAID'] },
             },
             orderBy: [
@@ -208,6 +211,9 @@ class AllocationService {
             description: `Payment for installment ${installment.installmentNumber}`,
         });
 
+        // Track if phase completed for post-transaction SNS event
+        let phaseCompleted = false;
+
         // Update installment and phase in a transaction
         await prisma.$transaction(async (tx) => {
             const newPaidAmount = installment.paidAmount + amount;
@@ -237,12 +243,42 @@ class AllocationService {
 
             // Update parent ApplicationPhase status if complete
             if (isPhaseComplete) {
+                phaseCompleted = true;
+
                 await tx.applicationPhase.update({
                     where: { id: paymentPhase.phaseId },
                     data: {
                         status: 'COMPLETED',
                         completedAt: new Date(),
                     },
+                });
+
+                // Write PHASE_COMPLETED domain event
+                await tx.domainEvent.create({
+                    data: {
+                        id: uuidv4(),
+                        tenantId: applicationPhase.tenantId,
+                        eventType: 'PHASE.COMPLETED',
+                        aggregateType: 'ApplicationPhase',
+                        aggregateId: applicationPhase.id,
+                        queueName: 'application-steps',
+                        payload: JSON.stringify({
+                            phaseId: applicationPhase.id,
+                            applicationId: applicationPhase.applicationId,
+                            phaseCategory: applicationPhase.phaseCategory,
+                            phaseType: applicationPhase.phaseType,
+                            phaseName: applicationPhase.name,
+                            phaseOrder: applicationPhase.order,
+                            userId,
+                        }),
+                        actorId: userId,
+                    },
+                });
+
+                console.log('[Allocation] Payment phase completed', {
+                    phaseId: applicationPhase.id,
+                    phaseName: applicationPhase.name,
+                    applicationId: applicationPhase.applicationId,
                 });
             }
 
@@ -294,6 +330,31 @@ class AllocationService {
             reference,
             newWalletBalance: wallet.balance,
         });
+
+        // Publish PAYMENT_PHASE_COMPLETED event to SNS for mortgage-service to activate next phase
+        if (phaseCompleted) {
+            try {
+                await paymentPublisher.publishPaymentPhaseCompleted({
+                    phaseId: applicationPhase.id,
+                    applicationId: applicationPhase.applicationId,
+                    tenantId: applicationPhase.tenantId,
+                    paymentPhaseId: paymentPhase.id,
+                    phaseName: applicationPhase.name,
+                    phaseOrder: applicationPhase.order,
+                    userId,
+                });
+                console.log('[Allocation] Published PAYMENT_PHASE_COMPLETED event', {
+                    phaseId: applicationPhase.id,
+                    applicationId: applicationPhase.applicationId,
+                });
+            } catch (error) {
+                // Don't fail the transaction if SNS publish fails
+                console.error('[Allocation] Failed to publish PAYMENT_PHASE_COMPLETED event', {
+                    error: error instanceof Error ? error.message : error,
+                    phaseId: applicationPhase.id,
+                });
+            }
+        }
     }
 }
 
