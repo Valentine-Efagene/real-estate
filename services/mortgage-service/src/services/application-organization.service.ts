@@ -31,7 +31,7 @@ export function isOrgStaffRole(roles: string[] | undefined): boolean {
  * This service controls which organizations (banks, developers, legal firms)
  * are authorized to interact with specific applications.
  */
-export function createApplicationOrganizationService(prisma: AnyPrismaClient) {
+export function createApplicationOrganizationService(prisma: AnyPrismaClient): any {
     return {
         /**
          * Get organization IDs where user is an active member.

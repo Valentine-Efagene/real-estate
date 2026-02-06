@@ -9,7 +9,7 @@ import {
 } from "@valentine-efagene/qshelter-common";
 import { approvalRequestService } from "../services/approval-request.service";
 
-const router = Router();
+const router: Router = Router();
 
 // =============================================================================
 // VALIDATION SCHEMAS

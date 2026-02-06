@@ -231,7 +231,7 @@ router.get('/phases/:phaseId/effective-requirements', requireTenant, async (req:
 
         const documentationPlanService = getDocumentationPlanService(req);
         const requirements = await documentationPlanService.getEffectiveDocumentRequirements(
-            phaseId,
+            phaseId as string,
             bankOrganizationId
         );
 

@@ -11,7 +11,7 @@ import {
 import { getTenantPrisma } from '../lib/tenant-services';
 import { z } from 'zod';
 
-const router = Router();
+const router: Router = Router();
 
 // =============================================================================
 // ORGANIZATION PENDING REVIEWS
@@ -85,7 +85,7 @@ router.get(
         if (!isAdmin) {
             const membership = await tenantPrisma.organizationMember.findFirst({
                 where: {
-                    organizationId: orgId,
+                    organizationId: orgId as string,
                     userId,
                 },
             });
@@ -96,7 +96,7 @@ router.get(
 
         // Get organization details with its types
         const organization = await tenantPrisma.organization.findUnique({
-            where: { id: orgId },
+            where: { id: orgId as string },
             include: {
                 types: {
                     include: {
@@ -111,11 +111,12 @@ router.get(
         }
 
         // Get organization type codes
-        const orgTypeCodes = organization.types.map(t => t.orgType.code);
-        const primaryTypeCode = organization.types.find(t => t.isPrimary)?.orgType?.code || orgTypeCodes[0];
+        const orgWithTypes = organization as typeof organization & { types: Array<{ isPrimary: boolean; orgType: { code: string } }> };
+        const orgTypeCodes = orgWithTypes.types.map(t => t.orgType.code);
+        const primaryTypeCode = orgWithTypes.types.find(t => t.isPrimary)?.orgType?.code || orgTypeCodes[0];
 
         // Check if any of this organization's types participate in reviews
-        const participatingTypes = orgTypeCodes.filter(code => REVIEW_ORG_TYPES.includes(code));
+        const participatingTypes = orgTypeCodes.filter((code: string) => REVIEW_ORG_TYPES.includes(code));
         if (participatingTypes.length === 0) {
             return res.json(successResponse({
                 organization: {
@@ -153,7 +154,7 @@ router.get(
         // Find applications where this organization is bound
         const applicationBindings = await tenantPrisma.applicationOrganization.findMany({
             where: {
-                organizationId: orgId,
+                organizationId: orgId as string,
                 status: { in: ['PENDING', 'ACTIVE'] },
             },
             include: {
@@ -242,18 +243,19 @@ router.get(
                     },
                 });
 
+                const app = (binding as any).application;
                 pendingReviews.push({
                     applicationId: binding.applicationId,
-                    applicationNumber: binding.application.applicationNumber,
+                    applicationNumber: app.applicationNumber,
                     customer: {
-                        id: binding.application.buyer.id,
-                        name: `${binding.application.buyer.firstName || ''} ${binding.application.buyer.lastName || ''}`.trim(),
-                        email: binding.application.buyer.email,
+                        id: app.buyer.id,
+                        name: `${app.buyer.firstName || ''} ${app.buyer.lastName || ''}`.trim(),
+                        email: app.buyer.email,
                     },
                     property: {
-                        id: binding.application.propertyUnit?.variant?.property?.id,
-                        title: binding.application.propertyUnit?.variant?.property?.title,
-                        unitNumber: binding.application.propertyUnit?.unitNumber,
+                        id: app.propertyUnit?.variant?.property?.id,
+                        title: app.propertyUnit?.variant?.property?.title,
+                        unitNumber: app.propertyUnit?.unitNumber,
                     },
                     stage: {
                         id: stage.id,
@@ -327,7 +329,7 @@ router.get(
         if (!isAdmin) {
             const membership = await tenantPrisma.organizationMember.findFirst({
                 where: {
-                    organizationId: orgId,
+                    organizationId: orgId as string,
                     userId,
                 },
             });
@@ -338,7 +340,7 @@ router.get(
 
         // Build filter
         const whereClause: any = {
-            organizationId: orgId,
+            organizationId: orgId as string,
         };
         if (status) {
             whereClause.status = status;
@@ -459,7 +461,7 @@ router.get(
 
         // Verify organization exists
         const organization = await tenantPrisma.organization.findUnique({
-            where: { id: orgId },
+            where: { id: orgId as string },
         });
 
         if (!organization) {
@@ -467,7 +469,7 @@ router.get(
         }
 
         // Check if organization is a bank
-        const isBank = await hasOrgType(tenantPrisma, orgId, 'BANK');
+        const isBank = await hasOrgType(tenantPrisma, orgId as string, 'BANK');
         if (!isBank) {
             throw new AppError(400, 'Document requirements are only applicable to bank organizations');
         }
@@ -477,7 +479,7 @@ router.get(
         if (!isAdmin) {
             const membership = await tenantPrisma.organizationMember.findFirst({
                 where: {
-                    organizationId: orgId,
+                    organizationId: orgId as string,
                     userId,
                 },
             });
@@ -487,7 +489,7 @@ router.get(
         }
 
         const requirements = await tenantPrisma.bankDocumentRequirement.findMany({
-            where: { organizationId: orgId },
+            where: { organizationId: orgId as string },
             orderBy: { documentType: 'asc' },
             include: {
                 phase: {
@@ -531,7 +533,7 @@ router.post(
 
         // Verify organization exists
         const organization = await tenantPrisma.organization.findUnique({
-            where: { id: orgId },
+            where: { id: orgId as string },
         });
 
         if (!organization) {
@@ -539,7 +541,7 @@ router.post(
         }
 
         // Check if organization is a bank
-        const isBank = await hasOrgType(tenantPrisma, orgId, 'BANK');
+        const isBank = await hasOrgType(tenantPrisma, orgId as string, 'BANK');
         if (!isBank) {
             throw new AppError(400, 'Document requirements are only applicable to bank organizations');
         }
@@ -549,7 +551,7 @@ router.post(
         if (!isAdmin) {
             const membership = await tenantPrisma.organizationMember.findFirst({
                 where: {
-                    organizationId: orgId,
+                    organizationId: orgId as string,
                     userId,
                 },
             });
@@ -561,7 +563,7 @@ router.post(
         // Check for existing requirement for this document type
         const existing = await tenantPrisma.bankDocumentRequirement.findFirst({
             where: {
-                organizationId: orgId,
+                organizationId: orgId as string,
                 documentType: data.documentType,
                 phaseId: data.phaseId,
             },
@@ -587,7 +589,7 @@ router.post(
 
         const requirement = await tenantPrisma.bankDocumentRequirement.create({
             data: {
-                organizationId: orgId,
+                organizationId: orgId as string,
                 tenantId: organization.tenantId,
                 phaseId: data.phaseId,
                 documentType: data.documentType,
@@ -638,8 +640,8 @@ router.put(
         // Verify requirement exists and belongs to this org
         const requirement = await tenantPrisma.bankDocumentRequirement.findFirst({
             where: {
-                id: reqId,
-                organizationId: orgId,
+                id: reqId as string,
+                organizationId: orgId as string,
             },
         });
 
@@ -652,7 +654,7 @@ router.put(
         if (!isAdmin) {
             const membership = await tenantPrisma.organizationMember.findFirst({
                 where: {
-                    organizationId: orgId,
+                    organizationId: orgId as string,
                     userId,
                 },
             });
@@ -662,7 +664,7 @@ router.put(
         }
 
         const updated = await tenantPrisma.bankDocumentRequirement.update({
-            where: { id: reqId },
+            where: { id: reqId as string },
             data: {
                 phaseId: data.phaseId,
                 documentType: data.documentType,
@@ -711,8 +713,8 @@ router.delete(
         // Verify requirement exists and belongs to this org
         const requirement = await tenantPrisma.bankDocumentRequirement.findFirst({
             where: {
-                id: reqId,
-                organizationId: orgId,
+                id: reqId as string,
+                organizationId: orgId as string,
             },
         });
 
@@ -725,7 +727,7 @@ router.delete(
         if (!isAdmin) {
             const membership = await tenantPrisma.organizationMember.findFirst({
                 where: {
-                    organizationId: orgId,
+                    organizationId: orgId as string,
                     userId,
                 },
             });
@@ -735,7 +737,7 @@ router.delete(
         }
 
         await tenantPrisma.bankDocumentRequirement.delete({
-            where: { id: reqId },
+            where: { id: reqId as string },
         });
 
         res.json(successResponse({ deleted: true }));

@@ -11,7 +11,7 @@ import {
 import { createApplicationTerminationService } from '../services/application-termination.service';
 import { z } from 'zod';
 
-const terminationRouter = Router();
+const terminationRouter: Router = Router();
 
 /**
  * Request termination (buyer/seller initiated)

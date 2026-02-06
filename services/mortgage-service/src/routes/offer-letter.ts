@@ -11,7 +11,7 @@ import {
 import { z } from 'zod';
 import { getAuthContext } from '@valentine-efagene/qshelter-common';
 
-const router = Router();
+const router: Router = Router();
 
 // ============================================================================
 // OFFER LETTER ROUTES

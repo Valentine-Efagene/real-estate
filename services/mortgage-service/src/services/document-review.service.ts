@@ -53,6 +53,7 @@ export interface CreateReviewsInput {
  * - organizationId: The specific organization (null for customer self-reviews)
  * - Customer reviews: organizationId = null, organizationTypeCode = 'CUSTOMER'
  */
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function createDocumentReviewService(prismaClient: PrismaClient) {
     /**
      * Helper to resolve organization type code to ID

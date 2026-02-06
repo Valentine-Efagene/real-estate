@@ -43,7 +43,7 @@ import { z } from 'zod';
 import { getTenantPrisma } from '../lib/tenant-services';
 import { AppError } from '@valentine-efagene/qshelter-common';
 
-const router = Router();
+const router: Router = Router();
 
 /**
  * Helper to get tenant-scoped application service from request
@@ -696,9 +696,9 @@ router.post('/:id/documents/:documentId/review', requireTenant, canAccessApplica
         // Look up the document to get the phaseId
         const document = await prisma.applicationDocument.findFirst({
             where: {
-                id: req.params.documentId,
+                id: req.params.documentId as string,
                 tenantId,
-                applicationId: req.params.id,
+                applicationId: req.params.id as string,
             },
         });
 
@@ -761,9 +761,9 @@ router.post('/:id/documents/:documentId/revert', requireTenant, requireRole(ADMI
         // Look up the document to get the phaseId
         const document = await prisma.applicationDocument.findFirst({
             where: {
-                id: req.params.documentId,
+                id: req.params.documentId as string,
                 tenantId,
-                applicationId: req.params.id,
+                applicationId: req.params.id as string,
             },
         });
 

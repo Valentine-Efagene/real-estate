@@ -5,7 +5,7 @@ import {
     UnderwritingRequestSchema,
 } from '../validators/underwriting.validator';
 
-const router = Router();
+const router: Router = Router();
 
 /**
  * POST /underwriting/evaluate

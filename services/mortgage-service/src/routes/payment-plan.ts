@@ -11,7 +11,7 @@ import {
 } from '@valentine-efagene/qshelter-common';
 import { getTenantPrisma } from '../lib/tenant-services';
 
-const router = Router();
+const router: Router = Router();
 
 /**
  * Helper to get tenant-scoped payment plan service from request

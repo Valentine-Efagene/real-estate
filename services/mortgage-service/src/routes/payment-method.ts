@@ -29,7 +29,7 @@ import {
 import { prisma } from '../lib/prisma';
 import { getTenantPrisma } from '../lib/tenant-services';
 
-const router = Router();
+const router: Router = Router();
 
 /**
  * Helper to get tenant-scoped payment method service from request

@@ -14,13 +14,22 @@
  *   # or directly:
  *   ./scripts/run-full-e2e-staging.sh
  *
- * Flow (5 phases):
- * 1. Prequalification questionnaire by customer
- * 2. Sales offer letter by developer (Emeka from Lekki Gardens)
- * 3. Preapproval documentation (KYC) by customer + preapproval letter by lender (Nkechi from Access Bank)
- *    - Documents reviewed in TWO STAGES: QShelter (Adaeze) then Bank (Nkechi)
- * 4. Customer pays downpayment
- * 5. Mortgage offer letter by lender (Nkechi from Access Bank)
+ * Setup Phases:
+ * 1. Bootstrap → Admin (Adaeze) setup
+ * 2. Organizations → Invite staff (Emeka as agent, Nkechi as lender_ops)
+ * 3. Payment config → Plans, doc plans (with conditional docs), payment method (5-phase journey)
+ * 4. Customer registration (Chidi signs up)
+ * 5. Property setup → Developer (Emeka) creates property, admin links payment method
+ *
+ * Application Flow (5 phases within payment method):
+ * 6. Customer creates application
+ * 7. Prequalification questionnaire by customer → admin approval
+ * 8. Sales offer letter by developer (Emeka from Lekki Gardens) — auto-approved
+ * 9. KYC documentation by customer + preapproval by lender
+ *    - Two-stage review: QShelter (Adaeze) then Bank (Nkechi)
+ *    - Conditional SPOUSE_ID doc (only if mortgage_type=JOINT)
+ * 10. 10% downpayment (event-based wallet flow)
+ * 11. Mortgage offer letter by lender (Nkechi from Access Bank) — auto-approved
  *
  * Actors:
  * - Adaeze (Mortgage Operations Officer): QShelter staff who performs QShelter document review (Stage 1)
@@ -78,7 +87,27 @@ const docClient = DynamoDBDocumentClient.from(dynamoClient);
 const BOOTSTRAP_SECRET =
     process.env.BOOTSTRAP_SECRET || 'local-bootstrap-secret';
 
-// Unique test run ID for idempotency
+// =========================================================================
+// Fixed scenario values — matching demo-frontend defaults exactly
+// This test is a "faster version" of clicking through the demo frontend UI
+// =========================================================================
+const TENANT_NAME = 'QShelter Demo';
+const TENANT_SUBDOMAIN = 'qshelter-demo';
+
+// Actors (all @mailsac.com for testable email verification)
+const ADMIN_EMAIL = 'adaeze@mailsac.com';
+const ADMIN_PASSWORD = 'password';
+
+const CUSTOMER_EMAIL = 'chidi@mailsac.com';
+const CUSTOMER_PASSWORD = 'password';
+
+const DEVELOPER_EMAIL = 'emeka@mailsac.com';
+const DEVELOPER_PASSWORD = 'password';
+
+const LENDER_EMAIL = 'nkechi@mailsac.com';
+const LENDER_PASSWORD = 'password';
+
+// Unique test run ID — only used for idempotency keys, not for data
 const TEST_RUN_ID = randomUUID();
 
 function idempotencyKey(operation: string): string {
@@ -150,6 +179,12 @@ function lenderHeaders(accessToken: string): Record<string, string> {
     };
 }
 
+// Mock S3 URL helper — the document workflow only needs a valid-looking URL,
+// actual file content is irrelevant for the application flow tests.
+function mockS3Url(folder: string, fileName: string): string {
+    return `https://qshelter-uploads-staging.s3.amazonaws.com/${folder}/${randomUUID()}/${fileName}`;
+}
+
 /**
  * Verify a user's email for E2E testing.
  * Gets the verification token from admin endpoint and calls verify-email.
@@ -191,19 +226,29 @@ async function verifyUserEmail(userId: string): Promise<void> {
 describe('Full E2E Mortgage Flow', () => {
     // Tenant & Auth
     let tenantId: string;
+
+    // Role IDs (extracted from bootstrap response)
+    let adminRoleId: string;
+    let userRoleId: string;
+    let mortgageOpsRoleId: string;
+    let agentRoleId: string;
+    let lenderOpsRoleId: string;
+
     // Mortgage Operations Officer (Adaeze from QShelter)
     let adaezeId: string;
     let adaezeAccessToken: string;
     let qshelterOrgId: string; // Platform organization
+
+    // Customer (Chidi)
     let chidiId: string;
     let chidiAccessToken: string;
 
-    // Developer (Emeka from Lekki Gardens)
+    // Developer (Emeka from Lekki Gardens) — invited by admin
     let emekaId: string;
     let emekaAccessToken: string;
     let lekkiGardensOrgId: string;
 
-    // Lender (Nkechi from Access Bank)
+    // Lender (Nkechi from Access Bank) — invited by admin
     let nkechiId: string;
     let nkechiAccessToken: string;
     let accessBankOrgId: string;
@@ -265,22 +310,38 @@ describe('Full E2E Mortgage Flow', () => {
     });
 
     // =========================================================================
-    // Phase 1: Tenant Bootstrap
+    // Phase 1: Bootstrap & Admin Setup
+    // Only Adaeze is seeded via bootstrap. All other users are invited.
     // =========================================================================
-    describe('Phase 1: Tenant Bootstrap', () => {
-        it('Step 1.1: Bootstrap tenant with roles and admin', async () => {
+    describe('Phase 1: Bootstrap & Admin Setup', () => {
+        it('Step 1.0: Reset database for clean state', async () => {
+            const response = await userApi
+                .post('/admin/reset')
+                .set('x-bootstrap-secret', BOOTSTRAP_SECRET);
+
+            console.log(`Reset response: ${response.status}`);
+            if (response.status === 200) {
+                console.log(`✅ Deleted ${response.body.totalDeleted} records`);
+            } else {
+                console.log('Reset response:', JSON.stringify(response.body, null, 2));
+            }
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+        });
+
+        it('Step 1.1: Bootstrap tenant with admin (Adaeze)', async () => {
             const response = await userApi
                 .post('/admin/bootstrap-tenant')
                 .set('x-bootstrap-secret', BOOTSTRAP_SECRET)
                 .set('Content-Type', 'application/json')
                 .send({
                     tenant: {
-                        name: 'QShelter Real Estate',
-                        subdomain: `qshelter-${TEST_RUN_ID.slice(0, 8)}`,
+                        name: TENANT_NAME,
+                        subdomain: TENANT_SUBDOMAIN,
                     },
                     admin: {
-                        email: `adaeze-${TEST_RUN_ID.slice(0, 8)}@qshelter.com`,
-                        password: 'SecureAdmin123!',
+                        email: ADMIN_EMAIL,
+                        password: ADMIN_PASSWORD,
                         firstName: 'Adaeze',
                         lastName: 'Okonkwo',
                     },
@@ -289,24 +350,36 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.status).toBe(201);
             expect(response.body.tenant).toBeDefined();
             expect(response.body.admin).toBeDefined();
+            expect(response.body.roles.length).toBeGreaterThanOrEqual(5);
 
             tenantId = response.body.tenant.id;
             adaezeId = response.body.admin.id;
 
-            console.log('Bootstrap response roles:', JSON.stringify(response.body.roles, null, 2));
+            // Extract role IDs from bootstrap response for use in invitations
+            const roles = response.body.roles as Array<{ id: string; name: string }>;
+            adminRoleId = roles.find(r => r.name === 'admin')!.id;
+            userRoleId = roles.find(r => r.name === 'user')!.id;
+            mortgageOpsRoleId = roles.find(r => r.name === 'mortgage_ops')!.id;
+            agentRoleId = roles.find(r => r.name === 'agent')!.id;
+            lenderOpsRoleId = roles.find(r => r.name === 'lender_ops')!.id;
 
-            expect(response.body.roles.length).toBeGreaterThanOrEqual(5);
+            console.log(`✅ Tenant: ${tenantId}`);
+            console.log(`✅ Admin (Adaeze): ${adaezeId}`);
+            console.log(`✅ Roles: admin=${adminRoleId}, mortgage_ops=${mortgageOpsRoleId}, agent=${agentRoleId}, lender_ops=${lenderOpsRoleId}`);
+
+            // Verify Adaeze has the admin role
+            expect(adminRoleId).toBeDefined();
 
             await waitForPolicyInDynamoDB('admin', tenantId);
         });
 
-        it('Step 1.2: Admin logs in', async () => {
+        it('Step 1.2: Admin (Adaeze) logs in', async () => {
             const response = await userApi
                 .post('/auth/login')
                 .set('Content-Type', 'application/json')
                 .send({
-                    email: `adaeze-${TEST_RUN_ID.slice(0, 8)}@qshelter.com`,
-                    password: 'SecureAdmin123!',
+                    email: ADMIN_EMAIL,
+                    password: ADMIN_PASSWORD,
                 });
 
             expect(response.status).toBe(200);
@@ -314,9 +387,20 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.body.data.accessToken).toBeDefined();
 
             adaezeAccessToken = response.body.data.accessToken;
-        });
 
-        it('Step 1.3: Admin creates QShelter platform organization', async () => {
+            // Verify admin role is in the JWT
+            const tokenPayload = JSON.parse(Buffer.from(adaezeAccessToken.split('.')[1], 'base64').toString());
+            adaezeId = tokenPayload.sub;
+            console.log(`✅ Adaeze logged in, roles in token:`, tokenPayload.roles);
+        });
+    });
+
+    // =========================================================================
+    // Phase 2: Organization Setup & Staff Invitations
+    // Admin creates organizations, then invites staff with explicit roles.
+    // =========================================================================
+    describe('Phase 2: Organization & Staff Setup', () => {
+        it('Step 2.1: Admin creates QShelter platform organization', async () => {
             const response = await userApi
                 .post('/organizations')
                 .set(adminHeaders(adaezeAccessToken))
@@ -325,7 +409,7 @@ describe('Full E2E Mortgage Flow', () => {
                     name: 'QShelter Real Estate',
                     typeCodes: ['PLATFORM'],
                     isPlatformOrg: true,
-                    email: 'support@qshelter.com',
+                    email: 'support@mailsac.com',
                     phone: '+2348001234567',
                     address: '123 Victoria Island',
                     city: 'Lagos',
@@ -342,13 +426,10 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.body.success).toBe(true);
 
             qshelterOrgId = response.body.data.id;
+            console.log(`✅ QShelter org: ${qshelterOrgId}`);
         });
 
-        it('Step 1.4: Admin adds herself to QShelter as Mortgage Operations Officer', async () => {
-            // Get Adaeze's user ID from token
-            const tokenPayload = JSON.parse(Buffer.from(adaezeAccessToken.split('.')[1], 'base64').toString());
-            adaezeId = tokenPayload.sub;
-
+        it('Step 2.2: Admin adds herself to QShelter with mortgage_ops role', async () => {
             const response = await userApi
                 .post(`/organizations/${qshelterOrgId}/members`)
                 .set(adminHeaders(adaezeAccessToken))
@@ -365,44 +446,8 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.status).toBe(201);
             expect(response.body.success).toBe(true);
         });
-    });
 
-    // =========================================================================
-    // Phase 2: Customer Registration
-    // =========================================================================
-    describe('Phase 2: Customer Registration', () => {
-        it('Step 2.1: Chidi signs up', async () => {
-            const response = await userApi
-                .post('/auth/signup')
-                .set('Content-Type', 'application/json')
-                .send({
-                    email: `chidi-${TEST_RUN_ID.slice(0, 8)}@gmail.com`,
-                    password: 'CustomerPass123!',
-                    firstName: 'Chidi',
-                    lastName: 'Nnamdi',
-                    tenantId: tenantId,
-                });
-
-            if (response.status !== 201) {
-                console.error('Signup failed:', response.status, JSON.stringify(response.body, null, 2));
-            }
-            expect(response.status).toBe(201);
-            expect(response.body.success).toBe(true);
-            expect(response.body.data.accessToken).toBeDefined();
-
-            chidiAccessToken = response.body.data.accessToken;
-
-            const tokenPayload = JSON.parse(Buffer.from(chidiAccessToken.split('.')[1], 'base64').toString());
-            chidiId = tokenPayload.sub;
-            expect(chidiId).toBeDefined();
-        });
-    });
-
-    // =========================================================================
-    // Phase 2.5: Partner Setup (Organizations & Members)
-    // =========================================================================
-    describe('Phase 2.5: Partner Setup', () => {
-        it('Step 2.5.1: Admin creates Lekki Gardens (Developer organization)', async () => {
+        it('Step 2.3: Admin creates Lekki Gardens (Developer organization)', async () => {
             const response = await userApi
                 .post('/organizations')
                 .set(adminHeaders(adaezeAccessToken))
@@ -410,7 +455,7 @@ describe('Full E2E Mortgage Flow', () => {
                 .send({
                     name: 'Lekki Gardens Development Company',
                     typeCodes: ['DEVELOPER'],
-                    email: 'info@lekkigardens.com',
+                    email: 'lekkigardens@mailsac.com',
                     phone: '+2348012345678',
                     address: '15 Admiralty Way',
                     city: 'Lekki',
@@ -428,75 +473,57 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.body.success).toBe(true);
 
             lekkiGardensOrgId = response.body.data.id;
+            console.log(`✅ Lekki Gardens org: ${lekkiGardensOrgId}`);
         });
 
-        it('Step 2.5.2: Emeka signs up as developer', async () => {
+        it('Step 2.4: Admin invites Emeka to Lekki Gardens with agent role', async () => {
             const response = await userApi
-                .post('/auth/signup')
-                .set('Content-Type', 'application/json')
+                .post(`/organizations/${lekkiGardensOrgId}/invitations`)
+                .set(adminHeaders(adaezeAccessToken))
+                .set('x-idempotency-key', idempotencyKey('invite-emeka'))
                 .send({
-                    email: `emeka-${TEST_RUN_ID.slice(0, 8)}@lekkigardens.com`,
-                    password: 'DeveloperPass123!',
+                    email: DEVELOPER_EMAIL,
                     firstName: 'Emeka',
                     lastName: 'Okafor',
-                    tenantId: tenantId,
-                });
-
-            if (response.status !== 201) {
-                console.error('Emeka signup failed:', response.status, JSON.stringify(response.body, null, 2));
-            }
-            expect(response.status).toBe(201);
-            expect(response.body.success).toBe(true);
-            expect(response.body.data.accessToken).toBeDefined();
-
-            emekaAccessToken = response.body.data.accessToken;
-
-            const tokenPayload = JSON.parse(Buffer.from(emekaAccessToken.split('.')[1], 'base64').toString());
-            emekaId = tokenPayload.sub;
-            expect(emekaId).toBeDefined();
-        });
-
-        it('Step 2.5.3: Admin adds Emeka to Lekki Gardens', async () => {
-            const response = await userApi
-                .post(`/organizations/${lekkiGardensOrgId}/members`)
-                .set(adminHeaders(adaezeAccessToken))
-                .set('x-idempotency-key', idempotencyKey('add-emeka-to-lekki-gardens'))
-                .send({
-                    userId: emekaId,
+                    roleId: agentRoleId,
                     title: 'Sales Manager',
                     department: 'Sales',
                 });
 
             if (response.status !== 201) {
-                console.log('Add Emeka to org failed:', JSON.stringify(response.body, null, 2));
+                console.log('Emeka invitation failed:', JSON.stringify(response.body, null, 2));
             }
             expect(response.status).toBe(201);
             expect(response.body.success).toBe(true);
+            expect(response.body.data.token).toBeDefined();
+            expect(response.body.data.role.name).toBe('agent');
 
-            // Wait for policy sync
-            await waitForPolicyInDynamoDB('DEVELOPER', tenantId);
-        });
-
-        it('Step 2.5.4: Emeka re-authenticates to get new token with developer role', async () => {
-            // Verify email first (required before login in non-localstack environments)
-            await verifyUserEmail(emekaId);
-
-            const response = await userApi
-                .post('/auth/login')
+            // Emeka accepts the invitation (creates his account + auto-login)
+            const acceptResponse = await userApi
+                .post('/invitations/accept')
+                .query({ token: response.body.data.token })
                 .set('Content-Type', 'application/json')
                 .send({
-                    email: `emeka-${TEST_RUN_ID.slice(0, 8)}@lekkigardens.com`,
-                    password: 'DeveloperPass123!',
+                    password: DEVELOPER_PASSWORD,
                 });
 
-            expect(response.status).toBe(200);
-            expect(response.body.success).toBe(true);
-            expect(response.body.data.accessToken).toBeDefined();
+            if (acceptResponse.status !== 200) {
+                console.log('Emeka accept failed:', JSON.stringify(acceptResponse.body, null, 2));
+            }
+            expect(acceptResponse.status).toBe(200);
+            expect(acceptResponse.body.success).toBe(true);
+            expect(acceptResponse.body.data.accessToken).toBeDefined();
 
-            emekaAccessToken = response.body.data.accessToken;
+            emekaAccessToken = acceptResponse.body.data.accessToken;
+            emekaId = acceptResponse.body.data.user.id;
+
+            console.log(`✅ Emeka invited & accepted: ${emekaId} (role: agent)`);
+
+            // Wait for agent policy sync
+            await waitForPolicyInDynamoDB('agent', tenantId);
         });
 
-        it('Step 2.5.5: Admin creates Access Bank (Bank organization)', async () => {
+        it('Step 2.5: Admin creates Access Bank (Bank organization)', async () => {
             const response = await userApi
                 .post('/organizations')
                 .set(adminHeaders(adaezeAccessToken))
@@ -504,7 +531,7 @@ describe('Full E2E Mortgage Flow', () => {
                 .send({
                     name: 'Access Bank PLC',
                     typeCodes: ['BANK'],
-                    email: 'mortgages@accessbankplc.com',
+                    email: 'mortgages@mailsac.com',
                     phone: '+2341234567890',
                     address: '999C Danmole Street',
                     city: 'Victoria Island',
@@ -523,158 +550,64 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.body.success).toBe(true);
 
             accessBankOrgId = response.body.data.id;
+            console.log(`✅ Access Bank org: ${accessBankOrgId}`);
         });
 
-        it('Step 2.5.6: Nkechi signs up as lender', async () => {
+        it('Step 2.6: Admin invites Nkechi to Access Bank with lender_ops role', async () => {
             const response = await userApi
-                .post('/auth/signup')
-                .set('Content-Type', 'application/json')
+                .post(`/organizations/${accessBankOrgId}/invitations`)
+                .set(adminHeaders(adaezeAccessToken))
+                .set('x-idempotency-key', idempotencyKey('invite-nkechi'))
                 .send({
-                    email: `nkechi-${TEST_RUN_ID.slice(0, 8)}@accessbankplc.com`,
-                    password: 'LenderPass123!',
+                    email: LENDER_EMAIL,
                     firstName: 'Nkechi',
                     lastName: 'Adebayo',
-                    tenantId: tenantId,
-                });
-
-            if (response.status !== 201) {
-                console.error('Nkechi signup failed:', response.status, JSON.stringify(response.body, null, 2));
-            }
-            expect(response.status).toBe(201);
-            expect(response.body.success).toBe(true);
-            expect(response.body.data.accessToken).toBeDefined();
-
-            nkechiAccessToken = response.body.data.accessToken;
-
-            const tokenPayload = JSON.parse(Buffer.from(nkechiAccessToken.split('.')[1], 'base64').toString());
-            nkechiId = tokenPayload.sub;
-            expect(nkechiId).toBeDefined();
-        });
-
-        it('Step 2.5.7: Admin adds Nkechi to Access Bank', async () => {
-            const response = await userApi
-                .post(`/organizations/${accessBankOrgId}/members`)
-                .set(adminHeaders(adaezeAccessToken))
-                .set('x-idempotency-key', idempotencyKey('add-nkechi-to-access-bank'))
-                .send({
-                    userId: nkechiId,
+                    roleId: lenderOpsRoleId,
                     title: 'Mortgage Loan Officer',
                     department: 'Retail Banking',
                 });
 
             if (response.status !== 201) {
-                console.log('Add Nkechi to org failed:', JSON.stringify(response.body, null, 2));
+                console.log('Nkechi invitation failed:', JSON.stringify(response.body, null, 2));
             }
             expect(response.status).toBe(201);
             expect(response.body.success).toBe(true);
+            expect(response.body.data.token).toBeDefined();
+            expect(response.body.data.role.name).toBe('lender_ops');
 
-            // Wait for policy sync
-            await waitForPolicyInDynamoDB('LENDER', tenantId);
-        });
-
-        it('Step 2.5.8: Nkechi re-authenticates to get new token with lender role', async () => {
-            // Verify email first (required before login in non-localstack environments)
-            await verifyUserEmail(nkechiId);
-
-            const response = await userApi
-                .post('/auth/login')
+            // Nkechi accepts the invitation (creates her account + auto-login)
+            const acceptResponse = await userApi
+                .post('/invitations/accept')
+                .query({ token: response.body.data.token })
                 .set('Content-Type', 'application/json')
                 .send({
-                    email: `nkechi-${TEST_RUN_ID.slice(0, 8)}@accessbankplc.com`,
-                    password: 'LenderPass123!',
+                    password: LENDER_PASSWORD,
                 });
 
-            expect(response.status).toBe(200);
-            expect(response.body.success).toBe(true);
-            expect(response.body.data.accessToken).toBeDefined();
+            if (acceptResponse.status !== 200) {
+                console.log('Nkechi accept failed:', JSON.stringify(acceptResponse.body, null, 2));
+            }
+            expect(acceptResponse.status).toBe(200);
+            expect(acceptResponse.body.success).toBe(true);
+            expect(acceptResponse.body.data.accessToken).toBeDefined();
 
-            nkechiAccessToken = response.body.data.accessToken;
+            nkechiAccessToken = acceptResponse.body.data.accessToken;
+            nkechiId = acceptResponse.body.data.user.id;
+
+            console.log(`✅ Nkechi invited & accepted: ${nkechiId} (role: lender_ops)`);
+
+            // Wait for lender_ops policy sync
+            await waitForPolicyInDynamoDB('lender_ops', tenantId);
         });
     });
 
     // =========================================================================
-    // Phase 3: Property Setup
+    // Phase 3: Payment Configuration
+    // Admin creates plans, documentation plans (with conditional docs), and
+    // the payment method that defines the full customer journey.
     // =========================================================================
-    describe('Phase 3: Property Setup', () => {
-        it('Step 3.1: Admin creates property', async () => {
-            const response = await propertyApi
-                .post('/property/properties')
-                .set(adminHeaders(adaezeAccessToken))
-                .send({
-                    title: 'Lekki Gardens Estate',
-                    description: 'Premium residential estate in Lekki Phase 1',
-                    category: 'SALE',
-                    propertyType: 'APARTMENT',
-                    country: 'Nigeria',
-                    currency: 'NGN',
-                    city: 'Lagos',
-                    district: 'Lekki',
-                    // Link property to developer organization
-                    organizationId: lekkiGardensOrgId,
-                });
-
-            expect(response.status).toBe(201);
-            expect(response.body.success).toBe(true);
-            expect(response.body.data.id).toBeDefined();
-
-            propertyId = response.body.data.id;
-        });
-
-        it('Step 3.2: Admin creates property variant', async () => {
-            const response = await propertyApi
-                .post(`/property/properties/${propertyId}/variants`)
-                .set(adminHeaders(adaezeAccessToken))
-                .send({
-                    name: '3-Bedroom Flat',
-                    nBedrooms: 3,
-                    nBathrooms: 3,
-                    nParkingSpots: 1,
-                    area: 150,
-                    price: propertyPrice,
-                    totalUnits: 20,
-                    availableUnits: 15,
-                });
-
-            expect(response.status).toBe(201);
-            expect(response.body.success).toBe(true);
-            expect(response.body.data.id).toBeDefined();
-
-            variantId = response.body.data.id;
-        });
-
-        it('Step 3.3: Admin creates property unit', async () => {
-            const response = await propertyApi
-                .post(`/property/properties/${propertyId}/variants/${variantId}/units`)
-                .set(adminHeaders(adaezeAccessToken))
-                .send({
-                    unitNumber: '14B',
-                    floorNumber: 14,
-                    blockName: 'Block B',
-                });
-
-            expect(response.status).toBe(201);
-            expect(response.body.success).toBe(true);
-            expect(response.body.data.id).toBeDefined();
-
-            unitId = response.body.data.id;
-        });
-
-        it('Step 3.4: Admin publishes property', async () => {
-            const response = await propertyApi
-                .patch(`/property/properties/${propertyId}/publish`)
-                .set(adminHeaders(adaezeAccessToken));
-
-            expect(response.status).toBe(200);
-            expect(response.body.success).toBe(true);
-            expect(response.body.data.status).toBe('PUBLISHED');
-        });
-    });
-
-    // =========================================================================
-    // Phase 4: Payment Configuration (New Structure)
-    // =========================================================================
-    describe('Phase 4: Payment Configuration', () => {
-        it('Step 4.1: Admin creates downpayment plan', async () => {
+    describe('Phase 3: Payment Configuration', () => {
+        it('Step 3.1: Admin creates downpayment plan (one-off)', async () => {
             const response = await mortgageApi
                 .post('/payment-plans')
                 .set(adminHeaders(adaezeAccessToken))
@@ -693,16 +626,17 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.body.data.id).toBeDefined();
 
             downpaymentPlanId = response.body.data.id;
+            console.log(`✅ Downpayment plan: ${downpaymentPlanId}`);
         });
 
-        it('Step 4.2: Admin creates prequalification questionnaire plan', async () => {
+        it('Step 3.2: Admin creates prequalification questionnaire plan', async () => {
             const response = await mortgageApi
                 .post('/questionnaire-plans')
                 .set(adminHeaders(adaezeAccessToken))
                 .set('x-idempotency-key', idempotencyKey('create-prequalification-plan'))
                 .send({
                     name: 'Mortgage Prequalification',
-                    description: 'Collects applicant age and income to validate mortgage eligibility',
+                    description: 'Collects applicant age, income, and employment to validate mortgage eligibility',
                     isActive: true,
                     passingScore: 100,
                     scoringStrategy: 'MIN_ALL',
@@ -799,17 +733,18 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.body.data.id).toBeDefined();
 
             prequalificationPlanId = response.body.data.id;
+            console.log(`✅ Prequalification plan: ${prequalificationPlanId}`);
         });
 
-        it('Step 4.3: Admin creates sales offer documentation plan', async () => {
-            // Developer (Emeka) uploads the sales offer letter
+        it('Step 3.3: Admin creates sales offer documentation plan', async () => {
+            // Developer uploads the sales offer letter, customer accepts
             const response = await mortgageApi
                 .post('/documentation-plans')
                 .set(adminHeaders(adaezeAccessToken))
                 .set('x-idempotency-key', idempotencyKey('create-sales-offer-doc-plan'))
                 .send({
                     name: 'Sales Offer Documentation',
-                    description: 'Developer uploads sales offer letter',
+                    description: 'Developer uploads sales offer letter for customer acceptance',
                     isActive: true,
                     documentDefinitions: [
                         {
@@ -842,17 +777,19 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.body.success).toBe(true);
 
             salesOfferDocPlanId = response.body.data.id;
+            console.log(`✅ Sales offer doc plan: ${salesOfferDocPlanId}`);
         });
 
-        it('Step 4.4: Admin creates KYC documentation plan', async () => {
-            // Customer uploads KYC docs, lender (Nkechi) uploads preapproval letter
+        it('Step 3.4: Admin creates KYC documentation plan (with conditional document)', async () => {
+            // Two-stage approval: PLATFORM (QShelter) → BANK (Access Bank)
+            // The "Spouse ID" document is CONDITIONAL on mortgage_type=JOINT from the questionnaire
             const response = await mortgageApi
                 .post('/documentation-plans')
                 .set(adminHeaders(adaezeAccessToken))
                 .set('x-idempotency-key', idempotencyKey('create-kyc-doc-plan'))
                 .send({
                     name: 'Mortgage KYC Documentation',
-                    description: 'Standard KYC documentation workflow',
+                    description: 'Standard KYC workflow with conditional spouse document',
                     isActive: true,
                     documentDefinitions: [
                         {
@@ -861,15 +798,31 @@ describe('Full E2E Mortgage Flow', () => {
                             uploadedBy: 'CUSTOMER',
                             order: 1,
                             isRequired: true,
-                            description: 'Valid government-issued ID',
+                            description: 'Valid government-issued ID (NIN, driver\'s license, or international passport)',
                             maxSizeBytes: 5 * 1024 * 1024,
                             allowedMimeTypes: ['image/jpeg', 'image/png', 'application/pdf'],
+                        },
+                        {
+                            documentType: 'SPOUSE_ID',
+                            documentName: 'Spouse ID Card',
+                            uploadedBy: 'CUSTOMER',
+                            order: 2,
+                            isRequired: true,
+                            description: 'Spouse\'s government-issued ID (required for joint mortgage)',
+                            maxSizeBytes: 5 * 1024 * 1024,
+                            allowedMimeTypes: ['image/jpeg', 'image/png', 'application/pdf'],
+                            // CONDITIONAL: only required when mortgage_type=JOINT in prequalification
+                            condition: {
+                                questionKey: 'mortgage_type',
+                                operator: 'EQUALS',
+                                value: 'JOINT',
+                            },
                         },
                         {
                             documentType: 'BANK_STATEMENT',
                             documentName: 'Bank Statements',
                             uploadedBy: 'CUSTOMER',
-                            order: 2,
+                            order: 3,
                             isRequired: true,
                             description: 'Last 6 months bank statements',
                             maxSizeBytes: 10 * 1024 * 1024,
@@ -879,9 +832,9 @@ describe('Full E2E Mortgage Flow', () => {
                             documentType: 'EMPLOYMENT_LETTER',
                             documentName: 'Employment Letter',
                             uploadedBy: 'CUSTOMER',
-                            order: 3,
+                            order: 4,
                             isRequired: true,
-                            description: 'Employment confirmation letter',
+                            description: 'Employment confirmation letter from employer',
                             maxSizeBytes: 5 * 1024 * 1024,
                             allowedMimeTypes: ['application/pdf'],
                         },
@@ -889,7 +842,7 @@ describe('Full E2E Mortgage Flow', () => {
                             documentType: 'PREAPPROVAL_LETTER',
                             documentName: 'Preapproval Letter',
                             uploadedBy: 'LENDER',
-                            order: 4,
+                            order: 5,
                             isRequired: true,
                             description: 'Preapproval letter from partner bank',
                             maxSizeBytes: 10 * 1024 * 1024,
@@ -925,17 +878,18 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.body.success).toBe(true);
 
             kycDocPlanId = response.body.data.id;
+            console.log(`✅ KYC doc plan: ${kycDocPlanId} (includes conditional spouse doc)`);
         });
 
-        it('Step 4.5: Admin creates mortgage offer documentation plan', async () => {
-            // In AWS E2E test, admin acts as platform uploading on behalf of lender
+        it('Step 3.5: Admin creates mortgage offer documentation plan', async () => {
+            // Bank uploads mortgage offer letter, customer accepts
             const response = await mortgageApi
                 .post('/documentation-plans')
                 .set(adminHeaders(adaezeAccessToken))
                 .set('x-idempotency-key', idempotencyKey('create-mortgage-offer-doc-plan'))
                 .send({
                     name: 'Mortgage Offer Documentation',
-                    description: 'Bank (lender) uploads mortgage offer letter',
+                    description: 'Bank uploads mortgage offer letter for customer acceptance',
                     isActive: true,
                     documentDefinitions: [
                         {
@@ -944,7 +898,7 @@ describe('Full E2E Mortgage Flow', () => {
                             uploadedBy: 'LENDER',
                             order: 1,
                             isRequired: true,
-                            description: 'Mortgage offer letter from bank',
+                            description: 'Final mortgage offer letter from bank',
                             maxSizeBytes: 10 * 1024 * 1024,
                             allowedMimeTypes: ['application/pdf'],
                         },
@@ -968,16 +922,17 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.body.success).toBe(true);
 
             mortgageOfferDocPlanId = response.body.data.id;
+            console.log(`✅ Mortgage offer doc plan: ${mortgageOfferDocPlanId}`);
         });
 
-        it('Step 4.6: Admin creates payment method with 5 phases', async () => {
+        it('Step 3.6: Admin creates payment method with 5-phase journey', async () => {
             const response = await mortgageApi
                 .post('/payment-methods')
                 .set(adminHeaders(adaezeAccessToken))
                 .set('x-idempotency-key', idempotencyKey('create-payment-method'))
                 .send({
                     name: '10/90 Lekki Mortgage',
-                    description: 'Prequalification → Sales Offer → KYC → Downpayment → Mortgage Offer',
+                    description: 'Prequalification → Sales Offer → KYC → 10% Downpayment → Mortgage Offer',
                     requiresManualApproval: true,
                     phases: [
                         {
@@ -1028,9 +983,135 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.body.data.phases).toHaveLength(5);
 
             paymentMethodId = response.body.data.id;
+            console.log(`✅ Payment method: ${paymentMethodId} (5 phases)`);
+        });
+    });
+
+    // =========================================================================
+    // Phase 4: Customer Registration (Chidi signs up)
+    // =========================================================================
+    describe('Phase 4: Customer Registration', () => {
+        it('Step 4.1: Chidi signs up', async () => {
+            const response = await userApi
+                .post('/auth/signup')
+                .set('Content-Type', 'application/json')
+                .send({
+                    email: CUSTOMER_EMAIL,
+                    password: CUSTOMER_PASSWORD,
+                    firstName: 'Chidi',
+                    lastName: 'Nnamdi',
+                    tenantId: tenantId,
+                });
+
+            if (response.status !== 201) {
+                console.error('Chidi signup failed:', response.status, JSON.stringify(response.body, null, 2));
+            }
+            expect(response.status).toBe(201);
+            expect(response.body.success).toBe(true);
+            expect(response.body.data.accessToken).toBeDefined();
+
+            chidiAccessToken = response.body.data.accessToken;
+
+            const tokenPayload = JSON.parse(Buffer.from(chidiAccessToken.split('.')[1], 'base64').toString());
+            chidiId = tokenPayload.sub;
+            expect(chidiId).toBeDefined();
+            console.log(`✅ Chidi registered: ${chidiId}`);
+        });
+    });
+
+    // =========================================================================
+    // Phase 5: Property Setup (Developer creates property)
+    // Emeka (developer/agent) creates the property and links the payment method.
+    // =========================================================================
+    describe('Phase 5: Property Setup (by Developer)', () => {
+        it('Step 5.1: Developer (Emeka) creates property', async () => {
+            const response = await propertyApi
+                .post('/property/properties')
+                .set(developerHeaders(emekaAccessToken))
+                .send({
+                    title: 'Lekki Gardens Estate',
+                    description: 'Premium residential estate in Lekki Phase 1',
+                    category: 'SALE',
+                    propertyType: 'APARTMENT',
+                    country: 'Nigeria',
+                    currency: 'NGN',
+                    city: 'Lagos',
+                    district: 'Lekki',
+                    // Link property to developer organization
+                    organizationId: lekkiGardensOrgId,
+                });
+
+            if (response.status !== 201) {
+                console.log('Property creation failed:', JSON.stringify(response.body, null, 2));
+            }
+            expect(response.status).toBe(201);
+            expect(response.body.success).toBe(true);
+            expect(response.body.data.id).toBeDefined();
+
+            propertyId = response.body.data.id;
+            console.log(`✅ Property: ${propertyId}`);
         });
 
-        it('Step 4.7: Admin links payment method to property', async () => {
+        it('Step 5.2: Developer creates property variant', async () => {
+            const response = await propertyApi
+                .post(`/property/properties/${propertyId}/variants`)
+                .set(developerHeaders(emekaAccessToken))
+                .send({
+                    name: '3-Bedroom Flat',
+                    nBedrooms: 3,
+                    nBathrooms: 3,
+                    nParkingSpots: 1,
+                    area: 150,
+                    price: propertyPrice,
+                    totalUnits: 20,
+                    availableUnits: 15,
+                });
+
+            if (response.status !== 201) {
+                console.log('Variant creation failed:', JSON.stringify(response.body, null, 2));
+            }
+            expect(response.status).toBe(201);
+            expect(response.body.success).toBe(true);
+            expect(response.body.data.id).toBeDefined();
+
+            variantId = response.body.data.id;
+        });
+
+        it('Step 5.3: Developer creates property unit', async () => {
+            const response = await propertyApi
+                .post(`/property/properties/${propertyId}/variants/${variantId}/units`)
+                .set(developerHeaders(emekaAccessToken))
+                .send({
+                    unitNumber: '14B',
+                    floorNumber: 14,
+                    blockName: 'Block B',
+                });
+
+            if (response.status !== 201) {
+                console.log('Unit creation failed:', JSON.stringify(response.body, null, 2));
+            }
+            expect(response.status).toBe(201);
+            expect(response.body.success).toBe(true);
+            expect(response.body.data.id).toBeDefined();
+
+            unitId = response.body.data.id;
+        });
+
+        it('Step 5.4: Developer publishes property', async () => {
+            const response = await propertyApi
+                .patch(`/property/properties/${propertyId}/publish`)
+                .set(developerHeaders(emekaAccessToken));
+
+            if (response.status !== 200) {
+                console.log('Publish failed:', JSON.stringify(response.body, null, 2));
+            }
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+            expect(response.body.data.status).toBe('PUBLISHED');
+        });
+
+        it('Step 5.5: Admin links payment method to property', async () => {
+            // Payment method linking is an admin operation
             const response = await mortgageApi
                 .post(`/payment-methods/${paymentMethodId}/properties`)
                 .set(adminHeaders(adaezeAccessToken))
@@ -1040,16 +1121,20 @@ describe('Full E2E Mortgage Flow', () => {
                     isDefault: true,
                 });
 
+            if (response.status !== 201) {
+                console.log('Link payment method failed:', JSON.stringify(response.body, null, 2));
+            }
             expect(response.status).toBe(201);
             expect(response.body.success).toBe(true);
+            console.log(`✅ Payment method linked to property`);
         });
     });
 
     // =========================================================================
-    // Phase 5: Customer Application
+    // Phase 6: Customer Application
     // =========================================================================
-    describe('Phase 5: Customer Application', () => {
-        it('Step 5.1: Chidi creates application', async () => {
+    describe('Phase 6: Customer Application', () => {
+        it('Step 6.1: Chidi creates application', async () => {
             const response = await mortgageApi
                 .post('/applications')
                 .set(customerHeaders(chidiAccessToken))
@@ -1092,7 +1177,7 @@ describe('Full E2E Mortgage Flow', () => {
             expect(mortgageOfferPhaseId).toBeDefined();
         });
 
-        it('Step 5.2: Verify Lekki Gardens is auto-bound as developer', async () => {
+        it('Step 6.2: Verify Lekki Gardens is auto-bound as developer', async () => {
             // Developer should be auto-bound because property has organizationId
             const response = await mortgageApi
                 .get(`/applications/${applicationId}/organizations`)
@@ -1110,7 +1195,7 @@ describe('Full E2E Mortgage Flow', () => {
             expect(developerBinding.isPrimary).toBe(true);
         });
 
-        it('Step 5.3: Admin binds Access Bank as lender', async () => {
+        it('Step 6.3: Admin binds Access Bank as lender', async () => {
             const response = await mortgageApi
                 .post(`/applications/${applicationId}/organizations`)
                 .set(adminHeaders(adaezeAccessToken))
@@ -1131,7 +1216,7 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.body.data.isPrimary).toBe(true);
         });
 
-        it('Step 5.4: Verify phase amounts', async () => {
+        it('Step 6.4: Verify phase amounts', async () => {
             const response = await mortgageApi
                 .get(`/applications/${applicationId}/phases`)
                 .set(customerHeaders(chidiAccessToken));
@@ -1144,7 +1229,7 @@ describe('Full E2E Mortgage Flow', () => {
             expect(downPhase.totalAmount).toBe(downpaymentAmount);
         });
 
-        it('Step 5.5: Prequalification phase is auto-activated', async () => {
+        it('Step 6.5: Prequalification phase is auto-activated', async () => {
             const response = await mortgageApi
                 .get(`/applications/${applicationId}/phases/${prequalificationPhaseId}`)
                 .set(customerHeaders(chidiAccessToken));
@@ -1156,10 +1241,10 @@ describe('Full E2E Mortgage Flow', () => {
     });
 
     // =========================================================================
-    // Phase 6: Prequalification Questionnaire
+    // Phase 7: Prequalification Questionnaire
     // =========================================================================
-    describe('Phase 6: Prequalification Questionnaire', () => {
-        it('Step 6.1: Chidi submits prequalification answers', async () => {
+    describe('Phase 7: Prequalification Questionnaire', () => {
+        it('Step 7.1: Chidi submits prequalification answers', async () => {
             const response = await mortgageApi
                 .post(`/applications/${applicationId}/phases/${prequalificationPhaseId}/questionnaire/submit`)
                 .set(customerHeaders(chidiAccessToken))
@@ -1182,7 +1267,7 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.body.success).toBe(true);
         });
 
-        it('Step 6.2: Prequalification awaits approval', async () => {
+        it('Step 7.2: Prequalification awaits approval', async () => {
             const response = await mortgageApi
                 .get(`/applications/${applicationId}/phases/${prequalificationPhaseId}`)
                 .set(customerHeaders(chidiAccessToken));
@@ -1191,7 +1276,7 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.body.data.status).toBe('AWAITING_APPROVAL');
         });
 
-        it('Step 6.3: Admin approves prequalification', async () => {
+        it('Step 7.3: Admin approves prequalification', async () => {
             const response = await mortgageApi
                 .post(`/applications/${applicationId}/phases/${prequalificationPhaseId}/questionnaire/review`)
                 .set(adminHeaders(adaezeAccessToken))
@@ -1211,10 +1296,10 @@ describe('Full E2E Mortgage Flow', () => {
     });
 
     // =========================================================================
-    // Phase 7: Sales Offer (Admin uploads as developer)
+    // Phase 8: Sales Offer (Developer uploads, auto-approved)
     // =========================================================================
-    describe('Phase 7: Sales Offer', () => {
-        it('Step 7.1: Sales offer phase is auto-activated', async () => {
+    describe('Phase 8: Sales Offer', () => {
+        it('Step 8.1: Sales offer phase is auto-activated', async () => {
             const response = await mortgageApi
                 .get(`/applications/${applicationId}/phases/${salesOfferPhaseId}`)
                 .set(customerHeaders(chidiAccessToken));
@@ -1223,14 +1308,16 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.body.data.status).toBe('IN_PROGRESS');
         });
 
-        it('Step 7.2: Developer (Emeka) uploads sales offer letter', async () => {
+        it('Step 8.2: Developer (Emeka) uploads sales offer letter', async () => {
+            const salesOfferUrl = mockS3Url('mortgage_docs', 'sales-offer-letter.pdf');
+
             const response = await mortgageApi
                 .post(`/applications/${applicationId}/phases/${salesOfferPhaseId}/documents`)
                 .set(developerHeaders(emekaAccessToken))
                 .set('x-idempotency-key', idempotencyKey('upload-sales-offer'))
                 .send({
                     documentType: 'SALES_OFFER_LETTER',
-                    url: 'https://s3.amazonaws.com/qshelter/developer/sales-offer-chidi.pdf',
+                    url: salesOfferUrl,
                     fileName: 'sales-offer-letter.pdf',
                 });
 
@@ -1238,7 +1325,7 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.body.success).toBe(true);
         });
 
-        it('Step 7.3: Sales offer phase completes', async () => {
+        it('Step 8.3: Sales offer phase completes', async () => {
             const response = await mortgageApi
                 .get(`/applications/${applicationId}/phases/${salesOfferPhaseId}`)
                 .set(customerHeaders(chidiAccessToken));
@@ -1249,12 +1336,13 @@ describe('Full E2E Mortgage Flow', () => {
     });
 
     // =========================================================================
-    // Phase 8: KYC Documentation (Two-Stage Review)
+    // Phase 9: KYC Documentation (Two-Stage Review)
     // Stage 1: QShelter Review (Adaeze - Mortgage Operations Officer)
     // Stage 2: Bank Review (Nkechi - Access Bank Loan Officer)
+    // Note: Chidi answered mortgage_type=SINGLE so conditional SPOUSE_ID doc is NOT required
     // =========================================================================
-    describe('Phase 8: KYC Documentation', () => {
-        it('Step 8.1: KYC phase is auto-activated', async () => {
+    describe('Phase 9: KYC Documentation', () => {
+        it('Step 9.1: KYC phase is auto-activated', async () => {
             const response = await mortgageApi
                 .get(`/applications/${applicationId}/phases/${kycPhaseId}`)
                 .set(customerHeaders(chidiAccessToken));
@@ -1263,25 +1351,31 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.body.data.status).toBe('IN_PROGRESS');
         });
 
-        it('Step 8.2: Chidi uploads KYC documents', async () => {
-            const documents = [
-                { documentType: 'ID_CARD', url: 'https://s3.amazonaws.com/qshelter/chidi/id.pdf', fileName: 'id.pdf' },
-                { documentType: 'BANK_STATEMENT', url: 'https://s3.amazonaws.com/qshelter/chidi/bank.pdf', fileName: 'bank.pdf' },
-                { documentType: 'EMPLOYMENT_LETTER', url: 'https://s3.amazonaws.com/qshelter/chidi/employment.pdf', fileName: 'employment.pdf' },
+        it('Step 9.2: Chidi uploads KYC documents', async () => {
+            const docTypes = [
+                { documentType: 'ID_CARD', fileName: 'chidi-id-card.pdf' },
+                { documentType: 'BANK_STATEMENT', fileName: 'chidi-bank-statement.pdf' },
+                { documentType: 'EMPLOYMENT_LETTER', fileName: 'chidi-employment-letter.pdf' },
             ];
 
-            for (const doc of documents) {
+            for (const doc of docTypes) {
+                const fileUrl = mockS3Url('kyc_documents', doc.fileName);
+
                 const response = await mortgageApi
                     .post(`/applications/${applicationId}/phases/${kycPhaseId}/documents`)
                     .set(customerHeaders(chidiAccessToken))
                     .set('x-idempotency-key', idempotencyKey(`upload-${doc.documentType}`))
-                    .send(doc);
+                    .send({
+                        documentType: doc.documentType,
+                        url: fileUrl,
+                        fileName: doc.fileName,
+                    });
 
                 expect(response.status).toBe(201);
             }
         });
 
-        it('Step 8.3: Adaeze (QShelter - Stage 1) reviews and approves documents', async () => {
+        it('Step 9.3: Adaeze (QShelter - Stage 1) reviews and approves documents', async () => {
             // Stage 1: QShelter Mortgage Operations Officer performs platform review
             const docsResponse = await mortgageApi
                 .get(`/applications/${applicationId}/phases/${kycPhaseId}/documents`)
@@ -1311,11 +1405,13 @@ describe('Full E2E Mortgage Flow', () => {
             }
         });
 
-        it('Step 8.4: Nkechi (Bank) uploads preapproval letter (auto-approved)', async () => {
+        it('Step 9.4: Nkechi (Bank) uploads preapproval letter (auto-approved)', async () => {
             // Stage 2: Bank (Access Bank) is responsible for LENDER-uploaded documents
             // When the lender uploads the preapproval letter during the BANK stage,
             // it is AUTO-APPROVED because the uploader matches the stage's organization type.
             // This is the design: uploaders don't need to review their own documents.
+
+            const preapprovalUrl = mockS3Url('mortgage_docs', 'preapproval-letter-chidi.pdf');
 
             const uploadResponse = await mortgageApi
                 .post(`/applications/${applicationId}/phases/${kycPhaseId}/documents`)
@@ -1323,7 +1419,7 @@ describe('Full E2E Mortgage Flow', () => {
                 .set('x-idempotency-key', idempotencyKey('upload-preapproval-for-bank-review'))
                 .send({
                     documentType: 'PREAPPROVAL_LETTER',
-                    url: 'https://s3.amazonaws.com/qshelter/lender/preapproval-chidi.pdf',
+                    url: preapprovalUrl,
                     fileName: 'preapproval-letter.pdf',
                 });
 
@@ -1347,7 +1443,7 @@ describe('Full E2E Mortgage Flow', () => {
             expect(preapprovalDoc.status).toBe('APPROVED');
         });
 
-        it('Step 8.5: Verify KYC phase is now complete', async () => {
+        it('Step 9.5: Verify KYC phase is now complete', async () => {
             // After both stages complete:
             // - Stage 1 (PLATFORM) approved customer docs
             // - Stage 2 (BANK) auto-approved lender preapproval upload
@@ -1360,7 +1456,7 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.body.data.status).toBe('COMPLETED');
         });
 
-        it('Step 8.6: KYC phase completes after both stages approved', async () => {
+        it('Step 9.6: KYC phase completes after both stages approved', async () => {
             const response = await mortgageApi
                 .get(`/applications/${applicationId}/phases/${kycPhaseId}`)
                 .set(customerHeaders(chidiAccessToken));
@@ -1371,7 +1467,7 @@ describe('Full E2E Mortgage Flow', () => {
     });
 
     // =========================================================================
-    // Phase 9: Downpayment (Event-Based Payment Flow)
+    // Phase 10: Downpayment (Event-Based Payment Flow)
     // This tests the centralized phase orchestration:
     // 1. Admin generates installments (or auto-generated via PAYMENT_PHASE_ACTIVATED event)
     // 2. Customer's wallet is credited (simulating bank transfer received)
@@ -1379,8 +1475,8 @@ describe('Full E2E Mortgage Flow', () => {
     // 4. When payment phase completes, PAYMENT_PHASE_COMPLETED event triggers
     // 5. mortgage-service's sqsConsumer activates the next phase
     // =========================================================================
-    describe('Phase 9: Downpayment (Event-Based Flow)', () => {
-        it('Step 9.1: Downpayment phase is auto-activated', async () => {
+    describe('Phase 10: Downpayment (Event-Based Flow)', () => {
+        it('Step 10.1: Downpayment phase is auto-activated', async () => {
             const response = await mortgageApi
                 .get(`/applications/${applicationId}/phases/${downpaymentPhaseId}`)
                 .set(customerHeaders(chidiAccessToken));
@@ -1389,7 +1485,7 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.body.data.status).toBe('IN_PROGRESS');
         });
 
-        it('Step 9.2: Create wallet for Chidi via payment-service', async () => {
+        it('Step 10.2: Create wallet for Chidi via payment-service', async () => {
             const response = await paymentApi
                 .post('/wallets/me')
                 .set(customerHeaders(chidiAccessToken))
@@ -1416,7 +1512,7 @@ describe('Full E2E Mortgage Flow', () => {
             console.log(`Chidi's wallet ID: ${chidiWalletId}`);
         });
 
-        it('Step 9.3: Generate downpayment installment', async () => {
+        it('Step 10.3: Generate downpayment installment', async () => {
             const response = await mortgageApi
                 .post(`/applications/${applicationId}/phases/${downpaymentPhaseId}/installments`)
                 .set(adminHeaders(adaezeAccessToken))
@@ -1446,7 +1542,7 @@ describe('Full E2E Mortgage Flow', () => {
             console.log(`Downpayment installment ID: ${downpaymentInstallmentId}`);
         });
 
-        it('Step 9.4: Simulate payment by crediting wallet (triggers auto-allocation)', async () => {
+        it('Step 10.4: Simulate payment by crediting wallet (triggers auto-allocation)', async () => {
             // This simulates Chidi making a bank transfer that gets credited to his wallet.
             // The wallet credit triggers WALLET_CREDITED event → auto-allocation service
             // → pays the pending installment → PAYMENT_PHASE_COMPLETED event → next phase activation
@@ -1457,7 +1553,7 @@ describe('Full E2E Mortgage Flow', () => {
                 .set('x-idempotency-key', idempotencyKey('credit-chidi-downpayment'))
                 .send({
                     amount: downpaymentAmount,
-                    reference: `DOWNPAYMENT-${TEST_RUN_ID.slice(0, 8)}`,
+                    reference: `DOWNPAYMENT-${TEST_RUN_ID.slice(0, 8)}`, // Unique per run for idempotency
                     description: 'Downpayment for Lekki Gardens Unit 14B',
                     source: 'manual', // Admin manually crediting (simulating bank transfer)
                 });
@@ -1471,7 +1567,7 @@ describe('Full E2E Mortgage Flow', () => {
             console.log('Wallet credited, waiting for event processing...');
         });
 
-        it('Step 9.5: Wait for async event processing and verify downpayment phase completes', async () => {
+        it('Step 10.5: Wait for async event processing and verify downpayment phase completes', async () => {
             // The event flow is:
             // 1. WALLET_CREDITED → payment-service allocates to installment
             // 2. Installment PAID → payment phase COMPLETED
@@ -1508,12 +1604,12 @@ describe('Full E2E Mortgage Flow', () => {
     });
 
     // =========================================================================
-    // Phase 10: Mortgage Offer (Activated via Event from Payment Service)
+    // Phase 11: Mortgage Offer (Activated via Event from Payment Service)
     // The PAYMENT_PHASE_COMPLETED event triggered by payment-service should have
     // activated this phase via the mortgage-service sqsConsumer
     // =========================================================================
-    describe('Phase 10: Mortgage Offer (Event-Activated)', () => {
-        it('Step 10.1: Verify mortgage offer phase was auto-activated via event', async () => {
+    describe('Phase 11: Mortgage Offer (Event-Activated)', () => {
+        it('Step 11.1: Verify mortgage offer phase was auto-activated via event', async () => {
             // Poll to allow time for SQS event processing
             const maxWaitMs = 15000;
             const pollIntervalMs = 2000;
@@ -1542,14 +1638,16 @@ describe('Full E2E Mortgage Flow', () => {
             console.log('✓ Mortgage offer phase auto-activated via PAYMENT_PHASE_COMPLETED event');
         });
 
-        it('Step 10.2: Lender (Nkechi) uploads mortgage offer letter', async () => {
+        it('Step 11.2: Lender (Nkechi) uploads mortgage offer letter', async () => {
+            const mortgageOfferUrl = mockS3Url('mortgage_docs', 'mortgage-offer-letter-chidi.pdf');
+
             const response = await mortgageApi
                 .post(`/applications/${applicationId}/phases/${mortgageOfferPhaseId}/documents`)
                 .set(lenderHeaders(nkechiAccessToken))
                 .set('x-idempotency-key', idempotencyKey('upload-mortgage-offer'))
                 .send({
                     documentType: 'MORTGAGE_OFFER_LETTER',
-                    url: 'https://s3.amazonaws.com/qshelter/lender/mortgage-offer-chidi.pdf',
+                    url: mortgageOfferUrl,
                     fileName: 'mortgage-offer-letter.pdf',
                 });
 
@@ -1557,7 +1655,7 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.body.success).toBe(true);
         });
 
-        it('Step 10.3: Mortgage offer phase completes', async () => {
+        it('Step 11.3: Mortgage offer phase completes', async () => {
             const response = await mortgageApi
                 .get(`/applications/${applicationId}/phases/${mortgageOfferPhaseId}`)
                 .set(customerHeaders(chidiAccessToken));
@@ -1566,7 +1664,7 @@ describe('Full E2E Mortgage Flow', () => {
             expect(response.body.data.status).toBe('COMPLETED');
         });
 
-        it('Step 10.4: Application is completed', async () => {
+        it('Step 11.4: Application is completed', async () => {
             const response = await mortgageApi
                 .get(`/applications/${applicationId}`)
                 .set(customerHeaders(chidiAccessToken));
@@ -1637,10 +1735,10 @@ describe('Full E2E Mortgage Flow', () => {
                     .send({
                         tenant: {
                             name: 'Other Real Estate Co',
-                            subdomain: `other-${TEST_RUN_ID.slice(0, 8)}`,
+                            subdomain: 'other-realestate',
                         },
                         admin: {
-                            email: `other-admin-${TEST_RUN_ID.slice(0, 8)}@other.com`,
+                            email: 'other-admin@mailsac.com',
                             password: 'OtherAdmin123!',
                             firstName: 'Other',
                             lastName: 'Admin',
@@ -1654,7 +1752,7 @@ describe('Full E2E Mortgage Flow', () => {
                     .post('/auth/login')
                     .set('Content-Type', 'application/json')
                     .send({
-                        email: `other-admin-${TEST_RUN_ID.slice(0, 8)}@other.com`,
+                        email: 'other-admin@mailsac.com',
                         password: 'OtherAdmin123!',
                     });
 
@@ -1708,10 +1806,10 @@ describe('Full E2E Mortgage Flow', () => {
                     .post('/auth/signup')
                     .set('Content-Type', 'application/json')
                     .send({
-                        email: `emeka-${TEST_RUN_ID.slice(0, 8)}@gmail.com`,
-                        password: 'EmekaPass123!',
-                        firstName: 'Emeka',
-                        lastName: 'Obi',
+                        email: 'random-user@mailsac.com',
+                        password: 'RandomPass123!',
+                        firstName: 'Random',
+                        lastName: 'User',
                         tenantId: tenantId,
                     });
 

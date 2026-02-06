@@ -633,7 +633,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                     const orgHasDevType = await tx.organizationTypeAssignment.findFirst({
                         where: {
                             organizationId: devOrgId,
-                            organizationTypeId: developerType.id,
+                            typeId: developerType.id,
                         },
                     });
 
