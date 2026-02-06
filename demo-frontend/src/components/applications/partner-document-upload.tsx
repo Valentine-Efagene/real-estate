@@ -15,10 +15,12 @@ interface PartnerDocumentUploadProps {
     phaseId: string;
     phaseName: string;
     role: 'DEVELOPER' | 'LENDER' | 'PLATFORM';
+    /** Pending document types from party actions - when provided, only these will be shown */
+    pendingDocuments?: string[];
     onUploadSuccess?: () => void;
 }
 
-// Document types by role
+// Fallback document types by role (used when pendingDocuments not provided)
 const DOCUMENT_TYPES_BY_ROLE = {
     DEVELOPER: [
         { value: 'SALES_OFFER_LETTER', label: 'Sales Offer Letter' },
@@ -28,6 +30,7 @@ const DOCUMENT_TYPES_BY_ROLE = {
     ],
     LENDER: [
         { value: 'PREAPPROVAL_LETTER', label: 'Preapproval Letter' },
+        { value: 'MORTGAGE_OFFER', label: 'Mortgage Offer' },
         { value: 'MORTGAGE_OFFER_LETTER', label: 'Mortgage Offer Letter' },
         { value: 'LOAN_AGREEMENT', label: 'Loan Agreement' },
         { value: 'DISBURSEMENT_NOTICE', label: 'Disbursement Notice' },
@@ -39,11 +42,27 @@ const DOCUMENT_TYPES_BY_ROLE = {
     ],
 };
 
+// Map role to uploadedBy value expected by backend
+const ROLE_TO_UPLOADED_BY: Record<string, 'CUSTOMER' | 'LENDER' | 'DEVELOPER' | 'PLATFORM'> = {
+    LENDER: 'LENDER',
+    DEVELOPER: 'DEVELOPER',
+    PLATFORM: 'PLATFORM',
+};
+
+// Format document type for display (e.g., MORTGAGE_OFFER -> Mortgage Offer)
+const formatDocumentType = (docType: string): string => {
+    return docType
+        .split('_')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join(' ');
+};
+
 export function PartnerDocumentUpload({
     applicationId,
     phaseId,
     phaseName,
     role,
+    pendingDocuments,
     onUploadSuccess,
 }: PartnerDocumentUploadProps) {
     const uploadPhaseDocument = useUploadPhaseDocument();
@@ -54,7 +73,10 @@ export function PartnerDocumentUpload({
     const [isUploading, setIsUploading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
 
-    const documentTypes = DOCUMENT_TYPES_BY_ROLE[role] || DOCUMENT_TYPES_BY_ROLE.PLATFORM;
+    // Use pending documents from party actions if provided, otherwise fall back to role-based list
+    const documentTypes = pendingDocuments && pendingDocuments.length > 0
+        ? pendingDocuments.map(docType => ({ value: docType, label: formatDocumentType(docType) }))
+        : (DOCUMENT_TYPES_BY_ROLE[role] || DOCUMENT_TYPES_BY_ROLE.PLATFORM);
 
     const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -95,6 +117,7 @@ export function PartnerDocumentUpload({
                 documentType,
                 url: cleanUrl,
                 fileName: selectedFile.name,
+                uploadedBy: ROLE_TO_UPLOADED_BY[role],
             });
 
             toast.success('Document uploaded successfully');

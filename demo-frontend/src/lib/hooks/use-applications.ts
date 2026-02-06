@@ -705,16 +705,18 @@ export function useUploadPhaseDocument() {
       documentType,
       url,
       fileName,
+      uploadedBy,
     }: {
       applicationId: string;
       phaseId: string;
       documentType: string;
       url: string;
       fileName: string;
+      uploadedBy?: 'CUSTOMER' | 'LENDER' | 'DEVELOPER' | 'PLATFORM';
     }) => {
       const response = await mortgageApi.post<PhaseDocument>(
         `/applications/${applicationId}/phases/${phaseId}/documents`,
-        { documentType, url, fileName }
+        { documentType, url, fileName, uploadedBy }
       );
       if (!response.success) {
         throw new Error(response.error?.message || 'Failed to upload document');

@@ -877,13 +877,14 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
           <>
             <Separator />
             <div className="grid gap-4 md:grid-cols-1">
-              {/* Show upload section with pending documents info */}
+              {/* Show upload section with pending documents from party actions */}
               {userUploadType === 'DEVELOPER' && boundOrganizations?.some(org => org.assignedAsType?.code === 'DEVELOPER') && (
                 <PartnerDocumentUpload
                   applicationId={applicationId}
                   phaseId={currentAction.currentPhase!.id}
                   phaseName={currentAction.currentPhase!.name}
                   role="DEVELOPER"
+                  pendingDocuments={pendingDocs}
                 />
               )}
               {userUploadType === 'LENDER' && boundOrganizations?.some(org => org.assignedAsType?.code === 'BANK') && (
@@ -892,6 +893,7 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
                   phaseId={currentAction.currentPhase!.id}
                   phaseName={currentAction.currentPhase!.name}
                   role="LENDER"
+                  pendingDocuments={pendingDocs}
                 />
               )}
               {userUploadType === 'PLATFORM' && (
@@ -900,12 +902,8 @@ function AdminApplicationDetailContent({ applicationId }: { applicationId: strin
                   phaseId={currentAction.currentPhase!.id}
                   phaseName={currentAction.currentPhase!.name}
                   role="PLATFORM"
+                  pendingDocuments={pendingDocs}
                 />
-              )}
-              {pendingDocs.length > 0 && (
-                <p className="text-sm text-gray-500">
-                  Required documents: <span className="font-medium">{pendingDocs.join(', ')}</span>
-                </p>
               )}
             </div>
           </>

@@ -29,6 +29,10 @@ export const UploadDocumentSchema = z
         url: z.string().url(),
         type: z.string().min(1).max(50).optional().openapi({ example: 'ID' }),
         fileName: z.string().optional(),
+        uploadedBy: z.enum(['CUSTOMER', 'LENDER', 'DEVELOPER', 'PLATFORM']).optional().openapi({
+            description: 'Who is uploading this document',
+            example: 'LENDER',
+        }),
     })
     .transform((data) => ({
         ...data,
