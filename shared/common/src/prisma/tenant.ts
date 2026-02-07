@@ -14,17 +14,19 @@ const GLOBAL_MODELS = [
     // System-level entities with no tenant ownership
     "tenant",
     "user",
-    "tenantMembership",
+    "tenantmembership",
     // Auth/session related (linked to user, not tenant)
-    "refreshToken",
-    "passwordReset",
-    "userSuspension",
-    "oAuthState",
+    "refreshtoken",
+    "passwordreset",
+    "usersuspension",
+    "oauthstate",
     // User preferences/devices (linked to user, not tenant)
-    "emailPreference",
-    "deviceEndpoint",
+    "emailpreference",
+    "deviceendpoint",
     // Organization members (tenant access via organization.tenantId)
-    "organizationMember",
+    "organizationmember",
+    // Join table - no tenantId, tenant access via related org/type
+    "organizationtypeassignment",
 ] as const;
 
 type GlobalModel = (typeof GLOBAL_MODELS)[number];
@@ -35,31 +37,27 @@ type GlobalModel = (typeof GLOBAL_MODELS)[number];
  * Queries will return both global AND tenant-specific records.
  */
 const OPTIONAL_TENANT_MODELS = [
-    "paymentPlan",
+    "paymentplan",
     // DocumentationPlan can be global template (tenantId = null) or tenant-specific
-    "documentationPlan",
+    "documentationplan",
     // QuestionnairePlan can be global template (tenantId = null) or tenant-specific
-    "questionnairePlan",
+    "questionnaireplan",
     // Role can be global template (tenantId = null) or tenant-specific
     "role",
     // Permission can be global template or tenant-specific
     "permission",
     // ScheduledJob can be system-wide or tenant-specific
-    "scheduledJob",
+    "scheduledjob",
 ] as const;
 
 type OptionalTenantModel = (typeof OPTIONAL_TENANT_MODELS)[number];
 
 function isGlobalModel(model: string): model is GlobalModel {
-    // Prisma extensions pass model name in camelCase
-    const normalizedModel = model.toLowerCase();
-    return GLOBAL_MODELS.includes(normalizedModel as GlobalModel);
+    return GLOBAL_MODELS.includes(model.toLowerCase() as GlobalModel);
 }
 
 function isOptionalTenantModel(model: string): model is OptionalTenantModel {
-    // Prisma extensions pass model name in camelCase
-    const normalizedModel = model.toLowerCase();
-    return OPTIONAL_TENANT_MODELS.includes(normalizedModel as OptionalTenantModel);
+    return OPTIONAL_TENANT_MODELS.includes(model.toLowerCase() as OptionalTenantModel);
 }
 
 /**
