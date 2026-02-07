@@ -34,6 +34,10 @@ export const queryKeys = {
     list: (filters?: Record<string, unknown>) => ['applications', 'list', filters] as const,
     detail: (id: string) => ['applications', 'detail', id] as const,
     phases: (applicationId: string) => ['applications', applicationId, 'phases'] as const,
+    phaseDetail: (applicationId: string, phaseId: string) =>
+      ['applications', applicationId, 'phases', phaseId] as const,
+    phaseDocuments: (applicationId: string, phaseId: string) =>
+      ['applications', applicationId, 'phases', phaseId, 'documents'] as const,
     currentAction: (applicationId: string) =>
       ['applications', applicationId, 'current-action'] as const,
     documents: (applicationId: string) =>
@@ -61,6 +65,12 @@ export const queryKeys = {
     detail: (id: string) => ['payments', 'detail', id] as const,
     installments: (applicationId: string) =>
       ['payments', 'installments', applicationId] as const,
+  },
+
+  // Wallets
+  wallets: {
+    me: ['wallets', 'me'] as const,
+    detail: (id: string) => ['wallets', 'detail', id] as const,
   },
 
   // Payment Plans

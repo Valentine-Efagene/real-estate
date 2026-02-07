@@ -1,21 +1,18 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { toast } from 'sonner';
 import {
     useGenerateInstallments,
-    useCreatePayment,
-    useProcessPayment,
-    useSimulatePayment,
     type Installment
 } from '@/lib/hooks';
+import { useWallet, useCreateWallet, useCreditWallet } from '@/lib/hooks/use-wallet';
 
 interface PaymentSectionProps {
     applicationId: string;
@@ -45,23 +42,27 @@ export function PaymentSection({
     paidAmount,
     currency = 'NGN',
     installments,
-    buyerEmail,
     onPaymentSuccess,
 }: PaymentSectionProps) {
     const generateInstallments = useGenerateInstallments();
-    const createPayment = useCreatePayment();
-    const processPayment = useProcessPayment();
-    const simulatePayment = useSimulatePayment();
+    const { data: wallet, isLoading: walletLoading, error: walletError } = useWallet();
+    const createWallet = useCreateWallet();
+    const creditWallet = useCreditWallet();
 
     const [selectedInstallment, setSelectedInstallment] = useState<Installment | null>(null);
-    const [paymentMethod, setPaymentMethod] = useState<string>('BANK_TRANSFER');
-    const [externalReference, setExternalReference] = useState('');
     const [showPaymentDialog, setShowPaymentDialog] = useState(false);
-    const [pendingPaymentRef, setPendingPaymentRef] = useState<string | null>(null);
+    const [creditAmount, setCreditAmount] = useState('');
 
     const pendingInstallments = installments.filter(
         (i) => i.status === 'PENDING' || i.status === 'DUE' || i.status === 'OVERDUE'
     );
+
+    // Auto-set credit amount when installment is selected
+    useEffect(() => {
+        if (selectedInstallment) {
+            setCreditAmount(String(selectedInstallment.amount));
+        }
+    }, [selectedInstallment]);
 
     const handleGenerateInstallments = useCallback(async () => {
         try {
@@ -75,76 +76,55 @@ export function PaymentSection({
         }
     }, [applicationId, phaseId, generateInstallments]);
 
-    const handleInitiatePayment = useCallback(async () => {
+    const handleCreateWallet = useCallback(async () => {
+        try {
+            await createWallet.mutateAsync({ currency });
+            toast.success('Wallet created successfully');
+        } catch (error) {
+            toast.error(error instanceof Error ? error.message : 'Failed to create wallet');
+        }
+    }, [currency, createWallet]);
+
+    const handleCreditWallet = useCallback(async () => {
+        if (!wallet) {
+            toast.error('No wallet found. Please create a wallet first.');
+            return;
+        }
         if (!selectedInstallment) {
             toast.error('Please select an installment to pay');
             return;
         }
 
-        try {
-            const result = await createPayment.mutateAsync({
-                applicationId,
-                phaseId,
-                installmentId: selectedInstallment.id,
-                amount: selectedInstallment.amount,
-                paymentMethod: paymentMethod as 'BANK_TRANSFER' | 'CARD' | 'USSD' | 'WALLET',
-                externalReference: externalReference || undefined,
-            });
-
-            setPendingPaymentRef(result.reference);
-            toast.success('Payment initiated. Please complete the payment and confirm.');
-        } catch (error) {
-            toast.error(error instanceof Error ? error.message : 'Failed to initiate payment');
-        }
-    }, [applicationId, phaseId, selectedInstallment, paymentMethod, externalReference, createPayment]);
-
-    const handleConfirmPayment = useCallback(async () => {
-        if (!pendingPaymentRef) {
-            toast.error('No pending payment to confirm');
+        const amount = parseFloat(creditAmount);
+        if (isNaN(amount) || amount <= 0) {
+            toast.error('Please enter a valid amount');
             return;
         }
 
         try {
-            await processPayment.mutateAsync({
-                reference: pendingPaymentRef,
-                status: 'COMPLETED',
-                gatewayTransactionId: `DEMO-${Date.now()}`,
+            await creditWallet.mutateAsync({
+                walletId: wallet.id,
+                amount,
+                reference: `PAY-${applicationId.slice(0, 8)}-${Date.now()}`,
+                description: `Payment for ${phaseName} installment`,
+                source: 'BANK_TRANSFER',
             });
 
-            toast.success('Payment confirmed successfully!');
+            toast.success(
+                'Wallet credited! Funds will be auto-allocated to pending installments.'
+            );
             setShowPaymentDialog(false);
             setSelectedInstallment(null);
-            setPendingPaymentRef(null);
-            setExternalReference('');
+            setCreditAmount('');
             onPaymentSuccess?.();
         } catch (error) {
-            toast.error(error instanceof Error ? error.message : 'Failed to confirm payment');
+            toast.error(error instanceof Error ? error.message : 'Failed to credit wallet');
         }
-    }, [pendingPaymentRef, processPayment, onPaymentSuccess]);
-
-    const handleSimulatePayment = useCallback(async () => {
-        if (!selectedInstallment || !buyerEmail) {
-            toast.error('Cannot simulate payment: missing installment or buyer email');
-            return;
-        }
-
-        try {
-            await simulatePayment.mutateAsync({
-                email: buyerEmail,
-                amount: selectedInstallment.amount,
-                reference: `SIM-${Date.now()}`,
-            });
-            toast.success('Payment simulated! Wallet credited and installment should be paid.');
-            setShowPaymentDialog(false);
-            setSelectedInstallment(null);
-            onPaymentSuccess?.();
-        } catch (error) {
-            toast.error(error instanceof Error ? error.message : 'Failed to simulate payment');
-        }
-    }, [selectedInstallment, buyerEmail, simulatePayment, onPaymentSuccess]);
+    }, [wallet, selectedInstallment, creditAmount, applicationId, phaseName, creditWallet, onPaymentSuccess]);
 
     const remainingAmount = totalAmount - paidAmount;
     const progressPercent = totalAmount > 0 ? (paidAmount / totalAmount) * 100 : 0;
+    const hasWallet = !!wallet && !walletError;
 
     return (
         <Card>
@@ -155,6 +135,34 @@ export function PaymentSection({
                 </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
+                {/* Wallet Status */}
+                <div className="p-4 rounded-lg border bg-gray-50">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <p className="text-sm font-medium text-gray-700">Wallet</p>
+                            {walletLoading ? (
+                                <p className="text-sm text-gray-500">Loading...</p>
+                            ) : hasWallet ? (
+                                <p className="text-sm text-gray-500">
+                                    Balance: <span className="font-semibold text-gray-900">{formatCurrency(wallet.balance, currency)}</span>
+                                </p>
+                            ) : (
+                                <p className="text-sm text-gray-500">No wallet yet</p>
+                            )}
+                        </div>
+                        {!hasWallet && !walletLoading && (
+                            <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={handleCreateWallet}
+                                disabled={createWallet.isPending}
+                            >
+                                {createWallet.isPending ? 'Creating...' : 'Create Wallet'}
+                            </Button>
+                        )}
+                    </div>
+                </div>
+
                 {/* Payment Progress */}
                 <div className="space-y-2">
                     <div className="flex justify-between text-sm">
@@ -222,113 +230,62 @@ export function PaymentSection({
                                                 setSelectedInstallment(installment);
                                             } else {
                                                 setSelectedInstallment(null);
-                                                setPendingPaymentRef(null);
                                             }
                                         }}>
                                             <DialogTrigger asChild>
-                                                <Button size="sm">Pay Now</Button>
+                                                <Button size="sm" disabled={!hasWallet}>
+                                                    {hasWallet ? 'Pay Now' : 'Create wallet first'}
+                                                </Button>
                                             </DialogTrigger>
                                             <DialogContent>
                                                 <DialogHeader>
-                                                    <DialogTitle>Make Payment</DialogTitle>
+                                                    <DialogTitle>Fund Wallet & Pay</DialogTitle>
                                                     <DialogDescription>
-                                                        Pay {formatCurrency(installment.amount, currency)} for installment {index + 1}
+                                                        Credit your wallet to pay {formatCurrency(installment.amount, currency)} for installment {index + 1}.
+                                                        Funds are auto-allocated to pending installments.
                                                     </DialogDescription>
                                                 </DialogHeader>
 
-                                                {!pendingPaymentRef ? (
-                                                    <>
-                                                        <div className="space-y-4 py-4">
-                                                            <div className="space-y-2">
-                                                                <Label>Payment Method</Label>
-                                                                <Select value={paymentMethod} onValueChange={setPaymentMethod}>
-                                                                    <SelectTrigger>
-                                                                        <SelectValue />
-                                                                    </SelectTrigger>
-                                                                    <SelectContent>
-                                                                        <SelectItem value="BANK_TRANSFER">Bank Transfer</SelectItem>
-                                                                        <SelectItem value="CARD">Card Payment</SelectItem>
-                                                                        <SelectItem value="USSD">USSD</SelectItem>
-                                                                        <SelectItem value="WALLET">Wallet</SelectItem>
-                                                                    </SelectContent>
-                                                                </Select>
-                                                            </div>
-
-                                                            <div className="space-y-2">
-                                                                <Label htmlFor="reference">Reference (Optional)</Label>
-                                                                <Input
-                                                                    id="reference"
-                                                                    placeholder="Transaction reference..."
-                                                                    value={externalReference}
-                                                                    onChange={(e) => setExternalReference(e.target.value)}
-                                                                />
-                                                            </div>
-
-                                                            <div className="p-4 bg-gray-50 rounded-lg">
-                                                                <div className="flex justify-between">
-                                                                    <span className="text-gray-500">Amount:</span>
-                                                                    <span className="font-bold">{formatCurrency(installment.amount, currency)}</span>
-                                                                </div>
-                                                            </div>
+                                                <div className="space-y-4 py-4">
+                                                    {wallet && (
+                                                        <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                                                            <p className="text-sm text-blue-800">
+                                                                Current wallet balance: <span className="font-semibold">{formatCurrency(wallet.balance, currency)}</span>
+                                                            </p>
                                                         </div>
+                                                    )}
 
-                                                        <DialogFooter>
-                                                            <div className="flex flex-col gap-2 w-full">
-                                                                <Button
-                                                                    onClick={handleInitiatePayment}
-                                                                    disabled={createPayment.isPending}
-                                                                    className="w-full"
-                                                                >
-                                                                    {createPayment.isPending ? 'Processing...' : 'Initiate Payment'}
-                                                                </Button>
-                                                                {buyerEmail && (
-                                                                    <Button
-                                                                        variant="outline"
-                                                                        onClick={handleSimulatePayment}
-                                                                        disabled={simulatePayment.isPending}
-                                                                        className="w-full"
-                                                                    >
-                                                                        {simulatePayment.isPending ? 'Simulating...' : '🧪 Simulate Payment (Test)'}
-                                                                    </Button>
-                                                                )}
-                                                            </div>
-                                                        </DialogFooter>
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        <div className="space-y-4 py-4">
-                                                            <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                                                                <p className="font-medium text-yellow-800">Payment Initiated</p>
-                                                                <p className="text-sm text-yellow-700 mt-1">
-                                                                    Reference: {pendingPaymentRef}
-                                                                </p>
-                                                                <p className="text-sm text-yellow-700 mt-2">
-                                                                    Please complete the payment using your selected method, then click &quot;Confirm Payment&quot; below.
-                                                                </p>
-                                                            </div>
+                                                    <div className="space-y-2">
+                                                        <Label htmlFor="creditAmount">Amount to Credit</Label>
+                                                        <Input
+                                                            id="creditAmount"
+                                                            type="number"
+                                                            placeholder="Enter amount..."
+                                                            value={creditAmount}
+                                                            onChange={(e) => setCreditAmount(e.target.value)}
+                                                        />
+                                                        <p className="text-xs text-gray-500">
+                                                            Funds credited to your wallet will be automatically allocated to pending installments.
+                                                        </p>
+                                                    </div>
 
-                                                            <div className="p-4 bg-gray-50 rounded-lg text-center">
-                                                                <p className="text-2xl font-bold">{formatCurrency(installment.amount, currency)}</p>
-                                                                <p className="text-sm text-gray-500 mt-1">Amount to pay</p>
-                                                            </div>
+                                                    <div className="p-4 bg-gray-50 rounded-lg">
+                                                        <div className="flex justify-between">
+                                                            <span className="text-gray-500">Installment amount:</span>
+                                                            <span className="font-bold">{formatCurrency(installment.amount, currency)}</span>
                                                         </div>
+                                                    </div>
+                                                </div>
 
-                                                        <DialogFooter className="flex gap-2">
-                                                            <Button
-                                                                variant="outline"
-                                                                onClick={() => setPendingPaymentRef(null)}
-                                                            >
-                                                                Cancel
-                                                            </Button>
-                                                            <Button
-                                                                onClick={handleConfirmPayment}
-                                                                disabled={processPayment.isPending}
-                                                            >
-                                                                {processPayment.isPending ? 'Confirming...' : 'Confirm Payment'}
-                                                            </Button>
-                                                        </DialogFooter>
-                                                    </>
-                                                )}
+                                                <DialogFooter>
+                                                    <Button
+                                                        onClick={handleCreditWallet}
+                                                        disabled={creditWallet.isPending}
+                                                        className="w-full"
+                                                    >
+                                                        {creditWallet.isPending ? 'Processing...' : `Credit ${creditAmount ? formatCurrency(parseFloat(creditAmount) || 0, currency) : 'Wallet'}`}
+                                                    </Button>
+                                                </DialogFooter>
                                             </DialogContent>
                                         </Dialog>
                                     )}
@@ -339,7 +296,7 @@ export function PaymentSection({
                 )}
 
                 {/* Quick Pay All Pending */}
-                {pendingInstallments.length > 1 && (
+                {pendingInstallments.length > 1 && hasWallet && (
                     <div className="pt-4 border-t">
                         <p className="text-sm text-gray-500 mb-2">
                             You have {pendingInstallments.length} pending installments totaling{' '}

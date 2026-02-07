@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
 import { env } from '@/lib/env';
+
+const COOKIE_NAME = 'qshelter_access_token';
+const REFRESH_COOKIE_NAME = 'qshelter_refresh_token';
 
 export async function POST(request: NextRequest) {
     try {
@@ -27,23 +29,29 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // Set the session cookie with the tokens
-        const cookieStore = await cookies();
-        const sessionData = {
-            accessToken: data.data.accessToken,
-            refreshToken: data.data.refreshToken,
-            expiresAt: Date.now() + (data.data.expiresIn || 900) * 1000,
-        };
+        const { accessToken, refreshToken, expiresIn } = data.data;
 
-        cookieStore.set(env.cookieName, JSON.stringify(sessionData), {
+        // Create response
+        const res = NextResponse.json({ success: true });
+
+        // Set httpOnly cookies — same pattern as login route
+        res.cookies.set(COOKIE_NAME, accessToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'lax',
-            maxAge: env.cookieMaxAge,
             path: '/',
+            maxAge: expiresIn || 900, // 15 minutes
         });
 
-        return NextResponse.json({ success: true });
+        res.cookies.set(REFRESH_COOKIE_NAME, refreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            path: '/',
+            maxAge: 60 * 60 * 24 * 7, // 7 days
+        });
+
+        return res;
     } catch (error) {
         console.error('Google callback error:', error);
         return NextResponse.json(

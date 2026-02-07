@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { mortgageApi, paymentApi } from '@/lib/api/client';
+import { mortgageApi } from '@/lib/api/client';
 import { queryKeys } from '@/lib/query/query-keys';
 
 // Types (simplified - would import from shared package)
@@ -275,6 +275,46 @@ export function useApplicationPhases(applicationId: string) {
   });
 }
 
+/**
+ * Get a single phase detail
+ * Calls: GET /applications/:id/phases/:phaseId via mortgage-service
+ */
+export function usePhaseDetail(applicationId: string, phaseId: string) {
+  return useQuery({
+    queryKey: queryKeys.applications.phaseDetail(applicationId, phaseId),
+    queryFn: async () => {
+      const response = await mortgageApi.get<Phase>(
+        `/applications/${applicationId}/phases/${phaseId}`
+      );
+      if (!response.success) {
+        throw new Error(response.error?.message || 'Failed to fetch phase detail');
+      }
+      return response.data!;
+    },
+    enabled: !!applicationId && !!phaseId,
+  });
+}
+
+/**
+ * Get documents for a specific phase
+ * Calls: GET /applications/:id/phases/:phaseId/documents via mortgage-service
+ */
+export function usePhaseDocuments(applicationId: string, phaseId: string) {
+  return useQuery({
+    queryKey: queryKeys.applications.phaseDocuments(applicationId, phaseId),
+    queryFn: async () => {
+      const response = await mortgageApi.get<RequiredDocument[]>(
+        `/applications/${applicationId}/phases/${phaseId}/documents`
+      );
+      if (!response.success) {
+        throw new Error(response.error?.message || 'Failed to fetch phase documents');
+      }
+      return response.data!;
+    },
+    enabled: !!applicationId && !!phaseId,
+  });
+}
+
 export function useCurrentAction(applicationId: string) {
   return useQuery({
     queryKey: queryKeys.applications.currentAction(applicationId),
@@ -493,113 +533,6 @@ export function useGenerateInstallments() {
       });
       queryClient.invalidateQueries({
         queryKey: queryKeys.applications.currentAction(variables.applicationId),
-      });
-    },
-  });
-}
-
-export function useCreatePayment() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async ({
-      applicationId,
-      phaseId,
-      installmentId,
-      amount,
-      paymentMethod,
-      externalReference,
-    }: PaymentInput) => {
-      const response = await mortgageApi.post<Payment>(
-        `/applications/${applicationId}/payments`,
-        { phaseId, installmentId, amount, paymentMethod, externalReference }
-      );
-      if (!response.success) {
-        throw new Error(response.error?.message || 'Failed to create payment');
-      }
-      return response.data!;
-    },
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.applications.phases(variables.applicationId),
-      });
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.applications.currentAction(variables.applicationId),
-      });
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.payments.all,
-      });
-    },
-  });
-}
-
-export function useProcessPayment() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async ({
-      reference,
-      status,
-      gatewayTransactionId,
-    }: {
-      reference: string;
-      status: 'COMPLETED' | 'FAILED' | 'CANCELLED';
-      gatewayTransactionId?: string;
-    }) => {
-      const response = await mortgageApi.post(
-        `/applications/payments/process`,
-        { reference, status, gatewayTransactionId }
-      );
-      if (!response.success) {
-        throw new Error(response.error?.message || 'Failed to process payment');
-      }
-      return response.data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.applications.all,
-      });
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.payments.all,
-      });
-    },
-  });
-}
-
-/**
- * Hook to simulate a payment via mock webhook
- * This is for testing purposes only - simulates a bank transfer payment
- */
-export function useSimulatePayment() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async ({
-      email,
-      amount,
-      reference,
-    }: {
-      email: string;
-      amount: number;
-      reference?: string;
-    }) => {
-      const response = await paymentApi.post('/webhooks/budpay/mock', {
-        email,
-        amount,
-        reference,
-      });
-      if (!response.success) {
-        throw new Error(response.error?.message || 'Failed to simulate payment');
-      }
-      return response.data;
-    },
-    onSuccess: () => {
-      // Invalidate all relevant queries after simulated payment
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.applications.all,
-      });
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.payments.all,
       });
     },
   });

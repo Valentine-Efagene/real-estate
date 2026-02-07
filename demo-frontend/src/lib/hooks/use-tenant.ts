@@ -14,19 +14,16 @@ interface BootstrapStatus {
 }
 
 /**
- * Fetch bootstrap status from the API
+ * Fetch bootstrap status via the Next.js proxy (avoids CORS issues)
  */
 async function fetchBootstrapStatus(): Promise<BootstrapStatus> {
-    const userServiceUrl = process.env.NEXT_PUBLIC_USER_SERVICE_URL;
-    if (!userServiceUrl) {
-        throw new Error('USER_SERVICE_URL not configured');
-    }
-
-    const response = await fetch(`${userServiceUrl}/admin/public/bootstrap-status`);
+    const response = await fetch('/api/proxy/user/admin/public/bootstrap-status');
     if (!response.ok) {
         throw new Error(`Failed to fetch bootstrap status: ${response.status}`);
     }
-    return response.json();
+    const data = await response.json();
+    // Proxy returns the backend response directly
+    return data.data ?? data;
 }
 
 /**
