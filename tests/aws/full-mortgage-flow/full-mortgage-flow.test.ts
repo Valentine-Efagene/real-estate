@@ -1016,6 +1016,7 @@ describe('Full E2E Mortgage Flow', () => {
             chidiId = tokenPayload.sub;
             expect(chidiId).toBeDefined();
             console.log(`✅ Chidi registered: ${chidiId}`);
+            console.log(`   Token payload: tenantId=${tokenPayload.tenantId}, roles=${JSON.stringify(tokenPayload.roles)}`);
         });
     });
 
@@ -1494,6 +1495,10 @@ describe('Full E2E Mortgage Flow', () => {
                     currency: 'NGN',
                 });
 
+            if (response.status !== 201 && response.status !== 200 && response.status !== 409) {
+                console.log('Wallet creation failed:', response.status, JSON.stringify(response.body, null, 2));
+            }
+
             // Might already exist, check for 200 or 201
             if (response.status === 409) {
                 // Wallet already exists, get it
@@ -1774,7 +1779,7 @@ describe('Full E2E Mortgage Flow', () => {
                     .set(adminHeaders(otherAdminToken));
 
                 expect(response.status).toBe(200);
-                const apps = response.body.data || [];
+                const apps = response.body.data?.items || [];
                 const foundOurApp = apps.some((app: { id: string }) => app.id === applicationId);
                 expect(foundOurApp).toBe(false);
             });

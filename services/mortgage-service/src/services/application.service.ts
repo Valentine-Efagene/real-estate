@@ -521,6 +521,7 @@ export function createApplicationService(prisma: AnyPrismaClient = defaultPrisma
                                 condition: d.condition,
                             })) : null,
                             approvalStagesSnapshot: approvalStages.length > 0 ? approvalStages.map((s: any) => ({
+                                id: s.id,
                                 name: s.name,
                                 order: s.order,
                                 organizationTypeId: s.organizationTypeId,

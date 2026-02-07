@@ -111,12 +111,30 @@ export function createApprovalWorkflowService() {
             tenantId: string,
             approvalStages: ApprovalStageSnapshot[]
         ): Promise<void> {
+            // Check if progress records already exist (e.g., created at application time)
+            const existing = await tx.approvalStageProgress.count({
+                where: { documentationPhaseId },
+            });
+
+            if (existing > 0) {
+                console.log('[ApprovalWorkflow] Stage progress already initialized, activating first stage', {
+                    documentationPhaseId,
+                    existingCount: existing,
+                });
+                // Ensure the first stage is IN_PROGRESS
+                await tx.approvalStageProgress.updateMany({
+                    where: { documentationPhaseId, order: 1 },
+                    data: { status: 'IN_PROGRESS' as StageStatus, activatedAt: new Date() },
+                });
+                return;
+            }
+
             // Create progress records for each approval stage
             const stageProgressData = approvalStages.map((stage, index) => ({
                 id: uuidv4(),
                 tenantId,
                 documentationPhaseId,
-                approvalStageId: stage.id,
+                approvalStageId: stage.id || uuidv4(), // Snapshots may not have the original stage ID
                 name: stage.name,
                 order: stage.order,
                 organizationTypeId: stage.organizationTypeId,

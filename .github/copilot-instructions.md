@@ -52,6 +52,7 @@ We are in active development - **delete unused code, don't deprecate it**:
 - Don't retain old models/types/functions to "keep tests passing" - update the tests
 - If tests fail after schema changes, fix the tests to use the new architecture
 - The goal is a clean codebase, not a museum of old approaches
+- Don't use the `head` command in bash. It conflicts with a PERL command, and the error just wastes time and tokens.
 
 ## Shared Library (`@valentine-efagene/qshelter-common`)
 

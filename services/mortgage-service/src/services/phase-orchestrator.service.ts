@@ -60,14 +60,11 @@ class PhaseOrchestratorService {
             throw new Error(`Phase not found: ${phaseId}`);
         }
 
-        // Skip if already completed
-        if (phase.status === PhaseStatus.COMPLETED) {
-            console.log('[PhaseOrchestrator] Phase already completed, skipping', { phaseId });
-            return {
-                completedPhase: phase,
-                nextPhase: null,
-                applicationCompleted: false,
-            };
+        // If already completed (e.g. payment service marked it directly),
+        // still advance to the next phase — that's why the event was sent.
+        const alreadyCompleted = phase.status === PhaseStatus.COMPLETED;
+        if (alreadyCompleted) {
+            console.log('[PhaseOrchestrator] Phase already completed, advancing to next phase', { phaseId });
         }
 
         const tenantId = phase.application?.tenantId || phase.tenantId;
@@ -75,41 +72,45 @@ class PhaseOrchestratorService {
 
         // Use transaction if not already in one
         const executeInTransaction = async (tx: any) => {
-            // 1. Mark phase as completed
-            const completedPhase = await tx.applicationPhase.update({
-                where: { id: phaseId },
-                data: {
-                    status: PhaseStatus.COMPLETED,
-                    completedAt: new Date(),
-                },
-            });
+            let completedPhase = phase;
 
-            // 2. Clear documentation phase stage order if applicable
-            if (phase.documentationPhase) {
-                await tx.documentationPhase.update({
-                    where: { id: phase.documentationPhase.id },
-                    data: { currentStageOrder: undefined },
+            // 1. Mark phase as completed (skip if already done)
+            if (!alreadyCompleted) {
+                completedPhase = await tx.applicationPhase.update({
+                    where: { id: phaseId },
+                    data: {
+                        status: PhaseStatus.COMPLETED,
+                        completedAt: new Date(),
+                    },
+                });
+
+                // 2. Clear documentation phase stage order if applicable
+                if (phase.documentationPhase) {
+                    await tx.documentationPhase.update({
+                        where: { id: phase.documentationPhase.id },
+                        data: { currentStageOrder: undefined },
+                    });
+                }
+
+                // 3. Write PHASE.COMPLETED domain event
+                await tx.domainEvent.create({
+                    data: {
+                        id: uuidv4(),
+                        tenantId,
+                        eventType: 'PHASE.COMPLETED',
+                        aggregateType: 'ApplicationPhase',
+                        aggregateId: phaseId,
+                        queueName: 'application-steps',
+                        payload: JSON.stringify({
+                            phaseId,
+                            applicationId,
+                            phaseCategory: phase.phaseCategory,
+                            phaseType: phase.phaseType,
+                        }),
+                        actorId: userId,
+                    },
                 });
             }
-
-            // 3. Write PHASE.COMPLETED domain event
-            await tx.domainEvent.create({
-                data: {
-                    id: uuidv4(),
-                    tenantId,
-                    eventType: 'PHASE.COMPLETED',
-                    aggregateType: 'ApplicationPhase',
-                    aggregateId: phaseId,
-                    queueName: 'application-steps',
-                    payload: JSON.stringify({
-                        phaseId,
-                        applicationId,
-                        phaseCategory: phase.phaseCategory,
-                        phaseType: phase.phaseType,
-                    }),
-                    actorId: userId,
-                },
-            });
 
             // 4. Find and activate next phase (unless skipped)
             let nextPhase = null;

@@ -51,10 +51,11 @@ async function handleWalletCredited(event: PaymentEvent<WalletCreditedPayload>):
         correlationId: event.meta.correlationId,
     });
 
-    // Only auto-allocate for virtual account funding
-    if (source === 'virtual_account') {
-        await allocationService.autoAllocateToPendingInstallments(userId, walletId);
-    }
+    // Always auto-allocate on wallet credit.
+    // In production, credits come via the virtual-account webhook (BudPay)
+    // that fires on any inbound transfer. Manual credits (admin top-ups,
+    // refunds) should also allocate to pending installments.
+    await allocationService.autoAllocateToPendingInstallments(userId, walletId);
 }
 
 /**
