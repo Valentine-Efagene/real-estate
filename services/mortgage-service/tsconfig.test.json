@@ -10,7 +10,8 @@
     "include": [
         "tests/**/*",
         "src/**/*",
-        "../notification-service/src/**/*"
+        "../notification-service/src/**/*",
+        "../property-service/src/**/*"
     ],
     "exclude": [
         "node_modules",

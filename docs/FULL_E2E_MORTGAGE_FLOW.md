@@ -780,6 +780,53 @@ Content-Type: application/json
 
 **Store Variables**: `propertyId`
 
+### Step 5.1a: Developer Adds Media to Property
+
+Simulates images that were already uploaded via presigned S3 URLs. The backend stores the media metadata.
+
+```http
+POST {{propertyServiceUrl}}/property/properties/{{propertyId}}/media
+Authorization: Bearer {{emekaAccessToken}}
+Content-Type: application/json
+
+{
+  "media": [
+    {
+      "url": "https://qshelter-staging-uploads.s3.us-east-1.amazonaws.com/property_pictures/lekki-gardens-front.jpg",
+      "type": "IMAGE",
+      "caption": "Lekki Gardens Estate - Front View",
+      "order": 0
+    },
+    {
+      "url": "https://qshelter-staging-uploads.s3.us-east-1.amazonaws.com/property_pictures/lekki-gardens-interior.jpg",
+      "type": "IMAGE",
+      "caption": "Lekki Gardens Estate - Interior",
+      "order": 1
+    }
+  ]
+}
+```
+
+**Expected Response** (201 Created): Array of created media records with `id`, `url`, `type`.
+
+**Store Variables**: `displayImageMediaId` (first media record's `id`)
+
+### Step 5.1b: Developer Sets Display Image
+
+Uses the media record ID (not URL) to set the property's display image.
+
+```http
+PUT {{propertyServiceUrl}}/property/properties/{{propertyId}}
+Authorization: Bearer {{emekaAccessToken}}
+Content-Type: application/json
+
+{
+  "displayImageId": "{{displayImageMediaId}}"
+}
+```
+
+**Expected Response** (200 OK): Updated property with `displayImageId` set.
+
 ### Step 5.2: Create Property Variant
 
 ```http

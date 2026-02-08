@@ -1,6 +1,6 @@
 
 
-import { api, prisma, cleanupTestData } from '../../setup.js';
+import { api, propertyApi, prisma, cleanupTestData } from '../../setup.js';
 import { faker } from '@faker-js/faker';
 import { randomUUID } from 'crypto';
 import { mockAuthHeaders, ROLES, ConditionOperator, QuestionCategory } from '@valentine-efagene/qshelter-common';
@@ -85,6 +85,9 @@ describe("Chidi's Lekki Mortgage Flow", () => {
     let salesOfferDocumentationPlanId: string; // DocumentationPlan for sales offer phase (developer uploads)
     let kycDocumentationPlanId: string; // DocumentationPlan for KYC/preapproval documentation phase
     let mortgageDocumentationPlanId: string; // DocumentationPlan for mortgage offer phase (bank uploads)
+
+    // Property media
+    let displayImageMediaId: string;
 
     // Chidi's application
     let applicationId: string;
@@ -360,9 +363,71 @@ describe("Chidi's Lekki Mortgage Flow", () => {
         await cleanupTestData();
         await prisma.propertyUnit.deleteMany({ where: { variant: { propertyId } } });
         await prisma.propertyVariant.deleteMany({ where: { propertyId } });
+        await prisma.propertyMedia.deleteMany({ where: { propertyId } });
         await prisma.property.delete({ where: { id: propertyId } }).catch(() => { });
         await prisma.user.deleteMany({ where: { tenantId } });
         await prisma.tenant.delete({ where: { id: tenantId } }).catch(() => { });
+    });
+
+    // =========================================================================
+    // Step 0: Adaeze adds property media via the property service API
+    // This mirrors the demo frontend flow: upload images, then set display image
+    // =========================================================================
+    describe('Step 0: Adaeze adds property media', () => {
+        it('Adaeze uploads property images via the API', async () => {
+            // The demo frontend uploads images via presigned URLs, then registers
+            // them with POST /property/properties/:id/media. We skip the presigned
+            // upload and pass dummy S3 URLs (as if the upload already happened).
+            const response = await propertyApi
+                .post(`/property/properties/${propertyId}/media`)
+                .set(adminHeaders(adaezeId, tenantId))
+                .send({
+                    media: [
+                        {
+                            url: 'https://qshelter-staging-uploads.s3.us-east-1.amazonaws.com/property_pictures/lekki-gardens-front.jpg',
+                            type: 'IMAGE',
+                            caption: 'Lekki Gardens Estate - Front View',
+                            order: 0,
+                        },
+                        {
+                            url: 'https://qshelter-staging-uploads.s3.us-east-1.amazonaws.com/property_pictures/lekki-gardens-interior.jpg',
+                            type: 'IMAGE',
+                            caption: 'Lekki Gardens Estate - Interior',
+                            order: 1,
+                        },
+                    ],
+                });
+
+            if (response.status !== 201) {
+                console.error('Media upload failed:', response.body);
+            }
+
+            expect(response.status).toBe(201);
+            expect(response.body.data).toHaveLength(2);
+            expect(response.body.data[0].url).toContain('lekki-gardens-front.jpg');
+            expect(response.body.data[1].url).toContain('lekki-gardens-interior.jpg');
+
+            // Save the first media ID for the display image step
+            displayImageMediaId = response.body.data[0].id;
+        });
+
+        it('Adaeze sets the display image for the property', async () => {
+            // The demo frontend calls PUT /property/properties/:id with displayImageId
+            // after the user selects which uploaded image should be the cover photo.
+            const response = await propertyApi
+                .put(`/property/properties/${propertyId}`)
+                .set(adminHeaders(adaezeId, tenantId))
+                .send({
+                    displayImageId: displayImageMediaId,
+                });
+
+            if (response.status !== 200) {
+                console.error('Set display image failed:', response.body);
+            }
+
+            expect(response.status).toBe(200);
+            expect(response.body.data.displayImageId).toBe(displayImageMediaId);
+        });
     });
 
     // =========================================================================

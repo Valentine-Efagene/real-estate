@@ -6,6 +6,7 @@ import { PrismaClient, destroyAllEventPublishers } from '@valentine-efagene/qshe
 import { faker } from '@faker-js/faker';
 import supertest from 'supertest';
 import { app } from '../src/app.js';
+import { app as propertyApp } from '../../property-service/src/app.js';
 import { destroySNSClient } from '../src/lib/outbox.js';
 
 // Note: notification-service import removed - tests should use the deployed service or mock
@@ -20,10 +21,15 @@ import { destroySNSClient } from '../src/lib/outbox.js';
  */
 export const API_BASE_URL = process.env.API_BASE_URL;
 export const NOTIFICATION_API_BASE_URL = process.env.NOTIFICATION_API_BASE_URL;
+export const PROPERTY_API_BASE_URL = process.env.PROPERTY_API_BASE_URL;
 export const isDeployedMode = !!API_BASE_URL;
 
 // Create a supertest instance that works with both modes
 export const api = API_BASE_URL ? supertest(API_BASE_URL) : supertest(app);
+// Property API - uses property service app in local mode, or deployed URL
+export const propertyApi = PROPERTY_API_BASE_URL
+    ? supertest(PROPERTY_API_BASE_URL)
+    : supertest(propertyApp);
 // Notification API requires NOTIFICATION_API_BASE_URL to be set for tests
 export const notificationApi = NOTIFICATION_API_BASE_URL
     ? supertest(NOTIFICATION_API_BASE_URL)

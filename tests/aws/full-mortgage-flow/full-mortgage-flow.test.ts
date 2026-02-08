@@ -257,6 +257,7 @@ describe('Full E2E Mortgage Flow', () => {
     let propertyId: string;
     let variantId: string;
     let unitId: string;
+    let displayImageMediaId: string;
 
     // Payment Configuration
     let downpaymentPlanId: string;
@@ -1051,6 +1052,56 @@ describe('Full E2E Mortgage Flow', () => {
 
             propertyId = response.body.data.id;
             console.log(`✅ Property: ${propertyId}`);
+        });
+
+        it('Step 5.1a: Developer adds media to property', async () => {
+            // Simulate media that was already uploaded via presigned URL
+            const response = await propertyApi
+                .post(`/property/properties/${propertyId}/media`)
+                .set(developerHeaders(emekaAccessToken))
+                .send({
+                    media: [
+                        {
+                            url: 'https://qshelter-staging-uploads.s3.us-east-1.amazonaws.com/property_pictures/lekki-gardens-front.jpg',
+                            type: 'IMAGE',
+                            caption: 'Lekki Gardens Estate - Front View',
+                            order: 0,
+                        },
+                        {
+                            url: 'https://qshelter-staging-uploads.s3.us-east-1.amazonaws.com/property_pictures/lekki-gardens-interior.jpg',
+                            type: 'IMAGE',
+                            caption: 'Lekki Gardens Estate - Interior',
+                            order: 1,
+                        },
+                    ],
+                });
+
+            if (response.status !== 201) {
+                console.log('Media upload failed:', JSON.stringify(response.body, null, 2));
+            }
+            expect(response.status).toBe(201);
+            expect(response.body.success).toBe(true);
+            expect(response.body.data).toHaveLength(2);
+
+            // Store first media ID for display image
+            displayImageMediaId = response.body.data[0].id;
+            console.log(`✅ Property media added (${response.body.data.length} items)`);
+        });
+
+        it('Step 5.1b: Developer sets display image', async () => {
+            const response = await propertyApi
+                .put(`/property/properties/${propertyId}`)
+                .set(developerHeaders(emekaAccessToken))
+                .send({
+                    displayImageId: displayImageMediaId,
+                });
+
+            if (response.status !== 200) {
+                console.log('Set display image failed:', JSON.stringify(response.body, null, 2));
+            }
+            expect(response.status).toBe(200);
+            expect(response.body.success).toBe(true);
+            console.log(`✅ Display image set: ${displayImageMediaId}`);
         });
 
         it('Step 5.2: Developer creates property variant', async () => {

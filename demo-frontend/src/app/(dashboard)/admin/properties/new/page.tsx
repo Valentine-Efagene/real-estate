@@ -131,16 +131,22 @@ function CreatePropertyWizardPage() {
                     }));
 
                 if (mediaData.length > 0) {
-                    await propertyApi.post(`/property/properties/${propertyId}/media`, { media: mediaData });
-                }
+                    const mediaResponse = await propertyApi.post<Array<{ id: string; url: string; type: string }>>(`/property/properties/${propertyId}/media`, { media: mediaData });
 
-                // Set display image if selected
-                if (wizardData.displayImageKey) {
-                    const displayMedia = wizardData.media.find((m) => m.key === wizardData.displayImageKey);
-                    if (displayMedia?.downloadUrl) {
-                        await propertyApi.patch(`/property/properties/${propertyId}`, {
-                            displayImageUrl: displayMedia.downloadUrl,
-                        });
+                    // Set display image if selected - use media record ID (not URL)
+                    if (wizardData.displayImageKey && mediaResponse.data) {
+                        const displayMedia = wizardData.media.find((m) => m.key === wizardData.displayImageKey);
+                        if (displayMedia?.downloadUrl) {
+                            // Find the created media record matching the display image URL
+                            const displayMediaRecord = mediaResponse.data.find(
+                                (m) => m.url === displayMedia.downloadUrl
+                            );
+                            if (displayMediaRecord) {
+                                await propertyApi.put(`/property/properties/${propertyId}`, {
+                                    displayImageId: displayMediaRecord.id,
+                                });
+                            }
+                        }
                     }
                 }
             }
@@ -222,10 +228,10 @@ function CreatePropertyWizardPage() {
                                     onClick={() => goToStep(step.id)}
                                     disabled={isSubmitting}
                                     className={`flex items-center gap-1.5 text-xs transition-colors ${currentStepIndex === idx
-                                            ? 'text-primary font-medium'
-                                            : currentStepIndex > idx
-                                                ? 'text-green-600 hover:text-green-700'
-                                                : 'text-muted-foreground hover:text-foreground'
+                                        ? 'text-primary font-medium'
+                                        : currentStepIndex > idx
+                                            ? 'text-green-600 hover:text-green-700'
+                                            : 'text-muted-foreground hover:text-foreground'
                                         }`}
                                 >
                                     {currentStepIndex > idx ? (
