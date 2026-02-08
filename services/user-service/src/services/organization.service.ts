@@ -438,6 +438,10 @@ class OrganizationService {
             }
 
             // Assign the role to the user via TenantMembership
+            // IMPORTANT: Only set roleId on CREATE (new membership).
+            // On UPDATE, do NOT overwrite the existing role — the user may already
+            // have a higher-privilege role (e.g., admin from bootstrap) that should
+            // not be downgraded when they're added to an organization.
             await tx.tenantMembership.upsert({
                 where: { userId_tenantId: { userId: data.userId, tenantId } },
                 create: {
@@ -447,7 +451,6 @@ class OrganizationService {
                     isActive: true,
                 },
                 update: {
-                    roleId: role.id,
                     isActive: true,
                 },
             });

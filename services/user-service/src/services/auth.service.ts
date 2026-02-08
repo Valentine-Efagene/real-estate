@@ -160,8 +160,8 @@ class AuthService {
         let tenantId: string | null = null;
 
         if (defaultMembership) {
-            // Federated: Use tenant membership role
-            roleNames = [defaultMembership.role.name];
+            // Federated: Use ALL roles from tenant memberships (not just first)
+            roleNames = [...new Set(user.tenantMemberships!.map((m) => m.role.name))];
             tenantId = defaultMembership.tenantId;
         } else {
             // Legacy: Use user-level roles and tenantId
@@ -402,8 +402,8 @@ class AuthService {
             let tenantId: string | null = null;
 
             if (defaultMembership) {
-                // Federated: Use tenant membership role
-                roleNames = [defaultMembership.role.name];
+                // Federated: Use ALL roles from tenant memberships (not just first)
+                roleNames = [...new Set(user.tenantMemberships!.map((m) => m.role.name))];
                 tenantId = defaultMembership.tenantId;
             } else {
                 // Legacy: Use user-level roles and tenantId

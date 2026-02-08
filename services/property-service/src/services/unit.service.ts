@@ -1,6 +1,6 @@
 import { prisma } from '../lib/prisma';
 import { AppError } from '@valentine-efagene/qshelter-common';
-import type { CreateUnitInput, UpdateUnitInput } from '../validators/unit.validator';
+import type { CreateUnitInput, UpdateUnitInput, BulkCreateUnitsInput } from '../validators/unit.validator';
 
 class UnitService {
     async createUnit(variantId: string, data: CreateUnitInput, tenantId: string) {
@@ -56,6 +56,83 @@ class UnitService {
         });
 
         return unit;
+    }
+
+    async bulkCreateUnits(variantId: string, data: BulkCreateUnitsInput, tenantId: string) {
+        // Verify variant exists and belongs to tenant's property
+        const variant = await prisma.propertyVariant.findUnique({
+            where: { id: variantId },
+            include: { property: { select: { tenantId: true } } },
+        });
+
+        if (!variant) {
+            throw new AppError(404, 'Variant not found');
+        }
+
+        if (variant.property.tenantId !== tenantId) {
+            throw new AppError(403, 'Access denied');
+        }
+
+        // Check for duplicate unit numbers within the batch
+        const unitNumbers = data.units.map((u) => u.unitNumber);
+        const uniqueNumbers = new Set(unitNumbers);
+        if (uniqueNumbers.size !== unitNumbers.length) {
+            throw new AppError(400, 'Duplicate unit numbers found in the batch');
+        }
+
+        // Check for conflicts with existing units
+        const existing = await prisma.propertyUnit.findMany({
+            where: { variantId, unitNumber: { in: unitNumbers } },
+            select: { unitNumber: true },
+        });
+
+        if (existing.length > 0) {
+            const conflicts = existing.map((e) => e.unitNumber).join(', ');
+            throw new AppError(409, `Unit numbers already exist: ${conflicts}`);
+        }
+
+        const units = await prisma.$transaction(async (tx) => {
+            // Create all units in bulk
+            await tx.propertyUnit.createMany({
+                data: data.units.map((unit) => ({
+                    variantId,
+                    tenantId,
+                    unitNumber: unit.unitNumber,
+                    floorNumber: unit.floorNumber,
+                    blockName: unit.blockName,
+                    priceOverride: unit.priceOverride,
+                    areaOverride: unit.areaOverride,
+                    notes: unit.notes,
+                    status: unit.status ?? 'AVAILABLE',
+                })),
+            });
+
+            // Update variant's unit counts in one go
+            const availableCount = data.units.filter(
+                (u) => (u.status ?? 'AVAILABLE') === 'AVAILABLE'
+            ).length;
+
+            await tx.propertyVariant.update({
+                where: { id: variantId },
+                data: {
+                    totalUnits: { increment: data.units.length },
+                    availableUnits: { increment: availableCount },
+                },
+            });
+
+            // Fetch and return the created units
+            const created = await tx.propertyUnit.findMany({
+                where: {
+                    variantId,
+                    unitNumber: { in: data.units.map((u) => u.unitNumber) },
+                },
+                orderBy: [{ blockName: 'asc' }, { floorNumber: 'asc' }, { unitNumber: 'asc' }],
+            });
+
+            return created;
+        });
+
+        return units;
     }
 
     async getUnits(variantId: string, tenantId: string, filters?: { status?: string }) {

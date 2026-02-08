@@ -33,6 +33,8 @@ class PropertyService {
                 ...data,
                 userId,
                 tenantId,
+                // If status is PUBLISHED, set publishedAt
+                publishedAt: data.status === 'PUBLISHED' ? new Date() : undefined,
             },
         });
         return property;

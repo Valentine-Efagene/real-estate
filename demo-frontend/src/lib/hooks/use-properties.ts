@@ -353,6 +353,27 @@ export function useCreateUnit() {
   });
 }
 
+export function useBulkCreateUnits() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ propertyId, variantId, units }: { propertyId: string; variantId: string; units: CreateUnitInput[] }) => {
+      const response = await propertyApi.post<PropertyUnit[]>(
+        `/property/properties/${propertyId}/variants/${variantId}/units/bulk`,
+        { units }
+      );
+      if (!response.success) {
+        throw new Error(response.error?.message || 'Failed to create units');
+      }
+      return response.data!;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.properties.units(variables.propertyId, variables.variantId) });
+      queryClient.invalidateQueries({ queryKey: queryKeys.properties.variants(variables.propertyId) });
+    },
+  });
+}
+
 export function useDeleteUnit() {
   const queryClient = useQueryClient();
 

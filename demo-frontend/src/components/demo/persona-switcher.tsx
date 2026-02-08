@@ -109,9 +109,9 @@ export function PersonaSwitcher() {
         setSwitchingTo(targetUser.firstName);
 
         try {
-            // Logout current user
+            // Logout current user (skipRedirect to avoid navigating to / during switch)
             if (user) {
-                await logout();
+                await logout({ skipRedirect: true });
             }
 
             // Login as new persona with the demo password
@@ -170,8 +170,7 @@ export function PersonaSwitcher() {
                 ) : (
                     users.map(u => {
                         const isActive = u.email === user?.email;
-                        const primaryRole = getPrimaryRole(u.userRoles);
-                        const roleColor = getRoleColor(primaryRole);
+                        const allRoles = u.userRoles?.map(ur => ur.role.name) || [];
 
                         return (
                             <DropdownMenuItem
@@ -188,13 +187,27 @@ export function PersonaSwitcher() {
                                         <span className={`truncate ${isActive ? 'font-medium' : ''}`}>
                                             {u.firstName} {u.lastName}
                                         </span>
-                                        <Badge variant="secondary" className={`${roleColor} text-white text-xs shrink-0`}>
-                                            {formatRoleName(primaryRole)}
-                                        </Badge>
+                                        {isActive && <span className="text-xs text-green-600 shrink-0">Active</span>}
                                     </div>
-                                    <span className="text-xs text-muted-foreground truncate">{u.email}</span>
+                                    <div className="flex flex-wrap gap-1 mt-0.5">
+                                        {allRoles.length > 0 ? (
+                                            allRoles.map(roleName => (
+                                                <Badge
+                                                    key={roleName}
+                                                    variant="secondary"
+                                                    className={`${getRoleColor(roleName)} text-white text-[10px] leading-tight px-1.5 py-0`}
+                                                >
+                                                    {formatRoleName(roleName)}
+                                                </Badge>
+                                            ))
+                                        ) : (
+                                            <Badge variant="secondary" className="bg-gray-500 text-white text-[10px] leading-tight px-1.5 py-0">
+                                                User
+                                            </Badge>
+                                        )}
+                                    </div>
+                                    <span className="text-xs text-muted-foreground truncate mt-0.5">{u.email}</span>
                                 </div>
-                                {isActive && <span className="text-xs text-green-600 mt-0.5 shrink-0">Active</span>}
                             </DropdownMenuItem>
                         );
                     })

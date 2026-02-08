@@ -1,9 +1,26 @@
 import { Router, type Router as RouterType } from 'express';
 import { successResponse } from '@valentine-efagene/qshelter-common';
 import { unitService } from '../services/unit.service';
-import { createUnitSchema, updateUnitSchema } from '../validators/unit.validator';
+import { createUnitSchema, updateUnitSchema, bulkCreateUnitsSchema } from '../validators/unit.validator';
 
 export const unitRouter: RouterType = Router();
+
+// Bulk create units for a variant
+unitRouter.post('/properties/:propertyId/variants/:variantId/units/bulk', async (req, res, next) => {
+    try {
+        const { variantId } = req.params;
+        const tenantId = req.tenantContext?.tenantId;
+        if (!tenantId) {
+            return res.status(400).json({ success: false, error: 'Tenant context required' });
+        }
+
+        const data = bulkCreateUnitsSchema.parse(req.body);
+        const units = await unitService.bulkCreateUnits(variantId, data, tenantId);
+        res.status(201).json(successResponse(units));
+    } catch (error) {
+        next(error);
+    }
+});
 
 // Create unit for a variant
 unitRouter.post('/properties/:propertyId/variants/:variantId/units', async (req, res, next) => {

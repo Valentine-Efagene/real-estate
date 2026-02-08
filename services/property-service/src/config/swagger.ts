@@ -17,6 +17,7 @@ import {
     createUnitSchema,
     updateUnitSchema,
     unitResponseSchema,
+    bulkCreateUnitsSchema,
 } from '../validators/unit.validator';
 import {
     createAmenitySchema,
@@ -389,6 +390,47 @@ registry.registerPath({
                     }),
                 },
             },
+        },
+    },
+});
+
+registry.registerPath({
+    method: 'post',
+    path: '/properties/{propertyId}/variants/{variantId}/units/bulk',
+    tags: ['Units'],
+    summary: 'Bulk create units for a variant',
+    description: 'Create multiple units at once in a single transaction. More efficient than creating units one by one. Max 500 units per request.',
+    security: [{ bearerAuth: [] }],
+    request: {
+        params: z.object({
+            propertyId: z.string().openapi({ description: 'Property ID' }),
+            variantId: z.string().openapi({ description: 'Variant ID' }),
+        }),
+        body: {
+            content: {
+                'application/json': {
+                    schema: bulkCreateUnitsSchema,
+                },
+            },
+        },
+    },
+    responses: {
+        201: {
+            description: 'Units created',
+            content: {
+                'application/json': {
+                    schema: z.object({
+                        success: z.literal(true),
+                        data: z.array(unitResponseSchema),
+                    }),
+                },
+            },
+        },
+        400: {
+            description: 'Validation error or duplicate unit numbers in batch',
+        },
+        409: {
+            description: 'Unit numbers already exist in the variant',
         },
     },
 });

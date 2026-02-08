@@ -18,7 +18,7 @@ import {
     type VariantFormData,
     type UnitFormData,
 } from '@/components/properties/wizard-steps';
-import { useCreateProperty, useCreateVariant, useCreateUnit } from '@/lib/hooks/use-properties';
+import { useCreateProperty, useCreateVariant, useCreateUnit, useBulkCreateUnits, usePublishProperty } from '@/lib/hooks/use-properties';
 import { propertyApi } from '@/lib/api/client';
 import { ProtectedRoute } from '@/components/auth';
 
@@ -46,6 +46,8 @@ function CreatePropertyWizardPage() {
     const createProperty = useCreateProperty();
     const createVariant = useCreateVariant();
     const createUnit = useCreateUnit();
+    const bulkCreateUnits = useBulkCreateUnits();
+    const publishProperty = usePublishProperty();
 
     const [currentStep, setCurrentStep] = useState<StepId>('details');
     const [wizardData, setWizardData] = useState<WizardData>({
@@ -151,7 +153,7 @@ function CreatePropertyWizardPage() {
                 }
             }
 
-            // Step 3: Create variants and their units
+            // Step 3: Create variants and their units (bulk)
             for (const variant of wizardData.variants) {
                 const createdVariant = await createVariant.mutateAsync({
                     propertyId,
@@ -168,13 +170,13 @@ function CreatePropertyWizardPage() {
                     },
                 });
 
-                // Create units for this variant
+                // Bulk create units for this variant
                 const variantUnits = wizardData.units[variant.id] || [];
-                for (const unit of variantUnits) {
-                    await createUnit.mutateAsync({
+                if (variantUnits.length > 0) {
+                    await bulkCreateUnits.mutateAsync({
                         propertyId,
                         variantId: createdVariant.id,
-                        data: {
+                        units: variantUnits.map((unit) => ({
                             unitNumber: unit.unitNumber,
                             floorNumber: unit.floorNumber,
                             blockName: unit.blockName,
@@ -182,7 +184,7 @@ function CreatePropertyWizardPage() {
                             areaOverride: unit.areaOverride,
                             notes: unit.notes,
                             status: unit.status,
-                        },
+                        })),
                     });
                 }
             }

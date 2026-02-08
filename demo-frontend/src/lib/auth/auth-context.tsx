@@ -10,7 +10,7 @@ interface AuthContextValue {
   isLoading: boolean;
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<void>;
-  logout: () => Promise<void>;
+  logout: (options?: { skipRedirect?: boolean }) => Promise<void>;
   refresh: () => Promise<boolean>;
   hasRole: (role: UserRole) => boolean;
   hasAnyRole: (roles: UserRole[]) => boolean;
@@ -131,12 +131,14 @@ export function AuthProvider({ children, initialSession = null }: AuthProviderPr
     }
   }, []);
 
-  const logout = useCallback(async () => {
+  const logout = useCallback(async (options?: { skipRedirect?: boolean }) => {
     setIsLoading(true);
     try {
       await fetch('/api/auth/logout', { method: 'POST' });
       setUser(null);
-      router.push('/');
+      if (!options?.skipRedirect) {
+        router.push('/');
+      }
     } finally {
       setIsLoading(false);
     }

@@ -50,6 +50,13 @@ export const unitResponseSchema = z
     })
     .openapi('Unit');
 
+export const bulkCreateUnitsSchema = z
+    .object({
+        units: z.array(createUnitSchema).min(1).max(500).openapi({ description: 'Array of units to create (max 500)' }),
+    })
+    .openapi('BulkCreateUnitsRequest');
+
 export type CreateUnitInput = z.infer<typeof createUnitSchema>;
 export type UpdateUnitInput = z.infer<typeof updateUnitSchema>;
 export type UnitResponse = z.infer<typeof unitResponseSchema>;
+export type BulkCreateUnitsInput = z.infer<typeof bulkCreateUnitsSchema>;

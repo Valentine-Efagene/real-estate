@@ -28,6 +28,11 @@ export const createPropertySchema = z
             example: 'media_123',
             description: 'ID of the PropertyMedia to use as display image'
         }),
+        // Initial status - defaults to DRAFT
+        status: z.enum(['DRAFT', 'PUBLISHED']).default('DRAFT').openapi({
+            example: 'DRAFT',
+            description: 'Initial property status. If PUBLISHED, publishedAt will be set automatically.'
+        }),
     })
     .openapi('CreatePropertyRequest');
 
