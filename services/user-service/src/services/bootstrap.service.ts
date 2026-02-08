@@ -176,6 +176,8 @@ class BootstrapService {
         }
 
         // Execute in transaction for atomicity
+        // Increase timeout from default 5s to 30s - bootstrap creates 30+ records
+        // and Aurora cold-start latency can exceed 5s easily
         await prisma.$transaction(async (tx) => {
             // 1. Create or get tenant
             if (!tenant) {
@@ -397,7 +399,7 @@ class BootstrapService {
                     },
                 });
             }
-        });
+        }, { timeout: 30000 });
 
         // 7. Trigger immediate sync for new roles (outside transaction)
         let syncTriggered = false;
